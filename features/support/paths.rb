@@ -14,6 +14,7 @@ module NavigationHelpers
       when /new child page/
         new_child_path
 
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #

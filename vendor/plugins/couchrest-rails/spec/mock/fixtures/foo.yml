@@ -1,0 +1,11 @@
+<% def blurb; CouchRestRails::Fixtures.random_blurb; end %>
+
+<% 10.times do |i| %>
+record_<%= i %>:
+  type: Foo
+  title: <%= blurb.split('.').first %>
+  body: <%= blurb %>
+  tags: <%= blurb.split(' ').sort_by {rand}[0..3].map {|e| e.downcase.gsub(/[^a-z]/, '').strip}.inspect %>
+  created_at: <%= (Time.now - 3600*rand(10)).utc.strftime('%Y/%m/%d %H:%M:%S +0000') %>
+  updated_at: <%= Time.now.utc.strftime('%Y/%m/%d %H:%M:%S +0000') %>
+<% end %>

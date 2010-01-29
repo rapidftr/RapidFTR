@@ -1,0 +1,8 @@
+Description:
+    Generates the files needed for your Rails application to connect to and work with a CouchDB database over CouchRest.
+
+Example:
+    ./script/generate couchrest_rails
+
+    This will create:
+        config/initializers/couchdb.rb

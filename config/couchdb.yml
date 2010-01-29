@@ -1,0 +1,18 @@
+base: &base
+ database_prefix: rapidftr_
+ database_suffix: _<%= RAILS_ENV %>
+
+development:
+  host: localhost
+  port: 5984
+  <<: *base
+  
+test:
+  host: localhost
+  port: 5984
+  <<: *base
+
+cucumber:
+  host: localhost
+  port: 5984
+  <<: *base

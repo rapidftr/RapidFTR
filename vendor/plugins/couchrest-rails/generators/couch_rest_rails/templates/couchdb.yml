@@ -1,0 +1,13 @@
+base: &base
+ database_prefix: 
+ database_suffix: _<%%= RAILS_ENV %>
+
+development:
+  host: localhost
+  port: 5984
+  <<: *base
+  
+test:
+  host: localhost
+  port: 5984
+  <<: *base
