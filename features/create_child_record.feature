@@ -11,7 +11,7 @@ Scenario:
 #  And I fill in "Haiti" for "LastKnownLocation"
 #  And I select "1-2 weeks ago" from "DateOfSeparation"
   And I press "Create"
-  And I should see "Child record successfully created."
+  Then I should see "Child record successfully created."
   And I should see "Jorge Just"
   And I should see "27"
 #  And I should see "Male"
