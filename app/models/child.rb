@@ -3,4 +3,5 @@ class Child < CouchRestRails::Document
 
   property :name
   property :age
+  property :gender
 end
