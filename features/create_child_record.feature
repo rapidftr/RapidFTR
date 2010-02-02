@@ -6,7 +6,7 @@ Scenario:
   Given I am on new child page
   When I fill in "Jorge Just" for "name"
   And I fill in "27" for "age"
-   And I choose "child_gender_male"
+   And I choose "Male"
 #  And I fill in "London" for "Origin"
 #  And I fill in "Haiti" for "LastKnownLocation"
 #  And I select "1-2 weeks ago" from "DateOfSeparation"
