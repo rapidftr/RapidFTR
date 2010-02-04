@@ -10,11 +10,30 @@
     <p>
       <%= f.label :age %><br/>
       <%= f.text_field :age %>
+      <%= f.label :isAgeExact , "Is age exact?" %>
+           <%= f.check_box :isAgeExact ,{},"Exact","Approximate"%>
+
     </p>
     <p>
       <%= f.radio_button :gender, "Male" %><%= f.label :gender_male, "Male" %>
       <%= f.radio_button :gender, "Female" %><%= f.label :gender_female, "Female" %>
     </p>
+
+      <p>
+      <%= f.label :origin %><br/>
+      <%= f.text_field :origin %>
+    </p>
+      <p>
+      <%= f.label :lastKnownLocation, "Last known location" %><br/>
+      <%= f.text_field :lastKnownLocation %>
+    </p>
+
+    <!--<p>-->
+      <!--<%=f.label :dateOfSeparation ,"Date of separation" %>-->
+      <!--<%= select :dateOfSeparation,:dateOfSeparation, %w{one two three } %>-->
+    <!---->
+    <!--</p>-->
+
     <p>
       <%= f.label :photo, "Photo" %>
       <%= f.file_field :photo %>

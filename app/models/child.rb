@@ -3,7 +3,9 @@ class Child < CouchRestRails::Document
 
   property :name
   property :age
+  property :isAgeExact
   property :gender
+<<<<<<< HEAD
 
   def photo= photo_file
 
@@ -17,4 +19,10 @@ class Child < CouchRestRails::Document
   def photo
     fetch_attachment :photo
   end
+=======
+  property :origin
+  property :lastKnownLocation
+ # property :dateOfSeparation
+
+>>>>>>> 4c476af9bc4f831f206554cb4a17b27f6c07d34f
 end
