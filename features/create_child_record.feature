@@ -18,3 +18,14 @@ Scenario:
 #  And I should see "London" within "Origin"
 #  And I should see "Haiti" within "LastKnownLocation"
 #  And I should see "1-2 weeks ago" within "DateOfSeparation"
+
+  And I follow "Back"
+  Then I should see "Listing children"
+  Then I should see "Jorge Just"
+
+  And I follow "Show"
+  Then I should see "27"
+
+  And I follow "Back"
+  Then I should see "Listing children"
+  Then I should see "Jorge Just"  
