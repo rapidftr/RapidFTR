@@ -6,11 +6,22 @@
 <p>
   <b>Age:</b>
   <%=h @child.age %>
+  <%= '(' + @child.isAgeExact + ')' %>
 </p>
+
 <p>
   <b>Gender:</b>
   <%= h @child.gender %>
 </p>
+<p>
+  <b>Origin:</b>
+  <%= h @child.origin %>
+</p>
+<p>
+  <b>Last known location:</b>
+  <%= h @child.lastKnownLocation %>
+</p>
+
 
 
 <%= link_to 'Edit', edit_child_path(@child) %> |
