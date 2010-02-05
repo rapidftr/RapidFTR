@@ -8,7 +8,7 @@ Scenario:
   When I fill in the basic details of a child
   And I attach the file "features/resources/jorge.jpg" to "photo"
   And I press "Create"
-  Then I should be on the view child   record page
+  Then I should see "Child record successfully created"
   And I should see the photo of the child
   
 

@@ -14,10 +14,12 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     @child = Child.get(params[:id])
+    Mime::Type.register "image/jpeg", :jpg
 
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @child }
+      format.custom("image/jpeg") { send_data(@child.photo, :type => "image/jpeg")}
     end
   end
 

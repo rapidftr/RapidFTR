@@ -7,10 +7,6 @@ When /^I fill in the basic details of a child$/ do
 #  And I select "1-2 weeks ago" from "DateOfSeparation"
 end
 
-When /^I attach a photo$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 Then /^I should see the photo of the child$/ do
-  pending # express the regexp above with the code you wish you had
+  (Hpricot(response.body)/"img[@src*='']").should_not be_empty  
 end
