@@ -2,3 +2,4 @@
 db/*
 log/*
 tmp/*
+rerun.txt
