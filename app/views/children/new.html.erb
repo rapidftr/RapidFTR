@@ -1,6 +1,6 @@
 <h1>New child</h1>
 
-<% form_for(@child) do |f| %>
+<% form_for(@child, :html => {:multipart => true}) do |f| %>
     <%= f.error_messages %>
 
     <p>
@@ -34,6 +34,10 @@
     <!---->
     <!--</p>-->
 
+    <p>
+      <%= f.label :photo, "Photo" %>
+      <%= f.file_field :photo %>
+    </p>
     <p>
       <%= f.submit 'Create' %>
     </p>

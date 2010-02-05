@@ -4,9 +4,21 @@ class Child < CouchRestRails::Document
   property :name
   property :age
   property :isAgeExact
-  property :gender
   property :origin
   property :lastKnownLocation
- # property :dateOfSeparation
+  # property :dateOfSeparation
+  property :gender
 
+  def photo= photo_file
+    return unless photo_file.respond_to? :content_type
+    if (has_attachment? :photo)
+      update_attachment(:name => "photo", :content_type => photo_file.content_type, :file => photo_file)
+    else
+      create_attachment(:name => "photo", :content_type => photo_file.content_type, :file => photo_file)
+    end
+  end
+
+  def photo
+    read_attachment "photo"
+  end
 end
