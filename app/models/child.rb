@@ -3,5 +3,10 @@ class Child < CouchRestRails::Document
 
   property :name
   property :age
+  property :isAgeExact
   property :gender
+  property :origin
+  property :lastKnownLocation
+ # property :dateOfSeparation
+
 end
