@@ -1,7 +1,10 @@
+
+# Before each scenario...
 Before do
-  CouchRestRails::Tests.setup
+#  CouchRestRails::Tests.setup
 end
 
+# After each scenario...
 After do
-  CouchRestRails::Tests.teardown
+#  CouchRestRails::Tests.teardown
 end
