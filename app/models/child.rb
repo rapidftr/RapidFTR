@@ -10,7 +10,7 @@ class Child < CouchRestRails::Document
   property :gender
 
   def photo= photo_file
-    return unless photo_file.is_a? File
+    return unless photo_file.respond_to? :content_type
     if (has_attachment? :photo)
       update_attachment(:name => "photo", :content_type => photo_file.content_type, :file => photo_file)
     else
