@@ -28,11 +28,9 @@
       <%= f.text_field :lastKnownLocation %>
     </p>
 
-    <!--<p>-->
-      <!--<%=f.label :dateOfSeparation ,"Date of separation" %>-->
-      <!--<%= select :dateOfSeparation,:dateOfSeparation, %w{one two three } %>-->
-    <!---->
-    <!--</p>-->
+    <p><%=f.label :DATE_OF_SEPARATION ,"Date of separation" %>
+       <%= select(:child,:DATE_OF_SEPARATION,Child::DATE_OF_SEPARATION.collect{|d| [d]}) %>
+    </p>
 
     <p>
       <%= f.label :photo, "Photo" %>
