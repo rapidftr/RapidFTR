@@ -16,6 +16,9 @@ module NavigationHelpers
 
       when /children listing page/
         children_path
+
+      when /saved record page/
+        
         
 
 
