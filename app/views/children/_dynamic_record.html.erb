@@ -1,0 +1,12 @@
+<% dynamic_record.each do |field_name,field_value| %>
+    <div class="field">
+      <% if field_value.is_a? Array %>
+        <b><%= field_name.humanize + "s:" %></b>
+          <%= h field_value.join ", " %>
+      <% else %>
+          <b><%= field_name.humanize %>:</b>
+          <%= h field_value %>
+      <% end %>
+    </div>
+
+<% end %>
