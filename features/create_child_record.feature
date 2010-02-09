@@ -32,3 +32,24 @@ Feature:
     Then I follow "Back"
     And I should see "Listing children"
     And I should see "Jorge Just"
+
+
+  Scenario:
+    Given I am on new child page
+    When I fill in "Jorge Just" for "Name"
+    And I fill in "27" for "Age"
+    And I uncheck "Is age exact?"
+    And I fill in "Haiti" for "Last known location"
+    And I press "Create"
+    Then I should see "Child record successfully created."
+    And I should see "Jorge Just"
+    And I should see "27"
+    And I should see "Approximate"
+
+  Scenario:
+    Given I am on new child page
+    When I fill in "Jorge Just" for "Name"
+    And I fill in "" for "Last known location"
+    And I select "1-2 weeks ago" from "Date of separation"
+    And I press "Create"
+    Then I should see "Last known location cannot be empty"

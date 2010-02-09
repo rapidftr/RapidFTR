@@ -1,5 +1,6 @@
 class Child < CouchRestRails::Document
   use_database :child
+  include CouchRest::Validation
 
   property :name
   property :age
@@ -9,6 +10,8 @@ class Child < CouchRestRails::Document
   property :lastKnownLocation
   DATE_OF_SEPARATION= [' ', '1-2 weeks ago','2-4 weeks ago','1-6 months ago','6 months to 1 year ago','More than 1 year ago']
   property :DATE_OF_SEPARATION
+
+  validates_presence_of :lastKnownLocation,:message=>"Last known location cannot be empty"
   
 
   def photo= photo_file
