@@ -1,6 +1,6 @@
+@wip
 Feature: As an admin, I should be able to create and view users.
 
-  @wip
   Scenario:      To check that an admin creates a user record and is able to view it
 
     Given I am on admin homepage
