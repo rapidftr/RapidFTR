@@ -25,4 +25,8 @@ Scenario: Uploading an invalid file in the image field
   And I attach the file "features/resources/textfile.txt" to "photo"
   And I press "Create"
   Then I should see "Please upload a valid photo file (jpg or png) for this child record"
-  
+
+Scenario: I do not upload a photo
+  Given I am on the new child page
+  And I press "Create"
+  Then I should see "Please upload a valid photo file (jpg or png) for this child record"
