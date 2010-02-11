@@ -13,6 +13,7 @@ Feature:
     And I fill in "London" for "Origin"
     And I fill in "Haiti" for "Last known location"
     And I select "1-2 weeks ago" from "Date of separation"
+    And I attach the file "features/resources/jorge.jpg" to "photo"
     And I press "Create"
 
     Then I should see "Child record successfully created."
@@ -34,22 +35,17 @@ Feature:
     And I should see "Jorge Just"
 
 
-  Scenario:
+  Scenario: The label for age should include if that age is approximate
     Given I am on new child page
-    When I fill in "Jorge Just" for "Name"
-    And I fill in "27" for "Age"
+    When I fill in the basic details of a child
     And I uncheck "Is age exact?"
-    And I fill in "Haiti" for "Last known location"
     And I press "Create"
     Then I should see "Child record successfully created."
-    And I should see "Jorge Just"
-    And I should see "27"
     And I should see "Approximate"
 
-  Scenario:
+  Scenario: Last known location should be required to create a new child record
     Given I am on new child page
-    When I fill in "Jorge Just" for "Name"
+    When I fill in the basic details of a child
     And I fill in "" for "Last known location"
-    And I select "1-2 weeks ago" from "Date of separation"
     And I press "Create"
     Then I should see "Last known location cannot be empty"
