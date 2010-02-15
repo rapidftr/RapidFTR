@@ -38,7 +38,7 @@ Feature:
   Scenario: The label for age should include if that age is approximate
     Given I am on new child page
     When I fill in the basic details of a child
-    And I uncheck "Is age exact?"
+    And I choose "Approximate"
     And I press "Create"
     Then I should see "Child record successfully created."
     And I should see "Approximate"

@@ -36,18 +36,14 @@ class Schema
                     }
             ]
     }
-#    [
-#
-#            Field.new("name", "text_field"),
-#            RadioButtonField.new("gender", ["male", "female"]),
-#            Field.new("age", "text_field"),
-#            RadioButtonField.new("is_age_exact", ["exact", "approximate"]),
-#            Field.new("origin", "text_field"),
-#            Field.new("last_known_location", "text_field"),
-#            Field.new("uncle_name", "repeatable_text_field"),
-#            Field.new("auntie_name", "repeatable_text_field"),
-#            Field.new("sibling_name", "repeatable_text_field"),
-#            Field.new("cousin_name", "repeatable_text_field"),
-#    ]
   end
+            
+  def self.keys_in_order
+    keys = []
+    get_schema[:fields].each do |field|
+      keys << field[:name]
+    end
+    return keys
+  end
+
 end

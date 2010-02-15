@@ -1,4 +1,4 @@
-<% dynamic_record.each do |field_name,field_value| %>
+<% form.each do |field_name,field_value| %>
     <div class="field">
       <% if field_value.is_a? Array %>
         <b><%= field_name.humanize + "s:" %></b>
