@@ -1,0 +1,24 @@
+<h1>Manage Users</h1>
+
+<table>
+  <tr>
+    <th>Full Name</th>
+    <th>User Name</th>
+    <th>User Type</th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%=h user.full_name %></td>
+    <td><%=h user.user_name %></td>
+    <td><%=h user.user_type %></td>
+    <td><%= link_to 'Show', user %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New user', new_user_path %>

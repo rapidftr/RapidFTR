@@ -1,0 +1,43 @@
+ <p>
+  <b>Name:</b>
+  <%=h @user.full_name %>
+</p>
+
+<p>
+  <b>User Name:</b>
+  <%=h @user.user_name %>
+</p>
+
+<p>
+  <b>Password:</b>
+  <%=h @user.password %>
+</p>
+
+<p>
+  <b>User Type:</b>
+  <%=h @user.user_type %>
+</p>
+
+<p>
+  <b>email Address:</b>
+  <%=h @user.email %>
+</p>
+
+<p>
+  <b>Organisation:</b>
+  <%=h @user.organisation %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%=h @user.position %>
+</p>
+
+ <p>
+  <b>Location:</b>
+  <%=h @user.location %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

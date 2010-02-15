@@ -18,6 +18,15 @@ module NavigationHelpers
         children_path
 
       when /saved record page/
+
+          when /new user page/
+        new_user_path
+
+      when /manage users page/
+        users_path
+
+
+
         
         
 
