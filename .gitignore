@@ -3,3 +3,4 @@ db/*
 log/*
 tmp/*
 rerun.txt
+debug.html
