@@ -6,7 +6,7 @@
 <p>
   <b>Age:</b>
   <%=h @child.age %>
-  <%= '(' + @child.isAgeExact + ')' %>
+  <%= '(' + @child.is_age_exact + ')' %>
 </p>
 
 <p>
@@ -19,11 +19,11 @@
 </p>
 <p>
   <b>Last known location:</b>
-  <%= h @child.lastKnownLocation %>
+  <%= h @child.last_known_location %>
 </p>
 <p>
   <b>Date of separation:</b>
-  <%= h @child.DATE_OF_SEPARATION %>
+  <%= h @child.date_of_separation %>
 </p>
 <p>
   <%= image_tag child_path(@child)+".jpg" %>

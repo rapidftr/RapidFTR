@@ -1,0 +1,7 @@
+<% field_name = checkbox[:name]
+   input_name = "child[#{field_name}]" %>
+
+<div class="field">
+  <%= label_tag input_name, field_name.humanize %>
+  <%= check_box_tag input_name, "true" %>
+</div>

@@ -8,7 +8,7 @@ Feature:
     And I follow "New child"
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Age"
-    And I check "Is age exact?"
+    And I choose "Exact"
     And I choose "Male"
     And I fill in "London" for "Origin"
     And I fill in "Haiti" for "Last known location"

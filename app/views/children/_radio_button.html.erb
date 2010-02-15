@@ -1,0 +1,10 @@
+<% name = radio_button[:name]
+   options = radio_button[:options] %>
+
+<%= label_tag "child[#{name}]", name.humanize %><br/>
+
+<% options.each do |option| %>
+    <%= radio_button_tag "child[#{name}]", option.capitalize %>
+    <%= label_tag "child[#{name}_#{option}", option.capitalize %>
+<% end %>
+

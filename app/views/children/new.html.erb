@@ -1,44 +1,23 @@
 <h1>New child</h1>
 
-<% form_for(@child, :html => {:multipart => true}) do |f| %>
-    <%= f.error_messages %>
+<% form_tag '/children', :multipart => true do %>
+
+    <% schema = Schema.get_schema %>
+    <% Schema.get_schema[:fields].each do |field| %>
+        <p>
+          <%= render :partial => field[:type], :object => field %>
+        </p>
+    <% end %>
 
     <p>
-      <%= f.label :name %><br/>
-      <%= f.text_field :name %>
-    </p>
-    <p>
-      <%= f.label :age %><br/>
-      <%= f.text_field :age %>
-      <%= f.label :isAgeExact , "Is age exact?" %>
-           <%= f.check_box :isAgeExact ,{},"Exact","Approximate"%>
-
-    </p>
-    <p>
-      <%= f.radio_button :gender, "Male" %><%= f.label :gender_male, "Male" %>
-      <%= f.radio_button :gender, "Female" %><%= f.label :gender_female, "Female" %>
-    </p>
-
-      <p>
-      <%= f.label :origin %><br/>
-      <%= f.text_field :origin %>
-    </p>
-      <p>
-      <%= f.label :lastKnownLocation, "Last known location" %><br/>
-      <%= f.text_field :lastKnownLocation %>
-    </p>
-
-    <p><%=f.label :DATE_OF_SEPARATION ,"Date of separation" %>
-       <%= select(:child,:DATE_OF_SEPARATION,Child::DATE_OF_SEPARATION.collect{|d| [d]}) %>
+      <%= label_tag "child[photo]", "Photo" %><br/>
+      <%= file_field_tag "child[photo]" %>
     </p>
 
     <p>
-      <%= f.label :photo, "Photo" %>
-      <%= f.file_field :photo %>
+      <%= submit_tag "Create" %>
     </p>
-    <p>
-      <%= f.submit 'Create' %>
-    </p>
+
 <% end %>
 
 <%= link_to 'Back', children_path %>
