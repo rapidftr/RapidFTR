@@ -2,7 +2,8 @@
 
 <% form_tag '/children', :multipart => true do %>
 
-    <% schema = Schema.get_schema %>
+    <%= error_messages_for :child %>
+
     <% Schema.get_schema[:fields].each do |field| %>
         <p>
           <%= render :partial => field[:type], :object => field %>
