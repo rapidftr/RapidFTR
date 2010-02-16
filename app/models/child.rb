@@ -1,25 +1,17 @@
 class Child < CouchRestRails::Document
   use_database :child
-  
   include CouchRest::Validation
 
   property :name
   property :age
-  property :is_age_exact
+  property :isAgeExact
   property :gender
   property :origin
-  property :last_known_location
-  property :date_of_separation
+  property :lastKnownLocation
+  DATE_OF_SEPARATION= [' ', '1-2 weeks ago','2-4 weeks ago','1-6 months ago','6 months to 1 year ago','More than 1 year ago']
+  property :DATE_OF_SEPARATION
 
-  validates_presence_of :last_known_location, :message=>"Last known location cannot be empty"
-
-  def record_as_hash
-    reject { |k,v| ['_id', '_rev', 'couchrest-type', '_attachments'].include?(k) }
-  end
-
-  def as_form
-    Form.new record_as_hash
-  end
+  validates_presence_of :lastKnownLocation,:message=>"Last known location cannot be empty"
 
   def photo= photo_file
     return unless photo_file.respond_to? :content_type
@@ -47,7 +39,5 @@ class Child < CouchRestRails::Document
 
     return all_others_are_valid && photo_is_valid
   end
-
-
 
 end

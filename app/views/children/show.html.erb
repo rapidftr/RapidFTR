@@ -1,10 +1,34 @@
+<p>
+  <b>Name:</b>
+  <%=h @child.name %>
+</p>
 
+<p>
+  <b>Age:</b>
+  <%=h @child.age %>
+  <%= '(' + @child.isAgeExact + ')' %>
+</p>
+
+<p>
+  <b>Gender:</b>
+  <%= h @child.gender %>
+</p>
+<p>
+  <b>Origin:</b>
+  <%= h @child.origin %>
+</p>
+<p>
+  <b>Last known location:</b>
+  <%= h @child.lastKnownLocation %>
+</p>
+<p>
+  <b>Date of separation:</b>
+  <%= h @child.DATE_OF_SEPARATION %>
+</p>
 <p>
   <%= image_tag child_path(@child)+".jpg" %>
 </p>
 
-
-<%= render :partial => "form_show", :locals => {:form => @child.as_form} %>
 
 
 <%= link_to 'Edit', edit_child_path(@child) %> |
