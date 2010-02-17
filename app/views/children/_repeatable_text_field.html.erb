@@ -1,10 +1,10 @@
-<% input_name = "child[#{repeatable_text_field[:name]}][]" %>
+<% input_name = "child[#{form_name}][#{field["name"]}][]" %>
 
 <p>
-  <%= label_tag input_name, repeatable_text_field[:name].humanize %><br/>
+  <%= label_tag input_name, field["name"].humanize %><br/>
   <%= text_field_tag input_name %>
 </p>
 
-<button type="button" onclick="rapidftr.clone_field('<%="child_#{repeatable_text_field[:name]}"%>')">Add another</button>
+<button type="button" onclick="rapidftr.clone_field('<%="child_#{field["name"]}"%>')">Add another</button>
 
 

@@ -1,4 +1,4 @@
-<% input_name = "child[#{text_field[:name]}]" %>
+<% input_name = "child[#{form_name}][#{field["name"]}]" %>
 
-<%= label_tag input_name, text_field[:name].humanize %><br/>
+<%= label_tag input_name, field["name"].humanize %><br/>
 <%= text_field_tag input_name %>

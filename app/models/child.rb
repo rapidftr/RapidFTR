@@ -2,17 +2,6 @@ class Child < CouchRestRails::Document
   use_database :child
   include CouchRest::Validation
 
-  property :name
-  property :age
-  property :isAgeExact
-  property :gender
-  property :origin
-  property :lastKnownLocation
-  DATE_OF_SEPARATION= [' ', '1-2 weeks ago','2-4 weeks ago','1-6 months ago','6 months to 1 year ago','More than 1 year ago']
-  property :DATE_OF_SEPARATION
-
-  validates_presence_of :lastKnownLocation,:message=>"Last known location cannot be empty"
-
   def photo= photo_file
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path
@@ -28,16 +17,22 @@ class Child < CouchRestRails::Document
   end
 
   def valid?  context=:default
-    all_others_are_valid = super context
-
-    photo_is_valid = true
+    valid = true
 
     if (!/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
-      photo_is_valid = false
+      valid = false
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
 
-    return all_others_are_valid && photo_is_valid
+    last_known_location = self["basic_details"]["last_known_location"]
+
+    if last_known_location.blank?
+      valid = false
+      errors.add("last_known_location", "Last known location cannot be empty")
+    end
+
+
+    return valid
   end
 
 end

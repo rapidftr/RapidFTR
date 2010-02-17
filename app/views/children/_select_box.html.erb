@@ -1,6 +1,6 @@
-<% name = select_box[:name] %>
-<% select_tag_name = "child[#{name}]" %>
-<% options = select_box[:options] %>
+<% name = field["name"] %>
+<% select_tag_name = "child[#{form_name}][#{name}]" %>
+<% options = field["options"] %>
 
 
 <%= label_tag select_tag_name, name.humanize %>

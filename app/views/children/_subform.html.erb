@@ -1,0 +1,6 @@
+<b><%= subform[:name] %></b>
+<% subform[:fields].each do |field| %>
+    <p>
+      <%= render :partial => field[:type], :object => field %>
+    </p>
+<% end %>

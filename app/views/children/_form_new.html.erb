@@ -1,0 +1,9 @@
+
+
+<b><%= form["name"].humanize %></b>
+
+<% form["fields"].each do |field| %>
+    <p>
+      <%= render :partial => field["type"], :locals => {:field => field, :form_name => form["name"]} %>
+    </p>
+<% end %>
