@@ -7,4 +7,8 @@ class ApplicationController < ActionController::Base
   Mime::Type.register "image/jpeg", :jpg
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+
+  def self.current_user
+    nil
+  end
 end
