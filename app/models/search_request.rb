@@ -19,4 +19,11 @@ class SearchRequest < CouchRestRails::Document
       return search
     end
   end
+
+  property :user_name
+
+  def initialize(for_user_name, *args)
+    super args
+    @user_name = for_user_name
+  end
 end
