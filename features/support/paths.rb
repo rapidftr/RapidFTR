@@ -28,7 +28,8 @@ module NavigationHelpers
 
 
         
-        
+      when /search page/
+        search_url
 
 
       # Add more mappings here.
