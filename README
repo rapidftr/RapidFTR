@@ -1,23 +1,89 @@
-Showdown Demo
--------------
+RapidFTR
 
-You can try out Showdown on this page:
+RapidFTR is a mobile application that lets aid workers collect, sort and 
+share information about children in emergency situations. RapidFTR is 
+specifically designed to streamline and speed up Family Tracing and Reunification 
+efforts both in the immediate aftermath of a crisis and during ongoing recovery 
+efforts.
 
-  - Type some [Markdown] text on the left side.
-  - See the corresponding HTML on the right.
+RapidFTR allows for quick input of essential data about a child on a mobile phone, 
+including a photograph, the child's age, family, health status and location 
+information. Data is saved automatically and uploaded to a central database whenever 
+network access becomes available. Registered aid workers will be able to create and 
+modify entries for children in their care as well as search all existing records in 
+order to help distressed parents find information about their missing children.
+Because RapidFTR is designed specifically to collect and distribute information about 
+children, data security is extremely important.
 
-For a Markdown cheat-sheet, switch the right-hand window from *Preview* to *Syntax Guide*.
+Initial development is focused on building an API and web interface, with subsequent 
+development of on-phone applications for multiple mobile platforms.
 
-Showdown is a JavaScript port of the original Perl version of Markdown.  You can get the full [source code] by clicking on the version number at the bottom of the page.
 
-Also check out [WMD, the Wysiwym Markdown Editor][wmd].  It'll be open source soon; email me at the address below if you'd like to help me test the standalone version.
+Developer Info
 
-**Start with a [blank page] or edit this document in the left window.**
+We're working with developers from ThoughtWorks on version one of the API and Web 
+Interface.  You can get the source code by forking the GitHub repositories. Please 
+feel free to comment or contribute however you like:
+GITHUB: RapidFTR Repository
+GITHUB: RapidFTR BlackBerry Repository
 
-  [Markdown]: http://daringfireball.net/projects/markdown/
-  [source code]: http://attacklab.net/showdown/showdown-v0.9.zip
-  [wmd]: http://wmd-editor.com/
-  [blank page]: ?blank=1 "Clear all text"
+RapidFTR is being developed using Ruby on Rails and CouchDB. Alongside with the 
+development of the central system and API, we've also started to develop the BlackBerry 
+client. If you've got experience with any of these and want to help, please get in touch.
+ 
+
+
+Install & Run RapidFTR on OSX
+
+To get RapidFTR running on your machine while it’s in a dev environment, you’ll need to 
+install the following:
+CouchDB  Ruby 1.8.6 / 1.8.7 Gems Rails 2.3.5 JSON Cucumber
+You’ll also need to ‘pull’ the code from our GitHub Repository: http://github.com/jorgej/RapidFTR
+For more details, read the official CouchDB Read Me
+
+
+
+How To Install and Run on MAC OSX:
+
+STEP 1:
+	Download and install MacPorts 	Download and install CouchDBX
+
+STEP 2:
+	Then run these commands from Terminal or Command Line:
+
+	Ruby: 		To check version: ‘ruby -v’ 		If it’s not 1.8.7, install it using macports 		‘sudo port install ruby’
+
+	Gems:  		‘sudo rake gems:install’ 		‘sudo port install rb-rubygems’
+
+	Rails: 		‘sudo rake gems:install’
+
+	JSON 		‘sudo gem install json’
+
+	Cucumber: 		‘sudo gem install cucumber’
+
+STEP 3:
+
+	Do this once MacPorts is installed: 	‘sudo port install rb-libxml2 libxml2’  
+STEP 4:
+
+	To install your CouchDB database: 	From the command line, go to the folder where your GitHub repo is stored in and enter these commands: 	‘rake couchdb:create’ 	‘rake couchdb:create RAILS_ENV=cucumber’
+	Each time a new database is committed to code (this won’t happen often) you’ll have to rerun the ‘rake couchdb:create’ command.
+
+
+
+To run RapidFTR:
+
+From the command line, go to the folder where your GitHub repo is and enter this command: ‘./script/server’
+Open CouchDBX
+in a browser, go to:  http://localhost:3000/children http://localhost:3000/users/
+CouchDB itself should be running here: http://localhost:5984 You should also be able to see the built-in database admin tool, Futon, here: http://localhost:5984/_utils/
+
+
+
+Cucumber & RSPEC Tests:
+
+To run cucumber tests, type in the command line: ‘cucumber’ To run rspec tests, type in the command line: ‘rake spec’
+
 
 
 
