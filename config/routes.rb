@@ -1,5 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.namespace :children do |children|
+    children.resource :summary, :only => [:show, :create, :new]
+  end
+  map.search 'search', :controller => 'children/summaries', :action => 'new'
+
   map.resources :children
+
   map.resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.
