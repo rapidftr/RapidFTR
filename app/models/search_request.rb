@@ -1,6 +1,6 @@
 class SearchRequest < CouchRestRails::Document
   use_database :search_request
-
+  
   def user_name=(value)
     self['_id'] = value
   end
