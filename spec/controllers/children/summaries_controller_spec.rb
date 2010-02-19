@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mocha'
 
 describe Children::SummariesController, "POST create" do
 
@@ -12,14 +13,9 @@ describe Children::SummariesController, "POST create" do
   def post_request
     post :create, :search_request => @search_request_params
   end
-
-  it "creates a new seach request for the user" do
-    SearchRequest.should_receive(:new).with(@search_request_params)
-    post_request
-  end
   
-  it "saves the search request for the user"  do
-    search_request = stub('SearchRequest')
+  it "creates and saves the search request for the user"  do
+    search_request = stub('search_request')
 
     SearchRequest.stub(:new).with(@user.user_name, @search_request_params).and_return(search_request)
     search_request.should_receive(:save)
