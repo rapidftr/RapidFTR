@@ -1,7 +1,3 @@
-<% name = field["name"] %>
-<% select_tag_name = "child[#{form_name}][#{name}]" %>
-<% options = field["options"] %>
 
-
-<%= label_tag select_tag_name, name.humanize %>
-<%= select_tag select_tag_name, options_for_select(options.collect { |option| [option, option] } << ["", ""], "") %>
+<%= label_tag select_box.tag_name_attribute, select_box.name.humanize %>
+<%= select_tag select_box.tag_name_attribute, options_for_select(select_box.options.collect { |option| [option.option_name, option.option_name] } << ["", ""], "") %>

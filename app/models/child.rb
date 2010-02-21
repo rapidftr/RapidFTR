@@ -24,9 +24,7 @@ class Child < CouchRestRails::Document
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
 
-    last_known_location = self["basic_details"]["last_known_location"]
-
-    if last_known_location.blank?
+    if self["last_known_location"].blank?
       valid = false
       errors.add("last_known_location", "Last known location cannot be empty")
     end

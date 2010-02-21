@@ -4,8 +4,10 @@
 
     <%= error_messages_for :child %>
 
-    <% Schema.get_schema.each do |form| %>
-        <%= render :partial => "form_new", :locals => {:form => form} %>
+    <% @child_view.fields.each do |field| %>
+        <p>
+          <%= render :partial => field.type, :object => field %>
+        </p>
     <% end %>
 
     <p>

@@ -1,10 +1,8 @@
-<% name = field["name"]
-   options = field["options"] %>
 
-<%= label_tag "child[#{form_name}][#{name}]", name.humanize %><br/>
+<%= label_tag radio_button.tag_name_attribute, radio_button.name.humanize %><br/>
 
-<% options.each do |option| %>
-    <%= radio_button_tag "child[#{form_name}][#{name}]", option.capitalize %>
-    <%= label_tag "child[#{form_name}][#{name}_#{option}", option.capitalize %>
+<% radio_button.options.each do |option| %>
+    <%= radio_button_tag radio_button.tag_name_attribute, option.option_name.capitalize %>
+    <%= label_tag option.tag_name_attribute, option.option_name.capitalize %>
 <% end %>
 

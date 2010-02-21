@@ -15,33 +15,12 @@ describe "children/show.html.erb" do
       pending
     end
 
-    it "it displays all fields found on the record, in the order the appear on the Schema" do
-      Schema.stub(:get_schema).and_return(
-              [{
-                      "name" => "basic_details",
-                      "type" => "form",
-                      "fields" => [
-                              {
-                                      "name" => "name",
-                                      "type" => "text_field"
-                              },
-                              {
-                                      "name" => "age",
-                                      "type" => "text_field"
-                              },
-                              {
-                                      "name" => "address",
-                                      "type" => "text_field"
-                              }]
-              }])
+    it "displays all fields found on the ChildView" do
 
-      assigns[:child] = Child.new({
-              "_id" => "d7ab411b5b8964b0ac178f2bc5b9b5b9",
-              "basic_details" => {
-                      "age" => "27",
-                      "address" => "Highland Road",
-                      "name" => "Tom"
-              }})
+      child_view = ChildView.new
+      child_view.add_field
+
+      assigns[:child_view] = child_view
 
       render
 

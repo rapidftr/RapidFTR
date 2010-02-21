@@ -26,7 +26,7 @@ class ChildrenController < ApplicationController
   # GET /children/new.xml
   def new
     @child = Child.new
-
+    @child_view = ChildView.get_child_view_for_template Templates.get_template
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @child }

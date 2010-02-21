@@ -8,8 +8,8 @@
 
 <% @children.each do |child| %>
   <tr>
-    <td><%=h child['basic_details']['name'] %></td>
-    <td><%=h child['basic_details']['last_known_location'] %></td>
+    <td><%=h child['name'] %></td>
+    <td><%=h child['last_known_location'] %></td>
     <td><%= link_to 'Show', child %></td>
     <td><%= link_to 'Edit', edit_child_path(child) %></td>
     <td><%= link_to 'Destroy', child, :confirm => 'Are you sure?', :method => :delete %></td>
