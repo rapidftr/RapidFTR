@@ -51,7 +51,10 @@ class ChildrenController < ApplicationController
         format.html { redirect_to(@child) }
         format.xml  { render :xml => @child, :status => :created, :location => @child }
       else
-        format.html { render :action => "new" }
+        format.html {
+          @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+          render :action => "new"
+        }
         format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
@@ -63,7 +66,8 @@ class ChildrenController < ApplicationController
     @child = Child.get(params[:id])
     updated_child = Child.new(params[:child])
     @child.update_properties_from updated_child
-    @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+
+
 
     respond_to do |format|
       if @child.save
@@ -71,7 +75,10 @@ class ChildrenController < ApplicationController
         format.html { redirect_to(@child) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html {
+          @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+          render :action => "edit"
+        }
         format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
