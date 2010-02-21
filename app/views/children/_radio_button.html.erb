@@ -2,7 +2,7 @@
 <%= label_tag radio_button.tag_name_attribute, radio_button.name.humanize %><br/>
 
 <% radio_button.options.each do |option| %>
-    <%= radio_button_tag radio_button.tag_name_attribute, option.option_name.capitalize %>
-    <%= label_tag option.tag_name_attribute, option.option_name.capitalize %>
+    <%= radio_button_tag radio_button.tag_name_attribute, option.option_name, option.option_name == radio_button.value %>
+    <%= label_tag option.tag_id, option.option_name %>
 <% end %>
 

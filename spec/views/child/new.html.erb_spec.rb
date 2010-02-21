@@ -10,6 +10,7 @@ describe "children/new.html.erb" do
     before :each do
       @child_view = ChildView.new
       assigns[:child_view] = @child_view
+      @form_target = "/children"
     end
 
     it "renders a form that posts to the children url" do
@@ -44,8 +45,8 @@ describe "children/new.html.erb" do
       render
 
       response.should have_selector("form") do |form|
-        form.should have_selector("input[name='child[is_act_exact]'][type='radio'][value='Exact']")
-        form.should have_selector("input[name='child[is_act_exact]'][type='radio'][value='Approximate']")
+        form.should have_selector("input[name='child[is_act_exact]'][type='radio'][value='exact']")
+        form.should have_selector("input[name='child[is_act_exact]'][type='radio'][value='approximate']")
       end
     end
 
@@ -55,17 +56,13 @@ describe "children/new.html.erb" do
       render
 
       response.should have_selector("form") do |form|
-
-
-        response.should have_selector("form") do |form|
-          form.should have_selector("label[for='child_date_of_separation']")
-          form.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
-            select.should have_selector("option[value='1-2 weeks ago']")
-            select.should have_selector("option[value='More than a year ago']")
-          end
+        form.should have_selector("label[for='child_date_of_separation']")
+        form.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
+          select.should have_selector("option[value='1-2 weeks ago']")
+          select.should have_selector("option[value='More than a year ago']")
         end
-
       end
+
     end
   end
 

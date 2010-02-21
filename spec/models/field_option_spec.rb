@@ -6,7 +6,7 @@ describe "FieldOption" do
 
     before :each do
       @field_name = "is_age_exact"
-      @option_name = "approximate"
+      @option_name = "Approximate"
       @field_option = FieldOption.new @field_name, @option_name
 
     end
@@ -15,7 +15,7 @@ describe "FieldOption" do
     end
 
     it "converts field and option names to a HTML tag IDs" do
-      @field_option.tag_id.should == "child_#{@field_name}_#{@option_name}"
+      @field_option.tag_id.should == "child_#{@field_name}_#{@option_name.downcase}"
     end
 
   end

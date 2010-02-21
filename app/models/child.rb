@@ -33,4 +33,10 @@ class Child < CouchRestRails::Document
     return valid
   end
 
+  def update_properties_from child
+    child.each_pair do |name, value|
+      self[name] = value unless value.blank?
+    end
+  end
+
 end

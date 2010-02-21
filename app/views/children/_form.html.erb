@@ -1,0 +1,5 @@
+<% @child_view.fields.each do |field| %>
+    <p>
+      <%= render :partial => field.type, :object => field %>
+    </p>
+<% end %>

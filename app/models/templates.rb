@@ -13,12 +13,12 @@ class Templates
             {
                     "name" => "is_age_exact",
                     "type" => "radio_button",
-                    "options" =>["exact", "approximate"]
+                    "options" =>["Exact", "Approximate"]
             },
             {
                     "name" => "gender",
                     "type" => "radio_button",
-                    "options" => ["male", "female"]
+                    "options" => ["Male", "Female"]
             },
             {
                     "name" => "origin",

@@ -1,14 +1,10 @@
 <h1>New child</h1>
 
-<% form_tag '/children', :multipart => true do %>
+<% form_tag children_path, :multipart => true do %>
 
     <%= error_messages_for :child %>
 
-    <% @child_view.fields.each do |field| %>
-        <p>
-          <%= render :partial => field.type, :object => field %>
-        </p>
-    <% end %>
+    <%= render :partial => "form" %>
 
     <p>
       <%= label_tag "child[photo]", "Photo" %><br/>

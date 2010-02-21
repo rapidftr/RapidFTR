@@ -31,4 +31,8 @@ class Field
   def tag_name_attribute
     "child[#{@name}]"
   end
+
+  def select_options
+    return @options.collect { |option| [option.option_name, option.option_name] } << ["", ""]  
+  end
 end

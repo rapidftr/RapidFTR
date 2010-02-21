@@ -15,4 +15,9 @@ describe "Child record field view model" do
     @field.tag_name_attribute.should == "child[#{@field_name}]"
   end
 
+  it "returns the html options tags for a select box" do
+    @field = Field.new_select_box("select_box", ["option 1", "option 2"])
+    @field.select_options.should == [["option 1", "option 1"], ["option 2", "option 2"], ["", ""]]
+#            options.collect { |option| [option.option_name, option.option_name] } << ["", ""]     
+  end
 end

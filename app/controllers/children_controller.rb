@@ -29,7 +29,7 @@ class ChildrenController < ApplicationController
     @child = Child.new
     @child_view = ChildView.create_child_view_from_template Templates.get_template
     respond_to do |format|
-      format.html # new.html.erb
+      format.html
       format.xml  { render :xml => @child }
     end
   end
@@ -37,6 +37,7 @@ class ChildrenController < ApplicationController
   # GET /children/1/edit
   def edit
     @child = Child.get(params[:id])
+    @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
   end
 
   # POST /children
@@ -59,10 +60,13 @@ class ChildrenController < ApplicationController
   # PUT /children/1
   # PUT /children/1.xml
   def update
-    @child = Child.find(params[:id])
+    @child = Child.get(params[:id])
+    updated_child = Child.new(params[:child])
+    @child.update_properties_from updated_child
+    @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
 
     respond_to do |format|
-      if @child.update_attributes(params[:child])
+      if @child.save
         flash[:notice] = 'Child was successfully updated.'
         format.html { redirect_to(@child) }
         format.xml  { head :ok }

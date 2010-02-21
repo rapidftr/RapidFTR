@@ -1,20 +1,20 @@
-<h1>Editing child</h1>
+<h1>Edit child</h1>
 
-<% form_for(@child) do |f| %>
-  <%= f.error_messages %>
+<% form_tag child_path(@child), :method => :put, :multipart => true do %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :age %><br />
-    <%= f.text_field :age %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
+    <%= error_messages_for :child %>
+
+    <%= render :partial => "form" %>
+
+    <p>
+      <%= label_tag "child[photo]", "Photo" %><br/>
+      <%= file_field_tag "child[photo]" %>
+    </p>
+
+    <p>
+      <%= submit_tag "Update" %>
+    </p>
+
 <% end %>
 
-<%= link_to 'Show', @child %> |
 <%= link_to 'Back', children_path %>
