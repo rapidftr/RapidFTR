@@ -14,6 +14,7 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     @child = Child.get(params[:id])
+    @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,7 +27,7 @@ class ChildrenController < ApplicationController
   # GET /children/new.xml
   def new
     @child = Child.new
-    @child_view = ChildView.get_child_view_for_template Templates.get_template
+    @child_view = ChildView.create_child_view_from_template Templates.get_template
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @child }
@@ -35,7 +36,7 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
-    @child = Child.find(params[:id])
+    @child = Child.get(params[:id])
   end
 
   # POST /children

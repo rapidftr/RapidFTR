@@ -1,11 +1,13 @@
-
 <p>
   <%= image_tag child_path(@child)+".jpg" %>
 </p>
 
-<% Schema.get_schema.each do |form| %>
-    <%= render :partial => "form_show", :locals => {:form => form, :form_details => @child[form["name"]]} %>
+<% @child_view.fields.each do |field| %>
+    <div class="field">
+      <b><%= field.name.humanize %></b>: <%= field.value %>
+    </div>
 <% end %>
+
 
 <%= link_to 'Edit', edit_child_path(@child) %> |
 <%= link_to 'Back', children_path %>

@@ -14,11 +14,13 @@ class ChildView
     @fields << field
   end
 
-  def self.get_child_view_for_template template
+  def self.create_child_view_from_template template, child=Child.new
     child_view = ChildView.new
     template.each do |field|
-      child_view.add_field(Field.new field['name'], field['type'], field['options'] || [])
+      field_value = child[field['name']]
+      child_view.add_field(Field.new field['name'], field['type'], field['options'] || [], field_value)
     end
     return child_view
   end
+
 end

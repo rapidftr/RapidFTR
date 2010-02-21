@@ -5,51 +5,10 @@ end
 
 describe "children/show.html.erb" do
 
-  describe "rendering a Child record"  do
+  describe "displaying a child's details"  do
 
     before do
       params[:id] = "1234"
-    end
-
-    it "displays the Child's photo" do
-      pending
-    end
-
-    it "displays all fields found on the ChildView" do
-
-      child_view = ChildView.new
-      child_view.add_field
-
-      assigns[:child_view] = child_view
-
-      render
-
-      response.should have_selector("#basic_details.form") do |form|
-        form.should contain "Basic details"
-      end
-      response.should have_xpath("//div[@class='field'][1]") do |first_field|
-        first_field.should contain "Tom"
-      end
-      response.should have_xpath("//div[@class='field'][2]") do |second_field|
-        second_field.should contain "27"
-      end
-      response.should have_xpath("//div[@class='field'][3]") do |third_field|
-        third_field.should contain "Highland Road"
-      end
-    end
-
-    it "displays any fields on the record that aren't in the Schema at the end, in alphabetical order" do
-      Schema.stub(:get_schema).and_return(
-              [{
-                      "name" => "basic_details",
-                      "type" => "form",
-                      "fields" => [
-                              {
-                                      "name" => "name",
-                                      "type" => "text_field"
-                              }]
-              }])
-
       assigns[:child] = Child.new({
               "_id" => "d7ab411b5b8964b0ac178f2bc5b9b5b9",
               "basic_details" => {
@@ -57,19 +16,31 @@ describe "children/show.html.erb" do
                       "supplementary_field" => "Supplementary field value",
                       "extra_field" => "Extra field value"
               }})
+    end
+
+    it "displays the Child's photo" do
+      pending
+    end
+
+    it "renders all fields found on the ChildView" do
+
+      child_view = ChildView.new
+      child_view.add_field Field.new("age", Field::TEXT_FIELD, [], "27")
+      child_view.add_field Field.new("gender", Field::RADIO_BUTTON, ["male", "female"], "male")
+      child_view.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than"], "1-2 weeks ago")
+
+      assigns[:child_view] = child_view
 
       render
 
-      response.should have_xpath("//div[@class='field'][1]") do |first_field|
-        first_field.should contain "Adrian"
+      response.should have_selector(".field") do |fields|
+        fields[0].should contain "Age"
+        fields[0].should contain "27"
+        fields[1].should contain "Gender"
+        fields[1].should contain "male"
+        fields[2].should contain "Date of separation"
+        fields[2].should contain "1-2 weeks ago"
       end
-      response.should have_xpath("//div[@class='field'][2]") do |second_field|
-        second_field.should contain "Extra field value"
-      end
-      response.should have_xpath("//div[@class='field'][3]") do |third_field|
-        third_field.should contain "Supplementary field value"
-      end
-
     end
 
     it "renders repeating text fields on a single line" do
@@ -81,22 +52,6 @@ describe "children/show.html.erb" do
       response.should contain("Uncle names: Tim, Mike, Paul")
     end
 
-    it "renders fields in the order they were defined on the Schema" do
-
-      pending
-
-      Schema.stub(:keys_in_order).and_return(['c', 'a', 'b'])
-
-      render :locals => { :form => Form.new({'a' => 'Apple', 'b' => 'Banana', 'c' => 'Cat'})}
-
-      response.should have_xpath("//div[@class='field'][1]") do |first_field|
-        first_field.should contain "Cat"
-      end
-      response.should have_xpath("//div[@class='field'][2]") do |second_field|
-        second_field.should contain "Apple"
-      end
-
-    end
   end
 
 end
