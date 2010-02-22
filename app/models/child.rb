@@ -7,7 +7,7 @@ class Child < CouchRestRails::Document
   def create_unique_id (user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
-    self['unique_id'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
+    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
   end
 
 

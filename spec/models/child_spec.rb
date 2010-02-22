@@ -19,14 +19,14 @@ describe Child do
     child = Child.new({'last_known_location'=>'london'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
-    child["unique_id"].should == "georgelon12345"
+    child["unique_identifier"].should == "georgelon12345"
   end
 
   it "should use a default location if last known location is empty" do
     child = Child.new({'last_known_location'=>nil})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
-    child["unique_id"].should == "georgexxx12345"
+    child["unique_identifier"].should == "georgexxx12345"
   end
 
 
@@ -34,14 +34,14 @@ describe Child do
     child = Child.new({'last_known_location'=>'New York'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
-    child["unique_id"].should == "georgenew12345"
+    child["unique_identifier"].should == "georgenew12345"
   end
 
   it "should append a five digit random number to the unique child id" do
      child = Child.new({'last_known_location'=>'New York'})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
-    child["unique_id"].should == "georgenew12345"
+    child["unique_identifier"].should == "georgenew12345"
   end
 
 
