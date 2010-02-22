@@ -18,7 +18,7 @@ class ChildView
     child_view = ChildView.new
     template.each do |field|
       field_value = child[field['name']]
-      child_view.add_field(Field.new field['name'], field['type'], field['options'] || [], field_value)
+      child_view.add_field(Field.new(field['name'], field['type'], field['options'] || [], field_value))
     end
     return child_view
   end

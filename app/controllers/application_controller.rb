@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
 
   def self.current_user
-    nil
+    user = User.new
+    user.user_name = 'zubair'
+    user
   end
 end
