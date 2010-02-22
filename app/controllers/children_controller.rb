@@ -44,7 +44,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     @child = Child.new(params[:child])
-
+    @child.create_unique_id(current_user_name)
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child record successfully created.'
