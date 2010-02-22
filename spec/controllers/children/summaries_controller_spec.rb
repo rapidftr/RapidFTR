@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'mocha'
 
 describe Children::SummariesController, "POST create" do
 
