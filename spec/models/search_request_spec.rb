@@ -5,7 +5,7 @@ describe "Createing a new search request" do
   it "should set the id to the user name" do
     user_name = "someuser"
     request = SearchRequest.create_search user_name
-    request.id.should == user_name
+    request.id.should == user_name            
   end
 
   it "should save subsequent search request over previous search requests" do
