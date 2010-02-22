@@ -1,6 +1,15 @@
 class Child < CouchRestRails::Document
   use_database :child
+  require "uuidtools"
   include CouchRest::Validation
+
+
+  def create_unique_id (user_name)
+    unknown_location = 'xxx'
+    truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
+    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
+  end
+
 
   def photo= photo_file
     return unless photo_file.respond_to? :content_type

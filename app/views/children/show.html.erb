@@ -2,6 +2,11 @@
   <%= image_tag child_path(@child)+".jpg" %>
 </p>
 
+
+<div class="field">
+  <b>Unique Id</b>: <%= @child_view.unique_id %>
+</div>
+
 <% @child_view.fields.each do |field| %>
     <div class="field">
       <b><%= field.name.humanize %></b>: <%= field.value %>

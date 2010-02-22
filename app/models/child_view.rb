@@ -1,9 +1,11 @@
 class ChildView
 
+  attr_accessor :unique_id
   attr_reader :fields
 
   def initialize
     @fields = []
+    
   end
 
   def add_text_field field_name
@@ -16,6 +18,7 @@ class ChildView
 
   def self.create_child_view_from_template template, child=Child.new
     child_view = ChildView.new
+    child_view.unique_id=child['unique_identifier']
     template.each do |field|
       field_value = child[field['name']]
       child_view.add_field(Field.new(field['name'], field['type'], field['options'] || [], field_value))

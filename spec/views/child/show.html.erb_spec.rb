@@ -25,21 +25,26 @@ describe "children/show.html.erb" do
     it "renders all fields found on the ChildView" do
 
       child_view = ChildView.new
+      child_view.unique_id='georgelon12345' 
       child_view.add_field Field.new("age", Field::TEXT_FIELD, [], "27")
       child_view.add_field Field.new("gender", Field::RADIO_BUTTON, ["male", "female"], "male")
       child_view.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than"], "1-2 weeks ago")
+
 
       assigns[:child_view] = child_view
 
       render
 
       response.should have_selector(".field") do |fields|
-        fields[0].should contain "Age"
-        fields[0].should contain "27"
-        fields[1].should contain "Gender"
-        fields[1].should contain "male"
-        fields[2].should contain "Date of separation"
-        fields[2].should contain "1-2 weeks ago"
+        fields[0].should contain("Unique Id")
+        fields[0].should contain("georgelon12345")
+        fields[1].should contain("Age")
+        fields[1].should contain("27")
+        fields[2].should contain("Gender")
+        fields[2].should contain("male")
+        fields[3].should contain("Date of separation")
+        fields[3].should contain("1-2 weeks ago")
+
       end
     end
 

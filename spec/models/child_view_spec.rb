@@ -63,5 +63,13 @@ describe "ChildView" do
 
   end
 
+
+  it 'should set the unique id on the child view object' do
+    template = []
+    child = Child.new("unique_identifier" => "some id")
+    child_view = ChildView.create_child_view_from_template(template, child)
+    child_view.unique_id.should == 'some id'
+  end
+
 end
 

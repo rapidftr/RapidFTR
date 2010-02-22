@@ -13,4 +13,7 @@ class ApplicationController < ActionController::Base
     user.user_name = 'zubair'
     user
   end
+  def current_user_name
+     return "fix_me_to_return_session_user_name"
+  end
 end
