@@ -28,11 +28,17 @@ module NavigationHelpers
       when /manage users page/
         users_path
 
+
       when /login page/
         new_session_path
         
       when /search page/
         search_url
+
+      when /child summaries page/
+        children_summary_path
+
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #

@@ -14,7 +14,7 @@ describe "children/summaries/new.html.erb" do
 
   it "should render a text box for searching on name" do
     render
-    response.should have_selector("input[name='[search_params][name]']")
+    response.should have_selector("input[name='[search_params][child_name]']")
   end
 
   it "should have a form that posts to /children/summary/" do
