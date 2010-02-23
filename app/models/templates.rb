@@ -12,8 +12,7 @@ class Templates
             },
             {
                     "name" => "is_age_exact",
-                    "type" => "radio_button",
-                    "options" =>["Exact", "Approximate"]
+                    "type" => "check_box"
             },
             {
                     "name" => "gender",

@@ -8,7 +8,7 @@ Feature:
     And I follow "New child"
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Age"
-    And I choose "Exact"
+    And I check "Is age exact"
     And I choose "Male"
     And I fill in "London" for "Origin"
     And I fill in "Haiti" for "Last known location"
@@ -19,7 +19,7 @@ Feature:
     Then I should see "Child record successfully created."
     And I should see "Jorge Just"
     And I should see "27"
-    And I should see "Exact"
+    And I should see "1"
     And I should see "Male"
     And I should see "London"
     And I should see "Haiti"
@@ -38,10 +38,10 @@ Feature:
   Scenario: The label for age should include if that age is approximate
     Given I am on new child page
     When I fill in the basic details of a child
-    And I choose "Approximate"
+#    And I choose "Approximate"
     And I press "Create"
     Then I should see "Child record successfully created."
-    And I should see "Approximate"
+    And I should see ""
 
   Scenario: Last known location should be required to create a new child record
     Given I am on new child page
