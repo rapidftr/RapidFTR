@@ -10,6 +10,9 @@ module NavigationHelpers
 
       when /the home\s?page/
         '/'
+    when /the new assign_unique_id_to_a_child page/
+      new_assign_unique_id_to_a_child_path
+
 
       when /new child page/
         new_child_path

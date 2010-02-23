@@ -29,8 +29,8 @@ Feature: As an admin, I should be able to create and view users.
       Given I am on new user page
       And I press "Create"
       Then I should see "Please enter full name of the user"
-      And I should see "Please enter the user name"
-      And I should see "Please enter the password"
+      And I should see "Please enter a valid user name"
+      And I should see "Please enter a valid password"
       And I should see "Please choose a user type"
       And I should see "Please enter a valid email address"
 
@@ -48,8 +48,8 @@ Feature: As an admin, I should be able to create and view users.
       And I fill in "ge or ge" for "user name"
       And I fill in "pass word" for "password"
       When I press "Create"
-      Then I should see "User name cannot contain blanks"
-      Then I should see "Password cannot contain blanks"
+      Then I should see "Please enter a valid user name"
+      Then I should see "Please enter a valid password"
 
 
     Scenario:To check whether a user name already exists.

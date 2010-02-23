@@ -38,13 +38,18 @@ describe Child do
   end
 
   it "should append a five digit random number to the unique child id" do
-     child = Child.new({'last_known_location'=>'New York'})
+    child = Child.new({'last_known_location'=>'New York'})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgenew12345"
   end
 
-
+  it "should handle special characters in last known location when creating unique id" do
+    child = Child.new({'last_known_location'=>'ÃÄ§Ä·'})
+    UUIDTools::UUID.stub("random_create").and_return('12345abcd')
+    child.create_unique_id("george")
+    child["unique_identifier"].should == "georgeÃÄ12345"
+  end
 end
   
 

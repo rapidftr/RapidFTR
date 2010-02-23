@@ -33,13 +33,11 @@ class User < CouchRestRails::Document
   before_save :make_user_name_lowercase
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
-  validates_presence_of :user_name,:message=>"Please enter the user name"
   validates_presence_of :user_type,:message=>"Please choose a user type"
-  validates_presence_of :email,:message=>"Please enter a email address"
-  validates_presence_of :password, :message=>"Please enter the password"
 
-  validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"User name cannot contain blanks"
-  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Password cannot contain blanks"
+
+  validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
+  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password"
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/,
                       :message =>"Please enter a valid email address"
 
