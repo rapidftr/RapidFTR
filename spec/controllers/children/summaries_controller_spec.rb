@@ -6,11 +6,11 @@ describe Children::SummariesController, "POST create" do
     @user = User.new
     @user.user_name = "ausername"
     ApplicationController.stub(:current_user).and_return(@user)
-    @search_request_params = {"name"=> "Willis"}
+    @search_request_params = {"child_name"=> "Willis"}
   end
 
   def post_request
-    post :create, :search_request => @search_request_params
+    post :create, :search_params => @search_request_params
   end
   
   it "creates and saves the search request for the user"  do
@@ -40,12 +40,12 @@ describe Children::SummariesController, "GET show" do
     @user = stub('user_stub')
     @user.stub(:user_name).and_return(@user_name)
     ApplicationController.stub(:current_user).and_return(@user)
-    @search_params = SearchRequest.create_search(@user_name, {'full_name' => "jorge", 'user_id' => "zubair"})
+    @search_params = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'user_name' => "zubair"})
     SearchRequest.stub(:get).with(@user_name).and_return(@search_params)
   end
 
   it "sets the results of the search to variable results" do
-    SummariesHelper.should_receive(:get_results).with(@search_params).and_return(@search_results)
+    Summary.should_receive(:basic_search).with(@search_params[:user_name], @search_params[:child_name]).and_return(@search_results)
     get :show
     assigns[:results].should == @search_results
   end
