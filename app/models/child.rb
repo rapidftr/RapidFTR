@@ -3,7 +3,8 @@ class Child < CouchRestRails::Document
   require "uuidtools"
   include CouchRest::Validation
 
-  before_save :update_history
+  before_save :initialize_history, :if => :new_record?
+  before_save :update_history, :unless => :new_record?
   
   def create_unique_id(user_name)
     unknown_location = 'xxx'
@@ -47,15 +48,15 @@ class Child < CouchRestRails::Document
       self[name] = value unless value.blank?
     end
   end
+  
+  def initialize_history
+    self['histories'] = []
+  end
 
   def update_history
-    if new_record?
-      self['histories'] = []
-    else
-      self['histories'] << {
-        'from' => Child.get(self['_id'])['last_known_location'],
-        'to' => self['last_known_location']
-      }
-    end
-  end  
+    self['histories'] << {
+      'from' => Child.get(self['_id'])['last_known_location'],
+      'to' => self['last_known_location']
+    }
+  end
 end

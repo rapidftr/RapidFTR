@@ -67,7 +67,7 @@ describe Child do
       @child['histories'].should be_empty
     end
     
-    it "should update history with from value on field update" do
+    it "should update history with from value on last_known_location update" do
       @child = Child.new('last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       @child.save!
@@ -78,7 +78,7 @@ describe Child do
       @child['histories'].first['from'].should == 'New York'
     end
     
-    it "should update history with to value on field update" do
+    it "should update history with to value on last_known_location update" do
       @child = Child.new('last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       @child.save!
