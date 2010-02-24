@@ -60,7 +60,8 @@ class Child < CouchRestRails::Document
         self['histories'] << {
           'field' => field_name,
           'from' => Child.get(self['_id'])[field_name],
-          'to' => self[field_name]
+          'to' => self[field_name],
+          'datetime' => Time.now.strftime("%m/%d/%y %H:%M")
         }
       end
     end

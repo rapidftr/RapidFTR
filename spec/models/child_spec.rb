@@ -151,5 +151,18 @@ describe Child do
       last_known_location_history['from'].should == 'New York'
       last_known_location_history['to'].should == 'Philadelphia'
     end
+    
+    it "should update history with the correct date and time when a change has occurred" do
+      current_datetime = stub(:strftime => "3/15/2010 04:45")
+      Time.stub!(:now).and_return current_datetime
+      @child = Child.new('last_known_location' => 'New York')
+      @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      @child.save!
+
+      @child['last_known_location'] = 'Philadelphia'
+      @child.save!
+
+      @child['histories'].first['datetime'].should == "3/15/2010 04:45"
+    end
   end  
 end
