@@ -1,5 +1,17 @@
+<%= render :partial => "search_form" %>
 <ul>
   <% @results.each do |result| %>
       <li><%= result %></li>
   <% end %>
 </ul>
+
+<table>
+  <th>
+    <td>Name</td>
+  </th>
+  <% @results.each do |result| %>
+      <tr>
+        <td><%= result['name'] %></td>
+      </tr>
+  <% end %>
+</table>

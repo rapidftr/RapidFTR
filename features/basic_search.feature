@@ -10,3 +10,13 @@ Scenario: Searching for a child given his name
   And I press "Search"
   Then I should be on the child summaries page
   And I should see "Willis" in the column "Name"
+
+Scenario: Searching for a child given his unique identifier
+  Given a user "zubair" has entered a child found in "London" whose name is "andreas"
+  And I am on the search page
+  When I fill in "zubairlon" for "Child ID"
+  And I press "Search"
+  Then I should be on the child summaries page
+  And I should see "andreas" in the column "Name"
+
+

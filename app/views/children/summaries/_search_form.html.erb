@@ -1,0 +1,7 @@
+<% form_tag children_summary_path, :method => :post do %>
+    <%= label_tag '[search_params][child_name]', "Name" %>
+    <%= text_field_tag '[search_params][child_name]' %>
+    <%= label_tag '[search_params][unique_identifier]', "Child ID" %>
+    <%= text_field_tag '[search_params][unique_identifier]' %>
+    <%= submit_tag "Search" %>
+<%-end  %>

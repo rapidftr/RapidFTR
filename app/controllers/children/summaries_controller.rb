@@ -11,6 +11,6 @@ class Children::SummariesController < ApplicationController
 
   def show
     search_params = SearchRequest.get(ApplicationController.current_user.user_name)
-    @results = Summary.basic_search(search_params[:user_name], search_params[:child_name])
+    @results = search_params.get_results()
   end
 end
