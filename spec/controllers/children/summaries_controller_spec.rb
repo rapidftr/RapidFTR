@@ -40,12 +40,12 @@ describe Children::SummariesController, "GET show" do
     @user = stub('user_stub')
     @user.stub(:user_name).and_return(@user_name)
     ApplicationController.stub(:current_user).and_return(@user)
-    @search_params = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'user_name' => "zubair"})
+    @search_params = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'unique_identifier' => "zubair"})
     SearchRequest.stub(:get).with(@user_name).and_return(@search_params)
   end
 
   it "sets the results of the search to variable results" do
-    Summary.should_receive(:basic_search).with(@search_params[:user_name], @search_params[:child_name]).and_return(@search_results)
+    Summary.should_receive(:basic_search).with(@search_params[:child_name], @search_params[:unique_identifier]).and_return(@search_results)
     get :show
     assigns[:results].should == @search_results
   end
