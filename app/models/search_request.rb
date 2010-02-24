@@ -9,6 +9,10 @@ class SearchRequest < CouchRestRails::Document
     return @user
   end
 
+  def get_results()
+    Summary.basic_search(self[:child_name], self[:unique_identifier])
+  end
+
   def self.create_search(user, *fields)
     if (SearchRequest.get(user))
       search = SearchRequest.get(user)
