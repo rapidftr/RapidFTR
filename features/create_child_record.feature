@@ -19,7 +19,7 @@ Feature:
     Then I should see "Child record successfully created."
     And I should see "Jorge Just"
     And I should see "27"
-    And I should see "Exact"
+    And I should see "1"
     And I should see "Male"
     And I should see "London"
     And I should see "Haiti"
@@ -41,7 +41,7 @@ Feature:
     And I select "Approximate" from "Is age exact"
     And I press "Create"
     Then I should see "Child record successfully created."
-    And I should see "Approximate"
+    And I should see ""
 
   Scenario: Last known location should be required 
     Given I am on new child page
