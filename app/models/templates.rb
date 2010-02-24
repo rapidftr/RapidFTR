@@ -12,8 +12,8 @@ class Templates
             },
             {
                     "name" => "is_age_exact",
-                    "type" => "radio_button",
-                    "options" =>["Exact", "Approximate"]
+                    "type" => "select_box",
+                    "options" => ["Exact", "Approximate"],
             },
             {
                     "name" => "gender",
@@ -31,7 +31,7 @@ class Templates
             {
                     "name" => "date_of_separation",
                     "type" => "select_box",
-                    "options" => ["","1-2 weeks ago", "2-4 weeks ago", "1-6 months ago", "6 months to 1 year ago", "More than 1 year ago"]
+                    "options" => ["1-2 weeks ago", "2-4 weeks ago", "1-6 months ago", "6 months to 1 year ago", "More than 1 year ago"]
             }]
   end
 end

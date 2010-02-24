@@ -2,15 +2,15 @@ require 'spec_helper'
 
 
 describe Child do
-  
+
   before :all do
     CouchRestRails::Tests.setup("child")
   end
-  
+
   after :all do
     CouchRestRails::Tests.teardown("child")
   end
-  
+
   describe "Updating a Child's properties from another Child object" do
     it "replaces existing child properties with non-blank properties from the updated Child" do
       child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon"
@@ -21,6 +21,7 @@ describe Child do
       child['origin'].should == "Croydon"
     end
   end
+
 
   it "should create a unique id based on the last known location and the user name" do
     child = Child.new({'last_known_location'=>'london'})
@@ -57,7 +58,7 @@ describe Child do
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgeÃÄ12345"
   end
-  
+
   describe "history log" do
     it "should not update history on initial creation of child document" do
       @child = Child.new('last_known_location' => 'New York')
@@ -74,10 +75,10 @@ describe Child do
 
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
-      
+
       @child['histories'].first['field'].should == 'last_known_location'
     end
-    
+
     it "should update history with 'from' value on last_known_location update" do
       @child = Child.new('last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
@@ -85,18 +86,18 @@ describe Child do
 
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
-      
+
       @child['histories'].first['from'].should == 'New York'
     end
-    
+
     it "should update history with 'to' value on last_known_location update" do
       @child = Child.new('last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       @child.save!
-    
+
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
-      
+
       @child['histories'].first['to'].should == 'Philadelphia'
     end
 
@@ -107,10 +108,10 @@ describe Child do
 
       @child['age'] = '6'
       @child.save!
-      
+
       @child['histories'].first['field'].should == 'age'
-    end    
-    
+    end
+
     it "should update history with 'from' value on age update" do
       @child = Child.new('age' => '8', 'last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
@@ -118,11 +119,11 @@ describe Child do
 
       @child['age'] = '6'
       @child.save!
-      
+
       @child['histories'].size.should == 1
-      @child['histories'].first['from'].should == '8'      
+      @child['histories'].first['from'].should == '8'
     end
-    
+
     it "should update history with 'to' value on age update" do
       @child = Child.new('age' => '8', 'last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
@@ -130,10 +131,10 @@ describe Child do
 
       @child['age'] = '6'
       @child.save!
-      
+
       @child['histories'].first['to'].should == '6'
     end
-    
+
     it "should update history with multiple records when both age and last_known_location are updated" do
       @child = Child.new('age' => '8', 'last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
@@ -142,7 +143,7 @@ describe Child do
       @child['age'] = '6'
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
-      
+
       @child['histories'].size.should == 2
       age_history = @child['histories'].detect { |history| history['field'] == 'age' }
       age_history['from'].should == '8'
@@ -151,7 +152,7 @@ describe Child do
       last_known_location_history['from'].should == 'New York'
       last_known_location_history['to'].should == 'Philadelphia'
     end
-    
+
     it "should update history with the correct date and time when a change has occurred" do
       current_datetime = stub(:strftime => "3/15/2010 04:45")
       Time.stub!(:now).and_return current_datetime
@@ -164,5 +165,5 @@ describe Child do
 
       @child['histories'].first['datetime'].should == "3/15/2010 04:45"
     end
-  end  
+  end
 end
