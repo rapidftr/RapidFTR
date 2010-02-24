@@ -54,9 +54,21 @@ class Child < CouchRestRails::Document
   end
 
   def update_history
-    self['histories'] << {
-      'from' => Child.get(self['_id'])['last_known_location'],
-      'to' => self['last_known_location']
-    }
+    field_names = Templates.get_template.map { |field| field['name'] }
+    field_names.each do |field_name|
+      if changed?(field_name)
+        self['histories'] << {
+          'field' => field_name,
+          'from' => Child.get(self['_id'])[field_name],
+          'to' => self[field_name]
+        }
+      end
+    end
+  end
+  
+  protected
+  
+  def changed?(field_name)
+    self[field_name] != Child.get(self['_id'])[field_name]
   end
 end
