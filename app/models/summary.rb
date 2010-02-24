@@ -20,13 +20,23 @@ class Summary < CouchRestRails::Document
 
   def self.basic_search(childs_name, unique_id)
     x = get_keys_for_search(childs_name, "by_name")
-#    x ||=[]
     y = get_keys_for_search(unique_id, "by_unique_identifier")
-#    y ||=[]
+
     return [] if x == y && x == nil
-    return x if y == nil
-    return y if x == nil
-    return x.select { |doc| y.include?(doc)}
+    results = and_arrays(x, y)
+    results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]}
+  end
+
+  def self.and_arrays(*args)
+    results = args.find { |arg| arg != nil && !arg.empty?}
+    
+    args.each do |arr|
+      arr ||=[]
+      if (!arr.empty?)
+        results = results.select { |doc| arr.include?(doc)} unless arr.empty?
+      end
+    end
+    results
   end
 
   private
