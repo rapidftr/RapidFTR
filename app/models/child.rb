@@ -3,15 +3,15 @@ class Child < CouchRestRails::Document
   require "uuidtools"
   include CouchRest::Validation
 
-
-  def create_unique_id (user_name)
+  before_save :update_history
+  
+  def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
     self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
   end
 
-
-  def photo= photo_file
+  def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path
     if (has_attachment? :photo)
@@ -25,7 +25,7 @@ class Child < CouchRestRails::Document
     read_attachment "photo"
   end
 
-  def valid?  context=:default
+  def valid?(context=:default)
     valid = true
 
     if (!/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
@@ -42,10 +42,20 @@ class Child < CouchRestRails::Document
     return valid
   end
 
-  def update_properties_from child
+  def update_properties_from(child)
     child.each_pair do |name, value|
       self[name] = value unless value.blank?
     end
   end
 
+  def update_history
+    if new_record?
+      self['histories'] = []
+    else
+      self['histories'] << {
+        'from' => Child.get(self['_id'])['last_known_location'],
+        'to' => self['last_known_location']
+      }
+    end
+  end  
 end

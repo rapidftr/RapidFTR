@@ -2,8 +2,16 @@ require 'spec_helper'
 
 
 describe Child do
+  
+  before :all do
+    CouchRestRails::Tests.setup("child")
+  end
+  
+  after :all do
+    CouchRestRails::Tests.teardown("child")
+  end
+  
   describe "Updating a Child's properties from another Child object" do
-
     it "replaces existing child properties with non-blank properties from the updated Child" do
       child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon"
       updated_child = Child.new "name" => "Dave", "age" => "35", "origin" => ""
@@ -13,7 +21,6 @@ describe Child do
       child['origin'].should == "Croydon"
     end
   end
-
 
   it "should create a unique id based on the last known location and the user name" do
     child = Child.new({'last_known_location'=>'london'})
@@ -50,6 +57,36 @@ describe Child do
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgeÃÄ12345"
   end
-end
   
+  describe "history log" do
+    it "should not update history on initial creation of child document" do
+      @child = Child.new('last_known_location' => 'New York')
+      @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      @child.save
 
+      @child['histories'].should be_empty
+    end
+    
+    it "should update history with from value on field update" do
+      @child = Child.new('last_known_location' => 'New York')
+      @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      @child.save!
+
+      @child['last_known_location'] = 'Philadelphia'
+      @child.save!
+      
+      @child['histories'].first['from'].should == 'New York'
+    end
+    
+    it "should update history with to value on field update" do
+      @child = Child.new('last_known_location' => 'New York')
+      @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      @child.save!
+    
+      @child['last_known_location'] = 'Philadelphia'
+      @child.save!
+      
+      @child['histories'].first['to'].should == 'Philadelphia'
+    end
+  end  
+end
