@@ -11,9 +11,9 @@ class Templates
                     "type" => "text_field"
             },
             {
-                    "name" => "is_age_exact",
+                    "name" => "Age_is",
                     "type" => "select_box",
-                    "options" => ["Exact", "Approximate"]
+                    "options" => ["Approximate", "Exact"]
             },
             {
                     "name" => "gender",
