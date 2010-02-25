@@ -8,7 +8,7 @@ Feature:
     And I follow "New child"
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Age"
-    And I select "Exact" from "Is age exact"
+    And I select "Exact" from "Age is"
     And I choose "Male"
     And I fill in "London" for "Origin"
     And I fill in "Haiti" for "Last known location"
@@ -24,6 +24,7 @@ Feature:
     And I should see "London"
     And I should see "Haiti"
     And I should see "1-2 weeks ago"
+    And I should see "Unique Id: fix_me_to_return_session_user_name"
 
     When I follow "Back"
     Then I should see "Listing children"
@@ -38,10 +39,9 @@ Feature:
   Scenario: create child with approximate age
     Given I am on new child page
     When I fill in the basic details of a child
-    And I select "Approximate" from "Is age exact"
     And I press "Create"
     Then I should see "Child record successfully created."
-    And I should see ""
+    And I should see "Approximate"
 
   Scenario: Last known location should be required 
     Given I am on new child page

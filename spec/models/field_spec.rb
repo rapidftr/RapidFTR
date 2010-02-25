@@ -17,6 +17,6 @@ describe "Child record field view model" do
 
   it "returns the html options tags for a select box" do
     @field = Field.new_select_box("select_box", ["option 1", "option 2"])
-    @field.select_options.should == [["", ""], ["option 1", "option 1"], ["option 2", "option 2"]]
+    @field.select_options.should == [["option 1", "option 1"], ["option 2", "option 2"]]
   end
 end
