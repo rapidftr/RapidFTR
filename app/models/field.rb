@@ -40,6 +40,8 @@ class Field
   end
 
   def select_options
-    return @options.collect { |option| [option.option_name, option.option_name] } << ["", ""]  
+    default_empty_option = [["",""]]
+    select_options = @options.collect { |option| [option.option_name, option.option_name] }
+    return default_empty_option.concat(select_options)
   end
 end
