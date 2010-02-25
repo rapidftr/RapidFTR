@@ -1,3 +1,4 @@
+require 'digest/sha2'
 class User < CouchRestRails::Document
   use_database :user
   include CouchRest::Validation
@@ -28,7 +29,7 @@ class User < CouchRestRails::Document
                 emit(doc['full_name'],doc);
              }
           }"
-  
+
 
   before_save :make_user_name_lowercase
 

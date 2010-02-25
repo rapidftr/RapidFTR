@@ -14,6 +14,7 @@ class Templates
                     "name" => "is_age_exact",
                     "type" => "select_box",
                     "options" => ["Exact", "Approximate"]
+
             },
             {
                     "name" => "gender",

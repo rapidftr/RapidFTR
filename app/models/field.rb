@@ -1,9 +1,7 @@
 class Field
-  
   TEXT_FIELD = "text_field"
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
-  CHECK_BOX = "check_box"
 
   attr_reader :name, :type, :options, :value
 
@@ -24,11 +22,6 @@ class Field
 
   def self.new_select_box field_name, options
     Field.new field_name, SELECT_BOX, options
-  end
-
-
-  def self.new_check_box field_name
-    Field.new field_name, CHECK_BOX
   end
 
   def tag_id
