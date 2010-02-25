@@ -24,6 +24,7 @@ Feature:
     And I should see "London"
     And I should see "Haiti"
     And I should see "1-2 weeks ago"
+    And I should see "Unique Id: fix_me_to_return_session_user_name"
 
     When I follow "Back"
     Then I should see "Listing children"
