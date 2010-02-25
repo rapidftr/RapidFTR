@@ -78,7 +78,17 @@ Feature: As an admin, I should be able to create and view users.
       Then I should see "Please enter a valid email address"
 
 
+      Scenario: To check that email address is case insensitive
 
+      Given I am on new user page
+      When I fill in "George Bush" for "Full Name"
+      And I fill in "george1" for "user name"
+      And I fill in "password" for "password"
+      And I fill in "password" for "Re-enter password"
+      And I choose "User"
+      And I fill in "A@B.com" for "email"
+      When I press "Create"
+      Then I should see "User was successfully created."
 
 
 
