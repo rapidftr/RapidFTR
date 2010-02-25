@@ -45,7 +45,7 @@ class Child < CouchRestRails::Document
 
   def update_properties_from(child)
     child.each_pair do |name, value|
-      self[name] = value unless value.blank?
+      self[name] = value unless value == nil
     end
   end
   
