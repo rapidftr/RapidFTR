@@ -3,7 +3,7 @@ Feature:
   basic information about the lost child.
 
   Scenario: creating a child record
-    Given the database is empty
+    Given no children exist
     Given I am on children listing page
     And I follow "New child"
     When I fill in "Jorge Just" for "Name"

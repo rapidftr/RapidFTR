@@ -1,0 +1,18 @@
+<h1>New session</h1>
+
+<% form_tag sessions_path  do %>
+<%= error_messages_for :login %>
+<p>
+  <%= label_tag "login[user_name]", "User name" %>:
+  <%= text_field_tag "login[user_name]" %>
+</p>
+<p>
+  <%= label_tag "login[password]", "Password" %>:
+  <%= password_field_tag "login[password]" %>
+</p>
+<p>
+  <%= submit_tag 'Log in' %>
+</p>
+<% end %>
+
+<%= link_to 'Back', sessions_path %>

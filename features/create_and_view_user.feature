@@ -2,7 +2,7 @@ Feature: As an admin, I should be able to create and view users.
 
   Scenario:      To check that an admin creates a user record and is able to view it
     
-    Given the database is empty
+    Given no users exist
     Given I am on manage users page
     And I follow "New user"
     When I fill in "George Harrison" for "Full name"
@@ -86,7 +86,7 @@ Feature: As an admin, I should be able to create and view users.
       And I fill in "password" for "password"
       And I fill in "password" for "Re-enter password"
       And I choose "User"
-      And I fill in "A@B.com" for "email"
+      And I fill in "Aaa@Bbbb.com" for "email"
       When I press "Create"
       Then I should see "User was successfully created."
 

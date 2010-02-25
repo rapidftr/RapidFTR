@@ -3,14 +3,6 @@ require 'spec_helper'
 
 describe Child do
 
-  before :all do
-    CouchRestRails::Tests.setup("child")
-  end
-
-  after :all do
-    CouchRestRails::Tests.teardown("child")
-  end
-
   describe "Updating a Child's properties from another Child object" do
     it "replaces existing child properties with non-blank properties from the updated Child" do
       child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon"
@@ -22,6 +14,26 @@ describe Child do
     end
   end
 
+  describe "validating an existing child record" do
+    
+    photo = File.new("features/resources/jorge.jpg")
+    def photo.content_type
+      "image/jpg"
+    end
+
+    def photo.original_path
+      "features/resources/jorge.jpg"
+    end
+    
+    child = Child.new
+    child['last_known_location'] = "location"
+    child.photo = photo
+
+    child.save.should == true
+
+    loaded_child = Child.get(child.id)
+    loaded_child.save().should == true
+  end
 
   it "should create a unique id based on the last known location and the user name" do
     child = Child.new({'last_known_location'=>'london'})

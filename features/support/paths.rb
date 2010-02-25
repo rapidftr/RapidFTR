@@ -27,6 +27,10 @@ module NavigationHelpers
 
       when /manage users page/
         users_path
+      
+      when /login page/
+            new_session_path
+
 
 
 
