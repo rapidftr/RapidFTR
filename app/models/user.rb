@@ -59,6 +59,10 @@ class User < CouchRestRails::Document
     end
   end
 
+  def autheticate(check)
+    password == check
+  end
+
   private
   def make_user_name_lowercase
      user_name.downcase!

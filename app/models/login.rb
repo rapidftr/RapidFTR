@@ -8,10 +8,12 @@ class Login
   end
 
   def autheniticate_user
-    authenticated = !User.find_by_user_name(@user_name).nil?
+    user = User.find_by_user_name(@user_name)
+
+    authenticated = !user.nil? && user.autheticate(@password)
 
     if not authenticated
-      errors.add("user_name", "User does not exist")
+      errors.add(:base, "Invalid credentials. Please try again!")
     end
 
     authenticated
