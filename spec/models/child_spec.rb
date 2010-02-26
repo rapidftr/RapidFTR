@@ -81,17 +81,6 @@ describe Child do
       @child['histories'].should be_empty
     end
 
-    it "should update history with 'field' value on last_known_location update" do
-      @child = Child.new('last_known_location' => 'New York')
-      @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      @child.save!
-
-      @child['last_known_location'] = 'Philadelphia'
-      @child.save!
-
-      @child['histories'].first['field'].should == 'last_known_location'
-    end
-
     it "should update history with 'from' value on last_known_location update" do
       @child = Child.new('last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
@@ -100,7 +89,8 @@ describe Child do
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
 
-      @child['histories'].first['from'].should == 'New York'
+      changes = @child['histories'].first['changes']
+      changes['last_known_location']['from'].should == 'New York'
     end
 
     it "should update history with 'to' value on last_known_location update" do
@@ -111,18 +101,8 @@ describe Child do
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
 
-      @child['histories'].first['to'].should == 'Philadelphia'
-    end
-
-    it "should update history with 'field' value on age update" do
-      @child = Child.new('age' => '8', 'last_known_location' => 'New York')
-      @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      @child.save!
-
-      @child['age'] = '6'
-      @child.save!
-
-      @child['histories'].first['field'].should == 'age'
+      changes = @child['histories'].first['changes']
+      changes['last_known_location']['to'].should == 'Philadelphia'
     end
 
     it "should update history with 'from' value on age update" do
@@ -133,8 +113,8 @@ describe Child do
       @child['age'] = '6'
       @child.save!
 
-      @child['histories'].size.should == 1
-      @child['histories'].first['from'].should == '8'
+      changes = @child['histories'].first['changes']
+      changes['age']['from'].should == '8'
     end
 
     it "should update history with 'to' value on age update" do
@@ -145,10 +125,11 @@ describe Child do
       @child['age'] = '6'
       @child.save!
 
-      @child['histories'].first['to'].should == '6'
+      changes = @child['histories'].first['changes']
+      changes['age']['to'].should == '6'
     end
 
-    it "should update history with multiple records when both age and last_known_location are updated" do
+    it "should update history with a combined history record when multiple fields are updated" do
       @child = Child.new('age' => '8', 'last_known_location' => 'New York')
       @child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       @child.save!
@@ -157,13 +138,12 @@ describe Child do
       @child['last_known_location'] = 'Philadelphia'
       @child.save!
 
-      @child['histories'].size.should == 2
-      age_history = @child['histories'].detect { |history| history['field'] == 'age' }
-      age_history['from'].should == '8'
-      age_history['to'].should == '6'
-      last_known_location_history = @child['histories'].detect { |history| history['field'] == 'last_known_location' }
-      last_known_location_history['from'].should == 'New York'
-      last_known_location_history['to'].should == 'Philadelphia'
+      @child['histories'].size.should == 1
+      changes = @child['histories'].first['changes']
+      changes['age']['from'].should == '8'
+      changes['age']['to'].should == '6'
+      changes['last_known_location']['from'].should == 'New York'
+      changes['last_known_location']['to'].should == 'Philadelphia'
     end
 
     it "should update history with the correct date and time when a change has occurred" do
