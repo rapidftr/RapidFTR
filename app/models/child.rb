@@ -28,8 +28,8 @@ class Child < CouchRestRails::Document
 
   def valid?(context=:default)
     valid = true
-
-    if (!/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
+    
+    if (new? && !/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
       valid = false
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
@@ -45,7 +45,7 @@ class Child < CouchRestRails::Document
 
   def update_properties_from(child)
     child.each_pair do |name, value|
-      self[name] = value unless value.blank?
+      self[name] = value unless value == nil
     end
   end
   

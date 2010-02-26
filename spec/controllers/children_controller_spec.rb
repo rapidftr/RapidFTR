@@ -71,11 +71,5 @@ describe ChildrenController do
     end
   end
 
-  describe "POST create" do
-    it "should mark child's age as approximate if associated param is empty" do
-     
-    end
-
-  end
 
 end

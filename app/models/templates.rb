@@ -11,7 +11,7 @@ class Templates
                     "type" => "text_field"
             },
             {
-                    "name" => "Age_is",
+                    "name" => "age_is",
                     "type" => "select_box",
                     "options" => ["Approximate", "Exact"]
             },
@@ -32,6 +32,19 @@ class Templates
                     "name" => "date_of_separation",
                     "type" => "select_box",
                     "options" => [" ", "1-2 weeks ago", "2-4 weeks ago", "1-6 months ago", "6 months to 1 year ago", "More than 1 year ago"]
-            }]
+            },
+
+            {
+                    "name" => "mothers_name",
+                    "type" => "text_field"
+            },
+            {
+                    "name" => "reunite_with_mother",
+                    "type" => "select_box",
+                    "options" =>["Yes", " No"]
+            },
+
+
+    ]
   end
 end
