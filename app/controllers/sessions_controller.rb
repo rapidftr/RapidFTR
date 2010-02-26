@@ -15,8 +15,8 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
-    
 
+    @session = Session.new(params[:login])
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @session }
@@ -24,27 +24,36 @@ class SessionsController < ApplicationController
   end
 
 
-
   # POST /sessions
   # POST /sessions.xml
   def create
-    @session = Session.new(params[:login])
+    @login = Login.new(params[:login])
 
-    respond_to do |format|
-      if @session.save
-        flash[:notice] = 'Session was successfully created.'
-        format.html { redirect_to(@session) }
-        format.xml  { render :xml => @session, :status => :created, :location => @session }
-      else
+    if @login.autheniticate_user
+
+      @session = Session.new(params[:login])
+
+      respond_to do |format|
+        if @session.save
+          flash[:notice] = 'Session was successfully created.'
+          format.html { redirect_to(@session) }
+          format.xml  { render :xml => @session, :status => :created, :location => @session }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @session.errors, :status => :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
         format.html { render :action => "new" }
-        format.xml  { render :xml => @session.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @login.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # PUT /sessions/1
   # PUT /sessions/1.xml
-  
+
 
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
