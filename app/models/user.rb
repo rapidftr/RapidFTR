@@ -19,7 +19,7 @@ class User < CouchRestRails::Document
     :map => "function(doc) {
               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
              {
-                emit(doc['user_name'],doc.user_name);
+                emit(doc['user_name'],doc);
              }
           }"
   view_by :full_name,
@@ -46,13 +46,21 @@ class User < CouchRestRails::Document
   validates_with_method   :user_name, :method => :is_user_name_unique
 
 
+  def self.find_by_user_name(user_name)
+     User.by_user_name(:key => user_name.downcase).first
+  end
+
   def is_user_name_unique
-    db_user_name= User.by_user_name(:key => user_name.downcase)
-    if db_user_name.blank? 
+    user = User.find_by_user_name(user_name)
+    if  user.nil?
       true
     else
       [false, "User name has already been taken! Please select a new User name"]
     end
+  end
+
+  def autheticate(check)
+    password == check
   end
 
   private
