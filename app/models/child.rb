@@ -54,22 +54,25 @@ class Child < CouchRestRails::Document
   end
 
   def update_history
+    @from_child = Child.get(self['_id'])
     field_names = Templates.get_template.map { |field| field['name'] }
-    field_names.each do |field_name|
-      if changed?(field_name)
-        self['histories'] << {
-          'field' => field_name,
-          'from' => Child.get(self['_id'])[field_name],
-          'to' => self[field_name],
-          'datetime' => Time.now.strftime("%m/%d/%y %H:%M")
-        }
-      end
-    end
+    changed_field_names = field_names.select { |field_name| changed?(field_name) }
+    self['histories'] << { 
+      'changes' => changes_for(changed_field_names),
+      'datetime' => Time.now.strftime("%m/%d/%y %H:%M") }
   end
   
   protected
   
+  def changes_for(field_names)
+    field_names.inject({}) do |changes, field_name|
+      changes.merge(field_name => { 
+        'from' => @from_child[field_name], 
+        'to' => self[field_name] })
+    end
+  end
+  
   def changed?(field_name)
-    self[field_name] != Child.get(self['_id'])[field_name]
+    self[field_name] != @from_child[field_name]
   end
 end
