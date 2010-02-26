@@ -156,17 +156,17 @@ describe Child do
       loaded_child['histories'].should be_empty
     end
 
-    it "should update history with the correct date and time when a change has occurred" do
-      current_datetime = stub(:strftime => "3/15/2010 04:45")
-      Time.stub!(:now).and_return current_datetime
+    it "should update history with the correct datetime in format: m/d/y h:m" do
+      current_time = Time.now
+      Time.stub!(:now).and_return current_time
       child = Child.new('last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       child.save!
       
       child['last_known_location'] = 'Philadelphia'
       child.save!
-    
-      child['histories'].first['datetime'].should == "3/15/2010 04:45"
+      
+      child['histories'].first['datetime'].should == current_time.strftime("%m/%d/%y %H:%M")
     end
   end
 end
