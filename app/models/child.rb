@@ -54,12 +54,9 @@ class Child < CouchRestRails::Document
   end
 
   def update_history
-    @from_child = Child.get(self.id)
-    field_names = Templates.get_template.map { |field| field['name'] }
-    changed_field_names = field_names.select { |field_name| changed?(field_name) }
-    if changed_field_names.any?
+    if field_name_changes.any?
       self['histories'] << { 
-        'changes' => changes_for(changed_field_names),
+        'changes' => changes_for(field_name_changes),
         'datetime' => Time.now.strftime("%m/%d/%y %H:%M") }
     end
   end
@@ -74,7 +71,9 @@ class Child < CouchRestRails::Document
     end
   end
   
-  def changed?(field_name)
-    self[field_name] != @from_child[field_name]
-  end
+  def field_name_changes
+    @from_child = Child.get(self.id)
+    field_names = Templates.get_template.map { |field| field['name'] }
+    field_names.select { |field_name| self[field_name] != @from_child[field_name] }
+  end  
 end
