@@ -7,11 +7,28 @@ describe Child do
     it "replaces existing child properties with non-nil properties from the updated Child" do
       child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon", "last_known_location" => "London"
       updated_child = Child.new "name" => "Dave", "age" => "35", "origin" => nil
-      child.update_properties_from updated_child
+      child.update_properties_from updated_child, "george"
       child['age'].should == "35"
       child['name'].should == "Dave"
       child['origin'].should == "Croydon"
       child['last_known_location'].should == "London"
+    end
+    
+    it "should populate last_updated_by field with the user_name who is updating" do
+      child = Child.new
+      child.update_properties_from Child.new, "jdoe"
+      
+      child['last_updated_by'].should == 'jdoe'
+    end
+    
+    it "should populate last_updated_at field with the time of the update" do
+      current_time = Time.now
+      Time.stub!(:now).and_return current_time
+      child = Child.new
+      updated_child = Child.new
+      child.update_properties_from updated_child, "jdoe"
+      
+      child['last_updated_at'].should == current_time.strftime("%m/%d/%y %H:%M")
     end
   end
 
@@ -21,7 +38,7 @@ describe Child do
     def photo.content_type
       "image/jpg"
     end
-
+  
     def photo.original_path
       "features/resources/jorge.jpg"
     end
@@ -29,9 +46,9 @@ describe Child do
     child = Child.new
     child['last_known_location'] = "location"
     child.photo = photo
-
+  
     child.save.should == true
-
+  
     loaded_child = Child.get(child.id)
     loaded_child.save().should == true
   end
@@ -75,7 +92,6 @@ describe Child do
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgexxx12345"
   end
-
 
   it "should downcase the last known location of a child before generating the unique id" do
     child = Child.new({'last_known_location'=>'New York'})
