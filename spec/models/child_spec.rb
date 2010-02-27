@@ -44,10 +44,10 @@ describe Child do
       Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
     end
 
-    it "should call create_unique_id" do
-      Child.stub(:new).and_return(my_mock = mock)
-      my_mock.should_receive(:create_unique_id)
-      Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+    it "should create unique id" do
+      UUIDTools::UUID.stub("random_create").and_return(12345)
+      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+      child['unique_identifier'].should == "jdoelon12345"
     end
   end
   
