@@ -64,10 +64,8 @@ class ChildrenController < ApplicationController
   def update
     @child = Child.get(params[:id])
     updated_child = Child.new(params[:child])
-    @child.update_properties_from updated_child
-
-
-
+    @child.update_properties_from updated_child, current_user_name
+    
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child was successfully updated.'

@@ -51,10 +51,12 @@ class Child < CouchRestRails::Document
     return valid
   end
 
-  def update_properties_from(child)
+  def update_properties_from(child, user_name)
     child.each_pair do |name, value|
       self[name] = value unless value == nil
     end
+    self['last_updated_by'] = user_name
+    self['last_updated_at'] = Time.now.strftime("%m/%d/%y %H:%M")
   end
   
   def initialize_history
