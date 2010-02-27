@@ -36,18 +36,29 @@ describe Child do
     loaded_child.save().should == true
   end
 
-  describe "new with user name" do
-    it "should call new with field params" do
-      my_mock = mock
-      Child.should_receive(:new).with('last_known_location' => 'London').and_return my_mock
-      my_mock.stub!(:create_unique_id)
-      Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+  describe "new_with_user_name" do
+    it "should create regular child fields" do
+      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'age' => '6')
+      child['last_known_location'].should == 'London'
+      child['age'].should == '6'
     end
-
-    it "should create unique id" do
+    
+    it "should create a unique id" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
       child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
       child['unique_identifier'].should == "jdoelon12345"
+    end
+    
+    it "should create a created_by field with the user name" do
+      child = Child.new_with_user_name('jdoe', 'some_field' => 'some_value')
+      child['created_by'].should == 'jdoe'
+    end
+    
+    it "should create a created_on field with time of creation" do
+      current_time = Time.now
+      Time.stub!(:now).and_return current_time
+      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
+      child['created_on'].should == current_time.strftime("%m/%d/%y %H:%M")
     end
   end
   
