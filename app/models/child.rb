@@ -6,6 +6,11 @@ class Child < CouchRestRails::Document
   before_save :initialize_history, :if => :new_record?
   before_save :update_history, :unless => :new_record?
   
+  def self.new_with_user_name(user_name, fields)
+    child = new(fields)
+    child.create_unique_id user_name
+  end
+  
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
