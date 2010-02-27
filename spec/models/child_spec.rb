@@ -36,6 +36,21 @@ describe Child do
     loaded_child.save().should == true
   end
 
+  describe "new with user name" do
+    it "should call new with field params" do
+      my_mock = mock
+      Child.should_receive(:new).with('last_known_location' => 'London').and_return my_mock
+      my_mock.stub!(:create_unique_id)
+      Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+    end
+
+    it "should call create_unique_id" do
+      Child.stub(:new).and_return(my_mock = mock)
+      my_mock.should_receive(:create_unique_id)
+      Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+    end
+  end
+  
   it "should create a unique id based on the last known location and the user name" do
     child = Child.new({'last_known_location'=>'london'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
