@@ -71,11 +71,11 @@ describe Child do
       child['created_by'].should == 'jdoe'
     end
     
-    it "should create a created_on field with time of creation" do
+    it "should create a created_at field with time of creation" do
       current_time = Time.now
       Time.stub!(:now).and_return current_time
       child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
-      child['created_on'].should == current_time.strftime("%m/%d/%y %H:%M")
+      child['created_at'].should == current_time.strftime("%m/%d/%y %H:%M")
     end
   end
   

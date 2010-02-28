@@ -10,7 +10,7 @@ class Child < CouchRestRails::Document
     child = new(fields)
     child.create_unique_id user_name
     child['created_by'] = user_name
-    child['created_on'] = Time.now.strftime("%m/%d/%y %H:%M")
+    child['created_at'] = Time.now.strftime("%m/%d/%y %H:%M")
     child
   end
   
