@@ -197,18 +197,29 @@ describe Child do
       
       loaded_child['histories'].should be_empty
     end
-
-    it "should update history with the correct datetime in format: m/d/y h:m" do
-      current_time = Time.now
-      Time.stub!(:now).and_return current_time
+    
+    it "should update history with username from last_updated_by" do
       child = Child.new('last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       child.save!
       
       child['last_known_location'] = 'Philadelphia'
+      child['last_updated_by'] = 'some_user'
       child.save!
       
-      child['histories'].first['datetime'].should == current_time.strftime("%m/%d/%y %H:%M")
+      child['histories'].first['user_name'].should == 'some_user'      
+    end
+
+    it "should update history with the datetime from last_updated_at" do
+      child = Child.new('last_known_location' => 'New York')
+      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      child.save!
+      
+      child['last_known_location'] = 'Philadelphia'
+      child['last_updated_at'] = 'some_time'
+      child.save!
+      
+      child['histories'].first['datetime'].should == 'some_time'
     end
   end
 end

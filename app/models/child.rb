@@ -66,8 +66,9 @@ class Child < CouchRestRails::Document
   def update_history
     if field_name_changes.any?
       self['histories'] << { 
-        'changes' => changes_for(field_name_changes),
-        'datetime' => Time.now.strftime("%m/%d/%y %H:%M") }
+        'user_name' => self['last_updated_by'],
+        'datetime' => self['last_updated_at'],
+        'changes' => changes_for(field_name_changes) }
     end
   end
   
