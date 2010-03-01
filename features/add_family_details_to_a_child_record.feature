@@ -1,6 +1,6 @@
 Feature: Add family details
 
-  Scenario: Storying family names
+  Scenario: Storing family names
     
     Given I am on the new child page
     And I attach the file "features/resources/jorge.jpg" to "photo"
