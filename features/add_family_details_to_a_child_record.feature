@@ -3,8 +3,7 @@ Feature: Add family details
   Scenario: Storing family names
     
     Given I am on the new child page
-    And I attach the file "features/resources/jorge.jpg" to "photo"
-    And I fill in "Haiti" for "Last known location"
+    When I fill in the basic details of a child
     And I fill in "Mary" for "Mothers name"
     And I select "Yes" from "Reunite with mother"
 
