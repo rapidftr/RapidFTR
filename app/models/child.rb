@@ -83,8 +83,14 @@ class Child < CouchRestRails::Document
   end
   
   def field_name_changes
-    @from_child = Child.get(self.id)
+    @from_child ||= Child.get(self.id)
     field_names = Templates.get_template.map { |field| field['name'] }
-    field_names.select { |field_name| self[field_name] != @from_child[field_name] }
-  end  
+    field_names.select { |field_name| changed?(field_name) }
+  end
+  
+  def changed?(field_name)
+    return false if self[field_name].blank? && @from_child[field_name].blank?
+    return true if @from_child[field_name].blank?
+    self[field_name].strip != @from_child[field_name].strip
+  end
 end

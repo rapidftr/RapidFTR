@@ -7,7 +7,7 @@ describe Child do
     it "replaces existing child properties with non-nil properties from the updated Child" do
       child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon", "last_known_location" => "London"
       updated_child = Child.new "name" => "Dave", "age" => "35", "origin" => nil
-      child.update_properties_from updated_child, "george"
+      child.update_properties_from updated_child, "some_user"
       child['age'].should == "35"
       child['name'].should == "Dave"
       child['origin'].should == "Croydon"
@@ -17,7 +17,6 @@ describe Child do
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
       child.update_properties_from Child.new, "jdoe"
-      
       child['last_updated_by'].should == 'jdoe'
     end
     
@@ -25,9 +24,7 @@ describe Child do
       current_time = Time.now
       Time.stub!(:now).and_return current_time
       child = Child.new
-      updated_child = Child.new
-      child.update_properties_from updated_child, "jdoe"
-      
+      child.update_properties_from Child.new, "jdoe"
       child['last_updated_at'].should == current_time.strftime("%m/%d/%y %H:%M")
     end
   end
@@ -53,7 +50,7 @@ describe Child do
     loaded_child.save().should == true
   end
 
-  describe "new_with_user_name" do
+  describe "new_with_user_name" do    
     it "should create regular child fields" do
       child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'age' => '6')
       child['last_known_location'].should == 'London'
@@ -198,6 +195,41 @@ describe Child do
       loaded_child['histories'].should be_empty
     end
     
+    it "should not record empty string in the history if only change was spaces" do
+      child = Child.new('origin' => '', 'last_known_location' => 'New York')
+      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      child.save!
+
+      child['origin'] = '    '
+      child.save!
+      
+      child['histories'].should be_empty
+    end
+    
+    it "should not record history on populated field if only change was spaces" do
+      child = Child.new('last_known_location' => 'New York')
+      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      child.save!
+
+      child['last_known_location'] = ' New York   '
+      child.save!
+      
+      child['histories'].should be_empty
+    end
+    
+    it "should record history for newly populated field that previously was null" do
+      # gender is the only field right now that is allowed to be nil when creating child document
+      child = Child.new('gender' => nil, 'last_known_location' => 'New York')
+      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
+      child.save!
+
+      child['gender'] = 'Male'
+      child.save!
+      
+      child['histories'].first['changes']['gender']['from'].should be_nil
+      child['histories'].first['changes']['gender']['to'].should == 'Male'
+    end
+        
     it "should update history with username from last_updated_by" do
       child = Child.new('last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
