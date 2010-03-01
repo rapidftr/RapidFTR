@@ -3,8 +3,8 @@ class Child < CouchRestRails::Document
   require "uuidtools"
   include CouchRest::Validation
 
-  before_save :initialize_history, :if => :new_record?
-  before_save :update_history, :unless => :new_record?
+  before_save :initialize_history, :if => :new?
+  before_save :update_history, :unless => :new?
   
   def self.new_with_user_name(user_name, fields)
     child = new(fields)
