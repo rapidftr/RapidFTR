@@ -1,7 +1,7 @@
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
 require 'spec/autorun'
 require 'spec/rails'
 
@@ -10,11 +10,38 @@ require 'webrat/integrations/rspec-rails'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+Dir[File.expand_path(File.join(File.dirname(__FILE__), 'support', '**', '*.rb'))].each {|f| require f}
+
+def uploadable_photo
+  photo = File.new("features/resources/jorge.jpg")
+
+  def photo.content_type
+    "image/jpg"
+  end
+
+  def photo.original_path
+    "features/resources/jorge.jpg"
+  end
+  photo
+end
+
+def uploadable_text_file
+  photo = File.new("features/resources/textfile.txt")
+
+  def photo.content_type
+    "text/txt"
+  end
+
+  def photo.original_path
+    "features/resources/textfile.txt"
+  end
+  photo
+end
+
 
 CouchRestRails::Tests.setup
 Spec::Runner.configure do |config|
-  
+
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record
   # in your config/boot.rb

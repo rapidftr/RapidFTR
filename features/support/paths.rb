@@ -10,8 +10,8 @@ module NavigationHelpers
 
       when /the home\s?page/
         '/'
-    when /the new assign_unique_id_to_a_child page/
-      new_assign_unique_id_to_a_child_path
+      when /the new assign_unique_id_to_a_child page/
+        new_assign_unique_id_to_a_child_path
 
 
       when /new child page/
@@ -22,20 +22,20 @@ module NavigationHelpers
 
       when /saved record page/
 
-          when /new user page/
+      when /new user page/
         new_user_path
 
       when /manage users page/
         users_path
-      
+
       when /login page/
-            new_session_path
+        new_session_path
 
 
 
 
-        
-        
+
+
 
 
       # Add more mappings here.

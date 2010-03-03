@@ -7,7 +7,7 @@ describe Child do
     it "replaces existing child properties with non-nil properties from the updated Child" do
       child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon", "last_known_location" => "London"
       updated_child = Child.new "name" => "Dave", "age" => "35", "origin" => nil
-      child.update_properties_from updated_child, "some_user"
+      child.update_properties_from updated_child, nil, "some_user"
       child['age'].should == "35"
       child['name'].should == "Dave"
       child['origin'].should == "Croydon"
@@ -16,7 +16,7 @@ describe Child do
     
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
-      child.update_properties_from Child.new, "jdoe"
+      child.update_properties_from Child.new, nil, "jdoe"
       child['last_updated_by'].should == 'jdoe'
     end
     
@@ -24,30 +24,45 @@ describe Child do
       current_time = Time.now
       Time.stub!(:now).and_return current_time
       child = Child.new
-      child.update_properties_from Child.new, "jdoe"
+      child.update_properties_from Child.new,nil, "jdoe"
       child['last_updated_at'].should == current_time.strftime("%m/%d/%y %H:%M")
+    end
+
+    it "updates the photo field" do
+      child = Child.new
+      child.photo = uploadable_photo
+      child_update = Child.new
+      child_update.photo = uploadable_text_file
+
+      child.update_properties_from(child_update, uploadable_text_file, "jdoe")
+
+      def child.file_name
+        @file_name
+      end
+
+      def child_update.file_name
+        @file_name
+      end
+
+      child.file_name.should == child_update.file_name
     end
   end
 
   describe "validating an existing child record" do
-    
-    photo = File.new("features/resources/jorge.jpg")
-    def photo.content_type
-      "image/jpg"
-    end
-  
-    def photo.original_path
-      "features/resources/jorge.jpg"
-    end
-    
+
+    photo = uploadable_photo
+
     child = Child.new
     child['last_known_location'] = "location"
     child.photo = photo
-  
+
     child.save.should == true
-  
+
     loaded_child = Child.get(child.id)
     loaded_child.save().should == true
+
+    loaded_child.photo = uploadable_text_file
+    loaded_child.save().should == false
   end
 
   describe "new_with_user_name" do    
