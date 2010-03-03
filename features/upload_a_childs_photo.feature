@@ -30,3 +30,9 @@ Scenario: I do not upload a photo
   Given I am on the new child page
   And I press "Create"
   Then I should see "Please upload a valid photo file (jpg or png) for this child record"
+
+Scenario: Changing the photo field on an existing child record
+  Given I am editing an existing child record
+  And I attach the file "features/resources/textfile.txt" to "photo"
+  And I press "Update"
+  Then I should see "Please upload a valid photo file (jpg or png) for this child record"

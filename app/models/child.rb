@@ -23,6 +23,7 @@ class Child < CouchRestRails::Document
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path
+
     if (has_attachment? :photo)
       update_attachment(:name => "photo", :content_type => photo_file.content_type, :file => photo_file)
     else
@@ -37,7 +38,7 @@ class Child < CouchRestRails::Document
   def valid?(context=:default)
     valid = true
     
-    if (new? && !/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
+    if ((new? || @file_name != nil) && !/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
       valid = false
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
@@ -51,12 +52,15 @@ class Child < CouchRestRails::Document
     return valid
   end
 
-  def update_properties_from(child, user_name)
+  def update_properties_from(child, new_photo, user_name)
     child.each_pair do |name, value|
       self[name] = value unless value == nil
     end
+    
     self['last_updated_by'] = user_name
     self['last_updated_at'] = Time.now.strftime("%m/%d/%y %H:%M")
+
+    self.photo = new_photo unless new_photo == nil
   end
   
   def initialize_history
