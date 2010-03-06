@@ -15,7 +15,7 @@ Feature:
     And I fill in "Haiti" for "Last known location"
     And I select "1-2 weeks ago" from "Date of separation"
     And I attach the file "features/resources/jorge.jpg" to "photo"
-    And I press "Create"
+    And I press "Finish"
 
     Then I should see "Child record successfully created."
     Then I should see "Unique Id: mary"
@@ -34,7 +34,7 @@ Feature:
     Then I should see "Listing children"
     And I should see "Jorge Just"
 
-    When I follow "Show"
+    When I click "Jorge Just"
     Then I follow "Back"
     And I should see "Listing children"
     And I should see "Jorge Just"
@@ -44,7 +44,7 @@ Feature:
     Given I am logged in
     Given I am on new child page
     When I fill in the basic details of a child
-    And I press "Create"
+    And I press "Finish"
     Then I should see "Child record successfully created."
     And I should see "Approximate"
 
@@ -53,5 +53,5 @@ Feature:
     Given I am on new child page
     When I fill in the basic details of a child
     And I fill in "" for "Last known location"
-    And I press "Create"
+    And I press "Finish"
     Then I should see "Last known location cannot be empty"

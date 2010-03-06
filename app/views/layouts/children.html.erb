@@ -1,18 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <title>Children: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag 'scaffold' %>
-  <%= stylesheet_link_tag 'rapidftr' %>
+  <%= stylesheet_link_tag 'core' %>
 </head>
 <body>
+<div class="page-container">
+  <div class="page-header">
+        <p class="brand"><a href="/"><%= image_tag "logo.jpg" %></a></p>
 
-<p style="color: green"><%= flash[:notice] %></p>
+    <div class="nav">
+      <ul>
+        <li><a href="/">Logout</a></li>
+        <li><a href="/">Admin</a></li>
+        <li><a href="/">FAQ</a></li>
+        <li><a href="/">Contact</a></li>
+        <li><a href="/">About</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-content">
+    <h1><%= @page_name || "&nbsp;" %></h1>
 
-<%= yield %>
+    <div class="content-section">
+      <p style="color: green"><%= flash[:notice] %></p>
+      <%= yield %>
+    </div>
+
+    <div class="content-aside">
+      <h2>Participate</h2>
+
+      <p>We are looking for experienced Ruby on Rails programmers. If you're interested in participating, please
+        <a href="/">contact us</a></p>
+    </div>
+  </div>
+
+
+</div>
+
 
 </body>
 </html>

@@ -1,0 +1,159 @@
+/* default styles **/
+div, p, h1, h2, h3, h4, h5, h6, ul, form, fieldset, legend, label, dl, dt, dt1, dd1, dd, input, table * { margin: 0; padding: 0; }
+body {  font-size: 100%; font-family: Arial, Helvetica, Sans-Serif; color: #333; margin: 0; padding: 0; background: #f4f1ea url(../images/topbg.jpg) repeat-x 0 0; }
+p, li, legend, dt, dd, td { font-size: .75em; line-height: 1.5 }
+input, select, dt p, dd p, textarea { font-size: 1em; }
+a { color: #39f; text-decoration: none; overflow: hidden; outline: none; }
+a:hover { color: #f93; }
+img { border-width: 0; }
+
+/* default: lists */
+ul { list-style: none; overflow: hidden; }
+ul li { background: url(../images/bullet.gif) 3px .6em no-repeat; padding-left: 15px; }
+ul li strong { color: #f50; }
+li li { font-size: 1em; }
+
+/* default: headings */
+h1 { color: #678; font-size: 1.5em; }
+h2 { color: #678; font-size: 1em; }
+h3 { color: #678; font-size: .875em;  }
+
+/* default: table */
+table { background-color: #ddd; border-collapse: collapse; width: 100%; }
+table thead { background-color: #678; color: #fff; }
+th  { text-align: left;}
+td, th { padding: .5em 10px; border-bottom: 1px solid #fff; }
+td a { font-weight: bold;  }
+
+/* default: forms */
+.default-form fieldset { padding: .5em 10px; }
+.default-form fieldset legend { font-weight: bold; font-size: 1.1em; }
+.default-form fieldset p { margin-bottom: 1em; clear: both; overflow: hidden; }
+.default-form label { float: left; text-align: right; width: 150px; margin-right: 10px; font-weight: bold; color: #678; }
+.default-form input, 
+.default-form select { width: 200px; height: 1.7em; }
+
+/* default: forms > List of radio buttons */
+.default-form dl.radioList { overflow: hidden; }
+.default-form .radioList dt { clear: both; float: left; text-align: right; width: 150px; margin-right: 10px; padding-bottom: .5em; font-weight: bold; color: #678; }
+.default-form .radioList dd { float: left; width: 200px; padding-bottom: 1em; }
+.default-form .radioList p { margin-bottom: 0; }
+.default-form .radioList label { float: none; width: auto; font-weight: normal; }
+.default-form .radioList input { width: auto; height: auto; }
+
+/* default: forms > check box */
+.default-form p.checkbox { overflow: hidden; margin-left: 160px; }
+.default-form .checkbox label { float: none; width: auto; font-weight: normal; }
+.default-form .checkbox input { width: auto; height: auto; }
+
+/* default: forms > List of check boxes */
+.default-form dl.checkbox { overflow: hidden; }
+.default-form dl.checkboxList { overflow: hidden; }
+
+/* default: forms > custom inputs */
+.default-form .file input { width: auto; height: auto; }
+.default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
+
+/* page-container */
+.page-container { margin: 0 auto; width: 960px; }
+
+/* page-header */
+.page-header { background-color: #31353e; overflow: hidden; margin-bottom: 9px; }
+.page-header .brand { float: left; width: 305px; margin-left: 25px; padding: 21px 0 23px; }
+.page-header .brand img { display: block; }
+
+/* page-header > navigation */
+.page-header .nav { float: right; width: 580px; margin-right: 25px; padding-top: 30px; }
+.page-header .nav ul { text-align: right; }
+.page-header .nav li { display: inline;  font-size: .875em; font-weight: bold;  padding: 0; background-image: none; }
+.page-header .nav li a { padding-left: 12px; color: #fff; }
+.page-header .nav li a:hover { color: #f93; }
+
+/* page-content  */
+.page-content { overflow: hidden; background: url(../images/content-bg.gif) repeat-y 690px 0; padding-top: 10px; }
+.page-content h1 { padding: 0 0 1em 25px; margin-right: 280px; background: #f4f1ea url(../images/content-head-bg-1.gif) no-repeat 0 100%; }
+.page-content p, .page-content ul, .page-content h2 { margin-bottom: 1em; }
+
+/* content  */
+.content-section { float: left; width: 630px; padding: 10px 25px 25px; margin-bottom: 1.5em; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
+.content-aside { float: right; width: 230px; padding: 10px 15px 15px; margin-right: 10px; }
+
+/* tabbed content  */
+ul.tab-handles { border-left: 1px solid #678; margin-bottom: 0; position: relative; top: 1px; }
+.tab-handles li { padding: 0; background: none; margin: 0; float: left; font-weight: bold; }
+.tab-handles li a { display: block; border: solid #678; border-width: 1px 1px 0 0; background: #f3f0e9; padding: 5px 10px; }
+.tab-handles li.current a { background: #ddd; color: #678; padding-bottom: 6px; }
+
+/* CONTENT SPECIFIC STYLES*/
+
+/* table listing page */
+td.edit, th.edit { text-align: right;  }
+td.edit a {  }
+td.checkbox { text-align: center;}
+
+/* profiles wall page */
+.profile-wall-page .page-content h1 { background: none; }
+.profile-wall-page .content-section { background: none; width: 672px; padding: 10px 4px 25px; }
+
+/* profiles wall page */
+.profiles-list .new-row { clear: both; }
+.profiles-list-item { float: left; overflow: hidden; background-color: #fff; width: 312px; padding: 6px; margin: 0 6px 1em; position: relative; }
+.profiles-list-item header { }
+.profiles-list-item h3 { margin: 0 20px .5em; }
+.profiles-list-item .edit { position: absolute; top: 5px; right: 5px; }
+.profiles-list-item .checkbox { position: absolute; top: 5px; left: 5px; }
+.profiles-list-item .photo { clear: both; float: left; width: 120px; padding-right: 6px; margin-bottom: 0; }
+.profiles-list-item .details { float: right; width: 186px; }
+.profiles-list-item .details p { margin-bottom: 0; }
+.profiles-list-item .details p strong { display: block; color: #678; }
+.profiles-list-item .details p em { display: block; }
+.profiles-list-item dt, .profiles-list-item .details dd { }
+.profiles-list-item dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; }
+.profiles-list-item dt { width: 45px; margin-bottom: .5em; font-weight: bold; color: #678; }
+.profiles-list-item dd { margin: -2em 0 .5em; padding: 0 0 .5em 52px; border-bottom: 1px solid #678; }
+
+/* profile page */
+.profile-page .page-content { background: none;}
+.profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); }
+.profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
+.profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
+
+/* profile page > header */
+.profile-header { background-color: #ddd; padding: 9px; border: 1px solid #678; border-bottom-width: 0; }
+.profile-header h2 { margin-bottom: .5em; }
+.profile-header dt, .profile-header dd { font-size: .875em; }
+.profile-header dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; }
+.profile-header dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
+.profile-header dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border-bottom: 1px solid #678; }
+
+/* profile page > tools */
+.profile-tools { padding: 10px; background-color: #678; color: #fff; margin-bottom: 10px; }
+.profile-tools ul { text-align: right; margin-bottom: 0; }
+.profile-tools li { display: inline; font-weight: bold;  padding: 0; background-image: none; }
+.profile-tools li a { padding-left: 12px; color: #fff; }
+.profile-tools li a:hover { color: #f93; }
+
+/* profile page > image */
+.profile-image { background-color: #fff; padding: 11px 15px 25px 12px; margin-bottom: 1em; background: url(../images/profile-image-bg.gif) no-repeat 0 100%;  }
+.profile-image img { width: 100%;  height: 100%; }
+.profile-image .view-full-size { margin-bottom: 0; text-align: right; font-weight: bold; }
+
+/* edit page */
+.edit-profile { position: relative; } 
+.edit-profile fieldset { color: #666; background-color: #ddd; border: 1px solid #678; margin-bottom: 1em; overflow: hidden; clear: both; }
+.edit-profile h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
+.edit-profile .submitButton { float: right; text-align: right; }
+.edit-profile .cancel { float: left; }
+
+
+/* ie6 fixes */
+
+.page-header { zoom: 1; }
+.page-content { zoom: 1; }
+.profile-header { zoom: 1; }
+.profile-header dl { zoom: 1; }
+.tab-handles { zoom: 1; }
+
+.profiles-list { zoom: 1; overflow: hidden; }
+.profiles-list-item { display: inline; }
+.profiles-list-item dl { zoom: 1; }

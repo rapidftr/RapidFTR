@@ -7,7 +7,7 @@ Feature: Add family details
     And I fill in "Mary" for "Mothers name"
     And I select "Yes" from "Reunite with mother"
 
-    When I press "Create"
+    When I press "Finish"
 
     Then I should see "Mary"
     And I should see "Reunite with mother: Yes"

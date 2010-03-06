@@ -1,21 +1,29 @@
-<h1>Listing children</h1>
 
+<h2>All children</h2>
 <table>
+  <thead>
   <tr>
+    <th class="checkbox">&nbsp;</th>
     <th>Name</th>
     <th>Last known location</th>
+    <th class="edit">Edit</th>
   </tr>
+  </thead>
+  <tbody>
 
-<% @children.each do |child| %>
-  <tr>
-    <td><%=h child['name'] %></td>
-    <td><%=h child['last_known_location'] %></td>
-    <td><%= link_to 'Show', child %></td>
-    <td><%= link_to 'Edit', edit_child_path(child) %></td>
-  </tr>
-<% end %>
+  <% @children.each do |child| %>
+      <tr>
+        <td class="checkbox"></td>
+        <td><%= link_to(h(child['name']), child) %></td>
+        <td><%= h child['last_known_location'] %></td>
+        <td><%= link_to 'Edit', edit_child_path(child) %></td>
+      </tr>
+  <% end %>
+
+  </tbody>
+
 </table>
 
-<br />
+<br/>
 
 <%= link_to 'New child', new_child_path %>

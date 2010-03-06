@@ -1,5 +1,8 @@
-<% @child_view.fields.each do |field| %>
-    <p>
-      <%= render :partial => field.type, :object => field %>
-    </p>
-<% end %>
+<fieldset id="tab_1" class="personal-details tab">
+  
+  <h3>Basic details</h3>
+  <% @child_view.fields.each do |field| %>
+        <%= render :partial => field.type, :object => field %>
+  <% end %>
+
+</fieldset>

@@ -2,6 +2,7 @@ class ChildrenController < ApplicationController
   # GET /children
   # GET /children.xml
   def index
+    @page_name = "Listing children"
     @children = Child.all
 
     respond_to do |format|
@@ -26,6 +27,7 @@ class ChildrenController < ApplicationController
   # GET /children/new
   # GET /children/new.xml
   def new
+    @page_name = "New child record"
     @child = Child.new
     @child_view = ChildView.create_child_view_from_template Templates.get_template
     respond_to do |format|
