@@ -7,16 +7,16 @@ class Login
     @password = params[:password]
   end
 
-  def autheniticate_user
+  def authenticate_user
     user = User.find_by_user_name(@user_name)
 
-    authenticated = !user.nil? && user.autheticate(@password)
-
-    if not authenticated
+    if user.nil? || !user.autheticate(@password)
       errors.add(:base, "Invalid credentials. Please try again!")
+
+      return nil
     end
 
-    authenticated
+    Session.new(:user_name => @user_name)
   end
 
   def errors

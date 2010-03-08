@@ -29,9 +29,9 @@ class SessionsController < ApplicationController
   def create
     @login = Login.new(params[:login])
 
-    if @login.autheniticate_user
+    @session = @login.authenticate_user
 
-      @session = Session.new(params[:login])
+    if @session
 
       respond_to do |format|
         if @session.save
