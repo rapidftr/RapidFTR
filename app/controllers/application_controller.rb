@@ -9,6 +9,13 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
 
   def current_user_name
-     return "fix_me_to_return_session_user_name"
-  end
+#    session = Session.by_user_name(:key=>:user_name).first
+#    unless session[:user_name]
+#      @current_user = nil
+#      return
+#    end
+#    @current_user = User.find_by_user_name(session[:user_name])
+#    return @current_user.user_name
+    return "fix_me_to_return_session_user_name"
+    end
 end

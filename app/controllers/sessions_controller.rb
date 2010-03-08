@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
 
       respond_to do |format|
         if @session.save
-          flash[:notice] = 'Session was successfully created.'
+          flash[:notice] = 'Hello ' + @session.user_name
           format.html { redirect_to(@session) }
           format.xml  { render :xml => @session, :status => :created, :location => @session }
         else

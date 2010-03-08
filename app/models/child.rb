@@ -13,12 +13,31 @@ class Child < CouchRestRails::Document
     child['created_at'] = Time.now.strftime("%m/%d/%y %H:%M")
     child
   end
-  
+
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
     self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
   end
+
+#  view_by:user_name,
+#  :map => "function(doc,user_name) {
+#              if ((doc['couchrest-type'] == 'child') && doc['unique_identifier'].substr(0,)
+#             {
+#                emit(doc['user_name'],doc);
+#             }
+#          }"
+
+#  def find_by_created_user(user_name)
+#    @children = Child.by_user_name(:key => user_name.downcase)
+#      user_name = get_user_name_from_unique_identifier(child)
+#    end
+#  end
+
+#
+#  def self.get_user_name_from_unique_identifier(child)
+#    user_name = child.unique_identifier.
+#  end
 
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type

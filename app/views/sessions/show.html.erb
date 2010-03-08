@@ -1,1 +1,3 @@
-Hello <%=h @session.user_name %>
+<%= link_to 'Add child record', new_child_path %> <br/>
+<%= link_to 'View child listing', children_path %> <br/>
+<%= link_to 'Log Out',new_session_path,:action =>'destroy' %>

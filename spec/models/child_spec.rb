@@ -268,5 +268,7 @@ describe Child do
       
       child['histories'].first['datetime'].should == 'some_time'
     end
+
+   
   end
 end
