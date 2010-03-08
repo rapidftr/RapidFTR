@@ -5,4 +5,9 @@
         <%= render :partial => field.type, :object => field %>
   <% end %>
 
+ <p class="file">
+  <%= label_tag "child[photo]", "Photo" %>
+  <%= file_field_tag "child[photo]" %>
+</p>
+
 </fieldset>
