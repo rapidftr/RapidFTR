@@ -22,7 +22,7 @@ describe Summary do
       empty = []
       first = [1,2,3]
       second = [2,3]
-      result = Summary.and_arrays(empty, first, second).should == [2,3]
+      Summary.and_arrays(empty, first, second).should == [2,3]
     end
   end
 end

@@ -7,11 +7,9 @@
 
 <table>
   <th>
-    <td>Name</td>
+    <% Templates.get_search_result_template.each do |field| %>
+        <td><%= field['name'].humanize %></td>
+    <% end %>
   </th>
-  <% @results.each do |result| %>
-      <tr>
-        <td><%= result['name'] %></td>
-      </tr>
-  <% end %>
+  <%= render :partial => "summary_row", :collection => @results %>
 </table>

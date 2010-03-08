@@ -19,4 +19,8 @@ Scenario: Searching for a child given his unique identifier
   Then I should be on the child summaries page
   And I should see "andreas" in the column "Name"
 
+Scenario: Viewing search results show all the required fields
+  Given someone has entered a child with all details filled
+  
+
 
