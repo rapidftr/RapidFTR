@@ -28,13 +28,12 @@ module NavigationHelpers
       when /manage users page/
         users_path
 
-
+      when /search page/
+        search_url
+        
       when /login page/
         new_session_path
         
-      when /search page/
-        search_url
-
       when /child summaries page/
         children_summary_path
 

@@ -20,7 +20,7 @@ describe Children::SummariesController, "POST create" do
     search_request.should_receive(:save)
     post_request
   end
-  
+
   it "redirects to the summaries view" do
     search_result = double('search_result').as_null_object
     SearchRequest.stub(:new).with(anything).and_return(search_result)
