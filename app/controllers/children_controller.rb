@@ -25,7 +25,8 @@ class ChildrenController < ApplicationController
     end
 
     @aside = 'picture'
-
+    @body_class = 'profile-page'
+                                
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @child }
