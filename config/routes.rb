@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :children
+  map.resources :children do |child|
+    child.resource :history, :only => :show
+  end
   map.resources :users
   map.resources :sessions
 
