@@ -31,10 +31,10 @@
     </div>
 
     <div class="content-aside">
-      <h2>Participate</h2>
-
-      <p>We are looking for experienced Ruby on Rails programmers. If you're interested in participating, please
-        <a href="/">contact us</a></p>
+      <% if not @aside
+          @aside = 'participate'
+      end %>
+      <%= render :partial => @aside %>
     </div>
   </div>
 

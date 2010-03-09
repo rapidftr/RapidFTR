@@ -1,4 +1,5 @@
 class ChildrenController < ApplicationController
+
   # GET /children
   # GET /children.xml
   def index
@@ -22,7 +23,8 @@ class ChildrenController < ApplicationController
         @page_name = field.value
       end
     end
-    
+
+    @aside = 'picture'
 
     respond_to do |format|
       format.html # show.html.erb
