@@ -1,21 +1,22 @@
-<%= error_messages_for :child %>
+<div class="profile-header">
+  <h2> Identification Information</h2>
+  <dl>
+    <%= error_messages_for :child %>
 
+    <dt>Unique Id</dt>
+    <dd><%= @child_view.unique_id %></dd>
 
-<p  class = "imagePlaceholder">
-  <%= image_tag child_path(@child)+".jpg" %>
-</p>
+    <% @child_view.fields.each do |field| %>
+        <dt><%= field.name.humanize %></dt>
+        <dd><%= field.value %></dd>
+    <% end %>
 
-
-<div class="field">
-  <b>Unique Id</b>: <%= @child_view.unique_id %>
+  </dl>
 </div>
 
-<% @child_view.fields.each do |field| %>
-    <div class="field">
-      <b><%= field.name.humanize %></b>: <%= field.value %>
-    </div>
-<% end %>
-
+<p class="imagePlaceholder">
+  <%= image_tag child_path(@child)+".jpg" %>
+</p>
 
 <%= link_to 'Edit', edit_child_path(@child) %> |
 <%= link_to 'Back', children_path %> |
