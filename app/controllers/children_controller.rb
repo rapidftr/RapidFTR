@@ -15,7 +15,14 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     @child = Child.get(params[:id])
+
     @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+
+    @child_view.fields.each do |field|
+      if field.name == 'name'
+        @page_name = field.value
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb
