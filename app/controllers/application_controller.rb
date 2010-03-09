@@ -8,7 +8,17 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
+  def self.current_user
+    user = User.new
+    user.user_name = 'zubair'
+    user
+  end
   def current_user_name
      return "fix_me_to_return_session_user_name"
+  end
+  def self.current_user
+    user = User.new
+    user.user_name = 'zubair'
+    user
   end
 end

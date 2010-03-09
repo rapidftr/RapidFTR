@@ -1,4 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
+  map.namespace :children do |children|
+    children.resource :summary, :only => [:show, :create, :new]
+  end
+  map.search 'search', :controller => 'children/summaries', :action => 'new'
+
   map.resources :children do |child|
     child.resource :history, :only => :show
   end

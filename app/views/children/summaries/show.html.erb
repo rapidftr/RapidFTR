@@ -1,0 +1,16 @@
+<%= render :partial => "search_form" %>
+<ul>
+  <% @results.each do |result| %>
+      <li><%= result %></li>
+  <% end %>
+</ul>
+
+<table>
+  <th>
+    <% Templates.get_search_result_template.each do |field| %>
+        <td><%= field['name'].humanize %></td>
+    <% end %>
+  </th>
+  <%= render :partial => "summary_row", :collection => @results %>
+
+</table>
