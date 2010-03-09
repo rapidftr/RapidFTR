@@ -26,4 +26,12 @@ class ChildView
     return child_view
   end
 
+  def name
+    fields.each do |field|
+      if field.name == 'name'
+         return field.value
+      end
+    end
+  end
+
 end
