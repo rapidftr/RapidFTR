@@ -7,15 +7,16 @@ class ApplicationController < ActionController::Base
   Mime::Type.register "image/jpeg", :jpg
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+  session :off
+
 
   def current_user_name
-#    session = Session.by_user_name(:key=>:user_name).first
-#    unless session[:user_name]
-#      @current_user = nil
-#      return
-#    end
-#    @current_user = User.find_by_user_name(session[:user_name])
-#    return @current_user.user_name
-    return "fix_me_to_return_session_user_name"
+    session_id = cookies[:session_id]
+    session = Session.get(session_id)
+    if not session
+      return nil
     end
+    return session.user_name
+  end
+
 end

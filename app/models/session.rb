@@ -2,14 +2,6 @@ class Session < CouchRestRails::Document
   use_database :sessions
 
   property :user_name
-  view_by :user_name,
-          :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'Session') && doc['user_name'])
-             {
-                emit(doc['user_name'],doc);
-             }
-          }"
-
   def autheniticate_user
     user = User.find_by_user_name(@user_name)
 
@@ -21,4 +13,5 @@ class Session < CouchRestRails::Document
 
     authenticated
   end
+
 end

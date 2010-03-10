@@ -43,6 +43,9 @@ class ChildrenController < ApplicationController
   # POST /children
   # POST /children.xml
   def create
+#    session_id = request.cookies[:session_id]
+#    session = Session.get(session_id)
+#    current_user_name = session.user_name
     @child = Child.new_with_user_name(current_user_name, params[:child])
     respond_to do |format|
       if @child.save

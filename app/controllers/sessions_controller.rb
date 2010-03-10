@@ -1,8 +1,13 @@
 class SessionsController < ApplicationController
 
-
+#  after_filter :set_cookie
   # GET /sessions/1
   # GET /sessions/1.xml
+#  def set_cookie
+#    cookies = request.cookies
+#    cookies[:session_id] = session.session_id
+#  end
+
   def show
     @session = Session.get(params[:id])
 
@@ -27,14 +32,16 @@ class SessionsController < ApplicationController
   # POST /sessions
   # POST /sessions.xml
   def create
+
     @login = Login.new(params[:login])
 
-    @session = @login.authenticate_user
+    @session= @login.authenticate_user
 
     if @session
 
       respond_to do |format|
         if @session.save
+          cookies[:session_id] = @session.id
           flash[:notice] = 'Hello ' + @session.user_name
           format.html { redirect_to(@session) }
           format.xml  { render :xml => @session, :status => :created, :location => @session }

@@ -1,6 +1,9 @@
 class Login
   include Validatable
   attr_accessor :errors
+  attr_accessor :user_name
+  attr_accessor :password
+
 
   def initialize(params)
     @user_name = params[:user_name]
