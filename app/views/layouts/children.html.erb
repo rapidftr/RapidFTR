@@ -31,10 +31,7 @@
     </div>
 
     <div class="content-aside">
-      <% if not @aside
-          @aside = 'participate'
-      end %>
-      <%= render :partial => @aside %>
+      <%= render :partial => (@aside or 'participate')%>
     </div>
   </div>
 
