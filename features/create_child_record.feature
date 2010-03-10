@@ -3,6 +3,7 @@ Feature:
   basic information about the lost child.
 
   Scenario: creating a child record
+    Given I am logged in
     Given no children exist
     Given I am on children listing page
     And I follow "New child"
@@ -17,15 +18,15 @@ Feature:
     And I press "Create"
 
     Then I should see "Child record successfully created."
-    And I should see "Unique Id: fix_me_to_return_session_user_name"
+    Then I should see "Unique Id: mary"
     And I should see "Jorge Just"
     And I should see "27"
     And I should see "1"
-    And I should see "Male"             
+    And I should see "Male"
     And I should see "London"
     And I should see "Haiti"
     And I should see "1-2 weeks ago"
-    
+
 
 
 
@@ -40,13 +41,15 @@ Feature:
 
 
   Scenario: create child with approximate age
+    Given I am logged in
     Given I am on new child page
     When I fill in the basic details of a child
     And I press "Create"
     Then I should see "Child record successfully created."
     And I should see "Approximate"
 
-  Scenario: Last known location should be required 
+  Scenario: Last known location should be required
+    Given I am logged in
     Given I am on new child page
     When I fill in the basic details of a child
     And I fill in "" for "Last known location"

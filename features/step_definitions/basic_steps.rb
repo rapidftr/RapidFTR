@@ -25,9 +25,18 @@ Given /^I am editing an existing child record$/ do
   visit children_path+"/#{child.id}/edit"
 end
 
+Given /there is a User/ do
+  Given "no users exist"
+  Given "a user \"mary\" with a password \"123\""
+end
 
-Given /^I log in as "([^\"]*)" with password "([^\"]*)"$/ do |arg1, arg2|
-    #go to new session 
+Given /I am logged in/ do
+  Given "there is a User"
+  Given "I am on the login page"
+  Given "I fill in \"#{User.first.user_name}\" for \"user name\""
+  Given "I fill in \"#{User.first.password}\" for \"password\""
+  Given "I press \"Log In\""
+
 end
 
 When /^I create a new child$/ do
