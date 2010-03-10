@@ -16,13 +16,32 @@ class Child < CouchRestRails::Document
   
   def self.current_date_and_time
     Time.now.strftime("%m/%d/%y %H:%M")
-  end  
-    
+  end
+
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
     self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
   end
+
+#  view_by:user_name,
+#  :map => "function(doc,user_name) {
+#              if ((doc['couchrest-type'] == 'child') && doc['unique_identifier'].substr(0,)
+#             {
+#                emit(doc['user_name'],doc);
+#             }
+#          }"
+
+#  def find_by_created_user(user_name)
+#    @children = Child.by_user_name(:key => user_name.downcase)
+#      user_name = get_user_name_from_unique_identifier(child)
+#    end
+#  end
+
+#
+#  def self.get_user_name_from_unique_identifier(child)
+#    user_name = child.unique_identifier.
+#  end
 
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
@@ -82,6 +101,20 @@ class Child < CouchRestRails::Document
   
   protected
     
+  def changes_for(field_names)
+    field_names.inject({}) do |changes, field_name|
+      changes.merge(field_name => { 
+        'from' => @from_child[field_name], 
+        'to' => self[field_name] })
+    end
+  end
+  
+  def field_name_changes
+    @from_child ||= Child.get(self.id)
+    field_names = Templates.get_template.map { |field| field['name'] }
+    field_names.select { |field_name| changed?(field_name) }
+  end
+  
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
       changes.merge(field_name => { 

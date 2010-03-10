@@ -68,11 +68,4 @@ class User < CouchRestRails::Document
      user_name.downcase!
   end
 
-
-#  def strip_off_white_spaces
-#   user_name.gsub!(/ /,'');
-#   password.gsub!(/ /,'');
-#   password_confirmation.gsub!(/ /,'');
-#  end
-
 end

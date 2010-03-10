@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
     user
   end
   def current_user_name
-     return "fix_me_to_return_session_user_name"
-  end
-  def self.current_user
-    user = User.new
-    user.user_name = 'zubair'
-    user
+    session_id = cookies[:session_id]
+    session = Session.get(session_id)
+    if not session
+      return nil
+    end
+    return session.user_name
   end
 end
