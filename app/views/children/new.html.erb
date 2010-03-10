@@ -2,12 +2,7 @@
 
     <%= error_messages_for :child %>
 
-    <ul class="tab-handles">
-      <li class="current"><a href="#tab_1">Personal details</a></li>
-      <li><a href="#tab_2">Family details</a></li>
-      <li><a href="#tab_3">Care giver</a></li>
-      <li><a href="#tab_4">Protection concerns</a></li>
-    </ul>
+    <%= render :partial => "tabs" %>
 
     <%= render :partial => "form" %>
 
@@ -25,7 +20,7 @@
       <input name="commit" type="submit" value="Finish"/>
     </p>
     <p class="cancelButton">
-      <a href="/children">Cancel</a>
+       <%= link_to 'Cancel', children_path %>
     </p>
 
 <% end %>

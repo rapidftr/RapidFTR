@@ -28,7 +28,7 @@ Feature:
     And I fill in "Zambia" for "Last known location"
     And I select "6 months to 1 year ago" from "Date of separation"
     And I attach the file "features/resources/jeff.png" to "photo"
-    And I press "Update"
+    And I press "Finish"
 
   # verifying whether the edited record has been saved successfully
     Then I should see "George Harrison"
@@ -46,7 +46,7 @@ Feature:
     Then I follow "Edit"
     And I attach the file "features/resources/textfile.txt" to "photo"
     And I fill in "" for "Last known location"
-    And I press "Update"
+    And I press "Finish"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
     Then I should see "Last known location cannot be empty"
     

@@ -44,6 +44,7 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
+    @page_name = "Edit child record"
     @child = Child.get(params[:id])
     @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
   end
