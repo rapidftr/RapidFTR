@@ -1,4 +1,4 @@
-require 'spec'
+require File.dirname(__FILE__)+'/../spec_helper'
 
 describe Summary do
 
@@ -10,6 +10,12 @@ describe Summary do
       results.first()["name"].should =="alice"
       results.last()["name"].should == "zubair"
     end
+
+    it "should return an empty array if there are no matching results" do
+      results = Summary.basic_search( 'totally invalid name','absolutely not a valid id' )
+      results.should == []
+    end
+
   end
   def summary_with_name(name)
     sum = Summary.new

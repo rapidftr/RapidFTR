@@ -27,16 +27,13 @@ class Summary < CouchRestRails::Document
     results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]}
   end
 
-  def self.and_arrays(*args)
-    results = args.find { |arg| arg != nil && !arg.empty?}
-    
-    args.each do |arr|
-      arr ||=[]
-      if (!arr.empty?)
-        results = results.select { |doc| arr.include?(doc)} unless arr.empty?
-      end
+  def self.and_arrays(*arrays)
+    non_empty_arrays = arrays.reject{ |x| x.nil? || x.empty? }
+    return [] if non_empty_arrays.empty?
+
+    non_empty_arrays.inject do |anded_array,array|
+      anded_array &= array
     end
-    results
   end
 
   private
