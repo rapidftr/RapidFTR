@@ -2,30 +2,6 @@
 Feature:
   So that changes to the child record are kept for historical purposed and can be viewed
    @wip
-Scenario:  The user logs in, creates a child record and checks the log
-
-       Given no users exist
-       Given no children exist
-
-       Given I am logged in as "Harry"
-
-        And I follow "New child"
-        When I fill in "Jorge Just" for "Name"
-        And I fill in "27" for "Age"
-        And I select "Exact" from "Age is"
-        And I choose "Male"
-        And I fill in "London" for "Origin"
-        And I fill in "Haiti" for "Last known location"
-        And I select "1-2 weeks ago" from "Date of separation"
-        And I attach the file "features/resources/jorge.jpg" to "photo"
-        And I press "Create"
-
-        When I follow "View the change log"
-        Then I should see "Record created by Harry"
-                  And I should see the created date and time stamp
-        And I follow "logout"
-
-
   Scenario:  I log in as a different user, edit and view the record log
 
     Given I am logged in as "Mary"

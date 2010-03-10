@@ -7,6 +7,10 @@ When /^I fill in the basic details of a child$/ do
 
 end
 
+When /^the date\/time is "([^\"]*)"$/ do |datetime|
+  Child.stub!(:current_date_and_time).and_return datetime
+end
+
 Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   visit path_to('new child page')
   fill_in('Name', :with => child_name)

@@ -10,10 +10,14 @@ class Child < CouchRestRails::Document
     child = new(fields)
     child.create_unique_id user_name
     child['created_by'] = user_name
-    child['created_at'] = Time.now.strftime("%m/%d/%y %H:%M")
+    child['created_at'] = current_date_and_time
     child
   end
   
+  def self.current_date_and_time
+    Time.now.strftime("%m/%d/%y %H:%M")
+  end  
+    
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
@@ -77,7 +81,7 @@ class Child < CouchRestRails::Document
   end
   
   protected
-  
+    
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
       changes.merge(field_name => { 

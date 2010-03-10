@@ -7,11 +7,8 @@ describe HistoriesController do
                     {:controller => "histories", :action => "show", :child_id => "1"})
   end
   
-  it "should have created_by user name for initial log creation" do
-    child = Child.new_with_user_name("some_user", :last_known_location => 'London')
-    child.photo = uploadable_photo
-    child.save!
-    get :show, :child_id => child.id
-    assert_equal "some_user", assigns(:child)['created_by']
+  it "should use child_id param when retrieving the child" do
+    Child.stub!(:get).with "1"
+    get :show, :child_id => "1"
   end
 end
