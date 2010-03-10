@@ -6,7 +6,7 @@ class Child < CouchRestRails::Document
   before_save :initialize_history, :if => :new?
   before_save :update_history, :unless => :new?
   
-  def self.new_with_user_name(user_name, fields)
+  def self.new_with_user_name(user_name, fields = {})
     child = new(fields)
     child.create_unique_id user_name
     child.set_creation_fields_for user_name

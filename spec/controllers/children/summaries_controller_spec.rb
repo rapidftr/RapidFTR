@@ -46,9 +46,20 @@ describe Children::SummariesController, "GET show" do
   end
 
   it "sets the results of the search to variable results" do
-    Summary.should_receive(:basic_search).with(@search_params[:child_name], @search_params[:unique_identifier]).and_return(@search_results)
+    fake_results = [:fake_child_1,:fake_child_2]
+    Summary.should_receive(:basic_search).with(@search_params[:child_name], @search_params[:unique_identifier]).and_return(fake_results)
     get :show
-    assigns[:results].should == @search_results
+    assigns[:results].should == fake_results
   end
 
+  it "redirects to a child resource if there is only one result from the search" do
+    single_child = Child.new_with_user_name('sole result',:_id=>'some_id') 
+    stub_search_request = stub(SearchRequest, :get_results => [single_child])
+    SearchRequest.stub(:get).and_return( stub_search_request ) 
+
+    get :show
+    
+    expected_redirect_url = child_path(single_child) 
+    response.should redirect_to( expected_redirect_url ) 
+  end
 end

@@ -20,7 +20,11 @@ module NavigationHelpers
       when /children listing page/
         children_path
 
-      when /saved record page/
+      when /saved record page for child with name "(.+)"/
+        child_name = $1
+        child = Summary.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil?
+        child_path( child )
 
       when /new user page/
         new_user_path
