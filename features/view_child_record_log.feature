@@ -4,6 +4,7 @@ Feature:
 Scenario: Creates a child record and checks the log
 
 	Given no children exist
+    Given I am logged in
 	Given I am on the children listing page
 	And I follow "New child"
 	When I fill in "Jorge Just" for "Name"
@@ -15,10 +16,10 @@ Scenario: Creates a child record and checks the log
 	And I select "1-2 weeks ago" from "Date of separation"
 	And I attach the file "features/resources/jorge.jpg" to "photo"
 	And the date/time is "7/1/2010 11:05"
-	And I press "Create"
+	And I press "Finish"
 
 	When I follow "View the change log"
-	Then I should see "7/1/2010 11:05 Record created by fix_me_to_return_session_user_name"
+	Then I should see "7/1/2010 11:05 Record created by mary"
 
 
 

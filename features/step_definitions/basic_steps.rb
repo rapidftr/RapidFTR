@@ -16,7 +16,7 @@ Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   fill_in('Name', :with => child_name)
   fill_in('Last known location', :with => 'Haiti')
   attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
-  click_button('Create')
+  click_button('Finish')
 end
 
 Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
