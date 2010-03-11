@@ -31,3 +31,14 @@ Scenario: Searches that yield a single record should redirect directly to that r
   When I fill in "Lisa" for "Name"
   And I press "Search"
   Then I should be on the saved record page for child with name "Lisa"
+
+Scenario: Search parameters are displayed in the search results
+  Given I am logged in 
+  And no children exist
+  And I am on the search page
+  When I fill in "Will" for "Name"
+  And I fill in "xyz" for "Child ID"
+  And I press "Search"
+  Then I should be on the child summaries page
+  And the "Name" field should contain "Will"
+  And the "Child ID" field should contain "xyz"
