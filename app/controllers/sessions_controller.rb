@@ -14,8 +14,6 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
-    @session = Session.get_from_cookies(cookies)
-    @session.destroy if @session
 
     @session = Session.new(params[:login])
     respond_to do |format|
@@ -61,11 +59,11 @@ class SessionsController < ApplicationController
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
   def destroy
-    @session = Session.find(params[:id])
-    @session.destroy
+    @session = Session.get_from_cookies(cookies)
+    @session.destroy if @session
 
     respond_to do |format|
-      format.html { redirect_to(sessions_url) }
+      format.html { redirect_to(:login) }
       format.xml  { head :ok }
     end
   end

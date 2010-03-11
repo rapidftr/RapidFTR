@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   Mime::Type.register "image/jpeg", :jpg
 
-  before_filter :check_authentication, :except => [:check_authentication]
+  before_filter :check_authentication
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
     return if self.controller_name == 'sessions'
 
     unless Session.get_from_cookies(cookies)
-      redirect_to :controller => 'sessions', :action => 'new'
+      redirect_to :login
     end
   end
 end

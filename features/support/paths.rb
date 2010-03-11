@@ -32,13 +32,12 @@ module NavigationHelpers
         search_url
         
       when /login page/
-        new_session_path
+        login_path
         
       when /child summaries page/
         children_summary_path
 
-      when /login page/
-        new_session_path
+
 
 
       # Add more mappings here.
