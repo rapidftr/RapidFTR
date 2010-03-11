@@ -24,7 +24,7 @@ Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
 
   column_index = -1
 
-  Hpricot(response.body).search("table th td").each_with_index do |cell, index|
+  Hpricot(response.body).search("table tr th").each_with_index do |cell, index|
     if (cell.to_plain_text == column )
       column_index = index
     end

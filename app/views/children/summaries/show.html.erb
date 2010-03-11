@@ -6,11 +6,11 @@
 </ul>
 
 <table>
-  <th>
+  <tr>
     <% Templates.get_search_result_template.each do |field| %>
-        <td><%= field['name'].humanize %></td>
+        <th><%= field['name'].humanize %></th>
     <% end %>
-  </th>
+  </tr>
   <%= render :partial => "summary_row", :collection => @results %>
 
 </table>
