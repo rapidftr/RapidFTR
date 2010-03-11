@@ -20,6 +20,21 @@ Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   click_button('Finish')
 end
 
+Given /^the following children exist in the system:$/ do |children_table|
+  Given "no children exist"
+  children_table.hashes.each do |child_hash|
+    child_hash.reverse_merge!( 
+      'last_known_location' => 'Cairo', 
+      'photo_path' => 'features/resources/jorge.jpg',
+      'reporter' => 'zubair'
+    )
+
+    child = Child.new_with_user_name( child_hash['reporter'], child_hash.slice('name','last_known_location') )
+    child.photo = fixture_file_upload(child_hash['photo_path'])
+    child.create!
+  end
+end
+
 Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
 
   column_index = -1
