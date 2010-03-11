@@ -53,9 +53,10 @@ describe Children::SummariesController, "GET show" do
   end
 
   it "redirects to a child resource if there is only one result from the search" do
-    single_child = Child.new_with_user_name('sole result',:_id=>'some_id') 
-    stub_search_request = stub(SearchRequest, :get_results => [single_child])
-    SearchRequest.stub(:get).and_return( stub_search_request ) 
+    single_child = Summary.new(:_id=>'some_id') 
+    search_request = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'unique_identifier' => "zubair"})
+    search_request.stub(:get_results).and_return([single_child])
+    SearchRequest.stub(:get).and_return(search_request)
 
     get :show
     

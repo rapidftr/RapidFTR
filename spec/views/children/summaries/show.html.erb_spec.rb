@@ -8,23 +8,23 @@ describe "children/summaries/show.html.erb" do
       assigns[:results] = @results
     end
 
-    it "should render table rows for each record in the results" do
+    it "should render table rows for the header, plus each record in the results" do
       render
 
-      Hpricot(response.body).search("tr").size.should == 3
+      Hpricot(response.body).search("tr").size.should == 4
     end
 
     it "should have a column for each of the fields in the search template" do
       render
 
-      Hpricot(response.body).search("th td").size.should == Templates.get_search_result_template.size
+      Hpricot(response.body).search("tr th").size.should == Templates.get_search_result_template.size
     end
 
     it "should enter the information for each of those field from each of the records"
     it "should enter a balnk cell if that information is not available for a given record"
 
     def random_child_summary
-      Summary.new
+      Summary.new("_id" => "some_id")
     end
   end
 end
