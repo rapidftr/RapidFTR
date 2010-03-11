@@ -34,7 +34,7 @@ Feature:
     Then I should see "Listing children"
     And I should see "Jorge Just"
 
-    When I click "Jorge Just"
+    When I follow "Jorge Just"
     Then I follow "Back"
     And I should see "Listing children"
     And I should see "Jorge Just"

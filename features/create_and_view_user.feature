@@ -3,6 +3,7 @@ Feature: As an admin, I should be able to create and view users.
   Scenario:      To check that an admin creates a user record and is able to view it
     
     Given no users exist
+    Given I am logged in
     Given I am on manage users page
     And I follow "New user"
     When I fill in "George Harrison" for "Full name"
@@ -26,6 +27,7 @@ Feature: As an admin, I should be able to create and view users.
     And I should see "Amazon"
 
     Scenario:To check for validations on the user record page
+      Given I am logged in
       Given I am on new user page
       And I press "Create"
       Then I should see "Please enter full name of the user"
@@ -36,7 +38,8 @@ Feature: As an admin, I should be able to create and view users.
 
    Scenario: To check that user name and password  does not contain spaces
 
-     Given I am on new user page
+      Given I am logged in
+      Given I am on new user page
       When I fill in "George Bush" for "Full Name"
       And I fill in "ge or ge" for "user name"
       And I fill in "pass word" for "password"
@@ -54,6 +57,8 @@ Feature: As an admin, I should be able to create and view users.
 
     Scenario:To check whether a user name already exists.
 
+      Given I am logged in
+      Given a user "george" with a password "password"
       Given I am on new user page
       When I fill in "George Bush" for "Full Name"
       And I fill in "george" for "user name"
@@ -70,6 +75,7 @@ Feature: As an admin, I should be able to create and view users.
 
     Scenario: To check the validity of an email address
 
+      Given I am logged in
       Given I am on new user page
       And I fill in "abcdunicef.com" for "email"
       When I press "Create"
@@ -80,6 +86,7 @@ Feature: As an admin, I should be able to create and view users.
 
       Scenario: To check that email address is case insensitive
 
+      Given I am logged in
       Given I am on new user page
       When I fill in "George Bush" for "Full Name"
       And I fill in "george1" for "user name"

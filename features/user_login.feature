@@ -38,13 +38,10 @@ Feature: As an user, I should be able to log in.
     And I should see "View child listing"
     And I should see "Harry"
 
-#  Scenario:User session should be destroyed when a user logs out
-#    Given no users exist
-#    Given a user "Harry" with a password "123"
-#    Given I am on the login page
-#    When I fill in "Harry" for "user name"
-#    And I fill in "123" for "password"
-#    And I press "Log in"
-#    Then I should see "Hello Harry"
-#    And I follow "Log Out"
-#    Then I should be on the login page
+  Scenario:User session should be destroyed when a user logs out
+    Given no users exist
+    Given I am logged in
+    When I follow "Log Out"
+    Then I should be on the login page
+    When I go to new child page
+    Then I should be on the login page

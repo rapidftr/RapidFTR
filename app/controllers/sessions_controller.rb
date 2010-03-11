@@ -14,6 +14,8 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
+    @session = Session.get_from_cookies(cookies)
+    @session.destroy if @session
 
     @session = Session.new(params[:login])
     respond_to do |format|
