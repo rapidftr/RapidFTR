@@ -17,8 +17,31 @@ describe Children::SummariesController, "POST create" do
   it "creates and saves the search request for the user"  do
     search_request = stub('search_request')
 
-    SearchRequest.stub(:create_search).with(@user.user_name, @search_request_params).and_return(search_request)
+    SearchRequest.
+      stub(:create_search).
+      with(@user.user_name, hash_including(@search_request_params)).
+      and_return(search_request)
     search_request.should_receive(:save)
+    post_request
+  end
+
+  it "interprets no 'show_thumbnails' param to be false" do
+    @search_request_params.delete('show_thumbnails')
+    SearchRequest.should_receive(:create_search).with(
+      anything,
+      hash_including(:show_thumbnails => false)
+    ).and_return( stub( 'search_request', :save => nil ) )
+
+    post_request
+  end
+  
+  it "interprets any 'show_thumbnails' param to be true" do
+    @search_request_params['show_thumbnails'] = 'ffooo'
+    SearchRequest.should_receive(:create_search).with(
+      anything,
+      hash_including(:show_thumbnails => true)
+    ).and_return( stub( 'search_request', :save => nil ) )
+
     post_request
   end
 
@@ -41,7 +64,7 @@ describe Children::SummariesController, "GET show" do
     @user = stub('user_stub')
     @user.stub(:user_name).and_return(@user_name)
     ApplicationController.stub(:current_user).and_return(@user)
-    @search_params = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'unique_identifier' => "zubair"})
+    @search_params = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'unique_identifier' => "zubair",'show_thumbnails' => true})
     SearchRequest.stub(:get).with(@user_name).and_return(@search_params)
   end
 
@@ -52,6 +75,13 @@ describe Children::SummariesController, "GET show" do
     assigns[:results].should == fake_results
   end
 
+  it "assigns the search parameters to instance variables so the search fields can be filled in" do
+    get :show
+    assigns[:prev_child_name].should == 'jorge'
+    assigns[:prev_unique_identifier].should == 'zubair'
+    assigns[:show_thumbnails].should == true
+  end
+  
   it "redirects to a child resource if there is only one result from the search" do
     single_child = Summary.new(:_id=>'some_id') 
     search_request = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'unique_identifier' => "zubair"})

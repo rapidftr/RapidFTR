@@ -42,6 +42,18 @@ Scenario: Search parameters are displayed in the search results
   And the "Name" field should contain "Will"
   And the "Child ID" field should contain "xyz"
 
+Scenario: 'Show thumbnails' checkbox is unchecked in search results if it was unchecked for the search
+  Given no children exist
+  When I uncheck "Show thumbnails"
+  And I press "Search"
+  Then the "Show thumbnails" checkbox should not be checked
+
+Scenario: 'Show thumbnails' checkbox is checked in search results if it was checked for the search
+  Given no children exist
+  When I check "Show thumbnails"
+  And I press "Search"
+  Then the "Show thumbnails" checkbox should be checked
+
 Scenario: Each search result has a link to the full child record
   Given the following children exist in the system:
     | name   	| 
@@ -50,12 +62,24 @@ Scenario: Each search result has a link to the full child record
   When I search using a name of "W"
   Then I should see a link to the saved record page for child with name "Willis"
   And I should see a link to the saved record page for child with name "Will"
-
+ 
 Scenario: Thumbnails are displayed for each search result, if requested
   Given the following children exist in the system:
     | name   	| 
     | Willis	|
     | Will	|
-  When I search using a name of "W"
+  When I fill in "W" for "Name"
+  And I check "Show thumbnails" 
+  And I press "Search"
   Then I should see an image from the photo resource for child with name "Willis"
   Then I should see an image from the photo resource for child with name "Will"
+
+Scenario: Thumbnails are not displayed for each search result, if not requested
+Given the following children exist in the system:
+    | name   	| 
+    | Willis	|
+    | Will	|
+  When I fill in "W" for "Name"
+  And I uncheck "Show thumbnails" 
+  And I press "Search"
+  Then I should not see an image from the photo resource for child with name "Willis"

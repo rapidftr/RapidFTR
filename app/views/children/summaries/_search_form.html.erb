@@ -3,5 +3,7 @@
     <%= text_field_tag '[search_params][child_name]', @prev_child_name %>
     <%= label_tag '[search_params][unique_identifier]', "Child ID"%>
     <%= text_field_tag '[search_params][unique_identifier]', @prev_unique_identifier %>
+    <%= label_tag '[search_params][show_thumbnails]', "Show thumbnails"%>
+    <%= check_box_tag '[search_params][show_thumbnails]', "1", @show_thumbnails %>
     <%= submit_tag "Search" %>
 <%-end  %>

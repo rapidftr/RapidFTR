@@ -20,7 +20,8 @@ describe "children/summaries/show.html.erb" do
       Hpricot(response.body).search("tr th").size.should == Templates.get_search_result_template.size
     end
 
-    it "should include a column displaying thumbnails for each child" do
+    it "should include a column displaying thumbnails for each child if asked" do
+      assigns[:show_thumbnails] = true
       render
 
       first_content_row = Hpricot(response.body).search("tr")[1]
@@ -30,6 +31,13 @@ describe "children/summaries/show.html.erb" do
       first_image_tag['src'].should == child_path( @results.first, :format => 'jpg' )
       first_image_tag['width'].should == '60'
       first_image_tag['height'].should == '60'
+    end
+
+    it "should not include a column displaying thumbnails if not asked" do
+      assigns[:show_thumbnails] = false
+      render
+
+      Hpricot(response.body).at("tr td img").should be_nil
     end
 
     it "should enter the information for each of those field from each of the records"
