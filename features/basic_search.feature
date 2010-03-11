@@ -27,9 +27,7 @@ Scenario: Searches that yield a single record should redirect directly to that r
   Given I am logged in
   And no children exist
   And someone has entered a child with the name "Lisa"
-  And I am on the search page
-  When I fill in "Lisa" for "Name"
-  And I press "Search"
+  When I search using a name of "Lisa"
   Then I should be on the saved record page for child with name "Lisa"
 
 Scenario: Search parameters are displayed in the search results
@@ -47,8 +45,14 @@ Scenario: Each search result has a link to the full child record
   Given I am logged in
   And someone has entered a child with the name "Willis"
   And someone has entered a child with the name "Will"
-  And I am on the search page
-  When I fill in "Will" for "Name"
-  And I press "Search"
+  When I search using a name of "W"
   Then I should see a link to the saved record page for child with name "Willis"
   And I should see a link to the saved record page for child with name "Will"
+
+Scenario: Thumbnails are displayed for each search result, if requested
+  Given I am logged in
+  And there is a child with the name "Dave" and a photo from "features/resources/jorge.jpg"
+  And there is a child with the name "Daryl" and a photo from "features/resources/jorge.jpg"
+  When I search using a name of "D"
+  Then I should see an image from the photo resource for child with name "Dave"
+

@@ -43,6 +43,12 @@ module NavigationHelpers
 
 
 
+      when /photo resource for child with name "(.+)"/
+        child_name = $1
+        child = Summary.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil?
+        child_path( child, :format => 'jpg' )
+
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

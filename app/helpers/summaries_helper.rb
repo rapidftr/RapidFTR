@@ -1,5 +1,5 @@
 module SummariesHelper
-  def self.get_results(search_params)
-    
+  def thumbnail_image_tag(child)
+    image_tag(child_path(child,:format => 'jpg'),:size=>"60x60")
   end
 end

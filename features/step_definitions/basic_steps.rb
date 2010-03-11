@@ -54,14 +54,7 @@ Given /^a user "([^\"]*)" has entered a child found in "([^\"]*)" whose name is 
   new_child_record['last_known_location'] = location
   new_child_record.create_unique_id(user)
   new_child_record['name'] = name
-  photo_file = File.new("features/resources/jorge.jpg")
-  def photo_file.content_type
-    "image/jpg"
-  end
-  def photo_file.original_path
-   "features/resources/jorge.jpg"
-  end
-  new_child_record.photo = photo_file
+  new_child_record.photo = fixture_file_upload("features/resources/jorge.jpg")
   raise "couldn't save a child record!" unless new_child_record.save
 end
 
@@ -107,11 +100,18 @@ When /^I create a new child$/ do
   child.create!
 end
 
-
 Given /^a user "([^\"]*)" with a password "([^\"]*)" logs in$/ do |user_name, password|
   Given "a user \"#{user_name}\" with a password \"#{password}\""
   Given "I am on the login page"
   Given "I fill in \"#{user_name}\" for \"user name\""
   Given "I fill in \"#{password}\" for \"password\""
   And  "I press \"Log In\""
+end
+
+Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ do |child_name, photo_file_path|
+  child = Child.new( :name => child_name, :last_known_location => 'Chile' )
+
+  child.photo = fixture_file_upload(photo_file_path) 
+
+  child.create!
 end

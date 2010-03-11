@@ -20,6 +20,18 @@ describe "children/summaries/show.html.erb" do
       Hpricot(response.body).search("tr th").size.should == Templates.get_search_result_template.size
     end
 
+    it "should include a column displaying thumbnails for each child" do
+      render
+
+      first_content_row = Hpricot(response.body).search("tr")[1]
+      first_image_tag = first_content_row.at("td img")
+      raise 'no image tag' if first_image_tag.nil?
+
+      first_image_tag['src'].should == child_path( @results.first, :format => 'jpg' )
+      first_image_tag['width'].should == '60'
+      first_image_tag['height'].should == '60'
+    end
+
     it "should enter the information for each of those field from each of the records"
     it "should enter a balnk cell if that information is not available for a given record"
 
