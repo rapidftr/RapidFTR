@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
     user.user_name = 'zubair'
     user
   end
+
   def current_user_name
-    session_id = cookies[:session_id]
-    session = Session.get(session_id)
+    session = Session.get_from_cookies(cookies)
     if not session
       return nil
     end
