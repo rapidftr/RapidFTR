@@ -5,7 +5,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
 Scenario: Searching for a child given his name
   Given I am logged in
-  Given someone has entered a child with the name "Willis"
+  And someone has entered a child with the name "Willis"
   And someone has entered a child with the name "Will"
   And I am on the search page
   When I fill in "Will" for "Name"
@@ -42,3 +42,13 @@ Scenario: Search parameters are displayed in the search results
   Then I should be on the child summaries page
   And the "Name" field should contain "Will"
   And the "Child ID" field should contain "xyz"
+
+Scenario: Each search result has a link to the full child record
+  Given I am logged in
+  And someone has entered a child with the name "Willis"
+  And someone has entered a child with the name "Will"
+  And I am on the search page
+  When I fill in "Will" for "Name"
+  And I press "Search"
+  Then I should see a link to the saved record page for child with name "Willis"
+  And I should see a link to the saved record page for child with name "Will"
