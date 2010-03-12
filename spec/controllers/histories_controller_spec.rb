@@ -12,7 +12,7 @@ describe HistoriesController do
   end
   
   it "should use child_id param when retrieving the child" do
-    Child.stub!(:get).with "1"
+    Child.should_receive(:get).with "1"
     get :show, :child_id => "1"
   end
 end
