@@ -7,6 +7,7 @@ describe Children::SummariesController, "POST create" do
     @user.user_name = "ausername"
     ApplicationController.stub(:current_user).and_return(@user)
     @search_request_params = {"child_name"=> "Willis"}
+    @controller.stub!(:check_authentication)
   end
 
   def post_request
@@ -41,6 +42,7 @@ describe Children::SummariesController, "GET show" do
     ApplicationController.stub(:current_user).and_return(@user)
     @search_params = SearchRequest.create_search(@user_name, {'child_name' => "jorge", 'unique_identifier' => "zubair"})
     SearchRequest.stub(:get).with(@user_name).and_return(@search_params)
+    @controller.stub!(:check_authentication)
   end
 
   it "sets the results of the search to variable results" do

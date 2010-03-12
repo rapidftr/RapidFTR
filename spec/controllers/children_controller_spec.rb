@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe ChildrenController do
 
+  before(:each) do
+    @controller.stub!(:check_authentication)
+  end
 
   def mock_child(stubs={})
     @mock_child ||= mock_model(Child, stubs)
