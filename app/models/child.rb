@@ -29,6 +29,10 @@ class Child < CouchRestRails::Document
     self['last_updated_at'] = current_formatted_time
   end
 
+  def unique_identifier
+    self['unique_identifier']
+  end
+
 #  view_by:user_name,
 #  :map => "function(doc,user_name) {
 #              if ((doc['couchrest-type'] == 'child') && doc['unique_identifier'].substr(0,)
