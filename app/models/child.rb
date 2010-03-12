@@ -115,20 +115,6 @@ class Child < CouchRestRails::Document
     field_names.select { |field_name| changed?(field_name) }
   end
   
-  def changes_for(field_names)
-    field_names.inject({}) do |changes, field_name|
-      changes.merge(field_name => { 
-        'from' => @from_child[field_name], 
-        'to' => self[field_name] })
-    end
-  end
-  
-  def field_name_changes
-    @from_child ||= Child.get(self.id)
-    field_names = Templates.get_template.map { |field| field['name'] }
-    field_names.select { |field_name| changed?(field_name) }
-  end
-  
   def changed?(field_name)
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
