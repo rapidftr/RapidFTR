@@ -22,6 +22,7 @@ Rails::Initializer.run do |config|
   config.gem "json", :lib => false
   config.gem "uuidtools" , :lib =>false
   config.gem "dictionary"
+  config.gem "prawn"
 
   # config.gem "couchrest", :lib => false
   # config.gem "validatable", :lib => false
