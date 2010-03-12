@@ -15,7 +15,7 @@
       <tr>
         <td class="checkbox"></td>
         <td><%= link_to(h(child['name']), child) %></td>
-        <td><%= h child['last_known_location'] %></td>
+        <td><%= link_to(h(child['last_known_location']),child) %></td>
         <td class="edit"><%= link_to 'Edit', edit_child_path(child) %></td>
       </tr>
   <% end %>
