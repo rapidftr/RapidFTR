@@ -3,9 +3,9 @@ Feature:
 
 Scenario: Creates a child record and checks the log
 
-	Given no children exist
-    Given I am logged in
-	Given I am on the children listing page
+  Given "Harry" is logged in
+	And no children exist
+	And I am on the children listing page
 	And I follow "New child"
 	When I fill in "Jorge Just" for "Name"
 	And I fill in "27" for "Age"
@@ -19,7 +19,7 @@ Scenario: Creates a child record and checks the log
 	And I press "Finish"
 
 	When I follow "View the change log"
-	Then I should see "7/1/2010 11:05 Record created by mary"
+	Then I should see "7/1/2010 11:05 Record created by Harry"
 
 
 
