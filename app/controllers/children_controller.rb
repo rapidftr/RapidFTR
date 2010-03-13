@@ -107,6 +107,14 @@ class ChildrenController < ApplicationController
     end
   end
 
+  def search
+    @show_thumbnails = !!params[:show_thumbnails]
+    @results = Summary.basic_search(params[:child_name], params[:unique_identifier])
+    if 1 == @results.length
+      redirect_to child_path( @results.first )
+    end
+  end
+
   private
 
   def get_form_sections_for_child child
@@ -116,5 +124,4 @@ class ChildrenController < ApplicationController
     end
     return forms
   end
-
 end

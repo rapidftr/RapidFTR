@@ -100,4 +100,30 @@ describe ChildrenController do
       assigns[:child]['_attachments'].size.should == 1
     end
   end
+  
+  describe "GET search" do
+    it "performs a search using the parameters passed to it" do
+      fake_results = [:fake_child,:fake_child]
+      Summary.should_receive(:basic_search).with( 'the child name', 'the_unique_id' ).and_return(fake_results)
+      get( 
+        :search, 
+        :child_name => 'the child name',
+        :unique_identifier => 'the_unique_id'
+      )
+      assigns[:results].should == fake_results
+    end
+
+    it 'asks view to show thumbnails if show_thumbnails query parameter is present' do
+      get( 
+        :search, 
+        :show_thumbnails => '1'
+      )
+      assigns[:show_thumbnails].should == true
+    end
+
+    it 'asks view to not show thumbnails if show_thumbnails query parameter is missing' do
+      get( :search )
+      assigns[:show_thumbnails].should == false
+    end
+  end
 end

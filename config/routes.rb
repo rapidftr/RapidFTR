@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.search 'search', :controller => 'children/summaries', :action => 'new'
 
-  map.resources :children do |child|
+  map.resources :children, :collection => { :search => :get } do |child|
     child.resource :history, :only => :show
   end
   map.resources :users

@@ -29,5 +29,9 @@ describe ChildrenController do
     it "recognizes and generates #destroy" do
       { :delete => "/children/1" }.should route_to(:controller => "children", :action => "destroy", :id => "1") 
     end
+
+    it "recognizes and generates #search" do
+      { :get => '/children/search' }.should route_to(:controller => 'children', :action => 'search')
+    end
   end
 end
