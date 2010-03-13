@@ -1,0 +1,25 @@
+<% form_tag search_children_path, :method => :get do %>
+    <%= label_tag 'child_name', "Name" %>
+    <%= text_field_tag 'child_name', params[:child_name] %>
+    <%= label_tag 'unique_identifier', "Child ID"%>
+    <%= text_field_tag 'unique_identifier', params[:unique_identifier] %>
+    <%= label_tag 'show_thumbnails', "Show thumbnails"%>
+    <%= check_box_tag 'show_thumbnails', "1", params[:show_thumbnails] %>
+    <%= submit_tag "Search" %>
+<%-end  %>
+
+<ul>
+  <% @results.each do |result| %>
+      <li><%= result %></li>
+  <% end %>
+</ul>
+
+<table>
+  <tr>
+    <% Templates.get_search_result_template.each do |field| %>
+        <th><%= field['name'].humanize %></th>
+    <% end %>
+  </tr>
+  <%= render :partial => "summary_row", :collection => @results %>
+
+</table>

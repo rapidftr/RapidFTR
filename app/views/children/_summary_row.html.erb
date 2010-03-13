@@ -1,0 +1,9 @@
+<tr>
+<% Templates.get_search_result_template.each do |field| %>
+<td><%= summary_row[field["name"]] %></td>
+<% end %>
+<td><%= link_to "full record", child_path(summary_row) %></td>
+<%if @show_thumbnails%>
+  <td><%=thumbnail_image_tag(summary_row)%></td>
+<%end%>
+</tr>

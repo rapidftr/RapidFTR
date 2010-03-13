@@ -4,7 +4,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
 Background:
   Given I am logged in
-  And I am on the search page
+  And I am on the child search page
 
 Scenario: Searching for a child given his name
   Given the following children exist in the system:
@@ -13,7 +13,7 @@ Scenario: Searching for a child given his name
     | Will   |
   When I fill in "Will" for "Name"
   And I press "Search"
-  Then I should be on the child summaries page
+  Then I should be on the child search results page
   And I should see "Willis" in the column "Name"
 
 Scenario: Searching for a child given his unique identifier
@@ -23,7 +23,7 @@ Scenario: Searching for a child given his unique identifier
     | zak	    | London		            | zubair   |
   When I fill in "zubairlon" for "Child ID"
   And I press "Search"
-  Then I should be on the child summaries page
+  Then I should be on the child search results page
   And I should see "andreas" in the column "Name"
 
 Scenario: Searches that yield a single record should redirect directly to that record
@@ -38,7 +38,7 @@ Scenario: Search parameters are displayed in the search results
   When I fill in "Will" for "Name"
   And I fill in "xyz" for "Child ID"
   And I press "Search"
-  Then I should be on the child summaries page
+  Then I should be on the child search results page
   And the "Name" field should contain "Will"
   And the "Child ID" field should contain "xyz"
 
