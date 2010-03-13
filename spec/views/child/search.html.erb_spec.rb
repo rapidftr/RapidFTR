@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'hpricot'
 
-describe "children/summaries/show.html.erb" do
+describe "children/search.html.erb" do
   describe "rendering search results" do
     before :each do
       @results = [random_child_summary, random_child_summary, random_child_summary]
@@ -39,9 +39,6 @@ describe "children/summaries/show.html.erb" do
 
       Hpricot(response.body).at("tr td img").should be_nil
     end
-
-    it "should enter the information for each of those field from each of the records"
-    it "should enter a balnk cell if that information is not available for a given record"
 
     def random_child_summary
       Summary.new("_id" => "some_id")
