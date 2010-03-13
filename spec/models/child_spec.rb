@@ -21,11 +21,11 @@ describe Child do
     end
     
     it "should populate last_updated_at field with the time of the update" do
-      current_time = Time.now
+      current_time = Time.parse("Jan 17 2010 14:05")
       Time.stub!(:now).and_return current_time
       child = Child.new
       child.update_properties_from Child.new,nil, "jdoe"
-      child['last_updated_at'].should == current_time.strftime("%m/%d/%y %H:%M")
+      child['last_updated_at'].should == "17/01/2010 14:05"
     end
 
     it "updates the photo field" do
@@ -84,10 +84,10 @@ describe Child do
     end
     
     it "should create a created_at field with time of creation" do
-      current_time = Time.now
+      current_time = Time.parse("14 Jan 2010 14:05")
       Time.stub!(:now).and_return current_time
       child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
-      child['created_at'].should == current_time.strftime("%m/%d/%y %H:%M")
+      child['created_at'].should == "14/01/2010 14:05"
     end
   end
   

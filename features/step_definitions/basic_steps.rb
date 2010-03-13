@@ -8,7 +8,8 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
-  Child.stub!(:current_date_and_time).and_return datetime
+  current_time = Time.parse(datetime)
+  Time.stub!(:now).and_return current_time
 end
 
 Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|

@@ -9,19 +9,24 @@ class Child < CouchRestRails::Document
   def self.new_with_user_name(user_name, fields)
     child = new(fields)
     child.create_unique_id user_name
-    child['created_by'] = user_name
-    child['created_at'] = current_date_and_time
+    child.set_creation_fields_for user_name
     child
   end
   
-  def self.current_date_and_time
-    Time.now.strftime("%m/%d/%y %H:%M")
-  end
-
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
     self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
+  end
+  
+  def set_creation_fields_for(user_name)
+    self['created_by'] = user_name
+    self['created_at'] = current_formatted_time
+  end
+
+  def set_updated_fields_for(user_name)
+    self['last_updated_by'] = user_name
+    self['last_updated_at'] = current_formatted_time
   end
 
 #  view_by:user_name,
@@ -79,10 +84,7 @@ class Child < CouchRestRails::Document
     child.each_pair do |name, value|
       self[name] = value unless value == nil
     end
-    
-    self['last_updated_by'] = user_name
-    self['last_updated_at'] = Time.now.strftime("%m/%d/%y %H:%M")
-
+    self.set_updated_fields_for user_name
     self.photo = new_photo unless new_photo == nil
   end
   
@@ -100,6 +102,10 @@ class Child < CouchRestRails::Document
   end
   
   protected
+  
+  def current_formatted_time
+    Time.now.strftime("%d/%m/%Y %H:%M")
+  end
     
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
