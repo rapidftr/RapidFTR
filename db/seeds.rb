@@ -5,3 +5,10 @@
 #   
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
+User.create("user_type" => "Administrator",
+            "user_name" => "rapidftr",
+            "password" => "rapidftr",
+            "password_confirmation" => "rapidftr",
+            "full_name" => "RapidFTR",
+            "email" => "rapidftr@rapidftr.com"
+)
