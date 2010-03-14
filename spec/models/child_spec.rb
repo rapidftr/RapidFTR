@@ -27,44 +27,44 @@ describe Child do
       child.update_properties_from Child.new,nil, "jdoe"
       child['last_updated_at'].should == "17/01/2010 14:05"
     end
-
+  
     it "updates the photo field" do
       child = Child.new
       child.photo = uploadable_photo
       child_update = Child.new
       child_update.photo = uploadable_text_file
-
+  
       child.update_properties_from(child_update, uploadable_text_file, "jdoe")
-
+  
       def child.file_name
         @file_name
       end
-
+  
       def child_update.file_name
         @file_name
       end
-
+  
       child.file_name.should == child_update.file_name
     end
   end
-
+  
   describe "validating an existing child record" do
-
+  
     photo = uploadable_photo
-
+  
     child = Child.new
     child['last_known_location'] = "location"
     child.photo = photo
-
+  
     child.save.should == true
-
+  
     loaded_child = Child.get(child.id)
     loaded_child.save().should == true
-
+  
     loaded_child.photo = uploadable_text_file
     loaded_child.save().should == false
   end
-
+  
   describe "new_with_user_name" do    
     it "should create regular child fields" do
       child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'age' => '6')
@@ -97,35 +97,93 @@ describe Child do
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgelon12345"
   end
-
+  
   it "should use a default location if last known location is empty" do
     child = Child.new({'last_known_location'=>nil})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgexxx12345"
   end
-
+  
   it "should downcase the last known location of a child before generating the unique id" do
     child = Child.new({'last_known_location'=>'New York'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgenew12345"
   end
-
+  
   it "should append a five digit random number to the unique child id" do
     child = Child.new({'last_known_location'=>'New York'})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgenew12345"
   end
-
+  
   it "should handle special characters in last known location when creating unique id" do
     child = Child.new({'last_known_location'=>'ÃÄ§Ä·'})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgeÃÄ12345"
   end
+  
+  describe "photo attachments" do    
+    it "should create a field with current_photo_key on creation" do
+      current_time = Time.parse("Jan 20 2010 17:10")
+      Time.stub!(:now).and_return current_time
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+    
+      child['current_photo_key'].should == 'photo-20-01-2010-1710'
+    end
+    
+    it "should have current_photo_key as photo attachment key on creation" do
+      current_time = Time.parse("Jan 20 2010 17:10")
+      Time.stub!(:now).and_return current_time
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+    
+      child['_attachments'].should have_key('photo-20-01-2010-1710')
+    end
+    
+    it "should only have one attachment on creation" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child['_attachments'].size.should == 1
+    end
+    
+    it "should be able to read photo after creation" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child.photo.should_not be_empty
+    end
+    
+    it "should update current_photo_key on a photo change" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+    
+      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child.update_attributes :photo => uploadable_photo_jeff
+    
+      child['current_photo_key'].should == 'photo-20-02-2010-1204'
+    end
+    
+    it "should have updated current_photo_key as photo attachment key on a photo change" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      
+      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child.update_attributes :photo => uploadable_photo_jeff
+    
+      child['_attachments'].should have_key('photo-20-02-2010-1204')
+    end
+    
+    it "should be able to read photo after a photo change" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
+      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child.update_attributes :photo => uploadable_photo_jeff
+      
+      child.photo.should_not be_empty
+    end
+  end
+  
   describe "history log" do
     it "should not update history on initial creation of child document" do
       child = Child.new('last_known_location' => 'New York')
@@ -214,7 +272,7 @@ describe Child do
       child = Child.new('origin' => '', 'last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       child.save!
-
+  
       child['origin'] = '    '
       child.save!
       
@@ -225,7 +283,7 @@ describe Child do
       child = Child.new('last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       child.save!
-
+  
       child['last_known_location'] = ' New York   '
       child.save!
       
@@ -237,7 +295,7 @@ describe Child do
       child = Child.new('gender' => nil, 'last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
       child.save!
-
+  
       child['gender'] = 'Male'
       child.save!
       
@@ -256,7 +314,7 @@ describe Child do
       
       child['histories'].first['user_name'].should == 'some_user'      
     end
-
+  
     it "should update history with the datetime from last_updated_at" do
       child = Child.new('last_known_location' => 'New York')
       child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
@@ -268,7 +326,5 @@ describe Child do
       
       child['histories'].first['datetime'].should == 'some_time'
     end
-
-   
   end
 end

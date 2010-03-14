@@ -25,6 +25,19 @@ def uploadable_photo
   photo
 end
 
+def uploadable_photo_jeff
+  photo = File.new("features/resources/jeff.png")
+
+  def photo.content_type
+    "image/png"
+  end
+
+  def photo.original_path
+    "features/resources/jeff.png"
+  end
+  photo
+end
+
 def uploadable_text_file
   photo = File.new("features/resources/textfile.txt")
 
