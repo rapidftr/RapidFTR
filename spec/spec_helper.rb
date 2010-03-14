@@ -12,15 +12,15 @@ require 'webrat/integrations/rspec-rails'
 # in ./support/ and its subdirectories.
 Dir[File.expand_path(File.join(File.dirname(__FILE__), 'support', '**', '*.rb'))].each {|f| require f}
 
-def uploadable_photo
-  photo = File.new("features/resources/jorge.jpg")
+def uploadable_photo( photo_path = "features/resources/jorge.jpg" )
+  photo = File.new(photo_path)
 
   def photo.content_type
     "image/jpg"
   end
 
   def photo.original_path
-    "features/resources/jorge.jpg"
+    self.path
   end
   photo
 end

@@ -30,7 +30,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     )
 
     child = Child.new_with_user_name( child_hash['reporter'], child_hash.slice('name','last_known_location') )
-    child.photo = fixture_file_upload(child_hash['photo_path'])
+    child.photo = uploadable_photo(child_hash['photo_path'])
     child.create!
   end
 end
@@ -69,7 +69,7 @@ Given /^a user "([^\"]*)" has entered a child found in "([^\"]*)" whose name is 
   new_child_record['last_known_location'] = location
   new_child_record.create_unique_id(user)
   new_child_record['name'] = name
-  new_child_record.photo = fixture_file_upload("features/resources/jorge.jpg")
+  new_child_record.photo = uploadable_photo("features/resources/jorge.jpg")
   raise "couldn't save a child record!" unless new_child_record.save
 end
 
@@ -126,7 +126,7 @@ end
 Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ do |child_name, photo_file_path|
   child = Child.new( :name => child_name, :last_known_location => 'Chile' )
 
-  child.photo = fixture_file_upload(photo_file_path) 
+  child.photo = uploadable_photo(photo_file_path) 
 
   child.create!
 end
