@@ -1,4 +1,5 @@
 <tr>
+  <td><%=check_box_tag summary_row['_id']%></td>
 <% Templates.get_search_result_template.each do |field| %>
 <td><%= summary_row[field["name"]] %></td>
 <% end %>

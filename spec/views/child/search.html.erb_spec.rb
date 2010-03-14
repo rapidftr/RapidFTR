@@ -4,14 +4,14 @@ require 'hpricot'
 describe "children/search.html.erb" do
   describe "rendering search results" do
     before :each do
-      @results = [random_child_summary, random_child_summary, random_child_summary]
+      @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       assigns[:results] = @results
     end
 
     it "should render table rows for the header, plus each record in the results" do
       render
 
-      Hpricot(response.body).search("tr").size.should == 4
+      Hpricot(response.body).search("tr").size.should == @results.length + 1
     end
 
     it "should have a column for each of the fields in the search template" do
@@ -40,8 +40,19 @@ describe "children/search.html.erb" do
       Hpricot(response.body).at("tr td img").should be_nil
     end
 
-    def random_child_summary
-      Summary.new("_id" => "some_id")
+    it "should include a column of checkboxes to select individual records" do
+      render
+
+      select_check_boxes = Hpricot(response.body).search("tr td input[@type='checkbox']")
+      select_check_boxes.length.should == @results.length
+      select_check_boxes.each_with_index do |check_box,i|
+        check_box['name'].should == @results[i]['_id']
+      end
     end
+
+    def random_child_summary(id = 'some_id')
+      Summary.new("_id" => id)
+    end
+
   end
 end
