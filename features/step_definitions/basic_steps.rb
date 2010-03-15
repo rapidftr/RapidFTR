@@ -106,3 +106,12 @@ When /^I create a new child$/ do
   child.photo = uploadable_photo
   child.create!
 end
+
+
+Given /^a user "([^\"]*)" with a password "([^\"]*)" logs in$/ do |user_name, password|
+  Given "a user \"#{user_name}\" with a password \"#{password}\""
+  Given "I am on the login page"
+  Given "I fill in \"#{user_name}\" for \"user name\""
+  Given "I fill in \"#{password}\" for \"password\""
+  And  "I press \"Log In\""
+end

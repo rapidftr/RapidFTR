@@ -12,7 +12,11 @@
         <% section.fields.each do |field| %>
             <% if field.type != "photo_upload_box" %>
                 <dt><%= field.name.humanize %>:</dt>
-                <dd><%= field.value %></dd>
+                <% if !field.value.blank? %>
+                    <dd><%= field.value %></dd>
+                <% else %>
+                    <dd><%= "&nbsp" %></dd>
+                <% end %>
             <% end %>
         <% end %>
       </dl>
