@@ -68,24 +68,23 @@ class Child < CouchRestRails::Document
       valid = false
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
-
+    
     if self["last_known_location"].blank?
       valid = false
       errors.add("last_known_location", "Last known location cannot be empty")
     end
-
-
+    
     return valid
   end
-
-  def update_properties_from(child, new_photo, user_name)
-    child.each_pair do |name, value|
+  
+  def update_properties_with_user_name(user_name, new_photo, properties)
+    properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
-    self.photo = new_photo unless new_photo == nil
+    self.photo = new_photo
   end
-  
+
   def initialize_history
     self['histories'] = []
   end

@@ -76,9 +76,8 @@ class ChildrenController < ApplicationController
   # PUT /children/1.xml
   def update
     @child = Child.get(params[:id])
-    new_photo = params[:child][:photo]
-    updated_child = Child.new(params[:child])
-    @child.update_properties_from updated_child, new_photo, current_user_name
+    new_photo = params[:child].delete(:photo)
+    @child.update_properties_with_user_name current_user_name, new_photo, params[:child]
     
     respond_to do |format|
       if @child.save

@@ -3,66 +3,70 @@ require 'spec_helper'
 
 describe Child do
 
-  describe "Updating a Child's properties from another Child object" do
-    it "replaces existing child properties with non-nil properties from the updated Child" do
-      child = Child.new "name" => "Dave", "age" => "28", "origin" => "Croydon", "last_known_location" => "London"
-      updated_child = Child.new "name" => "Dave", "age" => "35", "origin" => nil
-      child.update_properties_from updated_child, nil, "some_user"
+  describe "update_properties_with_user_name" do
+    it "should replace old properties with updated ones" do
+      child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
+      new_properties = {"name" => "Dave", "age" => "35"}
+      child.update_properties_with_user_name "some_user", nil, new_properties
       child['age'].should == "35"
       child['name'].should == "Dave"
-      child['origin'].should == "Croydon"
       child['last_known_location'].should == "London"
     end
     
+    it "should not replace old properties when updated ones have nil value" do
+      child = Child.new("origin" => "Croydon", "last_known_location" => "London")
+      new_properties = {"origin" => nil, "last_known_location" => "Manchester"}
+      child.update_properties_with_user_name "some_user", nil, new_properties
+      child['last_known_location'].should == "Manchester"
+      child['origin'].should == "Croydon"
+    end
+
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
-      child.update_properties_from Child.new, nil, "jdoe"
+      child.update_properties_with_user_name "jdoe", nil, {}
       child['last_updated_by'].should == 'jdoe'
     end
-    
+
     it "should populate last_updated_at field with the time of the update" do
       current_time = Time.parse("Jan 17 2010 14:05")
       Time.stub!(:now).and_return current_time
       child = Child.new
-      child.update_properties_from Child.new,nil, "jdoe"
+      child.update_properties_with_user_name "jdoe", nil, {}
       child['last_updated_at'].should == "17/01/2010 14:05"
-    end
-  
-    it "updates the photo field" do
+    end 
+    
+    it "should update attachments when there is a photo update" do
+      current_time = Time.parse("Jan 17 2010 14:05")
+      Time.stub!(:now).and_return current_time
       child = Child.new
-      child.photo = uploadable_photo
-      child_update = Child.new
-      child_update.photo = uploadable_text_file
-  
-      child.update_properties_from(child_update, uploadable_text_file, "jdoe")
-  
-      def child.file_name
-        @file_name
-      end
-  
-      def child_update.file_name
-        @file_name
-      end
-  
-      child.file_name.should == child_update.file_name
+      child.update_properties_with_user_name "jdoe", uploadable_photo, {}
+      child['_attachments']['photo-17-01-2010-1405']['data'].should_not be_blank
+    end
+    
+    it "should not update attachments when the photo value is nil" do
+      child = Child.new
+      child.update_properties_with_user_name "jdoe", nil, {}
+      child['_attachments'].should be_blank
+      child['current_photo_key'].should be_nil
     end
   end
-  
+
   describe "validating an existing child record" do
+    it "should disallow file formats that are not photo formats" do
+      photo = uploadable_photo
   
-    photo = uploadable_photo
+      child = Child.new
+      child['last_known_location'] = "location"
+      child.photo = photo
   
-    child = Child.new
-    child['last_known_location'] = "location"
-    child.photo = photo
+      child.save.should == true
   
-    child.save.should == true
+      loaded_child = Child.get(child.id)
+      loaded_child.save().should == true
   
-    loaded_child = Child.get(child.id)
-    loaded_child.save().should == true
-  
-    loaded_child.photo = uploadable_text_file
-    loaded_child.save().should == false
+      loaded_child.photo = uploadable_text_file
+      loaded_child.save().should == false
+    end
   end
   
   describe "new_with_user_name" do    
@@ -148,9 +152,11 @@ describe Child do
       child['_attachments'].size.should == 1
     end
     
-    it "should be able to read photo after creation" do
+    it "should have data after creation" do
+      current_time = Time.parse("Jan 20 2010 17:10")
+      Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      child.photo.should_not be_empty
+      Child.get(child.id)['_attachments']['photo-20-01-2010-1710']['length'].should be > 0
     end
     
     it "should update current_photo_key on a photo change" do
@@ -180,7 +186,7 @@ describe Child do
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
       
-      child.photo.should_not be_empty
+      Child.get(child.id)['_attachments']['photo-20-02-2010-1204']['length'].should be > 0
     end
   end
   
