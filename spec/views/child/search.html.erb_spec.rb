@@ -14,10 +14,10 @@ describe "children/search.html.erb" do
       Hpricot(response.body).search("tr").size.should == @results.length + 1
     end
 
-    it "should have a column for each of the fields in the search template" do
+    it "should have a column for each of the fields in the search template, plus one column for selection checkboxes" do
       render
 
-      Hpricot(response.body).search("tr th").size.should == Templates.get_search_result_template.size
+      Hpricot(response.body).search("tr th").size.should == Templates.get_search_result_template.size + 1
     end
 
     it "should include a column displaying thumbnails for each child if asked" do

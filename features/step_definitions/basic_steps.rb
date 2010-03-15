@@ -134,3 +134,14 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
 
   child.create!
 end
+
+
+Then /^I should receive a PDF file$/ do
+  Tempfile.open('rapidftr_cuke_tests') do |temp_file|
+    temp_file.write( response_body )
+    temp_file.close
+    mimetype = `file --brief --mime #{temp_file.path}`.gsub(/\n/,"")
+    mimetype.should == "application/pdf"
+  end
+end
+

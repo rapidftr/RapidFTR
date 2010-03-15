@@ -126,4 +126,46 @@ describe ChildrenController do
       assigns[:show_thumbnails].should == false
     end
   end
+
+  describe "GET photo_pdf" do
+    def inject_pdf_generator( fake_pdf_generator )
+      PdfGenerator.stub!(:new).and_return( fake_pdf_generator )
+    end
+
+    def stub_out_pdf_generator
+      inject_pdf_generator( stub_pdf_generator = stub(PdfGenerator) )
+      stub_pdf_generator.stub!(:child_photo).and_return('')
+      stub_pdf_generator
+    end
+
+    def stub_out_child_get(mock_child = mock(Child))
+      Child.stub(:get).and_return( mock_child )
+      mock_child
+    end
+
+    it "fetches a child record from couch" do
+      stub_out_pdf_generator
+      Child.should_receive(:get).with('a_child_id')
+      get( :photo_pdf, :id => 'a_child_id' )
+    end
+
+    it "asks a pdf generator to render a child" do
+      inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
+      stub_out_child_get(:fake_child)
+      mock_pdf_generator.should_receive(:child_photo).with(:fake_child).and_return('')
+      get( :photo_pdf, :id => 'ignored' )
+    end
+
+    it "sends a response containing the pdf data, the correct content_type, etc" do
+      stub_pdf_generator = stub_out_pdf_generator
+      stub_pdf_generator.stub!(:child_photo).and_return(:fake_pdf_data)
+      stub_out_child_get
+
+      @controller.
+        should_receive(:send_data).
+        with( :fake_pdf_data, :filename => "photos.pdf", :type => "application/pdf" )
+
+      get( :photo_pdf, :id => 'ignored' )
+    end
+  end
 end

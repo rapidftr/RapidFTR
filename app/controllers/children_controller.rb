@@ -115,6 +115,12 @@ class ChildrenController < ApplicationController
     end
   end
 
+  def photo_pdf
+    @child = Child.get(params[:id])
+    pdf_data = PdfGenerator.new.child_photo(@child)
+    send_data pdf_data, :filename => "photos.pdf", :type => "application/pdf"
+  end
+
   private
 
   def get_form_sections_for_child child

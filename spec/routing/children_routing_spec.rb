@@ -33,5 +33,9 @@ describe ChildrenController do
     it "recognizes and generates #search" do
       { :get => '/children/search' }.should route_to(:controller => 'children', :action => 'search')
     end
+
+    it 'handles a multi-child photo pdf request' do
+      { :get => 'children/1;2;3/photo_pdf' }.should route_to( :controller => 'children', :action => 'photo_pdf', :id => '1;2;3' )
+    end
   end
 end

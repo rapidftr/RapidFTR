@@ -1,11 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :children, :collection => { :search => :get } do |child|
+  map.resources( 
+    :children, 
+    :collection => { :search => :get },
+    :member => {:photo_pdf => :get } ) do |child|
     child.resource :history, :only => :show
     child.resources :attachments, :only => :show
   end
   map.resources :users
   map.resources :sessions
-  
+
   map.login 'login', :controller=>'sessions',:action =>'new'
   map.logout 'logout', :controller=>'sessions',:action =>'destroy'
 

@@ -11,6 +11,7 @@ Background:
     | Will      |
     | William   |
 
+@wip
 Scenario: A pdf file is generated when a single record is selected and the export button is clicked 
   When I fill in "Will" for "Name"
   And I press "Search"
