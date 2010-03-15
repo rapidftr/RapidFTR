@@ -1,4 +1,3 @@
-require 'prawn'
 require "prawn/measurement_extensions"
 require 'prawn/layout'
 
@@ -17,6 +16,6 @@ class PdfGenerator
       child.unique_identifier,
       :align => :center
     )
-    pdf.render_file('/tmp/prawn.pdf')
+    pdf.render
   end
 end

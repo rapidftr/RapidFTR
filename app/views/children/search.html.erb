@@ -14,6 +14,7 @@
   <% end %>
 </ul>
 
+<form>
 <table>
   <tr>
     <th>select</th>
@@ -24,3 +25,5 @@
   <%= render :partial => "summary_row", :collection => @results %>
 
 </table>
+<input value="Export to PDF" type="button" />
+</form>
