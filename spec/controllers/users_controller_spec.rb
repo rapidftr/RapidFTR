@@ -1,10 +1,7 @@
 require 'spec_helper'
 
 describe UsersController do
-  
-  before(:each) do
-    @controller.stub!(:check_authentication)
-  end
+  include LoggedIn
 
   def mock_user(stubs={})
     @mock_user ||= mock_model(User, stubs)

@@ -9,19 +9,24 @@ class Child < CouchRestRails::Document
   def self.new_with_user_name(user_name, fields)
     child = new(fields)
     child.create_unique_id user_name
-    child['created_by'] = user_name
-    child['created_at'] = current_date_and_time
+    child.set_creation_fields_for user_name
     child
   end
   
-  def self.current_date_and_time
-    Time.now.strftime("%m/%d/%y %H:%M")
-  end
-
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
     self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
+  end
+  
+  def set_creation_fields_for(user_name)
+    self['created_by'] = user_name
+    self['created_at'] = current_formatted_time
+  end
+
+  def set_updated_fields_for(user_name)
+    self['last_updated_by'] = user_name
+    self['last_updated_at'] = current_formatted_time
   end
 
 #  view_by:user_name,
@@ -45,17 +50,15 @@ class Child < CouchRestRails::Document
 
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
-    @file_name = photo_file.original_path
-
-    if (has_attachment? :photo)
-      update_attachment(:name => "photo", :content_type => photo_file.content_type, :file => photo_file)
-    else
-      create_attachment(:name => "photo", :content_type => photo_file.content_type, :file => photo_file)
-    end
+    @file_name = photo_file.original_path    
+    self['current_photo_key'] = "photo-#{Time.now.strftime('%d-%m-%Y-%H%M')}"
+    create_attachment :name => self['current_photo_key'], 
+                      :content_type => photo_file.content_type, 
+                      :file => photo_file
   end
 
   def photo
-    read_attachment "photo"
+    read_attachment self['current_photo_key']
   end
 
   def valid?(context=:default)
@@ -65,27 +68,23 @@ class Child < CouchRestRails::Document
       valid = false
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
-
+    
     if self["last_known_location"].blank?
       valid = false
       errors.add("last_known_location", "Last known location cannot be empty")
     end
-
-
+    
     return valid
   end
-
-  def update_properties_from(child, new_photo, user_name)
-    child.each_pair do |name, value|
+  
+  def update_properties_with_user_name(user_name, new_photo, properties)
+    properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
-    
-    self['last_updated_by'] = user_name
-    self['last_updated_at'] = Time.now.strftime("%m/%d/%y %H:%M")
-
-    self.photo = new_photo unless new_photo == nil
+    self.set_updated_fields_for user_name
+    self.photo = new_photo
   end
-  
+
   def initialize_history
     self['histories'] = []
   end
@@ -100,7 +99,11 @@ class Child < CouchRestRails::Document
   end
   
   protected
-    
+  
+  def current_formatted_time
+    Time.now.strftime("%d/%m/%Y %H:%M")
+  end
+  
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
       changes.merge(field_name => { 
@@ -111,8 +114,7 @@ class Child < CouchRestRails::Document
   
   def field_name_changes
     @from_child ||= Child.get(self.id)
-    field_names = Templates.get_template.map { |field| field['name'] }
-    field_names.select { |field_name| changed?(field_name) }
+    Templates.all_child_field_names.select { |field_name| changed?(field_name) }
   end
   
   def changed?(field_name)

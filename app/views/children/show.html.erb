@@ -1,17 +1,22 @@
 <div class="profile-header">
-  <h2> Identification Information</h2>
   <dl>
     <%= error_messages_for :child %>
 
     <dt>Unique Id:</dt>
-    <dd><%= @child_view.unique_id %></dd>
-
-    <% @child_view.fields.each do |field| %>
-        <dt><%= field.name.humanize %>:</dt>
-        <dd><%= field.value %></dd>
-    <% end %>
-
+    <dd><%= @child["unique_identifier"] %></dd>
   </dl>
+
+  <% @form_sections.each do |section| %>
+      <h2><%= section.section_name.humanize %></h2>
+      <dl class="<%= section.section_name %>">
+        <% section.fields.each do |field| %>
+            <% if field.type != "photo_upload_box" %>
+                <dt><%= field.name.humanize %>:</dt>
+                <dd><%= field.value %></dd>
+            <% end %>
+        <% end %>
+      </dl>
+  <% end %>
 </div>
 
 

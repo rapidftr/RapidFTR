@@ -8,7 +8,8 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
-  Child.stub!(:current_date_and_time).and_return datetime
+  current_time = Time.parse(datetime)
+  Time.stub!(:now).and_return current_time
 end
 
 Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
@@ -84,7 +85,19 @@ Given /I am logged in/ do
   Given "I fill in \"#{User.first.user_name}\" for \"user name\""
   Given "I fill in \"#{User.first.password}\" for \"password\""
   Given "I press \"Log In\""
+end
 
+Given /"([^\"]*)" is the user/ do |user_name|
+  Given "no users exist"
+  Given "a user \"#{user_name}\" with a password \"123\""
+end  
+ 
+Given /"([^\"]*)" is logged in/ do |user_name|
+  Given "\"#{user_name}\" is the user"
+  Given "I am on the login page"
+  Given "I fill in \"#{user_name}\" for \"user name\""
+  Given "I fill in \"123\" for \"password\""
+  Given "I press \"Log In\""  
 end
 
 When /^I create a new child$/ do

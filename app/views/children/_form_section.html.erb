@@ -1,0 +1,8 @@
+<fieldset id="tab_<%= form_section.section_name %>" class="<%= form_section.section_name %> tab">
+  
+  <h3><%= form_section.section_name.humanize %></h3>
+  <% form_section.fields.each do |field| %>
+        <%= render :partial => field.type, :object => field %>
+  <% end %>
+
+</fieldset>

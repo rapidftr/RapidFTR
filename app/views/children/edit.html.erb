@@ -1,10 +1,10 @@
 <% form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
 
-    <%= render :partial => "tabs" %>
+    <%= render :partial => "tabs", :object => @form_sections.collect { |section| section.section_name } %>
 
     <%= error_messages_for :child %>
 
-    <%= render :partial => "form" %>
+    <%= render :partial => "form_section", :collection => @form_sections  %>
 
     <p class="submitButton">
       <input name="commit" type="submit" value="Finish"/>

@@ -22,41 +22,38 @@ describe "children/show.html.erb" do
       pending
     end
 
-    it "renders all fields found on the ChildView" do
+    it "renders all fields found on the FormSection" do
 
-      child_view = ChildView.new
-      child_view.unique_id='georgelon12345' 
-      child_view.add_field Field.new("age", Field::TEXT_FIELD, [], "27")
-      child_view.add_field Field.new("gender", Field::RADIO_BUTTON, ["male", "female"], "male")
-      child_view.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than"], "1-2 weeks ago")
+      form_section = FormSection.new "section_name"
+      form_section.add_field Field.new("age", Field::TEXT_FIELD, [], "27")
+      form_section.add_field Field.new("gender", Field::RADIO_BUTTON, ["male", "female"], "male")
+      form_section.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than"], "1-2 weeks ago")
 
 
-      assigns[:child_view] = child_view
+      assigns[:form_sections] = [form_section]
+
+      assigns[:child] = Child.new("unique_identifier" => "georgelon12345", "_id" => "id12345")
 
       render
 
-      response.should have_selector("dt") do |fields|
-        fields[0].should contain("Unique Id")
-        fields[1].should contain("Age")
-        fields[2].should contain("Gender")
-        fields[3].should contain("Date of separation")
+      response.should have_selector("dt:first") do |dt|
+        dt.should contain("Unique Id")
+      end
+      response.should have_selector("dd:first") do |dd|
+        dd.should contain("georgelon12345")
+      end
+
+      response.should have_selector("dl.section_name dt") do |fields|
+        fields[0].should contain("Age")
+        fields[1].should contain("Gender")
+        fields[2].should contain("Date of separation")
       end
       
-      response.should have_selector("dd") do |fields|
-        fields[0].should contain("georgelon12345")
-        fields[1].should contain("27")
-        fields[2].should contain("male")
-        fields[3].should contain("1-2 weeks ago")
+      response.should have_selector("dl.section_name dd") do |fields|
+        fields[0].should contain("27")
+        fields[1].should contain("male")
+        fields[2].should contain("1-2 weeks ago")
       end
-    end
-
-    it "renders repeating text fields on a single line" do
-
-      pending
-
-      render :locals => { :form => {"uncle_name" => ["Tim", "Mike", "Paul"]} }
-
-      response.should contain("Uncle names: Tim, Mike, Paul")
     end
 
   end
