@@ -134,7 +134,7 @@ describe ChildrenController do
 
     def stub_out_pdf_generator
       inject_pdf_generator( stub_pdf_generator = stub(PdfGenerator) )
-      stub_pdf_generator.stub!(:child_photo).and_return('')
+      stub_pdf_generator.stub!(:child_photos).and_return('')
       stub_pdf_generator
     end
 
@@ -143,22 +143,37 @@ describe ChildrenController do
       mock_child
     end
 
-    it "fetches a child record from couch" do
+    it "fetches a single child record from couch" do
       stub_out_pdf_generator
       Child.should_receive(:get).with('a_child_id')
       get( :photo_pdf, :id => 'a_child_id' )
     end
 
-    it "asks a pdf generator to render a child" do
+    it "fetches multiple child records from couch" do
+      stub_out_pdf_generator
+      Child.should_receive(:get).with('child_one')
+      Child.should_receive(:get).with('child_two')
+      Child.should_receive(:get).with('child_three')
+      get( :photo_pdf, :id => 'child_one;child_two;child_three' )
+    end
+
+    it "asks the pdf generator to render each child" do
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
-      stub_out_child_get(:fake_child)
-      mock_pdf_generator.should_receive(:child_photo).with(:fake_child).and_return('')
-      get( :photo_pdf, :id => 'ignored' )
+      
+      Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
+
+      
+      mock_pdf_generator.
+        should_receive(:child_photos).
+        with([:fake_child_one,:fake_child_two]).
+        and_return('')
+
+      get( :photo_pdf, :id => 'child_1;child_2' )
     end
 
     it "sends a response containing the pdf data, the correct content_type, etc" do
       stub_pdf_generator = stub_out_pdf_generator
-      stub_pdf_generator.stub!(:child_photo).and_return(:fake_pdf_data)
+      stub_pdf_generator.stub!(:child_photos).and_return(:fake_pdf_data)
       stub_out_child_get
 
       @controller.
