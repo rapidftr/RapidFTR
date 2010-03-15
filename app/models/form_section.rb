@@ -1,11 +1,10 @@
-class ChildView
+class FormSection
 
-  attr_accessor :unique_id
-  attr_reader :fields
+  attr_reader :fields, :section_name
 
-  def initialize
+  def initialize section_name=""
+    @section_name = section_name
     @fields = []
-    
   end
 
   def add_text_field field_name
@@ -16,14 +15,13 @@ class ChildView
     @fields << field
   end
 
-  def self.create_child_view_from_template template, child=Child.new
-    child_view = ChildView.new
-    child_view.unique_id=child['unique_identifier']
+  def self.create_form_section_from_template section_name, template, child=Child.new
+    form = FormSection.new section_name
     template.each do |field|
       field_value = child[field['name']]
-      child_view.add_field(Field.new(field['name'], field['type'], field['options'] || [], field_value))
+      form.add_field(Field.new(field['name'], field['type'], field['options'] || [], field_value))
     end
-    return child_view
+    return form
   end
 
   def name

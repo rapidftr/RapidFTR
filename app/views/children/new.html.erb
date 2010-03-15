@@ -1,20 +1,10 @@
-<% form_tag  children_path, :multipart => true, :class => "edit-profile default-form" do %>
+<% form_tag children_path, :multipart => true, :class => "edit-profile default-form" do %>
 
     <%= error_messages_for :child %>
 
-    <%= render :partial => "tabs" %>
+    <%= render :partial => "tabs", :object => @form_sections.collect { |section| section.section_name } %>
 
-    <%= render :partial => "form" %>
-
-    <fieldset id="tab_2" class="family-details tab">
-      <h3>family details</h3>
-    </fieldset>
-    <fieldset id="tab_3" class="care-giver-details tab">
-      <h3>Care Giver</h3>
-    </fieldset>
-    <fieldset id="tab_4" class="protection-details tab">
-      <h3>Protection concerns</h3>
-    </fieldset>
+    <%= render :partial => "form_section", :collection => @form_sections %>
 
     <p class="submitButton">
       <input name="commit" type="submit" value="Finish"/>

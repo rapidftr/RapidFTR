@@ -17,12 +17,13 @@ class ChildrenController < ApplicationController
   def show
     @child = Child.get(params[:id])
 
-    @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
-    @page_name = @child_view.name
+    @form_sections = get_form_sections_for_child @child
+
+    @page_name = @child["name"]
 
     @aside = 'picture'
     @body_class = 'profile-page'
-                                
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @child }
@@ -35,7 +36,7 @@ class ChildrenController < ApplicationController
   def new
     @page_name = "New child record"
     @child = Child.new
-    @child_view = ChildView.create_child_view_from_template Templates.get_template
+    @form_sections = get_form_sections_for_child @child
     respond_to do |format|
       format.html
       format.xml  { render :xml => @child }
@@ -46,7 +47,7 @@ class ChildrenController < ApplicationController
   def edit
     @page_name = "Edit child record"
     @child = Child.get(params[:id])
-    @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+    @form_sections = get_form_sections_for_child @child
   end
 
   # POST /children
@@ -60,7 +61,7 @@ class ChildrenController < ApplicationController
         format.xml  { render :xml => @child, :status => :created, :location => @child }
       else
         format.html {
-          @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+          @form_sections = get_form_sections_for_child @child
           render :action => "new"
         }
         format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
@@ -69,7 +70,7 @@ class ChildrenController < ApplicationController
   end
 
   def new_search
-    
+
   end
 
   # PUT /children/1
@@ -86,7 +87,7 @@ class ChildrenController < ApplicationController
         format.xml  { head :ok }
       else
         format.html {
-          @child_view = ChildView.create_child_view_from_template Templates.get_template, @child
+          @form_sections = get_form_sections_for_child @child
           render :action => "edit"
         }
         format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
@@ -105,4 +106,15 @@ class ChildrenController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  private
+
+  def get_form_sections_for_child child
+  forms = []
+    Templates.child_form_section_names.each do |section_name|
+      forms << FormSection.create_form_section_from_template(section_name, Templates.get_template(section_name), child)
+    end
+    return forms
+  end
+
 end

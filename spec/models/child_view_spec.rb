@@ -1,8 +1,8 @@
 require "spec"
 
-describe "ChildView" do
+describe "FormSection" do
 
-  it "creates a ChildView object based on a form template" do
+  it "creates a FormSection object based on a form template" do
     template = [
             {
                     "name" => "age",
@@ -15,23 +15,26 @@ describe "ChildView" do
             },
     ]
 
-    child_view = ChildView.create_child_view_from_template(template)
+    form = FormSection.create_form_section_from_template("basic_details", template)
 
-    child_view.fields.size.should == 2
 
-    text_field = child_view.fields[0]
+    form.section_name.should == "basic_details"
+
+    form.fields.size.should == 2
+
+    text_field = form.fields[0]
     text_field.type.should == "text_field"
     text_field.name.should == "age"
     text_field.value.should == nil
 
-    radio_button_field = child_view.fields[1]
+    radio_button_field = form.fields[1]
     radio_button_field.type.should == "radio_button"
     radio_button_field.options.size.should == 2
     radio_button_field.options.first.option_name.should == "male"
     radio_button_field.value.should == nil
   end
 
-  it "creates a ChildView object based on a form template and an existing Child object" do
+  it "creates a FormSection object based on a form template and an existing Child object" do
     template = [
             {
                     "name" => "age",
@@ -46,16 +49,16 @@ describe "ChildView" do
 
     child = Child.new("age" => "27", "gender" => "male")
 
-    child_view = ChildView.create_child_view_from_template(template, child)
+    form = FormSection.create_form_section_from_template("basic_details", template, child)
 
-    child_view.fields.size.should == 2
+    form.fields.size.should == 2
 
-    text_field = child_view.fields[0]
+    text_field = form.fields[0]
     text_field.type.should == "text_field"
     text_field.name.should == "age"
     text_field.value.should == "27"
 
-    radio_button_field = child_view.fields[1]
+    radio_button_field = form.fields[1]
     radio_button_field.type.should == "radio_button"
     radio_button_field.options.size.should == 2
     radio_button_field.options.first.option_name.should == "male"
@@ -63,13 +66,6 @@ describe "ChildView" do
 
   end
 
-
-  it 'should set the unique id on the child view object' do
-    template = []
-    child = Child.new("unique_identifier" => "some id")
-    child_view = ChildView.create_child_view_from_template(template, child)
-    child_view.unique_id.should == 'some id'
-  end
 
 end
 
