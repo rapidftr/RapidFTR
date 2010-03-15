@@ -116,8 +116,9 @@ class ChildrenController < ApplicationController
   end
 
   def photo_pdf
-    @child = Child.get(params[:id])
-    pdf_data = PdfGenerator.new.child_photo(@child)
+    child_ids = params[:id].split(';')
+    children = child_ids.map{ |child_id| Child.get(child_id) }
+    pdf_data = PdfGenerator.new.child_photos(children)
     send_data pdf_data, :filename => "photos.pdf", :type => "application/pdf"
   end
 
