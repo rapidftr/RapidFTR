@@ -64,6 +64,10 @@ Then /^I should see the photo of the child with a "([^\"]*)" extension$/ do |ext
   (Hpricot(response.body)/"img[@src*='']").should_not be_empty
 end
 
+Then /^I should see the content type as "([^\"]*)"$/ do |content_type|
+  response.content_type.should == content_type
+end
+
 Given /^a user "([^\"]*)" has entered a child found in "([^\"]*)" whose name is "([^\"]*)"$/ do |user, location, name|
   new_child_record = Child.new
   new_child_record['last_known_location'] = location

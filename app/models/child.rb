@@ -60,7 +60,11 @@ class Child < CouchRestRails::Document
   def photo
     read_attachment self['current_photo_key']
   end
-
+  
+  def photo_for_key(photo_key)
+    read_attachment photo_key
+  end
+  
   def valid?(context=:default)
     valid = true
     

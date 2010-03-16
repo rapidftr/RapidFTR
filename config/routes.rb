@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :children do |child|
     child.resource :history, :only => :show
+    child.resources :attachments, :only => :show
   end
   map.resources :users
   map.resources :sessions

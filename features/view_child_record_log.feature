@@ -21,7 +21,6 @@ Feature:
 		When I follow "View the change log"
 		Then I should see "19/07/2010 13:05 Record created by Harry"
 
-	@wip
 	Scenario:  I log in as a different user, upload a new photo and view the record log
 
 		Given "Mary" is logged in
@@ -36,7 +35,11 @@ Feature:
 		Then I should see "29/09/2010 17:59 Photo changed from view photo link to view photo link by Mary"
 
 		When I follow "from view photo link"
-		Then I should see the photo of the child with a "jpg" extension
+		Then I should see the content type as "image/jpg"
+		
+		When I am on the children listing page
+		And I follow "Jorge Just"
+		And I follow "View the change log"
 
 		When I follow "to view photo link"
-		Then I should see the photo of the child with a "png" extension
+		Then I should see the content type as "image/png"

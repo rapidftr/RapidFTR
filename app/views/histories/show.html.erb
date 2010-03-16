@@ -1,6 +1,8 @@
 <% @child['histories'].each do |history| %>
 	<% if history['changes']['current_photo_key'] %>
-		<li><%= history['datetime'] %> Photo changed from view photo link to view photo link by <%= history['user_name'] %></li>
+		<% from_key = history['changes']['current_photo_key']['from'] %>
+		<% to_key = history['changes']['current_photo_key']['to'] %>
+		<li><%= history['datetime'] %> Photo changed <%= link_to "from view photo link", child_attachment_path(:child_id => @child.id, :id => from_key), :target => '_blank' %> <%= link_to "to view photo link", child_attachment_path(:child_id => @child.id, :id => to_key), :target => '_blank' %> by <%= history['user_name'] %></li>
 	<% end %>
 <% end %>
 <li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>

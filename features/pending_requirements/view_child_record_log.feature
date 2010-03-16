@@ -3,26 +3,6 @@ Feature:
   So that changes to the child record are kept for historical purposed and can be viewed
   
 	@wip
-	Scenario:  I log in as a different user, upload a new photo and view the record log
-
-		Given "Mary" is logged in
-		And I am on the children listing page
-
-		When I follow "Edit"
-		And I attach the file "features/resources/jeff.png" to "photo"
-		And the date/time is "Sept 29 2010 17:59"
-		And I press "Finish"
-		And I follow "View the change log"
-
-		Then I should see "29/09/2010 17:59 Photo changed from view photo link to view photo link by Mary"
-
-		When I follow "from view photo link"
-		Then I should see the photo of the child with a "jpg" extension
-
-		When I follow "to view photo link"
-		Then I should see the photo of the child with a "png" extension
-
-	@wip
   Scenario:  I log in as a different user, edit and view the record log
 
     Given I am logged in as "Bobby"

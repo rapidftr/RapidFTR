@@ -130,7 +130,7 @@ describe Child do
     child["unique_identifier"].should == "georgeÃÄ12345"
   end
   
-  describe "photo attachments" do    
+  describe "photo attachments" do
     it "should create a field with current_photo_key on creation" do
       current_time = Time.parse("Jan 20 2010 17:10")
       Time.stub!(:now).and_return current_time
@@ -179,7 +179,7 @@ describe Child do
       child['_attachments'].should have_key('photo-20-02-2010-1204')
     end
     
-    it "should be able to read photo after a photo change" do
+    it "should have photo data after a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
       updated_at_time = Time.parse("Feb 20 2010 12:04")
@@ -187,6 +187,11 @@ describe Child do
       child.update_attributes :photo => uploadable_photo_jeff
       
       Child.get(child.id)['_attachments']['photo-20-02-2010-1204']['length'].should be > 0
+    end
+    
+    it "should be able to read data after a photo change" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child.photo_for_key(child['current_photo_key']).length.should == uploadable_photo.stat.size
     end
   end
   

@@ -18,7 +18,11 @@ def uploadable_photo( photo_path = "features/resources/jorge.jpg" )
   def photo.content_type
     "image/jpg"
   end
-
+  
+  def photo.size
+    File.size "features/resources/jorge.jpg"
+  end
+  
   def photo.original_path
     self.path
   end
@@ -31,6 +35,10 @@ def uploadable_photo_jeff
   def photo.content_type
     "image/png"
   end
+
+  def photo.size
+    File.size "features/resources/jeff.png"
+  end  
 
   def photo.original_path
     "features/resources/jeff.png"
