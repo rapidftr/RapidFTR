@@ -116,7 +116,7 @@ class ChildrenController < ApplicationController
   end
 
   def photo_pdf
-    child_ids = params[:id].split(';')
+    child_ids = params.map{ |k,v| 'selected' == v ? k : nil }.compact
     children = child_ids.map{ |child_id| Child.get(child_id) }
     pdf_data = PdfGenerator.new.child_photos(children)
     send_data pdf_data, :filename => "photos.pdf", :type => "application/pdf"
