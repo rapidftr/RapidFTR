@@ -308,6 +308,32 @@ describe Child do
       child['histories'].first['changes']['gender']['from'].should be_nil
       child['histories'].first['changes']['gender']['to'].should == 'Male'
     end
+    
+    it "should 'from' field with original current_photo_key on a photo addition" do
+      updated_at_time = Time.parse("Jan 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+    
+      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child.update_attributes :photo => uploadable_photo_jeff
+      
+      changes = child['histories'].first['changes']
+      changes['current_photo_key']['from'].should == "photo-20-01-2010-1204"
+    end
+
+    it "should 'to' field with new current_photo_key on a photo addition" do
+      updated_at_time = Time.parse("Jan 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+    
+      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      Time.stub!(:now).and_return updated_at_time
+      child.update_attributes :photo => uploadable_photo_jeff
+      
+      changes = child['histories'].first['changes']
+      changes['current_photo_key']['to'].should == "photo-20-02-2010-1204"
+    end
         
     it "should update history with username from last_updated_by" do
       child = Child.new('last_known_location' => 'New York')

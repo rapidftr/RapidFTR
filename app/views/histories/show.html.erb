@@ -1,1 +1,6 @@
+<% @child['histories'].each do |history| %>
+	<% if history['changes']['current_photo_key'] %>
+		<li><%= history['datetime'] %> Photo changed from view photo link to view photo link by <%= history['user_name'] %></li>
+	<% end %>
+<% end %>
 <li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>

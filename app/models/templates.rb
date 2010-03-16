@@ -34,7 +34,7 @@ class Templates
                           "options" => ["", "1-2 weeks ago", "2-4 weeks ago", "1-6 months ago", "6 months to 1 year ago", "More than 1 year ago"]
                   },
                   {
-                          "name" => "photo_of_child",
+                          "name" => "current_photo_key",
                           "type" => "photo_upload_box"
                   }
           ],
