@@ -106,7 +106,8 @@ describe ChildrenController do
       fake_results = [:fake_child,:fake_child]
       Summary.should_receive(:basic_search).with( 'the child name', 'the_unique_id' ).and_return(fake_results)
       get( 
-        :search, 
+        :search,
+        :format => 'html',
         :child_name => 'the child name',
         :unique_identifier => 'the_unique_id'
       )
@@ -116,14 +117,68 @@ describe ChildrenController do
     it 'asks view to show thumbnails if show_thumbnails query parameter is present' do
       get( 
         :search, 
+        :format => 'html',
         :show_thumbnails => '1'
       )
       assigns[:show_thumbnails].should == true
     end
 
     it 'asks view to not show thumbnails if show_thumbnails query parameter is missing' do
-      get( :search )
+      get( :search, :format => 'html' )
       assigns[:show_thumbnails].should == false
+    end
+
+    it 'asks view to not show csv export link if there are no results' do
+      Summary.stub!(:basic_search).and_return([])
+      get(:search, :format => 'html' )
+      assigns[:show_csv_export_link].should == false
+    end
+
+    it 'sends csv data with the correct content type and file name' do
+      @controller.
+        should_receive(:send_data).
+        with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
+
+      get( :search, :format => 'csv' )
+    end
+    
+    describe 'CSV formatting' do
+
+      def inject_results( results )
+        Summary.stub!(:basic_search).and_return(results)
+      end
+
+      def csv_response
+        get( :search, :format => 'csv' )
+        response.body
+      end
+
+      it 'should contain the correct column headers' do
+        inject_results([])
+        first_line = csv_response.split("\n").first
+        headers = first_line.split(",")
+
+        headers.should == Templates.all_child_field_names 
+      end
+
+      it 'should render a row for each result, plus a header row' do
+        inject_results( [
+          Child.new( 'name' => 'Dave' ),
+          Child.new( 'name' => 'Mary' )
+        ] );
+        csv_response.split("\n").length.should == 3
+      end
+
+      it "should render each record's name and age correctly" do
+        inject_results( [
+          Child.new( 'name' => 'Dave', 'age' => 145 ),
+          Child.new( 'name' => 'Mary', 'age' => 12 )
+        ] );
+        rows = csv_response.split("\n").map{ |line| line.split(",") }
+        rows.shift # skip past header row
+        rows.shift.should == ['Dave','145']
+        rows.shift.should == ['Mary','12']
+      end
     end
   end
 

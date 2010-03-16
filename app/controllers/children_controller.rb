@@ -108,10 +108,20 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    @show_thumbnails = !!params[:show_thumbnails]
     @results = Summary.basic_search(params[:child_name], params[:unique_identifier])
-    if 1 == @results.length
-      redirect_to child_path( @results.first )
+
+    respond_to do |format|
+      format.csv do
+        render_results_as_csv
+      end
+      format.html do
+        @show_thumbnails = !!params[:show_thumbnails]
+        @show_csv_export_link = !@results.empty?
+
+        if 1 == @results.length
+          redirect_to child_path( @results.first )
+        end
+      end
     end
   end
 
@@ -130,5 +140,17 @@ class ChildrenController < ApplicationController
       forms << FormSection.create_form_section_from_template(section_name, Templates.get_template(section_name), child)
     end
     return forms
+  end
+
+  def render_results_as_csv
+    field_names = Templates.all_child_field_names 
+    csv = FasterCSV.generate do |rows|
+      rows << field_names
+      @results.each do |child|
+        rows << field_names.map{ |field_name| child[field_name] } 
+      end
+    end
+
+    send_data( csv, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
   end
 end

@@ -22,3 +22,5 @@
 </table>
 <%= submit_tag "Export to PDF" %>
 <%-end%>
+
+<%=link_to( "Export to CSV", current_url_with_format_of('csv') ) if @show_csv_export_link%> 

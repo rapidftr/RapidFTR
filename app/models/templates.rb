@@ -87,11 +87,13 @@ class Templates
   end
 
   def self.all_child_field_names
-    field_names = []
-    child_form_section_names.each do |section|
-      field_names.concat(get_template(section).collect { |field| field["name"] })
-    end
-    return field_names
+    all_child_fields.map{ |field| field["name"] }
+  end
+
+  def self.all_child_fields
+    child_form_section_names.map do |section|
+      get_template(section)
+    end.flatten
   end
 
   def self.get_search_result_template
