@@ -20,11 +20,3 @@ RapidFTR.tabControl = function(){
 	});
 
 };
-
-RapidFTR.redirectToSelectedAsPhotoPdf = function() {
-  var selected_ids = $('table input.row_selector:checked')
-    .map(function(){ return $(this).attr('name'); }).get();
-
-  photo_pdf_url = '/children/'+selected_ids.join(';')+'/photo_pdf';
-  window.open( photo_pdf_url );
-};

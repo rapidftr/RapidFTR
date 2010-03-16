@@ -143,13 +143,39 @@ describe ChildrenController do
       mock_child
     end
 
-    it "fetches a single child record from couch" do
+    it 'extracts a single selected id from post params correctly' do
+      stub_out_pdf_generator
+      Child.should_receive(:get).with('a_child_id')
+      post( 
+        :photo_pdf, 
+        { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' } 
+      )
+    end
+
+    it 'extracts a multiple selected ids from post params correctly' do
+      stub_out_pdf_generator
+      Child.should_receive(:get).with('child_one')
+      Child.should_receive(:get).with('child_two')
+      Child.should_receive(:get).with('child_three')
+      post( 
+        :photo_pdf, 
+        { 
+          'child_one' => 'selected', 
+          'child_two' => 'selected', 
+          'child_three' => 'selected', 
+          'some_other_post_param' => 'blah'
+        } 
+      )
+    end
+
+
+    it "fetches a single child record from couch" do pending
       stub_out_pdf_generator
       Child.should_receive(:get).with('a_child_id')
       get( :photo_pdf, :id => 'a_child_id' )
     end
 
-    it "fetches multiple child records from couch" do
+    it "fetches multiple child records from couch" do pending
       stub_out_pdf_generator
       Child.should_receive(:get).with('child_one')
       Child.should_receive(:get).with('child_two')
@@ -157,7 +183,7 @@ describe ChildrenController do
       get( :photo_pdf, :id => 'child_one;child_two;child_three' )
     end
 
-    it "asks the pdf generator to render each child" do
+    it "asks the pdf generator to render each child" do pending
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
       
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
@@ -171,7 +197,7 @@ describe ChildrenController do
       get( :photo_pdf, :id => 'child_1;child_2' )
     end
 
-    it "sends a response containing the pdf data, the correct content_type, etc" do
+    it "sends a response containing the pdf data, the correct content_type, etc" do pending
       stub_pdf_generator = stub_out_pdf_generator
       stub_pdf_generator.stub!(:child_photos).and_return(:fake_pdf_data)
       stub_out_child_get

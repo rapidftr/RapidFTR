@@ -8,7 +8,8 @@
     <%= submit_tag "Search" %>
 <%-end  %>
 
-<form>
+<%- form_tag photo_pdf_children_path, :method => :post do %>
+
 <table>
   <tr>
     <th>select</th>
@@ -19,5 +20,5 @@
   <%= render :partial => "summary_row", :collection => @results %>
 
 </table>
-<input value="Export to PDF" type="button" onclick="RapidFTR.redirectToSelectedAsPhotoPdf();" />
-</form>
+<%= submit_tag "Export to PDF" %>
+<%-end%>
