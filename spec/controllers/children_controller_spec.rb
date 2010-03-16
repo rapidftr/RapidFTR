@@ -157,6 +157,7 @@ describe ChildrenController do
       Child.should_receive(:get).with('child_one')
       Child.should_receive(:get).with('child_two')
       Child.should_receive(:get).with('child_three')
+
       post( 
         :photo_pdf, 
         { 
@@ -169,21 +170,7 @@ describe ChildrenController do
     end
 
 
-    it "fetches a single child record from couch" do pending
-      stub_out_pdf_generator
-      Child.should_receive(:get).with('a_child_id')
-      get( :photo_pdf, :id => 'a_child_id' )
-    end
-
-    it "fetches multiple child records from couch" do pending
-      stub_out_pdf_generator
-      Child.should_receive(:get).with('child_one')
-      Child.should_receive(:get).with('child_two')
-      Child.should_receive(:get).with('child_three')
-      get( :photo_pdf, :id => 'child_one;child_two;child_three' )
-    end
-
-    it "asks the pdf generator to render each child" do pending
+    it "asks the pdf generator to render each child" do 
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
       
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
@@ -194,10 +181,16 @@ describe ChildrenController do
         with([:fake_child_one,:fake_child_two]).
         and_return('')
 
-      get( :photo_pdf, :id => 'child_1;child_2' )
+      post( 
+        :photo_pdf, 
+        { 
+          'child_1' => 'selected', 
+          'child_2' => 'selected', 
+        } 
+      )
     end
 
-    it "sends a response containing the pdf data, the correct content_type, etc" do pending
+    it "sends a response containing the pdf data, the correct content_type, etc" do
       stub_pdf_generator = stub_out_pdf_generator
       stub_pdf_generator.stub!(:child_photos).and_return(:fake_pdf_data)
       stub_out_child_get
@@ -206,7 +199,7 @@ describe ChildrenController do
         should_receive(:send_data).
         with( :fake_pdf_data, :filename => "photos.pdf", :type => "application/pdf" )
 
-      get( :photo_pdf, :id => 'ignored' )
+      post( :photo_pdf, 'ignored' => 'selected' )
     end
   end
 end

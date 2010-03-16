@@ -31,6 +31,7 @@ Given /^the following children exist in the system:$/ do |children_table|
 
     child = Child.new_with_user_name( child_hash['reporter'], child_hash.slice('name','last_known_location') )
     child.photo = uploadable_photo(child_hash['photo_path'])
+    child['unique_identifier'] = child_hash['unique_id'] if child_hash.has_key?('unique_id')
     child.create!
   end
 end
@@ -130,14 +131,3 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
 
   child.create!
 end
-
-
-Then /^I should receive a PDF file$/ do
-  Tempfile.open('rapidftr_cuke_tests') do |temp_file|
-    temp_file.write( response_body )
-    temp_file.close
-    mimetype = `file --brief --mime #{temp_file.path}`.gsub(/\n/,"")
-    mimetype.should == "application/pdf"
-  end
-end
-

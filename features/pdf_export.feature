@@ -14,11 +14,10 @@ Background:
 Scenario: When a single record is selected and the export button is clicked, a pdf file is generated  
   When I fill in "Wil" for "Name"
   And I press "Search"
-  And I select the first search result 
+  And I select search result #1
   And I press "Export to PDF"
   Then I should receive a PDF file
 
-@wip
 Scenario: When two records are selected a pdf referring to those two records is generated  
   When I fill in "Wil" for "Name"
   And I press "Search"
