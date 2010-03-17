@@ -33,7 +33,7 @@ describe UsersController do
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      User.stub!(:find).with("37").and_return(mock_user)
+      User.stub!(:get).with("37").and_return(mock_user)
       get :edit, :id => "37"
       assigns[:user].should equal(mock_user)
     end
