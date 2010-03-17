@@ -42,7 +42,7 @@ class User < CouchRestRails::Document
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/,
                       :message =>"Please enter a valid email address"
 
-  validates_confirmation_of   :password
+  validates_confirmation_of   :password, :if => :new_record?
   validates_with_method   :user_name, :method => :is_user_name_unique
 
 
@@ -51,10 +51,12 @@ class User < CouchRestRails::Document
   end
 
   def is_user_name_unique
+
     user = User.find_by_user_name(user_name)
     if  user.nil?
       true
     else
+      return true if self.id == user.id
       [false, "User name has already been taken! Please select a new User name"]
     end
   end
