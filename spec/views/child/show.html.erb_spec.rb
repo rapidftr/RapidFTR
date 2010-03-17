@@ -7,20 +7,7 @@ describe "children/show.html.erb" do
 
   describe "displaying a child's details"  do
 
-    before do
-      params[:id] = "1234"
-      assigns[:child] = Child.new({
-              "_id" => "d7ab411b5b8964b0ac178f2bc5b9b5b9",
-              "basic_details" => {
-                      "name" => "Adrian",
-                      "supplementary_field" => "Supplementary field value",
-                      "extra_field" => "Extra field value"
-              }})
-    end
-
-    it "displays the Child's photo" do
-      pending
-    end
+    it "displays the Child's photo"
 
     it "renders all fields found on the FormSection" do
 
