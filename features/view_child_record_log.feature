@@ -32,14 +32,14 @@ Feature:
 		And I press "Finish"
 		And I follow "View the change log"
 
-		Then I should see "29/09/2010 17:59 Photo changed from view photo link to view photo link by Mary"
+		Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by Mary"
 
-		When I follow "from view photo link"
+		When I follow "photo-19-07-2010-1305"
 		Then I should see the content type as "image/jpg"
 		
 		When I am on the children listing page
 		And I follow "Jorge Just"
 		And I follow "View the change log"
 
-		When I follow "to view photo link"
+		When I follow "photo-29-09-2010-1759"
 		Then I should see the content type as "image/png"
