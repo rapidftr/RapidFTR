@@ -1,0 +1,52 @@
+<% form_for(edittable_user) do |f| %>
+  <%= f.error_messages %>
+    <p>
+      <%= f.label :full_name, "Full name" %><br/>
+      <%= f.text_field :full_name %>
+           <%=  '*' %>
+    </p>
+    <p>
+      <%= f.label :user_name %><br/>
+      <%= f.text_field :user_name, :readonly => !edittable_user.new_record? %>
+      <%=  '*' %>
+      <span class="footnote">user name should not contain blanks</span>
+    </p>
+     <p>
+      <%= f.label :password %><br/>
+      <%= f.text_field :password %>
+       <%=  '*' %>
+       <span class="footnote">password should not contain blanks</span>
+    </p>
+     <p>
+      <%= f.label :password_confirmation,"Re-enter password" %><br/>
+      <%= f.text_field :password_confirmation %>
+       <%=  '*' %>
+    </p>
+     <p>
+       <%= f.label :"User type:" %>
+      <%= f.radio_button :user_type, "Administrator" %><%= f.label :user_type_administrator, "Administrator" %>
+      <%= f.radio_button :user_type, "User" %><%= f.label :user_type_user, "User" %>
+            <%=  '*' %>
+    </p>
+     <p>
+      <%= f.label :email %><br/>
+      <%= f.text_field :email %>
+        <%=  '*' %>
+    </p>
+     <p>
+      <%= f.label :organisation %><br/>
+      <%= f.text_field :organisation %>
+    </p>
+     <p>
+      <%= f.label :position %><br/>
+      <%= f.text_field :position %>
+    </p>
+      <p>
+      <%= f.label :location %><br/>
+      <%= f.text_field :location %>
+    </p>
+
+  <p>
+    <%= f.submit edittable_user.new_record? ? 'Create' : 'Update' %>
+  </p>
+<% end %>
