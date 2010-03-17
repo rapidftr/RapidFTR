@@ -32,6 +32,7 @@ class User < CouchRestRails::Document
 
 
   before_save :make_user_name_lowercase
+  before_validate :auto_fill_password_confirmation_if_not_supplied
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
   validates_presence_of :user_type,:message=>"Please choose a user type"
@@ -42,7 +43,7 @@ class User < CouchRestRails::Document
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/,
                       :message =>"Please enter a valid email address"
 
-  validates_confirmation_of   :password, :if => :new_record?
+  validates_confirmation_of :password
   validates_with_method   :user_name, :method => :is_user_name_unique
 
 
@@ -68,6 +69,10 @@ class User < CouchRestRails::Document
   private
   def make_user_name_lowercase
      user_name.downcase!
+  end
+
+  def auto_fill_password_confirmation_if_not_supplied
+    self.password_confirmation = password if self.password_confirmation.nil?
   end
 
 end

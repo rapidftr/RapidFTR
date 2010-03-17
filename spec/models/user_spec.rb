@@ -33,14 +33,32 @@ describe User do
     user.create!
 
     reloaded_user = User.get( user.id )
+    raise reloaded_user.errors.full_messages.inspect unless reloaded_user.valid?
     reloaded_user.should be_valid
+  end
+
+  it "should reject saving a changed password if the confirmation doesn't match" do
+    user = build_user
+    user.create!
+    user.password = 'foo'
+    user.password_confirmation = 'not foo'
+    user.should_not be_valid
+  end
+
+  it "should allow password update if confirmation matches" do
+    user = build_user
+    user.create!
+    user.password = 'new_password'
+    user.password_confirmation = 'new_password'
+
+    user.should be_valid
   end
 
   it "doesn't use _id for equality" do
     user = build_user
     user.create!
 
-    reloaded_user = User.get( user[:_id] )
+    reloaded_user = User.get( user.id )
 
     reloaded_user.should_not == user
     reloaded_user.should_not eql user
