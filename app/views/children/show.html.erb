@@ -29,5 +29,6 @@
     <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
     <li class="back"><%= link_to 'Back', children_path %></li>
     <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
+    <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
   </ul>
 </div>

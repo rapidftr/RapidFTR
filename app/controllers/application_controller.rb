@@ -32,4 +32,8 @@ class ApplicationController < ActionController::Base
       redirect_to :login
     end
   end
+
+  def send_pdf(pdf_data,filename) 
+    send_data pdf_data, :filename => filename, :type => "application/pdf"
+  end
 end
