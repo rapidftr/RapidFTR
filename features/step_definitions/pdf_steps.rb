@@ -7,7 +7,7 @@ Then /^I should receive a PDF file$/ do
   end
 end
 
-Then /^the PDF file should have (\d+) pages$/ do |num_pages|
+Then /^the PDF file should have (\d+) page(?:|s)$/ do |num_pages|
   num_pages = num_pages.to_i
 
   pdf = PDF::Inspector::Page.analyze( response_body )
