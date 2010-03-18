@@ -1,5 +1,11 @@
 Feature: As an admin, I should be able to edit existing users.
 
+Scenario: When editing a user I cannot edit their user_name
+  Given a user "mary" with a password "123" 
+  And I am logged in
+  And I am on the edit user page for "mary"
+  Then the "user name" field should be disabled
+
   Scenario:      To check that an admin creates a user record and is able to edit it.
 
   # Create an user

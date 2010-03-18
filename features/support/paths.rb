@@ -41,7 +41,10 @@ module NavigationHelpers
       when /child search results page/
         search_children_path
 
-
+      when /the edit user page for "(.+)"$/
+        user = User.by_user_name(:key => $1)
+        raise "no user named #{$1}" if user.nil?
+        edit_user_path(user)
 
       when /photo resource for child with name "(.+)"/
         child_name = $1

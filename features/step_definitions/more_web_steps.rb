@@ -9,3 +9,8 @@ end
 Then /^I should not see an image from the (.+)$/ do |image_resource_name|
   response_body.should_not have_selector("img[src='#{path_to(image_resource_name)}']")
 end
+
+Then /^the "([^\"]*)" field should be disabled$/ do |label|
+  field_labeled(label).should be_disabled
+end
+
