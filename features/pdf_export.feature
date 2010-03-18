@@ -30,6 +30,14 @@ Scenario: In search results, when two records are selected a pdf referring to th
   And the PDF file should contain the string "will_uid"
   And the PDF file should contain the string "wilma_uid"
 
+@allow-rescue
+Scenario: In search results, when no records are selected and the export button is clicked, the user is shown an error message
+  Given I am on the child search page
+  When I fill in "Wil" for "Name"
+  And I press "Search"
+  And I press "Export to PDF"
+  Then I should see "You must select at least one record to be exported"
+
 Scenario: Exporting PDF from the child results page
   Given I am on the saved record page for child with name "Will"
   And I follow "Export to PDF"
