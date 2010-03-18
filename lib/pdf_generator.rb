@@ -7,6 +7,10 @@ class PdfGenerator
     @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
   end
 
+  def child_photo(child)
+    child_photos( [child] )
+  end
+
   def child_photos(children)
     all_children_but_last = children.slice(0,children.length-1)
     all_children_but_last.each do |child|

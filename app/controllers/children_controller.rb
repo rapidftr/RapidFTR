@@ -28,6 +28,10 @@ class ChildrenController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @child }
       format.custom("image/jpeg") { send_data(@child.photo, :type => "image/jpeg")}
+      format.pdf do
+        pdf_data = PdfGenerator.new.child_photo(@child)
+        send_pdf( pdf_data, "photo.pdf" )
+      end
     end
   end
 
@@ -127,9 +131,12 @@ class ChildrenController < ApplicationController
 
   def photo_pdf
     child_ids = params.map{ |k,v| 'selected' == v ? k : nil }.compact
+    if child_ids.empty?
+      raise ErrorResponse.bad_request('You must select at least one record to be exported') 
+    end
     children = child_ids.map{ |child_id| Child.get(child_id) }
     pdf_data = PdfGenerator.new.child_photos(children)
-    send_data pdf_data, :filename => "photos.pdf", :type => "application/pdf"
+    send_pdf( pdf_data, "photos.pdf" )
   end
 
   private
