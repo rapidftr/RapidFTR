@@ -56,4 +56,8 @@ class ApplicationController < ActionController::Base
   def send_pdf(pdf_data,filename) 
     send_data pdf_data, :filename => filename, :type => "application/pdf"
   end
+
+  def name
+    self.class.to_s.gsub("Controller", "")
+  end
 end

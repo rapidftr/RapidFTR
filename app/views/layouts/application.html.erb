@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
-  <title>Children: <%= controller.action_name %></title>
+  <title><%= controller.name %>: <%= controller.action_name %></title>
   <%= stylesheet_link_tag 'core' %>
   <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" %>
   <%= javascript_include_tag  "application.js" %>
@@ -39,7 +39,7 @@ $(document).ready(function() {
     </div>
 
     <div class="content-aside">
-      <%= render :partial => (@aside or 'participate')%>
+      <%= render :partial => (@aside or 'shared/participate')%>
     </div>
   </div>
 
