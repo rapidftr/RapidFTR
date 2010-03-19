@@ -78,6 +78,9 @@ td a { font-weight: bold;  }
 .content-section { float: left; width: 630px; padding: 10px 25px 25px; margin-bottom: 1.5em; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
 .content-aside { float: right; width: 230px; padding: 10px 15px 15px; margin-right: 10px; }
 
+/* search content when on the profile wall page   */
+.content-section-search { float: left; width: 630px; padding: 10px 25px 25px; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
+
 /* tabbed content  */
 ul.tab-handles { border-left: 1px solid #678; margin-bottom: 0; position: relative; top: 1px; }
 .tab-handles li { padding: 0; background: none; margin: 0; float: left; font-weight: bold; }
@@ -92,25 +95,39 @@ td.edit a {  }
 td.checkbox { text-align: center;}
 
 /* profiles wall page */
-.profile-wall-page .page-content h1 { background: none; }
 .profile-wall-page .content-section { background: none; width: 672px; padding: 10px 4px 25px; }
 
-/* profiles wall page */
-.profiles-list .new-row { clear: both; }
-.profiles-list-item { float: left; overflow: hidden; background-color: #fff; width: 312px; padding: 6px; margin: 0 6px 1em; position: relative; }
-.profiles-list-item header { }
+/* profiles wall page - grid */
+.profiles-grid .new-row { clear: both; }
+.profiles-grid-item { float: left; overflow: hidden; background-color: #fff; width: 312px; padding: 6px; margin: 0 6px 1em; position: relative; }
+.profiles-grid-item header { }
+.profiles-grid-item h3 { margin: 0 20px .5em; }
+.profiles-grid-item .edit { position: absolute; top: 5px; right: 5px; }
+.profiles-grid-item .checkbox { position: absolute; top: 5px; left: 5px; }
+.profiles-grid-item .photo { clear: both; float: left; width: 120px; padding-right: 6px; margin-bottom: 0; }
+.profiles-grid-item .details { float: right; width: 186px; }
+.profiles-grid-item .details p { margin-bottom: 0; }
+.profiles-grid-item .details p strong { display: block; color: #678; }
+.profiles-grid-item .details p em { display: block; }
+.profiles-grid-item dt, .profiles-grid-item .details dd { }
+.profiles-grid-item dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; }
+.profiles-grid-item dt { width: 45px; margin-bottom: .5em; font-weight: bold; color: #678; }
+.profiles-grid-item dd { margin: -2em 0 .5em; padding: 0 0 .5em 52px; border-bottom: 1px solid #678; }
+
+/* profiles wall page - list */
+.profiles-list-item { overflow: hidden; background-color: #fff; padding: 6px; margin: 0 6px .6em; position: relative; }
+.profiles-list-item .header { margin-left: 70px; position: relative; }
 .profiles-list-item h3 { margin: 0 20px .5em; }
-.profiles-list-item .edit { position: absolute; top: 5px; right: 5px; }
-.profiles-list-item .checkbox { position: absolute; top: 5px; left: 5px; }
-.profiles-list-item .photo { clear: both; float: left; width: 120px; padding-right: 6px; margin-bottom: 0; }
-.profiles-list-item .details { float: right; width: 186px; }
-.profiles-list-item .details p { margin-bottom: 0; }
-.profiles-list-item .details p strong { display: block; color: #678; }
-.profiles-list-item .details p em { display: block; }
-.profiles-list-item dt, .profiles-list-item .details dd { }
-.profiles-list-item dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; }
-.profiles-list-item dt { width: 45px; margin-bottom: .5em; font-weight: bold; color: #678; }
-.profiles-list-item dd { margin: -2em 0 .5em; padding: 0 0 .5em 52px; border-bottom: 1px solid #678; }
+.profiles-list-item .edit { position: absolute; top: 0; right: 0px; }
+.profiles-list-item .checkbox { position: absolute; top: 0px; left: 0px; }
+.profiles-list-item .photo { position: absolute; top: 5px; left: 5px; }
+.profiles-list-item .details { margin-left: 70px; }
+.profiles-list-item .details p { margin-bottom: 0; clear: both; border-top: 1px solid #678; padding-top: .2em; }
+.profiles-list-item .details p strong { color: #678; }
+.profiles-list-item .details p em { }
+.profiles-list-item dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; margin-bottom: .2em; }
+.profiles-list-item dt { float: left; margin-right: 10px; font-weight: bold; color: #678; }
+.profiles-list-item dd { float: left; margin-right: 20px; }
 
 /* profile page */
 .profile-page .page-content { background: none;}
@@ -154,6 +171,6 @@ td.checkbox { text-align: center;}
 .profile-header dl { zoom: 1; }
 .tab-handles { zoom: 1; }
 
-.profiles-list { zoom: 1; overflow: hidden; }
-.profiles-list-item { display: inline; }
-.profiles-list-item dl { zoom: 1; }
+.profiles-grid { zoom: 1; overflow: hidden; }
+.profiles-grid-item { display: inline; }
+.profiles-grid-item dl { zoom: 1; }
