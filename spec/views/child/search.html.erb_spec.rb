@@ -26,7 +26,7 @@ describe "children/search.html.erb" do
       assigns[:show_thumbnails] = true
       render
 
-      first_content_row = Hpricot(response.body).photos[0]
+      first_content_row = Hpricot(response.body).photos
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
@@ -39,7 +39,7 @@ describe "children/search.html.erb" do
       assigns[:show_thumbnails] = false
       render
 
-      Hpricot(response.body).photos.should be_nil
+      Hpricot(response.body).photos.size.should be 0
     end
 
     it "should include checkboxes to select individual records" do

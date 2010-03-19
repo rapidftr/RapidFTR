@@ -4,7 +4,7 @@ module HpricotSearch
   end
 
   def photos
-    at("p[@class=photo]")
+    search("p[@class=photo]")
   end
 
   def definition_lists
