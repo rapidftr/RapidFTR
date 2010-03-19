@@ -7,7 +7,7 @@ Feature: As an user, I should be able to log in.
     When I fill in "Harry" for "user name"
     And I fill in "123" for "password"
     And I press "Log in"
-    Then I should see "Hello Harry"
+    Then I should see "Hello harry"
 
   Scenario: User does not exist
     Given no users exist
@@ -33,11 +33,12 @@ Feature: As an user, I should be able to log in.
     When I fill in "Harry" for "user name"
     And I fill in "123" for "password"
     And I press "Log in"
-    Then I should see "Hello Harry"
+    Then I should see "Hello harry"
     And I should see "Add child record"
     And I should see "View child listing"
-    And I should see "Harry"
+    And I should see "harry"
 
+@allow-rescue
   Scenario:User session should be destroyed when a user logs out
     Given no users exist
     Given I am logged in

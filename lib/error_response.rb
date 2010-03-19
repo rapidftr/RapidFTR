@@ -6,6 +6,10 @@ class ErrorResponse < StandardError
     new( 400, message )
   end
 
+  def self.unauthorized(message)
+    new( 401, message )
+  end
+
   def initialize( status_code, message )
     @status_code = status_code
     super(message)

@@ -19,11 +19,12 @@ Feature:
 		And I press "Finish"
 
 		When I follow "View the change log"
-		Then I should see "19/07/2010 13:05 Record created by Harry"
+		Then I should see "19/07/2010 13:05 Record created by harry"
 
 	Scenario:  I log in as a different user, upload a new photo and view the record log
 
 		Given "Mary" is logged in
+    And someone has entered a child with the name "Jorge Just"
 		And I am on the children listing page
 
 		When I follow "Edit"
@@ -32,7 +33,7 @@ Feature:
 		And I press "Finish"
 		And I follow "View the change log"
 
-		Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by Mary"
+		Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by mary"
 
 		When I follow "photo-19-07-2010-1305"
 		Then I should see the content type as "image/jpg"

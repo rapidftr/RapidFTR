@@ -89,8 +89,10 @@ Given /^I am editing an existing child record$/ do
 end
 
 Given /there is a User/ do
-  Given "no users exist"
-  Given "a user \"mary\" with a password \"123\""
+  unless @user
+    Given "no users exist"
+    Given "a user \"mary\" with a password \"123\""
+  end
 end
 
 Given /I am logged in/ do
@@ -99,6 +101,11 @@ Given /I am logged in/ do
   Given "I fill in \"#{User.first.user_name}\" for \"user name\""
   Given "I fill in \"#{User.first.password}\" for \"password\""
   Given "I press \"Log In\""
+end
+
+Given /I am logged out/ do
+  Given "I am sending a valid session token in my request headers"
+  Given "I go to the logout page"
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
