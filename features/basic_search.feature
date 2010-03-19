@@ -14,7 +14,7 @@ Scenario: Searching for a child given his name
   When I fill in "Will" for "Name"
   And I press "Search"
   Then I should be on the child search results page
-  And I should see "Willis" in the column "Name"
+  And I should see "Willis" in the search results
 
 Scenario: Searching for a child given his unique identifier
   Given the following children exist in the system:
@@ -24,7 +24,7 @@ Scenario: Searching for a child given his unique identifier
   When I fill in "zubairlon" for "Child ID"
   And I press "Search"
   Then I should be on the child search results page
-  And I should see "andreas" in the column "Name"
+  And I should see "andreas" in the search results
 
 Scenario: Searches that yield a single record should redirect directly to that record
   Given the following children exist in the system:

@@ -10,16 +10,10 @@
 
 <%- form_tag photo_pdf_children_path, :method => :post do %>
 
-<table>
-  <tr>
-    <th>select</th>
-    <% Templates.get_search_result_template.each do |field| %>
-        <th><%= field['name'].humanize %></th>
-    <% end %>
-  </tr>
+<div class="profiles-list">
   <%= render :partial => "summary_row", :collection => @results %>
 
-</table>
+</div>
 <%= submit_tag "Export to PDF" %>
 <%-end%>
 

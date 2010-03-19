@@ -1,10 +1,33 @@
-<tr>
-  <td><%=check_box_tag summary_row['_id'], 'selected'%></td>
-<% Templates.get_search_result_template.each do |field| %>
-<td><%= summary_row[field["name"]] %></td>
-<% end %>
-<td><%= link_to "full record", child_path(summary_row) %></td>
-<%if @show_thumbnails%>
-  <td><%=thumbnail_image_tag(summary_row)%></td>
-<%end%>
-</tr>
+<!-- BEGIN: item -->
+<div id="child_<%= summary_row['_id'] %>" class="profiles-list-item">
+  <div class="header">
+    <p class="checkbox">
+      <%= check_box_tag summary_row['_id'], 'selected' %>
+    </p>
+
+    <h3><%= link_to summary_row['name'], child_path(summary_row) %></h3>
+
+    <p class="edit"><a href="/">Edit</a></p>
+  </div>
+  <% if @show_thumbnails %>
+      <p class="photo">
+        <a href="/">
+          <%= thumbnail_image_tag(summary_row) %>
+        </a>
+      </p>
+  <% end %>
+  <div class="details">
+    <dl>
+      <dt>Age:</dt>
+      <dd><%= summary_row["age"] %> (<%= summary_row["age_is"].downcase %>)</dd>
+      <dt>Gender:</dt>
+      <dd><%= summary_row["gender"] %></dd>
+      <dt>Origin:</dt>
+      <dd><%= summary_row["origin"] %></dd>
+    </dl>
+
+    <p><strong>Last known location:</strong> <%= summary_row["last_known_location"] %>
+      <em><%= summary_row["date_of_separation"] %> </em></p>
+  </div>
+</div>
+<!-- END: item -->

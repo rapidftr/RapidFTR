@@ -5,6 +5,7 @@ class ChildrenController < ApplicationController
   def index
     @page_name = "Listing children"
     @children = Child.all
+    @aside = 'search_sidebar'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -28,10 +29,10 @@ class ChildrenController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @child }
       format.custom("image/jpeg") { send_data(@child.photo, :type => "image/jpeg")}
-      format.pdf do
-        pdf_data = PdfGenerator.new.child_photo(@child)
-        send_pdf( pdf_data, "photo.pdf" )
-      end
+#      format.pdf do
+#        pdf_data = PdfGenerator.new.child_photo(@child)
+#        send_pdf( pdf_data, "photo.pdf" )
+#      end
     end
   end
 

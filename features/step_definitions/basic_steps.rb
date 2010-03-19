@@ -23,8 +23,8 @@ end
 Given /^the following children exist in the system:$/ do |children_table|
   Given "no children exist"
   children_table.hashes.each do |child_hash|
-    child_hash.reverse_merge!( 
-      'last_known_location' => 'Cairo', 
+    child_hash.reverse_merge!(
+      'last_known_location' => 'Cairo',
       'photo_path' => 'features/resources/jorge.jpg',
       'reporter' => 'zubair'
     )
@@ -32,6 +32,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     child = Child.new_with_user_name( child_hash['reporter'], child_hash.slice('name','last_known_location') )
     child.photo = uploadable_photo(child_hash['photo_path'])
     child['unique_identifier'] = child_hash['unique_id'] if child_hash.has_key?('unique_id')
+    child['age_is'] = 'Approximate'
     child.create!
   end
 end
