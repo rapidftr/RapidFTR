@@ -13,7 +13,7 @@ class Login
   def authenticate_user
     user = User.find_by_user_name(@user_name)
 
-    if user.nil? || !user.autheticate(@password)
+    if user.nil? || !user.authenticate(@password)
       errors.add(:base, "Invalid credentials. Please try again!")
 
       return nil

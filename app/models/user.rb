@@ -62,7 +62,7 @@ class User < CouchRestRails::Document
     end
   end
 
-  def autheticate(check)
+  def authenticate(check)
     password == check
   end
 
