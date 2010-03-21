@@ -43,3 +43,31 @@ Feature:
 
 		When I follow "photo-29-09-2010-1759"
 		Then I should see the content type as "image/png"
+
+  Scenario:  I log in as a different user, edit and view the record log
+
+    Given "Bobby" is logged in
+    And I am on the children listing page
+
+    When I follow "Edit"
+    Then I fill in "George Harrison" for "Name"
+    And I fill in "56" for "Age"
+    And I select "Approximate" from "Age is"
+    And I choose "Female"
+    And I fill in "Bombay" for "Origin"
+    And I fill in "Zambia" for "Last known location"
+    And I select "6 months to 1 year ago" from "Date of separation"
+    And the date/time is "Oct 29 2010 10:12"
+    And I press "Finish"
+
+    When I follow "View the change log"
+
+    Then I should see "29/10/2010 10:12 Last known location changed from Haiti to Zambia by Bobby"
+    And I should see "29/10/2010 10:12 Origin changed from London to Bombay by Bobby"
+    And I should see "29/10/2010 10:12 Age changed from 27 to 56 by Bobby"
+    And I should see "29/10/2010 10:12 Name changed from Jorge Just to George Harrison by Bobby"
+    And I should see "29/10/2010 10:12 Date of separation changed from 1-2 weeks ago to 6 months to 1 year ago by Bobby"
+    And I should see "29/10/2010 10:12 Gender changed from Male to Female by Bobby"
+    And I should see "29/10/2010 10:12 Age is changed from Exact to Approximate"
+
+    # Change log to display ordered list of changes from most recent to older changes --> can this be automated ????
