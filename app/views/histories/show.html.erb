@@ -1,11 +1,21 @@
 <% @child['histories'].each do |history| %>
-	<% if history['changes']['current_photo_key'] %>
-		<%= render :partial => "photo_record", 
-			:locals => {
-				:from_key => history['changes']['current_photo_key']['from'],
-				:to_key => history['changes']['current_photo_key']['to'],
-				:datetime => history['datetime'],
-				:user_name => history['user_name'] } %>
+	<% history['changes'].each_pair do |field, change| %>
+		<% if field == "current_photo_key" %>
+			<%= render :partial => "photo_record", 
+				:locals => {
+					:from_value => change['from'],
+					:to_value => change['to'],
+					:datetime => history['datetime'],
+					:user_name => history['user_name'] } %>
+		<% else %>
+		  <%= render :partial => "history_change",
+		    :locals => {
+		      :field => field.humanize,
+		      :from_value => change['from'],
+					:to_value => change['to'],
+					:datetime => history['datetime'],
+					:user_name => history['user_name'] } %>
+		<% end %>
 	<% end %>
 <% end %>
 <li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>
