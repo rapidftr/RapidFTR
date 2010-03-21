@@ -11,6 +11,7 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
+  property :disabled
   attr_accessor :password_confirmation
 
   timestamps!
@@ -63,7 +64,7 @@ class User < CouchRestRails::Document
   end
 
   def authenticate(check)
-    password == check
+    !disabled && password == check
   end
 
   private

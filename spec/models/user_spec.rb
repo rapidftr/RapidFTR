@@ -10,7 +10,7 @@ describe User do
       :user_name => "user_name_#{rand(10000)}",
       :full_name => 'full name',
       :password => 'password',
-      :password_confirmation => 'password',
+      :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
       :user_type => 'user_type'
     })
@@ -63,6 +63,21 @@ describe User do
     reloaded_user.should_not == user
     reloaded_user.should_not eql user
     reloaded_user.should_not equal user
+  end
+  
+  it "can authenticate with the right password" do
+    user = build_user(:password => "thepass")
+    user.authenticate("thepass").should be_true
+  end
+  
+  it "can't authenticate with the wrong password" do
+    user = build_user(:password => "onepassword")
+    user.authenticate("otherpassword").should be_false
+  end
+  
+  it "can't authenticate if disabled" do
+    user = build_user(:disabled => true, :password => "thepass")
+    user.authenticate("thepass").should be_false
   end
 
 end

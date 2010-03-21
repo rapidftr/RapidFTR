@@ -25,6 +25,15 @@ Feature: As an user, I should be able to log in.
     And I press "Log in"
     Then I should see "Invalid credentials. Please try again!"
 
+  Scenario: User is disabled
+    Given no users exist
+    Given a user "Harry" with a password "123"
+    And user "Harry" is disabled
+    And I am on the login page
+    When I fill in "Harry" for "user name"
+    And I fill in "123" for "password"
+    And I press "Log in"
+    Then I should see "Invalid credentials. Please try again!"
 
   Scenario:User when logged in should see links to add and edit children
     Given no users exist
