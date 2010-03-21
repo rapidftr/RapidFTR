@@ -63,12 +63,12 @@ Feature:
 
     When I follow "View the change log"
 
-    Then I should see "29/10/2010 10:12 Last known location changed from Haiti to Zambia by Bobby"
-    And I should see "29/10/2010 10:12 Origin changed from London to Bombay by Bobby"
-    And I should see "29/10/2010 10:12 Age changed from 27 to 56 by Bobby"
-    And I should see "29/10/2010 10:12 Name changed from Jorge Just to George Harrison by Bobby"
-    And I should see "29/10/2010 10:12 Date of separation changed from 1-2 weeks ago to 6 months to 1 year ago by Bobby"
-    And I should see "29/10/2010 10:12 Gender changed from Male to Female by Bobby"
+    Then I should see "29/10/2010 10:12 Last known location changed from Haiti to Zambia by bobby"
+    And I should see "29/10/2010 10:12 Origin changed from London to Bombay by bobby"
+    And I should see "29/10/2010 10:12 Age changed from 27 to 56 by bobby"
+    And I should see "29/10/2010 10:12 Name changed from Jorge Just to George Harrison by bobby"
+    And I should see "29/10/2010 10:12 Date of separation changed from 1-2 weeks ago to 6 months to 1 year ago by bobby"
+    And I should see "29/10/2010 10:12 Gender changed from Male to Female by bobby"
     And I should see "29/10/2010 10:12 Age is changed from Exact to Approximate"
 
     # Change log to display ordered list of changes from most recent to older changes --> can this be automated ????
