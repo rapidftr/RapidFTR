@@ -45,6 +45,10 @@
       <%= f.label :location %><br/>
       <%= f.text_field :location %>
     </p>
+    <p>
+      <%= f.label :disabled, "Disabled?" %>
+      <%= f.check_box :disabled %>
+    </p>
 
   <p>
     <%= f.submit edittable_user.new_record? ? 'Create' : 'Update' %>

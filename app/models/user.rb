@@ -11,7 +11,7 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
-  property :disabled
+  property :disabled, :cast_as => :boolean
   attr_accessor :password_confirmation
 
   timestamps!

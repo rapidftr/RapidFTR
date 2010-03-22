@@ -25,7 +25,7 @@ Feature: As an user, I should be able to log in.
     And I press "Log in"
     Then I should see "Invalid credentials. Please try again!"
 
-  Scenario: User is disabled
+  Scenario: Disabled user can't log in
     Given no users exist
     Given a user "Harry" with a password "123"
     And user "Harry" is disabled
