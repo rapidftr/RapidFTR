@@ -18,6 +18,10 @@ Then /^user "(.+)" should be disabled$/ do |username|
   User.find_by_user_name(username).should be_disabled
 end
 
+Then /^user "(.+)" should not be disabled$/ do |username|
+  User.find_by_user_name(username).should_not be_disabled
+end
+
 Given /^no children exist$/ do
   Child.all.each{|child| child.destroy }
 end

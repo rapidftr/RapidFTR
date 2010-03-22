@@ -15,3 +15,16 @@ Feature:
     And I fill in "p@ssw0rd" for "Re-enter password"
     And I press "Update"
     Then user "george" should be disabled
+
+  @wip
+  Scenario: Admin re-enables a user from the edit page
+    Given no users exist
+    Given a user "george" with a password "p@ssw0rd"
+    And user "george" is disabled
+    And I am logged in as an admin
+    And I am on edit user page for "george"
+    When I uncheck "Disabled?"
+    # XXX: re-enter password should go away once user admin is proper
+    And I fill in "p@ssw0rd" for "Re-enter password"
+    And I press "Update"
+    Then user "george" should not be disabled
