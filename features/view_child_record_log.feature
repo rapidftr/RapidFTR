@@ -24,7 +24,6 @@ Feature:
 	Scenario:  I log in as a different user, upload a new photo and view the record log
 
 		Given "Mary" is logged in
-    And someone has entered a child with the name "Jorge Just"
 		And I am on the children listing page
 
 		When I follow "Edit"
