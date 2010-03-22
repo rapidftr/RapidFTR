@@ -1,0 +1,6 @@
+<%=
+  {
+    :status => "#{@exception.status_code} #{@exception.status_text}",
+    :message => @exception.message
+}.to_json
+%>

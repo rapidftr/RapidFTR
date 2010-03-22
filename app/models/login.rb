@@ -19,7 +19,8 @@ class Login
       return nil
     end
 
-    Session.new(:user_name => @user_name)
+    #Session.new(:user_name => @user_name)
+    Session.for_user( user )
   end
 
   def errors

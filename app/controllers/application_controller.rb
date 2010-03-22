@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   Mime::Type.register "image/jpeg", :jpg
 
+  include ChecksAuthentication
   before_filter :check_authentication
+  rescue_from( AuthFailure ) { |e| handle_authentication_failure(e) }
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
@@ -26,7 +28,16 @@ class ApplicationController < ActionController::Base
           :status => ex.status_code 
         )
       end
-      format.any  { head ex.status_code } # only return the status code
+      format.any do
+        begin
+        render( 
+          :template => "shared/status_#{ex.status_code.to_s}",
+          :status => ex.status_code 
+        )
+        rescue ActionView::MissingTemplate
+          head ex.status_code # only return the status code
+        end
+      end
     end
   end
 
@@ -43,14 +54,6 @@ class ApplicationController < ActionController::Base
       return nil
     end
     return session.user_name
-  end
-
-  def check_authentication
-    return if self.controller_name == 'sessions'
-
-    unless Session.get_from_cookies(cookies)
-      redirect_to :login
-    end
   end
 
   def send_pdf(pdf_data,filename) 

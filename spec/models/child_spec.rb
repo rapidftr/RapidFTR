@@ -197,17 +197,13 @@ describe Child do
   
   describe "history log" do
     it "should not update history on initial creation of child document" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
     
       child['histories'].should be_empty
     end
     
     it "should update history with 'from' value on last_known_location update" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
       
       child['last_known_location'] = 'Philadelphia'
       child.save!
@@ -217,9 +213,7 @@ describe Child do
     end
     
     it "should update history with 'to' value on last_known_location update" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
       
       child['last_known_location'] = 'Philadelphia'
       child.save!
@@ -229,9 +223,7 @@ describe Child do
     end
     
     it "should update history with 'from' value on age update" do
-      child = Child.new('age' => '8', 'last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo)
       
       child['age'] = '6'
       child.save!
@@ -241,9 +233,7 @@ describe Child do
     end
     
     it "should update history with 'to' value on age update" do
-      child = Child.new('age' => '8', 'last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo)
       
       child['age'] = '6'
       child.save!
@@ -253,9 +243,7 @@ describe Child do
     end
     
     it "should update history with a combined history record when multiple fields are updated" do
-      child = Child.new('age' => '8', 'last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo)
       
       child['age'] = '6'
       child['last_known_location'] = 'Philadelphia'
@@ -270,9 +258,8 @@ describe Child do
     end
     
     it "should not record anything in the history if a save occured with no changes" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'New York')
+
       loaded_child = Child.get(child.id)
       loaded_child.save!
       
@@ -280,9 +267,7 @@ describe Child do
     end
     
     it "should not record empty string in the history if only change was spaces" do
-      child = Child.new('origin' => '', 'last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('origin' => '', 'photo' => uploadable_photo, 'last_known_location' => 'New York')
   
       child['origin'] = '    '
       child.save!
@@ -291,9 +276,7 @@ describe Child do
     end
     
     it "should not record history on populated field if only change was spaces" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
   
       child['last_known_location'] = ' New York   '
       child.save!
@@ -303,9 +286,7 @@ describe Child do
     
     it "should record history for newly populated field that previously was null" do
       # gender is the only field right now that is allowed to be nil when creating child document
-      child = Child.new('gender' => nil, 'last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('gender' => nil, 'last_known_location' => 'London', 'photo' => uploadable_photo)
   
       child['gender'] = 'Male'
       child.save!
@@ -341,9 +322,7 @@ describe Child do
     end
         
     it "should update history with username from last_updated_by" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
       
       child['last_known_location'] = 'Philadelphia'
       child['last_updated_by'] = 'some_user'
@@ -353,9 +332,7 @@ describe Child do
     end
   
     it "should update history with the datetime from last_updated_at" do
-      child = Child.new('last_known_location' => 'New York')
-      child.instance_variable_set(:'@file_name', 'some_file.jpg') # to pass photo validation
-      child.save!
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
       
       child['last_known_location'] = 'Philadelphia'
       child['last_updated_at'] = 'some_time'

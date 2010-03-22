@@ -5,41 +5,48 @@ module NavigationHelpers
   #
   # step definition in web_steps.rb
   #
-  def path_to(page_name)
+  def path_to(page_name, options = {})
+
+    format = page_name[/^(?:|the )(\w+) formatted/,1]
+    options.reverse_merge!( :format => format )
+
     case page_name
 
       when /the home\s?page/
         '/'
       when /the new assign_unique_id_to_a_child page/
-        new_assign_unique_id_to_a_child_path
+        new_assign_unique_id_to_a_child_path(options)
 
 
       when /new child page/
-        new_child_path
+        new_child_path(options)
 
       when /children listing page/
-        children_path
+        children_path(options)
 
       when /saved record page for child with name "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
-        child_path( child )
+        child_path( child, options )
 
       when /new user page/
-        new_user_path
+        new_user_path(options)
 
       when /manage users page/
-        users_path
+        users_path(options)
 
       when /child search page/
-        search_children_path
+        search_children_path(options)
         
       when /login page/
-        login_path
+        login_path(options)
+        
+      when /logout page/
+        logout_path(options)
         
       when /child search results page/
-        search_children_path
+        search_children_path(options)
 
 
 
