@@ -11,9 +11,7 @@ Feature:
 		And I fill in "27" for "Age"
 		And I select "Exact" from "Age is"
 		And I choose "Male"
-		And I fill in "London" for "Origin"
 		And I fill in "Haiti" for "Last known location"
-		And I select "1-2 weeks ago" from "Date of separation"
 		And I attach the file "features/resources/jorge.jpg" to "photo"
 		And the date/time is "July 19 2010 13:05"
 		And I press "Finish"
@@ -63,10 +61,10 @@ Feature:
     When I follow "View the change log"
 
     Then I should see "29/10/2010 10:12 Last known location changed from Haiti to Zambia by bobby"
-    And I should see "29/10/2010 10:12 Origin changed from London to Bombay by bobby"
+    And I should see "29/10/2010 10:12 Origin initially set to Bombay by bobby"
     And I should see "29/10/2010 10:12 Age changed from 27 to 56 by bobby"
     And I should see "29/10/2010 10:12 Name changed from Jorge Just to George Harrison by bobby"
-    And I should see "29/10/2010 10:12 Date of separation changed from 1-2 weeks ago to 6 months to 1 year ago by bobby"
+    And I should see "29/10/2010 10:12 Date of separation initially set to 6 months to 1 year ago by bobby"
     And I should see "29/10/2010 10:12 Gender changed from Male to Female by bobby"
     And I should see "29/10/2010 10:12 Age is changed from Exact to Approximate"
 
