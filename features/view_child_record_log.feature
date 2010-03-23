@@ -68,4 +68,4 @@ Feature:
     And I should see "29/10/2010 10:12 Gender changed from Male to Female by bobby"
     And I should see "29/10/2010 10:12 Age is changed from Exact to Approximate"
 
-    # Change log to display ordered list of changes from most recent to older changes --> can this be automated ????
+    # Order tested at the moment in the show.html.erb_spec.rb view test for histories
