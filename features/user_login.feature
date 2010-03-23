@@ -1,7 +1,6 @@
 Feature: As an user, I should be able to log in.
 
   Scenario: To check that a user can log in
-    Given no users exist
     Given a user "Harry" with a password "123"
     Given I am on the login page
     When I fill in "Harry" for "user name"
@@ -10,7 +9,6 @@ Feature: As an user, I should be able to log in.
     Then I should see "Hello harry"
 
   Scenario: User does not exist
-    Given no users exist
     Given I am on the login page
     When I fill in "Harry" for "user name"
     And I fill in "123" for "password"
@@ -27,7 +25,6 @@ Feature: As an user, I should be able to log in.
 
 
   Scenario:User when logged in should see links to add and edit children
-    Given no users exist
     Given a user "Harry" with a password "123"
     Given I am on the login page
     When I fill in "Harry" for "user name"
@@ -40,7 +37,6 @@ Feature: As an user, I should be able to log in.
 
 @allow-rescue
   Scenario:User session should be destroyed when a user logs out
-    Given no users exist
     Given I am logged in
     When I follow "Log Out"
     Then I should be on the login page

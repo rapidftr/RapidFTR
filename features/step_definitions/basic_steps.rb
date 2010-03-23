@@ -21,18 +21,19 @@ Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
 end
 
 Given /^the following children exist in the system:$/ do |children_table|
-  Given "no children exist"
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(
       'last_known_location' => 'Cairo',
       'photo_path' => 'features/resources/jorge.jpg',
-      'reporter' => 'zubair'
+      'reporter' => 'zubair',
+      'age_is' => 'Approximate'
     )
-
-    child = Child.new_with_user_name( child_hash['reporter'], child_hash.slice('name','last_known_location') )
-    child.photo = uploadable_photo(child_hash['photo_path'])
-    child['unique_identifier'] = child_hash['unique_id'] if child_hash.has_key?('unique_id')
-    child['age_is'] = 'Approximate'
+    
+    photo = uploadable_photo(child_hash.delete('photo_path'))
+    unique_id = child_hash.delete('unique_id')
+    child = Child.new_with_user_name(child_hash['reporter'], child_hash)
+    child.photo = photo
+    child['unique_identifier'] = unique_id if unique_id
     child.create!
   end
 end
@@ -90,7 +91,6 @@ end
 
 Given /there is a User/ do
   unless @user
-    Given "no users exist"
     Given "a user \"mary\" with a password \"123\""
   end
 end
@@ -109,7 +109,6 @@ Given /I am logged out/ do
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
-  Given "no users exist"
   Given "a user \"#{user_name}\" with a password \"123\""
 end  
  

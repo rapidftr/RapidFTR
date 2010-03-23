@@ -2,7 +2,6 @@ Feature: As an admin, I should be able to create and view users.
 
   Scenario:      To check that an admin creates a user record and is able to view it
     
-    Given no users exist
     Given I am logged in
     Given I am on manage users page
     And I follow "New user"
