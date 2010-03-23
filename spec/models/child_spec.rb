@@ -295,6 +295,20 @@ describe Child do
       child['histories'].first['changes']['gender']['to'].should == 'Male'
     end
     
+    it "should apend latest history to the front of histories" do
+      child = Child.create('last_known_location' => 'London', 'photo' => uploadable_photo)
+      
+      child['last_known_location'] = 'New York'
+      child.save!
+      
+      child['last_known_location'] = 'Philadelphia'
+      child.save!
+      
+      child['histories'].size.should == 2
+      child['histories'][0]['changes']['last_known_location']['to'].should == 'Philadelphia'
+      child['histories'][1]['changes']['last_known_location']['to'].should == 'New York'
+    end
+    
     it "should 'from' field with original current_photo_key on a photo addition" do
       updated_at_time = Time.parse("Jan 20 2010 12:04")
       Time.stub!(:now).and_return updated_at_time
