@@ -3,7 +3,7 @@ namespace :ci do
   task :build => %w( clean install_test_gems install_cucumber_gems default)
   
   task :clean do
-    sh "rm rerun.txt"
+    rm_f "rerun.txt"
   end
   
   task :install_test_gems do
