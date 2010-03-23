@@ -34,7 +34,6 @@ Scenario: Searches that yield a single record should redirect directly to that r
   Then I should be on the saved record page for child with name "Lisa"
 
 Scenario: Search parameters are displayed in the search results
-  Given no children exist
   When I fill in "Will" for "Name"
   And I fill in "xyz" for "Child ID"
   And I press "Search"
@@ -43,13 +42,11 @@ Scenario: Search parameters are displayed in the search results
   And the "Child ID" field should contain "xyz"
 
 Scenario: 'Show thumbnails' checkbox is unchecked in search results if it was unchecked for the search
-  Given no children exist
   When I uncheck "Show thumbnails"
   And I press "Search"
   Then the "Show thumbnails" checkbox should not be checked
 
 Scenario: 'Show thumbnails' checkbox is checked in search results if it was checked for the search
-  Given no children exist
   When I check "Show thumbnails"
   And I press "Search"
   Then the "Show thumbnails" checkbox should be checked

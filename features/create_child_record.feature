@@ -4,7 +4,6 @@ Feature:
 
   Scenario: creating a child record
     Given I am logged in
-    Given no children exist
     Given I am on children listing page
     And I follow "New child"
     When I fill in "Jorge Just" for "Name"

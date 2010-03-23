@@ -3,11 +3,6 @@ Given /^a user "([^\"]*)" with a password "([^\"]*)"$/ do |username, password|
  @user.save!
 end
 
-Given /^no users exist$/ do
-  users = User.all
-  users.each {|user| user.destroy}
-end
-
 Given /^user "(.+)" is disabled$/ do |username|
   user = User.find_by_user_name(username)
   user.disabled = true
@@ -20,8 +15,4 @@ end
 
 Then /^user "(.+)" should not be disabled$/ do |username|
   User.find_by_user_name(username).should_not be_disabled
-end
-
-Given /^no children exist$/ do
-  Child.all.each{|child| child.destroy }
 end

@@ -3,7 +3,6 @@ Feature:
   the child's record
 
   Scenario: Editing a child record
-    Given no children exist
     Given I am logged in
   # creating a record
     Given I am on children listing page

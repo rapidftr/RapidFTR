@@ -4,7 +4,6 @@ Feature:
 	Scenario: Creates a child record and checks the log
 
 	  Given "Harry" is logged in
-		And no children exist
 		And I am on the children listing page
 		And I follow "New child"
 		When I fill in "Jorge Just" for "Name"
@@ -21,12 +20,16 @@ Feature:
 
 	Scenario:  I log in as a different user, upload a new photo and view the record log
 
-		Given "Mary" is logged in
+	  Given the date/time is "July 19 2010 13:05"
+    And the following children exist in the system:
+      | name       | age | age_is | gender | last_known_location |
+      | Jorge Just | 27  | Exact  | Male   | Haiti               |
+    And the date/time is "Sept 29 2010 17:59"
+		And "Mary" is logged in
 		And I am on the children listing page
 
 		When I follow "Edit"
 		And I attach the file "features/resources/jeff.png" to "photo"
-		And the date/time is "Sept 29 2010 17:59"
 		And I press "Finish"
 		And I follow "View the change log"
 
@@ -44,7 +47,12 @@ Feature:
 
   Scenario:  I log in as a different user, edit and view the record log
 
-    Given "Bobby" is logged in
+    Given the date/time is "July 19 2010 13:05"
+    And the following children exist in the system:
+      | name       | age | age_is | gender | last_known_location |
+      | Jorge Just | 27  | Exact  | Male   | Haiti               |
+    And the date/time is "Oct 29 2010 10:12"
+    And "Bobby" is logged in
     And I am on the children listing page
 
     When I follow "Edit"
@@ -68,4 +76,4 @@ Feature:
     And I should see "29/10/2010 10:12 Gender changed from Male to Female by bobby"
     And I should see "29/10/2010 10:12 Age is changed from Exact to Approximate"
 
-    # Change log to display ordered list of changes from most recent to older changes --> can this be automated ????
+    # Order tested at the moment in the show.html.erb_spec.rb view test for histories

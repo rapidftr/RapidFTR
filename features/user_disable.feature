@@ -6,7 +6,6 @@ Feature:
   #   see user_login.feature
 
   Scenario: Admin disables a user from the edit page
-    Given no users exist
     Given a user "george" with a password "p@ssw0rd"
     And I am logged in as an admin
     And I am on edit user page for "george"
@@ -18,7 +17,6 @@ Feature:
 
   @wip
   Scenario: Admin re-enables a user from the edit page
-    Given no users exist
     Given a user "george" with a password "p@ssw0rd"
     And user "george" is disabled
     And I am logged in as an admin
