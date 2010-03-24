@@ -3,7 +3,7 @@ Then /^I should receive a PDF file$/ do
     temp_file.write( response_body )
     temp_file.close
     mimetype = `file --brief --mime #{temp_file.path}`.gsub(/\n/,"")
-    mimetype.should == "application/pdf"
+    mimetype.should =~ /application\/pdf/
   end
 end
 
