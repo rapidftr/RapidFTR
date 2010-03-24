@@ -1,3 +1,5 @@
+require 'spec/spec_helper'
+
 include HpricotSearch
 
 When /^I search using a name of "([^\"]*)"$/ do |name|
