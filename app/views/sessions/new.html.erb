@@ -3,12 +3,12 @@
 <% form_tag sessions_path  do %>
 <%= error_messages_for :login %>
 <p>
-  <%= label_tag "login[user_name]", "User name" %>:
-  <%= text_field_tag "login[user_name]" %>
+  <%= label_tag "user_name", "User name" %>:
+  <%= text_field_tag "user_name" %>
 </p>
 <p>
-  <%= label_tag "login[password]", "Password" %>:
-  <%= password_field_tag "login[password]" %>
+  <%= label_tag "password", "Password" %>:
+  <%= password_field_tag "password" %>
 </p>
 <p>
   <%= submit_tag "Log in",:action=>'Create' %>
