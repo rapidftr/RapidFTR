@@ -41,7 +41,7 @@ class SessionsController < ApplicationController
   # POST /sessions.xml
   def create
 
-    @login = Login.new(params[:login])
+    @login = Login.new(params)
 
     @session = @login.authenticate_user
 
