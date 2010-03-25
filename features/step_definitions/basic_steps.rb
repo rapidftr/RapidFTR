@@ -95,7 +95,7 @@ Given /there is a User/ do
   end
 end
 
-Given /I am logged in/ do
+Given /^I am logged in$/ do
   Given "there is a User"
   Given "I am on the login page"
   Given "I fill in \"#{User.first.user_name}\" for \"user name\""
