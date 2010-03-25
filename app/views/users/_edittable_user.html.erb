@@ -1,4 +1,18 @@
-<% form_for(edittable_user) do |f| %>
+<script type="text/javascript" charset="utf-8">
+  function confirmDisable() {
+    var checkbox = $("#user_disabled")[0];
+    if (checkbox.checked && !checkbox.defaultChecked) {
+      return confirm('Are you sure you want to disable this user?');
+    }
+    return true;
+  }
+  
+  $(document).ready(function() {
+    $("form").submit(confirmDisable);
+  });
+</script>
+
+<% form_for edittable_user do |f| %>
   <%= f.error_messages %>
     <p>
       <%= f.label :full_name, "Full name" %><br/>
