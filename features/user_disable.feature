@@ -27,3 +27,12 @@ Feature:
     And I fill in "123" for "Re-enter password"
     And I press "Update"
     Then user "george" should not be disabled
+
+  @allow-rescue
+  Scenario: A user who is disabled mid-session can't continue using that session
+    Given a user "george"
+    And I am logged in as "george"
+    And I am on the children listing page
+    When user "george" is disabled
+    And I follow "New child"
+    Then I should have received a "401 Unauthorized" status code

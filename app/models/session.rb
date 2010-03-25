@@ -3,6 +3,8 @@ class Session < CouchRestRails::Document
 
   property :user
 
+  view_by :user_name
+
   COOKIE_KEY = 'rftr_session_token'
 
   def self.for_user( user )
@@ -19,6 +21,10 @@ class Session < CouchRestRails::Document
 
   def self.remove_from_cookies(cookies)
     cookies.delete(COOKIE_KEY)
+  end
+
+  def self.delete_for(user)
+    by_user_name(:key => user.user_name).each {|s| s.destroy }
   end
 
   def put_in_cookie(cookies)

@@ -33,6 +33,9 @@ class User < CouchRestRails::Document
 
 
   before_save :make_user_name_lowercase
+  before_update :if => :disabled? do |user|
+    Session.delete_for user
+  end
   before_validate :auto_fill_password_confirmation_if_not_supplied
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
