@@ -42,26 +42,25 @@ class SessionsController < ApplicationController
   # POST /sessions
   # POST /sessions.xml
   def create
-
     @login = Login.new(params)
-
     @session = @login.authenticate_user
 
-    if @session
-
+    if not @session
       respond_to do |format|
-        if @session.save
-          @session.put_in_cookie(cookies)
-          flash[:notice] = 'Hello ' + @session.user_name
-          format.html { redirect_to(@session) }
-          format.xml  { render :action => "show", :status => :created, :location => @session }
-        else
-          handle_create_error(@session.errors, format)
-        end
+        handle_create_error("Invalid credentials. Please try again!", format)
       end
-    else
-      respond_to do |format|
-        handle_create_error(@login.errors, format)
+
+      return
+    end
+
+    respond_to do |format|
+      if @session.save
+        @session.put_in_cookie(cookies)
+        flash[:notice] = 'Hello ' + @session.user_name
+        format.html { redirect_to(@session) }
+        format.xml  { render :action => "show", :status => :created, :location => @session }
+      else
+        handle_create_error("There was a problem logging in.  Please try again.", format)
       end
     end
   end
@@ -84,8 +83,10 @@ class SessionsController < ApplicationController
   end
 
   private
-  def handle_create_error(errors, format)
-    format.html { render :action => "new" }
+  def handle_create_error(notice, format)
+    format.html {
+      flash[:notice] = notice
+      redirect_to :action => "new" }
     format.xml  { render :xml => errors, :status => :unprocessable_entity }
   end
 
