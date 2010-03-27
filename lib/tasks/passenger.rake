@@ -1,7 +1,6 @@
 namespace :passenger do
   task :restart do
-    sh "pwd"
-    sh "ls -lA"
-    sh "touch tmp/restart.txt"
+    mkdir "tmp"
+    touch "tmp/restart.txt"
   end
 end
