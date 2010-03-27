@@ -68,7 +68,7 @@ class User < CouchRestRails::Document
     if new? 
       raise Exception.new, "Can't authenticate a un-saved user"
     end
-    !disabled && crypted_password == encrypt(check)
+    !disabled? && crypted_password == encrypt(check)
   end
 
   def encrypt(password)
