@@ -5,14 +5,16 @@ class User < CouchRestRails::Document
 
   property :full_name
   property :user_name
-  property :password
+  property :crypted_password
+  property :salt
   property :user_type
   property :email
   property :organisation
   property :position
   property :location
   property :disabled, :cast_as => :boolean
-  attr_accessor :password_confirmation
+  attr_accessor :password_confirmation, :password
+
 
   timestamps!
 
@@ -32,7 +34,8 @@ class User < CouchRestRails::Document
           }"
 
 
-  before_save :make_user_name_lowercase
+  before_save :make_user_name_lowercase, :encrypt_password
+  
   before_update :if => :disabled? do |user|
     Session.delete_for user
   end
@@ -43,11 +46,11 @@ class User < CouchRestRails::Document
 
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
-  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password"
+  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/,
                       :message =>"Please enter a valid email address"
 
-  validates_confirmation_of :password
+  validates_confirmation_of :password, :if => :password_required?
   validates_with_method   :user_name, :method => :is_user_name_unique
 
 
@@ -62,10 +65,32 @@ class User < CouchRestRails::Document
   end
 
   def authenticate(check)
-    !disabled && password == check
+    if new? 
+      raise Exception.new, "Can't authenticate a un-saved user"
+    end
+    !disabled && crypted_password == encrypt(check)
+  end
+
+  def encrypt(password)
+    self.class.encrypt(password, salt)
   end
 
   private
+
+  def encrypt_password
+    return if password.blank?
+    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{self.user_name}--") if new_record?
+    self.crypted_password = encrypt(password)
+  end
+
+  def self.encrypt(password, salt)
+    Digest::SHA1.hexdigest("--#{salt}--#{password}--")
+  end
+
+  def password_required?
+    crypted_password.blank? || !password.blank?
+  end
+  
   def make_user_name_lowercase
      user_name.downcase!
   end
