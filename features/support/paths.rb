@@ -52,7 +52,11 @@ module NavigationHelpers
       when /child search results page/
         search_children_path(options)
 
+      when /form section page/
+        '/form_sections'
 
+      when /choose field type page/
+        '/fields/new'
 
       when /photo resource for child with name "(.+)"/
         child_name = $1

@@ -103,7 +103,7 @@ Given /^I am logged in$/ do
   Given "there is a User"
   Given "I am on the login page"
   Given "I fill in \"#{User.first.user_name}\" for \"user name\""
-  Given "I fill in \"#{User.first.password}\" for \"password\""
+  Given "I fill in \"123\" for \"password\""
   Given "I press \"Log In\""
 end
 
@@ -145,4 +145,10 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
   child.photo = uploadable_photo(photo_file_path) 
 
   child.create!
+end
+
+Given /^the following form sections exist in the system:$/ do |form_sections_table|
+  form_sections_table.hashes.each do |form_section_hash|
+    FormSectionDefinition.create!(form_section_hash)
+  end
 end

@@ -15,7 +15,7 @@ Given /^I am sending a valid session token in my request headers$/ do
 end
 
 Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
-  response_body.should have_selector("a[href='#{path_to(page_name)}']")   
+  response_body.should have_selector("a[href='#{path_to(page_name)}']")
 end
 
 Then /^I should see an image from the (.+)$/ do |image_resource_name|
@@ -35,3 +35,14 @@ Then /^I should have received a "(.+)" status code$/ do |status_code|
   response.status.should == status_code
 end
 
+Then /^I should find the following links:$/ do |table|
+  table.rows_hash.each do |label, href|
+    assert_have_xpath "//a[@href='#{href}' and text()='#{label}']"
+  end
+end
+
+Then /^I should find the form with following attributes:$/ do |table|
+  table.raw.each do |attribute|
+    assert_contain attribute.first
+  end
+end

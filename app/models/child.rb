@@ -12,7 +12,7 @@ class Child < CouchRestRails::Document
     child.set_creation_fields_for user_name
     child
   end
-  
+
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase

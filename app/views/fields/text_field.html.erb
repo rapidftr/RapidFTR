@@ -1,0 +1,5 @@
+<% form_for :field, @field, :url => { :action => "create" } do |f| %>
+      <%= f.text_field :name %>
+      <%= f.text_area :help_text %>
+      <%= submit_tag 'Create' %>
+<% end %>

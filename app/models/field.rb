@@ -3,9 +3,9 @@ class Field
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
 
-  attr_reader :name, :type, :options, :value
+  attr_accessor :name, :type, :options, :value, :help_text
 
-  def initialize field_name, field_type, field_options = [], value = nil
+  def initialize field_name, field_type = '', field_options = [], value = nil
     @name = field_name
     @type = field_type
     @options = FieldOption.create_field_options(field_name, field_options)

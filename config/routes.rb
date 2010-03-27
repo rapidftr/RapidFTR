@@ -11,6 +11,11 @@ ActionController::Routing::Routes.draw do |map|
   map.login 'login', :controller=>'sessions',:action =>'new'
   map.logout 'logout', :controller=>'sessions',:action =>'destroy'
 
+  map.resources 'form_sections', :controller=>'form_section'
+
+  map.resources 'fields', :controller=>'fields'
+  map.connect 'fields/new', :controller=>'fields'  , :action=>:new
+  map.connect 'fields/new/:fieldtype', :controller=>'fields'  , :action=>:new
 
   # The priority is based upon order of creation: first created -> highest priority.
 
