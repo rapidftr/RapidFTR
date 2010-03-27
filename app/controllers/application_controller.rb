@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from( AuthFailure ) { |e| handle_authentication_failure(e) }
 
   # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
 
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
  
