@@ -157,7 +157,7 @@ describe 'API Test'
 		
 	end
 
-	it 'should return record of child with specified id'
+	it 'should delete record of child with specified id'
 	
 		$.ajax({
 			url: "http://localhost:3000/children/" + childid,

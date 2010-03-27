@@ -53,6 +53,7 @@ class SessionsController < ApplicationController
           flash[:notice] = 'Hello ' + @session.user_name
           format.html { redirect_to(@session) }
           format.xml  { render :action => "show", :status => :created, :location => @session }
+          format.json { render :json => @session.to_json }
         else
           format.html { render :action => "new" }
           format.xml  { render :xml => @session.errors, :status => :unprocessable_entity }

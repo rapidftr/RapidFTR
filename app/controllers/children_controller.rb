@@ -66,6 +66,7 @@ class ChildrenController < ApplicationController
         flash[:notice] = 'Child record successfully created.'
         format.html { redirect_to(@child) }
         format.xml  { render :xml => @child, :status => :created, :location => @child }
+        format.json { render :json => @child.to_json }
       else
         format.html {
           @form_sections = get_form_sections_for_child @child
@@ -92,6 +93,7 @@ class ChildrenController < ApplicationController
         flash[:notice] = 'Child was successfully updated.'
         format.html { redirect_to(@child) }
         format.xml  { head :ok }
+        format.json { render :json => @child.to_json }
       else
         format.html {
           @form_sections = get_form_sections_for_child @child
@@ -105,12 +107,13 @@ class ChildrenController < ApplicationController
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
-    @child = Child.find(params[:id])
+    @child = Child.get(params[:id])
     @child.destroy
 
     respond_to do |format|
       format.html { redirect_to(children_url) }
       format.xml  { head :ok }
+      format.json { render :json => {:response => "ok"}.to_json }
     end
   end
 
