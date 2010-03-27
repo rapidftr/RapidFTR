@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="http://localhost:3000/APITest/framework/lib/jspec.css" />
+		<script src="http://localhost:3000/APITest/framework/lib/jspec.js"></script>
+		<script src="http://localhost:3000/APITest/framework/lib/jspec.xhr.js"></script>
+		<script src="http://localhost:3000/APITest/spec/support/jquery.js"></script>
+		<script src="http://localhost:3000/APITest/spec/support/jquery-cookie.js"></script>
+		<script src="http://localhost:3000/APITest/framework/lib/jspec.jquery.js"></script>
+		<script src="http://localhost:3000/APITest/spec/unit/spec.helper.js"></script>
+		<script>
+			function runSuites() {
+				JSpec
+				.exec('unit/spec.js')
+				.run({ fixturePath: 'fixtures' })
+				.report()
+			}
+		</script>
+	</head>
+	<body class="jspec" onLoad="runSuites();">
+		<div id="jspec-top"><h2 id="jspec-title">JSpec <em><script>document.write(JSpec.version)</script></em></h2></div>
+		<div id="jspec"></div>
+		<div id="jspec-bottom"></div>
+	</body>
+</html>
