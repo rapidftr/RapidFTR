@@ -30,12 +30,14 @@ class SessionsController < ApplicationController
   # GET /sessions/new.xml
   def new
     @session = Session.new(params[:login])
+
+    @page_name = "Login"
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @session }
     end
   end
-
 
   # POST /sessions
   # POST /sessions.xml
@@ -54,18 +56,16 @@ class SessionsController < ApplicationController
           format.html { redirect_to(@session) }
           format.xml  { render :action => "show", :status => :created, :location => @session }
         else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @session.errors, :status => :unprocessable_entity }
+          handle_create_error(@session.errors, format)
         end
       end
     else
       respond_to do |format|
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @login.errors, :status => :unprocessable_entity }
+        handle_create_error(@login.errors, format)
       end
     end
   end
-
+  
   # PUT /sessions/1
   # PUT /sessions/1.xml
 
@@ -82,4 +82,11 @@ class SessionsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  private
+  def handle_create_error(errors, format)
+    format.html { render :action => "new" }
+    format.xml  { render :xml => errors, :status => :unprocessable_entity }
+  end
+
 end
