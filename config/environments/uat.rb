@@ -4,8 +4,11 @@
 # Code is not reloaded between requests
 config.cache_classes = true
 
+# Log error messages when you accidentally call methods on nil.
+config.whiny_nils = true
+
 # Full error reports are disabled and caching is turned on
-config.action_controller.consider_all_requests_local = false
+config.action_controller.consider_all_requests_local = true
 config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 
