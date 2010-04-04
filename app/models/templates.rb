@@ -2,7 +2,7 @@ class Templates
 
   TEMPLATES = {
           "basic_details" => [
-                          {
+                  {
                           "name" => "name",
                           "type" => "text_field"
                   },
@@ -74,8 +74,39 @@ class Templates
                           "name" => "relationship_to_child",
                           "type" => "text_field"
                   },
+                  {
+                          "name" => "is_orphan",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "is_refugee",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "trafficked_child",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "in_interim_care",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "is_in_child_headed_household",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "sick_or_injured",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "possible_physical_or_sexual_abuse",
+                          "type" => "check_box"
+                  },
+                  {
+                          "name" => "is_disabled",
+                          "type" => "check_box"
+                  },
           ]
-
   }
 
   def self.get_template(template_name)

@@ -68,7 +68,7 @@ describe "children/_form_section.html.erb" do
 
     context "new record" do
 
-      it "render select boxes" do
+      it "renders select boxes" do
         @form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than a year ago"])
 
         render :locals => { :form_section => @form_section }
@@ -80,20 +80,54 @@ describe "children/_form_section.html.erb" do
         end
       end
     end
+
+    context "existing record" do
+
+      it "renders a select box with the current value selected" do
+        @form_section.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than a year ago"], "1-2 weeks ago")
+
+        render :locals => { :form_section => @form_section }
+
+        response.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
+          select.should have_selector("option[value='1-2 weeks ago'][selected]")
+          select.should have_selector("option[value='More than a year ago']")
+        end
+      end
+    end
   end
 
-  context "existing record" do
+  describe "rendering check boxes" do
 
-    it "renders a select box with the current value selected" do
-      @form_section.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than a year ago"], "1-2 weeks ago")
+    context "new record" do
 
-      render :locals => { :form_section => @form_section }
+      it "renders checkboxes" do
+        @form_section.add_field Field.new("is_orphan", Field::CHECK_BOX)
 
-      response.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
-        select.should have_selector("option[value='1-2 weeks ago'][selected]")
-        select.should have_selector("option[value='More than a year ago']")
+        render :locals => { :form_section => @form_section }
+
+        response.should have_selector("label[for='child_is_orphan']")
+        response.should have_selector("input[type='checkbox'][name='child[is_orphan]'][value='Yes']")
       end
     end
 
+    context "existing record" do
+
+      it "renders checkboxes as checked if the underlying field is set to Yes" do
+        @form_section.add_field Field.new("is_orphan", Field::CHECK_BOX, [], "Yes")
+
+        render :locals => { :form_section => @form_section }
+
+        response.should have_selector("input[type='checkbox'][name='child[is_orphan]'][value='Yes'][checked]")
+      end
+
+      it "renders checkboxes with the HTML FORM hidden field workaround for unchecking a property" do
+        @form_section.add_field Field.new("is_orphan", Field::CHECK_BOX, [], "Yes")
+
+        render :locals => { :form_section => @form_section }
+
+        response.should have_selector("input[type='hidden'][name='child[is_orphan]'][value='No']")
+      end
+
+    end
   end
 end

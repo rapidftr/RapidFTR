@@ -2,6 +2,7 @@ class Field
   TEXT_FIELD = "text_field"
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
+  CHECK_BOX = "check_box"
 
   attr_accessor :name, :type, :options, :value, :help_text
 
