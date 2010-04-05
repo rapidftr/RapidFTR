@@ -1,4 +1,5 @@
 Feature: So that admin can customize fields in a form section
+  @wip
   Scenario:
     Given I am logged in
     Given I am on choose field type page
