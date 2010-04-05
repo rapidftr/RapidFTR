@@ -1,9 +1,26 @@
-<h2>Form sections</h2>
+<h2>Manage form sections</h2>
 
-<table class="formSectionLink">
+<table id="formSections">
+  <tr>
+    <th><input type="checkbox" disabled=true /></th>
+    <th>Enabled</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Ordering</th>
+    <th>Fields</th>
+  </tr>
 <% @form_sections.each do |section| %>
-      <tr>
-        <td><%= section.section_name %></td>
+      <tr id='<%= section.unique_id%>_row'>
+        <td><!-- TODO: checkboxes --></td>
+        <td>
+            <span class="enabledStatus <%= section.enabled=="true"? "tick":"cross"%>">
+              <%= section.enabled=="true"? "Enabled":"Disabled"%>
+            </span>
+          </td>
+        <td><a href="#" class="formSectionLink"><%= section.name %></a></td>
+        <td><%= section.description %></td>
+        <td><span class="formSectionOrder"><%= section.order %></span></td>
+        <td><a href="/formsection/<%=section.unique_id %>/fields" class="manageFieldsLink">Manage Fields</a></td>
       </tr>
   <% end %>
 </table>

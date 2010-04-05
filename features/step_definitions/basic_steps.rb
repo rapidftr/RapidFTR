@@ -27,12 +27,12 @@ end
 Given /^the following children exist in the system:$/ do |children_table|
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(
-      'last_known_location' => 'Cairo',
-      'photo_path' => 'features/resources/jorge.jpg',
-      'reporter' => 'zubair',
-      'age_is' => 'Approximate'
+            'last_known_location' => 'Cairo',
+            'photo_path' => 'features/resources/jorge.jpg',
+            'reporter' => 'zubair',
+            'age_is' => 'Approximate'
     )
-    
+
     photo = uploadable_photo(child_hash.delete('photo_path'))
     unique_id = child_hash.delete('unique_id')
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
@@ -59,7 +59,7 @@ Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
     cells = row.search("td")
     (cells[column_index] != nil && cells[column_index].to_plain_text == value)
   end
-  
+
   raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the table" unless match
 end
 
@@ -142,13 +142,60 @@ end
 Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ do |child_name, photo_file_path|
   child = Child.new( :name => child_name, :last_known_location => 'Chile' )
 
-  child.photo = uploadable_photo(photo_file_path) 
+  child.photo = uploadable_photo(photo_file_path)
 
   child.create!
 end
 
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   form_sections_table.hashes.each do |form_section_hash|
+    form_section_hash.reverse_merge!(
+            'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase 
+    )
     FormSectionDefinition.create!(form_section_hash)
   end
+end
+
+
+Then /^I should see a (\w+) in the enabled column for the form section "([^\"]*)"$/ do |expected_icon, form_section|
+  row = Hpricot(response.body).form_section_row_for form_section
+  row.should_not be_nil
+
+  enabled_icon = row.enabled_icon
+  enabled_icon["class"].should contain(expected_icon)
+end
+
+
+Then /^I should see the "([^\"]*)" form section link$/ do |form_section_name|
+
+  form_section_names = Hpricot(response.body).form_section_names.collect {|item| item.inner_html}
+  form_section_names.should contain(form_section_name)
+
+end
+
+Then /^I should see the text "([^\"]*)" in the enabled column for the form section "([^\"]*)"$/ do |expected_text, form_section|
+  row = Hpricot(response.body).form_section_row_for form_section
+  row.should_not be_nil
+
+  enabled_icon = row.enabled_icon
+  enabled_icon.inner_html.strip.should == expected_text
+end
+
+Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|
+  row = Hpricot(response.body).form_section_row_for form_section
+  description_text_cell = row.search("td").detect {|cell| cell.inner_html.strip == expected_description}
+  description_text_cell.should_not be_nil
+end
+
+
+Then /^I should see the form section "([^\"]*)" in row (\d+)$/ do |form_section, expected_row_position|
+  row = Hpricot(response.body).form_section_row_for form_section
+  rows =  Hpricot(response.body).form_section_rows
+  rows[expected_row_position.to_i].inner_html.should == row.inner_html
+end
+
+And /^I should see a current order of "([^\"]*)" for the "([^\"]*)" form section$/ do |expected_order, form_section|
+  row = Hpricot(response.body).form_section_row_for form_section
+  order_display = row.form_section_order
+  order_display.inner_html.strip.should == expected_order
 end

@@ -53,7 +53,7 @@ module NavigationHelpers
         search_children_path(options)
 
       when /form section page/
-        '/form_sections'
+        '/formsection'
 
       when /choose field type page/
         '/fields/new'
