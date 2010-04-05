@@ -14,8 +14,6 @@ User.create("user_type" => "Administrator",
 )
 
 
-# TEMP!
-
 FormSectionDefinition.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details")
 
 FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details")
