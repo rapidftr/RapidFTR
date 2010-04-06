@@ -64,6 +64,9 @@ module NavigationHelpers
         raise "no child named '#{child_name}'" if child.nil?
         child_path( child, :format => 'jpg' )
 
+      when /new field page for "(.+)"/
+        field_type = $1
+        new_field_path(:fieldtype=>field_type)
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
