@@ -72,10 +72,10 @@ class Child < CouchRestRails::Document
   def valid?(context=:default)
     valid = true
     
-    #if ((new? || @file_name != nil) && !/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name))
-    #  valid = false
-    #  errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
-    #end
+    if @file_name && !/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name)
+      valid = false
+      errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
+    end
     
     if self["last_known_location"].blank?
       valid = false

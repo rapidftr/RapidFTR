@@ -7,6 +7,10 @@ When /^I fill in the basic details of a child$/ do
 
 end
 
+When /^I fill in the required details for a child$/ do
+  fill_in("Last known location", :with => "Haiti")
+end
+
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)
   Time.stub!(:now).and_return current_time
