@@ -36,7 +36,8 @@ Then /^I should have received a "(.+)" status code$/ do |status_code|
 end
 
 Then /^I should find the following links:$/ do |table|
-  table.rows_hash.each do |label, href|
+  table.rows_hash.each do |label, named_path|
+    href = path_to(named_path)
     assert_have_xpath "//a[@href='#{href}' and text()='#{label}']"
   end
 end

@@ -1,9 +1,0 @@
-<form>
-  <label>name</label>
-  <input name="name" />
-</form>
-
-<% form_for :field, @field, :url => { :action => "create" } do |f| %>
-      <%= f.text_field :name %>
-      <%= submit_tag 'Create' %>
-<% end %>

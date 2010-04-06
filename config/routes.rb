@@ -17,6 +17,13 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'fields/new', :controller=>'fields'  , :action=>:new
   map.connect 'fields/new/:fieldtype', :controller=>'fields'  , :action=>:new
 
+  # Field routes
+  map.new_field 'fields/:fieldtype/new', :controller=>'fields'  , :action=>:new
+  map.new_textarea_field '/fields/textarea/new/', :controller=>'fields', :action=>:new, :fieldtype=>:textarea
+  map.new_text_field_field '/fields/text_field/new/', :controller=>'fields', :action=>:new, :fieldtype=>:textfield
+  map.new_check_box_field '/fields/check_box/new/', :controller=>'fields', :action=>:new, :fieldtype=>:check_box
+  map.new_select_drop_down_field '/fields/select_drop_down/new/', :controller=>'fields', :action=>:new, :fieldtype=>:select_drop_down
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
