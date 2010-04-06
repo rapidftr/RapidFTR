@@ -20,3 +20,7 @@ RapidFTR.tabControl = function(){
 	});
 
 };
+
+RapidFTR.clonableRows = function(){
+  $('#add_clone').ccopy('clonable_row', {removeText: 'remove', removeClass:'remove_clone'});
+};

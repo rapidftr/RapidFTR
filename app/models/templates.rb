@@ -58,6 +58,10 @@ class Templates
                           "type" => "select_box",
                           "options" =>["Yes", " No"]
                   },
+                  {
+                      "name" => "relationship",
+                      "type" => "relationship_field"
+                  }
 
           ],
 
