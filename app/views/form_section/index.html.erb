@@ -20,7 +20,7 @@
         <td><a href="#" class="formSectionLink"><%= section.name %></a></td>
         <td><%= section.description %></td>
         <td><span class="formSectionOrder"><%= section.order %></span></td>
-        <td><a href="/formsection/<%=section.unique_id %>/fields" class="manageFieldsLink">Manage Fields</a></td>
+        <td><%= link_to "Manage Fields", manage_fields_path(:formsection=> section.unique_id)%></td>
       </tr>
   <% end %>
 </table>
