@@ -59,6 +59,7 @@ class SessionsController < ApplicationController
         flash[:notice] = 'Hello ' + @session.user_name
         format.html { redirect_to(@session) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
+        format.json { render :json => @session.to_json }
       else
         handle_create_error("There was a problem logging in.  Please try again.", format)
       end
