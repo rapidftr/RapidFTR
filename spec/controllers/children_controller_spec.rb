@@ -59,13 +59,13 @@ describe ChildrenController do
 
   describe "DELETE destroy" do
     it "destroys the requested child" do
-      Child.should_receive(:find).with("37").and_return(mock_child)
+      Child.should_receive(:get).with("37").and_return(mock_child)
       mock_child.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
 
     it "redirects to the children list" do
-      Child.stub!(:find).and_return(mock_child(:destroy => true))
+      Child.stub!(:get).and_return(mock_child(:destroy => true))
       delete :destroy, :id => "1"
       response.should redirect_to(children_url)
     end
