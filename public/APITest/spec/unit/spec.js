@@ -29,7 +29,7 @@ describe 'API Test'
 	
 	it 'should return a autentication token'
 	
-		parameters = {user_name: "ronze", password: "Enurmadsen1"}
+		parameters = {user_name: "rapidftr", password: "rapidftr"}
 		
 		$.ajax({
 			url: "http://localhost:3000/sessions",
@@ -43,13 +43,11 @@ describe 'API Test'
 		    },
 			complete: function(request, textStatus) 
 			{
-				token = $.cookie('rftr_session_token')
+				token = response.session.token
 			}
 		})
 		
 		response.should.not.be_empty
-		response.user_name.should.eql parameters.user_name
-		
 		token.should.not.be_empty
 		
 	end
