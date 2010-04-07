@@ -255,26 +255,53 @@ describe ChildrenController do
     end
   end
 
-  it 'should correctly extract child relations passed in params' do
-    uncle_bob = { 'name' => 'Bob', 'type' => 'Uncle', 'reunite'=>'Yes' }
-    cousin_sally = { 'name' => 'Sally', 'type' => 'Cousin', 'reunite'=>'No' }
-    brother_john = { 'name' => 'John', 'type' => 'Brother', 'reunite'=>'Yes' }
-    params = {
-      'relations' => {
-        '0' => uncle_bob,
-        '2' => cousin_sally,
-        '3' => brother_john
+  describe 'capturing child relations' do
+
+    it 'should correctly extract child relations passed in params' do
+      uncle_bob = { 'name' => 'Bob', 'type' => 'Uncle', 'reunite'=>'Yes' }
+      cousin_sally = { 'name' => 'Sally', 'type' => 'Cousin', 'reunite'=>'No' }
+      brother_john = { 'name' => 'John', 'type' => 'Brother', 'reunite'=>'Yes' }
+      params = {
+        'relations' => {
+          '0' => uncle_bob,
+          '2' => cousin_sally,
+          '3' => brother_john
+        }
       }
-    }
 
-    post( :create, params )
+      post( :create, params )
 
-    created_child = assigns[:child]
-    relations = created_child['relations']
-    relations.should have(3).items
-    relations.should include(uncle_bob) 
-    relations.should include(cousin_sally) 
-    relations.should include(brother_john) 
+      created_child = assigns[:child]
+      relations = created_child['relations']
+      relations.should have(3).items
+
+      uncle_bob['reunite'] = true
+      relations.should include(uncle_bob) 
+      
+      cousin_sally['reunite'] = false
+      relations.should include(cousin_sally) 
+
+      brother_john['reunite'] = true
+      relations.should include(brother_john) 
+    end
+
+    it 'should ignore child relations with no name' do
+      uncle_bob = { 'name' => 'Bob', 'type' => 'Uncle', 'reunite'=>'Yes' }
+      anon_relative = { 'name' => ' ', 'type' => 'Sister', 'reunite'=>'Yes' }
+      params = {
+        'relations' => {
+          '0' => uncle_bob,
+          '3' => anon_relative
+        }
+      }
+
+      post( :create, params )
+
+      created_child = assigns[:child]
+      relations = created_child['relations']
+      relations.should have(1).item
+      relations[0]['name'].should == 'Bob'
+    end
   end
   
   it 'should cope with no child data being supplied at all' do

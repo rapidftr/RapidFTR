@@ -149,11 +149,19 @@ class ChildrenController < ApplicationController
   private
 
   def get_form_sections_for_child child
-  forms = []
+    forms = []
     Templates.child_form_section_names.each do |section_name|
       forms << FormSection.create_form_section_from_template(section_name, Templates.get_template(section_name), child)
     end
-    return forms
+    forms << create_relations_section_for( child )
+    forms.compact
+  end
+
+  def create_relations_section_for child
+    relations = child['relations']
+    return nil if relations.nil? || relations.empty?
+
+    RelationsSection.for( relations )
   end
 
   def render_results_as_csv
@@ -170,6 +178,14 @@ class ChildrenController < ApplicationController
 
   def extract_relations_from_params(params)
     relations = params['relations'] 
-    (relations && relations.values) || []
+    return [] unless relations && relations.values
+
+    relations_array = relations.values
+    relations_array.each do |relation|
+      relation['reunite'] = 'yes' == relation['reunite'].downcase.strip
+    end
+    relations_array.reject do |relation|
+      relation['name'].blank?
+    end
   end
 end

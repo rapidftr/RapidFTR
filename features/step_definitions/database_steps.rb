@@ -26,6 +26,19 @@ Given /^user "(.+)" is disabled$/ do |username|
   user.save!
 end
 
+Given /^"([^\"]*)" has the following relations:$/ do |child_name, table|
+  child = Summary.by_name(:key => child_name).first
+  raise "child '#{child_name}' not found" if child.nil?
+
+  relations = table.hashes
+  child['relations'] = relations.map do |relation_hash|
+    relation_hash['reunite'] = relation_hash['reunite'].downcase.strip == 'yes'
+    relation_hash
+  end
+  child.save!
+end
+
+
 Then /^user "(.+)" should be disabled$/ do |username|
   User.find_by_user_name(username).should be_disabled
 end

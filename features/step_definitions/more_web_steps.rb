@@ -35,3 +35,24 @@ Then /^I should have received a "(.+)" status code$/ do |status_code|
   response.status.should == status_code
 end
 
+Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
+
+  column_index = -1
+
+  Hpricot(response.body).search("table tr th").each_with_index do |cell, index|
+    if (cell.to_plain_text == column )
+      column_index = index
+    end
+  end
+
+  column_index.should be > -1
+  rows = Hpricot(response.body).search("table tr")
+
+  match = rows.find do |row|
+    cells = row.search("td")
+    (cells[column_index] != nil && cells[column_index].to_plain_text == value)
+  end
+  
+  raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the table" unless match
+end
+
