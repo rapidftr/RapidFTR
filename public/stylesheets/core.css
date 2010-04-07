@@ -178,7 +178,7 @@ td.checkbox { text-align: center;}
 
 /* Style relationships */
 
-.clonable_row_ccopy {
+.relation_row {
 	background-color: #e9e7e7;
 	border: 1px solid #a7acb1;
 	padding-top: 5px;
@@ -186,6 +186,6 @@ td.checkbox { text-align: center;}
 	margin-bottom: 10px;
 }
 
-a#add_clone_remove_clone {
+.relation_row a.remove_row{
 	margin-left: 10px;
 }

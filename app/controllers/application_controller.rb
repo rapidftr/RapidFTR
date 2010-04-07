@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
+  def initialize(*args)
+    super(*args)
+    @javascripts = ['application.js']
+  end
 
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
  
@@ -62,5 +66,11 @@ class ApplicationController < ActionController::Base
 
   def name
     self.class.to_s.gsub("Controller", "")
+  end
+
+  protected
+
+  def uses_javascript( js_file )
+    @javascripts << js_file
   end
 end

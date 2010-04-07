@@ -1,15 +1,16 @@
-<div id="clonable_row">
+<div class="relation_row">
   <p>
-    <%= label_tag 'relation_type', 'Relationship' %>
-    <%= select_tag 'relation_type', options_for_select( %w{Father Mother Brother Sister Uncle Aunt Cousin Neighbor Other} ), :class => 'narrow' %>
+    <%= label_tag 'relation[0][type]', 'Relationship' %>
+    <%= select_tag 'relation[0][type]', options_for_select( %w{Father Mother Brother Sister Uncle Aunt Cousin Neighbor Other} ), :class => 'narrow' %>
   </p>
   <p>
-    <%= label_tag 'relation_name', 'Name' %>
-    <%= text_field_tag 'relation_name' %>
+    <%= label_tag 'relation[0][name]', 'Name' %>
+    <%= text_field_tag 'relation[0][name]' %>
   </p>
   <p>
-    <%= label_tag 'reunite', 'Reunite?' %>
-    <%= select_tag 'reunite', options_for_select( %w{Yes No} ), :class => 'narrow' %>
+    <%= label_tag 'relation[0][reunite]', 'Reunite?' %>
+    <%= select_tag 'relation[0][reunite]', options_for_select( %w{Yes No} ), :class => 'narrow' %>
   </p>
+  <a class="remove_row" href="javascript:void(0);">delete this relation</a>
 </div>
-<a id="add_clone" href="javascript:void(0);">add</a>
+<a id="add_row" href="javascript:void(0);">add relation</a>

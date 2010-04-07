@@ -41,6 +41,7 @@ class ChildrenController < ApplicationController
   # GET /children/new
   # GET /children/new.xml
   def new
+    uses_javascript 'children/form.js'
     @page_name = "New child record"
     @child = Child.new
     @form_sections = get_form_sections_for_child @child
@@ -52,6 +53,7 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
+    uses_javascript 'children/form.js'
     @page_name = "Edit child record"
     @child = Child.get(params[:id])
     @form_sections = get_form_sections_for_child @child
