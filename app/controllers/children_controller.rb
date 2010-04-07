@@ -63,6 +63,8 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     @child = Child.new_with_user_name(current_user_name, params[:child])
+    @child['relations'] = extract_relations_from_params(params)
+
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child record successfully created.'
@@ -85,7 +87,8 @@ class ChildrenController < ApplicationController
     @child = Child.get(params[:id])
     new_photo = params[:child].delete(:photo)
     @child.update_properties_with_user_name current_user_name, new_photo, params[:child]
-    
+    @child['relations'] = extract_relations_from_params(params)
+
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child was successfully updated.'
@@ -163,5 +166,10 @@ class ChildrenController < ApplicationController
     end
 
     send_data( csv, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
+  end
+
+  def extract_relations_from_params(params)
+    relations = params['relations'] 
+    (relations && relations.values) || []
   end
 end

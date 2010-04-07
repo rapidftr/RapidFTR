@@ -45,19 +45,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-  def self.current_user
-    user = User.new
-    user.user_name = 'zubair'
-    user
-  end
-
   def current_user_name
-    session = Session.get_from_cookies(cookies)
-    if not session
-      return nil
+    begin 
+      session = check_authentication
+      session.user_name
+    rescue AuthFailure
+      nil
     end
-    return session.user_name
   end
 
   def send_pdf(pdf_data,filename) 

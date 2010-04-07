@@ -254,4 +254,30 @@ describe ChildrenController do
       post( :photo_pdf, 'ignored' => 'selected' )
     end
   end
+
+  it 'should correctly extract child relations passed in params' do
+    uncle_bob = { 'name' => 'Bob', 'type' => 'Uncle', 'reunite'=>'Yes' }
+    cousin_sally = { 'name' => 'Sally', 'type' => 'Cousin', 'reunite'=>'No' }
+    brother_john = { 'name' => 'John', 'type' => 'Brother', 'reunite'=>'Yes' }
+    params = {
+      'relations' => {
+        '0' => uncle_bob,
+        '2' => cousin_sally,
+        '3' => brother_john
+      }
+    }
+
+    post( :create, params )
+
+    created_child = assigns[:child]
+    relations = created_child['relations']
+    relations.should have(3).items
+    relations.should include(uncle_bob) 
+    relations.should include(cousin_sally) 
+    relations.should include(brother_john) 
+  end
+  
+  it 'should cope with no child data being supplied at all' do
+    post( :create, params )
+  end
 end

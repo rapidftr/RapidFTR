@@ -1,15 +1,15 @@
 <div class="relation_row">
   <p>
-    <%= label_tag 'relation[0][type]', 'Relationship' %>
-    <%= select_tag 'relation[0][type]', options_for_select( %w{Father Mother Brother Sister Uncle Aunt Cousin Neighbor Other} ), :class => 'narrow' %>
+    <%= label_tag 'relations[0][type]', 'Relationship' %>
+    <%= select_tag 'relations[0][type]', options_for_select( %w{Father Mother Brother Sister Uncle Aunt Cousin Neighbor Other} ), :class => 'narrow' %>
   </p>
   <p>
-    <%= label_tag 'relation[0][name]', 'Name' %>
-    <%= text_field_tag 'relation[0][name]' %>
+    <%= label_tag 'relations[0][name]', 'Name' %>
+    <%= text_field_tag 'relations[0][name]' %>
   </p>
   <p>
-    <%= label_tag 'relation[0][reunite]', 'Reunite?' %>
-    <%= select_tag 'relation[0][reunite]', options_for_select( %w{Yes No} ), :class => 'narrow' %>
+    <%= label_tag 'relations[0][reunite]', 'Reunite?' %>
+    <%= select_tag 'relations[0][reunite]', options_for_select( %w{Yes No} ), :class => 'narrow' %>
   </p>
   <a class="remove_row" href="javascript:void(0);">delete this relation</a>
 </div>

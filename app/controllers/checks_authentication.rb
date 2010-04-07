@@ -3,11 +3,15 @@ module ChecksAuthentication
   private
 
   def check_authentication
-    token = pull_token_from_headers || pull_token_from_cookies
+    token = pull_token_from_request
     raise AuthFailure.no_token('no session token in headers or cookies') if token.blank? 
     session = Session.get(token)
     raise AuthFailure.bad_token('invalid session token') if session.nil? 
     session
+  end
+
+  def pull_token_from_request
+    pull_token_from_headers || pull_token_from_cookies
   end
 
   def pull_token_from_headers
