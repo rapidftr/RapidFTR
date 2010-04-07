@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   skip_before_filter :check_authentication, :only => %w{new create}
+  protect_from_forgery :except => %w{create}
 
   # GET /sessions/1
   # GET /sessions/1.xml
@@ -13,15 +14,7 @@ class SessionsController < ApplicationController
       format.html # show.html.erb
       format.xml
       format.json do
-        render :json => {
-          :session => {
-            :token => @session.token,
-            :link => {
-              :rel => 'session',
-              :uri => session_path(@session)
-            }
-          }
-        }
+        render_session_as_json(@session)
       end
     end
   end
@@ -59,7 +52,7 @@ class SessionsController < ApplicationController
         flash[:notice] = 'Hello ' + @session.user_name
         format.html { redirect_to(@session) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
-        format.json { render :json => @session.to_json }
+        format.json { render_session_as_json(@session,:status => :created, :location => @session) }
       else
         handle_create_error("There was a problem logging in.  Please try again.", format)
       end
@@ -89,6 +82,19 @@ class SessionsController < ApplicationController
       flash[:notice] = notice
       redirect_to :action => "new" }
     format.xml  { render :xml => errors, :status => :unprocessable_entity }
+  end
+
+  def render_session_as_json(session,options = {})
+    json = {
+      :session => {
+        :token => session.token,
+        :link => {
+          :rel => 'session',
+          :uri => session_path(session)
+        }
+      }
+    }
+    render( options.merge( :json => json ) )  
   end
 
 end
