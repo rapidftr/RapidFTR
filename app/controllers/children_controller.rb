@@ -79,10 +79,6 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def new_search
-
-  end
-
   # PUT /children/1
   # PUT /children/1.xml
   def update

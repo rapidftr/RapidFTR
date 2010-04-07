@@ -33,25 +33,6 @@ class Child < CouchRestRails::Document
     self['unique_identifier']
   end
 
-#  view_by:user_name,
-#  :map => "function(doc,user_name) {
-#              if ((doc['couchrest-type'] == 'child') && doc['unique_identifier'].substr(0,)
-#             {
-#                emit(doc['user_name'],doc);
-#             }
-#          }"
-
-#  def find_by_created_user(user_name)
-#    @children = Child.by_user_name(:key => user_name.downcase)
-#      user_name = get_user_name_from_unique_identifier(child)
-#    end
-#  end
-
-#
-#  def self.get_user_name_from_unique_identifier(child)
-#    user_name = child.unique_identifier.
-#  end
-
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path    
@@ -87,7 +68,7 @@ class Child < CouchRestRails::Document
   
   def update_properties_with_user_name(user_name, new_photo, properties)
     properties.each_pair do |name, value|
-      self[name] = value unless value == nil
+      self[name] = value unless value.nil?
     end
     self.set_updated_fields_for user_name
     self.photo = new_photo
