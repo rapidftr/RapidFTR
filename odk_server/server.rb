@@ -51,5 +51,5 @@ post '/submission' do
     tempfile = multipart_contents[:tempfile]
     FileUtils.copy( tempfile.path, submission_filepath( original_filename ) )
   end
-  'OK'
+  redirect base_url, 201
 end
