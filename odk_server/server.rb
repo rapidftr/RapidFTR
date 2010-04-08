@@ -46,8 +46,10 @@ end
 
 
 post '/submission' do
-  original_filename = params[:xml_submission_file][:filename]
-  tempfile = params[:xml_submission_file][:tempfile]
-  FileUtils.copy( tempfile.path, submission_filepath( original_filename ) )
-  redirect submission_url( original_filename ), 201
+  params.each do |multipart_key,multipart_contents|
+    original_filename = multipart_contents[:filename]
+    tempfile = multipart_contents[:tempfile]
+    FileUtils.copy( tempfile.path, submission_filepath( original_filename ) )
+  end
+  'OK'
 end
