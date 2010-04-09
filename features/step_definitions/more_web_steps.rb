@@ -7,6 +7,11 @@ Given /^I am not sending a session token in my request headers$/ do
   #headers.delete( "Authorization" )
 end
 
+Given /^I am sending basic authentication credentials of "([^\"]*)"$/ do |up_pair|
+  username,password = up_pair.split("/")
+  basic_auth(username,password)
+end
+
 Given /^I am sending a valid session token in my request headers$/ do
   raise "don't know which user I should create a session for" if @user.nil?
   session = Session.for_user(@user)
