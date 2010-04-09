@@ -19,8 +19,8 @@ class FormsController < ApplicationController
   end
 
   def submission
-    user = authenticate_using_basic_auth
-    if user.nil?
+    submitter_name = determine_user_name
+    if submitter_name.nil?
       request_http_basic_authentication
       return
     end
@@ -30,7 +30,7 @@ class FormsController < ApplicationController
     logger.debug( file_contents )
 
     params = transform_xform_doc_to_params_hash(file_contents)
-    child = Child.new_with_user_name( user.user_name, params )
+    child = Child.new_with_user_name( submitter_name, params )
     child.save!
 
     redirect_to child_url( child ), :status => 201
@@ -45,6 +45,13 @@ class FormsController < ApplicationController
       params[xform_node.name] = xform_node.text
     end
     params
+  end
+
+  def determine_user_name
+    return 'anon_javarosa_user' if ActionController::HttpAuthentication::Basic.authorization(request).nil?
+    
+    user = authenticate_using_basic_auth
+    (user && user.user_name) || nil
   end
 
 

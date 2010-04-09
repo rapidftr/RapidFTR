@@ -62,10 +62,14 @@ EOS
         post_submission
       end
 
-      it 'should return 401 if no basic auth supplied' do
+      it "should create child using catchall 'anon_javarosa_user' if no basic auth supplied" do
         request.env["HTTP_AUTHORIZATION"] = nil
+        
+        Child.should_receive(:new_with_user_name).
+          with( 'anon_javarosa_user', anything ).
+          and_return( stub(Child,:save! => nil ) )
+
         post_submission
-        response.status.should == '401 Unauthorized'
       end
 
       it 'should return 401 if basic auth describes invalid user' do
@@ -98,7 +102,7 @@ EOS
         post_submission
       end
 
-      it 'Authenticate using basic auth' do
+      it 'should authenticate using basic auth' do
         stub_out_child_creation
         
         User.should_receive(:find_by_user_name).

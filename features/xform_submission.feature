@@ -33,7 +33,6 @@ Scenario: Credentials passed in during upload are used to record which user uplo
     And I go to the saved record page for child with name "Jenny"
     Then I should see "Unique Id: mobile_user"
 
-
 Scenario: Uploading valid form creates child record
     When I submit the following xform
       """
