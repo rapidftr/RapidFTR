@@ -35,6 +35,11 @@ Then /^I should have received a "(.+)" status code$/ do |status_code|
   response.status.should == status_code
 end
 
+Then /^I should be redirected to the (.+)$/ do |page_name|
+  response.header["Location"].should == path_to(page_name)
+end
+
+
 Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
 
   column_index = -1

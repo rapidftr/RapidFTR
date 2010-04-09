@@ -25,6 +25,7 @@ Rails::Initializer.run do |config|
   config.gem "prawn"
   config.gem "pdf-reader", :lib => false
   config.gem "fastercsv"
+  config.gem "nokogiri"
 
   # config.gem "couchrest", :lib => false
   # config.gem "validatable", :lib => false

@@ -22,7 +22,25 @@ class FormsController < ApplicationController
     logger.debug( params.inspect )
     file_contents = params['xml_submission_file'].read
     logger.debug( file_contents )
-    raise 'TODO'
+
+    params = transform_xform_doc_to_params_hash(file_contents)
+    child = Child.new_with_user_name( 'javarosa_user', params )
+    child.save!
+
+    redirect_to child_url( child ), :status => 201
+  end
+
+
+
+  private
+
+  def transform_xform_doc_to_params_hash( xml )
+    params = {}
+    doc = Nokogiri::XML( xml )
+    doc.search('xform/*').each do |xform_node|
+      params[xform_node.name] = xform_node.text
+    end
+    params
   end
 
 

@@ -4,10 +4,11 @@
 		<h:title>RapidFTR Missing Child Form</h:title>
 		<model>
 			<instance>
-				<childData id="basic">
+				<xform>
 					<Name/>
 					<Age/>
 					<AgePrecision/>
+          <last_known_location/>
 					<Gender/>
 					<Photo/>
           <Relations>
@@ -16,17 +17,18 @@
               <Type/>
             </Relation>
           </Relations>
-				</childData>
+				</xform>
 			</instance> 
 			<!-- add properties to the questions, like data types, skip logic, and constraints -->
-			<bind nodeset="/childData/Name" type="string" />
-			<bind nodeset="/childData/Age" type="integer" />
-			<bind nodeset="/childData/AgePrecision" type="string" />
-			<bind nodeset="/childData/Gender" type="string" />
-			<bind nodeset="/childData/Photo" type="binary" />
-      <bind nodeset="/childData/Relations/Relation" />
-      <bind nodeset="/childData/Relations/Relation/Name" type="string" />
-      <bind nodeset="/childData/Relations/Relation/Type" type="string" />
+			<bind nodeset="/xform/Name" type="string" />
+			<bind nodeset="/xform/Age" type="integer" />
+			<bind nodeset="/xform/AgePrecision" type="string" />
+			<bind nodeset="/xform/last_known_location" type="string" />
+			<bind nodeset="/xform/Gender" type="string" />
+			<bind nodeset="/xform/Photo" type="binary" />
+      <bind nodeset="/xform/Relations/Relation" />
+      <bind nodeset="/xform/Relations/Relation/Name" type="string" />
+      <bind nodeset="/xform/Relations/Relation/Type" type="string" />
 		</model>
 	</h:head>
 	<h:body>   
@@ -48,6 +50,9 @@
 				<value>Exact</value>
 			</item>
 		</select1>
+		<input ref="last_known_location">
+			<label>Last known location</label>
+		</input>
 		<select1 ref="Gender">
 			<label>Child's gender</label>
 			<item>
@@ -64,7 +69,7 @@
 		</upload>
     <group>
       <label>Relatives</label>
-      <repeat nodeset="/childData/Relations/Relation">
+      <repeat nodeset="/xform/Relations/Relation">
         <select1 ref="Type">
           <label>Relation</label>
           <item>
