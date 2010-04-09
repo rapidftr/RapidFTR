@@ -58,14 +58,15 @@ module NavigationHelpers
       when /child search results page/
         search_children_path(options)
 
-
-
       when /photo resource for child with name "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path( child, :format => 'jpg' )
 
+      when /javarosa form for "(.+)"/
+        form_name = $1
+        java_rosa_bridge_form_path(form_name)
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

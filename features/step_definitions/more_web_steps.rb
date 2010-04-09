@@ -66,3 +66,6 @@ Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
   raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the table" unless match
 end
 
+Then /^I should see the tag "([^\"]*)"$/ do |tag_name|
+  response.should have_tag(tag_name)
+end

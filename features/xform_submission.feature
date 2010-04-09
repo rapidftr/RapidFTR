@@ -48,3 +48,7 @@ Scenario: Uploading valid form creates child record
     Then I should see "Name: Jenny"
     And I should see "Age: 12"
     And I should see "Age is: Approximate"
+
+
+@wip
+Scenario: Uploaded photos are attached to created child record

@@ -13,6 +13,8 @@ class FormsController < ApplicationController
   end
   
   def show
+    form_sections = get_form_sections
+    @fields = form_sections.map(&:fields).flatten
     respond_to do |format|
       format.xml
     end
@@ -29,8 +31,14 @@ class FormsController < ApplicationController
     file_contents = params['xml_submission_file'].read
     logger.debug( file_contents )
 
-    params = transform_xform_doc_to_params_hash(file_contents)
-    child = Child.new_with_user_name( submitter_name, params )
+    param_hash = transform_xform_doc_to_params_hash(file_contents)
+    child = Child.new_with_user_name( submitter_name, param_hash )
+
+    if param_hash['current_photo_key']
+      logger.debug( 'adding photo to child record' )
+      child.photo = params[ param_hash['current_photo_key'] ] 
+    end
+
     child.save!
 
     redirect_to child_url( child ), :status => 201
@@ -62,6 +70,16 @@ class FormsController < ApplicationController
       user.authenticate(password) ? user : nil
     end
   end
+
+  def get_form_sections
+    forms = Templates.child_form_section_names.map do |section_name|
+      template = Templates.get_template(section_name)
+      FormSection.create_form_section_from_template(section_name,template)
+    end
+    #forms << create_relations_section_for( child )
+    forms.compact
+  end
+
 
 end
 end
