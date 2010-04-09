@@ -12,6 +12,12 @@ ActionController::Routing::Routes.draw do |map|
   map.logout 'logout', :controller=>'sessions',:action =>'destroy'
 
 
+  map.namespace :java_rosa_bridge do |java_rosa|
+    java_rosa.submission 'submission', :controller => 'forms', :action => 'submission', :conditions => { :method => :post }
+    java_rosa.resources :forms, :as => :formList, :only => [ :show, :index ]
+  end
+
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
