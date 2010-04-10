@@ -8,4 +8,7 @@ class FormSectionDefinition < CouchRestRails::Document
   property :order
   property :fields, :cast_as => ['FieldDefinition']
 
+  def self.get_by_unique_id unique_id
+    first(:unique_id => unique_id)
+  end
 end

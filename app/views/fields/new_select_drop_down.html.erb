@@ -1,4 +1,5 @@
 <% form_for :field, @field, :url => { :action => "create" } do |f| %>
+  <%= hidden_field_tag( 'field_type', 'select_drop_down' ) %>
       <%= f.text_field :name %>
       <%= submit_tag 'Create' %>
 <% end %>

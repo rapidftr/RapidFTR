@@ -199,3 +199,24 @@ And /^I should see a current order of "([^\"]*)" for the "([^\"]*)" form section
   order_display = row.form_section_order
   order_display.inner_html.strip.should == expected_order
 end
+
+
+Given /^the following suggested fields exist in the system:$/ do |suggested_fields_table|
+  suggested_fields_table.hashes.each do |suggested_field_hash|
+    suggested_field_hash.reverse_merge!(
+            'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase
+    )
+    SuggestedField.create!(suggested_field_hash)
+  end
+end
+
+Then /^I should see the following suggested fields:$/ do |suggested_fields_table|
+  suggested_fields_list = Hpricot(response.body).suggested_fields_list
+  suggested_fields_list.should_not be_nil
+  suggested_fields_table.hashes.each do |suggested_field_hash|
+    display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
+    display.should_not be_nil
+    display.at("a").inner_html.strip.should == suggested_field_hash[:name]
+    display.inner_html.should contain suggested_field_hash[:description]
+  end
+end

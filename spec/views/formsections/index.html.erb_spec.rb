@@ -77,6 +77,6 @@ describe "form_section/index.html.erb" do
     manage_field_link = row.manage_fields_link
     manage_field_link.should_not be_nil
     manage_field_link.inner_html.strip.should == "Manage Fields"
-    manage_field_link['href'].should == "/formsection/#{form_section.unique_id}/fields"
+    manage_field_link['href'].should == formsection_fields_path(form_section.unique_id)
   end
 end

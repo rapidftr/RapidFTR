@@ -11,4 +11,5 @@ Feature: So that admin can customize fields in a form section
     Then I should find the form with following attributes:
       | Name |
       | Help text |
-    
+
+     

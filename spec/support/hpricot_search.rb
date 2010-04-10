@@ -39,4 +39,13 @@ module HpricotSearch
   def manage_fields_link
     at(".manageFieldsLink")
   end
+  def suggested_fields_list
+    at("#suggestedFields")
+  end
+  def suggested_field_display_for (suggested_field_id)
+    at(".#{suggested_field_id}Display")
+  end
+  def add_custom_field_link
+    at("a[text()='Add Custom Field")
+  end
 end

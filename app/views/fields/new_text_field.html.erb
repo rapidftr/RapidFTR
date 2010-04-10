@@ -1,4 +1,5 @@
 <% form_for :field, @field, :url => { :action => "create" } do |f| %>
+  <%= hidden_field_tag( 'field_type', 'text_field' ) %>
         <p>Name</p>
       <%= f.text_field :name %>
     <p>Help text</p>

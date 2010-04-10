@@ -11,21 +11,29 @@ ActionController::Routing::Routes.draw do |map|
   map.login 'login', :controller=>'sessions',:action =>'new'
   map.logout 'logout', :controller=>'sessions',:action =>'destroy'
 
+<<<<<<< Updated upstream
   map.resources :formsections, :controller=>'form_section' do |form_section|
     field_types = %w{text_field textarea check_box select_drop_down}
     additional_field_actions = field_types.inject({}){ |h,type| h["new_#{type}"] = :get; h }
-    additional_field_actions[:new] = :get
-    form_section.resources(
+    form_section.resources( 
       :fields, 
       :controller => 'fields', 
       :collection => additional_field_actions )
   end
+=======
+  map.resources 'formsection', :controller=>'form_section'
+  map.manage_fields 'formsection/:formsection/fields', :controller=>'fields', :action=>:index  #todo: where does this go?
+  map.resources 'fields', :controller=>'fields'
+  map.connect 'fields/new', :controller=>'fields'  , :action=>:new
+  map.connect 'fields/new/:fieldtype', :controller=>'fields'  , :action=>:new
 
-  map.resources :fields
-  
-  
-
-
+  # Field routes
+  map.new_field 'fields/:fieldtype/new', :controller=>'fields'  , :action=>:new
+  map.new_textarea_field '/fields/textarea/new/', :controller=>'fields', :action=>:new, :fieldtype=>:textarea
+  map.new_text_field_field '/fields/text_field/new/', :controller=>'fields', :action=>:new, :fieldtype=>:textfield
+  map.new_check_box_field '/fields/check_box/new/', :controller=>'fields', :action=>:new, :fieldtype=>:check_box
+  map.new_select_drop_down_field '/fields/select_drop_down/new/', :controller=>'fields', :action=>:new, :fieldtype=>:select_drop_down
+>>>>>>> Stashed changes
 
   # The priority is based upon order of creation: first created -> highest priority.
 

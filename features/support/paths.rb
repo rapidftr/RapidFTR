@@ -14,6 +14,9 @@ module NavigationHelpers
 
       when /the home\s?page/
         '/'
+    when /the new add_suggested_field_to_form_section page/
+      new_add_suggested_field_to_form_section_path
+
       when /the new assign_unique_id_to_a_child page/
         new_assign_unique_id_to_a_child_path(options)
 
@@ -53,10 +56,11 @@ module NavigationHelpers
         search_children_path(options)
 
       when /form section page/
-        '/formsection'
+        formsections_path(options) 
 
       when /choose field type page/
-        '/fields/new'
+        arbitrary_form_section = FormSection.new
+        new_formsection_field_path( arbitrary_form_section, options )
 
       when /the edit user page for "(.+)"$/
         user = User.by_user_name(:key => $1)
@@ -71,7 +75,11 @@ module NavigationHelpers
 
       when /new field page for "(.+)"/
         field_type = $1
-        new_field_path(:fieldtype=>field_type)
+        send( "new_#{field_type}_formsection_fields_path" )
+
+      when /the manage fields page for "(.+)"/
+        form_section = $1
+        formsection_fields_path(form_section)
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
