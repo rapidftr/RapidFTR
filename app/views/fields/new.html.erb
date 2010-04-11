@@ -5,10 +5,19 @@
   </div>
   <div class="content">
     <ul>
-      <li><%=link_to "TextField", new_text_field_formsection_fields_path%> </li>
-      <li><%=link_to "TextArea", new_textarea_formsection_fields_path%></li>
-      <li><%=link_to "Check box", new_check_box_formsection_fields_path%></li>
-      <li><%=link_to "Select drop down", new_select_drop_down_formsection_fields_path%></li>
+      <li><%=link_to "TextField", new_text_field_formsection_fields_path(@form_section.unique_id)%> </li>
+      <li><%=link_to "TextArea", new_textarea_formsection_fields_path(@form_section.unique_id)%></li>
+      <li><%=link_to "Check box", new_check_box_formsection_fields_path(@form_section.unique_id)%></li>
+      <li><%=link_to "Select drop down", new_select_drop_down_formsection_fields_path(@form_section.unique_id)%></li>
     </ul>
   </div>
+  <ul id="suggestedFields">
+
+    <% @suggested_fields.each do |field| %>
+        <li class="<%=field.unique_id%>Display">
+          <a href="#"><%=field.name%></a>
+          <%=field.description%>
+        </li>
+    <% end %>
+  </ul>
 </fieldset>

@@ -20,3 +20,4 @@ FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :des
 
 FormSectionDefinition.create!("name" =>"Caregiver details", "enabled"=>"true", :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details")
 
+SuggestedField.create!("name"=>"Sample suggested field", "unique_id"=> "field_1", "description"=>"This is a useful field")
