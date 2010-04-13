@@ -21,7 +21,7 @@
     </p>
     <p>
       <%= f.label :user_name %><br/>
-      <%= f.text_field :user_name, :readonly => !edittable_user.new_record? %>
+      <%= f.text_field :user_name, :disabled => !edittable_user.new_record? %>
       <%=  '*' %>
       <span class="footnote">user name should not contain blanks</span>
     </p>

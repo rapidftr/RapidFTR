@@ -47,3 +47,7 @@ Then /^I should find the form with following attributes:$/ do |table|
     assert_contain attribute.first
   end
 end
+
+Then /^the "([^\"]*)" field should be disabled$/ do |label|
+  field_labeled(label).should be_disabled
+end

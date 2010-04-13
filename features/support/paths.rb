@@ -58,6 +58,11 @@ module NavigationHelpers
       when /choose field type page/
         '/fields/new'
 
+      when /the edit user page for "(.+)"$/
+        user = User.by_user_name(:key => $1)
+        raise "no user named #{$1}" if user.nil?
+        edit_user_path(user)
+
       when /photo resource for child with name "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
