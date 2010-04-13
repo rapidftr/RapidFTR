@@ -19,7 +19,7 @@ class ChildrenController < ApplicationController
   def show
     @child = Child.get(params[:id])
 
-    @form_sections = get_form_sections_for_child @child
+    @form_sections = get_form_sections
 
     @page_name = @child["name"]
 
@@ -43,7 +43,7 @@ class ChildrenController < ApplicationController
   def new
     @page_name = "New child record"
     @child = Child.new
-    @form_sections = get_form_sections_for_child @child
+    @form_sections = get_form_sections
     respond_to do |format|
       format.html
       format.xml  { render :xml => @child }
@@ -54,7 +54,7 @@ class ChildrenController < ApplicationController
   def edit
     @page_name = "Edit child record"
     @child = Child.get(params[:id])
-    @form_sections = get_form_sections_for_child @child
+    @form_sections = get_form_sections
   end
 
   # POST /children
@@ -69,7 +69,7 @@ class ChildrenController < ApplicationController
         format.json { render :json => @child.to_json }
       else
         format.html {
-          @form_sections = get_form_sections_for_child @child
+          @form_sections = get_form_sections
           render :action => "new"
         }
         format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
@@ -96,7 +96,7 @@ class ChildrenController < ApplicationController
         format.json { render :json => @child.to_json }
       else
         format.html {
-          @form_sections = get_form_sections_for_child @child
+          @form_sections = get_form_sections
           render :action => "edit"
         }
         format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
@@ -147,11 +147,11 @@ class ChildrenController < ApplicationController
 
   private
 
-  def get_form_sections_for_child child
+  def get_form_sections
   form_sections = []
 
     Templates.child_form_section_names.each do |section_name|
-      form_sections << FormSection.create_form_section_from_template(section_name, Templates.get_template(section_name), child)
+      form_sections << FormSection.create_form_section_from_template(section_name, Templates.get_template(section_name))
     end
     return form_sections
   end

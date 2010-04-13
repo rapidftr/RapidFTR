@@ -4,13 +4,12 @@ class Field
   SELECT_BOX = "select_box"
   CHECK_BOX = "check_box"
 
-  attr_accessor :name, :type, :options, :value, :help_text
+  attr_accessor :name, :type, :options, :help_text
 
-  def initialize field_name, field_type = '', field_options = [], value = nil
+  def initialize field_name, field_type = '', field_options = []
     @name = field_name
     @type = field_type
     @options = FieldOption.create_field_options(field_name, field_options)
-    @value = value
   end
 
   def self.new_text_field field_name

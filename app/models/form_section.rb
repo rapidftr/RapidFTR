@@ -15,21 +15,12 @@ class FormSection
     @fields << field
   end
 
-  def self.create_form_section_from_template section_name, template, child=Child.new
+  def self.create_form_section_from_template section_name, template
     form = FormSection.new section_name
     template.each do |field|
-      field_value = child[field['name']]
-      form.add_field(Field.new(field['name'], field['type'], field['options'] || [], field_value))
+      form.add_field(Field.new(field['name'], field['type'], field['options'] || []))
     end
     return form
-  end
-
-  def name
-    fields.each do |field|
-      if field.name == 'name'
-         return field.value
-      end
-    end
   end
 
 end

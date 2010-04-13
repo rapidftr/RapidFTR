@@ -4,7 +4,7 @@
   <dd>
     <% radio_button.options.each do |option| %>
         <p>
-          <%= radio_button_tag radio_button.tag_name_attribute, option.option_name, option.option_name == radio_button.value %>
+          <%= radio_button_tag radio_button.tag_name_attribute, option.option_name, option.option_name == @child[radio_button.name] %>
           <%= label_tag option.tag_id, option.option_name %>
         </p>
     <% end %>

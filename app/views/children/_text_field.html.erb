@@ -1,4 +1,4 @@
 <p>
   <%= label_tag text_field.tag_name_attribute, text_field.name.humanize %>
-  <%= text_field_tag text_field.tag_name_attribute, text_field.value %>
+  <%= text_field_tag text_field.tag_name_attribute, @child[text_field.name] %>
 </p>
