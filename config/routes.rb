@@ -21,6 +21,7 @@ ActionController::Routing::Routes.draw do |map|
       :collection => additional_field_actions )
   end
 
+
   map.resources :fields
   
   

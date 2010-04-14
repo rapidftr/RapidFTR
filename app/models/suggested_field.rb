@@ -4,4 +4,5 @@ class SuggestedField   < CouchRestRails::Document
   property :unique_id
   property :name
   property :description
+  property :field, :cast_as => 'FieldDefinition'
 end

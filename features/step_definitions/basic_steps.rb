@@ -204,7 +204,8 @@ end
 Given /^the following suggested fields exist in the system:$/ do |suggested_fields_table|
   suggested_fields_table.hashes.each do |suggested_field_hash|
     suggested_field_hash.reverse_merge!(
-            'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase
+            'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase,
+            'field' => (FieldDefinition.new :name=> suggested_field_hash["name"], :type=>"TEXT" )
     )
     SuggestedField.create!(suggested_field_hash)
   end
@@ -219,4 +220,11 @@ Then /^I should see the following suggested fields:$/ do |suggested_fields_table
     display.at("a").inner_html.strip.should == suggested_field_hash[:name]
     display.inner_html.should contain suggested_field_hash[:description]
   end
+end
+
+And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
+  fields = Hpricot(response.body).form_fields_list
+  fields.should_not be_nil
+  field_row = fields.form_field_for(field_id)
+  field_row.should_not be_nil
 end

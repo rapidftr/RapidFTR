@@ -48,4 +48,10 @@ module HpricotSearch
   def add_custom_field_link
     at("a[text()='Add Custom Field")
   end
+  def form_fields_list
+    at("#formFields")
+  end
+  def form_field_for (field_id)
+    at("tr.##{field_id}Row")
+  end
 end

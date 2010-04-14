@@ -13,10 +13,20 @@
   </div>
   <ul id="suggestedFields">
 
-    <% @suggested_fields.each do |field| %>
-        <li class="<%=field.unique_id%>Display">
-          <a href="#"><%=field.name%></a>
-          <%=field.description%>
+    <% @suggested_fields.each do |suggested_field| %>
+        <li class="<%=suggested_field.unique_id%>Display">
+          <a href="#"><%=suggested_field.name%></a>
+          <%=suggested_field.description%>
+
+          <% form_for suggested_field.field, :url => formsection_fields_path(@form_section.unique_id)  do |f| %>
+              <%= suggested_field.field.name %>
+              
+            <% suggested_field.field.each_pair do |key, value| %>
+                  <%= key %> = <%= value %> AND 
+                <%= f.hidden_field  key %>
+            <% end %>
+            <%= submit_tag "Add #{suggested_field.name}" %>
+          <% end %>
         </li>
     <% end %>
   </ul>
