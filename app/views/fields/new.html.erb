@@ -18,13 +18,13 @@
           <a href="#"><%=suggested_field.name%></a>
           <%=suggested_field.description%>
 
-          <% form_for suggested_field.field, :url => formsection_fields_path(@form_section.unique_id)  do |f| %>
+          <% form_for suggested_field.field, :url => formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
               <%= suggested_field.field.name %>
               
             <% suggested_field.field.each_pair do |key, value| %>
-                  <%= key %> = <%= value %> AND 
                 <%= f.hidden_field  key %>
             <% end %>
+              <input type="hidden" name="from_suggested_field" value="<%=suggested_field.unique_id%>"/>
             <%= submit_tag "Add #{suggested_field.name}" %>
           <% end %>
         </li>

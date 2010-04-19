@@ -11,8 +11,17 @@ class FieldsController < ApplicationController
 
   def new
     read_form_section()
-    @suggested_fields = SuggestedField.all
+    @suggested_fields = SuggestedField.all_unused
     render params[:fieldtype]
+  end
+
+  def create
+    formsection = FormSectionDefinition.get_by_unique_id(params[:formsection_id])
+    field =  FieldDefinition.new( params[:field_definition])
+    FormSectionDefinition.add_field_to_formsection formsection, field
+    SuggestedField.mark_as_used(params[:from_suggested_field])  if params.has_key? :from_suggested_field
+    flash[:notice] = "Field successfully added"
+    redirect_to(formsection_fields_path(params[:formsection_id]))
   end
 
   FIELD_TYPES.each do |field_type|

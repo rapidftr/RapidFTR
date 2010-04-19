@@ -8,7 +8,18 @@ class FormSectionDefinition < CouchRestRails::Document
   property :order
   property :fields, :cast_as => ['FieldDefinition']
 
+  view :unique_id
+  
   def self.get_by_unique_id unique_id
-    first(:unique_id => unique_id)
+    by_unique_id(:key => unique_id).first
+  end
+  def self.add_field_to_formsection formsection, field
+    raise "Field already exists for this formsection" if formsection.has_field(field.name)
+    formsection.fields.push(field)
+    formsection.save
+  end
+
+  def has_field field_name
+    fields.find {|field| field.name == field_name} != nil
   end
 end

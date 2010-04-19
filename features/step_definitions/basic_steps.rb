@@ -150,7 +150,8 @@ end
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
-            'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase 
+            'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
+            'fields'=> Array.new # todo:build these FSDs in a nicer way... 
     )
     FormSectionDefinition.create!(form_section_hash)
   end
@@ -219,6 +220,15 @@ Then /^I should see the following suggested fields:$/ do |suggested_fields_table
     display.should_not be_nil
     display.at("a").inner_html.strip.should == suggested_field_hash[:name]
     display.inner_html.should contain suggested_field_hash[:description]
+  end
+end
+
+Then /^I should not see the following suggested fields:$/ do |suggested_fields_table|
+  suggested_fields_list = Hpricot(response.body).suggested_fields_list
+  suggested_fields_list.should_not be_nil
+  suggested_fields_table.hashes.each do |suggested_field_hash|
+    display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
+    display.should be_nil
   end
 end
 

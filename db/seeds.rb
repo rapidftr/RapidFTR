@@ -14,10 +14,10 @@ User.create("user_type" => "Administrator",
 )
 
 
-FormSectionDefinition.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details")
+FormSectionDefinition.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :fields=>Array.new)
 
-FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details")
+FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields=>Array.new)
 
-FormSectionDefinition.create!("name" =>"Caregiver details", "enabled"=>"true", :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details")
+FormSectionDefinition.create!("name" =>"Caregiver details", "enabled"=>"true", :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields=>Array.new)
 
 SuggestedField.create!("name"=>"Sample suggested field", "unique_id"=> "field_1", "description"=>"This is a useful field", "field"=> FieldDefinition.new(:name=>"theField", :type=>"TEXT"))

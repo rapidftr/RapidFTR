@@ -39,6 +39,9 @@ describe "fields/new.html.erb" do
       value = value == [] ? "" : value
       field[:value].should == value 
     end
+    id_of_suggested_field = suggested_field_form.at("input[@name='from_suggested_field']")
+    id_of_suggested_field.should_not be_nil
+    id_of_suggested_field[:value].should == @suggested_field.unique_id
     submit_button = suggested_field_form.at("input[@type='submit]")
     submit_button.should_not be_nil
     submit_button[:value].should ==  "Add " + @suggested_field.name

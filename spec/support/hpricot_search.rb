@@ -52,6 +52,6 @@ module HpricotSearch
     at("#formFields")
   end
   def form_field_for (field_id)
-    at("tr.##{field_id}Row")
+    at("##{field_id}Row")
   end
 end

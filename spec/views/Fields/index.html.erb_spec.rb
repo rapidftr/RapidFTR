@@ -7,7 +7,8 @@ include HpricotSearch
 describe "fields/index.html.erb" do
 
   before :each do
-    fields = [Field.new_text_field("field1"), Field.new_text_field("field2")]
+    fields = [FieldDefinition.new(:name=>"field1"), FieldDefinition.new(:name=>"field2")]
+    
     @form_section = FormSectionDefinition.new "unique_id" => "basic_details", "fields"=>fields
     assigns[:form_section] = @form_section
     render
@@ -20,9 +21,10 @@ describe "fields/index.html.erb" do
     custom_field_link[:href].should == new_formsection_fields_path(@form_section.unique_id)
   end
   it "should display the list of fields" do
-    #fields = Hpricot(response.body).form_fields_list
-    #fields.should_not be_nil
-    #field_row = fields.form_field_for(field_id)
-    #field_row.should_not be_nil
+    field_name = @form_section.fields[0].name
+    fields = Hpricot(response.body).form_fields_list
+    fields.should_not be_nil
+    field_row = fields.form_field_for("field1")
+    field_row.should_not be_nil
   end
 end

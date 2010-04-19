@@ -1,6 +1,12 @@
 <h1>Fields</h1>
 
-list of fields
+<table id="formFields">
+    <% @form_section.fields.each do |field| %>
+    <tr id="<%="#{field.name}Row"%>">
+      <td><%= field.name %></td>
+    </tr>
+   <% end %>
+</table>
        <p>
 <%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %>
 </p>
