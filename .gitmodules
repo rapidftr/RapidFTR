@@ -1,3 +1,0 @@
-[submodule "vendor/plugins/pdf-inspector"]
-	path = vendor/plugins/pdf-inspector
-	url = git://github.com/sandal/pdf-inspector.git
