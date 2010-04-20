@@ -20,6 +20,6 @@ class SuggestedField   < CouchRestRails::Document
     self.by_unique_id(:key=>unique_id).first
   end
   def self.all_unused 
-    return self.by_is_used :key=>false
+    return self.by_is_used :key=>'false'
   end
 end

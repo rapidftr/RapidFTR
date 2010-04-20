@@ -20,4 +20,5 @@ FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :des
 
 FormSectionDefinition.create!("name" =>"Caregiver details", "enabled"=>"true", :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields=>Array.new)
 
-SuggestedField.create!("name"=>"Sample suggested field", "unique_id"=> "field_1", "description"=>"This is a useful field", "field"=> FieldDefinition.new(:name=>"theField", :type=>"TEXT"))
+SuggestedField.create!("name"=>"Sample suggested field", "unique_id"=> "field_1", "description"=>"This is a useful field", :is_used=>"false", "field"=> FieldDefinition.new(:name=>"theField", :type=>"TEXT"))
+SuggestedField.create!("name"=>"Another suggested field", "unique_id"=> "field_2", "description"=>"This is a useful field", :is_used=>"false", "field"=> FieldDefinition.new(:name=>"theSecondField", :type=>"radio_button"))

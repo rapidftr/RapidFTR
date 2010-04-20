@@ -34,10 +34,10 @@ describe "fields/new.html.erb" do
     suggested_field_form.should_not be_nil
     suggested_field_form[:action].should == formsection_fields_path(@form_section.unique_id)
     @suggested_field.field.each_pair do |key, value|
-      field = suggested_field_form.at("input[@name='field_definition[#{key}]'][@type='hidden']")
+      field = suggested_field_form.at("input[@id='field_definition_#{key}'][@type='hidden']")
       field.should_not be_nil
       value = value == [] ? "" : value
-      field[:value].should == value 
+      field[:value].should == value
     end
     id_of_suggested_field = suggested_field_form.at("input[@name='from_suggested_field']")
     id_of_suggested_field.should_not be_nil

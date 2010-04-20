@@ -8,8 +8,8 @@ class FormSectionDefinition < CouchRestRails::Document
   property :order
   property :fields, :cast_as => ['FieldDefinition']
 
-  view :unique_id
-  
+  view_by :unique_id
+
   def self.get_by_unique_id unique_id
     by_unique_id(:key => unique_id).first
   end

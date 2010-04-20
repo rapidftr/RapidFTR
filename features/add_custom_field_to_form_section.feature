@@ -1,7 +1,12 @@
 Feature: So that admin can customize fields in a form section
+  Background:
+     Given the following form sections exist in the system:
+        | name | unique_id |
+        | Basic details | basic_details |
   Scenario:
     Given I am logged in
-    Given I am on choose field type page
+     And I am on the manage fields page for "basic_details"
+     When I follow "Add Custom Field"
     Then I should find the following links:
       | TextField | new field page for "text_field" |
       | TextArea  | new field page for "textarea"  |

@@ -1,9 +1,9 @@
 Feature: Adding a suggested field to a form section
    Background:
      Given the following suggested fields exist in the system:
-        | name | unique_id | description |
-        | A_suggested_field | field_one | This is a good field to use |
-        | Another_suggested_field | field_two | This also is a good field to use |
+        | name | unique_id | description | is_used |
+        | A_suggested_field | field_one | This is a good field to use |  false |
+        | Another_suggested_field | field_two | This also is a good field to use | false |
      And the following form sections exist in the system:
         | name | unique_id |
         | Basic details | basic_details |
