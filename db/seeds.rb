@@ -14,7 +14,10 @@ User.create("user_type" => "Administrator",
 )
 
 
-FormSectionDefinition.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :fields=>Array.new)
+name_field = FieldDefinition.new "name" => "name", "type" => "text_field"
+age_field = FieldDefinition.new "name" => "age", "type" => "text_field"
+age_is_field = FieldDefinition.new "name" => "age_is", "type" => "select_box", "options" => ["Approximate", "Exact"]
+FormSectionDefinition.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :fields=>[name_field, age_field, age_is_field])
 
 FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields=>Array.new)
 
