@@ -148,6 +148,8 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
 end
 
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
+  FormSectionDefinition.all.each {|u| u.destroy }
+  
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
             'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
@@ -206,7 +208,7 @@ Given /^the following suggested fields exist in the system:$/ do |suggested_fiel
   suggested_fields_table.hashes.each do |suggested_field_hash|
     suggested_field_hash.reverse_merge!(
             'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase,
-            'field' => (FieldDefinition.new :name=> suggested_field_hash["name"], :type=>"TEXT" )
+            'field' => (Field.new :name=> suggested_field_hash["name"], :type=>"TEXT" )
     )
     SuggestedField.create!(suggested_field_hash)
   end

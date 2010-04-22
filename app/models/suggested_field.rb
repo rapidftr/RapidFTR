@@ -4,7 +4,7 @@ class SuggestedField   < CouchRestRails::Document
   property :unique_id
   property :name
   property :description
-  property :field, :cast_as => 'FieldDefinition'
+  property :field, :cast_as => 'Field'
   property :is_used, :cast_as => 'boolean'
 
   view_by :is_used

@@ -13,7 +13,7 @@ describe SuggestedField do
       unique_id = "fred"
       SuggestedField.stub(:by_unique_id).with(:key=>unique_id).and_return([expected])
       SuggestedField.get_by_unique_id(unique_id).should == expected
-      # line by line same as FormSection.get_by_   also should it just use get?
+      # line by line same as FormSectionDefinition.get_by_   also should it just use get?
     end
 
   end

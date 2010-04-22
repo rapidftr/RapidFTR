@@ -9,12 +9,12 @@ describe "children/show.html.erb" do
 
     it "displays the Child's photo"
 
-    it "renders all fields found on the FormSection" do
+    it "renders all fields found on the FormSectionDefinition" do
 
-      form_section = FormSection.new "section_name"
-      form_section.add_field Field.new("age", Field::TEXT_FIELD, [])
-      form_section.add_field Field.new("gender", Field::RADIO_BUTTON, ["male", "female"])
-      form_section.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than"])
+      form_section = FormSectionDefinition.new :unique_id => "section_name"
+      form_section.add_field Field.new_text_field("age")
+      form_section.add_field Field.new_radio_button("gender", ["male", "female"])
+      form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"])
 
       child = Child.new :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345"
 

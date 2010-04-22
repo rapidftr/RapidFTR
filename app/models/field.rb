@@ -1,39 +1,56 @@
-class Field
+class Field < Hash
+  include CouchRest::CastedModel
+
+  property :name
+  property :type
+  property :option_strings
+
+  attr_reader :options
+
   TEXT_FIELD = "text_field"
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
   CHECK_BOX = "check_box"
+  PHOTO_UPLOAD_BOX = "photo_upload_box"
 
-  attr_accessor :name, :type, :options, :help_text
+  def initialize properties
+    super properties
+    if (option_strings)
+      @options = FieldOption.create_field_options(name, option_strings)
+    end
+  end
 
-  def initialize field_name, field_type = '', field_options = []
-    @name = field_name
-    @type = field_type
-    @options = FieldOption.create_field_options(field_name, field_options)
+  def self.new_check_box field_name
+    Field.new :name => field_name, :type => CHECK_BOX
   end
 
   def self.new_text_field field_name
-    Field.new field_name, TEXT_FIELD
+    Field.new :name => field_name, :type => TEXT_FIELD
   end
 
-  def self.new_radio_button field_name, options
-    Field.new field_name, RADIO_BUTTON, options
+  def self.new_photo_upload_box field_name
+    Field.new :name => field_name, :type => PHOTO_UPLOAD_BOX
   end
 
-  def self.new_select_box field_name, options
-    Field.new field_name, SELECT_BOX, options
+  def self.new_radio_button field_name, option_strings
+    Field.new :name => field_name, :type => RADIO_BUTTON, :option_strings => option_strings
+  end
+
+  def self.new_select_box field_name, option_strings
+    Field.new :name => field_name, :type => SELECT_BOX, :option_strings => option_strings
   end
 
   def tag_id
-    "child_#{@name}"
+    "child_#{name}"
   end
 
   def tag_name_attribute
-    "child[#{@name}]"
+    "child[#{name}]"
   end
 
   def select_options
     select_options = @options.collect { |option| [option.option_name, option.option_name] }
     return select_options
   end
+
 end

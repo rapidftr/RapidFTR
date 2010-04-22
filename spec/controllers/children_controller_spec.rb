@@ -7,6 +7,10 @@ describe ChildrenController do
     @mock_child ||= mock_model(Child, stubs)
   end
 
+  before do
+    FormSectionDefinition.stub!(:all_child_field_names).and_return(["name", "age", "origin"])
+  end
+
   describe "GET index" do
     it "assigns all childrens as @childrens" do
       Child.stub!(:all).and_return([mock_child])
@@ -158,7 +162,7 @@ describe ChildrenController do
         first_line = csv_response.split("\n").first
         headers = first_line.split(",")
 
-        headers.should == Templates.all_child_field_names 
+        headers.should == FormSectionDefinition.all_child_field_names 
       end
 
       it 'should render a row for each result, plus a header row' do

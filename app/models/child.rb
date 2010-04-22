@@ -33,25 +33,6 @@ class Child < CouchRestRails::Document
     self['unique_identifier']
   end
 
-#  view_by:user_name,
-#  :map => "function(doc,user_name) {
-#              if ((doc['couchrest-type'] == 'child') && doc['unique_identifier'].substr(0,)
-#             {
-#                emit(doc['user_name'],doc);
-#             }
-#          }"
-
-#  def find_by_created_user(user_name)
-#    @children = Child.by_user_name(:key => user_name.downcase)
-#      user_name = get_user_name_from_unique_identifier(child)
-#    end
-#  end
-
-#
-#  def self.get_user_name_from_unique_identifier(child)
-#    user_name = child.unique_identifier.
-#  end
-
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path    
@@ -122,7 +103,7 @@ class Child < CouchRestRails::Document
   
   def field_name_changes
     @from_child ||= Child.get(self.id)
-    Templates.all_child_field_names.select { |field_name| changed?(field_name) }
+    FormSectionDefinition.all_child_field_names.select { |field_name| changed?(field_name) }
   end
   
   def changed?(field_name)

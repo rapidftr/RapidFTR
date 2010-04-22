@@ -3,20 +3,11 @@ require 'hpricot'
 require 'support/hpricot_search'
 include HpricotSearch
 
-
-def get_suggested_field_display
-  suggested_fields = @searchable_response.suggested_fields_list
-  suggested_fields.should_not be_nil
-  suggested_field_display = suggested_fields.suggested_field_display_for @suggested_field.unique_id
-  suggested_field_display.should_not be_nil
-  return suggested_field_display
-end
-
 describe "fields/new.html.erb" do
 
   before :each do
     @form_section = FormSectionDefinition.new "unique_id" => "basic_details"
-    @suggested_field = SuggestedField.new "unique_id" => "field_1", "name"=>"A field", "description"=> "This is a field", "field"=> FieldDefinition.new(:name=>"theField", :type=>"TEXT")
+    @suggested_field = SuggestedField.new "unique_id" => "field_1", "name"=>"A field", "description"=> "This is a field", "field"=> Field.new_text_field(:name=>"theField")
     assigns[:form_section] = @form_section
     assigns[:suggested_fields] = [@suggested_field]
     render
@@ -24,12 +15,14 @@ describe "fields/new.html.erb" do
   end
 
   it "should add the suggested fields list" do
-    suggested_field_display = get_suggested_field_display()
+    suggested_field_display = get_suggested_field_display
     suggested_field_display.at("a").inner_html.strip.should == @suggested_field.name
     suggested_field_display.inner_html.should contain @suggested_field.description
   end
+
   it"should render a form for each suggested field" do
-    suggested_field_display = get_suggested_field_display()
+    pending
+    suggested_field_display = get_suggested_field_display
     suggested_field_form = suggested_field_display.at("form")
     suggested_field_form.should_not be_nil
     suggested_field_form[:action].should == formsection_fields_path(@form_section.unique_id)
@@ -46,4 +39,13 @@ describe "fields/new.html.erb" do
     submit_button.should_not be_nil
     submit_button[:value].should ==  "Add " + @suggested_field.name
   end
+end
+
+
+def get_suggested_field_display
+  suggested_fields = @searchable_response.suggested_fields_list
+  suggested_fields.should_not be_nil
+  suggested_field_display = suggested_fields.suggested_field_display_for @suggested_field.unique_id
+  suggested_field_display.should_not be_nil
+  return suggested_field_display
 end

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-class FormSection;
+class FormSectionDefinition;
 end
 
 describe "children/_form_section.html.erb" do
 
   before :each do
-    @form_section = FormSection.new
+    @form_section = FormSectionDefinition.new "unique_id" => "section_name"
   end
 
   describe "rendering text fields" do
@@ -14,7 +14,7 @@ describe "children/_form_section.html.erb" do
     context "new record" do
 
       it "renders text fields with a corresponding label" do
-        @form_section.add_text_field("name")
+        @form_section.add_field(Field.new_text_field("name"))
 
         assigns[:child] = Child.new
         render :locals => { :form_section => @form_section }
@@ -30,7 +30,7 @@ describe "children/_form_section.html.erb" do
 
       it "prepopulates the text field with the existing value" do
         @child = Child.new :name => "Jessica"
-        @form_section.add_field(Field.new("name", Field::TEXT_FIELD, []))
+        @form_section.add_field(Field.new_text_field("name"))
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
@@ -60,7 +60,7 @@ describe "children/_form_section.html.erb" do
 
       it "renders a radio button with the current option selected" do
         @child = Child.new :is_age_exact => "approximate"
-        @form_section.add_field Field.new("is_age_exact", Field::RADIO_BUTTON, ["exact", "approximate"])
+        @form_section.add_field Field.new_radio_button("is_age_exact", ["exact", "approximate"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
@@ -95,7 +95,7 @@ describe "children/_form_section.html.erb" do
 
     it "renders a select box with the current value selected" do
       @child = Child.new :date_of_separation => "1-2 weeks ago"
-      @form_section.add_field Field.new("date_of_separation", Field::SELECT_BOX, ["1-2 weeks ago", "More than a year ago"])
+      @form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than a year ago"])
 
       assigns[:child] = @child
       render :locals => { :form_section => @form_section }
@@ -113,7 +113,7 @@ describe "children/_form_section.html.erb" do
 
       it "renders checkboxes" do
         @child = Child.new 
-        @form_section.add_field Field.new("is_orphan", Field::CHECK_BOX)
+        @form_section.add_field Field.new_check_box("is_orphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
@@ -127,7 +127,7 @@ describe "children/_form_section.html.erb" do
 
       it "renders checkboxes as checked if the underlying field is set to Yes" do
         @child = Child.new :is_orphan => "Yes"
-        @form_section.add_field Field.new("is_orphan", Field::CHECK_BOX, [])
+        @form_section.add_field Field.new_check_box("is_orphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
@@ -137,7 +137,7 @@ describe "children/_form_section.html.erb" do
 
       it "renders checkboxes with the HTML FORM hidden field workaround for unchecking a property" do
         @child = Child.new :is_orphan => "Yes"
-        @form_section.add_field Field.new("is_orphan", Field::CHECK_BOX, [])
+        @form_section.add_field Field.new_check_box("is_orphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }

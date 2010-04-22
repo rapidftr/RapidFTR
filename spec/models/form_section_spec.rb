@@ -7,7 +7,7 @@ require "spec_helper"
 
 def new_field(fields = {})
   fields.reverse_merge!(:name=>random_string)
-  FieldDefinition.new fields
+  Field.new fields
 end
 
 def random_string(length=10)
@@ -28,12 +28,15 @@ describe FormSectionDefinition do
       FormSectionDefinition.get_by_unique_id(unique_id).should == expected
     end
   end
+  
   describe "has_field" do
+
     it "should be true if the formsection has a field with that name" do
       field_name = "the_field"
       formsection = FormSectionDefinition.new :fields=>[new_field :name=>field_name]
       formsection.has_field(field_name).should == true
     end
+
     it "should be true if the formsection does not have a field with that name" do
       field_name = "the_field"
       formsection = FormSectionDefinition.new :fields=>[new_field]
@@ -42,14 +45,14 @@ describe FormSectionDefinition do
   end
   describe "add_field_to_formsection" do
     it "adds the field to the formsection" do
-      field = FieldDefinition.new
+      field = Field.new_text_field("name")
       formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
       FormSectionDefinition.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
     end
     it "saves the formsection" do
-      field = FieldDefinition.new
+      field = Field.new_text_field("name")
       formsection = mock_formsection
       formsection.should_receive(:save)    
       FormSectionDefinition.add_field_to_formsection formsection, field

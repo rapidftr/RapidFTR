@@ -87,7 +87,7 @@ class ChildrenController < ApplicationController
     @child = Child.get(params[:id])
     new_photo = params[:child].delete(:photo)
     @child.update_properties_with_user_name current_user_name, new_photo, params[:child]
-    
+
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child was successfully updated.'
@@ -136,9 +136,9 @@ class ChildrenController < ApplicationController
   end
 
   def photo_pdf
-    child_ids = params.map{ |k,v| 'selected' == v ? k : nil }.compact
+    child_ids = params.map{ |k, v| 'selected' == v ? k : nil }.compact
     if child_ids.empty?
-      raise ErrorResponse.bad_request('You must select at least one record to be exported') 
+      raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
     children = child_ids.map{ |child_id| Child.get(child_id) }
     pdf_data = PdfGenerator.new.child_photos(children)
@@ -148,20 +148,15 @@ class ChildrenController < ApplicationController
   private
 
   def get_form_sections
-  form_sections = []
-
-    Templates.child_form_section_names.each do |section_name|
-      form_sections << FormSection.create_form_section_from_template(section_name, Templates.get_template(section_name))
-    end
-    return form_sections
+    FormSectionDefinition.all
   end
 
   def render_results_as_csv
-    field_names = Templates.all_child_field_names 
+    field_names = FormSectionDefinition.all_child_field_names
     csv = FasterCSV.generate do |rows|
       rows << field_names
       @results.each do |child|
-        rows << field_names.map{ |field_name| child[field_name] } 
+        rows << field_names.map{ |field_name| child[field_name] }
       end
     end
 

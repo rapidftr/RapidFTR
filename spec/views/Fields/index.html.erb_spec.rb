@@ -7,7 +7,7 @@ include HpricotSearch
 describe "fields/index.html.erb" do
 
   before :each do
-    fields = [FieldDefinition.new(:name=>"field1"), FieldDefinition.new(:name=>"field2")]
+    fields = [Field.new(:name=>"field1"), Field.new(:name=>"field2")]
     
     @form_section = FormSectionDefinition.new "unique_id" => "basic_details", "fields"=>fields
     assigns[:form_section] = @form_section

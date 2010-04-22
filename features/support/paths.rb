@@ -59,7 +59,7 @@ module NavigationHelpers
         formsections_path(options) 
 
       when /choose field type page/
-        arbitrary_form_section = FormSection.new
+        arbitrary_form_section = FormSectionDefinition.new
         new_formsection_field_path( arbitrary_form_section, options )
 
       when /the edit user page for "(.+)"$/

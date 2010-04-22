@@ -29,7 +29,7 @@ describe FieldsController do
   describe "post create" do
     it "should add the new field to the formsection" do
       SuggestedField.stub(:mark_as_used)
-      field = FieldDefinition.new :name=>"myNewField", :type=>"TEXT"
+      field = Field.new :name=>"myNewField", :type=>"TEXT"
       FormSectionDefinition.should_receive(:add_field_to_formsection).with(@form_section, field)
       post :create, :formsection_id =>@form_section.unique_id, :field_definition=> field
     end

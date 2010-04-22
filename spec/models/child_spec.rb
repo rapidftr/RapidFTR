@@ -3,8 +3,19 @@ require 'spec_helper'
 
 describe Child do
 
+  before do
+    form_section = FormSectionDefinition.new :unique_id => "basic_details"
+    form_section.add_text_field("last_known_location")
+    form_section.add_text_field("age")
+    form_section.add_text_field("origin")
+    form_section.add_field(Field.new_radio_button("gender", ["male", "female"]))
+    form_section.add_field(Field.new_photo_upload_box("current_photo_key"))
+    FormSectionDefinition.stub!(:all).and_return([form_section])
+  end
+
+
   describe "update_properties_with_user_name" do
-    it "should replace old properties with updated ones" do
+    it "should reple old properties with updated ones" do
       child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
       new_properties = {"name" => "Dave", "age" => "35"}
       child.update_properties_with_user_name "some_user", nil, new_properties

@@ -22,4 +22,5 @@ class FieldOption
   def tag_id
     "child_#{@field_name}_#{@option_name.downcase}"
   end
+
 end

@@ -17,7 +17,7 @@ class FieldsController < ApplicationController
 
   def create
     formsection = FormSectionDefinition.get_by_unique_id(params[:formsection_id])
-    field =  FieldDefinition.new( params[:field_definition])
+    field =  Field.new( params[:field_definition])
     FormSectionDefinition.add_field_to_formsection formsection, field
     SuggestedField.mark_as_used(params[:from_suggested_field])  if params.has_key? :from_suggested_field
     flash[:notice] = "Field successfully added"
