@@ -2,7 +2,7 @@ class FieldsController < ApplicationController
   FIELD_TYPES = %w{text_field textarea check_box select_drop_down}
 
   def read_form_section
-    @form_section = FormSectionDefinition.get_by_unique_id(params[:formsection_id])
+    @form_section = FormSection.get_by_unique_id(params[:formsection_id])
   end
 
   def index
@@ -16,9 +16,9 @@ class FieldsController < ApplicationController
   end
 
   def create
-    formsection = FormSectionDefinition.get_by_unique_id(params[:formsection_id])
+    formsection = FormSection.get_by_unique_id(params[:formsection_id])
     field =  Field.new( params[:field_definition])
-    FormSectionDefinition.add_field_to_formsection formsection, field
+    FormSection.add_field_to_formsection formsection, field
     SuggestedField.mark_as_used(params[:from_suggested_field])  if params.has_key? :from_suggested_field
     flash[:notice] = "Field successfully added"
     redirect_to(formsection_fields_path(params[:formsection_id]))

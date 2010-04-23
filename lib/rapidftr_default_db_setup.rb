@@ -4,7 +4,7 @@ module RapidFTR
 
     def self.reset_default_form_section_definitions
 
-      FormSectionDefinition.all.each {|u| u.destroy }
+      FormSection.all.each {|u| u.destroy }
 
       basic_details_fields = [
               Field.new("name" => "name", "type" => "text_field"),
@@ -17,7 +17,7 @@ module RapidFTR
               Field.new("name" => "current_photo_key", "type" => "photo_upload_box")
       ]
 
-      FormSectionDefinition.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :fields => basic_details_fields)
+      FormSection.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :fields => basic_details_fields)
 
       family_details_fields = [
               Field.new("name" => "fathers_name", "type" => "text_field"),
@@ -26,7 +26,7 @@ module RapidFTR
               Field.new("name" => "reunite_with_mother", "type" => "select_box", "option_strings" =>["Yes", " No"]),
       ]
 
-      FormSectionDefinition.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
+      FormSection.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
 
 
       caregiver_details_fields = [
@@ -43,7 +43,7 @@ module RapidFTR
               Field.new("name" => "is_disabled", "type" => "check_box")
       ]
 
-      FormSectionDefinition.create!("name" =>"Caregiver details", "enabled"=>"true", :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields => caregiver_details_fields)
+      FormSection.create!("name" =>"Caregiver details", "enabled"=>"true", :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields => caregiver_details_fields)
 
       return true
     end

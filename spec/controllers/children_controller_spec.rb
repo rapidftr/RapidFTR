@@ -8,7 +8,7 @@ describe ChildrenController do
   end
 
   before do
-    FormSectionDefinition.stub!(:all_child_field_names).and_return(["name", "age", "origin"])
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin"])
   end
 
   describe "GET index" do
@@ -162,7 +162,7 @@ describe ChildrenController do
         first_line = csv_response.split("\n").first
         headers = first_line.split(",")
 
-        headers.should == FormSectionDefinition.all_child_field_names 
+        headers.should == FormSection.all_child_field_names
       end
 
       it 'should render a row for each result, plus a header row' do

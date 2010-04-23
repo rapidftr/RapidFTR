@@ -1,5 +1,5 @@
-class FormSectionDefinition < CouchRestRails::Document
-  use_database :form_section_definition
+class FormSection < CouchRestRails::Document
+  use_database :form_section
 
   property :unique_id
   property :name

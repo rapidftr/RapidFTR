@@ -148,11 +148,11 @@ class ChildrenController < ApplicationController
   private
 
   def get_form_sections
-    FormSectionDefinition.all
+    FormSection.all
   end
 
   def render_results_as_csv
-    field_names = FormSectionDefinition.all_child_field_names
+    field_names = FormSection.all_child_field_names
     csv = FasterCSV.generate do |rows|
       rows << field_names
       @results.each do |child|

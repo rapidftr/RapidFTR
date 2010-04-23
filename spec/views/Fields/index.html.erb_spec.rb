@@ -9,7 +9,7 @@ describe "fields/index.html.erb" do
   before :each do
     fields = [Field.new(:name=>"field1"), Field.new(:name=>"field2")]
     
-    @form_section = FormSectionDefinition.new "unique_id" => "basic_details", "fields"=>fields
+    @form_section = FormSection.new "unique_id" => "basic_details", "fields"=>fields
     assigns[:form_section] = @form_section
     render
     @searchable_response = Hpricot(response.body)

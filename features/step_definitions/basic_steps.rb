@@ -148,14 +148,14 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
 end
 
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
-  FormSectionDefinition.all.each {|u| u.destroy }
+  FormSection.all.each {|u| u.destroy }
   
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
             'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
             'fields'=> Array.new # todo:build these FSDs in a nicer way... 
     )
-    FormSectionDefinition.create!(form_section_hash)
+    FormSection.create!(form_section_hash)
   end
 end
 

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-class FormSectionDefinition;
+class FormSection;
 end
 
 describe "children/new.html.erb" do
 
   before :each do
-    @form_section = FormSectionDefinition.new :unique_id => "section_name"
+    @form_section = FormSection.new :unique_id => "section_name"
     assigns[:form_sections] = [@form_section]
   end
 

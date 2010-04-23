@@ -9,9 +9,9 @@ describe "children/show.html.erb" do
 
     it "displays the Child's photo"
 
-    it "renders all fields found on the FormSectionDefinition" do
+    it "renders all fields found on the FormSection" do
 
-      form_section = FormSectionDefinition.new :unique_id => "section_name"
+      form_section = FormSection.new :unique_id => "section_name"
       form_section.add_field Field.new_text_field("age")
       form_section.add_field Field.new_radio_button("gender", ["male", "female"])
       form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"])

@@ -6,7 +6,7 @@ include HpricotSearch
 describe "fields/new.html.erb" do
 
   before :each do
-    @form_section = FormSectionDefinition.new "unique_id" => "basic_details"
+    @form_section = FormSection.new "unique_id" => "basic_details"
     @suggested_field = SuggestedField.new "unique_id" => "field_1", "name"=>"A field", "description"=> "This is a field", "field"=> Field.new_text_field(:name=>"theField")
     assigns[:form_section] = @form_section
     assigns[:suggested_fields] = [@suggested_field]

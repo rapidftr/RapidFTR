@@ -6,7 +6,7 @@ describe "histories/show.html.erb" do
 
 
     before do
-      FormSectionDefinition.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
+      FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
     end
 
     it "should render only the creation record when no histories yet" do

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-class FormSectionDefinition;
+class FormSection;
 end
 
 describe "children/_form_section.html.erb" do
 
   before :each do
-    @form_section = FormSectionDefinition.new "unique_id" => "section_name"
+    @form_section = FormSection.new "unique_id" => "section_name"
   end
 
   describe "rendering text fields" do
