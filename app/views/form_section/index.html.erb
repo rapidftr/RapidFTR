@@ -14,13 +14,17 @@
         <td><!-- TODO: checkboxes --></td>
         <td>
             <span class="enabledStatus <%= section.enabled=="true"? "tick":"cross"%>">
-              <%= section.enabled=="true"? "Enabled":"Disabled"%>
+              <%= section.enabled? ? "Enabled" : "Disabled"%>
             </span>
           </td>
         <td><a href="#" class="formSectionLink"><%= section.name %></a></td>
         <td><%= section.description %></td>
         <td><span class="formSectionOrder"><%= section.order %></span></td>
-        <td><%= link_to "Manage Fields", formsection_fields_path(section.unique_id), :class=>'manageFieldsLink'%></td>
+        <td>
+        <% if section.editable? %>
+        <%= link_to "Manage Fields", formsection_fields_path(section.unique_id), :class=>'manageFieldsLink'%>
+        <% end %>
+        </td>
       </tr>
   <% end %>
 </table>

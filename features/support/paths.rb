@@ -20,7 +20,6 @@ module NavigationHelpers
       when /the new assign_unique_id_to_a_child page/
         new_assign_unique_id_to_a_child_path(options)
 
-
       when /new child page/
         new_child_path(options)
 
