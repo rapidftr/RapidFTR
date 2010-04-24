@@ -23,6 +23,10 @@ Feature: So that admin can customize fields in a form section
     When I fill in "Really anything" for "Help text"
     And I press "Create"
     Then I should see "Anything"
+    When I am on children listing page
+    And I follow "New child"
+    Then I should see "Anything"
+    
     
   Scenario: Basic Details should have no option to edit it's fields
     Given I am logged in
