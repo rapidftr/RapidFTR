@@ -20,7 +20,7 @@ Feature: Adding a suggested field to a form section
      And I am on the manage fields page for "basic_details"
      When I follow "Add Custom Field"
      #This is for cucumber only  - scriptless version just submits a form via a link
-     And I press "Add A_suggested_field"
+     And I press "A_suggested_field"
      Then I should see "Field successfully added"
      And I should be on the manage fields page for "basic_details"
      And I should see "A_suggested_field" in the list of fields
