@@ -7,6 +7,7 @@ class FormSection < CouchRestRails::Document
   property :enabled, :cast_as => 'boolean'
   property :order
   property :fields, :cast_as => ['Field']
+  property :editable, :cast_as => 'boolean', :default => true
 
   view_by :unique_id
 
@@ -31,6 +32,7 @@ class FormSection < CouchRestRails::Document
 
   def self.add_field_to_formsection formsection, field
     raise "Field already exists for this formsection" if formsection.has_field(field.name)
+    raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save
   end
