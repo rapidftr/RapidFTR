@@ -31,7 +31,7 @@ describe FieldsController do
       SuggestedField.stub(:mark_as_used)
       field = Field.new :name=>"myNewField", :type=>"TEXT"
       FormSection.should_receive(:add_field_to_formsection).with(@form_section, field)
-      post :create, :formsection_id =>@form_section.unique_id, :field_definition=> field
+      post :create, :formsection_id =>@form_section.unique_id, :field=> field
     end
     it "should redirect back to the fields page" do
       FormSection.stub(:add_field_to_formsection)

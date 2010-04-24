@@ -1,4 +1,3 @@
-@wip
 Feature: Adding a suggested field to a form section
    Background:
      Given the following suggested fields exist in the system:
