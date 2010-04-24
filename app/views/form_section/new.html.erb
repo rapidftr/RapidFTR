@@ -1,0 +1,21 @@
+<h2>Create form</h2>
+
+<!--form method="PUT" action="/form_section/save"-->
+<% form_for :form_section, :url => formsections_path(), :html => {:method => :post}  do |f| %>  
+  <p>
+     <label for="form_section_name">Name</label>
+     <%= f.text_field :name %></p>
+  <p>
+     <label for="form_section_description">Description</label>
+     <%= f.text_area :description %></p>
+  <p>
+      <label for="form_order">Order</label>
+      <%= f.text_field :order %></p>
+  <p>
+     <label for="form_enabled">Enabled</label>
+     <%= f.check_box :enabled, {:checked => true}, :true, :false %>
+  </p>
+   <p class="submitButton">
+      <input name="commit" type="submit" value="Save Form"/>
+   </p>
+<% end %>
