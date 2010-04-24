@@ -1,4 +1,5 @@
 class FieldsController < ApplicationController
+
   FIELD_TYPES = %w{text_field textarea check_box select_drop_down}
 
   def read_form_section
@@ -10,6 +11,7 @@ class FieldsController < ApplicationController
   end
 
   def new
+    @body_class = 'forms-page'
     read_form_section()
     @suggested_fields = SuggestedField.all_unused
     render params[:fieldtype]

@@ -135,6 +135,9 @@ td.checkbox { text-align: center;}
 .profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
 
+/* forms page */
+.forms-page #suggestedFields input[type=submit] {background: transparent; border-top: 0;border-right: 0; border-bottom:0;border-left: 0;display: inline;margin: 0;padding: 0;color: #39f; text-decoration: underline; overflow: hidden; outline: none; line-height: 1.5em  ; font-family:inherit; cursor:pointer;}
+
 /* profile page > header */
 .profile-header { background-color: #ddd; padding: 9px; border: 1px solid #678; border-bottom-width: 0; }
 .profile-header h2 { margin-bottom: .5em; }
