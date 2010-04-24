@@ -8,6 +8,10 @@
       <%= f.label :help_text%>
 
       <%= f.text_area :help_text %>
+  </p>  
+  <p>
+      <%= f.label :enabled %>
+      <%= f.check_box :enabled, :checked => true %>
   </p>
   <p class="submitButton">
       <%= submit_tag 'Create' %>
