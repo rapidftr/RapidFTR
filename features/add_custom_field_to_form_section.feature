@@ -16,5 +16,12 @@ Feature: So that admin can customize fields in a form section
     Then I should find the form with following attributes:
       | Name |
       | Help text |
+      | Enabled |
+    And the "Enabled" checkbox should be checked
+    When I fill in "Anything" for "name"
+    When I fill in "Really anything" for "Help text"
+    And I press "Create"
+    Then I should see "Anything"
+      
 
      

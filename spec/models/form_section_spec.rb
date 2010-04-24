@@ -1,7 +1,7 @@
 require "spec_helper"
 
   def mock_formsection(stubs={})
-    stubs.reverse_merge!(:fields=>[], :save=>true, :has_field=>false)
+    stubs.reverse_merge!(:fields=>[], :save => true, :has_field => false, :editable => true)
     @mock_formsection ||= mock_model(FormSection, stubs)
   end
 
@@ -42,8 +42,11 @@ describe FormSection do
       formsection = FormSection.new :fields=>[new_field]
       formsection.has_field(field_name).should == false
     end
+    
   end
+  
   describe "add_field_to_formsection" do
+    
     it "adds the field to the formsection" do
       field = Field.new_text_field("name")
       formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
@@ -51,16 +54,34 @@ describe FormSection do
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
     end
+    
     it "saves the formsection" do
       field = Field.new_text_field("name")
       formsection = mock_formsection
       formsection.should_receive(:save)    
       FormSection.add_field_to_formsection formsection, field
     end
+    
     it "raises an error if a field with that name already exists on the form section"  do
       field = new_field :name=>'field_one'
       formsection = FormSection.new :fields=>[new_field :name=>'field_one']
       lambda {FormSection.add_field_to_formsection formsection,field}.should raise_error
     end
+    
+    it "should raise an error if adding a field to a non editable form section" do
+      field = new_field :name=>'field_one'
+      formsection = FormSection.new :editable => false
+      lambda {FormSection.add_field_to_formsection formsection,field}.should raise_error
+    end
+    
+  end
+  
+  describe "editable" do
+    
+    it "should be editable by default" do
+      formsection = FormSection.new
+      formsection.editable?.should be_true
+    end
+    
   end
 end

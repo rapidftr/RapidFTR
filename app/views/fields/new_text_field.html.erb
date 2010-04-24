@@ -1,9 +1,22 @@
-<% form_for :field, @field, :url => { :action => "create" } do |f| %>
+<% form_for :field, @field, :url => { :action => "create" }, :html => {:class => "new-field default-form"} do |f| %>
   <%= hidden_field_tag( 'field_type', 'text_field' ) %>
-        <p>Name</p>
+  <p>
+      <%= f.label :name %>
       <%= f.text_field :name %>
-    <p>Help text</p>
+  </p>
+  <p>  
+      <%= f.label :help_text%>
 
       <%= f.text_area :help_text %>
+  </p>  
+  <p>
+      <%= f.label :enabled %>
+      <%= f.check_box :enabled, :checked => true %>
+  </p>
+  <p class="submitButton">
       <%= submit_tag 'Create' %>
+  </p>
+  <p class="cancelButton">
+     <%= link_to 'Cancel', new_formsection_fields_path(@form_section.unique_id) %>
+  </p>
 <% end %>
