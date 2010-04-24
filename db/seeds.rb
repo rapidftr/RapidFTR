@@ -17,5 +17,5 @@ User.create("user_type" => "Administrator",
 
 RapidFTR::DbSetup.reset_default_form_section_definitions
 
-SuggestedField.create!("name"=>"Sample suggested field", "unique_id"=> "field_1", "description"=>"This is a useful field", :is_used=>"false", "field"=> Field.new(:name=>"theField", :type=>"TEXT"))
-SuggestedField.create!("name"=>"Another suggested field", "unique_id"=> "field_2", "description"=>"This is a useful field", :is_used=>"false", "field"=> Field.new(:name=>"theSecondField", :type=>"radio_button"))
+SuggestedField.create!("name"=>"Sample suggested field", "unique_id"=> "field_1", "description"=>"This is a useful field", :is_used=>false, "field"=> Field.new(:name=>"theField", :type=>"TEXT"))
+SuggestedField.create!("name"=>"Another suggested field", "unique_id"=> "field_2", "description"=>"This is a useful field", :is_used=>false, "field"=> Field.new(:name=>"theSecondField", :type=>"radio_button"))

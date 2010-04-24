@@ -210,7 +210,8 @@ Given /^the following suggested fields exist in the system:$/ do |suggested_fiel
             'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase,
             'field' => (Field.new :name=> suggested_field_hash["name"], :type=>"TEXT" )
     )
-    SuggestedField.create!(suggested_field_hash)
+    suggested_field_hash[:is_used] = false
+    temp1 = SuggestedField.create!(suggested_field_hash)
   end
 end
 
