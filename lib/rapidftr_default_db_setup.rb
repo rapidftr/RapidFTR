@@ -17,7 +17,7 @@ module RapidFTR
               Field.new("name" => "current_photo_key", "type" => "photo_upload_box")
       ]
 
-      FormSection.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :fields => basic_details_fields)
+      FormSection.create!("name" =>"Basic details", "enabled"=>"true", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :editable => false, :fields => basic_details_fields)
 
       family_details_fields = [
               Field.new("name" => "fathers_name", "type" => "text_field"),
