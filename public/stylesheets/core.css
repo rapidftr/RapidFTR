@@ -163,6 +163,9 @@ td.checkbox { text-align: center;}
 .edit-profile .cancel { float: left; }
 
 
+/* new field page*/
+.new-field .submitButton { float:right; text-align:right;}
+
 /* ie6 fixes */
 
 .page-header { zoom: 1; }

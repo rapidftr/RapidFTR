@@ -26,6 +26,7 @@ class FieldsController < ApplicationController
 
   FIELD_TYPES.each do |field_type|
     define_method "new_#{field_type}" do
+      read_form_section()
     end
   end
 end
