@@ -1,4 +1,7 @@
 <% form_for :field, @field, :url => { :action => "create" }, :html => {:class => "new-field default-form"} do |f| %>
+  
+  <%= error_messages_for :field %>
+  
   <%= f.hidden_field 'type', :value => "text_field" %>
   <p>
       <%= f.label :name %>

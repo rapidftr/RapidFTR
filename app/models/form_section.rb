@@ -1,6 +1,6 @@
 class FormSection < CouchRestRails::Document
   use_database :form_section
-
+  
   property :unique_id
   property :name
   property :description
@@ -31,7 +31,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.add_field_to_formsection formsection, field
-    raise "Field already exists for this formsection" if formsection.has_field(field.name)
+    raise "Field already exists for this form section" if formsection.has_field(field.name)
     raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save

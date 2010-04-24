@@ -18,12 +18,19 @@ class FieldsController < ApplicationController
   end
 
   def create
-    formsection = FormSection.get_by_unique_id(params[:formsection_id])
+    @form_section = FormSection.get_by_unique_id(params[:formsection_id])
     field =  Field.new( params[:field])
-    FormSection.add_field_to_formsection formsection, field
-    SuggestedField.mark_as_used(params[:from_suggested_field])  if params.has_key? :from_suggested_field
-    flash[:notice] = "Field successfully added"
-    redirect_to(formsection_fields_path(params[:formsection_id]))
+    
+    begin
+      FormSection.add_field_to_formsection @form_section, field
+      SuggestedField.mark_as_used(params[:from_suggested_field])  if params.has_key? :from_suggested_field
+      flash[:notice] = "Field successfully added"
+      redirect_to(formsection_fields_path(params[:formsection_id]))
+    rescue Exception => e
+      field.errors.add("name", e.message)
+      @field = field
+      render :action => "new_#{params[:field][:type]}"
+    end
   end
 
   FIELD_TYPES.each do |field_type|

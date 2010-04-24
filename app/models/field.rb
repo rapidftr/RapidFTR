@@ -1,7 +1,9 @@
 class Field < Hash
   include CouchRest::CastedModel
-
+  include CouchRest::Validation
+  
   property :name
+  property :help_text
   property :type
   property :option_strings
 
