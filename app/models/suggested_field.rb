@@ -26,4 +26,8 @@ class SuggestedField   < CouchRestRails::Document
   def self.all_unused 
     return self.by_is_used :key=>false
   end
+
+  def self.create_from_field! name, description, field
+    SuggestedField.create!("name"=>name, "unique_id"=> field.name, "description"=>description, :is_used=>false, "field"=> field)
+  end
 end
