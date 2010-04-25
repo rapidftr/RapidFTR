@@ -33,13 +33,13 @@ describe FormSection do
 
     it "should be true if the formsection has a field with that name" do
       field_name = "the_field"
-      formsection = FormSection.new :fields=>[new_field :name=>field_name]
+      formsection = FormSection.new(:fields=>[new_field(:name=>field_name)])
       formsection.has_field(field_name).should == true
     end
 
     it "should be true if the formsection does not have a field with that name" do
       field_name = "the_field"
-      formsection = FormSection.new :fields=>[new_field]
+      formsection = FormSection.new(:fields=>[new_field])
       formsection.has_field(field_name).should == false
     end
     
@@ -64,7 +64,7 @@ describe FormSection do
     
     it "raises an error if a field with that name already exists on the form section"  do
       field = new_field :name=>'field_one'
-      formsection = FormSection.new :fields=>[new_field :name=>'field_one']
+      formsection = FormSection.new :fields=>[new_field(:name=>'field_one')]
       lambda {FormSection.add_field_to_formsection formsection,field}.should raise_error
     end
     

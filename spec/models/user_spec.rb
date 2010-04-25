@@ -61,8 +61,8 @@ describe User do
     reloaded_user = User.get( user.id )
 
     reloaded_user.should_not == user
-    reloaded_user.should_not eql user
-    reloaded_user.should_not equal user
+    reloaded_user.should_not eql(user)
+    reloaded_user.should_not equal(user)
   end
   
   it "can authenticate with the right password" do

@@ -39,7 +39,7 @@ describe "children/search.html.erb" do
       assigns[:show_thumbnails] = false
       render
 
-      Hpricot(response.body).photos.size.should be 0
+      Hpricot(response.body).photos.size.should be(0)
     end
 
     it "should include checkboxes to select individual records" do

@@ -17,7 +17,7 @@ describe "fields/new.html.erb" do
   it "should add the suggested fields list" do
     suggested_field_display = get_suggested_field_display
     suggested_field_display.at("input")[:value].strip.should == @suggested_field.name
-    suggested_field_display.inner_html.should contain @suggested_field.description
+    suggested_field_display.inner_html.should contain(@suggested_field.description)
   end
 
   it"should render a form for each suggested field" do
