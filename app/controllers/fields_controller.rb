@@ -19,7 +19,7 @@ class FieldsController < ApplicationController
 
   def create
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
-    field =  Field.new( params[:field])
+    field =  Field.new(params[:field])
     
     begin
       FormSection.add_field_to_formsection @form_section, field
