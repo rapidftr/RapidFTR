@@ -69,7 +69,11 @@ describe User do
     user = build_user(:password => "thepass")
     user.authenticate("thepass").should be_true
   end
-  
+   
+  it "can authenticate when disabled has a value of false and has the right password" do
+    user = build_user(:password => "thepass", :disabled => false)
+    user.authenticate("thepass").should be_true
+  end
   it "can't authenticate with the wrong password" do
     user = build_user(:password => "onepassword")
     user.authenticate("otherpassword").should be_false
