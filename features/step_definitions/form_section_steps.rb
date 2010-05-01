@@ -17,4 +17,10 @@ Then /^I should not see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arro
   row.inner_html.should_not include(arrow_name)
 end
 
+Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
+  row = Hpricot(response.body).search("tr[@id=#{field_name}Row]").first
+  row.inner_html.should include(arrow_name)
+end
+
+
 

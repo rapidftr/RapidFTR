@@ -1,10 +1,13 @@
 <h2>Fields</h2>
 
 <table id="formFields">
-    <th>Field</th>
     <% @form_section.fields.each do |field| %>
     <tr id="<%="#{field.name}Row"%>">
       <td><%= field.name %></td>
+      <%if @form_section.editable?%>
+        <td><%=link_to "Up", formsection_fields_path(@form_section.unique_id)%></td>
+        <td><%=link_to "Down", formsection_fields_path(@form_section.unique_id)%></td>
+      <%end%>
     </tr>
    <% end %>
 </table>

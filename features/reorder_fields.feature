@@ -10,6 +10,14 @@ Feature: So that admin can customize fields in a form section
   Scenario: Admins should not be able to reorder fields in non editable form section
     Given I am logged in
     And I am on the manage fields page for "basic_details"
-    Then I should not see the "up" arrow for the "name" field
-    And I should not see the "down" arrow for the "name" field
+    Then I should not see the "Up" arrow for the "name" field
+    And I should not see the "Down" arrow for the "name" field
+
+  Scenario: Admins should be able to reorder fields in editable form section
+    Given I am logged in
+    And I am on the manage fields page for "family_details"
+    Then I should see the "Up" arrow for the "mother" field
+    And I should see the "Down" arrow for the "mother" field
+    And I should see the "Up" arrow for the "father" field
+    And I should see the "Down" arrow for the "father" field
     
