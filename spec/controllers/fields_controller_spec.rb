@@ -79,4 +79,16 @@ describe FieldsController do
     end
     
   end
+
+  describe "post move_up" do
+    it "should swap position of selected field with the one above it" do
+      formsection_id = "fred"
+      field_name = "barney"
+      form_section = mock(:form_section)
+      FormSection.stub!(:get_by_unique_id).with(formsection_id).and_return(form_section)
+      form_section.should_receive(:move_up_field).with(field_name)
+
+      post :move_up, :formsection_id => formsection_id, :field_name=> field_name
+    end
+  end
 end

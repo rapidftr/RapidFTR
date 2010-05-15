@@ -26,7 +26,13 @@ And /^I click the "([^\"]*)" arrow on "([^\"]*)" field$/ do |arrow_name, field_n
   click_button("#{field_name}_#{arrow_name}")
 end
 
-Then /^the "([^\"]*)" field should be above the "([^\"]*)" field$/ do |arg1, arg2|
-  pending # express the regexp above with the code you wish you had
+Then /^the "([^\"]*)" field should be above the "([^\"]*)" field$/ do |first_field_name, second_field_name|
+  table_rows = Hpricot(response.body).search("table tr")
+  row_ids = table_rows.collect {|row| row[:id]}
+
+  index_of_first_row = row_ids.index(first_field_name + "Row")
+  index_of_second_row = row_ids.index(second_field_name + "Row")
+
+  index_of_first_row.should < index_of_second_row
 end
 

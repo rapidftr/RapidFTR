@@ -1,4 +1,4 @@
-@wip
+
 
 Feature: So that admin can customize fields in a form section
   Background:
@@ -23,7 +23,7 @@ Feature: So that admin can customize fields in a form section
     And I should see the "Up" arrow for the "father" field
     And I should see the "Down" arrow for the "father" field
 
-  Scenario: Admins should be able to reorder the fields
+  Scenario: Admins should be able to reorder the fields         
     Given I am logged in
     And I am on the manage fields page for "family_details"
     And I click the "Up" arrow on "father" field

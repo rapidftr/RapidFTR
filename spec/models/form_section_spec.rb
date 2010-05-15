@@ -1,9 +1,9 @@
 require "spec_helper"
 
-  def mock_formsection(stubs={})
-    stubs.reverse_merge!(:fields=>[], :save => true, :has_field => false, :editable => true)
-    @mock_formsection ||= mock_model(FormSection, stubs)
-  end
+def mock_formsection(stubs={})
+  stubs.reverse_merge!(:fields=>[], :save => true, :has_field => false, :editable => true)
+  @mock_formsection ||= mock_model(FormSection, stubs)
+end
 
 def new_field(fields = {})
   fields.reverse_merge!(:name=>random_string)
@@ -83,5 +83,25 @@ describe FormSection do
       formsection.editable?.should be_true
     end
     
+  end
+
+  describe "move_up_field" do
+    it "should move the field up" do
+      field2 = new_field(:name=>"field2")
+      field1 = new_field(:name=>"field1")
+      formsection = FormSection.new :fields=>[field1, field2]
+      formsection.move_up_field("field2")
+
+      formsection.fields[0].should == field2
+
+      formsection.fields[1].should == field1
+    end
+    it "saves the formsection" do
+      field2 = new_field(:name=>"field2")
+      field1 = new_field(:name=>"field1")
+      formsection = FormSection.new :fields=>[field1, field2]
+      formsection.should_receive(:save)
+      formsection.move_up_field "field2"
+    end
   end
 end

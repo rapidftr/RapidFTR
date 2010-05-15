@@ -33,6 +33,12 @@ class FieldsController < ApplicationController
     end
   end
 
+  def move_up
+    FormSection.get_by_unique_id(params[:formsection_id]).move_up_field(params[:field_name])
+
+    redirect_to(formsection_fields_path(params[:formsection_id]))
+  end
+
   FIELD_TYPES.each do |field_type|
     define_method "new_#{field_type}" do
       read_form_section()
