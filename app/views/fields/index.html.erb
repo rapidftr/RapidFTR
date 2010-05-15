@@ -5,7 +5,9 @@
     <tr id="<%="#{field.name}Row"%>">
       <td><%= field.name %></td>
       <%if @form_section.editable?%>
-        <td><%=link_to "Up", formsection_fields_path(@form_section.unique_id)%></td>
+        <td>
+            <%=button_to "Up", "#fooooo", :method=>"get", :class=>"Up", :id=>"#{field.name}_Up"%>
+        </td>
         <td><%=link_to "Down", formsection_fields_path(@form_section.unique_id)%></td>
       <%end%>
     </tr>

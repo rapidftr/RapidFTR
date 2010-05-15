@@ -22,5 +22,11 @@ Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_na
   row.inner_html.should include(arrow_name)
 end
 
+And /^I click the "([^\"]*)" arrow on "([^\"]*)" field$/ do |arrow_name, field_name|
+  click_button("#{field_name}_#{arrow_name}")
+end
 
+Then /^the "([^\"]*)" field should be above the "([^\"]*)" field$/ do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
+end
 

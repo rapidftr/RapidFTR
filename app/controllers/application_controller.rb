@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   Mime::Type.register "image/jpeg", :jpg
 
   include ChecksAuthentication
-  before_filter :check_authentication
+  #before_filter :check_authentication
   rescue_from( AuthFailure ) { |e| handle_authentication_failure(e) }
 
   # Scrub sensitive parameters from your log
