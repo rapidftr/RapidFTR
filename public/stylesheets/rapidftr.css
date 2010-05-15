@@ -9,3 +9,8 @@ form {
     border: black solid 0px;
     padding: 10px;
 }
+
+.direction-button
+{
+    display:none
+}

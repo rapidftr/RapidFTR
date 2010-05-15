@@ -19,4 +19,18 @@ RapidFTR.tabControl = function(){
 		return false;
 	});
 
+    // submitting forms with links
+    $(".submit-form").click(function()
+    {
+        var formToSubmit = $(this).attr("href");
+        $(formToSubmit).submit();
+        return false;
+    });
+
+
+    //hiding field direction buttons (first up button and second down)
+    $("#formFields .up-link:first").hide();
+    $("#formFields .down-link:last").hide();
+
+
 };

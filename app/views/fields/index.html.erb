@@ -6,15 +6,17 @@
       <td><%= field.name %></td>
       <%if @form_section.editable?%>
         <td>
-          <% form_for field, :url => move_up_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
+          <% form_for field, :url => move_up_formsection_fields_path(@form_section.unique_id), :html => {:method => :post, :id=>"#{field.name}_UpForm"}  do |f| %>
+              <a href="#<%=field.name%>_UpForm" class="submit-form up-link">Up</a>
             <input type="hidden" name="field_name" value="<%=field.name%>"/>            
-            <input type="submit" id="<%=field.name%>_Up" value="Up"/>
+            <input type="submit" id="<%=field.name%>_Up" class="direction-button" value="Up"/>
           <% end %>
         </td>
         <td>
-          <% form_for field, :url => move_down_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
+          <% form_for field, :url => move_down_formsection_fields_path(@form_section.unique_id), :html => {:method => :post,  :id=>"#{field.name}_DownForm"}  do |f| %>
+              <a href="#<%=field.name%>_DownForm" class="submit-form down-link">Down</a>
             <input type="hidden" name="field_name" value="<%=field.name%>"/>
-            <input type="submit" id="<%=field.name%>_Down" value="Down"/>
+            <input type="submit" id="<%=field.name%>_Down" value="Down"  class="direction-button"/>
           <% end %>
         </td>
       <%end%>
