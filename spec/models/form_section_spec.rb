@@ -96,6 +96,7 @@ describe FormSection do
 
       formsection.fields[1].should == field1
     end
+    
     it "saves the formsection" do
       field2 = new_field(:name=>"field2")
       field1 = new_field(:name=>"field1")
@@ -104,4 +105,25 @@ describe FormSection do
       formsection.move_up_field "field2"
     end
   end
+
+  describe "move_down_field" do
+    it "should move the field down" do
+      field2 = new_field(:name=>"field2")
+      field1 = new_field(:name=>"field1")
+      formsection = FormSection.new :fields=>[field1, field2]
+      formsection.move_down_field("field1")
+
+      formsection.fields[0].should == field2
+      formsection.fields[1].should == field1
+    end
+
+    it "saves the formsection" do
+      field2 = new_field(:name=>"field2")
+      field1 = new_field(:name=>"field1")
+      formsection = FormSection.new :fields=>[field1, field2]
+      formsection.should_receive(:save)
+      formsection.move_down_field "field2"
+    end
+  end
+
 end

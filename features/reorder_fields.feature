@@ -23,10 +23,16 @@ Feature: So that admin can customize fields in a form section
     And I should see the "Up" arrow for the "father" field
     And I should see the "Down" arrow for the "father" field
 
-  Scenario: Admins should be able to reorder the fields         
+  Scenario: Admins should be able to move a field up
     Given I am logged in
     And I am on the manage fields page for "family_details"
     And I click the "Up" arrow on "father" field
+    Then the "father" field should be above the "mother" field
+
+  Scenario: Admins should be able to move a field down
+    Given I am logged in
+    And I am on the manage fields page for "family_details"
+    And I click the "Down" arrow on "mother" field
     Then the "father" field should be above the "mother" field
 
 

@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
     additional_field_actions = field_types.inject({}){ |h,type| h["new_#{type}"] = :get; h }
     additional_field_actions[:new] = :get
     additional_field_actions[:move_up] = :post
+    additional_field_actions[:move_down] = :post
     form_section.resources(
       :fields, 
       :controller => 'fields', 

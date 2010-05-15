@@ -11,7 +11,12 @@
             <input type="submit" id="<%=field.name%>_Up" value="Up"/>
           <% end %>
         </td>
-        <td><%=link_to "Down", formsection_fields_path(@form_section.unique_id)%></td>
+        <td>
+          <% form_for field, :url => move_down_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
+            <input type="hidden" name="field_name" value="<%=field.name%>"/>
+            <input type="submit" id="<%=field.name%>_Down" value="Down"/>
+          <% end %>
+        </td>
       <%end%>
     </tr>
    <% end %>
