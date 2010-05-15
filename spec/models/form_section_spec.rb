@@ -86,43 +86,48 @@ describe FormSection do
   end
 
   describe "move_up_field" do
+    before :each do
+      @field2 = new_field(:name=>"field2")
+      @field1 = new_field(:name=>"field1")
+      @formsection = FormSection.new :fields=>[@field1, @field2]
+    end
+
     it "should move the field up" do
-      field2 = new_field(:name=>"field2")
-      field1 = new_field(:name=>"field1")
-      formsection = FormSection.new :fields=>[field1, field2]
-      formsection.move_up_field("field2")
-
-      formsection.fields[0].should == field2
-
-      formsection.fields[1].should == field1
+      @formsection.move_up_field("field2")
+      @formsection.fields[0].should == @field2
+      @formsection.fields[1].should == @field1
     end
     
     it "saves the formsection" do
-      field2 = new_field(:name=>"field2")
-      field1 = new_field(:name=>"field1")
-      formsection = FormSection.new :fields=>[field1, field2]
-      formsection.should_receive(:save)
-      formsection.move_up_field "field2"
+      @formsection.should_receive(:save)
+      @formsection.move_up_field "field2"
+    end
+
+    it "throws exception if you try to move something up that is already first" do
+      lambda {@formsection.move_up_field "field1"}.should raise_error
     end
   end
 
   describe "move_down_field" do
-    it "should move the field down" do
-      field2 = new_field(:name=>"field2")
-      field1 = new_field(:name=>"field1")
-      formsection = FormSection.new :fields=>[field1, field2]
-      formsection.move_down_field("field1")
+    before :each do
+      @field2 = new_field(:name=>"field2")
+      @field1 = new_field(:name=>"field1")
+      @formsection = FormSection.new :fields=>[@field1, @field2]
+    end
 
-      formsection.fields[0].should == field2
-      formsection.fields[1].should == field1
+    it "should move the field down" do
+      @formsection.move_down_field("field1")
+
+      @formsection.fields[0].should == @field2
+      @formsection.fields[1].should == @field1
     end
 
     it "saves the formsection" do
-      field2 = new_field(:name=>"field2")
-      field1 = new_field(:name=>"field1")
-      formsection = FormSection.new :fields=>[field1, field2]
-      formsection.should_receive(:save)
-      formsection.move_down_field "field2"
+      @formsection.should_receive(:save)
+      @formsection.move_down_field "field1"
+    end
+    it "throws exception if you try to move something down that is already last" do
+      lambda {@formsection.move_down_field "field2"}.should raise_error
     end
   end
 
