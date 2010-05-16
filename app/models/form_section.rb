@@ -52,27 +52,23 @@ class FormSection < CouchRestRails::Document
   def section_name
     unique_id
   end
-
-  def move_field(field_to_move, offset)
-    index_of_field_to_move_direction = fields.index(field_to_move)
-    index_of_field_to_swap_with  = fields.index(field_to_move) + offset
-    raise "Out of range!" if index_of_field_to_swap_with < 0 || index_of_field_to_swap_with >= fields.length
-    previous_field = fields[index_of_field_to_swap_with]
-    fields[index_of_field_to_swap_with] = field_to_move
-    fields[index_of_field_to_move_direction] = previous_field
+  
+  def move_field field_to_move, offset
+    field_index_1 = fields.index(field_to_move)
+    field_index_2 = field_index_1 + offset
+    raise "Out of range!" if field_index_2 < 0 || field_index_2 >= fields.length
+    fields[field_index_1], fields[field_index_2] = fields[field_index_2], fields[field_index_1]
     save()
   end
 
   def move_up_field field_name
     field_to_move_up = fields.find {|field| field.name == field_name}
-
     move_field(field_to_move_up, - 1)
   end
 
   def move_down_field field_name
     field_to_move_down = fields.find {|field| field.name == field_name}
     move_field(field_to_move_down, 1)
-
   end
 
 
