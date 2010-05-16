@@ -31,6 +31,4 @@ RapidFTR.tabControl = function(){
     //hiding field direction buttons (first up button and second down)
     $("#formFields .up-link:first").hide();
     $("#formFields .down-link:last").hide();
-
-
 };
