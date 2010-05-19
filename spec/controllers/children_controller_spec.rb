@@ -4,7 +4,7 @@ describe ChildrenController do
   include LoggedIn
 
   def mock_child(stubs={})
-    @mock_child ||= mock_model(Child, stubs)
+    @mock_child ||= mock_model(Child, stubs).as_null_object
   end
 
   before do
@@ -21,7 +21,6 @@ describe ChildrenController do
 
   describe "GET show" do
     it "assigns the requested child as @child" do
-      pending
       Child.stub!(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
@@ -30,7 +29,6 @@ describe ChildrenController do
 
   describe "GET show with image content type" do
     it "outputs the image data from the child object" do
-      pending
       photo_data = "somedata"
       Child.stub(:get).with("5363dhd").and_return(mock_child)
       mock_child.stub(:photo).and_return(photo_data)
@@ -45,7 +43,6 @@ describe ChildrenController do
 
   describe "GET new" do
     it "assigns a new child as @child" do
-      pending
       Child.stub!(:new).and_return(mock_child)
       get :new
       assigns[:child].should equal(mock_child)
@@ -54,8 +51,7 @@ describe ChildrenController do
 
   describe "GET edit" do
     it "assigns the requested child as @child" do
-      pending
-      Child.stub!(:find).with("37").and_return(mock_child)
+      Child.stub!(:get).with("37").and_return(mock_child)
       get :edit, :id => "37"
       assigns[:child].should equal(mock_child)
     end
