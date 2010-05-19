@@ -5,3 +5,5 @@ tmp/*
 rerun.txt
 debug.html
 .DS_Store
+*swp
+*~
