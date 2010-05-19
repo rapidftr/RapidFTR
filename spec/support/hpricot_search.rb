@@ -46,7 +46,7 @@ module HpricotSearch
     at(".#{suggested_field_id}Display")
   end
   def add_custom_field_link
-    at("a[text()='Add Custom Field")
+    at('a[text()="Add Custom Field"]')
   end
   def form_fields_list
     at("#formFields")

@@ -152,11 +152,17 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
   
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
-            'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
-            'fields'=> Array.new # todo:build these FSDs in a nicer way... 
+      'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
+      'fields'=> Array.new # todo:build these FSDs in a nicer way... 
     )
     FormSection.create!(form_section_hash)
   end
+end
+
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name, :help_text => field_help_text)
+  FormSection.add_field_to_formsection(form_section, field)
 end
 
 

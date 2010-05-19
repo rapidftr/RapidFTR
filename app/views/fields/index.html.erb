@@ -1,10 +1,23 @@
 <h2>Fields</h2>
 
 <table id="formFields">
-    <th>Field</th>
     <% @form_section.fields.each do |field| %>
     <tr id="<%="#{field.name}Row"%>">
       <td><%= field.name %></td>
+      <%if @form_section.editable?%>
+        <td>
+          <% form_for field, :url => move_up_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
+            <input type="hidden" name="field_name" value="<%=field.name%>"/>            
+            <input type="submit" id="<%=field.name%>_Up" value="Up"/>
+          <% end %>
+        </td>
+        <td>
+          <% form_for field, :url => move_down_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
+            <input type="hidden" name="field_name" value="<%=field.name%>"/>
+            <input type="submit" id="<%=field.name%>_Down" value="Down"/>
+          <% end %>
+        </td>
+      <%end%>
     </tr>
    <% end %>
 </table>

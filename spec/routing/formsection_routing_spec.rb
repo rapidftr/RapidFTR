@@ -27,4 +27,21 @@ describe 'Form Section routing' do
     formsection_fields_path('some_formsection').should ==
       '/formsections/some_formsection/fields'
   end
+
+  it 'has route to move a field up' do
+    {:post => '/formsections/foo/fields/move_up'}.should route_to(
+            :controller => 'fields', :action=>'move_up', :formsection_id=>'foo'
+            )
+    move_up_formsection_fields_path('some_formsection').should ==
+      '/formsections/some_formsection/fields/move_up'
+  end
+
+
+  it 'has route to move a field down' do
+    {:post => '/formsections/foo/fields/move_down'}.should route_to(
+            :controller => 'fields', :action=>'move_down', :formsection_id=>'foo'
+            )
+    move_down_formsection_fields_path('some_formsection').should ==
+      '/formsections/some_formsection/fields/move_down'
+  end
 end
