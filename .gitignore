@@ -7,3 +7,5 @@ debug.html
 .DS_Store
 *swp
 *~
+*.swp
+*.swo
