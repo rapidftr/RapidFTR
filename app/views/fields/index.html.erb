@@ -6,16 +6,10 @@
       <td><%= field.name %></td>
       <%if @form_section.editable?%>
         <td>
-          <% form_for field, :url => move_up_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
-            <input type="hidden" name="field_name" value="<%=field.name%>"/>            
-            <input type="submit" id="<%=field.name%>_Up" value="Up"/>
-          <% end %>
+		    <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
         </td>
         <td>
-          <% form_for field, :url => move_down_formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
-            <input type="hidden" name="field_name" value="<%=field.name%>"/>
-            <input type="submit" id="<%=field.name%>_Down" value="Down"/>
-          <% end %>
+		    <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
         </td>
       <%end%>
     </tr>

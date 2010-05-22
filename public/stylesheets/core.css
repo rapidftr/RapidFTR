@@ -169,6 +169,10 @@ td.checkbox { text-align: center;}
 /* new field page*/
 .new-field .submitButton { float:right; text-align:right;}
 
+
+/* fields list page */
+.direction-button { display:none }
+
 /* ie6 fixes */
 
 .page-header { zoom: 1; }
