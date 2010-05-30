@@ -1,7 +1,8 @@
 <h2>Manage form sections</h2>
 
 <p><%= link_to 'Create form', new_form_section_path %></p>
-<table id="formSections">
+<table id="form_sections">
+<thead>
   <tr>
     <th><input type="checkbox" disabled=true /></th>
     <th>Enabled</th>
@@ -10,6 +11,8 @@
     <th>Ordering</th>
     <th>Fields</th>
   </tr>
+</thead>
+<tbody>
 <% @form_sections.each do |section| %>
       <tr id="<%= section.unique_id%>_row">
         <td><!-- TODO: checkboxes --></td>
@@ -28,4 +31,5 @@
         </td>
       </tr>
   <% end %>
+</tbody>
 </table>

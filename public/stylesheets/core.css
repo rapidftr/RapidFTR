@@ -166,8 +166,9 @@ td.checkbox { text-align: center;}
 .edit-profile .cancel { float: left; }
 
 
-/* new field page*/
-.new-field .submitButton { float:right; text-align:right;}
+/* new field/formsection page*/
+.new-field .submitButton,
+.new-form-section .submitButton { float:right; text-align:right;}
 
 
 /* fields list page */

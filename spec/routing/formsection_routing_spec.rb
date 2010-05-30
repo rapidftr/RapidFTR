@@ -44,4 +44,12 @@ describe 'Form Section routing' do
     move_down_formsection_fields_path('some_formsection').should ==
       '/formsections/some_formsection/fields/move_down'
   end
+  
+  it 'has route for form sections index page' do
+    {:get => '/formsections'}.should route_to(
+            :controller => 'form_section', :action=>'index'
+            )
+    formsections_path().should ==
+      '/formsections'
+  end
 end

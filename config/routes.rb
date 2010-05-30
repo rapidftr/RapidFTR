@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.login 'login', :controller=>'sessions',:action =>'new'
   map.logout 'logout', :controller=>'sessions',:action =>'destroy'
 
-  map.resources :form_section
+
   
   map.resources :formsections, :controller=>'form_section' do |form_section|
     field_types = %w{text_field textarea check_box select_drop_down}
@@ -26,6 +26,7 @@ ActionController::Routing::Routes.draw do |map|
       :collection => additional_field_actions )
   end
 
+  map.resources :form_section
 
   map.resources :fields
 

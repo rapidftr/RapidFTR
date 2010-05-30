@@ -19,13 +19,13 @@ module HpricotSearch
     search("h3")
   end
   def form_section_names
-    search("#formSections tr td a.formSectionLink")
+    search("#form_sections tr td a.formSectionLink")
   end
   def form_section_enabled_icons
     search(".formSectionEnabledIcon")
   end
   def form_section_rows
-    search("#formSections tr")
+    search("#form_sections tr")
   end
   def form_section_row_for (form_section_id)
     at("##{form_section_id}_row")

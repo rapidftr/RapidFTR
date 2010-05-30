@@ -5,7 +5,7 @@ class FormSection < CouchRestRails::Document
   property :name
   property :description
   property :enabled, :cast_as => 'boolean'
-  property :order
+  property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
 
@@ -14,7 +14,7 @@ class FormSection < CouchRestRails::Document
   def initialize args={}
     self["fields"] = []
     super args
-  end
+  end 
 
   def self.all_child_field_names
     all_child_fields.map{ |field| field["name"] }
@@ -35,6 +35,12 @@ class FormSection < CouchRestRails::Document
     raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save
+  end
+  
+  def self.create_new_custom name, description = "", enabled=true
+    unique_id = name.gsub(/\s/, "_").downcase
+    max_order= (all.map{|form_section| form_section.order}).max || 0
+    create! FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
   end
 
   def add_text_field field_name
@@ -70,6 +76,5 @@ class FormSection < CouchRestRails::Document
     field_to_move_down = fields.find {|field| field.name == field_name}
     move_field(field_to_move_down, 1)
   end
-
 
 end

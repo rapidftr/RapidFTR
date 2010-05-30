@@ -4,14 +4,10 @@ class FormSectionController < ApplicationController
   end
 
   def create
-    unique_id = params[:form_section][:name].gsub(/\s/, "_").downcase
-    order_number = params[:form_section][:order].to_i
-    new_form_section = FormSection.new(params[:form_section])
-    new_form_section.order = order_number 
-    new_form_section.unique_id = unique_id
-    new_form_section.save
-    flash[:notice] = "Form successfully added"
-    redirect_to(formsections_path())
+    form_section_vals = params[:form_section]
+    FormSection.create_new_custom form_section_vals[:name], form_section_vals[:description], form_section_vals[:enabled]=="true"
+    flash[:notice] = "Form section successfully added"
+   redirect_to(formsections_path())
   end
   
   def new

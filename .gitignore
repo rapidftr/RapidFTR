@@ -10,3 +10,5 @@ debug.html
 *.swp
 *.swo
 *.orig
+.autotest
+

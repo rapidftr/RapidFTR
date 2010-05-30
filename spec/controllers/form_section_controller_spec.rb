@@ -14,7 +14,26 @@ describe FormSectionController do
       get :index
       assigns[:form_sections][0].should == expected_form_sections[1]
       assigns[:form_sections][1].should == expected_form_sections[0]
-
+     end
+   end
+   describe "post create" do
+ 
+     it "calls create_new_custom with parameters from post" do 
+       FormSection.should_receive(:create_new_custom).with("name", "desc", true)
+       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+       post :create, :form_section =>form_section
+     end
+    it "sets flash notice" do
+      FormSection.stub(:create_new_custom)
+      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+      post :create, :form_section =>form_section
+      response.flash[:notice].should == "Form section successfully added"
+    end
+    it "should redirect back to the form sections page" do
+      FormSection.stub(:create_new_custom)
+      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+      post :create, :form_section =>form_section
+      response.should redirect_to formsections_path
      end
    end
 end

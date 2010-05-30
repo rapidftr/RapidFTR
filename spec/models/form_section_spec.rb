@@ -18,6 +18,12 @@ def random_string(length=10)
     password
 end
 
+def create_should_be_called_with (name, value)
+  FormSection.should_receive(:create!) { |form_section_hash|
+    form_section_hash[name].should == value
+  }
+end
+
 
 describe FormSection do
   describe "get_by_unique_id" do
@@ -128,6 +134,46 @@ describe FormSection do
     end
     it "throws exception if you try to move something down that is already last" do
       lambda {@formsection.move_down_field "field2"}.should raise_error
+    end
+  end
+  
+  describe "create_new_custom" do
+    before :each do 
+      FormSection.stub(:all).and_return([])
+    end
+    it "should create a new form section" do
+      FormSection.should_receive(:create!)
+      FormSection.create_new_custom "basic"
+    end
+    it "should give the formsection a new unique id based on the name" do
+      form_section_name = "basic details"
+      create_should_be_called_with :unique_id, "basic_details"
+      FormSection.create_new_custom form_section_name
+    end
+    it "should populate the name" do
+      form_section_name = "basic details"
+        create_should_be_called_with :name, "basic details"
+        FormSection.create_new_custom form_section_name
+    end
+    it "should populate the description" do
+      form_section_description = "info about basic details"
+      create_should_be_called_with :description, "info about basic details"
+      FormSection.create_new_custom "basic", form_section_description
+    end
+    it "should populate the enabled status" do
+      create_should_be_called_with :enabled, true
+      FormSection.create_new_custom "basic", "form_section_description", true
+      create_should_be_called_with :enabled, false
+      FormSection.create_new_custom "basic", "form_section_description", false
+    end
+    it "should set the order to one plus maximum order value" do
+      FormSection.stub(:all).and_return([FormSection.new(:order=>20),FormSection.new(:order=>10), FormSection.new(:order=>40)])
+      create_should_be_called_with :order, 41
+      FormSection.create_new_custom "basic"
+    end
+    it "should set editable to true" do
+      create_should_be_called_with :editable, true
+      FormSection.create_new_custom "basic"
     end
   end
 

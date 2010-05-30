@@ -155,6 +155,7 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
       'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
       'fields'=> Array.new # todo:build these FSDs in a nicer way... 
     )
+    form_section_hash["order"] = form_section_hash["order"].to_i
     FormSection.create!(form_section_hash)
   end
 end
@@ -246,4 +247,12 @@ And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   fields.should_not be_nil
   field_row = fields.form_field_for(field_id)
   field_row.should_not be_nil
+end
+
+
+Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, position, table_selector|
+  table = Hpricot(response.body).at(table_selector)
+  table.should_not be_nil
+  table.at(row_selector).should_not be_nil
+  table.search("tbody/tr")[position.to_i-1].should == table.at(row_selector)
 end
