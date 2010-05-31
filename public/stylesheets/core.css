@@ -53,6 +53,7 @@ td a { font-weight: bold;  }
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
 .default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
+.default-form .cancelButton a { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
 
 /* default : forms > field errors */
 .default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
@@ -172,6 +173,7 @@ td.checkbox { text-align: center;}
 /* new field/formsection page*/
 .new-field .submitButton,
 .new-form-section .submitButton { float:right; text-align:right;}
+.new-form-section .cancelButton { clear: both; float:right; text-align:right;}
 
 
 /* fields list page */

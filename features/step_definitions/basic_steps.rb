@@ -177,10 +177,14 @@ end
 
 
 Then /^I should see the "([^\"]*)" form section link$/ do |form_section_name|
-
   form_section_names = Hpricot(response.body).form_section_names.collect {|item| item.inner_html}
   form_section_names.should contain(form_section_name)
 
+end
+
+Then /^I should not see the "([^\"]*)" form section link$/ do |form_section_name|
+  form_section_names = Hpricot(response.body).form_section_names.collect {|item| item.inner_html}
+  form_section_names.should_not contain(form_section_name)
 end
 
 Then /^I should see the text "([^\"]*)" in the enabled column for the form section "([^\"]*)"$/ do |expected_text, form_section|

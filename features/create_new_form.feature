@@ -33,3 +33,11 @@ Feature: Create new forms
 	And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 	When I press "Save Form"
 	And I should see "Name must not be blank" within "#errorExplanation"
+  Scenario: Cancelling the creation of a form
+	Given I am on form section page
+	And I follow "Create form"
+    And I fill in "form_section_name" with "New Form 1"
+	And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
+	When I follow "Cancel"
+    Then I am on form section page
+    Then I should not see the "New Form 1" form section link
