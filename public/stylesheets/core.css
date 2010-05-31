@@ -54,6 +54,9 @@ td a { font-weight: bold;  }
 .default-form .file input { width: auto; height: auto; }
 .default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
 
+/* default : forms > field errors */
+.default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
+
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
 
@@ -173,6 +176,12 @@ td.checkbox { text-align: center;}
 
 /* fields list page */
 .direction-button { display:none }
+
+/* error summary */
+.errorExplanation,
+.errorExplanation h3 {color: #ff0700}
+.errorExplanation li {background-image:none;}
+.errorExplanation ul, .errorExplanation p {margin-bottom:0;}
 
 /* ie6 fixes */
 

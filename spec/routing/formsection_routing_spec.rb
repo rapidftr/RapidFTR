@@ -52,4 +52,11 @@ describe 'Form Section routing' do
     formsections_path().should ==
       '/formsections'
   end
+      it 'has route for form sections new page' do
+        {:get => '/formsections/new'}.should route_to(
+                :controller => 'form_section', :action=>'new'
+                )
+        new_formsection_path().should ==
+          '/formsections/new'
+      end
 end

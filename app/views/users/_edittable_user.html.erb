@@ -13,7 +13,7 @@
 </script>
 
 <% form_for edittable_user do |f| %>
-  <%= f.error_messages %>
+  <%= f.error_messages :header_tag => :h3 %>
     <p>
       <%= f.label :full_name, "Full name" %><br/>
       <%= f.text_field :full_name %>

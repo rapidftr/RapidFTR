@@ -63,4 +63,8 @@ class ApplicationController < ActionController::Base
   def name
     self.class.to_s.gsub("Controller", "")
   end
+  
+  ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+    %(<span class="field-error">) + html_tag + %(</span>)
+  end
 end

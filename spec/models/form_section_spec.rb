@@ -175,6 +175,15 @@ describe FormSection do
       create_should_be_called_with :editable, true
       FormSection.create_new_custom "basic"
     end
+    it "should return the created form section" do
+      FormSection.stub(:create!)
+      result = FormSection.create_new_custom "basic"
+      result.should_not be_nil
+    end
+    it "should not save an invalid form section" do
+      FormSection.should_not_receive(:create!)
+      FormSection.create_new_custom nil
+    end
   end
 
 end

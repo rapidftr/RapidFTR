@@ -53,7 +53,10 @@ module NavigationHelpers
         
       when /child search results page/
         search_children_path(options)
-
+        
+      when /create form section page/
+        new_formsection_path(options)
+        
       when /form section page/
         formsections_path(options) 
 

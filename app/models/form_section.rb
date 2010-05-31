@@ -1,6 +1,6 @@
 class FormSection < CouchRestRails::Document
+  include CouchRest::Validation
   use_database :form_section
-  
   property :unique_id
   property :name
   property :description
@@ -10,6 +10,8 @@ class FormSection < CouchRestRails::Document
   property :editable, :cast_as => 'boolean', :default => true
 
   view_by :unique_id
+  
+  validates_presence_of :name
 
   def initialize args={}
     self["fields"] = []
@@ -38,9 +40,11 @@ class FormSection < CouchRestRails::Document
   end
   
   def self.create_new_custom name, description = "", enabled=true
-    unique_id = name.gsub(/\s/, "_").downcase
+    unique_id = (name||"").gsub(/\s/, "_").downcase
     max_order= (all.map{|form_section| form_section.order}).max || 0
-    create! FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
+    form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
+    create! form_section if form_section.valid?
+    form_section
   end
 
   def add_text_field field_name
