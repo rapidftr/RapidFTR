@@ -5,9 +5,15 @@ class FormSectionController < ApplicationController
 
   def create
     form_section_vals = params[:form_section]
-    FormSection.create_new_custom form_section_vals[:name], form_section_vals[:description], form_section_vals[:enabled]=="true"
-    flash[:notice] = "Form section successfully added"
-   redirect_to(formsections_path())
+    result = FormSection.create_new_custom form_section_vals[:name], form_section_vals[:description], form_section_vals[:enabled]=="true"
+
+    if(result.valid?) then
+      flash[:notice] = "Form section successfully added"
+      redirect_to(formsections_path())
+    else  
+      @form_section = result
+      render :new 
+    end
   end
   
   def new

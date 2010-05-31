@@ -1,6 +1,7 @@
 <h2>Create form</h2>
 <p>We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier.</p>
-<% form_for :form_section, :url => formsections_path(), :html => {:method => :post, :class => "new-form-section default-form"}  do |f| %>  
+<%= error_messages_for :form_section, :header_tag=>:h3, :header_message=>"Form section could not be created", :message=>'Please correct the following errors and resubmit:' %>
+<% form_for @form_section || FormSection.new, :url => formsections_path(), :html => {:method => :post, :class => "new-form-section default-form"}  do |f| %>  
   <p>
      <label for="form_section_name">Name</label>
      <%= f.text_field :name %></p>

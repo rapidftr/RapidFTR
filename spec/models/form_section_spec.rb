@@ -176,9 +176,10 @@ describe FormSection do
       FormSection.create_new_custom "basic"
     end
     it "should return the created form section" do
-      FormSection.stub(:create!)
+      form_section = FormSection.new
+      FormSection.stub(:create!).and_return(form_section)
       result = FormSection.create_new_custom "basic"
-      result.should_not be_nil
+      result.should == form_section
     end
     it "should not save an invalid form section" do
       FormSection.should_not_receive(:create!)

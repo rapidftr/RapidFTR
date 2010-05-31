@@ -12,6 +12,7 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   
   validates_presence_of :name
+  validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
 
   def initialize args={}
     self["fields"] = []
@@ -43,7 +44,8 @@ class FormSection < CouchRestRails::Document
     unique_id = (name||"").gsub(/\s/, "_").downcase
     max_order= (all.map{|form_section| form_section.order}).max || 0
     form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
-    create! form_section if form_section.valid?
+    name1 =  form_section.name
+    form_section = create! form_section if form_section.valid?
     form_section
   end
 

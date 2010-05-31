@@ -20,12 +20,10 @@ Feature: Create new forms
     Then I should see the "New Form 1" form section link
     And I should see the description text "I am a new custom form.  Say hello!" for form section "new_form_1"
 	And "#new_form_1_row" should be "4th" in "#form_sections" table
-  @wip
   Scenario: Disallowing non alphanumeric characters in the name field
 	Given I am on form section page
 	And I follow "Create form"
 	And I fill in "form_section_name" with "This is D£dgy"
 	And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 	When I press "Save Form"
-	Then should be on create form section page
 	And I should see "Name must contain only alphanumeric characters and spaces" within "#errorExplanation"
