@@ -186,5 +186,19 @@ describe FormSection do
       FormSection.create_new_custom nil
     end
   end
+  describe "valid?" do
+    it "should validate name is filled in" do
+      form_section = FormSection.new()
+      form_section.should_not be_valid
+    end
+    it "should validate name is alpha_num" do
+      form_section = FormSection.new(:name=>"££ss")
+      form_section.should_not be_valid
+    end
+    it "should validate name is alpha_num" do
+      form_section = FormSection.new(:name=>"££ss")
+      form_section.should_not be_valid
+    end
+  end
 
 end

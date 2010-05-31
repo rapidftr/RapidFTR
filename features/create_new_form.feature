@@ -27,3 +27,9 @@ Feature: Create new forms
 	And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 	When I press "Save Form"
 	And I should see "Name must contain only alphanumeric characters and spaces" within "#errorExplanation"
+  Scenario: Name field cannot be empty
+	Given I am on form section page
+	And I follow "Create form"
+	And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
+	When I press "Save Form"
+	And I should see "Name must not be blank" within "#errorExplanation"
