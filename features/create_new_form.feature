@@ -41,3 +41,11 @@ Feature: Create new forms
 	When I follow "Cancel"
     Then I am on form section page
     Then I should not see the "New Form 1" form section link
+  Scenario: Can create a form section disabled
+	Given I am on form section page
+	And I follow "Create form"
+	And I fill in "form_section_name" with "New Form 1"
+	And I uncheck "form_section_enabled"
+	When I press "Save Form"
+	Then I am on form section page
+	And I should see the text "Disabled" in the enabled column for the form section "new_form_1"
