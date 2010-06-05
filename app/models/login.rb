@@ -13,12 +13,8 @@ class Login
   def authenticate_user
     user = User.find_by_user_name(@user_name)
 
-    if user.nil? || !user.authenticate(@password)
-      return nil
-    end
-
     #Session.new(:user_name => @user_name)
-    Session.for_user( user )
+    Session.for_user( user ) unless user.nil? or !user.authenticate(@password)
   end
 
   def errors

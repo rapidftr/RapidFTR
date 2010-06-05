@@ -50,10 +50,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_name
     session = Session.get_from_cookies(cookies)
-    if not session
-      return nil
-    end
-    return session.user_name
+    return session.user_name unless session.nil?
   end
 
   def send_pdf(pdf_data,filename) 

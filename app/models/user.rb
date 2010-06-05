@@ -56,14 +56,9 @@ class User < CouchRestRails::Document
   end
 
   def is_user_name_unique
-
     user = User.find_by_user_name(user_name)
-    if  user.nil?
-      true
-    else
-      return true if self.id == user.id
-      [false, "User name has already been taken! Please select a new User name"]
-    end
+    return true if user.nil? or self.id == user.id
+    [false, "User name has already been taken! Please select a new User name"]
   end
 
   def authenticate(check)
