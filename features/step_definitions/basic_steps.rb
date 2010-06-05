@@ -34,7 +34,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     )
 
     photo = uploadable_photo(child_hash.delete('photo_path'))
-    unique_id = child_hash.delete('unique_identifier')
+    unique_id = child_hash.delete('unique_id')
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id

@@ -18,7 +18,7 @@ Scenario: Searching for a child given his name
 
 Scenario: Searching for a child given his unique identifier
   Given the following children exist in the system:
-    | name   	| last_known_location 	| reporter | unique_identifier |
+    | name   	| last_known_location 	| reporter | unique_id |
     | andreas	| London		            | zubair   | zubairlon123 |
     | zak	    | London		            | zubair   | zubairlon456 |
   When I fill in "zubairlon123" for "Child ID"
