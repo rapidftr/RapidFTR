@@ -5,6 +5,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <title><%= controller.name %>: <%= controller.action_name %></title>
+  <link rel="shortcut icon" href="favicon.ico" />
   <%= stylesheet_link_tag 'core' %>
   <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" %>
   <%= javascript_include_tag  "application.js" %>
@@ -22,14 +23,14 @@ $(document).ready(function() {
 
     <div class="nav">
       <ul>
+        <% unless current_user_name.nil? %>
+            <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_to 'Logout', :logout %>)</li>
+        <% end %>
         <li><a href="/">Home</a></li>
         <li><a href="/">Admin</a></li>
-        <li><a href="/">FAQ</a></li>
-        <li><a href="/">Contact</a></li>
-        <li><a href="/">About</a></li>
-         <% unless current_user_name.nil? %>
-             <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_to 'Logout', :logout %>)</li>
-         <% end %>
+        <li><a href="http://www.rapidftr.com/faq">FAQ</a></li>
+        <li><a href="http://www.rapidftr.com">About</a></li>
+        <li><a href="http://www.rapidftr.com/contact">Contact</a></li>
       </ul>
     </div>
   </div>
