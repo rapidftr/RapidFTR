@@ -12,3 +12,5 @@ debug.html
 *.orig
 .autotest
 *.iml
+tags
+
