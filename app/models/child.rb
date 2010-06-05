@@ -48,7 +48,7 @@ class Child < CouchRestRails::Document
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path    
-    self['current_photo_key'] = "photo-#{Time.now.strftime('%d-%m-%Y-%H%M')}"
+    self['current_photo_key'] = "photo-#{Time.now.strftime('%Y-%m-%dT%H%M%S')}"
     create_attachment :name => self['current_photo_key'], 
                       :content_type => photo_file.content_type, 
                       :file => photo_file

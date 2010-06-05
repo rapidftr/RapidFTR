@@ -20,11 +20,11 @@ Feature:
 
 	Scenario:  I log in as a different user, upload a new photo and view the record log
 
-	  Given the date/time is "July 19 2010 13:05"
+        Given the date/time is "July 19 2010 13:05:32"
     And the following children exist in the system:
       | name       | age | age_is | gender | last_known_location |
       | Jorge Just | 27  | Exact  | Male   | Haiti               |
-    And the date/time is "Sept 29 2010 17:59"
+  And the date/time is "Sept 29 2010 17:59:33"
 		And "Mary" is logged in
 		And I am on the children listing page
 
@@ -33,17 +33,17 @@ Feature:
 		And I press "Finish"
 		And I follow "View the change log"
 
-		Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by mary"
+                Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by mary"
 
-		When I follow "photo-19-07-2010-1305"
+                When I follow "photo-2010-07-19T130532"
 		Then I should see the content type as "image/jpg"
 		
 		When I am on the children listing page
 		And I follow "Jorge Just"
 		And I follow "View the change log"
 
-		When I follow "photo-29-09-2010-1759"
-		Then I should see the content type as "image/png"
+                When I follow "photo-2010-09-29T175933"
+                Then I should see the content type as "image/png"
 
   Scenario:  I log in as a different user, edit and view the record log
 

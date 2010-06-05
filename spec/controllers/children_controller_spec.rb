@@ -75,7 +75,7 @@ describe ChildrenController do
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
       
-      current_time = Time.parse("Jan 17 2010 14:05")
+      current_time = Time.parse("Jan 17 2010 14:05:32")
       Time.stub!(:now).and_return current_time      
       put :update, :id => child.id, 
         :child => {
@@ -84,7 +84,7 @@ describe ChildrenController do
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
-      assigns[:child]['_attachments']['photo-17-01-2010-1405']['data'].should_not be_blank
+      assigns[:child]['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
     end
 
     it "should update only non-photo fields when no photo update" do
