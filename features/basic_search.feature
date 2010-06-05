@@ -18,13 +18,12 @@ Scenario: Searching for a child given his name
 
 Scenario: Searching for a child given his unique identifier
   Given the following children exist in the system:
-    | name   	| last_known_location 	| reporter |
-    | andreas	| London		            | zubair   |
-    | zak	    | London		            | zubair   |
-  When I fill in "zubairlon" for "Child ID"
+    | name   	| last_known_location 	| reporter | unique_identifier |
+    | andreas	| London		            | zubair   | zubairlon123 |
+    | zak	    | London		            | zubair   | zubairlon456 |
+  When I fill in "zubairlon123" for "Child ID"
   And I press "Search"
-  Then I should be on the child search results page
-  And I should see "andreas" in the search results
+  Then I should be on the saved record page for child with name "andreas"
 
 Scenario: Searches that yield a single record should redirect directly to that record
   Given the following children exist in the system:
