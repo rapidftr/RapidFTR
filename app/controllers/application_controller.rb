@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def render_error_response(ex)
     @exception = ex
  
-    # Only add the error page to the status code if the reuqest-format was HTML
+    # Only add the error page to the status code if the request-format was HTML
     respond_to do |format|
       format.html do
         render( 

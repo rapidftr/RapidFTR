@@ -46,7 +46,7 @@ Feature: As an user, I should be able to log in.
 @allow-rescue
   Scenario:User session should be destroyed when a user logs out
     Given I am logged in
-    When I follow "Log Out"
+    When I follow "logout"
     Then I should be on the login page
     When I go to new child page
     Then I should be on the login page
