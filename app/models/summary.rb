@@ -1,4 +1,5 @@
 class Summary < CouchRestRails::Document
+  END_CHAR_AVOIDER = "aa"
   use_database :child
 
   view_by :name,
@@ -19,12 +20,12 @@ class Summary < CouchRestRails::Document
 
   
   def self.basic_search(child_name, unique_id)
-    x = search_by_unique_identifier(unique_id)
-    y = results = search_by_name(child_name)
+    results = search_by_unique_identifier(unique_id)
+    results = search_by_name(child_name) if results.nil?
 
-    results = and_arrays(x,y)
+    return [] unless results
 
-    results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]}
+    results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]} 
   end
 
   def self.and_arrays(*arrays)
@@ -55,7 +56,7 @@ class Summary < CouchRestRails::Document
     endkey = from_value[0].chr.next
 
     args = {:startkey => from_value}
-    args.store(:endkey, endkey) unless endkey == "aa"
+    args.store(:endkey, endkey) unless endkey == END_CHAR_AVOIDER
 
     args
   end
