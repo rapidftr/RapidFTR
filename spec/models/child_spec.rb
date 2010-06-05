@@ -135,7 +135,7 @@ describe Child do
   end
   
   it "should handle special characters in last known location when creating unique id" do
-    pending
+    pending "Seem to be having UTF-8 related problems - cv (talk to zk)" 
     child = Child.new({'last_known_location'=> "\215\303\304n"})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
@@ -367,4 +367,18 @@ describe Child do
       child['histories'].first['datetime'].should == 'some_time'
     end
   end
+
+  describe "when fetching children" do
+    it "should return list of children ordered by name" do
+      UUIDTools::UUID.stub("random_create").and_return(12345)
+
+      Child.create({ 'name' => 'Zbu', 'last_known_location' => 'POA' } )
+      Child.create({ 'name' => 'Abu', 'last_known_location' => 'POA' } )
+
+      childrens = Child.all
+      childrens.first['name'].should == 'Abu'
+    end
+
+  end
+
 end
