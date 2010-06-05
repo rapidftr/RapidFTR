@@ -21,9 +21,9 @@ module RapidFTR
 
       family_details_fields = [
               Field.new("name" => "fathers_name", "type" => "text_field"),
-              Field.new("name" => "reunite_with_father", "type" => "select_box", "option_strings" =>["Yes", " No"]),
+              Field.new("name" => "reunite_with_father", "type" => "select_box", "option_strings" =>["No", "Yes"]),
               Field.new("name" => "mothers_name", "type" => "text_field"),
-              Field.new("name" => "reunite_with_mother", "type" => "select_box", "option_strings" =>["Yes", " No"]),
+              Field.new("name" => "reunite_with_mother", "type" => "select_box", "option_strings" =>["No", "Yes"]),
       ]
 
       FormSection.create!("name" =>"Family details", "enabled"=>"true", :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
