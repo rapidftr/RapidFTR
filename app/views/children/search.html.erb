@@ -12,7 +12,7 @@
 
 <div class="profiles-list">
   <%= render :partial => "summary_row", :collection => @results %>
-
+  <%= "No results found" if @show_no_results_message %>
 </div>
 <%= submit_tag "Export to PDF" %>
 <%-end%>

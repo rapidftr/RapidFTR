@@ -128,11 +128,21 @@ describe ChildrenController do
       assigns[:show_thumbnails].should == false
     end
 
-    it 'asks view to not show csv export link if there are no results' do
-      Summary.stub!(:basic_search).and_return([])
-      get(:search, :format => 'html' )
-      assigns[:show_csv_export_link].should == false
-    end
+	describe "with no results" do
+		before do
+			Summary.stub!(:basic_search).and_return([])
+			get(:search, :format => 'html' )
+		end
+
+		it 'asks view to not show csv export link if there are no results' do
+		  assigns[:show_csv_export_link].should == false
+		end
+
+		it 'asks view to display a "No results found" message if there are no results' do
+		  assigns[:show_no_results_message].should == true
+		end
+
+	end
 
     it 'sends csv data with the correct content type and file name' do
       @controller.
