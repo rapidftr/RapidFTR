@@ -8,6 +8,12 @@ Feature: As an user, I should be able to log in.
     And I press "Log in"
     Then I should see "Hello harry"
 
+ Scenario: To check that a logged in user doesn't see the login page
+   Given I am logged in
+   When I go to the login page
+   Then I should see "View child listing"
+   And I should not see "Hello mary"
+
   Scenario: User does not exist
     Given I am on the login page
     When I fill in "Harry" for "user name"
@@ -55,3 +61,4 @@ Feature: As an user, I should be able to log in.
     Given there is a User
      And I am logged out     
     Then I should not see "Logged in as"
+
