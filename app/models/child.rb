@@ -5,7 +5,19 @@ class Child < CouchRestRails::Document
 
   before_save :initialize_history, :if => :new?
   before_save :update_history, :unless => :new?
-  
+
+  view_by :name,
+          :map => "function(doc) {
+              if ((doc['couchrest-type'] == 'Child') && doc['name'])
+             {
+                emit(doc['name'], doc);
+             }
+          }"
+
+  def self.all
+    view('by_name', {})
+  end
+
   def self.new_with_user_name(user_name, fields = {})
     child = new(fields)
     child.create_unique_id user_name
