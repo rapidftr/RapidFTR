@@ -128,7 +128,7 @@ class ChildrenController < ApplicationController
         @show_thumbnails = !!params[:show_thumbnails]
         @show_csv_export_link = !@results.empty?
 
-        if 1 == @results.length
+        if @results.length == 1
           redirect_to child_path( @results.first )
         end
       end
