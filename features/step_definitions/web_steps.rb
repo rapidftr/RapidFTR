@@ -261,3 +261,8 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
+
+Then /^I should be in the (.*?) page$/ do |page|
+  pending
+end
