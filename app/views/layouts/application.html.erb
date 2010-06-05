@@ -18,16 +18,18 @@ $(document).ready(function() {
 <body class="<%= @body_class %>">
 <div class="page-container">
   <div class="page-header">
-        <p class="brand"><a href="/"><%= image_tag "logo.jpg" %></a></p>
+    <p class="brand"><a href="/"><%= image_tag "logo.jpg" %></a></p>
 
     <div class="nav">
       <ul>
         <li><a href="/">Home</a></li>
-        <li><%= link_to 'Logout', :logout %></li>
         <li><a href="/">Admin</a></li>
         <li><a href="/">FAQ</a></li>
         <li><a href="/">Contact</a></li>
         <li><a href="/">About</a></li>
+         <% unless current_user_name.nil? %>
+             <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_to 'Logout', :logout %>)</li>
+         <% end %>
       </ul>
     </div>
   </div>

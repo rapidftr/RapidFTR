@@ -41,13 +41,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-  def self.current_user
-    user = User.new
-    user.user_name = 'zubair'
-    user
-  end
-
+  # TODO Remove duplication in ApplicationHelper
   def current_user_name
     session = Session.get_from_cookies(cookies)
     return session.user_name unless session.nil?

@@ -1,6 +1,6 @@
 Feature: As an user, I should be able to log in.
 
-  Scenario: To check that a user can log in
+   Scenario: To check that a user can log in
     Given a user "Harry" with a password "123"
     Given I am on the login page
     When I fill in "Harry" for "user name"
@@ -50,3 +50,8 @@ Feature: As an user, I should be able to log in.
     Then I should be on the login page
     When I go to new child page
     Then I should be on the login page
+
+   Scenario: I should not see 'Logged in as' if I'm logged out
+    Given there is a User
+     And I am logged out     
+    Then I should not see "Logged in as"
