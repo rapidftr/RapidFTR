@@ -11,10 +11,12 @@ class ApplicationController < ActionController::Base
   before_filter :check_authentication
   rescue_from( AuthFailure ) { |e| handle_authentication_failure(e) }
 
+  before_filter :session_expiry
+  before_filter :update_activity_time
+
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-
-
+  
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
  
   def render_error_response(ex)
@@ -54,7 +56,25 @@ class ApplicationController < ActionController::Base
   def name
     self.class.to_s.gsub("Controller", "")
   end
-  
+
+  def session_expiry
+    session = Session.get_from_cookies(cookies)
+    return if session.nil? || session['expires_at'].nil?
+    time_left = (session.expires_at - Time.now).to_i
+    puts time_left
+    if time_left < 0
+      flash[:error] = 'Your session has expired. Please re-login.'
+      redirect_to logout_path
+    end
+  end
+
+  def update_activity_time
+    session = Session.get_from_cookies(cookies)
+    return if session.nil?
+    session[:expires_at] = 20.minutes.from_now
+    session.save
+  end
+
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
     %(<span class="field-error">) + html_tag + %(</span>)
   end

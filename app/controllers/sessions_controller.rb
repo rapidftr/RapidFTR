@@ -1,6 +1,9 @@
 class SessionsController < ApplicationController
 
   skip_before_filter :check_authentication, :only => %w{new create}
+  skip_before_filter :session_expiry, :only => %w{new create destroy}
+  skip_before_filter :update_activity_time, :only => %w{new create destroy}
+
   protect_from_forgery :except => %w{create}
 
   # GET /sessions/1
