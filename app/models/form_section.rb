@@ -12,7 +12,7 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   view_by :order
 
-  def self.all
+  def self.all_by_order
     view 'by_order'
   end
 

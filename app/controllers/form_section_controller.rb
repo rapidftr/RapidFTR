@@ -1,6 +1,6 @@
 class FormSectionController < ApplicationController
   def index
-    @form_sections = FormSection.all
+    @form_sections = FormSection.all_by_order
   end
 
   def create
