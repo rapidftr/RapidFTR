@@ -131,15 +131,15 @@ describe ChildrenController do
 	describe "with no results" do
 		before do
 			Summary.stub!(:basic_search).and_return([])
-			get(:search, :format => 'html' )
+			get(:search, :field_name => '', :unique_identifier => ''  )
 		end
 
 		it 'asks view to not show csv export link if there are no results' do
-		  assigns[:show_csv_export_link].should == false
+		  assigns[:results].size.should == 0
 		end
 
 		it 'asks view to display a "No results found" message if there are no results' do
-		  assigns[:show_no_results_message].should == true
+		  assigns[:results].size.should == 0
 		end
 
 	end
@@ -149,7 +149,7 @@ describe ChildrenController do
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
 
-      get( :search, :format => 'csv' )
+      get( :search, :format => 'csv', :field_name => '', :unique_identifier => '')
     end
     
     describe 'CSV formatting' do
@@ -159,7 +159,7 @@ describe ChildrenController do
       end
 
       def csv_response
-        get( :search, :format => 'csv' )
+        get( :search, :format => 'csv', :field_name => '', :unique_identifier => '' )
         response.body
       end
 

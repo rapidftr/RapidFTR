@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources( 
     :children, 
-     :collection => { :search => :get, :photo_pdf => :post } ) do |child|
+     :collection => { :search => :get, :photo_pdf => :post, :advanced_search => :get } ) do |child|
     child.resource :history, :only => :show
     child.resources :attachments, :only => :show
   end

@@ -17,7 +17,6 @@ class Summary < CouchRestRails::Document
                 emit(doc['unique_identifier'],doc);
              }
           }"
-
   
   def self.basic_search(child_name, unique_id)
     results = search_by_unique_identifier(unique_id)
@@ -26,6 +25,14 @@ class Summary < CouchRestRails::Document
     return [] unless results
 
     results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]} 
+  end
+
+  def self.advanced_search(field, value)
+   Child.class_eval do
+     view_by field.to_sym
+   end
+   
+    Child.send("by_#{field}".to_sym, create_key_range(value))
   end
 
   def self.and_arrays(*arrays)

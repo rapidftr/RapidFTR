@@ -14,6 +14,8 @@ class Child < CouchRestRails::Document
              }
           }"
 
+  #view_by :name, :last_known_location
+  
   def self.all
     view('by_name', {})
   end
