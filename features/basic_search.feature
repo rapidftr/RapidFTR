@@ -79,3 +79,18 @@ Given the following children exist in the system:
   And I uncheck "Show thumbnails" 
   And I press "Search"
   Then I should not see an image from the photo resource for child with name "Willis"
+
+Scenario: Not seing "No results found" when first enter search page
+  Given the following children exist in the system:
+    | name   |
+    | Willis |
+    | Will   |
+  When I fill in "Will" for "Name"
+  And I press "Search"
+  Then I should be on the child search results page
+  And I should see "Willis" in the search results
+
+
+Scenario: Searching for a child given his name returns no results
+  Given I am on the child search page
+  Then I should not see "No results found"
