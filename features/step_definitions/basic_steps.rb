@@ -147,13 +147,30 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
   child.create!
 end
 
+Then /^I should see the "([^\"]*)" tab$/ do |tab_name|
+  tab_names = Hpricot(response.body).child_tab.collect {|item|item.inner_html}
+  tab_names.should contain(tab_name)
+end
+
+Then /^I should not see the "([^\"]*)" tab$/ do |tab_name|
+  tab_names = Hpricot(response.body).child_tab.collect {|item|item.inner_html}
+  tab_names.should_not contain(tab_name)
+end
+
+Then /^I should not see the "([^\"]*)" tab name in detail section$/ do |tab_name|
+  tab_names = Hpricot(response.body).child_tab_name.collect {|item|item.inner_html}
+  tab_names.should_not contain(tab_name)
+end
+
+
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
   
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
-      'fields'=> Array.new # todo:build these FSDs in a nicer way... 
+      'fields'=> Array.new # todo:build these FSDs in a nicer way...
     )
     form_section_hash["order"] = form_section_hash["order"].to_i
     FormSection.create!(form_section_hash)
