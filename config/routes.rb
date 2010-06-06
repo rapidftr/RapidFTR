@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
     child.resources :attachments, :only => :show
   end
   map.resources :users
+  map.resources :admin
   map.resources :sessions, :except => :index
 
 
