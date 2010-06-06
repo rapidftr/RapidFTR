@@ -16,13 +16,6 @@ describe FormSectionController do
       get :index
       assigns[:form_sections].should == expected_form_sections
      end
-     it "orders the form sections by their display order" do
-      expected_form_sections = [FormSection.new(name => "Form section 2", :order=>2), FormSection.new(name => "Form section 1", :order=>1)]
-      FormSection.stub!(:all).and_return(expected_form_sections)
-      get :index
-      assigns[:form_sections][0].should == expected_form_sections[1]
-      assigns[:form_sections][1].should == expected_form_sections[0]
-     end
    end
    describe "post create" do
      it "calls create_new_custom with parameters from post" do 
