@@ -10,11 +10,12 @@
 
 <%- form_tag photo_pdf_children_path, :method => :post do %>
 
-<div class="profiles-list">
-  <%= render :partial => "summary_row", :collection => @results %>
-  <%= "No results found" if @show_no_results_message %>
-</div>
-<%= submit_tag "Export to PDF" %>
+  <div class="profiles-list">
+    <%= render :partial => "summary_row", :collection => @results %>
+    <%= "No results found" unless @has_results %>
+  </div>
+
+  <%= submit_tag "Export to PDF" if @has_results %>
 <%-end%>
 
-<%=link_to( "Export to CSV", current_url_with_format_of('csv') ) if @show_csv_export_link%> 
+<%= link_to( "Export to CSV", current_url_with_format_of('csv') ) if @has_results %>
