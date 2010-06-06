@@ -118,7 +118,6 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    @page_name = "Child Search"
     @results = Summary.basic_search(params[:child_name], params[:unique_identifier])
 
     respond_to do |format|
@@ -127,7 +126,8 @@ class ChildrenController < ApplicationController
       end
       format.html do
         @show_thumbnails = !!params[:show_thumbnails]
-        @has_results = !@results.empty?
+        @show_csv_export_link = !@results.empty?
+        @show_no_results_message = @results.empty?
 
         if @results.length == 1
           redirect_to child_path( @results.first )
