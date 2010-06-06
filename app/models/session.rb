@@ -43,5 +43,23 @@ class Session < CouchRestRails::Document
   def full_name
     user['full_name']
   end
-  
+
+  def expired?
+    return true if !expiration_time.nil? && expiration_time - Time.now <= 0
+    false
+  end
+
+  def will_expire_soon?
+    return true if !expiration_time.nil? && expiration_time - Time.now <= 5.minutes
+    false
+  end
+
+  def update_expiration_time(time)
+    self[:expires_at] = time
+  end
+
+  def expiration_time
+    self[:expires_at]
+  end
+
 end

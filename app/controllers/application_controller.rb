@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-  
+
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
  
   def render_error_response(ex)
@@ -52,6 +52,24 @@ class ApplicationController < ActionController::Base
 
   def name
     self.class.to_s.gsub("Controller", "")
+  end
+
+  def session_expiry
+    session = Session.get_from_cookies(cookies)
+    unless session.nil?
+      if session.expired?
+        flash[:error] = 'Your session has expired. Please re-login.'
+        redirect_to logout_path
+      end
+    end
+  end
+
+  def update_activity_time
+    session = Session.get_from_cookies(cookies)
+    unless session.nil?
+      session.update_expiration_time(20.minutes.from_now)
+      session.save
+    end
   end
 
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
