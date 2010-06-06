@@ -27,7 +27,7 @@ $(document).ready(function() {
             <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_to 'Logout', :logout %>)</li>
         <% end %>
         <li><a href="/">Home</a></li>
-        <li><%= link_to 'Admin', :controller=>"admin", :action=>"index" %></li>
+        <li><%= link_to 'Admin', admin_path %></li>
         <li><a href="http://www.rapidftr.com/faq">FAQ</a></li>
         <li><a href="http://www.rapidftr.com">About</a></li>
         <li><a href="http://www.rapidftr.com/contact">Contact</a></li>

@@ -83,6 +83,9 @@ module NavigationHelpers
         form_section = $1
         formsection_fields_path(form_section)
 
+      when /the admin page/
+        admin_path(options) 
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #
