@@ -1,10 +1,10 @@
 Feature: As an admin I should be able to create and view form sections
   Scenario:      To view a list of existing forms as an admin
     Given the following form sections exist in the system:
-      | name   | description | unique_id |
-      | Basic Details | Basic details about a child | basic_details |
-      | Family Details   | Details of the child's family | family_details |
-      | Caregiver Details   |  | caregiver_details |
+      | name   | description | unique_id | order |
+      | Basic Details | Basic details about a child | basic_details | 1 |
+      | Family Details   | Details of the child's family | family_details | 2 |
+      | Caregiver Details   |  | caregiver_details | 3 |
     Given "admin" is logged in
     When I am on form section page
     Then I should see the "Basic Details" form section link
@@ -15,9 +15,9 @@ Feature: As an admin I should be able to create and view form sections
 
   Scenario: To be able to view the disabled and enabled status of form sections
     Given the following form sections exist in the system:
-      | name   |  enabled | unique_id |
-      | Basic Details | true | section_1 |
-      | Caregiver Details   | false | section_2 |
+      | name   |  enabled | unique_id | order |
+      | Basic Details | true | section_1 | 1 |
+      | Caregiver Details   | false | section_2 | 2 |
     Given "admin" is logged in
     When I am on form section page
     Then I should see a tick in the enabled column for the form section "section_1"
