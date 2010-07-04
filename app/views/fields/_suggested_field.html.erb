@@ -1,8 +1,6 @@
        
 <li class="<%=suggested_field.unique_id%>Display">
-
   <% form_for suggested_field.field, :url => formsection_fields_path(form_section.unique_id), :html => {:method => :post}  do |f| %>
-
 	  <%= submit_tag "#{suggested_field.name}" %>
 	  <div>
 			<%=suggested_field.description%>
@@ -14,22 +12,14 @@
 		  <%= suggested_field.field.type %></li>
 		<% if(suggested_field.field.options) %>
 			<li><strong>Options:</strong>
-			  <%suggested_field.field.options.each do |option| %>
-			  	<%= option.class %>HI<br/>
-			  <%end%></li>
+				<%=display_options suggested_field.field %></li>
 		<% end %>
 	  </ul>
 
-	  
-	<% suggested_field.field.each_pair do |key, value| %>
-		
-		<%= puts (value)
-			if(value.class==Array) 
-				f.hidden_field  key 
-			else
-				f.hidden_field  key 
-		end%>
-	<% end %>
-	  <input type="hidden" name="from_suggested_field" value="<%=suggested_field.unique_id%>"/>
+		<%= f.text_field :name %>
+		<%= f.text_field :type %>
+		<%= f.text_field :help_text %>
+	  	<%= option_fields_for f, suggested_field %>
+	  	<input type="hidden" name="from_suggested_field" value="<%=suggested_field.unique_id%>"/>
   <% end %>
 </li>
