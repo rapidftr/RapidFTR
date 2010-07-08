@@ -12,10 +12,7 @@
     </ul>
   </div>
   <ul id="suggestedFields">
+       <%= render :partial => "suggested_field", :collection => @suggested_fields, :locals=> {:form_section_id=>@form_section.unique_id} %>
 
-    <% @suggested_fields.each do |suggested_field| %>
-       <%= render :partial => "suggested_field", :locals =>{:suggested_field=>suggested_field, :form_section=>@form_section} %>
-
-    <% end %>
   </ul>
 </fieldset>
