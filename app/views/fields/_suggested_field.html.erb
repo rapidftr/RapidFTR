@@ -1,6 +1,6 @@
        
 <li class="<%=suggested_field.unique_id%>Display">
-  <% form_for suggested_field.field, :url => formsection_fields_path(form_section.unique_id), :html => {:method => :post}  do |f| %>
+  <% form_for suggested_field.field, :url => formsection_fields_path(form_section_id), :html => {:method => :post}  do |f| %>
 	  <%= submit_tag "#{suggested_field.name}" %>
 	  <div>
 			<%=suggested_field.description%>
@@ -16,9 +16,9 @@
 		<% end %>
 	  </ul>
 
-		<%= f.text_field :name %>
-		<%= f.text_field :type %>
-		<%= f.text_field :help_text %>
+		<%= f.hidden_field :name %>
+		<%= f.hidden_field :type %>
+		<%= f.hidden_field :help_text %>
 	  	<%= option_fields_for f, suggested_field %>
 	  	<input type="hidden" name="from_suggested_field" value="<%=suggested_field.unique_id%>"/>
   <% end %>
