@@ -27,6 +27,8 @@ ActionController::Routing::Routes.draw do |map|
       :collection => additional_field_actions )
   end
 
+  map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
+
   map.resources :form_section
 
   map.resources :fields
