@@ -45,48 +45,8 @@ If you've got experience with any of these and want to help, please get in touch
 
 Install & Run RapidFTR on OSX
 
-To get RapidFTR running on your machine while it’s in a dev environment, you’ll need to 
-install the following:
-CouchDB  Ruby 1.8.6 / 1.8.7 Gems Rails 2.3.5 JSON Cucumber
-You’ll also need to ‘pull’ the code from our GitHub Repository: 
-http://github.com/jorgej/RapidFTR
-For more details, read the official CouchDB Read Me
+PLEASE SEE INSTALLATION INSTRUCTIONS LOCATED AT http://wiki.github.com/jorgej/RapidFTR/install-run-rapidftr-on-osx
 
-
-
-How To Install and Run on MAC OSX:
-
-STEP 1:
-	Download and install MacPorts 	Download and install CouchDBX
-
-STEP 2:
-	Then run these commands from Terminal or Command Line:
-
-	Ruby: 		To check version: ‘ruby -v’ 		
-        If it’s not 1.8.7, install it using macports 		
-          ‘sudo port install ruby’
-
-	Gems:  		‘sudo rake gems:install’ 		
-          ‘sudo port install rb-rubygems’
-
-	Rails: 		‘sudo rake gems:install’
-
-	JSON: 		‘sudo gem install json’
-
-	Cucumber: 		‘sudo gem install cucumber’
-
-STEP 3:
-
-	Do this once MacPorts is installed: 	‘sudo port install rb-libxml2 libxml2’  
-STEP 4:
-
-	To install your CouchDB database: 	
-        From the command line, go to the folder where your GitHub repo is stored in and enter these commands: 	
-        ‘rake couchdb:create’ 	
-        ‘rake couchdb:create RAILS_ENV=cucumber’
-
-	Each time a new database is committed to code (this won’t happen often) 
-        you’ll have to rerun the ‘rake couchdb:create’ command.
 
 
 
