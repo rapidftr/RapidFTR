@@ -1,9 +1,9 @@
 Feature: So that admin can customize fields in a form section
   Background:
      Given the following form sections exist in the system:
-        | name | unique_id | editable |
-        | Basic details | basic_details | false |
-        | Family details | family_details | true |
+        | name | unique_id | editable | order | enabled |
+        | Basic details | basic_details | false | 1 | true |
+        | Family details | family_details | true | 2 | true |
   Scenario: Admins should be able to add new new text fields
     Given I am logged in
      And I am on the manage fields page for "family_details"

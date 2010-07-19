@@ -75,7 +75,7 @@ describe ChildrenController do
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
       
-      current_time = Time.parse("Jan 17 2010 14:05")
+      current_time = Time.parse("Jan 17 2010 14:05:32")
       Time.stub!(:now).and_return current_time      
       put :update, :id => child.id, 
         :child => {
@@ -84,7 +84,7 @@ describe ChildrenController do
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
-      assigns[:child]['_attachments']['photo-17-01-2010-1405']['data'].should_not be_blank
+      assigns[:child]['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
     end
 
     it "should update only non-photo fields when no photo update" do
@@ -128,18 +128,28 @@ describe ChildrenController do
       assigns[:show_thumbnails].should == false
     end
 
-    it 'asks view to not show csv export link if there are no results' do
-      Summary.stub!(:basic_search).and_return([])
-      get(:search, :format => 'html' )
-      assigns[:show_csv_export_link].should == false
-    end
+	describe "with no results" do
+		before do
+			Summary.stub!(:basic_search).and_return([])
+			get(:search, :field_name => '', :unique_identifier => ''  )
+		end
+
+		it 'asks view to not show csv export link if there are no results' do
+		  assigns[:results].size.should == 0
+		end
+
+		it 'asks view to display a "No results found" message if there are no results' do
+		  assigns[:results].size.should == 0
+		end
+
+	end
 
     it 'sends csv data with the correct content type and file name' do
       @controller.
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
 
-      get( :search, :format => 'csv' )
+      get( :search, :format => 'csv', :field_name => '', :unique_identifier => '')
     end
     
     describe 'CSV formatting' do
@@ -149,7 +159,7 @@ describe ChildrenController do
       end
 
       def csv_response
-        get( :search, :format => 'csv' )
+        get( :search, :format => 'csv', :field_name => '', :unique_identifier => '' )
         response.body
       end
 

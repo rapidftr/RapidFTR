@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   skip_before_filter :check_authentication, :only => %w{new create}
+
   protect_from_forgery :except => %w{create}
 
   # GET /sessions/1
@@ -22,6 +23,10 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
+    unless (@session = Session.get(pull_token_from_headers || pull_token_from_cookies)).nil?
+      return redirect_to :action => "show", :id => @session
+    end
+
     @session = Session.new(params[:login])
 
     @page_name = "Login"

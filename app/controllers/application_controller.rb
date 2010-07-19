@@ -14,13 +14,12 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
-
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
  
   def render_error_response(ex)
     @exception = ex
  
-    # Only add the error page to the status code if the reuqest-format was HTML
+    # Only add the error page to the status code if the request-format was HTML
     respond_to do |format|
       format.html do
         render( 
@@ -41,19 +40,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
-  def self.current_user
-    user = User.new
-    user.user_name = 'zubair'
-    user
-  end
-
+  # TODO Remove duplication in ApplicationHelper
   def current_user_name
     session = Session.get_from_cookies(cookies)
-    if not session
-      return nil
-    end
-    return session.user_name
+    return session.user_name unless session.nil?
   end
 
   def send_pdf(pdf_data,filename) 
@@ -63,7 +53,25 @@ class ApplicationController < ActionController::Base
   def name
     self.class.to_s.gsub("Controller", "")
   end
-  
+
+  def session_expiry
+    session = Session.get_from_cookies(cookies)
+    unless session.nil?
+      if session.expired?
+        flash[:error] = 'Your session has expired. Please re-login.'
+        redirect_to logout_path
+      end
+    end
+  end
+
+  def update_activity_time
+    session = Session.get_from_cookies(cookies)
+    unless session.nil?
+      session.update_expiration_time(20.minutes.from_now)
+      session.save
+    end
+  end
+
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
     %(<span class="field-error">) + html_tag + %(</span>)
   end

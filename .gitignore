@@ -11,4 +11,6 @@ debug.html
 *.swo
 *.orig
 .autotest
+*.iml
+tags
 
