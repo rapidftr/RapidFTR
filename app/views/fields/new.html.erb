@@ -12,34 +12,7 @@
     </ul>
   </div>
   <ul id="suggestedFields">
+       <%= render :partial => "suggested_field", :collection => @suggested_fields, :locals=> {:form_section_id=>@form_section.unique_id} %>
 
-    <% @suggested_fields.each do |suggested_field| %>
-        <li class="<%=suggested_field.unique_id%>Display">
-
-          <% form_for suggested_field.field, :url => formsection_fields_path(@form_section.unique_id), :html => {:method => :post}  do |f| %>
-
-              <%= submit_tag "#{suggested_field.name}" %>
-              <div>
-                    <%=suggested_field.description%>
-                </div>
-              <ul>
-                <li><strong>Field name:</strong> 
-                  <%= suggested_field.field.name %></li>
-                <li><strong>Field type:</strong> 
-                  <%= suggested_field.field.type %></li>
-                <% if(suggested_field.field.options) %>
-                    <li><strong>Options:</strong>
-                      <%= suggested_field.field.options %></li>
-                <% end %>
-              </ul>
-
-              
-            <% suggested_field.field.each_pair do |key, value| %>
-                <%= f.hidden_field  key %>
-            <% end %>
-              <input type="hidden" name="from_suggested_field" value="<%=suggested_field.unique_id%>"/>
-          <% end %>
-        </li>
-    <% end %>
   </ul>
 </fieldset>
