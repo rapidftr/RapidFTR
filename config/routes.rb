@@ -33,5 +33,5 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :fields
 
-  map.root :controller => 'children', :action => :index
+  map.root :controller => 'home', :action => :index
 end
