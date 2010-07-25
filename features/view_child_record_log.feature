@@ -11,7 +11,7 @@ Feature:
 		And I fill in "Haiti" for "Last known location"
 		And I attach the file "features/resources/jorge.jpg" to "photo"
 		And the date/time is "July 19 2010 13:05"
-		And I press "Finish"
+		And I press "Save"
       When I follow "View the change log"
       Then I should see "19/07/2010 13:05 Record created by harry"
 
@@ -25,7 +25,7 @@ Feature:
 		And I am on the children listing page
       When I follow "Edit"
 		And I attach the file "features/resources/jeff.png" to "photo"
-		And I press "Finish"
+		And I press "Save"
 		And I follow "View the change log"
         Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by mary"
       When I follow "photo-2010-07-19T130532"
@@ -53,7 +53,7 @@ Feature:
         And I fill in "Zambia" for "Last known location"
         And I select "6 months to 1 year ago" from "Date of separation"
         And the date/time is "Oct 29 2010 10:12"
-        And I press "Finish"
+        And I press "Save"
       When I follow "View the change log"
       Then I should see "29/10/2010 10:12 Last known location changed from Haiti to Zambia by bobby"
         And I should see "29/10/2010 10:12 Origin initially set to Bombay by bobby"
