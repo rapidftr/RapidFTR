@@ -10,7 +10,7 @@
       <input name="commit" type="submit" value="Finish"/>
     </p>
     <p class="cancelButton">
-       <%= link_to 'Cancel', children_path %>
+       <%= link_to 'Cancel', children_path, :confirm => 'Are you sure you want to cancel?' %>
     </p>
 
 <% end %>
