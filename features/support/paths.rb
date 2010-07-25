@@ -31,6 +31,18 @@ module NavigationHelpers
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path( child, options )
+        
+      when /child record page for "(.+)"/
+        child_name = $1
+        child = Summary.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil?
+        child_path( child, options )
+        
+      when /change log page for "(.+)"/
+        child_name = $1
+        child = Summary.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil?
+        child_history_path( child, options )
 
       when /new user page/
         new_user_path(options)

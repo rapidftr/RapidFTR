@@ -63,3 +63,14 @@ Feature:
         And I should see "29/10/2010 10:12 Gender changed from Male to Female by bobby"
         And I should see "29/10/2010 10:12 Age is changed from Exact to Approximate"
       # Order tested at the moment in the show.html.erb_spec.rb view test for histories
+      
+	Scenario: Clicking back from the change log
+	  Given "Harry" is logged in
+      And the following children exist in the system:
+          | name       | age | age_is | gender | last_known_location |
+          | Bob | 12  | Exact  | Male   | Spain               |
+      When I am on the change log page for "Bob"
+      And I follow "Back"
+      Then I should be on the child record page for "Bob"
+        
+	
