@@ -36,6 +36,12 @@ Feature: As an admin I should be able to create and view form sections
     And I should see the form section "section_2" in row 1
     And I should see a current order of "10" for the "section_1" form section
     And I should see a current order of "1" for the "section_2" form section 
+  
+  Scenario: To be able to return to the admin page from the form sections page
+    Given "admin" is logged in
+    And I am on form section page
+    When I follow "Back"
+    Then I should be on the admin page
 
     
 

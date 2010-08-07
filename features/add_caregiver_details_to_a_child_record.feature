@@ -7,7 +7,7 @@ Feature: Capture caregiver details
     And I fill in "Mother Teresa" for "Caregivers name"
     And I fill in "Saint" for "Occupation"
     And I fill in "Unknown" for "Relationship to child"
-    When I press "Finish"
+    When I press "Save"
     Then I should see "Mother Teresa"
     And I should see "Saint"
     And I should see "Unknown"

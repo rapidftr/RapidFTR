@@ -1,3 +1,6 @@
+
+      <div class="profile-header"> 
+<ul class="history-details">
 <% @child['histories'].each do |history| %>
 	<% history['changes'].each_pair do |field, change| %>
 		<% if field == "current_photo_key" %>
@@ -19,3 +22,11 @@
 	<% end %>
 <% end %>
 <li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>
+</ul>
+
+</div>
+<div class="profile-tools">
+  <ul>
+    <li class="back"><%=link_to "Back", child_path(@child) %></li>
+  </ul>
+</div>
