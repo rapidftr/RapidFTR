@@ -15,7 +15,7 @@ Feature:
     And I fill in "Haiti" for "Last known location"
     And I select "1-2 weeks ago" from "Date of separation"
     And I attach the file "features/resources/jorge.jpg" to "photo"
-    And I press "Finish"
+    And I press "Save"
 
   # editing the created record
     Then I follow "Edit"
@@ -27,7 +27,7 @@ Feature:
     And I fill in "Zambia" for "Last known location"
     And I select "6 months to 1 year ago" from "Date of separation"
     And I attach the file "features/resources/jeff.png" to "photo"
-    And I press "Finish"
+    And I press "Save"
 
   # verifying whether the edited record has been saved successfully
     Then I should see "George Harrison"
@@ -45,7 +45,7 @@ Feature:
     Then I follow "Edit"
     And I attach the file "features/resources/textfile.txt" to "photo"
     And I fill in "" for "Last known location"
-    And I press "Finish"
+    And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
     Then I should see "Last known location cannot be empty"
     
