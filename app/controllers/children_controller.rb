@@ -1,5 +1,7 @@
 class ChildrenController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token
+
   # GET /children
   # GET /children.xml
   def index
