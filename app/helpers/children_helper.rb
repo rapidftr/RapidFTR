@@ -1,6 +1,6 @@
 module ChildrenHelper
   def thumbnail_tag(child, key = nil)
-    image_tag(child_thumbnail_path(child, key), :size=>"60x60", :alt=> child['name'])
+    image_tag(child_thumbnail_path(child, key), :alt=> child['name'])
   end
 
   def link_to_photo_with_key(key)

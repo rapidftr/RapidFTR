@@ -31,8 +31,6 @@ describe "children/search.html.erb" do
       raise 'no image tag' if first_image_tag.nil?
 
       first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail"
-      first_image_tag['width'].should == '60'
-      first_image_tag['height'].should == '60'
     end
 
     it "should not include a column displaying thumbnails if not asked" do

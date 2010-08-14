@@ -1,4 +1,3 @@
-require 'RMagick'
 
 class ChildImagesController < ApplicationController
   before_filter :find_child, :find_attachment
@@ -8,8 +7,8 @@ class ChildImagesController < ApplicationController
   end
 
   def show_thumbnail
-    image = Magick::Image.from_blob(@attachment.data.read)[0]
-    thumbnail = image.resize_to_fill(60)
+    image = MiniMagick::Image.from_blob(@attachment.data.read)
+    thumbnail = image.resize "60x60"
     send_data(thumbnail.to_blob, :type => @attachment.content_type, :disposition => 'inline')
   end
 

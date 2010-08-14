@@ -8,7 +8,6 @@ require 'spec/support/matchers/attachment_response'
 
 # Uncomment the next line to use webrat's matchers
 require 'webrat/integrations/rspec-rails'
-require 'RMagick'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
@@ -59,7 +58,8 @@ def uploadable_text_file
 end
 
 def to_thumbnail(size, path)
-  thumbnail = Magick::Image.read(path).first.resize_to_fill(size)
+  thumbnail = MiniMagick::Image.from_file(path)
+  thumbnail.resize "60x60"
   thumbnail.instance_eval "def content_type; 'image/#{File.extname(path).gsub(/^\./, '').downcase}'; end"
 
   def thumbnail.read
