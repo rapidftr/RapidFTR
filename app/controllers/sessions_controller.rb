@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
 
     if not @session
       respond_to do |format|
-        handle_create_error("Invalid credentials. Please try again!", format)
+        handle_login_error("Invalid credentials. Please try again!", format)
       end
 
       return
@@ -59,7 +59,7 @@ class SessionsController < ApplicationController
         format.xml  { render :action => "show", :status => :created, :location => @session }
         format.json { render_session_as_json(@session,:status => :created, :location => @session) }
       else
-        handle_create_error("There was a problem logging in.  Please try again.", format)
+        handle_login_error("There was a problem logging in.  Please try again.", format)
       end
     end
   end
@@ -82,11 +82,12 @@ class SessionsController < ApplicationController
   end
 
   private
-  def handle_create_error(notice, format)
+  def handle_login_error(notice, format)
     format.html {
       flash[:notice] = notice
       redirect_to :action => "new" }
     format.xml  { render :xml => errors, :status => :unprocessable_entity }
+    format.json { head :unauthorized }
   end
 
   def render_session_as_json(session,options = {})

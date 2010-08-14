@@ -15,41 +15,68 @@ ____________________________________________________________________________ */
 
 describe 'API Test'
 
-	var token
-	var childid
-	var response = {}
-	var parameters = {}
+    urlPrefix = "http://" + window.location.host;
 
-	$.ajaxSetup({async:false})
+	var token;
+	var childid;
+	var responseBody = {};
+	var parameters = {};
+    var response = {};
+
+	$.ajaxSetup({async:false});
 	
 	before_each
-		response = {}
-		parameters = {}
+		responseBody = {};
+		parameters = {};
+        response = {};
 	end
 	
-	it 'should return a autentication token'
-	
+		it 'should return a autentication token'
+
 		parameters = {user_name: "rapidftr", password: "rapidftr"}
-		
+
 		$.ajax({
-			url: "http://localhost:3000/sessions",
+			url: urlPrefix + "/sessions",
 			dataType: 'json',
 			data: parameters,
 			type: 'POST',
 			cache: false,
 			success: function(data)
 			{
-				response = data
+				responseBody = data
 		    },
-			complete: function(request, textStatus) 
+			complete: function(xmlHttpRequest)
 			{
-				token = response.session.token
+                response = xmlHttpRequest;
+                token = responseBody.session.token
+
 			}
-		})
-		
-		response.should.not.be_empty
+		});
+
+        response.status.should.eql 201
+		responseBody.should.not.be_empty
 		token.should.not.be_empty
-		
+
+	end
+
+    it 'should return 401 not authorized when authenticating with invalid password'
+
+		parameters = {user_name: "rapidftr", password: "wrongpassword"};
+
+		$.ajax({
+			url: urlPrefix + "/sessions",
+			dataType: 'json',
+			data: parameters,
+			type: 'POST',
+			cache: false,
+			complete: function(xmlHttpRequest)
+			{
+                response = xmlHttpRequest;
+
+			}
+		});
+
+        response.status.should.eql 401
 	end
 	
 	it 'should create a new child record'
@@ -57,7 +84,7 @@ describe 'API Test'
 		parameters = { "child[name]": "apichild", "child[last_known_location]": "New York City"}
 		
 		$.ajax({
-			url: "http://localhost:3000/children",
+			url: urlPrefix + "/children",
 			dataType: 'json',
 			type: 'POST',
 			cache: false,
@@ -68,24 +95,24 @@ describe 'API Test'
 			},
 			success: function(data)
 			{
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.should.have_property "name"
-		response.should.have_property "last_known_location"
-		response.name.should.eql parameters["child[name]"]
-		response.last_known_location.should.eql parameters["child[last_known_location]"]
+		responseBody.should.not.be_empty
+		responseBody.should.have_property "name"
+		responseBody.should.have_property "last_known_location"
+		responseBody.name.should.eql parameters["child[name]"]
+		responseBody.last_known_location.should.eql parameters["child[last_known_location]"]
 		
-		childid = response._id
+		childid = responseBody._id
 		
 	end
 
 	it 'should return list of all children in database'
 
 		$.ajax({
-			url: "http://localhost:3000/children",
+			url: urlPrefix + "/children",
 		  	dataType: 'json',
 			cache: false,
 			beforeSend: function(request)
@@ -96,19 +123,19 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 				
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.should.be_a Array
+		responseBody.should.not.be_empty
+		responseBody.should.be_a Array
 		
 	end
 
 	it 'should return record of child with specified id'
 
 		$.ajax({
-			url: "http://localhost:3000/children/" + childid,
+			url: urlPrefix + "/children/" + childid,
 		  	dataType: 'json',
 			cache: false,
 			beforeSend: function(request)
@@ -118,21 +145,40 @@ describe 'API Test'
 		  	success: function(data)
 			{
 				//alert(data.toSource());
-				
-				response = data
+
+				responseBody = data
 		    }
 		})
-		
-		response.should.not.be_empty
-		response.should.have_property "name"
-		response.should.have_property "last_known_location"
-		
+
+		responseBody.should.not.be_empty
+		responseBody.should.have_property "name"
+		responseBody.should.have_property "last_known_location"
+
 	end
-	
+
+    it 'should return 401 not authorized when making a request with invalid token'
+
+        $.ajax({
+            url: urlPrefix + "/children/" + childid,
+              dataType: 'json',
+            cache: false,
+            beforeSend: function(request)
+            {
+                request.setRequestHeader('Authorization', "RFTR_Token " + "Invalid token")
+            },
+            complete: function(xmlHttpRequest)
+            {
+                response = xmlHttpRequest;
+            }
+        })
+
+        response.status.should.eql 401
+    end
+
 	it 'should update record of child with specified id'
 
 		$.ajax({
-			url: "http://localhost:3000/children/" + childid,
+			url: urlPrefix + "/children/" + childid,
 			dataType: 'json',
 			type: 'PUT',
 			cache: false,
@@ -145,20 +191,20 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 				
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.should.have_property "name"
-		response.should.have_property "last_known_location"
+		responseBody.should.not.be_empty
+		responseBody.should.have_property "name"
+		responseBody.should.have_property "last_known_location"
 		
 	end
 
 	it 'should delete record of child with specified id'
 	
 		$.ajax({
-			url: "http://localhost:3000/children/" + childid,
+			url: urlPrefix + "/children/" + childid,
 			dataType: 'json',
 			type: 'DELETE',
 			cache: false,
@@ -170,12 +216,12 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 				
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.response.should.eql "ok"
+		responseBody.should.not.be_empty
+		responseBody.response.should.eql "ok"
 	
 	end
 
