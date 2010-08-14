@@ -15,6 +15,8 @@ ____________________________________________________________________________ */
 
 describe 'API Test'
 
+    urlPrefix = "http://" + window.location.host;
+
 	var token
 	var childid
 	var response = {}
@@ -32,7 +34,7 @@ describe 'API Test'
 		parameters = {user_name: "rapidftr", password: "rapidftr"}
 		
 		$.ajax({
-			url: "http://localhost:3000/sessions",
+			url: urlPrefix + "/sessions",
 			dataType: 'json',
 			data: parameters,
 			type: 'POST',
@@ -57,7 +59,7 @@ describe 'API Test'
 		parameters = { "child[name]": "apichild", "child[last_known_location]": "New York City"}
 		
 		$.ajax({
-			url: "http://localhost:3000/children",
+			url: urlPrefix + "/children",
 			dataType: 'json',
 			type: 'POST',
 			cache: false,
@@ -85,7 +87,7 @@ describe 'API Test'
 	it 'should return list of all children in database'
 
 		$.ajax({
-			url: "http://localhost:3000/children",
+			url: urlPrefix + "/children",
 		  	dataType: 'json',
 			cache: false,
 			beforeSend: function(request)
@@ -108,7 +110,7 @@ describe 'API Test'
 	it 'should return record of child with specified id'
 
 		$.ajax({
-			url: "http://localhost:3000/children/" + childid,
+			url: urlPrefix + "/children/" + childid,
 		  	dataType: 'json',
 			cache: false,
 			beforeSend: function(request)
@@ -132,7 +134,7 @@ describe 'API Test'
 	it 'should update record of child with specified id'
 
 		$.ajax({
-			url: "http://localhost:3000/children/" + childid,
+			url: urlPrefix + "/children/" + childid,
 			dataType: 'json',
 			type: 'PUT',
 			cache: false,
@@ -158,7 +160,7 @@ describe 'API Test'
 	it 'should delete record of child with specified id'
 	
 		$.ajax({
-			url: "http://localhost:3000/children/" + childid,
+			url: urlPrefix + "/children/" + childid,
 			dataType: 'json',
 			type: 'DELETE',
 			cache: false,
