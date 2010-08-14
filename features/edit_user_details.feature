@@ -51,8 +51,7 @@ Scenario: When editing a user I cannot edit their user_name
     And I fill in "" for "Full name"
     And I press "Update"
     Then I should see "Please enter a valid email address"
-    And I should see "Please enter full name of the user"    
-    And I should see "Password does not match the confirmation"
+    And I should see "Please enter full name of the user"
 
 
-    
+
