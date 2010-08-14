@@ -201,9 +201,10 @@ describe Child do
       Child.get(child.id)['_attachments']['photo-2010-02-20T120432']['length'].should be > 0
     end
     
-    it "should be able to read data after a photo change" do
+    it "should be able to read attachment after a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      child.photo_for_key(child['current_photo_key']).length.should == uploadable_photo.stat.size
+      attachment = child.photo_for_key(child['current_photo_key'])
+      attachment.data.read.should == File.read(uploadable_photo.original_path)
     end
   end
   

@@ -1,14 +1,8 @@
 require 'spec/spec_helper'
 
 When /^I fill in the basic details of a child$/ do
-
   fill_in("Last known location", :with => "Haiti")
   attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
-
-end
-
-When /^I fill in the required details for a child$/ do
-  fill_in("Last known location", :with => "Haiti")
 end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
@@ -63,18 +57,6 @@ Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
   raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the table" unless match
 end
 
-Then /^I should see the photo of the child$/ do
-  (Hpricot(response.body)/"img[@src*='']").should_not be_empty
-end
-
-Then /^I should see the photo of the child with a "([^\"]*)" extension$/ do |extension|
-  (Hpricot(response.body)/"img[@src*='']").should_not be_empty
-end
-
-Then /^I should see the content type as "([^\"]*)"$/ do |content_type|
-  response.content_type.should == content_type
-end
-
 Given /^a user "([^\"]*)" has entered a child found in "([^\"]*)" whose name is "([^\"]*)"$/ do |user, location, name|
   new_child_record = Child.new
   new_child_record['last_known_location'] = location
@@ -90,6 +72,17 @@ Given /^I am editing an existing child record$/ do
   child.photo = uploadable_photo
   raise "Failed to save a valid child record" unless child.save
 
+  visit children_path+"/#{child.id}/edit"
+end
+
+Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
+  child = Child.new( :name => name, :last_known_location => 'unknown' )
+  child.photo = uploadable_photo(photo_file_path)
+  child.create
+end
+
+When /^I am editing the child with name "([^\"]*)"$/ do |name|
+  child = find_child_by_name name
   visit children_path+"/#{child.id}/edit"
 end
 
@@ -163,7 +156,6 @@ Then /^I should not see the "([^\"]*)" tab name in detail section$/ do |tab_name
 end
 
 
-
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
   
@@ -227,7 +219,7 @@ Then /^I should see the form section "([^\"]*)" in row (\d+)$/ do |form_section,
   rows[expected_row_position.to_i].inner_html.should == row.inner_html
 end
 
-And /^I should see a current order of "([^\"]*)" for the "([^\"]*)" form section$/ do |expected_order, form_section|
+Then /^I should see a current order of "([^\"]*)" for the "([^\"]*)" form section$/ do |expected_order, form_section|
   row = Hpricot(response.body).form_section_row_for form_section
   order_display = row.form_section_order
   order_display.inner_html.strip.should == expected_order

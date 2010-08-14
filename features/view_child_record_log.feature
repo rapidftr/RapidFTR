@@ -27,14 +27,20 @@ Feature:
 		And I attach the file "features/resources/jeff.png" to "photo"
 		And I press "Save"
 		And I follow "View the change log"
-        Then I should see "29/09/2010 17:59 Photo changed from this photo to this photo by mary"
-      When I follow "photo-2010-07-19T130532"
-	  Then I should see the content type as "image/jpg"
-	  When I am on the children listing page
-		And I follow "Jorge Just"
-		And I follow "View the change log"
-      When I follow "photo-2010-09-29T175933"
-      Then I should see the content type as "image/png"
+        Then I should see "29/09/2010 17:59 Photo changed from"
+        And I should see the thumbnail of "Jorge Just" with key "photo-19-07-2010-1305"
+        And I should see the thumbnail of "Jorge Just" with key "photo-29-09-2010-1759"
+        And I should see "by mary"
+
+		When I follow "photo-19-07-2010-1305"
+		Then I should see the photo corresponding to "features/resources/jorge.jpg"
+
+        When I am on the children listing page
+        And I follow "Jorge Just"
+        And I follow "View the change log"
+
+        When I follow "photo-29-09-2010-1759"
+        Then I should see the photo corresponding to "features/resources/jeff.png"
 
     Scenario:  I log in as a different user, edit and view the record log
       Given the date/time is "July 19 2010 13:05"
@@ -72,5 +78,4 @@ Feature:
       When I am on the change log page for "Bob"
       And I follow "Back"
       Then I should be on the child record page for "Bob"
-        
-	
+

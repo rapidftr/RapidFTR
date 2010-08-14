@@ -30,7 +30,7 @@ describe "children/search.html.erb" do
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
-      first_image_tag['src'].should == child_path( @results.first, :format => 'jpg' )
+      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail"
       first_image_tag['width'].should == '60'
       first_image_tag['height'].should == '60'
     end

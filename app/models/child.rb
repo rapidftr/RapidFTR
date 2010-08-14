@@ -49,19 +49,25 @@ class Child < CouchRestRails::Document
 
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
-    @file_name = photo_file.original_path    
-    self['current_photo_key'] = "photo-#{Time.now.strftime('%Y-%m-%dT%H%M%S')}"
-    create_attachment :name => self['current_photo_key'], 
-                      :content_type => photo_file.content_type, 
-                      :file => photo_file
+    @file_name = photo_file.original_path
+    attachment = FileAttachment.from_uploadable_file(photo_file, "photo")
+    self['current_photo_key'] = attachment.name
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
   end
 
   def photo
-    read_attachment self['current_photo_key']
+    attachment_name = self['current_photo_key']
+    data = read_attachment attachment_name
+    content_type = self['_attachments'][attachment_name]['content_type']
+    FileAttachment.new attachment_name, content_type, data
   end
   
   def photo_for_key(photo_key)
-    read_attachment photo_key
+    data = read_attachment photo_key
+    content_type = self['_attachments'][photo_key]['content_type']
+    FileAttachment.new photo_key, content_type, data
   end
   
   def valid?(context=:default)

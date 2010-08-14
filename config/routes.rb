@@ -5,6 +5,10 @@ ActionController::Routing::Routes.draw do |map|
     child.resource :history, :only => :show
     child.resources :attachments, :only => :show
   end
+
+  map.child_photo "/children/:child_id/photo/:id", :controller => "child_images", :action => "show_photo"
+  map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_images", :action => "show_thumbnail"
+
   map.resources :users
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index

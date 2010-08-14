@@ -2,3 +2,6 @@
   <%= label_tag "child[photo]", "Photo" %>
   <%= file_field_tag "child[photo]" %>
 </p>
+<% if !@child.id.nil? %>
+<div class="thumbnail"><%= thumbnail_tag(@child) %></div>
+<% end %>

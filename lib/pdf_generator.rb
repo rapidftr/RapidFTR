@@ -26,7 +26,7 @@ class PdfGenerator
 
   def add_child_page(child)
     @pdf.image( 
-      StringIO.new( child.photo ), 
+      child.photo.data, 
       :position => :center,
       :vposition => :top,
       :fit => @image_bounds 

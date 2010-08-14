@@ -81,12 +81,6 @@ module NavigationHelpers
         raise "no user named #{$1}" if user.nil?
         edit_user_path(user)
 
-      when /photo resource for child with name "(.+)"/
-        child_name = $1
-        child = Summary.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
-        child_path( child, :format => 'jpg' )
-
       when /new field page for "(.+)"/
         field_type = $1
         send( "new_#{field_type}_formsection_fields_path" )

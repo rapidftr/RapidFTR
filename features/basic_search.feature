@@ -67,8 +67,8 @@ Scenario: Thumbnails are displayed for each search result, if requested
   When I fill in "W" for "Name"
   And I check "Show thumbnails" 
   And I press "Search"
-  Then I should see an image from the photo resource for child with name "Willis"
-  Then I should see an image from the photo resource for child with name "Will"
+  Then I should see the thumbnail of "Willis"
+  And I should see the thumbnail of "Will"
 
 Scenario: Thumbnails are not displayed for each search result, if not requested
 Given the following children exist in the system:
@@ -78,7 +78,7 @@ Given the following children exist in the system:
   When I fill in "W" for "Name"
   And I uncheck "Show thumbnails" 
   And I press "Search"
-  Then I should not see an image from the photo resource for child with name "Willis"
+  Then I should not see the thumbnail of "Willis"
 
 Scenario: Not seing "No results found" when first enter search page
   Given the following children exist in the system:

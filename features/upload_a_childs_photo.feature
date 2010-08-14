@@ -6,20 +6,12 @@ Feature:
   Scenario: Uploading a standard JPG image
     Given I am logged in
     Given I am on the new child page
-    When I fill in the basic details of a child
+    When I fill in "Haiti" for "Last known location"
+    And I fill in "John" for "Name"
     And I attach the file "features/resources/jorge.jpg" to "photo"
     And I press "Save"
     Then I should see "Child record successfully created"
-    And I should see the photo of the child
-
-  Scenario: Uploading an image of type other than JPG
-    Given I am logged in
-    Given I am on the new child page
-    When I fill in the basic details of a child
-    And I attach the file "features/resources/jeff.png" to "photo"
-    And I press "Save"
-    Then I should see "Child record successfully created"
-    And I should see the photo of the child with a "png" extension
+    And I should see the photo of "John"
 
   Scenario: Uploading an invalid file in the image field
     Given I am logged in

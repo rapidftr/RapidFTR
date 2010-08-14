@@ -37,7 +37,7 @@ Feature:
     And I should see "Bombay"
     And I should see "Zambia"
     And I should see "6 months to 1 year ago"
-    And I should see the photo of the child with a "png" extension
+    And I should see the photo of "George Harrison"
     And I should see "Child was successfully updated."
 
  # checking if validations are still working fine 
