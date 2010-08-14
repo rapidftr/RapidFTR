@@ -19,16 +19,16 @@ describe 'API Test'
 
 	var token;
 	var childid;
-	var response = {};
+	var responseBody = {};
 	var parameters = {};
-    var request = {};
+    var response = {};
 
 	$.ajaxSetup({async:false});
 	
 	before_each
-		response = {};
+		responseBody = {};
 		parameters = {};
-        request = {};
+        response = {};
 	end
 	
 		it 'should return a autentication token'
@@ -41,20 +41,20 @@ describe 'API Test'
 			data: parameters,
 			type: 'POST',
 			cache: false,
-			success: function(data, status)
+			success: function(data)
 			{
-				response = data
+				responseBody = data
 		    },
 			complete: function(xmlHttpRequest)
 			{
-                request = xmlHttpRequest;
-                token = response.session.token
+                response = xmlHttpRequest;
+                token = responseBody.session.token
 
 			}
 		});
 
-        request.status.should.eql 201
-		response.should.not.be_empty
+        response.status.should.eql 201
+		responseBody.should.not.be_empty
 		token.should.not.be_empty
 
 	end
@@ -71,12 +71,12 @@ describe 'API Test'
 			cache: false,
 			complete: function(xmlHttpRequest)
 			{
-                request = xmlHttpRequest;
+                response = xmlHttpRequest;
 
 			}
 		});
 
-        request.status.should.eql 401
+        response.status.should.eql 401
 	end
 	
 	it 'should create a new child record'
@@ -95,17 +95,17 @@ describe 'API Test'
 			},
 			success: function(data)
 			{
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.should.have_property "name"
-		response.should.have_property "last_known_location"
-		response.name.should.eql parameters["child[name]"]
-		response.last_known_location.should.eql parameters["child[last_known_location]"]
+		responseBody.should.not.be_empty
+		responseBody.should.have_property "name"
+		responseBody.should.have_property "last_known_location"
+		responseBody.name.should.eql parameters["child[name]"]
+		responseBody.last_known_location.should.eql parameters["child[last_known_location]"]
 		
-		childid = response._id
+		childid = responseBody._id
 		
 	end
 
@@ -123,12 +123,12 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 				
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.should.be_a Array
+		responseBody.should.not.be_empty
+		responseBody.should.be_a Array
 		
 	end
 
@@ -146,13 +146,13 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 
-				response = data
+				responseBody = data
 		    }
 		})
 
-		response.should.not.be_empty
-		response.should.have_property "name"
-		response.should.have_property "last_known_location"
+		responseBody.should.not.be_empty
+		responseBody.should.have_property "name"
+		responseBody.should.have_property "last_known_location"
 
 	end
 
@@ -168,11 +168,11 @@ describe 'API Test'
             },
             complete: function(xmlHttpRequest)
             {
-                request = xmlHttpRequest;
+                response = xmlHttpRequest;
             }
         })
 
-        request.status.should.eql 401
+        response.status.should.eql 401
     end
 
 	it 'should update record of child with specified id'
@@ -191,13 +191,13 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 				
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.should.have_property "name"
-		response.should.have_property "last_known_location"
+		responseBody.should.not.be_empty
+		responseBody.should.have_property "name"
+		responseBody.should.have_property "last_known_location"
 		
 	end
 
@@ -216,12 +216,12 @@ describe 'API Test'
 			{
 				//alert(data.toSource());
 				
-				response = data
+				responseBody = data
 		    }
 		})
 		
-		response.should.not.be_empty
-		response.response.should.eql "ok"
+		responseBody.should.not.be_empty
+		responseBody.response.should.eql "ok"
 	
 	end
 
