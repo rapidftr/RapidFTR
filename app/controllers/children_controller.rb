@@ -31,7 +31,6 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @child }
-#      format.custom("image/jpeg") { send_data(@child.photo, :type => "image/jpeg")}
       format.json { render :json => @child.to_json }
       format.pdf do
         pdf_data = PdfGenerator.new.child_photo(@child)

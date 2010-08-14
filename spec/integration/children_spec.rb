@@ -36,17 +36,17 @@ describe Child do
   end
 
   it "should persist multiple photo attachments" do
-    Time.stub!(:now).and_return Time.parse("Jan 20 2010 12:04")
+    Time.stub!(:now).and_return Time.parse("Jan 20 2010 12:04:15")
     child = Child.create('last_known_location' => "New York", 'photo' => uploadable_photo_jeff)
 
     created_child = Child.get(child.id)
-    Time.stub!(:now).and_return Time.parse("Feb 20 2010 12:04")
+    Time.stub!(:now).and_return Time.parse("Feb 20 2010 12:04:15")
 
     created_child.update_attributes :photo => uploadable_photo
 
     updated_child = Child.get(child.id)
-    verify_attachment(updated_child.photo_for_key('photo-20-01-2010-1204'), uploadable_photo_jeff)
-    verify_attachment(updated_child.photo_for_key('photo-20-02-2010-1204'), uploadable_photo)
+    verify_attachment(updated_child.photo_for_key('photo-2010-01-20T120415'), uploadable_photo_jeff)
+    verify_attachment(updated_child.photo_for_key('photo-2010-02-20T120415'), uploadable_photo)
   end
 end
 

@@ -27,20 +27,6 @@ describe ChildrenController do
     end
   end
 
-  describe "GET show with image content type" do
-    it "outputs the image data from the child object" do
-      photo_data = "somedata"
-      Child.stub(:get).with("5363dhd").and_return(mock_child)
-      mock_child.stub(:photo).and_return(photo_data)
-      request.accept = "image/jpeg"
-
-      get :show, :id => "5363dhd"
-
-      response.body.should == "somedata"
-      
-    end
-  end
-
   describe "GET new" do
     it "assigns a new child as @child" do
       Child.stub!(:new).and_return(mock_child)

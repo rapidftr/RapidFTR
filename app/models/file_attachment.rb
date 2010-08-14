@@ -8,7 +8,7 @@ class FileAttachment
   end
 
   def FileAttachment.from_uploadable_file(file, name_prefix="file")
-    name = "#{name_prefix}-#{Time.now.strftime('%d-%m-%Y-%H%M')}"
+    name = "#{name_prefix}-#{Time.now.strftime('%Y-%m-%dT%H%M%S')}"
     new name, file.content_type, file.read
   end
 

@@ -196,3 +196,6 @@ td.checkbox { text-align: center;}
 .profiles-grid { zoom: 1; overflow: hidden; }
 .profiles-grid-item { display: inline; }
 .profiles-grid-item dl { zoom: 1; }
+
+/* history section */
+ul.history-details li { list-style:none; background: none; padding-left: 0; border-bottom: solid 1px }
