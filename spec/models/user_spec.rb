@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe User do
 
-
-  before :each do
-  end
-
   def build_user( options = {} )
     options.reverse_merge!( {
       :user_name => "user_name_#{rand(10000)}",
@@ -82,10 +78,6 @@ describe User do
     user.authenticate("thepass").should be_true
   end
    
-  it "can authenticate when disabled has a value of false and has the right password" do
-    user = build_user(:password => "thepass", :disabled => false)
-    user.authenticate("thepass").should be_true
-  end
   it "can't authenticate with the wrong password" do
     user = build_and_save_user(:password => "onepassword")
     user.authenticate("otherpassword").should be_false
