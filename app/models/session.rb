@@ -62,4 +62,8 @@ class Session < CouchRestRails::Document
     self[:expires_at]
   end
 
+  def admin?
+    user['user_type'] == "Administrator"
+  end
+  
 end

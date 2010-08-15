@@ -1,4 +1,9 @@
 class UsersController < ApplicationController
+
+  before_filter :check_authorization
+  rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
+
+
   # GET /users
   # GET /users.xml
   def index

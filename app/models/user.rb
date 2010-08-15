@@ -75,6 +75,10 @@ class User < CouchRestRails::Document
     self.class.encrypt(password, salt)
   end
 
+  def make_admin
+    self.user_type = "Administrator"
+  end
+
   private
 
   def encrypt_password
