@@ -1,6 +1,6 @@
 class FormSectionController < ApplicationController
 
-  before_filter :check_authorization
+  before_filter :administrators_only
 
   def index
     @form_sections = FormSection.all_by_order

@@ -24,7 +24,7 @@ describe ChecksAuthentication, :type => :normal do
   end
 
   def exercise_authorization_check
-    @controller.send(:check_authorization)
+    @controller.send(:administrators_only)
   end
 
   def set_header(key,value)

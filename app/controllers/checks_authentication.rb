@@ -8,13 +8,15 @@ module ChecksAuthentication
     session = Session.get(token)
   end
 
+  # a before filter requiring user to be logged in
   def check_authentication
     session = app_session
     raise AuthenticationFailure.bad_token('invalid session token') if session.nil?
     session
   end
 
-  def check_authorization
+  # a before filter requiring user to be an admin
+  def administrators_only
      session = app_session
      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
   end 

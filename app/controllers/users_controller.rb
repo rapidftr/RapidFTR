@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :check_authorization
+  before_filter :administrators_only
 
 
   # GET /users

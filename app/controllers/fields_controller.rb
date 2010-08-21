@@ -1,6 +1,6 @@
 class FieldsController < ApplicationController
 
-  before_filter :check_authorization
+  before_filter :administrators_only
 
   FIELD_TYPES = %w{text_field textarea check_box select_drop_down}
 
