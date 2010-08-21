@@ -9,6 +9,9 @@ class MockFormSection
   end
 end
 describe FormSectionController do
+  before do
+    fake_admin_login
+  end
    describe "get index" do
      it "populate the view with all the form sections" do
       expected_form_sections = [FormSection.new(name => "Form section 1"), FormSection.new(name => "Form section 2")]

@@ -63,3 +63,8 @@ end
 Then /^I should not be able to see (.+)$/ do |page_name|
   lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
 end
+
+Then /^I should be able to see (.+)$/ do |page_name|
+  When "I go to #{page_name}"
+  Then "I should be on #{page_name}"
+end

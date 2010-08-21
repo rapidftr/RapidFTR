@@ -2,17 +2,20 @@ module ChecksAuthentication
 
   private
 
-  def check_authentication
+  def app_session
     token = pull_token_from_headers || pull_token_from_cookies
     raise AuthenticationFailure.no_token('no session token in headers or cookies') if token.blank?
     session = Session.get(token)
+  end
+
+  def check_authentication
+    session = app_session
     raise AuthenticationFailure.bad_token('invalid session token') if session.nil?
     session
   end
 
   def check_authorization
-     token = pull_token_from_headers || pull_token_from_cookies
-     session = Session.get(token)
+     session = app_session
      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
   end 
 

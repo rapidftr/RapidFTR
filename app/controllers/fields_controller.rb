@@ -1,5 +1,7 @@
 class FieldsController < ApplicationController
 
+  before_filter :check_authorization
+
   FIELD_TYPES = %w{text_field textarea check_box select_drop_down}
 
   def read_form_section

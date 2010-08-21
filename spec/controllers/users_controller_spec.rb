@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe UsersController do
-  include LoggedIn
+  before do
+    fake_admin_login
+  end
 
   before(:each) do
     fake_session = Session.new()
