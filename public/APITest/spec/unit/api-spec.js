@@ -78,11 +78,38 @@ describe 'API Test'
 
         response.status.should.eql 401
 	end
-	
+
+	it 'should return a list of forms that specify the details to be collected about a child'
+
+		$.ajax({
+			url: urlPrefix + "/published_form_sections",
+		  	dataType: 'json',
+			cache: false,
+			beforeSend: function(request)
+			{
+				request.setRequestHeader('Authorization', "RFTR_Token " + token)
+			},
+		  	success: function(data)
+			{
+				//alert(data.toSource());
+
+				responseBody = data
+		    }
+		})
+
+		responseBody.should.not.be_empty
+		responseBody.should.be_a Array
+        firstForm = responseBody[0]
+        firstForm.name.should.not.be_empty
+        firstForm.fields.should.not.be_empty
+        firstForm.fields.should.be_a Array
+
+	end
+
 	it 'should create a new child record'
 
 		parameters = { "child[name]": "apichild", "child[last_known_location]": "New York City"}
-		
+
 		$.ajax({
 			url: urlPrefix + "/children",
 			dataType: 'json',
