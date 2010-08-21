@@ -6,6 +6,6 @@ module FieldsHelper
 		end
 	end
 	def display_options field
-		["<ul>", field.option_strings.map {|option| "<li>#{option}</li>"}, "</ul>"]
+		field.option_strings.join(", ")# {|option| "#{option}, "}.chomp(", ")
 	end
 end

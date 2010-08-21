@@ -1,8 +1,6 @@
-<fieldset>
-  <legend>Add New Field</legend>
-  <div class="subtitle">
-    <h2>1. Choose Field Type</h2>
-  </div>
+<div>
+  <h2>Add New Field</h2>
+    <p>Choose Field Type</p>
   <div class="content">
     <ul>
       <li><%=link_to "TextField", new_text_field_formsection_fields_path(@form_section.unique_id)%> </li>
@@ -11,8 +9,16 @@
       <li><%=link_to "Select drop down", new_select_drop_down_formsection_fields_path(@form_section.unique_id)%></li>
     </ul>
   </div>
-  <ul id="suggestedFields">
+  <p> Or use a suggested field</p>
+  <table id="suggestedFields">
+    <thead>
+        <td>Field</td>       
+        <td>Description</td>
+        <td>Type</td>
+        <td>Available options</td>
+        <td></td>
+    </thead>
        <%= render :partial => "suggested_field", :collection => @suggested_fields, :locals=> {:form_section_id=>@form_section.unique_id} %>
 
-  </ul>
-</fieldset>
+  </table>
+</div>
