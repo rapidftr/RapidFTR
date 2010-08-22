@@ -13,7 +13,7 @@ describe "fields/_suggested_field.html.erb" do
 	  end
 	
 	  it "should add the suggested fields add link" do
-		@searchable_response.at("input[@type='submit']")[:value].strip.should == @suggested_field.name
+		@searchable_response.at("#Add_#{@suggested_field.field.name} input[@type='submit']")[:value].strip.should == "Add to form"
 	  end
 	
 	  it"should render a form for the suggested field" do
