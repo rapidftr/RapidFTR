@@ -59,3 +59,12 @@ end
 Then /^I should see an option "([^\"]*)" for select "([^\"]*)"$/  do | option_value, select_name|
   	response_body.should have_selector("select[name='#{select_name}'] option[value=#{option_value}]")
 end
+
+Then /^I should not be able to see (.+)$/ do |page_name|
+  lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
+end
+
+Then /^I should be able to see (.+)$/ do |page_name|
+  When "I go to #{page_name}"
+  Then "I should be on #{page_name}"
+end

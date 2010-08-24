@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe PublishFormSectionController do
-  include LoggedIn
+  before do
+    fake_admin_login
+  end
 
   it "should publish form section documents" do
     form_sections = [basic_enabled_form_section]
