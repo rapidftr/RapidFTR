@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   Mime::Type.register "image/jpeg", :jpg
 
   include ChecksAuthentication
+
   before_filter :check_authentication
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
@@ -43,7 +44,7 @@ class ApplicationController < ActionController::Base
 
   # TODO Remove duplication in ApplicationHelper
   def current_user_name
-    session = Session.get_from_cookies(cookies)
+    session = get_session
     return session.user_name unless session.nil?
   end
 
@@ -56,7 +57,7 @@ class ApplicationController < ActionController::Base
   end
 
   def session_expiry
-    session = Session.get_from_cookies(cookies)
+    session = get_session
     unless session.nil?
       if session.expired?
         flash[:error] = 'Your session has expired. Please re-login.'
@@ -66,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update_activity_time
-    session = Session.get_from_cookies(cookies)
+    session = get_session
     unless session.nil?
       session.update_expiration_time(20.minutes.from_now)
       session.save

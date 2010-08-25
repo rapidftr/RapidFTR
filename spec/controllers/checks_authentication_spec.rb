@@ -44,7 +44,7 @@ describe ChecksAuthentication, :type => :normal do
   it "should use a token supplied in cookies" do
     set_session_token_cookie 'token_in_cookie'
     Session.should_receive(:get).with('token_in_cookie').and_return(:fake_session)
-    exercise_authentication_check.should == :fake_session
+    exercise_authentication_check
   end
 
   it "should use a token supplied in the header" do
@@ -68,12 +68,6 @@ describe ChecksAuthentication, :type => :normal do
     Session.should_receive(:get).with('token_in_header').and_return(:fake_session)
 
     exercise_authentication_check
-  end
-
-  it "should return the retrieved session" do
-    set_session_token_cookie
-    Session.stub!(:get).and_return(:fake_session)
-    exercise_authentication_check.should == :fake_session
   end
 
   it "should raise the appropriate AuthenticationFailure if no token is supplied" do
