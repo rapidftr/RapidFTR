@@ -18,14 +18,20 @@ module HpricotSearch
   def child_name
     search("h3")
   end
+  def child_tab
+    search(".tab-handles a")
+  end
+  def child_tab_name
+    search(".edit-profile h3")    
+  end
   def form_section_names
-    search("#formSections tr td a.formSectionLink")
+    search("#form_sections tr td a.formSectionLink")
   end
   def form_section_enabled_icons
     search(".formSectionEnabledIcon")
   end
   def form_section_rows
-    search("#formSections tr")
+    search("#form_sections tr")
   end
   def form_section_row_for (form_section_id)
     at("##{form_section_id}_row")
@@ -46,7 +52,7 @@ module HpricotSearch
     at(".#{suggested_field_id}Display")
   end
   def add_custom_field_link
-    at("a[text()='Add Custom Field")
+    at('a[text()="Add Custom Field"]')
   end
   def form_fields_list
     at("#formFields")

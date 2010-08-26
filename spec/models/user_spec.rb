@@ -2,9 +2,6 @@ require 'spec_helper'
 
 describe User do
 
-  before :each do
-  end
-
   def build_user( options = {} )
     options.reverse_merge!( {
       :user_name => "user_name_#{rand(10000)}",
@@ -15,6 +12,12 @@ describe User do
       :user_type => 'user_type'
     })
     user = User.new( options) 
+    user
+  end
+  
+  def build_and_save_user( options = {} )
+    user = build_user(options)
+    user.save
     user
   end
 
@@ -65,19 +68,34 @@ describe User do
     reloaded_user.should_not equal(user)
   end
   
-  it "can authenticate with the right password" do
+  it "can't authenticate which isn't saved" do
     user = build_user(:password => "thepass")
+    lambda { user.authenticate("thepass") }.should raise_error
+  end
+
+  it "can authenticate with the right password" do
+    user = build_and_save_user(:password => "thepass")
     user.authenticate("thepass").should be_true
   end
-  
+   
   it "can't authenticate with the wrong password" do
-    user = build_user(:password => "onepassword")
+    user = build_and_save_user(:password => "onepassword")
     user.authenticate("otherpassword").should be_false
   end
   
   it "can't authenticate if disabled" do
-    user = build_user(:disabled => true, :password => "thepass")
+    user = build_and_save_user(:disabled => "true", :password => "thepass")
     user.authenticate("thepass").should be_false
+  end
+
+  it "can't look up password in database" do
+    user = build_and_save_user(:disabled => "true", :password => "thepass")
+    user.authenticate("thepass").should be_false
+  end
+
+  it "can authenticate if not disabled" do
+    user = build_and_save_user(:disabled => "false", :password => "thepass")
+    user.authenticate("thepass").should be_true
   end
 
 end

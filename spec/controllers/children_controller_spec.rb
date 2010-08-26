@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe ChildrenController do
-  include LoggedIn
+  before do
+    fake_login
+  end
 
   def mock_child(stubs={})
-    @mock_child ||= mock_model(Child, stubs)
+    @mock_child ||= mock_model(Child, stubs).as_null_object
   end
 
   before do
@@ -21,7 +23,6 @@ describe ChildrenController do
 
   describe "GET show" do
     it "assigns the requested child as @child" do
-      pending
       Child.stub!(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
@@ -30,7 +31,6 @@ describe ChildrenController do
 
   describe "GET show with image content type" do
     it "outputs the image data from the child object" do
-      pending
       photo_data = "somedata"
       Child.stub(:get).with("5363dhd").and_return(mock_child)
       mock_child.stub(:photo).and_return(photo_data)
@@ -45,7 +45,6 @@ describe ChildrenController do
 
   describe "GET new" do
     it "assigns a new child as @child" do
-      pending
       Child.stub!(:new).and_return(mock_child)
       get :new
       assigns[:child].should equal(mock_child)
@@ -54,8 +53,7 @@ describe ChildrenController do
 
   describe "GET edit" do
     it "assigns the requested child as @child" do
-      pending
-      Child.stub!(:find).with("37").and_return(mock_child)
+      Child.stub!(:get).with("37").and_return(mock_child)
       get :edit, :id => "37"
       assigns[:child].should equal(mock_child)
     end
@@ -79,7 +77,7 @@ describe ChildrenController do
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
       
-      current_time = Time.parse("Jan 17 2010 14:05")
+      current_time = Time.parse("Jan 17 2010 14:05:32")
       Time.stub!(:now).and_return current_time      
       put :update, :id => child.id, 
         :child => {
@@ -88,7 +86,7 @@ describe ChildrenController do
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
-      assigns[:child]['_attachments']['photo-17-01-2010-1405']['data'].should_not be_blank
+      assigns[:child]['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
     end
 
     it "should update only non-photo fields when no photo update" do
@@ -132,18 +130,28 @@ describe ChildrenController do
       assigns[:show_thumbnails].should == false
     end
 
-    it 'asks view to not show csv export link if there are no results' do
-      Summary.stub!(:basic_search).and_return([])
-      get(:search, :format => 'html' )
-      assigns[:show_csv_export_link].should == false
-    end
+	describe "with no results" do
+		before do
+			Summary.stub!(:basic_search).and_return([])
+			get(:search, :field_name => '', :unique_identifier => ''  )
+		end
+
+		it 'asks view to not show csv export link if there are no results' do
+		  assigns[:results].size.should == 0
+		end
+
+		it 'asks view to display a "No results found" message if there are no results' do
+		  assigns[:results].size.should == 0
+		end
+
+	end
 
     it 'sends csv data with the correct content type and file name' do
       @controller.
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
 
-      get( :search, :format => 'csv' )
+      get( :search, :format => 'csv', :field_name => '', :unique_identifier => '')
     end
     
     describe 'CSV formatting' do
@@ -153,7 +161,7 @@ describe ChildrenController do
       end
 
       def csv_response
-        get( :search, :format => 'csv' )
+        get( :search, :format => 'csv', :field_name => '', :unique_identifier => '' )
         response.body
       end
 

@@ -23,6 +23,10 @@ describe ChecksAuthentication, :type => :normal do
     @controller.send(:check_authentication)
   end
 
+  def exercise_authorization_check
+    @controller.send(:administrators_only)
+  end
+
   def set_header(key,value)
     @controller.request.headers[key] = value
   end
@@ -34,13 +38,13 @@ describe ChecksAuthentication, :type => :normal do
   def expect_auth_failure
     lambda{
       yield
-    }.should( raise_error(AuthFailure) )
+    }.should( raise_error(AuthenticationFailure) )
   end
 
   it "should use a token supplied in cookies" do
     set_session_token_cookie 'token_in_cookie'
     Session.should_receive(:get).with('token_in_cookie').and_return(:fake_session)
-    exercise_authentication_check.should == :fake_session
+    exercise_authentication_check
   end
 
   it "should use a token supplied in the header" do
@@ -66,34 +70,55 @@ describe ChecksAuthentication, :type => :normal do
     exercise_authentication_check
   end
 
-  it "should return the retrieved session" do
-    set_session_token_cookie
-    Session.stub!(:get).and_return(:fake_session)
-    exercise_authentication_check.should == :fake_session
-  end
-
-  it "should raise the appropriate AuthFailure if no token is supplied" do
+  it "should raise the appropriate AuthenticationFailure if no token is supplied" do
     begin
       exercise_authentication_check
-    rescue AuthFailure => ex
+    rescue AuthenticationFailure => ex
       ex.token_provided?.should == false
       ex.message.should == 'no session token in headers or cookies'
     else
-      fail( 'AuthFailure not raised' )
+      fail( 'AuthenticationFailure not raised' )
     end
   end
 
-  it "should raise the apropriate AuthFailure if no session was found for the specified token" do
+  it "should raise the apropriate AuthenticationFailure if no session was found for the specified token" do
     set_session_token_cookie
     Session.stub!(:get).and_return(nil)
 
     begin
       exercise_authentication_check
-    rescue AuthFailure => ex
+    rescue AuthenticationFailure => ex
       ex.token_provided?.should == true
       ex.message.should == 'invalid session token'
     else
-      fail( 'AuthFailure not raised' )
+      fail( 'AuthenticationFailure not raised' )
+    end
+  end
+
+  describe "Authorization" do
+    def stub_session(is_admin)
+      set_session_token_cookie
+      session = Session.new()
+      session.stub!(:admin?).and_return(is_admin)
+      Session.stub!(:get).and_return(session)
+    end
+    
+    it "should raise AuthorizationFailure if user is not an admin" do
+      stub_session(false)
+
+      begin
+        exercise_authorization_check
+      rescue AuthorizationFailure => ex
+        ex.message.should == 'Not permitted to view page'
+      else
+        fail( 'AuthoratizatonFailure not raised' )
+      end
+    end
+
+    it "should not raise AuthorizationFailure when user is an administrator" do
+      stub_session(true)
+
+      exercise_authorization_check
     end
   end
 end

@@ -5,6 +5,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <title><%= controller.name %>: <%= controller.action_name %></title>
+  <link rel="shortcut icon" href="favicon.ico" />
   <%= stylesheet_link_tag 'core' %>
   <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" %>
   <%= javascript_include_tag  "application.js" %>
@@ -18,15 +19,18 @@ $(document).ready(function() {
 <body class="<%= @body_class %>">
 <div class="page-container">
   <div class="page-header">
-        <p class="brand"><a href="/"><%= image_tag "logo.jpg" %></a></p>
+    <p class="brand"><a href="/"><%= image_tag "logo.jpg" %></a></p>
 
     <div class="nav">
       <ul>
-        <li><a href="/">Logout</a></li>
-        <li><a href="/">Admin</a></li>
-        <li><a href="/">FAQ</a></li>
-        <li><a href="/">Contact</a></li>
-        <li><a href="/">About</a></li>
+        <% unless current_user_name.nil? %>
+            <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_to 'Logout', :logout %>)</li>
+        <% end %>
+        <li><a href="/">Home</a></li>
+        <li><%= link_to 'Admin', admin_path %></li>
+        <li><a href="http://www.rapidftr.com/faq">FAQ</a></li>
+        <li><a href="http://www.rapidftr.com">About</a></li>
+        <li><a href="http://www.rapidftr.com/contact">Contact</a></li>
       </ul>
     </div>
   </div>

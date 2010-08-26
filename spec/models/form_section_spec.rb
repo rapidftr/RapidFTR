@@ -1,9 +1,9 @@
 require "spec_helper"
 
-  def mock_formsection(stubs={})
-    stubs.reverse_merge!(:fields=>[], :save => true, :has_field => false, :editable => true)
-    @mock_formsection ||= mock_model(FormSection, stubs)
-  end
+def mock_formsection(stubs={})
+  stubs.reverse_merge!(:fields=>[], :save => true, :has_field => false, :editable => true)
+  @mock_formsection ||= mock_model(FormSection, stubs)
+end
 
 def new_field(fields = {})
   fields.reverse_merge!(:name=>random_string)
@@ -16,6 +16,12 @@ def random_string(length=10)
     password = ''
     length.times { password << chars[rand(chars.size)] }
     password
+end
+
+def create_should_be_called_with (name, value)
+  FormSection.should_receive(:create!) { |form_section_hash|
+    form_section_hash[name].should == value
+  }
 end
 
 
@@ -84,4 +90,115 @@ describe FormSection do
     end
     
   end
+
+  describe "move_up_field" do
+    before :each do
+      @field2 = new_field(:name=>"field2")
+      @field1 = new_field(:name=>"field1")
+      @formsection = FormSection.new :fields=>[@field1, @field2]
+    end
+
+    it "should move the field up" do
+      @formsection.move_up_field("field2")
+      @formsection.fields[0].should == @field2
+      @formsection.fields[1].should == @field1
+    end
+    
+    it "saves the formsection" do
+      @formsection.should_receive(:save)
+      @formsection.move_up_field "field2"
+    end
+
+    it "throws exception if you try to move something up that is already first" do
+      lambda {@formsection.move_up_field "field1"}.should raise_error
+    end
+  end
+
+  describe "move_down_field" do
+    before :each do
+      @field2 = new_field(:name=>"field2")
+      @field1 = new_field(:name=>"field1")
+      @formsection = FormSection.new :fields=>[@field1, @field2]
+    end
+
+    it "should move the field down" do
+      @formsection.move_down_field("field1")
+
+      @formsection.fields[0].should == @field2
+      @formsection.fields[1].should == @field1
+    end
+
+    it "saves the formsection" do
+      @formsection.should_receive(:save)
+      @formsection.move_down_field "field1"
+    end
+    it "throws exception if you try to move something down that is already last" do
+      lambda {@formsection.move_down_field "field2"}.should raise_error
+    end
+  end
+  
+  describe "create_new_custom" do
+    before :each do 
+      FormSection.stub(:all).and_return([])
+    end
+    it "should create a new form section" do
+      FormSection.should_receive(:create!)
+      FormSection.create_new_custom "basic"
+    end
+    it "should give the formsection a new unique id based on the name" do
+      form_section_name = "basic details"
+      create_should_be_called_with :unique_id, "basic_details"
+      FormSection.create_new_custom form_section_name
+    end
+    it "should populate the name" do
+      form_section_name = "basic details"
+        create_should_be_called_with :name, "basic details"
+        FormSection.create_new_custom form_section_name
+    end
+    it "should populate the description" do
+      form_section_description = "info about basic details"
+      create_should_be_called_with :description, "info about basic details"
+      FormSection.create_new_custom "basic", form_section_description
+    end
+    it "should populate the enabled status" do
+      create_should_be_called_with :enabled, true
+      FormSection.create_new_custom "basic", "form_section_description", true
+      create_should_be_called_with :enabled, false
+      FormSection.create_new_custom "basic", "form_section_description", false
+    end
+    it "should set the order to one plus maximum order value" do
+      FormSection.stub(:all).and_return([FormSection.new(:order=>20),FormSection.new(:order=>10), FormSection.new(:order=>40)])
+      create_should_be_called_with :order, 41
+      FormSection.create_new_custom "basic"
+    end
+    it "should set editable to true" do
+      create_should_be_called_with :editable, true
+      FormSection.create_new_custom "basic"
+    end
+    it "should return the created form section" do
+      form_section = FormSection.new
+      FormSection.stub(:create!).and_return(form_section)
+      result = FormSection.create_new_custom "basic"
+      result.should == form_section
+    end
+    it "should not save an invalid form section" do
+      FormSection.should_not_receive(:create!)
+      FormSection.create_new_custom nil
+    end
+  end
+  describe "valid?" do
+    it "should validate name is filled in" do
+      form_section = FormSection.new()
+      form_section.should_not be_valid
+    end
+    it "should validate name is alpha_num" do
+      form_section = FormSection.new(:name=>"££ss")
+      form_section.should_not be_valid
+    end
+    it "should validate name is alpha_num" do
+      form_section = FormSection.new(:name=>"££ss")
+      form_section.should_not be_valid
+    end
+  end
+
 end

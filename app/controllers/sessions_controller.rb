@@ -1,6 +1,9 @@
 class SessionsController < ApplicationController
 
+  include LoadsSession
+
   skip_before_filter :check_authentication, :only => %w{new create}
+
   protect_from_forgery :except => %w{create}
 
   # GET /sessions/1
@@ -22,6 +25,10 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
+    unless (@session = get_session).nil?
+      return redirect_to :action => "show", :id => @session
+    end
+
     @session = Session.new(params[:login])
 
     @page_name = "Login"
@@ -40,7 +47,7 @@ class SessionsController < ApplicationController
 
     if not @session
       respond_to do |format|
-        handle_create_error("Invalid credentials. Please try again!", format)
+        handle_login_error("Invalid credentials. Please try again!", format)
       end
 
       return
@@ -50,11 +57,11 @@ class SessionsController < ApplicationController
       if @session.save
         @session.put_in_cookie(cookies)
         flash[:notice] = 'Hello ' + @session.user_name
-        format.html { redirect_to(@session) }
+        format.html { redirect_to(root_path) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
         format.json { render_session_as_json(@session,:status => :created, :location => @session) }
       else
-        handle_create_error("There was a problem logging in.  Please try again.", format)
+        handle_login_error("There was a problem logging in.  Please try again.", format)
       end
     end
   end
@@ -66,7 +73,7 @@ class SessionsController < ApplicationController
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
   def destroy
-    @session = Session.get_from_cookies(cookies)
+    @session = get_session
     @session.destroy if @session
     Session.remove_from_cookies(cookies)
 
@@ -77,11 +84,12 @@ class SessionsController < ApplicationController
   end
 
   private
-  def handle_create_error(notice, format)
+  def handle_login_error(notice, format)
     format.html {
       flash[:notice] = notice
       redirect_to :action => "new" }
     format.xml  { render :xml => errors, :status => :unprocessable_entity }
+    format.json { head :unauthorized }
   end
 
   def render_session_as_json(session,options = {})

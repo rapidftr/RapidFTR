@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="../framework/lib/jspec.css" />
+		<script src="../framework/lib/jspec.js"></script>
+		<script src="../framework/lib/jspec.xhr.js"></script>
+		<script src="../spec/support/jquery.js"></script>
+		<script src="../spec/support/jquery-cookie.js"></script>
+		<script src="../framework/lib/jspec.jquery.js"></script>
+		<script src="../spec/unit/spec.helper.js"></script>
+		<script>
+			function runSuites() {
+				JSpec
+				.exec('unit/api-spec.js')
+				.run({ fixturePath: 'fixtures' })
+				.report()
+			}
+		</script>
+	</head>
+	<body class="jspec" onLoad="runSuites();">
+        
+		<div id="jspec-top"><h2 id="jspec-title">JSpec <em><script>document.write(JSpec.version)</script></em></h2></div>
+        <a href="unit/api-spec.js">Click to see JSpec source for the examples below</a>
+		<div id="jspec"></div>
+		<div id="jspec-bottom"></div>
+	</body>
+</html>

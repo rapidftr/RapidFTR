@@ -7,7 +7,7 @@
 
     <h3><%= link_to summary_row['name'], child_path(summary_row) %></h3>
 
-    <p class="edit"><a href="/">Edit</a></p>
+    <p class="edit"><%= link_to 'Edit', edit_child_path(summary_row) %></p>
   </div>
   <% if @show_thumbnails %>
       <p class="photo">

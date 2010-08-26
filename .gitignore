@@ -5,3 +5,12 @@ tmp/*
 rerun.txt
 debug.html
 .DS_Store
+*swp
+*~
+*.swp
+*.swo
+*.orig
+.autotest
+*.iml
+tags
+

@@ -47,11 +47,11 @@ describe Child do
     end 
     
     it "should update attachments when there is a photo update" do
-      current_time = Time.parse("Jan 17 2010 14:05")
+      current_time = Time.parse("Jan 17 2010 14:05:32")
       Time.stub!(:now).and_return current_time
       child = Child.new
       child.update_properties_with_user_name "jdoe", uploadable_photo, {}
-      child['_attachments']['photo-17-01-2010-1405']['data'].should_not be_blank
+      child['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
     end
     
     it "should not update attachments when the photo value is nil" do
@@ -135,27 +135,28 @@ describe Child do
   end
   
   it "should handle special characters in last known location when creating unique id" do
-    child = Child.new({'last_known_location'=>'ÃÄ§Ä·'})
+    pending "Seem to be having UTF-8 related problems - cv (talk to zk)" 
+    child = Child.new({'last_known_location'=> "\215\303\304n"})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
-    child["unique_identifier"].should == "georgeÃÄ12345"
+    child["unique_identifier"].should == "george\21512345"
   end
   
   describe "photo attachments" do
     it "should create a field with current_photo_key on creation" do
-      current_time = Time.parse("Jan 20 2010 17:10")
+      current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
     
-      child['current_photo_key'].should == 'photo-20-01-2010-1710'
+      child['current_photo_key'].should == 'photo-2010-01-20T171032'
     end
     
     it "should have current_photo_key as photo attachment key on creation" do
-      current_time = Time.parse("Jan 20 2010 17:10")
+      current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
     
-      child['_attachments'].should have_key('photo-20-01-2010-1710')
+      child['_attachments'].should have_key('photo-2010-01-20T171032')
     end
     
     it "should only have one attachment on creation" do
@@ -164,40 +165,40 @@ describe Child do
     end
     
     it "should have data after creation" do
-      current_time = Time.parse("Jan 20 2010 17:10")
+      current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      Child.get(child.id)['_attachments']['photo-20-01-2010-1710']['length'].should be > 0
+      Child.get(child.id)['_attachments']['photo-2010-01-20T171032']['length'].should be > 0
     end
     
     it "should update current_photo_key on a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
     
-      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
     
-      child['current_photo_key'].should == 'photo-20-02-2010-1204'
+      child['current_photo_key'].should == 'photo-2010-02-20T120432'
     end
     
     it "should have updated current_photo_key as photo attachment key on a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
       
-      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
     
-      child['_attachments'].should have_key('photo-20-02-2010-1204')
+      child['_attachments'].should have_key('photo-2010-02-20T120432')
     end
     
     it "should have photo data after a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
-      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
       
-      Child.get(child.id)['_attachments']['photo-20-02-2010-1204']['length'].should be > 0
+      Child.get(child.id)['_attachments']['photo-2010-02-20T120432']['length'].should be > 0
     end
     
     it "should be able to read data after a photo change" do
@@ -321,29 +322,29 @@ describe Child do
     end
     
     it "should 'from' field with original current_photo_key on a photo addition" do
-      updated_at_time = Time.parse("Jan 20 2010 12:04")
+      updated_at_time = Time.parse("Jan 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
     
-      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      updated_at_time = Time.parse("Feb 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
       
       changes = child['histories'].first['changes']
-      changes['current_photo_key']['from'].should == "photo-20-01-2010-1204"
+      changes['current_photo_key']['from'].should == "photo-2010-01-20T120424"
     end
 
     it "should 'to' field with new current_photo_key on a photo addition" do
-      updated_at_time = Time.parse("Jan 20 2010 12:04")
+      updated_at_time = Time.parse("Jan 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
     
-      updated_at_time = Time.parse("Feb 20 2010 12:04")
+      updated_at_time = Time.parse("Feb 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
       
       changes = child['histories'].first['changes']
-      changes['current_photo_key']['to'].should == "photo-20-02-2010-1204"
+      changes['current_photo_key']['to'].should == "photo-2010-02-20T120424"
     end
         
     it "should update history with username from last_updated_by" do
@@ -366,4 +367,18 @@ describe Child do
       child['histories'].first['datetime'].should == 'some_time'
     end
   end
+
+  describe "when fetching children" do
+    it "should return list of children ordered by name" do
+      UUIDTools::UUID.stub("random_create").and_return(12345)
+
+      Child.create({ 'name' => 'Zbu', 'last_known_location' => 'POA' } )
+      Child.create({ 'name' => 'Abu', 'last_known_location' => 'POA' } )
+
+      childrens = Child.all
+      childrens.first['name'].should == 'Abu'
+    end
+
+  end
+
 end

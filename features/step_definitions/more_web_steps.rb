@@ -51,3 +51,20 @@ end
 Then /^the "([^\"]*)" field should be disabled$/ do |label|
   field_labeled(label).should be_disabled
 end
+
+Then /^I should see the select named "([^\"]*)"$/ do |select_name|
+  	response_body.should have_selector("select[name='#{select_name}']")
+end
+
+Then /^I should see an option "([^\"]*)" for select "([^\"]*)"$/  do | option_value, select_name|
+  	response_body.should have_selector("select[name='#{select_name}'] option[value=#{option_value}]")
+end
+
+Then /^I should not be able to see (.+)$/ do |page_name|
+  lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
+end
+
+Then /^I should be able to see (.+)$/ do |page_name|
+  When "I go to #{page_name}"
+  Then "I should be on #{page_name}"
+end

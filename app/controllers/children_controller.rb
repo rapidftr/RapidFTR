@@ -1,5 +1,7 @@
 class ChildrenController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token
+
   # GET /children
   # GET /children.xml
   def index
@@ -118,17 +120,28 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    @results = Summary.basic_search(params[:child_name], params[:unique_identifier])
+    @page_name = "Child Search"
+    @results = Summary.basic_search(params[:child_name], params[:unique_identifier]) if params[:child_name] || params[:unique_identifier]
+    default_search_respond_to
+  end
 
+  def advanced_search
+    @page_name = "Advanced Child Search"
+    @fields_name = FormSection.all_child_field_names
+
+    @results = Summary.advanced_search(params[:search_field], params[:search_value]) if params[:search_value]
+
+    default_search_respond_to
+  end
+
+  def default_search_respond_to
     respond_to do |format|
       format.csv do
         render_results_as_csv
       end
       format.html do
         @show_thumbnails = !!params[:show_thumbnails]
-        @show_csv_export_link = !@results.empty?
-
-        if 1 == @results.length
+        if @results && @results.length == 1
           redirect_to child_path( @results.first )
         end
       end

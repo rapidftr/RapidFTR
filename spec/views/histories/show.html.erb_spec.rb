@@ -12,8 +12,12 @@ describe "histories/show.html.erb" do
     it "should render only the creation record when no histories yet" do
       assigns[:child] = Child.create(:last_known_location => "Haiti", :photo => uploadable_photo)
       render
-      response.should have_tag("li", :count => 1)
-      response.should have_tag("li", :text => /Record created by/)
+      response.should have_selector(".history-details") do |element|
+      	element.should have_selector("li", :count => 1)
+      	element.should have_selector("li") do |item|
+      		item.text.should match /Record created by/
+      	end
+      end
     end
 
     it "should render photo change record when updating a photo" do
@@ -26,8 +30,12 @@ describe "histories/show.html.erb" do
       assigns[:child] = Child.get(child.id)
       render
 
-      response.should have_tag("li", :count => 2)
-      response.should have_tag("li", :text => /Photo changed/)
+      response.should have_selector(".history-details") do |element|
+      	element.should have_selector("li", :count => 2)
+      	element.should have_selector("li") do |item|
+      		item.text.should match /Photo changed/
+      	end
+      end
     end
 
     it "should order history log from most recent change to oldest change" do

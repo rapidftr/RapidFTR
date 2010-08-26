@@ -99,6 +99,18 @@ Given /there is a User/ do
   end
 end
 
+Given /^there is a admin$/ do
+  Given "a admin \"admin\" with a password \"123\""
+end
+
+Given /^I am logged in as an admin$/ do
+  Given "there is a admin"
+  Given "I am on the login page"
+  Given "I fill in \"admin\" for \"user name\""
+  Given "I fill in \"123\" for \"password\""
+  Given "I press \"Log In\""
+end
+
 Given /^I am logged in$/ do
   Given "there is a User"
   Given "I am on the login page"
@@ -147,16 +159,42 @@ Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ 
   child.create!
 end
 
+Then /^I should see the "([^\"]*)" tab$/ do |tab_name|
+  tab_names = Hpricot(response.body).child_tab.collect {|item|item.inner_html}
+  tab_names.should contain(tab_name)
+end
+
+Then /^I should not see the "([^\"]*)" tab$/ do |tab_name|
+  tab_names = Hpricot(response.body).child_tab.collect {|item|item.inner_html}
+  tab_names.should_not contain(tab_name)
+end
+
+Then /^I should not see the "([^\"]*)" tab name in detail section$/ do |tab_name|
+  tab_names = Hpricot(response.body).child_tab_name.collect {|item|item.inner_html}
+  tab_names.should_not contain(tab_name)
+end
+
+
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
   
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
-            'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
-            'fields'=> Array.new # todo:build these FSDs in a nicer way... 
+      'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
+      'enabled' => true,
+      'fields'=> Array.new # todo:build these FSDs in a nicer way...
     )
+    
+    form_section_hash["order"] = form_section_hash["order"].to_i
     FormSection.create!(form_section_hash)
   end
+end
+
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name, :help_text => field_help_text)
+  FormSection.add_field_to_formsection(form_section, field)
 end
 
 
@@ -170,10 +208,14 @@ end
 
 
 Then /^I should see the "([^\"]*)" form section link$/ do |form_section_name|
-
   form_section_names = Hpricot(response.body).form_section_names.collect {|item| item.inner_html}
   form_section_names.should contain(form_section_name)
 
+end
+
+Then /^I should not see the "([^\"]*)" form section link$/ do |form_section_name|
+  form_section_names = Hpricot(response.body).form_section_names.collect {|item| item.inner_html}
+  form_section_names.should_not contain(form_section_name)
 end
 
 Then /^I should see the text "([^\"]*)" in the enabled column for the form section "([^\"]*)"$/ do |expected_text, form_section|
@@ -207,9 +249,10 @@ end
 Given /^the following suggested fields exist in the system:$/ do |suggested_fields_table|
   suggested_fields_table.hashes.each do |suggested_field_hash|
     suggested_field_hash.reverse_merge!(
-            'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase,
-            'field' => (Field.new :name=> suggested_field_hash["name"], :type=>"TEXT" )
-    )
+            'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase)
+    
+    field =  (Field.new :name=> suggested_field_hash["name"], :type=>suggested_field_hash["type"],:option_strings=>(eval suggested_field_hash["option_strings"]) )
+    suggested_field_hash[:field] = field
     suggested_field_hash[:is_used] = false
     temp1 = SuggestedField.create!(suggested_field_hash)
   end
@@ -240,4 +283,12 @@ And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   fields.should_not be_nil
   field_row = fields.form_field_for(field_id)
   field_row.should_not be_nil
+end
+
+
+Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, position, table_selector|
+  table = Hpricot(response.body).at(table_selector)
+  table.should_not be_nil
+  table.at(row_selector).should_not be_nil
+  table.search("tbody/tr")[position.to_i-1].should == table.at(row_selector)
 end

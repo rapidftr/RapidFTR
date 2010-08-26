@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+
+  before_filter :administrators_only
+
+
   # GET /users
   # GET /users.xml
   def index

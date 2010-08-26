@@ -1,12 +1,19 @@
 Feature: As an user, I should be able to log in.
 
-  Scenario: To check that a user can log in
+   Scenario: To check that a user can log in
     Given a user "Harry" with a password "123"
     Given I am on the login page
     When I fill in "Harry" for "user name"
     And I fill in "123" for "password"
     And I press "Log in"
     Then I should see "Hello harry"
+    And I should be on the home page
+
+ Scenario: To check that a logged in user doesn't see the login page
+   Given I am logged in
+   When I go to the login page
+   Then I should see "View child listing"
+   And I should not see "Hello mary"
 
   Scenario: User does not exist
     Given I am on the login page
@@ -32,21 +39,16 @@ Feature: As an user, I should be able to log in.
     And I press "Log in"
     Then I should see "Invalid credentials. Please try again!"
 
-  Scenario:User when logged in should see links to add and edit children
-    Given a user "Harry" with a password "123"
-    Given I am on the login page
-    When I fill in "Harry" for "user name"
-    And I fill in "123" for "password"
-    And I press "Log in"
-    Then I should see "Hello harry"
-    And I should see "Add child record"
-    And I should see "View child listing"
-    And I should see "harry"
-
 @allow-rescue
   Scenario:User session should be destroyed when a user logs out
     Given I am logged in
-    When I follow "Log Out"
+    When I follow "logout"
     Then I should be on the login page
     When I go to new child page
     Then I should be on the login page
+
+   Scenario: I should not see 'Logged in as' if I'm logged out
+    Given there is a User
+    And I am logged out     
+    Then I should not see "Logged in as"
+

@@ -14,8 +14,8 @@ module NavigationHelpers
 
       when /the home\s?page/
         '/'
-    when /the new add_suggested_field_to_form_section page/
-      new_add_suggested_field_to_form_section_path
+      when /the new add_suggested_field_to_form_section page/
+        new_add_suggested_field_to_form_section_path
 
       when /the new assign_unique_id_to_a_child page/
         new_assign_unique_id_to_a_child_path(options)
@@ -31,6 +31,18 @@ module NavigationHelpers
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path( child, options )
+        
+      when /child record page for "(.+)"/
+        child_name = $1
+        child = Summary.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil?
+        child_path( child, options )
+        
+      when /change log page for "(.+)"/
+        child_name = $1
+        child = Summary.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil?
+        child_history_path( child, options )
 
       when /new user page/
         new_user_path(options)
@@ -53,7 +65,10 @@ module NavigationHelpers
         
       when /child search results page/
         search_children_path(options)
-
+        
+      when /create form section page/
+        new_formsection_path(options)
+        
       when /form section page/
         formsections_path(options) 
 
@@ -79,6 +94,9 @@ module NavigationHelpers
       when /the manage fields page for "(.+)"/
         form_section = $1
         formsection_fields_path(form_section)
+
+      when /the admin page/
+        admin_path(options) 
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

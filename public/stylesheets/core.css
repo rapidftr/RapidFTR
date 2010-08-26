@@ -53,6 +53,10 @@ td a { font-weight: bold;  }
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
 .default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
+.default-form .cancelButton a { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
+
+/* default : forms > field errors */
+.default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
 
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
@@ -65,8 +69,8 @@ td a { font-weight: bold;  }
 /* page-header > navigation */
 .page-header .nav { float: right; width: 580px; margin-right: 25px; padding-top: 30px; }
 .page-header .nav ul { text-align: right; }
-.page-header .nav li { display: inline;  font-size: .875em; font-weight: bold;  padding: 0; background-image: none; }
-.page-header .nav li a { padding-left: 12px; color: #fff; }
+.page-header .nav li { padding-left: 12px; display: inline;  font-size: .875em; font-weight: bold; background-image: none; color: #ccc; }
+.page-header .nav li a { color: #fff; }
 .page-header .nav li a:hover { color: #f93; }
 
 /* page-content  */
@@ -155,7 +159,7 @@ td.checkbox { text-align: center;}
 
 /* profile page > image */
 .profile-image { background-color: #fff; padding: 11px 15px 25px 12px; margin-bottom: 1em; background: url(../images/profile-image-bg.gif) no-repeat 0 100%;  }
-.profile-image img { width: 100%; }
+.profile-image img { width: 100%;  height: 100%; }
 .profile-image .view-full-size { margin-bottom: 0; text-align: right; font-weight: bold; }
 
 /* edit page */
@@ -166,8 +170,20 @@ td.checkbox { text-align: center;}
 .edit-profile .cancel { float: left; }
 
 
-/* new field page*/
-.new-field .submitButton { float:right; text-align:right;}
+/* new field/formsection page*/
+.new-field .submitButton,
+.new-form-section .submitButton { float:right; text-align:right;}
+.new-form-section .cancelButton { clear: both; float:right; text-align:right;}
+
+
+/* fields list page */
+.direction-button { display:none }
+
+/* error summary */
+.errorExplanation,
+.errorExplanation h3 {color: #ff0700}
+.errorExplanation li {background-image:none;}
+.errorExplanation ul, .errorExplanation p {margin-bottom:0;}
 
 /* ie6 fixes */
 

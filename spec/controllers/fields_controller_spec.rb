@@ -7,6 +7,7 @@ end
 
 describe FieldsController do
   before :each do
+    fake_admin_login
     @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
     FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
   end
@@ -78,5 +79,32 @@ describe FieldsController do
       post :create, :formsection_id => @form_section.unique_id
     end
     
+  end
+
+  describe "post move_up and move_down" do
+    before :each do
+      @formsection_id = "fred"
+      @field_name = "barney"
+      @form_section = FormSection.new
+      FormSection.stub!(:get_by_unique_id).with(@formsection_id).and_return(@form_section)
+    end
+    it "should swap position of selected field with the one above it" do
+      @form_section.should_receive(:move_up_field).with(@field_name)
+      post :move_up, :formsection_id => @formsection_id, :field_name=> @field_name
+    end
+    it "should redirect back to the fields page on move_up" do
+      @form_section.stub(:move_up_field)
+      post :move_up, :formsection_id => @formsection_id, :field_name=> @field_name
+      response.should redirect_to(formsection_fields_path(@formsection_id))
+    end
+    it "should swap position of selected field with the one below it" do
+      @form_section.should_receive(:move_down_field).with(@field_name)
+      post :move_down, :formsection_id => @formsection_id, :field_name=> @field_name
+    end
+    it "should redirect back to the fields page on move_down" do
+      @form_section.stub(:move_down_field)
+      post :move_down, :formsection_id => @formsection_id, :field_name=> @field_name
+      response.should redirect_to(formsection_fields_path(@formsection_id))
+    end
   end
 end
