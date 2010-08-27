@@ -372,13 +372,22 @@ describe Child do
     it "should return list of children ordered by name" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
 
-      Child.create({ 'name' => 'Zbu', 'last_known_location' => 'POA' } )
-      Child.create({ 'name' => 'Abu', 'last_known_location' => 'POA' } )
+      Child.create('name' => 'Zbu', 'last_known_location' => 'POA')
+      Child.create('name' => 'Abu', 'last_known_location' => 'POA')
 
       childrens = Child.all
       childrens.first['name'].should == 'Abu'
     end
 
+    it "should return list of children ordered by name" do
+      UUIDTools::UUID.stub("random_create").and_return(12345)
+
+      Child.create('name' => '', 'last_known_location' => 'POA')
+
+      childrens = Child.all
+      childrens.first['name'].should == ''
+      childrens.size.should == 3
+    end
   end
 
 end
