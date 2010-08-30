@@ -2,9 +2,11 @@ require 'spec_helper'
 require 'support/child_builder'
 
 describe ChildImagesController do
-  include LoggedIn
   include ChildBuilder
   include CustomMatchers
+  before do
+    fake_login
+  end
   describe "routing" do
     it "should have a route for a child current photo" do
       { :get => "/children/1/photo" }.should route_to(:controller => "child_images", :action => "show_photo", :child_id => "1")
