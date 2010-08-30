@@ -101,7 +101,7 @@ describe "children/_form_section.html.erb" do
       render :locals => { :form_section => @form_section }
 
       response.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
-        select.should have_selector("option[value='1-2 weeks ago'][selected]")
+        select.should have_selector("option[value='1-2 weeks ago']")
         select.should have_selector("option[value='More than a year ago']")
       end
     end

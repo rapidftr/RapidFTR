@@ -10,6 +10,7 @@ class Field < Hash
   attr_reader :options
 
   TEXT_FIELD = "text_field"
+  TEXT_AREA = "textarea"
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
   CHECK_BOX = "check_box"
@@ -28,6 +29,10 @@ class Field < Hash
 
   def self.new_text_field field_name
     Field.new :name => field_name, :type => TEXT_FIELD
+  end
+
+  def self.new_textarea field_name
+    Field.new :name => field_name, :type => TEXT_AREA
   end
 
   def self.new_photo_upload_box field_name
@@ -51,7 +56,7 @@ class Field < Hash
   end
 
   def select_options
-    select_options = @options.collect { |option| [option.option_name, option.option_name] }
+    select_options = @options.collect { |option| [option.option_value, option.option_name] }
     return select_options
   end
 
