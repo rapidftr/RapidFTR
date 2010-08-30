@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+  include LoadsSession
+
   skip_before_filter :check_authentication, :only => %w{new create}
 
   protect_from_forgery :except => %w{create}
@@ -23,7 +25,7 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
-    unless (@session = Session.get(pull_token_from_headers || pull_token_from_cookies)).nil?
+    unless (@session = get_session).nil?
       return redirect_to :action => "show", :id => @session
     end
 
@@ -71,7 +73,7 @@ class SessionsController < ApplicationController
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
   def destroy
-    @session = Session.get_from_cookies(cookies)
+    @session = get_session
     @session.destroy if @session
     Session.remove_from_cookies(cookies)
 

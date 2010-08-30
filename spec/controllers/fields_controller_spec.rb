@@ -7,6 +7,7 @@ end
 
 describe FieldsController do
   before :each do
+    fake_admin_login
     @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
     FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
   end

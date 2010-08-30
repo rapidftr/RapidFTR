@@ -1,4 +1,4 @@
-class AuthFailure < StandardError
+class AuthenticationFailure < StandardError
   def self.no_token(message)
     new(false,message)
   end

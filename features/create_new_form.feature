@@ -3,7 +3,7 @@ Feature: Create new forms
   I want to allow institutions to create custom forms
 
   Background:
-	Given "admin" is logged in
+  Given I am logged in as an admin
 	And the following form sections exist in the system:
 		| name   | description | unique_id | order |
 		| Basic Details | Basic details about a child | basic_details | 1 |

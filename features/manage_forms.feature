@@ -1,7 +1,7 @@
 Feature: So that admin can see Manage Forms Page
 
   Background:
-    Given I am logged in
+    Given I am logged in as an admin
     And I follow "Admin"
     And I follow "Manage Forms" 
 

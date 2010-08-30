@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe HistoriesController do
-  include LoggedIn
+  before do
+    fake_login
+  end
 
   it "should have restful route for GET" do
     assert_routing( {:method => 'get', :path => '/children/1/history'}, 

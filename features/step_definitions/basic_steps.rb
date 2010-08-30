@@ -92,6 +92,18 @@ Given /there is a User/ do
   end
 end
 
+Given /^there is a admin$/ do
+  Given "a admin \"admin\" with a password \"123\""
+end
+
+Given /^I am logged in as an admin$/ do
+  Given "there is a admin"
+  Given "I am on the login page"
+  Given "I fill in \"admin\" for \"user name\""
+  Given "I fill in \"123\" for \"password\""
+  Given "I press \"Log In\""
+end
+
 Given /^I am logged in$/ do
   Given "there is a User"
   Given "I am on the login page"

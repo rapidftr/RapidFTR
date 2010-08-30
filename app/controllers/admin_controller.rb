@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
 
-  # GET /admin
-  # GET /admin.xml
+  before_filter :administrators_only
+
   def index
     @page_name = "Administration"
   end

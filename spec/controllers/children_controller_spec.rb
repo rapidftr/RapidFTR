@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe ChildrenController do
-  include LoggedIn
+  before do
+    fake_login
+  end
 
   def mock_child(stubs={})
     @mock_child ||= mock_model(Child, stubs).as_null_object
