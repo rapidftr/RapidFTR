@@ -21,9 +21,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.enable_form 'form_section/enable', :controller => 'form_section', :action => 'enable', :value => true, :conditions => {:method => :post}
   map.disable_form 'form_section/disable', :controller => 'form_section', :action => 'enable', :value => false
-
-  map.resources :formsections, :controller => 'form_section' do |form_section|
-
+  map.save_order "/form_section/save_order", :controller => "form_section", :action => "save_order"
+  
+  map.resources :formsections, :controller=>'form_section' do |form_section|
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
     additional_field_actions[:new] = :get
     additional_field_actions[:move_up] = :post

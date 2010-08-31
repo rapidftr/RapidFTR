@@ -25,6 +25,9 @@ th  { text-align: left;}
 td, th { padding: .5em 10px; border-bottom: 1px solid #fff; }
 td a { font-weight: bold;  }
 
+/* default classes */
+.hidden { display:none; }
+
 /* default: forms */
 .default-form fieldset { padding:0.5em 10px; color: #666; background-color: #ddd; border: 1px solid #678; margin-bottom: 1em; overflow: hidden; clear: both; }
 .default-form fieldset legend { font-weight: bold; font-size: 1.1em; }
@@ -190,6 +193,14 @@ td.checkbox { text-align: center;}
 .new-form-section .submitButton { float:right; text-align:right;}
 .new-form-section .cancelButton { float:left;}
 
+/* form section index page */
+span.moveUp { cursor:pointer; color: #3399FF; }
+span.moveDown { cursor:pointer; color: #3399FF;}
+div input#enable_form, div input#disable_form { float: left; margin-right: 5px; }
+div input#save_order { float: right; }
+div.formSectionButtons { overflow:hidden; }
+div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
+div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 
 /* fields list page */
 .direction-button { display:none }

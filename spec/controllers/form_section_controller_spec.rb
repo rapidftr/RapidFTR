@@ -60,6 +60,19 @@ describe FormSectionController do
       assigns[:form_section].should == expected_form_section
     end
   end
+   
+  describe "post save_order" do
+    it "should save the order of the forms" do
+      form_one = FormSection.create(:unique_id => "first_form", :name => "first form", :order => 1)
+      form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)
+      form_three = FormSection.create(:unique_id => "third_form", :name => "third form", :order => 3)
+      post :save_order, :form_order => {form_one.unique_id.to_s => "3", form_two.unique_id.to_s => "1", form_three.unique_id.to_s => "2"}
+      FormSection.get_by_unique_id(form_one.unique_id).order.should == 3
+      FormSection.get_by_unique_id(form_two.unique_id).order.should == 1
+      FormSection.get_by_unique_id(form_three.unique_id).order.should == 2
+    end
+  end
+  
   describe "post enable" do
     it "when called with value false disables only the selected form sections" do
       form_section1 = {:name=>"name1", :description=>"desc", :enabled=>"true", :unique_id=>"form_1"}
@@ -87,6 +100,18 @@ describe FormSectionController do
       form_section1.stub(:save!)
       form_section2.stub(:save!)
       post :enable, :value => true, :sections => {"form_1" => 1, "form_2" => 1}, :controller => "form_section"
+    end
+  end
+  
+  describe "post save_order" do
+    it "should save the order of the forms" do
+      form_one = FormSection.create_new_custom("first form")
+      form_two = FormSection.create_new_custom("second form")
+      form_three = FormSection.create_new_custom("third form")       
+      post :save_order, :form_order => {form_one.unique_id.to_s => "3", form_two.unique_id.to_s => "1", form_three.unique_id.to_s => "2"}
+      FormSection.get(form_one.id).order.should == 3
+      FormSection.get(form_three.id).order.should == 2
+      FormSection.get(form_two.id).order.should == 1
     end
   end
 end
