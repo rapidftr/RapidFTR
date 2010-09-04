@@ -8,7 +8,7 @@ class Child < CouchRestRails::Document
 
   view_by :name,
           :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'Child') && doc['name'])
+              if (doc['couchrest-type'] == 'Child')
              {
                 emit(doc['name'], doc);
              }

@@ -2,7 +2,7 @@
   
   <%= error_messages_for :field %>
   
-  <%= f.hidden_field 'type', :value => "select_box" %>
+  <%= f.hidden_field 'type', :value => "check_box" %>
   <p>
       <%= f.label :name %>
       <%= f.text_field :name %>
@@ -14,10 +14,6 @@
   <p>
       <%= f.label :enabled %>
       <%= f.check_box :enabled, :checked => true %>
-  </p>
-  <p>
-      <%= f.label :option_strings %>
-      <%= f.text_area :option_strings, :checked => true %>
   </p>
   <p class="submitButton">
       <%= submit_tag 'Create' %>

@@ -14,6 +14,13 @@ describe 'Form Section routing' do
       '/formsections/form_section_name/fields/new_text_field'
   end
 
+  it 'has route to show form to create a new textarea field' do 
+    {:get => '/formsections/foo/fields/new_textarea'}.should route_to(
+      :controller => 'fields', :action => 'new_textarea', :formsection_id => 'foo' )
+    new_textarea_formsection_fields_path('form_section_name').should ==
+      '/formsections/form_section_name/fields/new_textarea'
+  end
+
   it 'has route to show form to create a new select_drop_down field' do 
     {:get => '/formsections/foo/fields/new_select_drop_down'}.should route_to(
       :controller => 'fields', :action => 'new_select_drop_down', :formsection_id => 'foo' )

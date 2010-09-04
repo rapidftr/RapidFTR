@@ -82,6 +82,64 @@ describe FormSection do
     
   end
   
+
+  describe "add_textarea_field_to_formsection" do
+    
+    it "adds the textarea to the formsection" do
+      field = Field.new_textarea("name")
+      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      FormSection.add_field_to_formsection formsection, field
+      formsection.fields.length.should == 3
+      formsection.fields[2].should == field
+    end
+    
+    it "saves the formsection with textarea field" do
+      field = Field.new_textarea("name")
+      formsection = mock_formsection
+      formsection.should_receive(:save)    
+      FormSection.add_field_to_formsection formsection, field
+    end
+    
+  end
+
+  describe "add_checkbox_field_to_formsection" do
+    
+    it "adds the checkbox to the formsection" do
+      field = Field.new_check_box("name")
+      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      FormSection.add_field_to_formsection formsection, field
+      formsection.fields.length.should == 3
+      formsection.fields[2].should == field
+    end
+    
+    it "saves the formsection with checkbox field" do
+      field = Field.new_check_box("name")
+      formsection = mock_formsection
+      formsection.should_receive(:save)    
+      FormSection.add_field_to_formsection formsection, field
+    end
+    
+  end
+
+  describe "add_select_drop_down_field_to_formsection" do
+    
+    it "adds the select drop down to the formsection" do
+      field = Field.new_select_box("name","some")
+      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      FormSection.add_field_to_formsection formsection, field
+      formsection.fields.length.should == 3
+      formsection.fields[2].should == field
+    end
+    
+    it "saves the formsection with select drop down field" do
+      field = Field.new_select_box("name","some")
+      formsection = mock_formsection
+      formsection.should_receive(:save)    
+      FormSection.add_field_to_formsection formsection, field
+    end
+    
+  end
+
   describe "editable" do
     
     it "should be editable by default" do
