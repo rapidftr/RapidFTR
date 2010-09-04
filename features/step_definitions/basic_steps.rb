@@ -256,7 +256,7 @@ Then /^I should see the following suggested fields:$/ do |suggested_fields_table
   suggested_fields_table.hashes.each do |suggested_field_hash|
     display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
     display.should_not be_nil
-    display.at("input")[:value].strip.should == suggested_field_hash[:name]
+    display.at("input[@name='field[name]']")[:value].strip.should == suggested_field_hash[:name]
     display.inner_html.should contain suggested_field_hash[:description]
   end
 end
@@ -277,6 +277,11 @@ And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   field_row.should_not be_nil
 end
 
+And /^I press add for suggested field "([^\"]*)"$/ do |field_id|
+   within(".#{field_id}Display") do
+     click_button("Add to form")
+   end
+end
 
 Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, position, table_selector|
   table = Hpricot(response.body).at(table_selector)
