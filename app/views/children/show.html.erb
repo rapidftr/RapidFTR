@@ -1,3 +1,15 @@
+<% content_for :javascript do %>
+  <%= javascript_include_tag "jquery.lightbox-0.5.min" %>
+  <script type="text/javascript" language="javascript">
+    $(function(){
+         $('.profile-image a').lightBox({fixedNavigation:true});    
+    });
+  </script>
+<% end %>
+
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
+<% end %>
 <div class="profile-header">
   <dl>
     <%= error_messages_for :child %>
