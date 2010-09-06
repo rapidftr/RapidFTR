@@ -90,7 +90,10 @@ module NavigationHelpers
         formsection_fields_path(form_section)
 
       when /the admin page/
-        admin_path(options) 
+        admin_path(options)
+
+      when /all child Ids/
+        child_ids_path
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

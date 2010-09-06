@@ -7,6 +7,7 @@ module ChildBuilder
 
   def with_id(child_id)
     Child.stub!(:get).with(child_id).and_return @child
+    Child.stub!(:all).and_return [@child]
     @child.stub!(:id).and_return child_id
     self
   end
@@ -23,4 +24,10 @@ module ChildBuilder
     @child.stub!(:photo).and_return nil
     self
   end
+
+  def with_rev(revision)
+    @child.stub!(:rev).and_return revision
+    self
+  end
+
 end
