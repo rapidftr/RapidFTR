@@ -1,5 +1,6 @@
-
 <h2>All children</h2>
+
+<p><%= link_to 'New child', new_child_path %></p>
 <table>
   <thead>
   <tr>
@@ -10,7 +11,6 @@
   </tr>
   </thead>
   <tbody>
-
   <% @children.each do |child| %>
       <tr>
         <td class="checkbox"></td>
@@ -26,4 +26,4 @@
 
 <br/>
 
-<%= link_to 'New child', new_child_path %>
+<%= link_to "Back", admin_path() %>
