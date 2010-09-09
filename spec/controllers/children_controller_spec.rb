@@ -2,7 +2,12 @@ require 'spec_helper'
 
 describe ChildrenController do
   before do
+    Clock.fake_time_now = Time.utc(2000,"jan",1,20,15,1)
     fake_login
+  end
+
+  after do
+    Clock.reset!
   end
 
   def mock_child(stubs={})
@@ -27,6 +32,7 @@ describe ChildrenController do
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
     end
+
   end
 
   describe "GET new" do
@@ -62,12 +68,12 @@ describe ChildrenController do
   describe "PUT update" do
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
-      
+
       current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time      
-      put :update, :id => child.id, 
+      Time.stub!(:now).and_return current_time
+      put :update, :id => child.id,
         :child => {
-          :last_known_location => "Manchester", 
+          :last_known_location => "Manchester",
           :photo => uploadable_photo_jeff }
 
       assigns[:child]['last_known_location'].should == "Manchester"
@@ -77,8 +83,8 @@ describe ChildrenController do
 
     it "should update only non-photo fields when no photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
-      
-      put :update, :id => child.id, 
+
+      put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
           :age => '7'}
@@ -88,12 +94,12 @@ describe ChildrenController do
       assigns[:child]['_attachments'].size.should == 1
     end
   end
-  
+
   describe "GET search" do
     it "performs a search using the parameters passed to it" do
       fake_results = [:fake_child,:fake_child]
       Summary.should_receive(:basic_search).with( 'the child name', 'the_unique_id' ).and_return(fake_results)
-      get( 
+      get(
         :search,
         :format => 'html',
         :child_name => 'the child name',
@@ -103,8 +109,8 @@ describe ChildrenController do
     end
 
     it 'asks view to show thumbnails if show_thumbnails query parameter is present' do
-      get( 
-        :search, 
+      get(
+        :search,
         :format => 'html',
         :show_thumbnails => '1'
       )
@@ -139,7 +145,7 @@ describe ChildrenController do
 
       get( :search, :format => 'csv', :field_name => '', :unique_identifier => '')
     end
-    
+
     describe 'CSV formatting' do
 
       def inject_results( results )
@@ -199,9 +205,9 @@ describe ChildrenController do
     it 'extracts a single selected id from post params correctly' do
       stub_out_pdf_generator
       Child.should_receive(:get).with('a_child_id')
-      post( 
-        :photo_pdf, 
-        { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' } 
+      post(
+        :photo_pdf,
+        { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' }
       )
     end
 
@@ -211,46 +217,48 @@ describe ChildrenController do
       Child.should_receive(:get).with('child_two')
       Child.should_receive(:get).with('child_three')
 
-      post( 
-        :photo_pdf, 
-        { 
-          'child_one' => 'selected', 
-          'child_two' => 'selected', 
-          'child_three' => 'selected', 
+      post(
+        :photo_pdf,
+        {
+          'child_one' => 'selected',
+          'child_two' => 'selected',
+          'child_three' => 'selected',
           'some_other_post_param' => 'blah'
-        } 
+        }
       )
     end
 
 
-    it "asks the pdf generator to render each child" do 
+    it "asks the pdf generator to render each child" do
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
-      
+
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
 
-      
+
       mock_pdf_generator.
         should_receive(:child_photos).
         with([:fake_child_one,:fake_child_two]).
         and_return('')
 
-      post( 
-        :photo_pdf, 
-        { 
-          'child_1' => 'selected', 
-          'child_2' => 'selected', 
-        } 
+      post(
+        :photo_pdf,
+        {
+          'child_1' => 'selected',
+          'child_2' => 'selected',
+        }
       )
     end
 
-    it "sends a response containing the pdf data, the correct content_type, etc" do
+    it "sends a response containing the pdf data, the correct content_type and file name, etc" do
       stub_pdf_generator = stub_out_pdf_generator
       stub_pdf_generator.stub!(:child_photos).and_return(:fake_pdf_data)
       stub_out_child_get
 
+      @controller.stub!(:current_user_name).and_return('foo-user')
+
       @controller.
         should_receive(:send_data).
-        with( :fake_pdf_data, :filename => "photos.pdf", :type => "application/pdf" )
+        with( :fake_pdf_data, :filename => "foo-user-#{Clock.now.to_i}.pdf", :type => "application/pdf" )
 
       post( :photo_pdf, 'ignored' => 'selected' )
     end

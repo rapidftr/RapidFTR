@@ -154,7 +154,7 @@ class ChildrenController < ApplicationController
     end
     children = child_ids.map{ |child_id| Child.get(child_id) }
     pdf_data = PdfGenerator.new.child_photos(children)
-    send_pdf( pdf_data, "photos.pdf" )
+    send_pdf( pdf_data, "#{current_user_name}-#{Clock.now.to_i}.pdf" )
   end
 
   private
