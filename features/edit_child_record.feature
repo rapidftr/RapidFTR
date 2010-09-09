@@ -50,8 +50,15 @@ Feature:
     Then I should see "Last known location cannot be empty"
     
 
+		
+Scenario: Photo is required 
+		Given I am logged in
+		Given I am on children listing page
+		And I follow "New Child"
+		When I fill in "Mumbai" for "Last known location"
+		And I press "Save"
+		Then I should see "error prohibited this child from being saved"
+		And I should see "Photo must be provided"
 
- 
-    
 
 

@@ -78,6 +78,13 @@ describe Child do
       loaded_child.photo = uploadable_text_file
       loaded_child.save().should == false
     end
+
+    it "should not allow missing photo file" do
+      child = Child.new
+      child['last_known_location'] = 'some dummy location'
+      child.should_not be_valid
+      child.errors[:photo].should == ['Photo must be provided']
+    end
   end
   
   describe "new_with_user_name" do    
@@ -377,8 +384,8 @@ describe Child do
     it "should return list of children ordered by name" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
 
-      Child.create('name' => 'Zbu', 'last_known_location' => 'POA')
-      Child.create('name' => 'Abu', 'last_known_location' => 'POA')
+      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
+      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
 
       childrens = Child.all
       childrens.first['name'].should == 'Abu'
@@ -388,9 +395,9 @@ describe Child do
       UUIDTools::UUID.stub("random_create").and_return(12345)
 
 
-      Child.create('name' => 'Zbu', 'last_known_location' => 'POA')
-      Child.create('name' => 'Abu', 'last_known_location' => 'POA')
-      Child.create('name' => '', 'last_known_location' => 'POA')
+      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
+      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
+      Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
 
       childrens = Child.all
       childrens.first['name'].should == ''

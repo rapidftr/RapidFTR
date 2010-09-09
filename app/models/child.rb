@@ -82,6 +82,11 @@ class Child < CouchRestRails::Document
       valid = false
       errors.add("last_known_location", "Last known location cannot be empty")
     end
+
+    if self["current_photo_key"].blank?
+       valid = false
+       errors.add("photo","Photo must be provided")
+    end
     
     return valid
   end
