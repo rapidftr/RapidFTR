@@ -34,7 +34,7 @@ class ChildrenController < ApplicationController
       format.json { render :json => @child.to_json }
       format.pdf do
         pdf_data = PdfGenerator.new.child_photo(@child)
-        send_pdf( pdf_data, "photo.pdf" )
+        send_pdf( pdf_data, @child.unique_identifier )
       end
     end
   end
