@@ -8,8 +8,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.child_ids "/children-ids", :controller => "child_ids", :action => "all"
 
-  map.child_photo "/children/:child_id/photo/:id", :controller => "child_images", :action => "show_photo"
-  map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_images", :action => "show_thumbnail"
+  map.child_audio "/children/:child_id/audio/:id", :controller => "child_media", :action => "download_audio"
+  map.child_photo "/children/:child_id/photo/:id", :controller => "child_media", :action => "show_photo"
+  map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 
   map.resources :users
   map.admin 'admin', :controller=>"admin", :action=>"index"

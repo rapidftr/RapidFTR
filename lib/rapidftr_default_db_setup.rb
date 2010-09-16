@@ -14,7 +14,8 @@ module RapidFTR
               Field.new("name" => "origin", "type" => "text_field"),
               Field.new("name" => "last_known_location", "type" => "text_field"),
               Field.new("name" => "date_of_separation", "type" => "select_box", "option_strings" => ["", "1-2 weeks ago", "2-4 weeks ago", "1-6 months ago", "6 months to 1 year ago", "More than 1 year ago"]),
-              Field.new("name" => "current_photo_key", "type" => "photo_upload_box")
+              Field.new("name" => "current_photo_key", "type" => "photo_upload_box"),
+              Field.new("name" => "recorded_audio", "type" => "audio_upload_box")
       ]
 
       FormSection.create!("name" =>"Basic details", "enabled"=>true, :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :editable => false, :fields => basic_details_fields)

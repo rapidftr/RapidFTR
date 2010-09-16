@@ -15,7 +15,7 @@ class Child < CouchRestRails::Document
           }"
 
   #view_by :name, :last_known_location
-  
+
   def self.all
     view('by_name', {})
   end
@@ -29,10 +29,10 @@ class Child < CouchRestRails::Document
 
   def create_unique_id(user_name)
     unknown_location = 'xxx'
-    truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0,3).downcase
-    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0,5)
+    truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0, 3).downcase
+    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0, 5)
   end
-  
+
   def set_creation_fields_for(user_name)
     self['created_by'] = user_name
     self['created_at'] = current_formatted_time
@@ -63,40 +63,65 @@ class Child < CouchRestRails::Document
     content_type = self['_attachments'][attachment_name]['content_type']
     FileAttachment.new attachment_name, content_type, data
   end
-  
-  def photo_for_key(photo_key)
-    data = read_attachment photo_key
-    content_type = self['_attachments'][photo_key]['content_type']
-    FileAttachment.new photo_key, content_type, data
+
+  def audio
+    attachment_name = self['recorded_audio']
+    return nil unless attachment_name
+    data = read_attachment attachment_name
+    content_type = self['_attachments'][attachment_name]['content_type']
+    FileAttachment.new attachment_name, content_type, data
   end
-  
+
+  def audio=(audio_file)
+    return unless audio_file.respond_to? :content_type
+    @audio_file_name = audio_file.original_path
+    attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
+    self['recorded_audio'] = attachment.name
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
+
+  end
+
+  def media_for_key(media_key)
+    data = read_attachment media_key
+    content_type = self['_attachments'][media_key]['content_type']
+    FileAttachment.new media_key, content_type, data
+  end
+
+
   def valid?(context=:default)
     valid = true
-    
-    if @file_name && !/([^\s]+(\.(?i)(jpg|png|gif|bmp))$)/.match(@file_name)
+
+    if @file_name && !/([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)/.match(@file_name)
       valid = false
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
     end
-    
+    if @audio_file_name && !/([^\s]+(\.(?i)(amr))$)/.match(@audio_file_name)
+      valid = false
+      errors.add("audio", "Please upload a valid audio file amr for this child record")
+    end
+
+
     if self["last_known_location"].blank?
       valid = false
       errors.add("last_known_location", "Last known location cannot be empty")
     end
 
     if self["current_photo_key"].blank?
-       valid = false
-       errors.add("photo","Photo must be provided")
+      valid = false
+      errors.add("photo", "Photo must be provided")
     end
-    
     return valid
   end
-  
-  def update_properties_with_user_name(user_name, new_photo, properties)
+
+  def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
     self.photo = new_photo
+    self.audio = new_audio
   end
 
   def initialize_history
@@ -105,32 +130,32 @@ class Child < CouchRestRails::Document
 
   def update_history
     if field_name_changes.any?
-      self['histories'].unshift({ 
-        'user_name' => self['last_updated_by'],
-        'datetime' => self['last_updated_at'],
-        'changes' => changes_for(field_name_changes) })
+      self['histories'].unshift({
+              'user_name' => self['last_updated_by'],
+              'datetime' => self['last_updated_at'],
+              'changes' => changes_for(field_name_changes) })
     end
   end
-  
+
   protected
-  
+
   def current_formatted_time
     Time.now.strftime("%d/%m/%Y %H:%M")
   end
-  
+
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
-      changes.merge(field_name => { 
-        'from' => @from_child[field_name], 
-        'to' => self[field_name] })
+      changes.merge(field_name => {
+              'from' => @from_child[field_name],
+              'to' => self[field_name] })
     end
   end
-  
+
   def field_name_changes
     @from_child ||= Child.get(self.id)
     FormSection.all_child_field_names.select { |field_name| changed?(field_name) }
   end
-  
+
   def changed?(field_name)
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?

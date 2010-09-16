@@ -1,32 +1,38 @@
-
-      <div class="profile-header"> 
-<ul class="history-details">
-<% @child['histories'].each do |history| %>
-	<% history['changes'].each_pair do |field, change| %>
-		<% if field == "current_photo_key" %>
-			<%= render :partial => "photo_history_change", 
-				:locals => {
-					:from_value => change['from'],
-					:to_value => change['to'],
-					:datetime => history['datetime'],
-					:user_name => history['user_name'] } %>
-		<% else %>
-		  <%= render :partial => "history_change",
-		    :locals => {
-		      :field => field.humanize,
-		      :from_value => change['from'],
-					:to_value => change['to'],
-					:datetime => history['datetime'],
-					:user_name => history['user_name'] } %>
-		<% end %>
-	<% end %>
-<% end %>
-<li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>
-</ul>
+<div class="profile-header">
+  <ul class="history-details">
+    <% @child['histories'].each do |history| %>
+        <% history['changes'].each_pair do |field, change| %>
+            <% if field == "current_photo_key" %>
+                <%= render :partial => "photo_history_change",
+                           :locals => {
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
+                                   :datetime => history['datetime'],
+                                   :user_name => history['user_name'] } %>
+            <% elsif field == 'recorded_audio' %>
+                <%= render :partial => "audio_history_change",
+                           :locals => {
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
+                                   :datetime => history['datetime'],
+                                   :user_name => history['user_name'] } %>
+            <% else %>
+                <%= render :partial => "history_change",
+                           :locals => {
+                                   :field => field.humanize,
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
+                                   :datetime => history['datetime'],
+                                   :user_name => history['user_name'] } %>
+            <% end %>
+        <% end %>
+    <% end %>
+    <li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>
+  </ul>
 
 </div>
 <div class="profile-tools">
   <ul>
-    <li class="back"><%=link_to "Back", child_path(@child) %></li>
+    <li class="back"><%= link_to "Back", child_path(@child) %></li>
   </ul>
 </div>

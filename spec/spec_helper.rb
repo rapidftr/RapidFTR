@@ -73,6 +73,27 @@ def to_thumbnail(size, path)
   thumbnail
 end
 
+
+def uploadable_audio(audio_path = "features/resources/sample.amr")
+
+  audio = File.new(audio_path)
+
+  def audio.original_path
+    self.path
+  end
+
+  def audio.content_type
+    "audio/AMR"
+  end
+
+  audio
+end
+
+def uploadable_audio_sample
+  uploadable_audio
+end
+
+
 def find_child_by_name child_name
   child = Summary.by_name(:key => child_name)
   raise "no child named '#{child_name}'" if child.nil?
