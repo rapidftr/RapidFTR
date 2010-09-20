@@ -160,7 +160,7 @@ class ChildrenController < ApplicationController
   private
 
   def get_form_sections
-    FormSection.all
+    FormSection.all_by_order
   end
 
   def render_results_as_csv
