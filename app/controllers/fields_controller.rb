@@ -2,7 +2,7 @@ class FieldsController < ApplicationController
 
   before_filter :administrators_only
 
-  FIELD_TYPES = %w{text_field textarea check_box select_drop_down}
+  FIELD_TYPES = %w{  text_field textarea check_box select_drop_down  }
 
   def read_form_section
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
@@ -21,17 +21,27 @@ class FieldsController < ApplicationController
 
   def create
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
-    field =  Field.new(params[:field])
-    
+    properties = params[:field]
+    if properties
+      split_option_strings properties
+    end
+    field =  Field.new properties
+
     begin
       FormSection.add_field_to_formsection @form_section, field
-      SuggestedField.mark_as_used(params[:from_suggested_field])  if params.has_key? :from_suggested_field
+      SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = "Field successfully added"
       redirect_to(formsection_fields_path(params[:formsection_id]))
     rescue Exception => e
       field.errors.add("name", e.message)
       @field = field
       render :action => "new_#{params[:field][:type]}"
+    end
+  end
+
+  def split_option_strings properties
+    if properties[:option_strings] && properties[:type] == "select_box" && properties[:option_strings].type != Array
+      properties[:option_strings]=properties[:option_strings].split("\r\n")
     end
   end
 

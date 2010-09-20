@@ -54,6 +54,11 @@ class FormSection < CouchRestRails::Document
     form_section
   end
 
+  def self.change_form_section_state formsection, to_state
+    formsection.enabled = to_state
+    formsection.save
+  end
+  
   def add_text_field field_name
     self["fields"] << Field.new_text_field(field_name)
   end
@@ -87,5 +92,4 @@ class FormSection < CouchRestRails::Document
     field_to_move_down = fields.find {|field| field.name == field_name}
     move_field(field_to_move_down, 1)
   end
-
 end
