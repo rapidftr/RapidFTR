@@ -52,10 +52,20 @@ describe Child do
       results.first[:unique_identifier].should == uuid
     end
     
-    # it "should match more than one word" do
-    #   create_child("timothy cochran")      
-    #   Child.search("timothy cochran").map(&:name).should =~ ["timothy cochran"]
-    # end
+    it "should match more than one word" do
+      create_child("timothy cochran")      
+      Child.search("timothy cochran").map(&:name).should =~ ["timothy cochran"]
+    end
+    
+    it "should match more than one word with fuzzy search" do
+      create_child("timothy cochran")      
+      Child.search("timithy cichran").map(&:name).should =~ ["timothy cochran"]
+    end
+    
+    it "should match more than one word with starts with" do
+      create_child("timothy cochran")      
+      Child.search("timo coch").map(&:name).should =~ ["timothy cochran"]
+    end
     
     # it "should search across name and unique identifier" do
     #   Child.create("name" => "John Doe", "last_known_location" => "new york", "unique_identifier" => "ABC123")
