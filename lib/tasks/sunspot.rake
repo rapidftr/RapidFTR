@@ -15,6 +15,5 @@ namespace :sunspot do
       sh "sunspot-solr stop"
     rescue
     end
-    
   end
 end
