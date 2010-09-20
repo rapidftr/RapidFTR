@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChildrenController do
   before do
-    Clock.fake_time_now = Time.utc(2000,"jan",1,20,15,1)
+    Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
     fake_login
   end
 
@@ -258,7 +258,7 @@ describe ChildrenController do
 
       @controller.
         should_receive(:send_data).
-        with( :fake_pdf_data, :filename => "foo-user-#{Clock.now.to_i}.pdf", :type => "application/pdf" )
+        with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
 
       post( :photo_pdf, 'ignored' => 'selected' )
     end
