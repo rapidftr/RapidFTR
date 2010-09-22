@@ -34,7 +34,7 @@ class ChildrenController < ApplicationController
       format.json { render :json => @child.to_json }
       format.pdf do
         pdf_data = PdfGenerator.new.child_photo(@child)
-        send_pdf( pdf_data, @child.unique_identifier )
+        send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
       end
     end
   end
@@ -154,7 +154,7 @@ class ChildrenController < ApplicationController
     end
     children = child_ids.map{ |child_id| Child.get(child_id) }
     pdf_data = PdfGenerator.new.child_photos(children)
-    send_pdf( pdf_data, "#{current_user_name}-#{Clock.now.to_i}.pdf" )
+    send_pdf( pdf_data, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
   end
 
   private

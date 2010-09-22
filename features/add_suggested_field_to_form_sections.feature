@@ -8,8 +8,8 @@ Feature: Adding a suggested field to a form section
         | Field_with_options | field_three| Field with options | ["option1", "option2", "option3"] | select_box | 
 
      And the following form sections exist in the system:
-        | name | unique_id |
-        | Basic details | basic_details |
+        | name | unique_id | order |
+        | Basic details | basic_details | 1 |
 
 
    Scenario: Viewing the suggested fields for a form section when adding a field to a form section
