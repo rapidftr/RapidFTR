@@ -1,0 +1,62 @@
+= Dictionary
+
+* http://death.rubyforge.org
+* http://death.rubyforge.org/dictionary
+
+
+== DESCRIPTION
+
+The Dictionary class is a type of ordered Hash,
+which keeps it's contents in a customizable order.
+
+
+== FEATURES/ISSUES
+
+* Order is customizable.
+* Compatable with Hash API.
+
+
+== RELEASE NOTES
+
+Please see RELEASE file.
+
+
+== SYNOPSIS
+
+  require 'dictionary'
+
+  dict = Dictionary.new
+  dict['z'] = 1
+  dict['y'] = 2
+  dict['x'] = 3
+
+  dict.order_by{ |k,v| k }
+
+  dict.keys         #=> ['x', 'y', 'z']
+  dict.values       #=> [3, 2, 1]
+
+
+== HOW TO INSTALL
+
+To install with RubyGems simply open a console and type:
+
+  gem install dictionary
+
+Local installation requires Setup.rb (gem install setup),
+then download the tarball package and type:
+
+  tar -xvzf dictionary-1.0.0.tgz
+  cd dictionary-1.0.0.tgz
+  sudo setup.rb all
+
+Windows users use 'ruby setup.rb all'.
+
+
+== LICENSE
+
+Copyright (c) 2005 Jan Molic
+
+This program is ditributed unser the terms of the LGPL license.
+
+See LICENSE file for details.
+

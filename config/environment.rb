@@ -19,6 +19,14 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
+  config.gem "json", :lib => false, :version => '>= 1.4.6'
+  config.gem "json_pure", :lib => false, :version => '>= 1.4.6'
+  config.gem "uuidtools", :lib =>false
+  config.gem "dictionary"
+  config.gem "prawn"
+  config.gem "pdf-reader", :lib => false
+  config.gem "fastercsv"
+  config.gem "mini_magick"
 
   # config.gem "couchrest", :lib => false
   # config.gem "validatable", :lib => false

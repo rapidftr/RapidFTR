@@ -1,0 +1,70 @@
+--- !ruby/object:Gem::Specification 
+name: subexec
+version: !ruby/object:Gem::Version 
+  hash: 23
+  prerelease: false
+  segments: 
+  - 0
+  - 0
+  - 4
+  version: 0.0.4
+platform: ruby
+authors: 
+- Peter Kieltyka
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2010-07-07 00:00:00 -04:00
+default_executable: 
+dependencies: []
+
+description: Subexec spawns an external command with a timeout
+email: 
+- peter@nulayer.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- README.rdoc
+- VERSION
+- lib/subexec.rb
+has_rdoc: true
+homepage: http://github.com/nulayer/subexec
+licenses: []
+
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  none: false
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
+      version: "0"
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  none: false
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
+      version: "0"
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.7
+signing_key: 
+specification_version: 3
+summary: Subexec spawns an external command with a timeout
+test_files: []
+
