@@ -1,31 +1,32 @@
 require 'spec_helper'
 
-class MockFormSection 
+class MockFormSection
   def initialize is_valid = true
     @is_valid = is_valid
   end
+
   def valid?
-    @is_valid 
+    @is_valid
   end
 end
 describe FormSectionController do
   before do
     fake_admin_login
   end
-   describe "get index" do
-     it "populate the view with all the form sections" do
+  describe "get index" do
+    it "populate the view with all the form sections" do
       expected_form_sections = [FormSection.new(name => "Form section 1"), FormSection.new(name => "Form section 2")]
       FormSection.stub!(:all_by_order).and_return(expected_form_sections)
       get :index
       assigns[:form_sections].should == expected_form_sections
-     end
-   end
-   describe "post create" do
-     it "calls create_new_custom with parameters from post" do 
-       FormSection.should_receive(:create_new_custom).with("name", "desc", true).and_return(MockFormSection.new)
-       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
-       post :create, :form_section =>form_section
-     end
+    end
+  end
+  describe "post create" do
+    it "calls create_new_custom with parameters from post" do
+      FormSection.should_receive(:create_new_custom).with("name", "desc", true).and_return(MockFormSection.new)
+      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+      post :create, :form_section =>form_section
+    end
     it "sets flash notice if form section is valid" do
       FormSection.stub(:create_new_custom).and_return(MockFormSection.new)
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
@@ -43,20 +44,60 @@ describe FormSectionController do
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
       response.should redirect_to formsections_path
-     end
-     it "should show new view again if form section was not valid" do
-       FormSection.stub(:create_new_custom).and_return MockFormSection.new(false)
-       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
-       post :create, :form_section =>form_section
-       response.should_not redirect_to formsections_path
-       response.should render_template("new")
-     end
-      it "should assign view data if form section was not valid" do
-        expected_form_section = MockFormSection.new(false)
-        FormSection.stub(:create_new_custom).and_return expected_form_section
-        form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
-        post :create, :form_section =>form_section
-        assigns[:form_section].should == expected_form_section
-      end
-   end
+    end
+    it "should show new view again if form section was not valid" do
+      FormSection.stub(:create_new_custom).and_return MockFormSection.new(false)
+      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+      post :create, :form_section =>form_section
+      response.should_not redirect_to formsections_path
+      response.should render_template("new")
+    end
+    it "should assign view data if form section was not valid" do
+      expected_form_section = MockFormSection.new(false)
+      FormSection.stub(:create_new_custom).and_return expected_form_section
+      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+      post :create, :form_section =>form_section
+      assigns[:form_section].should == expected_form_section
+    end
+  end
+  describe "post enable" do
+    it "when called with value false disables only the selected form sections" do
+      form_section1 = {:name=>"name1", :description=>"desc", :enabled=>"true", :unique_id=>"form_1"}
+      form_section2 = {:name=>"name2", :description=>"desc", :enabled=>"true", :unique_id=>"form_2"}
+      form_section3 = {:name=>"name3", :description=>"desc", :enabled=>"true", :unique_id=>"form_3"}
+      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section1)
+      FormSection.should_receive(:get_by_unique_id).with("form_2").and_return(form_section2)
+      form_section1.stub(:save!)
+      form_section2.stub(:save!)
+      form_section1.should_receive(:enabled=).with(false)
+      form_section2.should_receive(:enabled=).with(false)
+      form_section3.should_not_receive(:enabled=).with(false)
+      post :enable, :value => false, :sections => {"form_1" => 1, "form_2" => 1}, :controller => "form_section"
+    end
+
+    it "when called with value true enables only the selected form sections" do
+      form_section1 = {:name=>"name1", :description=>"desc", :enabled=>"false", :unique_id=>"form_1"}
+      form_section2 = {:name=>"name2", :description=>"desc", :enabled=>"true", :unique_id=>"form_2"}
+      form_section3 = {:name=>"name3", :description=>"desc", :enabled=>"true", :unique_id=>"form_3"}
+      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section1)
+      FormSection.should_receive(:get_by_unique_id).with("form_2").and_return(form_section2)
+      form_section1.should_receive(:enabled=).with(true)
+      form_section2.should_receive(:enabled=).with(true)
+      form_section3.should_not_receive(:enabled=).with(true)
+      form_section1.stub(:save!)
+      form_section2.stub(:save!)
+      post :enable, :value => true, :sections => {"form_1" => 1, "form_2" => 1}, :controller => "form_section"
+    end
+
+    it "when called with value false on basic_details form does not do anything" do
+      basic_details_form_section = {:name=>"name1", :description=>"desc", :enabled=>"false", :unique_id=>"basic_details"}
+      form_section1 = {:name=>"name1", :description=>"desc", :enabled=>"true", :unique_id=>"form_1"}
+      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section1)
+      FormSection.should_not_receive(:get_by_unique_id).with("basic_details")
+      basic_details_form_section.should_not_receive(:enabled=).with(false)
+      form_section1.should_receive(:enabled=).with(false)
+      form_section1.stub(:save!)
+      post :enable, :value => false, :sections => {"basic_details" => 1, "form_1" => 1}, :controller => "form_section"
+    end
+  end
 end

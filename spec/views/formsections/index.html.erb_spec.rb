@@ -29,14 +29,20 @@ end
 
 def should_have_description(form_section)
   row = @searchable_response.form_section_row_for form_section.unique_id
-  cell = row.search("td").detect {|cell| cell.inner_html.strip == @form_section_1.description }
+  cell = row.search("td").detect { |cell| cell.inner_html.strip == @form_section_1.description }
+  cell.should_not be_nil
+end
+
+def should_have_enable_or_disable_checkbox(form_section)
+  row = @searchable_response.form_section_row_for form_section.unique_id
+  cell = row.search("td").detect { |cell| cell.inner_html.to_s.include? "sections_"+@form_section_1.unique_id }
   cell.should_not be_nil
 end
 
 describe "form_section/index.html.erb" do
 
   before :each do
-    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true" , "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details"
+    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details"
     @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> "false", "order"=>"101", "unique_id"=> "caregiver_details"
 
     assigns[:form_sections] = [@form_section_1, @form_section_2]
@@ -57,17 +63,24 @@ describe "form_section/index.html.erb" do
   end
 
   it "renders a enable icon for each form section" do
-    enabled_icon_should_have_icon_class "basic_details" ,"tick"
-    enabled_icon_should_have_icon_class "caregiver_details" ,"cross"
+    enabled_icon_should_have_icon_class "basic_details", "tick"
+    enabled_icon_should_have_icon_class "caregiver_details", "cross"
+  end
+  it "renders enable and disable buttons" do
+    @searchable_response.to_s.include?("enable_form").should == true
+    @searchable_response.to_s.include?("disable_form").should == true
   end
   it "renders the enabled status text for each form section" do
-    enabled_icon_should_have_text "basic_details" ,"Enabled"
-    enabled_icon_should_have_text "caregiver_details" ,"Disabled"
+    enabled_icon_should_have_text "basic_details", "Enabled"
+    enabled_icon_should_have_text "caregiver_details", "Disabled"
   end
-  it "renders the description text for each form section"do
+  it "renders the description text for each form section" do
     should_have_description(@form_section_1)
   end
-  it "renders the current order for each form section"do
+  it "renders the enable/disable checkbox for each form section" do
+    should_have_enable_or_disable_checkbox(@form_section_1)
+  end
+  it "renders the current order for each form section" do
     form_section_should_have_order(@form_section_1)
     form_section_should_have_order(@form_section_2)
   end

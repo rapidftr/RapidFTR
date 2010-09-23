@@ -249,6 +249,22 @@ Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
   end
 end
 
+Then /^the checkbox with id "([^\"]*)" should be checked$/ do |id|
+  if defined?(Spec::Rails::Matchers)
+    field_with_id(id).should be_checked
+  else
+    assert field_with_id(id).checked?
+  end
+end
+
+Then /^the checkbox with id "([^\"]*)" should not be checked$/ do |id|
+  if defined?(Spec::Rails::Matchers)
+    field_with_id(id).should_not be_checked
+  else
+    assert !field_with_id(id).checked?
+  end
+end
+
 Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).select(:path, :query).compact.join('?')
   if defined?(Spec::Rails::Matchers)

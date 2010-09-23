@@ -16,13 +16,14 @@ class Field < Hash
   CHECK_BOX = "check_box"
   PHOTO_UPLOAD_BOX = "photo_upload_box"
 
+
   def initialize properties
     super properties
     if (option_strings)
       @options = FieldOption.create_field_options(name, option_strings)
     end
   end
-
+  
   def self.new_check_box field_name
     Field.new :name => field_name, :type => CHECK_BOX
   end
@@ -56,8 +57,6 @@ class Field < Hash
   end
 
   def select_options
-    select_options = @options.collect { |option| [option.option_value, option.option_name] }
-    return select_options
+    select_options = @options.collect { |option| [option.option_name, option.option_name] }
   end
-
 end

@@ -22,7 +22,7 @@ module HpricotSearch
     search(".tab-handles a")
   end
   def child_tab_name
-    search(".edit-profile h3")    
+    search(".edit-profile h3")
   end
   def form_section_names
     search("#form_sections tr td a.formSectionLink")
