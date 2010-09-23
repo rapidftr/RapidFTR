@@ -13,4 +13,9 @@ debug.html
 .autotest
 *.iml
 tags
+vendor/ruby/1.8/bin/
+vendor/ruby/1.8/doc/
+vendor/ruby/1.8/specifications/
+vendor/ruby/1.8/gems/
+/.bundle/
 
