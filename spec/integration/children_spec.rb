@@ -45,8 +45,8 @@ describe Child do
     created_child.update_attributes :photo => uploadable_photo
 
     updated_child = Child.get(child.id)
-    verify_attachment(updated_child.photo_for_key('photo-2010-01-20T120415'), uploadable_photo_jeff)
-    verify_attachment(updated_child.photo_for_key('photo-2010-02-20T120415'), uploadable_photo)
+    verify_attachment(updated_child.media_for_key('photo-2010-01-20T120415'), uploadable_photo_jeff)
+    verify_attachment(updated_child.media_for_key('photo-2010-02-20T120415'), uploadable_photo)
   end
 end
 

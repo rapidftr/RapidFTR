@@ -15,6 +15,7 @@ class Field < Hash
   SELECT_BOX = "select_box"
   CHECK_BOX = "check_box"
   PHOTO_UPLOAD_BOX = "photo_upload_box"
+  AUDIO_UPLOAD_BOX = "audio_upload_box"
 
 
   def initialize properties
@@ -39,6 +40,11 @@ class Field < Hash
   def self.new_photo_upload_box field_name
     Field.new :name => field_name, :type => PHOTO_UPLOAD_BOX
   end
+
+  def self.new_audio_upload_box field_name
+    Field.new :name => field_name, :type => AUDIO_UPLOAD_BOX
+  end
+
 
   def self.new_radio_button field_name, option_strings
     Field.new :name => field_name, :type => RADIO_BUTTON, :option_strings => option_strings
