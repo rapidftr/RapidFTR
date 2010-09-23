@@ -1,17 +1,13 @@
 namespace :ci do
   
-  task :build => %w( clean install_test_gems install_cucumber_gems default)
+  task :build => %w( clean install_bundler_gems default)
   
   task :clean do
     rm_f "rerun.txt"
   end
   
-  task :install_test_gems do
-    sh "rake -t gems:install RAILS_ENV=test"
-  end
-  
-  task :install_cucumber_gems do
-    sh "rake -t gems:install RAILS_ENV=cucumber"
+  task :install_bundler_gems do
+    sh "bundle install"
   end
   
 end
