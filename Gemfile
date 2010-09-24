@@ -14,6 +14,7 @@ gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
+gem 'sunspot',        '1.1.0', :require => "sunspot"
 
 group :cucumber do
   gem 'cucumber',         '0.8.5'

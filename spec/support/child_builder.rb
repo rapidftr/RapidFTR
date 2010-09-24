@@ -35,5 +35,5 @@ module ChildBuilder
     @child.stub!(:rev).and_return revision
     self
   end
-
+  
 end

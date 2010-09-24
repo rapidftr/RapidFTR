@@ -1,4 +1,4 @@
-class ChildrenController < ApplicationController
+class   ChildrenController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
 
@@ -122,7 +122,7 @@ class ChildrenController < ApplicationController
 
   def search
     @page_name = "Child Search"
-    @results = Summary.basic_search(params[:child_name], params[:unique_identifier]) if params[:child_name] || params[:unique_identifier]
+    @results = Child.search(params[:query]) if params[:query]
     default_search_respond_to
   end
 
@@ -138,7 +138,7 @@ class ChildrenController < ApplicationController
   def default_search_respond_to
     respond_to do |format|
       format.csv do
-        render_results_as_csv
+        render_results_as_csv if @results
       end
       format.html do
         @show_thumbnails = !!params[:show_thumbnails]

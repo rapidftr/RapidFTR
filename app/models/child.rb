@@ -2,6 +2,14 @@ class Child < CouchRestRails::Document
   use_database :child
   require "uuidtools"
   include CouchRest::Validation
+  include Searchable
+
+  Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
+  Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
+
+  Sunspot.setup(self) do
+    text :name, :unique_identifier
+  end
 
   before_save :initialize_history, :if => :new?
   before_save :update_history, :unless => :new?
@@ -18,6 +26,23 @@ class Child < CouchRestRails::Document
 
   def self.all
     view('by_name', {})
+  end
+  
+  def self.search(query)
+    return [] if query == nil || query == ""
+    children = sunspot_search("unique_identifier_text:#{query}")
+    return children if children.length > 0
+    
+    lucene_query = query.split(/[ ,]+/).map {|word| "(name_text:#{word.downcase}~ OR name_text:#{word.downcase}*)"}.join(" AND ")
+    sunspot_search lucene_query
+  end
+  
+  def name 
+    self['name']
+  end
+  
+  def unique_identifier
+    self['unique_identifier']
   end
 
   def self.new_with_user_name(user_name, fields = {})

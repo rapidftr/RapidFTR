@@ -6,4 +6,6 @@ Before do
   User.all.each {|u| u.destroy }
   SuggestedField.all.each {|u| u.destroy }
   RapidFTR::DbSetup.reset_default_form_section_definitions
+  Sunspot.remove_all!(Child)
+  Sunspot.commit
 end

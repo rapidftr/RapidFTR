@@ -77,7 +77,7 @@ describe User do
     user = build_and_save_user(:password => "thepass")
     user.authenticate("thepass").should be_true
   end
-   
+
   it "can't authenticate with the wrong password" do
     user = build_and_save_user(:password => "onepassword")
     user.authenticate("otherpassword").should be_false
@@ -97,5 +97,5 @@ describe User do
     user = build_and_save_user(:disabled => "false", :password => "thepass")
     user.authenticate("thepass").should be_true
   end
-
+  
 end

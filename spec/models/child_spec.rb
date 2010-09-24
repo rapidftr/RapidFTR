@@ -15,6 +15,64 @@ describe Child do
     FormSection.stub!(:all).and_return([form_section])
   end
 
+  describe ".search" do
+    before :each do
+      Sunspot.remove_all(Child)
+    end
+    
+    it "should return empty array for no match" do
+      Child.search("Nothing").should == []
+    end
+
+    it "should return an exact match" do
+      create_child("Exact")
+      
+      Child.search("Exact").map(&:name).should == ["Exact"]
+    end
+  
+    it "should return a match that starts with the query" do
+      create_child("Starts With")
+      
+      Child.search("Star").map(&:name).should == ["Starts With"]
+    end
+    
+    it "should return a fuzzy match" do
+      create_child("timithy")
+      create_child("timothy")
+
+      Child.search("timathy").map(&:name).should =~ ["timithy", "timothy"]
+    end
+    
+    it "should search by exact match for unique id" do
+      uuid = UUIDTools::UUID.random_create.to_s
+      Child.create("name" => "kev", :unique_identifier => uuid, "last_known_location" => "new york",  'photo' => uploadable_photo)
+      Child.create("name" => "kev", :unique_identifier => UUIDTools::UUID.random_create, "last_known_location" => "new york", 'photo' => uploadable_photo)
+      results = Child.search(uuid)
+      results.length.should == 1
+      results.first[:unique_identifier].should == uuid
+    end
+    
+    it "should match more than one word" do
+      create_child("timothy cochran")      
+      Child.search("timothy cochran").map(&:name).should =~ ["timothy cochran"]
+    end
+    
+    it "should match more than one word with fuzzy search" do
+      create_child("timothy cochran")      
+      Child.search("timithy cichran").map(&:name).should =~ ["timothy cochran"]
+    end
+    
+    it "should match more than one word with starts with" do
+      create_child("timothy cochran")      
+      Child.search("timo coch").map(&:name).should =~ ["timothy cochran"]
+    end
+    
+    # it "should search across name and unique identifier" do
+    #   Child.create("name" => "John Doe", "last_known_location" => "new york", "unique_identifier" => "ABC123")
+    #   
+    #   Child.search("ABC123").map(&:name).should == ["John Doe"]
+    # end
+  end
 
   describe "update_properties_with_user_name" do
     it "should reple old properties with updated ones" do
@@ -435,5 +493,12 @@ describe Child do
       childrens.size.should == 3
     end
   end
+  
+  private
+  
+  def create_child(name)
+    child = Child.create("name" => name, "last_known_location" => "new york", 'photo' => uploadable_photo)
+    child.save!
+  end 
 
 end

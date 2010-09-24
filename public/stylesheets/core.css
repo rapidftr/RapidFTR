@@ -82,6 +82,12 @@ td a { font-weight: bold;  }
 .content-section { float: left; width: 630px; padding: 10px 25px 25px; margin-bottom: 1.5em; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
 .content-aside { float: right; width: 230px; padding: 10px 15px 15px; margin-right: 10px; }
 
+/* search-from */
+#search_form #query_label { display:block; }
+#search_form #query { width: 400px; padding: 4px; margin: 4px 8px 8px 0px;}
+
+
+
 /* search content when on the profile wall page   */
 .content-section-search { float: left; width: 630px; padding: 10px 25px 25px; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
 

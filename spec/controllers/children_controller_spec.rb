@@ -40,7 +40,7 @@ describe ChildrenController do
       assigns[:child].should equal(mock_child)
     end
   end
-
+  
   describe "GET new" do
     it "assigns a new child as @child" do
       Child.stub!(:new).and_return(mock_child)
@@ -119,12 +119,11 @@ describe ChildrenController do
   describe "GET search" do
     it "performs a search using the parameters passed to it" do
       fake_results = [:fake_child,:fake_child]
-      Summary.should_receive(:basic_search).with( 'the child name', 'the_unique_id' ).and_return(fake_results)
-      get(
+      Child.should_receive(:search).with( 'the child name' ).and_return(fake_results)
+      get( 
         :search,
         :format => 'html',
-        :child_name => 'the child name',
-        :unique_identifier => 'the_unique_id'
+        :query => 'the child name'
       )
       assigns[:results].should == fake_results
     end
@@ -143,38 +142,38 @@ describe ChildrenController do
       assigns[:show_thumbnails].should == false
     end
 
-	describe "with no results" do
-		before do
-			Summary.stub!(:basic_search).and_return([])
-			get(:search, :field_name => '', :unique_identifier => ''  )
-		end
+  	describe "with no results" do
+  		before do
+  			Summary.stub!(:basic_search).and_return([])
+  			get(:search, :field_name => '', :query => ''  )
+  		end
 
-		it 'asks view to not show csv export link if there are no results' do
-		  assigns[:results].size.should == 0
-		end
+  		it 'asks view to not show csv export link if there are no results' do
+  		  assigns[:results].size.should == 0
+  		end
 
-		it 'asks view to display a "No results found" message if there are no results' do
-		  assigns[:results].size.should == 0
-		end
+  		it 'asks view to display a "No results found" message if there are no results' do
+  		  assigns[:results].size.should == 0
+  		end
 
-	end
+  	end
 
     it 'sends csv data with the correct content type and file name' do
       @controller.
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
 
-      get( :search, :format => 'csv', :field_name => '', :unique_identifier => '')
+      get( :search, :format => 'csv', :query => '')
     end
 
     describe 'CSV formatting' do
 
       def inject_results( results )
-        Summary.stub!(:basic_search).and_return(results)
+        Child.stub!(:search).and_return(results)
       end
 
       def csv_response
-        get( :search, :format => 'csv', :field_name => '', :unique_identifier => '' )
+        get( :search, :format => 'csv', :query => '' )
         response.body
       end
 

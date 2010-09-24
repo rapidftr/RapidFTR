@@ -11,6 +11,12 @@ describe UsersController do
     Session.stub(:get).and_return(fake_session)
   end
 
+  before(:each) do
+    fake_session = Session.new()
+    fake_session.stub(:admin?).with(no_args()).and_return(true)
+    Session.stub(:get).and_return(fake_session)
+  end
+
   def mock_user(stubs={})
     @mock_user ||= mock_model(User, stubs)
   end
