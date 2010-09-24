@@ -88,16 +88,5 @@ describe FormSectionController do
       form_section2.stub(:save!)
       post :enable, :value => true, :sections => {"form_1" => 1, "form_2" => 1}, :controller => "form_section"
     end
-
-    it "when called with value false on basic_details form does not do anything" do
-      basic_details_form_section = {:name=>"name1", :description=>"desc", :enabled=>"false", :unique_id=>"basic_details"}
-      form_section1 = {:name=>"name1", :description=>"desc", :enabled=>"true", :unique_id=>"form_1"}
-      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section1)
-      FormSection.should_not_receive(:get_by_unique_id).with("basic_details")
-      basic_details_form_section.should_not_receive(:enabled=).with(false)
-      form_section1.should_receive(:enabled=).with(false)
-      form_section1.stub(:save!)
-      post :enable, :value => false, :sections => {"basic_details" => 1, "form_1" => 1}, :controller => "form_section"
-    end
   end
 end

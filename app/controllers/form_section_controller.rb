@@ -23,11 +23,9 @@ class FormSectionController < ApplicationController
     forms = params[:sections]
     if forms
       forms.each_key do |key|
-        if key != "basic_details"
-          form = FormSection.get_by_unique_id(key)
-          form.enabled = params[:value]
-          form.save!
-        end
+        form = FormSection.get_by_unique_id(key)
+        form.enabled = params[:value]
+        form.save!
       end
     end
     redirect_to formsections_url

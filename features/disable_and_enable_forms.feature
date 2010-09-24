@@ -12,11 +12,10 @@ Feature: Disable and enable forms
   Scenario Outline: Register new disable_and_enable_forms
     Given I am logged in as an admin
     And I am on the form section page
-    When I check "sections_basic_details"
+    When I check "sections_caregiver_details"
     Then the checkbox with id "<checkbox_id>" <has_this_value>
   Examples:
     | name              | order | unique_id         | enabled | checkbox_id                | has_this_value        |
-    | Basic details     | 1     | basic_details     | true    | sections_basic_details     | should not be checked |
     | Caregiver details | 2     | caregiver_details | false   | sections_caregiver_details | should not be checked |
 
 
@@ -30,7 +29,6 @@ Feature: Disable and enable forms
     And the checkbox with id "<checkbox_id>" <has_this_value>
   Examples:
     | checkbox_id                | has_this_value        |
-    | sections_basic_details     | should not be checked |
     | sections_caregiver_details | should not be checked |
 
  

@@ -35,14 +35,20 @@ end
 
 def should_have_enable_or_disable_checkbox(form_section)
   row = @searchable_response.form_section_row_for form_section.unique_id
-  cell = row.search("td").detect { |cell| cell.inner_html.to_s.include? "sections_"+@form_section_1.unique_id }
+  cell = row.search("td").detect { |cell| cell.inner_html.to_s.include? "sections_"+form_section.unique_id }
   cell.should_not be_nil
+end
+
+def should_not_have_enable_or_disable_checkbox(form_section)
+  row = @searchable_response.form_section_row_for form_section.unique_id
+  cell = row.search("td").detect { |cell| cell.inner_html.to_s.include? "sections_"+form_section.unique_id }
+  cell.should be_nil
 end
 
 describe "form_section/index.html.erb" do
 
   before :each do
-    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details"
+    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false"
     @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> "false", "order"=>"101", "unique_id"=> "caregiver_details"
 
     assigns[:form_sections] = [@form_section_1, @form_section_2]
@@ -78,14 +84,15 @@ describe "form_section/index.html.erb" do
     should_have_description(@form_section_1)
   end
   it "renders the enable/disable checkbox for each form section" do
-    should_have_enable_or_disable_checkbox(@form_section_1)
+    should_have_enable_or_disable_checkbox(@form_section_2)
+    should_not_have_enable_or_disable_checkbox(@form_section_1)
   end
   it "renders the current order for each form section" do
     form_section_should_have_order(@form_section_1)
     form_section_should_have_order(@form_section_2)
   end
   it "renders the manage fields link for each form section" do
-    form_section = @form_section_1
+    form_section = @form_section_2
     row = @searchable_response.form_section_row_for form_section.unique_id
     manage_field_link = row.manage_fields_link
     manage_field_link.should_not be_nil

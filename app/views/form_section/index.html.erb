@@ -21,7 +21,9 @@
 
           <tr id="<%= section.unique_id %>_row">
             <td>
-              <%= check_box_tag "sections[#{section.unique_id}]" %>
+              <% if section.editable? %>
+                  <%= check_box_tag "sections[#{section.unique_id}]" %>
+              <% end %>
             </td>
             <td>
       <span class="enabledStatus <%= section.enabled=="true" ? "tick" :"cross" %>">
