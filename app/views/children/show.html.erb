@@ -18,7 +18,7 @@
     <dd><%= @child["unique_identifier"] %></dd>
   </dl>
 
-  <% @form_sections.each do |section| %>
+  <% @form_sections.find_all {|section| section.enabled? }.each do |section| %>
       <h2><%= section.section_name.humanize %></h2>
       <dl class="<%= section.section_name %>">
         <% section.fields.each do |field| %>

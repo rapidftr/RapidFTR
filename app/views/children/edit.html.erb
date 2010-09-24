@@ -1,17 +1,16 @@
 <% form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
 
-    <%= render :partial => "tabs", :object => @form_sections.collect { |section| section.section_name } %>
-
     <%= error_messages_for :child %>
 
-    <%= render :partial => "form_section", :collection => @form_sections  %>
+    <%= render :partial => "tabs", :object => @form_sections.find_all {|section| section.enabled? }.collect { |section| section.section_name } %>
+
+    <%= render :partial => "form_section", :collection => @form_sections.find_all {|section| section.enabled? } %>
 
     <p class="submitButton">
       <input name="commit" type="submit" value="Save"/>
     </p>
     <p class="cancelButton">
-      <%= link_to 'Cancel', children_path,  :confirm => 'Are you sure you want to cancel?' %>
+       <%= link_to 'Cancel', children_path, :confirm => 'Are you sure you want to cancel?' %>
     </p>
-
-
+           
 <% end %>
