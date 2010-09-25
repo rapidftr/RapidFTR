@@ -103,10 +103,6 @@ class Child < CouchRestRails::Document
       valid = false
       errors.add("audio", "Please upload a valid audio file amr for this child record")
     end
-    if self["current_photo_key"].blank?
-      valid = false
-      errors.add("photo", "Photo must be provided")
-    end
     return valid
 
   end

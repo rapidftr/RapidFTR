@@ -3,12 +3,9 @@ Feature:
   
   Background:
     Given I am logged in as an admin
-     And the following form sections exist in the system:
-    | name | unique_id |
-    | Basic details | basic_details |
 
   Scenario: creating a numeric field
-    Given I am on the manage fields page for "basic_details"
+    Given I am on the manage fields page for "family_details"
     And I follow "Add Custom Field"
     When I follow "Numeric Field"
     And I fill in "My_new_numeric_field" for "Name"

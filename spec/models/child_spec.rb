@@ -90,12 +90,6 @@ describe Child do
       loaded_child.save().should == false
     end
 
-    it "should not allow missing photo file" do
-      child = Child.new
-      child['last_known_location'] = 'some dummy location'
-      child.should_not be_valid
-      child.errors[:photo].should == ['Photo must be provided']
-    end
   end
 
   describe "new_with_user_name" do
