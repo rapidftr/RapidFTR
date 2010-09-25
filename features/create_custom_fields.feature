@@ -15,3 +15,9 @@ Feature:
     And I fill in "Help for a numeric field" for "Help text"
     And I press "Create"
     Then I should see "Field successfully added"
+    And I should see "My_new_numeric_field" in the list of fields
+    When I am on children listing page
+    And I follow "New child"
+    And I fill in "2345" for "child[My_new_numeric_field]"
+    And I press "Save"
+    Then I should see "My new numeric field: 2345"
