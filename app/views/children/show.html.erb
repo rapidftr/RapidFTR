@@ -10,34 +10,9 @@
 <% content_for :stylesheet do %>
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
-<div class="profile-header">
-  <% basic_details = @form_sections.first %>
-  <h2><%= basic_details.section_name.humanize %></h2>
-  <dl class="<%= basic_details.section_name %>">
-    <% basic_details.fields.each do |field| %>
-        <% if field.type != Field::PHOTO_UPLOAD_BOX && field.type !=  Field::AUDIO_UPLOAD_BOX %>
-            <dt><%= field.name.humanize %>:</dt>
-            <dd><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></dd>
-        <% end %>
-        <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
-            <dt><%= field.name.humanize %>:</dt>
-            <dd><a href="<%= child_audio_url(@child,nil)%>">download</a></dd>
-        <% end %>
-    <% end %>
-  </dl>
-</div>
 
-<div class="profile-tools">
-  <ul>
-    <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
-    <li class="back"><%= link_to 'Back', :back %></li>
-    <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
-    <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
-  </ul>
-</div>
-
-<% @form_sections.find_all {|section| section.enabled? }[1..-1].each do |section| %>
-  <div class='profile-section'>
+<% @form_sections.find_all {|section| section.enabled? }.each do |section| %>
+  <div id='<%= section.section_name.underscore %>' class='profile-section'>
     <h2><%= section.section_name.humanize %></h2>
     <dl class="<%= section.section_name %>">
       <% section.fields.each do |field| %>
@@ -52,4 +27,15 @@
       <% end %>
     </dl>
   </div>
+
+  <% if section.section_name == 'basic_details' %>
+    <div class="profile-tools">
+      <ul>
+        <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
+        <li class="back"><%= link_to 'Back', :back %></li>
+        <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
+        <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
+      </ul>
+    </div>
+  <% end %>
 <% end %>
