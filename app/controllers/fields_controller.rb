@@ -47,14 +47,17 @@ class FieldsController < ApplicationController
 
   def move_up
     FormSection.get_by_unique_id(params[:formsection_id]).move_up_field(params[:field_name])
-
     redirect_to(formsection_fields_path(params[:formsection_id]))
   end
 
 
   def move_down
     FormSection.get_by_unique_id(params[:formsection_id]).move_down_field(params[:field_name])
-
+    redirect_to(formsection_fields_path(params[:formsection_id]))
+  end
+  
+  def delete
+    FormSection.get_by_unique_id(params[:formsection_id]).delete_field(params[:field_name])
     redirect_to(formsection_fields_path(params[:formsection_id]))
   end
 

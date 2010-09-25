@@ -75,6 +75,15 @@ class FormSection < CouchRestRails::Document
     unique_id
   end
   
+  def delete_field field_to_delete
+    field = fields.find {|field| field.name == field_to_delete}
+    if (field)
+      field_index = fields.index(field)
+      fields.delete_at(field_index)
+      save()
+    end
+  end
+  
   def move_field field_to_move, offset
     field_index_1 = fields.index(field_to_move)
     field_index_2 = field_index_1 + offset
