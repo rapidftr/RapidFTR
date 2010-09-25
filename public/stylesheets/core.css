@@ -135,8 +135,8 @@ td.checkbox { text-align: center;}
 .profiles-list-item dd { float: left; margin-right: 20px; }
 
 /* profile page */
-.profile-page .page-content { background: none;}
-.profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); }
+.profile-page .page-content { background-position: 650px 0;}
+.profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
 .profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
 
@@ -152,6 +152,14 @@ td.checkbox { text-align: center;}
 .profile-header dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; }
 .profile-header dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
 .profile-header dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border-bottom: 1px solid #678; }
+
+/* profile section */
+
+.profile-section {margin-bottom:.5em; }
+.profile-section h2 { margin-bottom: .5em; }
+.profile-section dl { overflow: hidden; border: 1px solid #678; padding: .2em; }
+.profile-section dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
+.profile-section dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border-bottom: 1px solid #678; }
 
 /* profile page > tools */
 .profile-tools { padding: 10px; background-color: #678; color: #fff; margin-bottom: 10px; }
