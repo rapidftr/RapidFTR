@@ -26,12 +26,13 @@ td, th { padding: .5em 10px; border-bottom: 1px solid #fff; }
 td a { font-weight: bold;  }
 
 /* default: forms */
-.default-form fieldset { padding: .5em 10px; }
+.default-form fieldset { padding:0.5em 10px; color: #666; background-color: #ddd; border: 1px solid #678; margin-bottom: 1em; overflow: hidden; clear: both; }
 .default-form fieldset legend { font-weight: bold; font-size: 1.1em; }
 .default-form fieldset p { margin-bottom: 1em; clear: both; overflow: hidden; }
 .default-form label { float: left; text-align: right; width: 150px; margin-right: 10px; font-weight: bold; color: #678; }
 .default-form input, 
 .default-form select { width: 200px; height: 1.7em; }
+.default-form h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 
 /* default: forms > List of radio buttons */
 .default-form dl.radioList { overflow: hidden; }
@@ -52,8 +53,8 @@ td a { font-weight: bold;  }
 
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
-.default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
-.default-form .cancelButton a { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
+.default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; float:right; }
+.default-form .cancelButton a { width: auto; height: auto;  background: #aaa; padding: 2px 30px; font-weight: bold; color: #fff; float:left;}
 
 /* default : forms > field errors */
 .default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
@@ -164,16 +165,14 @@ td.checkbox { text-align: center;}
 
 /* edit page */
 .edit-profile { position: relative; } 
-.edit-profile fieldset { color: #666; background-color: #ddd; border: 1px solid #678; margin-bottom: 1em; overflow: hidden; clear: both; }
 .edit-profile h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 .edit-profile .submitButton { float: right; text-align: right; }
-.edit-profile .cancel { float: left; }
 
 
 /* new field/formsection page*/
 .new-field .submitButton,
 .new-form-section .submitButton { float:right; text-align:right;}
-.new-form-section .cancelButton { clear: both; float:right; text-align:right;}
+.new-form-section .cancelButton { float:left;}
 
 
 /* fields list page */

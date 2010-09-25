@@ -1,28 +1,30 @@
+<% @page_name = 'New Select Drop Down Field' %>
+
 <% form_for :field, @field, :url => { :action => "create" }, :html => {:class => "new-field default-form"} do |f| %>
-  
   <%= error_messages_for :field %>
-  
+
   <%= f.hidden_field 'type', :value => "select_box" %>
-  <p>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-  </p>
-  <p>  
-      <%= f.label :help_text%>
-      <%= f.text_field :help_text %>
-  </p>  
-  <p>
-      <%= f.label :enabled %>
-      <%= f.check_box :enabled, :checked => true %>
-  </p>
-  <p>
-      <%= f.label :option_strings %>
-      <%= f.text_area :option_strings, :checked => true %>
-  </p>
-  <p class="submitButton">
-      <%= submit_tag 'Create' %>
-  </p>
-  <p class="cancelButton">
-     <%= link_to 'Cancel', new_formsection_fields_path(@form_section.unique_id) %>
-  </p>
+
+  <fieldset>
+    <h3>Select drop down details</h3>
+    <p>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+    </p>
+    <p>  
+        <%= f.label :help_text%>
+        <%= f.text_field :help_text %>
+    </p>  
+    <p>
+        <%= f.label :enabled %>
+        <%= f.check_box :enabled, :checked => true %>
+    </p>
+    <p>
+        <%= f.label :option_strings %>
+        <%= f.text_area :option_strings, :checked => true %>
+    </p>
+  </fieldset>
+
+  <%= submit_button 'Create' %>
+  <%= cancel_button(new_formsection_fields_path(@form_section.unique_id)) %>
 <% end %>

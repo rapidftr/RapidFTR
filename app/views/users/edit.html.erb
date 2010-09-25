@@ -1,6 +1,3 @@
-<h1>Editing user</h1>
+<% @page_name = "Editing user: #{@user.full_name}" %>
 
 <%= render :partial => "edittable_user", :object => @user %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>

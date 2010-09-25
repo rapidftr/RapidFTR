@@ -1,5 +1,5 @@
-<p>
+<p class='checkbox'>
+  <%= hidden_field_tag check_box.tag_name_attribute, "No", :id => nil %>
+  <%= check_box_tag check_box.tag_name_attribute, "Yes", @child[check_box.name] == "Yes", :id => check_box.tag_name_attribute %>
   <%= label_tag check_box.tag_name_attribute, check_box.name.humanize %>
-  <%= hidden_field_tag check_box.tag_name_attribute, "No" %>
-  <%= check_box_tag check_box.tag_name_attribute, "Yes", @child[check_box.name] == "Yes", :id => "id " + check_box.tag_name_attribute %>
 </p>

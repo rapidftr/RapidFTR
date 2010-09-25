@@ -12,59 +12,73 @@
   });
 </script>
 
-<% form_for edittable_user do |f| %>
+<% form_for edittable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
+  <fieldset>
+    <h3>User details</h3>
+
     <p>
-      <%= f.label :full_name, "Full name" %><br/>
-      <%= f.text_field :full_name %>
-           <%=  '*' %>
+      <%= f.label :full_name, "Full name" %>
+      <%= f.text_field :full_name %>*
     </p>
+
     <p>
-      <%= f.label :user_name %><br/>
-      <%= f.text_field :user_name, :disabled => !edittable_user.new_record? %>
-      <%=  '*' %>
+      <%= f.label :user_name %>
+      <%= f.text_field :user_name, :disabled => !edittable_user.new_record? %>*
       <span class="footnote">user name should not contain blanks</span>
     </p>
-     <p>
-      <%= f.label :password %><br/>
-      <%= f.text_field :password %>
-       <%=  '*' %>
-       <span class="footnote">password should not contain blanks</span>
+
+    <p>
+      <%= f.label :password %>
+      <%= f.text_field :password %>*
+      <span class="footnote">password should not contain blanks</span>
     </p>
-     <p>
-      <%= f.label :password_confirmation,"Re-enter password" %><br/>
-      <%= f.text_field :password_confirmation %>
-       <%=  '*' %>
+
+    <p>
+      <%= f.label :password_confirmation,"Re-enter password" %>
+      <%= f.text_field :password_confirmation %>*
     </p>
-     <p>
-       <%= f.label :"User type:" %>
-      <%= f.radio_button :user_type, "Administrator" %><%= f.label :user_type_administrator, "Administrator" %>
-      <%= f.radio_button :user_type, "User" %><%= f.label :user_type_user, "User" %>
-            <%=  '*' %>
+
+    <dl class="radioList">
+      <dt>User type:</dt>
+      <dd>
+        <p>
+          <%= f.radio_button :user_type, "Administrator" %>
+          <%= f.label :user_type_administrator, "Administrator" %>
+        </p>
+        <p>
+          <%= f.radio_button :user_type, "User" %>
+          <%= f.label :user_type_user, "User" %>
+        </p>
+      </dd>
+    </dl>
+
+    <p>
+      <%= f.label :email %>
+      <%= f.text_field :email %>*
     </p>
-     <p>
-      <%= f.label :email %><br/>
-      <%= f.text_field :email %>
-        <%=  '*' %>
-    </p>
-     <p>
-      <%= f.label :organisation %><br/>
+
+    <p>
+      <%= f.label :organisation %>
       <%= f.text_field :organisation %>
     </p>
-     <p>
-      <%= f.label :position %><br/>
+
+    <p>
+      <%= f.label :position %>
       <%= f.text_field :position %>
     </p>
-      <p>
-      <%= f.label :location %><br/>
+
+    <p>
+      <%= f.label :location %>
       <%= f.text_field :location %>
     </p>
+
     <p>
       <%= f.label :disabled, "Disabled?" %>
       <%= f.check_box :disabled, {}, "true", "false" %>
     </p>
+  </fieldset>
 
-  <p>
-    <%= f.submit edittable_user.new_record? ? 'Create' : 'Update' %>
-  </p>
+  <%= submit_button(edittable_user.new_record? ? 'Create' : 'Update') %>
+  <%= cancel_button(users_path) %>
 <% end %>
