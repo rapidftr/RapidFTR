@@ -47,10 +47,10 @@ Feature:
     Then I should see "Child record successfully created."
     And I should see "Approximate"
 
-  Scenario: Last known location should be required
+  Scenario: create child record with no details filled in
     Given I am logged in
     Given I am on new child page
-    When I fill in the basic details of a child
-    And I fill in "" for "Last known location"
     And I press "Save"
-    Then I should see "Last known location cannot be empty"
+    Then I should see "Child record successfully created."
+    Then I should see "Unique Id: maryxxx"
+

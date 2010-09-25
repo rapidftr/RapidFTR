@@ -44,10 +44,8 @@ Feature:
 
     Then I follow "Edit"
     And I attach the file "features/resources/textfile.txt" to "photo"
-    And I fill in "" for "Last known location"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
-    Then I should see "Last known location cannot be empty"
     
 
 		

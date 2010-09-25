@@ -95,24 +95,20 @@ class Child < CouchRestRails::Document
 
     if @file_name && !/([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)/.match(@file_name)
       valid = false
+
       errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
+      return false
     end
     if @audio_file_name && !/([^\s]+(\.(?i)(amr))$)/.match(@audio_file_name)
       valid = false
       errors.add("audio", "Please upload a valid audio file amr for this child record")
     end
-
-
-    if self["last_known_location"].blank?
-      valid = false
-      errors.add("last_known_location", "Last known location cannot be empty")
-    end
-
     if self["current_photo_key"].blank?
       valid = false
       errors.add("photo", "Photo must be provided")
     end
     return valid
+
   end
 
   def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
