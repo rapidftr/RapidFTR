@@ -4,6 +4,7 @@
     <% @form_section.fields.each do |field| %>
     <tr id="<%="#{field.name}Row"%>">
       <td><%= field.name %></td>
+      <td><%= field.display_name %></td>
       <%if @form_section.editable?%>
         <td>
 		    <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>

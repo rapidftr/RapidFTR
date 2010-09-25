@@ -22,10 +22,11 @@ class FieldsController < ApplicationController
   def create
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
     properties = params[:field]
+    properties[:display_name] = properties[:name].gsub('_', ' ') if properties[:display_name].empty?
     if properties
       split_option_strings properties
     end
-    field =  Field.new properties
+    field = Field.new properties
 
     begin
       FormSection.add_field_to_formsection @form_section, field
