@@ -8,4 +8,3 @@ Feature:As a user ,when I login with my credentials,my username should be used t
     And I attach the file "features/resources/jeff.png" to "photo"
     And I press "Save"
     Then I should see "Child record successfully created."
-    And I should see "Unique Id: mary"
