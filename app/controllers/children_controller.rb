@@ -23,7 +23,7 @@ class ChildrenController < ApplicationController
 
     @form_sections = get_form_sections
 
-    @page_name = @child["name"]
+    @page_name = @child
 
     @aside = 'picture'
     @body_class = 'profile-page'
