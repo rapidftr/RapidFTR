@@ -1,32 +1,32 @@
-       
-<tr class="<%=suggested_field.unique_id%>Display">
+<tr class="<%= suggested_field.unique_id %>Display">
   <td>
-    <%= suggested_field.name %> (<%= suggested_field.field.name %>)
-    </td>
+    <%= suggested_field.field.display_name %>
+  </td>
   <td>
-			<%=suggested_field.description%>
-    </td>
+    <%= suggested_field.help_text %>
+  </td>
   <td>
-		  <%= suggested_field.field.type %>
+    <%= suggested_field.field.type %>
 
   </td>
   <td>
-		<% if(suggested_field.field.options) %>
-				<%=display_options suggested_field.field %>
-		<% end %>
+    <% if (suggested_field.field.options) %>
+        <%= display_options suggested_field.field %>
+    <% end %>
 
-    </td>
+  </td>
   <td>
-  <% form_for suggested_field.field, :url => formsection_fields_path(form_section_id), :html => {:method => :post, :id => "Add_#{suggested_field.field.name}"}  do |f| %>
-	  <%= submit_tag "Add to form"  %> 
+    <% form_for suggested_field.field, :url => formsection_fields_path(form_section_id), :html => {:method => :post, :id => "Add_#{suggested_field.field.name}"} do |f| %>
+        <%= submit_tag "Add to form" %>
 
-		<%= f.hidden_field :name %>
-		<%= f.hidden_field :type %>
-		<%= f.hidden_field :help_text %>
-	  	<%= option_fields_for f, suggested_field %>
-	  	<input type="hidden" name="from_suggested_field" value="<%=suggested_field.unique_id%>"/>
+        <%= f.hidden_field :name %>
+        <%= f.hidden_field :type %>
+        <%= f.hidden_field :display_name %>
+        <%= f.hidden_field :help_text %>
+        <%= option_fields_for f, suggested_field %>
+        <input type="hidden" name="from_suggested_field" value="<%= suggested_field.unique_id %>"/>
 
-  <% end %>
+    <% end %>
 
   </td>
 </tr>

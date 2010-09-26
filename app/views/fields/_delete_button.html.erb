@@ -1,6 +1,5 @@
 <% form_id = "#{field.name}_DeleteForm" %>
 <% form_for field, :url => url, :html => {:method => :post, :id=>form_id}  do |f| %>
- 	<a href="#<%=form_id%>" class="submit-form delete-link">Delete</a>
 	<input type="hidden" name="field_name" value="<%=field.name%>"/>            
 	<input type="submit" id="<%=field.name%>_Delete" class="delete-button" value="Delete"/>
 <% end %>

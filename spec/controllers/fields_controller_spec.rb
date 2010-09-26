@@ -42,41 +42,40 @@ describe FieldsController do
    end
   
   describe "post create" do
-    
-    it "should add the new field to the formsection" do
+
+    before :each do
+      @field = Field.new :name => "myNewField", :type=>"TEXT", :display_name => "My New Field"
       SuggestedField.stub(:mark_as_used)
-      field = Field.new :name => "myNewField", :type=>"TEXT"
-      FormSection.should_receive(:add_field_to_formsection).with(@form_section, field)
-      post :create, :formsection_id =>@form_section.unique_id, :field => field
+
+    end
+    it "should add the new field to the formsection" do
+      FormSection.should_receive(:add_field_to_formsection).with(@form_section, @field)
+      post :create, :formsection_id =>@form_section.unique_id, :field => @field
     end
     
     it "should redirect back to the fields page" do
       FormSection.stub(:add_field_to_formsection)
-      SuggestedField.stub(:mark_as_used)
-      post :create, :formsection_id => @form_section.unique_id
+      post :create, :formsection_id => @form_section.unique_id, :field => @field
       response.should redirect_to(formsection_fields_path(@form_section.unique_id))
     end
     
     it "should show a flash message" do
       FormSection.stub(:add_field_to_formsection)
-      SuggestedField.stub(:mark_as_used)
-      post :create, :formsection_id => @form_section.unique_id
+      post :create, :formsection_id => @form_section.unique_id, :field => @field
       response.flash[:notice].should == "Field successfully added"
     end
     
     it "should mark suggested field as used if one is supplied" do 
       FormSection.stub(:add_field_to_formsection)
-      SuggestedField.stub(:mark_as_used)
       suggested_field = "this_is_my_field"
       SuggestedField.should_receive(:mark_as_used).with(suggested_field)
-      post :create, :formsection_id => @form_section.unique_id, :from_suggested_field => suggested_field
+      post :create, :formsection_id => @form_section.unique_id, :from_suggested_field => suggested_field, :field => @field
     end
     
     it "should not mark suggested field as used if there is not is supplied" do 
       FormSection.stub(:add_field_to_formsection)
-      SuggestedField.stub(:mark_as_used)
       SuggestedField.should_not_receive(:mark_as_used)
-      post :create, :formsection_id => @form_section.unique_id
+      post :create, :formsection_id => @form_section.unique_id, :field => @field
     end
     
   end

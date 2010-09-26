@@ -2,10 +2,10 @@ Feature: Adding a suggested field to a form section
 
    Background:
      Given the following suggested fields exist in the system:
-        | name | unique_id | description | option_strings | type |
-        | A_suggested_field | field_one | This is a good field to use | nil | text_field |
-        | Another_suggested_field | field_two | This also is a good field to use | nil | text_field |
-        | Field_with_options | field_three| Field with options | ["option1", "option2", "option3"] | select_box | 
+        | name | display_name | unique_id | help_text | option_strings | type |
+        | A_suggested_field | A Suggested Field | field_one | This is a good field to use | nil | text_field |
+        | Another_suggested_field | Another suggested field | field_two | This also is a good field to use | nil | text_field |
+        | Field_with_options | Field with options | field_three | Field with options | ["option1", "option2", "option3"] | select_box |
 
      And the following form sections exist in the system:
         | name | unique_id | order |
@@ -31,9 +31,9 @@ Feature: Adding a suggested field to a form section
      And I should see "A_suggested_field" in the list of fields
      When I follow "Add Custom Field"
      Then I should not see the following suggested fields:
-        | name | unique_id | description |
+        | name | unique_id | help_text |
         | A_suggested_field | field_one | This is a good field to use |
-     
+
    Scenario: Adding a suggested field with options
      Given I am logged in as an admin
      And I am on the manage fields page for "basic_details"
@@ -44,9 +44,8 @@ Feature: Adding a suggested field to a form section
      And I follow "New child"
      Then I should see the select named "child[Field_with_options]"
      Then I should see an option "option1" for select "child[Field_with_options]"
-        
-  
 
 
-     
-        
+
+
+

@@ -1,13 +1,14 @@
 module RapidFTR
 
   class SuggestedFieldsDbSetup
-    def self.create_field! name, description, field_name , field_type , options=nil
+    def self.create_field! display_name, help_text, name , field_type , options=nil
       SuggestedField.create!(
-              "name"=>name,
-              "unique_id"=> field_name,
-              "description"=>description,
+              "display_name" => display_name,
+              "unique_id" => name,
+              "help_text" => help_text,
               :is_used=>false,
-              "field"=> Field.new("name" => field_name, "type" => field_type, "option_strings"=>options))
+              "field"=> Field.new("name" => name, "help_text" => help_text, "display_name" => display_name,
+                                  "type" => field_type, "option_strings"=>options))
     end
     def self.recreate_suggested_fields
       SuggestedField.all.each {|u| u.destroy }
