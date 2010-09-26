@@ -8,7 +8,7 @@ module RapidFTR
 
       basic_details_fields = [
               Field.new("name" => "name", "display_name" => "Name", "type" => "text_field"),
-              Field.new("name" => "age", "display_name" => "Age", "type" => "text_field"),
+              Field.new("name" => "age", "display_name" => "Age", "type" => "numeric_text_field"),
               Field.new("name" => "age_is", "display_name" => "Age Is", "type" => "select_box", "option_strings" => ["Approximate", "Exact"]),
               Field.new("name" => "gender", "display_name" => "Gender", "type" => "radio_button", "option_strings" => ["Male", "Female"]),
               Field.new("name" => "origin", "display_name" => "Origin", "type" => "text_field"),
@@ -45,7 +45,7 @@ module RapidFTR
               Field.new("name" => "reunite_with_relative_4", "display_name" => "Reunite With Relative 4", "type" => "select_box", "option_strings" => ["Yes", "No"]),
               Field.new("name" => "married", "display_name" => "Married", "type" => "select_box", "option_strings" => ["Yes", "No"]),
               Field.new("name" => "spouse_or_partner_name", "display_name" => "Spouse or Partner Name", "type" => "text_field"),
-              Field.new("name" => "no_of_children", "display_name" => "No of Children", "type" => "text_field"),
+              Field.new("name" => "no_of_children", "display_name" => "No of Children", "type" => "numeric_text_field"),
       ]
 
       FormSection.create!("name" =>"Family details", "enabled"=>true, :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
