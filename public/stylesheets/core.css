@@ -26,12 +26,13 @@ td, th { padding: .5em 10px; border-bottom: 1px solid #fff; }
 td a { font-weight: bold;  }
 
 /* default: forms */
-.default-form fieldset { padding: .5em 10px; }
+.default-form fieldset { padding:0.5em 10px; color: #666; background-color: #ddd; border: 1px solid #678; margin-bottom: 1em; overflow: hidden; clear: both; }
 .default-form fieldset legend { font-weight: bold; font-size: 1.1em; }
 .default-form fieldset p { margin-bottom: 1em; clear: both; overflow: hidden; }
 .default-form label { float: left; text-align: right; width: 150px; margin-right: 10px; font-weight: bold; color: #678; }
 .default-form input, 
 .default-form select { width: 200px; height: 1.7em; }
+.default-form h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 
 /* default: forms > List of radio buttons */
 .default-form dl.radioList { overflow: hidden; }
@@ -52,8 +53,8 @@ td a { font-weight: bold;  }
 
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
-.default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
-.default-form .cancelButton a { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; }
+.default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; float:right; }
+.default-form .cancelButton a { width: auto; height: auto;  background: #aaa; padding: 2px 30px; font-weight: bold; color: #fff; float:left;}
 
 /* default : forms > field errors */
 .default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
@@ -134,21 +135,31 @@ td.checkbox { text-align: center;}
 .profiles-list-item dd { float: left; margin-right: 20px; }
 
 /* profile page */
-.profile-page .page-content { background: none;}
-.profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); }
+.profile-page .page-content { background-position: 650px 0;}
+.profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
 .profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
+
+.profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
 
 /* forms page */
 .forms-page #suggestedFields input[type=submit] {background: transparent; border-top: 0;border-right: 0; border-bottom:0;border-left: 0;display: inline;margin: 0;padding: 0;color: #39f; text-decoration: underline; overflow: hidden; outline: none; line-height: 1.5em  ; font-family:inherit; cursor:pointer;}
 
 /* profile page > header */
-.profile-header { background-color: #ddd; padding: 9px; border: 1px solid #678; border-bottom-width: 0; }
-.profile-header h2 { margin-bottom: .5em; }
-.profile-header dt, .profile-header dd { font-size: .875em; }
-.profile-header dl { overflow: hidden; border-top: 1px solid #678; padding-top: .2em; }
-.profile-header dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
-.profile-header dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border-bottom: 1px solid #678; }
+#basic_details { background-color: #ddd; padding: 9px; border: 1px solid #678; border-bottom-width: 0; margin-bottom:0;}
+#basic_details h2 { margin-bottom: .5em; }
+#basic_details dt, #basic_details dd { font-size: .875em; }
+#basic_details dl { overflow: hidden; border:none; border-top: 1px solid #678; padding-top: .2em; }
+#basic_details dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
+#basic_details dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border:none; border-bottom: 1px solid #678; }
+
+/* profile section */
+
+.profile-section {margin-bottom:.5em; }
+.profile-section h2 { margin-bottom: .5em; }
+.profile-section dl { overflow: hidden; border: 1px solid #678; padding: .2em; }
+.profile-section dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
+.profile-section dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border-bottom: 1px solid #678; }
 
 /* profile page > tools */
 .profile-tools { padding: 10px; background-color: #678; color: #fff; margin-bottom: 10px; }
@@ -164,16 +175,14 @@ td.checkbox { text-align: center;}
 
 /* edit page */
 .edit-profile { position: relative; } 
-.edit-profile fieldset { color: #666; background-color: #ddd; border: 1px solid #678; margin-bottom: 1em; overflow: hidden; clear: both; }
 .edit-profile h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 .edit-profile .submitButton { float: right; text-align: right; }
-.edit-profile .cancel { float: left; }
 
 
 /* new field/formsection page*/
 .new-field .submitButton,
 .new-form-section .submitButton { float:right; text-align:right;}
-.new-form-section .cancelButton { clear: both; float:right; text-align:right;}
+.new-form-section .cancelButton { float:left;}
 
 
 /* fields list page */

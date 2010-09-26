@@ -16,6 +16,14 @@ class Child < CouchRestRails::Document
 
   #view_by :name, :last_known_location
 
+  def to_s
+    if self['name'].present?
+      "#{self['name']} (#{self['unique_identifier']})"
+    else
+      self['unique_identifier']
+    end
+  end
+
   def self.all
     view('by_name', {})
   end

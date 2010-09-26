@@ -41,7 +41,7 @@ class FieldsController < ApplicationController
   end
 
   def split_option_strings properties
-    if properties[:option_strings] && properties[:type] == "select_box" && properties[:option_strings].type != Array
+    if properties[:option_strings] && properties[:type] == "select_box" && properties[:option_strings].class != Array
       properties[:option_strings]=properties[:option_strings].split("\r\n")
     end
   end

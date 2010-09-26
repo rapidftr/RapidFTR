@@ -17,7 +17,6 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created."
-    Then I should see "Unique Id: mary"
     And I should see "Jorge Just"
     And I should see "27"
     And I should see "1"
@@ -52,5 +51,3 @@ Feature:
     Given I am on new child page
     And I press "Save"
     Then I should see "Child record successfully created."
-    Then I should see "Unique Id: maryxxx"
-

@@ -32,7 +32,7 @@ class FormSectionController < ApplicationController
   end
 
   def new
-
+    @form_section = FormSection.new(params[:form_section])
   end
 
   def save

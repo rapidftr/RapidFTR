@@ -23,13 +23,6 @@ describe "children/show.html.erb" do
 
       render
 
-      response.should have_selector("dt:first") do |dt|
-        dt.should contain("Unique Id")
-      end
-      response.should have_selector("dd:first") do |dd|
-        dd.should contain("georgelon12345")
-      end
-
       response.should have_selector("dl.section_name dt") do |fields|
         fields[0].should contain("Age")
         fields[1].should contain("Gender")
@@ -55,13 +48,6 @@ describe "children/show.html.erb" do
       assigns[:child] = child
 
       render
-
-      response.should have_selector("dt:first") do |dt|
-        dt.should contain("Unique Id")
-      end
-      response.should have_selector("dd:first") do |dd|
-        dd.should contain("georgelon12345")
-      end
 
       response.should_not have_selector("dl.section_name dt") do |fields|
         fields[0].should_not contain("Age")

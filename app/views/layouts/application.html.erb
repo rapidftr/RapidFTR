@@ -39,12 +39,21 @@ $(document).ready(function() {
     <h1><%= @page_name || "&nbsp;" %></h1>
 
     <div class="content-section">
-      <p style="color: green"><%= flash[:notice] %></p>
+      <% if flash[:notice].present? %>
+        <div class='flash'>
+          <p class='notice'><%= flash[:notice] %></p>
+        </div>
+      <% end %>
+      <% if flash[:error].present? %>
+        <div class='flash'>
+          <p class='error'><%= flash[:error] %></p>
+        </div>
+      <% end %>
       <%= yield %>
     </div>
 
     <div class="content-aside">
-      <%= render :partial => (@aside or 'shared/participate')%>
+      <%= render :partial => 'shared/sidebar' %>
     </div>
   </div>
 

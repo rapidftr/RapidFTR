@@ -9,4 +9,16 @@ module ApplicationHelper
     session = Session.get_from_cookies(cookies)
     return session.user_name unless session.nil? or session.user.nil?
   end
+
+  def submit_button(name = 'Save')
+    content_tag(:p, :class => 'submitButton') do
+      submit_tag(name)
+    end
+  end
+
+  def cancel_button(path)
+    content_tag(:p, :class => 'cancelButton') do
+      link_to 'Cancel', path, :confirm => 'Are you sure you want to cancel?'
+    end
+  end
 end
