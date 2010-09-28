@@ -1,4 +1,4 @@
-Feature: As an admin I should be able to create and view form sections
+Feature: As an admin I should be able to view a list of form sections
   Scenario:      To view a list of existing forms as an admin
     Given the following form sections exist in the system:
       | name   | description | unique_id | order |
