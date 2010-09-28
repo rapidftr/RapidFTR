@@ -5,12 +5,12 @@ Feature: Add family details
     Given I am on the new child page
     When I fill in the basic details of a child
     And I fill in "Mary" for "Mothers name"
-    And I select "Yes" from "Reunite with mother"
+    And I select "Yes" from "Reunite with Mother"
 
     When I press "Save"
 
     Then I should see "Mary"
-    And I should see "Reunite with mother: Yes"
+    And I should see "Reunite With Mother: Yes"
 
 
 

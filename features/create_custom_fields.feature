@@ -18,4 +18,4 @@ Feature:
     And I follow "New child"
     And I fill in "2345" for "My new number field"
     And I press "Save"
-    Then I should see "My new numeric field: 2345"
+    Then I should see "My new number field: 2345"

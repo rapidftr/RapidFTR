@@ -12,9 +12,9 @@ describe "children/show.html.erb" do
     it "renders all fields found on the FormSection" do
 
       form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
-      form_section.add_field Field.new_text_field("age")
-      form_section.add_field Field.new_radio_button("gender", ["male", "female"])
-      form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"])
+      form_section.add_field Field.new_text_field("age", "Age")
+      form_section.add_field Field.new_radio_button("gender", ["male", "female"], "Gender")
+      form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"], "Date of separation")
 
       child = Child.new :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345"
 

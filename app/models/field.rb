@@ -26,33 +26,33 @@ class Field < Hash
     end
   end
   
-  def self.new_check_box field_name
-    Field.new :name => field_name, :type => CHECK_BOX
+  def self.new_check_box field_name, display_name = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => CHECK_BOX
   end
 
-  def self.new_text_field field_name
-    Field.new :name => field_name, :type => TEXT_FIELD
+  def self.new_text_field field_name, display_name = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => TEXT_FIELD
   end
 
-  def self.new_textarea field_name
-    Field.new :name => field_name, :type => TEXT_AREA
+  def self.new_textarea field_name, display_name = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => TEXT_AREA
   end
 
-  def self.new_photo_upload_box field_name
-    Field.new :name => field_name, :type => PHOTO_UPLOAD_BOX
+  def self.new_photo_upload_box field_name, display_name  = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => PHOTO_UPLOAD_BOX
   end
 
-  def self.new_audio_upload_box field_name
-    Field.new :name => field_name, :type => AUDIO_UPLOAD_BOX
+  def self.new_audio_upload_box field_name, display_name = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => AUDIO_UPLOAD_BOX
   end
 
 
-  def self.new_radio_button field_name, option_strings
-    Field.new :name => field_name, :type => RADIO_BUTTON, :option_strings => option_strings
+  def self.new_radio_button field_name, option_strings, display_name = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => RADIO_BUTTON, :option_strings => option_strings
   end
 
-  def self.new_select_box field_name, option_strings
-    Field.new :name => field_name, :type => SELECT_BOX, :option_strings => option_strings
+  def self.new_select_box field_name, option_strings, display_name = nil
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings => option_strings
   end
 
   def tag_id

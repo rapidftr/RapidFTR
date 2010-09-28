@@ -17,11 +17,11 @@
     <dl class="<%= section.section_name %>">
       <% section.fields.each do |field| %>
         <% if field.type != Field::PHOTO_UPLOAD_BOX && field.type !=  Field::AUDIO_UPLOAD_BOX %>
-            <dt><%= field.name.humanize %>:</dt>
+            <dt><%= field.display_name %>:</dt>
             <dd><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></dd>
         <% end %>
         <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
-            <dt><%= field.name.humanize %>:</dt>
+            <dt><%= field.display_name %>:</dt>
             <dd><a href="<%= child_audio_url(@child,nil)%>">download</a></dd>
         <% end %>
       <% end %>
