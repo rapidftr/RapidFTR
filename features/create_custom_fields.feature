@@ -19,3 +19,12 @@ Feature:
     And I fill in "2345" for "My new number field"
     And I press "Save"
     Then I should see "My new number field: 2345"
+  Scenario: creating a field without giving a name should dehumanize the display name
+    Given I am on the manage fields page for "family_details"
+    And I follow "Add Custom Field"
+    When I follow "Text Field"
+    And I fill in "Help for a text field" for "Help text"
+    And I fill in "My Text field" for "Display name"
+    And I press "Create"
+    Then I should see "Field successfully added"
+    And I should see "my_text_field" in the list of fields

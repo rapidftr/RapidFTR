@@ -23,6 +23,7 @@ class FieldsController < ApplicationController
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
     properties = params[:field]
     properties[:display_name] = properties[:name].gsub('_', ' ') if properties[:display_name].empty?
+    properties[:name] = properties[:display_name].dehumanize if properties[:name].empty?
     if properties
       split_option_strings properties
     end

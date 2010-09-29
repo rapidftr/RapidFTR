@@ -72,10 +72,15 @@ describe FieldsController do
       post :create, :formsection_id => @form_section.unique_id, :from_suggested_field => suggested_field, :field => @field
     end
     
-    it "should not mark suggested field as used if there is not is supplied" do 
+    it "should not mark suggested field as used if there is not one supplied" do
       FormSection.stub(:add_field_to_formsection)
       SuggestedField.should_not_receive(:mark_as_used)
       post :create, :formsection_id => @form_section.unique_id, :field => @field
+    end
+
+    it "should use the display name to form the field name if no field name is supplied" do
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>"My brilliant new field", "name"=>"my_brilliant_new_field"} )
+      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>"My brilliant new field", :name=>""}
     end
     
   end
