@@ -51,3 +51,9 @@ RapidFTR.tabControl = function() {
     $("#formFields .up-link:first").hide();
     $("#formFields .down-link:last").hide();
 };
+
+RapidFTR.followTextFieldControl = function(selector, followSelector, transformFunction){
+    $(selector).keyup(function(){
+       $(followSelector).val(transformFunction($(this).val())); 
+    });
+}
