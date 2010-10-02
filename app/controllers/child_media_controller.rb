@@ -1,9 +1,16 @@
 class ChildMediaController < ApplicationController
   before_filter :find_child
-  before_filter :find_photo_attachment, :only => [:show_photo, :show_thumbnail]
+  before_filter :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
 
   def show_photo
     send_data(@attachment.data.read, :type => @attachment.content_type, :disposition => 'inline')
+  end
+
+  def show_resized_photo
+    new_size = params[:size]
+    photo_data = @attachment.data.read
+    resized_photo = MiniMagick::Image.from_blob(photo_data).resize new_size
+    send_data(resized_photo.to_blob, :type => @attachment.content_type, :disposition => 'inline')
   end
 
   def show_thumbnail
