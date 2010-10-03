@@ -24,7 +24,7 @@ describe ChildIdsController do
       response.headers['Content-Type'].should include("application/json")
 
       child_ids = JSON.parse(response.body)
-      child_ids.count.should == 1
+      child_ids.length.should == 1
 
       child_id = child_ids[0]
       child_id['id'].should == "child-id"
