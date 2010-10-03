@@ -40,7 +40,7 @@ class Child < CouchRestRails::Document
     return [] if query == nil || query == ""
     children = sunspot_search("unique_identifier_text:#{query}")
     return children if children.length > 0
-    
+
     lucene_query = query.split(/[ ,]+/).map {|word| "(name_text:#{word.downcase}~ OR name_text:#{word.downcase}*)"}.join(" AND ")
     sunspot_search lucene_query
   end
