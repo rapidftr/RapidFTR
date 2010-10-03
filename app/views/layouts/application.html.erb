@@ -8,8 +8,7 @@
   <link rel="shortcut icon" href="favicon.ico" />
   <%= stylesheet_link_tag 'core' %>
   <%= yield :stylesheet %>
-  <%= javascript_include_tag "jquery-1.4.2.min.js" %>
-  <%= javascript_include_tag "application.js" %>
+  <%= javascript_include_tag "jquery-1.4.2.min", "application", "jquery.rotate.1-1" %>
   <%= yield :javascript %>
 <script language="javascript" type="text/javascript">//<![CDATA[
 $(document).ready(function() {

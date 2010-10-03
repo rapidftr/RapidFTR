@@ -51,3 +51,37 @@ RapidFTR.tabControl = function() {
     $("#formFields .up-link:first").hide();
     $("#formFields .down-link:last").hide();
 };
+RapidFTR.childPhotoRotation = {
+    rotateClockwise: function(event) {
+        RapidFTR.childPhotoRotation.childPicture().rotateRight(90, 'rel');
+        self.photoOrientation.val((parseInt(self.photoOrientation.val()) + 90) % 360);
+        event.preventDefault();
+    },
+
+    rotateAntiClockwise: function(event) {
+        RapidFTR.childPhotoRotation.childPicture().rotateLeft(90, 'rel');
+        self.photoOrientation.val((parseInt(self.photoOrientation.val()) - 90) % 360);
+        event.preventDefault();
+    },
+
+    restoreOrientation: function(event) {
+        RapidFTR.childPhotoRotation.childPicture().rotate(0, 'abs');
+        self.photoOrientation.val(0);
+        event.preventDefault();
+    },
+
+    childPicture : function(){
+        return $("#child_picture");
+    },
+
+    init: function() {
+        self.photoOrientation = $("#child_photo_orientation");
+        $("#image_rotation_links .rotate_clockwise").click(this.rotateClockwise);
+        $("#image_rotation_links .rotate_anti_clockwise").click(this.rotateAntiClockwise);
+        $("#image_rotation_links .restore_image").click(this.restoreOrientation);
+    }
+};
+
+$(document).ready(function() {
+    RapidFTR.childPhotoRotation.init();
+});

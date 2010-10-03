@@ -55,18 +55,26 @@ class Child < CouchRestRails::Document
     self['unique_identifier']
   end
 
+  def rotate_photo(angle)
+    exisiting_photo = photo
+    image = MiniMagick::Image.from_blob(exisiting_photo.data.read)
+    image.rotate(angle)
+
+    name = FileAttachment.generate_name
+    attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
+    attach(attachment, 'current_photo_key')
+  end
+
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path
     attachment = FileAttachment.from_uploadable_file(photo_file, "photo")
-    self['current_photo_key'] = attachment.name
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
+    attach(attachment, 'current_photo_key')
   end
 
   def photo
     attachment_name = self['current_photo_key']
+    return unless attachment_name
     data = read_attachment attachment_name
     content_type = self['_attachments'][attachment_name]['content_type']
     FileAttachment.new attachment_name, content_type, data
@@ -84,11 +92,7 @@ class Child < CouchRestRails::Document
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-    self['recorded_audio'] = attachment.name
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
-
+    attach(attachment, 'recorded_audio')
   end
 
   def media_for_key(media_key)
@@ -160,5 +164,14 @@ class Child < CouchRestRails::Document
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
     self[field_name].strip != @from_child[field_name].strip
+  end
+
+  private
+  def attach(attachment, key)
+    self[key] = attachment.name
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
+
   end
 end

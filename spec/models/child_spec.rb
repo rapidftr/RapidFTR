@@ -71,6 +71,10 @@ describe Child do
       child['_attachments']['audio-2010-01-17T140532']['data'].should_not be_blank
     end
 
+    it "should respond nil for photo when there is no photo associated with the child" do
+      child = Child.new
+      child.photo.should == nil
+    end
   end
 
   describe "validating an existing child record" do
