@@ -18,4 +18,4 @@ vendor/ruby/1.8/doc/
 vendor/ruby/1.8/specifications/
 vendor/ruby/1.8/gems/
 /.bundle/
-
+sunspot-solr.pid

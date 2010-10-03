@@ -11,7 +11,7 @@ Scenario: Searching for a child given his name
     | name   |
     | Willis |
     | Will   |
-  When I fill in "Will" for "Name"
+  When I fill in "Will" for "query"
   And I press "Search"
   Then I should be on the child search results page
   And I should see "Willis" in the search results
@@ -21,7 +21,7 @@ Scenario: Searching for a child given his unique identifier
     | name   	| last_known_location 	| reporter | unique_id |
     | andreas	| London		            | zubair   | zubairlon123 |
     | zak	    | London		            | zubair   | zubairlon456 |
-  When I fill in "zubairlon123" for "Child ID"
+  When I fill in "zubairlon123" for "Name or Unique Id"
   And I press "Search"
   Then I should be on the saved record page for child with name "andreas"
 
@@ -33,12 +33,10 @@ Scenario: Searches that yield a single record should redirect directly to that r
   Then I should be on the saved record page for child with name "Lisa"
 
 Scenario: Search parameters are displayed in the search results
-  When I fill in "Will" for "Name"
-  And I fill in "xyz" for "Child ID"
+  When I fill in "Will" for "Name or Unique Id"
   And I press "Search"
   Then I should be on the child search results page
-  And the "Name" field should contain "Will"
-  And the "Child ID" field should contain "xyz"
+  And the "Name or Unique Id" field should contain "Will"
 
 Scenario: 'Show thumbnails' checkbox is unchecked in search results if it was unchecked for the search
   When I uncheck "Show thumbnails"
