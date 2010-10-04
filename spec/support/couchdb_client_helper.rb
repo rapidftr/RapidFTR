@@ -10,7 +10,7 @@ module CouchdbClientHelper
     end
 
     def post_object(dbname, object)
-        response = RestClient.post database_url(dbname), JSON.generate(object)
+        response = RestClient.post database_url(dbname), object.to_json, :content_type => :json
         raise "Couchdb client error: #{response.code} - #{response}" if ![200, 201].include? response.code
         return JSON.parse(response)["id"]
     end
