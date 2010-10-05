@@ -65,8 +65,7 @@ describe ChildMediaController do
 
       get :show_resized_photo, :child_id => "1", :size => 300
 
-#      to_image(response.body)[:width].should == 300
-      response.should represent_inline_attachment uploadable_photo_jorge_300x300 
+      to_image(response.body)[:width].should == 300
     end
 
     it "should return current child's thumbnail" do
