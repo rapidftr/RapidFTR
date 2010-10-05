@@ -43,6 +43,10 @@ def uploadable_photo_jeff
   uploadable_photo "features/resources/jeff.png"
 end
 
+def uploadable_photo_jorge_300x300
+  uploadable_photo "features/resources/jorge-300x300.jpg"
+end
+
 def no_photo_clip
   uploadable_photo "public/images/no_photo_clip.jpg"
 end

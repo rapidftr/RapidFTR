@@ -24,6 +24,10 @@ describe ChildMediaController do
       { :get => "/children/c1/audio/a1" }.should route_to(:controller => "child_media", :action => "download_audio", :child_id => "c1", :id => "a1")
     end
 
+    it "should have a route for requesting a resized version of the current photo" do
+      {:get => '/children/c1/resized_photo/100'}.should route_to(:controller => "child_media", :action => "show_resized_photo", :child_id => "c1", :size => "100")
+    end
+
     it "should have a route for a child current thumbnail" do
       {:get => '/children/1/thumbnail'}.should route_to(:controller => "child_media", :action => "show_thumbnail", :child_id => "1")
     end
@@ -52,6 +56,16 @@ describe ChildMediaController do
       get :show_photo, :child_id => "1", :id => "other"
 
       response.should represent_inline_attachment uploadable_photo_jeff
+    end
+
+    it "should return current child's photo resized to a particular size" do
+      given_a_child.
+              with_id("1").
+              with_photo(uploadable_photo)
+
+      get :show_resized_photo, :child_id => "1", :size => 300
+
+      response.should represent_inline_attachment uploadable_photo_jorge_300x300 
     end
 
     it "should return current child's thumbnail" do
