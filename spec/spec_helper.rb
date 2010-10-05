@@ -77,6 +77,10 @@ def to_thumbnail(size, path)
   thumbnail
 end
 
+def to_image(blob)
+  MiniMagick::Image.from_blob(blob)
+end
+
 
 def uploadable_audio(audio_path = "features/resources/sample.amr")
 
