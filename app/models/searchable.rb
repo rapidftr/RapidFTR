@@ -34,10 +34,10 @@ module Searchable
 
       response = Sunspot.search(self) do
         fulltext(query)
-        adjust_solr_params do |params| 
+        adjust_solr_params do |params|
           params[:defType] = "lucene"
           params[:qf] = nil
-        end 
+        end
       end
       response.results
 
