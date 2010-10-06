@@ -11,6 +11,10 @@ namespace :sunspot do
   end
   
   task :stop do
-    sh "sunspot-solr stop"
+    begin
+      sh "sunspot-solr stop"
+    rescue
+    end
+    
   end
 end
