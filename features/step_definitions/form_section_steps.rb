@@ -7,8 +7,8 @@ end
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |name, help_text|
   When 'I follow "Add Custom Field"'
   And 'I follow "Text Field"'
-  And 'I fill in "#{name}" for "name"'
-  And 'I fill in "#{help_text}" for "Help text"'
+  And "I fill in \"#{name}\" for \"name\""
+  And "I fill in \"#{help_text}\" for \"Help text\""
   And 'I press "Create"'
 end
 

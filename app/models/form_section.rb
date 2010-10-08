@@ -40,11 +40,21 @@ class FormSection < CouchRestRails::Document
 
   def self.add_field_to_formsection formsection, field
     raise "Field already exists for this form section" if formsection.has_field(field.name)
+    ensure_field_name_not_already_in_use field.name
     raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save
   end
-  
+
+  def self.ensure_field_name_not_already_in_use field_name
+    form = get_form_containing_field field_name
+    raise "Field already exists on form '#{form.name}'" if form != nil
+    end
+
+  def self.get_form_containing_field field_name
+    all.find { |form| form.fields.find { |field| field.name == field_name } }
+  end
+
   def self.create_new_custom name, description = "", enabled=true
     unique_id = (name||"").gsub(/\s/, "_").downcase
     max_order= (all.map{|form_section| form_section.order}).max || 0
