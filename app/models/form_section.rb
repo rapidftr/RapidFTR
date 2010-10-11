@@ -39,17 +39,11 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.add_field_to_formsection formsection, field
-    raise "Field already exists for this form section" if formsection.has_field(field.name)
-    ensure_field_name_not_already_in_use field.name
+    ensure_field_name_not_already_in_use formsection, field
     raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save
   end
-
-  def self.ensure_field_name_not_already_in_use field_name
-    form = get_form_containing_field field_name
-    raise "Field already exists on form '#{form.name}'" if form != nil
-    end
 
   def self.get_form_containing_field field_name
     all.find { |form| form.fields.find { |field| field.name == field_name } }
@@ -59,7 +53,6 @@ class FormSection < CouchRestRails::Document
     unique_id = (name||"").gsub(/\s/, "_").downcase
     max_order= (all.map{|form_section| form_section.order}).max || 0
     form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
-    name1 =  form_section.name
     form_section = create! form_section if form_section.valid?
     form_section
   end
@@ -75,10 +68,6 @@ class FormSection < CouchRestRails::Document
 
   def add_field field
     self["fields"] << Field.new(field)
-  end
-
-  def has_field field_name
-    fields.find {|field| field.name == field_name} != nil
   end
 
   def section_name
@@ -110,5 +99,15 @@ class FormSection < CouchRestRails::Document
   def move_down_field field_name
     field_to_move_down = fields.find {|field| field.name == field_name}
     move_field(field_to_move_down, 1)
+  end
+
+  private
+
+  def self.ensure_field_name_not_already_in_use formsection, field
+    form = get_form_containing_field field.name
+    if form != nil
+      raise "Field already exists on this form" if form.name == formsection.name
+      raise "Field already exists on form '#{form.name}'"
+    end
   end
 end

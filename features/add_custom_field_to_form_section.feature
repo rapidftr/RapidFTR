@@ -38,7 +38,7 @@ Feature: So that admin can customize fields in a form section
     And I am on the manage fields page for "family_details"
     When I add a new text field with "My field" and "Description"
     And I add a new text field with "My field" and "Description 2"
-    Then I should see "Field already exists for this form section"
+    Then I should see "Field already exists on this form"
 
   Scenario: Should not be able to add two fields with the same name
     Given I am logged in as an admin
