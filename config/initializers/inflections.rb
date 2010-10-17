@@ -14,7 +14,7 @@ module ActiveSupport::Inflector
   # space-substituting .underscore
   def dehumanize(the_string)
     result = the_string.to_s.dup
-    result.downcase.gsub(/ +/,'_')
+    result.downcase().gsub(/ +/,'_').gsub(/\W/, '').strip()
   end
 end
 class String
