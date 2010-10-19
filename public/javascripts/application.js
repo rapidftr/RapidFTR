@@ -54,6 +54,8 @@ RapidFTR.tabControl = function() {
 
 RapidFTR.followTextFieldControl = function(selector, followSelector, transformFunction){
     $(selector).keyup(function(){
-       $(followSelector).val(transformFunction($(this).val())); 
+		var val = $(this).val();	
+		var transformed =  transformFunction(val);
+       	$(followSelector).val(transformed); 
     });
 }
