@@ -56,13 +56,13 @@ module RapidFTR
               Field.new("name" => "occupation", "display_name" => "Occupation", "type" => "text_field"),
               Field.new("name" => "relationship_to_child", "display_name" => "Relationship to Child", "type" => "text_field"),
               Field.new("name" => "is_unaccompanied", "display_name" => "Is child unaccompanied?", "type" => "check_box"),
-              Field.new("name" => "is_refugee", "display_name" => "Is child a refugees?", "type" => "check_box"),
-              Field.new("name" => "is_internally_displaced_person", "display_name" => "Is child Internally Displaced??", "type" => "check_box"),
-              Field.new("name" => "trafficked_child", "display_name" => "Trafficked child?", "type" => "check_box"),
+              Field.new("name" => "is_refugee", "display_name" => "Is child a refugee?", "type" => "check_box"),
+              Field.new("name" => "is_internally_displaced_person", "display_name" => "Is child internally displaced?", "type" => "check_box"),
+              Field.new("name" => "trafficked_child", "display_name" => "Has child been trafficked?", "type" => "check_box"),
               Field.new("name" => "is_orphan", "display_name" => "Is child an orphan?", "type" => "check_box"),
               Field.new("name" => "in_interim_care", "display_name" => "Is child in interim care?", "type" => "check_box"),
               Field.new("name" => "is_in_child_headed_household", "display_name" => "Is child in child headed household?", "type" => "check_box"),
-              Field.new("name" => "sick_or_injured", "display_name" => "Might the child be sick or injured?", "type" => "check_box"),
+              Field.new("name" => "sick_or_injured", "display_name" => "Is child sick or injured?", "type" => "check_box"),
               Field.new("name" => "possible_physical_or_sexual_abuse", "display_name" => "Signs of possible physical or sexual abuse?", "type" => "check_box"),
               Field.new("name" => "is_disabled", "display_name" => "Is child disabled?", "type" => "check_box")
       ]
