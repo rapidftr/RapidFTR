@@ -137,14 +137,14 @@ class   ChildrenController < ApplicationController
 
   def default_search_respond_to
     respond_to do |format|
+     format.html do
+       @show_thumbnails = !!params[:show_thumbnails]
+       if @results && @results.length == 1
+         redirect_to child_path( @results.first )
+       end
+     end
       format.csv do
         render_results_as_csv if @results
-      end
-      format.html do
-        @show_thumbnails = !!params[:show_thumbnails]
-        if @results && @results.length == 1
-          redirect_to child_path( @results.first )
-        end
       end
     end
   end

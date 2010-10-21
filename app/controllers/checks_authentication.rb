@@ -28,7 +28,7 @@ module ChecksAuthentication
     else
       respond_to do |format|
         format.html { redirect_to(:login) }
-        format.any { render_error_response ErrorResponse.unauthorized("no session token provided") }
+        format.any(:xml,:json) { render_error_response ErrorResponse.unauthorized("no session token provided") }
       end
     end
   end

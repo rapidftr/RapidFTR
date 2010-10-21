@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
           :status => ex.status_code 
         )
       end
-      format.any do
+      format.any(:xml,:json) do
         begin
         render( 
           :template => "shared/status_#{ex.status_code.to_s}",
