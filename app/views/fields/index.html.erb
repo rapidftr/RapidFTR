@@ -13,6 +13,9 @@
 		    <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
         </td>
         <td>
+            <%= render :partial => "edit_button", :locals =>{:field=>field, :url=>edit_field_formsection_fields_path(@form_section.unique_id)} %>
+        </td>
+        <td>
 		    <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id)} %>
         </td>
       <%end%>

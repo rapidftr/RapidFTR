@@ -1,0 +1,5 @@
+<% form_id = "#{field.name}_EditForm" %>
+<% form_for field, :url => url, :html => {:method => :get, :id=>form_id}  do |f| %>
+	<input type="hidden" name="field_name" value="<%=field.name%>"/>            
+	<input type="submit" id="<%=field.name%>_Edit" class="edit-button" value="Edit"/>
+<% end %>

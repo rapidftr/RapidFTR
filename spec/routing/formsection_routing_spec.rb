@@ -66,4 +66,12 @@ describe 'Form Section routing' do
         new_formsection_path().should ==
           '/formsections/new'
       end
+
+  it 'has route to edit a field' do
+    {:get => '/formsections/foo/fields/edit_field'}.should route_to(
+            :controller => 'fields', :action=>'edit_field', :formsection_id=>'foo'
+            )
+    edit_field_formsection_fields_path('some_formsection').should ==
+      '/formsections/some_formsection/fields/edit_field'
+  end
 end
