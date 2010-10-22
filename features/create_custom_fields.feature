@@ -1,4 +1,4 @@
-Feature:
+Feature: Creating Custom Form Fields
 
   So that we can add a numeric field to a formsection
   
@@ -52,3 +52,20 @@ Feature:
     Then I should see "Field successfully added"
 
     And I should see "my_dropdown_test" in the list of fields
+
+  Scenario: creating a dropdown field that allows blank default option
+
+    Given I am on the manage fields page for "family_details"
+    And I follow "Add Custom Field"
+    And I follow "Select drop down"
+    And I fill in "My Blank Dropdown Test" for "Display Name"
+    And I fill in options for "Option strings"
+    And I check "Allow blank default"
+
+    When I press "Create"
+
+    Then I should see "Field successfully added"
+    And I should see "my_blank_dropdown_test" in the list of fields
+    
+    When I go to the new child page
+    Then the "child[my_blank_dropdown_test]" dropdown should default to ""

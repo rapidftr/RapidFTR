@@ -1,4 +1,4 @@
 <p>
   <%= label_tag select_box.tag_name_attribute, select_box.display_name %>
-  <%= select_tag select_box.tag_name_attribute, options_for_select(select_box.select_options,@child[select_box.name] ) %>
+  <%= select_tag select_box.tag_name_attribute, options_for_select(select_box.select_options, (@child[select_box.name] || '')) %>
 </p>

@@ -24,6 +24,10 @@
         <%= f.check_box :enabled, :checked => true %>
     </p>
     <p>
+        <%= f.label :allow_blank_default %>
+        <%= f.check_box :allow_blank_default, :checked => false %>
+    </p>
+    <p>
         <%= f.label :option_strings %>
         <%= f.text_area :option_strings, :checked => true %>
     </p>

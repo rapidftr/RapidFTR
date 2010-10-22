@@ -49,7 +49,7 @@ Then /^I should see the select named "([^\"]*)"$/ do |select_name|
 end
 
 Then /^I should see an option "([^\"]*)" for select "([^\"]*)"$/  do | option_value, select_name|
-  	response_body.should have_selector("select[name='#{select_name}'] option[value=#{option_value}]")
+    response_body.should have_selector("select[name='#{select_name}'] option[value=#{option_value}]")
 end
 
 Then /^I should not be able to see (.+)$/ do |page_name|
