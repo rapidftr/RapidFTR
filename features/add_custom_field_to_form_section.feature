@@ -4,7 +4,7 @@ Feature: So that admin can customize fields in a form section
         | name | unique_id | editable | order | enabled |
         | Basic details | basic_details | false | 1 | true |
         | Family details | family_details | true | 2 | true |
-  Scenario: Admins should be able to add new new text fields
+  Scenario: Admins should be able to add new text fields
     Given I am logged in as an admin
      And I am on the manage fields page for "family_details"
      When I follow "Add Custom Field"
@@ -13,6 +13,7 @@ Feature: So that admin can customize fields in a form section
       | Text Area  | new field page for "textarea"  |
       | Check box  | new field page for "check_box"  |
       | Select drop down | new field page for "select_drop_down" |
+      | Numeric Field  | new field page for "numeric_field"  |
     When I follow "Text Field"
     Then I should find the form with following attributes:
       | Name |
@@ -48,6 +49,3 @@ Feature: So that admin can customize fields in a form section
     When I add a new text field with "My field" and "Description"
     Then I should see "Field already exists on form 'Basic details'"
   
-      
-
-     
