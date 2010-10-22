@@ -36,3 +36,7 @@ Then /^the "([^\"]*)" field should be above the "([^\"]*)" field$/ do |first_fie
   index_of_first_row.should < index_of_second_row
 end
 
+Given /^I fill in options for "([^"]*)"$/ do |field_label|
+  fill_in(field_label, :with => "Option 1\r\nOption 2\r\nOption 3")
+end
+
