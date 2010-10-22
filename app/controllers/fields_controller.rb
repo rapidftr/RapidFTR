@@ -2,7 +2,7 @@ class FieldsController < ApplicationController
 
   before_filter :administrators_only
 
-  FIELD_TYPES = %w{  text_field textarea check_box select_drop_down numeric_field }
+  FIELD_TYPES = %w{ text_field textarea check_box select_drop_down numeric_field date_field }
 
   def read_form_section
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])

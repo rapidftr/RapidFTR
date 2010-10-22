@@ -28,6 +28,26 @@ Feature: So that admin can customize fields in a form section
     And I follow "New child"
     Then I should see "Anything"
        
+  Scenario: Admins should be able to add new date fields
+    Given I am logged in as an admin
+     And I am on the manage fields page for "family_details"
+     When I follow "Add Custom Field"
+    Then I should find the following links:
+      | Date Field | new field page for "date_field" |
+    When I follow "Date Field"
+    Then I should find the form with following attributes:
+      | Name |
+      | Help text |
+      | Enabled |
+    And the "Enabled" checkbox should be checked
+    When I fill in "Anything" for "name"
+    When I fill in "Really anything" for "Help text"
+    And I press "Create"
+    Then I should see "Anything"
+    When I am on children listing page
+    And I follow "New child"
+    Then I should see "Anything"
+
   Scenario: Basic Details should have no option to edit it's fields
     Given I am logged in as an admin
     And I am on the form section page 
