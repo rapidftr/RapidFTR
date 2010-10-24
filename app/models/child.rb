@@ -36,7 +36,8 @@ class Child < CouchRestRails::Document
     view('by_name', {})
   end
   
-  def self.search(query)
+  def self.search(search)
+    query = search.query
     return [] if query == nil || query == ""
     children = sunspot_search("unique_identifier_text:#{query}")
     return children if children.length > 0
