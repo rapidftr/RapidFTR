@@ -117,9 +117,14 @@ describe ChildrenController do
   end
 
   describe "GET search" do
+    before :each do
+      @search = mock("search", :query => 'the child name')
+      Search.stub!(:new).and_return(@search)
+    end
+    
     it "performs a search using the parameters passed to it" do
       fake_results = [:fake_child,:fake_child]
-      Child.should_receive(:search).with( 'the child name' ).and_return(fake_results)
+      Child.should_receive(:search).with(@search).and_return(fake_results)
       get( 
         :search,
         :format => 'html',
@@ -132,59 +137,63 @@ describe ChildrenController do
       get(
         :search,
         :format => 'html',
-        :show_thumbnails => '1'
+        :show_thumbnails => '1',
+        :query => "blah"
       )
       assigns[:show_thumbnails].should == true
     end
 
     it 'asks view to not show thumbnails if show_thumbnails query parameter is missing' do
-      get( :search, :format => 'html' )
+      get( :search, :format => 'html', :query => "blah" )
       assigns[:show_thumbnails].should == false
     end
-
-  	describe "with no results" do
-  		before do
-  			Summary.stub!(:basic_search).and_return([])
-  			get(:search, :field_name => '', :query => ''  )
-  		end
-
-  		it 'asks view to not show csv export link if there are no results' do
-  		  assigns[:results].size.should == 0
-  		end
-
-  		it 'asks view to display a "No results found" message if there are no results' do
-  		  assigns[:results].size.should == 0
-  		end
-
-  	end
-
+    
+    
+    describe "with no results" do
+      before do
+        Summary.stub!(:basic_search).and_return([])
+        @search = mock("search", :query => '')
+        get(:search, :field_name => '', :query => ''  )
+      end
+    
+      it 'asks view to not show csv export link if there are no results' do
+        assigns[:results].size.should == 0
+      end
+    
+      it 'asks view to display a "No results found" message if there are no results' do
+        assigns[:results].size.should == 0
+      end
+    
+    end
+    
     it 'sends csv data with the correct content type and file name' do
+      @search = mock("search", :query => '')
       @controller.
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
-
       get( :search, :format => 'csv', :query => '')
     end
 
     describe 'CSV formatting' do
-
+    
       def inject_results( results )
         Child.stub!(:search).and_return(results)
       end
-
+    
       def csv_response
+        @search = mock("search", :query => '')
         get( :search, :format => 'csv', :query => '' )
         response.body
       end
-
+    
       it 'should contain the correct column headers' do
         inject_results([])
         first_line = csv_response.split("\n").first
         headers = first_line.split(",")
-
+    
         headers.should == FormSection.all_child_field_names
       end
-
+    
       it 'should render a row for each result, plus a header row' do
         inject_results( [
           Child.new( 'name' => 'Dave' ),
@@ -192,7 +201,7 @@ describe ChildrenController do
         ] );
         csv_response.split("\n").length.should == 3
       end
-
+    
       it "should render each record's name and age correctly" do
         inject_results( [
           Child.new( 'name' => 'Dave', 'age' => 145 ),
