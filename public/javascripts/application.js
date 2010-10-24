@@ -1,61 +1,62 @@
 var RapidFTR = {};
 
-// START: Tabs
 RapidFTR.tabControl = function() {
-  $(".tab").hide(); //Hide all content
-  $(".tab-handles li:first").addClass("current").show(); //Activate first tab
-  $(".tab:first").show(); //Show first tab content
+  $(".tab").hide();
+  $(".tab-handles li:first").addClass("current").show();
+  $(".tab:first").show();
 
-  //On Click Event
   $(".tab-handles a").click(function() {
 
-    $(".tab-handles li").removeClass("current"); //Remove any "active" class
-    $(".tab").hide(); //Hide all tab content
+    $(".tab-handles li").removeClass("current");
+    $(".tab").hide();
 
-    var activeTab = $(this).attr("href"); //Find the href attribute value to identify the active tab + content
+    var activeTab = $(this).attr("href");
 
-    $(this).parent().addClass("current"); //Add "active" class to selected tab
-    $(activeTab).show(); //Fade in the active ID content
+    $(this).parent().addClass("current");
+    $(activeTab).show();
+
     return false;
   });
+}
 
-  // submitting forms with links
-  $(".submit-form").click(function()
-  {
+RapidFTR.enableSubmitLinks = function() {
+  $(".submit-form").click(function() {
     var formToSubmit = $(this).attr("href");
     $(formToSubmit).submit();
     return false;
   });
+}
 
-  $(document.getElementById("enable_form")).click(function()
-  {
-
-    var form = document.getElementById("enable_or_disable_form_section");
-    form.action = 'form_section/enable';
-    form.submit();
+RapidFTR.activateToggleFormSectionLinks = function() {
+  var toggleFormSection = function(action) {
+    return function() {
+    $("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
     return true;
-  });
+    };
+  }
+  
+  $("#enable_form").click(toggleFormSection("enable"));
+  $("#disable_form").click(toggleFormSection("disable"));
+}
 
-
-  $(document.getElementById("disable_form")).click(function()
-  {
-
-    var form = document.getElementById("enable_or_disable_form_section");
-    form.action = 'form_section/disable';
-    form.submit();
-    return true;
-  });
-
-
-  //hiding field direction buttons (first up button and second down)
+RapidFTR.hideDirectionalButtons = function() {
   $("#formFields .up-link:first").hide();
   $("#formFields .down-link:last").hide();
-};
+}
 
-RapidFTR.followTextFieldControl = function(selector, followSelector, transformFunction){
-  $(selector).keyup(function(){
-    var val = $(this).val();  
-    var transformed =  transformFunction(val);
-    $(followSelector).val(transformed); 
+RapidFTR.followTextFieldControl = function(selector, followSelector, transformFunction) {
+  $(selector).keyup(function() {
+    var val = $(this).val();
+    var transformed = transformFunction(val);
+    $(followSelector).val(transformed);
   });
 }
+
+$(document).ready(function() {
+  RapidFTR.tabControl();
+  RapidFTR.enableSubmitLinks();
+  RapidFTR.activateToggleFormSectionLinks();
+  RapidFTR.hideDirectionalButtons();
+  
+  RapidFTR.followTextFieldControl("#field_display_name", "#field_name", RapidFTR.Utils.dehumanize);
+});

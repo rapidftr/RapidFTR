@@ -12,12 +12,6 @@
   <%= javascript_include_tag "application.js" %>
   <%= javascript_include_tag "utils.js" %>
   <%= yield :javascript %>
-<script language="javascript" type="text/javascript">//<![CDATA[
-$(document).ready(function() {
-	RapidFTR.tabControl();
-    RapidFTR.followTextFieldControl("#field_display_name", "#field_name", RapidFTR.Utils.dehumanize); // no shared place for form field new pages - so until there is, custom script in here!
-});
-//]]></script>
 </head>
 <body class="<%= @body_class %>">
 <div class="page-container">
