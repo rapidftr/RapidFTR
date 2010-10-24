@@ -25,7 +25,6 @@ Feature: Creating Custom Form Fields
 
     Then I should see "My new number field: 2345"
 
-
   Scenario: creating a field without giving a name should dehumanize the display name
 
     Given I am on the manage fields page for "family_details"

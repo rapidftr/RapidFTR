@@ -1,17 +1,19 @@
 Feature: As an admin, I should be able to edit existing users.
 
-Scenario: When editing a user I cannot edit their user_name
+Scenario: When editing a user I cannot edit their user name
   Given a user "mary" with a password "123" 
   And I am logged in as an admin
   And I am on the edit user page for "mary"
+
   Then the "user name" field should be disabled
 
-  Scenario:      To check that an admin creates a user record and is able to edit it.
+  Scenario: Check that an admin creates a user record and is able to edit it
 
-  # Create an user
+    # Create an user
     Given I am logged in as an admin
-    Given I am on manage users page
+    And I am on manage users page
     And I follow "New user"
+
     When I fill in "George Harrison" for "Full name"
     And I fill in "george" for "user name"
     And I fill in "password" for "password"
@@ -23,7 +25,7 @@ Scenario: When editing a user I cannot edit their user_name
     And I fill in "Amazon" for "location"
     And I press "Create"
 
-  # Editing the user
+    # Editing the user
     Then I follow "Edit"
     When I fill in "Julia Roberts" for "Full name"
     And I fill in "pass" for "password"
@@ -35,7 +37,7 @@ Scenario: When editing a user I cannot edit their user_name
     And I fill in "new york" for "location"
     And I press "Update"
 
-  # Verifying the edited details
+    # Verifying the edited details
     Then I should see "User was successfully updated"
     And I should see "Julia Roberts"
     And I should see "george"
@@ -45,13 +47,11 @@ Scenario: When editing a user I cannot edit their user_name
     And I should see "student"
     And I should see "new york"
 
-   # Verifying some of the validations
+    # Verifying some of the validations
     When I follow "Edit"
     And I fill in "xyz@nyu" for "email"
     And I fill in "" for "Full name"
     And I press "Update"
+
     Then I should see "Please enter a valid email address"
     And I should see "Please enter full name of the user"
-
-
-

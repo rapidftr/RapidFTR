@@ -13,5 +13,4 @@ Feature: So that admin can see Manage Forms Page
     Then I should see "Caregiver details"
 
   Scenario: Admins should see a back button
-	Then I should see "Back"
-    
+    Then I should see "Back"

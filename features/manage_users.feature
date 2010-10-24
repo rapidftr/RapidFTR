@@ -13,5 +13,5 @@ Feature: So that admin can see Manage Users Page
     Then I should see "Delete User"
 
   Scenario: Admins should see a navigational elements
-	Then I should see "Back"
-	Then I should see "New User"
+    Then I should see "Back"
+    Then I should see "New User"

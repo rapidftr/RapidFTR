@@ -4,8 +4,9 @@ Feature:
 
   Scenario: creating a child record
     Given I am logged in
-    Given I am on children listing page
+    And I am on children listing page
     And I follow "New child"
+
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Age"
     And I select "Exact" from "Age is"
@@ -25,10 +26,8 @@ Feature:
     And I should see "Haiti"
     And I should see "1-2 weeks ago"
 
-
-
-
     When I follow "Back"
+
     Then I should see "Listing children"
     And I should see "Jorge Just"
 
@@ -37,17 +36,20 @@ Feature:
     And I should see "Listing children"
     And I should see "Jorge Just"
 
-
   Scenario: create child with approximate age
+
     Given I am logged in
-    Given I am on new child page
+    And I am on new child page
+
     When I fill in the basic details of a child
     And I press "Save"
+
     Then I should see "Child record successfully created."
     And I should see "Approximate"
 
   Scenario: create child record with no details filled in
     Given I am logged in
-    Given I am on new child page
+    And I am on new child page
     And I press "Save"
+
     Then I should see "Child record successfully created."

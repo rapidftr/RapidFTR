@@ -11,11 +11,12 @@ Feature: Adding a suggested field to a form section
         | name | unique_id | order |
         | Basic details | basic_details | 1 |
 
-
    Scenario: Viewing the suggested fields for a form section when adding a field to a form section
      Given I am logged in as an admin
      And I am on the manage fields page for "basic_details"
+
      When I follow "Add Custom Field"
+
      Then I should see the following suggested fields:
         | name | unique_id | description |
         | A_suggested_field | field_one | This is a good field to use |
@@ -24,12 +25,16 @@ Feature: Adding a suggested field to a form section
    Scenario: Adding a suggested field to a form section
      Given I am logged in as an admin
      And I am on the manage fields page for "basic_details"
+
      When I follow "Add Custom Field"
      And I press add for suggested field "field_one"
+
      Then I should see "Field successfully added"
      And I should be on the manage fields page for "basic_details"
      And I should see "A_suggested_field" in the list of fields
+
      When I follow "Add Custom Field"
+
      Then I should not see the following suggested fields:
         | name | unique_id | help_text |
         | A_suggested_field | field_one | This is a good field to use |
@@ -37,15 +42,14 @@ Feature: Adding a suggested field to a form section
    Scenario: Adding a suggested field with options
      Given I am logged in as an admin
      And I am on the manage fields page for "basic_details"
+
      When I follow "Add Custom Field"
      And I press add for suggested field "field_three"
+
      Then I should see "Field successfully added"
+
      When I am on children listing page
      And I follow "New child"
+
      Then I should see the select named "child[Field_with_options]"
-     Then I should see an option "option1" for select "child[Field_with_options]"
-
-
-
-
-
+     And I should see an option "option1" for select "child[Field_with_options]"
