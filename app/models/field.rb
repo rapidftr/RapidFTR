@@ -19,7 +19,6 @@ class Field < Hash
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
 
-
   def initialize properties
     super properties
     if (option_strings)
@@ -66,7 +65,7 @@ class Field < Hash
 
   def select_options
     select_options = []
-    select_options << ['', ''] if allow_blank_default
+    select_options << ['(Select...)', ''] if allow_blank_default == '1'
     select_options += @options.collect { |option| [option.option_name, option.option_name] }
   end
 end
