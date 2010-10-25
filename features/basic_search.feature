@@ -119,3 +119,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Given I am on the child search page
 
     Then I should not see "No results found"
+  
+  Scenario: Creating an invalid search
+    Given I am on the child search page
+    When I fill in "" for "Name"
+    And I press "Search"
+    Then I should see the error "Query can't be empty"

@@ -1,3 +1,5 @@
+<%= error_messages_for :search %>
+
 <% form_tag search_children_path, :method => :get, :id => "search_form" do %>
     <%= label_tag 'query', "Name or Unique ID", :id => "query_label" %>
     <%= text_field_tag 'query', params[:query] %>

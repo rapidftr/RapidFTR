@@ -118,8 +118,28 @@ describe ChildrenController do
 
   describe "GET search" do
     before :each do
-      @search = mock("search", :query => 'the child name')
+      @search = mock("search", :query => 'the child name', :valid? => true)
       Search.stub!(:new).and_return(@search)
+    end
+    
+    it "should render error if search is invalid" do
+      search = mock("search", :query => 'the child name', :valid? => false)
+      Search.stub!(:new).and_return(search)
+      get( 
+        :search,
+        :format => 'html',
+        :query => '1'*160
+      )
+      assigns[:search].should == search
+    end
+    
+    it "should stay in the page if search is invalid" do
+      get( 
+        :search,
+        :format => 'html',
+        :query => '1'*160
+      )
+      response.should render_template("search")
     end
     
     it "performs a search using the parameters passed to it" do

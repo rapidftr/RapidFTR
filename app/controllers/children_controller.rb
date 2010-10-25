@@ -118,9 +118,12 @@ class   ChildrenController < ApplicationController
 
   def search
     @page_name = "Child Search"
-    if params[:query]
-      search = Search.new(params[:query]) 
+    search = Search.new(params[:query]) 
+    if search.valid?    
       @results = Child.search(search)
+    else
+      @search = search
+      render :search
     end
     default_search_respond_to
   end
