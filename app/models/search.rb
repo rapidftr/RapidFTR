@@ -3,6 +3,7 @@ class Search
   
   attr_accessor :query
   
+  validates_presence_of :query
   validates_length_of :query, :maximum => 150
   
   def initialize(query)
