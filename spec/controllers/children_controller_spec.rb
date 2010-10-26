@@ -257,7 +257,11 @@ describe ChildrenController do
       response.should render_template("children/advanced_search")
     end
     
-
+    it "should render error if search is invalid" do
+      get(:advanced_search, :format => 'html', :search_field => "", :search_value => "")
+      search = assigns[:search]
+      search.errors.size.should == 2
+    end    
     
   end
 

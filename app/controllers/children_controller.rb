@@ -131,10 +131,15 @@ class   ChildrenController < ApplicationController
   def advanced_search
     @page_name = "Advanced Child Search"
     @fields_name = FormSection.all_child_field_names
-
-    @results = Summary.advanced_search(params[:search_field], params[:search_value]) if params[:search_value]
-
-    default_search_respond_to
+    
+    search = AdvancedSearch.new(params[:search_field], params[:search_value])    
+    if (search.valid?)
+      @results = Summary.advanced_search(params[:search_field], params[:search_value]) if params[:search_value]
+      default_search_respond_to
+    else
+      @search = search
+      render :advanced_search
+    end
   end
 
   def default_search_respond_to
