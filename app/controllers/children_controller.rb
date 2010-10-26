@@ -134,7 +134,7 @@ class   ChildrenController < ApplicationController
     
     search = AdvancedSearch.new(params[:search_field], params[:search_value])    
     if (search.valid?)
-      @results = Summary.advanced_search(params[:search_field], params[:search_value]) if params[:search_value]
+      @results = Summary.advanced_search(search) if params[:search_value]
       default_search_respond_to
     else
       @search = search

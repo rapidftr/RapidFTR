@@ -224,13 +224,15 @@ describe ChildrenController do
 
     it "should assign results" do
       children = []
-      Summary.should_receive(:advanced_search).with("field", "value").and_return(children)
+      search = mock(:search, :search_field => "field", :search_value => 'value', :valid? => true);
+      AdvancedSearch.stub!(:new).and_return(search)
+      Summary.should_receive(:advanced_search).with(search).and_return(children)
       get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
     end
     
     it "should render advanced search on success" do
       children = []
-      Summary.should_receive(:advanced_search).with("field", "value").and_return(children)
+      Summary.should_receive(:advanced_search).and_return(children)
       get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
       response.should render_template("children/advanced_search")
     end
