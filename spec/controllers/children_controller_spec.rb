@@ -234,6 +234,32 @@ describe ChildrenController do
       end
     end
   end
+  
+  describe "GET advanced search" do
+    
+    it "should define form section fields as search criteria" do
+      names = []
+      FormSection.stub!(:all_child_field_names).and_return(names)
+      get(:advanced_search, :format => 'html')
+      assigns[:fields_name].should == names
+    end
+
+    it "should assign results" do
+      children = []
+      Summary.should_receive(:advanced_search).with("field", "value").and_return(children)
+      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
+    end
+    
+    it "should render advanced search on success" do
+      children = []
+      Summary.should_receive(:advanced_search).with("field", "value").and_return(children)
+      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
+      response.should render_template("children/advanced_search")
+    end
+    
+
+    
+  end
 
   describe "GET photo_pdf" do
     def inject_pdf_generator( fake_pdf_generator )
