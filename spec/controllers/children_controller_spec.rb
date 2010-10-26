@@ -117,49 +117,30 @@ describe ChildrenController do
   end
 
   describe "GET search" do
-    before :each do
-      @search = mock("search", :query => 'the child name', :valid? => true)
-      Search.stub!(:new).and_return(@search)
-    end
-    
+
     it "should render error if search is invalid" do
-      search = mock("search", :query => 'the child name', :valid? => false)
-      Search.stub!(:new).and_return(search)
-      get( 
-        :search,
-        :format => 'html',
-        :query => '1'*160
-      )
-      assigns[:search].should == search
+      get(:search, :format => 'html', :query => '2'*160)
+      search = assigns[:search]
+      search.errors.should_not be_empty
     end
     
     it "should stay in the page if search is invalid" do
-      get( 
-        :search,
-        :format => 'html',
-        :query => '1'*160
-      )
+      get(:search, :format => 'html', :query => '1'*160)
       response.should render_template("search")
     end
     
     it "performs a search using the parameters passed to it" do
+      search = mock("search", :query => 'the child name', :valid? => true)
+      Search.stub!(:new).and_return(search)
+      
       fake_results = [:fake_child,:fake_child]
-      Child.should_receive(:search).with(@search).and_return(fake_results)
-      get( 
-        :search,
-        :format => 'html',
-        :query => 'the child name'
-      )
+      Child.should_receive(:search).with(search).and_return(fake_results)
+      get(:search, :format => 'html', :query => 'the child name')
       assigns[:results].should == fake_results
     end
 
     it 'asks view to show thumbnails if show_thumbnails query parameter is present' do
-      get(
-        :search,
-        :format => 'html',
-        :show_thumbnails => '1',
-        :query => "blah"
-      )
+      get(:search, :format => 'html',:show_thumbnails => '1',:query => "blah")
       assigns[:show_thumbnails].should == true
     end
 
@@ -172,8 +153,7 @@ describe ChildrenController do
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
-        @search = mock("search", :query => '')
-        get(:search, :field_name => '', :query => ''  )
+        get(:search,  :query => 'blah'  )
       end
     
       it 'asks view to not show csv export link if there are no results' do
@@ -187,22 +167,20 @@ describe ChildrenController do
     end
     
     it 'sends csv data with the correct content type and file name' do
-      @search = mock("search", :query => '')
       @controller.
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
-      get( :search, :format => 'csv', :query => '')
+      get( :search, :format => 'csv', :query => 'blah')
     end
 
     describe 'CSV formatting' do
-    
+        
       def inject_results( results )
         Child.stub!(:search).and_return(results)
       end
     
       def csv_response
-        @search = mock("search", :query => '')
-        get( :search, :format => 'csv', :query => '' )
+        get( :search, :format => 'csv', :query => 'blah' )
         response.body
       end
     
