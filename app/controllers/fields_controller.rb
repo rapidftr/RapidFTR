@@ -63,10 +63,6 @@ class FieldsController < ApplicationController
     redirect_to(formsection_fields_path(params[:formsection_id]))
   end
 
-  def edit_field
-    redirect_to(formsection_fields_path(params[:formsection_id]))
-  end
-
   FIELD_TYPES.each do |field_type|
     define_method "new_#{field_type}" do
       read_form_section()
