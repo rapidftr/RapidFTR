@@ -294,3 +294,11 @@ Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, p
   table.at(row_selector).should_not be_nil
   table.search("tbody/tr")[position.to_i-1].should == table.at(row_selector)
 end
+
+Then /^I should see the error "([^\"]*)"$/ do |error_message|
+  Hpricot(response.body).search("div[@id=errorExplanation]").inner_text.include?(error_message)
+end
+
+Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
+  Hpricot(response.body).search("//p[@class=#{button_name.downcase}Button]/a").to_html.include?("confirm")
+end
