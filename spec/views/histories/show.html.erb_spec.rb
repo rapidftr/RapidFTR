@@ -15,7 +15,7 @@ describe "histories/show.html.erb" do
       response.should have_selector(".history-details") do |element|
       	element.should have_selector("li", :count => 1)
       	element.should have_selector("li") do |item|
-      		item.text.should match /Record created by/
+      		item.text.should match(/Record created by/)
       	end
       end
     end
@@ -33,7 +33,7 @@ describe "histories/show.html.erb" do
       response.should have_selector(".history-details") do |element|
       	element.should have_selector("li", :count => 2)
       	element.should have_selector("li") do |item|
-      		item.text.should match /Photo changed/
+      		item.text.should match(/Photo changed/)
       	end
       end
     end

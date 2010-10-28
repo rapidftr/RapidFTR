@@ -262,7 +262,7 @@ Then /^I should see the following suggested fields:$/ do |suggested_fields_table
     display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
     display.should_not be_nil
     display.at("input[@name='field[name]']")[:value].strip.should == suggested_field_hash[:name]
-    display.inner_html.should contain suggested_field_hash[:description]
+    display.inner_html.should contain(suggested_field_hash[:description])
   end
 end
 

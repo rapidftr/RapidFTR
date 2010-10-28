@@ -43,13 +43,13 @@ describe FormSectionController do
       FormSection.stub(:create_new_custom).and_return(MockFormSection.new)
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
-      response.should redirect_to formsections_path
+      response.should redirect_to(formsections_path)
     end
     it "should show new view again if form section was not valid" do
       FormSection.stub(:create_new_custom).and_return MockFormSection.new(false)
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
-      response.should_not redirect_to formsections_path
+      response.should_not redirect_to(formsections_path)
       response.should render_template("new")
     end
     it "should assign view data if form section was not valid" do

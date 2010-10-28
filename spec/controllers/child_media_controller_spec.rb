@@ -44,7 +44,7 @@ describe ChildMediaController do
 
       get :show_photo, :child_id => "1"
 
-      response.should represent_inline_attachment uploadable_photo
+      response.should represent_inline_attachment(uploadable_photo)
     end
 
     it "should return requested child's photo" do
@@ -55,7 +55,7 @@ describe ChildMediaController do
 
       get :show_photo, :child_id => "1", :id => "other"
 
-      response.should represent_inline_attachment uploadable_photo_jeff
+      response.should represent_inline_attachment(uploadable_photo_jeff)
     end
 
     it "should return current child's photo resized to a particular size" do
@@ -76,7 +76,7 @@ describe ChildMediaController do
       get :show_thumbnail, :child_id => "1"
 
       thumbnail = to_thumbnail(60, uploadable_photo.original_path)
-      response.should represent_inline_attachment thumbnail
+      response.should represent_inline_attachment(thumbnail)
     end
 
     it "should return requested child's thumbnail" do
@@ -88,7 +88,7 @@ describe ChildMediaController do
       get :show_thumbnail, :child_id => "1", :id => "other"
 
       thumbnail = to_thumbnail(60, uploadable_photo.original_path)
-      response.should represent_inline_attachment thumbnail
+      response.should represent_inline_attachment(thumbnail)
     end
 
     it "should return no photo available clip when no image is found" do
@@ -98,7 +98,7 @@ describe ChildMediaController do
 
       get :show_photo, :child_id => "1"
 
-      response.should represent_inline_attachment no_photo_clip
+      response.should represent_inline_attachment(no_photo_clip)
     end
 
   end
@@ -111,7 +111,7 @@ describe ChildMediaController do
                 with_audio(uploadable_audio_sample)
 
        get :download_audio, :child_id => '1'
-       response.should represent_inline_attachment uploadable_audio_sample 
+       response.should represent_inline_attachment(uploadable_audio_sample )
     end
   end
 end
