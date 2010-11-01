@@ -118,6 +118,11 @@ describe ChildrenController do
 
   describe "GET search" do
 
+    it "should not render error by default" do
+      get(:search, :format => 'html')
+      assigns[:search].should be_nil      
+    end
+
     it "should render error if search is invalid" do
       get(:search, :format => 'html', :query => '2'*160)
       search = assigns[:search]
@@ -214,6 +219,11 @@ describe ChildrenController do
   end
   
   describe "GET advanced search" do
+    
+    it "should not render error by default" do
+      get(:advanced_search, :format => 'html')
+      assigns[:search].should be_nil
+    end
     
     it "should define form section fields as search criteria" do
       names = []

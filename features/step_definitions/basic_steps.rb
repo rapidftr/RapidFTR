@@ -298,3 +298,7 @@ end
 Then /^I should see the error "([^\"]*)"$/ do |error_message|
   Hpricot(response.body).search("div[@id=errorExplanation]").inner_text.include?(error_message)
 end
+
+Then /^I should not see any errors$/ do
+  Hpricot(response.body).search("div[@id=errorExplanation]").size.should == 0
+end
