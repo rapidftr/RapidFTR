@@ -177,12 +177,12 @@ describe ChildrenController do
         response.body
       end
 
-      it 'should contain the correct column headers' do
+      it 'should contain the correct column headers based on the defined fields' do
         inject_results([])
         first_line = csv_response.split("\n").first
         headers = first_line.split(",")
 
-        headers.should == FormSection.all_child_field_names
+        FormSection.all_child_field_names.each {|field_name| headers.should contain field_name}
       end
 
       it 'should render a row for each result, plus a header row' do
@@ -195,13 +195,13 @@ describe ChildrenController do
 
       it "should render each record's name and age correctly" do
         inject_results( [
-          Child.new( 'name' => 'Dave', 'age' => 145 ),
-          Child.new( 'name' => 'Mary', 'age' => 12 )
+          Child.new( 'name' => 'Dave', 'age' => 145, 'unique_identifier' => 'dave_xxx' ),
+          Child.new( 'name' => 'Mary', 'age' => 12, 'unique_identifier' => 'mary_xxx' )
         ] );
         rows = csv_response.split("\n").map{ |line| line.split(",") }
         rows.shift # skip past header row
-        rows.shift.should == ['Dave','145']
-        rows.shift.should == ['Mary','12']
+        rows.shift.should == ['dave_xxx', 'Dave','145']
+        rows.shift.should == ['mary_xxx','Mary','12']
       end
     end
   end

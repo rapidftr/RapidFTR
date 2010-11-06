@@ -168,6 +168,7 @@ class   ChildrenController < ApplicationController
 
   def render_as_csv results_temp, filename
     field_names = FormSection.all_child_field_names
+    field_names.unshift "unique_identifier"
     csv = FasterCSV.generate do |rows|
       rows << field_names
       results_temp.each do |child|

@@ -6,10 +6,10 @@ Feature:
 
   Background:
     Given the following children exist in the system:
-      | name    |  last_known_location |
-      | Dan     |  London   |
-      | Dave    |  Venice   |
-      | Mike    |  Paris    |
+      | name    |  last_known_location |unique_id|
+      | Dan     |  London   | dan_123  |
+      | Dave    |  Venice   | dave_456 |
+      | Mike    |  Paris    | mike_789 |
 
   Scenario: A csv file with the correct number of lines is produced
     Given I am logged in
@@ -17,9 +17,9 @@ Feature:
     And I follow "Export to CSV"
     Then I should receive a CSV file with 3 lines
     And the CSV data should be:
-      | name    |  last_known_location |
-      | Dan     |  London   |
-      | Dave    |  Venice   |
+      | name    |  last_known_location |unique_identifier|
+      | Dan     |  London   | dan_123  |
+      | Dave    |  Venice   | dave_456 |
 
   Scenario: When there are no search results, there is no csv export link
     Given I am logged in
@@ -33,8 +33,8 @@ Feature:
     And I follow "Export All Child Records to CSV"
     Then I should receive a CSV file with 4 lines
     And the CSV data should be:
-      | name    |  last_known_location |
-      | Dan     |  London   |
-      | Dave    |  Venice   |
-      | Mike    |  Paris    |
+      | name    |  last_known_location |unique_identifier|
+      | Dan     |  London   | dan_123  |
+      | Dave    |  Venice   | dave_456 |
+      | Mike    |  Paris    | mike_789 |
     And the CSV filename should be "all_records_20101023.csv"
