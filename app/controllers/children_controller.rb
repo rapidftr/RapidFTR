@@ -12,6 +12,7 @@ class   ChildrenController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @children }
+      format.csv  { render_as_csv @children, "all_records_#{Time.now.strftime("%Y%m%d")}.csv" }
       format.json { render :json => @children }
     end
   end
@@ -144,7 +145,7 @@ class   ChildrenController < ApplicationController
        end
      end
       format.csv do
-        render_results_as_csv if @results
+        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
       end
     end
   end
@@ -165,15 +166,15 @@ class   ChildrenController < ApplicationController
     FormSection.all_by_order
   end
 
-  def render_results_as_csv
+  def render_as_csv results_temp, filename
     field_names = FormSection.all_child_field_names
     csv = FasterCSV.generate do |rows|
       rows << field_names
-      @results.each do |child|
-        rows << field_names.map{ |field_name| child[field_name] }
+      results_temp.each do |child|
+        rows << field_names.map { |field_name| child[field_name] }
       end
     end
 
-    send_data( csv, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
+    send_data(csv, :filename => filename, :type => 'text/csv')
   end
 end
