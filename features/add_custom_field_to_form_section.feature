@@ -63,6 +63,9 @@ Feature: So that admin can customize fields in a form section
     And I follow "New child"
 
     Then I should see "Anything"
+    When I fill in "11/17/2010" for "child_Anything"
+    And I press "Save"
+    Then I should see "11/17/2010"
 
   Scenario: Basic Details should have no option to edit it's fields
 

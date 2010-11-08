@@ -147,4 +147,41 @@ describe "children/_form_section.html.erb" do
 
     end
   end
+
+  describe "rendering date field" do
+
+    context "new record" do
+      it "renders date field" do
+        @child = Child.new 
+        @form_section.add_field Field.new(:name => "some_date", :display_name => "Some date", :type => "date_field")
+
+        assigns[:child] = @child
+        render :locals => { :form_section => @form_section }
+
+        response.should have_selector("label[for='child_some_date']")
+        response.should have_selector("input[type='text'][name='child[some_date]']")
+        response.should have_selector("script[type='text/javascript']") do |js|
+          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker\(\);.*/
+        end
+      end
+    end
+
+    context "existing record" do
+
+      it "renders date field with the previous date" do
+        @child = Child.new :some_date => "13/05/2004"
+        @form_section.add_field Field.new(:name => "some_date", :display_name => "Some date", :type => "date_field")
+
+        assigns[:child] = @child
+        render :locals => { :form_section => @form_section }
+
+        response.should have_selector("input[type='text'][name='child[some_date]'][value='13/05/2004']")
+        response.should have_selector("script[type='text/javascript']") do |js|
+          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker\(\);.*/
+        end
+      end
+
+    end
+  end
+
 end
