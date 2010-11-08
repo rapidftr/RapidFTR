@@ -17,6 +17,7 @@ describe Summary do
     end
 
   end
+  
   def summary_with_name(name)
     sum = Summary.new
     sum["name"] = name
@@ -30,5 +31,18 @@ describe Summary do
       second = [2,3]
       Summary.and_arrays(empty, first, second).should == [2,3]
     end
+  end
+  
+  describe "advanced search" do
+    
+    it "should delegate search to child model" do
+      Child.should_receive(:view_by).with(:name)
+      Child.should_receive(:by_name).with({:startkey=>"francisco", :endkey=>"g"})
+      
+      search = AdvancedSearch.new("name","francisco")
+      Summary.advanced_search(search)    
+    end
+    
+    
   end
 end

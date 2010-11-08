@@ -27,11 +27,13 @@ class Summary < CouchRestRails::Document
     results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]} 
   end
 
-  def self.advanced_search(field, value)
-   Child.class_eval do
-     view_by field.to_sym
-   end
-   
+  def self.advanced_search(search)
+    field = search.search_field
+    value = search.search_value
+    Child.class_eval do
+      view_by field.to_sym
+    end
+
     Child.send("by_#{field}".to_sym, create_key_range(value))
   end
 

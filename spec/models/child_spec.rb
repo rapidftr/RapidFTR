@@ -20,51 +20,61 @@ describe Child do
       Sunspot.remove_all(Child)
     end
     
+    it "should return empty array if search is not valid" do
+      search = mock("search", :query => "", :valid? => false)
+      Child.search(search).should == []      
+    end
+    
     it "should return empty array for no match" do
-      Child.search("Nothing").should == []
+      search = mock("search", :query => "Nothing", :valid? => true)
+      Child.search(search).should == []
     end
 
     it "should return an exact match" do
       create_child("Exact")
-      
-      Child.search("Exact").map(&:name).should == ["Exact"]
+      search = mock("search", :query => "Exact", :valid? => true)
+      Child.search(search).map(&:name).should == ["Exact"]
     end
   
     it "should return a match that starts with the query" do
       create_child("Starts With")
-      
-      Child.search("Star").map(&:name).should == ["Starts With"]
+      search = mock("search", :query => "Star", :valid? => true)      
+      Child.search(search).map(&:name).should == ["Starts With"]
     end
     
     it "should return a fuzzy match" do
       create_child("timithy")
       create_child("timothy")
-
-      Child.search("timathy").map(&:name).should =~ ["timithy", "timothy"]
+      search = mock("search", :query => "timothy", :valid? => true)      
+      Child.search(search).map(&:name).should =~ ["timithy", "timothy"]
     end
     
     it "should search by exact match for unique id" do
       uuid = UUIDTools::UUID.random_create.to_s
       Child.create("name" => "kev", :unique_identifier => uuid, "last_known_location" => "new york")
       Child.create("name" => "kev", :unique_identifier => UUIDTools::UUID.random_create, "last_known_location" => "new york")
-      results = Child.search(uuid)
+      search = mock("search", :query => uuid, :valid? => true)      
+      results = Child.search(search)
       results.length.should == 1
       results.first[:unique_identifier].should == uuid
     end
     
     it "should match more than one word" do
-      create_child("timothy cochran")      
-      Child.search("timothy cochran").map(&:name).should =~ ["timothy cochran"]
+      create_child("timothy cochran") 
+      search = mock("search", :query => "timothy cochran", :valid? => true)           
+      Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
     
     it "should match more than one word with fuzzy search" do
       create_child("timothy cochran")      
-      Child.search("timithy cichran").map(&:name).should =~ ["timothy cochran"]
+      search = mock("search", :query => "timithy cichran", :valid? => true)           
+      Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
     
     it "should match more than one word with starts with" do
-      create_child("timothy cochran")      
-      Child.search("timo coch").map(&:name).should =~ ["timothy cochran"]
+      create_child("timothy cochran")
+      search = mock("search", :query => "timo coch", :valid? => true)                 
+      Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
     
     # it "should search across name and unique identifier" do

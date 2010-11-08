@@ -79,10 +79,6 @@ class   ChildrenController < ApplicationController
     end
   end
 
-  def new_search
-
-  end
-
   # PUT /children/1
   # PUT /children/1.xml
   def update
@@ -123,17 +119,32 @@ class   ChildrenController < ApplicationController
 
   def search
     @page_name = "Child Search"
-    @results = Child.search(params[:query]) if params[:query]
+    if (params[:query])
+      @search = Search.new(params[:query]) 
+      if @search.valid?    
+        @results = Child.search(@search)
+      else
+        render :search
+      end
+    end
     default_search_respond_to
   end
-
+  
   def advanced_search
     @page_name = "Advanced Child Search"
     @fields_name = FormSection.all_child_field_names
-
-    @results = Summary.advanced_search(params[:search_field], params[:search_value]) if params[:search_value]
-
-    default_search_respond_to
+    
+    if params[:search_field] && params[:search_value]
+      search = AdvancedSearch.new(params[:search_field], params[:search_value])    
+      if (search.valid?)
+        @results = Summary.advanced_search(search) if params[:search_value]
+        default_search_respond_to
+      else
+        @search = search
+        render :advanced_search
+      end  
+      default_search_respond_to
+    end
   end
 
   def default_search_respond_to

@@ -117,66 +117,78 @@ describe ChildrenController do
   end
 
   describe "GET search" do
+
+    it "should not render error by default" do
+      get(:search, :format => 'html')
+      assigns[:search].should be_nil      
+    end
+
+    it "should render error if search is invalid" do
+      get(:search, :format => 'html', :query => '2'*160)
+      search = assigns[:search]
+      search.errors.should_not be_empty
+    end
+    
+    it "should stay in the page if search is invalid" do
+      get(:search, :format => 'html', :query => '1'*160)
+      response.should render_template("search")
+    end
+    
     it "performs a search using the parameters passed to it" do
+      search = mock("search", :query => 'the child name', :valid? => true)
+      Search.stub!(:new).and_return(search)
+      
       fake_results = [:fake_child,:fake_child]
-      Child.should_receive(:search).with( 'the child name' ).and_return(fake_results)
-      get( 
-        :search,
-        :format => 'html',
-        :query => 'the child name'
-      )
+      Child.should_receive(:search).with(search).and_return(fake_results)
+      get(:search, :format => 'html', :query => 'the child name')
       assigns[:results].should == fake_results
     end
 
     it 'asks view to show thumbnails if show_thumbnails query parameter is present' do
-      get(
-        :search,
-        :format => 'html',
-        :show_thumbnails => '1'
-      )
+      get(:search, :format => 'html',:show_thumbnails => '1',:query => "blah")
       assigns[:show_thumbnails].should == true
     end
 
     it 'asks view to not show thumbnails if show_thumbnails query parameter is missing' do
-      get( :search, :format => 'html' )
+      get( :search, :format => 'html', :query => "blah" )
       assigns[:show_thumbnails].should == false
     end
-
-  	describe "with no results" do
-  		before do
-  			Summary.stub!(:basic_search).and_return([])
-  			get(:search, :field_name => '', :query => ''  )
-  		end
-
-  		it 'asks view to not show csv export link if there are no results' do
-  		  assigns[:results].size.should == 0
-  		end
-
-  		it 'asks view to display a "No results found" message if there are no results' do
-  		  assigns[:results].size.should == 0
-  		end
-
-  	end
-
+    
+    
+    describe "with no results" do
+      before do
+        Summary.stub!(:basic_search).and_return([])
+        get(:search,  :query => 'blah'  )
+      end
+    
+      it 'asks view to not show csv export link if there are no results' do
+        assigns[:results].size.should == 0
+      end
+    
+      it 'asks view to display a "No results found" message if there are no results' do
+        assigns[:results].size.should == 0
+      end
+    
+    end
+    
     it 'sends csv data with the correct content type and file name' do
       @controller.
         should_receive(:send_data).
         with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
-
-      get( :search, :format => 'csv', :query => '')
+      get( :search, :format => 'csv', :query => 'blah')
     end
 
     describe 'CSV formatting' do
-
+        
       def inject_results( results )
         Child.stub!(:search).and_return(results)
       end
-
+    
       def csv_response
-        get( :search, :format => 'csv', :query => '' )
+        get( :search, :format => 'csv', :query => 'blah' )
         response.body
       end
-
+      
       it 'should contain the correct column headers based on the defined fields' do
         inject_results([])
         first_line = csv_response.split("\n").first
@@ -184,7 +196,7 @@ describe ChildrenController do
 
         FormSection.all_child_field_names.each {|field_name| headers.should contain field_name}
       end
-
+    
       it 'should render a row for each result, plus a header row' do
         inject_results( [
           Child.new( 'name' => 'Dave' ),
@@ -192,7 +204,7 @@ describe ChildrenController do
         ] );
         csv_response.split("\n").length.should == 3
       end
-
+    
       it "should render each record's name and age correctly" do
         inject_results( [
           Child.new( 'name' => 'Dave', 'age' => 145, 'unique_identifier' => 'dave_xxx' ),
@@ -204,6 +216,43 @@ describe ChildrenController do
         rows.shift.should == ['mary_xxx','Mary','12']
       end
     end
+  end
+  
+  describe "GET advanced search" do
+    
+    it "should not render error by default" do
+      get(:advanced_search, :format => 'html')
+      assigns[:search].should be_nil
+    end
+    
+    it "should define form section fields as search criteria" do
+      names = []
+      FormSection.stub!(:all_child_field_names).and_return(names)
+      get(:advanced_search, :format => 'html')
+      assigns[:fields_name].should == names
+    end
+
+    it "should assign results" do
+      children = []
+      search = mock(:search, :search_field => "field", :search_value => 'value', :valid? => true);
+      AdvancedSearch.stub!(:new).and_return(search)
+      Summary.should_receive(:advanced_search).with(search).and_return(children)
+      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
+    end
+    
+    it "should render advanced search on success" do
+      children = []
+      Summary.should_receive(:advanced_search).and_return(children)
+      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
+      response.should render_template("children/advanced_search")
+    end
+    
+    it "should render error if search is invalid" do
+      get(:advanced_search, :format => 'html', :search_field => "", :search_value => "")
+      search = assigns[:search]
+      search.errors.size.should == 2
+    end    
+    
   end
 
   describe "GET photo_pdf" do
