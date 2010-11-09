@@ -262,7 +262,7 @@ Then /^I should see the following suggested fields:$/ do |suggested_fields_table
     display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
     display.should_not be_nil
     display.at("input[@name='field[name]']")[:value].strip.should == suggested_field_hash[:name]
-    display.inner_html.should contain suggested_field_hash[:description]
+    display.inner_html.should contain(suggested_field_hash[:description])
   end
 end
 
@@ -301,4 +301,8 @@ end
 
 Then /^I should not see any errors$/ do
   Hpricot(response.body).search("div[@id=errorExplanation]").size.should == 0
+end
+
+Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
+  Hpricot(response.body).search("//p[@class=#{button_name.downcase}Button]/a").to_html.include?("confirm")
 end

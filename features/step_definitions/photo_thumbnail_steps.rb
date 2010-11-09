@@ -19,7 +19,7 @@ Then /^I should see the thumbnail of "([^\"]*)" with key "([^\"]*)"$/ do |child_
 end
 
 Then /I should see the photo corresponding to "([^\"]*)"$/ do |photo_file|
-  response.should represent_inline_attachment uploadable_photo(photo_file)
+  response.should represent_inline_attachment(uploadable_photo(photo_file))
 end
 
 def check_link(response, child_name)

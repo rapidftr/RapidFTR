@@ -16,7 +16,7 @@ describe "children/show.html.erb" do
       form_section.add_field Field.new_radio_button("gender", ["male", "female"], "Gender")
       form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"], "Date of separation")
 
-      child = Child.new :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345"
+      child = Child.new(:age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345")
 
       assigns[:form_sections] = [form_section]
       assigns[:child] = child
@@ -42,7 +42,7 @@ describe "children/show.html.erb" do
       form_section.add_field Field.new_text_field("age")
       form_section.add_field Field.new_radio_button("gender", ["male", "female"])
 
-      child = Child.new :age => "27", :gender => "male", :unique_identifier => "georgelon12345", :_id => "id12345"
+      child = Child.new(:age => "27", :gender => "male", :unique_identifier => "georgelon12345", :_id => "id12345")
 
       assigns[:form_sections] = [form_section]
       assigns[:child] = child

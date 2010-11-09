@@ -49,3 +49,6 @@ Feature:
     And I attach the file "features/resources/textfile.txt" to "photo"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
+
+  # cancel button should prompt user
+    And the "Cancel" button presents a confirmation message    

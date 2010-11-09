@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
   # GET /sessions/new.xml
   def new
     unless (@session = get_session).nil?
-      return redirect_to :action => "show", :id => @session
+      return redirect_to(:action => "show", :id => @session)
     end
 
     @session = Session.new(params[:login])

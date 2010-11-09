@@ -54,7 +54,7 @@ describe FormSection do
     end
 
     it "raises an error if a field with that name already exists on the form section" do
-      FormSection.stub(:all).and_return([FormSection.new :fields=>[new_field(:name=>'field_one')]])
+      FormSection.stub(:all).and_return([FormSection.new(:fields=>[new_field(:name=>'field_one')])])
       my_form = FormSection.new :fields=>[new_field(:name=>'field_one')]
       lambda { FormSection.add_field_to_formsection my_form, field }.should raise_error
     end
