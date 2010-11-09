@@ -248,7 +248,7 @@ describe ChildrenController do
     end
     
     it "should redirect to the child page if only one result is found" do
-      children = [stub("Child", :id => 1)]
+      children = [stub("Child", :to_param => '1235')]
       Summary.should_receive(:advanced_search).and_return(children)
       get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
       response.should redirect_to(child_path(children.first))
