@@ -142,21 +142,6 @@ class   ChildrenController < ApplicationController
       else
         @search = search
         render :advanced_search
-      end  
-      default_search_respond_to
-    end
-  end
-
-  def default_search_respond_to
-    respond_to do |format|
-     format.html do
-       @show_thumbnails = !!params[:show_thumbnails]
-       if @results && @results.length == 1
-         redirect_to child_path( @results.first )
-       end
-     end
-      format.csv do
-        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
       end
     end
   end
@@ -175,6 +160,20 @@ class   ChildrenController < ApplicationController
 
   def get_form_sections
     FormSection.all_by_order
+  end
+
+  def default_search_respond_to
+    respond_to do |format|
+     format.html do
+       @show_thumbnails = !!params[:show_thumbnails]
+       if @results && @results.length == 1
+         redirect_to child_path( @results.first )
+       end
+     end
+      format.csv do
+        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
+      end
+    end
   end
 
   def render_as_csv results_temp, filename

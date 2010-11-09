@@ -247,11 +247,18 @@ describe ChildrenController do
       response.should render_template("children/advanced_search")
     end
     
+    it "should redirect to the child page if only one result is found" do
+      children = [stub("Child", :id => 1)]
+      Summary.should_receive(:advanced_search).and_return(children)
+      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
+      response.should redirect_to(child_path(children.first))
+    end
+
     it "should render error if search is invalid" do
       get(:advanced_search, :format => 'html', :search_field => "", :search_value => "")
       search = assigns[:search]
       search.errors.size.should == 2
-    end    
+    end
     
   end
 
