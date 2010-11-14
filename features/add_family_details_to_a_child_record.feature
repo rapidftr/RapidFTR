@@ -6,8 +6,6 @@ Feature: Add family details
 
     When I fill in the basic details of a child
     And I fill in "Mary" for "Mothers name"
-    And I select "Yes" from "Reunite with Mother"
     And I press "Save"
 
     Then I should see "Mary"
-    And I should see "Reunite With Mother: Yes"
