@@ -143,6 +143,20 @@ describe Child do
 
   describe "validating an existing child record" do
     it "should disallow file formats that are not photo formats" do
+      child = Child.new
+      child['last_known_location'] = "location"
+
+      child.photo = uploadable_photo_gif
+      child.save.should == false
+
+      child.photo = uploadable_photo_bmp
+      child.save.should == false
+
+      child.photo = uploadable_photo
+      child.save.should == true
+    end
+    
+    it "should disallow image file formats that are not png or jpg" do
       photo = uploadable_photo
 
       child = Child.new
@@ -157,7 +171,6 @@ describe Child do
       loaded_child.photo = uploadable_text_file
       loaded_child.save().should == false
     end
-
   end
 
   describe "new_with_user_name" do

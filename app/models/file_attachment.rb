@@ -7,7 +7,7 @@ class FileAttachment
     @data = StringIO.new data
   end
 
-  def FileAttachment.from_uploadable_file(file, name_prefix="file")
+  def self.from_uploadable_file(file, name_prefix="file")
     name = "#{name_prefix}-#{Time.now.strftime('%Y-%m-%dT%H%M%S')}"
     new name, file.content_type, file.read
   end
