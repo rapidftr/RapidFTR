@@ -5,7 +5,7 @@ namespace :sunspot do
   task :start do
     FileUtils.rm_rf "tmp/sunspot_index" if File.exists? "tmp/sunspot_index"
     Dir.mkdir "tmp/sunspot_index"
-    sh "sunspot-solr start -d tmp/sunspot_index -p #{ENV['SOLR_PORT']}"
+    sh "sunspot-solr start -d tmp/sunspot_index -p #{ENV['SOLR_PORT'] || "8983"}"
     sleep 10
     
     Child.reindex!
