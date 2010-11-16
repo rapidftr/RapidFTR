@@ -30,7 +30,16 @@ class FormSectionController < ApplicationController
     end
     redirect_to formsections_url
   end
-
+  
+  def save_order
+    params[:form_order].each do |key, value|
+      form_section = FormSection.get_by_unique_id(key)
+      form_section.order = value.to_i
+      form_section.save!
+    end
+    redirect_to formsections_url
+  end
+  
   def new
     @form_section = FormSection.new(params[:form_section])
   end
