@@ -144,7 +144,6 @@ describe Child do
   describe "validating an existing child record" do
     it "should disallow file formats that are not photo formats" do
       child = Child.new
-      child['last_known_location'] = "location"
 
       child.photo = uploadable_photo_gif
       child.save.should == false
@@ -156,14 +155,58 @@ describe Child do
       child.save.should == true
     end
     
+    it "should disallow age that is not a number" do
+      child = Child.new({:age => "not num"})
+      child.save.should == false
+    end
+    
+    
+    it "should disallow age less than 1" do
+      child = Child.new({:age => "1"})
+      child.save.should == true
+      
+      child = Child.new({:age => "0"})
+      child.save.should == false
+    end
+    
+    it "should disallow age greater than 99" do
+      child = Child.new({:age => "99"})
+      child.save.should == true
+      
+      child = Child.new({:age => "100"})
+      child.save.should == false
+    end
+    
+    it "should disallow age more than 1 dp" do
+      child = Child.new({:age => "10.1"})
+      child.save.should == true
+      
+      child = Child.new({:age => "10.11"})
+      child.save.should == false
+    end
+    
+    it "should allow blank age" do
+      child = Child.new({:age => ""})
+      child.save.should == true
+      
+      child = Child.new
+      child.save.should == true
+    end
+
+    it "should show error message for age if not valid" do
+      child = Child.new({:age => "not num"})
+      child.save.should == false
+      child.errors.on("age").should == ["Age must be between 1 and 99"]
+    end
+    
     it "should disallow image file formats that are not png or jpg" do
       photo = uploadable_photo
 
       child = Child.new
-      child['last_known_location'] = "location"
       child.photo = photo
 
       child.save.should == true
+
 
       loaded_child = Child.get(child.id)
       loaded_child.save().should == true
@@ -171,6 +214,8 @@ describe Child do
       loaded_child.photo = uploadable_text_file
       loaded_child.save().should == false
     end
+    
+
   end
 
   describe "new_with_user_name" do

@@ -2,6 +2,7 @@ class Child < CouchRestRails::Document
   use_database :child
   require "uuidtools"
   include CouchRest::Validation
+  
   include Searchable
 
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
@@ -13,7 +14,10 @@ class Child < CouchRestRails::Document
 
   before_save :initialize_history, :if => :new?
   before_save :update_history, :unless => :new?
-
+  property :age
+  property :name
+  property :unique_identifier
+  
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
@@ -22,8 +26,25 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  #view_by :name, :last_known_location
-
+  validates_with_method :age, :method => :validate_age
+  validates_with_method :validate_file_name
+  validates_with_method :validate_audio_file_name
+  
+  def validate_age
+    return true if age.nil? || age.blank? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0)
+    [false, "Age must be between 1 and 99"]
+  end
+  
+  def validate_file_name
+    return true if @file_name == nil || /([^\s]+(\.(?i)(jpg|jpeg|png))$)/ =~ @file_name
+    [false, "Please upload a valid photo file (jpg or png) for this child record"]
+  end
+  
+  def validate_audio_file_name
+    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr))$)/ =~ @audio_file_name
+    [false, "Please upload a valid audio file amr for this child record"]
+  end
+  
   def to_s
     if self['name'].present?
       "#{self['name']} (#{self['unique_identifier']})"
@@ -45,14 +66,6 @@ class Child < CouchRestRails::Document
 
     lucene_query = query.split(/[ ,]+/).map {|word| "(name_text:#{word.downcase}~ OR name_text:#{word.downcase}*)"}.join(" AND ")
     sunspot_search lucene_query
-  end
-  
-  def name 
-    self['name']
-  end
-  
-  def unique_identifier
-    self['unique_identifier']
   end
 
   def self.new_with_user_name(user_name, fields = {})
@@ -125,22 +138,6 @@ class Child < CouchRestRails::Document
   end
 
 
-  def valid?(context=:default)
-    valid = true
-
-    if @file_name && !/([^\s]+(\.(?i)(jpg|jpeg|png))$)/.match(@file_name)
-      valid = false
-
-      errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
-      return false
-    end
-    if @audio_file_name && !/([^\s]+(\.(?i)(amr))$)/.match(@audio_file_name)
-      valid = false
-      errors.add("audio", "Please upload a valid audio file amr for this child record")
-    end
-    return valid
-
-  end
 
   def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
     properties.each_pair do |name, value|
