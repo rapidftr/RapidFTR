@@ -129,13 +129,13 @@ td.checkbox { text-align: center;}
 .profiles-grid-item dd { margin: -2em 0 .5em; padding: 0 0 .5em 52px; border-bottom: 1px solid #678; }
 
 /* profiles wall page - list */
-.profiles-list-item { overflow: hidden; background-color: #fff; padding: 6px; margin: 0 6px .6em; position: relative; }
-.profiles-list-item .header { margin-left: 70px; position: relative; }
+.profiles-list {padding-left:70px}
+.profiles-list-item { overflow: hidden; background-color: #fff; padding: 6px 6px 20px; }
+.profiles-list-item .header { width:100%;position: relative; }
 .profiles-list-item h3 { margin: 0 20px .5em; }
 .profiles-list-item .edit { position: absolute; top: 0; right: 0px; }
 .profiles-list-item .checkbox { position: absolute; top: 0px; left: 0px; }
 .profiles-list-item .photo { position: absolute; top: 5px; left: 5px; }
-.profiles-list-item .details { margin-left: 70px; }
 .profiles-list-item .details p { margin-bottom: 0; clear: both; border-top: 1px solid #678; padding-top: .2em; }
 .profiles-list-item .details p strong { color: #678; }
 .profiles-list-item .details p em { }
