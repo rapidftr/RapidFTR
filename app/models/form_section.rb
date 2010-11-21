@@ -19,6 +19,7 @@ class FormSection < CouchRestRails::Document
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
 
+  
   def initialize args={}
     self["fields"] = []
     super args
@@ -39,7 +40,6 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.add_field_to_formsection formsection, field
-    ensure_field_name_not_already_in_use formsection, field
     raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save
@@ -101,13 +101,5 @@ class FormSection < CouchRestRails::Document
     move_field(field_to_move_down, 1)
   end
 
-  private
 
-  def self.ensure_field_name_not_already_in_use formsection, field
-    form = get_form_containing_field field.name
-    if form != nil
-      raise "Field already exists on this form" if form.name == formsection.name
-      raise "Field already exists on form '#{form.name}'"
-    end
-  end
 end

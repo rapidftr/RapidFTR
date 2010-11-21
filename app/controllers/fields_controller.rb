@@ -24,18 +24,19 @@ class FieldsController < ApplicationController
     properties = params[:field]
     properties[:display_name] = properties[:name].gsub('_', ' ') if properties[:display_name].empty?
     properties[:name] = properties[:display_name].dehumanize if properties[:name].empty?
+    
     if properties
       split_option_strings properties
     end
     field = Field.new properties
-
-    begin
-      FormSection.add_field_to_formsection @form_section, field
+    
+    FormSection.add_field_to_formsection @form_section, field
+    
+    if (field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = "Field successfully added"
       redirect_to(formsection_fields_path(params[:formsection_id]))
-    rescue Exception => e
-      field.errors.add("name", e.message)
+    else
       @field = field
       render :action => "new_#{params[:field][:type]}"
     end

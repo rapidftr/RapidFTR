@@ -2,7 +2,6 @@ class Child < CouchRestRails::Document
   use_database :child
   require "uuidtools"
   include CouchRest::Validation
-  
   include Searchable
 
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
@@ -136,8 +135,6 @@ class Child < CouchRestRails::Document
     content_type = self['_attachments'][media_key]['content_type']
     FileAttachment.new media_key, content_type, data
   end
-
-
 
   def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
     properties.each_pair do |name, value|

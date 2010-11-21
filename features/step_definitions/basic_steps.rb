@@ -185,7 +185,7 @@ end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
-  field = Field.new(:name => field_name, :help_text => field_help_text)
+  field = Field.new(:name => field_name, :display_name => field_name, :help_text => field_help_text)
   FormSection.add_field_to_formsection(form_section, field)
 end
 

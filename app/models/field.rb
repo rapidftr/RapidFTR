@@ -18,6 +18,23 @@ class Field < Hash
   CHECK_BOX = "check_box"
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
+  
+  validates_presence_of :name
+  validates_presence_of :display_name
+  validates_with_method :name, :method => :validate_unique
+  
+  def form
+    base_doc
+  end
+  
+  def validate_unique
+    return true unless new? && form
+    return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.name == name})
+    
+    other_form = FormSection.get_form_containing_field name
+    return [false, "Field already exists on form '#{other_form.name}'"] if other_form  != nil
+    true
+  end
 
   def initialize properties
     super properties
@@ -45,7 +62,6 @@ class Field < Hash
   def self.new_audio_upload_box field_name, display_name = nil
     Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => AUDIO_UPLOAD_BOX
   end
-
 
   def self.new_radio_button field_name, option_strings, display_name = nil
     Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => RADIO_BUTTON, :option_strings => option_strings
