@@ -15,6 +15,7 @@ describe Child do
     FormSection.stub!(:all).and_return([form_section])
   end
 
+ 
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
@@ -508,6 +509,13 @@ describe Child do
       childrens = Child.all
       childrens.first['name'].should == ''
       childrens.size.should == 3
+    end
+  end
+
+   describe ".photo" do
+    it "should return nil if the record has no attached photo" do
+      create_child "Bob McBobberson"
+      Child.all[0].photo.should be_nil
     end
   end
   
