@@ -51,3 +51,11 @@ Feature: So that hard copy printout of missing child photos are available
     Then I should receive a PDF file
     And the PDF file should have 1 page
     And the PDF file should contain the string "will_uid"
+
+  Scenario: Exporting PDF when there is no photo
+    Given the following children exist in the system:
+      | name      | unique_id  | photo_path |
+      | Billy No Photo | will_uid   |  |
+   And I am on the saved record page for child with name "Billy No Photo"
+  And I follow "Export to PDF"
+  Then I should receive a PDF file

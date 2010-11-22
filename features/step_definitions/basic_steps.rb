@@ -27,7 +27,7 @@ Given /^the following children exist in the system:$/ do |children_table|
             'age_is' => 'Approximate'
     )
 
-    photo = uploadable_photo(child_hash.delete('photo_path'))
+    photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
     unique_id = child_hash.delete('unique_id')
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
     child.photo = photo

@@ -106,6 +106,7 @@ class Child < CouchRestRails::Document
 
   def photo
     attachment_name = self['current_photo_key']
+    return nil if !attachment_name
     data = read_attachment attachment_name
     content_type = self['_attachments'][attachment_name]['content_type']
     FileAttachment.new attachment_name, content_type, data

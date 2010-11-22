@@ -30,7 +30,7 @@ class PdfGenerator
       :position => :center,
       :vposition => :top,
       :fit => @image_bounds 
-    )
+    ) if child.photo
     @pdf.y -= 5.mm
     @pdf.text( 
       child.unique_identifier,
