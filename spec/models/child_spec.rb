@@ -559,8 +559,8 @@ describe Child do
 
    describe ".photo" do
     it "should return nil if the record has no attached photo" do
-      create_child "Bob McBobberson"
-      Child.all[0].photo.should be_nil
+      child = create_child "Bob McBobberson"
+      Child.all.find{|c| c.id == child.id}.photo.should be_nil
     end
   end
   
