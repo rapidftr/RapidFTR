@@ -44,7 +44,7 @@ describe FieldsController do
   describe "post create" do
 
     before :each do
-      @field = Field.new :name => "myNewField", :type=>"TEXT", :display_name => "My New Field"
+      @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
       SuggestedField.stub(:mark_as_used)
 
     end

@@ -19,9 +19,8 @@ class Field < Hash
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
   
-  validates_presence_of :name
   validates_presence_of :display_name
-  validates_with_method :name, :method => :validate_unique
+  validates_with_method :display_name, :method => :validate_unique
   
   def form
     base_doc

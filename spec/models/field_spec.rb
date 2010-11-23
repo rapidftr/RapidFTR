@@ -21,11 +21,6 @@ describe "Child record field view model" do
   end
   
   describe "valid?" do
-    it "should not allow blank name" do  
-      field = Field.new(:name => "")
-      field.valid?
-      field.errors.on(:name).should == ["Name must not be blank"]
-    end
   
     it "should not allow blank display name" do  
       field = Field.new(:display_name => "")
@@ -35,11 +30,11 @@ describe "Child record field view model" do
   
     it "should validate unique within form" do  
       form = FormSection.new(:fields => [Field.new(:name => "test", :display_name => "test")] )
-      field = Field.new(:name => "test")
+      field = Field.new(:display_name => "test", :name => "test")
       form.fields << field
     
       field.valid?
-      field.errors.on(:name).should ==  ["Field already exists on this form"] 
+      field.errors.on(:display_name).should ==  ["Field already exists on this form"] 
     end
   
     it "should validate unique within other forms" do  
@@ -47,11 +42,11 @@ describe "Child record field view model" do
       other_form.save!
     
       form = FormSection.new
-      field = Field.new(:name => "other test")
+      field = Field.new(:display_name => "test", :name => "other test")
       form.fields << field
     
       field.valid?
-      field.errors.on(:name).should ==  ["Field already exists on form 'test form'"] 
+      field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"] 
     end
   end
 end

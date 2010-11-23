@@ -31,7 +31,7 @@ Feature: Adding a suggested field to a form section
 
      Then I should see "Field successfully added"
      And I should be on the manage fields page for "basic_details"
-     And I should see "A_suggested_field" in the list of fields
+     And I should see "a_suggested_field" in the list of fields
 
      When I follow "Add Custom Field"
 
@@ -51,5 +51,5 @@ Feature: Adding a suggested field to a form section
      When I am on children listing page
      And I follow "New child"
 
-     Then I should see the select named "child[Field_with_options]"
-     And I should see an option "option1" for select "child[Field_with_options]"
+     Then I should see the select named "child[field_with_options]"
+     And I should see an option "option1" for select "child[field_with_options]"

@@ -2,8 +2,7 @@
 
 <table id="formFields">
     <% @form_section.fields.each do |field| %>
-    <tr id="<%="#{field.name}Row"%>">
-      <td><%= field.name %></td>
+    <tr id="<%="#{field.name}Row"%>"> 
       <td><%= field.display_name %></td>
       <%if @form_section.editable?%>
         <td>

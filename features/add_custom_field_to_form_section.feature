@@ -21,12 +21,12 @@ Feature: So that admin can customize fields in a form section
     When I follow "Text Field"
 
     Then I should find the form with following attributes:
-      | Name |
+      | Display name |
       | Help text |
       | Enabled |
     And the "Enabled" checkbox should be checked
 
-    When I fill in "Anything" for "name"
+    When I fill in "Anything" for "Display name"
     And I fill in "Really anything" for "Help text"
     And I press "Create"
     
@@ -48,12 +48,12 @@ Feature: So that admin can customize fields in a form section
     When I follow "Date Field"
 
     Then I should find the form with following attributes:
-      | Name |
+      | Display name |
       | Help text |
       | Enabled |
     And the "Enabled" checkbox should be checked
 
-    When I fill in "Anything" for "name"
+    When I fill in "Anything" for "Display name"
     And I fill in "Really anything" for "Help text"
     And I press "Create"
 
@@ -63,7 +63,7 @@ Feature: So that admin can customize fields in a form section
     And I follow "New child"
 
     Then I should see "Anything"
-    When I fill in "11/17/2010" for "child_Anything"
+    When I fill in "11/17/2010" for "child_anything"
     And I press "Save"
     Then I should see "11/17/2010"
 

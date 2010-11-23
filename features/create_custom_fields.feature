@@ -10,13 +10,12 @@ Feature: Creating Custom Form Fields
     And I follow "Add Custom Field"
 
     When I follow "Numeric Field"
-    And I fill in "My_new_numeric_field" for "Name"
     And I fill in "Help for a numeric field" for "Help text"
     And I fill in "My new number field" for "Display name"
     And I press "Create"
 
     Then I should see "Field successfully added"
-    And I should see "My_new_numeric_field" in the list of fields
+    And I should see "my_new_number_field" in the list of fields
 
     When I am on children listing page
     And I follow "New child"
