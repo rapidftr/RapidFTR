@@ -93,3 +93,10 @@ Feature: So that admin can customize fields in a form section
     When I add a new text field with "My field" and "Description"
 
     Then I should see "Field already exists on form 'Basic details'"
+  Scenario: Should provide navigation links
+    Given I am logged in as an admin
+    And I am on the form section page
+    And I am on the manage fields page for "family_details"
+    
+    And I follow "Back To Forms Page"
+    Then I am on the form section page

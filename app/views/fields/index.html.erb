@@ -18,6 +18,7 @@
     </tr>
    <% end %>
 </table>
-       <p>
-<%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %>
+<p>
+  <%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %>
 </p>
+<p><%= link_to "Back To Forms Page", formsections_path() %></p>
