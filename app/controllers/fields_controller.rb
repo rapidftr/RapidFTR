@@ -8,10 +8,6 @@ class FieldsController < ApplicationController
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
   end
 
-  def index
-    read_form_section()
-  end
-
   def new
     @body_class = 'forms-page'
     read_form_section()

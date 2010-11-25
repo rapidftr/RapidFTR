@@ -12,12 +12,6 @@ describe FieldsController do
     FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
   end
    
-   describe "get index" do
-     it "populates the view with the selected form section"do
-       should_populate_form_section(:index)
-     end
-   end
-   
    describe "get new" do
      
      it "populates the view with the selected form section"do
@@ -124,4 +118,6 @@ describe FieldsController do
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
   end
+  
+
 end
