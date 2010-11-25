@@ -24,6 +24,7 @@ table thead { background-color: #678; color: #fff; }
 th  { text-align: left;}
 td, th { padding: .5em 10px; border-bottom: 1px solid #fff; }
 td a { font-weight: bold;  }
+tfoot th { font-weight: normal; font-size: 0.75em;}
 
 /* default classes */
 .hidden { display:none; }
@@ -33,7 +34,7 @@ td a { font-weight: bold;  }
 .default-form fieldset legend { font-weight: bold; font-size: 1.1em; }
 .default-form fieldset p { margin-bottom: 1em; clear: both; overflow: hidden; }
 .default-form label { float: left; text-align: right; width: 150px; margin-right: 10px; font-weight: bold; color: #678; }
-.default-form input, 
+.default-form input[type=text], 
 .default-form select { width: 200px; height: 1.7em; }
 .default-form h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 
@@ -57,6 +58,7 @@ td a { font-weight: bold;  }
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
 .default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; float:right; }
+.default-form .submitButton { overflow: hidden; margin-bottom: 1em }
 .default-form .cancelButton a { width: auto; height: auto;  background: #aaa; padding: 2px 30px; font-weight: bold; color: #fff; float:left;}
 
 /* default : forms > field errors */

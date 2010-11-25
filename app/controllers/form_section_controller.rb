@@ -18,6 +18,21 @@ class FormSectionController < ApplicationController
       render :new
     end
   end
+  
+  def edit
+    @form_section = FormSection.get_by_unique_id(params[:id])
+  end
+  
+  def update
+    @form_section = FormSection.get_by_unique_id(params[:id])
+    @form_section.properties = params[:form_section]
+    if (@form_section.valid?)
+      @form_section.save!
+      redirect_to formsections_path
+    else
+      render :action => :edit
+    end
+  end
 
   def enable
     forms = params[:sections]

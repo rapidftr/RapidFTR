@@ -7,7 +7,7 @@ Feature: So that admin can customize fields in a form section
 
   Scenario: Admins should be able to add new text fields
     Given I am logged in as an admin
-    And I am on the manage fields page for "family_details"
+    And I am on the edit form section page for "family_details"
 
     When I follow "Add Custom Field"
 
@@ -38,7 +38,7 @@ Feature: So that admin can customize fields in a form section
        
   Scenario: Admins should be able to add new date fields
     Given I am logged in as an admin
-    And I am on the manage fields page for "family_details"
+    And I am on the edit form section page for "family_details"
 
     When I follow "Add Custom Field"
 
@@ -77,7 +77,7 @@ Feature: So that admin can customize fields in a form section
   Scenario: Should not be able to add two fields with the same name in a form section
     Given I am logged in as an admin
     And I am on the form section page
-    And I am on the manage fields page for "family_details"
+    And I am on the edit form section page for "family_details"
 
     When I add a new text field with "My field" and "Description"
     And I add a new text field with "My field" and "Description 2"
@@ -88,7 +88,7 @@ Feature: So that admin can customize fields in a form section
     Given I am logged in as an admin
     And the "basic_details" form section has the field "My field" with help text "Some description"
     And I am on the form section page
-    And I am on the manage fields page for "family_details"
+    And I am on the edit form section page for "family_details"
 
     When I add a new text field with "My field" and "Description"
 
@@ -96,7 +96,7 @@ Feature: So that admin can customize fields in a form section
   Scenario: Should provide navigation links
     Given I am logged in as an admin
     And I am on the form section page
-    And I am on the manage fields page for "family_details"
+    And I am on the edit form section page for "family_details"
     
     And I follow "Back To Forms Page"
     Then I am on the form section page

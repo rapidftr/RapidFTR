@@ -202,7 +202,6 @@ end
 Then /^I should see the "([^\"]*)" form section link$/ do |form_section_name|
   form_section_names = Hpricot(response.body).form_section_names.collect {|item| item.inner_html}
   form_section_names.should contain(form_section_name)
-
 end
 
 Then /^I should not see the "([^\"]*)" form section link$/ do |form_section_name|
@@ -222,6 +221,11 @@ Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$
   row = Hpricot(response.body).form_section_row_for form_section
   description_text_cell = row.search("td").detect {|cell| cell.inner_html.strip == expected_description}
   description_text_cell.should_not be_nil
+end
+
+Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expected_name, form_section|
+  row = Hpricot(response.body).form_section_row_for form_section
+  row.search("td")[2].inner_html.strip.should =~ /#{expected_name}/
 end
 
 
@@ -276,11 +280,8 @@ Then /^I should not see the following suggested fields:$/ do |suggested_fields_t
 end
 
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_id| 
-  fields = Hpricot(response.body).form_fields_list
-  fields.should_not be_nil
-  field_row = fields.form_field_for(field_id)
-  
-  field_row.should_not be_nil
+  field_ids = Nokogiri::HTML(response.body).css("#formFields tr").map {|row| row[:id] }
+  field_ids.should include("#{field_id}Row")
 end
 
 And /^I press add for suggested field "([^\"]*)"$/ do |field_id|
