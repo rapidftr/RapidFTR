@@ -10,7 +10,7 @@ Feature: So that admin can see Manage Users Page
     When I follow "Manage Users"
     Then I should see "Show"
     Then I should see "Edit"
-    Then I should see "Delete User"
+    Then I should not see "Delete User"
 
   Scenario: Admins should see a navigational elements
     Then I should see "Back"
