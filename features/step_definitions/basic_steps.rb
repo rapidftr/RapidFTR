@@ -276,11 +276,17 @@ Then /^I should not see the following suggested fields:$/ do |suggested_fields_t
 end
 
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_id| 
-  fields = Hpricot(response.body).form_fields_list
-  fields.should_not be_nil
-  field_row = fields.form_field_for(field_id)
+  field_row = Hpricot(response.body).form_field_for(field_id)
   
   field_row.should_not be_nil
+end
+
+Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
+  field = Hpricot(response.body).form_field_for(field_name)
+  field.should_not be_nil
+
+  enabled_icon = field.enabled_icon
+  enabled_icon.inner_html.strip.should == expected_text
 end
 
 And /^I press add for suggested field "([^\"]*)"$/ do |field_id|

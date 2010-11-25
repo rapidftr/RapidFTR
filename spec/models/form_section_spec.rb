@@ -223,6 +223,7 @@ describe FormSection do
       FormSection.create_new_custom nil
     end
   end
+
   describe "valid?" do
     it "should validate name is filled in" do
       form_section = FormSection.new()
@@ -238,4 +239,15 @@ describe FormSection do
     end
   end
 
+  describe "disable_fields" do
+    it "should set all given fields to disabled" do
+      field_blub = Field.new :name => 'blub', :enabled => true
+      field_bla = Field.new :name => 'bla', :enabled => true
+      form_section = FormSection.new :fields => [field_blub, field_bla]
+
+      form_section.disable_fields(['bla'])
+      field_blub.should be_enabled
+      field_bla.should_not be_enabled
+    end
+  end
 end

@@ -20,6 +20,7 @@ describe "fields/index.html.erb" do
     custom_field_link.should_not be_nil
     custom_field_link[:href].should == new_formsection_fields_path(@form_section.unique_id)
   end
+
   it "should display the list of fields" do
     field_name = @form_section.fields[0].name
     fields = Hpricot(response.body).form_fields_list

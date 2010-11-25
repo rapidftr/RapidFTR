@@ -49,4 +49,14 @@ describe "Child record field view model" do
       field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"] 
     end
   end
+
+  describe "save" do
+    it "should be enabled" do
+      field = Field.new :name => "field", :display_name => "field"
+      form = FormSection.new :fields => [field], :name => "test_form"
+
+      form.save!
+      field.should be_enabled
+    end
+  end
 end

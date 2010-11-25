@@ -62,6 +62,13 @@ class FieldsController < ApplicationController
     redirect_to(formsection_fields_path(params[:formsection_id]))
   end
 
+  def toggle_fields
+    form_section = FormSection.get_by_unique_id(params[:formsection_id])
+    form_section.disable_fields(params[:fields])
+    form_section.save()
+    redirect_to(formsection_fields_path(params[:formsection_id]))
+  end
+
   FIELD_TYPES.each do |field_type|
     define_method "new_#{field_type}" do
       read_form_section()

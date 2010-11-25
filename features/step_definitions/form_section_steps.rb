@@ -19,13 +19,13 @@ When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name,
 end
 
 Then /^I should not see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
-  row = Hpricot(response.body).search("tr[@id=#{field_name}Row]").first
+  row = Nokogiri::HTML(response.body).css("##{field_name}Row").first
   row.inner_html.should_not include(arrow_name)
 end
 
 Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
-  row = Hpricot(response.body).search("tr[@id=#{field_name}Row]").first
-  row.inner_html.should include(arrow_name)
+  row = Nokogiri::HTML(response.body).css("##{field_name}Row").first
+  row.content.should include(arrow_name)
 end
 
 And /^I click the "([^\"]*)" arrow on "([^\"]*)" field$/ do |arrow_name, field_name|
@@ -40,7 +40,7 @@ Then /^I should see an order of "([^\"]*)" next to "([^\"]*)"/ do |order, unique
 end
 
 Then /^the "([^\"]*)" field should be above the "([^\"]*)" field$/ do |first_field_name, second_field_name|
-  table_rows = Hpricot(response.body).search("table tr")
+  table_rows = Nokogiri::HTML(response.body).css("table tr")
   row_ids = table_rows.collect {|row| row[:id]}
 
   index_of_first_row = row_ids.index(first_field_name + "Row")
