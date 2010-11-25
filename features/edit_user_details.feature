@@ -55,3 +55,10 @@ Scenario: When editing a user I cannot edit their user name
 
     Then I should see "Please enter a valid email address"
     And I should see "Please enter full name of the user"
+
+  Scenario: Admin should not see "Disable" control when she is editing her own record
+    Given I am logged in as an admin
+    And I am on manage users page
+    And I follow "Edit"
+    Then I should not see "Disabled"
+
