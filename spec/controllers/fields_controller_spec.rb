@@ -126,17 +126,31 @@ describe FieldsController do
   end
 
   describe "post toggle_fields" do
+
+    before :each do
+      @formsection_id = "fred"
+      @form_section = FormSection.new
+      FormSection.stub!(:get_by_unique_id).with(@formsection_id).and_return(@form_section)
+    end
+
     it "should disable all selected fields" do
-      formsection_id = "fred"
       fields_to_disable = ['bla']
-      form_section = FormSection.new
-      FormSection.stub!(:get_by_unique_id).with(formsection_id).and_return(form_section)
 
-      form_section.should_receive(:disable_fields).with(fields_to_disable)
-      form_section.should_receive(:save)
+      @form_section.should_receive(:disable_fields).with(fields_to_disable)
+      @form_section.should_receive(:save)
 
-      post :toggle_fields, :formsection_id => formsection_id, :disable => 'Disable', :fields => fields_to_disable
-      response.should redirect_to(formsection_fields_path(formsection_id))
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Disable', :fields => fields_to_disable
+      response.should redirect_to(formsection_fields_path(@formsection_id))
+    end
+
+    it "should enable all selected fields" do
+      fields_to_enable = ["bla"]
+
+      @form_section.should_receive(:enable_fields).with(fields_to_enable)
+      @form_section.should_receive(:save)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
+      response.should redirect_to(formsection_fields_path(@formsection_id))
     end
   end
 end

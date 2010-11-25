@@ -245,9 +245,21 @@ describe FormSection do
       field_bla = Field.new :name => 'bla', :enabled => true
       form_section = FormSection.new :fields => [field_blub, field_bla]
 
-      form_section.disable_fields(['bla'])
+      form_section.disable_fields([field_bla.name])
       field_blub.should be_enabled
       field_bla.should_not be_enabled
+    end
+  end
+
+  describe "enable_fields" do
+    it "should set all given fields to enabled" do
+      field_one = Field.new :name => 'one', :enabled => false
+      field_two = Field.new :name => 'two', :enabled => false
+      form_section = FormSection.new :fields => [field_one, field_two]
+
+      form_section.enable_fields([field_two.name])
+      field_one.should_not be_enabled
+      field_two.should be_enabled
     end
   end
 end

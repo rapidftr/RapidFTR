@@ -37,8 +37,8 @@
   </tbody>
 </table>
 <div class="formSectionButtons">
-  <%= submit_tag "Disable", :name => "disable" %>
-  <%= submit_tag "Enable", :name => "enable" %>
+  <%= submit_tag "Disable", :name => "toggle_fields" %>
+  <%= submit_tag "Enable", :name => "toggle_fields" %>
 </div>
 <p>
   <%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %>
