@@ -40,9 +40,8 @@ Then /^I should see an order of "([^\"]*)" next to "([^\"]*)"/ do |order, unique
 end
 
 Then /^the "([^\"]*)" field should be above the "([^\"]*)" field$/ do |first_field_name, second_field_name|
-  table_rows = Nokogiri::HTML(response.body).css("table tr")
-  row_ids = table_rows.collect {|row| row[:id]}
-
+  rows = Nokogiri::HTML(response.body).css("#formFields tr")
+  row_ids = rows.collect {|row| row[:id]}
   index_of_first_row = row_ids.index(first_field_name + "Row")
   index_of_second_row = row_ids.index(second_field_name + "Row")
 

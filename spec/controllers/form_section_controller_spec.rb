@@ -73,6 +73,30 @@ describe FormSectionController do
     end
   end
   
+  describe "post update" do
+    it "should save update if valid" do
+      form_section = FormSection.new
+      params = {"some" => :params}
+      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section)
+      form_section.should_receive(:properties=).with(params)
+      form_section.should_receive(:valid?).and_return(true)
+      form_section.should_receive(:save!)
+      post :update, :form_section => params, :id => "form_1"
+      response.should redirect_to(formsections_path)
+    end
+    
+    it "should show errors if invalid" do
+      form_section = FormSection.new
+      params = {"some" => :params}
+      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section)
+      form_section.should_receive(:properties=).with(params)
+      form_section.should_receive(:valid?).and_return(false)
+      post :update, :form_section => params, :id => "form_1"
+      response.should_not redirect_to(formsections_path)
+      response.should render_template("edit")
+    end
+  end
+  
   describe "post enable" do
     it "when called with value false disables only the selected form sections" do
       form_section1 = {:name=>"name1", :description=>"desc", :enabled=>"true", :unique_id=>"form_1"}

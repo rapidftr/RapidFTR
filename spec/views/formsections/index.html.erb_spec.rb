@@ -91,12 +91,4 @@ describe "form_section/index.html.erb" do
     form_section_should_have_order(@form_section_1)
     form_section_should_have_order(@form_section_2)
   end
-  it "renders the manage fields link for each form section" do
-    form_section = @form_section_2
-    row = @searchable_response.form_section_row_for form_section.unique_id
-    manage_field_link = row.manage_fields_link
-    manage_field_link.should_not be_nil
-    manage_field_link.inner_html.strip.should == "Manage Fields"
-    manage_field_link['href'].should == formsection_fields_path(form_section.unique_id)
-  end
 end

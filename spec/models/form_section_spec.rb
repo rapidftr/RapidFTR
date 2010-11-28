@@ -218,10 +218,6 @@ describe FormSection do
       result = FormSection.create_new_custom "basic"
       result.should == form_section
     end
-    it "should not save an invalid form section" do
-      FormSection.should_not_receive(:create!)
-      FormSection.create_new_custom nil
-    end
   end
 
   describe "valid?" do

@@ -74,7 +74,10 @@ module NavigationHelpers
         
       when /create form section page/
         new_formsection_path(options)
-        
+      
+      when /edit form section page for "(.+)"$/
+        edit_form_section_path(:id => $1)
+          
       when /form section page/
         formsections_path(options) 
 
@@ -91,7 +94,7 @@ module NavigationHelpers
         field_type = $1
         send( "new_#{field_type}_formsection_fields_path" )
 
-      when /the manage fields page for "(.+)"/
+      when /the edit form section page for "(.+)"/
         form_section = $1
         formsection_fields_path(form_section)
 

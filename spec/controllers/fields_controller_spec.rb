@@ -12,12 +12,6 @@ describe FieldsController do
     FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
   end
    
-   describe "get index" do
-     it "populates the view with the selected form section"do
-       should_populate_form_section(:index)
-     end
-   end
-   
    describe "get new" do
      
      it "populates the view with the selected form section"do
@@ -56,7 +50,7 @@ describe FieldsController do
     it "should redirect back to the fields page" do
       FormSection.stub(:add_field_to_formsection)
       post :create, :formsection_id => @form_section.unique_id, :field => @field
-      response.should redirect_to(formsection_fields_path(@form_section.unique_id))
+      response.should redirect_to(edit_form_section_path(@form_section.unique_id))
     end
     
     it "should show a flash message" do
@@ -112,7 +106,7 @@ describe FieldsController do
     it "should redirect back to the fields page on move_up" do
       @form_section.stub(:move_up_field)
       post :move_up, :formsection_id => @formsection_id, :field_name=> @field_name
-      response.should redirect_to(formsection_fields_path(@formsection_id))
+      response.should redirect_to(edit_form_section_path(@formsection_id))
     end
     it "should swap position of selected field with the one below it" do
       @form_section.should_receive(:move_down_field).with(@field_name)
@@ -121,10 +115,10 @@ describe FieldsController do
     it "should redirect back to the fields page on move_down" do
       @form_section.stub(:move_down_field)
       post :move_down, :formsection_id => @formsection_id, :field_name=> @field_name
-      response.should redirect_to(formsection_fields_path(@formsection_id))
+      response.should redirect_to(edit_form_section_path(@formsection_id))
     end
   end
-
+ 
   describe "post toggle_fields" do
 
     before :each do
@@ -152,5 +146,6 @@ describe FieldsController do
       post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
       response.should redirect_to(formsection_fields_path(@formsection_id))
     end
-  end
+  end 
+  
 end

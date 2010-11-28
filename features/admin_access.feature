@@ -12,7 +12,7 @@ Feature: Only administrators should have access to certain sections of the site
     Then I should be able to see the admin page
     And I should be able to see the manage users page
     And I should be able to see the form section page
-    And I should be able to see the manage fields page for "basic_details"
+    And I should be able to see the edit form section page for "basic_details"
 
   Scenario: A normal user can't see administrator stuff
 
@@ -21,4 +21,4 @@ Feature: Only administrators should have access to certain sections of the site
     Then I should not be able to see the admin page
     And I should not be able to see the manage users page
     And I should not be able to see the form section page
-    And I should not be able to see the manage fields page for "basic_details"
+    And I should not be able to see the edit form section page for "basic_details"

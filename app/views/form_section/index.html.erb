@@ -12,7 +12,6 @@
     <th>Name</th>
     <th>Description</th>
     <th colspan="3">Ordering</th>
-    <th>Fields</th>
   </tr>
 </thead>
 <tbody>
@@ -28,7 +27,7 @@
         <%= section.enabled? ? "Enabled" : "Disabled" %>
         </span>
           </td>
-          <td><a href="#" class="formSectionLink"><%= section.name %></a></td>
+          <td><%= link_to section.name, edit_form_section_path(section.unique_id), :class => "formSectionLink" %></td>
           <td><%= section.description %></td>
           <td>
             <span class="formSectionOrder"><%= section.order %></span>
@@ -43,11 +42,7 @@
             <td class="orderingColumn">
               <a id="<%= "#{section.unique_id}_down"%>" href="#" class="hidden moveDown">Down</a>
             </td>
-            <td>
-              <%= link_to "Manage Fields", formsection_fields_path(section.unique_id), :class=>'manageFieldsLink'%>
-            </td>
           <% else %>
-            <td></td>
             <td></td>
             <td></td>
           <% end %>

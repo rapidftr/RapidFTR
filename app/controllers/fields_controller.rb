@@ -8,10 +8,6 @@ class FieldsController < ApplicationController
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
   end
 
-  def index
-    read_form_section()
-  end
-
   def new
     @body_class = 'forms-page'
     read_form_section()
@@ -33,7 +29,7 @@ class FieldsController < ApplicationController
     if (field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = "Field successfully added"
-      redirect_to(formsection_fields_path(params[:formsection_id]))
+      redirect_to(edit_form_section_path(params[:formsection_id]))
     else
       @field = field
       render :action => "new_#{params[:field][:type]}"
@@ -48,18 +44,18 @@ class FieldsController < ApplicationController
 
   def move_up
     FormSection.get_by_unique_id(params[:formsection_id]).move_up_field(params[:field_name])
-    redirect_to(formsection_fields_path(params[:formsection_id]))
+    redirect_to(edit_form_section_path(params[:formsection_id]))
   end
 
 
   def move_down
     FormSection.get_by_unique_id(params[:formsection_id]).move_down_field(params[:field_name])
-    redirect_to(formsection_fields_path(params[:formsection_id]))
+    redirect_to(edit_form_section_path(params[:formsection_id]))
   end
   
   def delete
     FormSection.get_by_unique_id(params[:formsection_id]).delete_field(params[:field_name])
-    redirect_to(formsection_fields_path(params[:formsection_id]))
+    redirect_to(edit_form_section_path(params[:formsection_id]))
   end
 
   def toggle_fields

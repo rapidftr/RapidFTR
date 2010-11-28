@@ -44,13 +44,19 @@ class FormSection < CouchRestRails::Document
     formsection.fields.push(field)
     formsection.save
   end
+  
+  def properties= properties
+    properties.each_pair do |name, value|
+      self[name] = value unless value == nil
+    end
+  end
 
   def self.get_form_containing_field field_name
     all.find { |form| form.fields.find { |field| field.name == field_name } }
   end
 
   def self.create_new_custom name, description = "", enabled=true
-    unique_id = (name||"").gsub(/\s/, "_").downcase
+    unique_id = name.dehumanize
     max_order= (all.map{|form_section| form_section.order}).max || 0
     form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
     form_section = create! form_section if form_section.valid?
