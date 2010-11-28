@@ -1,5 +1,5 @@
 <p>
   <%= label_tag date_field.tag_name_attribute, date_field.display_name %>
   <%= text_field_tag date_field.tag_name_attribute, @child[date_field.name] %>
-  <%= javascript_tag "$(\"##{date_field.tag_id}\").datepicker({ dateFormat: 'dd/mm/yy' });" %>
+  <%= javascript_tag "$(document).ready(function(){ $(\"##{date_field.tag_id}\").datepicker({ dateFormat: 'dd/mm/yy' }); });" %>
 </p>
