@@ -59,6 +59,7 @@ class FieldsController < ApplicationController
   end
 
   def toggle_fields
+    return redirect_to(edit_form_section_path(params[:formsection_id])) if params[:toggle_fields] == 'Cancel' 
     form_section = FormSection.get_by_unique_id(params[:formsection_id])
     if(params[:toggle_fields] == 'Disable')
       form_section.disable_fields(params[:fields])
@@ -66,7 +67,7 @@ class FieldsController < ApplicationController
       form_section.enable_fields(params[:fields])
     end
     form_section.save()
-    redirect_to(formsection_fields_path(params[:formsection_id]))
+    redirect_to(edit_form_section_path(params[:formsection_id]))
   end
 
   FIELD_TYPES.each do |field_type|

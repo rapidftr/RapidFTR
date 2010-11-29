@@ -189,6 +189,12 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^
   FormSection.add_field_to_formsection(form_section, field)
 end
 
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" disabled$/ do |form_section, field_name |
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :enabled => false)
+  FormSection.add_field_to_formsection(form_section, field)
+end
+
 
 Then /^I should see a (\w+) in the enabled column for the form section "([^\"]*)"$/ do |expected_icon, form_section|
   row = Hpricot(response.body).form_section_row_for form_section

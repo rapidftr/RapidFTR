@@ -134,7 +134,7 @@ describe FieldsController do
       @form_section.should_receive(:save)
 
       post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Disable', :fields => fields_to_disable
-      response.should redirect_to(formsection_fields_path(@formsection_id))
+      response.should redirect_to(edit_form_section_path(@formsection_id))
     end
 
     it "should enable all selected fields" do
@@ -144,8 +144,18 @@ describe FieldsController do
       @form_section.should_receive(:save)
 
       post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
-      response.should redirect_to(formsection_fields_path(@formsection_id))
+      response.should redirect_to(edit_form_section_path(@formsection_id))
     end
-  end 
-  
+
+    it "should redirect to edit form section on cancel" do
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should not load formsection on cancel" do
+      FormSection.should_not_receive(:get_by_unique_id)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
+    end
+  end
 end

@@ -17,17 +17,25 @@
   </p>
   </fieldset>
   <%= submit_button 'Save Details' %>
+<% end %>
 
 
-
-
+<% form_tag confirm_toggle_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
 <fieldset>
 <h3>Fields</h3>
 
 <table id="formFields">
   <tbody>
     <% @form_section.fields.each do |field| %>
-    <tr id="<%="#{field.name}Row"%>"> 
+    <tr id="<%="#{field.name}Row"%>">
+      <% if @form_section.editable? %>
+          <td>
+            <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
+          </td>
+          <td>
+            <span class="enabledStatus"><%= field.enabled ? "Enabled" : "Disabled" %></span>
+          e</td>
+      <% end %>
       <td><%= field.display_name %></td>
       <%if @form_section.editable?%>
         <td>
@@ -50,7 +58,12 @@
     </tr>
   </tfoot> 
 </table>
-
 </fieldset>
-<p><%= link_to "Back To Forms Page", formsections_path() %></p>
+<% if @form_section.editable? %>
+    <div class="formSectionButtons">
+      <%= submit_tag "Disable", :name => "toggle_fields" %>
+      <%= submit_tag "Enable", :name => "toggle_fields" %>
+    </div>
 <% end %>
+<% end %>
+<p><%= link_to "Back To Forms Page", formsections_path() %></p>
