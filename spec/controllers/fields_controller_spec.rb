@@ -73,20 +73,20 @@ describe FieldsController do
     end
 
     it "should use the display name to form the field name if no field name is supplied" do
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>"My brilliant new field", "name"=>"my_brilliant_new_field", "allow_blank_default"=>false} )
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>"My brilliant new field", "name"=>"my_brilliant_new_field", "allow_blank_default"=>false, "enabled" => true} )
       post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>"My brilliant new field", :name=>""}
     end
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This £££i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false} )
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false, "enabled" => true} )
       post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>""}
     end
     
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false} )
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false, "enabled" => true} )
       post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>""}
     end
     
@@ -118,6 +118,44 @@ describe FieldsController do
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
   end
-  
+ 
+  describe "post toggle_fields" do
 
+    before :each do
+      @formsection_id = "fred"
+      @form_section = FormSection.new
+      FormSection.stub!(:get_by_unique_id).with(@formsection_id).and_return(@form_section)
+    end
+
+    it "should disable all selected fields" do
+      fields_to_disable = ['bla']
+
+      @form_section.should_receive(:disable_fields).with(fields_to_disable)
+      @form_section.should_receive(:save)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Disable', :fields => fields_to_disable
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should enable all selected fields" do
+      fields_to_enable = ["bla"]
+
+      @form_section.should_receive(:enable_fields).with(fields_to_enable)
+      @form_section.should_receive(:save)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should redirect to edit form section on cancel" do
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should not load formsection on cancel" do
+      FormSection.should_not_receive(:get_by_unique_id)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
+    end
+  end
 end

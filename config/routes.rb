@@ -29,6 +29,8 @@ ActionController::Routing::Routes.draw do |map|
     additional_field_actions[:move_up] = :post
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
+    additional_field_actions[:toggle_fields] = :post
+    additional_field_actions[:confirm_toggle] = :post
     
     form_section.resources :fields, :controller => 'fields', :collection => additional_field_actions
   end

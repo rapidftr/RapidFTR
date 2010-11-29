@@ -189,6 +189,12 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^
   FormSection.add_field_to_formsection(form_section, field)
 end
 
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" disabled$/ do |form_section, field_name |
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :enabled => false)
+  FormSection.add_field_to_formsection(form_section, field)
+end
+
 
 Then /^I should see a (\w+) in the enabled column for the form section "([^\"]*)"$/ do |expected_icon, form_section|
   row = Hpricot(response.body).form_section_row_for form_section
@@ -279,9 +285,17 @@ Then /^I should not see the following suggested fields:$/ do |suggested_fields_t
   end
 end
 
-And /^I should see "([^\"]*)" in the list of fields$/ do |field_id| 
+And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   field_ids = Nokogiri::HTML(response.body).css("#formFields tr").map {|row| row[:id] }
   field_ids.should include("#{field_id}Row")
+end
+
+Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
+  field = Hpricot(response.body).form_field_for(field_name)
+  field.should_not be_nil
+
+  enabled_icon = field.enabled_icon
+  enabled_icon.inner_html.strip.should == expected_text
 end
 
 And /^I press add for suggested field "([^\"]*)"$/ do |field_id|

@@ -4,7 +4,7 @@ class FormSection < CouchRestRails::Document
   property :unique_id
   property :name
   property :description
-  property :enabled, :cast_as => 'boolean'
+  property :enabled, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
@@ -107,5 +107,14 @@ class FormSection < CouchRestRails::Document
     move_field(field_to_move_down, 1)
   end
 
+  def disable_fields fields_to_disable
+    matching_fields = fields.select { |field| fields_to_disable.include? field.name }
+    matching_fields.each{ |field| field.enabled = false }
+  end
+
+  def enable_fields fields_to_enable
+    matching_fields = fields.select { |field| fields_to_enable.include? field.name }
+    matching_fields.each{ |field| field.enabled = true}
+  end
 
 end

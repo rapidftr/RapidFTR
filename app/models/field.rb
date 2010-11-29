@@ -4,6 +4,7 @@ class Field < Hash
   
   property :name
   property :display_name
+  property :enabled, :cast_as => 'boolean', :default => true
   property :help_text
   property :type
   property :option_strings
