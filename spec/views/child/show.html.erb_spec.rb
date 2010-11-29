@@ -23,13 +23,13 @@ describe "children/show.html.erb" do
 
       render
 
-      response.should have_selector("dl.section_name dt") do |fields|
+      response.should have_selector(".section_name .profile-section-label") do |fields|
         fields[0].should contain("Age")
         fields[1].should contain("Gender")
         fields[2].should contain("Date of separation")
       end
       
-      response.should have_selector("dl.section_name dd") do |fields|
+      response.should have_selector(".section_name .profile-section-value") do |fields|
         fields[0].should contain("27")
         fields[1].should contain("male")
         fields[2].should contain("1-2 weeks ago")

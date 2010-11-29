@@ -158,20 +158,27 @@ td.checkbox { text-align: center;}
 .forms-page #suggestedFields input[type=submit] {background: transparent; border-top: 0;border-right: 0; border-bottom:0;border-left: 0;display: inline;margin: 0;padding: 0;color: #39f; text-decoration: underline; overflow: hidden; outline: none; line-height: 1.5em  ; font-family:inherit; cursor:pointer;}
 
 /* profile page > header */
-#basic_details { background-color: #ddd; padding: 9px; border: 1px solid #678; border-bottom-width: 0; margin-bottom:0;}
-#basic_details h2 { margin-bottom: .5em; }
-#basic_details dt, #basic_details dd { font-size: .875em; }
-#basic_details dl { overflow: hidden; border:none; border-top: 1px solid #678; padding-top: .2em; }
-#basic_details dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
-#basic_details dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border:none; border-bottom: 1px solid #678; }
 
-/* profile section */
+.profile-section ul {margin:0 0 10px; padding:0 3px 10px; border:1px #678 solid; border-collapse:collapse; zoom:1}
+.profile-section h2 { margin-bottom: .5em; padding:0 }
+.profile-section li {margin:0; background-image:none ;  padding:5px 0px; float:left; clear:both; width:100%; border-bottom:1px #678 solid;}
+.profile-section .profile-section-label {  display:block; float:left; width:170px; font-weight: bold; color: #678;}
+.profile-section .profile-section-value {  display:block; float:left}
 
-.profile-section {margin-bottom:.5em; }
-.profile-section h2 { margin-bottom: .5em; }
-.profile-section dl { overflow: hidden; border: 1px solid #678; padding: .2em; }
-.profile-section dt { width: 170px; margin-bottom: .5em; font-weight: bold; color: #678; }
-.profile-section dd { margin: -2em 0 .5em; padding: 0 0 .5em 180px; border-bottom: 1px solid #678; }
+#basic_details { background-color: #ddd; padding: 2px; border:1px #678 solid; border-bottom-width: 0; margin-bottom:0;}
+#basic_details ul {border:none; font-size: 1.2em; padding:0 10px 10px; margin:0}
+#basic_details li {padding:7px 0;}
+#basic_details h2 {border-bottom: 1px solid #678;padding:7px 0;margin:0 7px; }
+
+.profile-sectionx {margin-bottom:.5em; }
+.profile-sectionx dl {border: 1px solid #678;}
+.profile-sectionx dl { overflow: hidden;  padding-top: .2em; }
+.profile-sectionx dt { width: 170px; margin-bottom: .5em; padding:0 20px 0 3px; float:left; clear:left; font-weight: bold; color: #678; border:1px green solid; display:block  }
+.profile-sectionx dd { margin-bottom: .5em;  border-bottom: 1px  #678 solid; padding-bottom: 0.5em; padding-left:20px; border:1px red solid ; display:block; float:left}
+
+#basic_detailxs dl { border:none; border-top: 1px solid #678; }
+#basic_detailxs dt, #basic_details dd { font-size: .875em; }
+
 
 /* profile page > tools */
 .profile-tools { padding: 10px; background-color: #678; color: #fff; margin-bottom: 10px; }
