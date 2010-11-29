@@ -235,3 +235,6 @@ div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 
 /* history section */
 ul.history-details li { list-style:none; background: none; padding-left: 0; border-bottom: solid 1px }
+
+.display_photo {margin: 0 auto; width: 328px}
+.display_photo #child_picture {width: 328px;}
