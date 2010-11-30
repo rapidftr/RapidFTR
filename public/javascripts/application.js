@@ -36,8 +36,12 @@ RapidFTR.enableSubmitLinks = function() {
 RapidFTR.activateToggleFormSectionLinks = function() {
   var toggleFormSection = function(action) {
     return function() {
-    $("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
-    return true;
+			if (confirm("Are you sure you want to " + action + "?")) {
+    		$("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
+    		return true;
+			} else {
+				return false;
+			}
     };
   }
   
