@@ -5,9 +5,13 @@ class Search
   
   validates_presence_of :query
   validates_length_of :query, :maximum => 150
+  validates_format_of :query, 
+    :with => /^[^\*\~]/, 
+    :if => lambda { !query.blank?}, 
+    :message => "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
   
   def initialize(query)
-    @query = query
+    @query = query.strip
   end
   
 end
