@@ -35,6 +35,7 @@
         <li class="back"><%= link_to 'Back', :back %></li>
         <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
         <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
+        <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
       </ul>
     </div>
   <% end %>

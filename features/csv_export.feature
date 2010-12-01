@@ -13,7 +13,7 @@ Feature:
 
   Scenario: A csv file with the correct number of lines is produced
     Given I am logged in
-    When I search using a name of "D" 
+    When I search using a name of "D"
     And I follow "Export to CSV"
     Then I should receive a CSV file with 3 lines
     And the CSV data should be:
@@ -38,3 +38,27 @@ Feature:
       | Dave    |  Venice   | dave_456 |
       | Mike    |  Paris    | mike_789 |
     And the CSV filename should be "all_records_20101023.csv"
+
+  Scenario: A csv file with selected records is produced
+    Given I am logged in as an admin
+    When I go to the admin page
+    And I follow "Export Some Records to CSV"
+    And I search using a name of "D"
+    And I select search result #1
+    And I press "Export to CSV"
+    Then I should receive a CSV file with 2 lines
+    And the CSV data should be:
+      | name    |  last_known_location |unique_id|
+      | Dan     |  London   | dan_123  |
+
+  Scenario: A csv file with a single record is created in case on one record found
+    Given I am logged in as an admin
+    When I go to the admin page
+    And I follow "Export Some Records to CSV"
+    And I search using a name of "Dan"
+    And I follow "Export to CSV"
+    Then I should receive a CSV file with 2 lines
+    And the CSV data should be:
+      | name    |  last_known_location |unique_id|
+      | Dan     |  London   | dan_123  |
+

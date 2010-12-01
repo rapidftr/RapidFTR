@@ -10,3 +10,6 @@
 <p>
     <%= link_to 'Export All Child Records to CSV', url_for(:controller=>"children", :action=>"index", :escape => false, :format=>"csv") %>
 </p>
+<p>
+    <%= link_to 'Export Some Records to CSV', :advanced_search_children %>
+</p>

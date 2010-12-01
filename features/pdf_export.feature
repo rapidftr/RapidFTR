@@ -57,5 +57,5 @@ Feature: So that hard copy printout of missing child photos are available
       | name      | unique_id  | photo_path |
       | Billy No Photo | will_uid   |  |
    And I am on the saved record page for child with name "Billy No Photo"
-  And I follow "Export to PDF"
-  Then I should receive a PDF file
+   And I follow "Export to PDF"
+   Then I should receive a PDF file

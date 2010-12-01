@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :children, :collection => { :search => :get, :photo_pdf => :post, :advanced_search => :get } do |child|
+  map.resources :children, :collection => { :search => :get, :export_photo_to_pdf => :post, :advanced_search => :get, :export_csv => :post, :export_data => :post} do |child|
     child.resource :history, :only => :show
     child.resources :attachments, :only => :show
   end
