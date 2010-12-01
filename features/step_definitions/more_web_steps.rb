@@ -90,3 +90,11 @@ Then /^I should be able to see (.+)$/ do |page_name|
   Then "I should be on #{page_name}"
 end
 
+
+Then /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
+  puts response_body
+  response_body.should have_selector("#user-row-#{username} td.user-status") do |content|
+  	content.inner_html.downcase.should == status
+  end
+end
+
