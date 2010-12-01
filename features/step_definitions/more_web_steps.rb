@@ -92,7 +92,6 @@ end
 
 
 Then /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
-  puts response_body
   response_body.should have_selector("#user-row-#{username} td.user-status") do |content|
   	content.inner_html.downcase.should == status
   end
