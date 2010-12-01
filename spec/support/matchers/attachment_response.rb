@@ -11,8 +11,7 @@ module CustomMatchers
       verify { [response.content_type == @content_type, "content type is #{response.content_type} instead of #{@content_type}"] } &&
           verify { [response.body == @data, "data is different"] } &&
           verify do
-            result = response.headers.has_key?('Content-Disposition') &&
-                response.headers['Content-Disposition'] == @disposition
+            result = does_response_have_specified_disposition(response)
             [ result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
           end
     end
@@ -27,6 +26,10 @@ module CustomMatchers
       result, failure = yield
       @failure_reasons << "#{failure}" if !result
       result
+    end
+
+    def does_response_have_specified_disposition(response)
+      response.headers.has_key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
     end
 
   end

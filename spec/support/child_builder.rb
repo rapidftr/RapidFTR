@@ -12,6 +12,11 @@ module ChildBuilder
     self
   end
 
+  def with_unique_identifier(identifier)
+    @child.stub!(:unique_identifier).and_return identifier
+    self
+  end
+
   def with_photo(image, image_id = "img", current = true)
     photo = mock(FileAttachment, {:content_type => image.content_type, :data => StringIO.new(image.read)})
     @child.stub!(:media_for_key).with(image_id).and_return photo
