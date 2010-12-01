@@ -31,6 +31,10 @@ When /^(?:|I )follow "([^\"]*)" within "([^\"]*)"$/ do |link, parent|
   click_link_within(parent, link)
 end
 
+When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
+  fill_in(field, :with=>(0...length.to_i).map{ ('a'..'z').to_a[rand(26)] }.join)
+end
+
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
   fill_in(field, :with => value)
 end
