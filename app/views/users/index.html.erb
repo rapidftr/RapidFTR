@@ -3,20 +3,24 @@
 <p><%= link_to 'New User', new_user_path %></p>
 
 <table>
+	<thead>
   <tr>
     <th>Full Name</th>
     <th>User Name</th>
     <th>User Type</th>
+    <th>Status</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
+  </thead>
 
 <% @users.each do |user| %>
-  <tr>
+  <tr id="user-row-<%=user.full_name%>">
     <td><%=h user.full_name %></td>
     <td><%=h user.user_name %></td>
     <td><%=h user.user_type %></td>
+    <td class="user-status"><%= if (user.disabled=="true") then  h "Disabled" else h "Enabled" end %></td>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td>
