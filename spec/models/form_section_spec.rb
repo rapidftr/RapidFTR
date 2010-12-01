@@ -258,4 +258,13 @@ describe FormSection do
       field_two.should be_enabled
     end
   end
+  
+  describe "all_text_fields" do
+      it "should return all text fields on the form section" do
+        field_one = Field.new :name => 'one', :enabled => false, :type => "text_field"
+        field_two = Field.new :name => 'two', :enabled => false, :type => "numeric_field"
+        form_section = FormSection.new :fields => [field_one, field_two]
+        form_section.all_text_fields.should == [field_one]
+      end
+  end
 end

@@ -116,5 +116,9 @@ class FormSection < CouchRestRails::Document
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
     matching_fields.each{ |field| field.enabled = true}
   end
+  
+  def all_text_fields 
+    fields.select{|field| field.type==Field::TEXT_FIELD}
+  end
 
 end

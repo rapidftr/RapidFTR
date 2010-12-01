@@ -29,6 +29,7 @@ class Child < CouchRestRails::Document
   validates_with_method :validate_file_name
   validates_with_method :validate_audio_file_name
   validates_with_method :validate_custom_field_types
+  validates_with_method :validate_text_field_lengths
   
   def validate_custom_field_types
     fields = FormSection.all_by_order.collect{ |fs| fs[:fields] }.flatten
@@ -41,6 +42,21 @@ class Child < CouchRestRails::Document
       end
     end
     return [self.errors.blank?, '']
+  end
+  
+  
+  def validate_text_field_lengths
+      enabled_form_sections = FormSection.all_by_order.select{|form_section|form_section.enabled}
+      text_fields= enabled_form_sections.collect{|form_section| form_section.all_text_fields}.flatten
+      valid = true
+      text_fields.each do |field|
+        if self[field.name].length>200 
+          self.errors = {} unless self.errors  
+          self.errors.add(field.name, "#{field.display_name} cannot be more than 200 characters long") 
+          valid = false
+        end
+      end
+      return valid
   end
   
   def validate_age
