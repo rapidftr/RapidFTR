@@ -43,7 +43,7 @@ Feature: Creating Custom Form Fields
     And I follow "Add Custom Field"
     And I follow "Select drop down"
     And I fill in "My Dropdown Test" for "Display Name"
-    And I fill in options for "Option strings"
+    And I fill in options for "Options"
 
     When I press "Create"
 
@@ -57,7 +57,7 @@ Feature: Creating Custom Form Fields
     And I follow "Add Custom Field"
     And I follow "Select drop down"
     And I fill in "My Blank Dropdown Test" for "Display Name"
-    And I fill in options for "Option strings"
+    And I fill in options for "Options"
     And I check "Allow blank default"
 
     When I press "Create"
@@ -72,4 +72,4 @@ Feature: Creating Custom Form Fields
 	
 	Given I am on the edit form section page for "basic_details"
 	Then I should not see "Add Custom Field"
-	And I should see "This form cannot be edited"
+	And I should see "Fields on this form cannot be edited"
