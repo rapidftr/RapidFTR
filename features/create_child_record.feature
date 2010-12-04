@@ -53,8 +53,8 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created."
-
-    @123
+    
+  @123
   Scenario: cancel button should prompt user
     Given I am logged in
     Given I am on new child page

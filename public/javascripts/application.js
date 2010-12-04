@@ -49,6 +49,28 @@ RapidFTR.activateToggleFormSectionLinks = function() {
   $("#disable_form").click(toggleFormSection("disable"));
 }
 
+RapidFTR.activateFormValidation = function(){
+    $("form.validate").validate({
+      showErrors: function(errorMap, errorList) {
+        if (errorList.length === 0) {
+          $("#errorExplanation").hide();
+        } else {
+          $("#errorExplanation").show();
+          var message = "1 error prohibited this child from being saved";
+          if (errorList.length > 1) {
+            message = errorList.length + " errors prohibited this child from being saved";
+          }
+        
+          $("#errorList").html('');
+          $("#errorExplanation .title").text(message);
+          $.each(errorList, function(){
+            $("#errorList").append("<li>" + this.message + "</li>");
+          });
+        }
+    	}
+  	});
+}
+
 RapidFTR.hideDirectionalButtons = function() {
   $("#formFields .up-link:first").hide();
   $("#formFields .down-link:last").hide();
@@ -100,8 +122,34 @@ $(document).ready(function() {
   RapidFTR.tabControl();
   RapidFTR.enableSubmitLinks();
   RapidFTR.activateToggleFormSectionLinks();
+  RapidFTR.activateFormValidation();
   RapidFTR.hideDirectionalButtons();
   RapidFTR.backButton();
   RapidFTR.followTextFieldControl("#field_display_name", "#field_name", RapidFTR.Utils.dehumanize);
   RapidFTR.childPhotoRotation.init();
 });
+
+// Allows you to specify a validated input's message as an html attribute
+// <input class='number' message='Must be a number!!!1 1' />
+$.validator.prototype.formatAndAdd = function( element, rule ) {
+ var message = this.defaultMessage( element, rule.method ),
+   theregex = /\$?\{(\d+)\}/g;
+ if ( typeof message == "function" ) {
+   message = message.call(this, rule.parameters, element);
+ } else if (theregex.test(message)) {
+   message = jQuery.format(message.replace(theregex, '{$1}'), rule.parameters);
+ }     
+ 
+ var custom_message;
+ if (custom_message = $(element).attr('message')){
+   message = custom_message;
+ }
+ 
+ this.errorList.push({
+   message: message,
+   element: element
+ });
+ 
+ this.errorMap[element.name] = message;
+ this.submitted[element.name] = message;
+}

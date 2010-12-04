@@ -1,6 +1,6 @@
-<% form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
+<% form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form validate" do %>
 
-    <%= error_messages_for :child %>
+    <%=render :partial => "errors" %>
 
     <%= render :partial => "tabs", :object => @form_sections.find_all {|section| section.enabled? }.collect { |section| section.section_name } %>
 
