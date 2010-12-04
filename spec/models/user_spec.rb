@@ -110,7 +110,7 @@ describe User do
     user.add_mobile_login_event(imei, mobile_number)
     user.save
 
-    event = user.mobile_login_events.first
+    event = user.mobile_login_history.first
     event[:imei].should == imei
     event[:mobile_number].should == mobile_number
     event[:timestamp] == now

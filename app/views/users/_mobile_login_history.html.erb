@@ -1,0 +1,21 @@
+<div class="device-information">
+    <h3>Device Information</h3>
+    <table>
+      <tr>
+          <th>Timestamp</th>
+          <th>IMEI</th>
+          <th>Mobile Number</th>
+      </tr>
+
+
+    <% @user.mobile_login_history.reverse.each do |event| %>
+      <tr>
+        <td><%= event[:timestamp] %></td>
+        <td><%= event[:imei] %></td>
+        <td><%= event[:mobile_number] %></td>
+      </tr>
+      <% end %>
+
+    </table>
+
+</div>

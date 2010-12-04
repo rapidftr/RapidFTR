@@ -13,7 +13,7 @@ class User < CouchRestRails::Document
   property :position
   property :location
   property :disabled, :cast_as => :boolean
-  property :mobile_login_events, :cast_as => ['MobileLoginEvent']
+  property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   attr_accessor :password_confirmation, :password
 
 
@@ -60,7 +60,7 @@ class User < CouchRestRails::Document
   end
 
   def initialize args={}
-    self["mobile_login_events"] = []
+    self["mobile_login_history"] = []
     super args
   end
 
@@ -87,7 +87,7 @@ class User < CouchRestRails::Document
   end
   
   def add_mobile_login_event imei, mobile_number
-    self.mobile_login_events << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
+    self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
   end
 
   private
