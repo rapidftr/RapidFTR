@@ -1,9 +1,0 @@
-<% if (@child.errors.present? rescue false) %>
-  <%= error_messages_for :child %>
-<% else %>
-  <div id="errorExplanation" class="errorExplanation hidden">
-    <h2 id="title">1 error prohibited this child from being saved</h2>
-    <p>There were problems with the following fields:</p>
-    <ul id="errorList"></ul>
-  </div>
-<% end %>
