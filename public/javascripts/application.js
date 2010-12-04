@@ -51,10 +51,24 @@ RapidFTR.activateToggleFormSectionLinks = function() {
 
 RapidFTR.activateFormValidation = function(){
     $("form.validate").validate({
-        errorContainer: "#errorExplanation",
-        errorLabelContainer: "#errorExplanation #errorList",
-        errorElement: 'li'
-    });
+      showErrors: function(errorMap, errorList) {
+        if (errorList.length === 0) {
+          $("#errorExplanation").hide();
+        } else {
+          $("#errorExplanation").show();
+          var message = "1 error prohibited this child from being saved";
+          if (errorList.length > 1) {
+            message = errorList.length + " errors prohibited this child from being saved";
+          }
+        
+          $("#errorList").html('');
+          $("#errorExplanation .title").text(message);
+          $.each(errorList, function(){
+            $("#errorList").append("<li>" + this.message + "</li>");
+          });
+        }
+    	}
+  	});
 }
 
 RapidFTR.hideDirectionalButtons = function() {
@@ -117,25 +131,25 @@ $(document).ready(function() {
 
 // Allows you to specify a validated input's message as an html attribute
 // <input class='number' message='Must be a number!!!1 1' />
-// $.validator.prototype.formatAndAdd = function( element, rule ) {
-//  var message = this.defaultMessage( element, rule.method ),
-//    theregex = /\$?\{(\d+)\}/g;
-//  if ( typeof message == "function" ) {
-//    message = message.call(this, rule.parameters, element);
-//  } else if (theregex.test(message)) {
-//    message = jQuery.format(message.replace(theregex, '{$1}'), rule.parameters);
-//  }     
-//  
-//  var custom_message;
-//  if (custom_message = $(element).attr('message')){
-//    message = custom_message;
-//  }
-//  
-//  this.errorList.push({
-//    message: message,
-//    element: element
-//  });
-//  
-//  this.errorMap[element.name] = message;
-//  this.submitted[element.name] = message;
-// }
+$.validator.prototype.formatAndAdd = function( element, rule ) {
+ var message = this.defaultMessage( element, rule.method ),
+   theregex = /\$?\{(\d+)\}/g;
+ if ( typeof message == "function" ) {
+   message = message.call(this, rule.parameters, element);
+ } else if (theregex.test(message)) {
+   message = jQuery.format(message.replace(theregex, '{$1}'), rule.parameters);
+ }     
+ 
+ var custom_message;
+ if (custom_message = $(element).attr('message')){
+   message = custom_message;
+ }
+ 
+ this.errorList.push({
+   message: message,
+   element: element
+ });
+ 
+ this.errorMap[element.name] = message;
+ this.submitted[element.name] = message;
+}
