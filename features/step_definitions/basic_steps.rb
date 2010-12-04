@@ -183,6 +183,12 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
   end
 end
 
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" with field type "([^\"]*)"$/ do |form_section, field_name, field_type|
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :type => field_type)
+  FormSection.add_field_to_formsection(form_section, field)
+end
+
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :help_text => field_help_text)
@@ -312,7 +318,7 @@ Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, p
 end
 
 Then /^I should see the error "([^\"]*)"$/ do |error_message|
-  Hpricot(response.body).search("div[@id=errorExplanation]").inner_text.include?(error_message)
+  Hpricot(response.body).search("div[@id=errorExplanation]").inner_text.should include error_message
 end
 
 Then /^I should not see any errors$/ do
