@@ -45,7 +45,6 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created."
-    And I should see "Approximate"
 
   Scenario: create child record with no details filled in
     Given I am logged in

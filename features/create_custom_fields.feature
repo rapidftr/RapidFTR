@@ -42,31 +42,27 @@ Feature: Creating Custom Form Fields
     Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
     And I follow "Select drop down"
-    And I fill in "My Dropdown Test" for "Display Name"
-    And I fill in options for "Options"
-
+    And I fill in "Favourite Toy" for "Display Name"
+    And I fill the following options into "Options":
+      """
+      Doll
+      Teddy bear
+      Younger sibling
+      """
     When I press "Create"
 
     Then I should see "Field successfully added"
 
-    And I should see "my_dropdown_test" in the list of fields
+    And I should see "favourite_toy" in the list of fields
+    When I go to the add child page
+    And I visit the "Family Details" tab
 
-  Scenario: creating a dropdown field that allows blank default option
-
-    Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
-    And I follow "Select drop down"
-    And I fill in "My Blank Dropdown Test" for "Display Name"
-    And I fill in options for "Options"
-    And I check "Allow blank default"
-
-    When I press "Create"
-
-    Then I should see "Field successfully added"
-    And I should see "my_blank_dropdown_test" in the list of fields
-    
-    When I go to the new child page
-    Then the "child[my_blank_dropdown_test]" dropdown should default to ""
+    Then the "Favourite Toy" dropdown should have the following options:
+      | label           |  selected? |
+      | (Select...)     |  yes       |
+      | Doll            |  no        |
+      | Teddy bear      |  no        |
+      | Younger sibling |  no        |
 
   Scenario: can not create a custom field for forms that aren't editable
 	

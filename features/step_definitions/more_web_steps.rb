@@ -14,6 +14,11 @@ Given /^I am sending a valid session token in my request headers$/ do
   Given %Q|I am sending a session token of "#{session.id}" in my request headers|
 end
 
+When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
+  click_link name_of_tab
+end
+
+
 Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
   response_body.should have_selector("a[href='#{path_to(page_name)}']")
 end
@@ -52,6 +57,23 @@ Then /^I should see an option "([^\"]*)" for select "([^\"]*)"$/  do | option_va
     response_body.should have_selector("select[name='#{select_name}'] option[value=#{option_value}]")
 end
 
+Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
+  dropdown_field = field_labeled(dropdown_label)
+  actual_option_labels = dropdown_field.options.map(&:label)
+
+  selected_option = dropdown_field.element.search(".//*[@selected='selected']").first
+
+  table.hashes.each do |expected_option|
+    expected_label = expected_option['label']
+    should_be_selected = (expected_option['selected?'] == 'yes')
+
+    actual_option_labels.should include(expected_label)
+    if should_be_selected
+      selected_option.text.should == expected_label
+    end
+  end
+end
+
 Then /^I should not be able to see (.+)$/ do |page_name|
   lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
 end
@@ -60,3 +82,4 @@ Then /^I should be able to see (.+)$/ do |page_name|
   When "I go to #{page_name}"
   Then "I should be on #{page_name}"
 end
+
