@@ -53,8 +53,20 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created."
+    
+  @javascript
+  Scenario: create child with numeric custom field
+    Given the following form sections exist in the system:
+        | name | unique_id | editable | order | enabled |
+        | Basic details | basic_details | false | 1 | true |
+    And the "basic_details" form section has the field "Height" with field type "numeric_field"
+    And I am logged in
+    And I am on new child page
+    When I fill in "very tall" for "Height"
+    And I press "Save"
+    Then I should see "Height must be a valid number"
 
-    @123
+  @123
   Scenario: cancel button should prompt user
     Given I am logged in
     Given I am on new child page
