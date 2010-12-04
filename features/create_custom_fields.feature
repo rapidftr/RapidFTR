@@ -67,3 +67,9 @@ Feature: Creating Custom Form Fields
     
     When I go to the new child page
     Then the "child[my_blank_dropdown_test]" dropdown should default to ""
+
+  Scenario: can not create a custom field for forms that aren't editable
+	
+	Given I am on the edit form section page for "basic_details"
+	Then I should not see "Add Custom Field"
+	And I should see "This form cannot be edited"
