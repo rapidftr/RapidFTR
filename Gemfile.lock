@@ -103,3 +103,6 @@ DEPENDENCIES
   uuidtools (= 2.1.1)
   validatable (= 1.6.7)
   webrat (= 0.7.1)
+
+METADATA
+  version: 1.0.6
