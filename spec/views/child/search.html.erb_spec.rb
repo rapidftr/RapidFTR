@@ -49,6 +49,16 @@ describe "children/search.html.erb" do
         check_box['name'].should == @results[i]['_id']
       end
     end
+	
+	it "should include a view link for each record in the result" do
+      render
+
+      view_links = Hpricot(response.body).link_for("View")
+      view_links.length.should == @results.length
+      view_links.each_with_index do |link,i|
+        link['href'].should == "/children/#{@results[i]['_id']}"
+      end
+    end
 
     def random_child_summary(id = 'some_id')
       Summary.new("_id" => id, "age_is" => "Approx")

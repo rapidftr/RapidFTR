@@ -74,4 +74,8 @@ module HpricotSearch
   def form_field_for (field_id)
     at("##{field_id}Row")
   end
+
+  def link_for (link_title)
+    search("a[text()=\"#{link_title}\"]")
+  end
 end
