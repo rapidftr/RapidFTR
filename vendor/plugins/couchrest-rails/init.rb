@@ -8,3 +8,5 @@ require 'couch_rest_rails'
     exit
   end
 end
+
+require 'couchrest/custom_fields_validator'

@@ -149,12 +149,27 @@ describe Child do
   describe "validation of custom fields" do
     
     it "should validate numeric types" do
-      form_sections = [{ :fields => [{:type => 'numeric_field', :name => 'height'}]}]
+      form_sections = [{ :fields => [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]}]
       child = Child.new
       child[:height] = "very tall"
       FormSection.stub!(:all_by_order).and_return(form_sections)
       
-      child.should_not be_valid
+      child.valid?
+      child.errors.on(:height).should == ["height must be a valid number"]
+    end
+    
+    it "should validate multiple numeric types" do
+      form_sections = [{ :fields => [
+        {:type => 'numeric_field', :name => 'height', :display_name => "height"},
+        {:type => 'numeric_field', :name => 'new_age', :display_name => "new age"}]}]
+      child = Child.new
+      child[:height] = "very tall"
+      child[:new_age] = "very old"
+      FormSection.stub!(:all_by_order).and_return(form_sections)
+      
+      child.valid?
+      child.errors.on(:height).should == ["height must be a valid number"]
+      child.errors.on(:new_age).should == ["new age must be a valid number"]
     end
     
   end
