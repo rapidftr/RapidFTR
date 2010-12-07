@@ -161,7 +161,7 @@ describe "children/_form_section.html.erb" do
         response.should have_selector("label[for='child_some_date']")
         response.should have_selector("input[type='text'][name='child[some_date]']")
         response.should have_selector("script[type='text/javascript']") do |js|
-          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker\(\);.*/
+          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker.*/
         end
       end
     end
@@ -177,7 +177,7 @@ describe "children/_form_section.html.erb" do
 
         response.should have_selector("input[type='text'][name='child[some_date]'][value='13/05/2004']")
         response.should have_selector("script[type='text/javascript']") do |js|
-          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker\(\);.*/
+          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker.*/
         end
       end
 

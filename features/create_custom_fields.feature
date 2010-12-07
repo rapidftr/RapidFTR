@@ -6,17 +6,16 @@ Feature: Creating Custom Form Fields
     Given I am logged in as an admin
 
   Scenario: creating a numeric field
-    Given I am on the manage fields page for "family_details"
+    Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
 
     When I follow "Numeric Field"
-    And I fill in "My_new_numeric_field" for "Name"
     And I fill in "Help for a numeric field" for "Help text"
     And I fill in "My new number field" for "Display name"
     And I press "Create"
 
     Then I should see "Field successfully added"
-    And I should see "My_new_numeric_field" in the list of fields
+    And I should see "my_new_number_field" in the list of fields
 
     When I am on children listing page
     And I follow "New child"
@@ -27,7 +26,7 @@ Feature: Creating Custom Form Fields
 
   Scenario: creating a field without giving a name should dehumanize the display name
 
-    Given I am on the manage fields page for "family_details"
+    Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
 
     When I follow "Text Field"
@@ -40,7 +39,7 @@ Feature: Creating Custom Form Fields
 
   Scenario: creating a dropdown field
 
-    Given I am on the manage fields page for "family_details"
+    Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
     And I follow "Select drop down"
     And I fill in "My Dropdown Test" for "Display Name"
@@ -54,7 +53,7 @@ Feature: Creating Custom Form Fields
 
   Scenario: creating a dropdown field that allows blank default option
 
-    Given I am on the manage fields page for "family_details"
+    Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
     And I follow "Select drop down"
     And I fill in "My Blank Dropdown Test" for "Display Name"

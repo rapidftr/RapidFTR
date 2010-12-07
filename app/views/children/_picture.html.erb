@@ -1,4 +1,8 @@
 <div class="profile-image">
-   <a href='<%= child_photo_path(@child, nil) %>'><%= image_tag child_photo_path(@child, nil) %></a>
+  <div class="image">
+    <%= link_to image_tag(child_photo_path(@child, nil)), child_photo_path(@child, nil) %>
+
     <p class="view-full-size">Click on the Image to see full size</p>
+  </div>
+  <%= link_to "Edit photo", edit_photo_url(@child) if @child.photo %>
 </div>

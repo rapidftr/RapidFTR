@@ -1,0 +1,69 @@
+<% @page_name = 'Edit form' %>
+<% form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => { :class => "edit-form-section default-form" } do |f| %>
+
+<fieldset>
+  <h3>Details</h3>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %>
+    <%= f.text_area :description, :cols => 54, :rows => 10 %>
+  </p>
+  <p class="checkbox">
+    <%= f.check_box :enabled, {:checked => true}, :true, :false %>
+    <%= f.label :enabled %>
+  </p>
+  </fieldset>
+  <%= submit_button 'Save Details' %>
+<% end %>
+
+
+<% form_tag confirm_toggle_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
+<fieldset>
+<h3>Fields</h3>
+
+<table id="formFields">
+  <tbody>
+    <% @form_section.fields.each do |field| %>
+    <tr id="<%="#{field.name}Row"%>">
+      <% if @form_section.editable? %>
+          <td>
+            <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
+          </td>
+          <td>
+            <span class="enabledStatus"><%= field.enabled ? "Enabled" : "Disabled" %></span>
+          </td>
+      <% end %>
+      <td><%= field.display_name %></td>
+      <%if @form_section.editable?%>
+        <td>
+		    <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
+        </td>
+        <td>
+		    <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
+        </td>
+        <td>
+		    <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id)} %>
+        </td>
+      <%end%>
+    </tr>
+    <% end %>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <th colspan=4><%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %></th>
+    </tr>
+  </tfoot> 
+</table>
+</fieldset>
+<% if @form_section.editable? %>
+    <div class="formSectionButtons">
+      <%= submit_tag "Disable", :name => "toggle_fields" %>
+      <%= submit_tag "Enable", :name => "toggle_fields" %>
+    </div>
+<% end %>
+<% end %>
+<p><%= link_to "Back To Forms Page", formsections_path() %></p>

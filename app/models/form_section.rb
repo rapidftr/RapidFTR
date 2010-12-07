@@ -4,7 +4,7 @@ class FormSection < CouchRestRails::Document
   property :unique_id
   property :name
   property :description
-  property :enabled, :cast_as => 'boolean'
+  property :enabled, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
@@ -19,6 +19,7 @@ class FormSection < CouchRestRails::Document
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
 
+  
   def initialize args={}
     self["fields"] = []
     super args
@@ -39,10 +40,15 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.add_field_to_formsection formsection, field
-    ensure_field_name_not_already_in_use formsection, field
     raise "Form section not editable" unless formsection.editable
     formsection.fields.push(field)
     formsection.save
+  end
+  
+  def properties= properties
+    properties.each_pair do |name, value|
+      self[name] = value unless value == nil
+    end
   end
 
   def self.get_form_containing_field field_name
@@ -50,7 +56,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.create_new_custom name, description = "", enabled=true
-    unique_id = (name||"").gsub(/\s/, "_").downcase
+    unique_id = name.dehumanize
     max_order= (all.map{|form_section| form_section.order}).max || 0
     form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
     form_section = create! form_section if form_section.valid?
@@ -101,13 +107,14 @@ class FormSection < CouchRestRails::Document
     move_field(field_to_move_down, 1)
   end
 
-  private
-
-  def self.ensure_field_name_not_already_in_use formsection, field
-    form = get_form_containing_field field.name
-    if form != nil
-      raise "Field already exists on this form" if form.name == formsection.name
-      raise "Field already exists on form '#{form.name}'"
-    end
+  def disable_fields fields_to_disable
+    matching_fields = fields.select { |field| fields_to_disable.include? field.name }
+    matching_fields.each{ |field| field.enabled = false }
   end
+
+  def enable_fields fields_to_enable
+    matching_fields = fields.select { |field| fields_to_enable.include? field.name }
+    matching_fields.each{ |field| field.enabled = true}
+  end
+
 end

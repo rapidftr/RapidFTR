@@ -17,4 +17,21 @@ describe Search do
     search.errors.on(:query).should == "is invalid"
   end
   
+  it "should not be valid if starts with * wildcard" do
+    search = Search.new("*")
+    search.valid?.should be_false
+    search.errors.on(:query).should == "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
+  end
+  
+  it "should not be valid if starts with ~ wildcard" do
+    search = Search.new("~")
+    search.valid?.should be_false
+    search.errors.on(:query).should == "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
+  end
+  
+  it "should strip spaces" do
+     search = Search.new(" roger ")
+     search.query.should == "roger"
+   end
+  
 end

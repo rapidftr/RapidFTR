@@ -12,12 +12,6 @@ describe FieldsController do
     FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
   end
    
-   describe "get index" do
-     it "populates the view with the selected form section"do
-       should_populate_form_section(:index)
-     end
-   end
-   
    describe "get new" do
      
      it "populates the view with the selected form section"do
@@ -44,7 +38,7 @@ describe FieldsController do
   describe "post create" do
 
     before :each do
-      @field = Field.new :name => "myNewField", :type=>"TEXT", :display_name => "My New Field"
+      @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
       SuggestedField.stub(:mark_as_used)
 
     end
@@ -56,7 +50,7 @@ describe FieldsController do
     it "should redirect back to the fields page" do
       FormSection.stub(:add_field_to_formsection)
       post :create, :formsection_id => @form_section.unique_id, :field => @field
-      response.should redirect_to(formsection_fields_path(@form_section.unique_id))
+      response.should redirect_to(edit_form_section_path(@form_section.unique_id))
     end
     
     it "should show a flash message" do
@@ -79,20 +73,20 @@ describe FieldsController do
     end
 
     it "should use the display name to form the field name if no field name is supplied" do
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>"My brilliant new field", "name"=>"my_brilliant_new_field", "allow_blank_default"=>false} )
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>"My brilliant new field", "name"=>"my_brilliant_new_field", "allow_blank_default"=>false, "enabled" => true} )
       post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>"My brilliant new field", :name=>""}
     end
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This £££i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false} )
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false, "enabled" => true} )
       post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>""}
     end
     
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false} )
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "allow_blank_default"=>false, "enabled" => true} )
       post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>""}
     end
     
@@ -112,7 +106,7 @@ describe FieldsController do
     it "should redirect back to the fields page on move_up" do
       @form_section.stub(:move_up_field)
       post :move_up, :formsection_id => @formsection_id, :field_name=> @field_name
-      response.should redirect_to(formsection_fields_path(@formsection_id))
+      response.should redirect_to(edit_form_section_path(@formsection_id))
     end
     it "should swap position of selected field with the one below it" do
       @form_section.should_receive(:move_down_field).with(@field_name)
@@ -121,7 +115,47 @@ describe FieldsController do
     it "should redirect back to the fields page on move_down" do
       @form_section.stub(:move_down_field)
       post :move_down, :formsection_id => @formsection_id, :field_name=> @field_name
-      response.should redirect_to(formsection_fields_path(@formsection_id))
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+  end
+ 
+  describe "post toggle_fields" do
+
+    before :each do
+      @formsection_id = "fred"
+      @form_section = FormSection.new
+      FormSection.stub!(:get_by_unique_id).with(@formsection_id).and_return(@form_section)
+    end
+
+    it "should disable all selected fields" do
+      fields_to_disable = ['bla']
+
+      @form_section.should_receive(:disable_fields).with(fields_to_disable)
+      @form_section.should_receive(:save)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Disable', :fields => fields_to_disable
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should enable all selected fields" do
+      fields_to_enable = ["bla"]
+
+      @form_section.should_receive(:enable_fields).with(fields_to_enable)
+      @form_section.should_receive(:save)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should redirect to edit form section on cancel" do
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
+      response.should redirect_to(edit_form_section_path(@formsection_id))
+    end
+
+    it "should not load formsection on cancel" do
+      FormSection.should_not_receive(:get_by_unique_id)
+
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
     end
   end
 end

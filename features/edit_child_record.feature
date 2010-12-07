@@ -51,4 +51,4 @@ Feature:
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
 
   # cancel button should prompt user
-    And the "Cancel" button presents a confirmation message    
+    And the "Discard" button presents a confirmation message    

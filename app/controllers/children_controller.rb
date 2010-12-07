@@ -79,6 +79,26 @@ class   ChildrenController < ApplicationController
     end
   end
 
+  def edit_photo
+    @child = Child.get(params[:id])
+    @page_name = "Edit Photo"
+  end
+
+  def update_photo
+    @child = Child.get(params[:id])
+    orientation = params[:child].delete(:photo_orientation).to_i
+    if orientation != 0
+      @child.rotate_photo(orientation)
+      @child.save
+    end  
+    redirect_to(@child)
+  end
+
+
+  def new_search
+
+  end
+
   # PUT /children/1
   # PUT /children/1.xml
   def update
@@ -188,4 +208,5 @@ class   ChildrenController < ApplicationController
 
     send_data(csv, :filename => filename, :type => 'text/csv')
   end
+
 end

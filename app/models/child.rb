@@ -13,7 +13,10 @@ class Child < CouchRestRails::Document
 
   before_save :initialize_history, :if => :new?
   before_save :update_history, :unless => :new?
-
+  property :age
+  property :name
+  property :unique_identifier
+  
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
@@ -22,8 +25,25 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  #view_by :name, :last_known_location
-
+  validates_with_method :age, :method => :validate_age
+  validates_with_method :validate_file_name
+  validates_with_method :validate_audio_file_name
+  
+  def validate_age
+    return true if age.nil? || age.blank? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0)
+    [false, "Age must be between 1 and 99"]
+  end
+  
+  def validate_file_name
+    return true if @file_name == nil || /([^\s]+(\.(?i)(jpg|jpeg|png))$)/ =~ @file_name
+    [false, "Please upload a valid photo file (jpg or png) for this child record"]
+  end
+  
+  def validate_audio_file_name
+    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr))$)/ =~ @audio_file_name
+    [false, "Please upload a valid audio file amr for this child record"]
+  end
+  
   def to_s
     if self['name'].present?
       "#{self['name']} (#{self['unique_identifier']})"
@@ -45,14 +65,6 @@ class Child < CouchRestRails::Document
 
     lucene_query = query.split(/[ ,]+/).map {|word| "(name_text:#{word.downcase}~ OR name_text:#{word.downcase}*)"}.join(" AND ")
     sunspot_search lucene_query
-  end
-  
-  def name 
-    self['name']
-  end
-  
-  def unique_identifier
-    self['unique_identifier']
   end
 
   def self.new_with_user_name(user_name, fields = {})
@@ -82,18 +94,26 @@ class Child < CouchRestRails::Document
     self['unique_identifier']
   end
 
+  def rotate_photo(angle)
+    exisiting_photo = photo
+    image = MiniMagick::Image.from_blob(exisiting_photo.data.read)
+    image.rotate(angle)
+
+    name = FileAttachment.generate_name
+    attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
+    attach(attachment, 'current_photo_key')
+  end
+
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path
     attachment = FileAttachment.from_uploadable_file(photo_file, "photo")
-    self['current_photo_key'] = attachment.name
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
+    attach(attachment, 'current_photo_key')
   end
 
   def photo
     attachment_name = self['current_photo_key']
+    return unless attachment_name
     data = read_attachment attachment_name
     content_type = self['_attachments'][attachment_name]['content_type']
     FileAttachment.new attachment_name, content_type, data
@@ -111,35 +131,13 @@ class Child < CouchRestRails::Document
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-    self['recorded_audio'] = attachment.name
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
-
+    attach(attachment, 'recorded_audio')
   end
 
   def media_for_key(media_key)
     data = read_attachment media_key
     content_type = self['_attachments'][media_key]['content_type']
     FileAttachment.new media_key, content_type, data
-  end
-
-
-  def valid?(context=:default)
-    valid = true
-
-    if @file_name && !/([^\s]+(\.(?i)(jpg|jpeg|png|gif|bmp))$)/.match(@file_name)
-      valid = false
-
-      errors.add("photo", "Please upload a valid photo file (jpg or png) for this child record")
-      return false
-    end
-    if @audio_file_name && !/([^\s]+(\.(?i)(amr))$)/.match(@audio_file_name)
-      valid = false
-      errors.add("audio", "Please upload a valid audio file amr for this child record")
-    end
-    return valid
-
   end
 
   def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
@@ -187,5 +185,14 @@ class Child < CouchRestRails::Document
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
     self[field_name].strip != @from_child[field_name].strip
+  end
+
+  private
+  def attach(attachment, key)
+    self[key] = attachment.name
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
+
   end
 end

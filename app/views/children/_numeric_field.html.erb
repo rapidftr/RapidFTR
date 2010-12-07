@@ -1,4 +1,7 @@
 <p>
   <%= label_tag numeric_field.tag_name_attribute, numeric_field.display_name %>
-  <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %>
+  <% klass = @child.errors.on(numeric_field.name) == nil ? "" : "field-error"%>
+  <span class="<%= klass %>">
+    <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %> 
+  </span>
 </p>

@@ -12,7 +12,9 @@
   <%= javascript_include_tag "jquery-1.4.3.min.js" %>
   <%= javascript_include_tag "jquery-ui-1.8.6.custom.min.js" %>
   <%= javascript_include_tag "application.js" %>
+  <%= javascript_include_tag "form_section.js" %>
   <%= javascript_include_tag "utils.js" %>
+  <%= javascript_include_tag "jquery.rotate.1-1.js" %>
   <%= yield :javascript %>
 </head>
 <body class="<%= @body_class %>">
@@ -27,9 +29,9 @@
         <% end %>
         <li><a href="/">Home</a></li>
         <li><%= link_to 'Admin', admin_path %></li>
-        <li><a href="http://www.rapidftr.com/faq">FAQ</a></li>
-        <li><a href="http://www.rapidftr.com">About</a></li>
-        <li><a href="http://www.rapidftr.com/contact">Contact</a></li>
+        <% unless current_user_name.nil? %>
+            <li><%= link_to('Search Children', :search_children) %></li>
+        <% end %>
       </ul>
     </div>
   </div>

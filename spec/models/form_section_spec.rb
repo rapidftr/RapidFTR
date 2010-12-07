@@ -53,12 +53,6 @@ describe FormSection do
       FormSection.add_field_to_formsection formsection, field
     end
 
-    it "raises an error if a field with that name already exists on the form section" do
-      FormSection.stub(:all).and_return([FormSection.new(:fields=>[new_field(:name=>'field_one')])])
-      my_form = FormSection.new :fields=>[new_field(:name=>'field_one')]
-      lambda { FormSection.add_field_to_formsection my_form, field }.should raise_error
-    end
-
     it "should raise an error if adding a field to a non editable form section" do
       field = new_field :name=>'field_one'
       formsection = FormSection.new :editable => false
@@ -224,11 +218,8 @@ describe FormSection do
       result = FormSection.create_new_custom "basic"
       result.should == form_section
     end
-    it "should not save an invalid form section" do
-      FormSection.should_not_receive(:create!)
-      FormSection.create_new_custom nil
-    end
   end
+
   describe "valid?" do
     it "should validate name is filled in" do
       form_section = FormSection.new()
@@ -244,4 +235,27 @@ describe FormSection do
     end
   end
 
+  describe "disable_fields" do
+    it "should set all given fields to disabled" do
+      field_blub = Field.new :name => 'blub', :enabled => true
+      field_bla = Field.new :name => 'bla', :enabled => true
+      form_section = FormSection.new :fields => [field_blub, field_bla]
+
+      form_section.disable_fields([field_bla.name])
+      field_blub.should be_enabled
+      field_bla.should_not be_enabled
+    end
+  end
+
+  describe "enable_fields" do
+    it "should set all given fields to enabled" do
+      field_one = Field.new :name => 'one', :enabled => false
+      field_two = Field.new :name => 'two', :enabled => false
+      form_section = FormSection.new :fields => [field_one, field_two]
+
+      form_section.enable_fields([field_two.name])
+      field_one.should_not be_enabled
+      field_two.should be_enabled
+    end
+  end
 end
