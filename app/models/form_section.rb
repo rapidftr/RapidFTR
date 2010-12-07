@@ -120,5 +120,9 @@ class FormSection < CouchRestRails::Document
   def all_text_fields 
     fields.select{|field| field.type==Field::TEXT_FIELD}
   end
+  
+  def all_text_areas
+    fields.select{|field| field.type==Field::TEXT_AREA}
+  end
 
 end
