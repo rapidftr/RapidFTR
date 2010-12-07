@@ -21,8 +21,8 @@
             <span class="profile-section-value"><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></span></li>
         <% end %>
         <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
-            <dt><%= field.display_name %>:</dt>
-            <dd><a href="<%= child_audio_url(@child,nil)%>">download</a></dd>
+        	<li><span class="profile-section-label"><%= field.display_name %>:</span>
+            <%= link_to "download", child_audio_url(@child)%></li>
         <% end %>
       <% end %>
     </ul>

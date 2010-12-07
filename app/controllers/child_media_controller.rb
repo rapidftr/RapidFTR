@@ -21,8 +21,8 @@ class ChildMediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return  unless @attachment
-    send_data(@attachment.data.read, :file_name => "recorded_audio",:type => @attachment.content_type, :disposition => 'inline')
+    redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
+    send_data( @attachment.data.read, :filename => gen_filename, :type => @attachment.content_type )
   end
 
 
@@ -35,6 +35,7 @@ class ChildMediaController < ApplicationController
     begin
       @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.audio
     rescue => e
+      p e.inspect
     end
   end
 
@@ -50,6 +51,10 @@ class ChildMediaController < ApplicationController
       data = File.read("public/images/no_photo_clip.jpg")
       @attachment = FileAttachment.new("no_photo", "image/jpg", data)
     end
+  end
+
+  def gen_filename
+    "audio_" + @child.unique_identifier + ".amr"
   end
 
 end

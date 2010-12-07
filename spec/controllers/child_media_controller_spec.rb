@@ -21,7 +21,7 @@ describe ChildMediaController do
     end
 
     it "should have a route for a child specific recorded audio" do
-      { :get => "/children/c1/audio/a1" }.should route_to(:controller => "child_media", :action => "download_audio", :child_id => "c1", :id => "a1")
+      { :get => "/children/c1/audio" }.should route_to(:controller => "child_media", :action => "download_audio", :child_id => "c1")
     end
 
     it "should have a route for requesting a resized version of the current photo" do
@@ -108,10 +108,11 @@ describe ChildMediaController do
     it "should return a audio file associated with a child" do
         given_a_child.
                 with_id('1').
+                with_unique_identifier('rapidxxx123').
                 with_audio(uploadable_audio_sample)
 
        get :download_audio, :child_id => '1'
-       response.should represent_inline_attachment(uploadable_audio_sample )
+       response.should represent_attachment(uploadable_audio_sample)
     end
   end
 end
