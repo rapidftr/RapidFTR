@@ -155,7 +155,7 @@ describe Child do
   describe "validation of custom fields" do
     
     it "should validate numeric types" do
-      form_sections = [{ :fields => [{:type => 'numeric_field', :name => 'height'}]}]
+      form_sections = [FormSection.new :fields => [{:type => 'numeric_field', :name => 'height'}]]
       child = Child.new
       child[:height] = "very tall"
       FormSection.stub!(:all_by_order).and_return(form_sections)
@@ -186,7 +186,7 @@ describe Child do
     
     it "should disallow text field values to be more than 200 chars" do
       form_section = FormSection.new :fields =>[Field.new(:type=>Field::TEXT_FIELD,:name=>"name", :display_name=>"Name"), Field.new(:type=>Field::CHECK_BOX,:name=>"not_name")]
-      too_many_chars = (0...201).map{ ('a'..'z').to_a[rand(26)]}
+      too_many_chars = (0...201).map{ ('a'..'z').to_a[rand(26)]}.to_s
       FormSection.stub!(:all_by_order).and_return [form_section]
       child = Child.new({:name=>too_many_chars})
       child.save.should == false
@@ -194,7 +194,7 @@ describe Child do
     end
     it "should disallow text area values to be more than 400 chars" do
       form_section = FormSection.new :fields =>[Field.new(:type=>Field::TEXT_AREA,:name=>"a_textfield", :display_name=>"A textfield")]
-      too_many_chars = (0...401).map{ ('a'..'z').to_a[rand(26)]}
+      too_many_chars = (0...401).map{ ('a'..'z').to_a[rand(26)]}.to_s
       FormSection.stub!(:all_by_order).and_return [form_section]
       child = Child.new({:a_textfield=>too_many_chars})
       child.save.should == false

@@ -117,12 +117,5 @@ class FormSection < CouchRestRails::Document
     matching_fields.each{ |field| field.enabled = true}
   end
   
-  def all_text_fields 
-    fields.select{|field| field.type==Field::TEXT_FIELD}
-  end
-  
-  def all_text_areas
-    fields.select{|field| field.type==Field::TEXT_AREA}
-  end
 
 end
