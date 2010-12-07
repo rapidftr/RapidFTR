@@ -3,6 +3,7 @@ class Child < CouchRestRails::Document
   require "uuidtools"
   include CouchRest::Validation
   include Searchable
+  include CustomFieldValidations
 
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
@@ -29,49 +30,7 @@ class Child < CouchRestRails::Document
   validates_with_method :validate_file_name
   validates_with_method :validate_audio_file_name
   validates_with_method :validate_custom_field_types
-  validates_with_method :validate_text_field_lengths
-  validates_with_method :validate_text_area_lengths
-  
-  def validate_custom_field_types
-    fields = FormSection.all_by_order.collect{ |fs| fs[:fields] }.flatten
-    fields.each do |field|
-      value = (self[field[:name]].strip rescue '')
-      if 'numeric_field' == field[:type]
-        if value.present? and (value =~ /^\d*\.{0,1}\d+$/).nil?
-          self.errors.add(field[:name], "#{field[:display_name]} must be a valid number")
-        end
-      end
-    end
-    return [self.errors.blank?, '']
-  end
-  
-  
-  def validate_text_field_lengths
-      enabled_form_sections = FormSection.all_by_order.select{|form_section|form_section.enabled}
-      text_fields= enabled_form_sections.collect{|form_section| form_section.all_text_fields}.flatten
-      valid = true
-      text_fields.each do |field|
-        if (self[field.name]||"").length>200 
-          self.errors = {} unless self.errors  
-          self.errors.add(field.name, "#{field.display_name} cannot be more than 200 characters long") 
-          valid = false
-        end
-      end
-      return valid
-  end
-  def validate_text_area_lengths
-      enabled_form_sections = FormSection.all_by_order.select{|form_section|form_section.enabled}
-      text_fields= enabled_form_sections.collect{|form_section| form_section.all_text_areas}.flatten
-      valid = true
-      text_fields.each do |field|
-        if (self[field.name]||"").length>400 
-          self.errors = {} unless self.errors  
-          self.errors.add(field.name, "#{field.display_name} cannot be more than 400 characters long") 
-          valid = false
-        end
-      end
-      return valid
-  end
+
   
   def validate_age
     return true if age.nil? || age.blank? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0)
