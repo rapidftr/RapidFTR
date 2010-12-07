@@ -8,7 +8,6 @@ class Field < Hash
   property :help_text
   property :type
   property :option_strings
-  property :allow_blank_default, :cast_as => 'boolean', :default => false
 
   attr_reader :options
 
@@ -81,7 +80,7 @@ class Field < Hash
 
   def select_options
     select_options = []
-    select_options << ['(Select...)', ''] if allow_blank_default == '1'
+    select_options << ['(Select...)', '']
     select_options += @options.collect { |option| [option.option_name, option.option_name] }
   end
 end

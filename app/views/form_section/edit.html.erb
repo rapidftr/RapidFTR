@@ -54,7 +54,11 @@
 
   <tfoot>
     <tr>
-      <th colspan=4><%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %></th>
+      <% if @form_section.editable? %>
+        <th colspan=4><%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %></th>
+      <% else %>
+        <th colspan=4> <i>Fields on this form cannot be edited.</i> </th>
+      <% end %>
     </tr>
   </tfoot> 
 </table>

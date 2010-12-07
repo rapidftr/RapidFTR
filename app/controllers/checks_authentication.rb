@@ -24,7 +24,8 @@ module ChecksAuthentication
 
   def handle_authentication_failure(auth_failure)
     if auth_failure.token_provided?
-      render_error_response ErrorResponse.unauthorized("invalid session token")
+      Session.remove_from_cookies cookies
+      render_error_response ErrorResponse.unauthorized("invalid session token")  
     else
       respond_to do |format|
         format.html { redirect_to(:login) }

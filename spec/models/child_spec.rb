@@ -151,6 +151,19 @@ describe Child do
       child.photo.should == nil
     end
   end
+  
+  describe "validation of custom fields" do
+    
+    it "should validate numeric types" do
+      form_sections = [{ :fields => [{:type => 'numeric_field', :name => 'height'}]}]
+      child = Child.new
+      child[:height] = "very tall"
+      FormSection.stub!(:all_by_order).and_return(form_sections)
+      
+      child.should_not be_valid
+    end
+    
+  end
 
   describe "validating an existing child record" do
     it "should disallow file formats that are not photo formats" do

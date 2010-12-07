@@ -68,6 +68,10 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 /*device-information */
 .device-information { clear: both; margin-top: 3em; }
 
+/* default : forms > help text */
+.default-form .help-text { font-style: italic; width: 100px; float: right; display: block;}
+.default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
+
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
 

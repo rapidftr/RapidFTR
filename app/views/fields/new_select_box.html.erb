@@ -20,13 +20,18 @@
         <%= f.check_box :enabled, :checked => true %>
     </p>
     <p>
-        <%= f.label :allow_blank_default %>
-        <%= f.check_box :allow_blank_default, :checked => false %>
-    </p>
-    <p>
-        <%= f.label :option_strings %>
-        <%= f.text_area :option_strings, :checked => true %>
-    </p>
+     <div class="help-text-container">
+     	<p>
+	  		<%= f.label :option_strings, 'Options' %>
+			<br />
+			<br />
+			<span class="help-text">Enter each option 
+				on a new line</span>
+    	</p>
+	 </div>
+     <div>
+		<%= f.text_area :option_strings, :checked => true %>
+  	</div>
   </fieldset>
 
   <%= submit_button 'Create' %>
