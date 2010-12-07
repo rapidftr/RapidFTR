@@ -15,7 +15,7 @@ Feature: So that admin can customize fields in a form section
       | Text Field | new field page for "text_field" |
       | Text Area  | new field page for "textarea"  |
       | Check box  | new field page for "check_box"  |
-      | Select drop down | new field page for "select_drop_down" |
+      | Select drop down | new field page for "select_box" |
       | Numeric Field  | new field page for "numeric_field"  |
 
     When I follow "Text Field"
