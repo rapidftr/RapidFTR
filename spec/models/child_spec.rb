@@ -192,6 +192,21 @@ describe Child do
       child.save.should == false
       child.errors[:name].should == ["Name cannot be more than 200 characters long"]
     end
+    it "should disallow text area values to be more than 400 chars" do
+      form_section = FormSection.new :fields =>[Field.new(:type=>Field::TEXT_AREA,:name=>"a_textfield", :display_name=>"A textfield")]
+      too_many_chars = (0...401).map{ ('a'..'z').to_a[rand(26)]}
+      FormSection.stub!(:all_by_order).and_return [form_section]
+      child = Child.new({:a_textfield=>too_many_chars})
+      child.save.should == false
+      child.errors[:a_textfield].should == ["A textfield cannot be more than 400 characters long"]
+    end
+    it "should not validate fields that were not filled in" do
+      form_section = FormSection.new :fields =>[Field.new(:type=>Field::TEXT_FIELD,:name=>"name"),Field.new(:type=>Field::TEXT_AREA,:name=>"another")]
+      child = Child.new({:name=>nil})
+      child.save.should == true
+      child.errors["name"].should be_nil
+      child.errors["another"].should be_nil
+    end
     
     it "should disallow age less than 1" do
       child = Child.new({:age => "1"})
