@@ -13,6 +13,7 @@ class User < CouchRestRails::Document
   property :position
   property :location
   property :disabled, :cast_as => :boolean
+  property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   attr_accessor :password_confirmation, :password
 
 
@@ -58,6 +59,12 @@ class User < CouchRestRails::Document
      User.by_user_name(:key => user_name.downcase).first
   end
 
+  def initialize args={}
+    self["mobile_login_history"] = []
+    super args
+  end
+
+
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
     return true if user.nil? or self.id == user.id
@@ -78,6 +85,10 @@ class User < CouchRestRails::Document
   def make_admin
     self.user_type = "Administrator"
   end
+  
+  def add_mobile_login_event imei, mobile_number
+    self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
+  end
 
   private
 
@@ -94,9 +105,10 @@ class User < CouchRestRails::Document
   def password_required?
     crypted_password.blank? || !password.blank?
   end
-  
+
+
   def make_user_name_lowercase
-     user_name.downcase!
+    user_name.downcase!
   end
 
   def auto_fill_password_confirmation_if_not_supplied

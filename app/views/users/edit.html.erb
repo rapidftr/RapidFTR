@@ -1,3 +1,5 @@
 <% @page_name = "Editing user: #{@user.full_name}" %>
 
 <%= render :partial => "edittable_user", :object => @user %>
+
+<%= render :partial => "mobile_login_history", :object => @user %>
