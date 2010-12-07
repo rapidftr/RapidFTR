@@ -144,6 +144,12 @@ describe Child do
       child = Child.new
       child.photo.should == nil
     end
+    
+    it "should do nothing when a zero byte photo is associated with the child" do
+      child = Child.new
+      child['current_photo_key'] = ""
+      child.photo.should == nil
+    end
   end
 
   describe "validating an existing child record" do
@@ -219,8 +225,6 @@ describe Child do
       loaded_child.photo = uploadable_text_file
       loaded_child.save().should == false
     end
-    
-
   end
 
   describe "new_with_user_name" do
