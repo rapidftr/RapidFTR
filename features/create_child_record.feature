@@ -30,8 +30,14 @@ Feature:
 
     Then I should see "Listing children"
     And I should see "Jorge Just"
+    And I should see "View"
 
     When I follow "Jorge Just"
+    Then I follow "Back"
+    And I should see "Listing children"
+    And I should see "Jorge Just"
+
+    When I follow "View"
     Then I follow "Back"
     And I should see "Listing children"
     And I should see "Jorge Just"
