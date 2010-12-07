@@ -7,7 +7,7 @@
     <th class="checkbox">&nbsp;</th>
     <th>Name</th>
     <th>Last known location</th>
-    <th class="edit">Edit</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -16,7 +16,7 @@
         <td class="checkbox"></td>
         <td><%= link_to(h(child['name']), child) %></td>
         <td><%= link_to(h(child['last_known_location']),child) %></td>
-        <td class="edit"><%= link_to('View', child_path(child)) %> | <%= link_to 'Edit', edit_child_path(child) %></td>
+        <td class="view-edit"><%= link_to('View', child_path(child)) %> | <%= link_to 'Edit', edit_child_path(child) %></td>
       </tr>
   <% end %>
 

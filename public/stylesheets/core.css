@@ -107,8 +107,8 @@ ul.tab-handles { border-left: 1px solid #678; margin-bottom: 0; position: relati
 /* CONTENT SPECIFIC STYLES*/
 
 /* table listing page */
-td.edit, th.edit { text-align: right;  }
-td.edit a {  }
+td.view-edit, th.edit { text-align: right;  }
+td.view-edit a {  }
 td.checkbox { text-align: center;}
 
 /* profiles wall page */
@@ -136,7 +136,7 @@ td.checkbox { text-align: center;}
 .profiles-list-item { overflow: hidden; background-color: #fff; padding: 6px 6px 20px; }
 .profiles-list-item .header { width:100%; position: relative; float:left;}
 .profiles-list-item h3 { margin: 0 10px; float:left; padding:0; }
-.profiles-list-item .edit { float:right;margin:0;padding:0  }
+.profiles-list-item .view-edit { float:right;margin:0;padding:0  }
 .profiles-list-item .checkbox { float:left;margin:0;padding:0;  }
 .profiles-list-item .photo { position: absolute; top: 5px; left: 5px; }
 .profiles-list-item .details p { margin-bottom: 0; clear: both; border-top: 1px solid #678; padding-top: .2em; }
