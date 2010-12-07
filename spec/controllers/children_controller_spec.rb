@@ -188,7 +188,12 @@ describe ChildrenController do
         get( :search, :format => 'csv', :query => 'blah' )
         response.body
       end
-      
+
+      def csv_export_data_response
+        get( :export, :format => 'csv', :query => 'blah' )
+        response.body
+      end
+
       it 'should contain the correct column headers based on the defined fields' do
         inject_results([])
         first_line = csv_response.split("\n").first
@@ -282,7 +287,7 @@ describe ChildrenController do
       stub_out_pdf_generator
       Child.should_receive(:get).with('a_child_id')
       post(
-        :photo_pdf,
+        :export_data,
         { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' }
       )
     end
@@ -294,7 +299,7 @@ describe ChildrenController do
       Child.should_receive(:get).with('child_three')
 
       post(
-        :photo_pdf,
+        :export_data,
         {
           'child_one' => 'selected',
           'child_two' => 'selected',
@@ -317,10 +322,11 @@ describe ChildrenController do
         and_return('')
 
       post(
-        :photo_pdf,
+        :export_data,
         {
           'child_1' => 'selected',
           'child_2' => 'selected',
+          :commit => "Export to PDF"
         }
       )
     end
@@ -336,7 +342,7 @@ describe ChildrenController do
         should_receive(:send_data).
         with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
 
-      post( :photo_pdf, 'ignored' => 'selected' )
+      post( :export_data, 'ignored' => 'selected', :commit => "Export to PDF" )
     end
   end
 end

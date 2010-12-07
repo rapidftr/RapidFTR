@@ -1,5 +1,5 @@
 <% has_results = (@results && @results.size > 0) %>
-<%- form_tag photo_pdf_children_path, :method => :post do %>
+<%- form_tag export_data_children_path, :method => :post do %>
 
   <br /> 
   <div class="profiles-list">
@@ -8,6 +8,7 @@
   </div>
 
   <%= submit_tag "Export to PDF" if has_results %>
+  <%= submit_tag "Export to CSV" if has_results %>
 <%-end%>
 
 <%= link_to( "Export to CSV", current_url_with_format_of('csv') ) if has_results %>

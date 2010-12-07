@@ -33,6 +33,10 @@ class   ChildrenController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @child }
       format.json { render :json => @child.to_json }
+      format.csv do
+        child_ids = [@child]
+        export_to_csv(child_ids, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
+      end
       format.pdf do
         pdf_data = PdfGenerator.new.child_photo(@child)
         send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
@@ -166,14 +170,27 @@ class   ChildrenController < ApplicationController
     end
   end
 
-  def photo_pdf
+  def export_data
     child_ids = params.map{ |k, v| 'selected' == v ? k : nil }.compact
     if child_ids.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
     children = child_ids.map{ |child_id| Child.get(child_id) }
+    if params[:commit] == "Export to PDF"
+      export_photo_to_pdf(children, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+    end
+    if params[:commit] == "Export to CSV"
+      export_to_csv(children, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
+    end
+  end
+
+  def export_photo_to_pdf children, filename
     pdf_data = PdfGenerator.new.child_photos(children)
-    send_pdf( pdf_data, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+    send_pdf( pdf_data, filename)
+  end
+
+  def export_to_csv children, filename
+    render_as_csv(children, filename)
   end
 
   private
@@ -200,9 +217,12 @@ class   ChildrenController < ApplicationController
     field_names = FormSection.all_child_field_names
     field_names.unshift "unique_identifier"
     csv = FasterCSV.generate do |rows|
+      if results_temp.nil?
+        results_temp = @children
+      end
       rows << field_names
       results_temp.each do |child|
-        rows << field_names.map { |field_name| child[field_name] }
+          rows << field_names.map { |field_name| child[field_name] }
       end
     end
 
