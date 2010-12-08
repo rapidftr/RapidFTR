@@ -20,9 +20,9 @@ IdleSessionTimeout.start = function() {
     });
 
     $.idleTimeout('#dialog', 'div.ui-dialog-buttonpane button:first', {
-        idleAfter: 300,
-        pollingInterval: 60,
-        warningLength: 60,
+        idleAfter: 900,
+        pollingInterval: 180,
+        warningLength: 300,
         keepAliveURL: '/active',
         serverResponseEquals: 'OK',
         onTimeout: function() {
