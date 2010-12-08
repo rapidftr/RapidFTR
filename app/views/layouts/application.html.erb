@@ -11,10 +11,13 @@
   <%= yield :stylesheet %>
   <%= javascript_include_tag "jquery-1.4.3.min.js" %>
   <%= javascript_include_tag "jquery-ui-1.8.6.custom.min.js" %>
+  <%= javascript_include_tag "jquery.idletimeout.js" %>
+  <%= javascript_include_tag "jquery.idletimer.js" %>
   <%= javascript_include_tag "application.js" %>
   <%= javascript_include_tag "form_section.js" %>
   <%= javascript_include_tag "utils.js" %>
   <%= javascript_include_tag "jquery.rotate.1-1.js" %>
+  <%= javascript_include_tag "session_timeout.js" %>
   <%= yield :javascript %>
 </head>
 <body class="<%= @body_class %>">
@@ -60,6 +63,11 @@
 
 </div>
 
+<!-- idle dialog window markup -->
+<div id="dialog" title="Your session is about to expire!">
+	<p>You will be logged off in <span id="dialog-countdown"></span> seconds.</p>
+	<p>Do you want to continue your session?</p>
+</div>
 
 </body>
 </html>

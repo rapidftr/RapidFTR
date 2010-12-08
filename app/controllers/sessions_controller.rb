@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 
   include LoadsSession
 
-  skip_before_filter :check_authentication, :only => %w{new create}
+  skip_before_filter :check_authentication, :only => %w{new create active}
 
   protect_from_forgery :except => %w{create}
 
@@ -81,6 +81,10 @@ class SessionsController < ApplicationController
       format.html { redirect_to(:login) }
       format.xml  { head :ok }
     end
+  end
+
+  def active
+    render :text => 'OK'
   end
 
   private
