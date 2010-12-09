@@ -37,6 +37,30 @@ Feature: Creating Custom Form Fields
     Then I should see "Field successfully added"
     And I should see "my_text_field" in the list of fields
 
+  Scenario: creating a radio_button field
+
+    Given I am on the edit form section page for "family_details"
+    And I follow "Add Custom Field"
+    And I follow "Radio button"
+    And I fill in "Radio button name" for "Display Name"
+    And I fill the following options into "Options":
+      """
+      one
+      two
+      """
+    When I press "Create"
+
+    Then I should see "Field successfully added"
+    
+    And I should see "radio_button_name" in the list of fields
+    
+    When I go to the add child page
+    And I visit the "Family Details" tab
+
+    Then the "Radio button name" radio_button should have the following options:
+      | one |
+      | two |            
+      
   Scenario: creating a dropdown field
 
     Given I am on the edit form section page for "family_details"
@@ -54,10 +78,11 @@ Feature: Creating Custom Form Fields
     Then I should see "Field successfully added"
 
     And I should see "favourite_toy" in the list of fields
+    
     When I go to the add child page
     And I visit the "Family Details" tab
 
-    Then the "Favourite Toy" dropdown should have the following options:
+    Then the "Favourite toy" dropdown should have the following options:
       | label           |  selected? |
       | (Select...)     |  yes       |
       | Doll            |  no        |

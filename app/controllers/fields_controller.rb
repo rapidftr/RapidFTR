@@ -2,7 +2,7 @@ class FieldsController < ApplicationController
 
   before_filter :administrators_only
 
-  FIELD_TYPES = %w{ text_field textarea check_box select_box numeric_field date_field }
+  FIELD_TYPES = %w{ text_field textarea check_box select_box radio_button numeric_field date_field }
 
   def read_form_section
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
@@ -18,11 +18,9 @@ class FieldsController < ApplicationController
   def create
     @form_section = FormSection.get_by_unique_id(params[:formsection_id])
     properties = params[:field]
-    
-    if properties
-      split_option_strings properties
-    end
+
     field = Field.new properties
+    field.option_strings_text = properties['option_strings_text']
     field.name = field.display_name.dehumanize
     FormSection.add_field_to_formsection @form_section, field
     
@@ -33,12 +31,6 @@ class FieldsController < ApplicationController
     else
       @field = field
       render :action => "new_#{params[:field][:type]}"
-    end
-  end
-
-  def split_option_strings properties
-    if properties[:option_strings] && properties[:type] == "select_box" && properties[:option_strings].class != Array
-      properties[:option_strings] = properties[:option_strings].split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
     end
   end
 

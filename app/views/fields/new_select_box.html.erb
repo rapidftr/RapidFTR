@@ -1,39 +1,4 @@
 <% @page_name = 'New Select Drop Down Field' %>
 
-<% form_for :field, @field, :url => { :action => "create" }, :html => {:class => "new-field default-form"} do |f| %>
-  <%= error_messages_for :field %>
+<%= render :partial => "multiple_choice_form", :locals=> {:field_type=>"select_box"} %>
 
-  <%= f.hidden_field 'type', :value => "select_box" %>
-
-  <fieldset>
-    <h3>Select drop down details</h3>
-    <p>
-        <%= f.label :display_name %>
-        <%= f.text_field :display_name %> <i>required</i>
-    </p>
-    <p>  
-        <%= f.label :help_text %>
-        <%= f.text_field :help_text %>
-    </p>
-    <p>
-        <%= f.label :enabled %>
-        <%= f.check_box :enabled, :checked => true %>
-    </p>
-    <p>
-     <div class="help-text-container">
-     	<p>
-	  		<%= f.label :option_strings, 'Options' %>
-			<br />
-			<br />
-			<span class="help-text">Enter each option 
-				on a new line</span>
-    	</p>
-	 </div>
-     <div>
-		<%= f.text_area :option_strings, :checked => true %>
-  	</div>
-  </fieldset>
-
-  <%= submit_button 'Create' %>
-  <%= cancel_button(new_formsection_fields_path(@form_section.unique_id)) %>
-<% end %>
