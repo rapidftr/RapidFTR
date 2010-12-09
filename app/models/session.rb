@@ -28,6 +28,10 @@ class Session < CouchRestRails::Document
     by_user_name(:key => user.user_name).each {|s| s.destroy }
   end
 
+  def self.find_by_user_name user_name
+    Session.by_user_name(:key => user_name.downcase)
+  end
+
   def put_in_cookie(cookies)
     cookies[COOKIE_KEY] = id
   end
