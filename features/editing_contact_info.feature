@@ -15,7 +15,12 @@ Feature: Allowing admin contact info to be specified
     And the "Organization" field should contain "UNICEF"        
     And the "Phone" field should contain "0123456 ext 2"
     And the "Email" field should contain "Foo@bar.com"
-  
+	When I fill in "Barney Rubble" for "Name"
+	And I fill in "Slate Rock and Gravel Company" for "Organization"
+	And I press "Save"
+	Then I should see "Contact information saved successfully"
+	And the "Name" field should contain "Barney Rubble"
+	Amd the "Organization" field should contain "Slate Rock and Gravel Company"
   Scenario: Only admins can edit contact info
  	When I am logged in
 	Then I should not be able to see the edit administrator contact information page
