@@ -2,6 +2,9 @@ class ContactInformation < CouchRestRails::Document
   use_database :contact_information
   property :id
   property :name
+  property :organization
+  property :phone
+  property :email
   view_by :id
   
   def self.get_by_id id
