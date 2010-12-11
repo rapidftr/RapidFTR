@@ -27,7 +27,26 @@ Feature: Allowing admin contact info to be specified
   Scenario: Only admins can edit contact info
  	When I am logged in
 	Then I should not be able to see the edit administrator contact information page
-
+	
+  Scenario: Viewing administrator contact information 
+    Given the following admin contact info: 
+      | key | value |
+      | name | John Smith |
+      | organization | UNICEF |
+      | phone | 0123456 ext 2|
+      | email | Foo@bar.com |
+      | location | Uganda |
+      | other_information | Please let us know if your password goes missing! |
+	And I am logged in
+	When I follow "Contact & Help"
+	Then I should be on the administrator contact page
+	And I should see "John Smith" within "#contact_info_name"
+	And I should see "UNICEF" within "#contact_info_organization"
+	And I should see "0123456 ext 2" within "#contact_info_phone"
+	And I should see "Foo@bar.com" within "#contact_info_email"
+	And I should see "Uganda" within "#contact_info_location"
+	And I should see "Please let us know if your password goes missing!" within "#contact_info_other_information"
+  
   # Background:
   #   Given I am logged in
   # 

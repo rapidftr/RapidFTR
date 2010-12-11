@@ -32,6 +32,8 @@
         <% unless current_user_name.nil? %>
             <li><%= link_to('Search Children', :search_children) %></li>
         <% end %>
+		<li><%= link_to 'Contact & Help', contact_information_path("administrator") %>
+		
       </ul>
     </div>
   </div>
