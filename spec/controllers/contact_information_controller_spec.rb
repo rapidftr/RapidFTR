@@ -12,5 +12,4 @@ describe ContactInformationController do
       assigns[:contact_information].should == contact_information
     end
   end
-
 end

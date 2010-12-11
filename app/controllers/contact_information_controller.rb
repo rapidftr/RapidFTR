@@ -6,4 +6,15 @@ class ContactInformationController < ApplicationController
     @contact_information = ContactInformation.get_by_id(params[:id])
   end
   
+  # POST /contact_information/Administrator
+  
+  def update
+    administrators_only
+    @contact_information = ContactInformation.get_by_id(params[:id])
+    @contact_information.update_attributes(params[:contact_information])  
+    @contact_information.save!
+    flash[:notice] = 'Contact information was successfully updated.'
+    redirect_to edit_contact_information_path(params[:id]) 
+  end
+  
 end

@@ -1,26 +1,29 @@
 Feature: Allowing admin contact info to be specified
 
-  @wip
   Scenario: Viewing and editing the currently saved contact information
     Given the following admin contact info: 
       | key | value |
-      | name | Fred Flintstone |
+      | name | John Smith |
       | organization | UNICEF |
       | phone | 0123456 ext 2|
       | email | Foo@bar.com |
+      | location | Uganda |
+      | other_information | Lorem Ipsum Dolor sit amet... |
 	And I am logged in as an admin
     When I am on the admin page
     And I follow "Admin Contact Information"
-    Then the "Name" field should contain "Fred Flintstone"
+    Then the "Name" field should contain "John Smith"
     And the "Organization" field should contain "UNICEF"        
     And the "Phone" field should contain "0123456 ext 2"
     And the "Email" field should contain "Foo@bar.com"
+    And the "Location" field should contain "Uganda"
+    And the "Other information" field should contain "Lorem Ipsum Dolor sit amet..."
 	When I fill in "Barney Rubble" for "Name"
 	And I fill in "Slate Rock and Gravel Company" for "Organization"
 	And I press "Save"
-	Then I should see "Contact information saved successfully"
+	Then I should see "Contact information was successfully updated."
 	And the "Name" field should contain "Barney Rubble"
-	Amd the "Organization" field should contain "Slate Rock and Gravel Company"
+	And the "Organization" field should contain "Slate Rock and Gravel Company"
   Scenario: Only admins can edit contact info
  	When I am logged in
 	Then I should not be able to see the edit administrator contact information page

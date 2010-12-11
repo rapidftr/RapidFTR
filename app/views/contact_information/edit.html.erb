@@ -1,6 +1,6 @@
 <% @page_name = "Editing contact information" %>
 
-<% form_for @contact_information, :html => {:class=> 'default-form'} do |f| %>
+<% form_for @contact_information, :url => contact_information_path(@contact_information.id), :html => {:class=> 'default-form'} do |f| %>
   <fieldset>
     <h3>Contact Information</h3>
 
@@ -19,6 +19,14 @@
     <p>
       <%= f.label :email, "Email" %>
       <%= f.text_field :email %>
+    </p>
+    <p>
+      <%= f.label :location, "Location" %>
+      <%= f.text_field :location %>
+    </p>
+    <p>
+      <%= f.label :other_information, "Other information" %>
+      <%= f.text_area :other_information %>
     </p>
   </fieldset>
 
