@@ -37,3 +37,7 @@ end
 Then /^user "(.+)" should not be disabled$/ do |username|
   User.find_by_user_name(username).should_not be_disabled
 end
+
+Given /^the following admin contact info:$/ do |table|
+  ContactInformation.new table.hashes
+end
