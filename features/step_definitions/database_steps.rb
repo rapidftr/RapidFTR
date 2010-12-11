@@ -39,5 +39,10 @@ Then /^user "(.+)" should not be disabled$/ do |username|
 end
 
 Given /^the following admin contact info:$/ do |table|
-  ContactInformation.new table.hashes
+  contact_info = table.hashes.inject({}) do |result, current|
+    result[current["key"]] = current["value"]
+    result
+  end
+  contact_info[:id] = "administrator"
+  ContactInformation.create contact_info
 end

@@ -4,14 +4,14 @@ Feature: Allowing admin contact info to be specified
   Scenario: Viewing and editing the currently saved contact information
     Given the following admin contact info: 
       | key | value |
-      | Name | Fred Flintstone |
-      | Organization | UNICEF |
-      | Phone | 0123456 ext 2|
-      | Email | Foo@bar.com |
+      | name | Fred Flintstone |
+      | organization | UNICEF |
+      | phone | 0123456 ext 2|
+      | email | Foo@bar.com |
 	And I am logged in as an admin
     When I am on the admin page
     And I follow "Admin Contact Information"
-    Then the "Name" field should contain "Fred Flinstone"
+    Then the "Name" field should contain "Fred Flintstone"
     And the "Organization" field should contain "UNICEF"        
     And the "Phone" field should contain "0123456 ext 2"
     And the "Email" field should contain "Foo@bar.com"

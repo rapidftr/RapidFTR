@@ -1,0 +1,14 @@
+<% @page_name = "Editing contact information" %>
+
+<% form_for @contact_information, :html => {:class=> 'default-form'} do |f| %>
+  <fieldset>
+    <h3>Contact Information</h3>
+
+    <p>
+      <%= f.label :name, "Name" %>
+      <%= f.text_field :name %>*
+    </p>
+  </fieldset>
+
+  <%= submit_button("Save") %>
+<% end %>
