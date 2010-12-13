@@ -7,6 +7,7 @@ class ContactInformation < CouchRestRails::Document
   property :location
   property :other_information
   property :email
+  property :position
   view_by :id
   unique_id :id
   
