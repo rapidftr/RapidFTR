@@ -91,7 +91,7 @@ Then /^I should be able to see (.+)$/ do |page_name|
 end
 
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
-  response_body.should have_selector("audio source", :src=>"todo") 
+  response_body.should have_selector("audio source", :src=>request.url + "/audio")
 end
 
 
