@@ -20,5 +20,7 @@ RapidFTR::DbSetup.reset_default_form_section_definitions
 
 RapidFTR::SuggestedFieldsDbSetup.recreate_suggested_fields
 
+ContactInformation.create(:unique_id=>"administrator")
+
 
 
