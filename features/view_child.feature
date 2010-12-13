@@ -1,5 +1,4 @@
 Feature: Playing audio files uploaded to child records
-	@wip
 	Scenario: Viewing a child record with audio attached
 		Given I am logged in
 		And a child record named "Fred" exists with a audio file with the name "sample.mp3"
