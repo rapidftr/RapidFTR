@@ -46,3 +46,7 @@ Given /^the following admin contact info:$/ do |table|
   contact_info[:id] = "administrator"
   ContactInformation.create contact_info
 end
+
+
+
+
