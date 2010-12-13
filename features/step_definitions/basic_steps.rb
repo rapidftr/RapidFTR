@@ -36,6 +36,16 @@ Given /^the following children exist in the system:$/ do |children_table|
   end
 end
 
+Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
+  child = Child.new_with_user_name("Bob Creator",{:name=>name})
+  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.create!
+  # visit path_to('new child page')
+  #   fill_in('Name', :with => name)
+  #   attach_file("child[audio]", "features/resources/#{filename}", "audio/mpeg")
+  #   click_button('Save')
+end
+
 Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
 
   column_index = -1
