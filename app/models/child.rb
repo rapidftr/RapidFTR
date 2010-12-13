@@ -27,7 +27,7 @@ class Child < CouchRestRails::Document
 
   validates_with_method :age, :method => :validate_age
   validates_with_method :validate_file_name
-  # validates_with_method :validate_audio_file_name
+  validates_with_method :validate_audio_file_name
   validates_with_method :validate_custom_field_types
   
   def validate_custom_field_types
