@@ -20,4 +20,11 @@ describe HistoriesController do
     get :show, :child_id => "some_id"
     assigns(:child).should == "some_child"
   end
+
+  it "should set the page name to the child" do
+    Child.stub(:get).and_return "some_child"
+    get :show, :child_id => "some_id"
+    assigns(:page_name).should == "History of some_child"
+  end
+
 end
