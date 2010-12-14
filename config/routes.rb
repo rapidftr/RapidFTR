@@ -45,6 +45,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :form_section
 
   map.resources :fields
+  
+  map.resources :contact_information
 
   map.root :controller => 'home', :action => :index
 

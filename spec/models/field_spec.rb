@@ -36,7 +36,21 @@ describe "Child record field view model" do
       field.valid?
       field.errors.on(:display_name).should ==  ["Field already exists on this form"] 
     end
+    
+    it "should validate radio button has at least 2 options" do  
+      field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::RADIO_BUTTON)
+    
+      field.valid?
+      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"] 
+    end
   
+    it "should validate select box has at least 2 options" do  
+      field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::SELECT_BOX)
+    
+      field.valid?
+      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"] 
+    end
+    
     it "should validate unique within other forms" do  
       other_form = FormSection.new(:name => "test form", :fields => [Field.new(:name => "other test", :display_name => "other test")] )
       other_form.save!

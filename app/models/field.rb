@@ -19,11 +19,18 @@ class Field < Hash
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
   
-  validates_presence_of :display_name
+  validates_presence_of :display_name 
   validates_with_method :display_name, :method => :validate_unique
+  validates_with_method :option_strings, :method => :validate_has_2_options
   
   def form
     base_doc
+  end
+  
+  def validate_has_2_options
+    return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
+    return [false, "Field must have at least 2 options"] if option_strings == nil || option_strings.length < 2
+    true
   end
   
   def validate_unique
@@ -40,6 +47,17 @@ class Field < Hash
     if (option_strings)
       @options = FieldOption.create_field_options(name, option_strings)
     end
+  end
+  
+  def option_strings_text= value
+    if value && value.class != Array
+      self[:option_strings] = value.split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
+    end
+  end
+  
+  def option_strings_text
+    return "" unless  self[:option_strings]
+    self[:option_strings].join("\n") 
   end
   
   def self.new_check_box field_name, display_name = nil

@@ -16,6 +16,7 @@ Feature: So that admin can customize fields in a form section
       | Text Area  | new field page for "textarea"  |
       | Check box  | new field page for "check_box"  |
       | Select drop down | new field page for "select_box" |
+      | Radio button | new field page for "radio_button" |
       | Numeric Field  | new field page for "numeric_field"  |
 
     When I follow "Text Field"
@@ -66,6 +67,40 @@ Feature: So that admin can customize fields in a form section
     When I fill in "11/17/2010" for "child_anything"
     And I press "Save"
     Then I should see "11/17/2010"
+    
+  Scenario: Admins should be able to add new radio button
+    Given I am logged in as an admin
+    And I am on the edit form section page for "family_details"
+
+    When I follow "Add Custom Field"
+
+    Then I should find the following links:
+      | Radio button | new field page for "radio_button" |
+
+    When I follow "Radio button"
+    
+  Then I should find the form with following attributes:
+    | Display name |
+    | Help text |
+    | Enabled |
+    | Options |
+  And the "Enabled" checkbox should be checked  
+  
+  When I fill in "Radio button name" for "Display name"
+  And I fill in "Something" for "Help text"
+  And I fill the following options into "Options":
+    """
+    one
+    two
+    """
+  And I press "Create"
+  
+  Then I should see "Radio button name"
+  When I am on children listing page
+  And I follow "New child"
+  
+  Then I should see "Radio button name" 
+  
 
   Scenario: Basic Details should have no option to edit it's fields
 

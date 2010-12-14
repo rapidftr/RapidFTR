@@ -104,6 +104,11 @@ module NavigationHelpers
       when /the admin page/
         admin_path(options)
 
+      when /the edit administrator contact information page/
+        edit_contact_information_path(:administrator)
+      when /the administrator contact page/
+          contact_information_path(:administrator)
+        
       when /all child Ids/
         child_ids_path
 

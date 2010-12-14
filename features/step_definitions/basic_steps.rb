@@ -292,7 +292,7 @@ Then /^I should not see the following suggested fields:$/ do |suggested_fields_t
 end
 
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
-  field_ids = Nokogiri::HTML(response.body).css("#formFields tr").map {|row| row[:id] }
+  field_ids = Nokogiri::HTML(response.body).css("table tbody tr").map {|row| row[:id] }
   field_ids.should include("#{field_id}Row")
 end
 

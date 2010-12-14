@@ -57,6 +57,13 @@ Then /^I should see an option "([^\"]*)" for select "([^\"]*)"$/  do | option_va
     response_body.should have_selector("select[name='#{select_name}'] option[value=#{option_value}]")
 end
 
+Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
+   radios = Nokogiri::HTML(response.body).css(".radioList")
+   radio = radios.detect {|radio| radio.css("dt").first.text == radio_button}
+   radio.should_not be_nil
+   radio.css("label").map(&:text).should == table.raw.map(&:first)
+end
+
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
   dropdown_field = field_labeled(dropdown_label)
   actual_option_labels = dropdown_field.options.map(&:label)
@@ -81,5 +88,12 @@ end
 Then /^I should be able to see (.+)$/ do |page_name|
   When "I go to #{page_name}"
   Then "I should be on #{page_name}"
+end
+
+
+Then /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
+  response_body.should have_selector("#user-row-#{username} td.user-status") do |content|
+  	content.inner_html.downcase.should == status
+  end
 end
 

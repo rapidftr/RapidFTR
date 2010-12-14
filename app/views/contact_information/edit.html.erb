@@ -1,0 +1,38 @@
+<% @page_name = "Editing contact information" %>
+
+<% form_for @contact_information, :url => contact_information_path(@contact_information.id), :html => {:class=> 'default-form'} do |f| %>
+  <fieldset>
+    <h3>Contact Information</h3>
+
+    <p>
+      <%= f.label :name, "Name" %>
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <%= f.label :organization, "Organization" %>
+      <%= f.text_field :organization %>
+    </p>
+    <p>
+      <%= f.label :position, "Position" %>
+      <%= f.text_field :position %>
+    </p>
+    <p>
+      <%= f.label :phone, "Phone" %>
+      <%= f.text_field:phone %>
+    </p>
+    <p>
+      <%= f.label :email, "Email" %>
+      <%= f.text_field :email %>
+    </p>
+    <p>
+      <%= f.label :location, "Location" %>
+      <%= f.text_area :location %>
+    </p>
+    <p>
+      <%= f.label :other_information, "Other information" %>
+      <%= f.text_area :other_information %>
+    </p>
+  </fieldset>
+
+  <%= submit_button("Save") %>
+<% end %>
