@@ -96,6 +96,8 @@ def uploadable_audio(audio_path = "features/resources/sample.amr")
   def audio.content_type
     if /amr$/.match self.path 
       "audio/amr"
+    elsif /wav$/.match self.path 
+      "audio/wav"
     else
       "audio/mpeg"
     end
