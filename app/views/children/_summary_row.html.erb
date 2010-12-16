@@ -11,7 +11,7 @@
   </div>
   <% if @show_thumbnails %>
       <p class="photo">
-        <a href="/">
+        <a href=<%= child_path(summary_row['_id']) %>>
           <%= thumbnail_tag(summary_row) %>
         </a>
       </p>
