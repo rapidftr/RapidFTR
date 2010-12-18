@@ -38,6 +38,11 @@
   <%=h @user.location %>
 </p>
 
+ <p>
+  <b>Status:</b>
+  <%=h @user.disabled=="true"? "Disabled" : "Enabled" %>
+</p>
+
  <%= link_to 'Edit', edit_user_path(@user) %> |
  <%= link_to 'Back', users_path %>
 
