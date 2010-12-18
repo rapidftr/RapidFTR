@@ -118,8 +118,16 @@ def uploadable_audio(audio_path = "features/resources/sample.amr")
   audio
 end
 
-def uploadable_audio_sample
-  uploadable_audio
+def uploadable_audio_amr
+  uploadable_audio "features/resources/sample.amr"
+end
+
+def uploadable_audio_wav
+  uploadable_audio "features/resources/sample.wav"
+end
+
+def uploadable_audio_mp3
+  uploadable_audio "features/resources/sample.mp3"
 end
 
 

@@ -109,10 +109,10 @@ describe ChildMediaController do
         given_a_child.
                 with_id('1').
                 with_unique_identifier('rapidxxx123').
-                with_audio(uploadable_audio_sample)
+                with_audio(uploadable_audio_amr)
 
        get :download_audio, :child_id => '1'
-       response.should represent_attachment(uploadable_audio_sample)
+       response.should represent_attachment(uploadable_audio_amr)
     end
   end
 end
