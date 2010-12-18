@@ -282,3 +282,7 @@ end
 Then /^I should be in the (.*?) page$/ do |page|
   pending
 end
+
+When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
+  fill_in(field, :with=>(0...length.to_i).map{ ('a'..'z').to_a[rand(26)] }.join)
+end
