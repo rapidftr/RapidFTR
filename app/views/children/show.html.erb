@@ -23,6 +23,12 @@
         <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
         	<li><span class="profile-section-label"><%= field.display_name %>:</span>
             <%= link_to "download", child_audio_url(@child)%></li>
+			<li>
+				<audio controls="controls">
+					<source src="<%=child_audio_url(@child)%>"/>
+					Cannot play this media type
+				</audio>
+				</li>
         <% end %>
       <% end %>
     </ul>

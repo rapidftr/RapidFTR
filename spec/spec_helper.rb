@@ -89,17 +89,30 @@ def to_image(blob)
   MiniMagick::Image.from_blob(blob)
 end
 
-
 def uploadable_audio(audio_path = "features/resources/sample.amr")
 
   audio = File.new(audio_path)
+
+  def audio.content_type
+    if /amr$/.match self.path 
+      "audio/amr"
+    elsif /wav$/.match self.path 
+      "audio/wav"
+    else
+      "audio/mpeg"
+    end
+  end
+
+  def audio.size
+    File.size self.path
+  end
 
   def audio.original_path
     self.path
   end
 
-  def audio.content_type
-    "audio/AMR"
+  def audio.data
+    File.read self.path
   end
 
   audio
