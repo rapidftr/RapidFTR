@@ -222,6 +222,22 @@ describe Child do
       child.save.should == true
     end
     
+    it "should disallow file formats that are not audio formats" do
+      child = Child.new
+
+      child.audio = uploadable_photo_gif
+      child.save.should == false
+
+      child.audio = uploadable_audio_amr
+      child.save.should == true
+      
+      child.audio = uploadable_audio_wav
+      child.save.should == true
+      
+      child.audio = uploadable_audio_mp3
+      child.save.should == true
+    end
+    
     it "should disallow age that is not a number" do
       fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
       FormSection.stub!(:all_enabled_child_fields).and_return fields
