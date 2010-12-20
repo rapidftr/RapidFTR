@@ -9,4 +9,9 @@ Feature: Playing audio files uploaded to child records
 		And a child record named "Barney" exists with a audio file with the name "sample.wav"
 		When I am on the child record page for "Barney"
 		Then I should see an audio element that can play the audio file named "sample.wav"
+	Scenario: Viewing a child record with audio attached - amr
+		Given I am logged in
+		And a child record named "Barney" exists with a audio file with the name "sample.amr"
+		When I am on the child record page for "Barney"
+		Then I should not see an audio tag
 	

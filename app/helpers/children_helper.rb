@@ -13,4 +13,9 @@ module ChildrenHelper
   def link_to_download_audio_with_key(key)
     link_to key.humanize, child_audio_url(@child.id,key),:id => key, :target => '_blank'
   end
+  
+  def is_playable_in_browser audio
+    browser_audio_formats = ["audio/mpeg", "audio/wav"]
+    browser_audio_formats.include? audio.content_type.downcase
+  end
 end
