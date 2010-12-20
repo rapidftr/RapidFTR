@@ -37,3 +37,12 @@ end
 Then /^user "(.+)" should not be disabled$/ do |username|
   User.find_by_user_name(username).should_not be_disabled
 end
+
+Given /^the following admin contact info:$/ do |table|
+  contact_info = table.hashes.inject({}) do |result, current|
+    result[current["key"]] = current["value"]
+    result
+  end
+  contact_info[:id] = "administrator"
+  ContactInformation.create contact_info
+end
