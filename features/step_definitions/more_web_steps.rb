@@ -101,4 +101,9 @@ Then /^I should see an audio element that can play the audio file named "([^"]*)
   response_body.should have_selector("audio source", :src=>request.url + "/audio")
 end
 
+Then /^I should not see an audio tag$/ do
+  response_body.should_not have_selector("audio")
+end
+
+
 

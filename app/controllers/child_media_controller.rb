@@ -25,7 +25,6 @@ class ChildMediaController < ApplicationController
     send_data( @attachment.data.read, :filename => gen_filename, :type => @attachment.content_type )
   end
 
-
   private
   def find_child
     @child = Child.get(params[:child_id])
