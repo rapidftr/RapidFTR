@@ -30,13 +30,13 @@
 
     <p>
       <%= f.label :password %>
-      <%= f.text_field :password %>*
+      <%= f.password_field :password %>*
       <span class="footnote">password should not contain blanks</span>
     </p>
 
     <p>
       <%= f.label :password_confirmation,"Re-enter password" %>
-      <%= f.text_field :password_confirmation %>*
+      <%= f.password_field :password_confirmation %>*
     </p>
 
   <% if current_user_name != @user.user_name %>
