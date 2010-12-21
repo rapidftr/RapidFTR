@@ -98,6 +98,8 @@ def uploadable_audio(audio_path = "features/resources/sample.amr")
       "audio/amr"
     elsif /wav$/.match self.path 
       "audio/wav"
+    elsif /ogg$/.match self.path 
+      "audio/ogg"
     else
       "audio/mpeg"
     end
@@ -128,6 +130,10 @@ end
 
 def uploadable_audio_mp3
   uploadable_audio "features/resources/sample.mp3"
+end
+
+def uploadable_audio_ogg
+  uploadable_audio "features/resources/sample.ogg"
 end
 
 

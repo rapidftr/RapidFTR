@@ -222,7 +222,7 @@ describe Child do
       child.save.should == true
     end
     
-    it "should disallow file formats that are not audio formats" do
+    it "should disallow file formats that are not supported audio formats" do
       child = Child.new
 
       child.audio = uploadable_photo_gif
@@ -232,6 +232,9 @@ describe Child do
       child.save.should == true
       
       child.audio = uploadable_audio_wav
+      child.save.should == false
+      
+      child.audio = uploadable_audio_ogg
       child.save.should == true
       
       child.audio = uploadable_audio_mp3
