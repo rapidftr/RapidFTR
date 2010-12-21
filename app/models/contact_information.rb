@@ -8,10 +8,13 @@ class ContactInformation < CouchRestRails::Document
   property :other_information
   property :email
   property :position
-  view_by :id
   unique_id :id
   
   def self.get_by_id id
-    by_id(:key => id).first
+    result = self.all.select{|x|x.id==id}.first
+    return result if !result.nil?
+    new_contact_info = ContactInformation.new :id=>id
+    new_contact_info.save!
+    new_contact_info
   end
 end
