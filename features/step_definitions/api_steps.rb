@@ -12,3 +12,11 @@ Then /^I receive a JSON list of elements with Id and Revision$/ do
     item.has_key?('rev').should be_true
   end
 end
+
+Then /^I receive a JSON response:$/ do |table|
+  expected = table.hashes.first
+  json_response = JSON.parse(response_body)
+  json_response.class.should == Hash
+  expected.each {|key,value| json_response[key].should == value}
+end
+
