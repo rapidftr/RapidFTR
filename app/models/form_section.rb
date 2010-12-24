@@ -29,6 +29,15 @@ class FormSection < CouchRestRails::Document
     all_child_fields.map{ |field| field["name"] }
   end
 
+  def self.all_enabled
+    all.select{|x|x.enabled}
+  end
+  def self.all_enabled_child_fields
+    all_enabled.map do |form_section|
+      form_section.fields
+    end.flatten
+  end
+  
   def self.all_child_fields
     all.map do |form_section|
       form_section.fields
@@ -44,6 +53,7 @@ class FormSection < CouchRestRails::Document
     formsection.fields.push(field)
     formsection.save
   end
+
   
   def properties= properties
     properties.each_pair do |name, value|
@@ -116,5 +126,6 @@ class FormSection < CouchRestRails::Document
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
     matching_fields.each{ |field| field.enabled = true}
   end
+  
 
 end
