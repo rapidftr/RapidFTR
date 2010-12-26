@@ -7,8 +7,8 @@ describe ContactInformationController do
   describe "GET edit" do
     it "populates the contact information" do
       contact_information = {"name"=>"Bob"}
-      ContactInformation.stub!(:get_by_id).with("administrator").and_return(contact_information)
-      get :edit, :id => "administrator"
+      ContactInformation.stub!(:get_or_create).with("bob").and_return(contact_information)
+      get :edit, :id => "bob"
       assigns[:contact_information].should == contact_information
     end
   end
@@ -20,6 +20,11 @@ describe ContactInformationController do
       get :show, :id => "administrator"
       response_as_json =  JSON.parse @response.body
       response_as_json.should == {"name"=>"Bob"}
+    end
+    it "should 404 if showing a contact information that does not exist" do
+      ContactInformation.stub!(:get_by_id).with("foo").and_raise(ErrorResponse.not_found("Contact information not found"))
+      get :show, :id => "foo"
+      response.status.should =~ /404/
     end
   end
   
