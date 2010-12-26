@@ -26,4 +26,4 @@
 
 <br/>
 
-<p><%= link_to "Back", admin_path() %></p>
+<p><%= link_to "Back", is_admin? ? admin_path() : root_path() %></p>
