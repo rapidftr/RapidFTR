@@ -12,7 +12,7 @@
     <%= f.text_area :description, :cols => 54, :rows => 10 %>
   </p>
   <p class="checkbox">
-    <%= f.check_box :enabled, {}, :true, :false %>
+    <%= f.check_box :enabled?, {}, true, false %>
     <%= f.label :enabled %>
   </p>
   </fieldset>
@@ -38,7 +38,7 @@
             <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
           </td>
           <td>
-            <span class="enabledStatus"><%= field.enabled == true ? "Enabled" : "Disabled" %></span>
+            <span class="enabledStatus"><%= field.enabled? ? "Enabled" : "Disabled" %></span>
           </td>
       <% end %>
       <td><%= field.display_name %></td>

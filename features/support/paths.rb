@@ -80,6 +80,9 @@ module NavigationHelpers
       
       when /edit form section page for "(.+)"$/
         edit_form_section_path(:id => $1)
+        
+      when /edit field page for "(.+)" on "(.+)" form$/
+        edit_formsection_field_path(:formsection_id => $2, :id => $1)
           
       when /form section page/
         formsections_path(options) 
