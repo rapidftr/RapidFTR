@@ -17,15 +17,7 @@ Feature: So that an admin user can access admin screens
 
     Scenario: Non-Admin user should not see the Admin Link
 
-      Given a user "Harry" with a password "123"
-
-      And I am on the login page
-
-      When I fill in "Harry" for "user name"
-
-      And I fill in "123" for "password"
-
-      And I press "Log in"
+      Given I am logged in
 
       Then I should not see "Admin"
 
