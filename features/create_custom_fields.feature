@@ -12,7 +12,7 @@ Feature: Creating Custom Form Fields
     When I follow "Numeric Field"
     And I fill in "Help for a numeric field" for "Help text"
     And I fill in "My new number field" for "Display name"
-    And I press "Create"
+    And I press "Save"
 
     Then I should see "Field successfully added"
     And I should see "my_new_number_field" in the list of fields
@@ -32,7 +32,7 @@ Feature: Creating Custom Form Fields
     When I follow "Text Field"
     And I fill in "Help for a text field" for "Help text"
     And I fill in "My Text field" for "Display name"
-    And I press "Create"
+    And I press "Save"
 
     Then I should see "Field successfully added"
     And I should see "my_text_field" in the list of fields
@@ -48,7 +48,7 @@ Feature: Creating Custom Form Fields
       one
       two
       """
-    When I press "Create"
+    When I press "Save"
 
     Then I should see "Field successfully added"
     
@@ -73,7 +73,7 @@ Feature: Creating Custom Form Fields
       Teddy bear
       Younger sibling
       """
-    When I press "Create"
+    When I press "Save"
 
     Then I should see "Field successfully added"
 

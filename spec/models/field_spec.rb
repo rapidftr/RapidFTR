@@ -4,7 +4,7 @@ describe "Child record field view model" do
 
   before :each do
     @field_name = "gender"
-    @field = Field.new_radio_button @field_name, ["male", "female"]
+    @field = Field.new :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
   end
 
   it "converts field name to a HTML tag ID" do
@@ -16,8 +16,24 @@ describe "Child record field view model" do
   end
 
   it "returns the html options tags for a select box with default option '(Select...)'" do
-    @field = Field.new_select_box("select_box", ["option 1", "option 2"])
+    @field = Field.new :type => Field::SELECT_BOX, :display_name => @field_name, :option_strings_text => "option 1\noption 2"
     @field.select_options.should == [["(Select...)", ""], ["option 1", "option 1"], ["option 2", "option 2"]]
+  end
+  
+  it "should have form type" do
+    @field.type.should == "radio_button"
+    @field.form_type.should == "multiple_choice"
+  end
+  
+  it "should dehumanzie name" do
+    field = Field.new :display_name => "Kevin Bacon"
+    field.name.should == "kevin_bacon"
+  end
+  
+  it "should create options from text" do
+    field = Field.new :option_strings_text => "tim\nrob"
+    field['option_strings_text'].should == nil    
+    field['option_strings'].should == ["tim", "rob"]
   end
   
   describe "valid?" do
@@ -56,7 +72,7 @@ describe "Child record field view model" do
       other_form.save!
     
       form = FormSection.new
-      field = Field.new(:display_name => "test", :name => "other test")
+      field = Field.new(:display_name => "other test")
       form.fields << field
     
       field.valid?
@@ -66,7 +82,7 @@ describe "Child record field view model" do
 
   describe "save" do
     it "should be enabled" do
-      field = Field.new :name => "field", :display_name => "field"
+      field = Field.new :name => "field", :display_name => "field", :enabled => true
       form = FormSection.new :fields => [field], :name => "test_form"
 
       form.save!
