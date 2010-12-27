@@ -155,17 +155,60 @@ describe Child do
   describe "validation of custom fields" do
     
     it "should validate numeric types" do
-      form_sections = [{ :fields => [{:type => 'numeric_field', :name => 'height'}]}]
+      fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
       child = Child.new
       child[:height] = "very tall"
-      FormSection.stub!(:all_by_order).and_return(form_sections)
+      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
       
-      child.should_not be_valid
+      child.valid?
+      child.errors.on(:height).should == ["height must be a valid number"]
     end
     
-  end
-
-  describe "validating an existing child record" do
+    it "should validate multiple numeric types" do
+      fields = [
+        {:type => 'numeric_field', :name => 'height', :display_name => "height"},
+        {:type => 'numeric_field', :name => 'new_age', :display_name => "new age"}]
+      child = Child.new
+      child[:height] = "very tall"
+      child[:new_age] = "very old"
+      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+      
+      child.valid?
+      child.errors.on(:height).should == ["height must be a valid number"]
+      child.errors.on(:new_age).should == ["new age must be a valid number"]
+    end
+    it "should disallow text field values to be more than 200 chars" do
+      fields = [Field.new(:type=>Field::TEXT_FIELD,:name=>"name", :display_name=>"Name"), Field.new(:type=>Field::CHECK_BOX,:name=>"not_name")]
+      too_many_chars = (0...201).map{ ('a'..'z').to_a[rand(26)]}.to_s
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
+      child = Child.new({:name=>too_many_chars})
+      child.save.should == false
+      child.errors[:name].should == ["Name cannot be more than 200 characters long"]
+    end
+    it "should disallow text area values to be more than 400 chars" do
+      fields = [Field.new(:type=>Field::TEXT_AREA,:name=>"a_textfield", :display_name=>"A textfield")]
+      too_many_chars = (0...401).map{ ('a'..'z').to_a[rand(26)]}.to_s
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
+      child = Child.new({:a_textfield=>too_many_chars})
+      child.save.should == false
+      child.errors[:a_textfield].should == ["A textfield cannot be more than 400 characters long"]
+    end
+    it "should not validate fields that were not filled in" do
+      fields = [Field.new(:type=>Field::TEXT_FIELD,:name=>"name"),Field.new(:type=>Field::TEXT_AREA,:name=>"another")]
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
+      child = Child.new({:name=>nil})
+      child.save.should == true
+      child.errors["name"].should be_nil
+      child.errors["another"].should be_nil
+    end
+    it "should pass numeric fields that are valid numbers to 1 dp" do
+      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"height")]
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
+      child = Child.new({:height=>"10.2"})
+      child.save.should == true
+      child.errors["height"].should be_nil
+    end
+    
     it "should disallow file formats that are not photo formats" do
       child = Child.new
 
@@ -179,12 +222,32 @@ describe Child do
       child.save.should == true
     end
     
+    it "should disallow file formats that are not supported audio formats" do
+      child = Child.new
+
+      child.audio = uploadable_photo_gif
+      child.save.should == false
+
+      child.audio = uploadable_audio_amr
+      child.save.should == true
+      
+      child.audio = uploadable_audio_wav
+      child.save.should == false
+      
+      child.audio = uploadable_audio_ogg
+      child.save.should == true
+      
+      child.audio = uploadable_audio_mp3
+      child.save.should == true
+    end
+    
     it "should disallow age that is not a number" do
+      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
       child = Child.new({:age => "not num"})
       child.save.should == false
     end
-    
-    
+
     it "should disallow age less than 1" do
       child = Child.new({:age => "1"})
       child.save.should == true
@@ -202,6 +265,8 @@ describe Child do
     end
     
     it "should disallow age more than 1 dp" do
+      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
       child = Child.new({:age => "10.1"})
       child.save.should == true
       
@@ -210,6 +275,8 @@ describe Child do
     end
     
     it "should allow blank age" do
+      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
       child = Child.new({:age => ""})
       child.save.should == true
       
@@ -218,7 +285,15 @@ describe Child do
     end
 
     it "should show error message for age if not valid" do
+      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age", :display_name=>"Age")]
+      FormSection.stub!(:all_enabled_child_fields).and_return fields
       child = Child.new({:age => "not num"})
+      child.save.should == false
+      child.errors.on("age").should == ["Age must be a valid number"]
+    end
+    
+    it "should show error message for age if out of range" do
+      child = Child.new({:age => "200"})
       child.save.should == false
       child.errors.on("age").should == ["Age must be between 1 and 99"]
     end

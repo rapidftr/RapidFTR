@@ -21,6 +21,8 @@ Feature:
     Then user "george" should be disabled
     When I am on the manage users page
     And the user "george" should be marked as disabled
+	When I follow "Show" within "#user-row-george"
+	Then I should see "Disabled"
 
   Scenario: Admin re-enables a user from the edit page
 
@@ -38,6 +40,8 @@ Feature:
     Then user "george" should not be disabled
     When I go to the manage users page
     And the user "george" should be marked as enabled
+	When I follow "Show" within "#user-row-george"
+	Then I should see "Enabled"
   @allow-rescue
   Scenario: A user who is disabled mid-session can't continue using that session
 

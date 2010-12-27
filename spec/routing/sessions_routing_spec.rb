@@ -18,5 +18,9 @@ describe SessionsController do
     it "recognizes and generates #destroy" do
       { :delete => "/sessions/1" }.should route_to(:controller => "sessions", :action => "destroy", :id => "1") 
     end
+
+    it "recognizes and generates #active" do
+      { :get => "/active" }.should route_to(:controller => "sessions", :action => "active")
+    end
   end
 end

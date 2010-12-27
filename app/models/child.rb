@@ -25,26 +25,15 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  validates_with_method :age, :method => :validate_age
   validates_with_method :validate_file_name
   validates_with_method :validate_audio_file_name
-  validates_with_method :validate_custom_field_types
-  
-  def validate_custom_field_types
-    fields = FormSection.all_by_order.collect{ |fs| fs[:fields] }.flatten
-    fields.each do |field|
-      value = (self[field[:name]].strip rescue '')
-      if 'numeric_field' == field[:type]
-        if value.present? and (value =~ /^\d*\.{0,1}\d+$/).nil?
-          self.errors.add(field[:name], "#{field[:display_name]} must be a valid number")
-        end
-      end
-    end
-    return [self.errors.blank?, '']
-  end
-  
+  validates_fields_of_type Field::NUMERIC_FIELD
+  validates_fields_of_type Field::TEXT_FIELD
+  validates_fields_of_type Field::TEXT_AREA
+  validates_with_method :age, :method => :validate_age
+    
   def validate_age
-    return true if age.nil? || age.blank? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0)
+    return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
     [false, "Age must be between 1 and 99"]
   end
   
@@ -54,7 +43,7 @@ class Child < CouchRestRails::Document
   end
   
   def validate_audio_file_name
-    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr))$)/ =~ @audio_file_name
+    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3|ogg))$)/ =~ @audio_file_name
     [false, "Please upload a valid audio file amr for this child record"]
   end
   

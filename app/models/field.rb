@@ -16,6 +16,7 @@ class Field < Hash
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
   CHECK_BOX = "check_box"
+  NUMERIC_FIELD = "numeric_field"
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
   DATE_FIELD = "date_field"
