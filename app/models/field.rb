@@ -59,7 +59,7 @@ class Field < Hash
   end
 
   def initialize properties
-    properties["enabled"] = true if properties["enabled"] == nil
+    self.enabled = true if properties["enabled"] == nil
     self.attributes = properties
   end
   
@@ -67,7 +67,6 @@ class Field < Hash
     option_strings_text = properties.delete('option_strings_text')
     super properties
     self.option_strings_text = option_strings_text
-    self.name = display_name.dehumanize if display_name
     if (option_strings)
       @options = FieldOption.create_field_options(name, option_strings)
     end
@@ -100,11 +99,11 @@ class Field < Hash
   
   #TODO - remove this is just for testing
   def self.new_field(type, name, options=[])
-    Field.new :type => type, :name => name, :display_name => name, :enabled => true, :option_strings => options
+    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :enabled => true, :option_strings => options
   end
   
   def self.new_check_box field_name, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOX
+    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOX, :enabled => true
   end
   
   def self.new_text_field field_name, display_name = nil

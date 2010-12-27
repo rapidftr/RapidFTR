@@ -210,7 +210,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
     )
     form_section.fields.push Field.new(field_hash)
   end
-  form_section.save
+  form_section.save!
 end
 
 Then /^there should be (\d+) child records in the database$/ do |number_of_records|
@@ -325,6 +325,8 @@ And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   field_ids = Nokogiri::HTML(response.body).css("table tbody tr").map {|row| row[:id] }
   field_ids.should include("#{field_id}Row")
 end
+
+
 
 Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
   field = Hpricot(response.body).form_field_for(field_name)

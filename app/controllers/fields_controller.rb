@@ -28,8 +28,10 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new params[:field]
+    @field.name = @field.display_name.dehumanize 
+        
     FormSection.add_field_to_formsection @form_section, @field
-    
+        
     if (@field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = "Field successfully added"

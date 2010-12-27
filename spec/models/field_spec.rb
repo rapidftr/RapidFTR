@@ -4,7 +4,7 @@ describe "Child record field view model" do
 
   before :each do
     @field_name = "gender"
-    @field = Field.new :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
+    @field = Field.new :name => "gender", :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
   end
 
   it "converts field name to a HTML tag ID" do
@@ -25,13 +25,8 @@ describe "Child record field view model" do
     @field.form_type.should == "multiple_choice"
   end
   
-  it "should dehumanzie name" do
-    field = Field.new :display_name => "Kevin Bacon"
-    field.name.should == "kevin_bacon"
-  end
-  
   it "should create options from text" do
-    field = Field.new :option_strings_text => "tim\nrob"
+    field = Field.new :display_name => "something", :option_strings_text => "tim\nrob"
     field['option_strings_text'].should == nil    
     field['option_strings'].should == ["tim", "rob"]
   end
@@ -68,11 +63,11 @@ describe "Child record field view model" do
     end
     
     it "should validate unique within other forms" do  
-      other_form = FormSection.new(:name => "test form", :fields => [Field.new(:name => "other test", :display_name => "other test")] )
+      other_form = FormSection.new(:name => "test form", :fields => [Field.new(:name => "other_test", :display_name => "other test")] )
       other_form.save!
     
       form = FormSection.new
-      field = Field.new(:display_name => "other test")
+      field = Field.new(:display_name => "other test", :name => "other_test")
       form.fields << field
     
       field.valid?
@@ -82,7 +77,7 @@ describe "Child record field view model" do
 
   describe "save" do
     it "should be enabled" do
-      field = Field.new :name => "field", :display_name => "field", :enabled => true
+      field = Field.new :name => "field", :display_name => "field", :enabled => "true"
       form = FormSection.new :fields => [field], :name => "test_form"
 
       form.save!
