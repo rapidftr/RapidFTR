@@ -34,6 +34,22 @@ describe FormSection do
       FormSection.stub(:by_unique_id).with(:key=>unique_id).and_return([expected])
       FormSection.get_by_unique_id(unique_id).should == expected
     end
+    
+    it "should save fields" do
+      section = FormSection.new :name => 'somename', :unique_id => "someform"
+      section.save!
+      
+      section.fields = [Field.new(:name => "a field", :type => "text_field", :display_name => "A Field")]
+      section.save!
+      
+      field = section.fields.first 
+      field.name = "kev"
+      section.save!
+      
+      section = FormSection.get_by_unique_id("someform")
+      section.name.should == 'somename' 
+    end
+    
   end
 
   describe "add_field_to_formsection" do

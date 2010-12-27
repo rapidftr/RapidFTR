@@ -36,6 +36,16 @@ Given /^the following children exist in the system:$/ do |children_table|
   end
 end
 
+Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
+  child = Child.new_with_user_name("Bob Creator",{:name=>name})
+  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.create!
+  # visit path_to('new child page')
+  #   fill_in('Name', :with => name)
+  #   attach_file("child[audio]", "features/resources/#{filename}", "audio/mpeg")
+  #   click_button('Save')
+end
+
 Then /^I should see "([^\"]*)" in the column "([^\"]*)"$/ do |value, column|
 
   column_index = -1
@@ -175,7 +185,7 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
     form_section_hash.reverse_merge!(
       'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
       'enabled' => true,
-      'fields'=> Array.new # todo:build these FSDs in a nicer way...
+      'fields'=> Array.new
     )
     
     form_section_hash["order"] = form_section_hash["order"].to_i
@@ -188,6 +198,26 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" with field type "([
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :type => field_type)
   FormSection.add_field_to_formsection(form_section, field)
 end
+
+Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table|
+  form_section = FormSection.get_by_unique_id(form_section_name)
+  form_section.should_not be_nil
+  form_section.fields = []
+  table.hashes.each do |field_hash|
+    field_hash.reverse_merge!(
+      'enabled' => true,
+      'type'=> Field::TEXT_FIELD 
+    )
+    form_section.fields.push Field.new(field_hash)
+  end
+  form_section.save!
+end
+
+Then /^there should be (\d+) child records in the database$/ do |number_of_records|
+  Child.all.length.should == number_of_records.to_i
+end
+
+
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
@@ -295,6 +325,8 @@ And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   field_ids = Nokogiri::HTML(response.body).css("table tbody tr").map {|row| row[:id] }
   field_ids.should include("#{field_id}Row")
 end
+
+
 
 Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
   field = Hpricot(response.body).form_field_for(field_name)

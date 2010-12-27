@@ -30,7 +30,7 @@ describe FieldsController do
    describe "get new text field" do
      
      it "populates the view with the selected form section"do
-        should_populate_form_section(:new_text_field)
+        should_populate_form_section(:new)
       end
      
    end
@@ -74,20 +74,20 @@ describe FieldsController do
 
     it "should use the display name to form the field name if no field name is supplied" do
       FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>"My brilliant new field", "name"=>"my_brilliant_new_field", "enabled" => true} )
-      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>"My brilliant new field", :name=>""}
+      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>"My brilliant new field", :name=>"", "enabled" => true}
     end
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This £££i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
       FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "enabled" => true} )
-      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>""}
+      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>"", "enabled" => true}
     end
     
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
       FormSection.should_receive(:add_field_to_formsection).with(anything(), {"display_name"=>field_display_name, "name"=>expected_name, "enabled" => true} )
-      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>""}
+      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>"", "enabled" => true}
     end
     
   end
@@ -152,10 +152,5 @@ describe FieldsController do
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
 
-    it "should not load formsection on cancel" do
-      FormSection.should_not_receive(:get_by_unique_id)
-
-      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
-    end
   end
 end

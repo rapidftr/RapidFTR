@@ -17,7 +17,7 @@ Feature: So that admin can customize fields in a form section
       | Check box  | new field page for "check_box"  |
       | Select drop down | new field page for "select_box" |
       | Radio button | new field page for "radio_button" |
-      | Numeric Field  | new field page for "numeric_field"  |
+      | Numeric Field | new field page for "numeric_field"  |
 
     When I follow "Text Field"
 
@@ -29,7 +29,7 @@ Feature: So that admin can customize fields in a form section
 
     When I fill in "Anything" for "Display name"
     And I fill in "Really anything" for "Help text"
-    And I press "Create"
+    And I press "Save"
     
     Then I should see "Anything"
     When I am on children listing page
@@ -56,7 +56,7 @@ Feature: So that admin can customize fields in a form section
 
     When I fill in "Anything" for "Display name"
     And I fill in "Really anything" for "Help text"
-    And I press "Create"
+    And I press "Save"
 
     Then I should see "Anything"
 
@@ -93,7 +93,7 @@ Feature: So that admin can customize fields in a form section
     one
     two
     """
-  And I press "Create"
+  And I press "Save"
   
   Then I should see "Radio button name"
   When I am on children listing page

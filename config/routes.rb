@@ -14,7 +14,6 @@ ActionController::Routing::Routes.draw do |map|
   map.child_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 
-
   map.resources :users
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index
@@ -31,15 +30,19 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :formsections, :controller=>'form_section' do |form_section|
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
     additional_field_actions[:new] = :get
+    additional_field_actions[:edit] = :get
+    additional_field_actions[:update] = :post
     additional_field_actions[:move_up] = :post
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
     additional_field_actions[:toggle_fields] = :post
     additional_field_actions[:confirm_toggle] = :post
-    
+        
     form_section.resources :fields, :controller => 'fields', :collection => additional_field_actions
   end
-
+  
+  map.choose_field 'form_section/:formsection_id/choose_field', :controller => 'fields', :action => 'choose'
+    
   map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
 
   map.resources :form_section

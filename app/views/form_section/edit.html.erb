@@ -12,7 +12,7 @@
     <%= f.text_area :description, :cols => 54, :rows => 10 %>
   </p>
   <p class="checkbox">
-    <%= f.check_box :enabled, {:checked => true}, :true, :false %>
+    <%= f.check_box :enabled?, {}, true, false %>
     <%= f.label :enabled %>
   </p>
   </fieldset>
@@ -27,7 +27,7 @@
     <th></th>
     <th>Enabled</th>
     <th>Name</th>
-    <th colspan=3>Ordering</th>
+    <th colspan=4>Ordering</th>
   </tr>
 </thead>
 <tbody>
@@ -38,7 +38,7 @@
             <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
           </td>
           <td>
-            <span class="enabledStatus"><%= field.enabled ? "Enabled" : "Disabled" %></span>
+            <span class="enabledStatus"><%= field.enabled? ? "Enabled" : "Disabled" %></span>
           </td>
       <% end %>
       <td><%= field.display_name %></td>
@@ -49,8 +49,9 @@
         <td>
 		    <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
         </td>
-        <td>
-		    <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id)} %>
+        <td class='field-buttons'>
+          <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 
+          		      <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id)} %>
         </td>
       <%end%>
     </tr>
@@ -60,7 +61,7 @@
   <tfoot>
     <tr>
       <% if @form_section.editable? %>
-        <th colspan=4><%= link_to "Add Custom Field", new_formsection_fields_path(@form_section.unique_id) %></th>
+        <th colspan=4><%= link_to "Add Custom Field", choose_field_path(@form_section.unique_id) %></th>
       <% else %>
         <th colspan=4> <i>Fields on this form cannot be edited.</i> </th>
       <% end %>
