@@ -10,6 +10,15 @@ module ApplicationHelper
     return session.user_name unless session.nil? or session.user.nil?
   end
 
+
+  def is_admin?
+    session = Session.get_from_cookies(cookies)
+    user = User.find_by_user_name session.user_name
+    user.user_type == "User" ? false : true
+
+  end
+
+
   def submit_button(name = 'Save')
     content_tag(:p, :class => 'submitButton') do
       submit_tag(name)
