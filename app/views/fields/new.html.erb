@@ -1,27 +1,2 @@
-<div>
-  <h2>Add New Field</h2>
-    <p>Choose Field Type</p>
-  <div class="content">
-    <ul>
-      <li><%=link_to "Text Field", new_text_field_formsection_fields_path(@form_section.unique_id)%> </li>
-      <li><%=link_to "Text Area", new_textarea_formsection_fields_path(@form_section.unique_id)%></li>
-      <li><%=link_to "Check box", new_check_box_formsection_fields_path(@form_section.unique_id)%></li>
-      <li><%=link_to "Select drop down", new_select_box_formsection_fields_path(@form_section.unique_id)%></li>
-      <li><%=link_to "Radio button", new_radio_button_formsection_fields_path(@form_section.unique_id)%></li>
-      <li><%=link_to "Numeric Field", new_numeric_field_formsection_fields_path(@form_section.unique_id)%></li>
-      <li><%=link_to "Date Field", new_date_field_formsection_fields_path(@form_section.unique_id)%></li>
-    </ul>
-  </div>
-  <p> Or use a suggested field</p>
-  <table id="suggestedFields">
-    <thead>
-        <td>Name</td>       
-        <td>Help text</td>
-        <td>Type</td>
-        <td>Available options</td>
-        <td></td>
-    </thead>
-       <%= render :partial => "suggested_field", :collection => @suggested_fields, :locals=> {:form_section_id=>@form_section.unique_id} %>
-
-  </table>
-</div>
+<% @page_name = "New #{@field.type.humanize}" %>
+<%= render :partial => "#{@field.form_type}_form", :locals=> { :url => formsection_fields_path } %>

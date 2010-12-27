@@ -95,7 +95,7 @@ module NavigationHelpers
 
       when /new field page for "(.+)"/
         field_type = $1
-        send( "new_#{field_type}_formsection_fields_path" )
+        new_formsection_field_path(:type => field_type)
 
       when /the edit form section page for "(.+)"/
         form_section = $1

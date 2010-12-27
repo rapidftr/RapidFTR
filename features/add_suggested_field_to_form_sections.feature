@@ -19,8 +19,8 @@ Feature: Adding a suggested field to a form section
 
      Then I should see the following suggested fields:
         | name | unique_id | description |
-        | A_suggested_field | field_one | This is a good field to use |
-        | Another_suggested_field | field_two | This also is a good field to use |
+        | a_suggested_field | field_one | This is a good field to use |
+        | another_suggested_field | field_two | This also is a good field to use |
 
    Scenario: Adding a suggested field to a form section
      Given I am logged in as an admin
