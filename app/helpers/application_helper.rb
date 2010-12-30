@@ -9,6 +9,11 @@ module ApplicationHelper
     session = Session.get_from_cookies(cookies)
     return session.user_name unless session.nil? or session.user.nil?
   end
+  
+  def is_admin?
+    session = Session.get_from_cookies(cookies)
+    return session.admin? if session 
+  end
 
 
   def is_admin?
