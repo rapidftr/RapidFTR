@@ -124,7 +124,7 @@ class Child < CouchRestRails::Document
 
   def audio
     attachment_name = self['recorded_audio']
-    return nil unless attachment_name
+    return nil unless attachment_name && (has_attachment? attachment_name)
     data = read_attachment attachment_name
     content_type = self['_attachments'][attachment_name]['content_type']
     FileAttachment.new attachment_name, content_type, data

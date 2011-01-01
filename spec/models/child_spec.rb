@@ -653,10 +653,18 @@ describe Child do
     end
   end
 
-   describe ".photo" do
+  describe ".photo" do
     it "should return nil if the record has no attached photo" do
       child = create_child "Bob McBobberson"
       Child.all.find{|c| c.id == child.id}.photo.should be_nil
+    end
+  end
+  
+  describe ".audio" do
+    it "should return nil if the recorded audio key is not an attachment" do
+      child = Child.create('audio' => uploadable_audio)
+      child["recorded_audio"] = "ThisIsNotAnAttachmentName"
+      child.audio.should be_nil
     end
   end
   
