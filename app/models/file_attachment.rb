@@ -14,5 +14,9 @@ class FileAttachment
   def FileAttachment.generate_name(prefix = "file")
     "#{prefix}-#{Time.now.strftime('%Y-%m-%dT%H%M%S')}"    
   end
+  
+  def mime_type
+    Mime::Type.lookup(self.content_type.downcase)
+  end
 
 end

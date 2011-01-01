@@ -37,7 +37,7 @@ describe ChildMediaController do
   end
 
   describe "response" do
-    it "should return current child's photo" do
+    it "should return current ch  ild's photo" do
       given_a_child.
               with_id("1").
               with_photo(uploadable_photo)

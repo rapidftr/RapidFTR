@@ -15,7 +15,6 @@ module ChildrenHelper
   end
   
   def is_playable_in_browser audio
-    media_type = Media::Type.lookup(audio.content_type.downcase)
-    AudioMediaTypes.browser_playable? media_type
+    AudioMimeTypes.browser_playable? audio.mime_type
   end
 end
