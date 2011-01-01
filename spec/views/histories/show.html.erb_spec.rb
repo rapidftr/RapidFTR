@@ -1,16 +1,28 @@
 require 'spec_helper'
 class FakeRecordWithHistory
   attr_reader :id
-  def initialize
+  def initialize user = "Bob", created = "31/12/2010 22:06"
     @id = "ChildId"
    @fields = {
      "histories"=> [],
-     "created_at" => "31/12/2010 22:06",
-     "created_by" => "Bob"
+     "created_at" => created,
+     "created_by" => user
    }
   end
   def add_history history
     @fields["histories"].unshift(history)
+  end
+  def add_single_change username, date, field, from, to
+    self.add_history({
+             "changes" => {
+                 field => {
+                     "from" => from,
+                     "to" => to
+                 }
+             },
+             "user_name" => username,
+             "datetime" => date
+          })
   end
   def [](field)
      @fields[field]
@@ -26,23 +38,21 @@ describe "histories/show.html.erb" do
     end
     describe "rendering history for a newly created record" do
       it "should render only the creation record" do
-        assigns[:child] = Child.create(:last_known_location => "Haiti", :photo => uploadable_photo)
+        child = FakeRecordWithHistory.new "Bob", "Yesterday"
+        assigns[:child] = child
         render
       	response.should have_selector(".history-details li", :count => 1)
       	response.should have_selector(".history-details li") do |item|
-      		item.text.should match(/Record created by/)
+      		item.text.should match(/Yesterday Record created by Bob/)
       	end
       end
     end
     describe "rendering changes to photos" do
       it "should render photo change record when updating a photo" do
-        child = Child.create(:last_known_location => "Haiti", :photo => uploadable_photo)
-
-        updated_at_time = Time.parse("Feb 20 2010 12:04")
-        Time.stub!(:now).and_return updated_at_time
-        child.update_attributes :photo => uploadable_photo_jeff
-
-        assigns[:child] = Child.get(child.id)
+        child = FakeRecordWithHistory.new "Bob", "Yesterday"
+        child.add_single_change "rapidftr", "31/12/2010 20:55", "current_photo_key", "OldPhoto", "NewPhoto"
+ 
+        assigns[:child] = child
         render
 
       	response.should have_selector(".history-details li", :count => 2)
@@ -50,20 +60,23 @@ describe "histories/show.html.erb" do
       		item.text.should match(/Photo changed/)
       	end 
       end
+      it "should render photo change record with links when adding a photo to an existing record for first time" do
+        child = FakeRecordWithHistory.new "Bob", "Yesterday"
+        child.add_single_change "rapidftr", "31/12/2010 20:55", "current_photo_key", nil, "NewPhoto"
+ 
+        assigns[:child] = child
+        render
+
+      	response.should have_selector(".history-details li", :count => 2)
+      	response.should have_selector(".history-details li") do |item|
+      		item.text.should match(/Photo  added/)
+      	end
+      end
     end
     describe "rendering changes to audio" do
-      it "should render audio change record with links when updating a sound file" do
+      it "should render audio change record" do
         child = FakeRecordWithHistory.new 
-        child.add_history({
-                             "changes" => {
-                                 "recorded_audio" => {
-                                     "from" => "First",
-                                     "to" => "Second"
-                                 }
-                             },
-                             "user_name" => "rapidftr",
-                             "datetime" => "31/12/2010 20:55"
-                          })
+        child.add_single_change "rapidftr", "31/12/2010 20:55", "recorded_audio", "First", "Second"
         
         assigns[:child] = child
         render
@@ -73,27 +86,18 @@ describe "histories/show.html.erb" do
       		item[0].text.should match(/31\/12\/2010 20:55 Audio changed from First to Second by rapidftr/)
       	end 
       end
-          it "should render audio change record with links when adding a sound file to an existing record for first time" do
-            child = FakeRecordWithHistory.new 
-            child.add_history({
-                                 "changes" => {
-                                     "recorded_audio" => {
-                                         "from" => nil,
-                                         "to" => "Audio"
-                                     }
-                                 },
-                                 "user_name" => "rapidftr",
-                                 "datetime" => "31/12/2010 20:55"
-                              })
+      it "should render audio change record with links when adding a sound file to an existing record for first time" do
+        child = FakeRecordWithHistory.new 
+        child.add_single_change "rapidftr", "31/12/2010 20:55", "recorded_audio", nil, "Audio"
 
-            assigns[:child] = child
-            render
+        assigns[:child] = child
+        render
 
-          	response.should have_selector(".history-details li", :count => 2)
-          	response.should have_selector(".history-details li") do |item|
-          		item[0].text.should match(/31\/12\/2010 20:55 Audio Audio added by rapidftr/)
-          	end 
-          end
+      	response.should have_selector(".history-details li", :count => 2)
+      	response.should have_selector(".history-details li") do |item|
+      		item[0].text.should match(/31\/12\/2010 20:55 Audio Audio added by rapidftr/)
+      	end 
+      end
     end
     describe "rendering several history entries" do
       it "should order history log from most recent change to oldest change" do

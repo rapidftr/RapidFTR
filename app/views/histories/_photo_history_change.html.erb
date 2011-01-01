@@ -1,5 +1,10 @@
 <li>
   <div>
-	<%= datetime %> Photo changed from <%= link_to_photo_with_key(from_value) %> to <%= link_to_photo_with_key(to_value) %> by <%= user_name %>
+	<%= datetime %> 
+	<% if from_value %>
+		Photo changed from <%= link_to_photo_with_key(from_value) %> to <%= link_to_photo_with_key(to_value) %> by <%= user_name %>
+	<% else %>
+		Photo <%= link_to_photo_with_key(to_value) %> added by <%= user_name %>
+	<%end%>
   </div>
 </li>
