@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.edit_photo '/children/:id/photo/edit', :controller => 'children', :action => 'edit_photo', :conditions => {:method => :get }
   map.update_photo '/children/:id/photo', :controller => 'children', :action => 'update_photo', :conditions => {:method => :put }
 
-  map.child_audio "/children/:child_id/audio", :controller => "child_media", :action => "download_audio"
+  map.child_audio "/children/:child_id/audio/:id", :controller => "child_media", :action => "download_audio"
   map.child_photo "/children/:child_id/photo/:id", :controller => "child_media", :action => "show_photo"
   map.child_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"

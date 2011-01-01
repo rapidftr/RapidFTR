@@ -1,5 +1,21 @@
 require 'spec_helper'
-
+class FakeRecordWithHistory
+  attr_reader :id
+  def initialize
+    @id = "ChildId"
+   @fields = {
+     "histories"=> [],
+     "created_at" => "31/12/2010 22:06",
+     "created_by" => "Bob"
+   }
+  end
+  def add_history history
+    @fields["histories"].unshift(history)
+  end
+  def [](field)
+     @fields[field]
+   end
+end
 describe "histories/show.html.erb" do
 
   describe "child history" do
@@ -37,26 +53,47 @@ describe "histories/show.html.erb" do
     end
     describe "rendering changes to audio" do
       it "should render audio change record with links when updating a sound file" do
-        child = Child.new
-        child['histories'] =[ {
-                           "changes" => {
-                               "recorded_audio" => {
-                                   "from" => "first audio file",
-                                   "to" => "second audio file"
-                               }
-                           },
-                           "user_name" => "rapidftr",
-                           "datetime" => "31/12/2010 20:55"
-        }]
+        child = FakeRecordWithHistory.new 
+        child.add_history({
+                             "changes" => {
+                                 "recorded_audio" => {
+                                     "from" => "First",
+                                     "to" => "Second"
+                                 }
+                             },
+                             "user_name" => "rapidftr",
+                             "datetime" => "31/12/2010 20:55"
+                          })
         
         assigns[:child] = child
         render
 
       	response.should have_selector(".history-details li", :count => 2)
       	response.should have_selector(".history-details li") do |item|
-      		item.text.should match(/Audio changed from FOO/)
+      		item[0].text.should match(/31\/12\/2010 20:55 Audio changed from First to Second by rapidftr/)
       	end 
       end
+          it "should render audio change record with links when adding a sound file to an existing record for first time" do
+            child = FakeRecordWithHistory.new 
+            child.add_history({
+                                 "changes" => {
+                                     "recorded_audio" => {
+                                         "from" => nil,
+                                         "to" => "Audio"
+                                     }
+                                 },
+                                 "user_name" => "rapidftr",
+                                 "datetime" => "31/12/2010 20:55"
+                              })
+
+            assigns[:child] = child
+            render
+
+          	response.should have_selector(".history-details li", :count => 2)
+          	response.should have_selector(".history-details li") do |item|
+          		item[0].text.should match(/31\/12\/2010 20:55 Audio Audio added by rapidftr/)
+          	end 
+          end
     end
     describe "rendering several history entries" do
       it "should order history log from most recent change to oldest change" do
