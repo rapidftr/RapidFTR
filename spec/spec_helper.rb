@@ -104,6 +104,9 @@ def uploadable_audio(audio_path = "features/resources/sample.amr")
       "audio/mpeg"
     end
   end
+  def audio.mime_type
+    Mime::Type.lookup self.content_type
+  end
 
   def audio.size
     File.size self.path

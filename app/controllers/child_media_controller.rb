@@ -53,8 +53,7 @@ class ChildMediaController < ApplicationController
   end
 
   def audio_filename attachment
-    mime_type = Mime::Type.lookup attachment.content_type
-    "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(mime_type)
+    "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 
 end
