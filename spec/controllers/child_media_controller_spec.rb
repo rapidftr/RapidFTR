@@ -104,15 +104,14 @@ describe ChildMediaController do
   end
 
   describe "download audio" do
-
     it "should return a audio file associated with a child" do
         given_a_child.
                 with_id('1').
-                with_unique_identifier('rapidxxx123').
+                with_unique_identifier('child123').
                 with_audio(uploadable_audio_amr)
 
        get :download_audio, :child_id => '1'
-       response.should represent_attachment(uploadable_audio_amr)
+       response.should represent_attachment(uploadable_audio_amr, "audio_child123.amr")
     end
   end
 end
