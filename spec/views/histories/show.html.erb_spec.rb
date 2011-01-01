@@ -31,8 +31,6 @@ end
 describe "histories/show.html.erb" do
 
   describe "child history" do
-
-
     before do
       FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
     end
@@ -101,24 +99,12 @@ describe "histories/show.html.erb" do
     end
     describe "rendering several history entries" do
       it "should order history log from most recent change to oldest change" do
-        child = Child.create(:age => "6", :last_known_location => "Haiti", :photo => uploadable_photo)
+        child = FakeRecordWithHistory.new
+        child.add_single_change "rapidftr", "20/02/2010 12:04", "age", "6", "7"
+        child.add_single_change "rapidftr", "20/02/2010 13:04", "last_known_location", "Haiti", "Santiago"
+        child.add_single_change "rapidftr", "20/02/2011 12:04", "age", "7", "8"
 
-        child = Child.get(child.id)
-        child['last_updated_at'] = "20/02/2010 12:04"
-        child['age'] = '7'
-        child.save!
-
-        child = Child.get(child.id)
-        child['last_updated_at'] = "20/02/2010 13:04"
-        child['last_known_location'] = 'Santiago'
-        child.save!
-
-        child = Child.get(child.id)
-        child['last_updated_at'] = "20/02/2011 12:04"
-        child['age'] = '8'
-        child.save!
-
-        assigns[:child] = Child.get(child.id)
+        assigns[:child] = child
         render
 
         response.should have_selector(".history-details li") do |elements|
