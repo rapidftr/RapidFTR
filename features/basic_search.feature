@@ -127,3 +127,10 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I fill in "" for "Name"
     And I press "Search"
     Then I should see the error "Query can't be empty"
+
+  Scenario: Creating a search with non standard queries
+    Given I am on the child search page
+    Then I should not see any errors
+    When I fill in "\" for "Name"
+    And I press "Search"
+    Then I should be on the child search results page

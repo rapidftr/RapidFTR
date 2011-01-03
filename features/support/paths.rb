@@ -80,6 +80,9 @@ module NavigationHelpers
       
       when /edit form section page for "(.+)"$/
         edit_form_section_path(:id => $1)
+        
+      when /edit field page for "(.+)" on "(.+)" form$/
+        edit_formsection_field_path(:formsection_id => $2, :id => $1)
           
       when /form section page/
         formsections_path(options) 
@@ -95,7 +98,7 @@ module NavigationHelpers
 
       when /new field page for "(.+)"/
         field_type = $1
-        send( "new_#{field_type}_formsection_fields_path" )
+        new_formsection_field_path(:type => field_type)
 
       when /the edit form section page for "(.+)"/
         form_section = $1
@@ -106,9 +109,9 @@ module NavigationHelpers
 
       when /the edit administrator contact information page/
         edit_contact_information_path(:administrator)
-      when /the administrator contact page/
-          contact_information_path(:administrator)
-        
+      when /(the )?administrator contact page/
+          contact_information_path(:administrator, options)
+
       when /all child Ids/
         child_ids_path
 

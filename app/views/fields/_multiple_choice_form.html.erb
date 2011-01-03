@@ -1,10 +1,10 @@
-<% form_for :field, @field, :url => { :action => "create" }, :html => {:class => "new-field default-form"} do |f| %>
+<% form_for @field, :url => url, :html => {:class => "new-field default-form"} do |f| %>
   <%= error_messages_for :field %>
 
-  <%= f.hidden_field 'type', :value => field_type %>
+  <%= f.hidden_field 'type', :value => @field.type %>
 
   <fieldset>
-    <h3><%= field_type.humanize %> details</h3>
+    <h3><%= @field.type.humanize %> details</h3>
     <p>
         <%= f.label :display_name %>
         <%= f.text_field :display_name %> <i>required</i>
@@ -15,7 +15,7 @@
     </p>
     <p>
         <%= f.label :enabled %>
-        <%= f.check_box :enabled, :checked => true %>
+        <%= f.check_box :enabled?, {}, true, false %>
     </p>
     <div class="help-text-container">
       <p>
@@ -29,8 +29,9 @@
  		  <%= f.text_area :option_strings_text %>
    	</div>
   </fieldset>
-
-  <%= submit_button 'Create' %>
-  <%= cancel_button(new_formsection_fields_path(@form_section.unique_id)) %>
+  <p class='submitButton' >
+    <%= f.submit 'Save' %>
+  </p>   
+  <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
 <% end %>
 

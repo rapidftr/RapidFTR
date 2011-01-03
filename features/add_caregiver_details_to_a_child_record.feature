@@ -8,10 +8,13 @@ Feature: Capture caregiver details
     And I fill in "Mother Teresa" for "Caregiver's name"
     And I fill in "Saint" for "Occupation"
     And I fill in "Unknown" for "Relationship to child"
+    And I choose "child_is_unaccompanied_yes"
 
     When I press "Save"
 
     Then I should see "Mother Teresa"
     And I should see "Saint"
     And I should see "Unknown"
-  
+    And I should not see "Is child a refugee?:      No"
+    And I should see "Yes"
+                      

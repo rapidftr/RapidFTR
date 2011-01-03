@@ -14,8 +14,9 @@ describe "children/_form_section.html.erb" do
     context "new record" do
 
       it "renders text fields with a corresponding label" do
-        @form_section.add_field(Field.new_text_field("name"))
-
+        field = Field.new_field("text_field", "name")
+        @form_section.add_field(field)
+        
         assigns[:child] = Child.new
         render :locals => { :form_section => @form_section }
 
@@ -30,7 +31,7 @@ describe "children/_form_section.html.erb" do
 
       it "prepopulates the text field with the existing value" do
         @child = Child.new :name => "Jessica"
-        @form_section.add_field(Field.new_text_field("name"))
+        @form_section.add_field(Field.new_field("text_field", "name"))
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
@@ -46,27 +47,28 @@ describe "children/_form_section.html.erb" do
 
       it "renders radio button fields" do
         @child = Child.new
-        @form_section.add_field Field.new_radio_button("is_age_exact", ["exact", "approximate"])
+        @form_section.add_field Field.new_field("radio_button", "is_age_exact", ["exact", "approximate"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_selector("input[name='child[is_age_exact]'][type='radio'][value='exact']")
-        response.should have_selector("input[name='child[is_age_exact]'][type='radio'][value='approximate']")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='exact']")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='approximate']")
       end
     end
 
     context "existing record" do
 
       it "renders a radio button with the current option selected" do
-        @child = Child.new :is_age_exact => "approximate"
-        @form_section.add_field Field.new_radio_button("is_age_exact", ["exact", "approximate"])
+        @child = Child.new :isageexact => "approximate"
+          
+        @form_section.add_field Field.new_field("radio_button", "is_age_exact", ["exact", "approximate"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_selector("input[name='child[is_age_exact]'][type='radio'][value='exact']")
-        response.should have_selector("input[name='child[is_age_exact]'][type='radio'][value='approximate'][checked]")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='exact']")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='approximate'][checked]")
       end
     end
   end
@@ -77,13 +79,13 @@ describe "children/_form_section.html.erb" do
 
       it "render select boxes" do
         @child = Child.new
-        @form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than a year ago"])
+        @form_section.add_field Field.new_field("select_box", "date_of_separation", ["1-2 weeks ago", "More than a year ago"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_selector("label[for='child_date_of_separation']")
-        response.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
+        response.should have_selector("label[for='child_dateofseparation']")
+        response.should have_selector("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
           select.should have_selector("option[value='1-2 weeks ago']")
           select.should have_selector("option[value='More than a year ago']")
         end
@@ -95,12 +97,12 @@ describe "children/_form_section.html.erb" do
 
     it "renders a select box with the current value selected" do
       @child = Child.new :date_of_separation => "1-2 weeks ago"
-      @form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than a year ago"])
+      @form_section.add_field Field.new_field("select_box","date_of_separation", ["1-2 weeks ago", "More than a year ago"])
 
       assigns[:child] = @child
       render :locals => { :form_section => @form_section }
 
-      response.should have_selector("select[name='child[date_of_separation]'][id='child_date_of_separation']") do |select|
+      response.should have_selector("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
         select.should have_selector("option[value='1-2 weeks ago']")
         select.should have_selector("option[value='More than a year ago']")
       end
@@ -113,36 +115,36 @@ describe "children/_form_section.html.erb" do
 
       it "renders checkboxes" do
         @child = Child.new 
-        @form_section.add_field Field.new_check_box("is_orphan")
+        @form_section.add_field Field.new_field("check_box", "is_orphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_selector("label[for='child_is_orphan']")
-        response.should have_selector("input[type='checkbox'][name='child[is_orphan]'][value='Yes']")
+        response.should have_selector("label[for='child_isorphan']")
+        response.should have_selector("input[type='checkbox'][name='child[isorphan]'][value='Yes']")
       end
     end
 
     context "existing record" do
 
       it "renders checkboxes as checked if the underlying field is set to Yes" do
-        @child = Child.new :is_orphan => "Yes"
-        @form_section.add_field Field.new_check_box("is_orphan")
+        @child = Child.new :isorphan => "Yes"
+        @form_section.add_field Field.new_field("check_box", "isorphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_selector("input[type='checkbox'][name='child[is_orphan]'][value='Yes'][checked]")
+        response.should have_selector("input[type='checkbox'][name='child[isorphan]'][value='Yes'][checked]")
       end
 
       it "renders checkboxes with the HTML FORM hidden field workaround for unchecking a property" do
         @child = Child.new :is_orphan => "Yes"
-        @form_section.add_field Field.new_check_box("is_orphan")
+        @form_section.add_field Field.new_field("check_box", "isorphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_selector("input[type='hidden'][name='child[is_orphan]'][value='No']")
+        response.should have_selector("input[type='hidden'][name='child[isorphan]'][value='No']")
       end
 
     end
@@ -153,7 +155,7 @@ describe "children/_form_section.html.erb" do
     context "new record" do
       it "renders date field" do
         @child = Child.new 
-        @form_section.add_field Field.new(:name => "some_date", :display_name => "Some date", :type => "date_field")
+        @form_section.add_field Field.new_field("date_field", "Some date")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
@@ -170,7 +172,7 @@ describe "children/_form_section.html.erb" do
 
       it "renders date field with the previous date" do
         @child = Child.new :some_date => "13/05/2004"
-        @form_section.add_field Field.new(:name => "some_date", :display_name => "Some date", :type => "date_field")
+        @form_section.add_field Field.new_field("date_field", "Some date")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }

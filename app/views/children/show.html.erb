@@ -23,6 +23,14 @@
         <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
         	<li><span class="profile-section-label"><%= field.display_name %>:</span>
             <%= link_to "download", child_audio_url(@child)%></li>
+			<% if is_playable_in_browser(@child.audio)%>
+			<li>
+				<audio controls="controls">
+					<source src="<%=child_audio_url(@child)%>"/>
+					Your browser is unable to play this audio file. You can download the file using the link above.
+				</audio>
+				</li>
+			<% end %>
         <% end %>
       <% end %>
     </ul>

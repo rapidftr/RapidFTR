@@ -210,6 +210,8 @@ td.checkbox { text-align: center;}
 .new-field .submitButton,
 .new-form-section .submitButton { float:right; text-align:right;}
 .new-form-section .cancelButton { float:left;}
+.field-buttons form { float:right; margin-right: 6px;	}
+.field-buttons a { display: block; float:right;}
 
 /* form section index page */
 span.moveUp { cursor:pointer; color: #3399FF; }

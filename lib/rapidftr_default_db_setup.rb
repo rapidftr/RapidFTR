@@ -18,7 +18,7 @@ module RapidFTR
               Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box")
       ]
 
-      FormSection.create!("name" =>"Basic details", "enabled"=>true, :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :editable => false, :fields => basic_details_fields)
+      FormSection.create!("name" =>"Basic details", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :editable => false, :fields => basic_details_fields)
 
       family_details_fields = [
               Field.new("name" => "fathers_name", "display_name" => "Fathers Name", "type" => "text_field"),
@@ -55,16 +55,16 @@ module RapidFTR
               Field.new("name" => "caregivers_name", "display_name" => "Caregiver's Name", "type" => "text_field"),
               Field.new("name" => "occupation", "display_name" => "Occupation", "type" => "text_field"),
               Field.new("name" => "relationship_to_child", "display_name" => "Relationship to Child", "type" => "text_field"),
-              Field.new("name" => "is_unaccompanied", "display_name" => "Is child unaccompanied?", "type" => "check_box"),
-              Field.new("name" => "is_refugee", "display_name" => "Is child a refugee?", "type" => "check_box"),
-              Field.new("name" => "is_internally_displaced_person", "display_name" => "Is child internally displaced?", "type" => "check_box"),
-              Field.new("name" => "trafficked_child", "display_name" => "Has child been trafficked?", "type" => "check_box"),
-              Field.new("name" => "is_orphan", "display_name" => "Is child an orphan?", "type" => "check_box"),
-              Field.new("name" => "in_interim_care", "display_name" => "Is child in interim care?", "type" => "check_box"),
-              Field.new("name" => "is_in_child_headed_household", "display_name" => "Is child in child headed household?", "type" => "check_box"),
-              Field.new("name" => "sick_or_injured", "display_name" => "Is child sick or injured?", "type" => "check_box"),
-              Field.new("name" => "possible_physical_or_sexual_abuse", "display_name" => "Signs of possible physical or sexual abuse?", "type" => "check_box"),
-              Field.new("name" => "is_disabled", "display_name" => "Is child disabled?", "type" => "check_box")
+              Field.new("name" => "is_unaccompanied", "display_name" => "Is child unaccompanied?", "type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "is_refugee", "display_name" => "Is child a refugee?", "type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "is_internally_displaced_person", "display_name" => "Is child internally displaced?", "type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "trafficked_child", "display_name" => "Has child been trafficked?", "type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "is_orphan", "display_name" => "Is child an orphan?","type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "in_interim_care", "display_name" => "Is child in interim care?", "type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "is_in_child_headed_household", "display_name" => "Is child in child headed household?","type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "sick_or_injured", "display_name" => "Is child sick or injured?","type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "possible_physical_or_sexual_abuse", "display_name" => "Signs of possible physical or sexual abuse?", "type" => "radio_button", "option_strings" => ["Yes", "No"]),
+              Field.new("name" => "is_disabled", "display_name" => "Is child disabled?","type" => "radio_button", "option_strings" => ["Yes", "No"]), 
       ]
 
       FormSection.create!("name" =>"Caregiver details", "enabled"=>true, :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields => caregiver_details_fields)
