@@ -19,7 +19,7 @@
   <div class="details">
     <dl>
       <dt>Age:</dt>
-      <dd><%= summary_row["age"] %> (<%= summary_row["age_is"].downcase %>)</dd>
+      <dd><%= summary_row["age"] %> (<%=summary_row["age_is"] ? summary_row["age_is"].downcase : summary_row["age_is"] %>)</dd>
       <dt>Gender:</dt>
       <dd><%= summary_row["gender"] %></dd>
       <dt>Origin:</dt>
