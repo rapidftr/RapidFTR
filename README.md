@@ -67,3 +67,4 @@ To run cucumber tests, type in the command line:
 To run rspec tests, type in the command line:
 
     rake spec
+
