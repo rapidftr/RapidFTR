@@ -7,5 +7,5 @@
     <%= render :partial => "form_section", :collection => @form_sections.find_all {|section| section.enabled? } %>
 
     <%= submit_button %>
-    <%= discard_button children_path %>
+    <%= discard_button :back %>
 <% end %>
