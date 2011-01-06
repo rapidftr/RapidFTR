@@ -24,6 +24,7 @@ Feature: Allowing admin contact info to be specified
 	Then I should see "Contact information was successfully updated."
 	And the "Name" field should contain "Barney Rubble"
 	And the "Organization" field should contain "Slate Rock and Gravel Company"
+	
   Scenario: Only admins can edit contact info
  	When I am logged in
 	Then I should not be able to see the edit administrator contact information page
@@ -46,26 +47,4 @@ Feature: Allowing admin contact info to be specified
 	And I should see "Foo@bar.com" within "#contact_info_email"
 	And I should see "Uganda" within "#contact_info_location"
 	And I should see "Please let us know if your password goes missing!" within "#contact_info_other_information"
-  
-  # Background:
-  #   Given I am logged in
-  # 
-  # Scenario: From saved record page clicking on 'Home' link redirects to initial start page
-  #   Given the following children exist in the system:
-  #     | name  |
-  #     | Lisa	|
-  #   And I am on the child search page
-  # 
-  #   When I search using a name of "Lisa"
-  #   Then I should be on the saved record page for child with name "Lisa"
-  # 
-  #   When I follow "Home"
-  #   Then I should be on the home page
-  # 
-  # Scenario: The homepage should contain useful links and welcome text
-  # 
-  #   Given I am on the home page
-  # 
-  #   Then I should see "Welcome to RapidFTR"
-  #   Then I should see "Add child record"
-  #   Then I should see "View child listing"
+
