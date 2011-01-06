@@ -12,11 +12,10 @@ module CustomMatchers
       verify { [response.content_type == @content_type, "content type is #{response.content_type} instead of #{@content_type}"] } &&
           verify { [response.body == @data, "data is different"] } &&
           verify do
-            result = does_response_have_specified_disposition(response)
+            result = response_has_specified_disposition? response
             [ result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
           end &&
-          verify { @filename.nil? || does_have_filename(@filename) }
-          
+          verify { @filename.nil? || has_filename?(@filename) }
     end
 
     def failure_message_for_should
@@ -31,12 +30,12 @@ module CustomMatchers
       result
     end
 
-    def does_response_have_specified_disposition(response)
+    def response_has_specified_disposition?(response)
       response.headers.has_key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
     end
     
-    def does_have_filename filename
-      response.headers['Content-Disposition'].index( ";filename=#{filename}" )
+    def has_filename?(filename)
+      response.headers['Content-Disposition'].include? ";filename=#{filename}"
     end
   end
 
@@ -48,4 +47,3 @@ module CustomMatchers
     AttachmentResponse.new file, 'inline'
   end
 end
-
