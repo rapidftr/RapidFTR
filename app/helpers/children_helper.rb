@@ -15,7 +15,6 @@ module ChildrenHelper
   end
   
   def is_playable_in_browser audio
-    browser_audio_formats = ["audio/mpeg", "audio/mp3", "audio/ogg"]
-    browser_audio_formats.include? audio.content_type.downcase
+    AudioMimeTypes.browser_playable? audio.mime_type
   end
 end

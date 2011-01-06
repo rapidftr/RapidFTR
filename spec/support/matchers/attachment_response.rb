@@ -1,10 +1,11 @@
 module CustomMatchers
   class AttachmentResponse
-    def initialize(file, disposition = 'attachment')
+    def initialize(file, disposition = 'attachment', filename = nil )
       @data = file.read
       @content_type = file.content_type
       @disposition = disposition
       @failure_reasons = []
+      @filename = filename
     end
 
     def matches?(response)
@@ -13,7 +14,9 @@ module CustomMatchers
           verify do
             result = does_response_have_specified_disposition(response)
             [ result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
-          end
+          end &&
+          verify { @filename.nil? || does_have_filename(@filename) }
+          
     end
 
     def failure_message_for_should
@@ -31,11 +34,14 @@ module CustomMatchers
     def does_response_have_specified_disposition(response)
       response.headers.has_key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
     end
-
+    
+    def does_have_filename filename
+      response.headers['Content-Disposition'].index( ";filename=#{filename}" )
+    end
   end
 
-  def represent_attachment(file)
-    AttachmentResponse.new file
+  def represent_attachment(file, filename = nil)
+    AttachmentResponse.new file, filename
   end
 
   def represent_inline_attachment(file)

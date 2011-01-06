@@ -37,7 +37,7 @@ describe ChildMediaController do
   end
 
   describe "response" do
-    it "should return current child's photo" do
+    it "should return current ch  ild's photo" do
       given_a_child.
               with_id("1").
               with_photo(uploadable_photo)
@@ -104,15 +104,32 @@ describe ChildMediaController do
   end
 
   describe "download audio" do
-
-    it "should return a audio file associated with a child" do
+    it "should return an amr audio file associated with a child" do
         given_a_child.
                 with_id('1').
-                with_unique_identifier('rapidxxx123').
+                with_unique_identifier('child123').
                 with_audio(uploadable_audio_amr)
 
        get :download_audio, :child_id => '1'
-       response.should represent_attachment(uploadable_audio_amr)
+       response.should represent_attachment(uploadable_audio_amr, "audio_child123.amr")
+    end
+    it "should return an ogg audio file associated with a child" do
+        given_a_child.
+                with_id('1').
+                with_unique_identifier('child123').
+                with_audio(uploadable_audio_ogg)
+
+       get :download_audio, :child_id => '1'
+       response.should represent_attachment(uploadable_audio_ogg, "audio_child123.ogg")
+    end
+    it "should return an ogg audio file associated with a child" do
+       given_a_child.
+               with_id('1').
+               with_unique_identifier('child123').
+               with_audio(uploadable_audio_mp3)
+
+      get :download_audio, :child_id => '1'
+      response.should represent_attachment(uploadable_audio_mp3, "audio_child123.mp3")
     end
   end
 end

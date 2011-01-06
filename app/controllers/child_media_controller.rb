@@ -22,7 +22,7 @@ class ChildMediaController < ApplicationController
   def download_audio
     find_audio_attachment
     redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
-    send_data( @attachment.data.read, :filename => gen_filename, :type => @attachment.content_type )
+    send_data( @attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type )
   end
 
   private
@@ -52,8 +52,8 @@ class ChildMediaController < ApplicationController
     end
   end
 
-  def gen_filename
-    "audio_" + @child.unique_identifier + ".amr"
+  def audio_filename attachment
+    "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 
 end
