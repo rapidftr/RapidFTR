@@ -16,14 +16,14 @@
 </thead>
 <tbody>
     <% @form_sections.each do |section| %>
-        <tr id="<%= section.unique_id%>_row">
+      <tr id="<%= section.unique_id%>_row" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
           <td>
             <% if section.editable? %>
                 <%= check_box_tag "sections[#{section.unique_id}]" %>
             <% end %>
           </td>
           <td>
-    <span class="enabledStatus <%= section.enabled=="true" ? "tick" :"cross" %>">
+    <span class="enabledStatus <%= section.enabled? ? "tick" :"cross" %>">
         <%= section.enabled? ? "Enabled" : "Disabled" %>
         </span>
           </td>
