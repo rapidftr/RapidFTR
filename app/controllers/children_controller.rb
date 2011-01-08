@@ -181,16 +181,22 @@ class   ChildrenController < ApplicationController
     end
     children = child_ids.map{ |child_id| Child.get(child_id) }
     if params[:commit] == "Export to PDF"
-      export_photo_to_pdf(children, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+      export_photos_to_pdf(children, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
     end
     if params[:commit] == "Export to CSV"
       export_to_csv(children, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
     end
   end
 
-  def export_photo_to_pdf children, filename
+  def export_photos_to_pdf children, filename
     pdf_data = PdfGenerator.new.child_photos(children)
     send_pdf( pdf_data, filename)
+  end
+
+  def export_photo_to_pdf
+    child = Child.get(params[:id])
+    pdf_data = PdfGenerator.new.child_photo(child)
+    send_pdf(pdf_data, "#{child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
   end
 
   def export_to_csv children, filename
