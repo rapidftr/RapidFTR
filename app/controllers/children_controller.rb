@@ -38,7 +38,7 @@ class   ChildrenController < ApplicationController
         export_to_csv(child_ids, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
       end
       format.pdf do
-        pdf_data = PdfGenerator.new.child_photo(@child)
+        pdf_data = PdfGenerator.new.child_info(@child)
         send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
       end
     end
