@@ -8,6 +8,7 @@ class User < CouchRestRails::Document
   property :crypted_password
   property :salt
   property :user_type
+  property :phone
   property :email
   property :organisation
   property :position
