@@ -14,6 +14,10 @@ class   ChildrenController < ApplicationController
       format.xml  { render :xml => @children }
       format.csv  { render_as_csv @children, "all_records_#{Time.now.strftime("%Y%m%d")}.csv" }
       format.json { render :json => @children }
+      format.pdf do
+        pdf_data = PdfGenerator.new.children_info(@children)
+        send_pdf(pdf_data, "RapidFTR-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+      end
     end
   end
 

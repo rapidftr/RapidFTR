@@ -28,6 +28,11 @@ class PdfGenerator
     @pdf.render
   end
 
+  def children_info(children)
+    children.each {|child| add_child_page(child); @pdf.start_new_page unless children.last == child}
+    @pdf.render
+  end
+
   private
   def add_child_page(child)
     @pdf.image( 
