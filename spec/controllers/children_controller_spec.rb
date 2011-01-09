@@ -346,18 +346,13 @@ describe ChildrenController do
     end
   end
 
-  describe "exports photo to pdf" do
-    before(:each) do
-
-    end
-
+  describe "GET export_photo_to_pdf" do
     it "should return the photo wall pdf for selected child" do
-      stub_child = stub('child', :unique_identifier => '1')
-      Child.should_receive(:find).with('1').and_return(stub_child)
+      Child.should_receive(:get).with('1').and_return(
+        stub_child = stub('child', :unique_identifier => '1'))
 
-      mock_pdf_generator = mock('mock_pdf_generator')
-      mock_pdf_generator.should_receive(:child_photo).with(stub_child).and_return(:fake_pdf_data)
-      PdfGenerator.should_receive(:new).and_return(mock_pdf_generator)
+      PdfGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
+      pdf_generator.should_receive(:child_photo).with(stub_child).and_return(:fake_pdf_data)
 
       Clock.stub!(:now).and_return(stub('clock', :strftime => '20000101-2015'))
       @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-2015.pdf', :type => 'application/pdf')
