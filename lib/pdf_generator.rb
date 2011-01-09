@@ -12,29 +12,58 @@ class PdfGenerator
   end
 
   def child_photos(children)
-    all_children_but_last = children.slice(0,children.length-1)
-    all_children_but_last.each do |child|
-      add_child_page(child)
-      @pdf.start_new_page
+    children.each do |child|
+      add_child_photo(child)
+      @pdf.start_new_page unless children.last == child
     end
-    add_child_page(children.last)
+    @pdf.render
+  end
 
+
+  def child_info(child)
+    add_child_page(child)
+    @pdf.render
+  end
+
+  def children_info(children)
+    children.each do |child|
+      add_child_page(child)
+      @pdf.start_new_page unless children.last == child
+    end
     @pdf.render
   end
 
   private
-
-  def add_child_page(child)
-    @pdf.image( 
-      child.photo.data, 
-      :position => :center,
-      :vposition => :top,
-      :fit => @image_bounds 
+  def add_child_photo(child)
+    @pdf.image(
+            child.photo.data,
+            :position => :center,
+            :vposition => :top,
+            :fit => @image_bounds
     ) if child.photo
     @pdf.y -= 5.mm
-    @pdf.text( 
-      child.unique_identifier,
-      :align => :center
+    @pdf.text(
+            child.unique_identifier,
+            :align => :center
     )
+  end
+
+  def add_child_details(child)
+    FormSection.all_by_order { |section| section.enabled? }.each do |section|
+      @pdf.text section.section_name.humanize.capitalize, :style => :bold, :size => 16
+
+      @pdf.table section.fields.
+              select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX }.
+              map { |field| [field.display_name.humanize, child[field.name]] },
+                 :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
+                 :width => 500, :column_widths => {0 => 200, 1 => 300},
+                 :position => :left
+      @pdf.move_down 10
+    end
+  end
+
+  def add_child_page(child)
+    add_child_photo(child)
+    add_child_details(child)
   end
 end
