@@ -19,3 +19,8 @@ Then /^the PDF file should contain the string "([^\"]*)"$/ do |expected_string|
   pdf.strings.should include(expected_string)
 end
 
+Then /^the PDF file should not contain the string "([^\"]*)"$/ do |expected_string|
+  pdf = PDF::Inspector::Text.analyze( response_body )
+  pdf.strings.should_not include(expected_string)
+end
+
