@@ -14,6 +14,7 @@ class FormSection < CouchRestRails::Document
 
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
+  validates_with_method :name, :method => :validate_unique_name
 
   def initialize args={}
     self["fields"] = []
@@ -122,4 +123,10 @@ class FormSection < CouchRestRails::Document
     matching_fields.each{ |field| field.enabled = true}
   end
 
+  protected
+
+  def validate_unique_name
+    unique = FormSection.all.all? {|f| id == f.id || name != f.name }
+    unique || [false, "The name '#{name}' is already taken."]
+  end
 end

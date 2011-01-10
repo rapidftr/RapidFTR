@@ -258,10 +258,25 @@ describe FormSection do
     it "should validate name is filled in" do
       form_section = FormSection.new()
       form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
     end
     it "should validate name is alpha_num" do
       form_section = FormSection.new(:name=>"££ss")
       form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
+    end
+    it "should validate name is unique" do
+      same_name = 'Same Name'
+      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true}
+      FormSection.create! valid_attributes.dup
+      form_section = FormSection.new valid_attributes.dup
+      form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
+    end
+    it "should not trip the unique name validation on self" do
+      form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
+      form_section.create!
+      form_section.should be_valid
     end
   end
 
