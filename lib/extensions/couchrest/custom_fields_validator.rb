@@ -49,11 +49,12 @@ module CouchRest
       end
     end
     class CustomTextAreasValidator < CustomFieldsValidator
+      MAX_LENGTH = 400_000
       def is_not_valid value
-        value.length > 400
+        value.length > MAX_LENGTH
       end
       def validation_message_for field
-        "#{field[:display_name]} cannot be more than 400 characters long"
+        "#{field[:display_name]} cannot be more than #{MAX_LENGTH} characters long"
       end
     end
     

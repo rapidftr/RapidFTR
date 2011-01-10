@@ -160,7 +160,7 @@ describe Child do
       child[:height] = "very tall"
       FormSection.stub!(:all_enabled_child_fields).and_return(fields)
       
-      child.valid?
+      child.should_not be_valid
       child.errors.on(:height).should == ["height must be a valid number"]
     end
     
@@ -173,40 +173,45 @@ describe Child do
       child[:new_age] = "very old"
       FormSection.stub!(:all_enabled_child_fields).and_return(fields)
       
-      child.valid?
+      child.should_not be_valid
       child.errors.on(:height).should == ["height must be a valid number"]
       child.errors.on(:new_age).should == ["new age must be a valid number"]
     end
     it "should disallow text field values to be more than 200 chars" do
-      fields = [Field.new(:type=>Field::TEXT_FIELD,:name=>"name", :display_name=>"Name"), Field.new(:type=>Field::CHECK_BOX,:name=>"not_name")]
-      too_many_chars = (0...201).map{ ('a'..'z').to_a[rand(26)]}.to_s
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:name=>too_many_chars})
-      child.save.should == false
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"), 
+           Field.new(:type => Field::CHECK_BOX, :name => "not_name")])
+      child = Child.new :name => ('a' * 201)
+      child.should_not be_valid
       child.errors[:name].should == ["Name cannot be more than 200 characters long"]
     end
-    it "should disallow text area values to be more than 400 chars" do
-      fields = [Field.new(:type=>Field::TEXT_AREA,:name=>"a_textfield", :display_name=>"A textfield")]
-      too_many_chars = (0...401).map{ ('a'..'z').to_a[rand(26)]}.to_s
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:a_textfield=>too_many_chars})
-      child.save.should == false
-      child.errors[:a_textfield].should == ["A textfield cannot be more than 400 characters long"]
+
+    it "should disallow text area values to be more than 400,000 chars" do
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
+      child = Child.new :a_textfield => ('a' * 400_001)
+      child.should_not be_valid
+      child.errors[:a_textfield].should == ["A textfield cannot be more than 400000 characters long"]
     end
+
+    it "should allow text area values to be 400,000 chars" do
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
+      child = Child.new :a_textfield => ('a' * 400_000)
+      child.should be_valid
+    end
+
     it "should not validate fields that were not filled in" do
-      fields = [Field.new(:type=>Field::TEXT_FIELD,:name=>"name"),Field.new(:type=>Field::TEXT_AREA,:name=>"another")]
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:name=>nil})
-      child.save.should == true
-      child.errors["name"].should be_nil
-      child.errors["another"].should be_nil
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::TEXT_FIELD, :name => "name"),
+           Field.new(:type => Field::TEXT_AREA, :name => "another")])
+      Child.new(:name => nil).should be_valid
     end
+
     it "should pass numeric fields that are valid numbers to 1 dp" do
-      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"height")]
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:height=>"10.2"})
-      child.save.should == true
-      child.errors["height"].should be_nil
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
+      Child.new(:height => "10.2").should be_valid
     end
     
     it "should disallow file formats that are not photo formats" do
