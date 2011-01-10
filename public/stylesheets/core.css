@@ -36,6 +36,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form label { float: left; text-align: right; width: 150px; margin-right: 10px; font-weight: bold; color: #678; }
 .default-form input[type=text], 
 .default-form select { width: 200px; height: 1.7em; }
+.default-form textarea { width: 425px; height: 185px; }
 .default-form h3, .device-information h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 
 /* default: forms > List of radio buttons */
