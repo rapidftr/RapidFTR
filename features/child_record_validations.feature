@@ -21,7 +21,7 @@ Scenario: Should be restricted to 400,000 characters in a text area
 	Given I am logged in
 	And I am on children listing page
 	And I follow "New child"
-	When I fill in a 400,001 character long string for "my text area" 
+	When I fill in a 400001 character long string for "my text area" 
 	And I press "Save" 
 	Then I should see "my text area cannot be more than 400000 characters long"
   	And there should be 0 child records in the database
