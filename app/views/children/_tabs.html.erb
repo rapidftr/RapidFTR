@@ -1,12 +1,12 @@
 <ul class="tab-handles">
   <% is_first_tab = true %>
-  <% tabs.each do |tab_name| %>
+  <% tabs.each do |form_section| %>
       <% if is_first_tab %>
           <li class="current">
       <% else %>
           <li>
       <% end %>
-      <a href="#tab_<%= tab_name %>"><%= tab_name.humanize %></a>
+      <a href="#tab_<%= form_section.section_name %>"><%= form_section.name %></a>
       </li>
       <% is_first_tab = false %>
   <% end %>
