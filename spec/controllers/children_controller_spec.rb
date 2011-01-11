@@ -116,19 +116,16 @@ describe ChildrenController do
     end
 
     it "should update history on photo update" do
-        current_time = Time.parse("Jan 20 2010 17:10:32")
-        Time.stub!(:now).and_return current_time
-          child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
+      current_time = Time.parse("Jan 20 2010 17:10:32")
+      Time.stub!(:now).and_return current_time
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 
-           put :update_photo, :id => child.id,
-             :child => {
-           :photo_orientation => "-180" }
+      put :update_photo, :id => child.id, :child => {:photo_orientation => "-180"}
 
-        update_child = Child.get(child.id)
-        updated_history_time = update_child["histories"].first["datetime"]
-        updated_history_time.should==current_time.strftime('%d/%m/%Y %H:%M')
-
-      end
+      history = Child.get(child.id)["histories"].first
+      history['changes'].should have_key('current_photo_key')
+      history['datetime'].should == current_time.strftime('%d/%m/%Y %H:%M')
+    end
   end
 
   describe "GET search" do
