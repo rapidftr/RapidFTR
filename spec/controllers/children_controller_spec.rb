@@ -35,7 +35,7 @@ describe ChildrenController do
 
     it "orders the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:all_by_order).and_return([mock_child])
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
     end

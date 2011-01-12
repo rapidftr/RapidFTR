@@ -27,6 +27,7 @@ class   ChildrenController < ApplicationController
     @child = Child.get(params[:id])
 
     @form_sections = get_form_sections
+    @first_form_section = @form_sections.shift
 
     @page_name = @child
 
