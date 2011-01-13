@@ -110,7 +110,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 ul.tab-handles { border-left: 1px solid #678; margin-bottom: 0; position: relative; top: 1px; }
 .tab-handles li { padding: 0; background: none; margin: 0; float: left; font-weight: bold; }
 .tab-handles li a { display: block; border: solid #678; border-width: 1px 1px 0 0; background: #f3f0e9; padding: 5px 10px; }
-.tab-handles li.current a { background: #ddd; color: #678; padding-bottom: 6px; }
+.tab-handles li.current a { background: #ddd; color: #678; }
 
 /* CONTENT SPECIFIC STYLES*/
 
