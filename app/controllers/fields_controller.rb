@@ -71,7 +71,6 @@ class FieldsController < ApplicationController
   end
 
   def toggle_fields
-    return redirect_to(edit_form_section_path(params[:formsection_id])) if params[:toggle_fields] == 'Cancel' 
     if(params[:toggle_fields] == 'Disable')
        @form_section.disable_fields(params[:fields])
     else

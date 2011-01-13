@@ -20,7 +20,7 @@
 <% end %>
 
 
-<% form_tag confirm_toggle_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
+<% form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
 <table id="form_sections">
 <thead>
   <tr>
@@ -71,8 +71,8 @@
 
 <% if @form_section.editable? %>
     <div class="formSectionButtons">
-      <%= submit_tag "Disable", :name => "toggle_fields" %>
-      <%= submit_tag "Enable", :name => "toggle_fields" %>
+      <%= submit_tag "Disable", :name => "toggle_fields", :id=>"disable_field"%>
+      <%= submit_tag "Enable", :name => "toggle_fields",:id=>"enable_field" %>
     </div>
 <% end %>
 <% end %>
