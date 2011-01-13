@@ -11,10 +11,12 @@
     <%= f.label :description %>
     <%= f.text_area :description, :cols => 54, :rows => 10 %>
   </p>
-  <p class="checkbox">
-    <%= f.check_box :enabled?, {}, true, false %>
-    <%= f.label :enabled %>
-  </p>
+    <% if @form_section.editable? %>
+        <p class="checkbox">
+            <%= f.check_box :enabled?, {}, true, false %>
+            <%= f.label :enabled %>
+        </p>
+        <% end %>
   </fieldset>
   <%= submit_button 'Save Details' %>
 <% end %>
