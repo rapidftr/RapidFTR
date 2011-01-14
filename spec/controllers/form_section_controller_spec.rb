@@ -63,8 +63,10 @@ describe FormSectionController do
       assigns[:form_section].should == expected_form_section
     end
   end
-   
+
   describe "post save_order" do
+    after { FormSection.all.each &:destroy }
+
     it "should save the order of the forms" do
       form_one = FormSection.create(:unique_id => "first_form", :name => "first form", :order => 1)
       form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)

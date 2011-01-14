@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe FormSection do
 
   def mock_formsection(stubs={})
@@ -25,6 +24,25 @@ describe FormSection do
     FormSection.should_receive(:create!) { |form_section_hash|
       form_section_hash[name].should == value
     }
+  end
+
+  describe "repository methods" do
+    after { FormSection.all.each &:destroy }
+
+    describe "enabled_by_order" do
+      it "should bring back sections in order" do
+        second = FormSection.create! :name => 'Second', :order => 2, :unique_id => 'second'
+        first = FormSection.create! :name => 'First', :order => 1, :unique_id => 'first'
+        third = FormSection.create! :name => 'Third', :order => 3, :unique_id => 'third'
+        FormSection.enabled_by_order.map(&:name).should == %w( First Second Third )
+      end
+
+      it "should exclude disabled sections" do
+        expected = FormSection.create! :name => 'Good', :order => 1, :unique_id => 'good'
+        unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :enabled => false
+        FormSection.enabled_by_order.map(&:name).should == %w(Good)
+      end
+    end
   end
 
   describe "get_by_unique_id" do
@@ -239,10 +257,6 @@ describe FormSection do
   describe "valid?" do
     it "should validate name is filled in" do
       form_section = FormSection.new()
-      form_section.should_not be_valid
-    end
-    it "should validate name is alpha_num" do
-      form_section = FormSection.new(:name=>"££ss")
       form_section.should_not be_valid
     end
     it "should validate name is alpha_num" do

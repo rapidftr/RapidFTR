@@ -11,7 +11,7 @@
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
 
-<% @form_sections.find_all {|section| section.enabled? }.each do |section| %>
+<% @form_sections.each do |section| %>
   <div id='<%= section.section_name.underscore %>' class='profile-section'>
     <h2><%= section.name %></h2>
     <ul class="<%= section.section_name %>">

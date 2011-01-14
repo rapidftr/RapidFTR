@@ -27,17 +27,17 @@ describe ChildrenController do
   end
 
   describe "GET show" do
-    it "assigns the requested child as @child" do
+    it "assigns the requested child" do
       Child.stub!(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
     end
 
-    it "orders the forms" do
+    it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :show, :id => "37"
-      assigns[:child].should equal(mock_child)
+      assigns[:form_sections].should == [:the_form_sections]
     end
   end
 
@@ -48,27 +48,27 @@ describe ChildrenController do
       assigns[:child].should equal(mock_child)
     end
 
-    it "orders the forms" do
+    it "orders and assigns the forms" do
       Child.stub!(:new).and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :new
-      assigns[:child].should equal(mock_child)
+      assigns[:form_sections].should == [:the_form_sections]
     end
   end
 
   describe "GET edit" do
     it "assigns the requested child as @child" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order)
       get :edit, :id => "37"
       assigns[:child].should equal(mock_child)
     end
 
-    it "Orders the forms" do
+    it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :edit, :id => "37"
-      assigns[:child].should equal(mock_child)
+      assigns[:form_sections].should == [:the_form_sections]
     end
   end
 

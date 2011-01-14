@@ -207,7 +207,7 @@ class   ChildrenController < ApplicationController
   private
 
   def get_form_sections
-    FormSection.all_by_order
+    FormSection.enabled_by_order
   end
 
   def default_search_respond_to

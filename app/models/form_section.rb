@@ -19,21 +19,21 @@ class FormSection < CouchRestRails::Document
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
 
-  
   def initialize args={}
     self["fields"] = []
     super args
   end 
 
+  def self.enabled_by_order
+    by_order.select(&:enabled?)
+  end
+
   def self.all_child_field_names
     all_child_fields.map{ |field| field["name"] }
   end
 
-  def self.all_enabled
-    all.select{|x|x.enabled}
-  end
   def self.all_enabled_child_fields
-    all_enabled.map do |form_section|
+    enabled_by_order.map do |form_section|
       form_section.fields
     end.flatten
   end
@@ -54,7 +54,6 @@ class FormSection < CouchRestRails::Document
     formsection.save
   end
 
-  
   def properties= properties
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
@@ -126,6 +125,5 @@ class FormSection < CouchRestRails::Document
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
     matching_fields.each{ |field| field.enabled = true}
   end
-  
 
 end

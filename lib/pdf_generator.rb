@@ -49,7 +49,7 @@ class PdfGenerator
   end
 
   def add_child_details(child)
-    FormSection.all_by_order.select { |section| section.enabled? }.each do |section|
+    FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
 
       @pdf.table section.fields.
