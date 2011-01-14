@@ -35,7 +35,7 @@
 </thead>
 <tbody>
     <% @form_section.fields.each do |field| %>
-    <tr id="<%="#{field.name}Row"%>">
+    <tr id="<%="#{field.name}Row"%>" class="<%= field.enabled? ? "rowEnabled": "rowDisabled" %>">
       <% if @form_section.editable? %>
           <td>
             <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
