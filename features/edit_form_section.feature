@@ -21,9 +21,12 @@ Feature: So that admin can customize form section details
     And I should see the name "Edited Form" for form section "family_details"
 
 
-  Scenario: Admins should not disable non editable form
+  Scenario: Admins should not see Enable checkbox for non editable form so that he cannot disable the form
+    Given I am logged in as an admin
+    And I am on the edit form section page for "basic_details"
+    Then I should not see "Enable checkbox" with id "form_section_enabled"
+
+  Scenario: Admins should see Enable checkbox for editable form so that he can enable/disable the form.
     Given I am logged in as an admin
     And I am on the edit form section page for "family_details"
-    Then I should find the form with following attributes:
-      | Name |
-      | Description |
+    Then I should see "Enable checkbox" with id "form_section_enabled"
