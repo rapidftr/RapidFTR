@@ -189,10 +189,13 @@ ul.ui-widget-content { background: none; }
 #basic_details ul { font-size: 1.2em; }
 
 /* profile page > tools */
-.profile-tools { padding: 10px; background-color: #678; color: #fff; margin-bottom: 10px; }
+.profile-tools { padding: 10px; border: 1px solid #678; margin-bottom: 10px; overflow: hidden; }
 .profile-tools ul { text-align: right; margin-bottom: 0; }
-.profile-tools li { display: inline; font-weight: bold;  padding: 0; background-image: none; }
-.profile-tools li a { padding-left: 12px; color: #fff; }
+.profile-tools li { float: left; font-weight: bold;  padding: 3px; background-image: none; }
+.profile-tools li a { display: block; padding: 3px 15px 3px 30px; background: url(../images/icon-download.gif) no-repeat 0 0; }
+.profile-tools li.edit a { background-image: url(../images/icon-edit.gif); }
+.profile-tools li.back a { background-image: url(../images/icon-back.gif); }
+.profile-tools li.view-log a { background-image: url(../images/icon-calendar.gif); }
 .profile-tools li a:hover { color: #f93; }
 
 /* profile page > image */
