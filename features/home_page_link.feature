@@ -20,7 +20,6 @@ Feature: So that a user can get back to their initial start page from anywhere w
   Scenario: The homepage should contain useful links and welcome text
 
     Given I am on the home page
-
     Then I should see "Welcome to RapidFTR"
-    Then I should see "Add child record"
-    Then I should see "View child listing"
+    And I should see "Register Child"
+    And I should see "View All Children"
