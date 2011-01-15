@@ -12,10 +12,6 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   view_by :order
 
-  def self.all_by_order
-    view 'by_order'
-  end
-
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
 
