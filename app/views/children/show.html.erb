@@ -4,6 +4,9 @@
         $(function() {
             $('.profile-image .image a').lightBox({fixedNavigation:true});
         });
+        $(function() {
+            $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
+        });
     </script>
 <% end %>
 
@@ -11,41 +14,13 @@
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
 
-<% @form_sections.each do |section| %>
-  <div id='<%= section.section_name.underscore %>' class='profile-section'>
-    <h2><%= section.name %></h2>
-    <ul class="<%= section.section_name %>">
-      <% section.fields.each do |field| %>
-        <% if field.type != Field::PHOTO_UPLOAD_BOX && field.type !=  Field::AUDIO_UPLOAD_BOX %>
-            <li><span class="profile-section-label"><%= field.display_name %>:</span>
-            <span class="profile-section-value"><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></span></li>
-        <% end %>
-        <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
-        	<li><span class="profile-section-label"><%= field.display_name %>:</span>
-            <%= link_to "download", child_audio_url(@child)%></li>
-			<% if is_playable_in_browser(@child.audio)%>
-			<li>
-				<audio controls="controls">
-					<source src="<%=child_audio_url(@child)%>"/>
-					Your browser is unable to play this audio file. You can download the file using the link above.
-				</audio>
-				</li>
-			<% end %>
-        <% end %>
-      <% end %>
-    </ul>
-  </div>
+<%= render :partial => "show_child_toolbar" %>
 
-  <% if section.section_name == 'basic_details' %>
-    <div class="profile-tools">
-      <ul>
-        <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
-        <li class="back"><%= link_to 'Back', :back %></li>
-        <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
-        <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
-        <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
-        <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
-      </ul>
-    </div>
+<%= render :partial => "view_form_section", :locals => { :section => @first_form_section } if @first_form_section != nil %>
+<div class="accordion">
+  <% @form_sections.each do |section| %>
+      <%= render :partial => "view_form_section", :locals => { :section => section } %>
   <% end %>
-<% end %>
+</div>
+
+<%= render :partial => "show_child_toolbar" %>

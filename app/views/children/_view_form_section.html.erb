@@ -1,0 +1,25 @@
+<div id='<%= section.section_name.underscore %>' class='profile-section'>
+  <h2><%= section.section_name.humanize %></h2>
+  <ul class="<%= section.section_name %>">
+    <% section.fields.each do |field| %>
+        <% if field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX %>
+            <li><span class="profile-section-label"><%= field.display_name %>:</span>
+              <span class="profile-section-value"><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></span>
+            </li>
+        <% end %>
+        <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
+            <li><span class="profile-section-label"><%= field.display_name %>:</span>
+              <%= link_to "download", child_audio_url(@child) %></li>
+            <% if is_playable_in_browser(@child.audio) %>
+                <li>
+                  <audio controls="controls">
+                    <source src="<%= child_audio_url(@child) %>"/>
+                    Your browser is unable to play this audio file. You can download the file using the link
+                    above.
+                  </audio>
+                </li>
+            <% end %>
+        <% end %>
+    <% end %>
+  </ul>
+</div>
