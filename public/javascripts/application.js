@@ -52,25 +52,6 @@ RapidFTR.activateToggleFormSectionLinks = function() {
   $("#disable_form").click(toggleFormSection("disable"));
 }
 
-RapidFTR.activateToggleFieldSectionLinks = function() {
-  var toggleFieldSection = function(action) {
-    return function() {
-            if(!$('#enable_disable_fields input:checked').length) {
-                alert("Please select field(s) you want to " + action + ".");
-                return false;
-            }
-            else if(confirm("Are you sure you want to " + action + "?")) {
-    		$("#enable_disable_fields").submit();
-    		return true;
-			} else {
-				return false;
-			}
-    };
-  }
-
-  $("#enable_field").click(toggleFieldSection("enable"));
-  $("#disable_field").click(toggleFieldSection("disable"));
-}
 
 RapidFTR.hideDirectionalButtons = function() {
   $("#formFields .up-link:first").hide();
@@ -123,7 +104,6 @@ $(document).ready(function() {
   RapidFTR.tabControl();
   RapidFTR.enableSubmitLinks();
   RapidFTR.activateToggleFormSectionLinks();
-  RapidFTR.activateToggleFieldSectionLinks();
   RapidFTR.hideDirectionalButtons();
   RapidFTR.backButton();
   RapidFTR.followTextFieldControl("#field_display_name", "#field_name", RapidFTR.Utils.dehumanize);

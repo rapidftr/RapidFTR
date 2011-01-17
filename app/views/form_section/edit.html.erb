@@ -73,8 +73,8 @@
 
 <% if @form_section.editable? %>
     <div class="formSectionButtons">
-      <%= submit_tag "Disable", :name => "toggle_fields", :id=>"disable_field"%>
-      <%= submit_tag "Enable", :name => "toggle_fields",:id=>"enable_field" %>
+      <%= submit_tag "Disable", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to disable fields?')"  }%>
+      <%= submit_tag "Enable", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to enable fields?')"  }%>
     </div>
 <% end %>
 <% end %>

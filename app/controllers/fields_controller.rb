@@ -71,6 +71,11 @@ class FieldsController < ApplicationController
   end
 
   def toggle_fields
+    if params[:fields].nil?
+      flash[:error] = "Please select atleast one field to #{params[:toggle_fields]}"
+      redirect_to(edit_form_section_path(params[:formsection_id])) and return
+    end  
+
     if(params[:toggle_fields] == 'Disable')
        @form_section.disable_fields(params[:fields])
     else
