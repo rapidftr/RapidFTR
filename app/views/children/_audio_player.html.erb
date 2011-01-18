@@ -1,3 +1,24 @@
+<% content_for :javascript do  %>
+<script language="javascript" type="text/javascript">
+  $(document).ready(function(){
+     $("#child_audio").hide();
+      if($("#jplayer-placeholder").length){
+        $('head').append('');
+      }
+	    $("#jplayer-placeholder").jPlayer({
+		    ready: function () {
+          var audio = $("#audio_link").attr("href");
+          $(this).jPlayer("setMedia", { mp3: audio });      
+		    },
+		    swfPath: "../javascripts",
+        supplied: "mp3"
+	    });
+  });
+</script>
+<%end%>
+<%content_for :stylesheet do %>
+  <link rel="stylesheet" href="/stylesheets/jplayer/jplayer.blue.monday.css" type="text/css" ></link>
+<%end%>
 <div id="jplayer-placeholder"></div>
 <div class="jp-audio">
 			<div class="jp-type-single">

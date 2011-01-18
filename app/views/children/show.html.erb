@@ -4,19 +4,6 @@
     <script type="text/javascript" language="javascript">
         $(function() {
             $('.profile-image .image a').lightBox({fixedNavigation:true});
-            $("#child_audio").hide();
-            if($("#jplayer-placeholder").length){
-              $('head').append('<link rel="stylesheet" href="/stylesheets/jplayer/jplayer.blue.monday.css" type="text/css" />');
-            }
-	          $("#jplayer-placeholder").jPlayer({
-		          ready: function () {
-                var audio = $("#audio_link").attr("href");
-                $(this).jPlayer("setMedia", { mp3: audio });
-                
-		          },
-		          swfPath: "../javascripts",
-		          supplied: "mp3"
-	          });
         });
     </script>
 <% end %>
