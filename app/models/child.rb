@@ -43,8 +43,8 @@ class Child < CouchRestRails::Document
   end
   
   def validate_audio_file_name
-    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3|ogg))$)/ =~ @audio_file_name
-    [false, "Please upload a valid audio file amr for this child record"]
+    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
+    [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
   
   def to_s

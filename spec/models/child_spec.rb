@@ -236,14 +236,15 @@ describe Child do
       child.audio = uploadable_audio_amr
       child.save.should == true
       
+      child.audio = uploadable_audio_mp3
+      child.save.should == true
+      
       child.audio = uploadable_audio_wav
       child.save.should == false
       
       child.audio = uploadable_audio_ogg
-      child.save.should == true
+      child.save.should == false
       
-      child.audio = uploadable_audio_mp3
-      child.save.should == true
     end
     
     it "should disallow age that is not a number" do

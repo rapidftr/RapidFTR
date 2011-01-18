@@ -113,16 +113,7 @@ describe ChildMediaController do
        get :download_audio, :child_id => '1'
        response.should represent_attachment(uploadable_audio_amr, "audio_child123.amr")
     end
-    it "should return an ogg audio file associated with a child" do
-        given_a_child.
-                with_id('1').
-                with_unique_identifier('child123').
-                with_audio(uploadable_audio_ogg)
-
-       get :download_audio, :child_id => '1'
-       response.should represent_attachment(uploadable_audio_ogg, "audio_child123.ogg")
-    end
-    it "should return an ogg audio file associated with a child" do
+    it "should return an mp3 audio file associated with a child" do
        given_a_child.
                with_id('1').
                with_unique_identifier('child123').

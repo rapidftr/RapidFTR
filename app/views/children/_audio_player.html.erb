@@ -2,9 +2,6 @@
 <script language="javascript" type="text/javascript">
   $(document).ready(function(){
      $("#child_audio").hide();
-      if($("#jplayer-placeholder").length){
-        $('head').append('');
-      }
 	    $("#jplayer-placeholder").jPlayer({
 		    ready: function () {
           var audio = $("#audio_link").attr("href");
