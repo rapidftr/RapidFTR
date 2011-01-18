@@ -27,4 +27,13 @@ Feature: So that admin can customize form section details
     Then the "Cancel" button presents a confirmation message
     When I follow "Cancel"
     Then I am on form section page
-    
+
+  Scenario: Admins should not see Enable checkbox for non editable form so that he cannot disable the form
+    Given I am logged in as an admin
+    And I am on the edit form section page for "basic_details"
+    Then I should not see "Enable checkbox" with id "form_section_enabled"
+
+  Scenario: Admins should see Enable checkbox for editable form so that he can enable/disable the form.
+    Given I am logged in as an admin
+    And I am on the edit form section page for "family_details"
+    Then I should see "Enable checkbox" with id "form_section_enabled"

@@ -105,5 +105,13 @@ Then /^I should not see an audio tag$/ do
   response_body.should_not have_selector("audio")
 end
 
+Then /^I should not see "([^\"]*)" with id "([^\"]*)"$/ do |element,id|
+  response_body.should_not have_selector("##{id}")
+end
+
+Then /^I should see "([^\"]*)" with id "([^\"]*)"$/ do |element,id|
+  response_body.should have_selector("##{id}")
+end
+
 
 
