@@ -37,7 +37,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form input[type=text],
 .default-form input[type=password],
 .default-form select { width: 200px; height: 1.7em; }
-.default-form textarea { width: 425px; height: 185px; }
+.default-form textarea { width: 425px; height: 185px; max-width: 600px; }
 .default-form h3, .device-information h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 
 /* default: forms > List of radio buttons */
@@ -252,8 +252,3 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .display_photo {margin: 0 auto; width: 328px}
 .display_photo #child_picture {width: 328px;}
-
-textarea {
-    resize: none;
-    overflow: auto;
-} 
