@@ -73,6 +73,36 @@ describe "Child record field view model" do
       field.valid?
       field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"] 
     end
+
+    it "should not be valid if starts with * wildcard" do
+      field = Field.new(:display_name => "*")
+      field.valid?
+      field.errors.on(:display_name).should ==  ["Field name must contain only alphanumeric characters,underscore and spaces"]
+    end
+
+    it "should not be valid if starts with ~ wildcard" do
+      field = Field.new(:display_name => "~asd")
+      field.valid?
+      field.errors.on(:display_name).should ==  ["Field name must contain only alphanumeric characters,underscore and spaces"]
+    end
+
+    it "should not be valid if starts with \\ escape char" do
+      field = Field.new(:display_name => "\\")
+      field.valid?
+      field.errors.on(:display_name).should ==  ["Field name must contain only alphanumeric characters,underscore and spaces"]
+    end
+
+    it "should be valid if the field contains _" do
+      field = Field.new(:display_name => "a_b")
+      field.valid?
+      field.errors.on(:display_name).should be_nil
+    end
+
+    it "should be valid if the field contains numbers" do
+      field = Field.new(:display_name => "as10")
+      field.valid?
+      field.errors.on(:display_name).should be_nil
+    end
   end
 
   describe "save" do
