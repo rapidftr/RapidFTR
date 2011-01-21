@@ -170,7 +170,7 @@ td.checkbox { text-align: center;}
 /* profile page > header */
 
 /* profile section */
-.profile-section { margin-bottom:.5em; border: 1px solid #678; }
+.profile-section { margin-bottom:.5em }
 .profile-section h2 { margin-bottom: 0; background-color: #678; color: #ddd; padding: 9px; }
 
 .profile-section ul { margin: 0 0 10px; padding: 0 10px 10px; zoom: 1; }
