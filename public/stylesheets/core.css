@@ -67,6 +67,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 /* default : forms > field errors */
 .default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
 
+
 /*device-information */
 .device-information { clear: both; margin-top: 3em; }
 
@@ -234,6 +235,7 @@ tr.rowDisabled {  font-style: italic; }
 .errorExplanation h3 {color: #ff0700}
 .errorExplanation li {background-image:none;}
 .errorExplanation ul, .errorExplanation p {margin-bottom:0;}
+.flash .error { color: #ff0000;}
 
 /* ie6 fixes */
 

@@ -52,6 +52,7 @@ RapidFTR.activateToggleFormSectionLinks = function() {
   $("#disable_form").click(toggleFormSection("disable"));
 }
 
+
 RapidFTR.hideDirectionalButtons = function() {
   $("#formFields .up-link:first").hide();
   $("#formFields .down-link:last").hide();

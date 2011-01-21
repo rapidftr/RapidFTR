@@ -147,10 +147,5 @@ describe FieldsController do
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
 
-    it "should redirect to edit form section on cancel" do
-      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => "Cancel"
-      response.should redirect_to(edit_form_section_path(@formsection_id))
-    end
-
   end
 end
