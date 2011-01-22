@@ -33,11 +33,12 @@ describe ChildrenController do
       assigns[:child].should equal(mock_child)
     end
 
-    it "orders and assigns the forms" do
+    it "assigns the first form and remaining forms separately" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
+      FormSection.should_receive(:enabled_by_order).and_return([:form_section_one, :form_section_two, :form_section_three])
       get :show, :id => "37"
-      assigns[:form_sections].should == [:the_form_sections]
+      assigns[:first_form_section].should == :form_section_one
+      assigns[:form_sections].should == [:form_section_two,:form_section_three]
     end
   end
 
