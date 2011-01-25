@@ -65,8 +65,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form .discardButton a { width: auto; height: auto;  background: #aaa; padding: 2px 30px; font-weight: bold; color: #fff; float:left;}
 
 /* default : forms > field errors */
-.default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
-
+.default-form .field-error input { background: #ffdddd; border: 1px solid #990000; }
 
 /*device-information */
 .device-information { clear: both; margin-top: 3em; }
@@ -102,8 +101,6 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 /* search-from */
 #search_form #query_label { display:block; }
 #search_form #query { width: 400px; padding: 4px; margin: 4px 8px 8px 0px;}
-
-
 
 /* search content when on the profile wall page   */
 .content-section-search { float: left; width: 630px; padding: 10px 25px 25px; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
@@ -229,11 +226,13 @@ tr.rowDisabled {  font-style: italic; }
 .direction-button { display:none }
 
 /* error summary */
-.errorExplanation,
-.errorExplanation h3 {color: #ff0700}
+.errorExplanation { color: #990000; background-color: #ffdddd; border: 1px solid #990000; padding: 10px; margin-bottom: 10px; }
+.errorExplanation h2 { color: #990000; margin-bottom: 1ex; }
 .errorExplanation li {background-image:none;}
 .errorExplanation ul, .errorExplanation p {margin-bottom:0;}
-.flash .error { color: #ff0000;}
+.flash { margin-bottom: 10px; }
+.flash .error { color: #990000; background-color: #ffdddd; border: 1px solid #990000; padding: 10px; }
+.flash .notice { color: #006600; background-color: #ccffcc; border: 1px solid #006600; padding: 10px; }
 
 /* ie6 fixes */
 
