@@ -3,7 +3,7 @@ class FormSectionController < ApplicationController
   before_filter :administrators_only
 
   def index
-    @form_sections = FormSection.all_by_order
+    @form_sections = FormSection.all.sort_by { |row| [row.enabled ? 0 : 1, row.order] }
   end
 
   def create

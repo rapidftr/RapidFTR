@@ -34,8 +34,10 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form fieldset legend { font-weight: bold; font-size: 1.1em; }
 .default-form fieldset p { margin-bottom: 1em; clear: both; overflow: hidden; }
 .default-form label { float: left; text-align: right; width: 150px; margin-right: 10px; font-weight: bold; color: #678; }
-.default-form input[type=text], 
+.default-form input[type=text],
+.default-form input[type=password],
 .default-form select { width: 200px; height: 1.7em; }
+.default-form textarea { width: 425px; height: 185px; max-width: 600px; }
 .default-form h3, .device-information h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
 
 /* default: forms > List of radio buttons */
@@ -64,6 +66,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 
 /* default : forms > field errors */
 .default-form .field-error input {background:#ff7373; border: 1px solid #ff0700;}
+
 
 /*device-information */
 .device-information { clear: both; margin-top: 3em; }
@@ -109,7 +112,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 ul.tab-handles { border-left: 1px solid #678; margin-bottom: 0; position: relative; top: 1px; }
 .tab-handles li { padding: 0; background: none; margin: 0; float: left; font-weight: bold; }
 .tab-handles li a { display: block; border: solid #678; border-width: 1px 1px 0 0; background: #f3f0e9; padding: 5px 10px; }
-.tab-handles li.current a { background: #ddd; color: #678; padding-bottom: 6px; }
+.tab-handles li.current a { background: #ddd; color: #678; }
 
 /* CONTENT SPECIFIC STYLES*/
 
@@ -221,7 +224,7 @@ div input#save_order { float: right; }
 div.formSectionButtons { overflow:hidden; }
 div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
 div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
-
+tr.rowDisabled {  font-style: italic; }
 /* fields list page */
 .direction-button { display:none }
 
@@ -230,6 +233,7 @@ div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 .errorExplanation h3 {color: #ff0700}
 .errorExplanation li {background-image:none;}
 .errorExplanation ul, .errorExplanation p {margin-bottom:0;}
+.flash .error { color: #ff0000;}
 
 /* ie6 fixes */
 

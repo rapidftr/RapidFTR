@@ -1,6 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :children, :collection => { :search => :get, :export_photo_to_pdf => :post, :advanced_search => :get, :export_csv => :post, :export_data => :post} do |child|
+  map.resources :children, :collection => { :search => :get,
+                                            :export_photos_to_pdf => :post,
+                                            :advanced_search => :get,
+                                            :export_csv => :post,
+                                            :export_data => :post},
+                :member => {:export_photo_to_pdf => :get} do |child|
     child.resource :history, :only => :show
     child.resources :attachments, :only => :show
   end
@@ -36,7 +41,6 @@ ActionController::Routing::Routes.draw do |map|
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
     additional_field_actions[:toggle_fields] = :post
-    additional_field_actions[:confirm_toggle] = :post
         
     form_section.resources :fields, :controller => 'fields', :collection => additional_field_actions
   end

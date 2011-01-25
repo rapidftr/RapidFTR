@@ -12,8 +12,8 @@ Feature: As an user I should not see disabled forms when adding new child
     And I am on children listing page
     And I follow "New child"
 
-    Then I should see the "Basic details" tab
-    And I should see the "Family details" tab
-    And I should see the "Caregiver details" tab
-    And I should not see the "Disabled details" tab
-    And I should not see the "Disabled details" tab name in detail section
+    Then I should see the "Basic Details" tab
+    And I should see the "Family Details" tab
+    And I should see the "Caregiver Details" tab
+    And I should not see the "Disabled Details" tab
+    And I should not see the "Disabled Details" tab name in detail section

@@ -11,7 +11,7 @@ Scenario: Should be restricted to 200 characters in a text field
   Then I should see "Name cannot be more than 200 characters long"	
   And there should be 0 child records in the database
 
-Scenario: Should be restricted to 400 characters in a text area
+Scenario: Should be restricted to 400,000 characters in a text area
 	Given the following form sections exist in the system:
       | name | unique_id | editable | order |
       | Basic details | basic_details | true | 1 |
@@ -21,9 +21,9 @@ Scenario: Should be restricted to 400 characters in a text area
 	Given I am logged in
 	And I am on children listing page
 	And I follow "New child"
-	When I fill in a 401 character long string for "my text area" 
+	When I fill in a 400001 character long string for "my text area" 
 	And I press "Save" 
-	Then I should see "my text area cannot be more than 400 characters long"
+	Then I should see "my text area cannot be more than 400000 characters long"
   	And there should be 0 child records in the database
 
 

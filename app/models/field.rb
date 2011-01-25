@@ -20,7 +20,6 @@ class Field < Hash
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
   DATE_FIELD = "date_field"
-  NUMERIC_FIELD = "numeric_field"
    
   FIELD_FORM_TYPES = {  TEXT_FIELD       => "basic", 
                         TEXT_AREA        => "basic",

@@ -15,7 +15,7 @@ describe ChildrenController do
   end
 
   before do
-    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin"])
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key"])
   end
 
   describe "GET index" do
@@ -27,17 +27,17 @@ describe ChildrenController do
   end
 
   describe "GET show" do
-    it "assigns the requested child as @child" do
+    it "assigns the requested child" do
       Child.stub!(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
     end
 
-    it "orders the forms" do
+    it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :show, :id => "37"
-      assigns[:child].should equal(mock_child)
+      assigns[:form_sections].should == [:the_form_sections]
     end
   end
 
@@ -48,27 +48,27 @@ describe ChildrenController do
       assigns[:child].should equal(mock_child)
     end
 
-    it "orders the forms" do
+    it "orders and assigns the forms" do
       Child.stub!(:new).and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :new
-      assigns[:child].should equal(mock_child)
+      assigns[:form_sections].should == [:the_form_sections]
     end
   end
 
   describe "GET edit" do
     it "assigns the requested child as @child" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order)
       get :edit, :id => "37"
       assigns[:child].should equal(mock_child)
     end
-    
-    it "Orders the forms" do
+
+    it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
-      FormSection.should_receive(:all_by_order)
+      FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :edit, :id => "37"
-      assigns[:child].should equal(mock_child)
+      assigns[:form_sections].should == [:the_form_sections]
     end
   end
 
@@ -114,13 +114,25 @@ describe ChildrenController do
       assigns[:child]['age'].should == "7"
       assigns[:child]['_attachments'].size.should == 1
     end
+
+    it "should update history on photo update" do
+      current_time = Time.parse("Jan 20 2010 17:10:32")
+      Time.stub!(:now).and_return current_time
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
+
+      put :update_photo, :id => child.id, :child => {:photo_orientation => "-180"}
+
+      history = Child.get(child.id)["histories"].first
+      history['changes'].should have_key('current_photo_key')
+      history['datetime'].should == current_time.strftime('%d/%m/%Y %H:%M')
+    end
   end
 
   describe "GET search" do
 
     it "should not render error by default" do
       get(:search, :format => 'html')
-      assigns[:search].should be_nil      
+      assigns[:search].should be_nil
     end
 
     it "should render error if search is invalid" do
@@ -128,16 +140,16 @@ describe ChildrenController do
       search = assigns[:search]
       search.errors.should_not be_empty
     end
-    
+
     it "should stay in the page if search is invalid" do
       get(:search, :format => 'html', :query => '1'*160)
       response.should render_template("search")
     end
-    
+
     it "performs a search using the parameters passed to it" do
       search = mock("search", :query => 'the child name', :valid? => true)
       Search.stub!(:new).and_return(search)
-      
+
       fake_results = [:fake_child,:fake_child]
       Child.should_receive(:search).with(search).and_return(fake_results)
       get(:search, :format => 'html', :query => 'the child name')
@@ -153,24 +165,24 @@ describe ChildrenController do
       get( :search, :format => 'html', :query => "blah" )
       assigns[:show_thumbnails].should == false
     end
-    
-    
+
+
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
         get(:search,  :query => 'blah'  )
       end
-    
+
       it 'asks view to not show csv export link if there are no results' do
         assigns[:results].size.should == 0
       end
-    
+
       it 'asks view to display a "No results found" message if there are no results' do
         assigns[:results].size.should == 0
       end
-    
+
     end
-    
+
     it 'sends csv data with the correct content type and file name' do
       @controller.
         should_receive(:send_data).
@@ -179,11 +191,11 @@ describe ChildrenController do
     end
 
     describe 'CSV formatting' do
-        
+
       def inject_results( results )
         Child.stub!(:search).and_return(results)
       end
-    
+
       def csv_response
         get( :search, :format => 'csv', :query => 'blah' )
         response.body
@@ -201,7 +213,7 @@ describe ChildrenController do
 
         FormSection.all_child_field_names.each {|field_name| headers.should contain field_name}
       end
-    
+
       it 'should render a row for each result, plus a header row' do
         inject_results( [
           Child.new( 'name' => 'Dave' ),
@@ -209,7 +221,7 @@ describe ChildrenController do
         ] );
         csv_response.split("\n").length.should == 3
       end
-    
+
       it "should render each record's name and age correctly" do
         inject_results( [
           Child.new( 'name' => 'Dave', 'age' => 145, 'unique_identifier' => 'dave_xxx' ),
@@ -222,14 +234,14 @@ describe ChildrenController do
       end
     end
   end
-  
+
   describe "GET advanced search" do
-    
+
     it "should not render error by default" do
       get(:advanced_search, :format => 'html')
       assigns[:search].should be_nil
     end
-    
+
     it "should define form section fields as search criteria" do
       names = []
       FormSection.stub!(:all_child_field_names).and_return(names)
@@ -244,14 +256,14 @@ describe ChildrenController do
       Summary.should_receive(:advanced_search).with(search).and_return(children)
       get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
     end
-    
+
     it "should render advanced search on success" do
       children = []
       Summary.should_receive(:advanced_search).and_return(children)
       get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
       response.should render_template("children/advanced_search")
     end
-    
+
     it "should redirect to the child page if only one result is found" do
       children = [stub("Child", :to_param => '1235')]
       Summary.should_receive(:advanced_search).and_return(children)
@@ -264,7 +276,7 @@ describe ChildrenController do
       search = assigns[:search]
       search.errors.size.should == 2
     end
-    
+
   end
 
   describe "GET photo_pdf" do
@@ -343,6 +355,21 @@ describe ChildrenController do
         with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
 
       post( :export_data, 'ignored' => 'selected', :commit => "Export to PDF" )
+    end
+  end
+
+  describe "GET export_photo_to_pdf" do
+    it "should return the photo wall pdf for selected child" do
+      Child.should_receive(:get).with('1').and_return(
+        stub_child = stub('child', :unique_identifier => '1'))
+
+      PdfGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
+      pdf_generator.should_receive(:child_photo).with(stub_child).and_return(:fake_pdf_data)
+
+      Clock.stub!(:now).and_return(stub('clock', :strftime => '20000101-2015'))
+      @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-2015.pdf', :type => 'application/pdf')
+
+      get :export_photo_to_pdf, :id => '1'
     end
   end
 end

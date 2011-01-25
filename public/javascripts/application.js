@@ -36,7 +36,10 @@ RapidFTR.enableSubmitLinks = function() {
 RapidFTR.activateToggleFormSectionLinks = function() {
   var toggleFormSection = function(action) {
     return function() {
-			if (confirm("Are you sure you want to " + action + "?")) {
+            if(!$('#form_sections input:checked').length) {
+                alert("Please select form(s) you want to " + action + ".");
+            } 
+            else if(confirm("Are you sure you want to " + action + "?")) {
     		$("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
     		return true;
 			} else {
@@ -48,6 +51,7 @@ RapidFTR.activateToggleFormSectionLinks = function() {
   $("#enable_form").click(toggleFormSection("enable"));
   $("#disable_form").click(toggleFormSection("disable"));
 }
+
 
 RapidFTR.hideDirectionalButtons = function() {
   $("#formFields .up-link:first").hide();

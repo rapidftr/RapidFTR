@@ -14,11 +14,14 @@ describe FormSectionController do
     fake_admin_login
   end
   describe "get index" do
-    it "populate the view with all the form sections" do
-      expected_form_sections = [FormSection.new(name => "Form section 1"), FormSection.new(name => "Form section 2")]
-      FormSection.stub!(:all_by_order).and_return(expected_form_sections)
+    it "populate the view with all the form sections showing the enabled sections first" do
+      row1 = FormSection.new(name => "Form section 1", :enabled => false)
+      row2 = FormSection.new(name => "Form section 2", :enabled => true)
+      FormSection.stub!(:all).and_return([row1, row2])
+      
       get :index
-      assigns[:form_sections].should == expected_form_sections
+     
+      assigns[:form_sections].should == [row2, row1]
     end
   end
   describe "post create" do
@@ -60,8 +63,10 @@ describe FormSectionController do
       assigns[:form_section].should == expected_form_section
     end
   end
-   
+
   describe "post save_order" do
+    after { FormSection.all.each &:destroy }
+
     it "should save the order of the forms" do
       form_one = FormSection.create(:unique_id => "first_form", :name => "first form", :order => 1)
       form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)

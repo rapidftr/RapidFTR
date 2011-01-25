@@ -44,13 +44,23 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should see "You must select at least one record to be exported"
 
-  Scenario: Exporting PDF from the child results page
+  Scenario: Exporting full PDF from the child page
     Given I am on the saved record page for child with name "Will"
     And I follow "Export to PDF"
 
     Then I should receive a PDF file
+    And the PDF file should have 3 pages
+    And the PDF file should contain the string "will_uid"
+    And the PDF file should contain the string "Will"
+
+  Scenario: Exporting photo wall PDF from the child page
+    Given I am on the saved record page for child with name "Will"
+    And I follow "Export to Photo Wall"
+
+    Then I should receive a PDF file
     And the PDF file should have 1 page
     And the PDF file should contain the string "will_uid"
+    And the PDF file should not contain the string "Will"
 
   Scenario: Exporting PDF when there is no photo
     Given the following children exist in the system:

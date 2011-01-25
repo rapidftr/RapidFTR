@@ -30,6 +30,9 @@ GEM
     fastercsv (1.5.3)
     gherkin (2.1.5)
       trollop (~> 1.16.2)
+    hoptoad_notifier (2.4.2)
+      activesupport
+      builder
     hpricot (0.8.2)
     json (1.4.6)
     json_pure (1.4.6)
@@ -87,6 +90,7 @@ DEPENDENCIES
   cucumber-rails (= 0.3.2)
   dictionary (= 1.0.0)
   fastercsv (= 1.5.3)
+  hoptoad_notifier (= 2.4.2)
   hpricot (= 0.8.2)
   json (= 1.4.6)
   json_pure (= 1.4.6)

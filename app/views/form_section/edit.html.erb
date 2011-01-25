@@ -11,16 +11,19 @@
     <%= f.label :description %>
     <%= f.text_area :description, :cols => 54, :rows => 10 %>
   </p>
-  <p class="checkbox">
-    <%= f.check_box :enabled?, {}, true, false %>
-    <%= f.label :enabled %>
-  </p>
+    <% if @form_section.editable? %>
+        <p class="checkbox">
+            <%= f.check_box :enabled?, {}, true, false %>
+            <%= f.label :enabled %>
+        </p>
+        <% end %>
   </fieldset>
-  <%= submit_button 'Save Details' %>
+    <%= cancel_button(formsections_path) %>
+    <%= submit_button 'Save Details' %>
 <% end %>
 
 
-<% form_tag confirm_toggle_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
+<% form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
 <table id="form_sections">
 <thead>
   <tr>
@@ -32,7 +35,7 @@
 </thead>
 <tbody>
     <% @form_section.fields.each do |field| %>
-    <tr id="<%="#{field.name}Row"%>">
+    <tr id="<%="#{field.name}Row"%>" class="<%= field.enabled? ? "rowEnabled": "rowDisabled" %>">
       <% if @form_section.editable? %>
           <td>
             <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
@@ -71,8 +74,8 @@
 
 <% if @form_section.editable? %>
     <div class="formSectionButtons">
-      <%= submit_tag "Disable", :name => "toggle_fields" %>
-      <%= submit_tag "Enable", :name => "toggle_fields" %>
+      <%= submit_tag "Disable", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to disable fields?')"  }%>
+      <%= submit_tag "Enable", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to enable fields?')"  }%>
     </div>
 <% end %>
 <% end %>

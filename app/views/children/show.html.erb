@@ -11,9 +11,9 @@
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
 
-<% @form_sections.find_all {|section| section.enabled? }.each do |section| %>
+<% @form_sections.each do |section| %>
   <div id='<%= section.section_name.underscore %>' class='profile-section'>
-    <h2><%= section.section_name.humanize %></h2>
+    <h2><%= section.name %></h2>
     <ul class="<%= section.section_name %>">
       <% section.fields.each do |field| %>
         <% if field.type != Field::PHOTO_UPLOAD_BOX && field.type !=  Field::AUDIO_UPLOAD_BOX %>
@@ -42,6 +42,7 @@
         <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
         <li class="back"><%= link_to 'Back', :back %></li>
         <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
+        <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
         <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
         <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
       </ul>
