@@ -227,7 +227,8 @@ tr.rowDisabled {  font-style: italic; }
 
 /* error summary */
 .errorExplanation { color: #990000; background-color: #ffdddd; border: 1px solid #990000; padding: 10px; margin-bottom: 10px; }
-.errorExplanation h2 { color: #990000; margin-bottom: 1ex; }
+.errorExplanation h2,
+.errorExplanation h3 { color: #990000; margin-bottom: 1ex; }
 .errorExplanation li {background-image:none;}
 .errorExplanation ul, .errorExplanation p {margin-bottom:0;}
 .flash { margin-bottom: 10px; }
