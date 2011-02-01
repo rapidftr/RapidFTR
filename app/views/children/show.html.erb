@@ -11,6 +11,15 @@
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
 
+<div id='interviewer_details'>
+  <h3>
+    Registered by: <%= @child['created_by'] %>
+    <% if @child['last_updated_by'] %>
+        <%= link_to 'and others', child_history_path(@child) %>
+    <% end %>
+  </h3>
+</div>
+
 <% @form_sections.each do |section| %>
   <div id='<%= section.section_name.underscore %>' class='profile-section'>
     <h2><%= section.name %></h2>

@@ -54,6 +54,38 @@ describe "children/show.html.erb" do
         fields[1].should_not contain("Gender")
       end
     end
+    
+    describe "interviewer details" do
+      it "should show registered by details and no link to change log if child has not been updated" do
+        form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
+        child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith')
+
+        assigns[:form_sections] = [form_section]
+        assigns[:child] = child
+
+        render
+
+        response.should have_selector("#interviewer_details") do |fields|
+          fields[0].should contain("jsmith")
+          fields[0].should_not contain("and others")
+        end      
+      end
+      
+      it "should show link to change log if child has been updated" do
+        form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
+        child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :last_updated_by => "jdoe")
+
+        assigns[:form_sections] = [form_section]
+        assigns[:child] = child
+
+        render
+
+        response.should have_selector("#interviewer_details") do |fields|
+          fields[0].should contain("jsmith")
+          fields[0].should contain("and others")
+        end              
+      end
+    end
 
   end
 
