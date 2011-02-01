@@ -22,19 +22,19 @@
             <span class="profile-section-value"><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></span></li>
         <% end %>
         <% if field.type == Field::AUDIO_UPLOAD_BOX and @child.audio %>
-        	<li><span class="profile-section-label"><%= field.display_name %>:</span>
+          <li><span class="profile-section-label"><%= field.display_name %>:</span>
             <%= link_to "download", child_audio_url(@child), {:id=>"audio_link"}%></li>
-			<% if is_playable_in_browser(@child.audio)%>
-			<li>
-				<audio controls="controls" id="child_audio">
-					<source src="<%=child_audio_url(@child)%>"/>
-					Your browser is unable to play this audio file. You can download the file using the link above.
-				</audio>
+      <% if is_playable_in_browser(@child.audio)%>
+      <li>
+        <audio controls="controls" id="child_audio">
+          <source src="<%=child_audio_url(@child)%>"/>
+          Your browser is unable to play this audio file. You can download the file using the link above.
+        </audio>
         
         <%= render :partial => "audio_player" %>
         
-				</li>
-			<% end %>
+        </li>
+      <% end %>
         <% end %>
       <% end %>
     </ul>
