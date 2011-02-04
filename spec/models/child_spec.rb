@@ -628,6 +628,49 @@ describe Child do
       child['histories'].first['datetime'].should == 'some_time'
     end
   end
+  
+  describe ".has_one_interviewer?" do
+    it "should be true if was created and not updated" do
+      child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
+      
+      child.has_one_interviewer?.should be_true
+    end
+    
+    it "should be true if was created and updated by the same person" do
+      child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
+      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"}, 
+                                          "age"=>{"from"=>"1", "to"=>"15"}}, 
+                                          "user_name"=>"john", 
+                                          "datetime"=>"03/02/2011 21:48"}, 
+                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
+                                         "datetime"=>"03/02/2011 21:34", 
+                                         "user_name"=>"john"}, 
+                             {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
+                                          "user_name"=>"john", 
+                                          "datetime"=>"03/02/2011 21:33"}]
+      child['last_updated_by'] = 'john'
+      
+      child.has_one_interviewer?.should be_true
+    end
+    
+    it "should be false if created by one person and updated by another" do
+      child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
+      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"}, 
+                                          "age"=>{"from"=>"1", "to"=>"15"}}, 
+                                          "user_name"=>"jane", 
+                                          "datetime"=>"03/02/2011 21:48"}, 
+                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
+                                         "datetime"=>"03/02/2011 21:34", 
+                                         "user_name"=>"john"}, 
+                             {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
+                                          "user_name"=>"john", 
+                                          "datetime"=>"03/02/2011 21:33"}]
+      child['last_updated_by'] = 'jane'
+      
+      child.has_one_interviewer?.should be_false
+    end
+    
+  end
 
   describe "when fetching children" do
     before do

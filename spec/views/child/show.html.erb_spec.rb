@@ -17,7 +17,8 @@ describe "children/show.html.erb" do
       form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"], "Date of separation")
 
       child = Child.new(:age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345")
-
+      child.stub!(:has_one_interviewer?).and_return(true)
+      
       assigns[:form_sections] = [form_section]
       assigns[:child] = child
 
@@ -43,7 +44,8 @@ describe "children/show.html.erb" do
       form_section.add_field Field.new_radio_button("gender", ["male", "female"])
 
       child = Child.new(:age => "27", :gender => "male", :unique_identifier => "georgelon12345", :_id => "id12345")
-
+      child.stub!(:has_one_interviewer?).and_return(true)
+      
       assigns[:form_sections] = [form_section]
       assigns[:child] = child
 
@@ -59,7 +61,8 @@ describe "children/show.html.erb" do
       it "should show registered by details and no link to change log if child has not been updated" do
         form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
         child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith')
-
+        child.stub!(:has_one_interviewer?).and_return(true)
+        
         assigns[:form_sections] = [form_section]
         assigns[:child] = child
 
@@ -71,10 +74,11 @@ describe "children/show.html.erb" do
         end      
       end
       
-      it "should show link to change log if child has been updated" do
+      it "should show link to change log if child has been updated by multiple people" do
         form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
         child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :last_updated_by => "jdoe")
-
+        child.stub!(:has_one_interviewer?).and_return(false)
+        
         assigns[:form_sections] = [form_section]
         assigns[:child] = child
 
@@ -84,6 +88,22 @@ describe "children/show.html.erb" do
           fields[0].should contain("jsmith")
           fields[0].should contain("and others")
         end              
+      end
+      
+      it "should not show link to change log if child was registered by and updated again by only the same person" do
+        form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
+        child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :last_updated_by => "jsmith")
+        child.stub!(:has_one_interviewer?).and_return(true)
+          
+        assigns[:form_sections] = [form_section]
+        assigns[:child] = child
+
+        render
+        
+        response.should have_selector("#interviewer_details") do |fields|
+          fields[0].should contain("jsmith")
+          fields[0].should_not contain("and others")
+        end
       end
     end
 

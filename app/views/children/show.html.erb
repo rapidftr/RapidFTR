@@ -14,9 +14,7 @@
 <div id='interviewer_details'>
   <h3>
     Registered by: <%= @child['created_by'] %>
-    <% if @child['last_updated_by'] %>
-        <%= link_to 'and others', child_history_path(@child) %>
-    <% end %>
+    <%= link_to('and others', child_history_path(@child)) unless @child.has_one_interviewer? %>
   </h3>
 </div>
 
