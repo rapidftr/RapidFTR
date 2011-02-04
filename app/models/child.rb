@@ -164,6 +164,12 @@ class Child < CouchRestRails::Document
               'changes' => changes_for(field_name_changes) })
     end
   end
+  
+  def has_one_interviewer?
+    user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
+    user_names_after_deletion.delete(self['created_by'])
+    self['last_updated_by'].blank? || user_names_after_deletion.blank?
+  end
 
   protected
 
