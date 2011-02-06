@@ -43,14 +43,15 @@ class FieldsController < ApplicationController
   
   def update
     @field = @form_section.fields.detect { |field| field.name == params[:id] }
-    if params[:destination_form_id]
+    @field.attributes = params[:field]
+    if params[:destination_form_id].blank?
+      @form_section.save!
+    else
       @form_section.delete_field @field.name
       destination_form = FormSection.get_by_unique_id(params[:destination_form_id])
       destination_form.add_field @field
       destination_form.save!
     end
-    @field.attributes = params[:field]
-    @form_section.save!
     
     if (@field.errors.length == 0)
       flash[:notice] = "Field updated"
