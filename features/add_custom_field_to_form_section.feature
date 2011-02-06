@@ -64,9 +64,9 @@ Feature: So that admin can customize fields in a form section
     And I follow "New child"
 
     Then I should see "Anything"
-    When I fill in "11/17/2010" for "child_anything"
+    When I fill in "17 Nov 2010" for "child_anything"
     And I press "Save"
-    Then I should see "11/17/2010"
+    Then I should see "17 Nov 2010"
     
   Scenario: Admins should be able to add new radio button
     Given I am logged in as an admin

@@ -201,6 +201,21 @@ describe Child do
       child.should be_valid
     end
 
+    it "should disallow date fields not formatted as dd M yy" do
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
+      child = Child.new :a_datefield => ('2/27/2010')
+      child.should_not be_valid
+      child.errors[:a_datefield].should == ["A datefield must be formatted as dd M yy (e.g. 4 Feb 2010)"]
+    end
+
+    it "should allow date fields formatted as dd M yy" do
+      FormSection.stub!(:all_enabled_child_fields =>
+          [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
+      child = Child.new :a_datefield => ('27 Feb 2010')
+      child.should be_valid
+    end
+
     it "should not validate fields that were not filled in" do
       FormSection.stub!(:all_enabled_child_fields =>
           [Field.new(:type => Field::TEXT_FIELD, :name => "name"),

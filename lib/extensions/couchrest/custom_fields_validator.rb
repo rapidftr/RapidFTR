@@ -57,6 +57,22 @@ module CouchRest
         "#{field[:display_name]} cannot be more than #{MAX_LENGTH} characters long"
       end
     end
+
+    class DateFieldsValidator < CustomFieldsValidator
+      # Blackberry client can only parse specific date formats
+      def is_not_valid value
+        begin
+          Date.strptime(value, '%d %b %Y')
+          false
+        rescue
+          true
+        end
+      end
+      def validation_message_for field
+        "#{field[:display_name]} must be formatted as dd M yy (e.g. 4 Feb 2010)"
+      end
+    end
+
     
     module ValidatesCustomFields
 
@@ -73,6 +89,8 @@ module CouchRest
             CouchRest::Validation::CustomTextFieldsValidator
           when Field::TEXT_AREA
             CouchRest::Validation::CustomTextAreasValidator
+          when Field::DATE_FIELD
+            CouchRest::Validation::DateFieldsValidator
         else
           raise "Unrecognised field type " + field_type.to_s + " for validation"
         end

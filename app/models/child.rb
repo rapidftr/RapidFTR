@@ -30,6 +30,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
+  validates_fields_of_type Field::DATE_FIELD
   validates_with_method :age, :method => :validate_age
     
   def validate_age
