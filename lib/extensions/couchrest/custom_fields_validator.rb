@@ -69,7 +69,7 @@ module CouchRest
         end
       end
       def validation_message_for field
-        "#{field[:display_name]} must be formatted as dd M yy (e.g. 4 Feb 2010)"
+        "#{field[:display_name]} must follow this format: 4 Feb 2010"
       end
     end
 

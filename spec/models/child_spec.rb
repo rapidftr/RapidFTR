@@ -206,7 +206,7 @@ describe Child do
           [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
       child = Child.new :a_datefield => ('2/27/2010')
       child.should_not be_valid
-      child.errors[:a_datefield].should == ["A datefield must be formatted as dd M yy (e.g. 4 Feb 2010)"]
+      child.errors[:a_datefield].should == ["A datefield must follow this format: 4 Feb 2010"]
     end
 
     it "should allow date fields formatted as dd M yy" do
