@@ -19,6 +19,7 @@ class FieldsController < ApplicationController
   def edit
     @body_class = 'forms-page'
     @field = @form_section.fields.detect {|field| field.name == params[:id] }
+    @forms_for_display = FormSection.all.map { |form| [form.name, form.unique_id] }
   end
   
   def choose
@@ -44,7 +45,7 @@ class FieldsController < ApplicationController
   def update
     @field = @form_section.fields.detect { |field| field.name == params[:id] }
     @field.attributes = params[:field]
-    if params[:destination_form_id].blank?
+    if params[:destination_form_id] == params[:formsection_id]
       @form_section.save!
     else
       @form_section.delete_field @field.name

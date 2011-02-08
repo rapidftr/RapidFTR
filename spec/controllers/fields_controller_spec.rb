@@ -157,7 +157,20 @@ describe FieldsController do
       post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
-
+  end
+  
+  describe "edit" do
+    
+    it "should give back tuples of form unique id and display name" do
+      field = Field.new(:name => "form_name", :enabled => true, :display_name => "Form Name")
+      FormSection.create!(:name => "First Form", :unique_id => "first_form", :fields => [field])
+      FormSection.create!(:name => "Second Form", :unique_id => "second_form")
+      
+      get :edit, :id => "form_name", :formsection_id => "first_form"
+      
+      assigns(:forms).should include(["First Form", "first_form"])
+      assigns(:forms).should include(["Second Form", "second_form"])
+    end
   end
   
   describe "post update" do
@@ -167,7 +180,7 @@ describe FieldsController do
         :help_text => "old help text")
       some_form = FormSection.create!(:name => "Some Form", :unique_id => "some_form", :fields => [field_to_change])
       
-      put :update, :id => "country_of_origin", :formsection_id => some_form.unique_id, :destination_form_id => "", 
+      put :update, :id => "country_of_origin", :formsection_id => some_form.unique_id, :destination_form_id => some_form.unique_id, 
         :field => {:display_name => "What Country Are You From", :enabled => false, :help_text => "new help text"}
       
       updated_field = FormSection.get(some_form.id).fields.first
