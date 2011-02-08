@@ -10,6 +10,13 @@ When /^the date\/time is "([^\"]*)"$/ do |datetime|
   Time.stub!(:now).and_return current_time
 end
 
+When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datetime, utcdatetime|
+  current_time = Time.parse(datetime)
+  current_time_in_utc = Time.parse(utcdatetime)
+  Time.stub!(:now).and_return current_time
+  current_time.stub!(:getutc).and_return current_time_in_utc
+end
+
 Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   visit path_to('new child page')
   fill_in('Name', :with => child_name)

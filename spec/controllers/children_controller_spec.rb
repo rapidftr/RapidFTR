@@ -116,15 +116,17 @@ describe ChildrenController do
     end
 
     it "should update history on photo update" do
-      current_time = Time.parse("Jan 20 2010 17:10:32")
+      current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
+      current_time = Time.parse("20 Jan 2010 17:10:32")
       Time.stub!(:now).and_return current_time
+      current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 
       put :update_photo, :id => child.id, :child => {:photo_orientation => "-180"}
 
       history = Child.get(child.id)["histories"].first
       history['changes'].should have_key('current_photo_key')
-      history['datetime'].should == current_time.strftime('%d/%m/%Y %H:%M')
+      history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
   end
 
