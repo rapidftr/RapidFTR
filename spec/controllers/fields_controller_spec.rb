@@ -8,11 +8,13 @@ end
 describe FieldsController do
   before :each do
     fake_admin_login
-    @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
-    FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
   end
    
    describe "get new" do
+     before :each do
+       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
+       FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
+     end
      
      it "populates the view with the selected form section"do
        should_populate_form_section(:new)
@@ -29,19 +31,28 @@ describe FieldsController do
    
    describe "get new text field" do
      
+     before :each do
+       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
+       FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
+     end
+     
      it "populates the view with the selected form section"do
         should_populate_form_section(:new)
       end
      
    end
-  
+   
+ 
+   
   describe "post create" do
 
     before :each do
       @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
       SuggestedField.stub(:mark_as_used)
-
+      @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
+      FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end
+    
     it "should add the new field to the formsection" do
       FormSection.should_receive(:add_field_to_formsection).with(@form_section, @field)
       post :create, :formsection_id =>@form_section.unique_id, :field => @field
@@ -146,6 +157,55 @@ describe FieldsController do
       post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
-
   end
+  
+  describe "edit" do
+    
+    it "should give back tuples of form unique id and display name" do
+      field = Field.new(:name => "form_name", :enabled => true, :display_name => "Form Name")
+      first_form = FormSection.create!(:name => "First Form", :unique_id => "first_form", :fields => [field])
+      second_form = FormSection.create!(:name => "Third Form", :unique_id => "third_form")
+      third_form = FormSection.create!(:name => "Middle Form", :unique_id => "middle_form")
+      FormSection.stub(:all).and_return [first_form, second_form, third_form]
+      
+      get :edit, :id => "form_name", :formsection_id => "first_form"
+      
+      assigns(:forms_for_display).should == [["First Form", "first_form"], ["Middle Form", "middle_form"], ["Third Form", "third_form"]]
+    end
+  end
+  
+  describe "post update" do
+    
+    it "should update all attributes on field at once" do
+      field_to_change = Field.new(:name => "country_of_origin", :display_name => "Origin Country", :enabled => true,
+        :help_text => "old help text")
+      some_form = FormSection.create!(:name => "Some Form", :unique_id => "some_form", :fields => [field_to_change])
+      
+      put :update, :id => "country_of_origin", :formsection_id => some_form.unique_id, :destination_form_id => some_form.unique_id, 
+        :field => {:display_name => "What Country Are You From", :enabled => false, :help_text => "new help text"}
+      
+      updated_field = FormSection.get(some_form.id).fields.first
+      updated_field.display_name.should == "What Country Are You From"
+      updated_field.enabled.should == false
+      updated_field.help_text.should == "new help text"
+    end
+      
+    it "should move field to specified form section with update to display name" do
+      mothers_name_field = Field.new(:name => "mothers_name", :enabled => true, :display_name => "Mother's Name")
+      another_field = Field.new(:name => "childs_name", :enabled => true, :display_name => "Child's Name")
+      family_details_form = FormSection.create!(:name => "Family Details", :unique_id => "family_details", :fields => [mothers_name_field])
+      mother_details_form = FormSection.create!(:name => "Mother Details", :unique_id => "mother_details", :fields => [another_field])
+  
+      put :update, 
+        :id => "mothers_name", 
+        :formsection_id => "family_details", 
+        :destination_form_id => "mother_details",
+        :field => {:display_name => "Name", :enabled => true}
+      
+      FormSection.get(family_details_form.id).fields.find {|field| field.name == "mothers_name"}.should be_nil
+      updated_field = FormSection.get(mother_details_form.id).fields.find {|field| field.name == "mothers_name"}
+      updated_field.display_name.should == "Name"
+    end
+  end
+  
 end
