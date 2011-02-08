@@ -17,7 +17,7 @@
       </p>
   <% end %>
   <div class="details">
-    <dl>
+    <dl class="basic">
       <dt>Age:</dt>
       <dd><%= summary_row["age"] %> (<%=summary_row["age_is"] ? summary_row["age_is"].downcase : summary_row["age_is"] %>)</dd>
       <dt>Gender:</dt>
@@ -28,6 +28,15 @@
 
     <p><strong>Last known location:</strong> <%= summary_row["last_known_location"] %>
       <em><%= summary_row["date_of_separation"] %> </em></p>
+
+    <dl class="interview-timestamp">
+      <dt>Created by:</dt>
+      <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= summary_row['created_at'] %></dd>
+      <% if summary_row['last_updated_at'] %>
+        <dt>Last updated:</dt>
+        <dd><%= summary_row['last_updated_at'] %></dd>
+      <% end %>
+    </dl>
   </div>
 </div>
 <!-- END: item -->
