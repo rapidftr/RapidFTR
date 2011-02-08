@@ -5,24 +5,7 @@
 
     <fieldset>
       <h3><%= @field.type.humanize %> details</h3>
-
-      <p>
-        <%= f.label :display_name %>
-        <%= f.text_field :display_name %> <i>required</i>
-      </p>
-      <p>
-        <%= f.label :help_text %>
-        <%= f.text_field :help_text %>
-      </p>
-      <p>
-        <%= f.label :enabled %>
-        <%= f.check_box :enabled?, {}, true, false %>
-      </p>
-			<p>
-	    	<%= f.label :form %>
-	      <%= select_tag "destination_form_id", options_for_select(@forms_for_display, @form_section.unique_id) %>
-	    </p>
-				
+ 			<%= render :partial => "common", :locals => {:f => f} %>
     </fieldset>
     <p class='submitButton' >
       <%= f.submit 'Save' %>

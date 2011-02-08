@@ -19,7 +19,7 @@ class FieldsController < ApplicationController
   def edit
     @body_class = 'forms-page'
     @field = @form_section.fields.detect {|field| field.name == params[:id] }
-    @forms_for_display = FormSection.all.map { |form| [form.name, form.unique_id] }
+    @forms_for_display = FormSection.all.sort_by(&:name).map { |form| [form.name, form.unique_id] }
   end
   
   def choose
