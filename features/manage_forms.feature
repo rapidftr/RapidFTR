@@ -8,6 +8,8 @@ Feature: So that admin can see Manage Forms Page
 
   Scenario: Admins should see correct re-ordering links for each section
     Then I should see the "basic_details" section without any ordering links
+		And I should see the "basic_details" section without an enabled checkbox
+		And I should see the "caregiver_details" section with an enabled checkbox
     And I should see "family_details" with order of "2"
     And I should see "caregiver_details" with order of "3"
     And I should see "other_details" with order of "4"

@@ -10,6 +10,16 @@ Then /^I should see the "([^\"]*)" section without any ordering links$/ do |sect
   row.search("span.moveDown").should be_empty
 end
 
+Then /^I should see the "([^\"]*)" section without an enabled checkbox$/ do |section_name|
+  row = Hpricot(response.body).search("tr[@id=#{section_name}_row]").first
+  row.search("input#sections_#{section_name}").should be_empty
+end
+
+Then /^I should see the "([^\"]*)" section with an enabled checkbox$/ do |section_name|
+  row = Hpricot(response.body).search("tr[@id=#{section_name}_row]").first
+  row.search("input#sections_#{section_name}").should_not be_empty
+end
+
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
   When 'I follow "Add Custom Field"'
   And 'I follow "Text Field"'

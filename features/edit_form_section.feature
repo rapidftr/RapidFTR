@@ -2,9 +2,9 @@ Feature: So that admin can customize form section details
 
   Background:
     Given the following form sections exist in the system:
-      | name | unique_id | editable | order | enabled |
-      | Basic details | basic_details | false | 1 | true |
-      | Family details | family_details | true | 2 | true |
+      | name | unique_id | editable | order | enabled | perm_enabled |
+      | Basic details | basic_details | true | 1 | true | true |
+      | Family details | family_details | true | 2 | true | false |
 
   Scenario: Admins should be able to edit name and description
     Given I am logged in as an admin
@@ -28,7 +28,7 @@ Feature: So that admin can customize form section details
     When I follow "Cancel"
     Then I am on form section page
 
-  Scenario: Admins should not see Enable checkbox for non editable form so that he cannot disable the form
+  Scenario: Admins should not see Enable checkbox for perm_enabled form so that he cannot disable the form
     Given I am logged in as an admin
     And I am on the edit form section page for "basic_details"
     Then I should not see "Enable checkbox" with id "form_section_enabled"
@@ -37,3 +37,4 @@ Feature: So that admin can customize form section details
     Given I am logged in as an admin
     And I am on the edit form section page for "family_details"
     Then I should see "Enable checkbox" with id "form_section_enabled"
+

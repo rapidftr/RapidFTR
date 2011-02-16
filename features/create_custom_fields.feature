@@ -3,7 +3,11 @@ Feature: Creating Custom Form Fields
   So that we can add a numeric field to a formsection
   
   Background:
-    Given I am logged in as an admin
+		Given the following form sections exist in the system:
+		  | name | unique_id | editable | order | enabled | perm_enabled |
+		  | Basic details | basic_details | false | 1 | true | true |
+		  | Family details | family_details | true | 2 | true | false |
+	  Given I am logged in as an admin
 
   Scenario: creating a numeric field
     Given I am on the edit form section page for "family_details"
