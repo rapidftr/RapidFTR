@@ -1,8 +1,8 @@
 module RapidFTR
 
-  class DbSetup
+  module FormSectionSetup
 
-    def self.reset_default_form_section_definitions
+    def self.reset_definitions
 
       FormSection.all.each {|u| u.destroy }
 
