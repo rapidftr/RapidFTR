@@ -34,7 +34,8 @@ class Field < Hash
   validates_presence_of :display_name 
   validates_with_method :display_name, :method => :validate_unique
   validates_with_method :option_strings, :method => :validate_has_2_options
-  
+  validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
+    
   def form
     base_doc
   end
