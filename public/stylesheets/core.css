@@ -141,7 +141,7 @@ td.checkbox { text-align: center;}
 /* profiles wall page - list */
 .profiles-list {padding: 0 8px 0 6px}
 .profiles-list-item { overflow: hidden; background-color: #fff; padding: 6px 6px 20px; position:relative;}
-.profiles-list-item .header { width:100%; position: relative; float:left; margin-left:60px;}
+.profiles-list-item .header { width:543px; position: relative; float:left; margin-left:60px;}
 .profiles-list-item h3 { margin: 0 10px; float:left; padding:0; }
 .profiles-list-item .view-edit { float:right;margin:0;padding:0  }
 .profiles-list-item .checkbox { float:left;margin:0;padding:0;  }
