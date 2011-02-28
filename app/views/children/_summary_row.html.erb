@@ -2,7 +2,7 @@
 <div id="child_<%= summary_row['_id'] %>" class="profiles-list-item">
   <div class="header">
     <p class="checkbox">
-      <%= check_box_tag summary_row['_id'], 'selected',  %>
+      <%= check_box_tag summary_row['_id'], 'selected' %>
     </p>
 
     <h3><%= link_to summary_row['name'], child_path(summary_row) %></h3>
