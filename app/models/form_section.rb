@@ -8,6 +8,7 @@ class FormSection < CouchRestRails::Document
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
+  property :perm_enabled, :cast_as => 'boolean', :default => false
 
   view_by :unique_id
   view_by :order

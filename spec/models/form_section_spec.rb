@@ -161,6 +161,19 @@ describe FormSection do
     end
 
   end
+  
+  describe "perm_enabled" do
+    
+    it "should not be perm_enabled by default" do
+      formsection = FormSection.new
+      formsection.perm_enabled?.should be_false
+    end
+    
+    it "should be perm_enabled when set" do
+      formsection = FormSection.new(:perm_enabled => true)
+      formsection.perm_enabled?.should be_true
+    end
+  end
 
   describe "move_up_field" do
     before :each do

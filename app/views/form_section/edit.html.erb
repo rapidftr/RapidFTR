@@ -11,7 +11,7 @@
     <%= f.label :description %>
     <%= f.text_area :description, :cols => 54, :rows => 10 %>
   </p>
-    <% if @form_section.editable? %>
+    <% if not @form_section.perm_enabled? %>
         <p class="checkbox">
             <%= f.check_box :enabled?, {}, true, false %>
             <%= f.label :enabled %>

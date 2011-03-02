@@ -48,7 +48,7 @@ end
 describe "form_section/index.html.erb" do
 
   before :each do
-    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false"
+    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :perm_enabled => true
     @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> "false", "order"=>"101", "unique_id"=> "caregiver_details"
 
     assigns[:form_sections] = [@form_section_1, @form_section_2]

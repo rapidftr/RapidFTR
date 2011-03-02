@@ -1,6 +1,6 @@
 module RapidFTR
 
-  class SuggestedFieldsDbSetup
+  module SuggestedFieldsSetup
     def self.create_field! display_name, help_text, name , field_type , options=nil
       SuggestedField.create!(
               "display_name" => display_name,
@@ -10,7 +10,7 @@ module RapidFTR
               "field"=> Field.new("name" => name, "help_text" => help_text, "display_name" => display_name,
                                   "type" => field_type, "option_strings"=>options))
     end
-    def self.recreate_suggested_fields
+    def self.reset_definitions
       SuggestedField.all.each {|u| u.destroy }
 
       create_field!("Caregiver's name", "The name of the child's caregiver", "caregivers_name", "text_field")

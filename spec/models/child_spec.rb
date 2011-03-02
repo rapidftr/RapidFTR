@@ -104,11 +104,13 @@ describe Child do
     end
 
     it "should populate last_updated_at field with the time of the update" do
-      current_time = Time.parse("Jan 17 2010 14:05")
+      current_time_in_utc = Time.parse("17 Jan 2010 19:05UTC")
+      current_time = mock()
       Time.stub!(:now).and_return current_time
+      current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, {}
-      child['last_updated_at'].should == "17/01/2010 14:05"
+      child['last_updated_at'].should == "2010-01-17 19:05:00UTC"
     end
 
     it "should update attachments when there is a photo update" do
@@ -349,10 +351,12 @@ describe Child do
     end
 
     it "should create a created_at field with time of creation" do
-      current_time = Time.parse("14 Jan 2010 14:05")
+      current_time_in_utc = Time.parse("14 Jan 2010 14:05UTC")
+      current_time = mock()
       Time.stub!(:now).and_return current_time
+      current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
-      child['created_at'].should == "14/01/2010 14:05"
+      child['created_at'].should == "2010-01-14 14:05:00UTC"
     end
   end
 

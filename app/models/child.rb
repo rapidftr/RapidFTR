@@ -184,7 +184,7 @@ class Child < CouchRestRails::Document
   protected
 
   def current_formatted_time
-    Time.now.strftime("%d/%m/%Y %H:%M")
+    Time.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
   end
 
   def changes_for(field_names)

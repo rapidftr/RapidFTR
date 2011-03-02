@@ -1,8 +1,8 @@
 module RapidFTR
 
-  class DbSetup
+  module FormSectionSetup
 
-    def self.reset_default_form_section_definitions
+    def self.reset_definitions
 
       FormSection.all.each {|u| u.destroy }
 
@@ -18,7 +18,15 @@ module RapidFTR
               Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box")
       ]
 
-      FormSection.create!("name" =>"Basic details", :description => "Basic information about a child", :order=> 1, :unique_id=>"basic_details", :editable => false, :fields => basic_details_fields)
+      FormSection.create!(
+        "name" =>"Basic details", 
+        :description => "Basic information about a child", 
+        :order => 1, 
+        :unique_id => "basic_details",
+        :perm_enabled => true,
+        :editable => true,
+        :enabled => true, 
+        :fields => basic_details_fields)
 
       family_details_fields = [
               Field.new("name" => "fathers_name", "display_name" => "Fathers Name", "type" => "text_field"),
