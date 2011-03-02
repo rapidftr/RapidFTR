@@ -13,10 +13,10 @@
 <% end %>
 
 <div id='interviewer_details'>
-  <h3>
-    Registered by: <%= @child['created_by'] %>
-    <%= link_to('and others', child_history_path(@child)) unless @child.has_one_interviewer? %>
-  </h3>
+  <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @child['created_at'] %></h3>
+  <% if @child['last_updated_by']%>
+    <h3>Last updated: <%= @child['last_updated_at'] %> </h3>
+  <% end %>
 </div>
 
 <% @form_sections.each do |section| %>

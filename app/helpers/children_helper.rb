@@ -17,4 +17,9 @@ module ChildrenHelper
   def is_playable_in_browser audio
     AudioMimeTypes.browser_playable? audio.mime_type
   end
+  
+  def link_to_update_info(child)
+    link_to('and others', child_history_path(child)) unless child.has_one_interviewer?
+  end
+  
 end
