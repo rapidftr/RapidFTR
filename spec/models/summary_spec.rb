@@ -32,17 +32,4 @@ describe Summary do
       Summary.and_arrays(empty, first, second).should == [2,3]
     end
   end
-  
-  describe "advanced search" do
-    
-    it "should delegate search to child model" do
-      Child.should_receive(:view_by).with(:name)
-      Child.should_receive(:by_name).with({:startkey=>"francisco", :endkey=>"g"})
-      
-      search = AdvancedSearch.new("name","francisco")
-      Summary.advanced_search(search)    
-    end
-    
-    
-  end
 end

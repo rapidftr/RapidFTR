@@ -49,20 +49,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should be on the child search results page
     And the "Name or Unique Id" field should contain "Will"
 
-  Scenario: 'Show thumbnails' checkbox is unchecked in search results if it was unchecked for the search
-
-    When I uncheck "Show thumbnails"
-    And I press "Search"
-
-    Then the "Show thumbnails" checkbox should not be checked
-
-  Scenario: 'Show thumbnails' checkbox is checked in search results if it was checked for the search
-
-    When I check "Show thumbnails"
-    And I press "Search"
-
-    Then the "Show thumbnails" checkbox should be checked
-
   Scenario: Each search result has a link to the full child record
 
     Given the following children exist in the system:
@@ -82,24 +68,10 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will	|
 
     When I fill in "W" for "Name"
-    And I check "Show thumbnails" 
     And I press "Search"
 
     Then I should see the thumbnail of "Willis"
     And I should see the thumbnail of "Will"
-
-  Scenario: Thumbnails are not displayed for each search result, if not requested
-
-    Given the following children exist in the system:
-      | name   	| 
-      | Willis	|
-      | Will	|
-
-    When I fill in "W" for "Name"
-    And I uncheck "Show thumbnails" 
-    And I press "Search"
-
-    Then I should not see the thumbnail of "Willis"
 
   Scenario: Not seing "No results found" when first enter search page
 

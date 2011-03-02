@@ -3,10 +3,7 @@
 <% form_tag search_children_path, :method => :get, :id => "search_form" do %>
     <%= label_tag 'query', "Name or Unique ID", :id => "query_label" %>
     <%= text_field_tag 'query', params[:query] %>
-
-
-    <%= check_box_tag 'show_thumbnails', "1", params[:show_thumbnails] %>
-    <%= label_tag 'show_thumbnails', "Show thumbnails"%><br/>
+    
     <%= submit_tag "Search", :id => "search_button" %>
 <%-end  %>
 

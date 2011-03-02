@@ -63,13 +63,9 @@
   </form>      
 </div>
 
+<%= render :partial => 'children/search_results' %>
 
 
-  <br /> 
-  <div class="profiles-list">
-    <%= render :partial => "children/summary_row", :collection => @children %>
-    <%= "No results found" if @results.try(:size) == 0 %>
-  </div>
 <script>
 
   CriteriaTemplateHelper = {}

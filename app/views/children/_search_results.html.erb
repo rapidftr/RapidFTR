@@ -3,7 +3,7 @@
 
   <br /> 
   <div class="profiles-list">
-    <%= render :partial => "summary_row", :collection => @results %>
+    <%= render :partial => "children/summary_row", :collection => @results %>
     <%= "No results found" if @results.try(:size) == 0 %>
   </div>
 

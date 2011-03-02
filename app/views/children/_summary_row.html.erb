@@ -9,13 +9,11 @@
 
     <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %></p>
   </div>
-  <% if @show_thumbnails %>
-      <p class="photo">
-        <a href=<%= child_path(summary_row['_id']) %>>
-          <%= thumbnail_tag(summary_row) %>
-        </a>
-      </p>
-  <% end %>
+  <p class="photo">
+    <a href=<%= child_path(summary_row['_id']) %>>
+      <%= thumbnail_tag(summary_row) %>
+    </a>
+  </p>
   <div class="details">
     <dl>
       <dt>Age:</dt>

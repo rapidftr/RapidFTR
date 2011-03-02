@@ -72,24 +72,26 @@
 			menu.hide();
 		});
 		
-		element.find("form").submit(function() { 
-			result = validate();
-			$('.form-error').text(result);
-			if(result != ''){ return true;}
-			return false;
-		});
-		
-		function validate(){
-			var result = true;
+		var validate = function(){
+			var result = "";
 			$('.criteria-list .criteria-field').each(function(){
-				if($(this).val() == "") { return 'Please select a valid field name.'; }
+				if($(this).val() == "") { result = 'Please select a valid field name.'; }
 			});
 			
 			$('.criteria-list .criteria-value').each(function(){
-				if($(this).val() == "") { return 'Please enter a valid field value.'; }
+				if($(this).val() == "") { result = 'Please enter a valid field value.'; }
 			});
-			return '';
+			return result;
 		}
+		
+		element.find("form").submit(function() { 
+			result = validate();
+			$('.form-error').text(result);
+			if(result == ''){ return true;}
+			return false;
+		});
+		
+		
 		
 	}
 })(jQuery);

@@ -158,22 +158,6 @@ class   ChildrenController < ApplicationController
     end
     default_search_respond_to
   end
-  
-  def advanced_search
-    @page_name = "Advanced Child Search"
-    @fields_name = FormSection.all_child_field_names
-    
-    if params[:search_field] && params[:search_value]
-      search = AdvancedSearch.new(params[:search_field], params[:search_value])    
-      if (search.valid?)
-        @results = Summary.advanced_search(search) if params[:search_value]
-        default_search_respond_to
-      else
-        @search = search
-        render :advanced_search
-      end
-    end
-  end
 
   def export_data
     child_ids = params.map{ |k, v| 'selected' == v ? k : nil }.compact
@@ -213,7 +197,6 @@ class   ChildrenController < ApplicationController
   def default_search_respond_to
     respond_to do |format|
      format.html do
-       @show_thumbnails = !!params[:show_thumbnails]
        if @results && @results.length == 1
          redirect_to child_path( @results.first )
        end

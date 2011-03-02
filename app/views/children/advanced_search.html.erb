@@ -1,9 +1,0 @@
-<%= error_messages_for :search %>
-
-<% form_tag advanced_search_children_path, :method => :get do %>
-  <%= select_tag 'search_field', options_for_select(@fields_name.collect{ |u| [u.humanize, u] }, params[:search_field] ) %>
-  <%= text_field_tag 'search_value', params[:search_value] %>
-  <%= submit_tag "Search" %>
-<% end %>
-
-<%= render :partial => 'search_results' %>

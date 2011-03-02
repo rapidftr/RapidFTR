@@ -34,7 +34,6 @@ describe "children/search.html.erb" do
     end
 
     it "should show thumbnails with urls for child details page for each child if asked" do
-      assigns[:show_thumbnails] = true
       render
 
       first_content_row = Hpricot(response.body).photos
@@ -42,13 +41,6 @@ describe "children/search.html.erb" do
       raise 'no image tag' if first_href.nil?
 
       first_href['href'].should == "/children/#{@results.first.id}"
-    end
-
-    it "should not include a column displaying thumbnails if not asked" do
-      assigns[:show_thumbnails] = false
-      render
-
-      Hpricot(response.body).photos.size.should be(0)
     end
 
     it "should include checkboxes to select individual records" do

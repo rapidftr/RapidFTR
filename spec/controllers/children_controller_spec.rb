@@ -158,17 +158,6 @@ describe ChildrenController do
       assigns[:results].should == fake_results
     end
 
-    it 'asks view to show thumbnails if show_thumbnails query parameter is present' do
-      get(:search, :format => 'html',:show_thumbnails => '1',:query => "blah")
-      assigns[:show_thumbnails].should == true
-    end
-
-    it 'asks view to not show thumbnails if show_thumbnails query parameter is missing' do
-      get( :search, :format => 'html', :query => "blah" )
-      assigns[:show_thumbnails].should == false
-    end
-
-
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
@@ -235,50 +224,6 @@ describe ChildrenController do
         rows.shift.should == ['mary_xxx','Mary','12']
       end
     end
-  end
-
-  describe "GET advanced search" do
-
-    it "should not render error by default" do
-      get(:advanced_search, :format => 'html')
-      assigns[:search].should be_nil
-    end
-
-    it "should define form section fields as search criteria" do
-      names = []
-      FormSection.stub!(:all_child_field_names).and_return(names)
-      get(:advanced_search, :format => 'html')
-      assigns[:fields_name].should == names
-    end
-
-    it "should assign results" do
-      children = []
-      search = mock(:search, :search_field => "field", :search_value => 'value', :valid? => true);
-      AdvancedSearch.stub!(:new).and_return(search)
-      Summary.should_receive(:advanced_search).with(search).and_return(children)
-      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
-    end
-
-    it "should render advanced search on success" do
-      children = []
-      Summary.should_receive(:advanced_search).and_return(children)
-      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
-      response.should render_template("children/advanced_search")
-    end
-
-    it "should redirect to the child page if only one result is found" do
-      children = [stub("Child", :to_param => '1235')]
-      Summary.should_receive(:advanced_search).and_return(children)
-      get(:advanced_search, :format => 'html', :search_field => "field", :search_value => "value")
-      response.should redirect_to(child_path(children.first))
-    end
-
-    it "should render error if search is invalid" do
-      get(:advanced_search, :format => 'html', :search_field => "", :search_value => "")
-      search = assigns[:search]
-      search.errors.size.should == 2
-    end
-
   end
 
   describe "GET photo_pdf" do
