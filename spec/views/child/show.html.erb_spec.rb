@@ -69,7 +69,7 @@ describe "children/show.html.erb" do
         render
 
         response.should have_selector("#interviewer_details") do |fields|
-          fields[0].should contain("Created by: jsmith")
+          fields[0].should contain("Registered by: jsmith")
           fields[0].should_not contain("and others")
           fields[0].should_not contain("Last updated:")
         end      
@@ -86,7 +86,7 @@ describe "children/show.html.erb" do
         render
 
         response.should have_selector("#interviewer_details") do |fields|
-          fields[0].should contain("Created by: jsmith")
+          fields[0].should contain("Registered by: jsmith")
           fields[0].should contain("and others")
           fields[0].should contain("Last updated:")
         end              
@@ -103,7 +103,7 @@ describe "children/show.html.erb" do
         render
         
         response.should have_selector("#interviewer_details") do |fields|
-          fields[0].should contain("Created by: jsmith")
+          fields[0].should contain("Registered by: jsmith")
           fields[0].should_not contain("and others")
         end
       end

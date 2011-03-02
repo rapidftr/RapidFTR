@@ -29,9 +29,11 @@
     <p><strong>Last known location:</strong> <%= summary_row["last_known_location"] %>
       <em><%= summary_row["date_of_separation"] %> </em></p>
 
-    <dl class="interview-timestamp">
-      <dt>Created by:</dt>
+    <dl class="interviewer-details">
+      <dt>Registered by:</dt>
       <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= summary_row['created_at'] %></dd>
+    </dl>
+    <dl class="interview-timestamp">
       <% if summary_row['last_updated_at'] %>
         <dt>Last updated:</dt>
         <dd><%= summary_row['last_updated_at'] %></dd>
