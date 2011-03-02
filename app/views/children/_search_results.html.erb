@@ -1,8 +1,25 @@
 <% has_results = (@results && @results.size > 0) %>
 <%- form_tag export_data_children_path, :method => :post do %>
+  <script type="text/javascript">
+  $(document).ready(function()
+  {
+  	$("#all").click(function()				
+  	{
+  		var checked_status = this.checked;
+  		$(".profiles-list-item :checkbox").each(function()
+  		{
+  			this.checked = checked_status;
+  		});
+  	});					
+  });
+  </script>
 
   <br /> 
   <div class="profiles-list">
+    <% if !@results.nil? && @results.size > 0 %>
+      <%= check_box_tag 'all', 'Select all' %>
+      <%= label_tag 'all', 'Select all' %>
+		<% end %>
     <%= render :partial => "summary_row", :collection => @results %>
     <%= "No results found" if @results.try(:size) == 0 %>
   </div>
