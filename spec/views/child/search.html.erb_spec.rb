@@ -16,10 +16,16 @@ describe "children/search.html.erb" do
       Hpricot(response.body).profiles_list_items.size.should == @results.length
     end
 
-    it "should have a definition list for each record in the results" do
+    it "should have a definition list for basic details for each record in the results" do
       render
 
-      Hpricot(response.body).definition_lists.size.should == @results.length
+      Hpricot(response.body).search(".details dl.basic").size.should == @results.length
+    end
+
+    it "should have a definition list for interview timestamps details for each record in the results" do
+      render
+
+      Hpricot(response.body).search(".details dl.interview-timestamp").size.should == @results.length
     end
 
     it "should include a column displaying thumbnails for each child if asked" do
@@ -64,7 +70,9 @@ describe "children/search.html.erb" do
     end
 
     def random_child_summary(id = 'some_id')
-      Summary.new("_id" => id, "age_is" => "Approx")
+      summary = Summary.new("_id" => id, "age_is" => "Approx", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"))
+      summary.stub!(:has_one_interviewer?).and_return(true)
+      summary
     end
 
   end

@@ -159,21 +159,6 @@ describe FieldsController do
     end
   end
   
-  describe "edit" do
-    
-    it "should give back tuples of form unique id and display name" do
-      field = Field.new(:name => "form_name", :enabled => true, :display_name => "Form Name")
-      first_form = FormSection.create!(:name => "First Form", :unique_id => "first_form", :fields => [field])
-      second_form = FormSection.create!(:name => "Third Form", :unique_id => "third_form")
-      third_form = FormSection.create!(:name => "Middle Form", :unique_id => "middle_form")
-      FormSection.stub(:all).and_return [first_form, second_form, third_form]
-      
-      get :edit, :id => "form_name", :formsection_id => "first_form"
-      
-      assigns(:forms_for_display).should == [["First Form", "first_form"], ["Middle Form", "middle_form"], ["Third Form", "third_form"]]
-    end
-  end
-  
   describe "post update" do
     
     it "should update all attributes on field at once" do

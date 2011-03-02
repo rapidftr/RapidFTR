@@ -141,11 +141,13 @@ td.checkbox { text-align: center;}
 /* profiles wall page - list */
 .profiles-list {padding: 0 8px 0 6px}
 .profiles-list-item { overflow: hidden; background-color: #fff; padding: 6px 6px 20px; position:relative;}
-.profiles-list-item .header { width:100%; position: relative; float:left; margin-left:60px;}
+.profiles-list-item .header { width:543px; position: relative; float:left; margin-left:60px;}
 .profiles-list-item h3 { margin: 0 10px; float:left; padding:0; }
 .profiles-list-item .view-edit { float:right;margin:0;padding:0  }
 .profiles-list-item .checkbox { float:left;margin:0;padding:0;  }
 .profiles-list-item .photo { position: absolute; top: 17px; left: 5px;  width:60px;}
+.profiles-list #all {  margin-left:65px; margin-bottom: 10px;}
+.profiles-list label  { font-weight: bold; color: #678; font-size: .75em; line-height: 1.5; }
 .profiles-list-item .details {  margin-left:65px;}
 .profiles-list-item .details p { margin-bottom: 0; clear: both; border-top: 1px solid #678; padding-top: .2em; }
 .profiles-list-item .details p strong { color: #678; }

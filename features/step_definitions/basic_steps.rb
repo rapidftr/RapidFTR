@@ -357,13 +357,17 @@ Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, p
 end
 
 Then /^I should see the error "([^\"]*)"$/ do |error_message|
-  Hpricot(response.body).search("div[@id=errorExplanation]").inner_text.should include error_message
+  Hpricot(response.body).search("div[@class=errorExplanation]").inner_text.should include error_message
 end
 
 Then /^I should not see any errors$/ do
-  Hpricot(response.body).search("div[@id=errorExplanation]").size.should == 0
+  Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 0
 end
 
 Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
   Hpricot(response.body).search("//p[@class=#{button_name.downcase}Button]/a").to_html.include?("confirm")
+end
+
+Then /^I should see errors$/ do
+  Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 1
 end

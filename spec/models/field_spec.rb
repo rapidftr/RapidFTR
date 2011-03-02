@@ -36,7 +36,13 @@ describe "Child record field view model" do
     it "should not allow blank display name" do  
       field = Field.new(:display_name => "")
       field.valid?
-      field.errors.on(:display_name).should ==  ["Display name must not be blank"] 
+      field.errors.on(:display_name).first.should == "Display name must not be blank"
+    end
+
+    it "should not allow display name without alphabetic characters" do  
+      field = Field.new(:display_name => "!@£$@")
+      field.valid?.should == false
+      field.errors.on(:display_name).should include("Display name must contain at least one alphabetic characters")
     end
   
     it "should validate unique within form" do  
