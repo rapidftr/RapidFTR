@@ -3,18 +3,14 @@ class Child < CouchRestRails::Document
   require "uuidtools"
   include CouchRest::Validation
   include Searchable
-
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
-
-  Sunspot.setup(self) do
-    text :name, :unique_identifier
-  end
 
   before_save :initialize_history, :if => :new?
   before_save :update_history, :unless => :new?
   property :age
   property :name
+  property :nickname
   property :unique_identifier
   
   view_by :name,
@@ -32,7 +28,17 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::TEXT_AREA
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :age, :method => :validate_age
-    
+  
+  def self.build_solar_schema
+    fields = ["unique_identifier"]  + Field.all_text_names
+
+    Sunspot.setup(Child) do
+      text *fields
+    end
+  end
+ 
+
+  
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
     [false, "Age must be between 1 and 99"]
@@ -46,6 +52,10 @@ class Child < CouchRestRails::Document
   def validate_audio_file_name
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
+  end
+  
+  def method_missing(m, *args, &block)  
+    self[m]
   end
   
   def to_s
@@ -66,9 +76,8 @@ class Child < CouchRestRails::Document
     query = search.query
     children = sunspot_search("unique_identifier_text:#{query}")
     return children if children.length > 0
-
-    lucene_query = query.split(/[ ,]+/).map {|word| "(name_text:#{word.downcase}~ OR name_text:#{word.downcase}*)"}.join(" AND ")
-    sunspot_search lucene_query
+    
+    SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
   end
 
   def self.new_with_user_name(user_name, fields = {})

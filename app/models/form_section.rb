@@ -28,7 +28,8 @@ class FormSection < CouchRestRails::Document
   def self.all_child_field_names
     all_child_fields.map{ |field| field["name"] }
   end
-
+  
+  
   def self.all_enabled_child_fields
     enabled_by_order.map do |form_section|
       form_section.fields
@@ -122,7 +123,11 @@ class FormSection < CouchRestRails::Document
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
     matching_fields.each{ |field| field.enabled = true}
   end
-
+  
+  def all_text_fields
+    self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
+  end 
+  
   protected
 
   def validate_unique_name

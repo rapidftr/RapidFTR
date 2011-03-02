@@ -31,7 +31,6 @@ ActionController::Routing::Routes.draw do |map|
   map.save_order "/form_section/save_order", :controller => "form_section", :action => "save_order"
 
   map.session_active '/active', :controller => 'sessions', :action => 'active'
-  
   map.resources :formsections, :controller=>'form_section' do |form_section|
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
     additional_field_actions[:new] = :get
@@ -48,6 +47,8 @@ ActionController::Routing::Routes.draw do |map|
   map.choose_field 'form_section/:formsection_id/choose_field', :controller => 'fields', :action => 'choose'
     
   map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
+  
+  map.resources :advanced_search
 
   map.resources :form_section
 

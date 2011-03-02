@@ -40,8 +40,8 @@ describe "Child record field view model" do
     end
   
     it "should validate unique within form" do  
-      form = FormSection.new(:fields => [Field.new(:name => "test", :display_name => "test")] )
-      field = Field.new(:display_name => "test", :name => "test")
+      form = FormSection.new(:fields => [Field.new(:name => "other", :display_name => "other")] )
+      field = Field.new(:display_name => "other", :name => "other")
       form.fields << field
     
       field.valid?
@@ -77,11 +77,13 @@ describe "Child record field view model" do
 
   describe "save" do
     it "should be enabled" do
-      field = Field.new :name => "field", :display_name => "field", :enabled => "true"
+      field = Field.new :name => "diff_field", :display_name => "diff_field", :enabled => "true"
       form = FormSection.new :fields => [field], :name => "test_form"
 
       form.save!
       field.should be_enabled
+      
+      form.destroy
     end
   end
 end

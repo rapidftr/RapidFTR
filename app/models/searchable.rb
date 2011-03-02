@@ -20,6 +20,7 @@ module Searchable
 
       def index_record
         begin
+          Child.build_solar_schema
           Sunspot.index!(self)
         rescue
           puts "***Problem indexing record for searching, is SOLR running?"
@@ -31,6 +32,7 @@ module Searchable
 
   module ClassMethods
     def sunspot_search(query = "")
+      Child.build_solar_schema
 
       response = Sunspot.search(self) do
         fulltext(query)
@@ -44,6 +46,7 @@ module Searchable
     end
 
     def reindex!
+      Child.build_solar_schema
       Sunspot.remove_all(self)
       self.all.each { |record| Sunspot.index!(record) }
     end

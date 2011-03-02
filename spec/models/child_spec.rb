@@ -3,22 +3,22 @@ require 'spec_helper'
 
 describe Child do
 
-  before do
-    form_section = FormSection.new :unique_id => "basic_details"
-    form_section.add_text_field("last_known_location")
-    form_section.add_text_field("age")
-    form_section.add_text_field("origin")
-    form_section.add_field(Field.new_radio_button("gender", ["male", "female"]))
-    form_section.add_field(Field.new_photo_upload_box("current_photo_key"))
-    form_section.add_field(Field.new_audio_upload_box("recorded_audio"))
 
-    FormSection.stub!(:all).and_return([form_section])
-  end
 
  
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
+    end
+    
+    before :all do
+      form = FormSection.new(:name => "test_form")
+      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
+      form.save!
+    end
+    
+    after :all do
+      FormSection.all.each{ |form| form.destroy }
     end
     
     it "should return empty array if search is not valid" do
@@ -77,12 +77,6 @@ describe Child do
       search = mock("search", :query => "timo coch", :valid? => true)                 
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
-    
-    # it "should search across name and unique identifier" do
-    #   Child.create("name" => "John Doe", "last_known_location" => "new york", "unique_identifier" => "ABC123")
-    #   
-    #   Child.search("ABC123").map(&:name).should == ["John Doe"]
-    # end
   end
 
   describe "update_properties_with_user_name" do
@@ -485,6 +479,19 @@ describe Child do
   end
 
   describe "history log" do
+    
+    before do
+      form_section = FormSection.new :unique_id => "basic_details"
+      form_section.add_text_field("last_known_location")
+      form_section.add_text_field("age")
+      form_section.add_text_field("origin")
+      form_section.add_field(Field.new_radio_button("gender", ["male", "female"]))
+      form_section.add_field(Field.new_photo_upload_box("current_photo_key"))
+      form_section.add_field(Field.new_audio_upload_box("recorded_audio"))
+    
+      FormSection.stub!(:all).and_return([form_section])
+    end
+    
     it "should not update history on initial creation of child document" do
       child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
 

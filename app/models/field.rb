@@ -43,6 +43,10 @@ class Field < Hash
     FIELD_FORM_TYPES[type]
   end
   
+  def self.all_text_names
+    FormSection.all.map { |form| form.all_text_fields.map(&:name) }.flatten
+  end
+  
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
     return [false, "Field must have at least 2 options"] if option_strings == nil || option_strings.length < 2
@@ -128,4 +132,6 @@ class Field < Hash
   def self.new_select_box field_name, option_strings, display_name = nil
     Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings => option_strings
   end
+  
+  
 end

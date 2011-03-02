@@ -1,0 +1,83 @@
+
+<% content_for :javascript do %>
+  <%= javascript_include_tag "advanced_search.js" %>
+  <%= javascript_include_tag "jquery.tmpl.min.js" %>
+<% end %>
+
+<div class='advanced-search'>
+  <div class="form-error"></div>
+  <form>
+    <div class='criteria_menu' style='display:none'>
+      <div class='box-shadow content'>
+        <div style="float:right; margin-left: 6px;">
+          <a class='close-link'><%= image_tag("dialog-close.png") %></a>
+        </div>
+
+        <ul class='forms'>      
+        <% @forms.each do |form| %>
+          <li id="<%= form.unique_id %>_form"> <%= form.name %></li>
+        <% end %>
+        </ul>
+          <% @forms.each do |form| %>
+          <ul id="<%= form.unique_id %>_form_fields" class="fields">
+            <% form.all_text_fields.each do |field|%>
+              <li><a><%= field.display_name %></a><input type="hidden" value='<%= field.name %>' /></li>
+            <% end %>
+          
+            <% empty_lines(form.all_text_fields).times do %> 
+              <li>&nbsp;&nbsp;</li>
+            <% end %>
+          </ul>
+          <% end %>
+      </div>
+    </div>
+
+    
+    
+  
+    <script id="criteria_template" type="text/x-jquery-tmpl">      
+      <p>
+        {{if index > 0}}
+          <input type='radio' name='criteria_list[${index}][join]' id='criteria_join_and' ${CriteriaTemplateHelper.andRadioSelected(join)} value='AND' /><label for='criteria_join_and'>And</label>
+          <input type='radio' name='criteria_list[${index}][join]' id='criteria_join_or' ${CriteriaTemplateHelper.orRadioSelected(join)} value='OR' /><label for='criteria_join_or'>Or</label>
+        {{/if}}
+        <a class='select-criteria'>${ CriteriaTemplateHelper.link(field_display_name) }</a>
+        <input type='hidden' name="criteria_list[${index}][field]" value="${field}" class="criteria-field"/>
+        <input type='text' name="criteria_list[${index}][value]" value="${value}" class="criteria-value"/>
+        <input type='hidden' name="criteria_list[${index}][index]" value="${index}" class="criteria-index"/>
+        {{if index > 0}}
+          <a class='remove-criteria'>remove</a>
+        {{/if}}
+      </p>
+    </script>
+  
+    <div class="criteria-list" style="float:left">
+    </div>
+    
+    <div style="float:right">
+      <input type='submit' value='Search'/>
+    </div>
+    <p style='clear:both'>
+      <a class='add-criteria'>+ add more search options</a>
+    </p>
+  </form>      
+</div>
+
+
+
+  <br /> 
+  <div class="profiles-list">
+    <%= render :partial => "children/summary_row", :collection => @children %>
+    <%= "No results found" if @results.try(:size) == 0 %>
+  </div>
+<script>
+
+  CriteriaTemplateHelper = {}
+  CriteriaTemplateHelper.andRadioSelected = function(join) { return join == "AND" ? "checked" : ""; }
+  CriteriaTemplateHelper.orRadioSelected = function(join) { return join == "OR" ? "checked" : ""; }
+  CriteriaTemplateHelper.link = function(field_display_name) { 
+    return field_display_name == "" ? "Select A Criteria" : field_display_name; 
+  }
+  
+  $(".advanced-search").advancedSearch({criteria: <%=@criteria_list.to_json %>});
+</script>

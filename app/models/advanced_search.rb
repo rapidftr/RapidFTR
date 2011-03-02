@@ -12,3 +12,4 @@ class AdvancedSearch
     @search_value = search_value
   end
 end
+
