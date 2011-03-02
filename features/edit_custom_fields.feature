@@ -25,6 +25,13 @@ Feature: Editing Custom Form Fields
     Then I should see "Edited Field"
     Then I should see "Disabled"
     And I should see "another_field" in the list of fields
+    
+  Scenario: editing text with invalid display name
+    Given I am logged in as an admin
+    And I am on the edit field page for "another_field" on "family_details" form
+    When I fill in "!@#$%$" for "Display Name"
+    And I press "Save"
+    Then I should see errors
 
 	Scenario: moving a field to another form
 		Given I am logged in as an admin
