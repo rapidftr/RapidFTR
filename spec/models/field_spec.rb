@@ -30,6 +30,16 @@ describe "Child record field view model" do
     field['option_strings_text'].should == nil    
     field['option_strings'].should == ["tim", "rob"]
   end
+
+	it "should limit display names to 100 characters" do
+		field = Field.new :display_name => "A" * 101
+		field.valid?.should == false
+	end
+
+	it "should allow display names up to 100 characters" do
+		field = Field.new :display_name => "A" * 100
+		field.valid?.should == true
+	end
   
   describe "valid?" do
   
