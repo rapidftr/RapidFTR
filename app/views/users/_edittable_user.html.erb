@@ -14,6 +14,7 @@
 
 <% form_for edittable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
+  <% trying_to_edit_ourself = (!@user.new_record? && current_user_name == @user.user_name) %>
   <fieldset>
     <h3>User details</h3>
 
@@ -39,7 +40,7 @@
       <%= f.password_field :password_confirmation %>*
     </p>
 
-  <% if current_user_name != @user.user_name %>
+  <% if !trying_to_edit_ourself %>
     <dl class="radioList">
       <dt>User type:</dt>
       <dd>
@@ -79,7 +80,7 @@
       <%= f.text_field :location %>
     </p>
 
-    <% if current_user_name != @user.user_name %>
+    <% if !trying_to_edit_ourself %>
         <p>
           <%= f.label :disabled, "Disabled?" %>
           <%= f.check_box :disabled, {}, "true", "false" %>
