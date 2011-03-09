@@ -259,7 +259,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .advanced-search a { color:blue; text-decoration: underline; cursor: pointer;}
 .advanced-search p, div { margin-bottom: 8px; }
-.advaned-seach div, p, li, input, a { font-size: 12px; }
+.advanced-search .help-text { font-style: italic; font-size: 13px; margin-bottom: 6px;}
 
 .advanced-search label {margin-right: 2px;}
 .advanced-search input[type='radio'] {margin-right: 2px;}
