@@ -116,3 +116,15 @@ Feature: As an admin, I should be able to create and view users.
     Given I am logged in
 
     Then I should not be able to see new user page
+
+  Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username 
+
+    Given I am logged in as an admin
+    And I am on new user page
+
+    When I fill in "admin" for "user name"
+
+    When I press "Create"
+
+    Then I should see "User type"
+    And I should see "Disabled"
