@@ -99,6 +99,16 @@ describe "SearchService" do
     result = SearchService.search [criteria1,criteria2]
     result.should =~ [child1, child2]
   end
+  
+  it "Should be able to starts with search by fields Ored" do
+    child1 = Child.create( :name => "tim", :company => "fireman")
+    child2 = Child.create( :name => "kevin", :company => "student")
+  
+    criteria1 = SearchCriteria.new(:field => "name", :value => "tim OR kevon")
+    
+    result = SearchService.search [criteria1]
+    result.should =~ [child1, child2]
+  end
 
   
 end

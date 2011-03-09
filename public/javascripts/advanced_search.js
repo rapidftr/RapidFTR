@@ -15,12 +15,11 @@
 		formFields.first().addClass("selected");
 		formFields.first().find("li:first").addClass("selected");		
 				
-		self.selected_field = "";
+		self.selectedField = "";
 		
 		var buildCriteria = function(condition) {
 			var criteria = $("#criteria_template").tmpl(condition);
 			criteria.appendTo( criteriaList );			
-			
 		};
 		
 		$.each(criteria, function(index, element){
@@ -28,23 +27,27 @@
 		});
 		
 		var selectForm = function(formLink){
-				formList.removeClass("selected");
-				formId = formLink.attr("id");
-				formLink.addClass("selected");
-				formFields.removeClass("selected");
+			formList.removeClass("selected");
+			formLink.addClass("selected");
+			formFields.removeClass("selected");
 
-				var selected_fields = element.find("#" + formId + "_fields");
-				selected_fields.addClass("selected");
-				selected_field = selected_fields.find("li:nth-child(" + (formList.index(formLink) + 1) + ")");
-				selected_field.addClass("selected");
+			var selectedFields = element.find("#" + formLink.attr("id") + "_fields");
+			selectedFields.addClass("selected");
+			selectedField = selectedFields.find("li:nth-child(" + (formList.index(formLink) + 1) + ")");
+			selectedField.addClass("selected");
 		}
 		
 		formList.click(function(){ selectForm($(this)); });
 			
 		element.find("ul.fields li").click(function(){
 			var field = $(this);
-			self.selected_field.find(".select-criteria").text(field.find("a").text());
-			self.selected_field.find(".criteria-field").val(field.find("input[type='hidden']").val())
+			
+			if ($(this).is(".disabled")) {
+				return false;
+			}
+				
+			self.selectedField.find(".select-criteria").text(field.find("a").text());
+			self.selectedField.find(".criteria-field").val(field.find("input[type='hidden']").val())
 			menu.hide();
 		});
 		
@@ -58,15 +61,29 @@
 			$(this).parents("p").remove();
 		});
 		
-		var selectCriteria = function(){
-			var position = $(this).position()
+		var disableSelectedFields = function() {
+			var selectedFields = $(".criteria-field").map(function(){
+				return $(this).val();
+			});
+			$(".fields li").removeClass("disabled");
+			$(".fields li").filter(function(index) { 
+				var fieldName = $(this).find(".field").val();
+				return ($.inArray(fieldName, selectedFields) != -1);
+			}).addClass("disabled");
+			
+		};
+		
+		var showCriteriaMenu = function()	{
+			disableSelectedFields();
+			var position = $(this).position();
 			menu.css("top", position.top + "px");
 			menu.css("left", position.left + "px");
 			menu.show();
-			self.selected_field = $(this).parent();
-		}
+			
+			self.selectedField = $(this).parent();
+		};
 		
-		element.find(".select-criteria").live("click", selectCriteria);
+		element.find(".select-criteria").live("click", showCriteriaMenu);
 		
 		menu.find(".close-link").click(function(){
 			menu.hide();
@@ -86,9 +103,15 @@
 		
 		element.find("form").submit(function() { 
 			result = validate();
-			$('.form-error').text(result);
-			if(result == ''){ return true;}
-			return false;
+			
+			if(result == ''){
+				$('.flash .error').hide(); 
+				return true;
+			} else {
+				$('.flash .error').show();
+				$('.flash .error').text(result);
+				return false;
+			}
 		});
 		
 		

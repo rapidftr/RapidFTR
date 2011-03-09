@@ -36,8 +36,6 @@ class Child < CouchRestRails::Document
       text *fields
     end
   end
- 
-
   
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
