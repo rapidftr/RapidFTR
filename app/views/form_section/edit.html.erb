@@ -9,7 +9,11 @@
   </p>
   <p>
     <%= f.label :description %>
-    <%= f.text_area :description, :cols => 54, :rows => 10 %>
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.label :help_text %>
+    <%= f.text_field :help_text %>
   </p>
     <% if not @form_section.perm_enabled? %>
         <p class="checkbox">

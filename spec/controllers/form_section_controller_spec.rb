@@ -26,8 +26,8 @@ describe FormSectionController do
   end
   describe "post create" do
     it "calls create_new_custom with parameters from post" do
-      FormSection.should_receive(:create_new_custom).with("name", "desc", true).and_return(MockFormSection.new)
-      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
+      FormSection.should_receive(:create_new_custom).with("name", "desc", "help text", true).and_return(MockFormSection.new)
+      form_section = {:name=>"name", :description=>"desc", :help_text=>"help text", :enabled=>"true"}
       post :create, :form_section =>form_section
     end
     it "sets flash notice if form section is valid" do
