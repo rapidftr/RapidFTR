@@ -36,7 +36,6 @@ Feature: As an admin, I should be able to create and view users.
     And I should see "Please enter a valid user name"
     And I should see "Please enter a valid password"
     And I should see "Please choose a user type"
-    And I should see "Please enter a valid email address"
 
   Scenario: Check that user name and password does not contain spaces
 
