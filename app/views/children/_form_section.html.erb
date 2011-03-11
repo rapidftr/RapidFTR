@@ -2,7 +2,9 @@
   
     <div class="form-section-header">
       <% if form_section.description.present? %>
-        <%= form_section.description %>        
+        <div class="form-section-description">
+          <%= form_section.description %>
+        </div>
       <% end %>
       <% if form_section.help_text.present? %>
         <div class="form-section-help-text">

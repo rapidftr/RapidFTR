@@ -204,8 +204,9 @@ td.checkbox { text-align: center;}
 
 /* edit page */
 .edit-profile { position: relative; } 
-.edit-profile .form-section-header { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .7em; font-size: 12px; }
-.edit-profile .form-section-header .form-section-help-text { padding-top: .5em; font-style: italic; }
+.edit-profile .form-section-header { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
+.edit-profile .form-section-header .form-section-help-text { padding-top: .7em; font-style: italic; }
+.edit-profile .form-section-header div { margin-bottom: 3px; }
 .edit-profile .submitButton { float: right; text-align: right; }
 
 /* new field/formsection page*/
