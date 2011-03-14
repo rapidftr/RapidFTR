@@ -78,4 +78,8 @@ module HpricotSearch
   def link_for (link_title)
     search("a[text()=\"#{link_title}\"]")
   end
+
+	def submit_for (submit_text)
+		search("input[@value='#{submit_text}']")
+	end
 end
