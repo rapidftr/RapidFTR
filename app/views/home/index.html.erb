@@ -1,3 +1,7 @@
 <h2>Welcome to RapidFTR</h2>
+<p>
+  <%= label_tag "time_zone_selector", "Current time zone" %>
+  <%= select_tag "time_zone_selector", "<option selected='selected'>GMT</option>" %>
+</p>
 <%= link_to 'Register Child', new_child_path %> <br/><br/>
 <%= link_to 'View All Children', children_path %> <br/><br/>
