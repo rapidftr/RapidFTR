@@ -371,3 +371,9 @@ end
 Then /^I should see errors$/ do
   Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 1
 end
+
+Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
+  dropdown_field = field_labeled(dropdown_label)
+  selected_option = dropdown_field.element.search(".//*[@selected='selected']").first
+  selected_option.text.should == selected_text
+end
