@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PdfGenerator do
 
-  it "should_generate_a_pdf" do
+  it "should generate a pdf" do
     child = Child.new_with_user_name("jdoe", {
         "name" => "Dave",
         "age" => "28",
