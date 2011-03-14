@@ -269,7 +269,7 @@ describe ChildrenController do
     end
 
 
-    it "asks the pdf generator to render each child" do
+    it "asks the pdf generator to render each child as a Photo Wall" do
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
 
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
@@ -285,7 +285,7 @@ describe ChildrenController do
         {
           'child_1' => 'selected',
           'child_2' => 'selected',
-          :commit => "Export to PDF"
+          :commit => "Export to Photo Wall"
         }
       )
     end
@@ -301,7 +301,7 @@ describe ChildrenController do
         should_receive(:send_data).
         with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
 
-      post( :export_data, 'ignored' => 'selected', :commit => "Export to PDF" )
+      post( :export_data, 'ignored' => 'selected', :commit => "Export to Photo Wall" )
     end
   end
 

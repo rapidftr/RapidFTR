@@ -165,10 +165,10 @@ class   ChildrenController < ApplicationController
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
     children = child_ids.map{ |child_id| Child.get(child_id) }
-    if params[:commit] == "Export to PDF"
+
+    if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
-    end
-    if params[:commit] == "Export to CSV"
+    elsif params[:commit] == "Export to CSV"
       export_to_csv(children, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
     end
   end
