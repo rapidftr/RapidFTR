@@ -51,13 +51,15 @@ class PdfGenerator
   def add_child_details(child)
     FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
-
-      @pdf.table section.fields.
+      field_pair = section.fields.
               select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX }.
-              map { |field| [field.display_name, child[field.name]] },
-                 :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
-                 :width => 500, :column_widths => {0 => 200, 1 => 300},
-                 :position => :left
+              map { |field| [field.display_name, child[field.name]] }
+      if !field_pair.empty?
+        @pdf.table field_pair,
+           :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
+           :width => 500, :column_widths => {0 => 200, 1 => 300},
+           :position => :left
+      end
       @pdf.move_down 10
     end
   end
