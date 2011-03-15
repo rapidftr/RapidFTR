@@ -286,7 +286,7 @@ describe FormSection do
     end
     it "should validate name is unique" do
       same_name = 'Same Name'
-      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true}
+      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true, :order => 0}
       FormSection.create! valid_attributes.dup
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid
