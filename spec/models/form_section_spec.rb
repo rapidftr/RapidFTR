@@ -27,7 +27,7 @@ describe FormSection do
   end
 
   describe "repository methods" do
-    after { FormSection.all.each &:destroy }
+    before { FormSection.all.each &:destroy }
 
     describe "enabled_by_order" do
       it "should bring back sections in order" do
