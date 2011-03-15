@@ -206,9 +206,10 @@ ul.ui-widget-content { background: none; }
 
 /* edit page */
 .edit-profile { position: relative; } 
-.edit-profile h3 { border-bottom: 1px solid #678; padding-bottom: .5em; margin-bottom: 1em; }
+.edit-profile .form-section-header { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
+.edit-profile .form-section-header .form-section-help-text { padding-top: .7em; font-style: italic; }
+.edit-profile .form-section-header div { margin-bottom: 3px; }
 .edit-profile .submitButton { float: right; text-align: right; }
-
 
 /* new field/formsection page*/
 .new-field .submitButton,

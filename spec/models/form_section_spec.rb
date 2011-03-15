@@ -244,11 +244,17 @@ describe FormSection do
       create_should_be_called_with :description, "info about basic details"
       FormSection.create_new_custom "basic", form_section_description
     end
+    it "should populate the help text" do
+      create_should_be_called_with :help_text, "help text about basic details"
+      FormSection.create_new_custom "basic", "description", "help text about basic details"
+    end
     it "should populate the enabled status" do
+      form_section_description = "form_section_description"
+      form_section_help_text = "help text about basic details"
       create_should_be_called_with :enabled, true
-      FormSection.create_new_custom "basic", "form_section_description", true
+      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, true
       create_should_be_called_with :enabled, false
-      FormSection.create_new_custom "basic", "form_section_description", false
+      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, false
     end
     it "should set the order to one plus maximum order value" do
       FormSection.stub(:all).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])

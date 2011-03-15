@@ -4,6 +4,7 @@ class FormSection < CouchRestRails::Document
   property :unique_id
   property :name
   property :description
+  property :help_text
   property :enabled, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
@@ -63,10 +64,15 @@ class FormSection < CouchRestRails::Document
     all.find { |form| form.fields.find { |field| field.name == field_name } }
   end
 
-  def self.create_new_custom name, description = "", enabled=true
+  def self.create_new_custom name, description = "", help_text = "", enabled=true
     unique_id = name.dehumanize
     max_order= (all.map{|form_section| form_section.order}).max || 0
-    form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
+    form_section = FormSection.new :unique_id=>unique_id, 
+                                   :name=>name, 
+                                   :description=>description, 
+                                   :help_text=>help_text, 
+                                   :enabled=>enabled, 
+                                   :order=>max_order+1
     form_section = create! form_section if form_section.valid?
     form_section
   end
