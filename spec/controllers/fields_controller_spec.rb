@@ -160,6 +160,7 @@ describe FieldsController do
   end
   
   describe "post update" do
+    before { FormSection.all.each &:destroy }
     
     it "should update all attributes on field at once" do
       field_to_change = Field.new(:name => "country_of_origin", :display_name => "Origin Country", :enabled => true,

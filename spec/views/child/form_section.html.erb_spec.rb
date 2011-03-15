@@ -187,6 +187,8 @@ describe "children/_form_section.html.erb" do
   end
   
   describe "rendering header" do
+    before { FormSection.all.each &:destroy }
+    
     it "renders description but no help text" do
       @form_section = FormSection.create_new_custom "form_name", "some description"
       assigns[:child] = Child.new
