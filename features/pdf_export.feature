@@ -27,7 +27,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I press "Search"
     And I select search result #1
     And I select search result #3
-    And I press "Export to PDF"
+    And I press "Export to Photo Wall"
 
     Then I should receive a PDF file
     And the PDF file should have 2 pages
