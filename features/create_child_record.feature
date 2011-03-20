@@ -51,13 +51,6 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created."
-
-  Scenario: create child record with no details filled in
-    Given I am logged in
-    And I am on new child page
-    And I press "Save"
-
-    Then I should see "Child record successfully created."
     
   @javascript
   Scenario: create child with numeric custom field
