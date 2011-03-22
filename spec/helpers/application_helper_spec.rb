@@ -7,7 +7,7 @@ describe ApplicationHelper do
       params['controller'] = 'children'
       params['param_a'] = 'foo'
 
-      helper.current_url_with_format_of('csv').should == 
+      helper.current_url_with_format_of('csv').should ==
         '/children/search.csv?param_a=foo'
     end
 
@@ -17,8 +17,8 @@ describe ApplicationHelper do
       params[:format] = 'pdf'
 
       url = helper.current_url_with_format_of('csv')
-      url.should contain('.csv')
-      url.should_not contain('.pdf')
+      url.should include('.csv')
+      url.should_not include('.pdf')
     end
 
   end

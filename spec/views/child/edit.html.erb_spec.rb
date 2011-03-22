@@ -11,7 +11,7 @@ describe "children/edit.html.erb" do
 
   it "renders a form that posts to the children url" do
     render
-    response.should have_selector("form", :action => child_path(@child))
+    response.should have_tag("form[action='#{child_path(@child)}']")
   end
 
   it "renders the children/form_section partial" do

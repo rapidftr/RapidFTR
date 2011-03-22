@@ -12,7 +12,7 @@ end
 
 def enabled_icon_should_have_icon_class (form_section, expected_icon_class)
   enabled_icon = enabled_icon_for(form_section)
-  enabled_icon["class"].should contain(expected_icon_class)
+  enabled_icon["class"].should include(expected_icon_class)
 end
 
 def enabled_icon_should_have_text (form_section, expected_text)
