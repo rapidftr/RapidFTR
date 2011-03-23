@@ -1,4 +1,5 @@
- <p>
+<h2>User Details</h2>
+<p>
   <b>Name:</b>
   <%=h @user.full_name %>
 </p>
@@ -46,6 +47,19 @@
   <b>Status:</b>
   <%=h @user.disabled=="true"? "Disabled" : "Enabled" %>
 </p>
+
+<p>
+  <b>Devices:</b><br/>
+    <% @user.devices.each do |device| %>
+      <% if device.blacklisted? %>
+        <span class='device-blacklisted'><%= device.imei %> (blacklisted)</span><br/>
+      <% else %>
+        <%= device.imei %> <br/>      
+      <% end %>
+    <% end %>
+</p>
+
+
 
  <%= link_to 'Edit', edit_user_path(@user) %> |
  <%= link_to 'Back', users_path %>

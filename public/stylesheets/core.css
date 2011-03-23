@@ -263,6 +263,9 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .advanced-search label {margin-right: 2px;}
 .advanced-search input[type='radio'] {margin-right: 2px;}
+
+.device-blacklisted { color: red; }
+
 .criteria-value { margin: 0px 10px; width: 240px;}
 
 .criteria_menu { position:absolute; }
