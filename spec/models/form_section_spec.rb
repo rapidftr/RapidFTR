@@ -27,7 +27,7 @@ describe FormSection do
   end
 
   describe "repository methods" do
-    after { FormSection.all.each &:destroy }
+    before { FormSection.all.each &:destroy }
 
     describe "enabled_by_order" do
       it "should bring back sections in order" do
@@ -244,11 +244,17 @@ describe FormSection do
       create_should_be_called_with :description, "info about basic details"
       FormSection.create_new_custom "basic", form_section_description
     end
+    it "should populate the help text" do
+      create_should_be_called_with :help_text, "help text about basic details"
+      FormSection.create_new_custom "basic", "description", "help text about basic details"
+    end
     it "should populate the enabled status" do
+      form_section_description = "form_section_description"
+      form_section_help_text = "help text about basic details"
       create_should_be_called_with :enabled, true
-      FormSection.create_new_custom "basic", "form_section_description", true
+      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, true
       create_should_be_called_with :enabled, false
-      FormSection.create_new_custom "basic", "form_section_description", false
+      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, false
     end
     it "should set the order to one plus maximum order value" do
       FormSection.stub(:all).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])
@@ -280,7 +286,7 @@ describe FormSection do
     end
     it "should validate name is unique" do
       same_name = 'Same Name'
-      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true}
+      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true, :order => 0}
       FormSection.create! valid_attributes.dup
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid

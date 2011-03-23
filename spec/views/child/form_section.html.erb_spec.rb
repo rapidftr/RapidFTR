@@ -185,5 +185,38 @@ describe "children/_form_section.html.erb" do
 
     end
   end
+  
+  describe "rendering header" do
+    before { FormSection.all.each &:destroy }
+    
+    it "renders description but no help text" do
+      @form_section = FormSection.create_new_custom "form_name", "some description"
+      assigns[:child] = Child.new
+      render :locals => { :form_section => @form_section }
+
+      response.should have_selector(".form-section-header")
+      response.should_not have_selector(".form-section-help-text")
+    end
+    
+    it "renders help text but no description" do
+      @form_section = FormSection.create_new_custom "form_name", "", "this is some help text"
+      assigns[:child] = Child.new
+      render :locals => { :form_section => @form_section }
+
+      response.should have_selector(".form-section-header")
+      response.should have_selector(".form-section-help-text")      
+      response.should_not have_selector(".form-section-description")      
+    end
+    
+    it "should render both description and help text if both available" do
+      @form_section = FormSection.create_new_custom "form_name", "this is some description", "this is some help text"
+      assigns[:child] = Child.new
+      render :locals => { :form_section => @form_section }
+
+      response.should have_selector(".form-section-header")
+      response.should have_selector(".form-section-description")      
+      response.should have_selector(".form-section-help-text")      
+    end
+  end
 
 end

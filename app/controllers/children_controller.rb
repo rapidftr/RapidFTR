@@ -164,12 +164,16 @@ class   ChildrenController < ApplicationController
     if child_ids.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
+
     children = child_ids.map{ |child_id| Child.get(child_id) }
-    if params[:commit] == "Export to PDF"
-      export_photos_to_pdf(children, "#{current_user_name}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
-    end
-    if params[:commit] == "Export to CSV"
-      export_to_csv(children, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
+
+    if params[:commit] == "Export to Photo Wall"
+      export_photos_to_pdf(children, "#{file_basename}.pdf")
+    elsif params[:commit] == "Export to PDF"
+			pdf_data = PdfGenerator.new.children_info(children)
+			send_pdf(pdf_data, "#{file_basename}.pdf")
+    elsif params[:commit] == "Export to CSV"
+      export_to_csv(children, "#{file_basename}.csv")
     end
   end
 
@@ -189,6 +193,13 @@ class   ChildrenController < ApplicationController
   end
 
   private
+
+	def file_basename(child = nil)
+		prefix = current_user_name
+		prefix = child.unique_identifier if child
+
+		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
+	end
 
   def get_form_sections
     FormSection.enabled_by_order

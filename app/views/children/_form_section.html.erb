@@ -1,6 +1,18 @@
 <fieldset id="tab_<%= form_section.section_name %>" class="<%= form_section.section_name %> tab">
   
-  <h3><%= form_section.name %></h3>
+    <div class="form-section-header">
+      <% if form_section.description.present? %>
+        <div class="form-section-description">
+          <%= form_section.description %>
+        </div>
+      <% end %>
+      <% if form_section.help_text.present? %>
+        <div class="form-section-help-text">
+          <%= form_section.help_text %>
+        </div>
+      <% end %>
+    </div>
+  
   <% (form_section.fields.select {|field| field.enabled? }).each do |field| %>
         <%= render :partial => field.type, :object => field %>
   <% end %>
