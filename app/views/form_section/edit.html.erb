@@ -58,7 +58,12 @@
         </td>
         <td class='field-buttons'>
           <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 
-          		      <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id)} %>
+          <%= render :partial => "delete_button", :locals =>{:field=>field, 
+															 :url=>delete_formsection_fields_path(@form_section.unique_id),
+															 :warning=>"Warning: If you continue, any data associated with this field will be lost. 
+																		If you're uncertain, disable the field instead. 
+																		Click Cancel to go back. Click OK to Delete the field."
+															} %>
         </td>
       <%end%>
     </tr>
