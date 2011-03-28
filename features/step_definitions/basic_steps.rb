@@ -373,7 +373,7 @@ Then /^I should see errors$/ do
 end
 
 Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
-  dropdown_field = field_labeled(dropdown_label)
-  selected_option = dropdown_field.element.search(".//*[@selected='selected']").first
-  selected_option.text.should == selected_text
+  field_labeled(dropdown_label).value.should == selected_text
+#  selected_option = dropdown_field.element.search(".//option[@selected='selected']").first
+#  selected_option.inner_text.should == selected_text
 end
