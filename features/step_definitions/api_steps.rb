@@ -39,3 +39,15 @@ And /^I am using device with imei "(.+)"$/ do |imei|
   session.save!
 end
 
+When /^I create the following child:$/ do |table|
+	params={}
+	params[:format] ||= 'json'
+  visit children_path(params), :post, {:child => table.rows_hash}
+end
+
+Then /^the following child should be returned:$/ do |table|
+  json_response = JSON.parse(response_body)
+	table.rows_hash.each do |key,value|
+		json_response[key].should == value
+	end
+end
