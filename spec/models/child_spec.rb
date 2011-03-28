@@ -370,6 +370,10 @@ describe Child do
 				child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
 				child['created_at'].should == "2010-01-14 14:05:00UTC"
 			end
+			it "should be a be a valid ISO date" do
+				child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
+				child.should_not be_valid
+			end
 		end
   end
 
