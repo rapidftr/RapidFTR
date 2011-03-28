@@ -73,7 +73,9 @@ class FieldsController < ApplicationController
   end
   
   def delete
-    @form_section.delete_field(params[:field_name])
+    field = @form_section.fields.find { |field| field.name == params[:field_name] }
+    @form_section.delete_field(field.name)
+    flash[:notice] = "Field '#{field.display_name}' has been deleted."
     redirect_to(edit_form_section_path(params[:formsection_id]))
   end
 
