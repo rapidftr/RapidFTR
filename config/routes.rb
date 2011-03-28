@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 
   map.resources :users
+  map.resources :user_preferences
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index
 

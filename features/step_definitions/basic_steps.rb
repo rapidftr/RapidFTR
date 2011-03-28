@@ -373,10 +373,9 @@ Then /^I should see errors$/ do
 end
 
 Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
-  dropdown_field = field_labeled(dropdown_label)
-  selected_option = dropdown_field.element.search(".//*[@selected='selected']").first
-  selected_option.text.should == selected_text
+  field_labeled(dropdown_label).value.should == selected_text
 end
+
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
   child = find_child_by_name name
   visit children_path+"/#{child.id}"
@@ -401,6 +400,7 @@ When /^the record history should log "([^\"]*)"$/ do |field|
   visit(children_path+"/#{Child.all[0].id}/history")
   response.should contain(field)
 end
+
 Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
   child_name = find_child_by_name name
   child_images = Hpricot(response.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
