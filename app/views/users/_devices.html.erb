@@ -1,0 +1,19 @@
+<fieldset>  
+  <h3>Devices</h3>  
+  <table>
+    <thead>
+      <tr>
+        <th>IMEI</th>
+        <th>Blacklisted?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% devices.each do |device| %>
+        <tr>
+          <td><%= device.imei %><%= hidden_field_tag "user[devices][][imei]", device.imei %></td>
+          <td><%= check_box_tag "user[devices][][blacklisted]", true, device.blacklisted?  %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</fieldset>

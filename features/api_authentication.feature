@@ -33,3 +33,17 @@ Feature: Only authorized API clients should be allowed to access the system
 
     Then I should be on the json formatted children listing page
     And I should have received a "200 OK" status code
+    
+  Scenario: Authenicated API client can access 
+  
+    Given a user "tim" with a password "123" 
+    And devices exist
+      | imei | blacklisted | user_name |
+      | 12345 | true | tim |
+      | 11111 | false | tim |
+    
+    When I login with user tim:123 for device with imei 12345
+    Then should_be_unsuccessful_login
+    When I login with user tim:123 for device with imei 11111
+    Then should_be_successful_login
+    

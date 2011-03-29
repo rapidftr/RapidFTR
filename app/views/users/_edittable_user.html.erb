@@ -88,6 +88,8 @@
     <% end %>
 
   </fieldset>
+  
+  <%= render :partial => "devices", :object => @user.devices %>
 
   <%= submit_button(edittable_user.new_record? ? 'Create' : 'Update') %>
   <%= cancel_button(users_path) %>

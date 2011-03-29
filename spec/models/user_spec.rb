@@ -115,5 +115,45 @@ describe User do
     event[:mobile_number].should == mobile_number
     event[:timestamp] == now
   end
+  
+  it "should store list of devices when new device is used" do
+    user = build_user
+    user.create!
+    user.add_mobile_login_event("an imei", "a mobile")
+    user.add_mobile_login_event("an imei", "a mobile")
+    user.add_mobile_login_event("another imei", "a mobile")
+    
+    user.devices.map(&:imei).should == ["an imei", "another imei"]
+  end
+  
+  it "should create devices as not blacklisted" do
+    user = build_user
+    user.create!
+    user.add_mobile_login_event("an imei", "a mobile")
+    
+    user.devices.all? {|device| device.blacklisted? }.should be_false
+  end
+  
+  it "should create user with devices" do
+    user = User.new({
+      :user_name => "timothy",
+      :full_name => "timothy cochran",
+      :user_type => "admin",
+      :password => "password",
+      :devices => [{"imei" => "1234", "blacklisted" => "true"}]
+      
+      })
+    user.save!
+    
+    user = User.get(user.id)
+    user.update_attributes({
+      :user_name => "timothy",
+      :full_name => "timothy cochran",
+      :user_type => "admin",
+      :password => "password",
+      "devices" => [{"imei" => "kevin", "blacklisted" => "false"}]
+      })
+    
+  end
 
 end

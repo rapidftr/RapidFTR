@@ -113,5 +113,13 @@ Then /^I should see "([^\"]*)" with id "([^\"]*)"$/ do |element,id|
   response_body.should have_selector("##{id}")
 end
 
+Given /^devices exist$/ do |devices|
+  devices.hashes.each do |device_hash|
+    user = User.all.detect {|user| user.user_name == device_hash[:user_name]}
+    user.devices << {:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted]}
+    user.save!
+  end
+end
+
 
 
