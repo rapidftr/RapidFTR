@@ -43,7 +43,7 @@ Feature: Only authorized API clients should be allowed to access the system
       | 11111 | false | tim |
     
     When I login with user tim:123 for device with imei 12345
-    Then should_be_unsuccessful_login
+    Then should be kill response for imei "12345"
     When I login with user tim:123 for device with imei 11111
-    Then should_be_successful_login
+    Then should be successful login
     

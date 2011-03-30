@@ -54,15 +54,27 @@ describe Login do
       
       user = mock(User).as_null_object
       User.stub(:find_by_user_name).and_return(user)
-      user.stub(:authenticate).and_return true
       user.stub(:devices).and_return([Device.new({:imei => "1335", :blacklisted => true})])
-      
-      User.stub(:find_by_user_name).and_return(user)
-      user.stub(:authenticate).and_return true
 
       params = {:imei => imei, :mobile_number => mobile_number}
       login = Login.new(params)
-      login.authenticate_user.should == nil
+      login.device_blacklisted?.should == true
     end
+    
+    it "should allow non blacklisted imei to login" do
+      imei = "1335"
+      mobile_number = "555-555"
+      
+      user = mock(User).as_null_object
+      User.stub(:find_by_user_name).and_return(user)
+      user.stub(:devices).and_return([Device.new({:imei => "1335", :blacklisted => false})])
+
+      params = {:imei => imei, :mobile_number => mobile_number}
+      login = Login.new(params)
+      login.device_blacklisted?.should == false 
+    end
+    
+    
+    
   end
 end

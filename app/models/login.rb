@@ -13,10 +13,9 @@ class Login
   end
 
   def authenticate_user
-    
     user = User.find_by_user_name(@user_name)
 
-    if (user and user.authenticate(@password) and !is_device_blacklisted(user, @imei))  
+    if (user and user.authenticate(@password))  
       session = Session.for_user( user ) 
     end
 
@@ -28,8 +27,13 @@ class Login
     session
   end
   
-  def is_device_blacklisted(user, imei)
-    user.devices.any? {|device| device.imei == imei && device.blacklisted? }
+  def device_blacklisted?
+    user = User.find_by_user_name(@user_name)
+    
+    if (user)
+      return true if user.devices.any? {|device| device.imei == @imei && device.blacklisted? }
+    end
+    false
   end
 
   def errors
