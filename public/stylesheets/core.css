@@ -156,13 +156,18 @@ td.checkbox { text-align: center;}
 .profiles-list-item dt { float: left; margin-right: 10px; font-weight: bold; color: #678; }
 .profiles-list-item dd { float: left; margin-right: 20px; }
 
+/* profile and edit page */
+.form-section-info { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
+.form-section-info .form-section-help-text { padding-top: .7em; font-style: italic; }
+.form-section-info div { margin-bottom: 3px; }
+
 /* profile page */
 .profile-page .page-content { background-position: 650px 0;}
 .profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
 .profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
-
 .profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
+.profile-page .form-section-info { padding-top: .5em; }
 
 /* forms page */
 .forms-page #suggestedFields input[type=submit] {background: transparent; border-top: 0;border-right: 0; border-bottom:0;border-left: 0;display: inline;margin: 0;padding: 0;color: #39f; text-decoration: underline; overflow: hidden; outline: none; line-height: 1.5em  ; font-family:inherit; cursor:pointer;}
@@ -206,9 +211,6 @@ ul.ui-widget-content { background: none; }
 
 /* edit page */
 .edit-profile { position: relative; } 
-.edit-profile .form-section-header { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
-.edit-profile .form-section-header .form-section-help-text { padding-top: .7em; font-style: italic; }
-.edit-profile .form-section-header div { margin-bottom: 3px; }
 .edit-profile .submitButton { float: right; text-align: right; }
 
 /* new field/formsection page*/
