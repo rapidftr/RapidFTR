@@ -51,10 +51,14 @@
       <td><%= field.display_name %></td>
       <%if @form_section.editable?%>
         <td>
-		    <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
+	  <% if !@form_section.is_first field %>
+	  <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
+	  <%end%>
         </td>
         <td>
-		    <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
+	  <% if !@form_section.is_last field %>
+	  <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
+	  <%end%>
         </td>
         <td class='field-buttons'>
           <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 

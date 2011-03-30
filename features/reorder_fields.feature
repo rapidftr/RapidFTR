@@ -7,8 +7,10 @@ Feature: So that admin can customize fields in a form section
       | Basic details | basic_details | false | 1 |
       | Family details | family_details | true | 2 |
     And the "basic details" form section has the field "name" with help text "name"   
+    And the "family details" form section has the field "first" with help text "first field"
     And the "family details" form section has the field "mother" with help text "mother's name" 
     And the "family details" form section has the field "father" with help text "father's name" 
+    And the "family details" form section has the field "last" with help text "last field"
 
   Scenario: Admins should not be able to reorder fields in non editable form section
 
