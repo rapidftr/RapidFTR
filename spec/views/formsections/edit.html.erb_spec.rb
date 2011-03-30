@@ -14,4 +14,31 @@ describe "form_section/edit.html.erb" do
     document.css(".enabledStatus").should be_empty
     document.css(".formSectionButtons").should be_empty
   end
+
+  it "should not have Up UI elements for first field item when in edit mode" do
+    fields = [Field.new :name => 'my_field', :display_name => 'My Field', :enabled => true ]
+    fields.insert(1, (Field.new :name=> 'field_two', :display_name => 'Field Two', :enabled => true))
+    form_section = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "true", :fields => fields
+
+    assigns[:form_section] = form_section
+    render
+
+    document = Nokogiri::HTML(response.body)
+
+    document.css(".up-link").should_not be_empty
+    document.css(".up-link").length.should == 1    
+  end
+  it "should not have Down UI elements for last field item when in edit mode" do
+        fields = [Field.new :name => 'my_field', :display_name => 'My Field', :enabled => true ]
+    fields.insert(1, (Field.new :name=> 'field_two', :display_name => 'Field Two', :enabled => true))
+    form_section = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "true", :fields => fields
+
+    assigns[:form_section] = form_section
+    render
+
+    document = Nokogiri::HTML(response.body)
+
+    document.css(".down-link").should_not be_empty
+    document.css(".down-link").length.should == 1
+  end
 end
