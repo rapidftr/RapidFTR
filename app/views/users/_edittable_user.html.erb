@@ -1,4 +1,13 @@
 <script type="text/javascript" charset="utf-8">
+
+  function confirmBlacklisted() {
+    $(".devices :checkbox").each(function() {
+      if (this.checked && !this.defaultChecked)
+        return confirm('Are you sure you want to disable this device?');
+    });
+    return true;
+  }
+  
   function confirmDisable() {
     var checkbox = $("#user_disabled")[0];
     if (checkbox.checked && !checkbox.defaultChecked) {
@@ -8,7 +17,7 @@
   }
   
   $(document).ready(function() {
-    $("form").submit(confirmDisable);
+    $("form").submit(function() { return (confirmDisable() && confirmBlacklisted()); } );
   });
 </script>
 
