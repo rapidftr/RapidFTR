@@ -30,6 +30,16 @@ class Field < Hash
                         AUDIO_UPLOAD_BOX => "basic",
                         DATE_FIELD       => "basic",
                         NUMERIC_FIELD    => "basic"}
+                        
+  DEFAULT_VALUES = {  TEXT_FIELD       => "", 
+                        TEXT_AREA        => "",
+                        RADIO_BUTTON     => "",
+                        SELECT_BOX       => "",
+                        CHECK_BOX        => "No",
+                        PHOTO_UPLOAD_BOX => nil,
+                        AUDIO_UPLOAD_BOX => nil,
+                        DATE_FIELD       => "",
+                        NUMERIC_FIELD    => ""}
   
   validates_presence_of :display_name 
   validates_with_method :display_name, :method => :validate_unique
@@ -85,6 +95,11 @@ class Field < Hash
   def option_strings_text
     return "" unless  self[:option_strings]
     self[:option_strings].join("\n") 
+  end
+  
+  def default_value
+    raise "Cannot find default value for type " + type unless DEFAULT_VALUES.has_key? type
+    return DEFAULT_VALUES[type]
   end
   
   def tag_id

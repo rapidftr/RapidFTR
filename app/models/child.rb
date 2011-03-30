@@ -28,6 +28,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::TEXT_AREA
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :age, :method => :validate_age
+  validates_with_method :validate_has_at_least_one_field_value
   
   def self.build_solar_schema
     fields = ["unique_identifier"]  + Field.all_text_names
@@ -35,6 +36,14 @@ class Child < CouchRestRails::Document
     Sunspot.setup(Child) do
       text *fields
     end
+  end
+ 
+
+  def validate_has_at_least_one_field_value
+    return true if FormSection.all_enabled_child_fields.any? { |field| is_filled_in? field }
+    return true if !@file_name.nil? || !@audio_file_name.nil?
+    return true if deprecated_fields.any?{|key,value| !value.nil?}
+    [false, "Please fill in at least one field or upload a file"]
   end
   
   def validate_age
@@ -203,6 +212,10 @@ class Child < CouchRestRails::Document
     return true if @from_child[field_name].blank?
     self[field_name].strip != @from_child[field_name].strip
   end
+  
+  def is_filled_in? field
+    !(self[field.name].nil? || self[field.name] == field.default_value)
+  end
 
   private
   def attach(attachment, key)
@@ -211,5 +224,11 @@ class Child < CouchRestRails::Document
                       :content_type => attachment.content_type,
                       :file => attachment.data
 
+  end
+  
+  def deprecated_fields
+    system_fields = ["created_at", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
+    existing_fields = system_fields + FormSection.all_enabled_child_fields.map {|x| x.name}
+    self.reject {|k,v| existing_fields.include? k} 
   end
 end
