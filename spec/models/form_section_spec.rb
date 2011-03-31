@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe FormSection do
@@ -291,6 +292,13 @@ describe FormSection do
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
+    end
+    it "should validate name is unique via a case-insensitive search" do
+      same_name_lcased = "same name"
+      invalid_attributes = {:name=> same_name_lcased, :unique_id => same_name_lcased.dehumanize, :description => '', :enabled => true, :order => 0}
+      form_section = FormSection.new invalid_attributes.dup
+      form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present  
     end
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
