@@ -28,8 +28,8 @@ Feature: As an admin I should be able to view a list of form sections
 
     Then I should see a tick in the enabled column for the form section "section_1"
     And I should see a cross in the enabled column for the form section "section_2"
-    And I should see the text "Enabled" in the enabled column for the form section "section_1"
-    And I should see the text "Disabled" in the enabled column for the form section "section_2"
+    And I should see the text "Visible" in the enabled column for the form section "section_1"
+    And I should see the text "Hidden" in the enabled column for the form section "section_2"
 
   Scenario: To be able to view current order of the form sections
     Given the following form sections exist in the system:
