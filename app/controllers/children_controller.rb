@@ -7,7 +7,7 @@ class   ChildrenController < ApplicationController
   def index
     @page_name = "Listing children"
     @children = Child.all
-    @aside = 'search_sidebar'
+    @aside = 'shared/sidebar_links'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -148,6 +148,7 @@ class   ChildrenController < ApplicationController
 
   def search
     @page_name = "Child Search"
+    @aside = "shared/sidebar_links"
     if (params[:query])
       @search = Search.new(params[:query]) 
       if @search.valid?    
