@@ -1,4 +1,5 @@
 class ContactInformationController < ApplicationController
+  skip_before_filter :check_authentication, :only => %w{show}
   def show
     @contact_information = ContactInformation.get_by_id(params[:id]) 
     respond_to do |format|
@@ -6,7 +7,7 @@ class ContactInformationController < ApplicationController
       format.json { render :json => @contact_information }
     end
   end
-  # GET /contact_information/Admininstrator/edit
+
   # GET /contact_information/Administrator/edit
   def edit
     administrators_only
@@ -23,5 +24,4 @@ class ContactInformationController < ApplicationController
     flash[:notice] = 'Contact information was successfully updated.'
     redirect_to edit_contact_information_path(params[:id]) 
   end
-  
 end
