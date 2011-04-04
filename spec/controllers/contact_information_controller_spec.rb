@@ -1,11 +1,9 @@
 require 'spec_helper'
 
 describe ContactInformationController do
-  before do
-    fake_admin_login
-  end
   describe "GET edit" do
     it "populates the contact information" do
+      fake_admin_login
       contact_information = {"name"=>"Bob"}
       ContactInformation.stub!(:get_or_create).with("bob").and_return(contact_information)
       get :edit, :id => "bob"
@@ -22,6 +20,7 @@ describe ContactInformationController do
       response_as_json.should == {"name"=>"Bob"}
     end
     it "should 404 if showing a contact information that does not exist" do
+      fake_admin_login
       ContactInformation.stub!(:get_by_id).with("foo").and_raise(ErrorResponse.not_found("Contact information not found"))
       get :show, :id => "foo"
       response.status.should =~ /404/
