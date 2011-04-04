@@ -262,7 +262,7 @@ describe ChildrenController do
         first_line = csv_response.split("\n").first
         headers = first_line.split(",")
 
-        FormSection.all_child_field_names.each {|field_name| headers.should contain field_name}
+        FormSection.all_child_field_names.each {|field_name| headers.should include field_name}
       end
 
       it 'should render a row for each result, plus a header row' do
