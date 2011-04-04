@@ -16,13 +16,13 @@ describe "children/_form_section.html.erb" do
       it "renders text fields with a corresponding label" do
         field = Field.new_field("text_field", "name")
         @form_section.add_field(field)
-
+        
         assigns[:child] = Child.new
         render :locals => { :form_section => @form_section }
 
         @form_section.fields.each do |field|
-          response.should have_tag("label[for='#{field.tag_id}']")
-          response.should have_tag("input[id='#{field.tag_id}'][type='text'][name='#{field.tag_name_attribute}']")
+          response.should have_selector("label[for='#{field.tag_id}']")
+          response.should have_selector("input[id='#{field.tag_id}'][type='text'][name='#{field.tag_name_attribute}']")
         end
       end
     end
@@ -36,7 +36,7 @@ describe "children/_form_section.html.erb" do
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input#child_name", :value => "Jessica")
+        response.should have_selector("input#child_name", :value => "Jessica")
       end
     end
   end
@@ -52,8 +52,8 @@ describe "children/_form_section.html.erb" do
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='exact']")
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='approximate']")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='exact']")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='approximate']")
       end
     end
 
@@ -61,14 +61,14 @@ describe "children/_form_section.html.erb" do
 
       it "renders a radio button with the current option selected" do
         @child = Child.new :isageexact => "approximate"
-
+          
         @form_section.add_field Field.new_field("radio_button", "is_age_exact", ["exact", "approximate"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='exact']")
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='approximate'][checked]")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='exact']")
+        response.should have_selector("input[name='child[isageexact]'][type='radio'][value='approximate'][checked]")
       end
     end
   end
@@ -84,10 +84,10 @@ describe "children/_form_section.html.erb" do
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("label[for='child_dateofseparation']")
-        response.should have_tag("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
-          select.should have_tag("option[value='1-2 weeks ago']")
-          select.should have_tag("option[value='More than a year ago']")
+        response.should have_selector("label[for='child_dateofseparation']")
+        response.should have_selector("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
+          select.should have_selector("option[value='1-2 weeks ago']")
+          select.should have_selector("option[value='More than a year ago']")
         end
       end
     end
@@ -102,9 +102,9 @@ describe "children/_form_section.html.erb" do
       assigns[:child] = @child
       render :locals => { :form_section => @form_section }
 
-      response.should have_tag("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
-        select.should have_tag("option[value='1-2 weeks ago']")
-        select.should have_tag("option[value='More than a year ago']")
+      response.should have_selector("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
+        select.should have_selector("option[value='1-2 weeks ago']")
+        select.should have_selector("option[value='More than a year ago']")
       end
     end
   end
@@ -114,14 +114,14 @@ describe "children/_form_section.html.erb" do
     context "new record" do
 
       it "renders checkboxes" do
-        @child = Child.new
+        @child = Child.new 
         @form_section.add_field Field.new_field("check_box", "is_orphan")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("label[for='child_isorphan']")
-        response.should have_tag("input[type='checkbox'][name='child[isorphan]'][value='Yes']")
+        response.should have_selector("label[for='child_isorphan']")
+        response.should have_selector("input[type='checkbox'][name='child[isorphan]'][value='Yes']")
       end
     end
 
@@ -134,7 +134,7 @@ describe "children/_form_section.html.erb" do
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[type='checkbox'][name='child[isorphan]'][value='Yes'][checked]")
+        response.should have_selector("input[type='checkbox'][name='child[isorphan]'][value='Yes'][checked]")
       end
 
       it "renders checkboxes with the HTML FORM hidden field workaround for unchecking a property" do
@@ -144,7 +144,7 @@ describe "children/_form_section.html.erb" do
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[type='hidden'][name='child[isorphan]'][value='No']")
+        response.should have_selector("input[type='hidden'][name='child[isorphan]'][value='No']")
       end
 
     end
@@ -154,15 +154,17 @@ describe "children/_form_section.html.erb" do
 
     context "new record" do
       it "renders date field" do
-        @child = Child.new
+        @child = Child.new 
         @form_section.add_field Field.new_field("date_field", "Some date")
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("label[for='child_some_date']")
-        response.should have_tag("input[type='text'][name='child[some_date]']")
-        response.should have_tag("script[type='text/javascript']", /.*\$\("#child_some_date"\).datepicker.*/)
+        response.should have_selector("label[for='child_some_date']")
+        response.should have_selector("input[type='text'][name='child[some_date]']")
+        response.should have_selector("script[type='text/javascript']") do |js|
+          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker.*/
+        end
       end
     end
 
@@ -175,8 +177,10 @@ describe "children/_form_section.html.erb" do
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[type='text'][name='child[some_date]'][value='13/05/2004']")
-        response.should have_tag("script[type='text/javascript']", /.*\$\("#child_some_date"\).datepicker.*/)
+        response.should have_selector("input[type='text'][name='child[some_date]'][value='13/05/2004']")
+        response.should have_selector("script[type='text/javascript']") do |js|
+          js.inner_html.should =~ /.*\$\("#child_some_date"\).datepicker.*/
+        end
       end
 
     end

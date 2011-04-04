@@ -39,8 +39,9 @@ describe "histories/show.html.erb" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         assigns[:child] = child
         render
-      	response.should have_tag(".history-details") do
-          with_tag("li", /Yesterday Record created by Bob/)
+      	response.should have_selector(".history-details li", :count => 1)
+      	response.should have_selector(".history-details li") do |item|
+      		item.text.should match(/Yesterday Record created by Bob/)
       	end
       end
     end
@@ -48,49 +49,52 @@ describe "histories/show.html.erb" do
       it "should render photo change record when updating a photo" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         child.add_single_change "rapidftr", "31/12/2010 20:55", "current_photo_key", "OldPhoto", "NewPhoto"
-
+ 
         assigns[:child] = child
         render
 
-      	response.should have_tag(".history-details") do
-          with_tag("li", /Photo changed/)
-      	end
+      	response.should have_selector(".history-details li", :count => 2)
+      	response.should have_selector(".history-details li") do |item|
+      		item.text.should match(/Photo changed/)
+      	end 
       end
       it "should render photo change record with links when adding a photo to an existing record for first time" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         child.add_single_change "rapidftr", "31/12/2010 20:55", "current_photo_key", nil, "NewPhoto"
-
+ 
         assigns[:child] = child
         render
 
-      	response.should have_tag(".history-details") do
-          with_tag("li", /Photo  added/)
-          with_tag("li", /Photo  added/)
+      	response.should have_selector(".history-details li", :count => 2)
+      	response.should have_selector(".history-details li") do |item|
+      		item.text.should match(/Photo  added/)
       	end
       end
     end
     describe "rendering changes to audio" do
       it "should render audio change record" do
-        child = FakeRecordWithHistory.new
+        child = FakeRecordWithHistory.new 
         child.add_single_change "rapidftr", "31/12/2010 20:55", "recorded_audio", "First", "Second"
-
+        
         assigns[:child] = child
         render
 
-      	response.should have_tag(".history-details") do
-      		with_tag("li", /31\/12\/2010 20:55 Audio changed from First to Second by rapidftr/)
-      	end
+      	response.should have_selector(".history-details li", :count => 2)
+      	response.should have_selector(".history-details li") do |item|
+      		item[0].text.should match(/31\/12\/2010 20:55 Audio changed from First to Second by rapidftr/)
+      	end 
       end
       it "should render audio change record with links when adding a sound file to an existing record for first time" do
-        child = FakeRecordWithHistory.new
+        child = FakeRecordWithHistory.new 
         child.add_single_change "rapidftr", "31/12/2010 20:55", "recorded_audio", nil, "Audio"
 
         assigns[:child] = child
         render
 
-      	response.should have_tag(".history-details") do
-          with_tag("li", /31\/12\/2010 20:55 Audio Audio added by rapidftr/)
-      	end
+      	response.should have_selector(".history-details li", :count => 2)
+      	response.should have_selector(".history-details li") do |item|
+      		item[0].text.should match(/31\/12\/2010 20:55 Audio Audio added by rapidftr/)
+      	end 
       end
     end
     describe "rendering several history entries" do
@@ -103,11 +107,11 @@ describe "histories/show.html.erb" do
         assigns[:child] = child
         render
 
-        response.should have_tag(".history-details") do
-          with_tag("li", /Age changed from 7 to 8/)
-          with_tag("li", /Last known location changed from Haiti to Santiago/)
-          with_tag("li", /Age changed from 6 to 7/)
-          with_tag("li", /Record created by/)
+        response.should have_selector(".history-details li") do |elements|
+          elements[0].should contain(/Age changed from 7 to 8/)
+          elements[1].should contain(/Last known location changed from Haiti to Santiago/)
+          elements[2].should contain(/Age changed from 6 to 7/)
+          elements[3].should contain(/Record created by/)
         end
       end
     end

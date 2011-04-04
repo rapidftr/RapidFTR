@@ -36,7 +36,7 @@ describe "children/search.html.erb" do
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
-      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail/"
+      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail"
     end
 
     it "should show thumbnails with urls for child details page for each child if asked" do

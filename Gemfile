@@ -10,7 +10,7 @@ gem 'mime-types',     '1.16'
 gem 'mini_magick',    '1.3.2'
 gem 'pdf-reader',     '0.8.6'
 gem 'prawn',          '0.8.4'
-gem 'rails',          '2.3.11'
+gem 'rails',          '2.3.5'
 gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
@@ -18,7 +18,7 @@ gem 'validatable',    '1.6.7'
 gem 'sunspot',				'1.1.0'
 
 group :cucumber do
-  gem 'cucumber',         '0.9.4'
+  gem 'cucumber',         '0.8.5'
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
 end
