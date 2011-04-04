@@ -112,6 +112,8 @@ Feature:
     When I follow "Edit"
 
     Then I fill in "George Harrison" for "Name"
+    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I attach the file "features/resources/sample.mp3" to "Recorded Audio"
     And the local date/time is "Oct 29 2010 14:12:15" and UTC time is "Oct 29 2010 14:12:15UTC"
     And I press "Save"
 
@@ -121,6 +123,8 @@ Feature:
     And I press "Save"
     And I am on the change log page for "George Harrison"
 
-    Then I should see "2010-10-29 03:12:15 -1100 Name changed from Jorge Just to George Harrison by bobby"
-    And I should see "2010-07-19 02:05:15 -1100 Record created by zubair"
+    Then I should see "2010-10-29 03:12:15 -1100 Audio"
+    Then I should see "2010-10-29 03:12:15 -1100 Photo changed"
+    And I should see "2010-10-29 03:12:15 -1100 Name changed"
+    And I should see "2010-07-19 02:05:15 -1100 Record created"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
