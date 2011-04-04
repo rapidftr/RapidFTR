@@ -44,7 +44,12 @@ class SessionsController < ApplicationController
   def create
     @login = Login.new(params)
     @session = @login.authenticate_user
-
+    
+    if @login.device_blacklisted?
+      render (:status => :unauthorized, :json => params[:imei]) 
+      return 
+    end
+    
     if not @session
       respond_to do |format|
         handle_login_error("Invalid credentials. Please try again!", format)

@@ -15,16 +15,25 @@ class Login
   def authenticate_user
     user = User.find_by_user_name(@user_name)
 
-    #Session.new(:user_name => @user_name)
-    session = Session.for_user( user ) unless user.nil? or !user.authenticate(@password)
+    if (user and user.authenticate(@password))  
+      session = Session.for_user( user ) 
+    end
 
-    if session and @imei
+    if session and @imei 
       user.add_mobile_login_event(@imei, @mobile_number)
       user.save
     end
 
-
     session
+  end
+  
+  def device_blacklisted?
+    user = User.find_by_user_name(@user_name)
+    
+    if (user)
+      return true if user.devices.any? {|device| device.imei == @imei && device.blacklisted? }
+    end
+    false
   end
 
   def errors

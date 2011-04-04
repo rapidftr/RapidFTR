@@ -365,7 +365,7 @@ Then /^I should not see any errors$/ do
 end
 
 Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
-  Hpricot(response.body).search("//p[@class=#{button_name.downcase}Button]/a").to_html.include?("confirm")
+  Hpricot(response.body).search("//p[@class=#{button_name.downcase}Button]/a").to_html.should include("confirm")
 end
 
 Then /^I should see errors$/ do

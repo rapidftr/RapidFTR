@@ -5,7 +5,10 @@
 <% end %>
 
 <div class='advanced-search'>
-  <div class="form-error"></div>
+  <div class="flash">
+    <div class="error" style="display:none"></div>
+  </div>
+  <div class="help-text">Separate words by OR to search for more than one option eg. Tim OR Rahul</div>
   <form>
     <div class='criteria_menu' style='display:none'>
       <div class='box-shadow content'>
@@ -21,7 +24,7 @@
           <% @forms.each do |form| %>
           <ul id="<%= form.unique_id %>_form_fields" class="fields">
             <% form.all_text_fields.each do |field|%>
-              <li><a><%= field.display_name %></a><input type="hidden" value='<%= field.name %>' /></li>
+              <li><a><%= field.display_name %></a><input type="hidden" class="field" value='<%= field.name %>' /></li>
             <% end %>
           
             <% empty_lines(form.all_text_fields).times do %> 
@@ -63,8 +66,9 @@
   </form>      
 </div>
 
-<%= render :partial => 'children/search_results' %>
-
+<% if params[:criteria_list] %>
+  <%= render :partial => 'children/search_results' %>
+<% end %>
 
 <script>
 

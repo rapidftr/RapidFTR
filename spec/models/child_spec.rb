@@ -149,7 +149,21 @@ describe Child do
   end
   
   describe "validation of custom fields" do
-    
+    it "should fail to validate if all fields are nil" do      
+      child = Child.new
+      FormSection.stub!(:all_enabled_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
+      child.should_not be_valid
+      child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
+    end
+    it "should fail to validate if all fields on child record are the default values" do      
+      child = Child.new({:height=>"",:reunite_with_mother=>"No", :current_photo_key=>nil})
+      FormSection.stub!(:all_enabled_child_fields).and_return [
+                Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
+                Field.new(:type => Field::CHECK_BOX, :name => 'reunite_with_mother'),
+                Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
+      child.should_not be_valid
+      child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
+    end
     it "should validate numeric types" do
       fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
       child = Child.new
@@ -193,7 +207,7 @@ describe Child do
     it "should allow text area values to be 400,000 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
           [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-      child = Child.new :a_textfield => ('a' * 400_000)
+      child = Child.new :a_textfield => ('a' * 400_000)      
       child.should be_valid
     end
 
@@ -210,13 +224,6 @@ describe Child do
           [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
       child = Child.new :a_datefield => ('27 Feb 2010')
       child.should be_valid
-    end
-
-    it "should not validate fields that were not filled in" do
-      FormSection.stub!(:all_enabled_child_fields =>
-          [Field.new(:type => Field::TEXT_FIELD, :name => "name"),
-           Field.new(:type => Field::TEXT_AREA, :name => "another")])
-      Child.new(:name => nil).should be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
@@ -294,10 +301,10 @@ describe Child do
     it "should allow blank age" do
       fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
       FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:age => ""})
+      child = Child.new({:age => "", :another_field=>"blah"})
       child.save.should == true
       
-      child = Child.new
+      child = Child.new :foo=>"bar"
       child.save.should == true
     end
 

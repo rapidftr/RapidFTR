@@ -1,6 +1,6 @@
 <fieldset id="tab_<%= form_section.section_name %>" class="<%= form_section.section_name %> tab">
+  <%= render :partial => "form_section_info", :locals => {:form_section => form_section} %>
   
-  <h3><%= form_section.name %></h3>
   <% (form_section.fields.select {|field| field.enabled? }).each do |field| %>
         <%= render :partial => field.type, :object => field %>
   <% end %>

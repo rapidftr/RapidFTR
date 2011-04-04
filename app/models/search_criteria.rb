@@ -28,8 +28,11 @@ class SearchCriteria
   
   # for text based fields
   def to_lucene_query
-    query = value.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}~ OR #{field}_text:#{word.downcase}*)"}.join(" AND ")
-    "(#{query})" 
+    phrases = value.split(/\s+OR\s+/)
+    phrases.map do |phrase|
+      query = phrase.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}~ OR #{field}_text:#{word.downcase}*)"}.join(" AND ")
+      "(#{query})" 
+    end.join(" OR ")
   end
   
   private 

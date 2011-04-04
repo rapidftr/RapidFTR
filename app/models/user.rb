@@ -15,6 +15,7 @@ class User < CouchRestRails::Document
   property :location
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
+  property :devices, :cast_as => ['Device'], :default => []
   attr_accessor :password_confirmation, :password
 
 
@@ -49,8 +50,12 @@ class User < CouchRestRails::Document
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
   validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
-  validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/,
+
+  validates_format_of :email, :as => :email_address, :if => :email_entered?
+  
+  validates_format_of :email, :with =>  /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message =>"Please enter a valid email address"
+  
 
   validates_confirmation_of :password, :if => :password_required?
   validates_with_method   :user_name, :method => :is_user_name_unique
@@ -65,6 +70,9 @@ class User < CouchRestRails::Document
     super args
   end
 
+  def email_entered?
+    !email.blank?
+  end
 
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
@@ -89,6 +97,10 @@ class User < CouchRestRails::Document
   
   def add_mobile_login_event imei, mobile_number
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
+    self.devices ||= []
+    if (devices.none? {|device| device.imei == imei})
+      self.devices << Device.new(:imei => imei, :blacklisted => false)
+    end
   end
 
   private
@@ -106,7 +118,6 @@ class User < CouchRestRails::Document
   def password_required?
     crypted_password.blank? || !password.blank?
   end
-
 
   def make_user_name_lowercase
     user_name.downcase!

@@ -20,3 +20,16 @@ Then /^I receive a JSON response:$/ do |table|
   expected.each {|key,value| json_response[key].should == value}
 end
 
+When /^I login with user (.+):(.+) for device with imei (.+)$/ do |user, password, imei|
+  post(sessions_path, {:imei => imei, :user_name => user, :password => password, :mobile_number => "123456"})
+end
+
+Then /^should be kill response for imei "(.+)"$/ do |imei|
+  response.status.should =~ /401/
+  response_body.should == imei
+end
+
+Then /^should be successful login$/ do
+  response_body.should_not =~ /sessions\/new/
+end
+
