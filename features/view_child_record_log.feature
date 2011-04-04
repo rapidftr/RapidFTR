@@ -98,3 +98,29 @@ Feature:
     And I follow "Back"
 
     Then I should be on the child record page for "Bob"
+
+  Scenario:  The change log page displays date-times in my local timezone
+
+    Given the date/time is "July 19 2010 13:05:15UTC"
+    And the following children exist in the system:
+    | name       | age | age_is | gender | last_known_location |
+    | Jorge Just | 27  | Exact  | Male   | Haiti               |
+    And the date/time is "Oct 29 2010 10:12UTC"
+    And "Bobby" is logged in
+    And I am on the children listing page
+
+    When I follow "Edit"
+
+    Then I fill in "George Harrison" for "Name"
+    And the local date/time is "Oct 29 2010 14:12:15" and UTC time is "Oct 29 2010 14:12:15UTC"
+    And I press "Save"
+
+    #When the user's time zone is "(GMT-11:00) Samoa"
+    When I am on the home page
+    When I select "(GMT-11:00) Samoa" from "Current time zone"
+    And I press "Save"
+    And I am on the change log page for "George Harrison"
+
+    Then I should see "2010-10-29 03:12:15 -1100 Name changed from Jorge Just to George Harrison by bobby"
+    And I should see "2010-07-19 02:05:15 -1100 Record created by zubair"
+    # Order tested at the moment in the show.html.erb_spec.rb view test for histories
