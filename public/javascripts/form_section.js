@@ -11,7 +11,11 @@ function initOrderingColumns() {
 		$("a.moveUp", element).show();
 	});
 	
-	$("#form_sections tbody tr:nth-child(2)").each(function(index, element){
+	var fieldToStartFrom = 2;
+	if ($('#editFormDetails').length === 1){
+	    fieldToStartFrom = 1;
+	}
+	$("#form_sections tbody tr:nth-child("+fieldToStartFrom+")").each(function(index, element){
 		$("a.moveDown", element).show();
 		$("a.moveUp", element).hide();
 	});
@@ -20,24 +24,46 @@ function initOrderingColumns() {
 		$("a.moveDown", element).hide();
 		$("a.moveUp", element).show();
 	});
-	
+
 	$("#form_sections tbody tr").each(function(index, element){	$(element).find(".updatedFormSectionOrder :input").val(index + 1); });
 }
-
+function changeDirection(fieldName, isUp){
+    var curAction= $('#changeDirection').attr('action');
+    if (isUp){
+	curAction += 'move_up';
+    }else{
+	curAction += 'move_down';
+    }
+    $('#changeDirection').attr('action', curAction);
+    $('#changeDirectionFieldName').val(fieldName);
+    $('#changeDirectionSubmit').click();
+}
 function moveUp()
 {
 	var row = $(this).parents("tr");
 	var prevRow = row.prev("tr");
-  prevRow.before(row);
-	initOrderingColumns();
+	prevRow.before(row);
+	if ($('#editFormDetails').length === 1){
+	    var div = $(this).parents("div");
+	    var fieldName = div.find("input[name=field_name]").val();
+	    changeDirection(fieldName, true);
+	}else{
+	    initOrderingColumns();
+	}
 }
 
 function moveDown()
 {
 	var row = $(this).parents("tr");
 	var prevRow = row.next("tr");
-  prevRow.after(row);
-	initOrderingColumns();
+	prevRow.after(row);
+	if ($('#editFormDetails').length === 1){
+	    var div = $(this).parents("div");
+	    var fieldName = div.find("input[name=field_name]").val();
+	    changeDirection(fieldName, false);
+	}else{
+	    initOrderingColumns();
+	}
 }
 
 function saveOrder(event) {
