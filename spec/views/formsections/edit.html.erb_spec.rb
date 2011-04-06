@@ -24,11 +24,11 @@ describe "form_section/edit.html.erb" do
 
     document = Nokogiri::HTML(response.body)
 
-		document.css("#oneRow .up-link").should be_empty
-		document.css("#twoRow .up-link").should_not be_empty
+    document.css("#oneRow .up-link").should be_empty
+    document.css("#twoRow .up-link").should_not be_empty
   end
   it "should not have Down UI elements for last field item when in edit mode" do
-		fields = [{:name=>"one"},{:name=>"two"}]
+    fields = [{:name=>"one"},{:name=>"two"}]
     form_section = FormSection.new :fields => fields, :unique_id=>"foo"
 
     form_section = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "true", :fields => fields
@@ -38,7 +38,7 @@ describe "form_section/edit.html.erb" do
 
     document = Nokogiri::HTML(response.body)
 
-		document.css("#twoRow .down-link").should be_empty
-		document.css("#oneRow .down-link").should_not be_empty
+    document.css("#twoRow .down-link").should be_empty
+    document.css("#oneRow .down-link").should_not be_empty
   end
 end
