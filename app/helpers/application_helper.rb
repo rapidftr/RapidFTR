@@ -23,7 +23,6 @@ module ApplicationHelper
 
   end
 
-
   def submit_button(name = 'Save')
     content_tag(:p, :class => 'submitButton') do
       submit_tag(name)
@@ -39,6 +38,15 @@ module ApplicationHelper
   def discard_button(path)
     content_tag(:p, :class => 'discardButton') do
       link_to 'Discard', path, :confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.'
+    end
+  end
+  
+  def show_sidebar_links
+    sidebar_links = {"View All Children" => children_path, 
+                     "Search" => search_children_path, 
+                     "Advanced Search" => advanced_search_index_path}
+    sidebar_links.select do |_, link|
+      !current_page?(link)
     end
   end
 end
