@@ -115,6 +115,7 @@ class Child < CouchRestRails::Document
   def set_creation_fields_for(user_name)
     self['created_by'] = user_name
     self['created_at'] ||= current_formatted_time
+    self['posted_at'] = current_formatted_time
   end
 
   def set_updated_fields_for(user_name)
