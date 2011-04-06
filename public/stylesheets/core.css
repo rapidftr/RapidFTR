@@ -43,6 +43,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 /* default: forms > List of radio buttons */
 .default-form dl.radioList { overflow: hidden; }
 .default-form .radioList dt { clear: both; float: left; text-align: right; width: 150px; margin-right: 10px; padding-bottom: .5em; font-weight: bold; color: #678; }
+.default-form .help-text {font-weight:normal; color:#666}
 .default-form .radioList dd { float: left; width: 200px; padding-bottom: 1em; }
 .default-form .radioList p { margin-bottom: 0; }
 .default-form .radioList label { float: none; width: auto; font-weight: normal; }
@@ -71,8 +72,9 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .device-information { clear: both; margin-top: 3em; }
 
 /* default : forms > help text */
-.default-form .help-text { font-style: italic; width: 100px; float: right; display: block;}
+.default-form .help-text { font-style: italic; float: right; display: block;}
 .default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
+.default-form .help-text-checkbox{ font-style:italic; display:block;}
 
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
@@ -156,13 +158,18 @@ td.checkbox { text-align: center;}
 .profiles-list-item dt { float: left; margin-right: 10px; font-weight: bold; color: #678; }
 .profiles-list-item dd { float: left; margin-right: 20px; }
 
+/* profile and edit page */
+.form-section-info { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
+.form-section-info .form-section-help-text { padding-top: .7em; font-style: italic; }
+.form-section-info div { margin-bottom: 3px; }
+
 /* profile page */
 .profile-page .page-content { background-position: 650px 0;}
 .profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
 .profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
-
 .profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
+.profile-page .form-section-info { padding-top: .5em; }
 
 /* forms page */
 .forms-page #suggestedFields input[type=submit] {background: transparent; border-top: 0;border-right: 0; border-bottom:0;border-left: 0;display: inline;margin: 0;padding: 0;color: #39f; text-decoration: underline; overflow: hidden; outline: none; line-height: 1.5em  ; font-family:inherit; cursor:pointer;}
@@ -206,9 +213,6 @@ ul.ui-widget-content { background: none; }
 
 /* edit page */
 .edit-profile { position: relative; } 
-.edit-profile .form-section-header { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
-.edit-profile .form-section-header .form-section-help-text { padding-top: .7em; font-style: italic; }
-.edit-profile .form-section-header div { margin-bottom: 3px; }
 .edit-profile .submitButton { float: right; text-align: right; }
 
 /* new field/formsection page*/
@@ -228,7 +232,7 @@ div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
 div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 tr.rowDisabled {  font-style: italic; }
 /* fields list page */
-.direction-button { display:none }
+.direction-button, .delete-button { display:none }
 
 /* error summary */
 .errorExplanation { color: #990000; background-color: #ffdddd; border: 1px solid #990000; padding: 10px; margin-bottom: 10px; }

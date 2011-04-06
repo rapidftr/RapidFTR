@@ -1,6 +1,14 @@
 <p class="file">
   <%= label_tag "child[photo]", "Photo" %>
   <%= file_field_tag "child[photo]" %>
+  <% if photo_upload_box.help_text.present?%> 
+  <br />
+  <span class='help-text-container'>
+    <span class='help-text'>
+      <%=photo_upload_box.help_text%>
+    </span>
+  </span>
+  <% end%>
 </p>
 <% if !@child.id.nil? %>
 <div class="thumbnail"><%= thumbnail_tag(@child) %></div>

@@ -35,7 +35,7 @@ end
 
 Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
   row = Nokogiri::HTML(response.body).css("##{field_name}Row").first
-  row.content.should include(arrow_name)
+  row.inner_html.should include(arrow_name)
 end
 
 And /^I click the "([^\"]*)" arrow on "([^\"]*)" field$/ do |arrow_name, field_name|

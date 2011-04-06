@@ -23,7 +23,7 @@ Feature: Editing Custom Form Fields
     And I press "Save"
     
     Then I should see "Edited Field"
-    Then I should see "Disabled"
+    Then I should see "Hidden"
     And I should see "another_field" in the list of fields
     
   Scenario: editing text with invalid display name

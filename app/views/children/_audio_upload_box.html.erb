@@ -1,4 +1,12 @@
 <p class="file">
   <%= label_tag "child[audio]", "Recorded Audio" %>
   <%= file_field_tag "child[audio]" %>
+  <% if audio_upload_box.help_text.present?%> 
+  <br />
+  <span class='help-text-container'>
+    <span class='help-text'>
+      <%= audio_upload_box.help_text%>
+    </span>
+  </span>
+  <% end%>
 </p>

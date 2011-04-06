@@ -94,6 +94,14 @@ class FormSection < CouchRestRails::Document
     unique_id
   end
   
+  def is_first field_to_check
+    field_to_check == fields.at(0)
+  end
+
+  def is_last field_to_check
+    field_to_check == fields.at(fields.length-1)
+  end
+
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
     if (field)
@@ -102,7 +110,7 @@ class FormSection < CouchRestRails::Document
       save()
     end
   end
-  
+
   def move_field field_to_move, offset
     field_index_1 = fields.index(field_to_move)
     field_index_2 = field_index_1 + offset
