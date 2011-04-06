@@ -142,16 +142,10 @@ describe User do
     device = Device.new (:imei => "1234", :blacklisted => false, :user_name => "timothy")
     device.save!
     
-    user = User.create!({
-      :user_name => "timothy",
-      :full_name => "timothy cochran",
-      :user_type => "admin",
-      :password => "password",
-      })
+    user = build_and_save_user(:user_name => "timothy")
     user.devices = [{"imei" => "1234", "blacklisted" => "true", :user_name => "timothy"}]
     user.save!
     
-    p user.devices
     blacklisted_device = user.devices.detect { |device| device.imei == "1234" }
     blacklisted_device.blacklisted.should == true
     
