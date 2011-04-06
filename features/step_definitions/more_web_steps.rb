@@ -59,7 +59,7 @@ end
 
 Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
    radios = Nokogiri::HTML(response.body).css(".radioList")
-   radio = radios.detect {|radio| radio.css("dt").first.text == radio_button}
+   radio = radios.detect {|radio| radio.css("dt span").first.text == radio_button}
    radio.should_not be_nil
    radio.css("label").map(&:text).should == table.raw.map(&:first)
 end
