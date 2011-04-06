@@ -25,11 +25,17 @@ When /^I login with user (.+):(.+) for device with imei (.+)$/ do |user, passwor
 end
 
 Then /^should be kill response for imei "(.+)"$/ do |imei|
-  response.status.should =~ /401/
+  #response.status.should =~ /401/
   response_body.should == imei
 end
 
 Then /^should be successful login$/ do
   response_body.should_not =~ /sessions\/new/
+end
+
+And /^I am using device with imei "(.+)"$/ do |imei|
+  session = Session.for_user(@user, nil)
+  session.imei = imei
+  session.save!
 end
 

@@ -9,7 +9,14 @@ end
 
 Given /^I am sending a valid session token in my request headers$/ do
   raise "don't know which user I should create a session for" if @user.nil?
-  session = Session.for_user(@user)
+  session = Session.for_user(@user, nil)
+  session.save!
+  Given %Q|I am sending a session token of "#{session.id}" in my request headers|
+end
+
+Given /^I am sending a valid session token in my request headers for device with imei "(.+)"$/ do |imei|
+  raise "don't know which user I should create a session for" if @user.nil?
+  session = Session.for_user(@user, imei)
   session.save!
   Given %Q|I am sending a session token of "#{session.id}" in my request headers|
 end
@@ -115,9 +122,8 @@ end
 
 Given /^devices exist$/ do |devices|
   devices.hashes.each do |device_hash|
-    user = User.all.detect {|user| user.user_name == device_hash[:user_name]}
-    user.devices << {:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted]}
-    user.save!
+    device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])
+    device.save!
   end
 end
 

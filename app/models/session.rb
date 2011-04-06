@@ -2,16 +2,18 @@ class Session < CouchRestRails::Document
   use_database :sessions
 
   property :user
+  property :imei
   property :expires_at, :cast_as => 'Time', :init_method => 'parse'
 
   view_by :user_name
 
   COOKIE_KEY = 'rftr_session_token'
 
-  def self.for_user( user )
+  def self.for_user( user, imei)
     Session.new(
       :user_name => user.user_name,
-      :user => user.clone.except("password")
+      :user => user.clone.except("password"),
+      :imei => imei
     )
   end
 
@@ -64,6 +66,13 @@ class Session < CouchRestRails::Document
 
   def admin?
     user['user_type'] == "Administrator"
+  end
+  
+  def device_blacklisted?
+    if (imei)
+      return true if Device.all.any? {|device| device.imei == imei && device.blacklisted? }
+    end
+    false
   end
   
 end
