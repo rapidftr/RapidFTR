@@ -354,6 +354,13 @@ describe Child do
       child['created_by'].should == 'jdoe'
     end
 
+		it "should create a posted_at field with the current date" do
+			current_time_in_utc = Time.parse("22 Jan 2010 14:05UTC")
+			Time.stub!(:now).and_return current_time_in_utc 
+			child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
+			child['posted_at'].should == "2010-01-22 14:05:00UTC"
+		end
+
 		describe "when the created at field is not supplied"do
 			it "should create a created_at field with time of creation" do
 				current_time_in_utc = Time.parse("14 Jan 2010 14:05UTC")
