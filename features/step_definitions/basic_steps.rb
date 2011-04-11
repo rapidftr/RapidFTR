@@ -17,12 +17,6 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
 
-Given /^the user's time zone is "([^\"]*)"$/ do |timezone|
-  Given "I am on the home page"
-  When "I select #{timezone} from \"Current time zone\""
-  And "I press \"Save\""
-end
-
 Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   visit path_to('new child page')
   fill_in('Name', :with => child_name)

@@ -16,7 +16,7 @@ class   ChildrenController < ApplicationController
       format.json { render :json => @children }
       format.pdf do
         pdf_data = PdfGenerator.new.children_info(@children)
-        send_pdf(pdf_data, "RapidFTR-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+        send_pdf(pdf_data, "RapidFTR-#{get_file_name_time_stamp}.pdf")
       end
     end
   end
@@ -43,7 +43,7 @@ class   ChildrenController < ApplicationController
       end
       format.pdf do
         pdf_data = PdfGenerator.new.child_info(@child)
-        send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+        send_pdf( pdf_data, "#{@child.unique_identifier}-#{get_file_name_time_stamp}.pdf" )
       end
     end
   end
@@ -186,7 +186,7 @@ class   ChildrenController < ApplicationController
   def export_photo_to_pdf
     child = Child.get(params[:id])
     pdf_data = PdfGenerator.new.child_photo(child)
-    send_pdf(pdf_data, "#{child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+    send_pdf(pdf_data, "#{child.unique_identifier}-#{get_file_name_time_stamp}.pdf")
   end
 
   def export_to_csv children, filename
@@ -201,6 +201,10 @@ class   ChildrenController < ApplicationController
 
 		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
 	end
+  def get_file_name_time_stamp
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
+  end
 
   def get_form_sections
     FormSection.enabled_by_order

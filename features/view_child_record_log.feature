@@ -117,10 +117,7 @@ Feature:
     And the local date/time is "Oct 29 2010 14:12:15" and UTC time is "Oct 29 2010 14:12:15UTC"
     And I press "Save"
 
-    #When the user's time zone is "(GMT-11:00) Samoa"
-    When I am on the home page
-    When I select "(GMT-11:00) Samoa" from "Current time zone"
-    And I press "Save"
+    When the user's time zone is "(GMT-11:00) Samoa"
     And I am on the change log page for "George Harrison"
 
     Then I should see "2010-10-29 03:12:15 -1100 Audio"
