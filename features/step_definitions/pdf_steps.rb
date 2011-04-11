@@ -24,3 +24,12 @@ Then /^the PDF file should not contain the string "([^\"]*)"$/ do |expected_stri
   pdf.strings.should_not include(expected_string)
 end
 
+Then /^the PDF file name should contain the string "([^"]*)"$/ do |expected_string|
+  pdf = PDF::Inspector::Text.analyze( response_body )
+  puts response.
+  pdf.strings should contain "blah"
+end
+
+Then /^the filename should contain "(.+)"$/ do |filename|
+   response.headers["content-disposition"].should contain "#{filename}"
+end
