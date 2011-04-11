@@ -272,7 +272,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 .criteria-value { margin: 0px 10px; width: 240px;}
 
 .criteria_menu { position:absolute; }
-.criteria_menu .content { overflow:hidden; background-color: #EEE; padding: 8px 6px 8px 6px; z-index:200; position:relative; border: 1px solid #CCC; }
+.content { overflow:hidden; background-color: #EEE; padding: 8px 6px 8px 6px; z-index:200; position:relative; border: 1px solid #CCC; }
 .criteria_menu p { margin:0; }
 .criteria_menu a { text-decoration: underline; color: blue; cursor: pointer; }
 
@@ -286,7 +286,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 .criteria_menu li { list-style:none; padding: 0; margin: 0; background: none; }
 .criteria_menu li:hover { cursor: pointer; }
 .criteria_menu ul.fields li.disabled a { color: black; text-decoration: none; cursor: default;} 
-.criteria_menu .box-shadow {
+.box-shadow {
 		-moz-box-shadow: 2px 2px 5px #BBB;
 		-webkit-box-shadow: 2px 2px 6px #BBB;
 		box-shadow: 2px 2px 5px #BBB;
@@ -296,4 +296,15 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB');
 }
 
-
+/* form-fields-select-list*/
+.form-fields-container { background-color: #EEE; display: none; position: absolute; margin-left: 5px; }
+.form-fields-container .form-container { position: relative; right: -1px ; float: left; }
+.form-fields-container .fields-container { float: left; max-height: 298px; overflow: auto; border: 1px solid #AAA; background-color: white; 
+                                           width: 220px;}
+.form-fields-container .form-container .selected { border-left: 1px solid #AAA; border-top: 1px solid #AAA; border-bottom: 1px solid #AAA; background-color: white; }
+.form-fields-container .form, .form-fields-container .field { list-style:none; background: none; padding: 3px 20px 3px 20px; margin: 0; }
+.form-fields-container .form:hover, .form-fields-container .field:hover {cursor: pointer; }
+.form-fields-container .fields-container .selected { background-color: white; display: block !important;}
+.form-fields-container .fields-container .field-container {display: none;}
+.form-fields-container .prev-selected:hover {cursor: auto; }
+.form-fields-container .prev-selected { background-color: #EEE; }

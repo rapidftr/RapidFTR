@@ -1,0 +1,75 @@
+<% content_for :javascript do %>
+  <%= javascript_include_tag "jquery.tmpl.min.js" %>
+  <%= javascript_include_tag "jquery_plugin.js" %>
+  <%= javascript_include_tag "form_fields.js" %>
+<% end %>
+
+<table class="highlight-fields">
+  <thead>
+    <tr>
+      <th>Field Name</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+     <td></td>
+     <td><a class="add-field">add</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="form-fields-container">
+  <div class='box-shadow content'>
+        <div style="float:right; margin-left: 6px;">
+          <a class='close-link'><%= image_tag("dialog-close.png") %></a>
+        </div>
+
+    <ul class="form-container">
+        <% @forms.each do|form| %>
+          <li id="form-<%= form.id%>" class="form">
+            <%= form.name %>
+          </li>      
+        <%end%> 
+    </ul>
+    <div class="fields-container">
+      <% @forms.each do|form|%>    
+        <ul id="fields-for-form-<%= form.id%>" class="field-container">
+          <% form.fields.each do |field| %>
+            <li id="field-<%= field.name%>" class="field">
+              <span class="field-display-name"><%= field.display_name%></span>
+              <input type="hidden" class="field-name" value="<%= field.name%>"/>
+            </li>
+          <%end%>
+        </ul>
+      <%end%>  
+    </div>     
+  <div>
+</div>
+
+<script id="highlight-field-template" type="text/x-jquery-tmpl"> 
+  <tr>     
+    <td>${field_display_name}</td>
+    <input type="hidden" class="highlighted-field" value="${field_name}"/>
+    <td><a class="edit-field">edit</a>&nbsp;<a class="delete-field">delete</a></td>
+  </tr>
+</script>
+
+<script> 
+
+var updateWithSelectedItem = function(actionElement, selectedElement){
+  var selectedFieldSection = $("#highlight-field-template").tmpl(selectedElement);
+  $(actionElement).parents("tr").before(selectedFieldSection);			
+}
+
+ $(".form-fields-container").formFields({itemSelected: updateWithSelectedItem});
+
+
+ $(".add-field").live("click", 
+    function(){
+        var args = { actionElement: $(this) };
+        $(".form-fields-container").formFields("show", args);
+    }
+  );
+
+</script>
