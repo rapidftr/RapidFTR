@@ -15,7 +15,6 @@ class User < CouchRestRails::Document
   property :location
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
-  property :devices, :cast_as => ['Device'], :default => []
   attr_accessor :password_confirmation, :password
 
 
@@ -38,6 +37,8 @@ class User < CouchRestRails::Document
 
 
   before_save :make_user_name_lowercase, :encrypt_password
+  after_save :save_devices
+  
   
   before_update :if => :disabled? do |user|
     Session.delete_for user
@@ -97,14 +98,33 @@ class User < CouchRestRails::Document
   
   def add_mobile_login_event imei, mobile_number
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
-    self.devices ||= []
-    if (devices.none? {|device| device.imei == imei})
-      self.devices << Device.new(:imei => imei, :blacklisted => false)
+    
+    if (Device.all.none? {|device| device.imei == imei})
+      device = Device.new(:imei => imei, :blacklisted => false, :user_name => self.user_name)
+      device.save!
+    end
+  end
+  
+  def devices
+    Device.all.select { |device| device.user_name == self.user_name }
+  end
+  
+  def devices= device_hashes
+    all_devices = Device.all
+    @devices = device_hashes.map do |device_hash|
+      device = all_devices.detect { |device| device.imei == device_hash["imei"] }
+      device.blacklisted = device_hash["blacklisted"] == "true"
+      device
     end
   end
 
   private
 
+  def save_devices
+    @devices.map(&:save!) if @devices
+    true
+  end
+  
   def encrypt_password
     return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{self.user_name}--") if new_record?
