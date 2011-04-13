@@ -275,7 +275,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .criteria-value { margin: 0px 10px; width: 240px;}
 
-.criteria_menu { position:absolute; }
+.criteria_menu { position:absolute; z-index:1000; }
 .criteria_menu .content { overflow:hidden; background-color: #EEE; padding: 8px 6px 8px 6px; z-index:200; position:relative; border: 1px solid #CCC; }
 .criteria_menu p { margin:0; }
 .criteria_menu a { text-decoration: underline; color: blue; cursor: pointer; }
@@ -298,6 +298,8 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB')";
 		/* For IE 5.5 - 7 */
 		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB');
+		
+		
 }
 
 

@@ -31,6 +31,14 @@ describe "Child record field view model" do
     field['option_strings'].should == ["tim", "rob"]
   end
   
+  it "should have display name with diabled if not enabled" do
+    @field.display_name = "pokpok"
+    @field.enabled = false
+    
+    @field.display_name_for_field_selector.should == "pokpok (Disabled)"
+    
+  end 
+  
   describe "valid?" do
   
     it "should not allow blank display name" do  

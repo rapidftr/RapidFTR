@@ -31,7 +31,6 @@ class FormSection < CouchRestRails::Document
     all_child_fields.map{ |field| field["name"] }
   end
   
-  
   def self.all_enabled_child_fields
     enabled_by_order.map do |form_section|
       form_section.fields
