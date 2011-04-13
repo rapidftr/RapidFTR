@@ -145,7 +145,7 @@ class FormSection < CouchRestRails::Document
   protected
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != f.name }
+    unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
     unique || [false, "The name '#{name}' is already taken."]
   end
 end
