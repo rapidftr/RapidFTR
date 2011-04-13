@@ -1,4 +1,7 @@
-class Player
+namespace = exports ? this
+namespace = namespace.Media ?= {}
+
+class namespace.Player
   constructor: ->
     @isPlaying = false
 
@@ -15,5 +18,3 @@ class Player
   makeFavorite: ->
     @currentlyPlayingSong.persistFavoriteStatus true
 
-namespace = exports ? this
-(namespace.Media ?= {}).Player = Player

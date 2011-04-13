@@ -16,6 +16,7 @@ gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
 gem 'sunspot',				'1.1.0'
+gem 'barista',        '1.0.0'
 
 group :cucumber do
   gem 'cucumber',         '0.9.4'
@@ -24,8 +25,18 @@ group :cucumber do
 end
 
 group :test do
-  gem 'rspec',            '1.3.0'
+  gem 'rspec',            '1.3.2'
   gem 'rspec-rails',      '1.3.2'
   gem 'webrat',           '0.7.1'
+  gem 'rack-asset-compiler'
+  gem 'therubyracer'
+  gem 'jasmine',          '1.0.2.0'
 end
 
+group :development do
+  gem 'guard'
+  gem 'guard-coffeescript'
+  gem 'guard-livereload'
+  gem 'rb-fsevent'
+  gem 'growl'
+end

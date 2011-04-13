@@ -1,6 +1,7 @@
-class Song
+namespace = exports ? this
+namespace = namespace.Media ?= {}
+
+class namespace.Song
   persistFavoriteStatus: (value) ->
     "throw new Error not yet implemented"
     
-namespace = exports ? window
-(namespace.Media ?= {}).Song = Song

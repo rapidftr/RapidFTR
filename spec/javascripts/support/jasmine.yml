@@ -11,13 +11,8 @@
 #   - dist/**/*.js
 #
 src_files:
-  - *.js
-  - prototype.js
-  - effects.js
-  - controls.js
-  - dragdrop.js
-  - application.js
-  - compiled/**/*.js
+  - javascripts/*.js
+  - javascripts/models/**/*.js
 
 # stylesheets
 #
@@ -44,7 +39,7 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
-  - helpers/**/*.js
+  - helpers/**/*.coffee
 
 # spec_files
 #
@@ -57,7 +52,7 @@ helpers:
 #   - **/*[sS]pec.js
 #
 spec_files:
-  - **/*_spec.js
+  - **/*_spec.coffee
 
 # src_dir
 #
@@ -68,7 +63,7 @@ spec_files:
 #
 # src_dir: public
 #
-src_dir: public/javascripts
+src_dir: public
 
 # spec_dir
 #
@@ -79,4 +74,4 @@ src_dir: public/javascripts
 #
 # spec_dir: spec/javascripts
 #
-spec_dir: spec/javascripts
+spec_dir: spec/coffeescripts
