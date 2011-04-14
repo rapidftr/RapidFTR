@@ -31,7 +31,6 @@ class FormSection < CouchRestRails::Document
     all_child_fields.map{ |field| field["name"] }
   end
   
-  
   def self.all_enabled_child_fields
     enabled_by_order.map do |form_section|
       form_section.fields
@@ -146,7 +145,7 @@ class FormSection < CouchRestRails::Document
   protected
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != f.name }
+    unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
     unique || [false, "The name '#{name}' is already taken."]
   end
 end

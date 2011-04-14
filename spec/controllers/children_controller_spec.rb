@@ -145,6 +145,19 @@ describe ChildrenController do
       history['changes'].should have_key('current_photo_key')
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
+
+    it "should allow a records ID to be specified to create a new record with a known id" do
+      new_uuid = UUIDTools::UUID.random_create()
+      put :update, :id => new_uuid.to_s,
+        :child => {
+            :id => new_uuid.to_s,
+            :_id => new_uuid.to_s,
+            :last_known_location => "London",
+            :age => "7"
+        }
+      Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
+    end
+
   end
 
   describe "GET search" do
