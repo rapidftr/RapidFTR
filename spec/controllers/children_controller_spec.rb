@@ -21,6 +21,7 @@ describe ChildrenController do
   before do
     Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
     fake_login
+    @controller.stub!(:current_user_name).and_return('foo-user')
   end
 
   after do
@@ -325,6 +326,13 @@ describe ChildrenController do
   end
 
   describe "GET photo_pdf" do
+    before do
+      user = mock(:user)
+      user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+      User.stub!(:find_by_user_name).and_return user
+      @controller.stub!(:current_user_name).and_return('foo-user')
+    end
+
     it 'extracts a single selected id from post params correctly' do
       stub_out_pdf_generator
       Child.should_receive(:get).with('a_child_id')
@@ -368,6 +376,12 @@ describe ChildrenController do
   end
 
   describe "GET export_photo_to_pdf" do
+    before do
+      @user = mock(:user)
+      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+      User.stub!(:find_by_user_name).and_return @user
+      @controller.stub!(:current_user_name).and_return('foo-user')
+    end
     it "should return the photo wall pdf for selected child" do
       Child.should_receive(:get).with('1').and_return(
         stub_child = stub('child', :unique_identifier => '1'))
@@ -375,7 +389,8 @@ describe ChildrenController do
       PdfGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
       pdf_generator.should_receive(:child_photo).with(stub_child).and_return(:fake_pdf_data)
 
-      Clock.stub!(:now).and_return(stub('clock', :strftime => '20000101-2015'))
+#MT: TODO - Fix this stubbing
+      Clock.stub!(:now).and_return(stub('clock', :in_time_zone => DateTime.parse('2000-01-01 20:15')))#:strftime => '20000101-2015'))
       @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-2015.pdf', :type => 'application/pdf')
 
       get :export_photo_to_pdf, :id => '1'
