@@ -251,7 +251,7 @@ class Child < CouchRestRails::Document
   end
   
   def deprecated_fields
-    system_fields = ["created_at", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
+    system_fields = ["created_at","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
     existing_fields = system_fields + FormSection.all_enabled_child_fields.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end
