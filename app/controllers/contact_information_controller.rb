@@ -1,5 +1,9 @@
 class ContactInformationController < ApplicationController
   skip_before_filter :check_authentication, :only => %w{show}
+  
+  before_filter :administrators_only, :except => %w{show}
+
+  # GET /contact_information/Administrator  
   def show
     @contact_information = ContactInformation.get_by_id(params[:id]) 
     respond_to do |format|
@@ -10,14 +14,11 @@ class ContactInformationController < ApplicationController
 
   # GET /contact_information/Administrator/edit
   def edit
-    administrators_only
     @contact_information = ContactInformation.get_or_create(params[:id])
   end
   
-  # POST /contact_information/Administrator
-  
+  # PUT /contact_information/Administrator
   def update
-    administrators_only
     @contact_information = ContactInformation.get_by_id(params[:id])
     @contact_information.update_attributes(params[:contact_information])  
     @contact_information.save!

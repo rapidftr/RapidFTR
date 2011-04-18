@@ -72,7 +72,6 @@ Feature: As an user, I should be able to log in.
 
     Then I should not see "Logged in as"
 
-  @wip
   Scenario: I should see the Contact & Help page even when I'm not logged in
 	Given the following admin contact info:
       | key | value |
