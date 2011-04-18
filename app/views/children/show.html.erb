@@ -21,6 +21,9 @@
   <% if @child['last_updated_by']%>
     <h3>Last updated: <%= @child['last_updated_at'] %> </h3>
   <% end %>
+  <% if @child['posted_from']=="Mobile" %>
+    <h3>Posted from the mobile client at: <%= @child['posted_at'] %> </h3>
+  <% end %>
 </div>
 
 <%= render :partial => "show_form_section" %>
