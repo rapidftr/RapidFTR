@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
 
   # TODO Remove duplication in ApplicationHelper
   def current_user_name
-    session = get_session
+    session = app_session
     return session.user_name unless session.nil?
   end
 

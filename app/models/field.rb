@@ -65,6 +65,11 @@ class Field < Hash
     true
   end
   
+  def display_name_for_field_selector
+    disabled = self.enabled? ? "" : " (Disabled)"
+    "#{display_name}#{disabled}"
+  end
+  
   def validate_unique
     return true unless new? && form
     return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.name == name})

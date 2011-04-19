@@ -43,6 +43,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 /* default: forms > List of radio buttons */
 .default-form dl.radioList { overflow: hidden; }
 .default-form .radioList dt { clear: both; float: left; text-align: right; width: 150px; margin-right: 10px; padding-bottom: .5em; font-weight: bold; color: #678; }
+.default-form .help-text {font-weight:normal; color:#666}
 .default-form .radioList dd { float: left; width: 200px; padding-bottom: 1em; }
 .default-form .radioList p { margin-bottom: 0; }
 .default-form .radioList label { float: none; width: auto; font-weight: normal; }
@@ -71,8 +72,9 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .device-information { clear: both; margin-top: 3em; }
 
 /* default : forms > help text */
-.default-form .help-text { font-style: italic; width: 100px; float: right; display: block;}
+.default-form .help-text { font-style: italic; float: right; display: block;}
 .default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
+.default-form .help-text-checkbox{ font-style:italic; display:block;}
 
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
@@ -230,7 +232,7 @@ div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
 div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 tr.rowDisabled {  font-style: italic; }
 /* fields list page */
-.direction-button { display:none }
+.direction-button, .delete-button { display:none }
 
 /* error summary */
 .errorExplanation { color: #990000; background-color: #ffdddd; border: 1px solid #990000; padding: 10px; margin-bottom: 10px; }
@@ -273,7 +275,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .criteria-value { margin: 0px 10px; width: 240px;}
 
-.criteria_menu { position:absolute; }
+.criteria_menu { position:absolute; z-index:1000; }
 .criteria_menu .content { overflow:hidden; background-color: #EEE; padding: 8px 6px 8px 6px; z-index:200; position:relative; border: 1px solid #CCC; }
 .criteria_menu p { margin:0; }
 .criteria_menu a { text-decoration: underline; color: blue; cursor: pointer; }
@@ -296,6 +298,8 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB')";
 		/* For IE 5.5 - 7 */
 		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB');
+		
+		
 }
 
 

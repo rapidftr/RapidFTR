@@ -2,4 +2,12 @@
   <%= label_tag date_field.tag_name_attribute, date_field.display_name %>
   <%= text_field_tag date_field.tag_name_attribute, @child[date_field.name] %>
   <%= javascript_tag "$(document).ready(function(){ $(\"##{date_field.tag_id}\").datepicker({ dateFormat: 'dd M yy' }); });" %>
+  <% if date_field.help_text.present?%> 
+  <br />
+  <span class='help-text-container'>
+    <span class='help-text'>
+      <%=date_field.help_text%>
+    </span>
+  </span>
+  <% end%>
 </p>

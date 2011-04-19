@@ -68,4 +68,4 @@ Feature: Create new forms
     When I press "Save Form"
 
     Then I am on form section page
-    And I should see the text "Disabled" in the enabled column for the form section "new_form_1"
+    And I should see the text "Hidden" in the enabled column for the form section "new_form_1"

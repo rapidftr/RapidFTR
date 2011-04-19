@@ -31,7 +31,6 @@ class FormSection < CouchRestRails::Document
     all_child_fields.map{ |field| field["name"] }
   end
   
-  
   def self.all_enabled_child_fields
     enabled_by_order.map do |form_section|
       form_section.fields
@@ -94,6 +93,14 @@ class FormSection < CouchRestRails::Document
     unique_id
   end
   
+  def is_first field_to_check
+    field_to_check == fields.at(0)
+  end
+
+  def is_last field_to_check
+    field_to_check == fields.at(fields.length-1)
+  end
+
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
     if (field)
@@ -102,7 +109,7 @@ class FormSection < CouchRestRails::Document
       save()
     end
   end
-  
+
   def move_field field_to_move, offset
     field_index_1 = fields.index(field_to_move)
     field_index_2 = field_index_1 + offset
@@ -138,7 +145,7 @@ class FormSection < CouchRestRails::Document
   protected
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != f.name }
+    unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
     unique || [false, "The name '#{name}' is already taken."]
   end
 end

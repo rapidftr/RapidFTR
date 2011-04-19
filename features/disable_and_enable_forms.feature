@@ -28,12 +28,12 @@ Feature: Disable and enable forms
     Given I am logged in as an admin
     And I am on the form section page
 
-    Then I should see the text "Disabled" in the enabled column for the form section "caregiver_details"
+    Then I should see the text "Hidden" in the enabled column for the form section "caregiver_details"
 
     When I check "sections_caregiver_details"
-    And I press "Enable"
+    And I press "Show"
 
-    Then I should see the text "Enabled" in the enabled column for the form section "caregiver_details"
+    Then I should see the text "Visible" in the enabled column for the form section "caregiver_details"
     And the checkbox with id "<checkbox_id>" <has_this_value>
 
   Examples:
