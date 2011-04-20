@@ -27,7 +27,7 @@ module RapidFTR
               Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box"),
       ]
 
-      FormSection.create!("name" =>"Basic Identity", "enabled"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"basic_details", "editable"=>true, :fields => iauamsc_registration_fields, :perm_enabled => true)
+      FormSection.create!("name" =>"Basic Identity", "enabled"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"iauamsc_registration", "editable"=>true, :fields => iauamsc_registration_fields, :perm_enabled => true)
 
       family_details_fields = [
               Field.new("name" => "fathers_name", "display_name" => "Father's Name", "type" => "text_field"),
@@ -78,7 +78,7 @@ module RapidFTR
     
       ]
 
-      FormSection.create!("name" =>"Care Arrangements", "enabled"=>true, :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields => current_care_fields)
+      FormSection.create!("name" =>"Care Arrangements", "enabled"=>true, :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"care_arrangements", :fields => current_care_fields)
 
       separation_history_fields = [
               Field.new("name" => "separation_date", "display_name" => "Date of Separation", "type" => "text_field"),
@@ -129,7 +129,7 @@ module RapidFTR
 
       ]
 	            	            
-      FormSection.create!("name" =>"Childs Wishes", "enabled"=>true, :description =>"", :order=> 6, :unique_id=>"child_wishes", :fields => child_wishes_fields)
+      FormSection.create!("name" =>"Childs Wishes", "enabled"=>true, :description =>"", :order=> 6, :unique_id=>"childs_wishes", :fields => child_wishes_fields)
               
       other_org_fields = [
               Field.new("name" => "other_org_interview_status", "display_name" => "Has the child been interviewed by another organization?", "type" => "select_box", "option_strings" => ["", "Yes", "No"]),  
@@ -141,7 +141,7 @@ module RapidFTR
 
       ]
 	            	            
-      FormSection.create!("name" =>"Other Interviews", "enabled"=>true, :description =>"", :order=> 7, :unique_id=>"other_org", :fields => other_org_fields)              
+      FormSection.create!("name" =>"Other Interviews", "enabled"=>true, :description =>"", :order=> 7, :unique_id=>"other_interviews", :fields => other_org_fields)              
 	            	            
          
       other_info_fields = [
@@ -149,7 +149,7 @@ module RapidFTR
 
       ]	            	  
       
-      FormSection.create!("name" =>"Other Tracing Info", "enabled"=>true, :description =>"", :order=> 8, :unique_id=>"additional_info", :fields => other_info_fields)   	            	            
+      FormSection.create!("name" =>"Other Tracing Info", "enabled"=>true, :description =>"", :order=> 8, :unique_id=>"other_tracing_info", :fields => other_info_fields)   	            	            
     	   
 
       interview_details_fields = [   	   
