@@ -43,7 +43,15 @@ class UsersController < ApplicationController
   end
 
   def update
+    :check_authentication
+
+    session = app_session
+ 
     @user = User.get(params[:id])
+    unless session.admin? or @user.user_name == current_user_name
+      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
+    end
+
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
       redirect_to(@user) 
