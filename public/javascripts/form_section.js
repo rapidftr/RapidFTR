@@ -1,8 +1,10 @@
 $(document).ready(function() {
 	initOrderingColumns();
+	$("a.delete").click(deleteItem);
 	$("a.moveDown").click(moveDown);
 	$("a.moveUp").click(moveUp);
 	$("input#save_order").click(saveOrder);
+	
 });
 
 function initOrderingColumns() {
@@ -27,17 +29,6 @@ function initOrderingColumns() {
 
 	$("#form_sections tbody tr").each(function(index, element){	$(element).find(".updatedFormSectionOrder :input").val(index + 1); });
 }
-function changeDirection(fieldName, isUp){
-    var curAction= $('#changeDirection').attr('action');
-    if (isUp){
-	curAction += 'move_up';
-    }else{
-	curAction += 'move_down';
-    }
-    $('#changeDirection').attr('action', curAction);
-    $('#changeDirectionFieldName').val(fieldName);
-    $('#changeDirectionSubmit').click();
-}
 function moveUp()
 {
 	var row = $(this).parents("tr");
@@ -51,7 +42,25 @@ function moveUp()
 	    initOrderingColumns();
 	}
 }
-
+function changeDirection(fieldName, isUp){
+    var curAction= $('#changeDirection').attr('action');
+    if (isUp){
+	curAction += 'move_up';
+    }else{
+	curAction += 'move_down';
+    }
+    $('#changeDirection').attr('action', curAction);
+    $('#changeDirectionFieldName').val(fieldName);
+    $('#changeDirectionSubmit').click();
+}
+function deleteItem(){
+    var td = $(this).parents("td");
+    var fieldName = td.find("input[name=field_name]").val();
+    $('#deleteFieldName').val(fieldName);
+    if (confirm("Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field.")){	
+	$('#deleteSubmit').click();
+    }
+}
 function moveDown()
 {
 	var row = $(this).parents("tr");
