@@ -19,6 +19,8 @@ ActionController::Routing::Routes.draw do |map|
   map.child_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 
+  map.resource :myaccount
+  
   map.resources :users
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index
