@@ -33,7 +33,7 @@ function moveUp()
 {
 	var row = $(this).parents("tr");
 	var prevRow = row.prev("tr");
-	prevRow.before(row);
+	//prevRow.before(row);
 	if ($('#editFormDetails').length === 1){
 	    var div = $(this).parents("div");
 	    var fieldName = div.find("input[name=field_name]").val();
@@ -41,6 +41,7 @@ function moveUp()
 	}else{
 	    initOrderingColumns();
 	}
+	return false;
 }
 function changeDirection(fieldName, isUp){
     var curAction= $('#changeDirection').attr('action');
@@ -65,7 +66,7 @@ function moveDown()
 {
 	var row = $(this).parents("tr");
 	var prevRow = row.next("tr");
-	prevRow.after(row);
+	//	prevRow.after(row);
 	if ($('#editFormDetails').length === 1){
 	    var div = $(this).parents("div");
 	    var fieldName = div.find("input[name=field_name]").val();
@@ -73,6 +74,7 @@ function moveDown()
 	}else{
 	    initOrderingColumns();
 	}
+	return false;
 }
 
 function saveOrder(event) {
