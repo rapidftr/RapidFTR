@@ -11,8 +11,7 @@ Feature:
 
     Given I am on the new child page
 
-    When I fill in "Haiti" for "Last known location"
-    And I fill in "John" for "Name"
+    When I fill in "John" for "Name"
     And I attach the file "features/resources/jorge.jpg" to "photo"
     And I press "Save"
 
@@ -23,7 +22,7 @@ Feature:
 
     Given I am on the new child page
 
-    When I fill in the basic details of a child
+    When I fill in the basic photo details of a child
     And I attach the file "features/resources/textfile.txt" to "photo"
     And I press "Save"
 
