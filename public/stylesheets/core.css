@@ -166,7 +166,7 @@ td.checkbox { text-align: center;}
 /* profile page */
 .profile-page .page-content { background-position: 650px 0;}
 .profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
-.profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
+.profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2-sliver.gif); background-repeat:repeat-y; background-position: 0 0}
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
 .profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
 .profile-page .form-section-info { padding-top: .5em; }
