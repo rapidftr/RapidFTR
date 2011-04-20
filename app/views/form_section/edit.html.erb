@@ -5,7 +5,11 @@
   <h3>Details</h3>
   <p>
     <%= f.label :name %>
+    <% if not @form_section.perm_enabled? %>
     <%= f.text_field :name %>
+    <% else %>
+    <%= @form_section.name %>
+    <% end %>
   </p>
   <p>
     <%= f.label :description %>
