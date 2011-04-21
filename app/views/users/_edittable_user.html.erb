@@ -97,9 +97,9 @@
     <% end %>
 
   </fieldset>
-  
+  <% if is_admin? %>
   <%= render :partial => "devices", :object => @user.devices %>
-
+  <% end %>
   <%= submit_button(edittable_user.new_record? ? 'Create' : 'Update') %>
   <%= cancel_button(users_path) %>
 <% end %>
