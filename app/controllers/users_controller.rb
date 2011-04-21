@@ -7,7 +7,13 @@ class UsersController < ApplicationController
   end
 
   def show
+    :check_authentication
+
+    session = app_session
     @user = User.get(params[:id])
+    unless session.admin? or @user.user_name == current_user_name   
+      raise AuthorizationFailure.new('Not permitted to view page')      
+    end
   end
 
   def new
@@ -20,7 +26,7 @@ class UsersController < ApplicationController
     session = app_session
     
     @user = User.get(params[:id])
-    unless session.admin? or @user.user_name == current_user_name
+    unless session.admin? or @user.user_name == current_user_name   
       raise AuthorizationFailure.new('Not permitted to view page')
     end
   end
