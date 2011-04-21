@@ -14,9 +14,7 @@ function initOrderingColumns() {
 	});
 	
 	var fieldToStartFrom = 2;
-	if ($('#editFormDetails').length === 1){
-	    fieldToStartFrom = 1;
-	}
+
 	$("#form_sections tbody tr:nth-child("+fieldToStartFrom+")").each(function(index, element){
 		$("a.moveDown", element).show();
 		$("a.moveUp", element).hide();

@@ -49,7 +49,9 @@
     <tr id="<%="#{field.name}Row"%>" class="<%= field.enabled? ? "rowEnabled": "rowDisabled" %>">
       <% if @form_section.editable? %>
       <td>
+	<% if field.editable? %>
         <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
+	<% end %>
       </td>
       <td>
         <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
