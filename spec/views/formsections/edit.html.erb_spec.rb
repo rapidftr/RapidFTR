@@ -41,4 +41,30 @@ describe "form_section/edit.html.erb" do
     document.css("#twoRow .down-link").should be_empty
     document.css("#oneRow .down-link").should_not be_empty
   end
+  it "should not have Down or Up UI elements for uneditable field" do
+    fields = [{:name=>"topfield"}, {:name=>"field", :editable=>false},{:name=>"bottomfield"}]
+    form_section = FormSection.new :fields => fields, :unique_id=>"foo"
+    
+    assigns[:form_section] = form_section
+    render
+
+    document = Nokogiri::HTML(response.body)
+
+    document.css("#fieldRow .up-link").should be_empty
+    document.css("#fieldRow .down-link").should be_empty
+  end
+
+  it "should not have edit or delete UI elements for uneditable fields" do
+    fields = [{:name=>"topfield"}, {:name=>"field", :editable=>false},{:name=>"bottomfield"}]
+    form_section = FormSection.new :fields => fields, :unique_id=>"foo"
+    
+    assigns[:form_section] = form_section
+    render
+
+    document = Nokogiri::HTML(response.body)
+        
+    document.css("#field_Delete").should be_empty
+    document.css("#field_edit").should be_empty
+  end
+
 end
