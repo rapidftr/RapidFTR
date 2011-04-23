@@ -470,9 +470,9 @@ describe Child do
     before(:each) do
       @child = Child.new
       @child.stub!(:attach)
-      @file_attachment = mock_model(FileAttachment, :data => "My Data", :name => "some name", :content_type => "audio/my-mime")
+      @file_attachment = mock_model(FileAttachment, :data => "My Data", :name => "some name", :mime_type => Mime::Type.lookup("audio/mpeg"))
     end
-    
+
     it "should create an 'original' key in the audio hash" do
       @child.audio= uploadable_audio
       @child['audio_attachments'].should have_key('original')
@@ -501,7 +501,43 @@ describe Child do
     it "should store the audio attachment key with the 'mime-type' key in the audio hash" do
       FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
       @child.audio= uploadable_audio
-      @child['audio_attachments']['my-mime'].should == 'some name'
+      @child['audio_attachments']['mp3'].should == 'some name'
+    end
+
+  end
+
+  describe ".add_audio_file" do
+    before (:each) do
+      @file = stub!("File")
+      @file.stub!(:read).and_return("ABC")
+      @file_attachment = FileAttachment.new("attachment_file_name", "audio/mpeg", "data")
+    end
+
+    it "should use Mime::Type.lookup to create file name postfix" do
+      child = Child.new()
+      Mime::Type.should_receive(:lookup).exactly(2).times.with("audio/mpeg").and_return("abc".to_sym)
+      child.add_audio_file(@file, "audio/mpeg")
+    end
+
+    it "should create a file attachment for the file with 'audio' prefix, mime mediatype as postfix" do
+      child = Child.new()
+      Mime::Type.stub!(:lookup).and_return("abc".to_sym)
+      FileAttachment.should_receive(:from_file).with(@file, "audio/mpeg", "audio", "abc").and_return(@file_attachment)
+      child.add_audio_file(@file, "audio/mpeg")
+    end
+
+    it "should attach the file to the child record with the name of the attachment as the key" do
+      child = Child.new()
+      FileAttachment.stub!(:from_file).and_return(@file_attachment)
+      child.should_receive(:attach).with(@file_attachment, "attachment_file_name")
+      child.add_audio_file(@file, "audio/mpeg")
+    end
+
+    it "should add attachments key attachment to the audio hash using the content's media type as key" do
+      child = Child.new()
+      FileAttachment.stub!(:from_file).and_return(@file_attachment)
+      child.add_audio_file(@file, "audio/mpeg")
+      child['audio_attachments']['mp3'].should == "attachment_file_name"
     end
 
   end
@@ -514,7 +550,7 @@ describe Child do
 
     it "should check if 'original' audio attachment is present" do
       child = Child.create('audio' => uploadable_audio)
-      child['audio_attachments']["original"] = "ThisIsNotAnAttachmentName"
+      child['audio_attachments']['original'] = "ThisIsNotAnAttachmentName"
 
       child.should_receive(:has_attachment?).with('ThisIsNotAnAttachmentName').and_return(false)
 
@@ -523,7 +559,7 @@ describe Child do
 
     it "should return nil if the recorded audio key is not an attachment" do
       child = Child.create('audio' => uploadable_audio)
-      child['audio_attachments']["original"] = "ThisIsNotAnAttachmentName"
+      child['audio_attachments']['original'] = "ThisIsNotAnAttachmentName"
       child.audio.should be_nil
     end
 
