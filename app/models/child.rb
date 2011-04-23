@@ -153,8 +153,15 @@ class Child < CouchRestRails::Document
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
+
     attach(attachment, attachment.name)
     setup_original_audio(attachment)
+    setup_mime_specific_audio(attachment)
+  end
+
+  def add_audio_file(audio_file, content_type)
+    attachment = FileAttachment.from_file(audio_file, content_type, "audio", key_for_content_type(content_type))
+    attach(attachment, attachment.name)
     setup_mime_specific_audio(attachment)
   end
 
@@ -242,9 +249,14 @@ class Child < CouchRestRails::Document
     audio_attachments['original'] = attachment.name
   end
 
-  def setup_mime_specific_audio(attachment)
-    content_type_for_key = attachment.content_type.split('/')[1]
-    self['audio_attachments'][content_type_for_key] = attachment.name
+  def setup_mime_specific_audio(file_attachment)
+    audio_attachments = (self['audio_attachments'] ||= {})
+    content_type_for_key = file_attachment.mime_type.to_sym.to_s
+    audio_attachments[content_type_for_key] = file_attachment.name
+  end
+
+  def key_for_content_type(content_type)
+    Mime::Type.lookup(content_type).to_sym.to_s
   end
   
 end
