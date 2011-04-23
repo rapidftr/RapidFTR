@@ -140,18 +140,22 @@ class Child < CouchRestRails::Document
   end
 
   def audio
-    attachment_name = self['recorded_audio']
-    return nil unless attachment_name && (has_attachment? attachment_name)
-    data = read_attachment attachment_name
-    content_type = self['_attachments'][attachment_name]['content_type']
-    FileAttachment.new attachment_name, content_type, data
+    return nil if self['audio_attachments'].nil?
+    attachment_key = self['audio_attachments']['original']
+    return nil unless has_attachment? attachment_key
+
+    data = read_attachment attachment_key
+    content_type = self['_attachments'][attachment_key]['content_type']
+    FileAttachment.new attachment_key, content_type, data
   end
 
   def audio=(audio_file)
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-    attach(attachment, 'recorded_audio')
+    attach(attachment, attachment.name)
+    setup_original_audio(attachment)
+    setup_mime_specific_audio(attachment)
   end
 
   def media_for_key(media_key)
@@ -231,4 +235,16 @@ class Child < CouchRestRails::Document
     existing_fields = system_fields + FormSection.all_enabled_child_fields.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end
+
+  def setup_original_audio(attachment)
+    audio_attachments = (self['audio_attachments'] ||= {})
+    audio_attachments.clear
+    audio_attachments['original'] = attachment.name
+  end
+
+  def setup_mime_specific_audio(attachment)
+    content_type_for_key = attachment.content_type.split('/')[1]
+    self['audio_attachments'][content_type_for_key] = attachment.name
+  end
+  
 end

@@ -3,9 +3,6 @@ require 'spec_helper'
 
 describe Child do
 
-
-
- 
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
@@ -469,22 +466,111 @@ describe Child do
     end
   end
 
+  describe ".audio=" do
+    before(:each) do
+      @child = Child.new
+      @child.stub!(:attach)
+      @file_attachment = mock_model(FileAttachment, :data => "My Data", :name => "some name", :content_type => "audio/my-mime")
+    end
+    
+    it "should create an 'original' key in the audio hash" do
+      @child.audio= uploadable_audio
+      @child['audio_attachments'].should have_key('original')
+    end
+
+    it "should create a FileAttachment with uploaded file and prefix 'audio'" do
+      uploaded_file = uploadable_audio
+      FileAttachment.should_receive(:from_uploadable_file).with(uploaded_file, "audio").and_return(@file_attachment)
+      @child.audio= uploaded_file
+    end
+
+    it "should attach the created FileAttachment to the document with a key the same as the file name" do
+      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+
+      @child.should_receive(:attach).with(@file_attachment, 'some name')
+
+      @child.audio= uploadable_audio
+    end
+
+    it "should store the audio attachment key with the 'original' key in the audio hash" do
+      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+      @child.audio= uploadable_audio
+      @child['audio_attachments']['original'].should == 'some name'
+    end
+
+    it "should store the audio attachment key with the 'mime-type' key in the audio hash" do
+      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+      @child.audio= uploadable_audio
+      @child['audio_attachments']['my-mime'].should == 'some name'
+    end
+
+  end
+
+  describe ".audio" do
+    it "should return nil if no audio file has been set" do
+      child = Child.new
+      child.audio.should be_nil
+    end
+
+    it "should check if 'original' audio attachment is present" do
+      child = Child.create('audio' => uploadable_audio)
+      child['audio_attachments']["original"] = "ThisIsNotAnAttachmentName"
+
+      child.should_receive(:has_attachment?).with('ThisIsNotAnAttachmentName').and_return(false)
+
+      child.audio
+    end
+
+    it "should return nil if the recorded audio key is not an attachment" do
+      child = Child.create('audio' => uploadable_audio)
+      child['audio_attachments']["original"] = "ThisIsNotAnAttachmentName"
+      child.audio.should be_nil
+    end
+
+    it "should retrieve attachment data for attachment key" do
+      current_time = Time.parse("Feb 20 2010 12:04:32")
+      Time.stub!(:now).and_return current_time
+      child = Child.create('audio' => uploadable_audio)
+
+      child.should_receive(:read_attachment).with('audio-2010-02-20T120432').and_return("Some audio")
+
+      child.audio
+    end
+
+    it 'should create a FileAttachment with the read attachment and the attachments content type' do
+      current_time = Time.parse("Feb 20 2010 12:04:32")
+      Time.stub!(:now).and_return current_time
+      uploaded_amr = uploadable_audio_amr
+      child = Child.create('audio' => uploaded_amr)
+      expected_data = 'LA! LA! LA! Audio Data'
+      child.stub!(:read_attachment).and_return(expected_data)
+
+      FileAttachment.should_receive(:new).with('audio-2010-02-20T120432', uploaded_amr.content_type, expected_data)
+
+      child.audio
+
+    end
+
+  end
+
+
   describe "audio attachment" do
+
     it "should create a field with recorded_audio on creation" do
       current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
 
-      child['recorded_audio'].should == 'audio-2010-01-20T171032'
+      child['audio_attachments']['original'].should == 'audio-2010-01-20T171032'
     end
 
-    it "should update recorded audio on a audio change" do
+    it "should change audio file if a new audio file is set" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
 
       updated_at_time = Time.parse("Feb 20 2010 12:04:32")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :audio => uploadable_audio
-      child['recorded_audio'].should == 'audio-2010-02-20T120432'
+      child['audio_attachments']['original'].should == 'audio-2010-02-20T120432'
     end
 
   end
@@ -739,14 +825,6 @@ describe Child do
     it "should return nil if the record has no attached photo" do
       child = create_child "Bob McBobberson"
       Child.all.find{|c| c.id == child.id}.photo.should be_nil
-    end
-  end
-  
-  describe ".audio" do
-    it "should return nil if the recorded audio key is not an attachment" do
-      child = Child.create('audio' => uploadable_audio)
-      child["recorded_audio"] = "ThisIsNotAnAttachmentName"
-      child.audio.should be_nil
     end
   end
   
