@@ -14,7 +14,7 @@ module RapidFTR
               Field.new("name" => "origin", "display_name" => "Origin", "type" => "text_field"),
               Field.new("name" => "last_known_location", "display_name" => "Last Known Location", "type" => "text_field"),
               Field.new("name" => "date_of_separation", "display_name" => "Date of Separation", "type" => "select_box", "option_strings" => ["", "1-2 weeks ago", "2-4 weeks ago", "1-6 months ago", "6 months to 1 year ago", "More than 1 year ago"]),
-              Field.new("name" => "current_photo_key", "display_name" => "Current Photo Key", "type" => "photo_upload_box"),
+              Field.new("name" => "current_photo_key", "display_name" => "Photos", "type" => "photo_upload_box"),
               Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box")
       ]
 

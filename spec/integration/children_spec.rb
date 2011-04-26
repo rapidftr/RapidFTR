@@ -43,10 +43,11 @@ describe Child do
     Time.stub!(:now).and_return Time.parse("Feb 20 2010 12:04:15")
 
     created_child.update_attributes :photo => uploadable_photo
-
+    
     updated_child = Child.get(child.id)
-    verify_attachment(updated_child.media_for_key('photo-2010-01-20T120415'), uploadable_photo_jeff)
-    verify_attachment(updated_child.media_for_key('photo-2010-02-20T120415'), uploadable_photo)
+    photo_keys = updated_child['photo_keys']
+    verify_attachment(updated_child.media_for_key(photo_keys.first), uploadable_photo_jeff)
+    verify_attachment(updated_child.media_for_key(photo_keys.last), uploadable_photo)
   end
 end
 

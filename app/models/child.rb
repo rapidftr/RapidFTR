@@ -7,7 +7,9 @@ class Child < CouchRestRails::Document
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
 
   before_save :initialize_history, :if => :new?
+  before_save :update_photo_keys
   before_save :update_history, :unless => :new?
+
   property :age
   property :name
   property :nickname
@@ -121,14 +123,24 @@ class Child < CouchRestRails::Document
 
     name = FileAttachment.generate_name
     attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
-    attach(attachment, 'current_photo_key')
+    @photo_keys ||= []
+    @photo_keys << attachment.name
+    attach(attachment)
   end
 
   def photo=(photo_file)
-    return unless photo_file.respond_to? :content_type
-    @file_name = photo_file.original_path
-    attachment = FileAttachment.from_uploadable_file(photo_file, "photo")
-    attach(attachment, 'current_photo_key')
+    return unless photo_file
+    #basically to support any client passing a single photo param, only used by child_spec AFAIK
+    unless photo_file.is_a? Hash
+      photo_file = {'0' => photo_file}
+    end
+    photo_file.values.select {|photo| photo.respond_to? :content_type}.each do |photo|
+        @file_name = photo.original_path
+        attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
+        @photo_keys ||= []
+        @photo_keys << attachment.name
+        attach(attachment)
+    end
   end
 
   def photo
@@ -138,6 +150,7 @@ class Child < CouchRestRails::Document
     content_type = self['_attachments'][attachment_name]['content_type']
     FileAttachment.new attachment_name, content_type, data
   end
+  
 
   def audio
     attachment_name = self['recorded_audio']
@@ -151,7 +164,8 @@ class Child < CouchRestRails::Document
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-    attach(attachment, 'recorded_audio')
+    self['recorded_audio'] = attachment.name
+    attach(attachment)
   end
 
   def media_for_key(media_key)
@@ -210,7 +224,11 @@ class Child < CouchRestRails::Document
   def changed?(field_name)
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
-    self[field_name].strip != @from_child[field_name].strip
+    if self[field_name].respond_to? :strip
+       self[field_name].strip != @from_child[field_name].strip
+    else
+       self[field_name] != @from_child[field_name]
+    end
   end
   
   def is_filled_in? field
@@ -218,13 +236,18 @@ class Child < CouchRestRails::Document
   end
 
   private
-  def attach(attachment, key)
-    self[key] = attachment.name
+  def update_photo_keys
+    return unless @photo_keys
+    self['photo_keys'] ||= [] 
+    self['photo_keys'].concat @photo_keys
+    self['current_photo_key'] = @photo_keys.last
+  end
+  
+  def attach(attachment)
     create_attachment :name => attachment.name,
                       :content_type => attachment.content_type,
-                      :file => attachment.data
-
-  end
+                      :file => attachment.data  
+  end  
   
   def deprecated_fields
     system_fields = ["created_at", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]

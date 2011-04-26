@@ -18,7 +18,8 @@ Feature:
     And I fill in "London" for "Origin"
     And I fill in "Haiti" for "Last known location"
     And I select "1-2 weeks ago" from "Date of separation"
-    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I attach a photo "features/resources/jorge.jpg"
+
     And I press "Save"
 
     # editing the created record
@@ -30,7 +31,7 @@ Feature:
     And I fill in "Bombay" for "Origin"
     And I fill in "Zambia" for "Last known location"
     And I select "6 months to 1 year ago" from "Date of separation"
-    And I attach the file "features/resources/jeff.png" to "photo"
+    And I attach a photo "features/resources/jeff.png"
     And I press "Save"
 
     # verifying whether the edited record has been saved successfully
@@ -46,7 +47,7 @@ Feature:
 
    # checking if validations are still working fine
     Then I follow "Edit"
-    And I attach the file "features/resources/textfile.txt" to "photo"
+    And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
 

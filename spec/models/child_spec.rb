@@ -2,10 +2,6 @@ require 'spec_helper'
 
 
 describe Child do
-
-
-
- 
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
@@ -80,7 +76,7 @@ describe Child do
   end
 
   describe "update_properties_with_user_name" do
-    it "should reple old properties with updated ones" do
+    it "should replace old properties with updated ones" do
       child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
       new_properties = {"name" => "Dave", "age" => "35"}
       child.update_properties_with_user_name "some_user", nil, nil, new_properties
@@ -118,7 +114,8 @@ describe Child do
       Time.stub!(:now).and_return current_time
       child = Child.new
       child.update_properties_with_user_name "jdoe", uploadable_photo, nil, {}
-      child['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
+      key = child['_attachments'].keys.select {|key| key =~ /.*2010-01-17T140532/}.first
+      child['_attachments'][key]['data'].should_not be_blank
     end
 
     it "should not update attachments when the photo value is nil" do
@@ -404,68 +401,86 @@ describe Child do
   end
 
   describe "photo attachments" do
-    it "should create a field with current_photo_key on creation" do
+    before(:each) do
       current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
-      child['current_photo_key'].should == 'photo-2010-01-20T171032'
     end
 
-    it "should have current_photo_key as photo attachment key on creation" do
-      current_time = Time.parse("Jan 20 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+    context "with a single new photo" do
+      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}    
+      it "should create a field with current_photo_key on creation" do
+        child['photo_keys'].size.should == 1
+      end
+      
+      it "should create a field with current_photo_key on creation" do
+        child['current_photo_key'].should_not be_empty
+      end
+      
+      it "should have current_photo_key as photo attachment key on creation" do
+        child['_attachments'].should have_key(child['current_photo_key'])
+      end
 
-      child['_attachments'].should have_key('photo-2010-01-20T171032')
+      it "should only have one attachment on creation" do
+        child['_attachments'].size.should == 1
+      end
+
+      it "should have data after creation" do
+        Child.get(child.id)['_attachments'].values.first['length'].should be > 0
+      end
+      
+      it "should be able to read attachment after a photo change" do
+        attachment = child.media_for_key(child['current_photo_key'])
+        attachment.data.read.should == File.read(uploadable_photo.original_path)
+      end
     end
 
-    it "should only have one attachment on creation" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      child['_attachments'].size.should == 1
+    context "with multiple new photos" do
+      let(:child) {Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London')}    
+      it "should add photo key for each uploaded photo" do
+        child['photo_keys'].uniq.size.should == 2
+      end
+
+      it "should only the right number of attachments on creation" do
+        child['_attachments'].size.should == 2
+      end
+
+      it "should have current_photo_key as photo attachment key on creation" do
+        child['photo_keys'].each do |key|
+          child['_attachments'].should have_key(key)
+        end
+      end
+
+      it "should have data after creation" do
+        Child.get(child.id)['_attachments'].values.each do |value|
+          value['length'].should be > 0
+        end
+      end
+      
+      it "should have the last photo as the current photo key" do
+        child['current_photo_key'].should eql(child['photo_keys'].last)
+      end
     end
+    
+    context "when updating a photo" do
+      before(:each) do
+        updated_at_time = Time.parse("Feb 20 2010 12:04:32")
+        Time.stub!(:now).and_return updated_at_time
+        child.update_attributes :photo => uploadable_photo_jeff
+      end
+      
+      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}    
+      it "should update current_photo_key on a photo change" do
+        child['current_photo_key'] =~ /photo.*?-2010-02-20T120432/
+      end
 
-    it "should have data after creation" do
-      current_time = Time.parse("Jan 20 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      Child.get(child.id)['_attachments']['photo-2010-01-20T171032']['length'].should be > 0
-    end
+      it "should have updated current_photo_key as photo attachment key on a photo change" do
+        child['_attachments'].keys.join(' ').should =~  /photo.*-2010-02-20T120432/
+      end
 
-    it "should update current_photo_key on a photo change" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
-      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
-      Time.stub!(:now).and_return updated_at_time
-      child.update_attributes :photo => uploadable_photo_jeff
-
-      child['current_photo_key'].should == 'photo-2010-02-20T120432'
-    end
-
-    it "should have updated current_photo_key as photo attachment key on a photo change" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
-      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
-      Time.stub!(:now).and_return updated_at_time
-      child.update_attributes :photo => uploadable_photo_jeff
-
-      child['_attachments'].should have_key('photo-2010-02-20T120432')
-    end
-
-    it "should have photo data after a photo change" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
-      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
-      Time.stub!(:now).and_return updated_at_time
-      child.update_attributes :photo => uploadable_photo_jeff
-
-      Child.get(child.id)['_attachments']['photo-2010-02-20T120432']['length'].should be > 0
-    end
-
-    it "should be able to read attachment after a photo change" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      attachment = child.media_for_key(child['current_photo_key'])
-      attachment.data.read.should == File.read(uploadable_photo.original_path)
+      it "should have photo data after a photo change" do
+        key = Child.get(child.id)['_attachments'].keys.select {|key| key =~ /photo.*-2010-02-20T120432/}.first
+        Child.get(child.id)['_attachments'][key]['length'].should be > 0
+      end
     end
   end
 
@@ -489,8 +504,7 @@ describe Child do
 
   end
 
-  describe "history log" do
-    
+  describe "history log" do    
     before do
       form_section = FormSection.new :unique_id => "basic_details"
       form_section.add_text_field("last_known_location")
@@ -619,14 +633,14 @@ describe Child do
     it "should 'from' field with original current_photo_key on a photo addition" do
       updated_at_time = Time.parse("Jan 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child = Child.create('photo' => uploadable_photo_jorge, 'last_known_location' => 'London')
 
       updated_at_time = Time.parse("Feb 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
 
       changes = child['histories'].first['changes']
-      changes['current_photo_key']['from'].should == "photo-2010-01-20T120424"
+      changes['current_photo_key']['from'].should =~ /photo.*?-2010-01-20T120424/
     end
 
     it "should 'to' field with new current_photo_key on a photo addition" do
@@ -639,7 +653,7 @@ describe Child do
       child.update_attributes :photo => uploadable_photo_jeff
 
       changes = child['histories'].first['changes']
-      changes['current_photo_key']['to'].should == "photo-2010-02-20T120424"
+      changes['current_photo_key']['to'].should =~ /photo.*?-2010-02-20T120424/
     end
 
     it "should update history with username from last_updated_by" do

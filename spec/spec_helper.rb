@@ -5,6 +5,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'envi
 require 'spec/autorun'
 require 'spec/rails'
 require 'spec/support/matchers/attachment_response'
+require 'pp'
 
 # Uncomment the next line to use webrat's matchers
 require 'webrat/integrations/rspec-rails'
@@ -42,6 +43,11 @@ end
 def uploadable_photo_jeff
   uploadable_photo "features/resources/jeff.png"
 end
+
+def uploadable_photo_jorge
+  uploadable_photo "features/resources/jorge.jpg"
+end
+
 
 def uploadable_photo_gif
   uploadable_photo "features/resources/small.gif"
