@@ -1,6 +1,7 @@
+<% 5.times do |i|%>
 <p class="file">
   <%= label_tag "child[photo]", "Photo" %>
-  <%= file_field_tag "child[photo]0" %>
+  <%= file_field_tag "child[photo]#{i}" %>
   <% if photo_upload_box.help_text.present?%> 
   <br />
   <span class='help-text-container'>
@@ -10,6 +11,8 @@
   </span>
   <% end%>
 </p>
-<% if !@child.id.nil? %>
-<div class="thumbnail"><%= thumbnail_tag(@child) %></div>
+<% end %>
+
+<% @child.photos.each do |photo| %>
+    <div class="thumbnail"><%= thumbnail_tag(@child, photo.name) %></div>
 <% end %>

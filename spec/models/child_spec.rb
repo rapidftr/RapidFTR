@@ -405,6 +405,12 @@ describe Child do
       current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
     end
+    
+    context "with no photos" do
+      it "should have an empty set" do
+        Child.new.photos.should be_empty
+      end
+    end
 
     context "with a single new photo" do
       let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}    
@@ -422,6 +428,10 @@ describe Child do
 
       it "should only have one attachment on creation" do
         child['_attachments'].size.should == 1
+      end
+      
+      it "should only have one photo on creation" do
+        child.photos.size.should eql 1
       end
 
       it "should have data after creation" do
@@ -454,6 +464,10 @@ describe Child do
         Child.get(child.id)['_attachments'].values.each do |value|
           value['length'].should be > 0
         end
+      end
+      
+      it "should have corrent number of photos after creation" do
+        child.photos.size.should eql 2
       end
       
       it "should have the last photo as the current photo key" do

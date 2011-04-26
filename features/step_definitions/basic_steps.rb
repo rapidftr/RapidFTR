@@ -11,6 +11,14 @@ When /^I attach a photo "([^"]*)"$/ do |photo_path|
   }
 end
 
+When /^I attach the following photos:$/ do |table|
+  table.raw.each_with_index do |photo, i|
+    steps %Q{
+      When I attach the file "#{photo}" to "child[photo]#{i}"
+    }
+  end
+end
+
 Then /^I should see the thumbnail of "([^"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|
   thumbnail = current_dom.xpath("//img[@alt='#{name}' and contains(@src,'#{timestamp}')]").first
   thumbnail['src'].should =~ /photo.*-#{timestamp}/

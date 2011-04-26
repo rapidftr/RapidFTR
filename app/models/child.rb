@@ -143,14 +143,18 @@ class Child < CouchRestRails::Document
     end
   end
 
-  def photo
-    attachment_name = self['current_photo_key']
-    return if attachment_name.blank?
-    data = read_attachment attachment_name
-    content_type = self['_attachments'][attachment_name]['content_type']
-    FileAttachment.new attachment_name, content_type, data
+  def photos
+    return [] if self['photo_keys'].blank?
+    self['photo_keys'].collect do |key|
+      data = read_attachment key
+      content_type = self['_attachments'][key]['content_type']
+      FileAttachment.new key, content_type, data      
+    end
   end
   
+  def photo
+    photos.first
+  end
 
   def audio
     attachment_name = self['recorded_audio']
