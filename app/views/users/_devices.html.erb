@@ -10,7 +10,7 @@
     <tbody>
       <% devices.each do |device| %>
         <tr>
-          <td><%= device.imei %><%= hidden_field_tag "user[devices][][imei]", device.imei %></td>
+          <td><%= device.imei %><%= hidden_field_tag "user[devices][][imei]", device.imei %><%= hidden_field_tag "user[devices][][user_name]", device.user_name %></td>
           <td><%= check_box_tag "user[devices][][blacklisted]", true, device.blacklisted?  %></td>
         </tr>
       <% end %>

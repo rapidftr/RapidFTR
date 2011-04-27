@@ -24,11 +24,18 @@ When /^I login with user (.+):(.+) for device with imei (.+)$/ do |user, passwor
   post(sessions_path, {:imei => imei, :user_name => user, :password => password, :mobile_number => "123456"})
 end
 
-Then /^should_be_successful_login$/ do
+Then /^should be kill response for imei "(.+)"$/ do |imei|
+  #response.status.should =~ /401/
+  response_body.should == imei
+end
+
+Then /^should be successful login$/ do
   response_body.should_not =~ /sessions\/new/
 end
 
-Then /^should_be_unsuccessful_login$/ do
-  response_body.should =~ /sessions\/new/
+And /^I am using device with imei "(.+)"$/ do |imei|
+  session = Session.for_user(@user, nil)
+  session.imei = imei
+  session.save!
 end
 

@@ -7,7 +7,7 @@ class   ChildrenController < ApplicationController
   def index
     @page_name = "Listing children"
     @children = Child.all
-    @aside = 'search_sidebar'
+    @aside = 'shared/sidebar_links'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -111,11 +111,11 @@ class   ChildrenController < ApplicationController
   # PUT /children/1
   # PUT /children/1.xml
   def update
-    @child = Child.get(params[:id])
+    @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
+
     new_photo = params[:child].delete(:photo)
     new_audio = params[:child].delete(:audio)
     @child.update_properties_with_user_name(current_user_name, new_photo, new_audio, params[:child])
-
 
     respond_to do |format|
       if @child.save
@@ -148,6 +148,7 @@ class   ChildrenController < ApplicationController
 
   def search
     @page_name = "Child Search"
+    @aside = "shared/sidebar_links"
     if (params[:query])
       @search = Search.new(params[:query]) 
       if @search.valid?    

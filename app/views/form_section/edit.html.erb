@@ -32,7 +32,7 @@
 <thead>
   <tr>
     <th></th>
-    <th>Enabled</th>
+    <th>Visibility</th>
     <th>Name</th>
     <th colspan=4>Ordering</th>
   </tr>
@@ -45,16 +45,20 @@
             <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
           </td>
           <td>
-            <span class="enabledStatus"><%= field.enabled? ? "Enabled" : "Disabled" %></span>
+            <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
           </td>
       <% end %>
       <td><%= field.display_name %></td>
       <%if @form_section.editable?%>
         <td>
-		    <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
+	  <% if !@form_section.is_first field %>
+	  <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
+	  <%end%>
         </td>
         <td>
-		    <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
+	  <% if !@form_section.is_last field %>
+	  <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
+	  <%end%>
         </td>
         <td class='field-buttons'>
           <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 
@@ -71,9 +75,9 @@
   <tfoot>
     <tr>
       <% if @form_section.editable? %>
-        <th colspan=4><%= link_to "Add Custom Field", choose_field_path(@form_section.unique_id) %></th>
+        <th colspan=6><%= link_to "Add Custom Field", choose_field_path(@form_section.unique_id) %></th>
       <% else %>
-        <th colspan=4> <i>Fields on this form cannot be edited.</i> </th>
+        <th colspan=6> <i>Fields on this form cannot be edited.</i> </th>
       <% end %>
     </tr>
   </tfoot> 
@@ -81,8 +85,8 @@
 
 <% if @form_section.editable? %>
     <div class="formSectionButtons">
-      <%= submit_tag "Disable", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to disable fields?')"  }%>
-      <%= submit_tag "Enable", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to enable fields?')"  }%>
+      <%= submit_tag "Hide", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to hide fields?')"  }%>
+      <%= submit_tag "Show", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to show fields?')"  }%>
     </div>
 <% end %>
 <% end %>

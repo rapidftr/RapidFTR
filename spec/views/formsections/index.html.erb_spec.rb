@@ -12,7 +12,7 @@ end
 
 def enabled_icon_should_have_icon_class (form_section, expected_icon_class)
   enabled_icon = enabled_icon_for(form_section)
-  enabled_icon["class"].should contain(expected_icon_class)
+  enabled_icon["class"].should include(expected_icon_class)
 end
 
 def enabled_icon_should_have_text (form_section, expected_text)
@@ -50,8 +50,8 @@ describe "form_section/index.html.erb" do
   before :each do
     @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :perm_enabled => true
     @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> "false", "order"=>"101", "unique_id"=> "caregiver_details"
-
-    assigns[:form_sections] = [@form_section_1, @form_section_2]
+    @form_section_3 = FormSection.new "name" => "Family Details", "enabled" =>"true", "order"=>"20", "unique_id"=>"family_details"
+    assigns[:form_sections] = [@form_section_1, @form_section_2, @form_section_3]
     render
     @searchable_response = Hpricot(response.body)
   end
@@ -59,13 +59,15 @@ describe "form_section/index.html.erb" do
   it "renders a table row for each form section" do
     (@searchable_response.form_section_row_for @form_section_1.unique_id).should_not be_nil
     (@searchable_response.form_section_row_for @form_section_2.unique_id).should_not be_nil
+    (@searchable_response.form_section_row_for @form_section_3.unique_id).should_not be_nil
   end
 
   it "renders the name of each form section as a link" do
     form_section_names =  @searchable_response.form_section_names
-    form_section_names.length.should == 2
+    form_section_names.length.should == 3
     form_section_names[0].inner_html.should == "Basic Details"
     form_section_names[1].inner_html.should == "Caregiver Details"
+    form_section_names[2].inner_html.should == "Family Details"
   end
 
   it "renders a enable icon for each form section" do
@@ -77,18 +79,21 @@ describe "form_section/index.html.erb" do
     @searchable_response.to_s.include?("disable_form").should == true
   end
   it "renders the enabled status text for each form section" do
-    enabled_icon_should_have_text "basic_details", "Enabled"
-    enabled_icon_should_have_text "caregiver_details", "Disabled"
+    enabled_icon_should_have_text "basic_details", "Visible"
+    enabled_icon_should_have_text "caregiver_details", "Hidden"
+    enabled_icon_should_have_text "family_details", "Visible"
   end
   it "renders the description text for each form section" do
     should_have_description(@form_section_1)
   end
   it "renders the enable/disable checkbox for each form section" do
     should_have_enable_or_disable_checkbox(@form_section_2)
+    should_have_enable_or_disable_checkbox(@form_section_3)
     should_not_have_enable_or_disable_checkbox(@form_section_1)
   end
   it "renders the current order for each form section" do
     form_section_should_have_order(@form_section_1)
     form_section_should_have_order(@form_section_2)
+    form_section_should_have_order(@form_section_3)
   end
 end

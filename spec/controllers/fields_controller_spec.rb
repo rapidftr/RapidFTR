@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 def should_populate_form_section(action)
@@ -145,7 +146,7 @@ describe FieldsController do
       @form_section.should_receive(:disable_fields).with(fields_to_disable)
       @form_section.should_receive(:save)
 
-      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Disable', :fields => fields_to_disable
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Hide', :fields => fields_to_disable
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
 
@@ -155,7 +156,7 @@ describe FieldsController do
       @form_section.should_receive(:enable_fields).with(fields_to_enable)
       @form_section.should_receive(:save)
 
-      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Enable', :fields => fields_to_enable
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Show', :fields => fields_to_enable
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
   end

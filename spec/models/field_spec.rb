@@ -31,6 +31,14 @@ describe "Child record field view model" do
     field['option_strings'].should == ["tim", "rob"]
   end
   
+  it "should have display name with diabled if not enabled" do
+    @field.display_name = "pokpok"
+    @field.enabled = false
+    
+    @field.display_name_for_field_selector.should == "pokpok (Disabled)"
+    
+  end 
+  
   describe "valid?" do
   
     it "should not allow blank display name" do  
@@ -90,6 +98,30 @@ describe "Child record field view model" do
       field.should be_enabled
       
       form.destroy
+    end
+  end
+  
+  describe "default_value" do
+    it "should be empty string for text entry, radio, audio, photo and select fields" do
+      Field.new(:type=>Field::TEXT_FIELD).default_value.should == ""
+      Field.new(:type=>Field::NUMERIC_FIELD).default_value.should == ""
+      Field.new(:type=>Field::TEXT_AREA).default_value.should == ""
+      Field.new(:type=>Field::DATE_FIELD).default_value.should == ""
+      Field.new(:type=>Field::RADIO_BUTTON).default_value.should == ""
+      Field.new(:type=>Field::SELECT_BOX).default_value.should == ""
+    end
+    
+    it "should be nil for photo/audio upload boxes" do
+      Field.new(:type=>Field::PHOTO_UPLOAD_BOX).default_value.should be_nil
+      Field.new(:type=>Field::AUDIO_UPLOAD_BOX).default_value.should be_nil
+    end
+
+    it "should return 'no' for checkbox fields" do
+      Field.new(:type=>Field::CHECK_BOX).default_value.should == "No"
+    end
+
+    it "should raise an error if can't find a default value for this field type" do
+      lambda {Field.new(:type=>"INVALID_FIELD_TYPE").default_value}.should raise_error
     end
   end
 end

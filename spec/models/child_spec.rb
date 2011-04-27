@@ -3,9 +3,6 @@ require 'spec_helper'
 
 describe Child do
 
-
-
- 
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
@@ -149,7 +146,21 @@ describe Child do
   end
   
   describe "validation of custom fields" do
-    
+    it "should fail to validate if all fields are nil" do      
+      child = Child.new
+      FormSection.stub!(:all_enabled_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
+      child.should_not be_valid
+      child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
+    end
+    it "should fail to validate if all fields on child record are the default values" do      
+      child = Child.new({:height=>"",:reunite_with_mother=>"No", :current_photo_key=>nil})
+      FormSection.stub!(:all_enabled_child_fields).and_return [
+                Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
+                Field.new(:type => Field::CHECK_BOX, :name => 'reunite_with_mother'),
+                Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
+      child.should_not be_valid
+      child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
+    end
     it "should validate numeric types" do
       fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
       child = Child.new
@@ -193,7 +204,7 @@ describe Child do
     it "should allow text area values to be 400,000 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
           [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-      child = Child.new :a_textfield => ('a' * 400_000)
+      child = Child.new :a_textfield => ('a' * 400_000)      
       child.should be_valid
     end
 
@@ -210,13 +221,6 @@ describe Child do
           [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
       child = Child.new :a_datefield => ('27 Feb 2010')
       child.should be_valid
-    end
-
-    it "should not validate fields that were not filled in" do
-      FormSection.stub!(:all_enabled_child_fields =>
-          [Field.new(:type => Field::TEXT_FIELD, :name => "name"),
-           Field.new(:type => Field::TEXT_AREA, :name => "another")])
-      Child.new(:name => nil).should be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
@@ -294,10 +298,10 @@ describe Child do
     it "should allow blank age" do
       fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
       FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:age => ""})
+      child = Child.new({:age => "", :another_field=>"blah"})
       child.save.should == true
       
-      child = Child.new
+      child = Child.new :foo=>"bar"
       child.save.should == true
     end
 
@@ -462,22 +466,147 @@ describe Child do
     end
   end
 
+  describe ".audio=" do
+    before(:each) do
+      @child = Child.new
+      @child.stub!(:attach)
+      @file_attachment = mock_model(FileAttachment, :data => "My Data", :name => "some name", :mime_type => Mime::Type.lookup("audio/mpeg"))
+    end
+
+    it "should create an 'original' key in the audio hash" do
+      @child.audio= uploadable_audio
+      @child['audio_attachments'].should have_key('original')
+    end
+
+    it "should create a FileAttachment with uploaded file and prefix 'audio'" do
+      uploaded_file = uploadable_audio
+      FileAttachment.should_receive(:from_uploadable_file).with(uploaded_file, "audio").and_return(@file_attachment)
+      @child.audio= uploaded_file
+    end
+
+    it "should attach the created FileAttachment to the document with a key the same as the file name" do
+      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+
+      @child.should_receive(:attach).with(@file_attachment, 'some name')
+
+      @child.audio= uploadable_audio
+    end
+
+    it "should store the audio attachment key with the 'original' key in the audio hash" do
+      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+      @child.audio= uploadable_audio
+      @child['audio_attachments']['original'].should == 'some name'
+    end
+
+    it "should store the audio attachment key with the 'mime-type' key in the audio hash" do
+      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+      @child.audio= uploadable_audio
+      @child['audio_attachments']['mp3'].should == 'some name'
+    end
+
+  end
+
+  describe ".add_audio_file" do
+    before (:each) do
+      @file = stub!("File")
+      @file.stub!(:read).and_return("ABC")
+      @file_attachment = FileAttachment.new("attachment_file_name", "audio/mpeg", "data")
+    end
+
+    it "should use Mime::Type.lookup to create file name postfix" do
+      child = Child.new()
+      Mime::Type.should_receive(:lookup).exactly(2).times.with("audio/mpeg").and_return("abc".to_sym)
+      child.add_audio_file(@file, "audio/mpeg")
+    end
+
+    it "should create a file attachment for the file with 'audio' prefix, mime mediatype as postfix" do
+      child = Child.new()
+      Mime::Type.stub!(:lookup).and_return("abc".to_sym)
+      FileAttachment.should_receive(:from_file).with(@file, "audio/mpeg", "audio", "abc").and_return(@file_attachment)
+      child.add_audio_file(@file, "audio/mpeg")
+    end
+
+    it "should attach the file to the child record with the name of the attachment as the key" do
+      child = Child.new()
+      FileAttachment.stub!(:from_file).and_return(@file_attachment)
+      child.should_receive(:attach).with(@file_attachment, "attachment_file_name")
+      child.add_audio_file(@file, "audio/mpeg")
+    end
+
+    it "should add attachments key attachment to the audio hash using the content's media type as key" do
+      child = Child.new()
+      FileAttachment.stub!(:from_file).and_return(@file_attachment)
+      child.add_audio_file(@file, "audio/mpeg")
+      child['audio_attachments']['mp3'].should == "attachment_file_name"
+    end
+
+  end
+
+  describe ".audio" do
+    it "should return nil if no audio file has been set" do
+      child = Child.new
+      child.audio.should be_nil
+    end
+
+    it "should check if 'original' audio attachment is present" do
+      child = Child.create('audio' => uploadable_audio)
+      child['audio_attachments']['original'] = "ThisIsNotAnAttachmentName"
+
+      child.should_receive(:has_attachment?).with('ThisIsNotAnAttachmentName').and_return(false)
+
+      child.audio
+    end
+
+    it "should return nil if the recorded audio key is not an attachment" do
+      child = Child.create('audio' => uploadable_audio)
+      child['audio_attachments']['original'] = "ThisIsNotAnAttachmentName"
+      child.audio.should be_nil
+    end
+
+    it "should retrieve attachment data for attachment key" do
+      current_time = Time.parse("Feb 20 2010 12:04:32")
+      Time.stub!(:now).and_return current_time
+      child = Child.create('audio' => uploadable_audio)
+
+      child.should_receive(:read_attachment).with('audio-2010-02-20T120432').and_return("Some audio")
+
+      child.audio
+    end
+
+    it 'should create a FileAttachment with the read attachment and the attachments content type' do
+      current_time = Time.parse("Feb 20 2010 12:04:32")
+      Time.stub!(:now).and_return current_time
+      uploaded_amr = uploadable_audio_amr
+      child = Child.create('audio' => uploaded_amr)
+      expected_data = 'LA! LA! LA! Audio Data'
+      child.stub!(:read_attachment).and_return(expected_data)
+
+      FileAttachment.should_receive(:new).with('audio-2010-02-20T120432', uploaded_amr.content_type, expected_data)
+
+      child.audio
+
+    end
+
+  end
+
+
   describe "audio attachment" do
+
     it "should create a field with recorded_audio on creation" do
       current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
 
-      child['recorded_audio'].should == 'audio-2010-01-20T171032'
+      child['audio_attachments']['original'].should == 'audio-2010-01-20T171032'
     end
 
-    it "should update recorded audio on a audio change" do
+    it "should change audio file if a new audio file is set" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
 
       updated_at_time = Time.parse("Feb 20 2010 12:04:32")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :audio => uploadable_audio
-      child['recorded_audio'].should == 'audio-2010-02-20T120432'
+      child['audio_attachments']['original'].should == 'audio-2010-02-20T120432'
     end
 
   end
@@ -732,14 +861,6 @@ describe Child do
     it "should return nil if the record has no attached photo" do
       child = create_child "Bob McBobberson"
       Child.all.find{|c| c.id == child.id}.photo.should be_nil
-    end
-  end
-  
-  describe ".audio" do
-    it "should return nil if the recorded audio key is not an attachment" do
-      child = Child.create('audio' => uploadable_audio)
-      child["recorded_audio"] = "ThisIsNotAnAttachmentName"
-      child.audio.should be_nil
     end
   end
   

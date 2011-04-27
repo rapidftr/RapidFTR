@@ -1,4 +1,12 @@
 <p>
   <%= label_tag textarea.tag_name_attribute, textarea.display_name %>
   <%= text_area_tag textarea.tag_name_attribute, @child[textarea.name] %>
+  <% if textarea.help_text.present?%> 
+  <br />
+  <span class='help-text-container'>
+    <span class='help-text'>
+      <%=textarea.help_text%>
+    </span>
+  </span>
+  <% end%>
 </p>

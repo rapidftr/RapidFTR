@@ -8,7 +8,7 @@
 <thead>
   <tr>
     <th><input type="checkbox" disabled=true /></th>
-    <th>Enabled</th>
+    <th>Visibility</th>
     <th>Name</th>
     <th>Description</th>
     <th colspan="3">Ordering</th>
@@ -24,7 +24,7 @@
           </td>
           <td>
     <span class="enabledStatus <%= section.enabled? ? "tick" :"cross" %>">
-        <%= section.enabled? ? "Enabled" : "Disabled" %>
+        <%= section.enabled? ? "Visible" : "Hidden" %>
         </span>
           </td>
           <td><%= link_to section.name, edit_form_section_path(section.unique_id), :class => "formSectionLink" %></td>
@@ -37,10 +37,10 @@
           </td>
           <% if not section.perm_enabled? %>
             <td class="orderingColumn">
-              <a id="<%= "#{section.unique_id}_up"%>"  href="#" class="hidden moveUp">Up</a>
+              <a id="<%= "#{section.unique_id}_up"%>"  href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
             </td>
             <td class="orderingColumn">
-              <a id="<%= "#{section.unique_id}_down"%>" href="#" class="hidden moveDown">Down</a>
+              <a id="<%= "#{section.unique_id}_down"%>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
             </td>
           <% else %>
             <td></td>
@@ -51,8 +51,8 @@
 </tbody>
 </table>
 <div class="formSectionButtons">
-  <input type="button" name="Enable" value="Enable" id="enable_form"/>
-  <input type="button" name="Disable" value="Disable" id="disable_form"/>
+  <input type="button" name="Enable" value="Show" id="enable_form"/>
+  <input type="button" name="Disable" value="Hide" id="disable_form"/>
   <input type="button" name="SaveOrder" value="Save Order" id="save_order"/>  
 </div>
 <div class="backLink">

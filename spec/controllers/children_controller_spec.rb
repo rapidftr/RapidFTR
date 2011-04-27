@@ -145,6 +145,19 @@ describe ChildrenController do
       history['changes'].should have_key('current_photo_key')
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
+
+    it "should allow a records ID to be specified to create a new record with a known id" do
+      new_uuid = UUIDTools::UUID.random_create()
+      put :update, :id => new_uuid.to_s,
+        :child => {
+            :id => new_uuid.to_s,
+            :_id => new_uuid.to_s,
+            :last_known_location => "London",
+            :age => "7"
+        }
+      Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
+    end
+
   end
 
   describe "GET search" do
@@ -262,7 +275,7 @@ describe ChildrenController do
         first_line = csv_response.split("\n").first
         headers = first_line.split(",")
 
-        FormSection.all_child_field_names.each {|field_name| headers.should contain field_name}
+        FormSection.all_child_field_names.each {|field_name| headers.should include field_name}
       end
 
       it 'should render a row for each result, plus a header row' do

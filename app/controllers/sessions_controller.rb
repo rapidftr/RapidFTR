@@ -52,7 +52,12 @@ class SessionsController < ApplicationController
 
       return
     end
-
+    
+    if @session.device_blacklisted?
+      handle_device_blacklisted(@session) 
+      return
+    end
+    
     respond_to do |format|
       if @session.save
         @session.put_in_cookie(cookies)

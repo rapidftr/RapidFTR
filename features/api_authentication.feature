@@ -34,16 +34,26 @@ Feature: Only authorized API clients should be allowed to access the system
     Then I should be on the json formatted children listing page
     And I should have received a "200 OK" status code
     
-  Scenario: Authenicated API client can access 
+  Scenario: Authenticated API blackberry is sent kill signal on login if imei is blacklisted
   
     Given a user "tim" with a password "123" 
     And devices exist
       | imei | blacklisted | user_name |
       | 12345 | true | tim |
       | 11111 | false | tim |
-    
     When I login with user tim:123 for device with imei 12345
-    Then should_be_unsuccessful_login
-    When I login with user tim:123 for device with imei 11111
-    Then should_be_successful_login
+    Then should be kill response for imei "12345"
     
+    When I login with user tim:123 for device with imei 11111
+    Then should be successful login
+    
+  Scenario: Authenticated API blackberry is sent kill signal on request if imei is blacklisted
+
+    Given I am sending a valid session token in my request headers for device with imei "12345"
+    And a user "tim" with a password "123" 
+    And devices exist
+      | imei | blacklisted | user_name |
+      | 12345 | true | tim |
+      | 11111 | false | tim |
+    When I go to the json formatted children listing page
+    Then should be kill response for imei "12345"

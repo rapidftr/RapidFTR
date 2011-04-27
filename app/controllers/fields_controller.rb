@@ -85,7 +85,7 @@ class FieldsController < ApplicationController
       redirect_to(edit_form_section_path(params[:formsection_id])) and return
     end  
 
-    if(params[:toggle_fields] == 'Disable')
+    if(params[:toggle_fields] == 'Hide')
        @form_section.disable_fields(params[:fields])
     else
        @form_section.enable_fields(params[:fields])

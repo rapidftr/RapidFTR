@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe FormSection do
@@ -292,6 +293,16 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
+    
+    it "should validate name is unique via a case-insensitive search" do
+      upcase_name = "UPCASE NAME"
+      valid_attributes = {:name=> upcase_name, :unique_id => upcase_name.dehumanize, :description => '', :enabled => true, :order => 0}
+      FormSection.create! valid_attributes
+      form_section = FormSection.new valid_attributes.merge(:name => upcase_name.downcase)
+      form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
+    end
+    
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!

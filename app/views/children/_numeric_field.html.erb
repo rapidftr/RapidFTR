@@ -4,4 +4,12 @@
   <span class="<%= klass %>">
     <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %> 
   </span>
+  <% if numeric_field.help_text.present?%> 
+  <br />
+  <span class='help-text-container'>
+    <span class='help-text'>
+      <%=numeric_field.help_text%>
+    </span>
+  </span>
+  <% end%>
 </p>
