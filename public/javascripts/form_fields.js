@@ -22,7 +22,10 @@
 
     select: function(selectElement){
       methods.hide.apply(self.element);
-      var selectedField = { field_name: $(selectElement).find(".field-name").val(), field_display_name: $(selectElement).find(".field-display-name").html() };
+      var selectedField = { field_name: $(selectElement).find(".field-name").val(), 
+                            display_name: $(selectElement).find(".display-name").val(), 
+                            form_name: $(self.selectedForm).find(".form-name").val(),
+                            order: self.selectedFields.length + 1  };
       self.selectedFields.push(selectedField);
       self.options.itemSelected(actionElement, selectedField);
     },

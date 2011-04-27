@@ -4,20 +4,27 @@
   <%= javascript_include_tag "form_fields.js" %>
 <% end %>
 
-<table class="highlight-fields">
-  <thead>
-    <tr>
-      <th>Field Name</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-     <td></td>
-     <td><a class="add-field">add</a></td>
-    </tr>
-  </tbody>
-</table>
+<% form_tag highlight_fields_path, :method => :post do %>
+  <table class="highlight-fields">
+    <thead>
+      <tr>
+        <th>Field Name</th>
+        <th>Form Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="highlighted-fields">
+      <tr>
+       <td></td>
+       <td></td>
+       <td><a class="add-field">add</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <%= submit_button %>
+
+<% end %>
 
 <div class="form-fields-container">
   <div class='box-shadow content'>
@@ -29,6 +36,7 @@
         <% @forms.each do|form| %>
           <li id="form-<%= form.id%>" class="form">
             <%= form.name %>
+            <input type="hidden" class="form-name" value="<%= form.name%>"/>
           </li>      
         <%end%> 
     </ul>
@@ -39,6 +47,7 @@
             <li id="field-<%= field.name%>" class="field">
               <span class="field-display-name"><%= field.display_name%></span>
               <input type="hidden" class="field-name" value="<%= field.name%>"/>
+              <input type="hidden" class="display-name" value="<%= field.display_name%>"/>
             </li>
           <%end%>
         </ul>
@@ -49,9 +58,12 @@
 
 <script id="highlight-field-template" type="text/x-jquery-tmpl"> 
   <tr>     
-    <td>${field_display_name}</td>
-    <input type="hidden" class="highlighted-field" value="${field_name}"/>
-    <td><a class="edit-field">edit</a>&nbsp;<a class="delete-field">delete</a></td>
+    <td>${display_name}</td>
+    <input type="hidden" name="fields[][field_name]" class="highlighted-field" value="${field_name}"/>
+    <input type="hidden" name="fields[][form_name]" class="highlighted-field" value="${form_name}"/>
+    <input type="hidden" name="fields[][order]" class="highlighted-field" value="${order}"/>
+    <td>${form_name}</td>
+    <td><a class="delete-field">delete</a></td>
   </tr>
 </script>
 
@@ -61,6 +73,10 @@ var updateWithSelectedItem = function(actionElement, selectedElement){
   var selectedFieldSection = $("#highlight-field-template").tmpl(selectedElement);
   $(actionElement).parents("tr").before(selectedFieldSection);			
 }
+
+<% if @highlighted_fields %>
+  $("#highlight-field-template").tmpl(<%=@highlighted_fields.to_json %>).appendTo("#highlighted-fields");
+<% end %>
 
  $(".form-fields-container").formFields({itemSelected: updateWithSelectedItem});
 

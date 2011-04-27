@@ -89,7 +89,22 @@ class FormSection < CouchRestRails::Document
   def add_field field
     self["fields"] << Field.new(field)
   end
+  
+  def self.update_field_as_highlighted highlight_field
+    form = all.find { |form| form.name == highlight_field[:form_name] }
+    field = form.fields.find {|field| field.name == highlight_field[:field_name] }
+    if(field)
+      field.highlight_information = HighlightInformation.new :highlighted => true, :order => highlight_field[:order] 
+      form.save()
+    end
+  end
 
+  def self.highlighted_fields
+    all.map do |form|
+      form.fields.select{|field| field.highlight_information.highlighted}
+    end.flatten.sort{|field1, field2| field1.highlight_information.order <=> field2.highlight_information.order}
+  end
+  
   def section_name
     unique_id
   end

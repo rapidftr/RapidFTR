@@ -8,6 +8,7 @@ class Field < Hash
   property :help_text
   property :type
   property :option_strings
+  property :highlight_information , :cast_as=> 'HighlightInformation' 
 
   attr_reader :options
 
@@ -64,6 +65,7 @@ class Field < Hash
 
   def initialize properties
     self.enabled = true if properties["enabled"] == nil
+    self.highlight_information = HighlightInformation.new
     self.attributes = properties
   end
   
