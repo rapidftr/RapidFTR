@@ -32,7 +32,8 @@ describe "histories/show.html.erb" do
 
   describe "child history" do
     before do
-      FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
+      FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "childs_photo"])
+      assigns[:photo_fields] = ["childs_photo"]
     end
     describe "rendering history for a newly created record" do
       it "should render only the creation record" do
@@ -47,7 +48,7 @@ describe "histories/show.html.erb" do
     describe "rendering changes to photos" do
       it "should render photo change record when updating a photo" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
-        child.add_single_change "rapidftr", "31/12/2010 20:55", "current_photo_key", "OldPhoto", "NewPhoto"
+        child.add_single_change "rapidftr", "31/12/2010 20:55", "childs_photo", "OldPhoto", "NewPhoto"
 
         assigns[:child] = child
         render
@@ -58,7 +59,7 @@ describe "histories/show.html.erb" do
       end
       it "should render photo change record with links when adding a photo to an existing record for first time" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
-        child.add_single_change "rapidftr", "31/12/2010 20:55", "current_photo_key", nil, "NewPhoto"
+        child.add_single_change "rapidftr", "31/12/2010 20:55", "childs_photo", nil, "NewPhoto"
 
         assigns[:child] = child
         render

@@ -120,6 +120,10 @@ class Field < Hash
     select_options << ['(Select...)', '']
     select_options += @options.collect { |option| [option.option_name, option.option_name] }
   end
+
+  def is_photo_field?
+    type == PHOTO_UPLOAD_BOX
+  end
   
   #TODO - remove this is just for testing
   def self.new_field(type, name, options=[])

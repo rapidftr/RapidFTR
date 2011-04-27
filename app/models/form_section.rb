@@ -43,6 +43,14 @@ class FormSection < CouchRestRails::Document
     end.flatten
   end
 
+  def self.all_photo_field_names
+    all.map do |form_section|
+      form_section.fields.select do |field|
+        field.is_photo_field?
+      end
+    end.flatten.map(&:name)
+  end
+
   def self.get_by_unique_id unique_id
     by_unique_id(:key => unique_id).first
   end

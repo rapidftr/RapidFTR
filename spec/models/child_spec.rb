@@ -80,7 +80,7 @@ describe Child do
     it "should reple old properties with updated ones" do
       child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
       new_properties = {"name" => "Dave", "age" => "35"}
-      child.update_properties_with_user_name "some_user", nil, nil, new_properties
+      child.update_properties_with_user_name "some_user", new_properties
       child['age'].should == "35"
       child['name'].should == "Dave"
       child['last_known_location'].should == "London"
@@ -89,14 +89,14 @@ describe Child do
     it "should not replace old properties when updated ones have nil value" do
       child = Child.new("origin" => "Croydon", "last_known_location" => "London")
       new_properties = {"origin" => nil, "last_known_location" => "Manchester"}
-      child.update_properties_with_user_name "some_user", nil, nil, new_properties
+      child.update_properties_with_user_name "some_user", new_properties
       child['last_known_location'].should == "Manchester"
       child['origin'].should == "Croydon"
     end
 
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, {}
+      child.update_properties_with_user_name "jdoe", {}
       child['last_updated_by'].should == 'jdoe'
     end
 
@@ -106,31 +106,16 @@ describe Child do
       Time.stub!(:now).and_return current_time
       current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, {}
+      child.update_properties_with_user_name "jdoe", {}
       child['last_updated_at'].should == "2010-01-17 19:05:00UTC"
     end
 
-    it "should update attachments when there is a photo update" do
-      current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time
-      child = Child.new
-      child.update_properties_with_user_name "jdoe", uploadable_photo, nil, {}
-      child['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
-    end
 
     it "should not update attachments when the photo value is nil" do
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, {}
+      child.update_properties_with_user_name "jdoe", {}
       child['_attachments'].should be_blank
-      child['current_photo_key'].should be_nil
-    end
-
-    it "should update attachment when there is audio update" do
-      current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time
-      child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, uploadable_audio, {}
-      child['_attachments']['audio-2010-01-17T140532']['data'].should_not be_blank
+      child['childs_photo'].should be_nil
     end
 
     it "should respond nil for photo when there is no photo associated with the child" do
@@ -140,7 +125,7 @@ describe Child do
     
     it "should do nothing when a zero byte photo is associated with the child" do
       child = Child.new
-      child['current_photo_key'] = ""
+      child['childs_photo'] = ""
       child.photo.should == nil
     end
   end
@@ -153,11 +138,11 @@ describe Child do
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
     it "should fail to validate if all fields on child record are the default values" do      
-      child = Child.new({:height=>"",:reunite_with_mother=>"No", :current_photo_key=>nil})
+      child = Child.new({:height=>"",:reunite_with_mother=>"No", :childs_photo=>nil})
       FormSection.stub!(:all_enabled_child_fields).and_return [
                 Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
                 Field.new(:type => Field::CHECK_BOX, :name => 'reunite_with_mother'),
-                Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
+                Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'childs_photo') ]
       child.should_not be_valid
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
@@ -401,15 +386,15 @@ describe Child do
   end
 
   describe "photo attachments" do
-    it "should create a field with current_photo_key on creation" do
+    it "should create a field with childs_photo on creation" do
       current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
-      child['current_photo_key'].should == 'photo-2010-01-20T171032'
+      child['childs_photo'].should == 'photo-2010-01-20T171032'
     end
 
-    it "should have current_photo_key as photo attachment key on creation" do
+    it "should have childs_photo as photo attachment key on creation" do
       current_time = Time.parse("Jan 20 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
@@ -429,17 +414,17 @@ describe Child do
       Child.get(child.id)['_attachments']['photo-2010-01-20T171032']['length'].should be > 0
     end
 
-    it "should update current_photo_key on a photo change" do
+    it "should update childs_photo on a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
       updated_at_time = Time.parse("Feb 20 2010 12:04:32")
       Time.stub!(:now).and_return updated_at_time
       child.update_attributes :photo => uploadable_photo_jeff
 
-      child['current_photo_key'].should == 'photo-2010-02-20T120432'
+      child['childs_photo'].should == 'photo-2010-02-20T120432'
     end
 
-    it "should have updated current_photo_key as photo attachment key on a photo change" do
+    it "should have updated childs_photo as photo attachment key on a photo change" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
       updated_at_time = Time.parse("Feb 20 2010 12:04:32")
@@ -460,8 +445,10 @@ describe Child do
     end
 
     it "should be able to read attachment after a photo change" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-      attachment = child.media_for_key(child['current_photo_key'])
+      child = Child.create('last_known_location' => 'London')
+      child.set_photo("childs_photo", uploadable_photo )
+      child.save
+      attachment = child.media_for_id(child['childs_photo'])
       attachment.data.read.should == File.read(uploadable_photo.original_path)
     end
   end
@@ -619,7 +606,7 @@ describe Child do
       form_section.add_text_field("age")
       form_section.add_text_field("origin")
       form_section.add_field(Field.new_radio_button("gender", ["male", "female"]))
-      form_section.add_field(Field.new_photo_upload_box("current_photo_key"))
+      form_section.add_field(Field.new_photo_upload_box("childs_photo"))
       form_section.add_field(Field.new_audio_upload_box("recorded_audio"))
     
       FormSection.stub!(:all).and_return([form_section])
@@ -738,7 +725,7 @@ describe Child do
       child['histories'][1]['changes']['last_known_location']['to'].should == 'New York'
     end
 
-    it "should 'from' field with original current_photo_key on a photo addition" do
+    it "should 'from' field with original childs_photo on a photo addition" do
       updated_at_time = Time.parse("Jan 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
@@ -748,10 +735,10 @@ describe Child do
       child.update_attributes :photo => uploadable_photo_jeff
 
       changes = child['histories'].first['changes']
-      changes['current_photo_key']['from'].should == "photo-2010-01-20T120424"
+      changes['childs_photo']['from'].should == "photo-2010-01-20T120424"
     end
 
-    it "should 'to' field with new current_photo_key on a photo addition" do
+    it "should 'to' field with new childs_photo on a photo addition" do
       updated_at_time = Time.parse("Jan 20 2010 12:04:24")
       Time.stub!(:now).and_return updated_at_time
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
@@ -761,7 +748,7 @@ describe Child do
       child.update_attributes :photo => uploadable_photo_jeff
 
       changes = child['histories'].first['changes']
-      changes['current_photo_key']['to'].should == "photo-2010-02-20T120424"
+      changes['childs_photo']['to'].should == "photo-2010-02-20T120424"
     end
 
     it "should update history with username from last_updated_by" do

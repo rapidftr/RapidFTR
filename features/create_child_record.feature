@@ -14,7 +14,7 @@ Feature:
     And I fill in "London" for "Origin"
     And I fill in "Haiti" for "Last known location"
     And I select "1-2 weeks ago" from "Date of separation"
-    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I attach the file "features/resources/jorge.jpg" to "Child's photo"
     And I press "Save"
 
     Then I should see "Child record successfully created."

@@ -21,8 +21,8 @@ class ChildMediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
-    send_data( @attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type )
+    redirect_to(:controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
+    send_data(@attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type)
   end
 
   private
@@ -32,24 +32,20 @@ class ChildMediaController < ApplicationController
 
   def find_audio_attachment
     begin
-      @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.audio
+      @attachment = params[:id] ? @child.media_for_id(params[:id]) : @child.audio
     rescue => e
       p e.inspect
     end
   end
 
   def find_photo_attachment
-    begin
-       @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.photo
-    rescue => e
-      p e.inspect
-    end
+    @attachment = @child.media_for_id(params[:id])
+  end
 
-    #TODO: there must be a better way to return a static image file
-    if @attachment.nil?
-      data = File.read("public/images/no_photo_clip.jpg")
-      @attachment = FileAttachment.new("no_photo", "image/jpg", data)
-    end
+  #TODO: there must be a better way to return a static image file
+  if @attachment.nil?
+    data = File.read("public/images/no_photo_clip.jpg")
+    @attachment = FileAttachment.new("no_photo", "image/jpg", data)
   end
 
   def audio_filename attachment

@@ -1,13 +1,22 @@
 module ChildrenHelper
-  def thumbnail_tag(child, key = nil)
-    image_tag(child_thumbnail_path(child, key), :alt=> child['name'])
+  def thumbnail_tag(child, id)
+    return image_tag(no_photo_available_thumbnail_path, :alt => "No photo available")  if id.nil?
+    image_tag(child_thumbnail_path(child, id), :alt => child['name'])
   end
 
-  def link_to_photo_with_key(key)
-    link_to thumbnail_tag(@child, key),
-      child_photo_path(@child, key),
-      :id => key,
+  def link_to_photo_with_id(id)
+    link_to thumbnail_tag(@child, id),
+      child_photo_path(@child, id),
+      :id => id,
       :target => '_blank'
+  end
+
+  def no_photo_available_path
+    "/images/no_photo_clip.jpg"
+  end
+
+  def no_photo_available_thumbnail_path
+    "/images/no_photo_available_thumb.jpg"
   end
 
   def link_to_download_audio_with_key(key)

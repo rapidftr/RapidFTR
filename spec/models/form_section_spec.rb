@@ -44,6 +44,15 @@ describe FormSection do
         FormSection.enabled_by_order.map(&:name).should == %w(Good)
       end
     end
+
+    describe "all_photo_fields" do
+      it "should return all photo field names from all forms" do
+        form = FormSection.create! :name => 'somename', :unique_id => "someform",
+                                   :fields => [Field.new_text_field("name"), Field.new_photo_upload_box("childs_photo")]
+
+        FormSection.all_photo_field_names.should == ['childs_photo']
+      end
+    end
   end
 
   describe "get_by_unique_id" do
@@ -53,22 +62,22 @@ describe FormSection do
       FormSection.stub(:by_unique_id).with(:key=>unique_id).and_return([expected])
       FormSection.get_by_unique_id(unique_id).should == expected
     end
-    
+
     it "should save fields" do
       section = FormSection.new :name => 'somename', :unique_id => "someform"
       section.save!
-      
+
       section.fields = [Field.new(:name => "a field", :type => "text_field", :display_name => "A Field")]
       section.save!
-      
-      field = section.fields.first 
+
+      field = section.fields.first
       field.name = "kev"
       section.save!
-      
+
       section = FormSection.get_by_unique_id("someform")
-      section.name.should == 'somename' 
+      section.name.should == 'somename'
     end
-    
+
   end
 
   describe "add_field_to_formsection" do
@@ -162,14 +171,14 @@ describe FormSection do
     end
 
   end
-  
+
   describe "perm_enabled" do
-    
+
     it "should not be perm_enabled by default" do
       formsection = FormSection.new
       formsection.perm_enabled?.should be_false
     end
-    
+
     it "should be perm_enabled when set" do
       formsection = FormSection.new(:perm_enabled => true)
       formsection.perm_enabled?.should be_true
@@ -293,7 +302,7 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
-    
+
     it "should validate name is unique via a case-insensitive search" do
       upcase_name = "UPCASE NAME"
       valid_attributes = {:name=> upcase_name, :unique_id => upcase_name.dehumanize, :description => '', :enabled => true, :order => 0}
@@ -302,7 +311,7 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
-    
+
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!

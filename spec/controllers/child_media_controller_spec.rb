@@ -25,7 +25,7 @@ describe ChildMediaController do
     end
 
     it "should have a route for requesting a resized version of the current photo" do
-      {:get => '/children/c1/resized_photo/100'}.should route_to(:controller => "child_media", :action => "show_resized_photo", :child_id => "c1", :size => "100")
+      {:get => '/children/c1/resized_photo/childs_photo-123/100'}.should route_to(:controller => "child_media", :action => "show_resized_photo", :child_id => "c1", :id => "childs_photo-123", :size => "100")
     end
 
     it "should have a route for a child current thumbnail" do
@@ -40,9 +40,9 @@ describe ChildMediaController do
     it "should return current child's photo" do
       given_a_child.
               with_id("1").
-              with_photo(uploadable_photo)
+              with_photo(uploadable_photo, "childs_photo-123")
 
-      get :show_photo, :child_id => "1"
+      get :show_photo, :child_id => "1", :id => "childs_photo-123"
 
       response.should represent_inline_attachment(uploadable_photo)
     end
@@ -61,9 +61,9 @@ describe ChildMediaController do
     it "should return current child's photo resized to a particular size" do
       given_a_child.
               with_id("1").
-              with_photo(uploadable_photo)
+              with_photo(uploadable_photo, "childs_photo-123")
 
-      get :show_resized_photo, :child_id => "1", :size => 300
+      get :show_resized_photo, :child_id => "1", :id => "childs_photo-123", :size => 300
 
       to_image(response.body)[:width].should == 300
     end
@@ -71,9 +71,9 @@ describe ChildMediaController do
     it "should return current child's thumbnail" do
       given_a_child.
               with_id("1")
-      with_photo(uploadable_photo)
+      with_photo(uploadable_photo, "childs_photo-123")
 
-      get :show_thumbnail, :child_id => "1"
+      get :show_thumbnail, :child_id => "1", :id => "childs_photo-123"
 
       thumbnail = to_thumbnail(60, uploadable_photo.original_path)
       response.should represent_inline_attachment(thumbnail)
@@ -89,16 +89,6 @@ describe ChildMediaController do
 
       thumbnail = to_thumbnail(60, uploadable_photo.original_path)
       response.should represent_inline_attachment(thumbnail)
-    end
-
-    it "should return no photo available clip when no image is found" do
-      given_a_child.
-              with_id("1")
-      with_no_photos
-
-      get :show_photo, :child_id => "1"
-
-      response.should represent_inline_attachment(no_photo_clip)
     end
 
   end

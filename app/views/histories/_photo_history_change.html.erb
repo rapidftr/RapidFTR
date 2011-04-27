@@ -2,9 +2,9 @@
   <div>
 	<%= datetime %> 
 	<% if from_value %>
-		Photo changed from <%= link_to_photo_with_key(from_value) %> to <%= link_to_photo_with_key(to_value) %> by <%= user_name %>
+		Photo changed from <%= link_to_photo_with_id(from_value) %> to <%= link_to_photo_with_id(to_value) %> by <%= user_name %>
 	<% else %>
-		Photo <%= link_to_photo_with_key(to_value) %> added by <%= user_name %>
+		Photo <%= link_to_photo_with_id(to_value) %> added by <%= user_name %>
 	<%end%>
   </div>
 </li>

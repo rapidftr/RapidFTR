@@ -2,7 +2,7 @@ require 'spec/spec_helper'
 
 When /^I fill in the basic details of a child$/ do
   fill_in("Last known location", :with => "Haiti")
-  attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
+  attach_file("Child's photo", "features/resources/jorge.jpg", "image/jpg")
 end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
@@ -21,7 +21,7 @@ Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   visit path_to('new child page')
   fill_in('Name', :with => child_name)
   fill_in('Last known location', :with => 'Haiti')
-  attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
+  attach_file("childs_photo", "features/resources/jorge.jpg", "image/jpg")
   click_button('Finish')
 end
 
@@ -37,7 +37,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
     unique_id = child_hash.delete('unique_id')
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
-    child.photo = photo
+    child.set_photo("childs_photo", photo)
     child['unique_identifier'] = unique_id if unique_id
     child.create!
   end
@@ -94,7 +94,7 @@ end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
   child = Child.new( :name => name, :last_known_location => 'unknown' )
-  child.photo = uploadable_photo(photo_file_path)
+  child.set_photo("childs_photo", uploadable_photo(photo_file_path))
   child.create
 end
 

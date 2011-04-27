@@ -32,7 +32,8 @@ describe ChildrenController do
   end
 
   before do
-    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key"])
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","childs_photo"])
+    FormSection.stub!(:all_photo_field_names).and_return(["childs_photo"])
   end
 
   describe "GET index" do
@@ -105,22 +106,29 @@ describe ChildrenController do
 
   describe "PUT update" do
     it "should update child on a field and photo update" do
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
+      child = Child.create('last_known_location' => "London")
+      child.set_photo('childs_photo', uploadable_photo)
+      child.save
 
       current_time = Time.parse("Jan 17 2010 14:05:32")
       Time.stub!(:now).and_return current_time
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
-          :photo => uploadable_photo_jeff }
+          :childs_photo => uploadable_photo_jeff,
+          :audio => uploadable_audio }
 
       assigns[:child]['last_known_location'].should == "Manchester"
-      assigns[:child]['_attachments'].size.should == 2
-      assigns[:child]['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
+      assigns[:child]['_attachments'].size.should == 3
+      assigns[:child]['_attachments']['childs_photo-2010-01-17T140532']['data'].should_not be_blank
+      assigns[:child]['_attachments']['audio-2010-01-17T140532']['data'].should_not be_blank
+
     end
 
     it "should update only non-photo fields when no photo update" do
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
+      child = Child.create('last_known_location' => "London")
+      child.set_photo('childs_photo', uploadable_photo)
+      child.save
 
       put :update, :id => child.id,
         :child => {
@@ -137,12 +145,14 @@ describe ChildrenController do
       current_time = Time.parse("20 Jan 2010 17:10:32")
       Time.stub!(:now).and_return current_time
       current_time.stub!(:getutc).and_return current_time_in_utc
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
+      child = Child.create('last_known_location' => "London")
+      child.set_photo('childs_photo', uploadable_photo_jeff)
+      child.save
 
       put :update_photo, :id => child.id, :child => {:photo_orientation => "-180"}
 
       history = Child.get(child.id)["histories"].first
-      history['changes'].should have_key('current_photo_key')
+      history['changes'].should have_key('childs_photo')
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
 
@@ -157,6 +167,7 @@ describe ChildrenController do
         }
       Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
     end
+
 
   end
 

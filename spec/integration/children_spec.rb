@@ -18,7 +18,7 @@ describe Child do
     data['age'].should == "28"
     data['last_known_location'].should == "London"
     data['_attachments'].should_not be_empty
-    data['_attachments'][data['current_photo_key']]['content_type'].should == photo.content_type
+    data['_attachments'][data['childs_photo']]['content_type'].should == photo.content_type
   end
 
   it "should load an existing child record from the database" do
@@ -37,16 +37,18 @@ describe Child do
 
   it "should persist multiple photo attachments" do
     Time.stub!(:now).and_return Time.parse("Jan 20 2010 12:04:15")
-    child = Child.create('last_known_location' => "New York", 'photo' => uploadable_photo_jeff)
+    child = Child.create('last_known_location' => "New York")
+    child.set_photo('childs_photo', uploadable_photo_jeff)
+    child.save
 
-    created_child = Child.get(child.id)
     Time.stub!(:now).and_return Time.parse("Feb 20 2010 12:04:15")
-
-    created_child.update_attributes :photo => uploadable_photo
+    created_child = Child.get(child.id)
+    created_child.set_photo('childs_photo', uploadable_photo)
+    created_child.save
 
     updated_child = Child.get(child.id)
-    verify_attachment(updated_child.media_for_key('photo-2010-01-20T120415'), uploadable_photo_jeff)
-    verify_attachment(updated_child.media_for_key('photo-2010-02-20T120415'), uploadable_photo)
+    verify_attachment(updated_child.media_for_id('childs_photo-2010-01-20T120415'), uploadable_photo_jeff)
+    verify_attachment(updated_child.media_for_id('childs_photo-2010-02-20T120415'), uploadable_photo)
   end
 end
 

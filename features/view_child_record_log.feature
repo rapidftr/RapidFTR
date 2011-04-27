@@ -15,7 +15,7 @@ Feature:
     And I select "Exact" from "Age is"
     And I choose "Male"
     And I fill in "Haiti" for "Last known location"
-    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I attach the file "features/resources/jorge.jpg" to "Child's photo"
     And the local date/time is "July 19 2010 13:05" and UTC time is "July 19 2010 17:05UTC"
     And I press "Save"
     And I follow "View the change log"
@@ -33,13 +33,13 @@ Feature:
     And I am on the children listing page
 
     When I follow "Edit"
-    And I attach the file "features/resources/jeff.png" to "photo"
+    And I attach the file "features/resources/jeff.png" to "Child's photo"
     And I press "Save"
     And I follow "View the change log"
 
     Then I should see "2010-09-29 21:59:33UTC Photo changed from"
-    And I should see the thumbnail of "Jorge Just" with key "photo-2010-07-19T130532"
-    And I should see the thumbnail of "Jorge Just" with key "photo-2010-09-29T175933"
+    And I should see the thumbnail of "Jorge Just" with key "childs_photo-2010-07-19T130532"
+    And I should see the thumbnail of "Jorge Just" with key "childs_photo-2010-09-29T175933"
     And I should see "by mary"
 
     When I follow "photo-2010-07-19T130532"

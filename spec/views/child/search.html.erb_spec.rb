@@ -36,7 +36,7 @@ describe "children/search.html.erb" do
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
-      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail/"
+      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail/childs_photo-attachment-id"
     end
 
     it "should show thumbnails with urls for child details page for each child if asked" do
@@ -84,9 +84,12 @@ describe "children/search.html.erb" do
 		end
 
     def random_child_summary(id = 'some_id')
-      summary = Summary.new("_id" => id, "age_is" => "Approx", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"))
-      summary.stub!(:has_one_interviewer?).and_return(true)
-      summary
+      child = Child.new("_id" => id, "age_is" => "Approx", "created_by" => "dave",
+                        "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"),
+                        "childs_photo" => "childs_photo-attachment-id")
+
+      child.stub!(:has_one_interviewer?).and_return(true)
+      child
     end
 
   end
