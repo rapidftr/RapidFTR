@@ -79,12 +79,12 @@ var updateWithSelectedItem = function(actionElement, selectedElement){
 <% end %>
 
  $(".form-fields-container").formFields({itemSelected: updateWithSelectedItem});
-
+ var formFields = $(".form-fields-container").data("formFields");
 
  $(".add-field").live("click", 
     function(){
         var args = { actionElement: $(this) };
-        $(".form-fields-container").formFields("show", args);
+        formFields.show(args);
     }
   );
 
