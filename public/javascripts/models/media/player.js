@@ -1,4 +1,4 @@
-/* DO NOT MODIFY. This file was compiled Tue, 12 Apr 2011 23:12:20 GMT from
+/* DO NOT MODIFY. This file was compiled Thu, 28 Apr 2011 02:14:04 GMT from
  * /Users/ndrew/IdeaProjects/ThoughtWorks/RapidFTR/RapidFTR/app/coffeescripts/models/media/player.coffee
  */
 
