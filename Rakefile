@@ -6,8 +6,9 @@ require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'rake/clean'
 
 require 'tasks/rails'
 
 Rake::Task['default'].prerequisites.clear
-task :default => %w( spec cucumber:ok )
+task :default => %w( barista:brew spec jasmine:ci cucumber:ok  )
