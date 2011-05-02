@@ -371,3 +371,18 @@ end
 Then /^I should see errors$/ do
   Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 1
 end
+
+
+When /^I flag the record as suspect with the following reason:$/ do |reason|
+  child = Child.all[0]
+  visit children_path+"/#{child.id}"
+  click_link("Flag record as suspect")
+  fill_in("Flag reason", :with => reason)
+  click_button("Flag")
+end
+
+Then /^the (view|edit) record page should show the record is flagged$/ do |page|
+  path = children_path+"/#{Child.all[0].id}"
+  page == "edit" ? visit(path + "/edit") : visit(path)
+  response.should contain("Flagged as suspect record")
+  end

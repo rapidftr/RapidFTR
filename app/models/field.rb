@@ -3,6 +3,7 @@ class Field < Hash
   include CouchRest::Validation
   
   property :name
+  property :flag
   property :display_name
   property :enabled, :cast_as => 'boolean', :default => true
   property :help_text
