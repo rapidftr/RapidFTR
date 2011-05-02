@@ -18,7 +18,7 @@
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
 <% if @child.flag? %>
-    <h3 class="flag-message">Flagged as suspect record by <%= user_who_flagged %></h3>
+    <h3 class="flag-message"><%= flag_message %></h3>
 <% end %>
 <%= render :partial => "show_child_toolbar" %>
 

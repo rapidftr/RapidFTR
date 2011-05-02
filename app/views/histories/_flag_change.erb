@@ -1,7 +1,10 @@
 <li>
     <% if to_value == 'true' %>
         <%= datetime %> Record flagged as possibly suspect or duplicate by <%= user_name %>
-    <% else %>
+        <% if !message.nil? %>
+               : <i><%=message%></i>
+          <% end %>
+ <% else %>
         <%= datetime %> Flag was removed by <%= user_name %>
     <% end %>
 </li>

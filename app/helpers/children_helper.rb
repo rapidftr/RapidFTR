@@ -22,8 +22,9 @@ module ChildrenHelper
     link_to('and others', child_history_path(child)) unless child.has_one_interviewer?
   end
 
-  def user_who_flagged
-    @child.histories.select{|h| h["changes"]["flag"]}.first["user_name"]
+  def flag_message
+    user = @child.histories.select{|h| h["changes"]["flag"]}.first["user_name"]
+    message = (@child.flag_message.strip.blank? && "") || ": \"#{@child.flag_message}\""
+    "Flagged as suspect record by #{user} #{message}"
   end
-  
 end

@@ -208,9 +208,12 @@ class Child < CouchRestRails::Document
 
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
-      changes.merge(field_name => {
-              'from' => @from_child[field_name],
-              'to' => self[field_name] })
+      field_hash = ({ 'from' => @from_child[field_name],
+                        'to' => self[field_name] })
+      if (field_name == 'flag' && !self['flag_message'].blank?)
+        field_hash.merge!({'message' => self['flag_message']})
+      end
+      changes.merge(field_name => field_hash)
     end
   end
 
@@ -220,7 +223,7 @@ class Child < CouchRestRails::Document
     #Dirty Hack to avoid adding flag to a form section
     #Unsure of other solutions
     other_fields = ["flag"]
-    all_fields = form_section_fields.concat other_fields
+    all_fields = form_section_fields + other_fields
     all_fields.select { |field_name| changed?(field_name) }
   end
 
