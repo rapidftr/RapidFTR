@@ -21,5 +21,9 @@ module ChildrenHelper
   def link_to_update_info(child)
     link_to('and others', child_history_path(child)) unless child.has_one_interviewer?
   end
+
+  def user_who_flagged
+    @child.histories.select{|h| h["changes"]["flag"]}.first["user_name"]
+  end
   
 end

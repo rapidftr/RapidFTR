@@ -384,5 +384,10 @@ end
 Then /^the (view|edit) record page should show the record is flagged$/ do |page|
   path = children_path+"/#{Child.all[0].id}"
   page == "edit" ? visit(path + "/edit") : visit(path)
-  response.should contain("Flagged as suspect record")
-  end
+  response.should contain("Flagged as suspect record by")
+end
+
+When /^the record history should log a change to "([^\"]*)"$/ do |field|
+  visit(children_path+"/#{Child.all[0].id}/history")
+  response.should contain(field)
+end

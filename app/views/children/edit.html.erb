@@ -1,5 +1,5 @@
 <% if @child.flag? %>
-    <h3 class="flag-message">Flagged as suspect record</h3>
+    <h3 class="flag-message">Flagged as suspect record by #{user_who_flagged}</h3>
 <% end %>
 <% form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
 

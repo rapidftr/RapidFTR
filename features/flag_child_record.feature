@@ -16,4 +16,4 @@ Feature:
       """
     Then the view record page should show the record is flagged
     And the edit record page should show the record is flagged
-#    And the history should
+    And the record history should log a change to "flag"
