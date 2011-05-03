@@ -206,7 +206,7 @@ ul.ui-widget-content { background: none; }
 .profile-tools li.back a { background-image: url(../images/icon-back.gif); }
 .profile-tools li.view-log a { background-image: url(../images/icon-calendar.gif); }
 .profile-tools li.flag a { background-image: url(../images/icon-flag.gif); }
-.profile-tools li.unflag a { background-image: url(../images/icon-x.gif); }
+.profile-tools li.unflag a { background-image: url(../images/icon-flag.gif); }
 .profile-tools li a:hover { color: #f93; }
 .profile-tools .flag-form h3 { display:inline; }
 .profile-tools .flag-form input { display:inline; }

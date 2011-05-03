@@ -208,12 +208,11 @@ class Child < CouchRestRails::Document
 
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
-      field_hash = ({ 'from' => @from_child[field_name],
-                        'to' => self[field_name] })
-      if (field_name == 'flag' && !self['flag_message'].blank?)
-        field_hash.merge!({'message' => self['flag_message']})
-      end
-      changes.merge(field_name => field_hash)
+      changes.merge(field_name => {
+        'from' => @from_child[field_name],
+        'to' => self[field_name],
+        'message' => ( field_name == 'flag' ) ? self['flag_message'] : nil
+      })
     end
   end
 
