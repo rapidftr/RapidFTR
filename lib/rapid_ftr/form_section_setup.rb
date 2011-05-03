@@ -77,6 +77,19 @@ module RapidFTR
 
       FormSection.create!("name" =>"Caregiver details", "enabled"=>true, :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"caregiver_details", :fields => caregiver_details_fields)
 
+      flag_details_fields = [
+            Field.new("name" => "flag", "display_name" => "Flagged Record?", "type" => "radio_button","option_strings" => ["true", "false"]),
+            Field.new("name" => "flag_message", "display_name" => "Flag Message", "type" => "text_field")
+      ]
+
+      FormSection.create!("name" =>"Flag Status details",
+                          :enabled=>false,
+                          :perm_enabled=>true,
+                          :description =>"Flagging for duplicate or suspect records",
+                          :order=> 4,
+                          :unique_id=>"flag_details",
+                          :fields => flag_details_fields)
+
       return true
     end
   end

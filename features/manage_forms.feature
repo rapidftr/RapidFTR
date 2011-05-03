@@ -12,7 +12,8 @@ Feature: So that admin can see Manage Forms Page
 		And I should see the "caregiver_details" section with an enabled checkbox
     And I should see "family_details" with order of "2"
     And I should see "caregiver_details" with order of "3"
-    And I should see "other_details" with order of "4"
+    And I should see "flag_details" with order of "4"
+    And I should see "other_details" with order of "5"
   
   Scenario: Admins should see a back button
     Then I should see "Back"

@@ -21,7 +21,13 @@
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :message => change['message'],
+                                   :datetime => history['datetime'],
+                                   :user_name => history['user_name'] } %>
+            <% elsif field == 'flag_message'%>
+                <%= render :partial => "flag_message_change",
+                           :locals => {
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
                                    :datetime => history['datetime'],
                                    :user_name => history['user_name'] } %>
             <% else %>
