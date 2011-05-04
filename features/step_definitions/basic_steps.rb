@@ -1,7 +1,7 @@
 require 'spec/spec_helper'
 
 When /^I fill in the basic details of a child$/ do
-  fill_in("Last known location", :with => "Haiti")
+  fill_in("Birthplace", :with => "Haiti")
   attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
 end
 
@@ -20,7 +20,7 @@ end
 Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   visit path_to('new child page')
   fill_in('Name', :with => child_name)
-  fill_in('Last known location', :with => 'Haiti')
+  fill_in('Birthplace', :with => 'Haiti')
   attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
   click_button('Finish')
 end
@@ -28,7 +28,7 @@ end
 Given /^the following children exist in the system:$/ do |children_table|
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(
-            'last_known_location' => 'Cairo',
+            'birthplace' => 'Cairo',
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
             'age_is' => 'Approximate'
@@ -85,7 +85,7 @@ end
 
 Given /^I am editing an existing child record$/ do
   child = Child.new
-  child["last_known_location"] = "haiti"
+  child["birthplace"] = "haiti"
   child.photo = uploadable_photo
   raise "Failed to save a valid child record" unless child.save
 
@@ -93,7 +93,7 @@ Given /^I am editing an existing child record$/ do
 end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
-  child = Child.new( :name => name, :last_known_location => 'unknown' )
+  child = Child.new( :name => name, :birthplace => 'unknown' )
   child.photo = uploadable_photo(photo_file_path)
   child.create
 end
@@ -148,7 +148,7 @@ end
 
 When /^I create a new child$/ do
   child = Child.new
-  child["last_known_location"] = "haiti"
+  child["birthplace"] = "haiti"
   child.photo = uploadable_photo
   child.create!
 end
@@ -162,7 +162,7 @@ Given /^a user "([^\"]*)" with a password "([^\"]*)" logs in$/ do |user_name, pa
 end
 
 Given /^there is a child with the name "([^\"]*)" and a photo from "([^\"]*)"$/ do |child_name, photo_file_path|
-  child = Child.new( :name => child_name, :last_known_location => 'Chile' )
+  child = Child.new( :name => child_name, :birthplace => 'Chile' )
 
   child.photo = uploadable_photo(photo_file_path)
 
