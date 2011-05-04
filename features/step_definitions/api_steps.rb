@@ -25,7 +25,7 @@ When /^I login with user (.+):(.+) for device with imei (.+)$/ do |user, passwor
 end
 
 Then /^should be kill response for imei "(.+)"$/ do |imei|
-  #response.status.should =~ /401/
+  response.status.should =~ /403/
   response_body.should == imei
 end
 
