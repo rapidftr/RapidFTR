@@ -1,4 +1,4 @@
-class   ChildrenController < ApplicationController
+class ChildrenController < ApplicationController
 
   skip_before_filter :verify_authenticity_token
 
@@ -11,8 +11,8 @@ class   ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @children }
-      format.csv  { render_as_csv @children, "all_records_#{Time.now.strftime("%Y%m%d")}.csv" }
+      format.xml { render :xml => @children }
+      format.csv { render_as_csv @children, "all_records_#{Time.now.strftime("%Y%m%d")}.csv" }
       format.json { render :json => @children }
       format.pdf do
         pdf_data = PdfGenerator.new.children_info(@children)
@@ -35,7 +35,7 @@ class   ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @child }
+      format.xml { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
         child_ids = [@child]
@@ -43,7 +43,7 @@ class   ChildrenController < ApplicationController
       end
       format.pdf do
         pdf_data = PdfGenerator.new.child_info(@child)
-        send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+        send_pdf(pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
       end
     end
   end
@@ -56,7 +56,7 @@ class   ChildrenController < ApplicationController
     @form_sections = get_form_sections
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @child }
+      format.xml { render :xml => @child }
     end
   end
 
@@ -67,22 +67,42 @@ class   ChildrenController < ApplicationController
     @form_sections = get_form_sections
   end
 
-  # POST /children
-  # POST /children.xml
+  def extract_photo_fields_from_params
+    @photo_fields = {}
+    FormSection.all_photo_field_names.each do |field_name|
+      photo_field = params[:child].delete(field_name)
+      @photo_fields[field_name] = photo_field unless photo_field.nil?
+    end
+  end
+  private :extract_photo_fields_from_params
+
+  def attach_photo_fields_to_child
+    @photo_fields.each do |field_name, photo|
+      @child.set_photo(field_name, photo)
+    end
+  end
+
+# POST /children
+# POST /children.xml
   def create
+    extract_photo_fields_from_params
+
     @child = Child.new_with_user_name(current_user_name, params[:child])
+
+    attach_photo_fields_to_child
+
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child record successfully created.'
         format.html { redirect_to(@child) }
-        format.xml  { render :xml => @child, :status => :created, :location => @child }
+        format.xml { render :xml => @child, :status => :created, :location => @child }
         format.json { render :json => @child.to_json }
       else
         format.html {
           @form_sections = get_form_sections
           render :action => "new"
         }
-        format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -108,40 +128,46 @@ class   ChildrenController < ApplicationController
 
   end
 
-  # PUT /children/1
-  # PUT /children/1.xml
+# PUT /children/1
+# PUT /children/1.xml
   def update
     @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
 
-    new_photo = params[:child].delete(:photo)
-    new_audio = params[:child].delete(:audio)
-    @child.update_properties_with_user_name(current_user_name, new_photo, new_audio, params[:child])
+    FormSection.all_photo_field_names.each do |field_name|
+      photo = params[:child].delete(field_name)
+      @child.set_photo(field_name, photo) unless photo.nil?
+    end
+
+    @child.audio = params[:child].delete(:audio)
+
+    @child.update_properties_with_user_name(current_user_name, params[:child])
+
 
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child was successfully updated.'
         format.html { redirect_to(@child) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
         format.json { render :json => @child.to_json }
       else
         format.html {
           @form_sections = get_form_sections
           render :action => "edit"
         }
-        format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /children/1
-  # DELETE /children/1.xml
+# DELETE /children/1
+# DELETE /children/1.xml
   def destroy
     @child = Child.get(params[:id])
     @child.destroy
 
     respond_to do |format|
       format.html { redirect_to(children_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
       format.json { render :json => {:response => "ok"}.to_json }
     end
   end
@@ -150,8 +176,8 @@ class   ChildrenController < ApplicationController
     @page_name = "Child Search"
     @aside = "shared/sidebar_links"
     if (params[:query])
-      @search = Search.new(params[:query]) 
-      if @search.valid?    
+      @search = Search.new(params[:query])
+      if @search.valid?
         @results = Child.search(@search)
       else
         render :search
@@ -161,18 +187,18 @@ class   ChildrenController < ApplicationController
   end
 
   def export_data
-    child_ids = params.map{ |k, v| 'selected' == v ? k : nil }.compact
+    child_ids = params.map { |k, v| 'selected' == v ? k : nil }.compact
     if child_ids.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
 
-    children = child_ids.map{ |child_id| Child.get(child_id) }
+    children = child_ids.map { |child_id| Child.get(child_id) }
 
     if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to PDF"
-			pdf_data = PdfGenerator.new.children_info(children)
-			send_pdf(pdf_data, "#{file_basename}.pdf")
+      pdf_data = PdfGenerator.new.children_info(children)
+      send_pdf(pdf_data, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to CSV"
       export_to_csv(children, "#{file_basename}.csv")
     end
@@ -180,7 +206,7 @@ class   ChildrenController < ApplicationController
 
   def export_photos_to_pdf children, filename
     pdf_data = PdfGenerator.new.child_photos(children)
-    send_pdf( pdf_data, filename)
+    send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf
@@ -195,12 +221,12 @@ class   ChildrenController < ApplicationController
 
   private
 
-	def file_basename(child = nil)
-		prefix = current_user_name
-		prefix = child.unique_identifier if child
+  def file_basename(child = nil)
+    prefix = current_user_name
+    prefix = child.unique_identifier if child
 
-		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
-	end
+    "#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
+  end
 
   def get_form_sections
     FormSection.enabled_by_order
@@ -208,11 +234,11 @@ class   ChildrenController < ApplicationController
 
   def default_search_respond_to
     respond_to do |format|
-     format.html do
-       if @results && @results.length == 1
-         redirect_to child_path( @results.first )
-       end
-     end
+      format.html do
+        if @results && @results.length == 1
+          redirect_to child_path(@results.first)
+        end
+      end
       format.csv do
         render_as_csv(@results, 'rapidftr_search_results.csv') if @results
       end
@@ -228,7 +254,7 @@ class   ChildrenController < ApplicationController
       end
       rows << field_names
       results_temp.each do |child|
-          rows << field_names.map { |field_name| child[field_name] }
+        rows << field_names.map { |field_name| child[field_name] }
       end
     end
 

@@ -13,7 +13,7 @@ Feature:
 
     When I fill in "Haiti" for "Last known location"
     And I fill in "John" for "Name"
-    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I attach the file "features/resources/jorge.jpg" to "Child's photo"
     And I press "Save"
 
     Then I should see "Child record successfully created"
@@ -24,7 +24,7 @@ Feature:
     Given I am on the new child page
 
     When I fill in the basic details of a child
-    And I attach the file "features/resources/textfile.txt" to "photo"
+    And I attach the file "features/resources/textfile.txt" to "Child's photo"
     And I press "Save"
 
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
@@ -33,7 +33,7 @@ Feature:
 
     Given I am editing an existing child record
 
-    And I attach the file "features/resources/textfile.txt" to "photo"
+    And I attach the file "features/resources/textfile.txt" to "Child's photo"
     And I press "Save"
 
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"

@@ -19,14 +19,14 @@ module ChildBuilder
 
   def with_photo(image, image_id = "img", current = true)
     photo = mock(FileAttachment, {:content_type => image.content_type, :data => StringIO.new(image.read)})
-    @child.stub!(:media_for_key).with(image_id).and_return photo
+    @child.stub!(:media_for_id).with(image_id).and_return photo
     @child.stub!(:photo).and_return photo if current
     self
   end
 
   def with_audio(audio, audio_id ="audio", current = true)
     audio = mock(FileAttachment, {:content_type => audio.content_type, :mime_type => audio.mime_type, :data => StringIO.new(audio.read)})
-    @child.stub!(:media_for_key).with(audio_id).and_return audio
+    @child.stub!(:media_for_id).with(audio_id).and_return audio
     @child.stub!(:audio).and_return audio if current
   end
 

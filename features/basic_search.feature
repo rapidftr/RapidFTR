@@ -70,8 +70,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I fill in "W" for "Name"
     And I press "Search"
 
-    Then I should see the thumbnail of "Willis"
-    And I should see the thumbnail of "Will"
+    Then I should see the primary photo thumbnail of "Willis"
+    And I should see the primary photo thumbnail of "Will"
 
   Scenario: Not seing "No results found" when first enter search page
 

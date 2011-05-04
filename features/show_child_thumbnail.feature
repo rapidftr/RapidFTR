@@ -11,4 +11,4 @@ Feature:
 
     When I am editing the child with name "John"
 
-    Then I should see the thumbnail of "John"
+    Then I should see the primary photo thumbnail of "John"

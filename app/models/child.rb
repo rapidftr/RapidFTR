@@ -134,18 +134,25 @@ class Child < CouchRestRails::Document
 
     name = FileAttachment.generate_name
     attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
-    attach(attachment, 'current_photo_key')
+    attach(attachment, 'childs_photo')
   end
 
   def photo=(photo_file)
     return unless photo_file.respond_to? :content_type
     @file_name = photo_file.original_path
     attachment = FileAttachment.from_uploadable_file(photo_file, "photo")
-    attach(attachment, 'current_photo_key')
+    attach(attachment, primary_photo_field_name)
+  end
+
+  def set_photo(name, photo_file)
+    return unless photo_file.respond_to? :content_type
+    @file_name = photo_file.original_path
+    attachment = FileAttachment.from_uploadable_file(photo_file, name)
+    attach(attachment, name)
   end
 
   def photo
-    attachment_name = self['current_photo_key']
+    attachment_name = primary_photo_id
     return if attachment_name.blank?
     data = read_attachment attachment_name
     content_type = self['_attachments'][attachment_name]['content_type']
@@ -178,19 +185,26 @@ class Child < CouchRestRails::Document
     setup_mime_specific_audio(attachment)
   end
 
-  def media_for_key(media_key)
-    data = read_attachment media_key
-    content_type = self['_attachments'][media_key]['content_type']
-    FileAttachment.new media_key, content_type, data
+  def media_for_id(media_id)
+    data = read_attachment media_id
+    content_type = self['_attachments'][media_id]['content_type']
+    FileAttachment.new media_id, content_type, data
   end
 
-  def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
+  def update_properties_with_user_name(user_name, properties)['_id']
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
-    self.photo = new_photo
-    self.audio = new_audio
+  end
+
+  def primary_photo_id
+    # Will cease to be hardcoded after the Select Primary Photo stories have been played
+    self[primary_photo_field_name]
+  end
+
+  def primary_photo_field_name
+    "childs_photo"
   end
 
   def initialize_history

@@ -11,7 +11,7 @@
   </div>
   <p class="photo">
     <a href=<%= child_path(summary_row['_id']) %>>
-      <%= thumbnail_tag(summary_row) %>
+      <%= thumbnail_tag(summary_row, summary_row.primary_photo_id) %>
     </a>
   </p>
   <div class="details">
