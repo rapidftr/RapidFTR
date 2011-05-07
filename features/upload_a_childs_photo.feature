@@ -32,6 +32,7 @@ Feature:
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
+    Then I should see "1" thumbnails    
     
     When I follow "Edit"
     Then I should see "2" thumbnails
