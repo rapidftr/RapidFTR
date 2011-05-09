@@ -24,7 +24,7 @@ module ChildrenHelper
 
   def flag_message
     user = @child.histories.select{|h| h["changes"]["flag"]}.first["user_name"]
-    message = (@child.flag_message.strip.blank? && "") || ": \"#{@child.flag_message}\""
+    message = (@child.flag_message.blank? && "") || ": \"#{@child.flag_message}\""
     "Flagged as suspect record by #{user}#{message}"
   end
 end
