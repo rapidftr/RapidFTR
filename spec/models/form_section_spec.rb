@@ -21,7 +21,7 @@ describe FormSection do
     password
   end
 
-  def create_should_be_called_with (name, value)
+  def create_should_be_called_with(name, value)
     FormSection.should_receive(:create!) { |form_section_hash|
       form_section_hash[name].should == value
     }
