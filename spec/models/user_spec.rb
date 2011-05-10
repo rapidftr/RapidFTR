@@ -139,7 +139,7 @@ describe User do
   end
   
   it "should save blacklisted devices to the device list" do
-    device = Device.new (:imei => "1234", :blacklisted => false, :user_name => "timothy")
+    device = Device.new(:imei => "1234", :blacklisted => false, :user_name => "timothy")
     device.save!
     
     user = build_and_save_user(:user_name => "timothy")
