@@ -1,5 +1,5 @@
 base: &base
- database_prefix: rapidftr_spec_
+ database_prefix: rapidftr_
  database_suffix: _<%= RAILS_ENV %>
 
 development:
