@@ -29,6 +29,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :age, :method => :validate_age
   validates_with_method :validate_has_at_least_one_field_value
+	validates_with_method :created_at, :method => :validate_created_at
   
   def self.build_solar_schema
     fields = ["unique_identifier"]  + Field.all_text_names
@@ -60,6 +61,17 @@ class Child < CouchRestRails::Document
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
+
+	def validate_created_at
+		begin
+			if self['created_at']
+				DateTime.parse self['created_at'] 
+			end
+			true
+		rescue
+			[false, '']
+		end
+	end
   
   def method_missing(m, *args, &block)  
     self[m]
@@ -102,7 +114,8 @@ class Child < CouchRestRails::Document
 
   def set_creation_fields_for(user_name)
     self['created_by'] = user_name
-    self['created_at'] = current_formatted_time
+    self['created_at'] ||= current_formatted_time
+    self['posted_at'] = current_formatted_time
   end
 
   def set_updated_fields_for(user_name)
@@ -140,18 +153,29 @@ class Child < CouchRestRails::Document
   end
 
   def audio
-    attachment_name = self['recorded_audio']
-    return nil unless attachment_name && (has_attachment? attachment_name)
-    data = read_attachment attachment_name
-    content_type = self['_attachments'][attachment_name]['content_type']
-    FileAttachment.new attachment_name, content_type, data
+    return nil if self['audio_attachments'].nil?
+    attachment_key = self['audio_attachments']['original']
+    return nil unless has_attachment? attachment_key
+
+    data = read_attachment attachment_key
+    content_type = self['_attachments'][attachment_key]['content_type']
+    FileAttachment.new attachment_key, content_type, data
   end
 
   def audio=(audio_file)
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-    attach(attachment, 'recorded_audio')
+
+    attach(attachment, attachment.name)
+    setup_original_audio(attachment)
+    setup_mime_specific_audio(attachment)
+  end
+
+  def add_audio_file(audio_file, content_type)
+    attachment = FileAttachment.from_file(audio_file, content_type, "audio", key_for_content_type(content_type))
+    attach(attachment, attachment.name)
+    setup_mime_specific_audio(attachment)
   end
 
   def media_for_key(media_key)
@@ -227,8 +251,25 @@ class Child < CouchRestRails::Document
   end
   
   def deprecated_fields
-    system_fields = ["created_at", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
+    system_fields = ["created_at","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
     existing_fields = system_fields + FormSection.all_enabled_child_fields.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end
+
+  def setup_original_audio(attachment)
+    audio_attachments = (self['audio_attachments'] ||= {})
+    audio_attachments.clear
+    audio_attachments['original'] = attachment.name
+  end
+
+  def setup_mime_specific_audio(file_attachment)
+    audio_attachments = (self['audio_attachments'] ||= {})
+    content_type_for_key = file_attachment.mime_type.to_sym.to_s
+    audio_attachments[content_type_for_key] = file_attachment.name
+  end
+
+  def key_for_content_type(content_type)
+    Mime::Type.lookup(content_type).to_sym.to_s
+  end
+  
 end

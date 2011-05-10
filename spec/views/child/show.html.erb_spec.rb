@@ -98,7 +98,35 @@ describe "children/show.html.erb" do
         response.should have_tag("#interviewer_details", /Registered by: jsmith/)
         response.should_not have_tag("#interviewer_details", /and others/)
       end
-    end
+   		it "should always show the posted at details when the record has been posted from a mobile client" do
+					child = Child.new(:posted_at=> "2007-01-01 10:04pm", :posted_from=>"Mobile", :unique_id=>"bob", :_id=>"123123")
+      	  child.stub!(:has_one_interviewer?).and_return(true)
+					form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
+        
+        	assigns[:form_sections] = [form_section]
+    	  	assigns[:child] = child
+
+       		render
+
+        	response.should have_selector("#interviewer_details") do |fields|
+          		fields[0].should contain("Posted from the mobile client at: 2007-01-01 10:04pm")
+        	end 
+			end
+			it "should not show the posted at details when the record has not been posted from mobile client" do
+				child = Child.new(:posted_at=> "2007-01-01 10:04pm", :unique_id=>"bob", :_id=>"123123")
+      	  child.stub!(:has_one_interviewer?).and_return(true)
+					form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
+        
+        	assigns[:form_sections] = [form_section]
+    	  	assigns[:child] = child
+
+       		render
+
+        	response.should have_selector("#interviewer_details") do |fields|
+          		fields[0].should_not contain("Posted from the mobile client at: 2007-01-01 10:04pm")
+        	end 
+			end
+		end
 
   end
 

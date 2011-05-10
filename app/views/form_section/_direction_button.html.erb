@@ -1,6 +1,2 @@
-<% form_id = "#{field.name}_#{direction}Form" %>
-<% form_for field, :url => url, :html => {:method => :post, :id=>form_id}  do |f| %>
- 	<a href="#<%=form_id%>" class="submit-form <%=direction.downcase%>-link"><img src="/images/icon-<%=direction.downcase%>-arrow.gif"></a>
-	<input type="hidden" name="field_name" value="<%=field.name%>"/>            
-	<input type="submit" id="<%=field.name%>_<%=direction%>" class="direction-button" value="<%=direction%>"/>
-<% end %>
+ 	<a href="#" class="<%=direction.downcase%>-link move<%=direction%>" id="<%=field.name%>_<%=direction%>"><img src="/images/icon-<%=direction.downcase%>-arrow.gif"></a>
+	<input type='hidden' name='field_name' value='<%=field.name%>' />

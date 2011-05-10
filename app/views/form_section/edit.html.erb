@@ -2,7 +2,7 @@
 <% form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => { :class => "edit-form-section default-form" } do |f| %>
 
 <fieldset>
-  <h3>Details</h3>
+  <h3 id='editFormDetails'>Details</h3>
   <p>
     <%= f.label :name %>
     <%= f.text_field :name %>
@@ -15,79 +15,92 @@
     <%= f.label :help_text %>
     <%= f.text_field :help_text %>
   </p>
-    <% if not @form_section.perm_enabled? %>
-        <p class="checkbox">
-            <%= f.check_box :enabled?, {}, true, false %>
-            <%= f.label :enabled %>
-        </p>
-        <% end %>
-  </fieldset>
-    <%= cancel_button(formsections_path) %>
-    <%= submit_button 'Save Details' %>
+  <% if not @form_section.perm_enabled? %>
+  <p class="checkbox">
+    <%= f.check_box :enabled?, {}, true, false %>
+    <%= f.label :enabled %>
+  </p>
+  <% end %>
+</fieldset>
+<%= cancel_button(formsections_path) %>
+<%= submit_button 'Save Details' %>
 <% end %>
-
+<% form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/',:html=>{ :id => 'changeDirection', :method => :post} do -%>
+<input type='hidden' name='field_name' value='' id='changeDirectionFieldName' />
+<input type='submit' id='changeDirectionSubmit' style='display:none;'/>
+<% end %>
+<% form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/delete',:html=>{ :id => 'delete', :method => :post} do -%>
+<input type='hidden' name='field_name' value='' id='deleteFieldName' />
+<input type='submit' id='deleteSubmit' style='display:none;'/>
+<% end %>
 
 <% form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
 <table id="form_sections">
-<thead>
-  <tr>
-    <th></th>
-    <th>Visibility</th>
-    <th>Name</th>
-    <th colspan=4>Ordering</th>
-  </tr>
-</thead>
-<tbody>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Visibility</th>
+      <th>Name</th>
+      <th colspan=4>Ordering</th>
+    </tr>
+  </thead>
+  <tbody>
     <% @form_section.fields.each do |field| %>
     <tr id="<%="#{field.name}Row"%>" class="<%= field.enabled? ? "rowEnabled": "rowDisabled" %>">
       <% if @form_section.editable? %>
-          <td>
-            <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
-          </td>
-          <td>
-            <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
-          </td>
+      <td>
+        <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
+      </td>
+      <td>
+        <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
+      </td>
       <% end %>
       <td><%= field.display_name %></td>
       <%if @form_section.editable?%>
-        <td>
-	  <% if !@form_section.is_first field %>
+      <td>
+	<div>
+	  <% if ! @form_section.is_first(field) %>
 	  <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
-	  <%end%>
-        </td>
-        <td>
-	  <% if !@form_section.is_last field %>
+	  <% end %>
+	</div>
+      </td>
+      <td>
+	<div>
+	  <% if ! @form_section.is_last(field) %>
 	  <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
-	  <%end%>
-        </td>
-        <td class='field-buttons'>
-          <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 
-          <%= render :partial => "delete_button", :locals =>{:field=>field, 
-															 :url=>delete_formsection_fields_path(@form_section.unique_id),
-															 :warning=>"Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
-															} %>
-        </td>
+	  <% end %>
+	</div>
+      </td>
+      <td class='field-buttons'>
+        <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 
+        <%= render :partial => "delete_button", :locals =>{:field=>field, 
+	:url=>delete_formsection_fields_path(@form_section.unique_id),
+	:warning=>"Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+	} %>
+      </td>
       <%end%>
     </tr>
     <% end %>
   </tbody>
-
+  
   <tfoot>
     <tr>
       <% if @form_section.editable? %>
-        <th colspan=6><%= link_to "Add Custom Field", choose_field_path(@form_section.unique_id) %></th>
+      <th colspan=6><%= link_to "Add Custom Field", choose_field_path(@form_section.unique_id) %></th>
       <% else %>
-        <th colspan=6> <i>Fields on this form cannot be edited.</i> </th>
+      <th colspan=6> <i>Fields on this form cannot be edited.</i> </th>
       <% end %>
     </tr>
   </tfoot> 
 </table>
 
 <% if @form_section.editable? %>
-    <div class="formSectionButtons">
-      <%= submit_tag "Hide", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to hide fields?')"  }%>
-      <%= submit_tag "Show", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to show fields?')"  }%>
-    </div>
+<div class="formSectionButtons">
+  <%= submit_tag "Hide", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to hide fields?')"  }%>
+  <%= submit_tag "Show", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to show fields?')"  }%>
+</div>
 <% end %>
 <% end %>
-<p><%= link_to "Back To Forms Page", formsections_path() %></p>
+<p><%= link_to "Back To Forms Page", formsections_path()%></p>
+
+
