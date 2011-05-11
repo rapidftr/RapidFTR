@@ -1,5 +1,6 @@
 <% form_tag children_path, :multipart => true, :class => "edit-profile default-form" do %>
 
+  	<%= hidden_field_tag "child[posted_from]", "Browser" %>
     <%= error_messages_for :child %>
     
     <%= render :partial => "tabs", :object => @form_sections %>

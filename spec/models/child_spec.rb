@@ -354,14 +354,34 @@ describe Child do
       child['created_by'].should == 'jdoe'
     end
 
-    it "should create a created_at field with time of creation" do
-      current_time_in_utc = Time.parse("14 Jan 2010 14:05UTC")
-      current_time = mock()
-      Time.stub!(:now).and_return current_time
-      current_time.stub!(:getutc).and_return current_time_in_utc
-      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
-      child['created_at'].should == "2010-01-14 14:05:00UTC"
-    end
+		it "should create a posted_at field with the current date" do
+			current_time_in_utc = Time.parse("22 Jan 2010 14:05UTC")
+			Time.stub!(:now).and_return current_time_in_utc 
+			child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
+			child['posted_at'].should == "2010-01-22 14:05:00UTC"
+		end
+
+		describe "when the created at field is not supplied"do
+			it "should create a created_at field with time of creation" do
+				current_time_in_utc = Time.parse("14 Jan 2010 14:05UTC")
+				current_time = mock()
+				Time.stub!(:now).and_return current_time
+				current_time.stub!(:getutc).and_return current_time_in_utc
+				child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
+				child['created_at'].should == "2010-01-14 14:05:00UTC"
+			end
+		end
+
+		describe "when the created at field is supplied" do
+			it "should use the supplied created at value" do
+				child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
+				child['created_at'].should == "2010-01-14 14:05:00UTC"
+			end
+			it "should be a be a valid ISO date" do
+				child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
+				child.should_not be_valid
+			end
+		end
   end
 
   it "should create a unique id based on the last known location and the user name" do

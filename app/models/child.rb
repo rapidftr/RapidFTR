@@ -29,6 +29,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :age, :method => :validate_age
   validates_with_method :validate_has_at_least_one_field_value
+	validates_with_method :created_at, :method => :validate_created_at
   
   def self.build_solar_schema
     fields = ["unique_identifier"]  + Field.all_text_names
@@ -60,6 +61,17 @@ class Child < CouchRestRails::Document
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
+
+	def validate_created_at
+		begin
+			if self['created_at']
+				DateTime.parse self['created_at'] 
+			end
+			true
+		rescue
+			[false, '']
+		end
+	end
   
   def method_missing(m, *args, &block)  
     self[m]
@@ -102,7 +114,8 @@ class Child < CouchRestRails::Document
 
   def set_creation_fields_for(user_name)
     self['created_by'] = user_name
-    self['created_at'] = current_formatted_time
+    self['created_at'] ||= current_formatted_time
+    self['posted_at'] = current_formatted_time
   end
 
   def set_updated_fields_for(user_name)
@@ -238,7 +251,7 @@ class Child < CouchRestRails::Document
   end
   
   def deprecated_fields
-    system_fields = ["created_at", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
+    system_fields = ["created_at","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
     existing_fields = system_fields + FormSection.all_enabled_child_fields.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end
