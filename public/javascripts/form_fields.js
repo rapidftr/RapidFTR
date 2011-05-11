@@ -3,9 +3,7 @@ var FormFields = {
     this.options = $.extend({},this.options,options);
     this.elem  = elem;
     this.$elem = $(elem);
-    this.selectedFields = [];
     this._build();
-    
     return this;
   },
 
@@ -23,42 +21,44 @@ var FormFields = {
   },
   
   selectForm : function(form){
-    if(this.selectedForm){
-      this.selectedForm.removeClass("selected");
-      this.$elem.find("#fields-for-"+this.selectedForm.attr("id")).removeClass("selected");
+    var self = this;
+    var selectedForm = self.$elem.find(".form.selected");
+    if(selectedForm){
+      selectedForm.removeClass("selected");
+      self.$elem.find("#fields-for-"+selectedForm.attr("id")).removeClass("selected");
     }
     $(form).addClass("selected");
-    this.$elem.find("#fields-for-"+$(form).attr("id")).addClass("selected");
-    this.selectedForm = $(form);
+    self.$elem.find("#fields-for-"+$(form).attr("id")).addClass("selected");
   },
   
   selectItem: function(selectElement){
-    this.hide();
+    var self = this;
+    self.hide();
     var selectedField = { field_name: $(selectElement).find(".field-name").val(), 
                           display_name: $(selectElement).find(".display-name").val(), 
-                          form_name: $(this.selectedForm).find(".form-name").val(),
-                          order: this.selectedFields.length + 1  };
-    this.selectedFields.push(selectedField);
-    this.options.itemSelected(this.actionElement, selectedField);
+                          form_name: self.$elem.find(".form.selected").find(".form-name").val(),
+                          order: self.$elem.find(".prev-selected").length + 1  };
+    self.options.onItemSelect(selectedField);
   },
   
   show : function(args) {
-    this.reset();
+    var self = this;
+    self.reset(args.prevSelectedFields);
     if(args.actionElement && args.actionElement.position().top && args.actionElement.position().left && args.actionElement.width()){
-      this.actionElement = args.actionElement;
-      this.$elem.css("top", this.actionElement.position().top + "px");
-      this.$elem.css("left", this.actionElement.position().left + this.actionElement.width() +  "px");
+      self.$elem.css("top", args.actionElement.position().top + "px");
+      self.$elem.css("left", args.actionElement.position().left + args.actionElement.width() +  "px");
     }
-    this.$elem.show();
+    self.$elem.show();
   },
 
-  hide : function( ) { this.$elem.hide(); },
+  hide : function( ) {var self = this; self.$elem.hide(); },
 
-  reset : function( ) {
-    var firstForm = this.$elem.find(".form").first();
-    this.selectForm(firstForm);
-    $.each(this.selectedFields, function(index, element){
-     this.$elem.find('#field-'+element.field_name).addClass("prev-selected");
+  reset : function(prevSelectedFields) {
+    var self = this;
+    var firstForm = self.$elem.find(".form").first();
+    self.selectForm(firstForm);
+    $.each(prevSelectedFields, function(index, field_name){
+     self.$elem.find('#field-'+field_name).addClass("prev-selected");
     });
   }
 };

@@ -1,8 +1,3 @@
-<% content_for :javascript do %>
-  <%= javascript_include_tag "jquery.tmpl.min.js" %>
-  <%= javascript_include_tag "jquery_plugin.js" %>
-  <%= javascript_include_tag "form_fields.js" %>
-<% end %>
 
 <% form_tag highlight_fields_path, :method => :post do %>
   <table class="highlight-fields">
@@ -14,7 +9,7 @@
       </tr>
     </thead>
     <tbody id="highlighted-fields">
-      <tr>
+      <tr class="add-field-section">
        <td></td>
        <td></td>
        <td><a class="add-field">add</a></td>
@@ -26,66 +21,30 @@
 
 <% end %>
 
-<div class="form-fields-container">
-  <div class='box-shadow content'>
-        <div style="float:right; margin-left: 6px;">
-          <a class='close-link'><%= image_tag("dialog-close.png") %></a>
-        </div>
-
-    <ul class="form-container">
-        <% @forms.each do|form| %>
-          <li id="form-<%= form.id%>" class="form">
-            <%= form.name %>
-            <input type="hidden" class="form-name" value="<%= form.name%>"/>
-          </li>      
-        <%end%> 
-    </ul>
-    <div class="fields-container">
-      <% @forms.each do|form|%>    
-        <ul id="fields-for-form-<%= form.id%>" class="field-container">
-          <% form.fields.each do |field| %>
-            <li id="field-<%= field.name%>" class="field">
-              <span class="field-display-name"><%= field.display_name%></span>
-              <input type="hidden" class="field-name" value="<%= field.name%>"/>
-              <input type="hidden" class="display-name" value="<%= field.display_name%>"/>
-            </li>
-          <%end%>
-        </ul>
-      <%end%>  
-    </div>     
-  <div>
-</div>
 
 <script id="highlight-field-template" type="text/x-jquery-tmpl"> 
   <tr>     
     <td>${display_name}</td>
-    <input type="hidden" name="fields[][field_name]" class="highlighted-field" value="${field_name}"/>
-    <input type="hidden" name="fields[][form_name]" class="highlighted-field" value="${form_name}"/>
-    <input type="hidden" name="fields[][order]" class="highlighted-field" value="${order}"/>
+    <input type="hidden" name="fields[][field_name]" class="highlighted-field-name" value="${field_name}"/>
+    <input type="hidden" name="fields[][form_name]" class="highlighted-form-name" value="${form_name}"/>
+    <input type="hidden" name="fields[][order]" class="highlighted-field-order" value="${order}"/>
     <td>${form_name}</td>
-    <td><a class="delete-field">delete</a></td>
+    <td><a class="delete-field">remove</a></td>
   </tr>
 </script>
 
 <script> 
 
-var updateWithSelectedItem = function(actionElement, selectedElement){
-  var selectedFieldSection = $("#highlight-field-template").tmpl(selectedElement);
-  $(actionElement).parents("tr").before(selectedFieldSection);			
+var updateWithSelectedItem = function(selectedElement){
+  $(".add-field-section").before($("#highlight-field-template").tmpl(selectedElement));		
 }
 
 <% if @highlighted_fields %>
-  $("#highlight-field-template").tmpl(<%=@highlighted_fields.to_json %>).appendTo("#highlighted-fields");
+  $(".add-field-section").before($("#highlight-field-template").tmpl(<%=@highlighted_fields.to_json %>));
 <% end %>
 
- $(".form-fields-container").formFields({itemSelected: updateWithSelectedItem});
- var formFields = $(".form-fields-container").data("formFields");
-
- $(".add-field").live("click", 
-    function(){
-        var args = { actionElement: $(this) };
-        formFields.show(args);
-    }
-  );
-
 </script>
+
+<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add-field" , 
+                                                          :on_item_select => "updateWithSelectedItem", 
+                                                          :prev_selected_field_selector => ".highlighted-field-name"} %>
