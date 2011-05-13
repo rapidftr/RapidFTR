@@ -404,7 +404,7 @@ describe Child do
       end
 
       it "should be the primary photo" do
-        child.primary_photo.data.size.should eql uploadable_photo.data.size
+        child.primary_photo.should match_photo uploadable_photo
       end
     end
 
@@ -415,7 +415,7 @@ describe Child do
       end
       
       it "should return the first photo as a primary photo" do
-        child.primary_photo.data.size.should eql uploadable_photo_jeff.size
+        child.primary_photo.should match_photo uploadable_photo_jeff
       end
     end
     
@@ -428,7 +428,7 @@ describe Child do
       end
       
       it "should become the primary photo" do
-        child.primary_photo.data.size.should eql uploadable_photo_jeff.size
+        child.primary_photo.should match_photo uploadable_photo_jeff
       end
     end
   end

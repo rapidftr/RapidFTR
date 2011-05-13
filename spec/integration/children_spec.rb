@@ -26,7 +26,7 @@ describe Child do
     child_from_db['name'].should == "Paul"
     child_from_db['age'].should == "10"
     child_from_db['last_known_location'].should == "New York"
-    child_from_db.primary_photo.data.size.should eql uploadable_photo.data.size
+    child_from_db.primary_photo.should match_photo uploadable_photo
   end
 
   it "should persist multiple photo attachments" do
