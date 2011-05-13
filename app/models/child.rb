@@ -120,10 +120,10 @@ class Child < CouchRestRails::Document
     exisiting_photo = photo
     image = MiniMagick::Image.from_blob(exisiting_photo.data.read)
     image.rotate(angle)
-
     name = FileAttachment.generate_name
     attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
     attach(attachment)
+    @photo_keys = [name]
   end
 
   def photo=(photo_file)

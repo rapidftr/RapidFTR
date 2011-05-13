@@ -431,6 +431,23 @@ describe Child do
         child.primary_photo.should match_photo uploadable_photo_jeff
       end
     end
+    
+    context "rotating an existing photo" do
+      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}  
+      before(:each) do
+        updated_at_time = Time.parse("Feb 20 2010 12:04:32")
+        Time.stub!(:now).and_return updated_at_time
+      end
+      
+      it "should become the primary photo" do
+        existing_photo = child.primary_photo
+        child.rotate_photo(180)
+        child.save
+
+        #TODO: should be a better way to check rotation other than stubbing Minimagic ?
+        child.primary_photo.should_not match_photo existing_photo
+      end
+    end
   end
 
   describe "audio attachment" do
