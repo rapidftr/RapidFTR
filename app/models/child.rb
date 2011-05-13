@@ -23,7 +23,7 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  validates_with_method :validate_file_name
+  validates_with_method :validate_photo_file_name
   validates_with_method :validate_audio_file_name
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
@@ -53,8 +53,8 @@ class Child < CouchRestRails::Document
     [false, "Age must be between 1 and 99"]
   end
   
-  def validate_file_name
-    return true if @file_name == nil || /([^\s]+(\.(?i)(jpg|jpeg|png))$)/ =~ @file_name
+  def validate_photo_file_name
+    return true if @file_names.blank? || @file_names.all?{|f| f =~ /([^\s]+(\.(?i)(jpg|jpeg|png))$)/ }
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
   
@@ -123,8 +123,6 @@ class Child < CouchRestRails::Document
 
     name = FileAttachment.generate_name
     attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
-    @photo_keys ||= []
-    @photo_keys << attachment.name
     attach(attachment)
   end
 
@@ -134,22 +132,25 @@ class Child < CouchRestRails::Document
     unless photo_file.is_a? Hash
       photo_file = {'0' => photo_file}
     end
-    photo_file.values.select {|photo| photo.respond_to? :content_type}.each do |photo|
-        @file_name = photo.original_path
+    
+    @file_names = []
+    @photo_keys = photo_file.values.select {|photo| photo.respond_to? :content_type}.collect do |photo|
+        @file_names <<  photo.original_path
         attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
-        @photo_keys ||= []
-        @photo_keys << attachment.name
         attach(attachment)
+        attachment.name
     end
   end
-
+  
   def photos
     return [] if self['photo_keys'].blank?
     self['photo_keys'].collect do |key|
-      data = read_attachment key
-      content_type = self['_attachments'][key]['content_type']
-      FileAttachment.new key, content_type, data      
+      attachment(key)
     end
+  end
+  
+  def primary_photo
+    attachment(self['current_photo_key'])
   end
   
   def photo
@@ -240,11 +241,17 @@ class Child < CouchRestRails::Document
   end
 
   private
+  def attachment(key)
+    data = read_attachment key
+    content_type = self['_attachments'][key]['content_type']
+    FileAttachment.new key, content_type, data      
+  end
+  
   def update_photo_keys
-    return unless @photo_keys
+    return if @photo_keys.blank?
     self['photo_keys'] ||= [] 
+    self['current_photo_key'] = @photo_keys.first
     self['photo_keys'].concat @photo_keys
-    self['current_photo_key'] = @photo_keys.last
   end
   
   def attach(attachment)

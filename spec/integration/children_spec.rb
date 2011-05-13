@@ -10,29 +10,23 @@ describe Child do
         "age" => "28",
         "last_known_location" => "London",
         "photo" => photo})
-    child.save.should be_true, display_child_errors(child.errors)
-
-    data = get_object(:child, child.id)
-
-    data['name'].should == "Dave"
-    data['age'].should == "28"
-    data['last_known_location'].should == "London"
-    data['_attachments'].should_not be_empty
-    data['_attachments'][data['current_photo_key']]['content_type'].should == photo.content_type
+    child.save.should be_true
   end
 
   it "should load an existing child record from the database" do
-    child_fixture = Child.new_with_user_name("jdoe", {
+    photo = uploadable_photo
+    child = Child.new_with_user_name("jdoe", {
         "name" => "Paul",
         "age" => "10",
-        "last_known_location" => "New York"})
-    child_id = post_object(:child, child_fixture)
+        "last_known_location" => "New York", "photo" => photo})
+    child.save
+    
+    child_from_db = Child.get(child.id)
 
-    child = Child.get(child_id)
-
-    child['name'].should == "Paul"
-    child['age'].should == "10"
-    child['last_known_location'].should == "New York"
+    child_from_db['name'].should == "Paul"
+    child_from_db['age'].should == "10"
+    child_from_db['last_known_location'].should == "New York"
+    child_from_db.primary_photo.data.size.should eql uploadable_photo.data.size
   end
 
   it "should persist multiple photo attachments" do

@@ -32,16 +32,16 @@ Feature:
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
-    Then I should see "1" thumbnails    
-    
+    Then I should see "2" thumbnails    
+        
     When I follow "Edit"
     Then I should see "2" thumbnails
 
   Scenario: Uploading an invalid file in the image field
 
     Given I am on the new child page
-
-    When I fill in the basic details of a child
+    When I fill in "Haiti" for "Last known location"
+    And I fill in "John" for "Name"
     And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
 

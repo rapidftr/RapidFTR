@@ -11,7 +11,7 @@
 </div>
 
 <div class="thumbnails">
-  <% @child.photos[1..-1].each do |photo| %>
+  <% @child.photos.each do |photo| %>
       <div class="thumbnail"><%= thumbnail_tag(@child, photo.name) %></div>
   <% end %>
 </div>

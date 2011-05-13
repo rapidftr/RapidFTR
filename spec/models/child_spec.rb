@@ -109,20 +109,10 @@ describe Child do
       child['last_updated_at'].should == "2010-01-17 19:05:00UTC"
     end
 
-    it "should update attachments when there is a photo update" do
-      current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time
-      child = Child.new
-      child.update_properties_with_user_name "jdoe", uploadable_photo, nil, {}
-      key = child['_attachments'].keys.select {|key| key =~ /.*2010-01-17T140532/}.first
-      child['_attachments'][key]['data'].should_not be_blank
-    end
-
     it "should not update attachments when the photo value is nil" do
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, {}
-      child['_attachments'].should be_blank
-      child['current_photo_key'].should be_nil
+      child.photos.should be_empty
     end
 
     it "should update attachment when there is audio update" do
@@ -137,13 +127,7 @@ describe Child do
       child = Child.new
       child.photo.should == nil
     end
-    
-    it "should do nothing when a zero byte photo is associated with the child" do
-      child = Child.new
-      child['current_photo_key'] = ""
-      child.photo.should == nil
     end
-  end
   
   describe "validation of custom fields" do
     it "should fail to validate if all fields are nil" do      
@@ -153,7 +137,7 @@ describe Child do
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
     it "should fail to validate if all fields on child record are the default values" do      
-      child = Child.new({:height=>"",:reunite_with_mother=>"No", :current_photo_key=>nil})
+      child = Child.new({:height=>"",:reunite_with_mother=>"No"})
       FormSection.stub!(:all_enabled_child_fields).and_return [
                 Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
                 Field.new(:type => Field::CHECK_BOX, :name => 'reunite_with_mother'),
@@ -161,6 +145,7 @@ describe Child do
       child.should_not be_valid
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
+    
     it "should validate numeric types" do
       fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
       child = Child.new
@@ -414,86 +399,36 @@ describe Child do
 
     context "with a single new photo" do
       let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}    
-      it "should create a field with current_photo_key on creation" do
-        child['photo_keys'].size.should == 1
-      end
-      
-      it "should create a field with current_photo_key on creation" do
-        child['current_photo_key'].should_not be_empty
-      end
-      
-      it "should have current_photo_key as photo attachment key on creation" do
-        child['_attachments'].should have_key(child['current_photo_key'])
-      end
-
-      it "should only have one attachment on creation" do
-        child['_attachments'].size.should == 1
-      end
-      
       it "should only have one photo on creation" do
         child.photos.size.should eql 1
       end
 
-      it "should have data after creation" do
-        Child.get(child.id)['_attachments'].values.first['length'].should be > 0
-      end
-      
-      it "should be able to read attachment after a photo change" do
-        attachment = child.media_for_key(child['current_photo_key'])
-        attachment.data.read.should == File.read(uploadable_photo.original_path)
+      it "should be the primary photo" do
+        child.primary_photo.data.size.should eql uploadable_photo.data.size
       end
     end
 
     context "with multiple new photos" do
       let(:child) {Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London')}    
-      it "should add photo key for each uploaded photo" do
-        child['photo_keys'].uniq.size.should == 2
-      end
-
-      it "should only the right number of attachments on creation" do
-        child['_attachments'].size.should == 2
-      end
-
-      it "should have current_photo_key as photo attachment key on creation" do
-        child['photo_keys'].each do |key|
-          child['_attachments'].should have_key(key)
-        end
-      end
-
-      it "should have data after creation" do
-        Child.get(child.id)['_attachments'].values.each do |value|
-          value['length'].should be > 0
-        end
-      end
-      
       it "should have corrent number of photos after creation" do
         child.photos.size.should eql 2
       end
       
-      it "should have the last photo as the current photo key" do
-        child['current_photo_key'].should eql(child['photo_keys'].last)
+      it "should return the first photo as a primary photo" do
+        child.primary_photo.data.size.should eql uploadable_photo_jeff.size
       end
     end
     
     context "when updating a photo" do
+      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}  
       before(:each) do
         updated_at_time = Time.parse("Feb 20 2010 12:04:32")
         Time.stub!(:now).and_return updated_at_time
         child.update_attributes :photo => uploadable_photo_jeff
       end
       
-      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}    
-      it "should update current_photo_key on a photo change" do
-        child['current_photo_key'] =~ /photo.*?-2010-02-20T120432/
-      end
-
-      it "should have updated current_photo_key as photo attachment key on a photo change" do
-        child['_attachments'].keys.join(' ').should =~  /photo.*-2010-02-20T120432/
-      end
-
-      it "should have photo data after a photo change" do
-        key = Child.get(child.id)['_attachments'].keys.select {|key| key =~ /photo.*-2010-02-20T120432/}.first
-        Child.get(child.id)['_attachments'][key]['length'].should be > 0
+      it "should become the primary photo" do
+        child.primary_photo.data.size.should eql uploadable_photo_jeff.size
       end
     end
   end
@@ -654,6 +589,8 @@ describe Child do
       child.update_attributes :photo => uploadable_photo_jeff
 
       changes = child['histories'].first['changes']
+      
+      #TODO: this should be instead child.photo_history.first.from or something like that
       changes['current_photo_key']['from'].should =~ /photo.*?-2010-01-20T120424/
     end
 
@@ -667,6 +604,7 @@ describe Child do
       child.update_attributes :photo => uploadable_photo_jeff
 
       changes = child['histories'].first['changes']
+      #TODO: this should be instead child.photo_history.first.to or something like that
       changes['current_photo_key']['to'].should =~ /photo.*?-2010-02-20T120424/
     end
 
@@ -777,7 +715,7 @@ describe Child do
       child.audio.should be_nil
     end
   end
-  
+ 
   private
   
   def create_child(name)
