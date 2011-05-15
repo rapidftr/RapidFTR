@@ -12,6 +12,7 @@ class Child < CouchRestRails::Document
   property :name
   property :nickname
   property :unique_identifier
+  property :flag, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {
@@ -221,14 +222,18 @@ class Child < CouchRestRails::Document
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
       changes.merge(field_name => {
-              'from' => @from_child[field_name],
-              'to' => self[field_name] })
+        'from' => @from_child[field_name],
+        'to' => self[field_name]
+      })
     end
   end
 
   def field_name_changes
     @from_child ||= Child.get(self.id)
-    FormSection.all_child_field_names.select { |field_name| changed?(field_name) }
+    form_section_fields = FormSection.all_child_field_names
+    other_fields = ["flag","flag_message"]
+    all_fields = form_section_fields + other_fields
+    all_fields.select { |field_name| changed?(field_name) }
   end
 
   def changed?(field_name)
