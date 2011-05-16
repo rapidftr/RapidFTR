@@ -199,7 +199,8 @@ class   ChildrenController < ApplicationController
 		prefix = current_user_name
 		prefix = child.unique_identifier if child
 
-		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
+    user = User.find_by_user_name(current_user_name)
+		"#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
 	end
   def get_file_name_time_stamp
     user = User.find_by_user_name(current_user_name)

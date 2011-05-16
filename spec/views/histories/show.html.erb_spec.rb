@@ -43,7 +43,7 @@ describe "histories/show.html.erb" do
         assigns[:user] = @user
         render
       	response.should have_tag(".history-details") do
-          with_tag("li", /Yesterday Record created by Bob/)
+          with_tag("li", /2010-12-31 20:55:00 UTC Record created by Bob/)
       	end
       end
     end
@@ -94,7 +94,7 @@ describe "histories/show.html.erb" do
       end
       it "should render audio change record with links when adding a sound file to an existing record for first time" do
         child = FakeRecordWithHistory.new
-        child.add_single_change "rapidftr", "31/12/2010 20:55", "recorded_audio", nil, "Audio"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", nil, "Audio"
 
         assigns[:child] = child
         assigns[:user] = @user
