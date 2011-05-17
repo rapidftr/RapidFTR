@@ -227,6 +227,13 @@ describe Child do
       child.save.should == true
     end
     
+    it "should save file based on mime type" do
+      child = Child.new
+      photo = uploadble_jpg_photo_without_file_extension
+      child.photo = photo
+      child.save.should == true
+    end
+    
     it "should disallow file formats that are not supported audio formats" do
       child = Child.new
 
@@ -488,8 +495,6 @@ describe Child do
       @child.audio= uploaded_file
     end
 
-    it "should attach the created FileAttachment to the document with a key the same as the file name" 
-
     it "should store the audio attachment key with the 'original' key in the audio hash" do
       FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
       @child.audio= uploadable_audio
@@ -523,8 +528,6 @@ describe Child do
       FileAttachment.should_receive(:from_file).with(@file, "audio/mpeg", "audio", "abc").and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
     end
-
-    it "should attach the file to the child record with the name of the attachment as the key" 
 
     it "should add attachments key attachment to the audio hash using the content's media type as key" do
       child = Child.new()

@@ -23,7 +23,7 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  validates_with_method :validate_photo_file_name
+  validates_with_method :validate_photos
   validates_with_method :validate_audio_file_name
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
@@ -54,8 +54,8 @@ class Child < CouchRestRails::Document
     [false, "Age must be between 1 and 99"]
   end
   
-  def validate_photo_file_name
-    return true if @file_names.blank? || @file_names.all?{|f| f =~ /([^\s]+(\.(?i)(jpg|jpeg|png))$)/ }
+  def validate_photos
+    return true if @photos.blank? || @photos.all?{|photo| photo.content_type =~ /(jpg|jpeg|png)/ }
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
   
@@ -145,10 +145,9 @@ class Child < CouchRestRails::Document
     unless photo_file.is_a? Hash
       photo_file = {'0' => photo_file}
     end
-    
-    @file_names = []
+    @photos = []
     @photo_keys = photo_file.values.select {|photo| photo.respond_to? :content_type}.collect do |photo|
-        @file_names <<  photo.original_path
+        @photos <<  photo
         attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
         attach(attachment)
         attachment.name

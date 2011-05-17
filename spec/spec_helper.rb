@@ -145,6 +145,14 @@ def uploadable_audio_ogg
   uploadable_audio "features/resources/sample.ogg"
 end
 
+def uploadble_jpg_photo_without_file_extension
+  returning(uploadable_photo "features/resources/jorge_jpg") do |photo|
+    def photo.content_type
+      "image/jpg"
+    end
+  end
+end
+
 
 def find_child_by_name child_name
   child = Summary.by_name(:key => child_name)
