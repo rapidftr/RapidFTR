@@ -18,4 +18,8 @@ describe "children/new.html.erb" do
             :collection => [@form_section])
     render
   end
+	it "renders a hidden field for the posted_from attribute" do
+		render
+		response.should have_tag("input[name='child[posted_from]'][value='Browser']")
+	end
 end
