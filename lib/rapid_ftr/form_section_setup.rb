@@ -7,7 +7,7 @@ module RapidFTR
       FormSection.all.each {|u| u.destroy }
 
       basic_details_fields = [
-              Field.new("name" => "name", "display_name" => "Name", "type" => "text_field"),
+              Field.new("name" => "name", "display_name" => "Name", "type" => "text_field", "editable" => false),
               Field.new("name" => "age", "display_name" => "Age", "type" => "numeric_field"),
               Field.new("name" => "age_is", "display_name" => "Age Is", "type" => "select_box", "option_strings" => ["Approximate", "Exact"]),
               Field.new("name" => "gender", "display_name" => "Gender", "type" => "radio_button", "option_strings" => ["Male", "Female"]),

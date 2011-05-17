@@ -104,7 +104,8 @@ class FormSection < CouchRestRails::Document
 
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
-    if (field)
+    raise "Uneditable field cannot be deleted" if !field.editable?
+    if (field) 
       field_index = fields.index(field)
       fields.delete_at(field_index)
       save()
@@ -112,6 +113,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def move_field field_to_move, offset
+    raise "Uneditable field cannot be moved" if !field_to_move.editable?
     field_index_1 = fields.index(field_to_move)
     field_index_2 = field_index_1 + offset
     raise "Out of range!" if field_index_2 < 0 || field_index_2 >= fields.length
