@@ -35,8 +35,9 @@
         <% unless current_user_name.nil? %>
             <% unless !is_admin? %>
                         <li><%= link_to 'Admin', admin_path %></li>
-            <% end %>
-            <li><%= link_to('Search Children', :search_children) %></li>
+			<% end %>
+        <li><%= link_to('Search Children', :search_children) %></li>
+	<li><%= link_to('Account', edit_user_path(User.find_by_user_name(current_user_name))) %></li>
         <% end %>
       </ul>
     </div>
