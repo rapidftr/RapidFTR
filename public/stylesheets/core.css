@@ -81,11 +81,11 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 
 /* page-header */
 .page-header { background-color: #31353e; overflow: hidden; margin-bottom: 9px; }
-.page-header .brand { float: left; width: 305px; margin-left: 25px; padding: 21px 0 23px; }
+.page-header .brand { float: left; width: 225px; margin-left: 25px; padding: 21px 0 23px; }
 .page-header .brand img { display: block; }
 
 /* page-header > navigation */
-.page-header .nav { float: right; width: 580px; margin-right: 25px; padding-top: 30px; }
+.page-header .nav { float: right; width: 660px; margin-right: 25px; padding-top: 30px; }
 .page-header .nav ul { text-align: right; }
 .page-header .nav li { padding-left: 12px; display: inline;  font-size: .875em; font-weight: bold; background-image: none; color: #ccc; }
 .page-header .nav li a { color: #fff; }
