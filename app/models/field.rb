@@ -123,6 +123,15 @@ class Field < Hash
     select_options += @options.collect { |option| [option.option_name, option.option_name] }
   end
   
+  def is_highlighted
+      highlight_information.highlighted
+  end
+  
+  def highlight_with_order order
+      highlight_information[:highlighted] = true
+      highlight_information[:order] = order
+  end
+  
   #TODO - remove this is just for testing
   def self.new_field(type, name, options=[])
     Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :enabled => true, :option_strings => options

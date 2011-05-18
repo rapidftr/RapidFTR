@@ -1,4 +1,5 @@
 class HighlightFieldsController < ApplicationController
+  
   def index
     administrators_only
     @forms = FormSection.all
@@ -19,4 +20,5 @@ class HighlightFieldsController < ApplicationController
     end
     redirect_to highlight_fields_url
   end
+
 end
