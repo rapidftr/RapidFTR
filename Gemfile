@@ -25,8 +25,8 @@ group :cucumber do
 end
 
 group :test do
-  gem 'rspec',            '1.3.0'
-  gem 'rspec-rails',      '1.3.2'
+  gem 'rspec',            '1.3.2'
+  gem 'rspec-rails',      '1.3.4'
   gem 'webrat',           '0.7.1'
 end
 

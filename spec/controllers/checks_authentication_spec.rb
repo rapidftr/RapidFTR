@@ -43,13 +43,13 @@ describe ChecksAuthentication, :type => :normal do
 
   it "should use a token supplied in cookies" do
     set_session_token_cookie 'token_in_cookie'
-    Session.should_receive(:get).with('token_in_cookie').and_return(:fake_session)
+    Session.should_receive(:get).with('token_in_cookie').and_return(Session.new)
     exercise_authentication_check
   end
 
   it "should use a token supplied in the header" do
     set_header 'Authorization','RFTR_Token token_in_header'
-    Session.should_receive(:get).with('token_in_header').and_return(:fake_session)
+    Session.should_receive(:get).with('token_in_header').and_return(Session.new)
     exercise_authentication_check
   end
 
@@ -65,7 +65,7 @@ describe ChecksAuthentication, :type => :normal do
     set_header 'Authorization','RFTR_Token token_in_header'
     set_session_token_cookie 'token_in_cookie'
 
-    Session.should_receive(:get).with('token_in_header').and_return(:fake_session)
+    Session.should_receive(:get).with('token_in_header').and_return(Session.new)
 
     exercise_authentication_check
   end
@@ -119,6 +119,20 @@ describe ChecksAuthentication, :type => :normal do
       stub_session(true)
 
       exercise_authorization_check
+    end
+  end
+  
+  describe "Blacklisted" do
+
+    it "should return 403 if a device is blacklisted" do
+      set_session_token_cookie
+      session = Session.new(:imei => "BLAH")
+      session.stub!(:admin?).and_return(true)
+      session.stub!(:device_blacklisted?).and_return(true)
+      Session.stub!(:get).and_return(session)
+      @controller.should_receive(:render).with(:status => 403, :json => session.imei)
+
+      exercise_authentication_check
     end
   end
 end

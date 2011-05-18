@@ -39,10 +39,10 @@ Feature: Allowing admin contact info to be specified
       | location | Uganda |
       | other_information | Please let us know if your password goes missing! |
 	And I am logged in
-	When I follow "Contact & Help"
-	Then I should be on the administrator contact page
-	And I should see "John Smith" within "#contact_info_name"
-	And I should see "UNICEF" within "#contact_info_organization"
+    When I follow "Contact & Help"
+    Then I should be on the administrator contact page
+    And I should see "John Smith" within "#contact_info_name"
+    And I should see "UNICEF" within "#contact_info_organization"
 	And I should see "0123456 ext 2" within "#contact_info_phone"
 	And I should see "Foo@bar.com" within "#contact_info_email"
 	And I should see "Uganda" within "#contact_info_location"

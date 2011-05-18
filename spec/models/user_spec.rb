@@ -117,42 +117,37 @@ describe User do
   end
   
   it "should store list of devices when new device is used" do
+    Device.all.each(&:destroy)
     user = build_user
     user.create!
-    user.add_mobile_login_event("an imei", "a mobile")
-    user.add_mobile_login_event("an imei", "a mobile")
-    user.add_mobile_login_event("another imei", "a mobile")
+    user.add_mobile_login_event("a imei", "a mobile")
+    user.add_mobile_login_event("b imei", "a mobile")
+    user.add_mobile_login_event("a imei", "a mobile")
+
     
-    user.devices.map(&:imei).should == ["an imei", "another imei"]
+    Device.all.map(&:imei).sort().should == (["a imei", "b imei"])
   end
   
   it "should create devices as not blacklisted" do
+    Device.all.each(&:destroy)
+    
     user = build_user
     user.create!
     user.add_mobile_login_event("an imei", "a mobile")
     
-    user.devices.all? {|device| device.blacklisted? }.should be_false
+    Device.all.all? {|device| device.blacklisted? }.should be_false
   end
   
-  it "should create user with devices" do
-    user = User.new({
-      :user_name => "timothy",
-      :full_name => "timothy cochran",
-      :user_type => "admin",
-      :password => "password",
-      :devices => [{"imei" => "1234", "blacklisted" => "true"}]
-      
-      })
+  it "should save blacklisted devices to the device list" do
+    device = Device.new(:imei => "1234", :blacklisted => false, :user_name => "timothy")
+    device.save!
+    
+    user = build_and_save_user(:user_name => "timothy")
+    user.devices = [{"imei" => "1234", "blacklisted" => "true", :user_name => "timothy"}]
     user.save!
     
-    user = User.get(user.id)
-    user.update_attributes({
-      :user_name => "timothy",
-      :full_name => "timothy cochran",
-      :user_type => "admin",
-      :password => "password",
-      "devices" => [{"imei" => "kevin", "blacklisted" => "false"}]
-      })
+    blacklisted_device = user.devices.detect { |device| device.imei == "1234" }
+    blacklisted_device.blacklisted.should == true
     
   end
 

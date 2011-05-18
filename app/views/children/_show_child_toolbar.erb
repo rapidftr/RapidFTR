@@ -6,5 +6,22 @@
     <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
     <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
     <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
-  </ul>
+    <% if !(@child.flag?) %>
+        <li class="flag"><a href="#">Flag record as suspect</a></li>
+      </ul>
+      <% form_for @child, :as => :put do |f| %>
+          <div class="flag-form">
+            <h3><%= f.label(:flag_message,"Flag Reason:") %></h3>
+            <%=	f.text_field :flag_message, :size => 30, :value => "" %>
+            <%= f.hidden_field(:flag, :value => true)%>
+            <%=	 f.submit "Flag" %>
+           </div>
+      <% end %>
+    <%else%>
+        <li class="unflag"><%= link_to "Unflag record",
+                                       child_path(@child,:child=> {:flag => false,
+                                                                   :flag_message => ''}),
+                                       :method => 'put' %></li>
+      </ul>
+    <% end %>
 </div>

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe FormSection do
@@ -175,6 +176,28 @@ describe FormSection do
     end
   end
 
+  describe "delete_field" do
+    it "should delete editable fields" do
+      @field = new_field(:name=>"field3")
+      form_section = FormSection.new :fields=>[@field]
+      form_section.delete_field(@field.name)
+      form_section.fields.should be_empty
+    end
+    it "should not delete uneditable fields" do
+     @field = new_field(:name=>"field3", :editable => false)
+      form_section = FormSection.new :fields=>[@field]
+      lambda {form_section.delete_field(@field.name)}.should raise_error("Uneditable field cannot be deleted")
+    end
+  end
+
+  describe "move_field" do
+    it "should not allow uneditable field to be moved" do
+      @field = new_field(:name=>"field3", :editable => false)
+      form_section = FormSection.new :fields=>[@field]
+      lambda {form_section.move_field(@field, 1)}.should raise_error("Uneditable field cannot be moved")
+    end
+  end 
+
   describe "move_up_field" do
     before :each do
       @field2 = new_field(:name=>"field2")
@@ -292,6 +315,16 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
+    
+    it "should validate name is unique via a case-insensitive search" do
+      upcase_name = "UPCASE NAME"
+      valid_attributes = {:name=> upcase_name, :unique_id => upcase_name.dehumanize, :description => '', :enabled => true, :order => 0}
+      FormSection.create! valid_attributes
+      form_section = FormSection.new valid_attributes.merge(:name => upcase_name.downcase)
+      form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
+    end
+    
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!
@@ -322,4 +355,6 @@ describe FormSection do
       field_two.should be_enabled
     end
   end
+  
+  
 end

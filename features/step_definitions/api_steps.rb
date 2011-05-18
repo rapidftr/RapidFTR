@@ -25,7 +25,7 @@ When /^I login with user (.+):(.+) for device with imei (.+)$/ do |user, passwor
 end
 
 Then /^should be kill response for imei "(.+)"$/ do |imei|
-  response.status.should =~ /401/
+  response.status.should =~ /403/
   response_body.should == imei
 end
 
@@ -33,3 +33,21 @@ Then /^should be successful login$/ do
   response_body.should_not =~ /sessions\/new/
 end
 
+And /^I am using device with imei "(.+)"$/ do |imei|
+  session = Session.for_user(@user, nil)
+  session.imei = imei
+  session.save!
+end
+
+When /^I create the following child:$/ do |table|
+	params={}
+	params[:format] ||= 'json'
+  visit children_path(params), :post, {:child => table.rows_hash}
+end
+
+Then /^the following child should be returned:$/ do |table|
+  json_response = JSON.parse(response_body)
+	table.rows_hash.each do |key,value|
+		json_response[key].should == value
+	end
+end

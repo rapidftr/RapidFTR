@@ -3,9 +3,13 @@
     <script type="text/javascript" language="javascript">
         $(function() {
             $('.profile-image .image a').lightBox({fixedNavigation:true});
-        });
-        $(function() {
+
             $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
+
+            $(".profile-tools .flag-form").hide();
+            $(".profile-tools li.flag a").click( function(){
+                $(".profile-tools .flag-form").toggle();
+            });
         });
     </script>
 <% end %>
@@ -13,13 +17,18 @@
 <% content_for :stylesheet do %>
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
-
+<% if @child.flag? %>
+    <h3 class="flag-message"><%= flag_message %></h3>
+<% end %>
 <%= render :partial => "show_child_toolbar" %>
 
 <div id='interviewer_details'>
   <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @child['created_at'] %></h3>
   <% if @child['last_updated_by']%>
     <h3>Last updated: <%= @child['last_updated_at'] %> </h3>
+  <% end %>
+  <% if @child['posted_from']=="Mobile" %>
+    <h3>Posted from the mobile client at: <%= @child['posted_at'] %> </h3>
   <% end %>
 </div>
 

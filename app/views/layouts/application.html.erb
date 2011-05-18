@@ -30,13 +30,14 @@
         <% unless current_user_name.nil? %>
             <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_to 'Logout', :logout %>)</li>
         <% end %>
-        <li><a href="/">Home</a></li>
+		<li><%= link_to 'Contact &amp; Help', contact_information_path("administrator") %></li>
+		<li><a href="/">Home</a></li>
         <% unless current_user_name.nil? %>
             <% unless !is_admin? %>
                         <li><%= link_to 'Admin', admin_path %></li>
-            <% end %>
-            <li><%= link_to('Search Children', :search_children) %></li>
-			<li><%= link_to 'Contact &amp; Help', contact_information_path("administrator") %></li>
+			<% end %>
+        <li><%= link_to('Search Children', :search_children) %></li>
+	<li><%= link_to('Account', edit_user_path(User.find_by_user_name(current_user_name))) %></li>
         <% end %>
       </ul>
     </div>

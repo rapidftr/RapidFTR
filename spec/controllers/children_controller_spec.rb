@@ -32,7 +32,7 @@ describe ChildrenController do
   end
 
   before do
-    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key"])
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
   describe "GET index" do
@@ -145,6 +145,44 @@ describe ChildrenController do
       history['changes'].should have_key('current_photo_key')
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
+
+    it "should allow a records ID to be specified to create a new record with a known id" do
+      new_uuid = UUIDTools::UUID.random_create()
+      put :update, :id => new_uuid.to_s,
+        :child => {
+            :id => new_uuid.to_s,
+            :_id => new_uuid.to_s,
+            :last_known_location => "London",
+            :age => "7"
+        }
+      Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
+    end
+
+    it "should update flag (cast as boolean) and flag message" do
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
+      put :update, :id => child.id,
+        :child => {
+          :flag => true,
+          :flag_message => "Possible Duplicate"
+        }
+      assigns[:child]['flag'].should be_true
+      assigns[:child]['flag_message'].should == "Possible Duplicate"
+    end
+
+    it "should update history on flagging of record" do
+      current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
+      current_time = Time.parse("20 Jan 2010 17:10:32")
+      Time.stub!(:now).and_return current_time
+      current_time.stub!(:getutc).and_return current_time_in_utc
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
+
+      put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}
+
+      history = Child.get(child.id)["histories"].first
+      history['changes'].should have_key('flag')
+      history['datetime'].should == "2010-01-20 17:10:32UTC"
+    end
+
   end
 
   describe "GET search" do

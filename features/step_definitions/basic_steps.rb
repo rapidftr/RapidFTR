@@ -371,3 +371,33 @@ end
 Then /^I should see errors$/ do
   Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 1
 end
+
+Given /^I flag "([^\"]*)" as suspect$/ do  |name|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Flag record as suspect")
+  click_button("Flag")
+end
+When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Flag record as suspect")
+  fill_in("Flag reason", :with => reason)
+  click_button("Flag")
+end
+
+Then /^the (view|edit) record page should show the record is flagged$/ do |page|
+  path = children_path+"/#{Child.all[0].id}"
+  page == "edit" ? visit(path + "/edit") : visit(path)
+  response.should contain("Flagged as suspect record by")
+end
+
+When /^the record history should log "([^\"]*)"$/ do |field|
+  visit(children_path+"/#{Child.all[0].id}/history")
+  response.should contain(field)
+end
+Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
+  child_name = find_child_by_name name
+  child_images = Hpricot(response.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
+  child_images[0][:src].should contain(image)
+end

@@ -10,6 +10,7 @@ class FormSection < CouchRestRails::Document
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
   property :perm_enabled, :cast_as => 'boolean', :default => false
+  property :validations, :type => [String]
 
   view_by :unique_id
   view_by :order
@@ -30,7 +31,6 @@ class FormSection < CouchRestRails::Document
   def self.all_child_field_names
     all_child_fields.map{ |field| field["name"] }
   end
-  
   
   def self.all_enabled_child_fields
     enabled_by_order.map do |form_section|
@@ -104,7 +104,8 @@ class FormSection < CouchRestRails::Document
 
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
-    if (field)
+    raise "Uneditable field cannot be deleted" if !field.editable?
+    if (field) 
       field_index = fields.index(field)
       fields.delete_at(field_index)
       save()
@@ -112,6 +113,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def move_field field_to_move, offset
+    raise "Uneditable field cannot be moved" if !field_to_move.editable?
     field_index_1 = fields.index(field_to_move)
     field_index_2 = field_index_1 + offset
     raise "Out of range!" if field_index_2 < 0 || field_index_2 >= fields.length
@@ -146,7 +148,7 @@ class FormSection < CouchRestRails::Document
   protected
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != f.name }
+    unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
     unique || [false, "The name '#{name}' is already taken."]
   end
 end

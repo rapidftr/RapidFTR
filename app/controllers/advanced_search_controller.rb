@@ -1,8 +1,7 @@
 class AdvancedSearchController < ApplicationController
 
   def index
-    puts params[:criteria_list]
-    @forms = FormSection.all
+    @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     new_search = !params[:criteria_list]
     if new_search

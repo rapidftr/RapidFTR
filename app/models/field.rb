@@ -8,6 +8,7 @@ class Field < Hash
   property :help_text
   property :type
   property :option_strings
+  property :editable, :cast_as => 'boolean', :default => true
 
   attr_reader :options
 
@@ -64,6 +65,11 @@ class Field < Hash
     true
   end
   
+  def display_name_for_field_selector
+    disabled = self.enabled? ? "" : " (Disabled)"
+    "#{display_name}#{disabled}"
+  end
+  
   def validate_unique
     return true unless new? && form
     return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.name == name})
@@ -74,6 +80,7 @@ class Field < Hash
 
   def initialize properties
     self.enabled = true if properties["enabled"] == nil
+    self.editable = true if properties["editable"] == nil
     self.attributes = properties
   end
   

@@ -4,7 +4,7 @@
     <ul class="<%= section.section_name %>">
       <%= render :partial => "form_section_info", :locals => {:form_section => section} %>
 
-      <% section.fields.each do |field| %>
+      <% (section.fields.select{|field| field.enabled?}).each do |field| %>
         <% if field.type != Field::PHOTO_UPLOAD_BOX && field.type !=  Field::AUDIO_UPLOAD_BOX %>
             <li><span class="profile-section-label"><%= field.display_name %>:</span>
             <span class="profile-section-value"><%= @child[field.name].blank? ? "&nbsp;" : @child[field.name] %></span></li>

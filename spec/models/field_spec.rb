@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe "Child record field view model" do
@@ -30,6 +31,14 @@ describe "Child record field view model" do
     field['option_strings_text'].should == nil    
     field['option_strings'].should == ["tim", "rob"]
   end
+  
+  it "should have display name with diabled if not enabled" do
+    @field.display_name = "pokpok"
+    @field.enabled = false
+    
+    @field.display_name_for_field_selector.should == "pokpok (Disabled)"
+    
+  end 
   
   describe "valid?" do
   

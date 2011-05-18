@@ -1,31 +1,36 @@
 require 'spec_helper'
 
 describe ContactInformationController do
-  before do
-    fake_admin_login
-  end
-  describe "GET edit" do
-    it "populates the contact information" do
-      contact_information = {"name"=>"Bob"}
-      ContactInformation.stub!(:get_or_create).with("bob").and_return(contact_information)
-      get :edit, :id => "bob"
-      assigns[:contact_information].should == contact_information
-    end
-  end
   describe "GET show" do
-    it "returns JSON version of the contact information when requested" do
+    it "returns the JSON representation if showing a contact information that exists" do
       @request.env["HTTP_ACCEPT"] = "application/json"
       contact_information = {"name"=>"Bob"}
       ContactInformation.stub!(:get_by_id).with("administrator").and_return(contact_information)
+          
       get :show, :id => "administrator"
+      
       response_as_json =  JSON.parse @response.body
-      response_as_json.should == {"name"=>"Bob"}
+      response_as_json.should == contact_information
     end
-    it "should 404 if showing a contact information that does not exist" do
+  
+    it "returns a 404 response if showing a contact information that does not exist" do
       ContactInformation.stub!(:get_by_id).with("foo").and_raise(ErrorResponse.not_found("Contact information not found"))
+          
       get :show, :id => "foo"
+      
       response.status.should =~ /404/
     end
   end
   
+  describe "GET edit" do
+    it "populates the contact information when logged in as an admin" do
+      fake_admin_login
+      contact_information = {"name"=>"Bob"}
+      ContactInformation.stub!(:get_or_create).with("bob").and_return(contact_information)
+          
+      get :edit, :id => "bob"
+      
+      assigns[:contact_information].should == contact_information
+    end
+  end
 end

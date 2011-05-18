@@ -13,6 +13,7 @@ module ChecksAuthentication
   # a before filter requiring user to be logged in
   def check_authentication
     session = app_session
+    handle_device_blacklisted(session) if session && session.device_blacklisted?
     raise AuthenticationFailure.bad_token('invalid session token') if session.nil?
   end
 
@@ -38,5 +39,9 @@ module ChecksAuthentication
     respond_to do |format|
       format.any { render_error_response ErrorResponse.new(403, authorization_failure.message) }
     end
+  end
+  
+  def handle_device_blacklisted(session)
+    render(:status => 403, :json => session.imei)
   end
 end

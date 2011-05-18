@@ -39,22 +39,42 @@ describe Session do
       end
     end
   end
+  
+  describe "device blacklisting" do
+    it "should not allow blacklisted imei to login" do
+      imei = "1335"
+      user = mock(User).as_null_object
+      Device.stub(:all).and_return([Device.new({:imei => "1335", :blacklisted => true})])
+
+      session = Session.for_user(user, imei)
+      session.device_blacklisted?.should == true
+    end
+
+    it "should allow non blacklisted imei to login" do
+      imei = "1335"
+      user = mock(User).as_null_object
+      Device.stub(:all).and_return([Device.new({:imei => "1335", :blacklisted => false})])
+
+      session = Session.for_user(user, imei)
+      session.device_blacklisted?.should == false 
+    end
+  end
 
   describe "admin?" do
 
     before(:each) do
       @user = User.new 
-      @session = Session.for_user(@user)
+      @session = Session.for_user(@user, "")
     end
 
     it "should return true when user is an administrator" do
       @user.user_type = "Administrator"
-      Session.for_user(@user).admin?.should == true
+      Session.for_user(@user, "").admin?.should == true
     end
 
     it "should return false when user is just a basic user" do
       @user.user_type = "BasicUser"
-      Session.for_user(@user).admin?.should == false
+      Session.for_user(@user, "").admin?.should == false
     end
   end
 end

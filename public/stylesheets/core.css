@@ -81,11 +81,11 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 
 /* page-header */
 .page-header { background-color: #31353e; overflow: hidden; margin-bottom: 9px; }
-.page-header .brand { float: left; width: 305px; margin-left: 25px; padding: 21px 0 23px; }
+.page-header .brand { float: left; width: 225px; margin-left: 25px; padding: 21px 0 23px; }
 .page-header .brand img { display: block; }
 
 /* page-header > navigation */
-.page-header .nav { float: right; width: 580px; margin-right: 25px; padding-top: 30px; }
+.page-header .nav { float: right; width: 660px; margin-right: 25px; padding-top: 30px; }
 .page-header .nav ul { text-align: right; }
 .page-header .nav li { padding-left: 12px; display: inline;  font-size: .875em; font-weight: bold; background-image: none; color: #ccc; }
 .page-header .nav li a { color: #fff; }
@@ -148,7 +148,7 @@ td.checkbox { text-align: center;}
 .profiles-list-item .view-edit { float:right;margin:0;padding:0  }
 .profiles-list-item .checkbox { float:left;margin:0;padding:0;  }
 .profiles-list-item .photo { position: absolute; top: 17px; left: 5px;  width:60px;}
-.profiles-list #all {  margin-left:65px; margin-bottom: 10px;}
+.profiles-list #all {  margin-left:66px; margin-bottom: 10px;}
 .profiles-list label  { font-weight: bold; color: #678; font-size: .75em; line-height: 1.5; }
 .profiles-list-item .details {  margin-left:65px;}
 .profiles-list-item .details p { margin-bottom: 0; clear: both; border-top: 1px solid #678; padding-top: .2em; }
@@ -157,6 +157,8 @@ td.checkbox { text-align: center;}
 .profiles-list-item dl {  border-top: 1px solid #678; padding-top: .2em; margin-bottom: .2em; clear:both; width:100%}
 .profiles-list-item dt { float: left; margin-right: 10px; font-weight: bold; color: #678; }
 .profiles-list-item dd { float: left; margin-right: 20px; }
+.profiles-button-wrapper { margin-left:72px;}
+.profiles-button-wrapper label { font-size:0.75em;font-weight:bold;color:#678;}
 
 /* profile and edit page */
 .form-section-info { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
@@ -170,6 +172,7 @@ td.checkbox { text-align: center;}
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
 .profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
 .profile-page .form-section-info { padding-top: .5em; }
+
 
 /* forms page */
 .forms-page #suggestedFields input[type=submit] {background: transparent; border-top: 0;border-right: 0; border-bottom:0;border-left: 0;display: inline;margin: 0;padding: 0;color: #39f; text-decoration: underline; overflow: hidden; outline: none; line-height: 1.5em  ; font-family:inherit; cursor:pointer;}
@@ -204,7 +207,15 @@ ul.ui-widget-content { background: none; }
 .profile-tools li.edit a { background-image: url(../images/icon-edit.gif); }
 .profile-tools li.back a { background-image: url(../images/icon-back.gif); }
 .profile-tools li.view-log a { background-image: url(../images/icon-calendar.gif); }
+.profile-tools li.flag a { background-image: url(../images/icon-flag.gif); }
+.profile-tools li.unflag a { background-image: url(../images/icon-flag.gif); }
 .profile-tools li a:hover { color: #f93; }
+.profile-tools .flag-form h3 { display:inline; }
+.profile-tools .flag-form input { display:inline; }
+.profile-tools .flag-form { margin: 0px;}
+.flag-message {color: red; margin-bottom: .5em;}
+
+
 
 /* profile page > image */
 .profile-image { background-color: #fff; padding: 11px 15px 25px 12px; margin-bottom: 1em; background: url(../images/profile-image-bg.gif) no-repeat 0 100%;  }
@@ -275,7 +286,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .criteria-value { margin: 0px 10px; width: 240px;}
 
-.criteria_menu { position:absolute; }
+.criteria_menu { position:absolute; z-index:1000; }
 .criteria_menu .content { overflow:hidden; background-color: #EEE; padding: 8px 6px 8px 6px; z-index:200; position:relative; border: 1px solid #CCC; }
 .criteria_menu p { margin:0; }
 .criteria_menu a { text-decoration: underline; color: blue; cursor: pointer; }
@@ -298,6 +309,8 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB')";
 		/* For IE 5.5 - 7 */
 		filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#BBBBBB');
+		
+		
 }
 
 

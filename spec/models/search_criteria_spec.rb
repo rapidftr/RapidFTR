@@ -24,15 +24,19 @@ describe SearchCriteria do
   
   it "should construct criteria objects" do    
     criteria_list = SearchCriteria.build_from_params("1" => {:field => "name", :value => "kevin", :join => "AND", :display_name => "name" } )
-
-    #assigns[:criteria_list].length.should == 1
     first_criteria = criteria_list.first
     first_criteria.field.should == "name"
     first_criteria.value.should == "kevin"
     first_criteria.join.should == "AND"
-    #first_criteria.index.should == "1"
-    
   end
+  
+  it "should remove whitespace from query" do    
+     criteria_list = SearchCriteria.build_from_params("1" => {
+       :field => "name", :value => "  \r\nkevin\t\n", :join => "", :display_name => "name" } )
+
+     first_criteria = criteria_list.first
+     first_criteria.value.should == "kevin"
+   end
   
   it "should order by criteria index" do
     criteria_list = {
@@ -115,7 +119,7 @@ describe SearchCriteria do
         mock(:join => "AND", :to_lucene_query => "QUERY5")
       ]
       SearchCriteria.lucene_query(criteria_list).should == "(QUERY1 AND QUERY2) OR ((QUERY3 AND QUERY4) AND QUERY5)"
-   end
-  
+  end
+
   
 end
