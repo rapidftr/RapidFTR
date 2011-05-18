@@ -27,7 +27,7 @@ describe AdvancedSearchController do
     SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
     
     get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => ""
-    assigns[:criteria_list].should == "criteria_list"
+    assigns[:criteria_list].should == ["criteria_list"]
 
   end
 
