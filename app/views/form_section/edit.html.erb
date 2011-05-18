@@ -49,7 +49,9 @@
     <tr id="<%="#{field.name}Row"%>" class="<%= field.enabled? ? "rowEnabled": "rowDisabled" %>">
       <% if @form_section.editable? %>
       <td>
+	<% if field.editable? %>
         <%= check_box_tag "fields[]", field.name, false, { :id => "fields_#{field.name}" } %>
+	<% end %>
       </td>
       <td>
         <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
@@ -59,24 +61,26 @@
       <%if @form_section.editable?%>
       <td>
 	<div>
-	  <% if ! @form_section.is_first(field) %>
+	  <% if ! @form_section.is_first(field) && field.editable?%>
 	  <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
 	  <% end %>
 	</div>
       </td>
       <td>
 	<div>
-	  <% if ! @form_section.is_last(field) %>
+	  <% if ! @form_section.is_last(field) && field.editable?%>
 	  <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
 	  <% end %>
 	</div>
       </td>
       <td class='field-buttons'>
-        <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name) %> 
+	<% if field.editable? %>
+        <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %> 
         <%= render :partial => "delete_button", :locals =>{:field=>field, 
 	:url=>delete_formsection_fields_path(@form_section.unique_id),
 	:warning=>"Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
 	} %>
+	<%end%>
       </td>
       <%end%>
     </tr>

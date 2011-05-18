@@ -251,42 +251,7 @@ describe Child do
       
     end
     
-    it "should disallow age that is not a number" do
-      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:age => "not num"})
-      child.save.should == false
-    end
-
-    it "should disallow age less than 1" do
-      child = Child.new({:age => "1"})
-      child.save.should == true
-      
-      child = Child.new({:age => "0"})
-      child.save.should == false
-    end
-    
-    it "should disallow age greater than 99" do
-      child = Child.new({:age => "99"})
-      child.save.should == true
-      
-      child = Child.new({:age => "100"})
-      child.save.should == false
-    end
-    
-    it "should disallow age more than 1 dp" do
-      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:age => "10.1"})
-      child.save.should == true
-      
-      child = Child.new({:age => "10.11"})
-      child.save.should == false
-    end
-    
     it "should allow blank age" do
-      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age")]
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
       child = Child.new({:age => "", :another_field=>"blah"})
       child.save.should == true
       
@@ -294,20 +259,6 @@ describe Child do
       child.save.should == true
     end
 
-    it "should show error message for age if not valid" do
-      fields = [Field.new(:type=>Field::NUMERIC_FIELD,:name=>"age", :display_name=>"Age")]
-      FormSection.stub!(:all_enabled_child_fields).and_return fields
-      child = Child.new({:age => "not num"})
-      child.save.should == false
-      child.errors.on("age").should == ["Age must be a valid number"]
-    end
-    
-    it "should show error message for age if out of range" do
-      child = Child.new({:age => "200"})
-      child.save.should == false
-      child.errors.on("age").should == ["Age must be between 1 and 99"]
-    end
-    
     it "should disallow image file formats that are not png or jpg" do
       photo = uploadable_photo
 

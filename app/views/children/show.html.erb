@@ -3,9 +3,13 @@
     <script type="text/javascript" language="javascript">
         $(function() {
             $('.profile-image .image a').lightBox({fixedNavigation:true});
-        });
-        $(function() {
+
             $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
+
+            $(".profile-tools .flag-form").hide();
+            $(".profile-tools li.flag a").click( function(){
+                $(".profile-tools .flag-form").toggle();
+            });
         });
     </script>
 <% end %>
@@ -13,7 +17,9 @@
 <% content_for :stylesheet do %>
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
-
+<% if @child.flag? %>
+    <h3 class="flag-message"><%= flag_message %></h3>
+<% end %>
 <%= render :partial => "show_child_toolbar" %>
 
 <div id='interviewer_details'>
