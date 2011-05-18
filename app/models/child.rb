@@ -31,13 +31,15 @@ class Child < CouchRestRails::Document
   validates_with_method :validate_has_at_least_one_field_value
   
   def self.build_solar_schema
-    fields = ["unique_identifier"]  + Field.all_text_names
-
+    fields = build_fields_for_solar
     Sunspot.setup(Child) do
       text *fields
     end
   end
- 
+
+  def self.build_fields_for_solar
+    ["unique_identifier", "created_by"] +  Field.all_text_names
+  end
 
   def validate_has_at_least_one_field_value
     return true if FormSection.all_enabled_child_fields.any? { |field| is_filled_in? field }

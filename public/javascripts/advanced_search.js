@@ -1,5 +1,6 @@
 (function($){
 	$.fn.advancedSearch = function(options){
+
 		var element = $(this); 
 		var self = this;
 		
@@ -91,6 +92,10 @@
 		
 		var validate = function(){
 			var result = "";
+
+            if ($('#created_by_value').val() != '') {
+                return result;
+            }
 			$('.criteria-list .criteria-field').each(function(){
 				if($(this).val() == "") { result = 'Please select a valid field name.'; }
 			});

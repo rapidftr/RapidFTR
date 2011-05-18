@@ -21,6 +21,7 @@ group :cucumber do
   gem 'cucumber',         '0.9.4'
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
+  gem 'launchy',          '0.4.0'
 end
 
 group :test do
