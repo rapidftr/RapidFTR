@@ -6,6 +6,9 @@
     </p>
 
     <h3><%= link_to summary_row['name'], child_path(summary_row) %></h3>
+    <% if summary_row['flag']=="true"%>
+        <%= image_tag("icon-flag.gif", :alt=> "Flagged",:size => "20x20",:class => 'flag') %>
+    <% end %>
 
     <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %></p>
   </div>

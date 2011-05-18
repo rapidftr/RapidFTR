@@ -121,4 +121,18 @@ describe ChecksAuthentication, :type => :normal do
       exercise_authorization_check
     end
   end
+  
+  describe "Blacklisted" do
+
+    it "should return 403 if a device is blacklisted" do
+      set_session_token_cookie
+      session = Session.new(:imei => "BLAH")
+      session.stub!(:admin?).and_return(true)
+      session.stub!(:device_blacklisted?).and_return(true)
+      Session.stub!(:get).and_return(session)
+      @controller.should_receive(:render).with(:status => 403, :json => session.imei)
+
+      exercise_authentication_check
+    end
+  end
 end

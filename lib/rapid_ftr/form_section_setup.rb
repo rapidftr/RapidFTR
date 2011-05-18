@@ -25,7 +25,7 @@ module RapidFTR
         :unique_id => "basic_details",
         :perm_enabled => true,
         :editable => true,
-        :enabled => true, 
+        :enabled => true,
         :fields => basic_details_fields)
 
       family_details_fields = [
