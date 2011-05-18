@@ -333,14 +333,14 @@ describe FormSection do
       field_two.should be_enabled
     end
   end
-  
+
   describe "highlighted_fields" do
     
     describe "get highlighted fields" do
       before :each do
         high_attr = [{ :order => "1", :highlighted => true }, { :order => "2", :highlighted => true }, { :order => "10", :highlighted => true }]
         @high_fields = [ Field.new(:name => "h1", :highlight_information => high_attr[0]),
-                         Field.new(:name => "h2", :highlight_information => high_attr[1]), 
+                         Field.new(:name => "h2", :highlight_information => high_attr[1]),
                          Field.new(:name => "h3", :highlight_information => high_attr[2]) ]
         field = Field.new :name => "regular_field"
         form_section1 = FormSection.new( :name => "Highlight Form1", :fields => [@high_fields[0], @high_fields[2], field] )
@@ -351,13 +351,13 @@ describe FormSection do
       it "should get fields that have highlight information" do
         highlighted_fields = FormSection.highlighted_fields
         highlighted_fields.size.should == @high_fields.size
-        highlighted_fields.map do |field| field.highlight_information end.should 
+        highlighted_fields.map do |field| field.highlight_information end.should
           include @high_fields.map do |field| field.highlight_information end
-      end 
+      end
       
       it "should sort the highlighted fields by highlight order" do
         highlighted_fields = FormSection.highlighted_fields
-        highlighted_fields.map do |field| field.highlight_information.order end.should == 
+        highlighted_fields.map do |field| field.highlight_information.order end.should ==
           @high_fields.map do |field| field.highlight_information.order end
       end
     end
@@ -365,14 +365,14 @@ describe FormSection do
     describe "set highlighted fields" do
 
       it "should update field as highlighted" do
-        attr = { :field_name => "h1", :form_name => "highlight form", :order => "6" } 
+        attr = { :field_name => "h1", :form_name => "highlight form", :order => "6" }
         existing_field = Field.new :name => attr[:field_name]
-        FormSection.stub(:all).and_return([FormSection.new(:name => attr[:form_name], 
-                                                                   :fields => [existing_field])]) 
+        FormSection.stub(:all).and_return([FormSection.new(:name => attr[:form_name],
+                                                                   :fields => [existing_field])])
         FormSection.update_field_as_highlighted attr
-        existing_field.highlight_information.order.should == attr[:order] 
+        existing_field.highlight_information.order.should == attr[:order]
       end
 
     end
-  end
+  end  
 end

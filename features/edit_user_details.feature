@@ -76,3 +76,7 @@ Scenario: Admin should not see "Disable" control or change user type control whe
   And I should not see "User type"
   Then I should not see "Disabled"
 
+Scenario: User should be able to edit their own general information, but should not be able to edit their devices
+Given "mary" is logged in
+  And I follow "Account"
+  Then I should not see "IMEI"

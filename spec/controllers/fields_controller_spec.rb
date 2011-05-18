@@ -85,24 +85,17 @@ describe FieldsController do
     end
 
     it "should use the display name to form the field name if no field name is supplied" do
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("name"=>"my_brilliant_new_field"))
-      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>"My brilliant new field", :name=>"", "enabled" => true}
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name" => "My brilliant new field"))
+      post :create, :formsection_id => @form_section.unique_id, :field => {:display_name => "My brilliant new field"}
     end
     
     it "should remove non alphanum characters from field display name when using it for the field name" do
       field_display_name = "This £££i$s a@ fi1eld!"
       expected_name = "this_is_a_fi1eld"
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name"=>field_display_name, "name"=>expected_name) )
-      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>"", "enabled" => true}
-    end
-    
-    it "should remove non alphanum characters from field display name when using it for the field name" do
-      field_display_name = "This i$s a@ fi1eld!"
-      expected_name = "this_is_a_fi1eld"
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name"=>field_display_name, "name"=>expected_name) )
-      post :create, :formsection_id =>@form_section.unique_id, :field =>{:display_name=>field_display_name, :name=>"", "enabled" => true}
-    end
-    
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name" => field_display_name, 
+                                                                                            "name" => expected_name) )
+      post :create, :formsection_id => @form_section.unique_id, :field => {:display_name => field_display_name}
+    end    
   end
 
   describe "post move_up and move_down" do

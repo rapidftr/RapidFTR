@@ -9,6 +9,7 @@ class Field < Hash
   property :type
   property :option_strings
   property :highlight_information , :cast_as=> 'HighlightInformation' 
+  property :editable, :cast_as => 'boolean', :default => true
 
   attr_reader :options
 
@@ -81,6 +82,7 @@ class Field < Hash
   def initialize properties
     self.enabled = true if properties["enabled"] == nil
     self.highlight_information = HighlightInformation.new
+    self.editable = true if properties["editable"] == nil
     self.attributes = properties
   end
   

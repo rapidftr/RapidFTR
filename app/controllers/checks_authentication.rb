@@ -42,6 +42,6 @@ module ChecksAuthentication
   end
   
   def handle_device_blacklisted(session)
-    render(:status => 401, :json => session.imei)
+    render(:status => 403, :json => session.imei)
   end
 end
