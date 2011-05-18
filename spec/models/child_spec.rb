@@ -222,12 +222,9 @@ describe Child do
 
       child.photo = uploadable_photo_bmp
       child.save.should == false
-
-      child.photo = uploadable_photo
-      child.save.should == true
     end
     
-    it "should save file based on mime type" do
+    it "should save file based on content type" do
       child = Child.new
       photo = uploadble_jpg_photo_without_file_extension
       child.photo = photo

@@ -55,7 +55,7 @@ class Child < CouchRestRails::Document
   end
   
   def validate_photos
-    return true if @photos.blank? || @photos.all?{|photo| photo.content_type =~ /(jpg|jpeg|png)/ }
+    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type}
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
   
