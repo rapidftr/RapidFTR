@@ -89,11 +89,27 @@
 		menu.find(".close-link").click(function(){
 			menu.hide();
 		});
-		
+
+        function enableInputByCheckbox(checkbox, inputElement) {
+            if (checkbox.is(':checked')) {
+                inputElement.removeAttr('disabled');
+            } else {
+                inputElement.attr('disabled', true);
+            }
+        }
+
+        $('#created_by').bind('click', function() {
+            enableInputByCheckbox($(this), $('#created_by_value'));
+        });
+
+        function createdByIsValid() {
+            return ($('#created_by').is(':checked')) && ($('#created_by_value').val() != '');
+        }
+
 		var validate = function(){
 			var result = "";
 
-            if ($('#created_by_value').val() != '') {
+            if (createdByIsValid()) {
                 return result;
             }
 			$('.criteria-list .criteria-field').each(function(){
