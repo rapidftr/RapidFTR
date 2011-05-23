@@ -130,7 +130,7 @@ class Child < CouchRestRails::Document
   end
 
   def rotate_photo(angle)
-    exisiting_photo = photo
+    exisiting_photo = primary_photo
     image = MiniMagick::Image.from_blob(exisiting_photo.data.read)
     image.rotate(angle)
     name = FileAttachment.generate_name
@@ -162,13 +162,10 @@ class Child < CouchRestRails::Document
   end
   
   def primary_photo
-    attachment(self['current_photo_key'])
+    key = self['current_photo_key']
+    key ? attachment(key) : nil
   end
   
-  def photo
-    photos.first
-  end
-
   def audio
     return nil if self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']

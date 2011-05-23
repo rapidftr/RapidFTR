@@ -370,6 +370,10 @@ describe Child do
       it "should have an empty set" do
         Child.new.photos.should be_empty
       end
+      
+      it "should not have a primary photo" do
+        Child.new.primary_photo.should be_nil
+      end
     end
 
     context "with a single new photo" do
@@ -416,7 +420,7 @@ describe Child do
       
       it "should become the primary photo" do
         existing_photo = child.primary_photo
-        child.rotate_photo(180)
+          child.rotate_photo(180)
         child.save
 
         #TODO: should be a better way to check rotation other than stubbing Minimagic ?

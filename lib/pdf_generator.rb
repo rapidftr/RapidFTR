@@ -36,11 +36,11 @@ class PdfGenerator
   private
   def add_child_photo(child)
     @pdf.image(
-            child.photo.data,
+            child.primary_photo.data,
             :position => :center,
             :vposition => :top,
             :fit => @image_bounds
-    ) if child.photo
+    ) if child.primary_photo
     @pdf.y -= 5.mm
     @pdf.text(
             child.unique_identifier,

@@ -3,8 +3,8 @@
       <div class='image'>
           <%= link_to image_tag(child_resized_photo_path(@child, 328)), child_resized_photo_path(@child, 640) %>
           <p class='view-full-size'>Click on the Image to see full size</p>
-          <%= link_to("Edit photo", edit_photo_url(@child)) %>
       </div>
+      <%= link_to("Edit photo", edit_photo_url(@child)) %>
     <% else %>
       <%= image_tag('/images/no_photo_clip.jpg') %>    
     <% end %>
