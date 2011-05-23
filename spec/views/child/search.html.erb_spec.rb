@@ -55,7 +55,8 @@ describe "children/search.html.erb" do
       select_check_boxes = Hpricot(response.body).checkboxes
       select_check_boxes.length.should == @results.length
       select_check_boxes.each_with_index do |check_box,i|
-        check_box['name'].should == @results[i]['_id']
+        check_box['name'].should == "selections[#{i}]"
+        check_box['value'].should == @results[i]['_id']
       end
     end
 	

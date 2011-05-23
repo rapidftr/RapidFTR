@@ -18,6 +18,7 @@ end
 
 
 describe ChildrenController do
+  
   before do
     Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
     fake_login
@@ -202,8 +203,11 @@ describe ChildrenController do
       post(
         :export_data,
         {
-          'child_1' => 'selected',
-          'child_2' => 'selected',
+          :selections => 
+          {
+            '0' => 'child_1',
+            '1' => 'child_2'
+          },
           :commit => "Export to PDF"
         }
       )
@@ -223,8 +227,11 @@ describe ChildrenController do
       post(
         :export_data,
         {
-          'child_1' => 'selected',
-          'child_2' => 'selected',
+          :selections => 
+          {
+            '0' => 'child_1',
+            '1' => 'child_2'
+          },
           :commit => "Export to Photo Wall"
         }
       )
@@ -300,28 +307,20 @@ describe ChildrenController do
   end
 
   describe "GET photo_pdf" do
-    it 'extracts a single selected id from post params correctly' do
-      stub_out_pdf_generator
-      Child.should_receive(:get).with('a_child_id')
-      post(
-        :export_data,
-        { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' }
-      )
-    end
 
-    it 'extracts a multiple selected ids from post params correctly' do
+    it 'extracts multiple selected ids from post params in correct order' do
       stub_out_pdf_generator
-      Child.should_receive(:get).with('child_one')
-      Child.should_receive(:get).with('child_two')
-      Child.should_receive(:get).with('child_three')
+      Child.should_receive(:get).with('child_zero').ordered
+      Child.should_receive(:get).with('child_one').ordered
+      Child.should_receive(:get).with('child_two').ordered
 
       post(
         :export_data,
+        :selections => 
         {
-          'child_one' => 'selected',
-          'child_two' => 'selected',
-          'child_three' => 'selected',
-          'some_other_post_param' => 'blah'
+          '2' => 'child_two',
+          '0' => 'child_zero',
+          '1' => 'child_one'
         }
       )
     end
@@ -338,7 +337,7 @@ describe ChildrenController do
         should_receive(:send_data).
         with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
 
-      post( :export_data, 'ignored' => 'selected', :commit => "Export to Photo Wall" )
+      post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )
     end
   end
 
