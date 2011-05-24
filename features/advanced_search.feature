@@ -1,3 +1,4 @@
+@wip
 Feature: So that I can find a child that has been entered in to RapidFTR
   As a user of the website
   I want to use the advanced search criteria to find all relevant results
@@ -13,7 +14,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Willis | aid_worker_1 |
       | Will   | aid_worker_2 |
 
-#    When I check "created_by"
+    When I check "created_by"
     And I fill in "aid_worker_1" for "created_by_value"
     And I press "Search"
 

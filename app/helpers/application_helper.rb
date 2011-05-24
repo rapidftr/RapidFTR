@@ -44,7 +44,7 @@ module ApplicationHelper
   def show_sidebar_links
     sidebar_links = {"View All Children" => children_path, 
                      "Search" => search_children_path, 
-                     "Advanced Search" => advanced_search_index_path}
+                     "Advanced Search" => new_advanced_search_path}
     sidebar_links.select do |_, link|
       !current_page?(link)
     end

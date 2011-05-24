@@ -1,5 +1,14 @@
 class AdvancedSearchController < ApplicationController
 
+  def new
+    @forms = FormSection.by_order
+    @aside = 'shared/sidebar_links'
+
+    @criteria_list = [SearchCriteria.new]
+    @results = []
+    render :index
+  end
+
   def index
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'

@@ -18,7 +18,8 @@ describe AdvancedSearchController do
 
   it "should construct empty criteria objects for new search" do
     SearchCriteria.stub(:new).and_return("empty_criteria")
-    get :index
+    get :new
+    response.should render_template('advanced_search/index.html.erb')
     assigns[:criteria_list].should == ["empty_criteria"]
   end
   

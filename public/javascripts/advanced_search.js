@@ -90,7 +90,7 @@
 			menu.hide();
 		});
 
-        function enableInputByCheckbox(checkbox, inputElement) {
+        var enableInputByCheckbox = function(checkbox, inputElement) {
             if (checkbox.is(':checked')) {
                 inputElement.removeAttr('disabled');
             } else {
@@ -102,7 +102,7 @@
             enableInputByCheckbox($(this), $('#created_by_value'));
         });
 
-        function createdByIsValid() {
+        var createdByIsValid = function() {
             return ($('#created_by').is(':checked')) && ($('#created_by_value').val() != '');
         }
 
