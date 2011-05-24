@@ -2,8 +2,35 @@ require 'spec/spec_helper'
 
 When /^I fill in the basic details of a child$/ do
   fill_in("Last known location", :with => "Haiti")
-  attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
+  attach_file("child[photo]0", "features/resources/jorge.jpg", "image/jpg")
 end
+
+When /^I attach a photo "([^"]*)"$/ do |photo_path|
+  steps %Q{
+    When I attach the file "#{photo_path}" to "child[photo]0"
+  }
+end
+
+When /^I attach the following photos:$/ do |table|
+  table.raw.each_with_index do |photo, i|
+    steps %Q{
+      When I attach the file "#{photo}" to "child[photo]#{i}"
+    }
+  end
+end
+
+Then /^I should see the thumbnail of "([^"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|
+  thumbnail = current_dom.xpath("//img[@alt='#{name}' and contains(@src,'#{timestamp}')]").first
+  thumbnail['src'].should =~ /photo.*-#{timestamp}/
+end
+
+When /^I follow photo with timestamp "([^"]*)"$/ do |timestamp|
+  thumbnail = current_dom.xpath("//img[contains(@src,'#{timestamp}')]").first
+  steps %Q{
+    When I follow "#{thumbnail['src']}"
+  }
+end
+
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)

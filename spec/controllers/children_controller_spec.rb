@@ -116,7 +116,8 @@ describe ChildrenController do
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
-      assigns[:child]['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
+      updated_photo_key = assigns[:child]['_attachments'].keys.select {|key| key =~ /photo.*?-2010-01-17T140532/}.first
+      assigns[:child]['_attachments'][updated_photo_key]['data'].should_not be_blank
     end
 
     it "should update only non-photo fields when no photo update" do
