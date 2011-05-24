@@ -16,7 +16,6 @@ def stub_out_child_get(mock_child = mock(Child))
 	mock_child
 end
 
-
 def stub_out_user
   user = mock(:user)
   user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")

@@ -44,6 +44,9 @@ describe "histories/show.html.erb" do
         render
       	response.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 20:55:00 UTC Record created by Bob/)
+#      	response.should have_selector(".history-details li", :count => 1)
+#      	response.should have_selector(".history-details li") do |item|
+#      		item.text.should match(/2010-12-31 20:55:00 UTC Record created by Bob/)
       	end
       end
     end
@@ -55,6 +58,7 @@ describe "histories/show.html.erb" do
       it "should render photo change record when updating a photo" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", "OldPhoto", "NewPhoto"
+
         assigns[:child] = child
         assigns[:user] = @user
         render
@@ -66,6 +70,7 @@ describe "histories/show.html.erb" do
       it "should render photo change record with links when adding a photo to an existing record for first time" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", nil, "NewPhoto"
+
         assigns[:child] = child
         assigns[:user] = @user
         render
@@ -84,6 +89,7 @@ describe "histories/show.html.erb" do
       it "should render audio change record" do
         child = FakeRecordWithHistory.new 
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", "First", "Second"
+
         assigns[:child] = child
         assigns[:user] = @user
         render
@@ -94,6 +100,13 @@ describe "histories/show.html.erb" do
       end
       it "should render audio change record with links when adding a sound file to an existing record for first time" do
         child = FakeRecordWithHistory.new
+#      	response.should have_selector(".history-details li", :count => 2)
+#      	response.should have_selector(".history-details li") do |item|
+#      		item[0].text.should match(/2010-12-31 20:55:00 UTC Audio changed from First to Second by rapidftr/)
+#      	end
+#      end
+#      it "should render audio change record with links when adding a sound file to an existing record for first time" do
+#        child = FakeRecordWithHistory.new
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", nil, "Audio"
 
         assigns[:child] = child
@@ -103,6 +116,10 @@ describe "histories/show.html.erb" do
       	response.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
       	end
+#      	response.should have_selector(".history-details li", :count => 2)
+#      	response.should have_selector(".history-details li") do |item|
+#      		item[0].text.should match(/2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
+#      	end
       end
     end
     describe "rendering several history entries" do

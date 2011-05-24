@@ -17,6 +17,7 @@ class   ChildrenController < ApplicationController
       format.pdf do
         pdf_data = PdfGenerator.new.children_info(@children)
         send_pdf(pdf_data, "#{file_basename}.pdf")
+#        send_pdf(pdf_data, "RapidFTR-#{get_file_name_time_stamp}.pdf")
       end
     end
   end
@@ -44,6 +45,7 @@ class   ChildrenController < ApplicationController
       format.pdf do
         pdf_data = PdfGenerator.new.child_info(@child)
         send_pdf( pdf_data, "#{file_basename(@child)}.pdf" )
+#        send_pdf( pdf_data, "#{@child.unique_identifier}-#{get_file_name_time_stamp}.pdf" )
       end
     end
   end
@@ -204,6 +206,7 @@ class   ChildrenController < ApplicationController
   end
 
   def file_name_datetime_string
+#  def get_file_name_time_stamp
     user = User.find_by_user_name(current_user_name)
     Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
   end
