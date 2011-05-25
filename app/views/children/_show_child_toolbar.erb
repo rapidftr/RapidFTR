@@ -18,10 +18,15 @@
            </div>
       <% end %>
     <%else%>
-        <li class="unflag"><%= link_to "Unflag record",
-                                       child_path(@child,:child=> {:flag => false,
-                                                                   :flag_message => ''}),
-                                       :method => 'put' %></li>
+        <li class="unflag"><a href="#">Unflag record</a><li>
       </ul>
+      <% form_for @child, :as => :put do |f| %>
+          <div class="unflag-form">
+            <h3><%= f.label(:flag_message,"Unflag Reason:") %></h3>
+            <%=	f.text_field :flag_message, :size => 30, :value => "" %>
+            <%= f.hidden_field(:flag, :value => "false")%>
+            <%=	 f.submit "Unflag" %>
+           </div>
+      <% end %>
     <% end %>
 </div>
