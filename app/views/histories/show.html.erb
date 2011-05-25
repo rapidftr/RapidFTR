@@ -22,14 +22,10 @@
                                    :from_value => change['from'],
                                    :to_value => change['to'],
                                    :datetime => history['datetime'],
-                                   :user_name => history['user_name'] } %>
+                                   :user_name => history['user_name'],
+ 								   :message => history['changes']['flag_message']['to']	} %>
             <% elsif field == 'flag_message'%>
-                <%= render :partial => "flag_message_change",
-                           :locals => {
-                                   :from_value => change['from'],
-                                   :to_value => change['to'],
-                                   :datetime => history['datetime'],
-                                   :user_name => history['user_name'] } %>
+                <%# do nothing, because we want the flag message to be suppresed %>
             <% else %>
                 <%= render :partial => "history_change",
                            :locals => {
