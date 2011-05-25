@@ -14,7 +14,7 @@
             <h3><%= f.label(:flag_message,"Flag Reason:") %></h3>
             <%=	f.text_field :flag_message, :size => 30, :value => "" %>
             <%= f.hidden_field(:flag, :value => true)%>
-            <%=	 f.submit "Flag" %>
+            <%=	 f.submit "Flag", :id => 'submit_flag' %>
            </div>
       <% end %>
     <%else%>
@@ -25,7 +25,7 @@
             <h3><%= f.label(:flag_message,"Unflag Reason:") %></h3>
             <%=	f.text_field :flag_message, :size => 30, :value => "" %>
             <%= f.hidden_field(:flag, :value => "false")%>
-            <%=	 f.submit "Unflag" %>
+            <%=	 f.submit "Unflag", :id => 'submit_unflag' %>
            </div>
       <% end %>
     <% end %>
