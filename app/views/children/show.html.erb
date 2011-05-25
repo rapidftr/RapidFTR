@@ -16,10 +16,27 @@
             $(".profile-tools li.flag a").click( function(){
                 $(".profile-tools .flag-form").toggle();
             });
+
+            $("#submit_flag").click(function(){
+                return showMessageIfEmpty('Please explain why you are flagging this record.');
+            });
+
 			$(".profile-tools .unflag-form").hide();	
             $(".profile-tools li.unflag a").click( function(){
                 $(".profile-tools .unflag-form").toggle();
             });
+
+            $("#submit_unflag").click(function(){
+                return showMessageIfEmpty('Please explain why you are unflagging this record.');
+            });
+
+            var showMessageIfEmpty = function(message){
+                if(!$("#child_flag_message").val()){
+                    alert(message);
+                    return false;
+                }
+            }
+
         });
     </script>
 <% end %>

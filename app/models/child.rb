@@ -32,7 +32,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
 	validates_with_method :created_at, :method => :validate_created_at
-  
+
   def self.build_solar_schema
     fields = ["unique_identifier"]  + Field.all_text_names
 
@@ -73,9 +73,9 @@ class Child < CouchRestRails::Document
 		rescue
 			[false, '']
 		end
-	end
-  
-  def method_missing(m, *args, &block)  
+  end
+
+  def method_missing(m, *args, &block)
     self[m]
   end
   
