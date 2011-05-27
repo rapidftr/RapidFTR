@@ -9,12 +9,14 @@ module ApplicationHelper
     session = Session.get_from_cookies(cookies)
     return session.user_name unless session.nil? or session.user.nil?
   end
-  
+
+  def current_user
+    @user ||= User.find_by_user_name current_user_name
+  end
 
   def is_admin?
-    session = Session.get_from_cookies(cookies)
-    user = User.find_by_user_name session.user_name
-    user.admin?
+    user = current_user
+    user.nil? ? false : user.admin?
   end
 
   def submit_button(name = 'Save')

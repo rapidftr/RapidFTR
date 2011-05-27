@@ -48,6 +48,10 @@ class ApplicationController < ActionController::Base
     return session.user_name unless session.nil?
   end
 
+  def current_user
+    @user ||= User.find_by_user_name(current_user_name)
+  end
+
   def send_pdf(pdf_data,filename) 
     send_data pdf_data, :filename => filename, :type => "application/pdf"
   end
