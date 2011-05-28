@@ -411,7 +411,7 @@ describe Child do
       end
     end
     
-    context "rotating an existing photo" do
+    context "when rotating an existing photo" do
       let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}  
       before(:each) do
         updated_at_time = Time.parse("Feb 20 2010 12:04:32")
@@ -425,6 +425,16 @@ describe Child do
 
         #TODO: should be a better way to check rotation other than stubbing Minimagic ?
         child.primary_photo.should_not match_photo existing_photo
+      end
+      
+      it "should delete the original orientation" do
+        existing_photo = child.primary_photo
+        child.rotate_photo(180)
+        child.save
+
+        child.primary_photo.name.should eql existing_photo.name
+        existing_photo.should_not match_photo child.primary_photo  
+        child.photos.size.should eql 1
       end
     end
   end

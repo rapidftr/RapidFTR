@@ -133,18 +133,12 @@ describe ChildrenController do
       assigns[:child]['_attachments'].size.should == 1
     end
 
-    it "should update history on photo update" do
-      current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
-      current_time = Time.parse("20 Jan 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
-      current_time.stub!(:getutc).and_return current_time_in_utc
+    it "should not update history on photo rotation" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 
       put :update_photo, :id => child.id, :child => {:photo_orientation => "-180"}
 
-      history = Child.get(child.id)["histories"].first
-      history['changes'].should have_key('current_photo_key')
-      history['datetime'].should == "2010-01-20 17:10:32UTC"
+      Child.get(child.id)["histories"].should be_empty
     end
 
     it "should allow a records ID to be specified to create a new record with a known id" do

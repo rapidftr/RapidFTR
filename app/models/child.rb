@@ -130,15 +130,19 @@ class Child < CouchRestRails::Document
   end
 
   def rotate_photo(angle)
-    exisiting_photo = primary_photo
-    image = MiniMagick::Image.from_blob(exisiting_photo.data.read)
+    existing_photo = primary_photo               
+    image = MiniMagick::Image.from_blob(existing_photo.data.read)
     image.rotate(angle)
-    name = FileAttachment.generate_name
-    attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
-    attach(attachment)
-    @photo_keys = [name]
-  end
-
+                                        
+    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob)
+    # attachment = FileAttachment.from_uploadable_file(image.to_blob, "photo-#{existing_photo.name.hash}")
+    
+    self['photo_keys'].delete(attachment.name)
+    @photo_keys = [attachment.name]
+    delete_attachment(existing_photo.name) 
+    attach(attachment)  
+  end                                                                 
+  
   def photo=(photo_file)
     return unless photo_file
     #basically to support any client passing a single photo param, only used by child_spec AFAIK
