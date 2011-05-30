@@ -1,6 +1,6 @@
 <% 5.times do |i|%>
 <p class="file">
-  <%= label_tag "child[photo]", "Photo" %>
+  <%= label_tag "child[photo]#{i}", "Add Photo" %>
   <%= file_field_tag "child[photo]#{i}" %>
   <% if photo_upload_box.help_text.present?%> 
   <br />
@@ -14,5 +14,9 @@
 <% end %>
 
 <% @child.photos.each do |photo| %>
-    <div class="thumbnail"><%= thumbnail_tag(@child, photo.name) %></div>
+    <p class="thumbnail">
+      <%= label_tag "delete_child_photo[#{photo.name}]", "Delete photo?" %>
+      <%= check_box_tag("delete_child_photo[#{photo.name}]") %>
+      <%= thumbnail_tag(@child, photo.name) %>
+    </p>
 <% end %> 

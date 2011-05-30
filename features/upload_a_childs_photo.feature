@@ -54,3 +54,28 @@ Feature:
     And I press "Save"
 
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
+
+  Scenario: Deleting an image
+
+    Given I am on the new child page
+
+    When I fill in "Haiti" for "Last known location"
+    And I fill in "John" for "Name"
+    And I attach the following photos:
+    |features/resources/jorge.jpg|
+    |features/resources/jeff.png |
+
+    And I press "Save"
+    Then I should see "Child record successfully created"
+    And I should see the photo of "John"
+    Then I should see "2" thumbnails
+
+    When I follow "Edit"
+    Then I should see "2" thumbnails
+    And I check "Delete Photo?"
+
+    And I press "Save"
+    Then I should see "Child was successfully updated"
+    And I should see the photo of "John"
+    Then I should see "1" thumbnails
+

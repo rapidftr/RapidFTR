@@ -115,7 +115,7 @@ class   ChildrenController < ApplicationController
 
     new_photo = params[:child].delete(:photo)
     new_audio = params[:child].delete(:audio)
-    @child.update_properties_with_user_name(current_user_name, new_photo, new_audio, params[:child])
+    @child.update_properties_with_user_name(current_user_name, new_photo, params[:delete_child_photo], new_audio, params[:child])
 
     respond_to do |format|
       if @child.save
