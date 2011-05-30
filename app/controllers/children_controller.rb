@@ -161,12 +161,12 @@ class   ChildrenController < ApplicationController
   end
 
   def export_data
-    child_ids = params.map{ |k, v| 'selected' == v ? k : nil }.compact
-    if child_ids.empty?
+    selected_records = params["selections"] || {}
+    if selected_records.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
-
-    children = child_ids.map{ |child_id| Child.get(child_id) }
+    
+    children = selected_records.sort.map{ |index, child_id| Child.get(child_id) }
 
     if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{file_basename}.pdf")
