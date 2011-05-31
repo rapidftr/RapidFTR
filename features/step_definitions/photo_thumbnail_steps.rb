@@ -34,3 +34,7 @@ def check_no_link(response, child_name)
   image_link = yield(child)
   response.body.should_not have_selector("img[@src='#{image_link}']")
 end
+
+When /^I fill in the basic photo details of a child$/ do
+  attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
+end

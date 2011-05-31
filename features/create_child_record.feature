@@ -8,12 +8,10 @@ Feature:
     And I follow "New child"
 
     When I fill in "Jorge Just" for "Name"
-    And I fill in "27" for "Age"
-    And I select "Exact" from "Age is"
-    And I choose "Male"
-    And I fill in "London" for "Origin"
-    And I fill in "Haiti" for "Last known location"
-    And I select "1-2 weeks ago" from "Date of separation"
+    And I fill in "27" for "Date of Birth / Age"
+    And I select "Male" from "Sex"
+    And I fill in "London" for "Nationality"
+    And I fill in "Haiti" for "Birthplace"
     And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
@@ -24,7 +22,6 @@ Feature:
     And I should see "Male"
     And I should see "London"
     And I should see "Haiti"
-    And I should see "1-2 weeks ago"
 
     When I follow "Back"
 
