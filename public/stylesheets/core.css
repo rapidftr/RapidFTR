@@ -60,6 +60,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
+.default-form .thumbnail input { vertical-align:top; margin-top: 2px; }
 .default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; float:right; }
 .default-form .submitButton { overflow: hidden; margin-bottom: 1em }
 .default-form .cancelButton a { width: auto; height: auto;  background: #aaa; padding: 2px 30px; font-weight: bold; color: #fff; float:left;}

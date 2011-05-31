@@ -143,21 +143,29 @@ class Child < CouchRestRails::Document
     attach(attachment)  
   end                                                                 
   
-  def photo=(photo_file)
-    return unless photo_file
-    #basically to support any client passing a single photo param, only used by child_spec AFAIK
-    unless photo_file.is_a? Hash
-      photo_file = {'0' => photo_file}
-    end
-    @photos = []
-    @photo_keys = photo_file.values.select {|photo| photo.respond_to? :content_type}.collect do |photo|
-        @photos <<  photo
-        attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
-        attach(attachment)
-        attachment.name
+  def delete_photo(delete_photos)
+    return unless delete_photos
+    delete_photos.keys.collect do |delete_photo|
+      self['photo_keys'].delete(delete_photo)
     end
   end
   
+  def photo=(new_photos)
+    return unless new_photos
+    #basically to support any client passing a single photo param, only used by child_spec AFAIK
+    unless new_photos.is_a? Hash
+      new_photos = {'0' => new_photos}
+    end
+
+    @photos = []
+    @photo_keys = new_photos.values.select {|photo| photo.respond_to? :content_type}.collect do |photo|
+      @photos <<  photo
+      attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
+      attach(attachment)
+      attachment.name
+    end
+  end
+
   def photos
     return [] if self['photo_keys'].blank?
     self['photo_keys'].collect do |key|
@@ -202,11 +210,12 @@ class Child < CouchRestRails::Document
     FileAttachment.new media_key, content_type, data
   end
 
-  def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
+  def update_properties_with_user_name(user_name, new_photo, delete_photo, new_audio, properties)
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
+    self.delete_photo(delete_photo)
     self.photo = new_photo
     self.audio = new_audio
   end
@@ -275,10 +284,10 @@ class Child < CouchRestRails::Document
   end
   
   def update_photo_keys
-    return if @photo_keys.blank?
-    self['photo_keys'] ||= [] 
-    self['current_photo_key'] = @photo_keys.first
+    @photo_keys ||= []
+    self['photo_keys'] ||= []
     self['photo_keys'].concat @photo_keys
+    self['current_photo_key'] = @photo_keys.first || self['photo_keys'].first
   end
   
   def attach(attachment)

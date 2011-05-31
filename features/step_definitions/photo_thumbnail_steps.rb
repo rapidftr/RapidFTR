@@ -19,7 +19,7 @@ Then /I should see the photo corresponding to "([^\"]*)"$/ do |photo_file|
 end
 
 Then /^I should see "([^\"]*)" thumbnails$/ do |number|
-  thumbnails = current_dom.xpath("//div[@class='thumbnail']/img")
+  thumbnails = current_dom.xpath("//*[@class='thumbnail']/img")
   thumbnails.collect{|element| element['src']}.uniq.size.should eql number.to_i
 end
 
