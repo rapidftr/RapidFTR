@@ -9,9 +9,15 @@
     </thead>
     <tbody>
       <% devices.each do |device| %>
-        <tr>
-          <td><%= device.imei %><%= hidden_field_tag "user[devices][][imei]", device.imei %><%= hidden_field_tag "user[devices][][user_name]", device.user_name %></td>
-          <td><%= check_box_tag "user[devices][][blacklisted]", true, device.blacklisted?  %></td>
+        <tr id='device-imei-<%= device.imei %>'>
+          <td>
+            <%= device.imei %>
+          </td>
+          <td>
+            <%= hidden_field_tag "user[devices][][imei]", device.imei %>
+            <%= hidden_field_tag "user[devices][][user_name]", device.user_name %>
+            <%= check_box_tag "user[devices][][blacklisted]", true, device.blacklisted?, :class => "blacklisted-checkbox-#{device.imei}" %>
+          </td>          
         </tr>
       <% end %>
     </tbody>

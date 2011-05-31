@@ -120,6 +120,10 @@ Then /^I should see "([^\"]*)" with id "([^\"]*)"$/ do |element,id|
   response_body.should have_selector("##{id}")
 end
 
+And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
+  check(field_by_xpath("//tr[@id='device-imei-#{imei_number}']/td/input[@type='checkbox']"))
+end
+
 Given /^devices exist$/ do |devices|
   devices.hashes.each do |device_hash|
     device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])

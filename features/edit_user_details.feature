@@ -58,14 +58,15 @@ Scenario: Check that an admin creates a user record and is able to edit it
   
 Scenario: Should be able to set devices to black listed
 
-Given a user "tim" with a password "123" 
+  Given a user "tim" with a password "123" 
   And devices exist
     | imei | blacklisted | user_name |
     | 123456 | false | tim |
+    | 555666 | false | tim |
   And I am logged in as an admin
   And I am on the edit user page for "tim"
   And I should see "123456"
-  And I check "user[devices][][blacklisted]"
+  When I check the device with an imei of "123456"
   And I press "Update"
   Then I should see "123456 (blacklisted)"
 

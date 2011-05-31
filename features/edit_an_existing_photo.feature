@@ -10,7 +10,6 @@ Feature:
 
     Given I am on the new child page
 
-    When I fill in "Haiti" for "Last known location"
     And I fill in "John" for "Name"
     And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
