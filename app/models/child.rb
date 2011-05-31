@@ -146,7 +146,6 @@ class Child < CouchRestRails::Document
   def delete_photo(delete_photos)
     return unless delete_photos
     delete_photos.keys.collect do |delete_photo|
-      delete_attachment delete_photo
       self['photo_keys'].delete(delete_photo)
     end
   end
