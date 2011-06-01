@@ -18,6 +18,8 @@ Feature:
     And that list should be composed of 3 elements  
     And that JSON response should be composed of items with body 
     	"""
-    	{   "id": "%SOME_STRING%",
-	"rev": "%SOME_STRING%"}
-	"""
+    	{ 
+    	  "id": "%SOME_STRING%",
+	      "rev": "%SOME_STRING%" 
+	    }
+	    """

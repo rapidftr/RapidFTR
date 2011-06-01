@@ -12,7 +12,7 @@ Feature: Creating a child using the API
 			| created_at  | 2011-03-28 13:23:12UTC |
 			| posted_from | Mobile |
 		Then I receive a JSON hash
-		And that hash should be composed of 10 elements
+		And that hash should be composed of 12 elements
 		And that JSON hash of elements has these properties:
 		    | JSONPropertyName |
 		    | name |
@@ -25,17 +25,23 @@ Feature: Creating a child using the API
 		    | couchrest-type |
 		    | histories |
 		    | posted_at |
+		    | photo_keys |
+		    | current_photo_key |
 		And that JSON response should be composed of items with body
 		    """
-		    {"name":"bob",
-			"created_at":"2011-03-28 13:23:12UTC",
-			"posted_from":"Mobile",
-			"_rev":"%SOME_STRING%",
-			"unique_identifier":"%SOME_STRING%",
-			"_id":"%SOME_STRING%",
-			"created_by":"mary",
-			"couchrest-type":"Child",
-			"histories":[],
-			"posted_at":"%SOME_STRING%"}	
-			
-		    """
+		    { 
+		      "name":"bob",
+			    "created_at":"2011-03-28 13:23:12UTC",
+			    "posted_from":"Mobile",
+			    "_rev":"%SOME_STRING%",
+			    "unique_identifier":"%SOME_STRING%",
+			    "_id":"%SOME_STRING%",
+			    "created_by":"mary",
+			    "couchrest-type":"Child",
+			    "histories":[],
+			    "posted_at":"%SOME_STRING%",
+			    "photo_keys":[],
+			    "current_photo_key":null
+			  }
+			  """
+			  
