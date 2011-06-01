@@ -14,5 +14,10 @@ Feature:
     And I am logged in
 
     When I make a request for all child Ids
-
-    Then I receive a JSON list of elements with Id and Revision
+    Then I receive a JSON array
+    And that list should be composed of 3 elements  
+    And that JSON response should be composed of items with body 
+    	"""
+    	{   "id": "%SOME_STRING%",
+	"rev": "%SOME_STRING%"}
+	"""
