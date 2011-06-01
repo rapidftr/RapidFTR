@@ -79,7 +79,7 @@ describe Child do
     it "should replace old properties with updated ones" do
       child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
       new_properties = {"name" => "Dave", "age" => "35"}
-      child.update_properties_with_user_name "some_user", nil, nil, new_properties
+      child.update_properties_with_user_name "some_user", nil, nil, nil, new_properties
       child['age'].should == "35"
       child['name'].should == "Dave"
       child['last_known_location'].should == "London"
@@ -88,14 +88,14 @@ describe Child do
     it "should not replace old properties when updated ones have nil value" do
       child = Child.new("origin" => "Croydon", "last_known_location" => "London")
       new_properties = {"origin" => nil, "last_known_location" => "Manchester"}
-      child.update_properties_with_user_name "some_user", nil, nil, new_properties
+      child.update_properties_with_user_name "some_user", nil, nil, nil, new_properties
       child['last_known_location'].should == "Manchester"
       child['origin'].should == "Croydon"
     end
 
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, {}
+      child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
       child['last_updated_by'].should == 'jdoe'
     end
 
@@ -105,13 +105,13 @@ describe Child do
       Time.stub!(:now).and_return current_time
       current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, {}
+      child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
       child['last_updated_at'].should == "2010-01-17 19:05:00UTC"
     end
 
     it "should not update attachments when the photo value is nil" do
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, {}
+      child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
       child.photos.should be_empty
     end
 
@@ -119,7 +119,7 @@ describe Child do
       current_time = Time.parse("Jan 17 2010 14:05:32")
       Time.stub!(:now).and_return current_time
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, uploadable_audio, {}
+      child.update_properties_with_user_name "jdoe", nil, nil, uploadable_audio, {}
       child['_attachments']['audio-2010-01-17T140532']['data'].should_not be_blank
     end
 
