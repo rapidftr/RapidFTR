@@ -26,6 +26,7 @@ class   ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     @child = Child.get(params[:id])
+    @user = User.find_by_user_name(current_user_name)
 
     @form_sections = get_form_sections
 
