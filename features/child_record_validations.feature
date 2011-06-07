@@ -33,5 +33,3 @@ Scenario: Should be prevented from saving a record that has no data filled in
 	And I press "Save" 
 	Then I should see "Please fill in at least one field or upload a file"
   And there should be 0 child records in the database
-
-

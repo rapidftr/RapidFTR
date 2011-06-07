@@ -46,7 +46,7 @@ describe ChildMediaController do
 
       response.should represent_inline_attachment(uploadable_photo)
     end
-
+    
     it "should return requested child's photo" do
       given_a_child.
               with_id("1")

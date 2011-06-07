@@ -18,6 +18,7 @@ end
 
 
 describe ChildrenController do
+  
   before do
     Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
     fake_login
@@ -116,7 +117,8 @@ describe ChildrenController do
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
-      assigns[:child]['_attachments']['photo-2010-01-17T140532']['data'].should_not be_blank
+      updated_photo_key = assigns[:child]['_attachments'].keys.select {|key| key =~ /photo.*?-2010-01-17T140532/}.first
+      assigns[:child]['_attachments'][updated_photo_key]['data'].should_not be_blank
     end
 
     it "should update only non-photo fields when no photo update" do
@@ -132,18 +134,12 @@ describe ChildrenController do
       assigns[:child]['_attachments'].size.should == 1
     end
 
-    it "should update history on photo update" do
-      current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
-      current_time = Time.parse("20 Jan 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
-      current_time.stub!(:getutc).and_return current_time_in_utc
+    it "should not update history on photo rotation" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 
       put :update_photo, :id => child.id, :child => {:photo_orientation => "-180"}
 
-      history = Child.get(child.id)["histories"].first
-      history['changes'].should have_key('current_photo_key')
-      history['datetime'].should == "2010-01-20 17:10:32UTC"
+      Child.get(child.id)["histories"].should be_empty
     end
 
     it "should allow a records ID to be specified to create a new record with a known id" do
@@ -227,8 +223,11 @@ describe ChildrenController do
       post(
         :export_data,
         {
-          'child_1' => 'selected',
-          'child_2' => 'selected',
+          :selections => 
+          {
+            '0' => 'child_1',
+            '1' => 'child_2'
+          },
           :commit => "Export to PDF"
         }
       )
@@ -248,8 +247,11 @@ describe ChildrenController do
       post(
         :export_data,
         {
-          'child_1' => 'selected',
-          'child_2' => 'selected',
+          :selections => 
+          {
+            '0' => 'child_1',
+            '1' => 'child_2'
+          },
           :commit => "Export to Photo Wall"
         }
       )
@@ -325,28 +327,20 @@ describe ChildrenController do
   end
 
   describe "GET photo_pdf" do
-    it 'extracts a single selected id from post params correctly' do
-      stub_out_pdf_generator
-      Child.should_receive(:get).with('a_child_id')
-      post(
-        :export_data,
-        { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' }
-      )
-    end
 
-    it 'extracts a multiple selected ids from post params correctly' do
+    it 'extracts multiple selected ids from post params in correct order' do
       stub_out_pdf_generator
-      Child.should_receive(:get).with('child_one')
-      Child.should_receive(:get).with('child_two')
-      Child.should_receive(:get).with('child_three')
+      Child.should_receive(:get).with('child_zero').ordered
+      Child.should_receive(:get).with('child_one').ordered
+      Child.should_receive(:get).with('child_two').ordered
 
       post(
         :export_data,
+        :selections => 
         {
-          'child_one' => 'selected',
-          'child_two' => 'selected',
-          'child_three' => 'selected',
-          'some_other_post_param' => 'blah'
+          '2' => 'child_two',
+          '0' => 'child_zero',
+          '1' => 'child_one'
         }
       )
     end
@@ -363,7 +357,7 @@ describe ChildrenController do
         should_receive(:send_data).
         with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
 
-      post( :export_data, 'ignored' => 'selected', :commit => "Export to Photo Wall" )
+      post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )
     end
   end
 
