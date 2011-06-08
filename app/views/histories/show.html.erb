@@ -23,7 +23,7 @@
                                    :to_value => change['to'],
                                    :datetime => history['datetime'],
                                    :user_name => history['user_name'],
- 								   :message => history['changes']['flag_message']['to']	} %>
+ 								   :message => flag_change_message(history)	} %>
             <% elsif field == 'flag_message'%>
                 <%# do nothing, because we want the flag message to be suppresed %>
             <% else %>
