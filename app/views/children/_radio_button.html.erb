@@ -1,12 +1,7 @@
 <dl class="radioList">
   <dt><span><%= radio_button.name.humanize %></span>
     <% if radio_button.help_text.present?%>
-    <br/>
-    <span class='help-text-container'>
-      <span class='help-text'>
-	<%=radio_button.help_text%>
-      </span>
-    </span>
+	<img class="tool-tip-icon vtip" title="<%=radio_button.help_text%>" src="/images/tool_tip_icon.gif"/>
     <% end%>
   </dt>
 

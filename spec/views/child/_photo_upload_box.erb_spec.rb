@@ -6,7 +6,7 @@ describe "children/_photo_upload_box.html.erb" do
     assigns[:child] = @child
   end
 
-  it "should show help text when exists" do
+  it "should include image for tooltip when help text exists" do
     photo_upload_box = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'photo_upload_box',
@@ -14,19 +14,17 @@ describe "children/_photo_upload_box.html.erb" do
     
     render :locals => { :photo_upload_box => photo_upload_box}
   
-    response.should have_tag(".help-text-container")
-    response.should have_tag(".help-text")
+    response.should have_tag("img.vtip")
   end
 
-  it "should not show help text when not exists" do
+  it "should not include image for tooltip when help text not exists" do
     photo_upload_box = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'photo_upload_box'
     
     render :locals => { :photo_upload_box => photo_upload_box}
   
-    response.should_not have_tag(".help-text-container")
-    response.should_not have_tag(".help-text")
+    response.should_not have_tag("img.vtip")
 
   end
   

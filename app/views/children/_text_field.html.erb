@@ -2,11 +2,6 @@
   <%= label_tag text_field.tag_name_attribute, text_field.display_name %>
   <%= text_field_tag text_field.tag_name_attribute, @child[text_field.name] %>
   <% if text_field.help_text.present?%> 
-  <br />
-  <span class='help-text-container'>
-    <span class='help-text'>
-      <%=text_field.help_text%>
-    </span>
-  </span>
+	<img class="tool-tip-icon vtip" title="<%=text_field.help_text%>" src="/images/tool_tip_icon.gif"/>
   <% end%>
 </p>

@@ -5,11 +5,6 @@
     <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %> 
   </span>
   <% if numeric_field.help_text.present?%> 
-  <br />
-  <span class='help-text-container'>
-    <span class='help-text'>
-      <%=numeric_field.help_text%>
-    </span>
-  </span>
+	<img class="tool-tip-icon vtip" title="<%=numeric_field.help_text%>" src="/images/tool_tip_icon.gif"/>
   <% end%>
 </p>
