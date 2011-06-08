@@ -356,8 +356,8 @@ describe FormSection do
       end
       
       it "should sort the highlighted fields by highlight order" do
-        highlighted_fields = FormSection.highlighted_fields
-        highlighted_fields.map do |field| field.highlight_information.order end.should ==
+        sorted_highlighted_fields = FormSection.sorted_highlighted_fields
+        sorted_highlighted_fields.map do |field| field.highlight_information.order end.should ==
           @high_fields.map do |field| field.highlight_information.order end
       end
     end
@@ -365,13 +365,26 @@ describe FormSection do
     describe "set highlighted fields" do
 
       it "should update field as highlighted" do
-        attrs = { :field_name => "h1", :form_id => "highlight_form", :order => "6" }
+        attrs = { :field_name => "h1", :form_id => "highlight_form" }
         existing_field = Field.new :name => attrs[:field_name]
         form = FormSection.new(:name => "Some Form", :unique_id => attrs[:form_id], :fields => [existing_field])
-        form.update_field_as_highlighted attrs
-        existing_field.highlight_information.order.should == attrs[:order]
+        FormSection.stub(:all).and_return([form])
+        form.update_field_as_highlighted attrs[:field_name]
+        existing_field.highlight_information.order.should == 1
+        existing_field.is_highlighted?.should be_true
       end
 
+      it "should increment order of the field to be highlighted" do
+        attrs = { :field_name => "existing_field", :form_id => "highlight_form"}
+        existing_field = Field.new :name => attrs[:field_name]
+        existing_highlighted_field = Field.new :name => "highlighted_field"
+        existing_highlighted_field.highlight_with_order 1
+        form = FormSection.new(:name => "Some Form", :unique_id => attrs[:form_id], :fields => [existing_field, existing_highlighted_field])
+        FormSection.stub(:all).and_return([form])
+        form.update_field_as_highlighted attrs[:field_name]
+        existing_field.is_highlighted?.should be_true
+        existing_field.highlight_information.order.should == 2
+      end
     end
   end  
 end

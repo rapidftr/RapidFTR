@@ -29,14 +29,12 @@
     <td>${display_name}</td>
     <td>${form_name}</td>
     <td></td>
-    <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
-    <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
+    <input type="hidden" name="field_name" class="highlighted" value="${field_name}"/>
   </tr>
 </script>
 
 <script id="add-template" type="text/x-jquery-tmpl">
     <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
-    <input type="hidden" name="order" class="highlighted-field-order" value="${order}"/>
     <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
 </script>
 
@@ -55,4 +53,4 @@ var updateWithSelectedItem = function(selectedElement){
 
 <%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add-field" , 
                                                           :on_item_select => "updateWithSelectedItem", 
-                                                          :prev_selected_field_selector => ".highlighted-field-name"} %>
+                                                          :prev_selected_field_selector => ".highlighted"} %>

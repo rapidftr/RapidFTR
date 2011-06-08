@@ -37,14 +37,17 @@ describe HighlightFieldsController do
   
   describe "create" do
     it "should update field as highlighted" do
-      form = FormSection.create(:name => "Form1", :unique_id => "form1", :fields => [Field.new(:name => "field1", :display_name => "field1_display")])      
+      field1 = Field.new(:name => "field1", :display_name => "field1_display" , :highlight_information => { :order => "1", :highlighted => true })
+      field2 = Field.new(:name => "field2", :display_name => "field2_display" , :highlight_information => { :order => "2", :highlighted => true })
+      field3 = Field.new(:name => "field3", :display_name => "field3_display")
+      form = FormSection.create(:name => "Form1", :unique_id => "form1", :fields => [field1, field2, field3])      
       
       fake_admin_login
-      post :create, :form_id => "form1", :field_name => "field1", :order => "2"
+      post :create, :form_id => "form1", :field_name => "field1"
       
-      field = FormSection.get_by_unique_id("form1").fields.first
+      field = FormSection.get_by_unique_id(form.unique_id).fields.find { |field| field.name == "field1" }
       field.is_highlighted?.should be_true
-      field["highlight_information"].order.should == "2"
+      field["highlight_information"].order.should == 3
     end
   end
 end

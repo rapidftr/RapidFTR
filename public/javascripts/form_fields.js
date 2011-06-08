@@ -36,8 +36,7 @@ var FormFields = {
     self.hide();
     var selectedField = { field_name: $(selectElement).find(".field-name").val(), 
                           display_name: $(selectElement).find(".display-name").val(), 
-                          form_id: self.$elem.find(".form.selected").find(".form-id").val(),
-                          order: self.$elem.find(".prev-selected").length + 1  };
+                          form_id: self.$elem.find(".form.selected").find(".form-id").val() };
     self.options.onItemSelect(selectedField);
   },
   
