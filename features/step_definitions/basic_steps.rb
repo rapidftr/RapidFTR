@@ -414,6 +414,14 @@ When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reaso
   click_button("Flag")
 end
 
+When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Unflag record")
+  fill_in("Unflag reason", :with => reason)
+  click_button("Unflag")
+end
+
 Then /^the (view|edit) record page should show the record is flagged$/ do |page|
   path = children_path+"/#{Child.all[0].id}"
   page == "edit" ? visit(path + "/edit") : visit(path)
