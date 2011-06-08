@@ -93,7 +93,7 @@ describe FormSection do
       formsection = FormSection.new :editable => false
       lambda { FormSection.add_field_to_formsection formsection, field }.should raise_error
     end
-
+    
   end
 
 
@@ -365,12 +365,11 @@ describe FormSection do
     describe "set highlighted fields" do
 
       it "should update field as highlighted" do
-        attr = { :field_name => "h1", :form_name => "highlight form", :order => "6" }
-        existing_field = Field.new :name => attr[:field_name]
-        FormSection.stub(:all).and_return([FormSection.new(:name => attr[:form_name],
-                                                                   :fields => [existing_field])])
-        FormSection.update_field_as_highlighted attr
-        existing_field.highlight_information.order.should == attr[:order]
+        attrs = { :field_name => "h1", :form_id => "highlight_form", :order => "6" }
+        existing_field = Field.new :name => attrs[:field_name]
+        form = FormSection.new(:name => "Some Form", :unique_id => attrs[:form_id], :fields => [existing_field])
+        form.update_field_as_highlighted attrs
+        existing_field.highlight_information.order.should == attrs[:order]
       end
 
     end

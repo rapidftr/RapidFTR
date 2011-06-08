@@ -21,15 +21,30 @@ describe HighlightFieldsController do
       field1 = Field.new(:name => "field1", :display_name => "field1_display" , :highlight_information => { :order => "1", :highlighted => true })
       field2 = Field.new(:name => "field2", :display_name => "field2_display" , :highlight_information => { :order => "2", :highlighted => true })
       field3 = Field.new(:name => "field3", :display_name => "field3_display" , :highlight_information => { :order => "3", :highlighted => true })
-      FormSection.new(:name => "Form1", :fields => [field1])
-      FormSection.new(:name => "Form2", :fields => [field2])
-      FormSection.new(:name => "Form3", :fields => [field3])
-      FormSection.stub(:highlighted_fields).and_return([field1, field2, field3])
+      form1 = FormSection.new(:name => "Form1", :unique_id => "form1", :fields => [field1])
+      form2 = FormSection.new(:name => "Form2", :unique_id => "form2", :fields => [field2])
+      form3 = FormSection.new(:name => "Form3", :unique_id => "form3", :fields => [field3])
+      FormSection.stub(:all).and_return([form1, form2, form3])
       fake_admin_login
       get :index
-      assigns[:highlighted_fields] == [ {:field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Form1" },
-                                        {:field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Form1" },
-                                        {:field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Form1" } ]
+      assigns[:highlighted_fields].size.should == 3
+      assigns[:highlighted_fields].should == [  { :field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Form1", :form_id => "form1" },
+                                                { :field_name => "field2", :display_name => "field2_display" , :order => "2", :form_name => "Form2", :form_id => "form2" },
+                                                { :field_name => "field3", :display_name => "field3_display" , :order => "3", :form_name => "Form3", :form_id => "form3" } ]
+    end
+
+  end
+  
+  describe "create" do
+    it "should update field as highlighted" do
+      form = FormSection.create(:name => "Form1", :unique_id => "form1", :fields => [Field.new(:name => "field1", :display_name => "field1_display")])      
+      
+      fake_admin_login
+      post :create, :form_id => "form1", :field_name => "field1", :order => "2"
+      
+      field = FormSection.get_by_unique_id("form1").fields.first
+      field.is_highlighted?.should be_true
+      field["highlight_information"].order.should == "2"
     end
   end
 end

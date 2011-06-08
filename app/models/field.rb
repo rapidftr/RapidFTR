@@ -125,7 +125,7 @@ class Field < Hash
     select_options += @options.collect { |option| [option.option_name, option.option_name] }
   end
   
-  def is_highlighted
+  def is_highlighted?
       highlight_information.highlighted
   end
   

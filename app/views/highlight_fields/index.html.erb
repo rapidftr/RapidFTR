@@ -1,5 +1,4 @@
 
-<% form_tag highlight_fields_path, :method => :post do %>
   <table class="highlight-fields">
     <thead>
       <tr>
@@ -17,26 +16,35 @@
     </tbody>
   </table>
 
-  <%= submit_button %>
 
+
+<%form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
+  <div id="add-field">
+  </div>  
 <% end %>
 
 
 <script id="highlight-field-template" type="text/x-jquery-tmpl"> 
   <tr>     
     <td>${display_name}</td>
-    <input type="hidden" name="fields[][field_name]" class="highlighted-field-name" value="${field_name}"/>
-    <input type="hidden" name="fields[][form_name]" class="highlighted-form-name" value="${form_name}"/>
-    <input type="hidden" name="fields[][order]" class="highlighted-field-order" value="${order}"/>
     <td>${form_name}</td>
     <td></td>
+    <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
+    <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
   </tr>
+</script>
+
+<script id="add-template" type="text/x-jquery-tmpl">
+    <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
+    <input type="hidden" name="order" class="highlighted-field-order" value="${order}"/>
+    <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
 </script>
 
 <script> 
 
 var updateWithSelectedItem = function(selectedElement){
-  $(".add-field-section").before($("#highlight-field-template").tmpl(selectedElement));		
+  $("#add-field").append($("#add-template").tmpl(selectedElement));
+  $("#add-form").submit();
 }
 
 <% if @highlighted_fields %>

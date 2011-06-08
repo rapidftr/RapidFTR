@@ -131,13 +131,13 @@ describe "Child record field view model" do
     it "should initialize with empty highlight information" do
       field = Field.new(:name => "No highlight")
       field.highlight_information.should be_empty
-      field.is_highlighted == false
+      field.is_highlighted? == false
     end
     
     it "should set highlight information" do
       field = Field.new(:name => "highlighted")
-      field.highlight_with_order(6)
-      field.is_highlighted == true
+      field.highlight_with_order 6
+      field.is_highlighted? == true
     end
   end
 end
