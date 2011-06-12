@@ -230,6 +230,16 @@ class Child < CouchRestRails::Document
       attachment(key)
     end
   end
+
+  def photos_index
+    return [] if self['photo_keys'].blank?
+    self['photo_keys'].collect do |key|
+      {
+        :photo_uri => child_photo_url(self, key),
+        :thumbnail_uri => child_photo_url(self, key)
+      }
+    end
+  end
   
   def primary_photo
     key = self['current_photo_key']

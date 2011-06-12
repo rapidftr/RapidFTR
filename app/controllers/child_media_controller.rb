@@ -1,6 +1,18 @@
 class ChildMediaController < ApplicationController
+  helper :children
   before_filter :find_child
   before_filter :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
+
+  def index
+    photo_uris = @child['photo_keys'].collect do |photo_key|
+        {
+          :photo_uri => child_photo_url(self, photo_key),
+          :thumbnail_uri => child_photo_url(self, photo_key)
+        }
+    end
+
+    render :json => photo_uris
+  end
 
   def show_photo
     send_data(@attachment.data.read, :type => @attachment.content_type, :disposition => 'inline')
@@ -23,6 +35,10 @@ class ChildMediaController < ApplicationController
     find_audio_attachment
     redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
     send_data( @attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type )
+  end
+
+  def manage_photos
+    
   end
 
   private

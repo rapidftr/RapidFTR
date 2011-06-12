@@ -5,6 +5,7 @@
           <p class='view-full-size'>Click on the Image to see full size</p>
       </div>
       <%= link_to("Edit photo", edit_photo_url(@child)) %>
+      <%= link_to("Manage photos", manage_photos_url(@child)) %>
     <% else %>
       <%= image_tag('/images/no_photo_clip.jpg') %>    
     <% end %>
