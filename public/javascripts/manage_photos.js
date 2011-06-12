@@ -30,10 +30,11 @@ $(function() {
 
     events: {
       "mouseover .thumbnail": "mouseover"
+      "click .thumbnail": 
     },
 
     render: function() {
-      $(this.el).html(this.template({thumbnail_uri: this.model.get("thumbnail_uri")}));
+      $(this.el).html(this.template({thumbnail_url: this.model.get("thumbnail_url")}));
       return this;
     },
 
