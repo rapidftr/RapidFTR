@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.child_audio "/children/:child_id/audio/:id", :controller => "child_media", :action => "download_audio"
   map.child_photo "/children/:child_id/photo/:id", :controller => "child_media", :action => "show_photo"
+  map.child_select_primary_photo "children/:child_id/select_primary_photo/:photo_id", :controller => "children", :action => "select_primary_photo", :conditions => {:method => :post}
   map.child_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 
@@ -46,21 +47,21 @@ ActionController::Routing::Routes.draw do |map|
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
     additional_field_actions[:toggle_fields] = :post
-        
+
     form_section.resources :fields, :controller => 'fields', :collection => additional_field_actions
   end
-  
+
   map.choose_field 'form_section/:formsection_id/choose_field', :controller => 'fields', :action => 'choose'
-    
+
   map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
-  
+
   map.resources :advanced_search, :only => [:index, :new]
   map.advanced_search_index 'advanced_search/index', :controller => 'advanced_search', :action => 'index'
 
   map.resources :form_section
 
   map.resources :fields
-  
+
   map.resources :contact_information
 
   map.resources :highlight_fields, :collection => { :remove => :post }

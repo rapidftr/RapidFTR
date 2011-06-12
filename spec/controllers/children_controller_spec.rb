@@ -373,4 +373,37 @@ describe ChildrenController do
       get :export_photo_to_pdf, :id => '1'
     end
   end
+
+  describe "PUT select_primary_photo" do
+    before :each do
+      @child = mock(Child, :id => :id)
+      @photo_key = "key"
+      @child.stub(:primary_photo_id=)
+      Child.stub(:get).with(:id).and_return @child
+    end
+
+    it "set the primary photo on the child" do
+      @child.should_receive(:primary_photo_id=).with(@photo_key)
+
+      put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
+    end
+
+    it "should return success" do
+      put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
+
+      response.should be_success
+    end
+
+    context "when setting new primary photo id errors" do
+      before :each do
+        @child.stub(:primary_photo_id=).and_raise("error")
+      end
+
+      it "should return error" do
+        put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
+
+        response.should be_error
+      end
+    end
+  end
 end
