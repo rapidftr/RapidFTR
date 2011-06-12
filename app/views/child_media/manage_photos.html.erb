@@ -1,8 +1,21 @@
-<%= javascript_include_tag "backbone.js" %>
+<%= javascript_include_tag "json2.js" %>
 <%= javascript_include_tag "underscore.js" %>
+<%= javascript_include_tag "backbone.js" %>
+<%= javascript_include_tag "manage_photos.js" %>
 
-<div class="thumbnails">
-  <%# <% @child.photos.each do |photo| %>
-    <%# <div class="thumbnail"><%= link_to image_tag(child_resized_photo_path(@child, 328)), child_resized_photo_path(@child, 640) %>
-  <%# <% end %>
-</div>
+<%= stylesheet_link_tag "manage_photos.css" %>
+
+<script type="text/template" id="photo-template">
+  <div class="thumbnail">
+    <image src="{{ thumbnail_uri }}" />
+  </div>
+</script>
+
+
+<script type="text/javascript">
+  $(function() {
+      window.Photos.refresh(<%= @photo_uris.to_json %>);
+  });
+</script>
+
+<div class="thumbnails"></div>

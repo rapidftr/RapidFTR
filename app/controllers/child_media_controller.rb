@@ -4,13 +4,6 @@ class ChildMediaController < ApplicationController
   before_filter :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
 
   def index
-    photo_uris = @child['photo_keys'].collect do |photo_key|
-        {
-          :photo_uri => child_photo_url(self, photo_key),
-          :thumbnail_uri => child_photo_url(self, photo_key)
-        }
-    end
-
     render :json => photo_uris
   end
 
@@ -38,7 +31,7 @@ class ChildMediaController < ApplicationController
   end
 
   def manage_photos
-    
+    @photo_uris = photo_uris
   end
 
   private
@@ -72,4 +65,12 @@ class ChildMediaController < ApplicationController
     "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 
+  def photo_uris 
+    @child['photo_keys'].collect do |photo_key|
+      {
+        :photo_uri => child_photo_url(@child, photo_key),
+        :thumbnail_uri => child_thumbnail_url(@child, photo_key)
+      }
+    end
+  end
 end

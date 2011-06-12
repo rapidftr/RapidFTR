@@ -1,0 +1,8 @@
+.thumbnail {
+  float: left;
+  padding: 20px;
+}
+
+.thumbnail:hover {
+  background-color: red;
+}
