@@ -926,6 +926,33 @@ describe Child do
     end
   end
  
+  describe "primary_photo =" do
+    before :each do
+      @photo1 = uploadable_photo("features/resources/jorge.jpg")
+      @photo2 = uploadable_photo("features/resources/jeff.png")
+      @child = Child.new("name" => "Tom")
+      @child.photo= { 0 => @photo1, 1 => @photo2 }
+      @child.save
+    end
+
+    it "should update the primary photo selection" do
+      photos = @child.photos
+      orig_primary_photo = photos[0]
+      new_primary_photo = photos[1]
+
+      @child.primary_photo_id.should == orig_primary_photo.name
+      @child.primary_photo_id = new_primary_photo.name
+      @child.save
+      @child.primary_photo_id.should == new_primary_photo.name
+    end
+
+    context "when selected photo id doesn't exist" do
+      it "should show an error" do
+        lambda { @child.primary_photo_id = "non-existant-id" }.should raise_error "Failed trying to set 'non-existant-id' to primary photo: no such photo key"
+      end
+    end
+  end
+
   private
   
   def create_child(name)

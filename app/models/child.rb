@@ -245,6 +245,17 @@ class Child < CouchRestRails::Document
     key = self['current_photo_key']
     key ? attachment(key) : nil
   end
+
+  def primary_photo_id
+    self['current_photo_key']
+  end
+
+  def primary_photo_id=(photo_key)
+    unless self['photo_keys'].include?(photo_key)
+      raise "Failed trying to set '#{photo_key}' to primary photo: no such photo key" 
+    end
+    self['current_photo_key'] = photo_key
+  end
   
   def audio
     return nil if self['audio_attachments'].nil?
