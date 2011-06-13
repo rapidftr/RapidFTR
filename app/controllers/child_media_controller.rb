@@ -70,7 +70,7 @@ class ChildMediaController < ApplicationController
       {
         :photo_url => child_photo_url(@child, photo_key),
         :thumbnail_url => child_thumbnail_url(@child, photo_key),
-        :select_primary_photo_url => child_select_primary_photo(@child, photo_key)
+        :select_primary_photo_url => child_select_primary_photo_url(@child, photo_key)
       }
     end
   end

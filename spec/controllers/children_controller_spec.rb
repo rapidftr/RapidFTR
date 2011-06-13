@@ -379,11 +379,13 @@ describe ChildrenController do
       @child = mock(Child, :id => :id)
       @photo_key = "key"
       @child.stub(:primary_photo_id=)
+      @child.stub(:save)
       Child.stub(:get).with(:id).and_return @child
     end
 
-    it "set the primary photo on the child" do
+    it "set the primary photo on the child and save" do
       @child.should_receive(:primary_photo_id=).with(@photo_key)
+      @child.should_receive(:save)
 
       put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
     end

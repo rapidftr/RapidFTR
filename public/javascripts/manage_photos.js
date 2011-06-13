@@ -7,6 +7,16 @@ $(function() {
 
   window.Photo = Backbone.Model.extend({
     initialize: function() {
+    },
+
+    makePrimaryPhoto: function() {
+      $.ajax({
+        url: this.get("select_primary_photo_url"),
+        success: function() {
+          alert("Set primary photo!");
+        },
+        type: "PUT"
+      });
     }
   });
 
@@ -29,8 +39,8 @@ $(function() {
     },
 
     events: {
-      "mouseover .thumbnail": "mouseover"
-      "click .thumbnail": 
+      "mouseover .thumbnail": "mouseover",
+      "click .thumbnail": "clickThumbnail"
     },
 
     render: function() {
@@ -40,6 +50,10 @@ $(function() {
 
     mouseover: function() {
       // $(this.el).html("<b>Book!</b>");
+    },
+
+    clickThumbnail: function() {
+      this.model.makePrimaryPhoto();
     }
 
   });

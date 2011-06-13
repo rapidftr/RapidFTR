@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.child_audio "/children/:child_id/audio/:id", :controller => "child_media", :action => "download_audio"
   map.child_photo "/children/:child_id/photo/:id", :controller => "child_media", :action => "show_photo"
-  map.child_select_primary_photo "children/:child_id/select_primary_photo/:photo_id", :controller => "children", :action => "select_primary_photo", :conditions => {:method => :post}
+  map.child_select_primary_photo "children/:child_id/select_primary_photo/:photo_id", :controller => "children", :action => "select_primary_photo", :conditions => {:method => :put}
   map.child_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 

@@ -1,8 +1,11 @@
 .thumbnail {
   float: left;
+  border: 5px none;
   padding: 20px;
+  margin: 20px;
 }
 
 .thumbnail:hover {
   background-color: red;
+  padding: 20px red;
 }
