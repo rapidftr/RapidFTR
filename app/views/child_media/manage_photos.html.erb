@@ -19,7 +19,10 @@
 </script>
 
 <div class="profile-tools">
-  <li class="back"><%= link_to 'Back to child', child_path(@child) %></li>
+  <ul>
+    <li class="back"><%= link_to 'Back to child', child_path(@child) %></li>
+    <li class=""><a href="#" id="selectPrimaryPhotoButton">Choose as primary photo</a></li>
+  </ul>
 </div>
 
 <div class="thumbnails"></div>

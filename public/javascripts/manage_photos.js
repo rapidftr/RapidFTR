@@ -99,6 +99,13 @@ $(function() {
 
       Photos.bind('add',     this.addOne);
       Photos.bind('refresh', this.addAll);
+
+      $("#selectPrimaryPhotoButton").click(function() {
+        var selectedPhoto = Photos.getSelectedPhoto();
+        if (selectedPhoto) {
+          selectedPhoto.makePrimaryPhoto();
+        }
+      });
     },
 
     addOne: function(photo) {
