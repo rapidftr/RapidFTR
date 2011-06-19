@@ -7,6 +7,7 @@ $(function() {
 
   window.Photo = Backbone.Model.extend({
     initialize: function() {
+      this.selected = false;
     },
 
     makePrimaryPhoto: function() {
@@ -17,11 +18,38 @@ $(function() {
         },
         type: "PUT"
       });
-    }
+    },
+
+    select: function() {
+      Photos.unselectAll();
+      this.selected = true;
+      this.view.select();
+    },
+
+    unselect: function() {
+      this.selected == false;
+      this.view.unselect();
+    },
+
+    isSelected: function() {
+      return this.selected == true;
+    },
   });
 
   window.PhotoList = Backbone.Collection.extend({
-    model: Photo
+    model: Photo,
+
+    unselectAll: function() {
+      this.each(function(photo) {
+        photo.unselect();
+      });
+    },
+
+    getSelectedPhoto: function() {
+      return this.find(function(photo) {
+        return photo.isSelected();
+      });
+    }
   });
 
   window.Photos = new PhotoList;
@@ -32,14 +60,12 @@ $(function() {
     // Cache the template function for a single item.
     template: _.template($('#photo-template').html()),
 
-    initialise: function() {
-      _.bindAll(this, 'render', 'close');
+    initialize: function() {
       this.model.bind('change', this.render);
       this.model.view = this;
     },
 
     events: {
-      "mouseover .thumbnail": "mouseover",
       "click .thumbnail": "clickThumbnail"
     },
 
@@ -48,12 +74,16 @@ $(function() {
       return this;
     },
 
-    mouseover: function() {
-      // $(this.el).html("<b>Book!</b>");
+    select: function() {
+      $(this.el).find(".thumbnail").addClass("selected");
+    },
+
+    unselect: function() {
+      $(this.el).find(".thumbnail").removeClass("selected");
     },
 
     clickThumbnail: function() {
-      this.model.makePrimaryPhoto();
+      this.model.select();
     }
 
   });
@@ -66,8 +96,6 @@ $(function() {
 
     initialize: function() {
       _.bindAll(this, 'addOne', 'addAll');
-
-      // this.input    = this.$("#new-todo");
 
       Photos.bind('add',     this.addOne);
       Photos.bind('refresh', this.addAll);
@@ -84,7 +112,6 @@ $(function() {
 
   });
 
-  // Finally, we kick things off by creating the **App**.
   window.App = new AppView;
 
 });

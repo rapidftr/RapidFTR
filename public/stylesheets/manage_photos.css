@@ -6,6 +6,9 @@
 }
 
 .thumbnail:hover {
+  background-color: grey;
+}
+
+.thumbnail.selected {
   background-color: red;
-  padding: 20px red;
 }
