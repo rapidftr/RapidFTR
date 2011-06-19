@@ -21,13 +21,17 @@ $(function() {
     },
 
     select: function() {
-      Photos.unselectAll();
-      this.selected = true;
-      this.view.select();
+      if (this.isSelected()) {
+        this.unselect();
+      } else {
+        Photos.unselectAll();
+        this.selected = true;
+        this.view.select();
+      }
     },
 
     unselect: function() {
-      this.selected == false;
+      this.selected = false;
       this.view.unselect();
     },
 
