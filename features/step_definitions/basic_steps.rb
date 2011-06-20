@@ -21,6 +21,7 @@ end
 
 Then /^I should see the thumbnail of "([^"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|
   thumbnail = current_dom.xpath("//img[@alt='#{name}' and contains(@src,'#{timestamp}')]").first
+  thumbnail.should_not be_nil
   thumbnail['src'].should =~ /photo.*-#{timestamp}/
 end
 

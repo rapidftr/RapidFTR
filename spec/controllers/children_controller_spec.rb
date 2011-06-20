@@ -337,15 +337,6 @@ describe ChildrenController do
 
   describe "GET photo_pdf" do
 
-    it 'extracts a single selected id from post params correctly' do
-      stub_out_pdf_generator
-      Child.should_receive(:get).with('a_child_id')
-      post(
-        :export_data,
-        { 'a_child_id' => 'selected', 'some_other_post_param' => 'blah' }
-      )
-    end
-
     it 'extracts multiple selected ids from post params in correct order' do
       stub_out_pdf_generator
       Child.should_receive(:get).with('child_zero').ordered

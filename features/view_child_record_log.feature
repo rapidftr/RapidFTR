@@ -38,7 +38,7 @@ Feature:
 
     Then I should see "2010-03-01 17:59:33 +0000 Photo changed from"
     And I should see the thumbnail of "Jorge Just" with timestamp "2010-07-19T130532"
-    And I should see the thumbnail of "Jorge Just" with timestamp "2010-03-29T175933"
+    And I should see the thumbnail of "Jorge Just" with timestamp "2010-03-01T175933"
     And I should see "by mary"
 
     When I follow photo with timestamp "2010-07-19T130532"
@@ -49,7 +49,7 @@ Feature:
     And I follow "Jorge Just"
     And I follow "View the change log"
 
-    When I follow photo with timestamp "2010-03-29T175933"
+    When I follow photo with timestamp "2010-03-01T175933"
 
     Then I should see the photo corresponding to "features/resources/jeff.png"
 
@@ -70,7 +70,7 @@ Feature:
     And I select "Female" from "Sex"
     And I fill in "Bombay" for "Nationality"
     And I fill in "Zambia" for "Birthplace"
-    And the local date/time is "Oct 29 2010 14:12:15"
+    And the date/time is "Oct 29 2010 14:12:15"
     And I press "Save"
 
     When I follow "View the change log"
@@ -107,7 +107,7 @@ Feature:
     When I follow "Edit"
 
     Then I fill in "George Harrison" for "Name"
-    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I attach a photo "features/resources/jorge.jpg"
     And I attach the file "features/resources/sample.mp3" to "Recorded Audio"
     And the date/time is "Oct 29 2010 14:12:15UTC"
     And I press "Save"
