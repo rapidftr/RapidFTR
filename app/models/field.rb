@@ -17,6 +17,7 @@ class Field < Hash
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
   CHECK_BOX = "check_box"
+  CHECK_BOXES = "check_boxes"
   NUMERIC_FIELD = "numeric_field"
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
@@ -27,6 +28,7 @@ class Field < Hash
                         RADIO_BUTTON     => "multiple_choice",
                         SELECT_BOX       => "multiple_choice",
                         CHECK_BOX        => "basic",
+                        CHECK_BOXES      => "multiple_choice",
                         PHOTO_UPLOAD_BOX => "basic",
                         AUDIO_UPLOAD_BOX => "basic",
                         DATE_FIELD       => "basic",
@@ -36,6 +38,7 @@ class Field < Hash
                         TEXT_AREA        => "",
                         RADIO_BUTTON     => "",
                         SELECT_BOX       => "",
+                        CHECK_BOXES       => "",
                         CHECK_BOX        => "No",
                         PHOTO_UPLOAD_BOX => nil,
                         AUDIO_UPLOAD_BOX => nil,
