@@ -60,6 +60,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 
 /* default: forms > custom inputs */
 .default-form .file input { width: auto; height: auto; }
+.default-form .thumbnail input { vertical-align:top; margin-top: 2px; }
 .default-form .submitButton input { width: auto; height: auto; border: 1px solid #678; background: #678; padding: 2px 30px; font-weight: bold; color: #fff; float:right; }
 .default-form .submitButton { overflow: hidden; margin-bottom: 1em }
 .default-form .cancelButton a { width: auto; height: auto;  background: #aaa; padding: 2px 30px; font-weight: bold; color: #fff; float:left;}
@@ -168,7 +169,7 @@ td.checkbox { text-align: center;}
 /* profile page */
 .profile-page .page-content { background-position: 650px 0;}
 .profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
-.profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2.gif); }
+.profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2-sliver.gif); background-repeat:repeat-y; background-position: 0 0}
 .profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
 .profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
 .profile-page .form-section-info { padding-top: .5em; }
@@ -212,7 +213,10 @@ ul.ui-widget-content { background: none; }
 .profile-tools li a:hover { color: #f93; }
 .profile-tools .flag-form h3 { display:inline; }
 .profile-tools .flag-form input { display:inline; }
-.profile-tools .flag-form { margin: 0px;}
+.profile-tools .flag-form { margin: 0;}
+.profile-tools .unflag-form h3 { display:inline; }
+.profile-tools .unflag-form input { display:inline; }
+.profile-tools .unflag-form { margin: 0;}
 .flag-message {color: red; margin-bottom: .5em;}
 
 

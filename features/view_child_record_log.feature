@@ -11,11 +11,10 @@ Feature:
     And I follow "New child"
 
     When I fill in "Jorge Just" for "Name"
-    And I fill in "27" for "Age"
-    And I select "Exact" from "Age is"
-    And I choose "Male"
-    And I fill in "Haiti" for "Last known location"
-    And I attach the file "features/resources/jorge.jpg" to "photo"
+    And I fill in "27" for "Date of Birth / Age"
+    And I select "Male" from "Sex"
+    And I fill in "Haiti" for "Birthplace"
+    And I attach a photo "features/resources/jorge.jpg"
     And the local date/time is "March 19 2010 13:05" and UTC time is "March 19 2010 13:05UTC"
     And I press "Save"
     And I follow "View the change log"
@@ -26,23 +25,23 @@ Feature:
 
     Given the date/time is "July 19 2010 13:05:32"
     And the following children exist in the system:
-    | name       | age | age_is | gender | last_known_location |
-    | Jorge Just | 27  | Exact  | Male   | Haiti               |
+    | name       | dob_or_age | gender | birthplace |
+    | Jorge Just | 27  | Male   | Haiti               |
     And the date/time is "March 01 2010 17:59:33"
     And "Mary" is logged in
     And I am on the children listing page
 
     When I follow "Edit"
-    And I attach the file "features/resources/jeff.png" to "photo"
+    And I attach a photo "features/resources/jeff.png"
     And I press "Save"
     And I follow "View the change log"
 
     Then I should see "2010-03-01 17:59:33 +0000 Photo changed from"
-    And I should see the thumbnail of "Jorge Just" with key "photo-2010-07-19T130532"
-    And I should see the thumbnail of "Jorge Just" with key "photo-2010-03-01T175933"
+    And I should see the thumbnail of "Jorge Just" with timestamp "2010-07-19T130532"
+    And I should see the thumbnail of "Jorge Just" with timestamp "2010-03-29T175933"
     And I should see "by mary"
 
-    When I follow "photo-2010-07-19T130532"
+    When I follow photo with timestamp "2010-07-19T130532"
 
     Then I should see the photo corresponding to "features/resources/jorge.jpg"
 
@@ -50,7 +49,7 @@ Feature:
     And I follow "Jorge Just"
     And I follow "View the change log"
 
-    When I follow "photo-2010-03-01T175933"
+    When I follow photo with timestamp "2010-03-29T175933"
 
     Then I should see the photo corresponding to "features/resources/jeff.png"
 
@@ -58,8 +57,8 @@ Feature:
 
     Given the date/time is "July 19 2010 13:05:15"
     And the following children exist in the system:
-    | name       | age | age_is | gender | last_known_location |
-    | Jorge Just | 27  | Exact  | Male   | Haiti               |
+    | name       | dob_or_age | gender | birthplace |
+    | Jorge Just | 27  | Male   | Haiti               |
     And the date/time is "Oct 29 2010 10:12"
     And "Bobby" is logged in
     And I am on the children listing page
@@ -67,31 +66,27 @@ Feature:
     When I follow "Edit"
 
     Then I fill in "George Harrison" for "Name"
-    And I fill in "56" for "Age"
-    And I select "Approximate" from "Age is"
-    And I choose "Female"
-    And I fill in "Bombay" for "Origin"
-    And I fill in "Zambia" for "Last known location"
-    And I select "6 months to 1 year ago" from "Date of separation"
-    And the date/time is "Oct 29 2010 14:12:15"
+    And I fill in "56" for "Date of Birth / Age"
+    And I select "Female" from "Sex"
+    And I fill in "Bombay" for "Nationality"
+    And I fill in "Zambia" for "Birthplace"
+    And the local date/time is "Oct 29 2010 14:12:15"
     And I press "Save"
 
     When I follow "View the change log"
 
-    Then I should see "2010-10-29 14:12:15 +0100 Last known location changed from Haiti to Zambia by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Origin initially set to Bombay by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Age changed from 27 to 56 by bobby"
+    Then I should see "2010-10-29 14:12:15 +0100 Birthplace changed from Haiti to Zambia by bobby"
+    And I should see "2010-10-29 14:12:15 +0100 Nationality initially set to Bombay by bobby"
+    And I should see "2010-10-29 14:12:15 +0100 Dob or age changed from 27 to 56 by bobby"
     And I should see "2010-10-29 14:12:15 +0100 Name changed from Jorge Just to George Harrison by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Date of separation initially set to 6 months to 1 year ago by bobby"
     And I should see "2010-10-29 14:12:15 +0100 Gender changed from Male to Female by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Age is changed from Exact to Approximate"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
 
   Scenario: Clicking back from the change log
 
     Given "Harry" is logged in
     And the following children exist in the system:
-    | name       | age | age_is | gender | last_known_location |
+    | name       | age | age_is | gender | birthplace |
     | Bob | 12  | Exact  | Male   | Spain               |
 
     When I am on the change log page for "Bob"

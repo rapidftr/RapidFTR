@@ -20,7 +20,7 @@ module ChildBuilder
   def with_photo(image, image_id = "img", current = true)
     photo = mock(FileAttachment, {:content_type => image.content_type, :data => StringIO.new(image.read)})
     @child.stub!(:media_for_key).with(image_id).and_return photo
-    @child.stub!(:photo).and_return photo if current
+    @child.stub!(:primary_photo).and_return photo if current
     self
   end
 
@@ -31,8 +31,7 @@ module ChildBuilder
   end
 
   def with_no_photos
-    @child.stub!(:photo_for_key).and_return nil
-    @child.stub!(:photo).and_return nil
+    @child.stub!(:primary_photo).and_return nil
     self
   end
 

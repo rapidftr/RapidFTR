@@ -6,10 +6,10 @@ Feature:
 
   Background:
     Given the following children exist in the system:
-      | name    |  last_known_location |unique_id|
-      | Dan     |  London   | dan_123  |
-      | Dave    |  Venice   | dave_456 |
-      | Mike    |  Paris    | mike_789 |
+      | name    | unique_id|
+      | Dan     | dan_123  |
+      | Dave    | dave_456 |
+      | Mike    | mike_789 |
 
   Scenario: A csv file with the correct number of lines is produced
     Given I am logged in
@@ -18,8 +18,8 @@ Feature:
     And I press "Export to CSV"
     Then I should receive a CSV file with 2 lines
     And the CSV data should be:
-      | name    |  last_known_location |unique_identifier|
-      | Dan     |  London   | dan_123  |
+      | name    |unique_identifier|
+      | Dan     |dan_123  |
 
   Scenario: When there are no search results, there is no csv export link
     Given I am logged in
@@ -33,10 +33,10 @@ Feature:
     And I follow "Export All Child Records to CSV"
     Then I should receive a CSV file with 4 lines
     And the CSV data should be:
-      | name    |  last_known_location |unique_identifier|
-      | Dan     |  London   | dan_123  |
-      | Dave    |  Venice   | dave_456 |
-      | Mike    |  Paris    | mike_789 |
+      | name    |unique_identifier|
+      | Dan     |dan_123  |
+      | Dave    |dave_456 |
+      | Mike    |mike_789 |
     And the CSV filename should be "all_records_20101023.csv"
 
   Scenario: A csv file with selected records is produced
@@ -48,8 +48,8 @@ Feature:
     And I press "Export to CSV"
     Then I should receive a CSV file with 2 lines
     And the CSV data should be:
-      | name    |  last_known_location |unique_id|
-      | Dan     |  London   | dan_123  |
+      | name    |unique_id|
+      | Dan     |dan_123  |
 
   Scenario: A csv file with a single record is created in case on one record found
     Given I am logged in as an admin
@@ -60,8 +60,8 @@ Feature:
 
     Then I should receive a CSV file with 2 lines
     And the CSV data should be:
-      | name    |  last_known_location |unique_id|
-      | Dan     |  London   | dan_123  |
+      | name    |unique_id|
+      | Dan     |dan_123  |
 
   Scenario: Admins can export all child records to CSV
     Given I am logged in as an admin
