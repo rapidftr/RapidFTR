@@ -3,12 +3,7 @@
   <%= label_tag "child[photo]#{i}", "Add Photo" %>
   <%= file_field_tag "child[photo]#{i}" %>
   <% if photo_upload_box.help_text.present?%> 
-  <br />
-  <span class='help-text-container'>
-    <span class='help-text'>
-      <%=photo_upload_box.help_text%>
-    </span>
-  </span>
+	<img class="tool-tip-icon vtip" title="<%=photo_upload_box.help_text%>" src="/images/tool_tip_icon.gif"/>
   <% end%>
 </p>
 <% end %>
