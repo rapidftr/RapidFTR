@@ -6,7 +6,7 @@ describe "children/_radio_button.html.erb" do
     assigns[:child] = @child
   end
 
-  it "should show help text when exists" do
+  it "should include image for tooltip when help text exists" do
     radio_button = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'radio_button',
@@ -15,22 +15,19 @@ describe "children/_radio_button.html.erb" do
     
     render :locals => { :radio_button => radio_button}
   
-    response.should have_tag(".help-text-container")
-    response.should have_tag(".help-text")
+    response.should have_tag("img.vtip")
+
   end
 
-  it "should not show help text when not exists" do
+  it "should not include image for tooltip when help text not exists" do
     radio_button = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'radio_button',
     :option_strings => Array['M', 'F']
-
-
     
     render :locals => { :radio_button => radio_button}
   
-    response.should_not have_tag(".help-text-container")
-    response.should_not have_tag(".help-text")
+    response.should_not have_tag("img.vtip")
 
   end
   
