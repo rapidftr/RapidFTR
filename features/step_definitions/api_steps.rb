@@ -164,6 +164,14 @@ When /^I edit the following child:$/ do |input_json|
   visit "/children/" + input_child_hash["_id"], :put, {:child => input_child_hash, :format => 'json'}
 end
 
+When /^I request for child with ID (\d+)$/ do |id|
+  visit "/children/" + id, :get, {:format => 'json'}
+end
+
+Then /^I should get back a response saying null$/ do
+  response_body.should == "null"
+end
+
 Then /^the following child should be returned:$/ do |table|
   json_response = JSON.parse(response_body)
   table.rows_hash.each do |key,value|
