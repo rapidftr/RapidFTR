@@ -111,9 +111,10 @@ module NavigationHelpers
         edit_contact_information_path(:administrator)
       when /(the )?administrator contact page/
           contact_information_path(:administrator, options)
-
       when /all child Ids/
         child_ids_path
+      when /published form sections/
+        published_form_sections_path
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
