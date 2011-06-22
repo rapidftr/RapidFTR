@@ -178,3 +178,7 @@ Then /^the following child should be returned:$/ do |table|
     json_response[key].should == value
   end
 end
+
+When /^I request for the picture of the child with ID (\d+) and square dimensions of (\d+) pixels$/ do |id, dimensions|
+  visit "/children/"+id+"/resized_photo/" + dimensions, :get, nil
+end
