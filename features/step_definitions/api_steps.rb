@@ -36,7 +36,6 @@ And /^that JSON response should be composed of items like (.+)$/ do |json_expect
 end
 
 And /^that JSON response should be composed of items with body$/ do |json_expectation_string|
-  puts response_body
   json_expectation = JSON.parse(json_expectation_string)
   json_response = JSON.parse(response_body)
   json_response.each do |item|

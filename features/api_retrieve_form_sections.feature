@@ -20,6 +20,10 @@ Feature:
 	      "_rev": "%SOME_STRING%",
 	      "order": "%SOME_INTEGER%",
 	      "enabled": "%SOME_BOOL%",
-	      "fields": "%SOME_FIELD_ARRAY%"
+	      "fields": "%SOME_FIELD_ARRAY%",
+	      "editable": "%SOME_BOOL%",
+	      "couchrest_type": "%SOME_STRING%",
+	      "description": "%SOME_STRING%",
+	      "perm_enabled": "%SOME_BOOL%"
 	    }
 	    """
