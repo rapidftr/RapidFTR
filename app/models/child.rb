@@ -239,6 +239,7 @@ class Child < CouchRestRails::Document
     self['last_updated_by'].blank? || user_names_after_deletion.blank?
   end
 
+
   protected
 
   def current_formatted_time

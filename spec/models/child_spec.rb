@@ -275,7 +275,6 @@ describe Child do
       loaded_child.save().should == false
     end
   end
-
   describe "new_with_user_name" do
     it "should create regular child fields" do
       child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'age' => '6')

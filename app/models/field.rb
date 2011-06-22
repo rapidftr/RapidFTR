@@ -33,7 +33,18 @@ class Field < Hash
                         AUDIO_UPLOAD_BOX => "basic",
                         DATE_FIELD       => "basic",
                         NUMERIC_FIELD    => "basic"}
-                        
+  FIELD_DISPLAY_TYPES = {	 
+												TEXT_FIELD       => "basic", 
+                        TEXT_AREA        => "basic",
+                        RADIO_BUTTON     => "basic",
+                        SELECT_BOX       => "basic",
+                        CHECK_BOX        => "basic",
+                        CHECK_BOXES      => "basic",
+                        PHOTO_UPLOAD_BOX => "photo",
+                        AUDIO_UPLOAD_BOX => "audio",
+                        DATE_FIELD       => "basic",
+                        NUMERIC_FIELD    => "basic"}
+	
   DEFAULT_VALUES = {  TEXT_FIELD       => "", 
                         TEXT_AREA        => "",
                         RADIO_BUTTON     => "",
@@ -57,6 +68,10 @@ class Field < Hash
   def form_type
     FIELD_FORM_TYPES[type]
   end
+
+	def display_type
+		FIELD_DISPLAY_TYPES[type]
+	end
   
   def self.all_text_names
     FormSection.all.map { |form| form.all_text_fields.map(&:name) }.flatten

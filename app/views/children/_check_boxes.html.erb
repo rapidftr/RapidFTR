@@ -1,0 +1,13 @@
+<p class='checkbox'>
+
+  <% check_boxes.options.each do |option| %>
+	 <%= check_box_tag check_boxes.tag_name_attribute+"[]", option.option_name, (@child[check_boxes.name]||[]).include?(option.option_name), :id => option.tag_id  %>
+  	<%= label_tag option.tag_id, option.option_name %>
+	<% end %>	
+  <% if check_boxes.help_text.present?%>
+  <br /> 
+  <span class='help-text-checkbox'>
+    <%= check_boxes.help_text%>
+  </span>
+  <% end%>
+</p>
