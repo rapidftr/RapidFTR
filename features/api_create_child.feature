@@ -8,12 +8,12 @@ Feature: Creating a child using the API
 			| name				| bob  |
 			| posted_from | Mobile |
 		Then the following child should be returned:
-			| name 				| bob									|
+			| name 				| bob	|
 			| created_at  | 2011-03-28 13:23:12UTC |
 			| posted_from | Mobile |
 		Then I receive a JSON hash
 		And that hash should be composed of 12 elements
-		And that JSON hash of elements has these properties:
+		And that JSON hash of elements strictly has these properties:
 		    | JSONPropertyName |
 		    | name |
 		    | created_at |
@@ -27,8 +27,8 @@ Feature: Creating a child using the API
 		    | posted_at |
 		    | photo_keys |
 		    | current_photo_key |
-		And that JSON response should be composed of items with body
-		    """
+		And that JSON response should be an item like
+			    """
 		    { 
 		      "name":"bob",
 			    "created_at":"2011-03-28 13:23:12UTC",

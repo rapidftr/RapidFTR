@@ -14,10 +14,19 @@ And /^that JSON list of elements has these properties:$/ do |properties_table|
   end
 end
 
-And /^that JSON hash of elements has these properties:$/ do |properties_table|
+And /^that JSON hash of elements strictly has these properties:$/ do |properties_table|
   
   json_response = JSON.parse(response_body)
   json_response.length.should == properties_table.rows.count
+  properties_table.rows.each do |property|
+    lambda {json_response.has_key? property}.should be_true
+  end
+  
+end
+
+And /^that JSON hash of elements has these properties:$/ do |properties_table|
+  
+  json_response = JSON.parse(response_body)
   properties_table.rows.each do |property|
     lambda {json_response.has_key? property}.should be_true
   end
@@ -29,10 +38,21 @@ And /^that JSON response should be composed of items like (.+)$/ do |json_expect
   json_response = JSON.parse(response_body)
   json_response.each do |item|
     json_expectation.keys.each do |expectation_key|
-      lambda {item.has_key? expectation_key}.should be_true
-      lambda {item[expectation_key] == json_expectation[expectation_key] || json_expectation[expectation_key] == "%SOME_STRING%"}.should be_true
+      item_valid(item, json_expectation, expectation_key)
     end
   end
+end
+
+Then /^that JSON response should be an item like$/ do |json_expectation_string|
+  json_expectation = JSON.parse(json_expectation_string)
+  json_expectation.keys.each do |expectation_key|
+    item_valid(JSON.parse(response_body), json_expectation, expectation_key)
+  end
+end
+
+def item_valid(item, json_expectation, expectation_key)
+  lambda {item.has_key? expectation_key}.should be_true
+  match_value(item[expectation_key], json_expectation[expectation_key])
 end
 
 And /^that JSON response should be composed of items with body$/ do |json_expectation_string|
@@ -134,9 +154,14 @@ And /^I am using device with imei "(.+)"$/ do |imei|
 end
 
 When /^I create the following child:$/ do |table|
-	params={}
-	params[:format] ||= 'json'
+  params={}
+  params[:format] ||= 'json'
   visit children_path(params), :post, {:child => table.rows_hash}
+end
+
+When /^I edit the following child:$/ do |input_json|
+  input_child_hash = JSON.parse(input_json)
+  visit "/children/" + input_child_hash["_id"], :put, {:child => input_child_hash, :format => 'json'}
 end
 
 Then /^the following child should be returned:$/ do |table|
