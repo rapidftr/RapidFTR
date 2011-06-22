@@ -71,13 +71,6 @@ Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio
    radio.css("label").map(&:text).should == table.raw.map(&:first)
 end
 
-Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
-   radios = Nokogiri::HTML(response.body).css(".radioList")
-   radio = radios.detect {|radio| radio.css("dt span").first.text == radio_button}
-   radio.should_not be_nil
-   radio.css("label").map(&:text).should == table.raw.map(&:first)
-end
-
 Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
 	checkbox_elements = Nokogiri::HTML(response.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
   

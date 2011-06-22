@@ -9,8 +9,7 @@ Feature: So that admin can customize fields in a form section
 
 
   Scenario: Admins should be able to add new text fields
-    Given I am logged in as an admin
-    And I am on the edit form section page for "family_details"
+    Given I am on the edit form section page for "family_details"
 
     When I follow "Add Custom Field"
 
@@ -18,6 +17,7 @@ Feature: So that admin can customize fields in a form section
       | Text Field | new field page for "text_field" |
       | Text Area  | new field page for "textarea"  |
       | Check box  | new field page for "check_box"  |
+      | Check boxes  | new field page for "check_boxes"  |
       | Select drop down | new field page for "select_box" |
       | Radio button | new field page for "radio_button" |
       | Numeric Field | new field page for "numeric_field"  |
@@ -41,8 +41,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Anything"
        
   Scenario: Admins should be able to add new date fields
-    Given I am logged in as an admin
-    And I am on the edit form section page for "family_details"
+    Given I am on the edit form section page for "family_details"
 
     When I follow "Add Custom Field"
 
@@ -72,8 +71,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "17 Nov 2010"
     
   Scenario: Admins should be able to add new radio button
-    Given I am logged in as an admin
-    And I am on the edit form section page for "family_details"
+    When I am on the edit form section page for "family_details"
 
     When I follow "Add Custom Field"
 
@@ -107,14 +105,12 @@ Feature: So that admin can customize fields in a form section
 
   Scenario: Basic Details should have no option to edit it's fields
 
-    Given I am logged in as an admin
-    And I am on the form section page 
+    Given I am on the form section page 
 
     Then I should not see the "Manage Fields" link for the "basic_details" section
   
   Scenario: Should not be able to add two fields with the same name in a form section
-    Given I am logged in as an admin
-    And I am on the form section page
+    Given I am on the form section page
     And I am on the edit form section page for "family_details"
 
     When I add a new text field with "My field" and "Description"
@@ -123,8 +119,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Field already exists on this form"
 
   Scenario: Should not be able to add two fields with the same name
-    Given I am logged in as an admin
-    And the "basic_details" form section has the field "My field" with help text "Some description"
+    Given the "basic_details" form section has the field "My field" with help text "Some description"
     And I am on the form section page
     And I am on the edit form section page for "family_details"
 
@@ -132,8 +127,7 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Field already exists on form 'Basic details'"
   Scenario: Should provide navigation links
-    Given I am logged in as an admin
-    And I am on the form section page
+    Given I am on the form section page
     And I am on the edit form section page for "family_details"
     
     And I follow "Back To Forms Page"
