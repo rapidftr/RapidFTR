@@ -16,7 +16,6 @@ Feature: So that admin can customize fields in a form section
     Then I should find the following links:
       | Text Field | new field page for "text_field" |
       | Text Area  | new field page for "textarea"  |
-      | Check box  | new field page for "check_box"  |
       | Check boxes  | new field page for "check_boxes"  |
       | Select drop down | new field page for "select_box" |
       | Radio button | new field page for "radio_button" |
