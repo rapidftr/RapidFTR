@@ -20,7 +20,7 @@ begin
       t.profile = 'default'
     end
 
-    Cucumber::Rake::Task.new({:wip => 'db:test:prepare'}, 'Run features that are being worked on') do |t|
+    Cucumber::Rake::Task.new({:headless_wip => 'db:test:prepare'}, 'Run features that are being worked on in headless mode') do |t|
       t.binary = vendored_cucumber_bin
       t.fork = true # You may get faster startup if you set this to false
       t.profile = 'wip'
