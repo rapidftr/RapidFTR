@@ -5,7 +5,7 @@ Feature:
   So that I can identify suspect and duplicate records to admin
 
   Background:
-   Given I am logged in
+   Given "Praful" is logged in
    And the following children exist in the system:
       | name   |
       | Peter |
@@ -17,15 +17,17 @@ Feature:
       """
     Then the view record page should show the record is flagged
     And the edit record page should show the record is flagged
-    And the record history should log "Record flagged"
-    And the record history should log "He is a bad guy"
+    And the record history should log "Record was flagged by praful because: He is a bad guy."
     
   Scenario: Removing flag from a child record
     Given I flag "Peter" as suspect
     When I am on the child record page for "Peter"
-    And I follow "Unflag record"
-    Then I should see "Flag record as suspect"
-    And the record history should log "Flag was removed"
+    And I unflag "Peter" with the following reason:
+      """
+      He is a not such a bad guy after all.
+      """
+    Then I should see "Child was successfully updated."
+    And the record history should log "Record was unflagged by praful because: He is a not such a bad guy after all."
 
     Scenario: Seeing Flagged Child in Search Results
       Given the following children exist in the system:

@@ -1,7 +1,10 @@
+<% 
+prefixed_message = message.present? ? ' because: '  + message : ''
+%>
 <li>
     <% if to_value == 'true' %>
-        <%= datetime %> Record flagged as possibly suspect or duplicate by <%= user_name %>
+        <%= datetime %> Record was flagged by <%= user_name %> <%= prefixed_message%>
     <% else %>
-        <%= datetime %> Flag was removed by <%= user_name %>
+        <%= datetime %> Record was unflagged by <%= user_name %> <%= prefixed_message%>
     <% end %>
 </li>

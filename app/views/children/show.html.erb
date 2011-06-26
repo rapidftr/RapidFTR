@@ -2,7 +2,13 @@
     <%= javascript_include_tag "jquery.lightbox-0.5.min" %>
     <script type="text/javascript" language="javascript">
         $(function() {
-            $('.profile-image .image a').lightBox({fixedNavigation:true});
+            $('.profile-image .image a').lightBox({fixedNavigation:true, 
+                                                  imageLoading:			'/images/lightbox-ico-loading.gif',
+                                            			imageBtnPrev:			'/images/lightbox-btn-prev.gif',	
+                                            			imageBtnNext:			'/images/lightbox-btn-next.gif',	
+                                            			imageBtnClose:			'/images/lightbox-btn-close.gif',
+                                            			imageBlank:				'/images/lightbox-blank.gif'			
+                                          			});
 
             $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
 
@@ -10,6 +16,27 @@
             $(".profile-tools li.flag a").click( function(){
                 $(".profile-tools .flag-form").toggle();
             });
+
+            $("#submit_flag").click(function(){
+                return showMessageIfEmpty('Please explain why you are flagging this record.');
+            });
+
+			$(".profile-tools .unflag-form").hide();	
+            $(".profile-tools li.unflag a").click( function(){
+                $(".profile-tools .unflag-form").toggle();
+            });
+
+            $("#submit_unflag").click(function(){
+                return showMessageIfEmpty('Please explain why you are unflagging this record.');
+            });
+
+            var showMessageIfEmpty = function(message){
+                if(!$("#child_flag_message").val()){
+                    alert(message);
+                    return false;
+                }
+            }
+
         });
     </script>
 <% end %>

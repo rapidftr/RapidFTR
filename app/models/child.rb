@@ -7,7 +7,9 @@ class Child < CouchRestRails::Document
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
 
   before_save :initialize_history, :if => :new?
+  before_save :update_photo_keys
   before_save :update_history, :unless => :new?
+
   property :age
   property :name
   property :nickname
@@ -22,7 +24,7 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  validates_with_method :validate_file_name
+  validates_with_method :validate_photos
   validates_with_method :validate_audio_file_name
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
@@ -30,7 +32,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
 	validates_with_method :created_at, :method => :validate_created_at
-  
+
   def self.build_solar_schema
     fields = build_fields_for_solar
     Sunspot.setup(Child) do
@@ -49,8 +51,13 @@ class Child < CouchRestRails::Document
     [false, "Please fill in at least one field or upload a file"]
   end
   
-  def validate_file_name
-    return true if @file_name == nil || /([^\s]+(\.(?i)(jpg|jpeg|png))$)/ =~ @file_name
+  def validate_age
+    return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
+    [false, "Age must be between 1 and 99"]
+  end
+  
+  def validate_photos
+    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type}
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
   
@@ -68,9 +75,9 @@ class Child < CouchRestRails::Document
 		rescue
 			[false, '']
 		end
-	end
-  
-  def method_missing(m, *args, &block)  
+  end
+
+  def method_missing(m, *args, &block)
     self[m]
   end
   
@@ -125,30 +132,54 @@ class Child < CouchRestRails::Document
   end
 
   def rotate_photo(angle)
-    exisiting_photo = photo
-    image = MiniMagick::Image.from_blob(exisiting_photo.data.read)
+    existing_photo = primary_photo               
+    image = MiniMagick::Image.from_blob(existing_photo.data.read)
     image.rotate(angle)
+                                        
+    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob)
+    # attachment = FileAttachment.from_uploadable_file(image.to_blob, "photo-#{existing_photo.name.hash}")
+    
+    self['photo_keys'].delete(attachment.name)
+    @photo_keys = [attachment.name]
+    delete_attachment(existing_photo.name) 
+    attach(attachment)  
+  end                                                                 
+  
+  def delete_photo(delete_photos)
+    return unless delete_photos
+    delete_photos.keys.collect do |delete_photo|
+      self['photo_keys'].delete(delete_photo)
+    end
+  end
+  
+  def photo=(new_photos)
+    return unless new_photos
+    #basically to support any client passing a single photo param, only used by child_spec AFAIK
+    unless new_photos.is_a? Hash
+      new_photos = {'0' => new_photos}
+    end
 
-    name = FileAttachment.generate_name
-    attachment = FileAttachment.new(name, exisiting_photo.content_type, image.to_blob)
-    attach(attachment, 'current_photo_key')
+    @photos = []
+    @photo_keys = new_photos.values.select {|photo| photo.respond_to? :content_type}.collect do |photo|
+      @photos <<  photo
+      attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
+      attach(attachment)
+      attachment.name
+    end
   end
 
-  def photo=(photo_file)
-    return unless photo_file.respond_to? :content_type
-    @file_name = photo_file.original_path
-    attachment = FileAttachment.from_uploadable_file(photo_file, "photo")
-    attach(attachment, 'current_photo_key')
+  def photos
+    return [] if self['photo_keys'].blank?
+    self['photo_keys'].collect do |key|
+      attachment(key)
+    end
   end
-
-  def photo
-    attachment_name = self['current_photo_key']
-    return if attachment_name.blank?
-    data = read_attachment attachment_name
-    content_type = self['_attachments'][attachment_name]['content_type']
-    FileAttachment.new attachment_name, content_type, data
+  
+  def primary_photo
+    key = self['current_photo_key']
+    key ? attachment(key) : nil
   end
-
+  
   def audio
     return nil if self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']
@@ -163,15 +194,15 @@ class Child < CouchRestRails::Document
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-
-    attach(attachment, attachment.name)
+    self['recorded_audio'] = attachment.name
+    attach(attachment)
     setup_original_audio(attachment)
     setup_mime_specific_audio(attachment)
   end
 
   def add_audio_file(audio_file, content_type)
     attachment = FileAttachment.from_file(audio_file, content_type, "audio", key_for_content_type(content_type))
-    attach(attachment, attachment.name)
+    attach(attachment)
     setup_mime_specific_audio(attachment)
   end
 
@@ -181,11 +212,12 @@ class Child < CouchRestRails::Document
     FileAttachment.new media_key, content_type, data
   end
 
-  def update_properties_with_user_name(user_name,new_photo, new_audio, properties)
+  def update_properties_with_user_name(user_name, new_photo, delete_photo, new_audio, properties)
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
+    self.delete_photo(delete_photo)
     self.photo = new_photo
     self.audio = new_audio
   end
@@ -235,7 +267,11 @@ class Child < CouchRestRails::Document
   def changed?(field_name)
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
-    self[field_name].strip != @from_child[field_name].strip
+    if self[field_name].respond_to? :strip
+       self[field_name].strip != @from_child[field_name].strip
+    else
+       self[field_name] != @from_child[field_name]
+    end
   end
   
   def is_filled_in? field
@@ -243,13 +279,24 @@ class Child < CouchRestRails::Document
   end
 
   private
-  def attach(attachment, key)
-    self[key] = attachment.name
+  def attachment(key)
+    data = read_attachment key
+    content_type = self['_attachments'][key]['content_type']
+    FileAttachment.new key, content_type, data      
+  end
+  
+  def update_photo_keys
+    @photo_keys ||= []
+    self['photo_keys'] ||= []
+    self['photo_keys'].concat @photo_keys
+    self['current_photo_key'] = @photo_keys.first || self['photo_keys'].first
+  end
+  
+  def attach(attachment)
     create_attachment :name => attachment.name,
                       :content_type => attachment.content_type,
-                      :file => attachment.data
-
-  end
+                      :file => attachment.data  
+  end  
   
   def deprecated_fields
     system_fields = ["created_at","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
