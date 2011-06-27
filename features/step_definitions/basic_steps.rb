@@ -11,6 +11,12 @@ When /^I attach a photo "([^"]*)"$/ do |photo_path|
   }
 end
 
+When /^I attach an audio file "([^"]*)"$/ do |audio_path|
+  steps %Q{
+    When I attach the file "#{audio_path}" to "child[audio]"
+  }
+end
+
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
     steps %Q{
