@@ -1,0 +1,56 @@
+
+  <table class="highlight-fields">
+    <thead>
+      <tr>
+        <th>Field Name</th>
+        <th>Form Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="highlighted-fields">
+      <tr class="add-field-section">
+       <td></td>
+       <td></td>
+       <td><a class="add-field">add</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+<%form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
+  <div id="add-field">
+  </div>  
+<% end %>
+
+
+<script id="highlight-field-template" type="text/x-jquery-tmpl"> 
+  <tr>     
+    <td>${display_name}</td>
+    <td>${form_name}</td>
+    <td></td>
+    <input type="hidden" name="field_name" class="highlighted" value="${field_name}"/>
+  </tr>
+</script>
+
+<script id="add-template" type="text/x-jquery-tmpl">
+    <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
+    <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
+</script>
+
+<script> 
+
+var updateWithSelectedItem = function(selectedElement){
+  $("#add-field").append($("#add-template").tmpl(selectedElement));
+  $("#add-form").submit();
+}
+
+<% if @highlighted_fields %>
+  $(".add-field-section").before($("#highlight-field-template").tmpl(<%=@highlighted_fields.to_json %>));
+<% end %>
+
+</script>
+
+<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add-field" , 
+                                                          :on_item_select => "updateWithSelectedItem", 
+                                                          :prev_selected_field_selector => ".highlighted"} %>

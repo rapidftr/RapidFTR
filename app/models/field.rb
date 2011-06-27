@@ -8,6 +8,7 @@ class Field < Hash
   property :help_text
   property :type
   property :option_strings
+  property :highlight_information , :cast_as=> 'HighlightInformation' 
   property :editable, :cast_as => 'boolean', :default => true
 
   attr_reader :options
@@ -80,6 +81,7 @@ class Field < Hash
 
   def initialize properties
     self.enabled = true if properties["enabled"] == nil
+    self.highlight_information = HighlightInformation.new
     self.editable = true if properties["editable"] == nil
     self.attributes = properties
   end
@@ -121,6 +123,15 @@ class Field < Hash
     select_options = []
     select_options << ['(Select...)', '']
     select_options += @options.collect { |option| [option.option_name, option.option_name] }
+  end
+  
+  def is_highlighted?
+      highlight_information.highlighted
+  end
+  
+  def highlight_with_order order
+      highlight_information[:highlighted] = true
+      highlight_information[:order] = order
   end
   
   #TODO - remove this is just for testing

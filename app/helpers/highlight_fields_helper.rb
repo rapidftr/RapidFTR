@@ -1,0 +1,2 @@
+module HighlightFieldsHelper
+end
