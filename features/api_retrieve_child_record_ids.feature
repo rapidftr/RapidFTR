@@ -7,8 +7,8 @@ Feature:
   Scenario: Only Id and Revision properties are returned for each child record
 
     Given the following children exist in the system:
-      | name |
-      | Tom  |
+      | name | 
+      | Tom  | 
       | Kate |
       | Jess |
     And I am logged in
