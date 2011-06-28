@@ -92,7 +92,18 @@ class FormSection < CouchRestRails::Document
   
   def update_field_as_highlighted field_name
     field = fields.find {|field| field.name == field_name }
-    field.highlight_with_order FormSection.highlighted_fields.length + 1  
+    existing_max_order = FormSection.highlighted_fields.
+                                     map(&:highlight_information).
+                                     map(&:order).
+                                     max 
+    order = existing_max_order.nil? ? 1 : existing_max_order + 1 
+    field.highlight_with_order order 
+    save
+  end
+
+  def remove_field_as_highlighted field_name
+    field = fields.find {|field| field.name == field_name }
+    field.unhighlight
     save
   end
 

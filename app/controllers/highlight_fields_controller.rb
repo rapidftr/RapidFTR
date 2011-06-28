@@ -1,7 +1,7 @@
 class HighlightFieldsController < ApplicationController
+  before_filter :administrators_only 
   
   def index
-    administrators_only
     @forms = FormSection.all
     @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
       { :field_name => field.name, 
@@ -14,10 +14,14 @@ class HighlightFieldsController < ApplicationController
   end 
   
   def create
-    administrators_only
     form = FormSection.get_by_unique_id(params[:form_id])
     form.update_field_as_highlighted params[:field_name]
     redirect_to highlight_fields_url
   end
-
+  
+  def remove
+    form = FormSection.get_by_unique_id(params[:form_id])
+    form.remove_field_as_highlighted params[:field_name]
+    redirect_to highlight_fields_url
+  end  
 end

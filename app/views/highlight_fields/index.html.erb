@@ -11,7 +11,7 @@
       <tr class="add-field-section">
        <td></td>
        <td></td>
-       <td><a class="add-field">add</a></td>
+       <td><a class="add_field">add</a></td>
       </tr>
     </tbody>
   </table>
@@ -23,17 +23,26 @@
   </div>  
 <% end %>
 
+<%form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
+  <div id="remove-field">
+  </div>  
+<% end %>
+
+
 
 <script id="highlight-field-template" type="text/x-jquery-tmpl"> 
   <tr>     
     <td>${display_name}</td>
     <td>${form_name}</td>
-    <td></td>
-    <input type="hidden" name="field_name" class="highlighted" value="${field_name}"/>
+    <td>
+      <a class="remove_field">remove</a>
+      <input type="hidden" name="field_name" class="highlighted-field" value="${field_name}"/>
+      <input type="hidden" name="form_id" class="highlighted-form" value="${form_id}"/>
+    </td>
   </tr>
 </script>
 
-<script id="add-template" type="text/x-jquery-tmpl">
+<script id="form-template" type="text/x-jquery-tmpl">
     <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
     <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
 </script>
@@ -41,9 +50,16 @@
 <script> 
 
 var updateWithSelectedItem = function(selectedElement){
-  $("#add-field").append($("#add-template").tmpl(selectedElement));
+  $("#add-field").append($("#form-template").tmpl(selectedElement));
   $("#add-form").submit();
 }
+
+$(".remove_field").live("click", function(){
+  var removeElement = { "field_name" : $(this).siblings(".highlighted-field").val(),
+                        "form_id" : $(this).siblings(".highlighted-form").val()}
+  $("#remove-field").append($("#form-template").tmpl(removeElement));
+  $("#remove-form").submit();
+});
 
 <% if @highlighted_fields %>
   $(".add-field-section").before($("#highlight-field-template").tmpl(<%=@highlighted_fields.to_json %>));
@@ -51,6 +67,6 @@ var updateWithSelectedItem = function(selectedElement){
 
 </script>
 
-<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add-field" , 
+<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" , 
                                                           :on_item_select => "updateWithSelectedItem", 
-                                                          :prev_selected_field_selector => ".highlighted"} %>
+                                                          :prev_selected_field_selector => ".highlighted-field"} %>

@@ -362,12 +362,14 @@ describe FormSection do
       end
     end
 
-    describe "set highlighted fields" do
+    describe "highlighted fields" do
 
       it "should update field as highlighted" do
         attrs = { :field_name => "h1", :form_id => "highlight_form" }
         existing_field = Field.new :name => attrs[:field_name]
-        form = FormSection.new(:name => "Some Form", :unique_id => attrs[:form_id], :fields => [existing_field])
+        form = FormSection.new(:name => "Some Form", 
+                               :unique_id => attrs[:form_id], 
+                               :fields => [existing_field])
         FormSection.stub(:all).and_return([form])
         form.update_field_as_highlighted attrs[:field_name]
         existing_field.highlight_information.order.should == 1
@@ -378,12 +380,24 @@ describe FormSection do
         attrs = { :field_name => "existing_field", :form_id => "highlight_form"}
         existing_field = Field.new :name => attrs[:field_name]
         existing_highlighted_field = Field.new :name => "highlighted_field"
-        existing_highlighted_field.highlight_with_order 1
-        form = FormSection.new(:name => "Some Form", :unique_id => attrs[:form_id], :fields => [existing_field, existing_highlighted_field])
+        existing_highlighted_field.highlight_with_order 3
+        form = FormSection.new(:name => "Some Form", 
+                               :unique_id => attrs[:form_id], 
+                               :fields => [existing_field, existing_highlighted_field])
         FormSection.stub(:all).and_return([form])
         form.update_field_as_highlighted attrs[:field_name]
         existing_field.is_highlighted?.should be_true
-        existing_field.highlight_information.order.should == 2
+        existing_field.highlight_information.order.should == 4
+      end
+      
+      it "should un-highlight a field" do
+        existing_highlighted_field = Field.new :name => "highlighted_field"
+        existing_highlighted_field.highlight_with_order 1
+        form = FormSection.new(:name => "Some Form", :unique_id => "form_id", 
+                               :fields => [existing_highlighted_field])
+        FormSection.stub(:all).and_return([form])
+        form.remove_field_as_highlighted existing_highlighted_field.name
+        existing_highlighted_field.is_highlighted?.should be_false  
       end
     end
   end  

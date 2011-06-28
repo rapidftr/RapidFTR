@@ -40,14 +40,22 @@ describe HighlightFieldsController do
       field1 = Field.new(:name => "field1", :display_name => "field1_display" , :highlight_information => { :order => "1", :highlighted => true })
       field2 = Field.new(:name => "field2", :display_name => "field2_display" , :highlight_information => { :order => "2", :highlighted => true })
       field3 = Field.new(:name => "field3", :display_name => "field3_display")
-      form = FormSection.create(:name => "Form1", :unique_id => "form1", :fields => [field1, field2, field3])      
-      
+      form = FormSection.new(:name => "Form1", :unique_id => "form1", :fields => [field1, field2, field3])      
+      FormSection.stub(:get_by_unique_id).and_return(form)
+      form.should_receive(:update_field_as_highlighted).with("field3")
       fake_admin_login
-      post :create, :form_id => "form1", :field_name => "field1"
-      
-      field = FormSection.get_by_unique_id(form.unique_id).fields.find { |field| field.name == "field1" }
-      field.is_highlighted?.should be_true
-      field["highlight_information"].order.should == 3
+      post :create, :form_id => "form1", :field_name => "field3"
+    end
+  end
+  
+  describe "remove" do
+    it  "should unhighlight a field"  do 
+      field1 = Field.new(:name => "newfield1", :display_name => "new_field1_display" , :highlight_information => { :order => "1", :highlighted => true })
+      form = FormSection.new(:name => "another form", :unique_id => "unique_form1", :fields => [field1])
+      FormSection.stub(:get_by_unique_id).and_return(form)
+      form.should_receive(:remove_field_as_highlighted).with("newfield1")
+      fake_admin_login
+      post :remove, :form_id => "form1", :field_name => "newfield1"
     end
   end
 end

@@ -126,13 +126,18 @@ class Field < Hash
   end
   
   def is_highlighted?
-      highlight_information.highlighted
+      highlight_information[:highlighted]
   end
   
   def highlight_with_order order
       highlight_information[:highlighted] = true
       highlight_information[:order] = order
   end
+    
+  def unhighlight
+    self.highlight_information = HighlightInformation.new
+  end
+
   
   #TODO - remove this is just for testing
   def self.new_field(type, name, options=[])
