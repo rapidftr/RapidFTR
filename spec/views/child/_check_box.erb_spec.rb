@@ -6,7 +6,7 @@ describe "children/_check_box.html.erb" do
     assigns[:child] = @child
   end
 
-  it "should show help text when exists" do
+  it "should include image for tooltip when help text exists" do
     check_box = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'check_box',
@@ -14,17 +14,17 @@ describe "children/_check_box.html.erb" do
     
     render :locals => { :check_box => check_box }
   
-    response.should have_tag(".help-text-checkbox")
+    response.should have_tag("img.vtip")
   end
 
-  it "should not show help text when not exists" do
+  it "should not include image for tooltip when help text not exists" do
     check_box = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'check_box'
     
     render :locals => { :check_box => check_box }
   
-    response.should_not have_tag(".help-text-checkbox")
+    response.should_not have_tag("img.vtip")
   end
   
 end

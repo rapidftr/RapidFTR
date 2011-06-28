@@ -73,9 +73,11 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .device-information { clear: both; margin-top: 3em; }
 
 /* default : forms > help text */
-.default-form .help-text { font-style: italic; float: right; display: block;}
+.default-form .help-text { font-style: italic; float: right; display:none;}
 .default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
+.default-form .tool-tip-icon { width:14px;height:14px; }
 .default-form .help-text-checkbox{ font-style:italic; display:block;}
+
 
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
