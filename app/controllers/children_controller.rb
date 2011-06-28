@@ -227,11 +227,24 @@ class   ChildrenController < ApplicationController
       end
       rows << field_names
       results_temp.each do |child|
-          rows << field_names.map { |field_name| child[field_name] }
+        rows << field_names.map { |field_name| fix_csv_fields(field_name, child[field_name], child["unique_identifier"]) }
       end
     end
 
     send_data(csv, :filename => filename, :type => 'text/csv')
   end
 
+  def fix_csv_fields field_name, value, child_id
+    if field_name != nil then
+      if value != nil then        
+        if field_name.index('photo') != nil then
+          return 'http://' + request.domain + ':' + request.port.to_s + '/children/' + child_id + '/photo/' + value
+        end
+        if field_name.index('audio') != nil then
+          return 'http://' + request.domain + ':' + request.port.to_s + '/children/' + child_id + '/audio/' + value
+        end
+      end
+    end
+    return value
+  end
 end
