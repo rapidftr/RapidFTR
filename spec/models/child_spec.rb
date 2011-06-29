@@ -596,15 +596,14 @@ describe Child do
 
   describe "history log" do    
     before do
-      form_section = FormSection.new :unique_id => "basic_details"
-      form_section.add_text_field("last_known_location")
-      form_section.add_text_field("age")
-      form_section.add_text_field("origin")
-      form_section.add_field(Field.new_radio_button("gender", ["male", "female"]))
-      form_section.add_field(Field.new_photo_upload_box("current_photo_key"))
-      form_section.add_field(Field.new_audio_upload_box("recorded_audio"))
-    
-      FormSection.stub!(:all).and_return([form_section])
+			fields = [
+					Field.new_text_field("last_known_location"),
+					Field.new_text_field("age"),
+					Field.new_text_field("origin"),
+					Field.new_radio_button("gender", ["male", "female"]),
+      		Field.new_photo_upload_box("current_photo_key"),
+      		Field.new_audio_upload_box("recorded_audio")]
+      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
     end
     
     it "should not update history on initial creation of child document" do
@@ -761,13 +760,13 @@ describe Child do
 
     it "should update history with the datetime from last_updated_at" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
       child['last_known_location'] = 'Philadelphia'
       child['last_updated_at'] = 'some_time'
       child.save!
 
       child['histories'].first['datetime'].should == 'some_time'
-    end
+    	
+		end
   end
   
   describe ".has_one_interviewer?" do
