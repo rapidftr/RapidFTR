@@ -38,6 +38,24 @@
                 }
             }
 
+			$('#sub_export_record').hide();
+
+			$('#export_record_link').click( function(e) {
+				e.preventDefault();
+			});
+
+			$('#export_record').click( function(e) {
+
+				if ( $("#sub_export_record").is(":hidden") )
+				{
+					$('#sub_export_record').slideDown("slow");
+				}
+				else
+				{
+					$('#sub_export_record').hide();
+				}
+			});
+
         });
     </script>
 <% end %>

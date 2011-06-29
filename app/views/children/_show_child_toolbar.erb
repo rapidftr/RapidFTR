@@ -3,9 +3,14 @@
     <li class="back"><%= link_to 'Back', :back %></li>
     <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
     <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
-    <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
-    <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
-    <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
+	<li id="export_record">
+		<%= link_to "Export this Record", "#", :id => "export_record_link"%>
+		<ul id="sub_export_record">
+			<li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
+			<li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
+			<li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
+		</ul>
+	</li>
     <% if !(@child.flag?) %>
         <li class="flag"><a href="#">Flag record as suspect</a></li>
       </ul>
