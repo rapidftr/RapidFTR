@@ -10,8 +10,12 @@ class ApplicationController < ActionController::Base
   include ChecksAuthentication
 
   before_filter :check_authentication
+  
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
+
+  before_filter :session_expiry
+  before_filter :update_activity_time
 
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
@@ -61,6 +65,7 @@ class ApplicationController < ActionController::Base
     unless session.nil?
       if session.expired?
         flash[:error] = 'Your session has expired. Please re-login.'
+        Session.delete_for_by_username session.user_name
         redirect_to logout_path
       end
     end
