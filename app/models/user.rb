@@ -136,7 +136,7 @@ class User < CouchRestRails::Document
   end
 
   def password_required?
-    crypted_password.blank? || !password.blank?
+    crypted_password.blank? || !password.blank? || !password_confirmation.blank?
   end
 
   def make_user_name_lowercase
