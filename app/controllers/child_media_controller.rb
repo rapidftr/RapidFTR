@@ -8,6 +8,9 @@ class ChildMediaController < ApplicationController
 
   def show_resized_photo
     new_size = params[:size]
+    if new_size.to_i > 3000 then
+      new_size = 640
+    end
     photo_data = @attachment.data.read
     resized_photo = MiniMagick::Image.from_blob(photo_data).resize new_size
     send_data(resized_photo.to_blob, :type => @attachment.content_type, :disposition => 'inline')
