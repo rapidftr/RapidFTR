@@ -7,18 +7,18 @@ module NavigationHelpers
   #
   def path_to(page_name, options = {})
 
-    format = page_name[/^(?:|the )(\w+) formatted/,1]
-    options.reverse_merge!( :format => format )
+    format = page_name[/^(?:|the )(\w+) formatted/, 1]
+    options.reverse_merge!(:format => format)
 
     case page_name
 
       when /the home\s?page/
         '/'
-    when /the new create_custom_field page/
-      new_create_custom_field_path
+      when /the new create_custom_field page/
+        new_create_custom_field_path
 
-    when /the new create_custom_fields.feature page/
-      new_create_custom_fields.feature_path
+      when /the new create_custom_fields.feature page/
+        new_create_custom_fields.feature_path
 
       when /the new add_suggested_field_to_form_section page/
         new_add_suggested_field_to_form_section_path
@@ -39,19 +39,19 @@ module NavigationHelpers
         child_name = $1
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
-        child_path( child, options )
+        child_path(child, options)
 
       when /child record page for "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
-        child_path( child, options )
+        child_path(child, options)
 
       when /change log page for "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
-        child_history_path( child, options )
+        child_history_path(child, options)
 
       when /new user page/
         new_user_path(options)
@@ -95,7 +95,7 @@ module NavigationHelpers
 
       when /choose field type page/
         arbitrary_form_section = FormSection.new
-        new_formsection_field_path( arbitrary_form_section, options )
+        new_formsection_field_path(arbitrary_form_section, options)
 
       when /the edit user page for "(.+)"$/
         user = User.by_user_name(:key => $1)
@@ -116,7 +116,7 @@ module NavigationHelpers
       when /the edit administrator contact information page/
         edit_contact_information_path(:administrator)
       when /(the )?administrator contact page/
-          contact_information_path(:administrator, options)
+        contact_information_path(:administrator, options)
 
       when /all child Ids/
         child_ids_path
@@ -129,7 +129,7 @@ module NavigationHelpers
 
       else
         raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
-                "Now, go and add a mapping in #{__FILE__}"
+                  "Now, go and add a mapping in #{__FILE__}"
     end
   end
 end

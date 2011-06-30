@@ -56,7 +56,4 @@ class SearchCriteria
     end
   end
   
-
-  
-  
 end

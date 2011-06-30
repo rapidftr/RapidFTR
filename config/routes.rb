@@ -48,7 +48,8 @@ ActionController::Routing::Routes.draw do |map|
     
   map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
   
-  map.resources :advanced_search, :only => [:new, :index]
+  map.resources :advanced_search, :only => [:index, :new]
+  map.advanced_search_index 'advanced_search/index', :controller => 'advanced_search', :action => 'index'
 
   map.resources :form_section
 
