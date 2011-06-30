@@ -9,9 +9,12 @@ module CouchRest
         @options = options
         @type = field_type.to_s
       end
-      
+      def retrieve_field_definitions target
+				return target.field_definitions if (target.respond_to? :field_definitions) && !target.field_definitions.nil?
+				return FormSection.all_enabled_child_fields
+			end
       def call(target)
-        fields = FormSection.all_enabled_child_fields
+        fields = retrieve_field_definitions target
         validated_fields = fields.select { |field| field[:type] == @type }
         return validate_fields(validated_fields, target)
       end
