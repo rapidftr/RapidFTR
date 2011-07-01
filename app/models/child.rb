@@ -25,6 +25,7 @@ class Child < CouchRestRails::Document
           }"
 
   validates_with_method :validate_photos
+  validates_with_method :validate_photos_size
   validates_with_method :validate_audio_file_name
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
@@ -55,8 +56,13 @@ class Child < CouchRestRails::Document
   end
   
   def validate_photos
-    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type}
+    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
+  end
+  
+  def validate_photos_size
+    return true if @photos.all?{|photo| photo.size < 10.megabytes }
+    [false, "File is too large"]
   end
   
   def validate_audio_file_name
