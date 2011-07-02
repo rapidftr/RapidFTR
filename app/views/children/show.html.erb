@@ -38,21 +38,17 @@
                 }
             }
 
-			$('#sub_export_record').hide();
+			$('.sub_export_record').hide();
 
-			$('#export_record_link').click( function(e) {
+			$('.export_record').click( function(e) {
 				e.preventDefault();
-			});
+				var $sub = $(this).find(".sub_export_record");
 
-			$('#export_record').click( function(e) {
-
-				if ( $("#sub_export_record").is(":hidden") )
-				{
-					$('#sub_export_record').slideDown("slow");
+				if ( $sub.is(":hidden") ) {
+					$sub.slideDown("slow");
 				}
-				else
-				{
-					$('#sub_export_record').hide();
+				else {
+				    $sub.hide();
 				}
 			});
 
@@ -66,7 +62,7 @@
 <% if @child.flag? %>
     <h3 class="flag-message"><%= flag_message %></h3>
 <% end %>
-<%= render :partial => "show_child_toolbar" %>
+<%= render :partial => "show_child_toolbar"%>
 
 <div id='interviewer_details'>
   <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @child['created_at'] %></h3>
@@ -79,4 +75,4 @@
 </div>
 
 <%= render :partial => "show_form_section" %>
-<%= render :partial => "show_child_toolbar" %>
+<%= render :partial => "show_child_toolbar"%>

@@ -221,7 +221,7 @@ ul.ui-widget-content { background: none; }
 .profile-tools .unflag-form { margin: 0;}
 .flag-message {color: red; margin-bottom: .5em;}
 
-#sub_export_record{
+.sub_export_record{
 	padding: 0;
 	position: absolute;
 	border-style: none solid solid solid;
@@ -229,7 +229,7 @@ ul.ui-widget-content { background: none; }
 	background: white;
 }
 
-#sub_export_record li{
+.sub_export_record li{
 	clear: both;
 }
 
