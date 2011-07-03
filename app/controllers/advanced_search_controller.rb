@@ -13,6 +13,7 @@ class AdvancedSearchController < ApplicationController
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     new_search = !params[:criteria_list]
+
     if new_search
       @criteria_list = [SearchCriteria.new]
       @results = []
@@ -28,7 +29,7 @@ class AdvancedSearchController < ApplicationController
   end
 
   def append_advanced_user_criteria(value, list)
-    if (value.length > 0)
+    if (value)
       advanced_user_criteria = SearchCriteria.create_advanced_criteria({:field => "created_by", :value => value, :index => 12})
       list.push(advanced_user_criteria)
     end

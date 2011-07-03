@@ -11,7 +11,7 @@ describe AdvancedSearchController do
 
      fake_results = [:fake_child,:fake_child]
      SearchService.should_receive(:search).with([search]).and_return(fake_results)
-     get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => ""
+     get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => nil
      assigns[:results].should == fake_results
   end
 
@@ -27,7 +27,7 @@ describe AdvancedSearchController do
     SearchService.stub(:search).and_return([])
     SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
     
-    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => ""
+    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => nil
     assigns[:criteria_list].should == ["criteria_list"]
 
   end
