@@ -50,6 +50,26 @@ describe "histories/show.html.erb" do
       	end
       end
     end
+    describe "rendering the history of a flagged child record" do
+      before do
+        #Set up a child record and then flag it as suspect
+        @user = mock(:user)
+        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+
+      end
+      it "should display the time of the change using the users timezone setting" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "flag", "false", "true"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        render
+
+      	response.should have_tag(".history-details") do
+          with_tag("li", "2010-12-31 09:55:00 -1100 Record was flagged by rapidftr")
+        end
+      end
+    end
     describe "rendering changes to photos" do
       before do
         @user = mock(:user)

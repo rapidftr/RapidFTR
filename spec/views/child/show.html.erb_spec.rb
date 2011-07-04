@@ -116,11 +116,12 @@ describe "children/show.html.erb" do
         response.should_not have_tag("#interviewer_details", /and others/)
       end
    		it "should always show the posted at details when the record has been posted from a mobile client" do
-					child = Child.new(:posted_at=> "2007-01-01 10:04pm", :posted_from=>"Mobile", :unique_id=>"bob", :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+					child = Child.new(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob", :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
       	  child.stub!(:has_one_interviewer?).and_return(true)
 					form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
 
           user = User.new()
+          user.time_zone = TZInfo::Timezone.get("US/Samoa")
         
         	assigns[:form_sections] = [form_section]
     	  	assigns[:child] = child
@@ -129,7 +130,7 @@ describe "children/show.html.erb" do
        		render
 
         	response.should have_selector("#interviewer_details") do |fields|
-          		fields[0].should contain("Posted from the mobile client at: 2007-01-01 10:04pm")
+          		fields[0].should contain("Posted from the mobile client at: 2007-01-01 03:04:00 -1100")
         	end 
 			end
 			it "should not show the posted at details when the record has not been posted from mobile client" do
@@ -146,7 +147,7 @@ describe "children/show.html.erb" do
        		render
 
         	response.should have_selector("#interviewer_details") do |fields|
-          		fields[0].should_not contain("Posted from the mobile client at: 2007-01-01 10:04pm")
+          		fields[0].should_not contain("Posted from the mobile client")
         	end 
 			end
 		end

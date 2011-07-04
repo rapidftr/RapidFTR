@@ -21,7 +21,7 @@
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => history['datetime'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'],
  								   :message => flag_change_message(history)	} %>
             <% elsif field == 'flag_message'%>
