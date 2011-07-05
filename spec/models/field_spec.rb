@@ -117,8 +117,8 @@ describe "Child record field view model" do
       Field.new(:type=>Field::AUDIO_UPLOAD_BOX).default_value.should be_nil
     end
 
-    it "should return 'no' for checkbox fields" do
-      Field.new(:type=>Field::CHECK_BOX).default_value.should == "No"
+    it "should return empty list for checkboxes fields" do
+      Field.new(:type=>Field::CHECK_BOXES).default_value.should == []
     end
 
     it "should raise an error if can't find a default value for this field type" do

@@ -116,25 +116,6 @@ describe FormSection do
 
   end
 
-  describe "add_checkbox_field_to_formsection" do
-
-    it "adds the checkbox to the formsection" do
-      field = Field.new_check_box("name")
-      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
-      FormSection.add_field_to_formsection formsection, field
-      formsection.fields.length.should == 3
-      formsection.fields[2].should == field
-    end
-
-    it "saves the formsection with checkbox field" do
-      field = Field.new_check_box("name")
-      formsection = mock_formsection
-      formsection.should_receive(:save)
-      FormSection.add_field_to_formsection formsection, field
-    end
-
-  end
-
   describe "add_select_drop_down_field_to_formsection" do
 
     it "adds the select drop down to the formsection" do
