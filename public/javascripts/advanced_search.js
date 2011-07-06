@@ -53,7 +53,7 @@
 		
 		
 		element.find(".add-criteria").live("click", function() { 
-			var index = criteriaList.find("p:last .criteria-index").val() + 1;
+			var index = parseInt(criteriaList.find("p:last .criteria-index").val()) + 1;
 			buildCriteria({index: index, join: "AND", field_display_name: ""}) 
 		});
 		
