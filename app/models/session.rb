@@ -30,6 +30,10 @@ class Session < CouchRestRails::Document
     by_user_name(:key => user.user_name).each {|s| s.destroy }
   end
 
+  def self.delete_for_by_username(username)
+    by_user_name(:key => username).each {|s| s.destroy}
+  end
+
   def put_in_cookie(cookies)
     cookies[COOKIE_KEY] = id
   end

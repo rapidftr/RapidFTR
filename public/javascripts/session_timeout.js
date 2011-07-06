@@ -35,8 +35,14 @@ IdleSessionTimeout.start = function() {
             $("#dialog-countdown").html(counter);
         },
         onResume: function() {
-            // the dialog is closed by a button in the dialog
-            // no need to do anything else
+	    $.ajax({
+		url: '/active',
+		error: function(){
+		},
+		success: function(response){
+
+		}
+	    });
         }
     });
 };
