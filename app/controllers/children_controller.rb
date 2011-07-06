@@ -1,5 +1,4 @@
-class   ChildrenController < ApplicationController
-
+class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   # GET /children
@@ -195,8 +194,7 @@ class   ChildrenController < ApplicationController
   private
 
 	def file_basename(child = nil)
-		prefix = current_user_name
-		prefix = child.unique_identifier if child
+		prefix = child.nil? ? current_user_name : child.unique_identifier
 
 		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
 	end
