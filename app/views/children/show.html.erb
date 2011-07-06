@@ -40,8 +40,12 @@
 
 			$('.sub_export_record').hide();
 
-			$('.export_record').click( function(e) {
+			$('.export_record_link').click( function(e) {
 				e.preventDefault();
+			});
+
+			$('.export_record').click( function(e) {
+				
 				var $sub = $(this).find(".sub_export_record");
 
 				if ( $sub.is(":hidden") ) {

@@ -4,7 +4,7 @@
     <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
     <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
 	<li class="export_record">
-		<%= link_to "Export this Record", "#"%>
+		<%= link_to "Export this Record", "#", :class => "export_record_link"%>
 		<ul class="sub_export_record" >
 			<li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
 			<li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
