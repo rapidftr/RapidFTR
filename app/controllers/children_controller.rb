@@ -227,7 +227,7 @@ class   ChildrenController < ApplicationController
       end
       rows << field_names
       results_temp.each do |child|
-        rows << field_names.map { |field_name| fix_csv_fields(field_name, child[field_name], child["unique_identifier"]) }
+        rows << field_names.map { |field_name| fix_csv_fields(field_name, child[field_name], child["_id"]) }
       end
     end
 
