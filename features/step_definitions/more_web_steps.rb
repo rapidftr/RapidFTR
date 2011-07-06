@@ -71,6 +71,24 @@ Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio
    radio.css("label").map(&:text).should == table.raw.map(&:first)
 end
 
+Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
+	checkbox_elements = Nokogiri::HTML(response.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
+  
+	checkboxes = checkbox_elements.inject({}) do | result,  element |
+		result[element['value']] = !!element[:checked]
+		result
+	end
+
+  table.hashes.each do |expected_checkbox|
+    expected_value = expected_checkbox['value']
+    should_be_checked = (expected_checkbox['checked?'] == 'yes')
+    checkboxes.should have_key expected_value
+		checkboxes[expected_value].should == should_be_checked
+		
+  end
+end
+
+
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
   dropdown_field = field_labeled(dropdown_label)
   actual_option_labels = dropdown_field.options.map(&:label)
@@ -129,6 +147,10 @@ Given /^devices exist$/ do |devices|
     device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])
     device.save!
   end
+end
+
+When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
+	  check(field_with_id("child_#{checkbox_name}_#{value.dehumanize}")) 
 end
 
 
