@@ -81,3 +81,32 @@ Scenario: User should be able to edit their own general information, but should 
 Given "mary" is logged in
   And I follow "Account"
   Then I should not see "IMEI"
+
+Scenario: Password field should not be blank if re-enter password field is filled in and vice versa
+  # Create an user
+  Given I am logged in as an admin
+  And I am on manage users page
+  And I follow "New user"
+
+  When I fill in "John Doe" for "Full name"
+  And I fill in "johndoe1" for "user name"
+  And I fill in "password" for "password"
+  And I fill in "password" for "Re-enter password"
+  And I choose "User"
+  And I fill in "abcde@unicef.com" for "email"
+  And I fill in "UNICEF" for "organisation"
+  And I fill in "Rescuer" for "position"
+  And I fill in "Amazon" for "location"
+  And I press "Create"
+
+  # Editing the user with re-enter password but no password
+  Then I follow "Edit"
+  And I fill in "pass" for "Re-enter password"
+  And I press "Update"
+  Then I should see "Password does not match the confirmation"
+
+  #Editing the user with password but no re-enter password
+  When I am on the edit user page for "johndoe"
+  Then I fill in "pass" for "password"
+  And I press "Update"
+  Then I should see "Password does not match the confirmation"
