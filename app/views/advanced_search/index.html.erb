@@ -12,15 +12,13 @@
   <form>
     <div class='criteria_menu' style='display:none;' >
       <div class='box-shadow content'>
-        <div style="float:right; margin-left: 6px;">
-          <a class='close-link'><%= image_tag("dialog-close.png") %></a>
-        </div>
+          <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
 
-        <ul class='forms'>      
-        <% @forms.each do |form| %>
+          <ul class='forms'>      
+          <% @forms.each do |form| %>
             <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.enabled? ? "" : "(Disabled)" %></li>
-        <% end %>
-        </ul>
+          <% end %>
+          </ul>
           <% @forms.each do |form| %>
           <ul id="<%= form.unique_id %>_form_fields" class="fields" style='overflow:hidden'>
             <% form.all_text_fields.each do |field|%>

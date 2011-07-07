@@ -23,11 +23,11 @@
             <% end %>
           </td>
           <td>
-	    <span class="enabledStatus <%= section.enabled? ? "tick" :"cross" %>">
+	    <span class="enabledStatus <%= section.enabled? ? "tick" : "cross" %>">
               <%= section.enabled? ? "Visible" : "Hidden" %>
             </span>
           </td>
-          <td><%= link_to section.name, edit_form_section_path(section.unique_id), :class => "formSectionLink" %></td>
+          <td><%= link_to section.name, edit_form_section_path(section), :class => "formSectionLink" %></td>
           <td><%= section.description %></td>
           <td>
             <span class="formSectionOrder"><%= section.order %></span>

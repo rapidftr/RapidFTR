@@ -254,8 +254,8 @@ describe FormSection do
     end
     it "should give the formsection a new unique id based on the name" do
       form_section_name = "basic details"
-      create_should_be_called_with :unique_id, "basic_details"
-      FormSection.create_new_custom form_section_name
+      form_section = FormSection.create_new_custom form_section_name
+      form_section.unique_id.should == "basic_details"
     end
     it "should populate the name" do
       form_section_name = "basic details"
@@ -355,6 +355,19 @@ describe FormSection do
       field_two.should be_enabled
     end
   end
-  
-  
+
+  describe "relevant fields" do
+    it "should return the first 3 enabled fields of the first enabled form sections" do
+        one, two, three  = new_field(:enabled => true, :display_name => random_string), new_field(:enabled => true, :display_name => random_string), new_field(:enabled => true, :display_name => random_string)
+        fourth = FormSection.create! :name => "fourth_#{random_string}", :order => 4, :enabled => true
+        third = FormSection.create! :name => "third_#{random_string}", :order => 3, :enabled => true, :fields => [three]
+        second = FormSection.create! :name => "second_#{random_string}", :order => 2, :enabled => false, :field => [new_field(:enabled => true, :display_name => random_string)]
+        first = FormSection.create! :name => "first_#{random_string}", :order => 1, :enabled => true, :fields => [one, two, new_field(:enabled => false, :display_name => random_string)]
+        
+        relevant_one, relevant_two, relevant_three = FormSection.relevant_fields
+        relevant_one.name.should == one.name
+        relevant_two.name.should == two.name
+        relevant_three.name.should == three.name
+    end
+  end
 end

@@ -17,9 +17,25 @@ describe "children/search.html.erb" do
     end
 
     it "should have a definition list for basic details for each record in the results" do
+      relevant_fields = [{:name => "age_is", :display_name => "Age Is"},
+                          {:name => "created_by", :display_name => "Created By"},
+                          {:name => "last_updated_at", :display_name => "Last Updated At"}]
+
+      FormSection.stub(:relevant_fields).and_return(relevant_fields)
+
       render
 
-      Hpricot(response.body).search(".details dl.basic").size.should == @results.length
+      basics = Hpricot(response.body).search(".details dl.basic")
+      basics.size.should == @results.length
+      
+      basics.each_with_index do |basic, i|
+        (basic/'dt').each_with_index do |term, i|
+          term.inner_text.strip.should == relevant_fields[i][:display_name]
+        end
+        (basic/'dd').each_with_index do |value, i|
+          value.inner_text.strip.should == @results[i][relevant_fields[i][:name]]
+        end
+      end
     end
 
     it "should have a definition list for interview timestamps details for each record in the results" do
@@ -44,7 +60,7 @@ describe "children/search.html.erb" do
 
       first_content_row = Hpricot(response.body).photos
       first_href = first_content_row.at("a")
-      raise 'no image tag' if first_href.nil?
+      first_href.should_not nil
 
       first_href['href'].should == "/children/#{@results.first.id}"
     end
