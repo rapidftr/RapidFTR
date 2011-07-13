@@ -15,6 +15,7 @@ class Child < CouchRestRails::Document
   property :nickname
   property :unique_identifier
   property :flag, :cast_as => :boolean
+  property :reunited, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {

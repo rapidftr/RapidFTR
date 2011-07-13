@@ -13,31 +13,18 @@
 
             $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
 
-            $(".profile-tools .flag-form").hide();
-            $(".profile-tools li.flag a").click( function(){
-                $(".profile-tools .flag-form").toggle();
+            $(".profile-tools .mark-as-form").hide();
+            $(".profile-tools .mark-as a").click( function(){
+              console.log($(this).parent().siblings('form').children('.mark-as-form'));
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
             });
 
-            $("#submit_flag").click(function(){
-                return showMessageIfEmpty('Please explain why you are flagging this record.');
-            });
-
-			$(".profile-tools .unflag-form").hide();	
-            $(".profile-tools li.unflag a").click( function(){
-                $(".profile-tools .unflag-form").toggle();
-            });
-
-            $("#submit_unflag").click(function(){
-                return showMessageIfEmpty('Please explain why you are unflagging this record.');
-            });
-
-            var showMessageIfEmpty = function(message){
-                if(!$("#child_flag_message").val()){
-                    alert(message);
-                    return false;
+            $(".mark-as-submit").click(function(){
+                if(!$(this).siblings('input[type=text]').val()){
+                  alert($(this).attr('error_message'));
+                  return false;
                 }
-            }
-
+            });
         });
     </script>
 <% end %>
