@@ -19,7 +19,7 @@ describe "children/show.html.erb" do
       child = Child.new(:age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
       child.stub!(:has_one_interviewer?).and_return(true)
 
-      user = User.new()
+      user = User.new
 
       assigns[:form_sections] = [form_section]
       assigns[:child] = child
@@ -49,7 +49,7 @@ describe "children/show.html.erb" do
       child = Child.new(:age => "27", :gender => "male", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
       child.stub!(:has_one_interviewer?).and_return(true)
 
-      user = User.new()
+      user = User.new
 
       assigns[:form_sections] = [form_section]
       assigns[:child] = child
@@ -66,9 +66,7 @@ describe "children/show.html.erb" do
         child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
         child.stub!(:has_one_interviewer?).and_return(true)
 
-        user = User.new()
-
-        user = User.new()
+        user = User.new
 
         assigns[:form_sections] = [form_section]
         assigns[:child] = child
@@ -86,7 +84,7 @@ describe "children/show.html.erb" do
         child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :last_updated_by => "jdoe", :last_updated_at => "July 20 2010 14:15:59UTC")
         child.stub!(:has_one_interviewer?).and_return(false)
 
-        user = User.new()
+        user = User.new
 
         assigns[:form_sections] = [form_section]
         assigns[:child] = child
@@ -104,7 +102,7 @@ describe "children/show.html.erb" do
         child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :last_updated_by => "jsmith", :last_updated_at => "July 20 2010 14:15:59UTC")
         child.stub!(:has_one_interviewer?).and_return(true)
 
-        user = User.new()
+        user = User.new
 
         assigns[:form_sections] = [form_section]
         assigns[:child] = child
@@ -120,8 +118,7 @@ describe "children/show.html.erb" do
       	  child.stub!(:has_one_interviewer?).and_return(true)
 					form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
 
-          user = User.new()
-          user.time_zone = TZInfo::Timezone.get("US/Samoa")
+          user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
         
         	assigns[:form_sections] = [form_section]
     	  	assigns[:child] = child
@@ -138,7 +135,7 @@ describe "children/show.html.erb" do
       	  child.stub!(:has_one_interviewer?).and_return(true)
 					form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
 
-          user = User.new()
+          user = User.new
         
         	assigns[:form_sections] = [form_section]
     	  	assigns[:child] = child

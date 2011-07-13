@@ -19,7 +19,7 @@ Feature:
     And I press "Save"
     And I follow "View the change log"
 
-    Then I should see "2010-03-19 13:05:00 +0000 Record created by harry"
+    Then I should see "2010-03-19 13:05:00 UTC Record created by harry"
 
   Scenario:  I log in as a different user, upload a new photo and view the record log
 
@@ -27,7 +27,7 @@ Feature:
     And the following children exist in the system:
     | name       | dob_or_age | gender | birthplace |
     | Jorge Just | 27  | Male   | Haiti               |
-    And the date/time is "March 01 2010 17:59:33"
+    And the date/time is "March 01 2010 17:59:33 UTC"
     And "Mary" is logged in
     And I am on the children listing page
 
@@ -36,7 +36,7 @@ Feature:
     And I press "Save"
     And I follow "View the change log"
 
-    Then I should see "2010-03-01 17:59:33 +0000 Photo changed from"
+    Then I should see "2010-03-01 17:59:33 UTC Photo changed from"
     And I should see the thumbnail of "Jorge Just" with timestamp "2010-07-19T130532"
     And I should see the thumbnail of "Jorge Just" with timestamp "2010-03-01T175933"
     And I should see "by mary"
@@ -55,11 +55,11 @@ Feature:
 
   Scenario:  I log in as a different user, edit and view the record log
 
-    Given the date/time is "July 19 2010 13:05:15"
+    Given the date/time is "July 19 2010 13:05:15 UTC"
     And the following children exist in the system:
     | name       | dob_or_age | gender | birthplace |
     | Jorge Just | 27  | Male   | Haiti               |
-    And the date/time is "Oct 29 2010 10:12"
+    And the date/time is "Oct 29 2010 10:12 UTC"
     And "Bobby" is logged in
     And I am on the children listing page
 
@@ -70,16 +70,16 @@ Feature:
     And I select "Female" from "Sex"
     And I fill in "Bombay" for "Nationality"
     And I fill in "Zambia" for "Birthplace"
-    And the date/time is "Oct 29 2010 14:12:15"
+    And the date/time is "Oct 29 2010 14:12:15 UTC"
     And I press "Save"
 
     When I follow "View the change log"
 
-    Then I should see "2010-10-29 14:12:15 +0100 Birthplace changed from Haiti to Zambia by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Nationality initially set to Bombay by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Dob or age changed from 27 to 56 by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Name changed from Jorge Just to George Harrison by bobby"
-    And I should see "2010-10-29 14:12:15 +0100 Gender changed from Male to Female by bobby"
+    Then I should see "2010-10-29 14:12:15 UTC Birthplace changed from Haiti to Zambia by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Nationality initially set to Bombay by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Dob or age changed from 27 to 56 by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Name changed from Jorge Just to George Harrison by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Gender changed from Male to Female by bobby"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
 
   Scenario: Clicking back from the change log

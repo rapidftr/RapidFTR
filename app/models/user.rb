@@ -15,7 +15,7 @@ class User < CouchRestRails::Document
   property :location
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
-  property :time_zone, :default => "London"
+  property :time_zone, :default => "UTC"
   attr_accessor :password_confirmation, :password
 
 

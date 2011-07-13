@@ -1,6 +1,8 @@
 require 'spec_helper'
+
 class FakeRecordWithHistory
   attr_reader :id
+
   def initialize user = "Bob", created = "2010/12/31 22:06:00 +0000"
     @id = "ChildId"
    @fields = {
@@ -9,9 +11,11 @@ class FakeRecordWithHistory
      "created_by" => user
    }
   end
+
   def add_history history
     @fields["histories"].unshift(history)
   end
+
   def add_single_change username, date, field, from, to
     self.add_history({
              "changes" => {
@@ -24,10 +28,12 @@ class FakeRecordWithHistory
              "datetime" => date
           })
   end
+
   def [](field)
      @fields[field]
    end
 end
+
 describe "histories/show.html.erb" do
 
   describe "child history" do
@@ -36,27 +42,27 @@ describe "histories/show.html.erb" do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
     end
+
     describe "rendering history for a newly created record" do
       it "should render only the creation record" do
         child = FakeRecordWithHistory.new "Bob", "2010/12/31 20:55:00 +0000"
         assigns[:child] = child
         assigns[:user] = @user
         render
+        response.should have_selector(".history-details li", :count => 1)
       	response.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 20:55:00 UTC Record created by Bob/)
-#      	response.should have_selector(".history-details li", :count => 1)
-#      	response.should have_selector(".history-details li") do |item|
-#      		item.text.should match(/2010-12-31 20:55:00 UTC Record created by Bob/)
       	end
       end
     end
+
     describe "rendering the history of a flagged child record" do
       before do
         #Set up a child record and then flag it as suspect
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-
       end
+
       it "should display the time of the change using the users timezone setting" do
         child = FakeRecordWithHistory.new "bob", "fake"
         child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "flag", "false", "true"
@@ -70,11 +76,13 @@ describe "histories/show.html.erb" do
         end
       end
     end
+
     describe "rendering changes to photos" do
       before do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       end
+
       it "should render photo change record when updating a photo" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", "OldPhoto", "NewPhoto"
@@ -87,6 +95,7 @@ describe "histories/show.html.erb" do
           with_tag("li", /Photo changed/)
       	end
       end
+
       it "should render photo change record with links when adding a photo to an existing record for first time" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", nil, "NewPhoto"
@@ -101,11 +110,13 @@ describe "histories/show.html.erb" do
       	end
       end
     end
+
     describe "rendering changes to audio" do
       before do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       end
+
       it "should render audio change record" do
         child = FakeRecordWithHistory.new 
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", "First", "Second"
@@ -118,15 +129,9 @@ describe "histories/show.html.erb" do
       		with_tag("li", /2010-12-31 20:55:00 UTC Audio changed from First to Second by rapidftr/)
       	end
       end
+
       it "should render audio change record with links when adding a sound file to an existing record for first time" do
         child = FakeRecordWithHistory.new
-#      	response.should have_selector(".history-details li", :count => 2)
-#      	response.should have_selector(".history-details li") do |item|
-#      		item[0].text.should match(/2010-12-31 20:55:00 UTC Audio changed from First to Second by rapidftr/)
-#      	end
-#      end
-#      it "should render audio change record with links when adding a sound file to an existing record for first time" do
-#        child = FakeRecordWithHistory.new
         child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", nil, "Audio"
 
         assigns[:child] = child
@@ -136,17 +141,15 @@ describe "histories/show.html.erb" do
       	response.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
       	end
-#      	response.should have_selector(".history-details li", :count => 2)
-#      	response.should have_selector(".history-details li") do |item|
-#      		item[0].text.should match(/2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
-#      	end
       end
     end
+
     describe "rendering several history entries" do
       before do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       end
+
       it "should order history log from most recent change to oldest change" do
         child = FakeRecordWithHistory.new
         child.add_single_change "rapidftr", "2010/02/20 12:04:00 +0000", "age", "6", "7"

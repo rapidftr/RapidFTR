@@ -3,7 +3,7 @@ Feature: As a user, I should be able to choose a time zone to display date-times
   Scenario: To check that the default time zone on a user's home page is UTC
     Given I am logged in
     And I am on the home page
-    Then the "Current time zone" dropdown should have "London" selected
+    Then the "Current time zone" dropdown should have "UTC" selected
 
   Scenario: To check that the user can select a different time zone for the display of date-times
     Given I am logged in
