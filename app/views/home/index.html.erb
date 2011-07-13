@@ -1,3 +1,12 @@
 <h2>Welcome to RapidFTR</h2>
+<p>
+  <% form_for @user, :url => user_preference_path(current_user_name), :html => {:method => :put} do |f| %>
+      <%= label_tag "user_time_zone", "Current time zone" %>
+      <%= f.time_zone_select "time_zone", nil %>
+      <p class='submitButton' >
+        <%= f.submit 'Save' %>
+      </p>
+  <% end %>
+</p>
 <%= link_to 'Register Child', new_child_path %> <br/><br/>
 <%= link_to 'View All Children', children_path %> <br/><br/>

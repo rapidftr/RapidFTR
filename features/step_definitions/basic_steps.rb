@@ -27,6 +27,7 @@ end
 
 Then /^I should see the thumbnail of "([^"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|
   thumbnail = current_dom.xpath("//img[@alt='#{name}' and contains(@src,'#{timestamp}')]").first
+  thumbnail.should_not be_nil
   thumbnail['src'].should =~ /photo.*-#{timestamp}/
 end
 
@@ -403,6 +404,10 @@ end
 
 Then /^I should see errors$/ do
   Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 1
+end
+
+Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
+  field_labeled(dropdown_label).value.should == selected_text
 end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|

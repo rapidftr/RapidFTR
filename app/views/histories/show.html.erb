@@ -7,21 +7,21 @@
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => history['datetime'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'] } %>
             <% elsif field == 'recorded_audio' %>
                 <%= render :partial => "audio_history_change",
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => history['datetime'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'] } %>
             <% elsif field == 'flag'%>
                 <%= render :partial => "flag_change",
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => history['datetime'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'],
  								   :message => flag_change_message(history)	} %>
             <% elsif field == 'flag_message'%>
@@ -32,12 +32,12 @@
                                    :field => field.humanize,
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => history['datetime'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'] } %>
             <% end %>
         <% end %>
     <% end %>
-    <li><%= @child['created_at'] %> Record created by <%= @child['created_by'] %></li>
+    <li><%= Time.parse(@child['created_at']).in_time_zone(@user.time_zone) %> Record created by <%= @child['created_by'] %></li>
   </ul>
 
 </div>

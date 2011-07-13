@@ -21,6 +21,12 @@ Given /^I am sending a valid session token in my request headers for device with
   Given %Q|I am sending a session token of "#{session.id}" in my request headers|
 end
 
+Given /^the user's time zone is "([^"]*)"$/ do |timezone|
+  Given %Q|I am on the home page|
+  When %Q|I select "#{timezone}" from "Current time zone"|
+  And %Q|I press "Save"|
+end
+
 When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
   click_link name_of_tab
 end
