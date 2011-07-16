@@ -1,2 +1,3 @@
 default: --format progress features --strict --tags ~@wip
+browser: --format progress capybara_features --strict --tags ~@wip
 wip: --tags @wip:3 --wip features

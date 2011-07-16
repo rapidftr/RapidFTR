@@ -22,12 +22,14 @@ group :cucumber do
   gem 'cucumber',         '0.9.4'
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
-  gem 'launchy'
+  gem 'launchy',          '0.4.0'
+
 end
 
 group :test do
   gem 'rspec',            '1.3.2'
   gem 'rspec-rails',      '1.3.4'
   gem 'webrat',           '0.7.1'
+  gem 'capybara',         '1.0.0'
 end
 
