@@ -23,7 +23,7 @@ Capybara.default_selector = :xpath #default selector , you can change to :css
 Capybara.default_wait_time = 2 #When we testing AJAX, we can set a default wait time
 Capybara.ignore_hidden_elements = false #Ignore hidden elements when testing, make helpful when you hide or show elements using javascript
 Capybara.javascript_driver = :selenium #default driver when you using @javascript tag
-
+Capybara.server_boot_timeout = 50
 # If you set this to false, any error raised from within your app will bubble 
 # up to your step definition and out to cucumber unless you catch it somewhere
 # on the way. You can make Rails rescue errors and render error pages on a
