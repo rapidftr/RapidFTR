@@ -63,6 +63,14 @@ describe ChildrenController do
       get :show, :id => "37"
       assigns[:form_sections].should == [:the_form_sections]
     end
+
+    it "should not break everything if a bad child record is given" do
+      Child.stub!(:get).and_return(nil)
+      get :show, :id => "9e22f6df5d1cbe69bd431b764c63be1e"
+      flash[:notice].should == "We couldn't find that page for some reason… we’ll take you back to the login page so you can try again."
+      @controller.get_session.should be_nil
+      response.should redirect_to(login_url)
+    end
   end
 
   describe "GET new" do
