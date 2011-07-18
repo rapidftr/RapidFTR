@@ -16,7 +16,7 @@ class Field < Hash
   TEXT_AREA = "textarea"
   RADIO_BUTTON = "radio_button"
   SELECT_BOX = "select_box"
-  CHECK_BOX = "check_box"
+  CHECK_BOXES = "check_boxes"
   NUMERIC_FIELD = "numeric_field"
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
@@ -26,17 +26,27 @@ class Field < Hash
                         TEXT_AREA        => "basic",
                         RADIO_BUTTON     => "multiple_choice",
                         SELECT_BOX       => "multiple_choice",
-                        CHECK_BOX        => "basic",
+                        CHECK_BOXES      => "multiple_choice",
                         PHOTO_UPLOAD_BOX => "basic",
                         AUDIO_UPLOAD_BOX => "basic",
                         DATE_FIELD       => "basic",
                         NUMERIC_FIELD    => "basic"}
-                        
+  FIELD_DISPLAY_TYPES = {	 
+												TEXT_FIELD       => "basic", 
+                        TEXT_AREA        => "basic",
+                        RADIO_BUTTON     => "basic",
+                        SELECT_BOX       => "basic",
+                        CHECK_BOXES      => "basic",
+                        PHOTO_UPLOAD_BOX => "photo",
+                        AUDIO_UPLOAD_BOX => "audio",
+                        DATE_FIELD       => "basic",
+                        NUMERIC_FIELD    => "basic"}
+	
   DEFAULT_VALUES = {  TEXT_FIELD       => "", 
                         TEXT_AREA        => "",
                         RADIO_BUTTON     => "",
                         SELECT_BOX       => "",
-                        CHECK_BOX        => "No",
+                        CHECK_BOXES       => [],
                         PHOTO_UPLOAD_BOX => nil,
                         AUDIO_UPLOAD_BOX => nil,
                         DATE_FIELD       => "",
@@ -54,6 +64,10 @@ class Field < Hash
   def form_type
     FIELD_FORM_TYPES[type]
   end
+
+	def display_type
+		FIELD_DISPLAY_TYPES[type]
+	end
   
   def self.all_text_names
     FormSection.all.map { |form| form.all_text_fields.map(&:name) }.flatten
@@ -115,8 +129,8 @@ class Field < Hash
     Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :enabled => true, :option_strings => options
   end
   
-  def self.new_check_box field_name, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOX, :enabled => true
+  def self.new_check_boxes_field field_name, display_name = nil, option_strings = []
+    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :enabled => true, :option_strings => option_strings
   end
   
   def self.new_text_field field_name, display_name = nil

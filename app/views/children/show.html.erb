@@ -38,6 +38,24 @@
                 }
             }
 
+			$('.sub_export_record').hide();
+
+			$('.export_record_link').click( function(e) {
+				e.preventDefault();
+			});
+
+			$('.export_record').click( function(e) {
+				
+				var $sub = $(this).find(".sub_export_record");
+
+				if ( $sub.is(":hidden") ) {
+					$sub.slideDown("slow");
+				}
+				else {
+				    $sub.hide();
+				}
+			});
+
         });
     </script>
 <% end %>
@@ -48,17 +66,17 @@
 <% if @child.flag? %>
     <h3 class="flag-message"><%= flag_message %></h3>
 <% end %>
-<%= render :partial => "show_child_toolbar" %>
+<%= render :partial => "show_child_toolbar"%>
 
 <div id='interviewer_details'>
-  <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @child['created_at'] %></h3>
-  <% if @child['last_updated_by']%>
-    <h3>Last updated: <%= @child['last_updated_at'] %> </h3>
+  <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= DateTime.parse(@child['created_at']).in_time_zone(@user.time_zone) %></h3>
+  <% if @child['last_updated_at']%>
+    <h3>Last updated: <%= DateTime.parse(@child['last_updated_at']).in_time_zone(@user.time_zone) %> </h3>
   <% end %>
   <% if @child['posted_from']=="Mobile" %>
-    <h3>Posted from the mobile client at: <%= @child['posted_at'] %> </h3>
+    <h3>Posted from the mobile client at: <%= DateTime.parse(@child['posted_at']).in_time_zone(@user.time_zone) %> </h3>
   <% end %>
 </div>
 
 <%= render :partial => "show_form_section" %>
-<%= render :partial => "show_child_toolbar" %>
+<%= render :partial => "show_child_toolbar"%>

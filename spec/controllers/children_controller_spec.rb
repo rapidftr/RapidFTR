@@ -16,12 +16,18 @@ def stub_out_child_get(mock_child = mock(Child))
 	mock_child
 end
 
+def stub_out_user
+  user = mock(:user)
+  user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+  User.stub!(:find_by_user_name).and_return user
+end
 
 describe ChildrenController do
   
   before do
     Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
     fake_login
+    @controller.stub!(:current_user_name).and_return('foo-user')
   end
 
   after do
@@ -210,10 +216,12 @@ describe ChildrenController do
     end
 
     it "asks the pdf generator to render each child as a PDF" do
+      stub_out_user
+      Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
+      
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
 
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
-
 
       mock_pdf_generator.
         should_receive(:children_info).
@@ -234,10 +242,12 @@ describe ChildrenController do
     end
 
     it "asks the pdf generator to render each child as a Photo Wall" do
+      stub_out_user
+      Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
+      
       inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
 
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
-
 
       mock_pdf_generator.
         should_receive(:child_photos).
@@ -256,7 +266,6 @@ describe ChildrenController do
         }
       )
     end
-
 
     describe "with no results" do
       before do
@@ -345,8 +354,10 @@ describe ChildrenController do
       )
     end
 
-
     it "sends a response containing the pdf data, the correct content_type and file name, etc" do
+      stub_out_user
+      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+
       stub_pdf_generator = stub_out_pdf_generator
       stub_pdf_generator.stub!(:child_photos).and_return(:fake_pdf_data)
       stub_out_child_get
@@ -362,6 +373,14 @@ describe ChildrenController do
   end
 
   describe "GET export_photo_to_pdf" do
+    
+    before do
+      user = mock(:user)
+      user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+      User.stub!(:find_by_user_name).and_return user
+      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+    end
+    
     it "should return the photo wall pdf for selected child" do
       Child.should_receive(:get).with('1').and_return(
         stub_child = stub('child', :unique_identifier => '1'))
@@ -369,8 +388,7 @@ describe ChildrenController do
       PdfGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
       pdf_generator.should_receive(:child_photo).with(stub_child).and_return(:fake_pdf_data)
 
-      Clock.stub!(:now).and_return(stub('clock', :strftime => '20000101-2015'))
-      @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-2015.pdf', :type => 'application/pdf')
+      @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf')
 
       get :export_photo_to_pdf, :id => '1'
     end

@@ -11,11 +11,11 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @children }
-      format.csv  { render_as_csv @children, "all_records_#{Time.now.strftime("%Y%m%d")}.csv" }
+      format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
       format.pdf do
         pdf_data = PdfGenerator.new.children_info(@children)
-        send_pdf(pdf_data, "RapidFTR-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+        send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
   end
@@ -24,6 +24,7 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     @child = Child.get(params[:id])
+    @user = User.find_by_user_name(current_user_name)
 
     @form_sections = get_form_sections
 
@@ -38,11 +39,11 @@ class ChildrenController < ApplicationController
       format.json { render :json => @child.to_json }
       format.csv do
         child_ids = [@child]
-        export_to_csv(child_ids, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
+        export_to_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
         pdf_data = PdfGenerator.new.child_info(@child)
-        send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+        send_pdf( pdf_data, "#{file_basename(@child)}.pdf" )
       end
     end
   end
@@ -184,7 +185,7 @@ class ChildrenController < ApplicationController
   def export_photo_to_pdf
     child = Child.get(params[:id])
     pdf_data = PdfGenerator.new.child_photo(child)
-    send_pdf(pdf_data, "#{child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+    send_pdf(pdf_data, "#{file_basename(child)}.pdf")
   end
 
   def export_to_csv children, filename
@@ -195,9 +196,19 @@ class ChildrenController < ApplicationController
 
 	def file_basename(child = nil)
 		prefix = child.nil? ? current_user_name : child.unique_identifier
+    user = User.find_by_user_name(current_user_name)
+		"#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+  end
 
-		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
-	end
+  def file_name_datetime_string
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
+  end
+
+  def file_name_date_string
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime("%Y%m%d")
+  end
 
   def get_form_sections
     FormSection.enabled_by_order
