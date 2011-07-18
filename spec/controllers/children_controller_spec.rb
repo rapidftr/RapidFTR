@@ -68,8 +68,8 @@ describe ChildrenController do
       Child.stub!(:get).and_return(nil)
       get :show, :id => "9e22f6df5d1cbe69bd431b764c63be1e"
       flash[:notice].should == "We couldn't find that page for some reason… we’ll take you back to the login page so you can try again."
-      @controller.get_session.should be_nil
       response.should redirect_to(login_url)
+      @controller.logged_in?.should_not be_true
     end
   end
 
