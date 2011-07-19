@@ -38,8 +38,6 @@ begin
   desc 'Alias for cucumber:headless and cucumber:browser'
   task :cucumber => 'cucumber:all'
 
-  task :default => :cucumber
-
   task :features => :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
   end
