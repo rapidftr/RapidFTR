@@ -242,6 +242,8 @@ class ChildrenController < ApplicationController
   def load_child_or_redirect
     @child = Child.get(params[:id])
 
+    return unless request.format.html?
+
     if @child.nil?
       flash[:notice] = "We couldn't find that page for some reason… we’ll take you back to the login page so you can try again."
       app_session.destroy
