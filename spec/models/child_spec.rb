@@ -5,6 +5,7 @@ describe Child do
 
   describe 'build solar schema' do
       it "should build with advanced search fields" do
+        Field.stub!(:all_text_names).and_return []
         Child.build_fields_for_solar.should == ["unique_identifier", "created_by"]
       end
 
