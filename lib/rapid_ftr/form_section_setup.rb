@@ -5,11 +5,11 @@ module RapidFTR
     def self.reset_definitions
 
       FormSection.all.each {|u| u.destroy }
-            
+
       basic_identity_fields = [
-        Field.new("name" => "name", "display_name" => "Name", "type" => "text_field", "editable" => false),
-        Field.new("name" => "rc_id_no", "display_name" => "RC ID No.", "type" => "text_field"),
-        Field.new("name" => "protection_status", "display_name" => "Protection Status", "help_text" => "A separated child is any person under the age of 18, separated from both parents or from his/her revious legal or customary primary care give, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives.", "type" => "select_box", "option_strings" => ["","Unaccompanied", "Separated"]),
+        Field.new("name" => "name", "display_name" => "Name", "type" => "text_field", "editable" => false,"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>1)),
+        Field.new("name" => "rc_id_no", "display_name" => "RC ID No.", "type" => "text_field","highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>2)),
+        Field.new("name" => "protection_status", "display_name" => "Protection Status", "help_text" => "A separated child is any person under the age of 18, separated from both parents or from his/her revious legal or customary primary care give, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives.", "type" => "select_box", "option_strings" => ["","Unaccompanied", "Separated"],"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>3)),
         Field.new("name" => "id_document", "display_name" => "Personal ID Document No.", "type" => "text_field"),
         Field.new("name" => "gender", "display_name" => "Sex", "type" => "select_box", "option_strings" => ["", "Male", "Female"]),
         Field.new("name" => "nick_name", "display_name" => "Also Known As (nickname)", "type" => "text_field"),

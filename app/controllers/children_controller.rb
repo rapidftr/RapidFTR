@@ -7,7 +7,7 @@ class ChildrenController < ApplicationController
     @page_name = "Listing children"
     @children = Child.all
     @aside = 'shared/sidebar_links'
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @children }
@@ -152,6 +152,9 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query]) 
       if @search.valid?    
         @results = Child.search(@search)
+        @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
+          { :name => field.name, :display_name => field.display_name }
+        end
       else
         render :search
       end
