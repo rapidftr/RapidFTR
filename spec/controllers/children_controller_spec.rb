@@ -57,6 +57,13 @@ describe ChildrenController do
       get :show, :id => "37"
       assigns[:form_sections].should == [:the_form_sections]
     end
+
+    it "should flash an error and go to listing page if the resource is not found" do
+      Child.stub!(:get).with("invalid record").and_return(nil)
+      get :show, :id=> "invalid record"
+      flash[:error].should == "Child with the given id is not found"
+      response.should redirect_to(:action => :index)
+    end
   end
 
   describe "GET new" do

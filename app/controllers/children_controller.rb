@@ -25,7 +25,10 @@ class   ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     @child = Child.get(params[:id])
-
+    if @child.nil?
+      flash[:error] = "Child with the given id is not found"
+      redirect_to :action => :index and return
+    end
     @form_sections = get_form_sections
 
     @page_name = @child
