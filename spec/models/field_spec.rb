@@ -125,4 +125,25 @@ describe "Child record field view model" do
       lambda {Field.new(:type=>"INVALID_FIELD_TYPE").default_value}.should raise_error
     end
   end
+  
+  describe "highlight information" do
+    
+    it "should initialize with empty highlight information" do
+      field = Field.new(:name => "No highlight")
+      field.is_highlighted?.should be_false
+    end
+    
+    it "should set highlight information" do
+      field = Field.new(:name => "highlighted")
+      field.highlight_with_order 6
+      field.is_highlighted?.should be_true
+    end
+    
+    it "should unhighlight a field" do
+      field = Field.new(:name => "new highlighted")
+      field.highlight_with_order 1
+      field.unhighlight
+      field.is_highlighted?.should be_false
+    end
+  end
 end
