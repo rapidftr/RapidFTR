@@ -1,3 +1,5 @@
 default: --format progress features --strict --tags ~@wip
-browser: --format progress capybara_features --strict --tags ~@wip
-wip: --tags @wip:3 --wip features
+headless: --format progress capybara_features --strict --tags ~@wip --tags ~@javascript
+browser: --format progress capybara_features --strict --tags @javascript --tags ~@wip
+browser_wip: --tags @javascript --tags @wip:3 --wip capybara_features
+headless_wip: --tags @headless --tags @wip:3 --wip capybara_features
