@@ -8,14 +8,10 @@ class PdfGenerator
     @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
   end
 
-  def child_photo(child)
-    child_photos( [child] )
-  end
-
-  def child_photos(children)
-    children.each do |child|
+  def to_photowall_pdf
+    @child_data.each do |child|
       add_child_photo(child)
-      @pdf.start_new_page unless children.last == child
+      @pdf.start_new_page unless @child_data.last == child
     end
     @pdf.render
   end

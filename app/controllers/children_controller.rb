@@ -176,13 +176,12 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
-		#temp
-    pdf_data = PdfGenerator.new([]).child_photos(children)
+    pdf_data = PdfGenerator.new(children).to_photowall_pdf
     send_pdf( pdf_data, filename)
   end
 
   def export_photo_to_pdf
-    pdf_data = PdfGenerator.new.child_photo(@child)
+    pdf_data = PdfGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
