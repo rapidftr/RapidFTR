@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 
-def inject_pdf_generator( fake_pdf_generator )
-	PdfGenerator.stub!(:new).and_return( fake_pdf_generator )
+def inject_pdf_generator( fake_pdf_generator, child_data )
+	PdfGenerator.stub!(:new).with(child_data).and_return( fake_pdf_generator )
 end
 
 def stub_out_pdf_generator
-	inject_pdf_generator( stub_pdf_generator = stub(PdfGenerator) )
+	inject_pdf_generator( stub_pdf_generator = stub(PdfGenerator) , [])
 	stub_pdf_generator.stub!(:child_photos).and_return('')
 	stub_pdf_generator
 end
@@ -237,13 +237,14 @@ describe ChildrenController do
       stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       
-      inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
+			children = [:fake_child_one, :fake_child_two]
+      Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
+      
+			inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator), children )
 
-      Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
 
       mock_pdf_generator.
-        should_receive(:children_info).
-        with([:fake_child_one,:fake_child_two]).
+        should_receive(:to_full_pdf).
         and_return('')
 
       post(
@@ -263,7 +264,7 @@ describe ChildrenController do
       stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       
-      inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator) )
+      inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator), [] )
 
       Child.stub(:get).and_return( :fake_child_one, :fake_child_two )
 

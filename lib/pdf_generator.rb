@@ -2,7 +2,8 @@ require "prawn/measurement_extensions"
 require 'prawn/layout'
 
 class PdfGenerator
-  def initialize
+  def initialize *child_data
+		@child_data = child_data.flatten 
     @pdf = Prawn::Document.new
     @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
   end
@@ -19,16 +20,10 @@ class PdfGenerator
     @pdf.render
   end
 
-
-  def child_info(child)
-    add_child_page(child)
-    @pdf.render
-  end
-
-  def children_info(children)
-    children.each do |child|
+  def to_full_pdf
+    @child_data.each do |child|
       add_child_page(child)
-      @pdf.start_new_page unless children.last == child
+      @pdf.start_new_page unless @child_data.last == child
     end
     @pdf.render
   end
