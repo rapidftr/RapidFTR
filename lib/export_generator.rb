@@ -1,7 +1,7 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
 
-class PdfGenerator
+class ExportGenerator
   def initialize *child_data
 		@child_data = child_data.flatten 
     @pdf = Prawn::Document.new

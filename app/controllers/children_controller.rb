@@ -16,7 +16,7 @@ class ChildrenController < ApplicationController
       format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
       format.pdf do
-        pdf_data = PdfGenerator.new(@children).to_full_pdf
+        pdf_data = ExportGenerator.new(@children).to_full_pdf
         send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
@@ -43,7 +43,7 @@ class ChildrenController < ApplicationController
         export_to_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
-        pdf_data = PdfGenerator.new(@child).to_full_pdf
+        pdf_data = ExportGenerator.new(@child).to_full_pdf
         send_pdf( pdf_data, "#{file_basename(@child)}.pdf" )
       end
     end
@@ -168,7 +168,7 @@ class ChildrenController < ApplicationController
     if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to PDF"
-			pdf_data = PdfGenerator.new(children).to_full_pdf
+			pdf_data = ExportGenerator.new(children).to_full_pdf
 			send_pdf(pdf_data, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to CSV"
       export_to_csv(children, "#{file_basename}.csv")
@@ -176,12 +176,12 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
-    pdf_data = PdfGenerator.new(children).to_photowall_pdf
+    pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf( pdf_data, filename)
   end
 
   def export_photo_to_pdf
-    pdf_data = PdfGenerator.new(@child).to_photowall_pdf
+    pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 

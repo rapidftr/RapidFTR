@@ -2,11 +2,11 @@ require 'spec_helper'
 
 
 def inject_pdf_generator( fake_pdf_generator, child_data )
-	PdfGenerator.stub!(:new).with(child_data).and_return( fake_pdf_generator )
+	ExportGenerator.stub!(:new).with(child_data).and_return( fake_pdf_generator )
 end
 
 def stub_out_pdf_generator child_data = []
-	inject_pdf_generator( stub_pdf_generator = stub(PdfGenerator) , child_data)
+	inject_pdf_generator( stub_pdf_generator = stub(ExportGenerator) , child_data)
 	stub_pdf_generator.stub!(:child_photos).and_return('')
 	stub_pdf_generator
 end
@@ -240,7 +240,7 @@ describe ChildrenController do
 			children = [:fake_child_one, :fake_child_two]
       Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
       
-			inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator), children )
+			inject_pdf_generator( mock_pdf_generator = mock(ExportGenerator), children )
 
 
       mock_pdf_generator.
@@ -264,7 +264,7 @@ describe ChildrenController do
       stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       children = [:fake_one, :fake_two]
-      inject_pdf_generator( mock_pdf_generator = mock(PdfGenerator), children )
+      inject_pdf_generator( mock_pdf_generator = mock(ExportGenerator), children )
 
       Child.stub(:get).and_return(*children )
 
@@ -403,7 +403,7 @@ describe ChildrenController do
       Child.should_receive(:get).with('1').and_return(
         stub_child = stub('child', :unique_identifier => '1'))
 
-      PdfGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
+      ExportGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
       pdf_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
 
       @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf')
