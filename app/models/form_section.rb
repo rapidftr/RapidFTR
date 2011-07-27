@@ -49,10 +49,6 @@ class FormSection < CouchRestRails::Document
         form_section.fields
       end.flatten
     end
-
-    def relevant_fields
-      all_enabled_child_fields[0..2]
-    end
   end
   
   def all_text_fields
@@ -102,7 +98,34 @@ class FormSection < CouchRestRails::Document
   def add_field field
     self["fields"] << Field.new(field)
   end
+  
+  def update_field_as_highlighted field_name
+    field = fields.find {|field| field.name == field_name }
+    existing_max_order = FormSection.highlighted_fields.
+                                     map(&:highlight_information).
+                                     map(&:order).
+                                     max 
+    order = existing_max_order.nil? ? 1 : existing_max_order + 1 
+    field.highlight_with_order order 
+    save
+  end
 
+  def remove_field_as_highlighted field_name
+    field = fields.find {|field| field.name == field_name }
+    field.unhighlight
+    save
+  end
+
+  def self.highlighted_fields
+    all.map do |form|
+      form.fields.select{ |field| field.is_highlighted? }
+    end.flatten
+  end
+
+  def self.sorted_highlighted_fields
+    highlighted_fields.sort{ |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
+  end
+  
   def section_name
     unique_id
   end

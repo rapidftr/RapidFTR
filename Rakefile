@@ -10,4 +10,4 @@ require 'rake/rdoctask'
 require 'tasks/rails'
 
 Rake::Task['default'].prerequisites.clear
-task :default => %w( spec cucumber:ok )
+task :default => %w( ci:build )

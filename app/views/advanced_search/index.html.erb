@@ -9,7 +9,7 @@
     <div class="error" style="display:none"></div>
   </div>
   <div class="help-text">Separate words by OR to search for more than one option eg. Tim OR Rahul</div>
-  <form>
+  <form action="index">
     <div class='criteria_menu' style='display:none;' >
       <div class='box-shadow content'>
           <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
@@ -32,9 +32,6 @@
           <% end %>
       </div>
     </div>
-
-    
-    
   
     <script id="criteria_template" type="text/x-jquery-tmpl">      
       <p>
@@ -61,6 +58,13 @@
     <p style='clear:both'>
       <a class='add-criteria'>+ add more search options</a>
     </p>
+
+    <hr>
+
+    <%= check_box_tag(:created_by) %>
+    <%= label_tag(:created_by_label, "Created by:") %>
+    <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
+
   </form>      
 </div>
 

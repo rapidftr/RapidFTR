@@ -8,6 +8,10 @@ class SearchCriteria
     @field = params[:field] || ""
     @value = (params[:value] || "").strip
   end
+
+  def self.create_advanced_criteria(criteria)
+    SearchCriteria.new(:field => criteria[:field], :value => criteria[:value], :join => "AND", :index => criteria[:index].to_s)
+  end
   
   def self.build_from_params(criteria_list)
     text_fields =  FormSection.all.map{ |form| form.all_text_fields }.flatten
@@ -50,8 +54,5 @@ class SearchCriteria
       return "#{query} OR #{build_joins(list, criteria.to_lucene_query)}"
     end
   end
-  
-  
-  
   
 end

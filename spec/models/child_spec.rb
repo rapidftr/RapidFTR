@@ -2,6 +2,32 @@ require 'spec_helper'
 
 
 describe Child do
+
+  describe 'build solar schema' do
+      it "should build with advanced search fields" do
+        Field.stub!(:all_text_names).and_return []
+        Child.build_fields_for_solar.should == ["unique_identifier", "created_by"]
+      end
+
+      it "fields build with all fields in form sections" do
+        form = FormSection.new(:name => "test_form")
+        form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
+        form.save!
+
+        Child.build_fields_for_solar.should include("name")
+
+        FormSection.all.each{ |form| form.destroy }
+
+      end
+
+      it "should call Sunspot with all fields" do
+        Sunspot.should_receive(:setup)
+        Child.should_receive(:build_fields_for_solar)
+        Child.build_solar_schema
+      end
+
+  end
+
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
@@ -834,6 +860,6 @@ describe Child do
   
   def create_child(name)
     Child.create("name" => name, "last_known_location" => "new york")
-  end 
+  end
 
 end

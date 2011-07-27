@@ -41,6 +41,7 @@ end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)
+  current_time.stub!(:getutc).and_return Time.parse(datetime)
   Time.stub!(:now).and_return current_time
 end
 

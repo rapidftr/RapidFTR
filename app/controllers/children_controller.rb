@@ -9,9 +9,9 @@ class ChildrenController < ApplicationController
     @page_name = "Listing children"
     @children = Child.all
     @aside = 'shared/sidebar_links'
-
+    
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
       format.xml  { render :xml => @children }
       format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
@@ -149,6 +149,7 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query]) 
       if @search.valid?    
         @results = Child.search(@search)
+        @highlighted_fields = FormSection.sorted_highlighted_fields
       else
         render :search
       end

@@ -49,13 +49,16 @@ ActionController::Routing::Routes.draw do |map|
     
   map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
   
-  map.resources :advanced_search
+  map.resources :advanced_search, :only => [:index, :new]
+  map.advanced_search_index 'advanced_search/index', :controller => 'advanced_search', :action => 'index'
 
   map.resources :form_section
 
   map.resources :fields
   
   map.resources :contact_information
+
+  map.resources :highlight_fields, :collection => { :remove => :post }
 
   map.root :controller => 'home', :action => :index
 

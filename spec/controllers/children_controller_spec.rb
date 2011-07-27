@@ -48,6 +48,7 @@ describe ChildrenController do
       get :index
       assigns[:children].should == [mock_child]
     end
+
   end
 
   describe "GET show" do
@@ -197,6 +198,16 @@ describe ChildrenController do
 
   describe "GET search" do
 
+    it "assigns the highlighted fields as @highlighted_fields on success" do
+      fields = [ mock_model(Field, { :name => "field_1", :display_name => "field display 1" }).as_null_object, 
+                 mock_model(Field, { :name => "field_2", :display_name => "field display 2" }).as_null_object ]
+      FormSection.stub!(:sorted_highlighted_fields).and_return(fields)     
+      search = mock("search", :query => 'the child name', :valid? => true)
+      Search.stub!(:new).and_return(search)
+      get :search, :format => 'html', :query => 'the child name'
+      assigns[:highlighted_fields].should == fields
+    end
+    
     it "should not render error by default" do
       get(:search, :format => 'html')
       assigns[:search].should be_nil
