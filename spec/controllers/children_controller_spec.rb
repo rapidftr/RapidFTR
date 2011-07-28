@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 
-def inject_pdf_generator( fake_pdf_generator, child_data )
-	ExportGenerator.stub!(:new).with(child_data).and_return( fake_pdf_generator )
+def inject_export_generator( fake_export_generator, child_data )
+	ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
 end
 
-def stub_out_pdf_generator child_data = []
-	inject_pdf_generator( stub_pdf_generator = stub(ExportGenerator) , child_data)
-	stub_pdf_generator.stub!(:child_photos).and_return('')
-	stub_pdf_generator
+def stub_out_export_generator child_data = []
+	inject_export_generator( stub_export_generator = stub(ExportGenerator) , child_data)
+	stub_export_generator.stub!(:child_photos).and_return('')
+	stub_export_generator
 end
 
 def stub_out_child_get(mock_child = mock(Child))
@@ -240,10 +240,10 @@ describe ChildrenController do
 			children = [:fake_child_one, :fake_child_two]
       Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
       
-			inject_pdf_generator( mock_pdf_generator = mock(ExportGenerator), children )
+			inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
 
 
-      mock_pdf_generator.
+      mock_export_generator.
         should_receive(:to_full_pdf).
         and_return('')
 
@@ -264,11 +264,11 @@ describe ChildrenController do
       stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       children = [:fake_one, :fake_two]
-      inject_pdf_generator( mock_pdf_generator = mock(ExportGenerator), children )
+      inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
 
       Child.stub(:get).and_return(*children )
 
-      mock_pdf_generator.
+      mock_export_generator.
         should_receive(:to_photowall_pdf).
         and_return('')
 
@@ -302,61 +302,23 @@ describe ChildrenController do
     end
 
     it 'sends csv data with the correct content type and file name' do
-      @controller.
+			
+			Child.stub!(:search).and_return(:child_search_results)	
+			export_generator = stub(ExportGenerator)
+			inject_export_generator(export_generator, :child_search_results)
+
+			export_generator.should_receive(:to_csv).and_return(:csv_data)
+			@controller.
         should_receive(:send_data).
-        with( anything, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
-      get( :search, :format => 'csv', :query => 'blah')
+        with( :csv_data, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
+      
+			get( :search, :format => 'csv', :query => 'blah')
     end
-
-    describe 'CSV formatting' do
-
-      def inject_results( results )
-        Child.stub!(:search).and_return(results)
-      end
-
-      def csv_response
-        get( :search, :format => 'csv', :query => 'blah' )
-        response.body
-      end
-
-      def csv_export_data_response
-        get( :export, :format => 'csv', :query => 'blah' )
-        response.body
-      end
-
-      it 'should contain the correct column headers based on the defined fields' do
-        inject_results([])
-        first_line = csv_response.split("\n").first
-        headers = first_line.split(",")
-
-        FormSection.all_child_field_names.each {|field_name| headers.should include field_name}
-      end
-
-      it 'should render a row for each result, plus a header row' do
-        inject_results( [
-          Child.new( 'name' => 'Dave' ),
-          Child.new( 'name' => 'Mary' )
-        ] );
-        csv_response.split("\n").length.should == 3
-      end
-
-      it "should render each record's name and age correctly" do
-        inject_results( [
-          Child.new( 'name' => 'Dave', 'age' => 145, 'unique_identifier' => 'dave_xxx' ),
-          Child.new( 'name' => 'Mary', 'age' => 12, 'unique_identifier' => 'mary_xxx' )
-        ] );
-        rows = csv_response.split("\n").map{ |line| line.split(",") }
-        rows.shift # skip past header row
-        rows.shift.should == ['dave_xxx', 'Dave','145']
-        rows.shift.should == ['mary_xxx','Mary','12']
-      end
-    end
-  end
-
+	end
   describe "GET photo_pdf" do
 
     it 'extracts multiple selected ids from post params in correct order' do
-      stub_out_pdf_generator
+      stub_out_export_generator
       Child.should_receive(:get).with('child_zero').ordered
       Child.should_receive(:get).with('child_one').ordered
       Child.should_receive(:get).with('child_two').ordered
@@ -377,8 +339,8 @@ describe ChildrenController do
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
       
 			stubbed_child = stub_out_child_get
-      stub_pdf_generator = stub_out_pdf_generator [stubbed_child] #this is getting a bit farcical now
-      stub_pdf_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
+      stub_export_generator = stub_out_export_generator [stubbed_child] #this is getting a bit farcical now
+      stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
 
       @controller.stub!(:current_user_name).and_return('foo-user')
 
@@ -403,8 +365,8 @@ describe ChildrenController do
       Child.should_receive(:get).with('1').and_return(
         stub_child = stub('child', :unique_identifier => '1'))
 
-      ExportGenerator.should_receive(:new).and_return(pdf_generator = mock('pdf_generator'))
-      pdf_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
+      ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
+      export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
 
       @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf')
 
