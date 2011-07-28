@@ -7,11 +7,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    session = app_session
-    @user = User.get(params[:id])
-    unless session.admin? or @user.user_name == current_user_name   
-      raise AuthorizationFailure.new('Not permitted to view page')      
-    end
+   check_authorization
   end
 
   def new
@@ -19,12 +15,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    session = app_session
-    
-    @user = User.get(params[:id])
-    unless session.admin? or @user.user_name == current_user_name   
-      raise AuthorizationFailure.new('Not permitted to view page')
-    end
+    check_authorization
   end
 
   def create
@@ -38,12 +29,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    session = app_session
-    
-    @user = User.get(params[:id])
-    unless session.admin? or @user.user_name == current_user_name
-      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
-    end
+
     
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
@@ -58,5 +44,12 @@ class UsersController < ApplicationController
     @user.destroy
     redirect_to(users_url) 
   end
-  
+  private
+  def check_authorization
+    session = app_session
+    @user = User.get(params[:id])
+    unless session.admin? or @user.user_name == current_user_name
+      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
+    end
+  end
 end
