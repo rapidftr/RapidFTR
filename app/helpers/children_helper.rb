@@ -27,4 +27,10 @@ module ChildrenHelper
     message = (@child.flag_message.blank? && "") || ": \"#{@child.flag_message}\""
     "Flagged as suspect record by #{user}#{message}"
   end
+
+	def field_value_for_display field_value
+		return "&nbsp;" if field_value.nil? || field_value.length==0
+		return field_value.join ", " if field_value.instance_of? Array
+		return field_value
+	end
 end

@@ -7,8 +7,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    :check_authentication
-
     session = app_session
     @user = User.get(params[:id])
     if @user.nil?
@@ -25,8 +23,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    :check_authentication
-
     session = app_session
     
     @user = User.get(params[:id])
@@ -46,8 +42,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    :check_authentication
-    
     session = app_session
     
     @user = User.get(params[:id])

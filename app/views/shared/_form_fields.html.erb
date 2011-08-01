@@ -1,0 +1,45 @@
+<% content_for :javascript do %>
+  <%= javascript_include_tag "jquery.tmpl.min.js" %>
+  <%= javascript_include_tag "jquery_plugin.js" %>
+  <%= javascript_include_tag "form_fields.js" %>
+<% end %>
+<div class="form-fields-container">
+  <div class='box-shadow content'>
+        <div style="float:right; margin-left: 6px;">
+          <a class='close-link'><%= image_tag("dialog-close.png") %></a>
+        </div>
+
+    <ul class="form-container">
+        <% @forms.each do|form| %>
+          <li id="form-<%= form.id%>" class="form">
+            <%= form.name %>
+            <input type="hidden" class="form-name" value="<%= form.name%>"/>
+            <input type="hidden" class="form-id" value="<%= form.unique_id%>"/>
+          </li>      
+        <%end%> 
+    </ul>
+    <div class="fields-container">
+      <% @forms.each do|form|%>    
+        <ul id="fields-for-form-<%= form.id%>" class="field-container">
+          <% form.fields.each do |field| %>
+            <li id="field-<%= field.name%>" class="field">
+              <span class="field-display-name"><%= field.display_name%></span>
+              <input type="hidden" class="field-name" value="<%= field.name%>"/>
+              <input type="hidden" class="display-name" value="<%= field.display_name%>"/>
+            </li>
+          <%end%>
+        </ul>
+      <%end%>  
+    </div>     
+  <div>
+</div>
+
+<script>
+  
+var formFields = $(".form-fields-container").formFields({onItemSelect: <%=on_item_select%>}).data("formFields");
+$(<%= "'#{menu_selector}'"%>).live("click", function(){ formFields.show({ 
+                                    actionElement: $(this), 
+                                    prevSelectedFields: $(<%= "'#{prev_selected_field_selector}'"%>).map( function(){ return $(this).val(); }) 
+                                  })  
+});
+</script>

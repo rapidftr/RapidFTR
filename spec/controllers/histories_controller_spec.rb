@@ -3,6 +3,7 @@ require 'spec_helper'
 describe HistoriesController do
   before do
     fake_login
+    @controller.stub!(:current_user_name).and_return('foo-user')
   end
 
   it "should have restful route for GET" do

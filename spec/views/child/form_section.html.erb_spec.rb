@@ -115,36 +115,30 @@ describe "children/_form_section.html.erb" do
 
       it "renders checkboxes" do
         @child = Child.new
-        @form_section.add_field Field.new_field("check_box", "is_orphan")
+        @form_section.add_field Field.new_field("check_boxes", "siblings", ["Sister", "Brother"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("label[for='child_isorphan']")
-        response.should have_tag("input[type='checkbox'][name='child[isorphan]'][value='Yes']")
+        response.should have_tag("label[for='child_siblings_sister']")
+        response.should have_tag("label[for='child_siblings_brother']")
+        response.should have_tag("input[type='checkbox'][name='child[siblings][]'][value='Sister']")
+        response.should have_tag("input[type='checkbox'][name='child[siblings][]'][value='Brother']")
       end
     end
 
     context "existing record" do
 
       it "renders checkboxes as checked if the underlying field is set to Yes" do
-        @child = Child.new :isorphan => "Yes"
-        @form_section.add_field Field.new_field("check_box", "isorphan")
+        @child = Child.new :relatives => ["Brother", "Sister"]
+        @form_section.add_field Field.new_field("check_boxes", "relatives", ["Sister", "Brother", "Cousin"])
 
         assigns[:child] = @child
         render :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[type='checkbox'][name='child[isorphan]'][value='Yes'][checked]")
-      end
-
-      it "renders checkboxes with the HTML FORM hidden field workaround for unchecking a property" do
-        @child = Child.new :is_orphan => "Yes"
-        @form_section.add_field Field.new_field("check_box", "isorphan")
-
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
-
-        response.should have_tag("input[type='hidden'][name='child[isorphan]'][value='No']")
+        response.should have_tag("input[type='checkbox'][name='child[relatives][]'][checked]") do |checked_tags|
+					checked_tags.map {|checked_tag| checked_tag["value"]}.should =~ ["Brother", "Sister"]
+				end
       end
 
     end
