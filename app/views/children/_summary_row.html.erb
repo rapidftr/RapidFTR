@@ -2,7 +2,7 @@
 <div id="child_<%= summary_row['_id'] %>" class="profiles-list-item">
   <div class="header">
     <p class="checkbox">
-      <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] %>
+      <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] if checkbox %>
     </p>
 
     <h3><%= link_to summary_row['name'], child_path(summary_row) %></h3>
@@ -13,15 +13,13 @@
     <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %></p>
   </div>
   <p class="photo">
-    <a href=<%= child_path(summary_row['_id']) %>>
-      <%= thumbnail_tag(summary_row) %>
-    </a>
+    <%= link_to thumbnail_tag(summary_row), child_path(summary_row['_id']) %>
   </p>
   <div class="details">
     <dl class="basic">
-      <% @highlighted_fields.each do |field| %>
-        <dt><%= field[:display_name] %>:</dt>
-        <dd><%= summary_row[field[:name]]%></dd>
+      <% @highlighted_fields.each do |relevant_field| %>
+        <dt><%= relevant_field[:display_name] %>:</dt>
+        <dd><%= summary_row[relevant_field[:name]] %></dd>
       <% end %>
     </dl>
 

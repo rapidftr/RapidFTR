@@ -1,5 +1,6 @@
 module FakeLogin
   def fake_login session = Session.new(:user => User.new(:user_name => 'fakeuser', :id =>'24'))
+  	session.save
     @controller.stub!(:app_session).and_return(session)
   end
   

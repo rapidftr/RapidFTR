@@ -1,28 +1,8 @@
 <h2>All children</h2>
 
 <p><%= link_to 'New child', new_child_path %></p>
-<table>
-  <thead>
-  <tr>
-    <th class="checkbox">&nbsp;</th>
-    <th>Name</th>
-    <th>Last known location</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @children.each do |child| %>
-      <tr>
-        <td class="checkbox"></td>
-        <td><%= link_to(h(child['name']), child) %></td>
-        <td><%= link_to(h(child['last_known_location']),child) %></td>
-        <td class="view-edit"><%= link_to('View', child_path(child)) %> | <%= link_to 'Edit', edit_child_path(child) %></td>
-      </tr>
-  <% end %>
 
-  </tbody>
-
-</table>
+<%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
 
 <br/>
 

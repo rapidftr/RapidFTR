@@ -64,6 +64,14 @@ describe ChildrenController do
       get :show, :id => "37"
       assigns[:form_sections].should == [:the_form_sections]
     end
+
+    it "should not break everything if a bad child record is given" do
+      Child.stub!(:get).and_return(nil)
+      get :show, :id => "9e22f6df5d1cbe69bd431b764c63be1e"
+      flash[:notice].should == "We couldn't find that page for some reason… we’ll take you back to the login page so you can try again."
+      response.should redirect_to(login_url)
+      @controller.logged_in?.should_not be_true
+    end
   end
 
   describe "GET new" do
@@ -197,7 +205,7 @@ describe ChildrenController do
       search = mock("search", :query => 'the child name', :valid? => true)
       Search.stub!(:new).and_return(search)
       get :search, :format => 'html', :query => 'the child name'
-      assigns[:highlighted_fields].should == [{ :name => "field_1", :display_name => "field display 1" }, { :name => "field_2", :display_name => "field display 2" } ]
+      assigns[:highlighted_fields].should == fields
     end
     
     it "should not render error by default" do

@@ -1,6 +1,8 @@
 class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+
   # GET /children
   # GET /children.xml
   def index
@@ -9,7 +11,7 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
       format.xml  { render :xml => @children }
       format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
@@ -23,7 +25,6 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    @child = Child.get(params[:id])
     @user = User.find_by_user_name(current_user_name)
 
     @form_sections = get_form_sections
@@ -63,7 +64,6 @@ class ChildrenController < ApplicationController
   # GET /children/1/edit
   def edit
     @page_name = "Edit child record"
-    @child = Child.get(params[:id])
     @form_sections = get_form_sections
   end
 
@@ -88,12 +88,10 @@ class ChildrenController < ApplicationController
   end
 
   def edit_photo
-    @child = Child.get(params[:id])
     @page_name = "Edit Photo"
   end
 
   def update_photo
-    @child = Child.get(params[:id])
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
       @child.rotate_photo(orientation)
@@ -135,7 +133,6 @@ class ChildrenController < ApplicationController
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
-    @child = Child.get(params[:id])
     @child.destroy
 
     respond_to do |format|
@@ -152,9 +149,7 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query]) 
       if @search.valid?    
         @results = Child.search(@search)
-        @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
-          { :name => field.name, :display_name => field.display_name }
-        end
+        @highlighted_fields = FormSection.sorted_highlighted_fields
       else
         render :search
       end
@@ -186,9 +181,8 @@ class ChildrenController < ApplicationController
   end
 
   def export_photo_to_pdf
-    child = Child.get(params[:id])
-    pdf_data = PdfGenerator.new.child_photo(child)
-    send_pdf(pdf_data, "#{file_basename(child)}.pdf")
+    pdf_data = PdfGenerator.new.child_photo(@child)
+    send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
   def export_to_csv children, filename
@@ -244,6 +238,18 @@ class ChildrenController < ApplicationController
     end
 
     send_data(csv, :filename => filename, :type => 'text/csv')
+  end
+
+  def load_child_or_redirect
+    @child = Child.get(params[:id])
+
+    return unless request.format.html?
+
+    if @child.nil?
+      flash[:notice] = "We couldn't find that page for some reason… we’ll take you back to the login page so you can try again."
+      app_session.destroy
+      redirect_to login_url
+    end
   end
 
 end
