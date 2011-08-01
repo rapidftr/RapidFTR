@@ -35,11 +35,10 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html do
-      # show.html.erb
       if @child.nil?
       flash[:error] = "Child with the given id is not found"
       redirect_to :action => :index and return
-    end
+      end
       end
       format.xml  { render :xml => @child }
       format.json { render :json => @child.to_json }
