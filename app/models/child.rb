@@ -259,7 +259,7 @@ class Child < CouchRestRails::Document
   def field_name_changes
     @from_child ||= Child.get(self.id)
     form_section_fields = FormSection.all_child_field_names
-    other_fields = ["flag","flag_message"]
+    other_fields = ["flag","flag_message", "reunited", "reunited_message"]
     all_fields = form_section_fields + other_fields
     all_fields.select { |field_name| changed?(field_name) }
   end

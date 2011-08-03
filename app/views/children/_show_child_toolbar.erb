@@ -19,7 +19,7 @@
    <% else %>
       <%= render :partial => "mark_as", 
         :locals=> { :mark_as_label => "Unflag record",
-          :mark_as_message_id => "unflag_message",
+          :mark_as_message_id => "flag_message",
           :mark_as_message => "Unflag Reason:",
           :mark_as_property => "flag",
           :mark_as_property_value => "false",
@@ -40,7 +40,7 @@
     <% else %>
       <%= render :partial => "mark_as", 
         :locals=> { :mark_as_label => "Mark child as not reunited",
-          :mark_as_message_id => "undo_reunited_message",
+          :mark_as_message_id => "reunited_message",
           :mark_as_message => "Undo reunite Reason:",
           :mark_as_property => "reunited",
           :mark_as_property_value => "false",
