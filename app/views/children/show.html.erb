@@ -20,7 +20,7 @@
 
             $(".mark-as-submit").click(function(){
                 if(!$(this).siblings('input[type=text]').val()){
-                  alert($(this).attr('error_message'));
+                  alert($(this).attr('data-error-message'));
                   return false;
                 }
             });

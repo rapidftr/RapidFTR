@@ -5,8 +5,7 @@
         <h3><%= f.label("#{mark_as_message_id}", "#{mark_as_message}") %></h3>
         <%=	f.text_field "#{mark_as_message_id}", :size => 30, :value => "" %>
         <%= f.hidden_field("#{mark_as_property}", :value => "#{mark_as_property_value}") %>
-        <%=	f.submit "#{mark_as_submit_label}", :error_message => "#{error_message}", :class => 'mark-as-submit' %>
+        <%=	f.submit "#{mark_as_submit_label}", "data-error-message" => "#{error_message}", :class => 'mark-as-submit' %>
       </div>
     <% end %>
 </div>
-
