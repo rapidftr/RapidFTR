@@ -9,6 +9,10 @@ class UsersController < ApplicationController
   def show
     session = app_session
     @user = User.get(params[:id])
+    if @user.nil?
+      flash[:error] = "User with the given id is not found"
+      redirect_to :action => :index and return
+    end
     unless session.admin? or @user.user_name == current_user_name   
       raise AuthorizationFailure.new('Not permitted to view page')      
     end

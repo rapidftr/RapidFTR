@@ -34,7 +34,12 @@ class ChildrenController < ApplicationController
     @body_class = 'profile-page'
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+      if @child.nil?
+      flash[:error] = "Child with the given id is not found"
+      redirect_to :action => :index and return
+      end
+      end
       format.xml  { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
