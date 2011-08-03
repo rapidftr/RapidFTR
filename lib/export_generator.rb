@@ -2,6 +2,13 @@ require "prawn/measurement_extensions"
 require 'prawn/layout'
 
 class ExportGenerator
+	class Export
+		attr_accessor :data, :options
+		def initialize data, options
+			@data = data
+			@options = options
+		end
+	end
   def initialize *child_data
 		@child_data = child_data.flatten 
     @pdf = Prawn::Document.new
@@ -18,15 +25,26 @@ class ExportGenerator
 	def to_csv
     field_names = FormSection.all_enabled_child_fields.map {|field| field.name}
     field_names.unshift "unique_identifier"
-    
-		FasterCSV.generate do |rows|
+    field_names 
+		csv_data = FasterCSV.generate do |rows|
       rows << field_names
       @child_data.each do |child|
           rows << field_names.map { |field_name| child[field_name] }
       end
     end
+
+		return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
 	end
-  def to_full_pdf
+  
+	def filename export_type, extension
+		return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
+	end
+
+	def filename_date_string
+    Clock.now.strftime("%Y%m%d")
+  end
+
+ 	def to_full_pdf
     @child_data.each do |child|
       add_child_page(child)
       @pdf.start_new_page unless @child_data.last == child

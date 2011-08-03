@@ -225,7 +225,7 @@ class ChildrenController < ApplicationController
     results = results || [] # previous version handled nils - needed? 
 		export_generator = ExportGenerator.new results
 		csv_data = export_generator.to_csv
-    send_data(csv_data, :filename => filename, :type => 'text/csv')
+    send_data(csv_data.data, csv_data.options)
   end
 
   def load_child_or_redirect

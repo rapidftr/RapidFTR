@@ -1,25 +1,38 @@
 require 'spec_helper'
 
 describe ExportGenerator do
-	subject do
-		ExportGenerator.new( [
-       Child.new( 'name' => 'Dave', 'unique_identifier' => "xxxy" ),
-       Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
-    ])
-	end
-	it 'should have a header for unique_identifier followed by all the user defined fields' do
-		fields = Field.new_text_field("field_one"), Field.new_text_field("field_two")
-		FormSection.stub!(:all_enabled_child_fields).and_return fields 
-		csv_data =  FasterCSV.parse subject.to_csv
+	describe "when generating a CSV download" do
+		before :each do
+			@user = mock(:user)
+      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+		end
+		subject do
+			ExportGenerator.new( [
+    		   Child.new( 'name' => 'Dave', 'unique_identifier' => "xxxy" ),
+    	  	 Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
+   	 	]).to_csv
+		end
+		it 'should have a header for unique_identifier followed by all the user defined fields' do
+			fields = Field.new_text_field("field_one"), Field.new_text_field("field_two")
+			FormSection.stub!(:all_enabled_child_fields).and_return fields 
+			csv_data =  FasterCSV.parse subject.data
 		
-    headers = csv_data[0]
-		headers.should == ["unique_identifier", "field_one", "field_two"]
-  end
-	it 'should render a row for each result, plus a header row' do
-		FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field("name")]
-		csv_data = FasterCSV.parse subject.to_csv
-   	csv_data.length.should == 3
-		csv_data[1][1].should == "Dave"
-		csv_data[2][1].should == "Mary"
+    	headers = csv_data[0]
+			headers.should == ["unique_identifier", "field_one", "field_two"]
+  	end
+		it 'should render a row for each result, plus a header row' do
+			FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field("name")]
+			csv_data = FasterCSV.parse subject.data
+   		csv_data.length.should == 3
+			csv_data[1][1].should == "Dave"
+			csv_data[2][1].should == "Mary"
+		end
+		it "should add the correct mime type" do
+			subject.options[:type].should == "text/csv"
+		end
+		it "should add the correct filename" do
+      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+			subject.options[:filename].should == "rapidftr-full-details-20000101.csv"			
+		end
 	end
 end

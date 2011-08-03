@@ -301,16 +301,16 @@ describe ChildrenController do
 
     end
 
-    it 'sends csv data with the correct content type and file name' do
+    it 'sends csv data with the correct attributes' do
 			
 			Child.stub!(:search).and_return(:child_search_results)	
 			export_generator = stub(ExportGenerator)
 			inject_export_generator(export_generator, :child_search_results)
 
-			export_generator.should_receive(:to_csv).and_return(:csv_data)
+			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
 			@controller.
         should_receive(:send_data).
-        with( :csv_data, :filename => 'rapidftr_search_results.csv', :type => 'text/csv' )
+        with( :csv_data, {:foo=>:bar} )
       
 			get( :search, :format => 'csv', :query => 'blah')
     end
