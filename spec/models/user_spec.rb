@@ -101,20 +101,21 @@ describe User do
   it "should be able to store a mobile login event" do
     imei = "1337"
     mobile_number = "555-555"
-    now = Time.now
+    now = Time.parse("2008-06-21 13:30:00 UTC") 
     user = build_user
     user.create!
 
     Time.stub(:now).and_return(now)
 
     user.add_mobile_login_event(imei, mobile_number)
-    user.save
+    user.save	
+		user = User.get(user.id)
 
     event = user.mobile_login_history.first
     event[:imei].should == imei
     event[:mobile_number].should == mobile_number
-    event[:timestamp] == now
-  end
+		event[:timestamp].should == now
+	end
   
   it "should store list of devices when new device is used" do
     Device.all.each(&:destroy)
