@@ -3,6 +3,9 @@ class User < CouchRestRails::Document
   use_database :user
   include CouchRest::Validation
 
+  ADMINISTRATOR = "Administrator"
+  USER = "User"
+
   property :full_name
   property :user_name
   property :crypted_password
@@ -94,7 +97,7 @@ class User < CouchRestRails::Document
   end
 
   def make_admin
-    self.user_type = "Administrator"
+    self.user_type = ADMINISTRATOR
   end
   
   def add_mobile_login_event imei, mobile_number
@@ -117,6 +120,10 @@ class User < CouchRestRails::Document
       device.blacklisted = device_hash["blacklisted"] == "true"
       device
     end
+  end
+
+  def admin?
+    self.user_type == ADMINISTRATOR
   end
 
   private
