@@ -7,7 +7,39 @@ describe "children/show.html.erb" do
 
   describe "displaying a child's details"  do
 
-    it "displays the Child's photo"
+    it "displays the child's photo and thumbnails" do
+      form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
+
+      photo = uploadable_photo
+      attachments = [FileAttachment.new("fakephoto.png", photo.content_type, photo.data),
+                     FileAttachment.new("otherfakephoto.png", photo.content_type, photo.data)]
+
+      child = Child.new(:name => "Homer", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+      child.stub!(:has_one_interviewer?).and_return(true)
+      child.stub!(:photos).and_return(attachments)
+
+      user = User.new
+
+      assigns[:form_sections] = [form_section]
+      assigns[:child] = child
+      assigns[:user] = user
+      assigns[:aside] = 'picture'
+
+      render :layout => 'application'
+
+      puts response.body
+      response.should have_tag(".content-aside") do
+        with_tag("a[href=?]", child_resized_photo_path(child, 640))
+        with_tag("img[src=?]", child_resized_photo_path(child, 328))
+      end
+
+      response.should have_tag(".thumbnails") do
+        attachments.each do |attachment|
+          with_tag("img[alt=?][src=?]", child['name'], child_thumbnail_path(child, attachment.name))
+        end
+      end
+
+    end
 
     it "renders all fields found on the FormSection" do
 
