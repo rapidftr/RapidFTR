@@ -252,7 +252,7 @@ describe Child do
     
     it "should save file based on content type" do
       child = Child.new
-      photo = uploadble_jpg_photo_without_file_extension
+      photo = uploadable_jpg_photo_without_file_extension
       child.photo = photo
       child.save.should == true
     end
