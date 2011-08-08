@@ -81,6 +81,8 @@ Scenario: User should be able to edit their own general information, but should 
 Given "mary" is logged in
   And I follow "Account"
   Then I should not see "IMEI"
+  Then the "Organisation" field should be disabled
+
 
 Scenario: Password field should not be blank if re-enter password field is filled in and vice versa
   # Create an user
