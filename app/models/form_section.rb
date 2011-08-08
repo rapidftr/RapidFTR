@@ -28,6 +28,13 @@ class FormSection < CouchRestRails::Document
     by_order.select(&:enabled?)
   end
 
+  def self.enabled_by_order_without_disabled_fields
+    enabled_by_order.each do |form_section|
+      form_section['fields'].map! { |field| field if field.enabled }
+      form_section['fields'].compact!
+    end
+  end
+
   def self.all_child_field_names
     all_child_fields.map{ |field| field["name"] }
   end
