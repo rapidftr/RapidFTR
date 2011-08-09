@@ -37,6 +37,7 @@ class ExportGenerator
 	end
   
 	def filename export_type, extension
+		return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
 		return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
 	end
 

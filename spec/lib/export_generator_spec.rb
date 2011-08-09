@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe ExportGenerator do
 	describe "when generating a CSV download" do
-		before :each do
-			@user = mock(:user)
-      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-		end
 		subject do
 			ExportGenerator.new( [
     		   Child.new( 'name' => 'Dave', 'unique_identifier' => "xxxy" ),
@@ -33,6 +29,16 @@ describe ExportGenerator do
 		it "should add the correct filename" do
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
 			subject.options[:filename].should == "rapidftr-full-details-20000101.csv"			
+		end
+	end
+	describe "when generating a CSV download for just one record" do
+		subject do
+			ExportGenerator.new( [
+    	  	 Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
+   	 	]).to_csv
+		end
+		it "should add the unique id to the filename" do
+			subject.options[:filename].should include "yyyx"
 		end
 	end
 end
