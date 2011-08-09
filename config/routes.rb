@@ -22,6 +22,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index
+  map.resources :password_recovery_requests
 
   map.login 'login', :controller=>'sessions', :action =>'new'
   map.logout 'logout', :controller=>'sessions', :action =>'destroy'

@@ -20,3 +20,4 @@ vendor/ruby/1.8/gems/
 /.bundle/
 sunspot-solr.pid
 .rvmrc
+bin
