@@ -21,6 +21,12 @@ Given /^I am sending a valid session token in my request headers for device with
   Given %Q|I am sending a session token of "#{session.id}" in my request headers|
 end
 
+Given /^the user's time zone is "([^"]*)"$/ do |timezone|
+  Given %Q|I am on the home page|
+  When %Q|I select "#{timezone}" from "Current time zone"|
+  And %Q|I press "Save"|
+end
+
 When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
   click_link name_of_tab
 end
@@ -70,6 +76,24 @@ Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio
    radio.should_not be_nil
    radio.css("label").map(&:text).should == table.raw.map(&:first)
 end
+
+Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
+	checkbox_elements = Nokogiri::HTML(response.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
+  
+	checkboxes = checkbox_elements.inject({}) do | result,  element |
+		result[element['value']] = !!element[:checked]
+		result
+	end
+
+  table.hashes.each do |expected_checkbox|
+    expected_value = expected_checkbox['value']
+    should_be_checked = (expected_checkbox['checked?'] == 'yes')
+    checkboxes.should have_key expected_value
+		checkboxes[expected_value].should == should_be_checked
+		
+  end
+end
+
 
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
   dropdown_field = field_labeled(dropdown_label)
@@ -129,6 +153,10 @@ Given /^devices exist$/ do |devices|
     device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])
     device.save!
   end
+end
+
+When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
+	  check(field_with_id("child_#{checkbox_name}_#{value.dehumanize}")) 
 end
 
 

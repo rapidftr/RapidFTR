@@ -11,6 +11,12 @@ When /^I attach a photo "([^"]*)"$/ do |photo_path|
   }
 end
 
+When /^I attach an audio file "([^"]*)"$/ do |audio_path|
+  steps %Q{
+    When I attach the file "#{audio_path}" to "child[audio]"
+  }
+end
+
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
     steps %Q{
@@ -21,6 +27,7 @@ end
 
 Then /^I should see the thumbnail of "([^"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|
   thumbnail = current_dom.xpath("//img[@alt='#{name}' and contains(@src,'#{timestamp}')]").first
+  thumbnail.should_not be_nil
   thumbnail['src'].should =~ /photo.*-#{timestamp}/
 end
 
@@ -34,6 +41,7 @@ end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)
+  current_time.stub!(:getutc).and_return Time.parse(datetime)
   Time.stub!(:now).and_return current_time
 end
 
@@ -399,6 +407,10 @@ Then /^I should see errors$/ do
   Hpricot(response.body).search("div[@class=errorExplanation]").size.should == 1
 end
 
+Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
+  field_labeled(dropdown_label).value.should == selected_text
+end
+
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
   child = find_child_by_name name
   visit children_path+"/#{child.id}"
@@ -412,6 +424,14 @@ When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reaso
   click_link("Flag record as suspect")
   fill_in("Flag reason", :with => reason)
   click_button("Flag")
+end
+
+When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Unflag record")
+  fill_in("Unflag reason", :with => reason)
+  click_button("Unflag")
 end
 
 Then /^the (view|edit) record page should show the record is flagged$/ do |page|

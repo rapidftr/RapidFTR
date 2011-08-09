@@ -40,13 +40,13 @@ module NavigationHelpers
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path( child, options )
-        
+
       when /child record page for "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path( child, options )
-        
+
       when /change log page for "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)
@@ -65,27 +65,33 @@ module NavigationHelpers
 
       when /child search page/
         search_children_path(options)
-        
+
+      when /child advanced search page/
+        advanced_search_index_path(options)
+
       when /login page/
         login_path(options)
-        
+
       when /logout page/
         logout_path(options)
-        
+
       when /child search results page/
         search_children_path(options)
-        
+
+      when /child advanced search results page/
+        advanced_search_index_path(options)
+
       when /create form section page/
         new_formsection_path(options)
-      
+
       when /edit form section page for "(.+)"$/
         edit_form_section_path(:id => $1)
-        
+
       when /edit field page for "(.+)" on "(.+)" form$/
         edit_formsection_field_path(:formsection_id => $2, :id => $1)
-          
+
       when /form section page/
-        formsections_path(options) 
+        formsections_path(options)
 
       when /choose field type page/
         arbitrary_form_section = FormSection.new
@@ -111,9 +117,10 @@ module NavigationHelpers
         edit_contact_information_path(:administrator)
       when /(the )?administrator contact page/
           contact_information_path(:administrator, options)
-
       when /all child Ids/
         child_ids_path
+      when /published form sections/
+        published_form_sections_path
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
   map.child_thumbnail "/children/:child_id/thumbnail/:id", :controller => "child_media", :action => "show_thumbnail"
 
   map.resources :users
+  map.resources :user_preferences
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index
   map.resources :password_recovery_requests
@@ -49,13 +50,16 @@ ActionController::Routing::Routes.draw do |map|
     
   map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
   
-  map.resources :advanced_search
+  map.resources :advanced_search, :only => [:index, :new]
+  map.advanced_search_index 'advanced_search/index', :controller => 'advanced_search', :action => 'index'
 
   map.resources :form_section
 
   map.resources :fields
   
   map.resources :contact_information
+
+  map.resources :highlight_fields, :collection => { :remove => :post }
 
   map.root :controller => 'home', :action => :index
 

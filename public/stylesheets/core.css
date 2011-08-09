@@ -50,7 +50,6 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form .radioList input { width: auto; height: auto; }
 
 /* default: forms > check box */
-.default-form p.checkbox { overflow: hidden; margin-left: 160px; }
 .default-form .checkbox label { float: none; width: auto; font-weight: normal; }
 .default-form .checkbox input { width: auto; height: auto; }
 
@@ -73,9 +72,11 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .device-information { clear: both; margin-top: 3em; }
 
 /* default : forms > help text */
-.default-form .help-text { font-style: italic; float: right; display: block;}
+.default-form .help-text { font-style: italic; float: right; display:none;}
 .default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
-.default-form .help-text-checkbox{ font-style:italic; display:block;}
+.default-form .help-text-checkboxes{ margin-left: 160px; font-style:italic; display:block;}
+.default-form .tool-tip-icon { width:14px;height:14px; }
+
 
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
@@ -213,9 +214,23 @@ ul.ui-widget-content { background: none; }
 .profile-tools li a:hover { color: #f93; }
 .profile-tools .flag-form h3 { display:inline; }
 .profile-tools .flag-form input { display:inline; }
-.profile-tools .flag-form { margin: 0px;}
+.profile-tools .flag-form { margin: 0;}
+.profile-tools .unflag-form h3 { display:inline; }
+.profile-tools .unflag-form input { display:inline; }
+.profile-tools .unflag-form { margin: 0;}
 .flag-message {color: red; margin-bottom: .5em;}
 
+.sub_export_record{
+	padding: 0;
+	position: absolute;
+	border-style: none solid solid solid;
+	border-width: 1px 1px 1px 1px;
+	background: white;
+}
+
+.sub_export_record li{
+	clear: both;
+}
 
 
 /* profile page > image */
@@ -302,7 +317,7 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 .criteria_menu li { list-style:none; padding: 0; margin: 0; background: none; }
 .criteria_menu li:hover { cursor: pointer; }
 .criteria_menu ul.fields li.disabled a { color: black; text-decoration: none; cursor: default;} 
-.criteria_menu .box-shadow {
+.box-shadow {
 		-moz-box-shadow: 2px 2px 5px #BBB;
 		-webkit-box-shadow: 2px 2px 6px #BBB;
 		box-shadow: 2px 2px 5px #BBB;
@@ -314,4 +329,15 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 		
 }
 
-
+/* form-fields-select-list*/
+.form-fields-container { background-color: #EEE; display: none; position: absolute; margin-left: 5px; }
+.form-fields-container .form-container { position: relative; right: -1px ; float: left; }
+.form-fields-container .fields-container { float: left; max-height: 298px; overflow: auto; border: 1px solid #AAA; background-color: white; 
+                                           width: 220px;}
+.form-fields-container .form-container .selected { border-left: 1px solid #AAA; border-top: 1px solid #AAA; border-bottom: 1px solid #AAA; background-color: white; }
+.form-fields-container .form, .form-fields-container .field { list-style:none; background: none; padding: 3px 20px 3px 20px; margin: 0; }
+.form-fields-container .form:hover, .form-fields-container .field:hover {cursor: pointer; }
+.form-fields-container .fields-container .selected { background-color: white; display: block !important;}
+.form-fields-container .fields-container .field-container {display: none;}
+.form-fields-container .prev-selected:hover {cursor: auto; }
+.form-fields-container .prev-selected { background-color: #EEE; }

@@ -6,7 +6,7 @@ describe "children/_numeric_field.html.erb" do
     assigns[:child] = @child
   end
 
-  it "should show help text when exists" do
+  it "should include image for tooltip when help text when exists" do
     numeric_field = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'numeric_field',
@@ -14,19 +14,18 @@ describe "children/_numeric_field.html.erb" do
     
     render :locals => { :numeric_field => numeric_field }
   
-    response.should have_tag(".help-text-container")
-    response.should have_tag(".help-text")
+    response.should have_tag("img.vtip")
+
   end
 
-  it "should not show help text when not exists" do
+  it "should not include image for tooltip when help text not exists" do
     numeric_field = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'numeric_field'
     
     render :locals => { :numeric_field => numeric_field }
   
-    response.should_not have_tag(".help-text-container")
-    response.should_not have_tag(".help-text")
+    response.should_not have_tag("img.vtip")
 
   end
   

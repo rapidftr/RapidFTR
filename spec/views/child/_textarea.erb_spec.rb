@@ -6,7 +6,7 @@ describe "children/_textarea.html.erb" do
     assigns[:child] = @child
   end
 
-  it "should show help text when exists" do
+  it "should include image for tooltip when help text exists" do
     textarea = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'textarea',
@@ -14,19 +14,18 @@ describe "children/_textarea.html.erb" do
     
     render :locals => { :textarea => textarea}
   
-    response.should have_tag(".help-text-container")
-    response.should have_tag(".help-text")
+    response.should have_tag("img.vtip")
+
   end
 
-  it "should not show help text when not exists" do
+  it "should not include image for tooltip when help text not exists" do
     textarea = Field.new :name => "new field", 
     :display_name => "field name",
     :type => 'textarea'
     
     render :locals => { :textarea => textarea}
   
-    response.should_not have_tag(".help-text-container")
-    response.should_not have_tag(".help-text")
+    response.should_not have_tag("img.vtip")
 
   end
   

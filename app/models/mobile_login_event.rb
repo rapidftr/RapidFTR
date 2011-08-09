@@ -3,7 +3,7 @@ class MobileLoginEvent < Hash
 
   property :imei
   property :mobile_number
-  property :timestamp
+  property :timestamp, :cast_as => 'Time', :init_method => 'parse' 
 
   def initialize properties
     super(properties)

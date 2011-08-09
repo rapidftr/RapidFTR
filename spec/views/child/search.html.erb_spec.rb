@@ -7,13 +7,33 @@ describe "children/search.html.erb" do
   describe "rendering search results" do
     before :each do
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
+      @highlighted_fields = [ { :name => "field_2", :display_name => "field display 2" }, { :name => "field_4", :display_name => "field display 4" } ]
       assigns[:results] = @results
+      assigns[:highlighted_fields] = @highlighted_fields
     end
 
     it "should render items for each record in the results" do
       render
 
       Hpricot(response.body).profiles_list_items.size.should == @results.length
+    end
+    
+    it "should show only the highlighted fields for a child" do
+      summary = Summary.new(
+        "_id" => "some_id", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"),
+        "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4")   
+      summary.stub!(:has_one_interviewer?).and_return(true)
+      @results = [summary]
+
+      assigns[:results] = @results
+
+      render
+
+      fields = Hpricot(response.body).search(".details dl.basic")
+      fields.search("dt").size.should == @highlighted_fields.size
+      fields.search("dd").size.should == @highlighted_fields.size
+      fields.search("dt").first.inner_text.should == "field display 2:"
+      fields.search("dd").first.inner_text.should == "field 2"
     end
 
     it "should have a definition list for basic details for each record in the results" do
@@ -60,7 +80,7 @@ describe "children/search.html.erb" do
       end
     end
 	
-	it "should include a view link for each record in the result" do
+    it "should include a view link for each record in the result" do
       render
 
       view_links = Hpricot(response.body).link_for("View")
@@ -70,19 +90,19 @@ describe "children/search.html.erb" do
       end
     end
 
-		it "should have a button to export to pdf" do
-			render
-			
-			export_to_photo_wall = Hpricot(response.body).submit_for("Export to PDF")
-			export_to_photo_wall.size.should_not == 0
-		end
+    it "should have a button to export to pdf" do
+      render
+                
+      export_to_photo_wall = Hpricot(response.body).submit_for("Export to PDF")
+      export_to_photo_wall.size.should_not == 0
+    end
 
-		it "should have a button to export to photo wall" do
-			render
-			
-			export_to_photo_wall = Hpricot(response.body).submit_for("Export to Photo Wall")
-			export_to_photo_wall.size.should_not == 0
-		end
+    it "should have a button to export to photo wall" do
+      render
+                      
+      export_to_photo_wall = Hpricot(response.body).submit_for("Export to Photo Wall")
+      export_to_photo_wall.size.should_not == 0
+    end
 
     def random_child_summary(id = 'some_id')
       summary = Summary.new("_id" => id, "age_is" => "Approx", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"))
