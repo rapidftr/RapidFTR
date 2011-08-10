@@ -252,7 +252,7 @@ describe Child do
     
     it "should save file based on content type" do
       child = Child.new
-      photo = uploadble_jpg_photo_without_file_extension
+      photo = uploadable_jpg_photo_without_file_extension
       child.photo = photo
       child.save.should == true
     end
@@ -378,11 +378,10 @@ describe Child do
   end
 
   it "should handle special characters in last known location when creating unique id" do
-    pending "Seem to be having UTF-8 related problems - cv (talk to zk)"
     child = Child.new({'last_known_location'=> "\215\303\304n"})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
-    child["unique_identifier"].should == "george\21512345"
+    child["unique_identifier"].should == "george\215\303\30412345"
   end
 
   describe "photo attachments" do

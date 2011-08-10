@@ -44,6 +44,19 @@ describe FormSection do
         FormSection.enabled_by_order.map(&:name).should == %w(Good)
       end
     end
+
+    describe "enabled_by_order_without_disabled_fields" do
+      it "should exclude disabled fields" do
+        enabled = Field.new(:name => "enabled", :type => "text_field", :display_name => "Enabled")
+        disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :enabled => false)
+
+        section = FormSection.new :name => 'section', :order => 1, :unique_id => 'section'
+        section.fields = [disabled, enabled]
+        section.save!
+
+        FormSection.enabled_by_order_without_disabled_fields.first.fields.should == [enabled]
+      end
+    end
   end
 
   describe "get_by_unique_id" do
