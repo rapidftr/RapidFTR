@@ -7,6 +7,7 @@
 
 		var criteriaList = $(this).find(".criteria-list")
 		var criteria = options.criteria
+		var userDetailsCriteria = options.user_details_criteria
 
 		var formList = element.find(".forms li");
 		formList.first().addClass("selected");
@@ -16,6 +17,14 @@
 		formFields.first().find("li:first").addClass("selected");
 
 		self.selectedField = "";
+
+		var populateUserCriteria = function(userDetailsCriteria) {
+			if (userDetailsCriteria.length == 0) return;
+
+			$('#created_by').attr('checked','checked');
+			enableInputByCheckbox($('#created_by'), $('#created_by_value'));
+			$('#created_by_value').val(userDetailsCriteria[0].value);
+		};
 
 		var buildCriteria = function(condition) {
 			var criteria = $("#criteria_template").tmpl(condition);
@@ -133,5 +142,7 @@
 				return false;
 			}
 		});
+
+		populateUserCriteria(userDetailsCriteria);
 	}
 })(jQuery);

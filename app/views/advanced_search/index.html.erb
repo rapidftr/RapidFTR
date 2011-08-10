@@ -83,5 +83,5 @@
     return field_display_name == "" ? "Select A Criteria" : field_display_name; 
   }
   
-  $(".advanced-search").advancedSearch({criteria: <%=@criteria_list.to_json %>});
+  $(".advanced-search").advancedSearch({criteria: <%=@criteria_list.to_json %>, user_details_criteria: <%=@user_details_criteria_list.to_json %>});
 </script>
