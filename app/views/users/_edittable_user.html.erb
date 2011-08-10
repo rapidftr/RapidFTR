@@ -76,7 +76,7 @@
 
     <p>
       <%= f.label :organisation %>
-      <%= f.text_field :organisation %>
+      <%= f.text_field :organisation, :disabled => !is_admin?%>
     </p>
 
     <p>

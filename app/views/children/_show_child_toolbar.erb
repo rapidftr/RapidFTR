@@ -3,11 +3,16 @@
     <li class="back"><%= link_to 'Back', :back %></li>
     <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
     <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
-    <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
-    <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
-    <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
+    <li class="export_record">
+      <%= link_to "Export this Record", "#", :class => "export_record_link"%>
+      <ul class="sub_export_record" >
+        <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
+        <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
+        <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
+      </ul>
+    </li>
     <% unless @child.flag? %>
-      <%= render :partial => "mark_as", 
+      <%= render :partial => "mark_as",
         :locals=> { :mark_as_label => "Flag record as suspect",
           :mark_as_message_id => "flag_message",
           :mark_as_message => "Flag Reason:",
@@ -17,7 +22,7 @@
           :error_message => "Please explain why you are flagging this record."
       } %>
    <% else %>
-      <%= render :partial => "mark_as", 
+      <%= render :partial => "mark_as",
         :locals=> { :mark_as_label => "Unflag record",
           :mark_as_message_id => "flag_message",
           :mark_as_message => "Unflag Reason:",
@@ -28,7 +33,7 @@
       } %>
    <% end %>
     <% unless @child.reunited? %>
-      <%= render :partial => "mark_as", 
+      <%= render :partial => "mark_as",
         :locals=> { :mark_as_label => "Mark child as Reunited",
           :mark_as_message_id => "reunited_message",
           :mark_as_message => "Reunite Details:",
@@ -38,7 +43,7 @@
           :error_message => "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       } %>
     <% else %>
-      <%= render :partial => "mark_as", 
+      <%= render :partial => "mark_as",
         :locals=> { :mark_as_label => "Mark child as Not Reunited",
           :mark_as_message_id => "reunited_message",
           :mark_as_message => "Undo reunite Reason:",

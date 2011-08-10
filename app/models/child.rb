@@ -34,17 +34,23 @@ class Child < CouchRestRails::Document
   validates_with_method :validate_has_at_least_one_field_value
 	validates_with_method :created_at, :method => :validate_created_at
 
-  def self.build_solar_schema
-    fields = ["unique_identifier"]  + Field.all_text_names
+	def field_definitions 
+		@field_definitions ||= FormSection.all_enabled_child_fields
+	end
 
+  def self.build_solar_schema
+    fields = build_fields_for_solar
     Sunspot.setup(Child) do
       text *fields
     end
   end
- 
+
+  def self.build_fields_for_solar
+    ["unique_identifier", "created_by"] +  Field.all_text_names
+  end
 
   def validate_has_at_least_one_field_value
-    return true if FormSection.all_enabled_child_fields.any? { |field| is_filled_in? field }
+    return true if field_definitions.any? { |field| is_filled_in? field }
     return true if !@file_name.nil? || !@audio_file_name.nil?
     return true if deprecated_fields.any?{|key,value| !value.nil?}
     [false, "Please fill in at least one field or upload a file"]
@@ -258,10 +264,10 @@ class Child < CouchRestRails::Document
 
   def field_name_changes
     @from_child ||= Child.get(self.id)
-    form_section_fields = FormSection.all_child_field_names
+		field_names = field_definitions.map {|f| f.name}
     other_fields = ["flag","flag_message", "reunited", "reunited_message"]
-    all_fields = form_section_fields + other_fields
-    all_fields.select { |field_name| changed?(field_name) }
+		all_fields = field_names + other_fields
+		all_fields.select { |field_name| changed?(field_name) }
   end
 
   def changed?(field_name)
@@ -300,7 +306,7 @@ class Child < CouchRestRails::Document
   
   def deprecated_fields
     system_fields = ["created_at","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
-    existing_fields = system_fields + FormSection.all_enabled_child_fields.map {|x| x.name}
+    existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end
 

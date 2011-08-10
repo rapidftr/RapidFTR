@@ -2,6 +2,32 @@ require 'spec_helper'
 
 
 describe Child do
+
+  describe 'build solar schema' do
+      it "should build with advanced search fields" do
+        Field.stub!(:all_text_names).and_return []
+        Child.build_fields_for_solar.should == ["unique_identifier", "created_by"]
+      end
+
+      it "fields build with all fields in form sections" do
+        form = FormSection.new(:name => "test_form")
+        form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
+        form.save!
+
+        Child.build_fields_for_solar.should include("name")
+
+        FormSection.all.each{ |form| form.destroy }
+
+      end
+
+      it "should call Sunspot with all fields" do
+        Sunspot.should_receive(:setup)
+        Child.should_receive(:build_fields_for_solar)
+        Child.build_solar_schema
+      end
+
+  end
+
   describe ".search" do
     before :each do
       Sunspot.remove_all(Child)
@@ -570,15 +596,14 @@ describe Child do
 
   describe "history log" do    
     before do
-      form_section = FormSection.new :unique_id => "basic_details"
-      form_section.add_text_field("last_known_location")
-      form_section.add_text_field("age")
-      form_section.add_text_field("origin")
-      form_section.add_field(Field.new_radio_button("gender", ["male", "female"]))
-      form_section.add_field(Field.new_photo_upload_box("current_photo_key"))
-      form_section.add_field(Field.new_audio_upload_box("recorded_audio"))
-    
-      FormSection.stub!(:all).and_return([form_section])
+			fields = [
+					Field.new_text_field("last_known_location"),
+					Field.new_text_field("age"),
+					Field.new_text_field("origin"),
+					Field.new_radio_button("gender", ["male", "female"]),
+      		Field.new_photo_upload_box("current_photo_key"),
+      		Field.new_audio_upload_box("recorded_audio")]
+      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
     end
     
     it "should not update history on initial creation of child document" do
@@ -735,7 +760,6 @@ describe Child do
 
     it "should update history with the datetime from last_updated_at" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
       child['last_known_location'] = 'Philadelphia'
       child['last_updated_at'] = 'some_time'
       child.save!
@@ -866,6 +890,6 @@ describe Child do
   
   def create_child(name)
     Child.create("name" => name, "last_known_location" => "new york")
-  end 
+  end
 
 end

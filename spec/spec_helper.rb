@@ -146,7 +146,7 @@ def uploadable_audio_ogg
 end
 
 def uploadble_jpg_photo_without_file_extension
-  returning(uploadable_photo "features/resources/jorge_jpg") do |photo|
+  uploadable_photo("features/resources/jorge_jpg").tap do |photo|
     def photo.content_type
       "image/jpg"
     end
