@@ -29,7 +29,7 @@
    <% end %>
     <% unless @child.reunited? %>
       <%= render :partial => "mark_as", 
-        :locals=> { :mark_as_label => "Mark child as reunited",
+        :locals=> { :mark_as_label => "Mark child as Reunited",
           :mark_as_message_id => "reunited_message",
           :mark_as_message => "Reunite Details:",
           :mark_as_property => "reunited",
@@ -39,7 +39,7 @@
       } %>
     <% else %>
       <%= render :partial => "mark_as", 
-        :locals=> { :mark_as_label => "Mark child as not reunited",
+        :locals=> { :mark_as_label => "Mark child as Not Reunited",
           :mark_as_message_id => "reunited_message",
           :mark_as_message => "Undo reunite Reason:",
           :mark_as_property => "reunited",
