@@ -56,6 +56,9 @@ module NavigationHelpers
       when /new user page/
         new_user_path(options)
 
+      when /new password recovery request page/
+        new_password_recovery_request_path
+
       when /manage users page/
         users_path(options)
 
