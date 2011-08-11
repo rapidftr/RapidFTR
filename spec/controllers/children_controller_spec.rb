@@ -204,7 +204,7 @@ describe ChildrenController do
       search = mock("search", :query => 'the child name', :valid? => true)
       Search.stub!(:new).and_return(search)
       get :search, :format => 'html', :query => 'the child name'
-      assigns[:highlighted_fields].should == [{ :name => "field_1", :display_name => "field display 1" }, { :name => "field_2", :display_name => "field display 2" } ]
+      assigns[:highlighted_fields].should == fields
     end
     
     it "should not render error by default" do

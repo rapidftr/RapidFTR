@@ -1,5 +1,6 @@
 class FormSection < CouchRestRails::Document
   include CouchRest::Validation
+
   use_database :form_section
   property :unique_id
   property :name
@@ -15,6 +16,8 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   view_by :order
 
+  before_create :create_unique_id
+
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
   validates_with_method :name, :method => :validate_unique_name
@@ -22,26 +25,34 @@ class FormSection < CouchRestRails::Document
   def initialize args={}
     self["fields"] = []
     super args
-  end 
-
-  def self.enabled_by_order
-    by_order.select(&:enabled?)
   end
 
-  def self.all_child_field_names
-    all_child_fields.map{ |field| field["name"] }
+  alias to_param unique_id
+
+  class << self
+    def enabled_by_order
+      by_order.select(&:enabled?)
+    end
+
+    def all_child_field_names
+      all_child_fields.map{ |field| field["name"] }
+    end
+    
+    def all_enabled_child_fields
+      enabled_by_order.map do |form_section|
+        form_section.fields.find_all(&:enabled)
+      end.flatten
+    end
+    
+    def all_child_fields
+      all.map do |form_section|
+        form_section.fields
+      end.flatten
+    end
   end
   
-  def self.all_enabled_child_fields
-    enabled_by_order.map do |form_section|
-      form_section.fields
-    end.flatten
-  end
-  
-  def self.all_child_fields
-    all.map do |form_section|
-      form_section.fields
-    end.flatten
+  def all_text_fields
+    self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
   end
 
   def self.get_by_unique_id unique_id
@@ -54,21 +65,13 @@ class FormSection < CouchRestRails::Document
     formsection.save
   end
 
-  def properties= properties
-    properties.each_pair do |name, value|
-      self[name] = value unless value == nil
-    end
-  end
-
   def self.get_form_containing_field field_name
     all.find { |form| form.fields.find { |field| field.name == field_name } }
   end
 
   def self.create_new_custom name, description = "", help_text = "", enabled=true
-    unique_id = name.dehumanize
     max_order= (all.map{|form_section| form_section.order}).max || 0
-    form_section = FormSection.new :unique_id=>unique_id, 
-                                   :name=>name, 
+    form_section = FormSection.new :name=>name, 
                                    :description=>description, 
                                    :help_text=>help_text, 
                                    :enabled=>enabled, 
@@ -80,6 +83,12 @@ class FormSection < CouchRestRails::Document
   def self.change_form_section_state formsection, to_state
     formsection.enabled = to_state
     formsection.save
+  end
+
+  def properties= properties
+    properties.each_pair do |name, value|
+      self[name] = value unless value == nil
+    end
   end
   
   def add_text_field field_name
@@ -168,14 +177,14 @@ class FormSection < CouchRestRails::Document
     matching_fields.each{ |field| field.enabled = true}
   end
   
-  def all_text_fields
-    self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
-  end 
-  
   protected
 
   def validate_unique_name
     unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
     unique || [false, "The name '#{name}' is already taken."]
+  end
+
+  def create_unique_id
+    self.unique_id = self.name.dehumanize if self.unique_id.nil?
   end
 end
