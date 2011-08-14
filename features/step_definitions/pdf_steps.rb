@@ -24,3 +24,6 @@ Then /^the PDF file should not contain the string "([^\"]*)"$/ do |expected_stri
   pdf.strings.should_not include(expected_string)
 end
 
+Then /^the filename should contain "(.+)"$/ do |filename|
+  response.headers["content-disposition"].should contain "#{filename}"
+end

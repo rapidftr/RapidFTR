@@ -1,6 +1,7 @@
-class   ChildrenController < ApplicationController
-
+class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
+
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
 
   # GET /children
   # GET /children.xml
@@ -8,15 +9,15 @@ class   ChildrenController < ApplicationController
     @page_name = "Listing children"
     @children = Child.all
     @aside = 'shared/sidebar_links'
-
+    
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
       format.xml  { render :xml => @children }
-      format.csv  { render_as_csv @children, "all_records_#{Time.now.strftime("%Y%m%d")}.csv" }
+      format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
       format.pdf do
         pdf_data = PdfGenerator.new.children_info(@children)
-        send_pdf(pdf_data, "RapidFTR-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+        send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
   end
@@ -24,7 +25,7 @@ class   ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    @child = Child.get(params[:id])
+    @user = User.find_by_user_name(current_user_name)
 
     @form_sections = get_form_sections
 
@@ -34,16 +35,16 @@ class   ChildrenController < ApplicationController
     @body_class = 'profile-page'
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.xml  { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
         child_ids = [@child]
-        export_to_csv(child_ids, current_user_name+"_#{Time.now.strftime("%Y%m%d-%H%M")}.csv")
+        export_to_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
         pdf_data = PdfGenerator.new.child_info(@child)
-        send_pdf( pdf_data, "#{@child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf" )
+        send_pdf( pdf_data, "#{file_basename(@child)}.pdf" )
       end
     end
   end
@@ -63,7 +64,6 @@ class   ChildrenController < ApplicationController
   # GET /children/1/edit
   def edit
     @page_name = "Edit child record"
-    @child = Child.get(params[:id])
     @form_sections = get_form_sections
   end
 
@@ -88,12 +88,10 @@ class   ChildrenController < ApplicationController
   end
 
   def edit_photo
-    @child = Child.get(params[:id])
     @page_name = "Edit Photo"
   end
 
   def update_photo
-    @child = Child.get(params[:id])
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
       @child.rotate_photo(orientation)
@@ -135,7 +133,6 @@ class   ChildrenController < ApplicationController
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
-    @child = Child.get(params[:id])
     @child.destroy
 
     respond_to do |format|
@@ -152,6 +149,7 @@ class   ChildrenController < ApplicationController
       @search = Search.new(params[:query]) 
       if @search.valid?    
         @results = Child.search(@search)
+        @highlighted_fields = FormSection.sorted_highlighted_fields
       else
         render :search
       end
@@ -183,9 +181,8 @@ class   ChildrenController < ApplicationController
   end
 
   def export_photo_to_pdf
-    child = Child.get(params[:id])
-    pdf_data = PdfGenerator.new.child_photo(child)
-    send_pdf(pdf_data, "#{child.unique_identifier}-#{Clock.now.strftime('%Y%m%d-%H%M')}.pdf")
+    pdf_data = PdfGenerator.new.child_photo(@child)
+    send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
   def export_to_csv children, filename
@@ -195,11 +192,20 @@ class   ChildrenController < ApplicationController
   private
 
 	def file_basename(child = nil)
-		prefix = current_user_name
-		prefix = child.unique_identifier if child
+		prefix = child.nil? ? current_user_name : child.unique_identifier
+    user = User.find_by_user_name(current_user_name)
+		"#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+  end
 
-		"#{prefix}-#{Clock.now.strftime('%Y%m%d-%H%M')}"
-	end
+  def file_name_datetime_string
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
+  end
+
+  def file_name_date_string
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime("%Y%m%d")
+  end
 
   def get_form_sections
     FormSection.enabled_by_order
@@ -232,6 +238,17 @@ class   ChildrenController < ApplicationController
     end
 
     send_data(csv, :filename => filename, :type => 'text/csv')
+  end
+
+  def load_child_or_redirect
+    @child = Child.get(params[:id])
+
+    return unless request.format.html?
+
+    if @child.nil?
+      flash[:error] = "Child with the given id is not found"
+      redirect_to :action => :index and return
+    end
   end
 
 end

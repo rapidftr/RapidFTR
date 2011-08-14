@@ -14,25 +14,42 @@ begin
   require 'cucumber/rake/task'
 
   namespace :cucumber do
-    Cucumber::Rake::Task.new({:ok => 'db:test:prepare'}, 'Run features that should pass') do |t|
+    Cucumber::Rake::Task.new({:webrat => 'db:test:prepare'}, 'Run all webrat features') do |t|
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
       t.fork = true # You may get faster startup if you set this to false
       t.profile = 'default'
     end
 
-    Cucumber::Rake::Task.new({:wip => 'db:test:prepare'}, 'Run features that are being worked on') do |t|
-      t.binary = vendored_cucumber_bin
+    Cucumber::Rake::Task.new({:headless => 'db:test:prepare'}, 'Run all features that should pass in headless mode') do |t|
+      t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
       t.fork = true # You may get faster startup if you set this to false
-      t.profile = 'wip'
+      t.profile = 'headless'
     end
 
-    desc 'Run all features'
-    task :all => [:ok, :wip]
-  end
-  desc 'Alias for cucumber:ok'
-  task :cucumber => 'cucumber:ok'
+    Cucumber::Rake::Task.new({:headless_wip => 'db:test:prepare'}, 'Run features that are being worked on in headless mode') do |t|
+      t.binary = vendored_cucumber_bin
+      t.fork = true # You may get faster startup if you set this to false
+      t.profile = 'headless_wip'
+    end
 
-  task :default => :cucumber
+    Cucumber::Rake::Task.new({:browser => 'db:test:prepare'}, 'Run all features that should pass in a browser') do |t|
+      t.binary = vendored_cucumber_bin
+      t.fork = true # You may get faster startup if you set this to false
+      t.profile = 'browser'
+    end
+
+    Cucumber::Rake::Task.new({:browser_wip => 'db:test:prepare'}, 'Run features that are being worked on in browser mode') do |t|
+       t.binary = vendored_cucumber_bin
+       t.fork = true # You may get faster startup if you set this to false
+       t.profile = 'browser_wip'
+     end
+
+   desc 'Run all features in headless and browser modes'
+    task :all => [:webrat, :headless, :browser]
+  end
+
+  desc 'Alias for cucumber:headless and cucumber:browser'
+  task :cucumber => 'cucumber:all'
 
   task :features => :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"

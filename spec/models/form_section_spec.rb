@@ -93,7 +93,7 @@ describe FormSection do
       formsection = FormSection.new :editable => false
       lambda { FormSection.add_field_to_formsection formsection, field }.should raise_error
     end
-
+    
   end
 
 
@@ -109,25 +109,6 @@ describe FormSection do
 
     it "saves the formsection with textarea field" do
       field = Field.new_textarea("name")
-      formsection = mock_formsection
-      formsection.should_receive(:save)
-      FormSection.add_field_to_formsection formsection, field
-    end
-
-  end
-
-  describe "add_checkbox_field_to_formsection" do
-
-    it "adds the checkbox to the formsection" do
-      field = Field.new_check_box("name")
-      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
-      FormSection.add_field_to_formsection formsection, field
-      formsection.fields.length.should == 3
-      formsection.fields[2].should == field
-    end
-
-    it "saves the formsection with checkbox field" do
-      field = Field.new_check_box("name")
       formsection = mock_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
@@ -183,8 +164,9 @@ describe FormSection do
       form_section.delete_field(@field.name)
       form_section.fields.should be_empty
     end
+
     it "should not delete uneditable fields" do
-     @field = new_field(:name=>"field3", :editable => false)
+      @field = new_field(:name=>"field3", :editable => false)
       form_section = FormSection.new :fields=>[@field]
       lambda {form_section.delete_field(@field.name)}.should raise_error("Uneditable field cannot be deleted")
     end
@@ -196,7 +178,7 @@ describe FormSection do
       form_section = FormSection.new :fields=>[@field]
       lambda {form_section.move_field(@field, 1)}.should raise_error("Uneditable field cannot be moved")
     end
-  end 
+  end
 
   describe "move_up_field" do
     before :each do
@@ -254,8 +236,8 @@ describe FormSection do
     end
     it "should give the formsection a new unique id based on the name" do
       form_section_name = "basic details"
-      create_should_be_called_with :unique_id, "basic_details"
-      FormSection.create_new_custom form_section_name
+      form_section = FormSection.create_new_custom form_section_name
+      form_section.unique_id.should == "basic_details"
     end
     it "should populate the name" do
       form_section_name = "basic details"
@@ -355,6 +337,71 @@ describe FormSection do
       field_two.should be_enabled
     end
   end
-  
-  
+
+  describe "highlighted_fields" do
+    describe "get highlighted fields" do
+      before :each do
+        high_attr = [{ :order => "1", :highlighted => true }, { :order => "2", :highlighted => true }, { :order => "10", :highlighted => true }]
+        @high_fields = [ Field.new(:name => "h1", :highlight_information => high_attr[0]),
+                         Field.new(:name => "h2", :highlight_information => high_attr[1]),
+                         Field.new(:name => "h3", :highlight_information => high_attr[2]) ]
+        field = Field.new :name => "regular_field"
+        form_section1 = FormSection.new( :name => "Highlight Form1", :fields => [@high_fields[0], @high_fields[2], field] )
+        form_section2 = FormSection.new( :name => "Highlight Form2", :fields => [@high_fields[1]] )
+        FormSection.stub(:all).and_return([form_section1, form_section2])
+      end
+      
+      it "should get fields that have highlight information" do
+        highlighted_fields = FormSection.highlighted_fields
+        highlighted_fields.size.should == @high_fields.size
+        highlighted_fields.map do |field| field.highlight_information end.should
+          include @high_fields.map do |field| field.highlight_information end
+      end
+      
+      it "should sort the highlighted fields by highlight order" do
+        sorted_highlighted_fields = FormSection.sorted_highlighted_fields
+        sorted_highlighted_fields.map do |field| field.highlight_information.order end.should ==
+          @high_fields.map do |field| field.highlight_information.order end
+      end
+    end
+
+    describe "highlighted fields" do
+
+      it "should update field as highlighted" do
+        attrs = { :field_name => "h1", :form_id => "highlight_form" }
+        existing_field = Field.new :name => attrs[:field_name]
+        form = FormSection.new(:name => "Some Form", 
+                               :unique_id => attrs[:form_id], 
+                               :fields => [existing_field])
+        FormSection.stub(:all).and_return([form])
+        form.update_field_as_highlighted attrs[:field_name]
+        existing_field.highlight_information.order.should == 1
+        existing_field.is_highlighted?.should be_true
+      end
+
+      it "should increment order of the field to be highlighted" do
+        attrs = { :field_name => "existing_field", :form_id => "highlight_form"}
+        existing_field = Field.new :name => attrs[:field_name]
+        existing_highlighted_field = Field.new :name => "highlighted_field"
+        existing_highlighted_field.highlight_with_order 3
+        form = FormSection.new(:name => "Some Form", 
+                               :unique_id => attrs[:form_id], 
+                               :fields => [existing_field, existing_highlighted_field])
+        FormSection.stub(:all).and_return([form])
+        form.update_field_as_highlighted attrs[:field_name]
+        existing_field.is_highlighted?.should be_true
+        existing_field.highlight_information.order.should == 4
+      end
+      
+      it "should un-highlight a field" do
+        existing_highlighted_field = Field.new :name => "highlighted_field"
+        existing_highlighted_field.highlight_with_order 1
+        form = FormSection.new(:name => "Some Form", :unique_id => "form_id", 
+                               :fields => [existing_highlighted_field])
+        FormSection.stub(:all).and_return([form])
+        form.remove_field_as_highlighted existing_highlighted_field.name
+        existing_highlighted_field.is_highlighted?.should be_false  
+      end
+    end
+  end  
 end

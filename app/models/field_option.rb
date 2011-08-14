@@ -20,7 +20,7 @@ class FieldOption
   end
 
   def tag_id
-    "child_#{@field_name}_#{@option_name.downcase}"
+    "child_#{@field_name}_#{@option_name.dehumanize}"
   end
 
 end

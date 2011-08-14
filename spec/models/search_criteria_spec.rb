@@ -13,10 +13,17 @@ describe SearchCriteria do
   after(:all) do
     FormSection.all.each{ |form| form.destroy }
   end
+
+  it "should construct advanced search parameters to criteria objects" do
+    search_criteria = SearchCriteria.create_advanced_criteria({:field => "created_by", :value => "johnny01", :index => 123})
+    search_criteria.field.should == "created_by"
+    search_criteria.value.should == "johnny01"
+    search_criteria.join.should == "AND"
+    search_criteria.index.should == '123'
+  end
   
   it "should construct criteria objects" do    
     criteria_list = SearchCriteria.build_from_params("1" => {:field => "name", :value => "kevin", :join => "AND", :display_name => "name" } )
-    
     first_criteria = criteria_list.first
     first_criteria.field.should == "name"
     first_criteria.value.should == "kevin"

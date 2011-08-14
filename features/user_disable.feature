@@ -15,8 +15,6 @@ Feature:
     And I am on edit user page for "george"
 
     When I check "Disabled?"
-    # XXX: re-enter password should go away once user admin is proper
-    And I fill in "123" for "Re-enter password"
     And I press "Update"
     Then user "george" should be disabled
     When I am on the manage users page
@@ -33,8 +31,6 @@ Feature:
     And I am on edit user page for "george"
 
     When I uncheck "Disabled?"
-    # XXX: re-enter password should go away once user admin is proper
-    And I fill in "123" for "Re-enter password"
     And I press "Update"
 
     Then user "george" should not be disabled

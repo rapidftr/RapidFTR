@@ -13,7 +13,7 @@ function initOrderingColumns() {
 		$("a.moveUp", element).show();
 	});
 	
-	var fieldToStartFrom = 2;
+	var fieldToStartFrom = 1;
 
 	$("#form_sections tbody tr:nth-child("+fieldToStartFrom+")").each(function(index, element){
 		$("a.moveDown", element).show();

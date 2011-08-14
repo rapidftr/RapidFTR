@@ -29,7 +29,7 @@
     <%= check_box_tag 'all', 'Select all records' %>
     <%= label_tag 'all', 'Select all records' %>
     <% end %>
-    <%= render :partial => "children/summary_row", :collection => @results %>
+    <%= render :partial => "children/summary_row", :collection => @results, :locals => { :checkbox => true } %>
     <%= "No results found" if @results.try(:size) == 0 %>
 
   </div>
