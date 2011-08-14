@@ -742,18 +742,28 @@ describe Child do
     end
     describe "photo logging" do
 
-      it "should log new photo key on adding a photo" do
+      before :each do
         updated_at_time = Time.parse("Jan 20 2010 12:04:24")
         Time.stub!(:now).and_return updated_at_time
-        child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
         updated_at_time = Time.parse("Feb 20 2010 12:04:24")
         Time.stub!(:now).and_return updated_at_time
-        child.update_attributes :photo => uploadable_photo_jeff
+      end
 
-        changes = child['histories'].first['changes']
+      it "should log new photo key on adding a photo" do
+        @child.update_attributes :photo => uploadable_photo_jeff
+
+        changes = @child['histories'].first['changes']
         #TODO: this should be instead child.photo_history.first.to or something like that
-        changes['photo_keys']['to'].should =~ /photo.*?-2010-02-20T120424/
+        changes['photo_keys']['added'].first.should =~ /photo.*?-2010-02-20T120424/
+      end
+
+      it "should log multiple photos being added" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['added'].should have(2).photo_keys
       end
     end
     it "should maintain history when child is flagged and message is added" do
