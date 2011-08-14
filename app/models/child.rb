@@ -27,6 +27,7 @@ class Child < CouchRestRails::Document
   validates_with_method :validate_photos
   validates_with_method :validate_photos_size
   validates_with_method :validate_audio_file_name
+  validates_with_method :validate_audio_size
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
@@ -69,10 +70,13 @@ class Child < CouchRestRails::Document
   def validate_photos_size
     return true if @photos.blank? || @photos.all?{|photo| photo.size < 10.megabytes }
     [false, "File is too large"]
-#    return true
   end
 
-  
+  def validate_audio_size
+    return true if @audio.blank? || @audio.size < 10.megabytes
+    [false, "File is too large"]
+  end
+
   def validate_audio_file_name
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
@@ -205,6 +209,7 @@ class Child < CouchRestRails::Document
   def audio=(audio_file)
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
+    @audio = audio_file
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
     self['recorded_audio'] = attachment.name
     attach(attachment)

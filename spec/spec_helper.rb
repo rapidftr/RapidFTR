@@ -40,6 +40,16 @@ def uploadable_photo( photo_path = "features/resources/jorge.jpg" )
   photo
 end
 
+def uploadable_large_photo
+  large_photo = "features/resources/huge.jpg"
+  f = File.new(large_photo, "w+")
+  f.seek(50000 * 1024)
+  f.write("hello")
+  f.close()
+  uploadable_photo large_photo
+
+end
+
 def uploadable_photo_jeff
   uploadable_photo "features/resources/jeff.png"
 end
@@ -131,6 +141,16 @@ def uploadable_audio(audio_path = "features/resources/sample.amr")
   end
 
   audio
+end
+
+def uploadable_large_audio
+  large_audio = "features/resources/huge.mp3"
+  f = File.new(large_audio, "w+")
+  f.seek(50000 * 1024)
+  f.write("hello")
+  f.close()
+  uploadable_audio large_audio
+
 end
 
 def uploadable_audio_amr
