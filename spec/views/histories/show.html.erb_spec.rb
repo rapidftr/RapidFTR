@@ -85,7 +85,7 @@ describe "histories/show.html.erb" do
 
       it "should render photo change record when updating a photo" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
-        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", "OldPhoto", "NewPhoto"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "photo_keys", "OldPhoto", "NewPhoto"
 
         assigns[:child] = child
         assigns[:user] = @user
@@ -98,7 +98,7 @@ describe "histories/show.html.erb" do
 
       it "should render photo change record with links when adding a photo to an existing record for first time" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
-        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", nil, "NewPhoto"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "photo_keys", nil, "NewPhoto"
 
         assigns[:child] = child
         assigns[:user] = @user
