@@ -2,7 +2,7 @@
   <ul class="history-details">
     <% @child['histories'].each do |history| %>
         <% history['changes'].each_pair do |field, change| %>
-            <% if field == "current_photo_key" %>
+            <% if field == "photo_keys" %>
                 <%= render :partial => "photo_history_change",
                            :locals => {
                                    :from_value => change['from'],
