@@ -289,10 +289,8 @@ class Child < CouchRestRails::Document
     end
   end
 
-  def photo_changes_for(photo_keys)
-    photo_keys.inject({}) do |changes, photo_key|
-      changes.merge('photo_keys' => { 'to' => photo_key })
-    end
+  def photo_changes_for(new_photo_keys)
+    { 'photo_keys' => { 'added' => new_photo_keys } }
   end
 
   def field_name_changes

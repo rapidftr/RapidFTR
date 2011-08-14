@@ -1,10 +1,12 @@
 <li>
   <div>
-	<%= datetime %> 
-	<% if from_value.blank? %>
-        Photo <%= link_to_photo_with_key(to_value) %> added by <%= user_name %>
-    <% else %>
-        Photo changed from <%= link_to_photo_with_key(from_value) %> to <%= link_to_photo_with_key(to_value) %> by <%= user_name %>
+	<%= datetime %>
+	<% unless new_photos.empty? %>
+          <%= new_photos.size > 1 ? "Photos" : "Photo" %>
+          <% new_photos.each do |new_photo| %>
+            <%= link_to_photo_with_key(new_photo) %> 
+          <% end %>
+          added by <%= user_name %>
 	<%end%>
   </div>
 </li>
