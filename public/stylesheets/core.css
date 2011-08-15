@@ -75,7 +75,8 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form .help-text { font-style: italic; float: right; display:none;}
 .default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
 .default-form .help-text-checkboxes{ margin-left: 160px; font-style:italic; display:block;}
-.default-form .tool-tip-icon { width:14px;height:14px; }
+.default-form .tool-tip-label { float:left; width:150px; margin-right:10px; }
+.default-form .tool-tip-icon { width:14px;height:14px; float: right; }
 
 
 /* page-container */
