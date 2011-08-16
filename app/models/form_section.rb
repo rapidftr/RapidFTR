@@ -49,6 +49,13 @@ class FormSection < CouchRestRails::Document
         form_section.fields
       end.flatten
     end
+    
+    def enabled_by_order_without_disabled_fields
+      enabled_by_order.each do |form_section|
+        form_section['fields'].map! { |field| field if field.enabled }
+        form_section['fields'].compact!
+      end
+    end
   end
   
   def all_text_fields
