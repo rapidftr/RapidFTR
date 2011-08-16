@@ -15,6 +15,7 @@ class Child < CouchRestRails::Document
   property :nickname
   property :unique_identifier
   property :flag, :cast_as => :boolean
+  property :reunited, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {
@@ -264,7 +265,7 @@ class Child < CouchRestRails::Document
   def field_name_changes
     @from_child ||= Child.get(self.id)
 		field_names = field_definitions.map {|f| f.name}
-    other_fields = ["flag","flag_message"]
+    other_fields = ["flag","flag_message", "reunited", "reunited_message"]
 		all_fields = field_names + other_fields
 		all_fields.select { |field_name| changed?(field_name) }
   end

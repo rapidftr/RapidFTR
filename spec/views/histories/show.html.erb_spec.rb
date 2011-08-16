@@ -72,7 +72,7 @@ describe "histories/show.html.erb" do
         render
 
       	response.should have_tag(".history-details") do
-          with_tag("li", "2010-12-31 09:55:00 -1100 Record was flagged by rapidftr")
+          with_tag("li", "2010-12-31 09:55:00 -1100 Record was flagged by rapidftr because:")
         end
       end
     end

@@ -764,10 +764,41 @@ describe Child do
       child.save!
 
       child['histories'].first['datetime'].should == 'some_time'
-    	
-		end
+    end
+
+    it "should maintain history when child is flagged and message is added" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+      child['flag'] = 'true'
+      child['flag_message'] = 'Duplicate record!'
+      child.save!
+
+      flag_history = child['histories'].first['changes']['flag']
+      flag_history['from'].should be_nil
+      flag_history['to'].should == 'true'
+
+      flag_message_history = child['histories'].first['changes']['flag_message']
+      flag_message_history['from'].should be_nil
+      flag_message_history['to'].should == 'Duplicate record!'
+    end
+
+    it "should maintain history when child is reunited and message is added" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+      child['reunited'] = 'true'
+      child['reunited_message'] = 'Finally home!'
+      child.save!
+
+      reunited_history = child['histories'].first['changes']['reunited']
+      reunited_history['from'].should be_nil
+      reunited_history['to'].should == 'true'
+
+      reunited_message_history = child['histories'].first['changes']['reunited_message']
+      reunited_message_history['from'].should be_nil
+      reunited_message_history['to'].should == 'Finally home!'
+    end
   end
-  
+
   describe ".has_one_interviewer?" do
     it "should be true if was created and not updated" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
