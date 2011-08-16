@@ -19,16 +19,16 @@ describe HistoriesHelper do
     @view.history_wording(nil, "New York").should == "initially set to New York"
   end
 
-  describe "#flag_change_message" do
+  describe "#new_value_for" do
 
     it "should get the flag change message from the history" do
         history = {'changes' => {'flag_message' => {'to' => 'message'}}}
-        @view.flag_change_message(history).should == 'message'
+        @view.new_value_for(history, 'flag_message').should == 'message'
     end
 
     it "should return an empty string if no changes have been made" do
       history = {'changes' => {}}
-      @view.flag_change_message(history).should == ''
+      @view.new_value_for(history, 'flag_message').should == ''
     end
   end
 end

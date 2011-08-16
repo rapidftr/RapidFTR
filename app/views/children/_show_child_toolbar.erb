@@ -3,35 +3,55 @@
     <li class="back"><%= link_to 'Back', :back %></li>
     <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
     <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
-	<li class="export_record">
-		<%= link_to "Export this Record", "#", :class => "export_record_link"%>
-		<ul class="sub_export_record" >
-			<li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
-			<li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
-			<li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
-		</ul>
-	</li>
-    <% if !(@child.flag?) %>
-        <li class="flag"><a href="#">Flag record as suspect</a></li>
+    <li class="export_record">
+      <%= link_to "Export this Record", "#", :class => "export_record_link"%>
+      <ul class="sub_export_record" >
+        <li><%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %></li>
+        <li><%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %></li>
+        <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
       </ul>
-      <% form_for @child, :as => :put do |f| %>
-          <div class="flag-form">
-            <h3><%= f.label(:flag_message,"Flag Reason:") %></h3>
-            <%=	f.text_field :flag_message, :size => 30, :value => "" %>
-            <%= f.hidden_field(:flag, :value => true)%>
-            <%=	 f.submit "Flag", :id => 'submit_flag' %>
-           </div>
-      <% end %>
-    <%else%>
-        <li class="unflag"><a href="#">Unflag record</a><li>
-      </ul>
-      <% form_for @child, :as => :put do |f| %>
-          <div class="unflag-form">
-            <h3><%= f.label(:flag_message,"Unflag Reason:") %></h3>
-            <%=	f.text_field :flag_message, :size => 30, :value => "" %>
-            <%= f.hidden_field(:flag, :value => "false")%>
-            <%=	 f.submit "Unflag", :id => 'submit_unflag' %>
-           </div>
-      <% end %>
-    <% end %>
+    </li>
+    <% unless @child.flag? %>
+      <%= render :partial => "mark_as",
+        :locals=> { :mark_as_label => "Flag record as suspect",
+          :mark_as_message_id => "flag_message",
+          :mark_as_message => "Flag Reason:",
+          :mark_as_property => "flag",
+          :mark_as_property_value => "true",
+          :mark_as_submit_label => "Flag",
+          :error_message => "Please explain why you are flagging this record."
+      } %>
+   <% else %>
+      <%= render :partial => "mark_as",
+        :locals=> { :mark_as_label => "Unflag record",
+          :mark_as_message_id => "flag_message",
+          :mark_as_message => "Unflag Reason:",
+          :mark_as_property => "flag",
+          :mark_as_property_value => "false",
+          :mark_as_submit_label => "Unflag",
+          :error_message => "Please explain why you are unflagging this record."
+      } %>
+   <% end %>
+    <% unless @child.reunited? %>
+      <%= render :partial => "mark_as",
+        :locals=> { :mark_as_label => "Mark child as Reunited",
+          :mark_as_message_id => "reunited_message",
+          :mark_as_message => "Reunite Details:",
+          :mark_as_property => "reunited",
+          :mark_as_property_value => "true",
+          :mark_as_submit_label => "Reunite",
+          :error_message => "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
+      } %>
+    <% else %>
+      <%= render :partial => "mark_as",
+        :locals=> { :mark_as_label => "Mark child as Not Reunited",
+          :mark_as_message_id => "reunited_message",
+          :mark_as_message => "Undo reunite Reason:",
+          :mark_as_property => "reunited",
+          :mark_as_property_value => "false",
+          :mark_as_submit_label => "Undo Reunite",
+          :error_message => "Please confirm child should be marked as Not Reunited, and enter any details you have."
+      } %>
+   <% end %>
+  </ul>
 </div>
