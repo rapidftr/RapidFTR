@@ -12,7 +12,7 @@ Feature: So that admin can customize form section details
     Then I should find the form with following attributes:
       | Name |
       | Description |
-      | Enabled |
+      | Visible |
     When I fill in "Edited Form" for "Name"
     When I fill in "Some Description" for "Description"
     And I press "Save"
@@ -28,13 +28,13 @@ Feature: So that admin can customize form section details
     When I follow "Cancel"
     Then I am on form section page
 
-  Scenario: Admins should not see Enable checkbox for perm_enabled form so that he cannot disable the form
+  Scenario: Admins should not see Visible checkbox for perm_enabled form so that he cannot disable the form
     Given I am logged in as an admin
     And I am on the edit form section page for "basic_details"
-    Then I should not see "Enable checkbox" with id "form_section_enabled"
+    Then I should not see "Visible checkbox" with id "form_section_enabled"
 
-  Scenario: Admins should see Enable checkbox for editable form so that he can enable/disable the form.
+  Scenario: Admins should see Visible checkbox for editable form so that he can enable/disable the form.
     Given I am logged in as an admin
     And I am on the edit form section page for "family_details"
-    Then I should see "Enable checkbox" with id "form_section_enabled"
+    Then I should see "Visible checkbox" with id "form_section_enabled"
 

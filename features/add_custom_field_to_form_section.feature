@@ -26,8 +26,8 @@ Feature: So that admin can customize fields in a form section
     Then I should find the form with following attributes:
       | Display name |
       | Help text |
-      | Enabled |
-    And the "Enabled" checkbox should be checked
+      | Visible |
+    And the "Visible" checkbox should be checked
 
     When I fill in "Anything" for "Display name"
     And I fill in "Really anything" for "Help text"
@@ -52,8 +52,8 @@ Feature: So that admin can customize fields in a form section
     Then I should find the form with following attributes:
       | Display name |
       | Help text |
-      | Enabled |
-    And the "Enabled" checkbox should be checked
+      | Visible |
+    And the "Visible" checkbox should be checked
 
     When I fill in "Anything" for "Display name"
     And I fill in "Really anything" for "Help text"
@@ -82,9 +82,9 @@ Feature: So that admin can customize fields in a form section
   Then I should find the form with following attributes:
     | Display name |
     | Help text |
-    | Enabled |
+    | Visible |
     | Options |
-  And the "Enabled" checkbox should be checked  
+  And the "Visible" checkbox should be checked  
   
   When I fill in "Radio button name" for "Display name"
   And I fill in "Something" for "Help text"
