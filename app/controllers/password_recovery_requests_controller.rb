@@ -13,4 +13,10 @@ class PasswordRecoveryRequestsController < ApplicationController
       render :new
     end
   end
+
+  def hide
+    PasswordRecoveryRequest.get(params[:password_recovery_request_id]).hide!
+    flash[:notice] = 'Password request notification was succefully hidden.'
+    redirect_to root_path
+  end
 end

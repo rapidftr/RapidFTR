@@ -18,3 +18,25 @@ Feature: As an user, I should be able to request my password to be recovered.
     When I press "Request Password"
 
     Then I should see "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
+
+
+  Scenario: An Admin user is able to see unhidden password recovery requests when he logs in 
+    Given a password recovery request for duck
+
+    Given I am logged in as an admin
+
+    Given I am on the home page
+
+    Then I should see "hide"
+
+
+  Scenario: An Admin user is able to hide notifications
+    Given a password recovery request for duck
+
+    Given I am logged in as an admin
+
+    Given I am on the home page
+
+    When I follow "hide"
+
+    Then I should not see "duck"
