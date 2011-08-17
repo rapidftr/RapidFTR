@@ -300,6 +300,24 @@ describe Child do
       loaded_child.photo = uploadable_text_file
       loaded_child.save().should == false
     end
+
+    it "should disallow photo larger than 10 megabytes" do
+      photo = uploadable_large_photo
+
+      child = Child.new
+      child.photo = photo
+
+      child.save.should == false
+
+    end
+
+    it "should disallow audio larger than 10 megabytes" do
+      child = Child.new
+
+      child.audio = uploadable_large_audio
+      child.save.should == false
+
+    end
   end
   describe "new_with_user_name" do
     it "should create regular child fields" do
