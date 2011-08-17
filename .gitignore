@@ -21,3 +21,7 @@ vendor/ruby/1.8/gems/
 sunspot-solr.pid
 .rvmrc
 .redcar/*
+features/resources/huge.jpg
+features/resources/huge.mp3
+
+
