@@ -426,6 +426,22 @@ When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reaso
   click_button("Flag")
 end
 
+When /^I reunite "([^"]*)" with the reason "([^\"]*)"$/ do |name, reason|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Mark child as Reunited")
+  fill_in("Reunite Details", :with => reason)
+  click_button("Reunite")
+end
+
+When /^I undo reunite "([^"]*)" with the reason "([^\"]*)"$/ do |name, reason|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Mark child as Not Reunited")
+  fill_in("Undo Reunite Reason", :with => reason)
+  click_button("Undo Reunite")
+end
+
 When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
   child = find_child_by_name name
   visit children_path+"/#{child.id}"
