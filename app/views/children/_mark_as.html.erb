@@ -1,5 +1,6 @@
 <div id="<%= mark_as_property %>">
-  <li class="mark-as"><a href="#"><%= mark_as_label %></a></li>
+  <li class="<%=style%>">
+  <a href="#"><%= mark_as_label %></a></li>
   <% form_for @child, :as => :put do |f| %>
       <div class="mark-as-form">
         <h3><%= f.label("#{mark_as_message_id}", "#{mark_as_message}") %></h3>
