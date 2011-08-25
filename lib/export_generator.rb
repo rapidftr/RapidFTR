@@ -1,34 +1,54 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
 
-class PdfGenerator
-  def initialize
+class ExportGenerator
+	class Export
+		attr_accessor :data, :options
+		def initialize data, options
+			@data = data
+			@options = options
+		end
+	end
+  def initialize *child_data
+		@child_data = child_data.flatten 
     @pdf = Prawn::Document.new
     @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
   end
 
-  def child_photo(child)
-    child_photos( [child] )
-  end
-
-  def child_photos(children)
-    children.each do |child|
+  def to_photowall_pdf
+    @child_data.each do |child|
       add_child_photo(child)
-      @pdf.start_new_page unless children.last == child
+      @pdf.start_new_page unless @child_data.last == child
     end
     @pdf.render
   end
+	def to_csv
+    field_names = FormSection.all_enabled_child_fields.map {|field| field.name}
+    field_names.unshift "unique_identifier"
+    field_names 
+		csv_data = FasterCSV.generate do |rows|
+      rows << field_names
+      @child_data.each do |child|
+          rows << field_names.map { |field_name| child[field_name] }
+      end
+    end
 
+		return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
+	end
+  
+	def filename export_type, extension
+		return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
+		return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
+	end
 
-  def child_info(child)
-    add_child_page(child)
-    @pdf.render
+	def filename_date_string
+    Clock.now.strftime("%Y%m%d")
   end
 
-  def children_info(children)
-    children.each do |child|
+ 	def to_full_pdf
+    @child_data.each do |child|
       add_child_page(child)
-      @pdf.start_new_page unless children.last == child
+      @pdf.start_new_page unless @child_data.last == child
     end
     @pdf.render
   end
