@@ -52,7 +52,7 @@ class PdfGenerator
     FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
-              select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX }.
+              select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.enabled? }.
               map { |field| [field.display_name, child[field.name]] }
       if !field_pair.empty?
         @pdf.table field_pair,
