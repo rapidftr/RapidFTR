@@ -48,19 +48,13 @@
         });
     </script>
 <% end %>
+
 <% content_for :stylesheet do %>
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
-<table border="0" width="100%" style="background-color: white">
-  <tr>
 <% if @child.flag? %>
-    <td><h3 class="flag-message"><%= flag_message %></h3></td>
+    <h3 class="flag-message"><%= flag_message %></h3>
 <% end %>
-<% if @child.reunited? %>
-    <td><div class="reunited-message"><%= reunited_message %></div></td>
-<% end %>
-  </tr>
-</table>
 <%= render :partial => "show_child_toolbar"%>
 
 <div id='interviewer_details'>
