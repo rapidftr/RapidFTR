@@ -19,8 +19,7 @@
           :mark_as_property => "flag",
           :mark_as_property_value => "true",
           :mark_as_submit_label => "Flag",
-          :error_message => "Please explain why you are flagging this record.",
-          :style => "flag"
+          :error_message => "Please explain why you are flagging this record."
       } %>
    <% else %>
       <%= render :partial => "mark_as",
@@ -30,8 +29,7 @@
           :mark_as_property => "flag",
           :mark_as_property_value => "false",
           :mark_as_submit_label => "Unflag",
-          :error_message => "Please explain why you are unflagging this record." ,
-          :style => "flag"
+          :error_message => "Please explain why you are unflagging this record."
       } %>
    <% end %>
     <% unless @child.reunited? %>
@@ -42,8 +40,7 @@
           :mark_as_property => "reunited",
           :mark_as_property_value => "true",
           :mark_as_submit_label => "Reunite",
-          :error_message => "Please confirm this child has been reunited with family or caregivers, and enter any details you have.",
-          :style => "reunited"
+          :error_message => "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       } %>
     <% else %>
       <%= render :partial => "mark_as",
@@ -53,8 +50,7 @@
           :mark_as_property => "reunited",
           :mark_as_property_value => "false",
           :mark_as_submit_label => "Undo Reunite",
-          :error_message => "Please confirm child should be marked as Not Reunited, and enter any details you have.",
-          :style => "reunited"
+          :error_message => "Please confirm child should be marked as Not Reunited, and enter any details you have."
       } %>
    <% end %>
   </ul>
