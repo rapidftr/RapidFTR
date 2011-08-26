@@ -47,6 +47,12 @@ Given /^the following admin contact info:$/ do |table|
   ContactInformation.create contact_info
 end
 
+Given /^the user's time zone is "([^"]*)"$/ do |timezone|
+	Given %Q|I am on the home page|
+  When %Q|I select "#{timezone}" from "Current time zone"|
+  And %Q|I press "Save"|
+end
+
 
 
 
