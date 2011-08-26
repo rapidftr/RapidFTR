@@ -52,14 +52,6 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
 
-Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
-  visit path_to('new child page')
-  fill_in('Name', :with => child_name)
-  fill_in('Birthplace', :with => 'Haiti')
-  attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
-  click_button('Finish')
-end
-
 Given /^the following children exist in the system:$/ do |children_table|
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(

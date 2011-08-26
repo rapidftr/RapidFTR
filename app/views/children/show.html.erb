@@ -14,7 +14,10 @@
             $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
 
             $(".profile-tools .mark-as-form").hide();
-            $(".profile-tools .mark-as a").click( function(){
+            $(".profile-tools .flag a").click( function(){
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
+            });
+            $(".profile-tools .reunited a").click( function(){
                 $(this).parent().siblings('form').children('.mark-as-form').toggle();
             });
 
