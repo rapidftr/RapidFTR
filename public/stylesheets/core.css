@@ -215,19 +215,19 @@ ul.ui-widget-content { background: none; }
 .profile-tools .mark-as-form h3 { display:inline; }
 .profile-tools .mark-as-form input { display:inline; }
 .profile-tools .mark-as-form { margin: 0; float: left;}
-.flag-message {color: red; margin-bottom: .5em; font-size: 10pt; }
+.flag-message {color: red; margin-bottom: .5em; font-size: 12pt; }
+
 .reunited-message {
-border-style: ridge;
-    border-color: #002299;
-    border-width: 3px;
-    background-image: url(../images/reunited-bkg.jpg);
-    background-position:right;
-    background-repeat: repeat-x;
+    position: relative;
+    float: right;
+    top: -10px;
+    width: 125px;
+    height: 33px;
+    background: url(../images/reunited-frame.jpg) no-repeat center bottom;
     color: white;
-    font-size: 12pt;
+    font-size: 14pt;
     text-align: center;
-    font-style: italic;
-    margin-bottom: .5em;
+    padding-top: 3px;
 }
 
 .sub_export_record{

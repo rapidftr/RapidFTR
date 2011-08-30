@@ -1,8 +1,3 @@
-Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|
-  divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
-  divs.size.should == quantity.to_i
-end
-
 Then /^I should see the following links in the toolbars:$/ do |links_table|
   divs = page.all :xpath, '//div[@class="profile-tools"]'
   divs.each do |div|
@@ -12,18 +7,18 @@ Then /^I should see the following links in the toolbars:$/ do |links_table|
   end
 end
 
-
-def check_link_presence(div, li_class_name, link_text)
-  lis = div.all :xpath, "//li[@class=\"#{li_class_name}\"]"
-  lis.size.should >= 1
-  found = false
-  lis.each do |li|
-    begin
-      li.find('a', :text => link_text)!=nil
-      found = true
+When /^I click the "(.*)" button$/ do |button_value|
+  divs = page.all "//div[@class=\"mark-as-form\"]"
+  divs.each do |div|
+    if div.visible?
+      buttons = div.all "//input[@value=\"#{button_value}\"]"
+      buttons.each do |button|
+        if button.visible?
+          button.click
+          break
+        end
+      end
       break
-    rescue Capybara::ElementNotFound
     end
   end
-  found.should_not be_false
 end
