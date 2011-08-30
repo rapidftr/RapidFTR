@@ -34,13 +34,13 @@ RapidFTR.enableSubmitLinks = function() {
 }
 
 RapidFTR.activateToggleFormSectionLinks = function() {
-  var toggleFormSection = function(action) {
+  var toggleFormSection = function(action, message) {
     return function() {
             if(!$('#form_sections input:checked').length) {
-                alert("Please select form(s) you want to " + action + ".");
+                alert("Please select form(s) you want to show/hide.");
             } 
-            else if(confirm("Are you sure you want to " + action + "?")) {
-    		$("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
+                else if(confirm("Are you sure you want to " + message + "?")) {
+    		    $("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
     		return true;
 			} else {
 				return false;
@@ -48,8 +48,8 @@ RapidFTR.activateToggleFormSectionLinks = function() {
     };
   }
   
-  $("#enable_form").click(toggleFormSection("enable"));
-  $("#disable_form").click(toggleFormSection("disable"));
+  $("#enable_form").click(toggleFormSection("enable", "make it visible"));
+  $("#disable_form").click(toggleFormSection("disable", "hide"));
 }
 
 
