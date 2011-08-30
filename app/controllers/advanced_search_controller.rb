@@ -19,9 +19,13 @@ class AdvancedSearchController < ApplicationController
       @criteria_list = [SearchCriteria.new]
       @results = []
     else
-      @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]): [])
-      append_advanced_user_criteria(params[:created_by_value], @criteria_list)
-      @results = SearchService.search(@criteria_list)
+      criteria_for_search = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]): [])
+
+      @user_details_criteria_list = []
+      append_advanced_user_criteria(params[:created_by_value], @user_details_criteria_list)
+
+      @results = SearchService.search(criteria_for_search + @user_details_criteria_list)
+      @criteria_list = criteria_for_search.empty? ? [SearchCriteria.new] : criteria_for_search
     end
   end
 
