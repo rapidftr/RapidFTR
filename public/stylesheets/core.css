@@ -222,12 +222,13 @@ ul.ui-widget-content { background: none; }
     float: right;
     top: -10px;
     width: 125px;
-    height: 33px;
+    height: 30px;
     background: url(../images/reunited-frame.jpg) no-repeat center bottom;
     color: white;
     font-size: 14pt;
     text-align: center;
     padding-top: 3px;
+    margin-bottom: .0em;
 }
 
 .sub_export_record{
