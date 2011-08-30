@@ -44,6 +44,19 @@ describe FormSection do
         FormSection.enabled_by_order.map(&:name).should == %w(Good)
       end
     end
+
+    describe "enabled_by_order_without_disabled_fields" do
+      it "should exclude disabled fields" do
+        enabled = Field.new(:name => "enabled", :type => "text_field", :display_name => "Enabled")
+        disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :enabled => false)
+
+        section = FormSection.new :name => 'section', :order => 1, :unique_id => 'section'
+        section.fields = [disabled, enabled]
+        section.save!
+
+        FormSection.enabled_by_order_without_disabled_fields.first.fields.should == [enabled]
+      end
+    end
   end
 
   describe "get_by_unique_id" do
@@ -236,8 +249,8 @@ describe FormSection do
     end
     it "should give the formsection a new unique id based on the name" do
       form_section_name = "basic details"
-      create_should_be_called_with :unique_id, "basic_details"
-      FormSection.create_new_custom form_section_name
+      form_section = FormSection.create_new_custom form_section_name
+      form_section.unique_id.should == "basic_details"
     end
     it "should populate the name" do
       form_section_name = "basic details"
@@ -339,7 +352,6 @@ describe FormSection do
   end
 
   describe "highlighted_fields" do
-    
     describe "get highlighted fields" do
       before :each do
         high_attr = [{ :order => "1", :highlighted => true }, { :order => "2", :highlighted => true }, { :order => "10", :highlighted => true }]

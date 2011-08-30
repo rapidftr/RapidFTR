@@ -1,6 +1,8 @@
 class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+
   # GET /children
   # GET /children.xml
   def index
@@ -9,12 +11,12 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
       format.xml  { render :xml => @children }
       format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
       format.pdf do
-        pdf_data = PdfGenerator.new.children_info(@children)
+        pdf_data = ExportGenerator.new(@children).to_full_pdf
         send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
@@ -23,7 +25,6 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    @child = Child.get(params[:id])
     @user = User.find_by_user_name(current_user_name)
 
     @form_sections = get_form_sections
@@ -34,20 +35,15 @@ class ChildrenController < ApplicationController
     @body_class = 'profile-page'
 
     respond_to do |format|
-      format.html do
-      if @child.nil?
-      flash[:error] = "Child with the given id is not found"
-      redirect_to :action => :index and return
-      end
-      end
+      format.html
       format.xml  { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
         child_ids = [@child]
-        export_to_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
+        render_as_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
-        pdf_data = PdfGenerator.new.child_info(@child)
+        pdf_data = ExportGenerator.new(@child).to_full_pdf
         send_pdf( pdf_data, "#{file_basename(@child)}.pdf" )
       end
     end
@@ -68,7 +64,6 @@ class ChildrenController < ApplicationController
   # GET /children/1/edit
   def edit
     @page_name = "Edit child record"
-    @child = Child.get(params[:id])
     @form_sections = get_form_sections
   end
 
@@ -93,12 +88,10 @@ class ChildrenController < ApplicationController
   end
 
   def edit_photo
-    @child = Child.get(params[:id])
     @page_name = "Edit Photo"
   end
 
   def update_photo
-    @child = Child.get(params[:id])
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
       @child.rotate_photo(orientation)
@@ -140,7 +133,6 @@ class ChildrenController < ApplicationController
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
-    @child = Child.get(params[:id])
     @child.destroy
 
     respond_to do |format|
@@ -157,9 +149,7 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query]) 
       if @search.valid?    
         @results = Child.search(@search)
-        @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
-          { :name => field.name, :display_name => field.display_name }
-        end
+        @highlighted_fields = FormSection.sorted_highlighted_fields
       else
         render :search
       end
@@ -178,27 +168,23 @@ class ChildrenController < ApplicationController
     if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to PDF"
-			pdf_data = PdfGenerator.new.children_info(children)
+			pdf_data = ExportGenerator.new(children).to_full_pdf
 			send_pdf(pdf_data, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to CSV"
-      export_to_csv(children, "#{file_basename}.csv")
+      render_as_csv(children, "#{file_basename}.csv")
     end
   end
 
   def export_photos_to_pdf children, filename
-    pdf_data = PdfGenerator.new.child_photos(children)
+    pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf( pdf_data, filename)
   end
 
   def export_photo_to_pdf
-    child = Child.get(params[:id])
-    pdf_data = PdfGenerator.new.child_photo(child)
-    send_pdf(pdf_data, "#{file_basename(child)}.pdf")
+    pdf_data = ExportGenerator.new(@child).to_photowall_pdf
+    send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
-  def export_to_csv children, filename
-    render_as_csv(children, filename)
-  end
 
   private
 
@@ -235,20 +221,22 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def render_as_csv results_temp, filename
-    field_names = FormSection.all_child_field_names
-    field_names.unshift "unique_identifier"
-    csv = FasterCSV.generate do |rows|
-      if results_temp.nil?
-        results_temp = @children
-      end
-      rows << field_names
-      results_temp.each do |child|
-          rows << field_names.map { |field_name| child[field_name] }
-      end
-    end
+  def render_as_csv results, filename
+    results = results || [] # previous version handled nils - needed? 
+		export_generator = ExportGenerator.new results
+		csv_data = export_generator.to_csv
+    send_data(csv_data.data, csv_data.options)
+  end
 
-    send_data(csv, :filename => filename, :type => 'text/csv')
+  def load_child_or_redirect
+    @child = Child.get(params[:id])
+
+    return unless request.format.html?
+
+    if @child.nil?
+      flash[:error] = "Child with the given id is not found"
+      redirect_to :action => :index and return
+    end
   end
 
 end

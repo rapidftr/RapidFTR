@@ -23,9 +23,19 @@
                                    :to_value => change['to'],
                                    :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'],
- 								   :message => flag_change_message(history)	} %>
+ 								   :message => new_value_for(history, 'flag_message')	} %>
             <% elsif field == 'flag_message'%>
-                <%# do nothing, because we want the flag message to be suppresed %>
+                <%# do nothing, because we are already displaying the flag message as a part of flag change %>
+            <% elsif field == 'reunited'%>
+                <%= render :partial => "reunited_change",
+                           :locals => {
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
+                                   :datetime => history['datetime'],
+                                   :user_name => history['user_name'],
+ 								   :message => new_value_for(history, 'reunited_message')	} %>
+            <% elsif field == 'reunited_message'%>
+                <%# do nothing, because we are already displaying the reunited message as a part of reunited change %>
             <% else %>
                 <%= render :partial => "history_change",
                            :locals => {

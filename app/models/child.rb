@@ -15,6 +15,7 @@ class Child < CouchRestRails::Document
   property :nickname
   property :unique_identifier
   property :flag, :cast_as => :boolean
+  property :reunited, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {
@@ -25,7 +26,9 @@ class Child < CouchRestRails::Document
           }"
 
   validates_with_method :validate_photos
+  validates_with_method :validate_photos_size
   validates_with_method :validate_audio_file_name
+  validates_with_method :validate_audio_size
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
@@ -61,10 +64,20 @@ class Child < CouchRestRails::Document
   end
   
   def validate_photos
-    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type}
+    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
   
+  def validate_photos_size
+    return true if @photos.blank? || @photos.all?{|photo| photo.size < 10.megabytes }
+    [false, "File is too large"]
+  end
+
+  def validate_audio_size
+    return true if @audio.blank? || @audio.size < 10.megabytes
+    [false, "File is too large"]
+  end
+
   def validate_audio_file_name
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
@@ -197,6 +210,7 @@ class Child < CouchRestRails::Document
   def audio=(audio_file)
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_path
+    @audio = audio_file
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
     self['recorded_audio'] = attachment.name
     attach(attachment)
@@ -264,7 +278,7 @@ class Child < CouchRestRails::Document
   def field_name_changes
     @from_child ||= Child.get(self.id)
 		field_names = field_definitions.map {|f| f.name}
-    other_fields = ["flag","flag_message"]
+    other_fields = ["flag","flag_message", "reunited", "reunited_message"]
 		all_fields = field_names + other_fields
 		all_fields.select { |field_name| changed?(field_name) }
   end

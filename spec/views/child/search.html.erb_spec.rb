@@ -36,12 +36,6 @@ describe "children/search.html.erb" do
       fields.search("dd").first.inner_text.should == "field 2"
     end
 
-    it "should have a definition list for basic details for each record in the results" do
-      render
-
-      Hpricot(response.body).search(".details dl.basic").size.should == @results.length
-    end
-
     it "should have a definition list for interview timestamps details for each record in the results" do
       render
 
@@ -64,7 +58,7 @@ describe "children/search.html.erb" do
 
       first_content_row = Hpricot(response.body).photos
       first_href = first_content_row.at("a")
-      raise 'no image tag' if first_href.nil?
+      first_href.should_not nil
 
       first_href['href'].should == "/children/#{@results.first.id}"
     end

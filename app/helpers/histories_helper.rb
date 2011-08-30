@@ -7,9 +7,9 @@ module HistoriesHelper
     "changed from #{formatted_from} to #{formatted_to}"
   end
 
-  def flag_change_message(history)
+  def new_value_for(history, field_name)
     begin
-      history['changes']['flag_message']['to']
+      history['changes'][field_name]['to']
     rescue
       ''
     end

@@ -252,7 +252,7 @@ describe Child do
     
     it "should save file based on content type" do
       child = Child.new
-      photo = uploadble_jpg_photo_without_file_extension
+      photo = uploadable_jpg_photo_without_file_extension
       child.photo = photo
       child.save.should == true
     end
@@ -299,6 +299,24 @@ describe Child do
 
       loaded_child.photo = uploadable_text_file
       loaded_child.save().should == false
+    end
+
+    it "should disallow photo larger than 10 megabytes" do
+      photo = uploadable_large_photo
+
+      child = Child.new
+      child.photo = photo
+
+      child.save.should == false
+
+    end
+
+    it "should disallow audio larger than 10 megabytes" do
+      child = Child.new
+
+      child.audio = uploadable_large_audio
+      child.save.should == false
+
     end
   end
   describe "new_with_user_name" do
@@ -378,11 +396,10 @@ describe Child do
   end
 
   it "should handle special characters in last known location when creating unique id" do
-    pending "Seem to be having UTF-8 related problems - cv (talk to zk)"
     child = Child.new({'last_known_location'=> "\215\303\304n"})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
-    child["unique_identifier"].should == "george\21512345"
+    child["unique_identifier"].should == "george\215\303\30412345"
   end
 
   describe "photo attachments" do
@@ -765,10 +782,41 @@ describe Child do
       child.save!
 
       child['histories'].first['datetime'].should == 'some_time'
-    	
-		end
+    end
+
+    it "should maintain history when child is flagged and message is added" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+      child['flag'] = 'true'
+      child['flag_message'] = 'Duplicate record!'
+      child.save!
+
+      flag_history = child['histories'].first['changes']['flag']
+      flag_history['from'].should be_nil
+      flag_history['to'].should == 'true'
+
+      flag_message_history = child['histories'].first['changes']['flag_message']
+      flag_message_history['from'].should be_nil
+      flag_message_history['to'].should == 'Duplicate record!'
+    end
+
+    it "should maintain history when child is reunited and message is added" do
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+      child['reunited'] = 'true'
+      child['reunited_message'] = 'Finally home!'
+      child.save!
+
+      reunited_history = child['histories'].first['changes']['reunited']
+      reunited_history['from'].should be_nil
+      reunited_history['to'].should == 'true'
+
+      reunited_message_history = child['histories'].first['changes']['reunited_message']
+      reunited_message_history['from'].should be_nil
+      reunited_message_history['to'].should == 'Finally home!'
+    end
   end
-  
+
   describe ".has_one_interviewer?" do
     it "should be true if was created and not updated" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
