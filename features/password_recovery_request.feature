@@ -40,3 +40,15 @@ Feature: As an user, I should be able to request my password to be recovered.
     When I follow "hide"
 
     Then I should not see "duck"
+
+
+  Scenario: An Admin user is able to see a link to the user profile of a given password recovery request
+    Given a user "duck" with password "iamevil"
+    
+    Given a password recovery request for duck
+
+    Given I am logged in as an admin
+
+    Given I am on the home page
+
+    Then I should see a link to the user details page for "duck"

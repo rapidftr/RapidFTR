@@ -4,7 +4,14 @@
     <p>These users requested password reset. Please contact them immediatly.<ul>
     <ul>
       <% @notifications.each do |notification| %>
-        <li><%= "#{notification.user_name} at #{time_ago_in_words notification.created_at} ago #{link_to("hide", hide_password_recovery_request_path(notification), :method => :delete)}" %></li>
+        <% notification_for_user = User.find_by_user_name notification.user_name %>
+        <li>
+          <% if notification_for_user.nil? %>
+            <%= "#{notification.user_name} at #{time_ago_in_words notification.created_at} ago #{link_to("hide", hide_password_recovery_request_path(notification), :method => :delete)}" %>
+          <% else %>
+            <%= "#{link_to notification.user_name, user_path(notification_for_user)} at #{time_ago_in_words notification.created_at} ago #{link_to("hide", hide_password_recovery_request_path(notification), :method => :delete)}" %>
+          <% end %>
+        </li>
       <% end %>
     </ul>
   <% end %>
