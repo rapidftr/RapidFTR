@@ -1,4 +1,7 @@
 <h2>Welcome to RapidFTR</h2>
+
+<%= render 'notifications' %>
+
 <p>
   <% form_for @user, :url => user_preference_path(current_user_name), :html => {:method => :put} do |f| %>
       <%= label_tag "user_time_zone", "Current time zone" %>
