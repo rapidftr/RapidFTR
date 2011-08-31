@@ -2,18 +2,21 @@ require 'spec_helper'
 
 describe PasswordRecoveryRequest do
   context 'a new request' do
-    before do
-      @request = PasswordRecoveryRequest.new :user_name => "duck" 
-      @request.save
+
+    it "should display requests that were not hidden" do
+      request = PasswordRecoveryRequest.create! :user_name => "evilduck"
+
+      PasswordRecoveryRequest.create! :user_name => "goodduck", :hidden => true
+
+      PasswordRecoveryRequest.to_display.map(&:user_name).should include("evilduck")
+      PasswordRecoveryRequest.to_display.map(&:user_name).should_not   include("goodduck")
     end
-    it "should tell new requests that were not hidden" do
-      PasswordRecoveryRequest.to_display.should =~ [ @request ]
-    end
-    context 'hiding a request' do
-      before { @request.hide! } 
-      it 'should not be displayed' do
-        PasswordRecoveryRequest.to_display.should =~ []
-      end 
+
+    it "should hide password requests" do
+      request = PasswordRecoveryRequest.create! :user_name => "moderateduck"
+      request.hide!
+
+      PasswordRecoveryRequest.to_display.map(&:user_name).should_not include("moderateduck")
     end
   end
 end
