@@ -27,11 +27,11 @@ end
 Then /^I should receive a CSV file with (\d+) lines?$/ do |num_lines|
   num_lines = num_lines.to_i
   page.response_headers['Content-Type'].should == "text/csv"
-  page.body.chomp.split("\n").length.should == num_lines
+  page.text.chomp.split("\n").length.should == num_lines
 end
 
 Then /^the CSV data should be:$/ do |expected_csv|
-  downloaded_csv = FasterCSV.parse(page.body)
+  downloaded_csv = FasterCSV.parse(page.text)
   index_of_name_column = downloaded_csv[0].index "name"
   expected_csv.hashes.each do |expected_line|
     matching_line = downloaded_csv.find do |line|
