@@ -17,9 +17,9 @@ Feature: Editing Custom Form Fields
     Then I should find the form with following attributes:
       | Display name |
       | Help text |
-      | Enabled |
+      | Visible |
     When I fill in "Edited Field" for "Display name"
-    When I fill in "false" for "Enabled"
+    When I fill in "false" for "Visible"
     And I press "Save"
     
     Then I should see "Edited Field"
@@ -39,7 +39,7 @@ Feature: Editing Custom Form Fields
     Then I should find the form with following attributes:
       | Display name |
       | Help text |
-      | Enabled |
+      | Visible |
       | Form |
     When I select "Basic details" from "Form"
 		And I press "Save"
