@@ -255,3 +255,9 @@ Feature: So that admin can customize fields in a form section
 	Given I am on the edit form section page for "basic_details"
 	Then I should not see "Add Custom Field"
 	And I should see "Fields on this form cannot be edited"
+
+    Scenario: should be able to go back to edit form section from add custom field page
+      Given I am on the edit form section page for "family_details"
+      And I follow "Add Custom Field"
+      And I follow "Go Back To Edit Forms Page"
+      Then I am on edit form section page
