@@ -13,7 +13,7 @@
     </li>
     <% unless @child.flag? %>
       <%= render :partial => "mark_as",
-        :locals=> { :mark_as_label => "Flag record as suspect",
+        :locals=> { :mark_as_label => "Flag as suspect record",
           :mark_as_message_id => "flag_message",
           :mark_as_message => "Flag Reason:",
           :mark_as_property => "flag",

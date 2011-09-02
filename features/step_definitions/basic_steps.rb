@@ -413,12 +413,12 @@ end
 
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
-  click_flag_record_as_suspect_link_for(name)
+  click_flag_as_suspect_record_link_for(name)
   click_button("Flag")
 end
 
 When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
-  click_flag_record_as_suspect_link_for(name)
+  click_flag_as_suspect_record_link_for(name)
   fill_in("Flag reason", :with => reason)
   click_button("Flag")
 end
@@ -465,8 +465,8 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
 end
 
 private
-  def click_flag_record_as_suspect_link_for(name)
+  def click_flag_as_suspect_record_link_for(name)
     child = find_child_by_name name
     visit children_path+"/#{child.id}"
-    click_link("Flag record as suspect")
+    click_link("Flag as suspect record")
   end
