@@ -56,8 +56,15 @@ module NavigationHelpers
       when /new user page/
         new_user_path(options)
 
+      when /new password recovery request page/
+        new_password_recovery_request_path
+
       when /manage users page/
         users_path(options)
+
+      when /user details page for "(.+)"/
+        user = User.find_by_user_name($1)
+        user_path(user, options)
 
       when /edit user page for "(.+)"/
         user = User.find_by_user_name($1)

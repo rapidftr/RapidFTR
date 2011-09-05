@@ -20,6 +20,7 @@ vendor/ruby/1.8/gems/
 /.bundle/
 sunspot-solr.pid
 .rvmrc
+bin
 .redcar/*
 features/resources/huge.jpg
 features/resources/huge.mp3

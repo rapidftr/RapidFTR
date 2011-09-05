@@ -6,6 +6,7 @@ Given /^the following children exist in the system:$/ do |children_table|
             'birthplace' => 'Cairo',
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
+						'created_by' => 'Billy',
             'age_is' => 'Approximate'
     )
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''

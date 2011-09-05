@@ -23,6 +23,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :user_preferences
   map.admin 'admin', :controller=>"admin", :action=>"index"
   map.resources :sessions, :except => :index
+  map.resources :password_recovery_requests, :only => [:new, :create]
+  map.hide_password_recovery_request 'password_recovery_request/:password_recovery_request_id/hide', :controller => "password_recovery_requests", :action => "hide", :via => :delete
 
   map.login 'login', :controller=>'sessions', :action =>'new'
   map.logout 'logout', :controller=>'sessions', :action =>'destroy'

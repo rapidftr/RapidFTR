@@ -47,6 +47,6 @@ Given /^the following admin contact info:$/ do |table|
   ContactInformation.create contact_info
 end
 
-
-
-
+Given /^a password recovery request for (.+)$/ do |username|
+  PasswordRecoveryRequest.new(:user_name => username).save
+end
