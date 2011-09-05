@@ -1,10 +1,10 @@
-Feature: So that admin can see Manage Forms Page
+Feature: So that admin can see Manage Form Sections Page
 
   Background:
     Given I am logged in as an admin
     And I follow "Admin"
     And I create a new form called "Other details"
-    And I follow "Manage Forms"
+    And I follow "Manage Form Sections"
 
   Scenario: Admins should see correct re-ordering links for each section
     Then I should see the "basic_identity" section without any ordering links
