@@ -9,7 +9,7 @@ Feature:
 
     # creating a record
     Given I am on children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
 
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Date of Birth / Age"

@@ -26,7 +26,7 @@ Feature: Hide Child Record Form Fields
   Scenario: Hidden field does not appear of form
    Given I follow "Home"
      And I am on children listing page
-     And I follow "New child"
+     And I follow "Register New Child"
      And I fill in "Name" with "Will"
     When I press "Save"
     Then I should see "Child record successfully created."
@@ -38,7 +38,7 @@ Feature: Hide Child Record Form Fields
   Scenario: Hidden field does not appear on PDF
    Given I follow "Home"
      And I am on children listing page
-     And I follow "New child"
+     And I follow "Register New Child"
      And I fill in "Name" with "Will"
     When I press "Save"
     Then I follow "Export to PDF"

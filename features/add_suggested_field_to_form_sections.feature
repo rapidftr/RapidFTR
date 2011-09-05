@@ -49,7 +49,7 @@ Feature: Adding a suggested field to a form section
      Then I should see "Field successfully added"
 
      When I am on children listing page
-     And I follow "New child"
+     And I follow "Register New Child"
 
      Then I should see the select named "child[field_with_options]"
      And I should see an option "option1" for select "child[field_with_options]"

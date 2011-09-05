@@ -45,7 +45,7 @@ describe UsersController do
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      User.stub!(:get).with("37").and_return(mock_user)
+      User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
       get :edit, :id => "37"
       assigns[:user].should equal(mock_user)
     end
@@ -123,7 +123,7 @@ describe UsersController do
       fake_session.stub(:admin?).with(no_args()).and_return(false)
       fake_session.stub(:user_name).and_return('me')
       Session.stub(:get).and_return(fake_session)
-      User.stub!(:get).with("37").and_return(mock_user)
+      User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
       mock_user.should_receive(:user_name).with(no_args()).and_return('not-self')
       controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
       get :edit, :id => "37"
@@ -134,7 +134,7 @@ describe UsersController do
       fake_session.stub(:admin?).with(no_args()).and_return(false)
       fake_session.stub(:user_name).and_return('fakeuser')
       Session.stub(:get).and_return(fake_session)
-      User.stub!(:get).with("24").and_return(mock_user)
+      User.stub!(:get).with("24").and_return(mock_user(:full_name => "Test Name"))
       mock_user.should_receive(:user_name).with(no_args()).and_return('fakeuser')
       controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
       get :edit, :id => "24"

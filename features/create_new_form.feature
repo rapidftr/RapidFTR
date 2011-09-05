@@ -14,7 +14,7 @@ Feature: Create new forms
   Scenario: User creates a new form and it is added to the bottom of the list of forms
 
     Given I am on form section page
-    And I follow "Create form"
+    And I follow "Create New Form Section"
     And I fill in "form_section_name" with "New Form 1"
     And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 
@@ -28,7 +28,7 @@ Feature: Create new forms
   Scenario: Disallowing non alphanumeric characters in the name field
 
     Given I am on form section page
-    And I follow "Create form"
+    And I follow "Create New Form Section"
     And I fill in "form_section_name" with "This is D£dgy"
     And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 
@@ -39,7 +39,7 @@ Feature: Create new forms
   Scenario: Name field cannot be empty
 
     Given I am on form section page
-    And I follow "Create form"
+    And I follow "Create New Form Section"
     And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 
     When I press "Save Form"
@@ -49,7 +49,7 @@ Feature: Create new forms
   Scenario: Cancelling the creation of a form
 
     Given I am on form section page
-    And I follow "Create form"
+    And I follow "Create New Form Section"
     And I fill in "form_section_name" with "New Form 1"
     And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 
@@ -61,7 +61,7 @@ Feature: Create new forms
   Scenario: Can create a form section disabled
 
     Given I am on form section page
-    And I follow "Create form"
+    And I follow "Create New Form Section"
 	Then I should see "Visible checkbox" with id "form_section_enabled"
     And I fill in "form_section_name" with "New Form 1"
     And I uncheck "Visible"
