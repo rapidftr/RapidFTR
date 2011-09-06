@@ -1,7 +1,10 @@
 <p>
-	<%= label_tag select_box.tag_name_attribute, select_box.display_name %> 
+  <span class="tool-tip-label">
+	<%= label_tag select_box.tag_name_attribute, select_box.display_name %>
+    <% if select_box.help_text.present?%>
+	    <img class="tool-tip-icon vtip" title="<%=select_box.help_text%>" src="/images/tool_tip_icon.gif"/>
+    <% end%>
+  </span>
 <%= select_tag select_box.tag_name_attribute, options_for_select(select_box.select_options, (@child[select_box.name] || '')) %>
-  <% if select_box.help_text.present?%> 
-	<img class="tool-tip-icon vtip" title="<%=select_box.help_text%>" src="/images/tool_tip_icon.gif"/>
-  <% end%>
+
 </p>
