@@ -10,8 +10,7 @@ end
 
 When /^I select search result \#(\d+)$/ do |ordinal|
   ordinal = ordinal.to_i - 1
-  
-	checkbox = page.all(:css, "p[@class=checkbox] input[@type='checkbox']")[0]
+	checkbox = page.all(:css, "p[@class=checkbox] input[@type='checkbox']")[ordinal]
   raise 'result row to select has not checkbox' if checkbox.nil?
   check(checkbox[:id])
 end
