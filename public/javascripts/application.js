@@ -39,7 +39,7 @@ RapidFTR.activateToggleFormSectionLinks = function() {
             if(!$('#form_sections input:checked').length) {
                 alert("Please select form(s) you want to show/hide.");
             } 
-                else if(confirm("Are you sure you want to " + message + "?")) {
+                else if(confirm(message)) {
     		    $("#enable_or_disable_form_section").attr("action", "form_section/" + action).submit();
     		return true;
 			} else {
@@ -48,8 +48,8 @@ RapidFTR.activateToggleFormSectionLinks = function() {
     };
   }
   
-  $("#enable_form").click(toggleFormSection("enable", "make it visible"));
-  $("#disable_form").click(toggleFormSection("disable", "hide"));
+  $("#enable_form").click(toggleFormSection("enable", "Are you sure you want to make these form(s) visible?"));
+  $("#disable_form").click(toggleFormSection("disable", "Are you sure you want to hide these form(s)?"));
 }
 
 
