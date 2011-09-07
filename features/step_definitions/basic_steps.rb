@@ -403,17 +403,14 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
   field_labeled(dropdown_label).value.should == selected_text
 end
 
+
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
-  child = find_child_by_name name
-  visit children_path+"/#{child.id}"
-  click_link("Flag record as suspect")
+  click_flag_as_suspect_record_link_for(name)
   click_button("Flag")
 end
 
 When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
-  child = find_child_by_name name
-  visit children_path+"/#{child.id}"
-  click_link("Flag record as suspect")
+  click_flag_as_suspect_record_link_for(name)
   fill_in("Flag reason", :with => reason)
   click_button("Flag")
 end
@@ -458,3 +455,10 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
   child_images = Hpricot(response.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
   child_images[0][:src].should contain(image)
 end
+
+private
+  def click_flag_as_suspect_record_link_for(name)
+    child = find_child_by_name name
+    visit children_path+"/#{child.id}"
+    click_link("Flag as suspect record")
+  end
