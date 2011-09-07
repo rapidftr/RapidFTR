@@ -14,7 +14,10 @@
             $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
 
             $(".profile-tools .mark-as-form").hide();
-            $(".profile-tools .mark-as a").click( function(){
+            $(".profile-tools .flag a").click( function(){
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
+            });
+            $(".profile-tools .reunited a").click( function(){
                 $(this).parent().siblings('form').children('.mark-as-form').toggle();
             });
 
@@ -45,13 +48,17 @@
         });
     </script>
 <% end %>
-
 <% content_for :stylesheet do %>
     <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
+<% end %>
+
+<% if @child.reunited? %>
+    <div class="reunited-message"><%= reunited_message %></div>
 <% end %>
 <% if @child.flag? %>
     <h3 class="flag-message"><%= flag_message %></h3>
 <% end %>
+<br><br>
 <%= render :partial => "show_child_toolbar"%>
 
 <div id='interviewer_details'>

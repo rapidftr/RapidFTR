@@ -41,3 +41,16 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   Time.stub!(:now).and_return current_time
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
+
+Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|
+  divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
+  divs.size.should == quantity.to_i
+end
+
+Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity, div_text, div_class_name|
+  divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
+  divs.size.should == quantity.to_i
+  divs.each do |div|
+    div.text.should == div_text
+  end
+end
