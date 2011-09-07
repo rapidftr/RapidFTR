@@ -16,7 +16,7 @@ Feature: Hide Child Record Form Fields
       | visible_field | text_field | Visible Field |
       | hidden_field  | text_field | Hidden Field  |
      And I am on the edit field page for "hidden_field" on "family_details" form
-    When I uncheck "Enabled"
+    When I uncheck "Visible"
      And I press "Save"
 
 
