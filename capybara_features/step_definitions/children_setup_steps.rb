@@ -17,3 +17,10 @@ Given /^the following children exist in the system:$/ do |children_table|
     child.create!
   end
 end
+
+Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
+  visit path_to('new child page')
+  fill_in('Name', :with => child_name)
+  fill_in('Birthplace', :with => 'Haiti')
+  click_button('Save')
+end
