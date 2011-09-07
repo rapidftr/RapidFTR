@@ -6,6 +6,7 @@
                 <%= render :partial => "photo_history_change",
                            :locals => {
                                    :new_photos => change['added'],
+                                   :deleted_photos => change['deleted'],
                                    :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'] } %>
             <% elsif field == 'recorded_audio' %>
