@@ -46,3 +46,22 @@ Feature:
 
   # cancel button should prompt user
     And the "Discard" button presents a confirmation message    
+
+  Scenario: Should not be able to successfully edit child record with all empty fields
+    Given I am logged in
+
+    # creating a record
+    Given I am on children listing page
+    And I follow "New child"
+
+    When I fill in "Jorge Just" for "Name"
+    And I press "Save"
+
+    # editing the created record
+    Then I follow "Edit"
+    When I fill in "" for "Name"
+    And I press "Save"
+
+    Then I should see "Please fill in at least one field or upload a file"
+
+

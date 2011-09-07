@@ -54,7 +54,7 @@ class Child < CouchRestRails::Document
   def validate_has_at_least_one_field_value
     return true if field_definitions.any? { |field| is_filled_in? field }
     return true if !@file_name.nil? || !@audio_file_name.nil?
-    return true if deprecated_fields.any?{|key,value| !value.nil?}
+    return true if deprecated_fields.any?{|key,value| !value.nil? && value != [] }
     [false, "Please fill in at least one field or upload a file"]
   end
   
@@ -318,7 +318,7 @@ class Child < CouchRestRails::Document
   end  
   
   def deprecated_fields
-    system_fields = ["created_at","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
+    system_fields = ["created_at","last_updated_at","last_updated_by","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end

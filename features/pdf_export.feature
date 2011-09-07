@@ -53,41 +53,6 @@ Feature: So that hard copy printout of missing child photos are available
     And the PDF file should contain the string "will_uid"
     And the PDF file should contain the string "Will"
 
-  Scenario: When an export pdf is generated for a single child the file name contains the date according to the user's timezone preference
-    Given the date/time is "Oct 29 2010 13:12:15UTC"
-    And the user's time zone is "(GMT-11:00) Samoa"
-    And I am on the child search page
-
-    When I fill in "Wil" for "Name"
-    And I press "Search"
-    And I select search result #1
-    And I press "Export to PDF"
-
-    Then I should receive a PDF file
-    And the filename should contain "20101029-0212"
-
-  Scenario: When an export pdf is generated for multiple children the file name contains the date according to the user's timezone preference
-    Given the date/time is "Oct 29 2010 13:12:15UTC"
-    And the user's time zone is "(GMT-11:00) Samoa"
-    And I am on the child search page
-
-    When I am on the saved record page for child with name "Will"
-    And I follow "Export to PDF"
-
-    Then I should receive a PDF file
-    And the filename should contain "20101029-0212"
-
-  Scenario: When a photo wall pdf is generated from the child page the file name contains the date according to the user's timezone preference
-    Given the date/time is "Oct 29 2010 13:12:15UTC"
-    And the user's time zone is "(GMT-11:00) Samoa"
-    And I am on the child search page
-
-    When I am on the saved record page for child with name "Will"
-    And I follow "Export to Photo Wall"
-
-    Then I should receive a PDF file
-    And the filename should contain "20101029-0212"
-
   Scenario: Exporting photo wall PDF from the child page
     Given I am on the saved record page for child with name "Will"
     And I follow "Export to Photo Wall"
