@@ -724,7 +724,7 @@ describe Child do
       child['histories'].first['datetime'].should == 'some_time'
     end
 
-    describe "photos" do
+    describe "photo changes" do
 
       before :each do
         updated_at_time = Time.parse("Jan 20 2010 12:04:24")
@@ -736,7 +736,8 @@ describe Child do
       end
 
       it "should log new photo key on adding a photo" do
-        @child.update_attributes :photo => uploadable_photo_jeff
+        @child.photo = uploadable_photo_jeff
+        @child.save
 
         changes = @child['histories'].first['changes']
         #TODO: this should be instead child.photo_history.first.to or something like that
@@ -748,7 +749,25 @@ describe Child do
         @child.save
         changes = @child['histories'].first['changes']
         changes['photo_keys']['added'].should have(2).photo_keys
+        changes['photo_keys']['deleted'].should be_nil
       end
+
+      it "should log a photo being deleted" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+        
+        @child.delete_photo(@child.photos.first.name)
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['deleted'].should have(1).photo_key
+        changes['photo_keys']['added'].should be_nil
+      end
+
+      it "should select a new primary photo if the current one is deleted"
+
+      it "should not log anything if no photo changes have been made"
+
     end
 
   end

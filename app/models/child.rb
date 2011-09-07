@@ -165,9 +165,15 @@ class Child < CouchRestRails::Document
 
   def delete_photo(delete_photos)
     return unless delete_photos
-    delete_photos.keys.collect do |delete_photo|
-      self['photo_keys'].delete(delete_photo)
+    if delete_photos.is_a? Hash
+      delete_photos = delete_photos.keys
     end
+    delete_photos(delete_photos)
+  end
+
+  def delete_photos(*deleted_photos)
+    @deleted_photo_keys ||= []
+    @deleted_photo_keys.concat(deleted_photos)
   end
 
   def photo=(new_photos)
@@ -192,12 +198,17 @@ class Child < CouchRestRails::Document
   end
 
   def update_photo_keys
-    if @new_photo_keys
-      add_to_history(photo_changes_for(@new_photo_keys)) unless id.nil?
-      self['photo_keys'].concat(@new_photo_keys).uniq!
-      @new_photo_keys = nil
-    end
+    return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
+
+    self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
+
+    @deleted_photo_keys.each { |p| self['photo_keys'].delete(p) } if @deleted_photo_keys
+
     self['current_photo_key'] = self['photo_keys'].first if self['current_photo_key'].blank?
+
+    add_to_history(photo_changes_for(@new_photo_keys, @deleted_photo_keys)) unless id.nil?
+
+    @new_photo_keys, @deleted_photo_keys = nil, nil
   end
 
   def photos
@@ -289,8 +300,9 @@ class Child < CouchRestRails::Document
     end
   end
 
-  def photo_changes_for(new_photo_keys)
-    { 'photo_keys' => { 'added' => new_photo_keys } }
+  def photo_changes_for(new_photo_keys, deleted_photo_keys)
+    return if new_photo_keys.blank? && deleted_photo_keys.blank?
+    { 'photo_keys' => { 'added' => new_photo_keys, 'deleted' => deleted_photo_keys } }
   end
 
   def field_name_changes
