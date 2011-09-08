@@ -181,7 +181,7 @@ class Child < CouchRestRails::Document
     if delete_photos.is_a? Hash
       delete_photos = delete_photos.keys
     end
-    delete_photos(delete_photos)
+    delete_photos(*delete_photos)
   end
 
   def delete_photos(*deleted_photos)
@@ -217,7 +217,7 @@ class Child < CouchRestRails::Document
 
     @deleted_photo_keys.each { |p| self['photo_keys'].delete(p) } if @deleted_photo_keys
 
-    self['current_photo_key'] = self['photo_keys'].first if self['current_photo_key'].blank?
+    self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
 
     add_to_history(photo_changes_for(@new_photo_keys, @deleted_photo_keys)) unless id.nil?
 

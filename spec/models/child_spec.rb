@@ -804,7 +804,7 @@ describe Child do
       it "should log a photo being deleted" do
         @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
         @child.save
-        
+
         @child.delete_photo(@child.photos.first.name)
         @child.save
 
@@ -813,10 +813,30 @@ describe Child do
         changes['photo_keys']['added'].should be_nil
       end
 
-      it "should select a new primary photo if the current one is deleted"
+      it "should select a new primary photo if the current one is deleted" do
+        #@child.primary_photo.should match_photo(uploadable_photo)
+        #@child.primary_photo.should match_photo(uploadable_photo)
+        @child.photos = [uploadable_photo_jeff]
+        @child.save
 
-      it "should not log anything if no photo changes have been made"
+        original_primary_photo_key = @child.photos[0].name
+        jeff_photo_key = @child.photos[1].name
 
+        @child.primary_photo.name.should == original_primary_photo_key
+        @child.delete_photo(original_primary_photo_key)
+        @child.save
+
+        @child.primary_photo.name.should == jeff_photo_key
+      end
+
+      it "should not log anything if no photo changes have been made" do
+        @child["last_known_location"] = "Moscow"
+        @child.save
+
+        y @child['histories']
+        changes = @child['histories'].first['changes']
+        changes['photo_keys'].should be_nil
+      end
     end
 
   end
