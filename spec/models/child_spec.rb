@@ -440,19 +440,6 @@ describe Child do
       end
     end
     
-    context "when updating a photo" do
-      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}  
-      before(:each) do
-        updated_at_time = Time.parse("Feb 20 2010 12:04:32")
-        Time.stub!(:now).and_return updated_at_time
-        child.update_attributes :photo => uploadable_photo_jeff
-      end
-      
-      it "should become the primary photo" do
-        child.primary_photo.should match_photo uploadable_photo_jeff
-      end
-    end
-    
     context "when rotating an existing photo" do
       let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}  
       before(:each) do
@@ -611,21 +598,20 @@ describe Child do
 
   end
 
-  describe "history log" do    
+  describe "history log" do
     before do
-			fields = [
-					Field.new_text_field("last_known_location"),
-					Field.new_text_field("age"),
-					Field.new_text_field("origin"),
-					Field.new_radio_button("gender", ["male", "female"]),
-      		Field.new_photo_upload_box("current_photo_key"),
-      		Field.new_audio_upload_box("recorded_audio")]
-      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+      fields = [
+        Field.new_text_field("last_known_location"),
+        Field.new_text_field("age"),
+        Field.new_text_field("origin"),
+        Field.new_radio_button("gender", ["male", "female"]),
+        Field.new_photo_upload_box("current_photo_key"),
+        Field.new_audio_upload_box("recorded_audio")]
+        FormSection.stub!(:all_enabled_child_fields).and_return(fields)
     end
-    
-    it "should not update history on initial creation of child document" do
-      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
 
+    it "should not update history on initial creation of child document without a photo" do
+      child = Child.create('last_known_location' => 'New York')
       child['histories'].should be_empty
     end
 
@@ -736,35 +722,6 @@ describe Child do
       child['histories'][1]['changes']['last_known_location']['to'].should == 'New York'
     end
 
-    it "should 'from' field with original current_photo_key on a photo addition" do
-      updated_at_time = Time.parse("Jan 20 2010 12:04:24")
-      Time.stub!(:now).and_return updated_at_time
-      child = Child.create('photo' => uploadable_photo_jorge, 'last_known_location' => 'London')
-
-      updated_at_time = Time.parse("Feb 20 2010 12:04:24")
-      Time.stub!(:now).and_return updated_at_time
-      child.update_attributes :photo => uploadable_photo_jeff
-
-      changes = child['histories'].first['changes']
-      
-      #TODO: this should be instead child.photo_history.first.from or something like that
-      changes['current_photo_key']['from'].should =~ /photo.*?-2010-01-20T120424/
-    end
-
-    it "should 'to' field with new current_photo_key on a photo addition" do
-      updated_at_time = Time.parse("Jan 20 2010 12:04:24")
-      Time.stub!(:now).and_return updated_at_time
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
-
-      updated_at_time = Time.parse("Feb 20 2010 12:04:24")
-      Time.stub!(:now).and_return updated_at_time
-      child.update_attributes :photo => uploadable_photo_jeff
-
-      changes = child['histories'].first['changes']
-      #TODO: this should be instead child.photo_history.first.to or something like that
-      changes['current_photo_key']['to'].should =~ /photo.*?-2010-02-20T120424/
-    end
-
     it "should update history with username from last_updated_by" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
@@ -815,6 +772,53 @@ describe Child do
       reunited_message_history['from'].should be_nil
       reunited_message_history['to'].should == 'Finally home!'
     end
+
+    describe "photo changes" do
+
+      before :each do
+        updated_at_time = Time.parse("Jan 20 2010 12:04:24")
+        Time.stub!(:now).and_return updated_at_time
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+        updated_at_time = Time.parse("Feb 20 2010 12:04:24")
+        Time.stub!(:now).and_return updated_at_time
+      end
+
+      it "should log new photo key on adding a photo" do
+        @child.photo = uploadable_photo_jeff
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        #TODO: this should be instead child.photo_history.first.to or something like that
+        changes['photo_keys']['added'].first.should =~ /photo.*?-2010-02-20T120424/
+      end
+
+      it "should log multiple photos being added" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['added'].should have(2).photo_keys
+        changes['photo_keys']['deleted'].should be_nil
+      end
+
+      it "should log a photo being deleted" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+        
+        @child.delete_photo(@child.photos.first.name)
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['deleted'].should have(1).photo_key
+        changes['photo_keys']['added'].should be_nil
+      end
+
+      it "should select a new primary photo if the current one is deleted"
+
+      it "should not log anything if no photo changes have been made"
+
+    end
+
   end
 
   describe ".has_one_interviewer?" do
