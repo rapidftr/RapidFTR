@@ -833,7 +833,6 @@ describe Child do
         @child["last_known_location"] = "Moscow"
         @child.save
 
-        y @child['histories']
         changes = @child['histories'].first['changes']
         changes['photo_keys'].should be_nil
       end
