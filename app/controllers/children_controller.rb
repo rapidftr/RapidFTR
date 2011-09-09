@@ -6,7 +6,7 @@ class ChildrenController < ApplicationController
   # GET /children
   # GET /children.xml
   def index
-    @page_name = "Listing children"
+    @page_name = "View All Children"
     @children = Child.all
     @aside = 'shared/sidebar_links'
     
@@ -143,7 +143,7 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    @page_name = "Child Search"
+    @page_name = "Search Children"
     @aside = "shared/sidebar_links"
     if (params[:query])
       @search = Search.new(params[:query]) 
