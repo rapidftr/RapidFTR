@@ -176,17 +176,17 @@ class Child < CouchRestRails::Document
     attach(attachment)
   end
 
-  def delete_photo(delete_photos)
-    return unless delete_photos
-    if delete_photos.is_a? Hash
-      delete_photos = delete_photos.keys
-    end
-    delete_photos(*delete_photos)
+  def delete_photo(delete_photo)
+    delete_photos([delete_photo])
   end
 
-  def delete_photos(*deleted_photos)
+  def delete_photos(delete_photos)
+    return unless delete_photos
+    if delete_photos.is_a? Hash
+          delete_photos = delete_photos.keys
+        end
     @deleted_photo_keys ||= []
-    @deleted_photo_keys.concat(deleted_photos)
+    @deleted_photo_keys.concat(delete_photos)
   end
 
   def photo=(new_photos)
@@ -269,12 +269,12 @@ class Child < CouchRestRails::Document
     FileAttachment.new media_key, content_type, data
   end
 
-  def update_properties_with_user_name(user_name, new_photo, delete_photo, new_audio, properties)
+  def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
-    self.delete_photo(delete_photo)
+    self.delete_photos(delete_photos)
     self.photo = new_photo
     self.audio = new_audio
   end
