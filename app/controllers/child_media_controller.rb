@@ -49,7 +49,7 @@ class ChildMediaController < ApplicationController
 
   def find_photo_attachment
     begin
-       @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.primary_photo
+       @attachment = params[:photo_id] ? @child.media_for_key(params[:photo_id]) : @child.primary_photo
     rescue => e
       p e.inspect
     end

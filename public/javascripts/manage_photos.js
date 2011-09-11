@@ -13,9 +13,6 @@ $(function() {
     makePrimaryPhoto: function() {
       $.ajax({
         url: this.get("select_primary_photo_url"),
-        success: function() {
-          alert("Set primary photo!");
-        },
         type: "PUT"
       });
     },
@@ -104,7 +101,8 @@ $(function() {
       Photos.bind('add',     this.addOne);
       Photos.bind('refresh', this.addAll);
 
-      $("#selectPrimaryPhotoButton").click(function() {
+      $("#selectPrimaryPhotoButton").click(function(e) {
+        e.preventDefault();
         var selectedPhoto = Photos.getSelectedPhoto();
         if (selectedPhoto) {
           selectedPhoto.makePrimaryPhoto();
