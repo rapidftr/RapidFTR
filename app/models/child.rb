@@ -6,9 +6,8 @@ class Child < CouchRestRails::Document
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
 
-  before_save :initialize_history, :if => :new?
-  before_save :update_photo_keys
   before_save :update_history, :unless => :new?
+  before_save :update_photo_keys
 
   property :age
   property :name
@@ -34,11 +33,18 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::TEXT_AREA
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
-	validates_with_method :created_at, :method => :validate_created_at
+  validates_with_method :created_at, :method => :validate_created_at
 
-	def field_definitions 
-		@field_definitions ||= FormSection.all_enabled_child_fields
-	end
+  def initialize *args
+    self['photo_keys'] ||= []
+    self['current_photo_key'] = nil
+    self['histories'] = []
+    super *args
+  end
+
+  def field_definitions
+    @field_definitions ||= FormSection.all_enabled_child_fields
+  end
 
   def self.build_solar_schema
     fields = build_fields_for_solar
@@ -144,45 +150,78 @@ class Child < CouchRestRails::Document
     self['last_updated_at'] = current_formatted_time
   end
 
+  def last_updated_by
+    self['last_updated_by'] || self['created_by']
+  end
+
+  def last_updated_at
+    self['last_updated_at'] || self['created_at']
+  end
+
   def unique_identifier
     self['unique_identifier']
   end
 
   def rotate_photo(angle)
-    existing_photo = primary_photo               
+    existing_photo = primary_photo
     image = MiniMagick::Image.from_blob(existing_photo.data.read)
     image.rotate(angle)
-                                        
+
     attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob)
-    # attachment = FileAttachment.from_uploadable_file(image.to_blob, "photo-#{existing_photo.name.hash}")
-    
-    self['photo_keys'].delete(attachment.name)
-    @photo_keys = [attachment.name]
-    delete_attachment(existing_photo.name) 
-    attach(attachment)  
-  end                                                                 
-  
-  def delete_photo(delete_photos)
-    return unless delete_photos
-    delete_photos.keys.collect do |delete_photo|
-      self['photo_keys'].delete(delete_photo)
-    end
+
+    photo_key_index = self['photo_keys'].find_index(existing_photo.name)
+    self['photo_keys'].delete_at(photo_key_index)
+    delete_attachment(existing_photo.name)
+    self['photo_keys'].insert(photo_key_index, existing_photo.name)
+    attach(attachment)
   end
-  
+
+  def delete_photo(delete_photo)
+    delete_photos([delete_photo])
+  end
+
+  def delete_photos(delete_photos)
+    return unless delete_photos
+    if delete_photos.is_a? Hash
+          delete_photos = delete_photos.keys
+        end
+    @deleted_photo_keys ||= []
+    @deleted_photo_keys.concat(delete_photos)
+  end
+
   def photo=(new_photos)
     return unless new_photos
     #basically to support any client passing a single photo param, only used by child_spec AFAIK
-    unless new_photos.is_a? Hash
-      new_photos = {'0' => new_photos}
+    if new_photos.is_a? Hash
+      photos = new_photos.values
+    else
+      photos = [new_photos]
     end
+    self.photos = photos
+  end
 
+  def photos=(new_photos)
     @photos = []
-    @photo_keys = new_photos.values.select {|photo| photo.respond_to? :content_type}.collect do |photo|
+    @new_photo_keys = new_photos.select {|photo| photo.respond_to? :content_type}.collect do |photo|
       @photos <<  photo
       attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
       attach(attachment)
       attachment.name
     end
+  end
+
+  def update_photo_keys
+    return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
+
+    self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
+
+    @deleted_photo_keys.each { |p| self['photo_keys'].delete(p) } if @deleted_photo_keys
+
+    self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
+
+    add_to_history(photo_changes_for(@new_photo_keys, @deleted_photo_keys)) unless id.nil?
+
+    @new_photo_keys, @deleted_photo_keys = nil, nil
   end
 
   def photos
@@ -230,29 +269,22 @@ class Child < CouchRestRails::Document
     FileAttachment.new media_key, content_type, data
   end
 
-  def update_properties_with_user_name(user_name, new_photo, delete_photo, new_audio, properties)
+  def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
     properties.each_pair do |name, value|
       self[name] = value unless value == nil
     end
     self.set_updated_fields_for user_name
-    self.delete_photo(delete_photo)
+    self.delete_photos(delete_photos)
     self.photo = new_photo
     self.audio = new_audio
   end
 
-  def initialize_history
-    self['histories'] = []
-  end
-
   def update_history
     if field_name_changes.any?
-      self['histories'].unshift({
-              'user_name' => self['last_updated_by'],
-              'datetime' => self['last_updated_at'],
-              'changes' => changes_for(field_name_changes) })
+      add_to_history(changes_for(field_name_changes))
     end
   end
-  
+
   def has_one_interviewer?
     user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
     user_names_after_deletion.delete(self['created_by'])
@@ -261,6 +293,13 @@ class Child < CouchRestRails::Document
 
 
   protected
+
+  def add_to_history(changes)
+      self['histories'].unshift({
+              'user_name' => last_updated_by,
+              'datetime' => last_updated_at,
+              'changes' => changes })
+  end
 
   def current_formatted_time
     Time.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
@@ -273,6 +312,11 @@ class Child < CouchRestRails::Document
         'to' => self[field_name]
       })
     end
+  end
+
+  def photo_changes_for(new_photo_keys, deleted_photo_keys)
+    return if new_photo_keys.blank? && deleted_photo_keys.blank?
+    { 'photo_keys' => { 'added' => new_photo_keys, 'deleted' => deleted_photo_keys } }
   end
 
   def field_name_changes
@@ -304,13 +348,6 @@ class Child < CouchRestRails::Document
     FileAttachment.new key, content_type, data      
   end
   
-  def update_photo_keys
-    @photo_keys ||= []
-    self['photo_keys'] ||= []
-    self['photo_keys'].concat @photo_keys
-    self['current_photo_key'] = @photo_keys.first || self['photo_keys'].first
-  end
-  
   def attach(attachment)
     create_attachment :name => attachment.name,
                       :content_type => attachment.content_type,
@@ -318,7 +355,7 @@ class Child < CouchRestRails::Document
   end  
   
   def deprecated_fields
-    system_fields = ["created_at","last_updated_at","last_updated_by","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier"]
+    system_fields = ["created_at","last_updated_at","last_updated_by","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier", "current_photo_key", "photo_keys"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end
