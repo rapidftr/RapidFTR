@@ -1,4 +1,3 @@
-@wip @headless
 Feature: View Child Record Toolbar
 
   As a User, when I view a child record
@@ -20,5 +19,5 @@ Feature: View Child Record Toolbar
     | Edit                   | edit            |
     | View the change log    | view-log        |
     | Export this Record     | export_record   |
-    | Flag record as suspect | flag            |
+    | Flag as suspect record | flag            |
     | Mark child as Reunited | reunited        |

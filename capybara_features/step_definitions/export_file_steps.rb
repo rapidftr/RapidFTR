@@ -1,15 +1,9 @@
 Then /^I should receive a PDF file$/ do
-  Tempfile.open('rapidftr_cuke_tests') do |temp_file|
-    temp_file.write(page.body)
-    temp_file.close
-    mimetype = `file --brief --mime #{temp_file.path}`.gsub(/\n/,"")
-    mimetype.should =~ /application\/pdf/
-  end
+  page.response_headers['Content-Type'].should == "application/pdf"
 end
 
 Then /^the PDF file should have (\d+) page(?:|s)$/ do |num_pages|
   num_pages = num_pages.to_i
-
   pdf = PDF::Inspector::Page.analyze(page.body)
   pdf.should have(num_pages).pages
 end
@@ -27,17 +21,16 @@ end
 Then /^I should receive a CSV file with (\d+) lines?$/ do |num_lines|
   num_lines = num_lines.to_i
   page.response_headers['Content-Type'].should == "text/csv"
-  page.text.chomp.split("\n").length.should == num_lines
+  page.body.chomp.split("\n").length.should == num_lines
 end
 
 Then /^the CSV data should be:$/ do |expected_csv|
-  downloaded_csv = FasterCSV.parse(page.text)
+  downloaded_csv = FasterCSV.parse(page.body)
   index_of_name_column = downloaded_csv[0].index "name"
   expected_csv.hashes.each do |expected_line|
     matching_line = downloaded_csv.find do |line|
       line[index_of_name_column] == expected_line["name"]
     end
-
     matching_line.should_not be_nil
     expected_line.each_key do |key|
       matching_line.should include expected_line[key]
