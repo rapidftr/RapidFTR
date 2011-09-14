@@ -54,3 +54,7 @@ Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity,
     div.text.should == div_text
   end
 end
+
+When /^I sleep (\d*) seconds$/ do |sleep_time|
+  sleep sleep_time.to_i
+end
