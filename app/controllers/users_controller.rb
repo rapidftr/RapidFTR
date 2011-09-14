@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   end
 
   def new
+    @page_name = 'New User'
     @user = User.new
   end
 
@@ -26,7 +27,8 @@ class UsersController < ApplicationController
     session = app_session
     
     @user = User.get(params[:id])
-    unless session.admin? or @user.user_name == current_user_name   
+    @page_name = "Editing User: #{@user.full_name}"
+    unless session.admin? or @user.user_name == current_user_name
       raise AuthorizationFailure.new('Not permitted to view page')
     end
   end

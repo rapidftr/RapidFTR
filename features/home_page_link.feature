@@ -21,5 +21,5 @@ Feature: So that a user can get back to their initial start page from anywhere w
 
     Given I am on the home page
     Then I should see "Welcome to RapidFTR"
-    And I should see "Register Child"
+    And I should see "Register New Child"
     And I should see "View All Children"

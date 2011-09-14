@@ -35,8 +35,8 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Anything"
     When I am on children listing page
-    And I follow "New child"
-
+    And I follow "Register New Child"
+    
     Then I should see "Anything"
 
   Scenario: Admins should be able to add new date fields
@@ -62,7 +62,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Anything"
 
     When I am on children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
 
     Then I should see "Anything"
     When I fill in "17 Nov 2010" for "child_anything"
@@ -97,7 +97,7 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Radio button name"
     When I am on children listing page
-    And I follow "New child"
+    And I follow "Register New child"
 
     Then I should see "Radio button name"
 
@@ -147,7 +147,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "my_new_number_field" in the list of fields
 
     When I am on children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
     And I fill in "2345" for "My new number field"
     And I press "Save"
 

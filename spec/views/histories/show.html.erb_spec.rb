@@ -16,6 +16,18 @@ class FakeRecordWithHistory
     @fields["histories"].unshift(history)
   end
 
+  def add_photo_change username, date, *new_photos
+    self.add_history({
+             "changes" => {
+                 "photo_keys" => {
+                     "added" => new_photos
+                 }
+             },
+             "user_name" => username,
+             "datetime" => date
+          })
+  end
+
   def add_single_change username, date, field, from, to
     self.add_history({
              "changes" => {
@@ -83,30 +95,29 @@ describe "histories/show.html.erb" do
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       end
 
-      it "should render photo change record when updating a photo" do
+      it "should render photo change record with links when adding a photo to an existing record" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
-        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", "OldPhoto", "NewPhoto"
+        child.add_photo_change "rapidftr", "2010/12/31 20:55:00 +0000", "new_photo_key"
 
         assigns[:child] = child
         assigns[:user] = @user
         render
 
       	response.should have_tag(".history-details") do
-          with_tag("li", /Photo changed/)
+          with_tag("li", /Photo\s+added/)
       	end
       end
 
-      it "should render photo change record with links when adding a photo to an existing record for first time" do
+      it "should render photo change record with links when adding photos to an existing record" do
         child = FakeRecordWithHistory.new "Bob", "Yesterday"
-        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "current_photo_key", nil, "NewPhoto"
+        child.add_photo_change "rapidftr", "2010/12/31 20:55:00 +0000", "new_photo_key", "new_photo_key2"
 
         assigns[:child] = child
         assigns[:user] = @user
         render
 
       	response.should have_tag(".history-details") do
-          with_tag("li", /Photo  added/)
-          with_tag("li", /Photo  added/)
+          with_tag("li", /Photos\s+added/)
       	end
       end
     end

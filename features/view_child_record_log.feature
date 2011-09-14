@@ -8,7 +8,7 @@ Feature:
 
     Given "Harry" is logged in
     And I am on the children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
 
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Date of Birth / Age"
@@ -36,22 +36,14 @@ Feature:
     And I press "Save"
     And I follow "View the change log"
 
-    Then I should see "2010-03-01 17:59:33 UTC Photo changed from"
-    And I should see the thumbnail of "Jorge Just" with timestamp "2010-07-19T130532"
+    Then I should see "2010-03-01 17:59:33 UTC Photo added"
     And I should see the thumbnail of "Jorge Just" with timestamp "2010-03-01T175933"
     And I should see "by mary"
 
-    When I follow photo with timestamp "2010-07-19T130532"
-
-    Then I should see the photo corresponding to "features/resources/jorge.jpg"
-
-    When I am on the children listing page
-    And I follow "Jorge Just"
-    And I follow "View the change log"
-
     When I follow photo with timestamp "2010-03-01T175933"
-
     Then I should see the photo corresponding to "features/resources/jeff.png"
+
+
 
   Scenario:  I log in as a different user, edit and view the record log
 
