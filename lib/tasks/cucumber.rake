@@ -7,13 +7,14 @@
 
 unless ARGV.any? {|a| a =~ /^gems/} # Don't load anything when running the gems:* tasks
 
-if ENV['CUCUMBER_OPTS'] == '--expand --format Teamcity::Cucumber::Formatter'
+if ENV['CUCUMBER_OPTS'] =~ /Teamcity/
   # Don't let TeamCity override our multiple profiles.
   # The ENV var overrides while the cucumber_opts rake task attribute works with profile.
+  puts "Removing ENV[CUCUMBER_OPTS] to use it in combination with task-specific profiles in TeamCity."
   cucumber_opts = ENV['CUCUMBER_OPTS']
   ENV['CUCUMBER_OPTS'] = nil
 elsif ENV['CUCUMBER_OPTS']
-  puts "Using CUCUMBER_OPTS #{ENV['CUCUMBER_OPTS'].inspect}"
+  puts "Using CUCUMBER_OPTS #{ENV['CUCUMBER_OPTS'].inspect}, which will override our task-specific profiles. (This is probably not what you want.)"
 end
 
 vendored_cucumber_bin = Dir["#{RAILS_ROOT}/vendor/{gems,plugins}/cucumber*/bin/cucumber"].first
