@@ -3,6 +3,7 @@ class FormSectionController < ApplicationController
   before_filter :administrators_only
 
   def index
+    @page_name = "Manage Form Sections"
     @form_sections = FormSection.all.sort_by { |row| [row.enabled ? 0 : 1, row.order] }
   end
 
@@ -23,6 +24,7 @@ class FormSectionController < ApplicationController
   end
   
   def edit
+    @page_name = "Edit Form Sections"
     @form_section = FormSection.get_by_unique_id(params[:id])
   end
   
@@ -59,6 +61,7 @@ class FormSectionController < ApplicationController
   end
   
   def new
+    @page_name = "Create New Form Section"
     @form_section = FormSection.new(params[:form_section])
   end
 

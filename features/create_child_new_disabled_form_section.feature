@@ -10,7 +10,7 @@ Feature: As an user I should not see disabled forms when adding new child
       | Caregiver Details   |  | caregiver_details | 3 | true |
       | Disabled |  | disabled_details | 4 | false |
     And I am on children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
 
     Then I should see the "Basic Details" tab
     And I should see the "Family Details" tab
