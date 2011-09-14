@@ -22,26 +22,40 @@ class ExportGenerator
     end
     @pdf.render
   end
-	def to_csv
+  def fix_csv_fields field_name, value, child_id
+    if field_name != nil then
+      if value != nil then        
+        if field_name.index('photo') != nil then
+          return 'http://' + request.domain + ':' + request.port.to_s + '/children/' + child_id + '/photo/' + value
+        end
+        if field_name.index('audio') != nil then
+          return 'http://' + request.domain + ':' + request.port.to_s + '/children/' + child_id + '/audio/' + value
+        end
+      end
+    end
+    return value
+  end
+
+  def to_csv
     field_names = FormSection.all_enabled_child_fields.map {|field| field.name}
     field_names.unshift "unique_identifier"
     field_names 
-		csv_data = FasterCSV.generate do |rows|
+    csv_data = FasterCSV.generate do |rows|
       rows << field_names
       @child_data.each do |child|
-          rows << field_names.map { |field_name| child[field_name] }
+        rows << field_names.map { |field_name| fix_csv_fields(field_name, child[field_name], child["_id"]) }
       end
     end
-
-		return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
-	end
+    
+    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
+  end
   
-	def filename export_type, extension
-		return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
-		return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
-	end
-
-	def filename_date_string
+  def filename export_type, extension
+    return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
+    return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
+  end
+  
+  def filename_date_string
     Clock.now.strftime("%Y%m%d")
   end
 
