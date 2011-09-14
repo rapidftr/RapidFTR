@@ -21,46 +21,26 @@ Then /^I should see "([^\"]*)" in the search results$/ do |value|
 end
 
 Then /^I should see "(.*)" as reunited in the search results$/ do |child_name|
-  child_link = page.find('//a', :text => child_name)
+  child_link = page.find(:xpath, "//a[text()=\"#{child_name}\"]")
   link = child_link[:href]
-  #puts 'link=' + link
   child_id = nil
   link.each('/') { |s| child_id=s }
-  #puts 'child_id=' + child_id
   child_id = 'child_'+child_id
-  #puts 'child_id=' + child_id
-  child_div = page.find('//div', :id => child_id)
-  #child_div2 = child_div.find( :xpath, 'div[@class="header"]')
-  match = child_div.find(:xpath, './/img[@class="reunited"]')
-  #puts 'child_div=' + child_div.to_s
-  #match = page.find :xpath, "//div[@id=\"#{child_id}\"]/div[@class=\"header\"]/img[@class=\"reunited\"]"
-  #match = page.find :xpath, "//div[@id=\"#{child_id}\"]//img[@class=\"reunited\"]"
-  #match = page.find :xpath, "//div[@id=#{child_id}] div[@class=header]"
-  #match = page.find :xpath, "//div[@id=#{child_id}]/div[@class=header]/img[@class=reunited]"
-  #match = child_div.find('img', :class => 'reunited')
-  #puts 'match=' + match.to_s
-  match.should_not be_nil
+  lambda { page.find(:xpath, "//div[@id=\"#{child_id}\"]/div/img[@class=\"reunited\"]")}.should_not raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should not see "(.*)" as reunited in the search results$/ do |child_name|
-  child_link = page.find('//a', :text => child_name)
+  child_link = page.find(:xpath, "//a[text()=\"#{child_name}\"]")
   link = child_link[:href]
-  #puts 'link=' + link
   child_id = nil
   link.each('/') { |s| child_id=s }
-  #puts 'child_id=' + child_id
   child_id = 'child_'+child_id
-  puts 'child_id=' + child_id
-  child_div = page.find('//div', :id => child_id)
-  #child_div2 = child_div.find( :xpath, '/div[@class="header"]')
-  match = child_div.find(:xpath, './img[@class="reunited"]')
-  #child_div2 = child_div.find('//div', :class => 'header')
-  #match = child_div2.find('//img', :class => 'reunited')
-  puts '********* ' + match[:src]
-  #puts 'child_div=' + child_div.to_s
-  #match = page.find :xpath, "//div[@id=\"#{child_id}\"]/div/img[@class=\"reunited\"]"
-  #match = child_div.find :xpath, "//div/img[@class=\"reunited\"]"
-  #match = child_div.find('img', :class => 'reunited')
-  #puts 'match=' + match.to_s
-  match.should be_nil
+  lambda { page.find(:xpath, "//div[@id=\"#{child_id}\"]/div/img[@class=\"reunited\"]") }.should raise_error(Capybara::ElementNotFound)
 end
+
+
+
+
+
+
+
