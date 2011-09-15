@@ -22,28 +22,28 @@ class ExportGenerator
     end
     @pdf.render
   end
-  def fix_csv_fields field_name, value, child_id
+  def fix_csv_fields field_name, value, child_id, path
     if field_name != nil then
       if value != nil then        
         if field_name.index('photo') != nil then
-          return 'http://' + request.domain + ':' + request.port.to_s + '/children/' + child_id + '/photo/' + value
+          return path + '/children/' + child_id + '/photo/' + value
         end
         if field_name.index('audio') != nil then
-          return 'http://' + request.domain + ':' + request.port.to_s + '/children/' + child_id + '/audio/' + value
+          return path + '/children/' + child_id + '/audio/' + value
         end
       end
     end
     return value
   end
 
-  def to_csv
+  def to_csv path
     field_names = FormSection.all_enabled_child_fields.map {|field| field.name}
     field_names.unshift "unique_identifier"
     field_names 
     csv_data = FasterCSV.generate do |rows|
       rows << field_names
       @child_data.each do |child|
-        rows << field_names.map { |field_name| fix_csv_fields(field_name, child[field_name], child["_id"]) }
+        rows << field_names.map { |field_name| fix_csv_fields(field_name, child[field_name], child["_id"], path) }
       end
     end
     
