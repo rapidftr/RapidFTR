@@ -28,12 +28,12 @@
 
     <dl class="interviewer-details">
       <dt>Registered by:</dt>
-      <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= summary_row['created_at'] %></dd>
+      <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></dd>
     </dl>
     <dl class="interview-timestamp">
       <% if summary_row['last_updated_at'] %>
         <dt>Last updated:</dt>
-        <dd><%= summary_row['last_updated_at'] %></dd>
+        <dd><%= @user.localize_date(summary_row['last_updated_at']) %></dd>
       <% end %>
     </dl>
   </div>

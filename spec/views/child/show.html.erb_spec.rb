@@ -99,7 +99,8 @@ describe "children/show.html.erb" do
       end
 
    		it "should always show the posted at details when the record has been posted from a mobile client" do
-					child = Child.new(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob", :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+					child = Child.new(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob",
+                            :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
       	  child.stub!(:has_one_interviewer?).and_return(true)
 
           user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
@@ -110,7 +111,7 @@ describe "children/show.html.erb" do
        		render
 
         	response.should have_selector("#interviewer_details") do |fields|
-          		fields[0].should contain("Posted from the mobile client at: 2007-01-01 03:04:00 -1100")
+          		fields[0].should contain("Posted from the mobile client at: 01 January 2007 at 03:04 (SST)")
         	end 
 			end
 
