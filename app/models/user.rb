@@ -16,6 +16,7 @@ class User < CouchRestRails::Document
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :time_zone, :default => "UTC"
+  property :permission
   attr_accessor :password_confirmation, :password
 
 
@@ -49,7 +50,6 @@ class User < CouchRestRails::Document
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
   validates_presence_of :user_type,:message=>"Please choose a user type"
 
-
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
   validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
 
@@ -61,6 +61,7 @@ class User < CouchRestRails::Document
 
   validates_confirmation_of :password, :if => :password_required?
   validates_with_method   :user_name, :method => :is_user_name_unique
+  validates_with_method   :permission, :method => :is_valid_permission_level
 
 
   def self.find_by_user_name(user_name)
@@ -119,13 +120,17 @@ class User < CouchRestRails::Document
     end
   end
 
+  def has_limited_access?
+    permission == Permission::LIMITED
+  end
+
   private
 
   def save_devices
     @devices.map(&:save!) if @devices
     true
   end
-  
+
   def encrypt_password
     return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{self.user_name}--") if new_record?
@@ -146,6 +151,11 @@ class User < CouchRestRails::Document
 
   def auto_fill_password_confirmation_if_not_supplied
     self.password_confirmation = password if self.password_confirmation.nil?
+  end
+
+  def is_valid_permission_level
+    return true if [Permission::LIMITED, Permission::UNLIMITED].include?(permission)
+    [ false, "Invalid Permission Level" ]
   end
 
 end
