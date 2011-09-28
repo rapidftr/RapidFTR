@@ -1,5 +1,6 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
+include ActionController::UrlWriter
 
 class ExportGenerator
 	class Export
@@ -23,14 +24,14 @@ class ExportGenerator
 		@pdf.render
 	end
 
-	def to_csv
+	def to_csv path
 		fields = FormSection.all_enabled_child_fields
 		fields.unshift Field.new_text_field("unique_identifier")
 		field_names = fields.map{|field| field.name}
 		csv_data = FasterCSV.generate do |rows|
 			rows << field_names
 			@child_data.each do |child|
-				rows << fields.map { |field| format_field_for_export(field, child[field.name]) }
+				rows << fields.map { |field| format_field_for_export(field, child[field.name], child.unique_identifier, path) }
 			end
 		end
 
@@ -46,11 +47,21 @@ class ExportGenerator
 	end
 
 	private
-	def format_field_for_export field, value
+	def format_field_for_export field, value, child_id, path
 		if (field.type ==  Field::CHECK_BOXES) 
 			return value.join(", ") unless value.nil?
 		end
-		return value || ""
+          if field.name != nil then
+            if value != nil then        
+              if field.name.index('photo') != nil then
+                return path + child_photo_path(child_id)
+              end
+              if field.name.index('audio') != nil then
+                return path + child_audio_path(child_id)
+              end
+            end
+          end
+          return value || ""
 	end
 
 	def filename export_type, extension
@@ -81,7 +92,7 @@ class ExportGenerator
 			@pdf.text section.name, :style => :bold, :size => 16
 			field_pair = section.fields.
 				select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.enabled? }.
-				map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
+				map { |field| [field.display_name, format_field_for_export(field, child[field.name], child.unique_identifier)] }
 			if !field_pair.empty?
 				@pdf.table field_pair,
 					:border_width => 0, :row_colors => %w[  cccccc ffffff  ],
