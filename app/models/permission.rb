@@ -1,6 +1,6 @@
 class Permission
 
-  LIMITED = "limited"
-  UNLIMITED = "unlimited"
+  LIMITED = "Limited"
+  UNLIMITED = "Unlimited"
 
 end

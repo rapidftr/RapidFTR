@@ -10,7 +10,7 @@ describe User do
       :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
       :user_type => 'user_type',
-      :permission => 'limited'
+      :permission => Permission::LIMITED
     })
     user = User.new( options) 
     user
@@ -34,9 +34,9 @@ describe User do
     end
 
     it "should succeed if permission is set appropriately" do
-      user = build_user(:permission => "limited")
+      user = build_user(:permission => "Limited")
       user.should be_valid
-      user.permission = "unlimited"
+      user.permission = "Unlimited"
       user.should be_valid
     end
   end
@@ -180,19 +180,19 @@ describe User do
 
     context "user with limited permissions" do
       before do
-        @user.permission = "limited"
+        @user.permission = "Limited"
         @user.save!
       end
       it { should have_limited_access }
-      its(:permission) { should == "limited" }
+      its(:permission) { should == "Limited" }
     end
 
     context "user with unlimited permissions" do
       before do
-        @user.permission = "unlimited"
+        @user.permission = "Unlimited"
         @user.save!
       end
-      its(:permission) { should == "unlimited" }
+      its(:permission) { should == "Unlimited" }
     end
   end
 
