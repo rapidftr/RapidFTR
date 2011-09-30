@@ -9,7 +9,7 @@ module RapidFTR
       basic_identity_fields = [
         Field.new("name" => "name", "display_name" => "Name", "type" => "text_field", "editable" => false,"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>1)),
         Field.new("name" => "rc_id_no", "display_name" => "RC ID No.", "type" => "text_field","highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>2)),
-        Field.new("name" => "protection_status", "display_name" => "Protection Status", "help_text" => "A separated child is any person under the age of 18, separated from both parents or from his/her revious legal or customary primary care give, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives.", "type" => "select_box", "option_strings" => ["","Unaccompanied", "Separated"],"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>3)),
+        Field.new("name" => "protection_status", "display_name" => "Protection Status", "help_text" => "A separated child is any person under the age of 18, separated from both parents or from his/her previous legal or customary primary care giver, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives.", "type" => "select_box", "option_strings" => ["","Unaccompanied", "Separated"],"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>3)),
         Field.new("name" => "id_document", "display_name" => "Personal ID Document No.", "type" => "text_field"),
         Field.new("name" => "gender", "display_name" => "Sex", "type" => "select_box", "option_strings" => ["", "Male", "Female"]),
         Field.new("name" => "nick_name", "display_name" => "Also Known As (nickname)", "type" => "text_field"),
@@ -119,7 +119,7 @@ module RapidFTR
               
       other_org_fields = [
         Field.new("name" => "other_org_interview_status", "display_name" => "Has the child been interviewed by another organization?", "type" => "select_box", "option_strings" => ["", "Yes", "No"]),  
-        Field.new("name" => "other_org_name", "display_name" => "Name of Organzation", "type" => "text_field"),      
+        Field.new("name" => "other_org_name", "display_name" => "Name of Organization", "type" => "text_field"),
         Field.new("name" => "other_org_place", "display_name" => "Place of Interview", "type" => "text_field"),      
         Field.new("name" => "other_org_country", "display_name" => "Country", "type" => "text_field"),      
         Field.new("name" => "other_org_date", "display_name" => "Date", "type" => "text_field"),      

@@ -5,7 +5,8 @@ class ContactInformationController < ApplicationController
 
   # GET /contact_information/Administrator  
   def show
-    @contact_information = ContactInformation.get_by_id(params[:id]) 
+    @page_name = "Contact & Help"
+    @contact_information = ContactInformation.get_by_id(params[:id])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @contact_information }
@@ -14,6 +15,7 @@ class ContactInformationController < ApplicationController
 
   # GET /contact_information/Administrator/edit
   def edit
+    @page_name = "Edit Contact Information"
     @contact_information = ContactInformation.get_or_create(params[:id])
   end
   

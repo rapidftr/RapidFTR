@@ -10,6 +10,7 @@ class AdvancedSearchController < ApplicationController
   end
 
   def index
+    @page_name = "Advanced Search"
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     @highlighted_fields = []

@@ -6,7 +6,7 @@ class ChildrenController < ApplicationController
   # GET /children
   # GET /children.xml
   def index
-    @page_name = "Listing children"
+    @page_name = "View All Children"
     @children = Child.all
     @aside = 'shared/sidebar_links'
     
@@ -29,7 +29,7 @@ class ChildrenController < ApplicationController
 
     @form_sections = get_form_sections
 
-    @page_name = @child
+    @page_name = "View Child: #{@child}"
 
     @aside = 'picture'
     @body_class = 'profile-page'
@@ -52,7 +52,7 @@ class ChildrenController < ApplicationController
   # GET /children/new
   # GET /children/new.xml
   def new
-    @page_name = "New child record"
+    @page_name = "Register New Child"
     @child = Child.new
     @form_sections = get_form_sections
     respond_to do |format|
@@ -63,7 +63,7 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
-    @page_name = "Edit child record"
+    @page_name = "Edit Child"
     @form_sections = get_form_sections
   end
 
@@ -154,7 +154,7 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    @page_name = "Child Search"
+    @page_name = "Search"
     @aside = "shared/sidebar_links"
     if (params[:query])
       @search = Search.new(params[:query]) 

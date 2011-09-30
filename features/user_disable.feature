@@ -46,6 +46,6 @@ Feature:
     And I am on the children listing page
 
     When user "george" is disabled
-    And I follow "New child"
+    And I follow "Register New Child"
 
     Then I should have received a "401 Unauthorized" status code

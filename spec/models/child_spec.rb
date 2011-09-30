@@ -740,7 +740,70 @@ describe Child do
 
       child['histories'].first['datetime'].should == 'some_time'
     end
+    describe "photo logging" do
 
+      before :each do
+        updated_at_time = Time.parse("Jan 20 2010 12:04:24")
+        Time.stub!(:now).and_return updated_at_time
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+        updated_at_time = Time.parse("Feb 20 2010 12:04:24")
+        Time.stub!(:now).and_return updated_at_time
+      end
+
+      it "should log new photo key on adding a photo" do
+        @child.photo = uploadable_photo_jeff
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        #TODO: this should be instead child.photo_history.first.to or something like that
+        changes['photo_keys']['added'].first.should =~ /photo.*?-2010-02-20T120424/
+      end
+
+      it "should log multiple photos being added" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['added'].should have(2).photo_keys
+        changes['photo_keys']['deleted'].should be_nil
+      end
+
+      it "should log a photo being deleted" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+
+        @child.delete_photo(@child.photos.first.name)
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['deleted'].should have(1).photo_key
+        changes['photo_keys']['added'].should be_nil
+      end
+
+      it "should select a new primary photo if the current one is deleted" do
+        #@child.primary_photo.should match_photo(uploadable_photo)
+        #@child.primary_photo.should match_photo(uploadable_photo)
+        @child.photos = [uploadable_photo_jeff]
+        @child.save
+
+        original_primary_photo_key = @child.photos[0].name
+        jeff_photo_key = @child.photos[1].name
+
+        @child.primary_photo.name.should == original_primary_photo_key
+        @child.delete_photo(original_primary_photo_key)
+        @child.save
+
+        @child.primary_photo.name.should == jeff_photo_key
+      end
+
+      it "should not log anything if no photo changes have been made" do
+        @child["last_known_location"] = "Moscow"
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        changes['photo_keys'].should be_nil
+      end
+    end
     it "should maintain history when child is flagged and message is added" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 

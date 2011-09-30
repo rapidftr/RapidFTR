@@ -5,7 +5,7 @@ Feature:
   Scenario: creating a child record
     Given I am logged in
     And I am on children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
 
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Date of Birth / Age"
@@ -25,18 +25,18 @@ Feature:
 
     When I follow "Back"
 
-    Then I should see "Listing children"
+    Then I should see "View All Children"
     And I should see "Jorge Just"
     And I should see "View"
 
     When I follow "Jorge Just"
     Then I follow "Back"
-    And I should see "Listing children"
+    And I should see "View All Children"
     And I should see "Jorge Just"
 
     When I follow "View"
     Then I follow "Back"
-    And I should see "Listing children"
+    And I should see "View All Children"
     And I should see "Jorge Just"
 
   Scenario: create child with approximate age

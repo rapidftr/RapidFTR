@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 def should_populate_form_section(action)
-  get action, :formsection_id => @form_section.unique_id
+  get action, :formsection_id => @form_section.unique_id, :type => "text_field"
   assigns[:form_section].should == @form_section
 end
 
@@ -24,7 +24,7 @@ describe FieldsController do
      it "populates suggested fields with all unused suggested fields" do
        suggested_fields = [SuggestedField.new, SuggestedField.new, SuggestedField.new]
        SuggestedField.stub!(:all_unused).and_return(suggested_fields)
-       get :new, :formsection_id=>@form_section.unique_id
+       get :new, :formsection_id=>@form_section.unique_id, :type => "text_field"
        assigns[:suggested_fields].should == suggested_fields
      end
      

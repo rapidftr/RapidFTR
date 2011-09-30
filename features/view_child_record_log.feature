@@ -8,7 +8,7 @@ Feature:
 
     Given "Harry" is logged in
     And I am on the children listing page
-    And I follow "New child"
+    And I follow "Register New Child"
 
     When I fill in "Jorge Just" for "Name"
     And I fill in "27" for "Date of Birth / Age"
