@@ -1,58 +1,37 @@
 describe("Manage Photos", function() {
-  var player;
-  var song;
-
-  beforeEach(function() {
-    player = new Player();
-    song = new Song();
-  });
-
-  it("should be able to play a Song", function() {
-    player.play(song);
-    expect(player.currentlyPlayingSong).toEqual(song);
-
-    //demonstrates use of custom matcher
-    expect(player).toBePlaying(song);
-  });
-
-  describe("when song has been paused", function() {
-    beforeEach(function() {
-      player.play(song);
-      player.pause();
-    });
-
-    it("should indicate that the song is currently paused", function() {
-      expect(player.isPlaying).toBeFalsy();
-
-      // demonstrates use of 'not' with a custom matcher
-      expect(player).not.toBePlaying(song);
-    });
-
-    it("should be possible to resume", function() {
-      player.resume();
-      expect(player.isPlaying).toBeTruthy();
-      expect(player.currentlyPlayingSong).toEqual(song);
-    });
-  });
-
-  // demonstrates use of spies to intercept and test method calls
-  it("tells the current song if the user has made it a favorite", function() {
-    spyOn(song, 'persistFavoriteStatus');
-
-    player.play(song);
-    player.makeFavorite();
-
-    expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
-  });
 
   //demonstrates use of expected exceptions
-  describe("#resume", function() {
-    it("should throw an exception if song is already playing", function() {
-      player.play(song);
+  describe("choosing primary photo button", function() {
 
-      expect(function() {
-        player.resume();
-      }).toThrow("song is already playing");
+    var ajaxSpy;
+
+    beforeEach(function() {
+      loadFixtures('manage_photos.html');
+      ManagePhotos.init();
+      window.Photos.refresh([{ 'photo_url': '/spec/resources/jorge.jpg', 'thumbnail_url': '/spec/resources/jorge.jpg', 'select_primary_photo_url': '/make/jorge/primary/photo'}]);
+      ajaxSpy = sinon.spy(jQuery, "ajax");
+
     });
+
+    afterEach(function() {
+      jQuery.ajax.restore();
+    });
+
+    it("sets the currently selected photo as the primary photo", function() {
+      $('.thumbnail').click();
+      $('#selectPrimaryPhotoButton').click();
+
+      expect(ajaxSpy).toHaveBeenCalled();
+      expect(ajaxSpy.getCall(0).args[0].type).toEqual("PUT");
+      expect(ajaxSpy.getCall(0).args[0].url).toEqual("/make/jorge/primary/photo");
+
+
+    });
+
+    it("doesn't do anything if no photo is selected", function() {
+      $('#selectPrimaryPhotoButton').click();
+      expect(ajaxSpy).not.toHaveBeenCalled();
+    });
+
   });
 });

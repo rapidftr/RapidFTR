@@ -1,5 +1,7 @@
 
-$(function() {
+var ManagePhotos = ManagePhotos || {};
+
+ManagePhotos.init = function() {
 
   _.templateSettings = {
     interpolate : /\{\{(.+?)\}\}/g
@@ -58,8 +60,7 @@ $(function() {
   window.PhotoView = Backbone.View.extend({
     tagName: "div",
 
-    // Cache the template function for a single item.
-    template: _.template($('#photo-template').html()),
+    template: _.template("<div class='thumbnail'><image src='{{ thumbnail_url }}' /></div>"),
 
     initialize: function() {
       this.model.bind('change', this.render);
@@ -93,7 +94,7 @@ $(function() {
 
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
-    el: $(".thumbnails"),
+    el: '.thumbnails',
 
     initialize: function() {
       _.bindAll(this, 'addOne', 'addAll');
@@ -112,7 +113,7 @@ $(function() {
 
     addOne: function(photo) {
       var view = new PhotoView({model: photo});
-      this.el.append(view.render().el);
+      $(this.el).append(view.render().el);
     },
 
     addAll: function() {
@@ -123,4 +124,9 @@ $(function() {
 
   window.App = new AppView;
 
+}
+
+$(function() {
+  ManagePhotos.init();
 });
+
