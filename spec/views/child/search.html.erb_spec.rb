@@ -19,9 +19,10 @@ describe "children/search.html.erb" do
     end
     
     it "should show only the highlighted fields for a child" do
-      summary = Summary.new(
+      summary = Child.new(
         "_id" => "some_id", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"),
-        "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4")   
+        "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4",
+        "current_photo_key" => "some-photo-id")
       summary.stub!(:has_one_interviewer?).and_return(true)
       @results = [summary]
 
@@ -50,7 +51,8 @@ describe "children/search.html.erb" do
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
-      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail/"
+      child = @results.first
+      first_image_tag['src'].should == "/children/#{child.id}/thumbnail/#{child.primary_photo_id}"
     end
 
     it "should show thumbnails with urls for child details page for each child if asked" do
@@ -99,10 +101,10 @@ describe "children/search.html.erb" do
     end
 
     def random_child_summary(id = 'some_id')
-      summary = Summary.new("_id" => id, "age_is" => "Approx", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"))
+      summary = Child.new("_id" => id, "age_is" => "Approx", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"), "current_photo_key" => "photo-id")
       summary.stub!(:has_one_interviewer?).and_return(true)
       summary
     end
 
   end
-end
+end 
