@@ -18,7 +18,7 @@ ActionController::Routing::Routes.draw do |map|
   map.manage_photos "/children/:child_id/photos", :controller => "child_media", :action => "manage_photos"
 
   map.child_audio "/children/:child_id/audio/:id", :controller => "child_media", :action => "download_audio"
-  map.child_photo "/children/:child_id/photo/:id", :controller => "child_media", :action => "show_photo"
+  map.child_photo "/children/:child_id/photo/:photo_id", :controller => "child_media", :action => "show_photo"
   map.child_select_primary_photo "children/:child_id/select_primary_photo/:photo_id", :controller => "children", :action => "select_primary_photo", :conditions => {:method => :put}
   map.child_legacy_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_resized_photo "/children/:child_id/photo/:photo_id/resized/:size", :controller => "child_media", :action => "show_resized_photo"
