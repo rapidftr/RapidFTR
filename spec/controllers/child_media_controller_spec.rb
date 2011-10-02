@@ -17,7 +17,7 @@ describe ChildMediaController do
     end
 
     it "should have a route for a child specific photo" do
-      { :get => "/children/c1/photo/p1" }.should route_to(:controller => "child_media", :action => "show_photo", :child_id => "c1", :id => "p1")
+      { :get => "/children/c1/photo/p1" }.should route_to(:controller => "child_media", :action => "show_photo", :child_id => "c1", :photo_id => "p1")
     end
 
     it "should have a route for a child specific recorded audio" do

@@ -23,8 +23,8 @@ describe "children/show.html.erb" do
       render :layout => 'application'
 
       response.should have_tag(".content-aside .profile-image .image") do
-        with_tag("a[href=?]", child_resized_photo_url(@child, @child.primary_photo_id, 640))
-        with_tag("img[src=?]", child_resized_photo_url(@child, @child.primary_photo_id, 328))
+        with_tag("a[href=?]", child_resized_photo_path(@child, @child.primary_photo_id, 640))
+        with_tag("img[src=?]", child_resized_photo_path(@child, @child.primary_photo_id, 328))
       end
 
       response.should have_tag(".content-aside .thumbnails") do
