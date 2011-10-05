@@ -20,7 +20,7 @@
           <% end %>
           </ul>
           <% @forms.each do |form| %>
-          <ul id="<%= form.unique_id %>_form_fields" class="fields" style='overflow:hidden'>
+          <ul id="<%= form.unique_id %>_form_fields" class="fields" style='overflow:auto;width:auto'>
             <% form.all_text_fields.each do |field|%>
                 <li><a><%= field.display_name_for_field_selector %></a><input type="hidden" class="field" value='<%= field.name %>' /></li>
             <% end %>
