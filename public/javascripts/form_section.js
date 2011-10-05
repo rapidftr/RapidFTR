@@ -7,6 +7,10 @@ $(document).ready(function() {
 	
 });
 
+function onFormSectionDetailsEditPage() {
+    return $('#editFormDetails').length === 1;
+}
+
 function initOrderingColumns() {
 	$("#form_sections tbody tr").each(function(index, element){
 		$("a.moveDown", element).show();
@@ -27,15 +31,16 @@ function initOrderingColumns() {
 
 	$("#form_sections tbody tr").each(function(index, element){	$(element).find(".updatedFormSectionOrder :input").val(index + 1); });
 }
-function moveUp()
-{
-	var row = $(this).parents("tr");
-	var prevRow = row.prev("tr");
-	if ($('#editFormDetails').length === 1){
+
+function moveUp() {
+    if (onFormSectionDetailsEditPage()){
 	    var div = $(this).parents("div");
 	    var fieldName = div.find("input[name=field_name]").val();
 	    changeDirection(fieldName, true);
 	}else{
+        var row = $(this).parents("tr");
+        var prevRow = row.prev("tr");
+        prevRow.before(row);
 	    initOrderingColumns();
 	}
 	return false;
@@ -59,15 +64,15 @@ function deleteItem(){
 	$('#deleteSubmit').click();
     }
 }
-function moveDown()
-{
-	var row = $(this).parents("tr");
-	var prevRow = row.next("tr");
-	if ($('#editFormDetails').length === 1){
+function moveDown() {
+    if (onFormSectionDetailsEditPage()){
 	    var div = $(this).parents("div");
 	    var fieldName = div.find("input[name=field_name]").val();
 	    changeDirection(fieldName, false);
 	}else{
+        var row = $(this).parents("tr");
+        var prevRow = row.next("tr");
+        prevRow.after(row);
 	    initOrderingColumns();
 	}
 	return false;
