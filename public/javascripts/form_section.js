@@ -12,6 +12,9 @@ function onFormSectionDetailsEditPage() {
 }
 
 function initOrderingColumns() {
+    if (onFormSectionDetailsEditPage())
+        return;
+
 	$("#form_sections tbody tr").each(function(index, element){
 		$("a.moveDown", element).show();
 		$("a.moveUp", element).show();
