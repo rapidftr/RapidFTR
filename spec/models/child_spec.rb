@@ -835,6 +835,72 @@ describe Child do
       reunited_message_history['from'].should be_nil
       reunited_message_history['to'].should == 'Finally home!'
     end
+
+    describe "photo changes" do
+
+      before :each do
+        updated_at_time = Time.parse("Jan 20 2010 12:04:24")
+        Time.stub!(:now).and_return updated_at_time
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+
+        updated_at_time = Time.parse("Feb 20 2010 12:04:24")
+        Time.stub!(:now).and_return updated_at_time
+      end
+
+      it "should log new photo key on adding a photo" do
+        @child.photo = uploadable_photo_jeff
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        #TODO: this should be instead child.photo_history.first.to or something like that
+        changes['photo_keys']['added'].first.should =~ /photo.*?-2010-02-20T120424/
+      end
+
+      it "should log multiple photos being added" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['added'].should have(2).photo_keys
+        changes['photo_keys']['deleted'].should be_nil
+      end
+
+      it "should log a photo being deleted" do
+        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
+        @child.save
+
+        @child.delete_photo(@child.photos.first.name)
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        changes['photo_keys']['deleted'].should have(1).photo_key
+        changes['photo_keys']['added'].should be_nil
+      end
+
+      it "should select a new primary photo if the current one is deleted" do
+        #@child.primary_photo.should match_photo(uploadable_photo)
+        #@child.primary_photo.should match_photo(uploadable_photo)
+        @child.photos = [uploadable_photo_jeff]
+        @child.save
+
+        original_primary_photo_key = @child.photos[0].name
+        jeff_photo_key = @child.photos[1].name
+
+        @child.primary_photo.name.should == original_primary_photo_key
+        @child.delete_photo(original_primary_photo_key)
+        @child.save
+
+        @child.primary_photo.name.should == jeff_photo_key
+      end
+
+      it "should not log anything if no photo changes have been made" do
+        @child["last_known_location"] = "Moscow"
+        @child.save
+
+        changes = @child['histories'].first['changes']
+        changes['photo_keys'].should be_nil
+      end
+    end
+
   end
 
   describe ".has_one_interviewer?" do
@@ -923,6 +989,33 @@ describe Child do
     end
   end
  
+  describe "primary_photo =" do
+    before :each do
+      @photo1 = uploadable_photo("features/resources/jorge.jpg")
+      @photo2 = uploadable_photo("features/resources/jeff.png")
+      @child = Child.new("name" => "Tom")
+      @child.photo= { 0 => @photo1, 1 => @photo2 }
+      @child.save
+    end
+
+    it "should update the primary photo selection" do
+      photos = @child.photos
+      orig_primary_photo = photos[0]
+      new_primary_photo = photos[1]
+
+      @child.primary_photo_id.should == orig_primary_photo.name
+      @child.primary_photo_id = new_primary_photo.name
+      @child.save
+      @child.primary_photo_id.should == new_primary_photo.name
+    end
+
+    context "when selected photo id doesn't exist" do
+      it "should show an error" do
+        lambda { @child.primary_photo_id = "non-existant-id" }.should raise_error "Failed trying to set 'non-existant-id' to primary photo: no such photo key"
+      end
+    end
+  end
+
   private
   
   def create_child(name)

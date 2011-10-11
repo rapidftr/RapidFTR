@@ -31,5 +31,6 @@ group :test do
   gem 'rspec-rails',      '1.3.4'
   gem 'webrat',           '0.7.1'
   gem 'capybara',         '1.0.1'
+  gem 'jasmine'
 end
 

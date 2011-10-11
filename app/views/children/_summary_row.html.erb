@@ -13,7 +13,7 @@
     <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %></p>
   </div>
   <p class="photo">
-    <%= link_to thumbnail_tag(summary_row), child_path(summary_row['_id']) %>
+    <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
   </p>
   <div class="details">
     <dl class="basic">

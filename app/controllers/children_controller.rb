@@ -100,6 +100,17 @@ class ChildrenController < ApplicationController
     redirect_to(@child)
   end
 
+  # POST
+  def select_primary_photo
+    @child = Child.get(params[:child_id])
+    begin
+      @child.primary_photo_id = params[:photo_id]
+      @child.save
+      head :ok
+    rescue
+      head :error
+    end
+  end
 
   def new_search
 
