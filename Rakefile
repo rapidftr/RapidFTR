@@ -9,5 +9,7 @@ require 'rake/rdoctask'
 
 require 'tasks/rails'
 
+require 'metric_fu'
+
 Rake::Task['default'].prerequisites.clear
 task :default => %w( ci:build )
