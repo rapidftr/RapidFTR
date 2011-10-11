@@ -9,7 +9,7 @@ describe "children/show.html.erb" do
 
     before :each do
       @form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
-      @child = Child.new(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+      @child = Child.create(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :photo => uploadable_photo_jeff)
       @child.stub!(:has_one_interviewer?).and_return(true)
 
       assigns[:form_sections] = [@form_section]
@@ -18,25 +18,17 @@ describe "children/show.html.erb" do
     end
 
     it "displays the child's photo and thumbnails" do
-      photo = uploadable_photo
-      attachments = [FileAttachment.new("fakephoto.png", photo.content_type, photo.data),
-                     FileAttachment.new("otherfakephoto.png", photo.content_type, photo.data)]
-
-      @child.stub!(:photos).and_return(attachments)
-
       assigns[:aside] = 'picture'
 
       render :layout => 'application'
 
       response.should have_tag(".content-aside .profile-image .image") do
-        with_tag("a[href=?]", child_resized_photo_path(@child, 640))
-        with_tag("img[src=?]", child_resized_photo_path(@child, 328))
+        with_tag("a[href=?]", child_resized_photo_path(@child, @child.primary_photo_id, 640))
+        with_tag("img[src=?]", child_resized_photo_path(@child, @child.primary_photo_id, 328))
       end
 
       response.should have_tag(".content-aside .thumbnails") do
-        attachments.each do |attachment|
-          with_tag("img[alt=?][src=?]", @child['name'], child_thumbnail_path(@child, attachment.name))
-        end
+        with_tag("img[alt=?][src=?]", @child['name'], child_thumbnail_path(@child, @child.primary_photo_id))
       end
 
     end
