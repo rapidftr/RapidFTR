@@ -47,17 +47,19 @@ class ExportGenerator
 	end
 
 	private
-	def format_field_for_export field, value, child_id, path
-		if (field.type ==  Field::CHECK_BOXES) 
-			return value.join(", ") unless value.nil?
-		end
-          if field.name != nil then
-            if value != nil then        
-              if field.name.index('photo') != nil then
-                return path + child_photo_path(child_id)
-              end
-              if field.name.index('audio') != nil then
-                return path + child_audio_path(child_id)
+	def format_field_for_export field, value, child_id, *path
+          if (field.type ==  Field::CHECK_BOXES) 
+            return value.join(", ") unless value.nil?
+          end
+          if path.size > 0
+            if field.name != nil then
+              if value != nil then        
+                if field.name.index('photo') != nil then
+                  return path[0] + child_photo_path(child_id)
+                end
+                if field.name.index('audio') != nil then
+                  return path[0] + child_audio_path(child_id)
+                end
               end
             end
           end

@@ -35,7 +35,6 @@ describe ExportGenerator do
       it 'should have a photo column with appropriate links' do
         FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("current_photo_key")]
         csv_data = FasterCSV.parse subject.data
-        puts subject.data
         csv_data[1][3].should == "http://testmachine:3000/children/xxxy/photo"
         csv_data[2][3].should == "http://testmachine:3000/children/yyyx/photo"
         csv_data.length.should == 3

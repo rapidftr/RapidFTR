@@ -14,12 +14,13 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Custom Field"
 
     Then I should find the following links:
-      | Text Field       | new field page for "text_field"    |
-      | Text Area        | new field page for "textarea"      |
-      | Check boxes      | new field page for "check_boxes"   |
-      | Select drop down | new field page for "select_box"    |
-      | Radio button     | new field page for "radio_button"  |
-      | Numeric Field    | new field page for "numeric_field" |
+      | Text Field       | new field page for "text_field" on "family_details"      |
+      | Text Area        | new field page for "textarea" on "family_details"      |
+      | Check boxes      | new field page for "check_boxes" on "family_details"      |
+      | Select drop down | new field page for "select_box" on "family_details"        |
+      | Radio button     | new field page for "radio_button" on "family_details"      |
+      | Numeric Field    | new field page for "numeric_field" on "family_details"      |
+
 
     When I follow "Text Field"
 
@@ -45,7 +46,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Custom Field"
 
     Then I should find the following links:
-      | Date Field | new field page for "date_field" |
+      | Date Field | new field page for "date_field" on "family_details" |
 
     When I follow "Date Field"
 
@@ -75,7 +76,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Custom Field"
 
     Then I should find the following links:
-      | Radio button | new field page for "radio_button" |
+      | Radio button | new field page for "radio_button" on "family_details"|
 
     When I follow "Radio button"
 

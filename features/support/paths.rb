@@ -8,8 +8,9 @@ module NavigationHelpers
   def path_to(page_name, options = {})
 
     format = page_name[/^(?:|the )(\w+) formatted/,1]
-    options.reverse_merge!( :format => format )
 
+    options.reverse_merge!( :format => format )
+    
     case page_name
 
       when /the home\s?page/
@@ -66,10 +67,6 @@ module NavigationHelpers
         user = User.find_by_user_name($1)
         user_path(user, options)
 
-      when /edit user page for "(.+)"/
-        user = User.find_by_user_name($1)
-        edit_user_path(user, options)
-
       when /child search page/
         search_children_path(options)
 
@@ -105,13 +102,18 @@ module NavigationHelpers
         new_formsection_field_path( arbitrary_form_section, options )
 
       when /the edit user page for "(.+)"$/
-        user = User.by_user_name(:key => $1)
+      user = User.by_user_name(:key => $1)
         raise "no user named #{$1}" if user.nil?
         edit_user_path(user)
 
-      when /new field page for "(.+)"/
+      when /edit user page for "(.+)"/
+      user = User.find_by_user_name($1)
+        edit_user_path(user, options)
+
+      when /new field page for "(.+)" on "(.+)"/
         field_type = $1
-        new_formsection_field_path(:type => field_type)
+        form_section = $2
+        new_formsection_field_path( form_section, :type => field_type)
 
       when /the edit form section page for "(.+)"/
         form_section = $1
