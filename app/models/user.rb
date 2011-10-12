@@ -119,13 +119,18 @@ class User < CouchRestRails::Document
     end
   end
 
+  def localize_date(date_time)
+    DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime("%d %B %Y at %H:%M (%Z)")
+  end
+
   private
 
   def save_devices
     @devices.map(&:save!) if @devices
     true
   end
-  
+
+
   def encrypt_password
     return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{self.user_name}--") if new_record?
@@ -147,5 +152,4 @@ class User < CouchRestRails::Document
   def auto_fill_password_confirmation_if_not_supplied
     self.password_confirmation = password if self.password_confirmation.nil?
   end
-
 end
