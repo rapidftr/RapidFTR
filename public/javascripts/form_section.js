@@ -6,6 +6,10 @@ $(document).ready(function() {
     $("input#save_order").click(saveOrder);
 });
 
+function onFormSectionDetailsEditPage() {
+    return $('#editFormDetails').length === 1;
+}
+
 function initOrderingColumns() {
     var mainContainer = "form_sections";
 
@@ -16,7 +20,7 @@ function initOrderingColumns() {
     
     var fieldToStartFrom = 1;
     
-    $("#"+mainContainer+" tbody tr:nth-child("+fieldToStartFrom+")").each(function(index, element){
+    $("#"+mainContainer+" tbody tr:eq("+fieldToStartFrom+")").each(function(index, element){
 	$("a.moveDown", element).show();
 	$("a.moveUp", element).hide();
     });
@@ -35,6 +39,8 @@ function moveUp()
     prevRow.before(row);
     initOrderingColumns();
     return false;
+}
+
 }
 function changeDirection(fieldName, isUp){
     var curAction= $('#changeDirection').attr('action');
