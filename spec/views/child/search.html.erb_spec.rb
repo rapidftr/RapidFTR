@@ -3,11 +3,16 @@ require 'hpricot'
 
 include HpricotSearch
 
+
 describe "children/search.html.erb" do
   describe "rendering search results" do
     before :each do
+      @user = mock(:user)
+      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+      @user.stub!(:localize_date).and_return("some date")
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       @highlighted_fields = [ { :name => "field_2", :display_name => "field display 2" }, { :name => "field_4", :display_name => "field display 4" } ]
+      assigns[:user] = @user
       assigns[:results] = @results
       assigns[:highlighted_fields] = @highlighted_fields
     end
@@ -17,11 +22,14 @@ describe "children/search.html.erb" do
 
       Hpricot(response.body).profiles_list_items.size.should == @results.length
     end
-    
+
     it "should show only the highlighted fields for a child" do
-      summary = Summary.new(
-        "_id" => "some_id", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"),
-        "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4")   
+      summary = Child.new(
+      "_id" => "some_id", "created_by" => "dave",
+      "last_updated_at" => time_now(),
+      "created_at" => time_now(),
+      "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4",
+      "current_photo_key" => "some-photo-id")
       summary.stub!(:has_one_interviewer?).and_return(true)
       @results = [summary]
 
@@ -50,7 +58,8 @@ describe "children/search.html.erb" do
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
-      first_image_tag['src'].should == "/children/#{@results.first.id}/thumbnail/"
+      child = @results.first
+      first_image_tag['src'].should == "/children/#{child.id}/thumbnail/#{child.primary_photo_id}"
     end
 
     it "should show thumbnails with urls for child details page for each child if asked" do
@@ -73,7 +82,7 @@ describe "children/search.html.erb" do
         check_box['value'].should == @results[i]['_id']
       end
     end
-	
+
     it "should include a view link for each record in the result" do
       render
 
@@ -86,23 +95,29 @@ describe "children/search.html.erb" do
 
     it "should have a button to export to pdf" do
       render
-                
+
       export_to_photo_wall = Hpricot(response.body).submit_for("Export to PDF")
       export_to_photo_wall.size.should_not == 0
     end
 
     it "should have a button to export to photo wall" do
       render
-                      
+
       export_to_photo_wall = Hpricot(response.body).submit_for("Export to Photo Wall")
       export_to_photo_wall.size.should_not == 0
     end
 
     def random_child_summary(id = 'some_id')
-      summary = Summary.new("_id" => id, "age_is" => "Approx", "created_by" => "dave", "last_updated_at" => Time.now.strftime("%d/%m/%Y %H:%M"))
+      summary = Child.new("_id" => id, "age_is" => "Approx", "created_by" => "dave",
+      "last_updated_at" => time_now(),
+      "created_at" => time_now(), 
+      "current_photo_key" => "photo-id")
       summary.stub!(:has_one_interviewer?).and_return(true)
       summary
     end
 
+    def time_now
+      Time.now.strftime("%d %B %Y at %H:%M (%Z)")
+    end
   end
-end
+end 

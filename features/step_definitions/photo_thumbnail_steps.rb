@@ -3,11 +3,11 @@ require 'spec/support/matchers/attachment_response'
 include CustomMatchers
 
 Then /^I should see the photo of "([^\"]*)"$/ do |child_name|
-  check_link(response, child_name) {|child| child_resized_photo_path(child, 328)}
+  check_link(response, child_name) {|child| child_resized_photo_path(child, child.primary_photo_id, 328)}
 end
 
 Then /^I should see the thumbnail of "([^\"]*)"$/ do |child_name|
-  check_link(response, child_name) {|child| child_thumbnail_path(child, nil)}
+  check_link(response, child_name) {|child| child_thumbnail_path(child, child.primary_photo_id)}
 end
 
 Then /^I should not see the thumbnail of "([^\"]*)"$/ do |child_name|

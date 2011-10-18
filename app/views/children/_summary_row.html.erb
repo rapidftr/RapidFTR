@@ -13,7 +13,7 @@
     <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %></p>
   </div>
   <p class="photo">
-    <%= link_to thumbnail_tag(summary_row), child_path(summary_row['_id']) %>
+    <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
   </p>
   <div class="details">
     <dl class="basic">
@@ -28,12 +28,12 @@
 
     <dl class="interviewer-details">
       <dt>Registered by:</dt>
-      <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= summary_row['created_at'] %></dd>
+      <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></dd>
     </dl>
     <dl class="interview-timestamp">
       <% if summary_row['last_updated_at'] %>
         <dt>Last updated:</dt>
-        <dd><%= summary_row['last_updated_at'] %></dd>
+        <dd><%= @user.localize_date(summary_row['last_updated_at']) %></dd>
       <% end %>
     </dl>
   </div>

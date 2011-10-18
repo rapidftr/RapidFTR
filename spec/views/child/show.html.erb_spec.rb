@@ -9,7 +9,7 @@ describe "children/show.html.erb" do
 
     before :each do
       @form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
-      @child = Child.new(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+      @child = Child.create(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :photo => uploadable_photo_jeff)
       @child.stub!(:has_one_interviewer?).and_return(true)
 
       assigns[:form_sections] = [@form_section]
@@ -18,25 +18,17 @@ describe "children/show.html.erb" do
     end
 
     it "displays the child's photo and thumbnails" do
-      photo = uploadable_photo
-      attachments = [FileAttachment.new("fakephoto.png", photo.content_type, photo.data),
-                     FileAttachment.new("otherfakephoto.png", photo.content_type, photo.data)]
-
-      @child.stub!(:photos).and_return(attachments)
-
       assigns[:aside] = 'picture'
 
       render :layout => 'application'
 
       response.should have_tag(".content-aside .profile-image .image") do
-        with_tag("a[href=?]", child_resized_photo_path(@child, 640))
-        with_tag("img[src=?]", child_resized_photo_path(@child, 328))
+        with_tag("a[href=?]", child_resized_photo_path(@child, @child.primary_photo_id, 640))
+        with_tag("img[src=?]", child_resized_photo_path(@child, @child.primary_photo_id, 328))
       end
 
       response.should have_tag(".content-aside .thumbnails") do
-        attachments.each do |attachment|
-          with_tag("img[alt=?][src=?]", @child['name'], child_thumbnail_path(@child, attachment.name))
-        end
+        with_tag("img[alt=?][src=?]", @child['name'], child_thumbnail_path(@child, @child.primary_photo_id))
       end
 
     end
@@ -99,7 +91,8 @@ describe "children/show.html.erb" do
       end
 
    		it "should always show the posted at details when the record has been posted from a mobile client" do
-					child = Child.new(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob", :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+					child = Child.new(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob",
+                            :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
       	  child.stub!(:has_one_interviewer?).and_return(true)
 
           user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
@@ -110,7 +103,7 @@ describe "children/show.html.erb" do
        		render
 
         	response.should have_selector("#interviewer_details") do |fields|
-          		fields[0].should contain("Posted from the mobile client at: 2007-01-01 03:04:00 -1100")
+          		fields[0].should contain("Posted from the mobile client at: 01 January 2007 at 03:04 (SST)")
         	end 
 			end
 
