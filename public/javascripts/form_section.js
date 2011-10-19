@@ -19,7 +19,9 @@ function initOrderingColumns() {
     });
     
     var fieldToStartFrom = 1;
-    
+    if (onFormSectionDetailsEditPage()){
+	fieldToStartFrom = 0;
+    }
     $("#"+mainContainer+" tbody tr:eq("+fieldToStartFrom+")").each(function(index, element){
 	$("a.moveDown", element).show();
 	$("a.moveUp", element).hide();
@@ -39,8 +41,6 @@ function moveUp()
     prevRow.before(row);
     initOrderingColumns();
     return false;
-}
-
 }
 function changeDirection(fieldName, isUp){
     var curAction= $('#changeDirection').attr('action');
