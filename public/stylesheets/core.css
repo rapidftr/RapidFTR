@@ -212,7 +212,7 @@ ul.ui-widget-content { background: none; }
 .profile-tools li.no-fancy-smancy-js-back a { background-image: url(../images/icon-back.gif); }
 .profile-tools li.view-log a { background-image: url(../images/icon-calendar.gif); }
 .profile-tools li.flag a { background-image: url(../images/icon-flag.gif); }
-.profile-tools li.reunited a { background-image: url(../images/icon-reunited.jpg); }
+.profile-tools li.reunited a { background-image: url(../images/icon-reunited.gif); }
 .profile-tools li a:hover { color: #f93; }
 .profile-tools .mark-as-form h3 { display:inline; }
 .profile-tools .mark-as-form input { display:inline; }
