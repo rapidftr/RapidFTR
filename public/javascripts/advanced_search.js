@@ -12,8 +12,8 @@
 		formList.first().addClass("selected");
 
 		var formFields = element.find(".fields");
-		formFields.first().addClass("selected");
-		formFields.first().find("li:first").addClass("selected");
+//		formFields.first().addClass("selected");
+//		formFields.first().find("li:first").addClass("selected");
 
 		self.selectedField = "";
 
@@ -27,6 +27,12 @@
 		});
 
 		var selectForm = function(formLink){
+		    if (formLink.attr('id') == 'ALL_form'){
+			self.selectedField.find(".select-criteria").text("All Text Fields");
+			self.selectedField.find(".criteria-field").val("ALL");
+			menu.hide();			
+		    }
+
 			formList.removeClass("selected");
 			formLink.addClass("selected");
 			formFields.removeClass("selected");

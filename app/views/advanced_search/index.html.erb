@@ -15,7 +15,8 @@
           <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
 
           <ul class='forms'>      
-          <% @forms.each do |form| %>
+	    <li id="ALL_form">All Text Fields</li>
+            <% @forms.each do |form| %>
             <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.enabled? ? "" : "(Disabled)" %></li>
           <% end %>
           </ul>
