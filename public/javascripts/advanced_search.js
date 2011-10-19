@@ -29,7 +29,7 @@
 		var selectForm = function(formLink){
 		    if (formLink.attr('id') == 'ALL_form'){
 			self.selectedField.find(".select-criteria").text("All Text Fields");
-			self.selectedField.find(".criteria-field").val("ALL");
+			self.selectedField.find(".criteria-field").val("all_fields");
 			menu.hide();			
 		    }
 

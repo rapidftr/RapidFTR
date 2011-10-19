@@ -6,7 +6,7 @@ describe Child do
   describe 'build solar schema' do
       it "should build with advanced search fields" do
         Field.stub!(:all_text_names).and_return []
-        Child.build_fields_for_solar.should == ["unique_identifier", "created_by"]
+        Child.build_fields_for_solar.should == ["unique_identifier", "created_by", "all_fields"]
       end
 
       it "fields build with all fields in form sections" do
@@ -99,6 +99,14 @@ describe Child do
       search = mock("search", :query => "timo coch", :valid? => true)                 
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
+    
+    it "should allow for All Text Fields searches" do
+      child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
+      Field.stub!(:all_text_names).and_return ["name", "last_known_location"]
+      child.save
+      search = mock("search", :query => "((all_fields_text:london~ OR all_fields_text:london*))", :valid? => true)
+      Child.search(search).map(&:name).should =~ ["Dave"]
+    end
   end
 
   describe "update_properties_with_user_name" do
@@ -118,7 +126,14 @@ describe Child do
       child['last_known_location'].should == "Manchester"
       child['origin'].should == "Croydon"
     end
-
+    
+    it "should update all_fields on save" do
+      child = Child.new("name" => "Dave", "age" => "28", "last_known_location" => "London")
+      Field.stub!(:all_text_names).and_return ["name", "last_known_location"]
+      child.save
+      child["all_fields"].should == " Dave London"
+    end
+    
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
@@ -153,7 +168,7 @@ describe Child do
       child = Child.new
       child.photo.should == nil
     end
-    end
+  end
   
   describe "validation of custom fields" do
     it "should fail to validate if all fields are nil" do      

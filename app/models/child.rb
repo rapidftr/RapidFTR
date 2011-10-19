@@ -8,11 +8,13 @@ class Child < CouchRestRails::Document
 
   before_save :update_history, :unless => :new?
   before_save :update_photo_keys
+  before_save :update_solar_all_text_fields
 
   property :age
   property :name
   property :nickname
   property :unique_identifier
+  property :all_fields
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
   
@@ -54,7 +56,18 @@ class Child < CouchRestRails::Document
   end
 
   def self.build_fields_for_solar
-    ["unique_identifier", "created_by"] +  Field.all_text_names
+
+    ["unique_identifier", "created_by", "all_fields"] +  Field.all_text_names
+  end
+
+  def update_solar_all_text_fields
+    self["all_fields"] = ""
+    Field.all_text_names.each { |field_name|
+      if (self[field_name] != nil && self[field_name].length > 0)
+        self["all_fields"] = self["all_fields"] + " " + self[field_name] 
+      end
+    }
+
   end
 
   def validate_has_at_least_one_field_value
