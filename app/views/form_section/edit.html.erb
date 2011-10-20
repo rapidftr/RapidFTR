@@ -57,7 +57,7 @@
         <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
       </td>
       <% end %>
-      <td><%= field.display_name %></td>
+      <td class='breakword'><%= field.display_name %></td>
       <%if @form_section.editable?%>
       <td>
 	<div>

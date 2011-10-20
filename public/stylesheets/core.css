@@ -75,7 +75,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form .help-text { font-style: italic; float: right; display:none;}
 .default-form .help-text-container { float: left; width: 150px; text-align: right; margin-right:10px; }
 .default-form .help-text-checkboxes{ margin-left: 160px; font-style:italic; display:block;}
-.default-form .tool-tip-label { float:left; width:150px; margin-right:10px; }
+.default-form .tool-tip-label { float:left; width:150px; margin-right:10px; word-wrap:break-word;}
 .default-form .tool-tip-icon { width:14px;height:14px; float: right; }
 
 
@@ -271,6 +271,8 @@ div.formSectionButtons { overflow:hidden; }
 div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
 div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 tr.rowDisabled {  font-style: italic; }
+td.breakword {word-wrap:break-word;max-width:100px;}
+
 /* fields list page */
 .direction-button, .delete-button { display:none }
 
