@@ -12,7 +12,6 @@ Feature:
     And I select "Male" from "Sex"
     And I fill in "London" for "Nationality"
     And I fill in "Haiti" for "Birthplace"
-    And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
     Then I should see "Child record successfully created."
