@@ -23,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.child_select_primary_photo "children/:child_id/select_primary_photo/:photo_id", :controller => "children", :action => "select_primary_photo", :conditions => {:method => :put}
   map.child_legacy_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
   map.child_resized_photo "/children/:child_id/photo/:photo_id/resized/:size", :controller => "child_media", :action => "show_resized_photo"
-  map.child_thumbnail "/children/:child_id/thumbnail/:photo_id", :controller => "child_media", :action => "show_thumbnail"
+  map.child_thumbnail "/children/:child_id/thumbnail/:photo_id", :controller => "child_media", :action => "show_thumbnail", :photo_id => nil
 
   map.resources :users
   map.resources :user_preferences
