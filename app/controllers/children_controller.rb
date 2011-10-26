@@ -234,7 +234,7 @@ class ChildrenController < ApplicationController
   def render_as_csv results, filename
     results = results || [] # previous version handled nils - needed? 
 		export_generator = ExportGenerator.new results
-		csv_data = export_generator.to_csv
+		csv_data = export_generator.to_csv 'http://' + request.domain + ":" + request.port.to_s
     send_data(csv_data.data, csv_data.options)
   end
 
