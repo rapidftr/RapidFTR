@@ -880,34 +880,74 @@ describe Child do
     
   end
 
-  describe "when fetching children" do
+  describe "when fetching" do
     before do
       Child.all.each { |child| child.destroy }
     end
 
-    it "should return list of children ordered by name" do
-      UUIDTools::UUID.stub("random_create").and_return(12345)
+    describe "all children" do
+      it "should return list of children ordered by name" do
+        UUIDTools::UUID.stub("random_create").and_return(12345)
 
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
+        Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
+        Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
 
-      childrens = Child.all
-      childrens.first['name'].should == 'Abu'
+        childrens = Child.all
+        childrens.first['name'].should == 'Abu'
+      end
+
+      it "should order children with blank names first" do
+        UUIDTools::UUID.stub("random_create").and_return(12345)
+
+        Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
+        Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
+        Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
+
+        childrens = Child.all
+        childrens.first['name'].should == ''
+        childrens.size.should == 3
+      end
     end
 
-    it "should order children with blank names first" do
-      UUIDTools::UUID.stub("random_create").and_return(12345)
+    describe "children filtered by creator" do
+      it "should return list of children created by the user" do
+        UUIDTools::UUID.stub("random_create").and_return(12345)
 
+        Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'created_by' => 'testuser')
+        Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'created_by' => 'testuser')
+        Child.create('photo' => uploadable_photo, 'name' => 'Kbu', 'created_by' => 'anotheruser')
 
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
-      Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
+        children = Child.all_by_creator("testuser")
+        children.size.should == 2
+        children.map(&:name).should_not include("Kbu")
+      end
 
-      childrens = Child.all
-      childrens.first['name'].should == ''
-      childrens.size.should == 3
+      it "should order children by name" do
+        UUIDTools::UUID.stub("random_create").and_return(12345)
+
+        Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'created_by' => 'testuser')
+        Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'created_by' => 'testuser')
+        Child.create('photo' => uploadable_photo, 'name' => 'Kbu', 'created_by' => 'anotheruser')
+
+        children = Child.all_by_creator("testuser")
+        children.size.should == 2
+        children.first.name.should == 'Abu'
+      end
+
+      it "should order children with blank names first" do
+        UUIDTools::UUID.stub("random_create").and_return(12345)
+
+        Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'created_by' => 'testuser')
+        Child.create('photo' => uploadable_photo, 'name' => '', 'created_by' => 'testuser')
+        Child.create('photo' => uploadable_photo, 'name' => 'Kbu', 'created_by' => 'anotheruser')
+
+        children = Child.all_by_creator("testuser")
+        children.size.should == 2
+        children.first.name.should == ''
+      end
     end
   end
+
 
   describe ".photo" do
     it "should return nil if the record has no attached photo" do
