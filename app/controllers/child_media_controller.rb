@@ -1,6 +1,11 @@
 class ChildMediaController < ApplicationController
+  helper :children
   before_filter :find_child
   before_filter :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
+
+  def index
+    render :json => photos_details
+  end
 
   def show_photo
     send_data(@attachment.data.read, :type => @attachment.content_type, :disposition => 'inline')
@@ -25,6 +30,10 @@ class ChildMediaController < ApplicationController
     send_data( @attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type )
   end
 
+  def manage_photos
+    @photos_details = photos_details
+  end
+
   private
   def find_child
     @child = Child.get(params[:child_id])
@@ -40,7 +49,7 @@ class ChildMediaController < ApplicationController
 
   def find_photo_attachment
     begin
-       @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.primary_photo
+       @attachment = params[:photo_id] ? @child.media_for_key(params[:photo_id]) : @child.primary_photo
     rescue => e
       p e.inspect
     end
@@ -56,4 +65,13 @@ class ChildMediaController < ApplicationController
     "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 
+  def photos_details
+    @child['photo_keys'].collect do |photo_key|
+      {
+        :photo_url => child_photo_url(@child, photo_key),
+        :thumbnail_url => child_thumbnail_url(@child, photo_key),
+        :select_primary_photo_url => child_select_primary_photo_url(@child, photo_key)
+      }
+    end
+  end
 end

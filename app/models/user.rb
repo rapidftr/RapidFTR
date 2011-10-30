@@ -124,6 +124,10 @@ class User < CouchRestRails::Document
     permission == Permission::LIMITED
   end
 
+  def localize_date(date_time)
+    DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime("%d %B %Y at %H:%M (%Z)")
+  end
+
   private
 
   def save_devices

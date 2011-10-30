@@ -2,6 +2,7 @@
 
 <fieldset>
   <h3 id='editFormDetails'>Details</h3>
+  <div id='sectionId' class='hidden'><%= @form_section.unique_id%></div>
   <p>
     <%= f.label :name %>
     <%= f.text_field :name %>
@@ -56,19 +57,23 @@
         <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
       </td>
       <% end %>
-      <td><%= field.display_name %></td>
+      <td class='breakword'><%= field.display_name %></td>
       <%if @form_section.editable?%>
       <td>
 	<div>
-	  <% if ! @form_section.is_first(field) && field.editable?%>
-	  <%= render :partial => "direction_button", :locals =>{:direction=>"Up", :field=>field, :url=>move_up_formsection_fields_path(@form_section.unique_id)} %>
+	  <% if field.editable?%>
+	  <a id="<%= "#{field.name}_up"%>" href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
 	  <% end %>
 	</div>
       </td>
       <td>
 	<div>
-	  <% if ! @form_section.is_last(field) && field.editable?%>
-	  <%= render :partial => "direction_button", :locals =>{:direction=>"Down", :field=>field, :url=>move_down_formsection_fields_path(@form_section.unique_id)} %>
+	  <span class="updatedFormSectionOrder">
+	    <%= hidden_field_tag "form_order[#{field.name}]", @form_section.field_order(field.name)%>
+	  </span>
+	  
+	  <% if field.editable?%>
+	  <a id="<%= "#{field.name}_down"%>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
 	  <% end %>
 	</div>
       </td>
@@ -101,6 +106,7 @@
 <div class="formSectionButtons">
   <%= submit_tag "Hide", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to hide fields?')"  }%>
   <%= submit_tag "Show", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to show fields?')"  }%>
+  <input type="button" name="SaveOrder" value="Save Order" id="save_order" />
 </div>
 <% end %>
 <% end %>

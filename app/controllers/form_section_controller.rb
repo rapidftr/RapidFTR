@@ -59,6 +59,20 @@ class FormSectionController < ApplicationController
     end
     redirect_to formsections_url
   end
+
+  def save_order_single
+    form_section = FormSection.get_by_unique_id(params[:formId]);
+    oldFields = Array.new()
+    form_section.fields.each do |field|
+      oldFields.push field
+    end
+
+    params[:form_order].each do |key, value|
+      form_section.fields[value.to_i - 1] = oldFields.find{|field| field.name == key}
+    end
+    form_section.save!
+    redirect_to request.env['HTTP_REFERER']
+  end
   
   def new
     @page_name = "Create New Form Section"

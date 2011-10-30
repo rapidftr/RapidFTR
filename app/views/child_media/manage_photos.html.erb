@@ -1,0 +1,23 @@
+<%= javascript_include_tag "json2.js" %>
+<%= javascript_include_tag "underscore.js" %>
+<%= javascript_include_tag "backbone.js" %>
+<%= javascript_include_tag "manage_photos.js" %>
+
+<%= stylesheet_link_tag "manage_photos.css" %>
+
+<script type="text/javascript">
+  $(function() {
+      window.Photos.refresh(<%= @photos_details.to_json %>);
+  });
+</script>
+
+<div class="profile-tools">
+  <ul>
+    <li class="no-fancy-spancy-js-back"><%= link_to 'Back to child', child_path(@child) %></li>
+    <li class=""><a href="#" id="selectPrimaryPhotoButton">Choose as primary photo</a></li>
+  </ul>
+</div>
+
+<div class="thumbnails"></div>
+
+
