@@ -59,15 +59,16 @@ describe AdvancedSearchController do
   it "should create advanced criteria for Date Create" do
     SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
     SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_criteria")
-    SearchService.stub(:search).and_return([])
+    SearchService.stub(:search).and_return("child_records")
 
-    date_created = "30-01-2011"  
+    created_at_start = "30-01-2011"
 
-    SearchCriteria.should_receive(:create_advanced_criteria).with({:field => "created_at", :value => date_created, :index => 13})
-    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :date_created_value => date_created
+    SearchService.should_receive(:search)
+    SearchService.should_receive(:filter_by_date).with("child_records", created_at_start, nil)
+    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_at_start_value => created_at_start
 
     assigns[:criteria_list].should == ["criteria_list"]
-    assigns[:advanced_criteria_list].should == ["advanced_criteria"]
+    assigns[:advanced_criteria_list].should == []
   end
 
 

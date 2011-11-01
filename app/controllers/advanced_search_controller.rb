@@ -23,9 +23,10 @@ class AdvancedSearchController < ApplicationController
       @results = []
     else
       @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]): [])
-      @advanced_criteria_list = build_advanced_user_criteria(params[:created_by_value], params[:date_created_value])
+      @advanced_criteria_list = build_advanced_user_criteria(params[:created_by_value], params[:created_at_start_value])
 
       @results = SearchService.search(@criteria_list + @advanced_criteria_list)
+      @results = SearchService.filter_by_date(@results, params[:created_at_start_value], params[:created_at_end_value]) if params[:created_at_start_value]
     end
   end
 
@@ -38,7 +39,7 @@ class AdvancedSearchController < ApplicationController
     advanced_user_criteria = []
     
     advanced_user_criteria << SearchCriteria.create_advanced_criteria({:field => "created_by", :value => created_by_value, :index => 12}) if (created_by_value)
-    advanced_user_criteria << SearchCriteria.create_advanced_criteria({:field => "created_at", :value => date_created_value, :index => 13}) if (date_created_value)
+    #advanced_user_criteria << SearchCriteria.create_advanced_criteria({:field => "created_at", :value => date_created_value, :index => 13}) if (date_created_value)
 
     advanced_user_criteria
   end

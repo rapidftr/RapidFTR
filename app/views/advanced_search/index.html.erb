@@ -62,16 +62,18 @@
     </p>
 
     <hr>
-
-    <%= check_box_tag(:created_by) %>
-    <%= label_tag(:created_by_label, "Created by:") %>
-    <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
-
-    <br/>
-    <%= check_box_tag(:date_created) %>
-    <%= label_tag(:date_created_label, "Date Created:") %>
-    <%= text_field_tag(:date_created_value, nil, :disabled => true) %>
-
+    <h3>Filter Search Results:</h3>
+    <p>
+      <%= check_box_tag(:created_by) %>
+      <%= label_tag(:created_by_label, "Created by:") %>
+      <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
+    </p>
+    <p>
+      <%= check_box_tag(:created_at) %>
+      <%= label_tag(:created_at_label, "Date Created:") %>
+      <%= text_field_tag(:created_at_start_value, nil, :disabled => true, :size => 10) %>
+      <%= text_field_tag(:created_at_end_value,   nil, :disabled => true, :size => 10) %>
+    </p>
   </form>      
 </div>
 
