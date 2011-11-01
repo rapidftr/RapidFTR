@@ -100,6 +100,10 @@
         $('#created_by').bind('click', function() {
             enableInputByCheckbox($(this), $('#created_by_value'));
         });
+		$('#date_created').bind('click', function() {
+            enableInputByCheckbox($(this), $('#date_created_value'));
+        });
+
 
         var createdByIsValid = function() {
             return ($('#created_by').is(':checked')) && ($('#created_by_value').val() != '');

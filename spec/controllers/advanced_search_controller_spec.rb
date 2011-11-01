@@ -5,16 +5,29 @@ describe AdvancedSearchController do
     fake_login
   end
 
-  it "performs a search using the parameters passed to it" do
+  it "performs a search using non-advanced parameters passed to it" do
      search = mock("search_criteria")
      SearchCriteria.stub!(:build_from_params).and_return([search])
 
      fake_results = [:fake_child,:fake_child]
      SearchService.should_receive(:search).with([search]).and_return(fake_results)
      get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => nil
+
      assigns[:results].should == fake_results
   end
 
+  it "performs a search using advanced parameters passed to it" do
+     search = mock("search_criteria")
+     advanced_search = mock("advanced_search_criteria")
+
+     SearchCriteria.stub!(:build_from_params).and_return([search])
+     SearchCriteria.stub!(:create_advanced_criteria).and_return(advanced_search)
+
+     fake_results = [:fake_child,:fake_child]
+     SearchService.should_receive(:search).with([search]+[advanced_search]).and_return(fake_results)
+     get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => 'john'
+     assigns[:results].should == fake_results
+  end
 
   it "should construct empty criteria objects for new search" do
     SearchCriteria.stub(:new).and_return("empty_criteria")
@@ -32,15 +45,31 @@ describe AdvancedSearchController do
 
   end
 
-  it "should append advanced user criteria" do
+  it "should create advanced user criteria" do
     SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
     SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_criteria")
     SearchService.stub(:search).and_return([])
 
     get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => "johnny_user"
 
-    assigns[:criteria_list].should == ["criteria_list", "advanced_criteria"]
+    assigns[:criteria_list].should == ["criteria_list"]
+    assigns[:advanced_criteria_list].should == ["advanced_criteria"]
   end
+
+  it "should create advanced criteria for Date Create" do
+    SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
+    SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_criteria")
+    SearchService.stub(:search).and_return([])
+
+    date_created = "30-01-2011"  
+
+    SearchCriteria.should_receive(:create_advanced_criteria).with({:field => "created_at", :value => date_created, :index => 13})
+    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :date_created_value => date_created
+
+    assigns[:criteria_list].should == ["criteria_list"]
+    assigns[:advanced_criteria_list].should == ["advanced_criteria"]
+  end
+
 
   it "should construct criteria list for only advanced user criteria" do
     SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_user_details")
@@ -49,7 +78,8 @@ describe AdvancedSearchController do
     get :index, :criteria_list => {"0"=>{"field"=>"", "value"=>"", "index"=>"0"}},
                 :created_by_value => "johnny_user"
 
-    assigns[:criteria_list].should == ["advanced_user_details"]
+    assigns[:criteria_list].should == []
+    assigns[:advanced_criteria_list].should == ["advanced_user_details"]
   end
   
   it "should order by criteria index" do
