@@ -45,27 +45,43 @@ describe AdvancedSearchController do
 
   end
 
-  it "should create advanced user criteria" do
+  it "should create advanced user criteria for created by" do
     SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
     SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_criteria")
     SearchService.stub(:search).and_return([])
 
+    SearchCriteria.should_receive(:create_advanced_criteria).with({:field => "created_by", :value => "johnny_user", :index => 12})
     get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_by_value => "johnny_user"
 
     assigns[:criteria_list].should == ["criteria_list"]
     assigns[:advanced_criteria_list].should == ["advanced_criteria"]
   end
 
-  it "should create advanced criteria for Date Create" do
+  it "should create advanced user criteria for updated by" do
+    SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
+    SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_criteria")
+    SearchService.stub(:search).and_return([])
+
+    SearchCriteria.should_receive(:create_advanced_criteria).with({:field => "last_updated_by", :value => "johnny_user", :index => 13})
+
+    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :updated_by_value => "johnny_user"
+
+    assigns[:criteria_list].should == ["criteria_list"]
+    assigns[:advanced_criteria_list].should == ["advanced_criteria"]
+  end
+
+  it "should filter search results by date created" do
     SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
     SearchCriteria.stub(:create_advanced_criteria).and_return("advanced_criteria")
     SearchService.stub(:search).and_return("child_records")
 
     created_at_start = "30-01-2011"
+    created_at_end  = "20-02-2011"
 
     SearchService.should_receive(:search)
-    SearchService.should_receive(:filter_by_date).with("child_records", created_at_start, nil)
-    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, :created_at_start_value => created_at_start
+    SearchService.should_receive(:filter_by_date).with("child_records", created_at_start, created_at_end)
+    get :index, :criteria_list => {"0"=>{"field"=>"name_of_child", "value"=>"joe joe", "index"=>"0"}}, 
+      :created_at_start_value => created_at_start, :created_at_end_value => created_at_end
 
     assigns[:criteria_list].should == ["criteria_list"]
     assigns[:advanced_criteria_list].should == []

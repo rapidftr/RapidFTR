@@ -69,11 +69,18 @@
       <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
     </p>
     <p>
+      <%= check_box_tag(:updated_by) %>
+      <%= label_tag(:updated_by_label, "Updated by:") %>
+      <%= text_field_tag(:updated_by_value, nil, :disabled => true) %>
+    </p>
+
+    <p>
       <%= check_box_tag(:created_at) %>
       <%= label_tag(:created_at_label, "Date Created:") %>
       <%= text_field_tag(:created_at_start_value, nil, :disabled => true, :size => 10) %>
       <%= text_field_tag(:created_at_end_value,   nil, :disabled => true, :size => 10) %>
     </p>
+    
   </form>      
 </div>
 

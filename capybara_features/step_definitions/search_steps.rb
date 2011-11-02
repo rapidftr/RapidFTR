@@ -20,6 +20,10 @@ Then /^I should see "([^\"]*)" in the search results$/ do |value|
   raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the search results" unless match
 end
 
+Then /^I should not see "([^\"]*)" in the search results$/ do |value|
+  Then "I should not see \"#{value}\" within \"//div[@class='profiles-list']\""
+end
+
 Then /^I should see "(.*)" as reunited in the search results$/ do |child_name|
   child_link = page.find(:xpath, "//a[text()=\"#{child_name}\"]")
   link = child_link[:href]
