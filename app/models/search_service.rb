@@ -5,22 +5,27 @@ class SearchService
     Child.sunspot_search(query)
   end 
 
-  def self.filter_by_date(search_results, created_at_begin, created_at_end)
+  def self.filter_by_date(search_results, date_begin, date_end, date_field)
     child_records = []
-    date_start = created_at_begin.blank? ? nil : Time.parse(created_at_begin)
-    date_end = created_at_end.blank? ? nil : Time.parse(created_at_end)
+    
+    date_begin = date_begin.blank? ? nil : Time.parse(date_begin)
+    date_end = date_end.blank? ? nil : Time.parse(date_end)
 
     search_results.each do |child|
-      created_at = Time.parse(child.created_at)
+      if date_field == :created_at
+        child_date_field = Time.parse(child.created_at)
+      elsif date_field == :last_updated_at
+        child_date_field = Time.parse(child.last_updated_at)
+      end
 
-      if date_start && date_end
-      	if(created_at.between?(date_start, date_end))
+      if date_begin && date_end
+      	if(child_date_field.between?(date_begin, date_end))
       		child_records << child
       	end
       else
-		child_records << child if(date_start && created_at > date_start)
-      	child_records << child if(date_end   && created_at < date_end)
-	  end
+		    child_records << child if(date_begin && child_date_field > date_begin)
+      	child_records << child if(date_end   && child_date_field < date_end)
+	    end
     end
 
     child_records

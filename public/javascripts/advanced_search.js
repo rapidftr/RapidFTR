@@ -103,9 +103,14 @@
         $('#updated_by').bind('click', function() {
             enableInputByCheckbox($(this), $('#updated_by_value'));
         });
-	$('#created_at').bind('click', function() {
+
+		$('#created_at').bind('click', function() {
             enableInputByCheckbox($(this), $('#created_at_start_value'));
             enableInputByCheckbox($(this), $('#created_at_end_value'));  
+        });
+        $('#last_updated_at').bind('click', function() {
+            enableInputByCheckbox($(this), $('#last_updated_at_start_value'));
+            enableInputByCheckbox($(this), $('#last_updated_at_end_value'));  
         });
 
         var createdByIsValid = function() {

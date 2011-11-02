@@ -21,16 +21,24 @@ class AdvancedSearchController < ApplicationController
     if new_search
       @criteria_list = [SearchCriteria.new]
       @results = []
-    else
-      @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]): [])
-      @advanced_criteria_list = build_advanced_user_criteria(params[:created_by_value], params[:updated_by_value])
+    else 
+      search_criteria=[]
 
-      @results = SearchService.search(@criteria_list + @advanced_criteria_list)
+      if child_fields_selected?(params[:criteria_list])
+        @criteria_list = SearchCriteria.build_from_params(params[:criteria_list])
+        search_criteria += @criteria_list
+      else
+        @criteria_list = [SearchCriteria.new]
+      end
+
+      @advanced_criteria_list = build_advanced_user_criteria(params[:created_by_value], params[:updated_by_value])
+      search_criteria += @advanced_criteria_list
+
+      @results = SearchService.search(search_criteria)
       
       #filter results by date
-      if params[:created_at_start_value]
-        @results = SearchService.filter_by_date(@results, params[:created_at_start_value], params[:created_at_end_value]) 
-      end
+      @results = SearchService.filter_by_date(@results, params[:created_at_start_value], params[:created_at_end_value], :created_at)  if params[:created_at_start_value]
+      @results = SearchService.filter_by_date(@results, params[:last_updated_at_start_value], params[:last_updated_at_end_value], :last_updated_at) if params[:last_updated_at_start_value]
     end
   end
 

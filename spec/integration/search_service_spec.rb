@@ -120,8 +120,7 @@ describe "SearchService" do
 
     #get only child records created after 'created_at_start'
     result = SearchService.search [criteria]
-    result = SearchService.filter_by_date(result, created_at_start, '')
-    result.should == [child2]
+    SearchService.filter_by_date(result, created_at_start, nil, :created_at).should == [child2]
   end
  
   it "Should be able to filter search results by creation date (BEFORE)" do
@@ -134,8 +133,7 @@ describe "SearchService" do
 
     #get only child records created before 'created_at_end'
     result = SearchService.search [criteria]
-    result = SearchService.filter_by_date(result, '', created_at_end)
-    result.should == [child1]
+    SearchService.filter_by_date(result, '', created_at_end, :created_at).should == [child1]
   end
 
   it "Should be able to filter search results by creation date (BETWEEN)" do
@@ -149,8 +147,18 @@ describe "SearchService" do
 
     #get only child records created between 'created_at_start' and 'created_at_end'
     result = SearchService.search [criteria]
-    result = SearchService.filter_by_date(result, created_at_start, created_at_end)
-    result.should == [child2]
+    SearchService.filter_by_date(result, created_at_start, created_at_end, :created_at).should == [child2]
   end
 
+  it "Should be able to filter search results by last update date" do
+    child1 = Child.create!(:name => "jorge", :last_updated_at => '01-01-2010')
+    child2 = Child.create!(:name => "john",  :last_updated_at => '01-02-2010')
+
+    last_updated_at_start = '15-01-2010'
+
+    criteria = SearchCriteria.new(:field => "name", :value => "j")
+
+    result = SearchService.search [criteria]
+    SearchService.filter_by_date(result, last_updated_at_start, nil, :last_updated_at).should == [child2]
+  end
 end
