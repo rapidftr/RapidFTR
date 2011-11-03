@@ -15,7 +15,7 @@ describe ExportGenerator do
 				csv_data =  FasterCSV.parse subject.data
 
 				headers = csv_data[0]
-				headers.should == ["unique_identifier", "field_one", "field_two"]
+				headers.should == ["unique_identifier", "field_one", "field_two", "Suspect Status", "Reunited Status"]
 			end
 			it 'should render a row for each result, plus a header row' do
 				FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field("name")]
