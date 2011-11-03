@@ -39,25 +39,25 @@ class User < CouchRestRails::Document
 
   before_save :make_user_name_lowercase, :encrypt_password
   after_save :save_devices
-  
-  
+
+
   before_update :if => :disabled? do |user|
     Session.delete_for user
   end
-  before_validate :auto_fill_password_confirmation_if_not_supplied
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
   validates_presence_of :user_type,:message=>"Please choose a user type"
+  validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
 
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
   validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
 
   validates_format_of :email, :as => :email_address, :if => :email_entered?
-  
+
   validates_format_of :email, :with =>  /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message =>"Please enter a valid email address"
-  
+
 
   validates_confirmation_of :password, :if => :password_required?
   validates_with_method   :user_name, :method => :is_user_name_unique
@@ -83,7 +83,7 @@ class User < CouchRestRails::Document
   end
 
   def authenticate(check)
-    if new? 
+    if new?
       raise Exception.new, "Can't authenticate a un-saved user"
     end
     !disabled? && crypted_password == encrypt(check)
@@ -96,20 +96,20 @@ class User < CouchRestRails::Document
   def make_admin
     self.user_type = "Administrator"
   end
-  
+
   def add_mobile_login_event imei, mobile_number
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
-    
+
     if (Device.all.none? {|device| device.imei == imei})
       device = Device.new(:imei => imei, :blacklisted => false, :user_name => self.user_name)
       device.save!
     end
   end
-  
+
   def devices
     Device.all.select { |device| device.user_name == self.user_name }
   end
-  
+
   def devices= device_hashes
     all_devices = Device.all
     @devices = device_hashes.map do |device_hash|
@@ -149,7 +149,4 @@ class User < CouchRestRails::Document
     user_name.downcase!
   end
 
-  def auto_fill_password_confirmation_if_not_supplied
-    self.password_confirmation = password if self.password_confirmation.nil?
-  end
 end
