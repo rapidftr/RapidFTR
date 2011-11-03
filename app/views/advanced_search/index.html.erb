@@ -62,10 +62,32 @@
     </p>
 
     <hr>
+    <h3>Filter Search Results:</h3>
+    <p>
+      <%= check_box_tag(:created_by) %>
+      <%= label_tag(:created_by_label, "Created By:") %>
+      <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
+    </p>
+    <p>
+      <%= check_box_tag(:updated_by) %>
+      <%= label_tag(:updated_by_label, "Updated By:") %>
+      <%= text_field_tag(:updated_by_value, nil, :disabled => true) %>
+    </p>
 
-    <%= check_box_tag(:created_by) %>
-    <%= label_tag(:created_by_label, "Created by:") %>
-    <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
+    <p>
+      <%= check_box_tag(:created_at) %>
+      <%= label_tag(:created_at_label, "Date Created:") %>
+      <%= image_tag("tool_tip_icon.gif", :title => date_filter_note, :class => "tool-tip-icon vtip" ) %>
+      <%= text_field_tag(:created_at_start_value, nil, :disabled => true, :size => 10) %>
+      <%= text_field_tag(:created_at_end_value,   nil, :disabled => true, :size => 10) %>
+    </p>
+    <p>
+      <%= check_box_tag(:last_updated_at) %>
+      <%= label_tag(:last_updated_at_label, "Date Updated:") %>
+      <%= image_tag("tool_tip_icon.gif", :title => date_filter_note, :class => "tool-tip-icon vtip" ) %>
+      <%= text_field_tag(:last_updated_at_start_value, nil, :disabled => true, :size => 10) %>
+      <%= text_field_tag(:last_updated_at_end_value,   nil, :disabled => true, :size => 10) %>
+    </p>
 
   </form>      
 </div>

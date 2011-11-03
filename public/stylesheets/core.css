@@ -79,6 +79,8 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .default-form .tool-tip-icon { width:14px;height:14px; float: right; }
 
 
+
+
 /* page-container */
 .page-container { margin: 0 auto; width: 960px; }
 
@@ -312,6 +314,8 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 
 .advanced-search label {margin-right: 2px;}
 .advanced-search input[type='radio'] {margin-right: 2px;}
+.advanced-search .tool-tip-icon { width:14px;height:14px; }
+
 
 .device-blacklisted { color: red; }
 

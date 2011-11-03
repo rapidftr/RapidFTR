@@ -100,17 +100,36 @@
         $('#created_by').bind('click', function() {
             enableInputByCheckbox($(this), $('#created_by_value'));
         });
+        $('#updated_by').bind('click', function() {
+            enableInputByCheckbox($(this), $('#updated_by_value'));
+        });
+
+		$('#created_at').bind('click', function() {
+            enableInputByCheckbox($(this), $('#created_at_start_value'));
+            enableInputByCheckbox($(this), $('#created_at_end_value'));  
+        });
+        $('#last_updated_at').bind('click', function() {
+            enableInputByCheckbox($(this), $('#last_updated_at_start_value'));
+            enableInputByCheckbox($(this), $('#last_updated_at_end_value'));  
+        });
 
         var createdByIsValid = function() {
             return ($('#created_by').is(':checked')) && ($('#created_by_value').val() != '');
+        }
+        var updatedByIsValid = function() {
+            return ($('#updated_by').is(':checked')) && ($('#updated_by_value').val() != '');
         }
 
 		var validate = function(){
 			var result = "";
 
-            if (createdByIsValid()) {
+            if(createdByIsValid()) {
                 return result;
             }
+            if(updatedByIsValid()) {
+                return result;
+            }
+
 			$('.criteria-list .criteria-field').each(function(){
 				if($(this).val() == "") { result = 'Please select a valid field name.'; }
 			});
