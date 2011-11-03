@@ -28,9 +28,12 @@ class ExportGenerator
 		fields.unshift Field.new_text_field("unique_identifier")
 		field_names = fields.map{|field| field.name}
 		csv_data = FasterCSV.generate do |rows|
-			rows << field_names
+			rows << field_names + ["Suspect Status", "Reunited Status"]
 			@child_data.each do |child|
-				rows << fields.map { |field| format_field_for_export(field, child[field.name]) }
+			  child_data = fields.map { |field| format_field_for_export(field, child[field.name]) }
+			  child_data << (child.flag? ? "Suspect" : nil)
+			  child_data << (child.reunited? ? "Reunited" : nil)
+				rows <<  child_data
 			end
 		end
 
@@ -77,6 +80,8 @@ class ExportGenerator
 	end
 
 	def add_child_details(child)
+    flag_if_suspected(child)
+    flag_if_reunited(child)
 		FormSection.enabled_by_order.each do |section|
 			@pdf.text section.name, :style => :bold, :size => 16
 			field_pair = section.fields.
@@ -96,4 +101,14 @@ class ExportGenerator
 		add_child_photo(child)
 		add_child_details(child)
 	end
+
+	private
+
+  def flag_if_suspected(child)
+    @pdf.text("Flagged as Suspect Record", :style => :bold) if child.flag?
+  end
+
+  def flag_if_reunited(child)
+    @pdf.text("Reunited", :style => :bold) if child.reunited?
+  end
 end
