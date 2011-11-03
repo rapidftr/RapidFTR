@@ -44,6 +44,17 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And  I should see "Jack" in the search results
 
   @javascript
+  Scenario: Filtering search results by the users who created the child record (ANDed conditions)
+    Given I am on child advanced search page
+
+    When I check "created_by"
+    And I fill in "aidWorker AND volunteer" for "created_by_value"
+    And I press "Search"
+
+    Then I should see "Bob" in the search results
+    And  I should see "Jack" in the search results
+
+ @javascript
   Scenario: Filtering search results by the user who last updated the child record
     Given I am on child advanced search page
 

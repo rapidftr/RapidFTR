@@ -10,7 +10,7 @@ class SearchCriteria
   end
 
   def self.create_advanced_criteria(criteria)
-    SearchCriteria.new(:field => criteria[:field], :value => criteria[:value], :join => "AND", :index => criteria[:index].to_s)
+    SearchCriteria.new(:field => criteria[:field], :value => criteria[:value].gsub("AND", "OR"), :join => "AND", :index => criteria[:index].to_s)
   end
   
   def self.build_from_params(criteria_list)

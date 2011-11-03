@@ -21,6 +21,14 @@ describe SearchCriteria do
     search_criteria.join.should == "AND"
     search_criteria.index.should == '123'
   end
+ 
+  it "should construct advanced search parameters to criteria objects replacing ANDed conditions for ORed conditions" do
+    search_criteria = SearchCriteria.create_advanced_criteria({:field => "created_by", :value => "johnny AND bob", :index => 123})
+    search_criteria.field.should == "created_by"
+    search_criteria.value.should == "johnny OR bob"
+    search_criteria.join.should == "AND"
+    search_criteria.index.should == '123'
+  end
   
   it "should construct criteria objects" do    
     criteria_list = SearchCriteria.build_from_params("1" => {:field => "name", :value => "kevin", :join => "AND", :display_name => "name" } )
