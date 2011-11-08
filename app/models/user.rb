@@ -1,4 +1,6 @@
 require 'digest/sha2'
+require 'permission_levels'
+
 class User < CouchRestRails::Document
   use_database :user
   include CouchRest::Validation
@@ -13,6 +15,7 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
+  property :permission_level
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :time_zone, :default => "UTC"
@@ -62,6 +65,8 @@ class User < CouchRestRails::Document
   validates_confirmation_of :password, :if => :password_required?
   validates_with_method   :user_name, :method => :is_user_name_unique
 
+  validates_presence_of :permission_level, :message => "Please select a permission level"
+  validates_with_method :permission_level, :method => :is_permission_level_valid
 
   def self.find_by_user_name(user_name)
      User.by_user_name(:key => user_name.downcase).first
@@ -69,17 +74,12 @@ class User < CouchRestRails::Document
 
   def initialize args={}
     self["mobile_login_history"] = []
+    args.reverse_merge!(:permission_level => PermissionLevel::LIMITED)
     super args
   end
 
   def email_entered?
     !email.blank?
-  end
-
-  def is_user_name_unique
-    user = User.find_by_user_name(user_name)
-    return true if user.nil? or self.id == user.id
-    [false, "User name has already been taken! Please select a new User name"]
   end
 
   def authenticate(check)
@@ -124,6 +124,15 @@ class User < CouchRestRails::Document
   end
 
   private
+  def is_user_name_unique
+    user = User.find_by_user_name(user_name)
+    return true if user.nil? or self.id == user.id
+    [false, "User name has already been taken! Please select a new User name"]
+  end
+
+  def is_permission_level_valid
+    PermissionLevel.valid? permission_level
+  end
 
   def save_devices
     @devices.map(&:save!) if @devices

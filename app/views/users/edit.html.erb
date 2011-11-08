@@ -1,4 +1,4 @@
 <%= render :partial => "edittable_user", :object => @user %>
-<% unless !is_admin? %>
+<% if is_admin? %>
 <%= render :partial => "mobile_login_history", :object => @user %>
 <% end %>

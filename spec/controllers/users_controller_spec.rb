@@ -43,6 +43,25 @@ describe UsersController do
     end
   end
 
+  describe "PUT update" do
+    it "discards permission level updates from non admins" do
+      fake_login
+      User.stub!(:get).with("37").and_return(mock_user)
+      mock_user.should_receive(:user_name).and_return("fakeuser")
+
+      mock_user.should_receive(:update_attributes).with({})
+      put :update, :id => "37", :user => {:permission_level => PermissionLevel::UNLIMITED}
+    end
+
+    it "discards permission level updates from admins" do
+      fake_admin_login
+      User.stub!(:get).with("37").and_return(mock_user)
+
+      mock_user.should_receive(:update_attributes).with({:permission_level.to_s => PermissionLevel::LIMITED})
+      put :update, :id => "37", :user => {:permission_level => PermissionLevel::LIMITED}
+    end
+  end
+  
   describe "GET edit" do
     it "assigns the requested user as @user" do
       User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
