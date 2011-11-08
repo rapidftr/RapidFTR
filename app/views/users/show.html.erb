@@ -38,6 +38,13 @@
   <%=h @user.location %>
 </p>
 
+<% if is_admin? %>
+ <p>
+  <b>Permission level:</b>
+  <%=h @user.permission_level %>
+</p>
+<% end %>
+
  <p>
   <b>Status:</b>
   <%=h @user.disabled=="true"? "Disabled" : "Enabled" %>
@@ -53,8 +60,6 @@
       <% end %>
     <% end %>
 </p>
-
-
 
  <%= link_to 'Edit', edit_user_path(@user) %> |
  <%= link_to 'Back', users_path %>

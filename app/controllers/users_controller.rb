@@ -48,9 +48,12 @@ class UsersController < ApplicationController
     
     @user = User.get(params[:id])
     unless session.admin? or @user.user_name == current_user_name
-      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
+      puts @user.user_name
+      puts current_user_name
+      raise AuthorizationFailure.new('Not permitted to view page')
     end
-    
+
+    params[:user].delete(:permission_level) unless session.admin?
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
       redirect_to(@user)
@@ -64,5 +67,4 @@ class UsersController < ApplicationController
     @user.destroy
     redirect_to(users_url) 
   end
-  
 end

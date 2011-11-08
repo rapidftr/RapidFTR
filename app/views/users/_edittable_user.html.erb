@@ -89,6 +89,16 @@
       <%= f.text_field :location %>
     </p>
 
+    <% if is_admin? %>
+    <p>
+      <%= f.label :permission_level %>
+      <%= f.radio_button :permission_level, PermissionLevel::LIMITED %>
+      Limited
+      <%= f.radio_button :permission_level, PermissionLevel::UNLIMITED %>
+      Unlimited
+    </p>
+    <% end %>
+
     <% if !trying_to_edit_ourself %>
         <p>
           <%= f.label :disabled, "Disabled?" %>
