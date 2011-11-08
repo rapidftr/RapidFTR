@@ -123,8 +123,8 @@ end
 
 
 Then /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
-  response_body.should have_selector("#user-row-#{username} td.user-status") do |content|
-  	content.inner_html.downcase.should == status
+  response_body.should have_selector("#user-row-#{username} td.user-status input") do |checkbox|
+  	status == "disabled" ? checkbox.attr('checked').should_not == nil : checkbox.attr('checked').should == nil
   end
 end
 

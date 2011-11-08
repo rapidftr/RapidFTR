@@ -1,0 +1,7 @@
+<% if current_user_name != user.user_name %>
+  <input type="checkbox"
+    <%= (user.disabled=="true") ? "checked='checked'" : "" %>
+  />
+<% else %>
+  <%= h "enabled" %>
+<% end %>

@@ -19,6 +19,7 @@ src_files:
   - public/javascripts/underscore.js
   - public/javascripts/backbone.js
   - public/javascripts/manage_photos.js
+  - public/javascripts/manage_users.js
 #  - public/javascripts/**/*.js
 
 # stylesheets
