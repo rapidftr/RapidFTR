@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.view("by_full_name")
+    @users_details = users_details
   end
 
   def show
@@ -63,6 +64,18 @@ class UsersController < ApplicationController
     @user = User.get(params[:id])
     @user.destroy
     redirect_to(users_url)
+  end
+
+  private
+
+  def users_details
+    @users.map do |user|
+      {
+        :user_url  => user_url(:id => user),
+        :user_name => user.user_name,
+        :token     => form_authenticity_token
+      }
+    end
   end
 
 end

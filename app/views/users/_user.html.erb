@@ -1,6 +1,6 @@
 <tr id="user-row-<%=user.full_name%>">
   <td><%=h user.full_name %></td>
-  <td><%=h user.user_name %></td>
+  <td class="user-name"><%=h user.user_name %></td>
   <td><%=h user.user_type %></td>
   <td class="user-status">
     <%= render :partial => 'user_disabled_checkbox', :locals => {:user => user} %>

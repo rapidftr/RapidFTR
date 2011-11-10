@@ -15,6 +15,7 @@ src_files:
   - spec/javascripts/support/jasmine-sinon.js
   - spec/javascripts/support/jasmine-jquery.js
   - public/javascripts/jquery-1.4.3.min.js
+  - public/javascripts/jquery-ui-1.8.6.custom.min.js
   - public/javascripts/json2.js
   - public/javascripts/underscore.js
   - public/javascripts/backbone.js
