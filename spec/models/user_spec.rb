@@ -21,6 +21,29 @@ describe User do
     user
   end
 
+  it 'should be given limited permission unless permission level specified' do
+    user = build_user
+    user.should be_valid
+    user.permission_level.should == PermissionLevel::LIMITED
+  end
+
+  it 'should be given unlimited permission if specified' do
+    user = build_user(:permission_level => PermissionLevel::UNLIMITED)
+    user.should be_valid
+    user.permission_level.should == PermissionLevel::UNLIMITED
+  end
+
+  it 'validates permission levels' do
+    user = build_user(:permission_level => PermissionLevel::UNLIMITED)
+    user.should be_valid
+
+    user = build_user(:permission_level => PermissionLevel::LIMITED)
+    user.should be_valid
+
+    user = build_user(:permission_level => "any other string")
+    user.should_not be_valid
+  end
+
   it 'should validate uniqueness of username for new users' do
     user = build_user(:user_name => 'the_user_name')
     user.should be_valid
