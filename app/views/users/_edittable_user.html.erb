@@ -7,7 +7,7 @@
     });
     return true;
   }
-  
+
   function confirmDisable() {
     var checkbox = $("#user_disabled")[0];
     if (checkbox.checked && !checkbox.defaultChecked) {
@@ -15,7 +15,7 @@
     }
     return true;
   }
-  
+
   $(document).ready(function() {
     $("form").submit(function() { return (confirmDisable() && confirmBlacklisted()); } );
   });
