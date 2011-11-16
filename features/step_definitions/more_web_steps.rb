@@ -79,7 +79,7 @@ end
 
 Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
 	checkbox_elements = Nokogiri::HTML(response.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
-  
+
 	checkboxes = checkbox_elements.inject({}) do | result,  element |
 		result[element['value']] = !!element[:checked]
 		result
@@ -90,7 +90,7 @@ Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbo
     should_be_checked = (expected_checkbox['checked?'] == 'yes')
     checkboxes.should have_key expected_value
 		checkboxes[expected_value].should == should_be_checked
-		
+
   end
 end
 
@@ -123,8 +123,8 @@ end
 
 
 Then /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
-  response_body.should have_selector("#user-row-#{username} td.user-status") do |content|
-  	content.inner_html.downcase.should == status
+  response_body.should have_selector("#user-row-#{username} td.user-status input") do |checkbox|
+  	status == "disabled" ? checkbox.attr('checked').should_not == nil : checkbox.attr('checked').should == nil
   end
 end
 
@@ -156,8 +156,9 @@ Given /^devices exist$/ do |devices|
 end
 
 When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
-	  check(field_with_id("child_#{checkbox_name}_#{value.dehumanize}")) 
+	  check(field_with_id("child_#{checkbox_name}_#{value.dehumanize}"))
 end
+
 
 
 

@@ -13,10 +13,23 @@ describe UsersController do
   end
 
   describe "GET index" do
+    before :each do
+      @user = mock_user({:merge=>{},:user_name=>"someone"})
+      User.stub!(:view).and_return([@user])
+    end
+
     it "assigns all users as @users" do
-      User.stub!(:view).and_return([mock_user])
       get :index
-      assigns[:users].should == [mock_user]
+      assigns[:users].should == [@user]
+    end
+
+    it "assigns users_details for backbone" do
+      get :index
+      users_details = assigns[:users_details]
+      users_details.should_not == nil
+      user_detail = users_details[0]
+      user_detail[:user_name].should == "someone"
+      user_detail[:user_url].should_not be_blank
     end
   end
 
@@ -65,7 +78,7 @@ describe UsersController do
       response.should redirect_to(users_url)
     end
   end
-  
+
   describe "GET index" do
     it "should not show any users in index (Forbidden) for non-admin" do
       fake_login
@@ -109,7 +122,7 @@ describe UsersController do
       fake_session = Session.new()
       fake_session.stub(:admin?).with(no_args()).and_return(false)
       Session.stub(:get).and_return(fake_session)
-      
+
       User.stub!(:new).and_return(mock_user)
       get :new
       assigns[:user].should equal(nil)
@@ -156,5 +169,5 @@ describe UsersController do
     end
 
   end
-  
+
 end

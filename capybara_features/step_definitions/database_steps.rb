@@ -26,7 +26,7 @@ end
 
 Given /^user "(.+)" is disabled$/ do |username|
   user = User.find_by_user_name(username)
-  user.disabled = true
+  user.disabled = "true"
   user.save!
 end
 
