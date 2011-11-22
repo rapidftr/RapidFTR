@@ -27,9 +27,6 @@
       <% end %>
     </dl>
 
-    <p><strong>Last known location:</strong> <%= summary_row["last_known_location"] %>
-      <em><%= summary_row["date_of_separation"] %> </em></p>
-
     <dl class="interviewer-details">
       <dt>Registered by:</dt>
       <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></dd>
