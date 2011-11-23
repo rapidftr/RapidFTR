@@ -151,6 +151,14 @@ class ChildrenController < ApplicationController
       format.json { render :json => {:response => "ok"}.to_json }
     end
   end
+  
+  # GET /children/suspect_records
+  def suspect_records
+    @children = Child.by_flag(:key => "true")
+    respond_to do |format|
+      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
+    end
+  end
 
   def search
     @page_name = "Search"

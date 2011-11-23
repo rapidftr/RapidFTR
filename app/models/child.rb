@@ -23,6 +23,14 @@ class Child < CouchRestRails::Document
                 emit(doc['name'], doc);
              }
           }"
+          
+  view_by :flag,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('flag'))
+               {
+                  emit(doc['flag'],doc);
+               }
+            }"
 
   validates_with_method :validate_photos
   validates_with_method :validate_photos_size
