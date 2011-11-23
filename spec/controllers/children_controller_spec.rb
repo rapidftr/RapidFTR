@@ -408,4 +408,12 @@ describe ChildrenController do
       end
     end
   end
+  
+  describe "GET suspect_records" do
+    it "assigns all flagged children as @children" do
+      Child.stub!(:by_flag).and_return([mock_child])
+      get :suspect_records
+      assigns[:children].should == [mock_child]
+    end
+  end
 end
