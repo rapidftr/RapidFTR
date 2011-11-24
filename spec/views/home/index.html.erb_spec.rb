@@ -15,7 +15,9 @@ describe "home/index.html.erb" do
     mock_password_recovery_request = mock("PasswordRecoveryRequest", :user_name =>'jpretorius', :created_at => Time.parse("Jan 31 2011"))
     assigns[:notifications] = [ mock_password_recovery_request ]
     
-    User.stub!(:find_by_user_name).and_return(mock("user", :user_name => 'jpretorius'))
+    # to_param is because the CI build is failing when trying to generate named route for this mock object - CG Nov 24 2011
+    mock_user = mock("user", :user_name => 'jpretorius', :to_param => 'foo')
+    User.stub!(:find_by_user_name).and_return(mock_user)
     template.stub!(:is_admin?).and_return(true)
   
     render :template=>'home/_notifications'
