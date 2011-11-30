@@ -2,6 +2,7 @@
 
 <p><%= link_to 'Register New Child', new_child_path %></p>
 
+<%= render :partial => "children/filter_box" %>
 <%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
 
 <br/>

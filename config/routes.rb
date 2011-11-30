@@ -8,9 +8,10 @@ ActionController::Routing::Routes.draw do |map|
                                             :suspect_records => :get},
                 :member => {:export_photo_to_pdf => :get} do |child|
     child.resource :history, :only => :show
-    child.resources :attachments, :only => :show
+    child.resources :attachments, :only => :show    
   end
-
+  
+  map.child_filter "/children/filter/:type", :controller => "children", :action => "index"  
   map.child_ids "/children-ids", :controller => "child_ids", :action => "all"
   map.edit_photo '/children/:id/photo/edit', :controller => 'children', :action => 'edit_photo', :conditions => {:method => :get }
   map.update_photo '/children/:id/photo', :controller => 'children', :action => 'update_photo', :conditions => {:method => :put }

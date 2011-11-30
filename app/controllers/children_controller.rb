@@ -8,8 +8,18 @@ class ChildrenController < ApplicationController
   # GET /children.xml
   def index
     @page_name = "View All Children"
-    @children = Child.all
     @aside = 'shared/sidebar_links'
+    
+    filter = params[:type]
+    if filter.nil? || filter == "all"
+      @children = Child.all
+    elsif filter == "reunited"
+      @children = Child.all.select{ |c| c.reunited? }
+    elsif filter == "flagged"
+      @children = Child.all.select{ |c| c.flag? }
+    else
+      @children = Child.all.select{ |c| !c.reunited? }      
+    end    
 
     respond_to do |format|
       format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
