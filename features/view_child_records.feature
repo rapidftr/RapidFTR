@@ -8,7 +8,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I am on the children listing page
 
   Scenario: Checking to verify there is a filter box 
-    Then I should see "Filter by status"
+    Then I should see "Filter by:"
     And I should see "All"
     And I should see "Reunited"
     And I should see "Flagged"

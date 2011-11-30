@@ -1,4 +1,8 @@
+<% if (@filter) %>
+<h2>All children > <%= h(@filter.capitalize) %></h2>
+<% else %>
 <h2>All children</h2>
+<% end %>
 
 <p><%= link_to 'Register New Child', new_child_path %></p>
 

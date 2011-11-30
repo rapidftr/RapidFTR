@@ -1,9 +1,9 @@
 <div class="filter-box">
-	<p>Filter by status:</p>
+	<p>Filter by:</p>
 	<ul>
-		<li><a href="<%= child_filter_path('all') %>">All</a></li>
-		<li><a href="<%= child_filter_path('reunited') %>">Reunited</a></li>
-		<li><a href="<%= child_filter_path('flagged') %>">Flagged</a></li>
-		<li><a href="<%= child_filter_path('active') %>">Active</a></li>
+		<li class="first"><%= link_for_filter('all', @filter) %></li>
+		<li><%= link_for_filter('reunited', @filter) %></li>
+		<li><%= link_for_filter('flagged', @filter) %></li>
+		<li><%= link_for_filter('active', @filter) %></li>
 	</ul>
 </div>

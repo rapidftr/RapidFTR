@@ -10,16 +10,7 @@ class ChildrenController < ApplicationController
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
     
-    filter = params[:type]
-    if filter.nil? || filter == "all"
-      @children = Child.all
-    elsif filter == "reunited"
-      @children = Child.all.select{ |c| c.reunited? }
-    elsif filter == "flagged"
-      @children = Child.all.select{ |c| c.flag? }
-    else
-      @children = Child.all.select{ |c| !c.reunited? }      
-    end    
+    filter_children_by params[:status]
 
     respond_to do |format|
       format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
@@ -264,6 +255,19 @@ class ChildrenController < ApplicationController
     if @child.nil?
       flash[:error] = "Child with the given id is not found"
       redirect_to :action => :index and return
+    end
+  end
+  
+  def filter_children_by status
+    @filter = status unless status.nil? || status == "all"
+    if status.nil? || status == "all"
+      @children = Child.all
+    elsif status == "reunited"
+      @children = Child.all.select{ |c| c.reunited? }      
+    elsif status == "flagged"
+      @children = Child.all.select{ |c| c.flag? }
+    else
+      @children = Child.all.select{ |c| !c.reunited? }      
     end
   end
 
