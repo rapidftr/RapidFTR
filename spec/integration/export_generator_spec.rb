@@ -9,16 +9,16 @@ describe ExportGenerator do
         "last_known_location" => "London"})
     pdf_generator = ExportGenerator.new child
     pdf_generator.to_full_pdf
-  	pdf_generator.to_photowall_pdf
-	end
+    pdf_generator.to_photowall_pdf
+  end
 
-	it "should generate a PDF file for multiple child records" do
-		child_a = Child.new_with_user_name "Bob"
-		child_b = Child.new_with_user_name "Gerald"
-		pdf_generator = ExportGenerator.new [child_a, child_b]
-		pdf_generator.to_full_pdf
-		pdf_generator.to_photowall_pdf
-	end
+  it "should generate a PDF file for multiple child records" do
+    child_a = Child.new_with_user_name "Bob"
+    child_b = Child.new_with_user_name "Gerald"
+    pdf_generator = ExportGenerator.new [child_a, child_b]
+    pdf_generator.to_full_pdf
+    pdf_generator.to_photowall_pdf
+  end
 
   describe "Suspect status" do
     before do
@@ -42,7 +42,7 @@ describe ExportGenerator do
 
     context "in CSV generation" do
       it "should be rendered when child is flagged as suspect" do
-        generated_csv = ExportGenerator.new(@suspected_child).to_csv.data
+        generated_csv = ExportGenerator.new(@suspected_child).to_csv("foo").data
         rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Suspect Status"
         suspect_status_colummn_index = rows[0].index("Suspect Status")
@@ -50,7 +50,7 @@ describe ExportGenerator do
       end
 
       it "should not be rendered when child is not flagged as suspect" do
-        generated_csv = ExportGenerator.new(@unsuspected_child).to_csv.data
+        generated_csv = ExportGenerator.new(@unsuspected_child).to_csv("foo").data
         rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Suspect Status"
         suspect_status_colummn_index = rows[0].index("Suspect Status")
@@ -81,7 +81,7 @@ describe ExportGenerator do
 
     context "in CSV generation" do
       it "should be rendered when child is reunited" do
-        generated_csv = ExportGenerator.new(@reunited_child).to_csv.data
+        generated_csv = ExportGenerator.new(@reunited_child).to_csv("foo").data
         rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Reunited Status"
         suspect_status_colummn_index = rows[0].index("Reunited Status")
@@ -89,7 +89,7 @@ describe ExportGenerator do
       end
 
       it "should not be rendered when child is not reunited" do
-        generated_csv = ExportGenerator.new(@not_reunited_child).to_csv.data
+        generated_csv = ExportGenerator.new(@not_reunited_child).to_csv("foo").data
         rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Reunited Status"
         reunited_status_colummn_index = rows[0].index("Reunited Status")
@@ -113,7 +113,7 @@ describe ExportGenerator do
           "name" => "Dave",
           "age" => "28",
           "last_known_location" => "London"})
-			pdf_generator = ExportGenerator.new child
+      pdf_generator = ExportGenerator.new child
       subject.to_full_pdf
      end
   end
