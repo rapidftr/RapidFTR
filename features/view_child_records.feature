@@ -80,3 +80,27 @@ Feature: So that I can filter the types of records being show when viewing searc
     When I follow "Flagged"
     Then I should see the order zak,meredith,jaco,andreas
     
+  Scenario: Checking filter by Flagged shows the Order by options
+  
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  | flagged_at                  |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  | DateTime.new(2001,2,3,4,5,6)| 
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  | DateTime.new(2004,2,3,4,5,6)|
+      | jaco	  | NYC		                | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6)|
+      | meredith| Austin	              | james    | james123     | false    | true  | DateTime.new(2003,2,3,4,5,6)|
+
+    When I follow "Flagged"
+    Then I should see "Order by:"
+    
+  Scenario: Checking filter by Flagged and then ordering by name returns the flagged children in alphabetical order
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  | flagged_at                  |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  | DateTime.new(2001,2,3,4,5,6)| 
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  | DateTime.new(2004,2,3,4,5,6)|
+      | jaco	  | NYC		                | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6)|
+      | meredith| Austin	              | james    | james123     | false    | true  | DateTime.new(2003,2,3,4,5,6)|
+
+    When I follow "Flagged"
+    And I follow "Name"
+    Then I should see the order andreas,jaco,meredith,zak

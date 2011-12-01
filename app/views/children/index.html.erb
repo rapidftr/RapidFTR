@@ -7,6 +7,9 @@
 <p><%= link_to 'Register New Child', new_child_path %></p>
 
 <%= render :partial => "children/filter_box" %>
+<% if (@filter == 'flagged') %>
+	<%= render :partial => "children/order_by_box" %>
+<% end %>
 <%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
 
 <br/>
