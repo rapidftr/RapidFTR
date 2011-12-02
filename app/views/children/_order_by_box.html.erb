@@ -1,7 +1,9 @@
 <div class="order-by-box">
 	<p>Order by:</p>
 	<ul>
-		<li class="first"><%= link_for_order_by(@filter, "most recently #{@filter}", @order) %></li>
+	  <% filter_name = @filter %>
+	  <% filter_name = 'created' if @filter == 'all' or @filter.nil? %>
+		<li class="first"><%= link_for_order_by(@filter, "most recently #{filter_name}", @order) %></li>
 		<li><%= link_for_order_by(@filter, 'name', @order) %></li>
 	</ul>
 </div>

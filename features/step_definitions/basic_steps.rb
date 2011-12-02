@@ -72,6 +72,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     child['histories'] ||= []
     child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
     child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => 'anything' }}
+    child['created_at'] = child_hash['created_at'] if child_hash.key?('created_at')
     child.create!
   end
 end

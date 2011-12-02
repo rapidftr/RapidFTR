@@ -29,6 +29,58 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I should see "jaco"
     And I should see "meredith" 
     
+  Scenario: Checking filter by All should by default show all children in alphabetical order
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    |
+      | andreas	| London		            | zubair   | zubairlon123 | 
+      | zak	    | London		            | zubair   | zubairlon456 | 
+      | jaco	  | NYC		                | james    | james456     | 
+      | meredith| Austin	              | james    | james123     | 
+
+    When I am on the children listing page
+    Then I should see the order andreas,jaco,meredith,zak
+    
+  Scenario: Checking filter by All shows the Order by options
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    |
+      | andreas	| London		            | zubair   | zubairlon123 |  
+      | zak	    | London		            | zubair   | zubairlon456 | 
+      | jaco	  | NYC		                | james    | james456     | 
+      | meredith| Austin	              | james    | james123     | 
+
+    When I am on the children listing page
+    Then I should see "Order by"
+    And I should see "Most recently created"
+
+  Scenario: Checking filter by All and then ordering by most recently added returns all the children in order of most recently added
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | created_at                  |
+      | andreas	| London		            | zubair   | zubairlon123 | DateTime.new(2004,2,3,4,5,6)|
+      | zak	    | London		            | zubair   | zubairlon456 | DateTime.new(2003,2,3,4,5,6)|
+      | jaco	  | NYC		                | james    | james456     | DateTime.new(2002,2,3,4,5,6)|
+      | meredith| Austin	              | james    | james123     | DateTime.new(2001,2,3,4,5,6)|
+
+    When I am on the children listing page
+    Then I follow "Most recently created"
+    Then I should see the order andreas,zak,jaco,meredith
+    
+  Scenario: Checking filter by All sand then ordering by Name should return all the children in alphabetical order
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    |
+      | andreas	| London		            | zubair   | zubairlon123 | 
+      | zak	    | London		            | zubair   | zubairlon456 | 
+      | jaco	  | NYC		                | james    | james456     | 
+      | meredith| Austin	              | james    | james123     | 
+
+    When I am on the children listing page
+    Then I follow "Most recently created"
+    And I follow "Name"
+    Then I should see the order andreas,jaco,meredith,zak
+    
   Scenario: Checking filter by Reunited returns all the reunited children in the system
 
     Given the following children exist in the system:
