@@ -262,49 +262,56 @@ class ChildrenController < ApplicationController
     @filter, @order = status, order
     @filter ||= "all"
     
-    if @filter == "all"
-      @order ||= 'name'
-      @children = Child.all    
-      if @order == 'most recently created'
-        @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
-      else
-        @children.sort!{ |x,y| x['name'] <=> y['name'] }  
-      end
-      
-    elsif @filter == "reunited"
-      @order ||= 'name'
-      @children = Child.all.select{ |c| c.reunited? }   
-      if @order == 'most recently reunited' 
-        @children.each { |child| 
-          child['reunited_at'] = child['histories'].select{ |h| h['changes'].keys.include?('reunited') }.map{ |h| h['datetime'] }.max
-        }
-        @children.sort!{ |x,y| y['reunited_at'] <=> x['reunited_at'] }
-      else
-        @children.sort!{ |x,y| x['name'] <=> y['name'] }  
-      end
-    
-    elsif @filter == "flagged"
-      @order ||= 'most recently flagged'
-      @children = Child.all.select{ |c| c.flag? }
-      @children.each { |child| 
-        child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
-      }
-      if @order == 'most recently flagged'
-        @children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
-      else
-        @children.sort!{ |x,y| x['name'] <=> y['name'] }
-      end
-    
-    elsif @filter == 'active'
-      @order ||= 'name'
-      @children = Child.all.select{ |c| !c.reunited? }
-      if @order == 'most recently created'  
-        @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
-      else
-        @children.sort!{ |x,y| x['name'] <=> y['name'] }  
-      end  
-    end
+    filter_all_children if @filter == "all"
+    filter_reunited_children if @filter == "reunited"
+    filter_flagged_children if @filter == "flagged"
+    filter_active_children if @filter == "active"              
+  end
   
+  def filter_all_children
+    @order ||= 'name'
+    @children = Child.all    
+    if @order == 'most recently created'
+      @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
+    else
+      @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+    end
+  end
+  
+  def filter_reunited_children
+    @order ||= 'name'
+    @children = Child.all.select{ |c| c.reunited? }   
+    if @order == 'most recently reunited' 
+      @children.each { |child| 
+        child['reunited_at'] = child['histories'].select{ |h| h['changes'].keys.include?('reunited') }.map{ |h| h['datetime'] }.max
+      }
+      @children.sort!{ |x,y| y['reunited_at'] <=> x['reunited_at'] }
+    else
+      @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+    end
+  end
+  
+  def filter_flagged_children
+    @order ||= 'most recently flagged'
+    @children = Child.all.select{ |c| c.flag? }
+    @children.each { |child| 
+      child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
+    }
+    if @order == 'most recently flagged'
+      @children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
+    else
+      @children.sort!{ |x,y| x['name'] <=> y['name'] }
+    end    
+  end
+  
+  def filter_active_children
+    @order ||= 'name'
+    @children = Child.all.select{ |c| !c.reunited? }
+    if @order == 'most recently created'  
+      @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
+    else
+      @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+    end
   end
 
 end
