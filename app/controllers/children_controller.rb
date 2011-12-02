@@ -259,13 +259,17 @@ class ChildrenController < ApplicationController
   end
   
   def filter_children_by status, order
-    @filter = status unless status.nil? || status == "all"
-    @order = order if order == 'name'
-    if status.nil? || status == "all"
-      @children = Child.all
-    elsif status == "reunited"
+    @filter, @order = status, order
+    @filter ||= "all"
+    
+    if @filter == "all"
+      @order = 'name'
+      @children = Child.all    
+      
+    elsif @filter == "reunited"
+      @order ||= 'name'
       @children = Child.all.select{ |c| c.reunited? }   
-      if !order.nil? && order != 'name' 
+      if @order == 'most recently reunited' 
         @children.each { |child| 
           child['reunited_at'] = child['histories'].select{ |h| h['changes'].keys.include?('reunited') }.map{ |h| h['datetime'] }.max
         }
@@ -273,17 +277,24 @@ class ChildrenController < ApplicationController
       else
         @children.sort!{ |x,y| x['name'] <=> y['name'] }  
       end
-    elsif status == "flagged"
+    
+    elsif @filter == "flagged"
+      @order ||= 'most recently flagged'
       @children = Child.all.select{ |c| c.flag? }
       @children.each { |child| 
         child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
       }
-      if order != 'name'
+      if @order == 'most recently flagged'
         @children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
+      else
+        @children.sort!{ |x,y| x['name'] <=> y['name'] }
       end
-    else
+    
+    elsif @filter == 'active'
+      @order = 'name'
       @children = Child.all.select{ |c| !c.reunited? }      
     end
+  
   end
 
 end

@@ -44,7 +44,7 @@ module ChildrenHelper
   end
   
   def link_for_order_by filter, order, selected_order
-    return order.capitalize if order == selected_order || (order == 'most recently flagged' && selected_order.nil?)
+    return order.capitalize if order == selected_order
     return "<a href=\"" + child_filter_path(filter, :order_by => order) + "\">" + order.capitalize + "</a>"
   end
 
