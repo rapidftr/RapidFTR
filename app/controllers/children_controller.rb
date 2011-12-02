@@ -264,7 +264,15 @@ class ChildrenController < ApplicationController
     if status.nil? || status == "all"
       @children = Child.all
     elsif status == "reunited"
-      @children = Child.all.select{ |c| c.reunited? }      
+      @children = Child.all.select{ |c| c.reunited? }   
+      if !order.nil? && order != 'name' 
+        @children.each { |child| 
+          child['reunited_at'] = child['histories'].select{ |h| h['changes'].keys.include?('reunited') }.map{ |h| h['datetime'] }.max
+        }
+        @children.sort!{ |x,y| y['reunited_at'] <=> x['reunited_at'] }
+      else
+        @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+      end
     elsif status == "flagged"
       @children = Child.all.select{ |c| c.flag? }
       @children.each { |child| 

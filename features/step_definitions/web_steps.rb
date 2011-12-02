@@ -282,7 +282,7 @@ Then /^I should see the order (.+)$/ do |input|
   current = 0
   input.split(',').each{ |match| 
     index = response.body.index(match)
-    assert index > current
+    assert index > current, "The index of #{match} was not greater than #{current}"
     current = index
   }
 end

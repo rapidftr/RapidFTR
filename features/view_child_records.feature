@@ -90,7 +90,8 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith| Austin	              | james    | james123     | false    | true  | DateTime.new(2003,2,3,4,5,6)|
 
     When I follow "Flagged"
-    Then I should see "Order by:"
+    Then I should see "Order by"
+    And I should see "Most recently flagged"
     
   Scenario: Checking filter by Flagged and then ordering by name returns the flagged children in alphabetical order
 
@@ -104,3 +105,41 @@ Feature: So that I can filter the types of records being show when viewing searc
     When I follow "Flagged"
     And I follow "Name"
     Then I should see the order andreas,jaco,meredith,zak
+
+  Scenario: Checking filter by Reunited shows the Order by options
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  | flagged_at                  |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  | DateTime.new(2001,2,3,4,5,6)| 
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  | DateTime.new(2004,2,3,4,5,6)|
+      | jaco	  | NYC		                | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6)|
+      | meredith| Austin	              | james    | james123     | false    | true  | DateTime.new(2003,2,3,4,5,6)|
+
+    When I follow "Reunited"
+    Then I should see "Order by"
+    And I should see "Most recently reunited"
+
+  Scenario: Checking filter by Reunited should by default show the records ordered alphabetically
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  | reunited_at                 |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  | DateTime.new(2001,2,3,4,5,6)| 
+      | zak	    | London		            | zubair   | zubairlon456 | true     | false | DateTime.new(2004,2,3,4,5,6)|
+      | jaco	  | NYC		                | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6)|
+      | meredith| Austin	              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6)|
+
+    When I follow "Reunited"
+    Then I should see the order andreas,jaco,meredith,zak
+
+  Scenario: Checking filter by Reunited and then selecting order by most recently reunited children returns the children in the order of most recently reunited
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  | reunited_at                 |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  | DateTime.new(2001,2,3,4,5,6)| 
+      | zak	    | London		            | zubair   | zubairlon456 | true     | false | DateTime.new(2004,2,3,4,5,6)|
+      | jaco	  | NYC		                | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6)|
+      | meredith| Austin	              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6)|
+
+    When I follow "Reunited"
+    And I follow "Most recently reunited"
+    Then I should see the order zak,meredith,jaco,andreas

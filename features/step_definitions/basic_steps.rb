@@ -60,6 +60,7 @@ Given /^the following children exist in the system:$/ do |children_table|
             'reporter' => 'zubair',
             'age_is' => 'Approximate',
             'reunited' => false,
+            'reunited_at' => DateTime.new(1990,1,1,4,5,6),
             'flag' => false,
             'flagged_at' => DateTime.new(1990,1,1,4,5,6)
     )
@@ -68,10 +69,9 @@ Given /^the following children exist in the system:$/ do |children_table|
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
-    # if child_hash['flag']
-      child['histories'] ||= []
-      child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
-    # end
+    child['histories'] ||= []
+    child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
+    child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => 'anything' }}
     child.create!
   end
 end
