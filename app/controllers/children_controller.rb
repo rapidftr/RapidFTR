@@ -296,8 +296,13 @@ class ChildrenController < ApplicationController
       end
     
     elsif @filter == 'active'
-      @order = 'name'
-      @children = Child.all.select{ |c| !c.reunited? }      
+      @order ||= 'name'
+      @children = Child.all.select{ |c| !c.reunited? }
+      if @order == 'most recently created'  
+        @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
+      else
+        @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+      end  
     end
   
   end

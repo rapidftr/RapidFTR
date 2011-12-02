@@ -223,3 +223,55 @@ Feature: So that I can filter the types of records being show when viewing searc
     When I follow "Active"
     Then I should see "zak"
     And I should see "meredith"
+    
+  Scenario: Checking filter by Active should by default show the records ordered alphabetically
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | false |
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  |
+      | jaco	  | NYC		                | james    | james456     | true     | true  |
+      | meredith| Austin	              | james    | james123     | false    | false |
+
+    When I follow "Active"
+    Then I should see the order meredith,zak
+    
+  Scenario: Checking filter by Active shows the Order by options
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  |  
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  | 
+      | jaco	  | NYC		                | james    | james456     | true     | true  | 
+      | meredith| Austin	              | james    | james123     | false    | true  | 
+
+    When I follow "Active"
+    Then I should see "Order by"
+    And I should see "Most recently created"    
+    
+  Scenario: Checking filter by Active and then ordering by most recently created returns the children in the order of most recently created
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  | created_at                   |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | true  | DateTime.new(2004,2,3,4,5,6) | 
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  | DateTime.new(2003,2,3,4,5,6) |
+      | jaco	  | NYC		                | james    | james456     | false    | true  | DateTime.new(2002,2,3,4,5,6) |
+      | meredith| Austin	              | james    | james123     | false    | true  | DateTime.new(2001,2,3,4,5,6) |
+
+    When I follow "Active"
+    And I follow "Most recently created"
+    Then I should see the order zak,jaco,meredith
+    
+  Scenario: Checking filter by Active and order by name should return the children in alphabetical order
+
+    Given the following children exist in the system:
+      | name   	| last_known_location 	| reporter | unique_id    | reunited | flag  |
+      | andreas	| London		            | zubair   | zubairlon123 | true     | false |
+      | zak	    | London		            | zubair   | zubairlon456 | false    | true  |
+      | jaco	  | NYC		                | james    | james456     | false    | true  |
+      | meredith| Austin	              | james    | james123     | false    | false |
+
+    When I follow "Active"
+    And I follow "Most recently created"
+    And I follow "Name"
+    Then I should see the order jaco,meredith,zak
