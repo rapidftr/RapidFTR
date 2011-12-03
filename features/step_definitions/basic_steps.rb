@@ -445,6 +445,13 @@ Then /^the (view|edit) record page should show the record is flagged$/ do |page|
   response.should contain("Flagged as suspect record by")
 end
 
+Then /^the suspect records page should show the following children:$/ do |table|
+  expected_child_names = table.raw.flatten
+  visit suspect_records_children_path
+  child_records = Hpricot(response.body).search("div[@class=profiles-list-item] h3 a").map {|a| a.inner_text }
+  child_records.should == expected_child_names
+end
+
 When /^the record history should log "([^\"]*)"$/ do |field|
   visit(children_path+"/#{Child.all[0].id}/history")
   response.should contain(field)

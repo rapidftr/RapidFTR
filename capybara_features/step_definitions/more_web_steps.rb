@@ -20,3 +20,9 @@ When /^I click text "([^"]*)"(?: within "([^\"]*)")?$/ do |text_value, selector|
 
   end
 end
+
+
+When /^I uncheck the disabled checkbox for user "([^"]*)"$/ do |username|
+  page.find("//tr[@id='user-row-#{username}']/td/input[@type='checkbox']").click
+  click_button("Yes")
+end

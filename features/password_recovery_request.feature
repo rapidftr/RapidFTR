@@ -50,5 +50,5 @@ Feature: As an user, I should be able to request my password to be recovered.
     Given I am logged in as an admin
 
     Given I am on the home page
-
+    
     Then I should see a link to the user details page for "duck"
