@@ -14,6 +14,14 @@ Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form
   row_for(section_name).find(".//span[@class='formSectionOrder']").text.should == form_order
 end
 
+Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|
+  row_for(form_section).should have_css("td", :text => expected_description)
+end
+
+Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expected_name, form_section|
+  row_for(form_section).should have_css("td:nth-child(3)", :text => expected_name)
+end
+
 def row_for(section_name)
   page.find "//tr[@id='#{section_name}_row']"
 end

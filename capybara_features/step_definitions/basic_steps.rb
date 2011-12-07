@@ -55,6 +55,10 @@ Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity,
   end
 end
 
+Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
+  page.find("//p[@class='#{button_name.downcase}Button']/a")[:onclick].should =~ /confirm/
+end
+
 Then /^I should (not )?see the "([^\"]*)" tab$/ do |do_not_want, tab_name|
   should = do_not_want ? :should_not : :should
   page.all(:css, ".tab-handles a").map(&:text).send(should, include(tab_name))
