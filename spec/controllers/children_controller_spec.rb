@@ -302,17 +302,16 @@ describe ChildrenController do
     end
 
     it 'sends csv data with the correct attributes' do
-			
-			Child.stub!(:search).and_return(:child_search_results)	
+			Child.stub!(:search).and_return([])	
 			export_generator = stub(ExportGenerator)
-			inject_export_generator(export_generator, :child_search_results)
+			inject_export_generator(export_generator, [])
 
 			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
 			@controller.
         should_receive(:send_data).
         with( :csv_data, {:foo=>:bar} )
       
-			get( :search, :format => 'csv', :query => 'blah')
+			get(:search, :format => 'csv', :query => 'blah')
     end
 	end
   describe "GET photo_pdf" do
