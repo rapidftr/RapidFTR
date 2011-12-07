@@ -15,6 +15,6 @@ Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form
 end
 
 def row_for(section_name)
-  page.find("//tr[@id='#{section_name}_row']")
+  page.find "//tr[@id='#{section_name}_row']"
 end
 

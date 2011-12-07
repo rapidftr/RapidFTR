@@ -55,6 +55,11 @@ Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity,
   end
 end
 
+Then /^I should (not )?see the "([^\"]*)" tab$/ do |do_not_want, tab_name|
+  should = do_not_want ? :should_not : :should
+  page.all(:css, ".tab-handles a").map(&:text).send(should, include(tab_name))
+end
+
 When /^I sleep (\d*) seconds$/ do |sleep_time|
   sleep sleep_time.to_i
 end
