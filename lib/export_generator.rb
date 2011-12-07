@@ -1,6 +1,5 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
-include ActionController::UrlWriter
 
 class ExportGenerator
   class Export
@@ -24,17 +23,17 @@ class ExportGenerator
     @pdf.render
   end
 
-  def to_csv path
+  def to_csv
     fields = FormSection.all_enabled_child_fields
     fields.unshift Field.new_text_field("unique_identifier")
-    field_names = fields.map{|field| field.name}
+    field_names = fields.map {|field| field.name}
     csv_data = FasterCSV.generate do |rows|
       rows << field_names + ["Suspect Status", "Reunited Status"]
       @child_data.each do |child|
-        child_data = fields.map { |field| format_field_for_export(field, child[field.name], child.id, path) }
+        child_data = fields.map { |field| format_field_for_export(field, child[field.name], child) }
         child_data << (child.flag? ? "Suspect" : nil)
         child_data << (child.reunited? ? "Reunited" : nil)
-        rows <<  child_data
+        rows << child_data
       end
     end
 
@@ -50,23 +49,15 @@ class ExportGenerator
   end
 
   private
-  def format_field_for_export field, value, child_id, *path
-    if (field.type ==  Field::CHECK_BOXES) 
-      return value.join(", ") unless value.nil?
+  
+  def format_field_for_export field, value, child=nil
+    return "" if value.blank?
+    return value.join(", ") if field.type ==  Field::CHECK_BOXES
+    if child
+      return child['photo_url'] if field.name.include?('photo')
+      return child['audio_url'] if field.name.include?('audio')
     end
-    if path.size > 0
-      if field.name != nil then
-        if value != nil then        
-          if field.name.include?('photo')
-            return path[0] + child_photo_path(child_id, value)
-          end
-          if field.name.include?('audio')
-            return path[0] + child_audio_path(child_id)
-          end
-        end
-      end
-    end
-    return value || ""
+    value
   end
 
   def filename export_type, extension
@@ -99,7 +90,7 @@ class ExportGenerator
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
         select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.enabled? }.
-        map { |field| [field.display_name, format_field_for_export(field, child[field.name], child.id)] }
+        map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
       if !field_pair.empty?
         @pdf.table field_pair,
           :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
@@ -114,8 +105,6 @@ class ExportGenerator
     add_child_photo(child)
     add_child_details(child)
   end
-
-  private
 
   def flag_if_suspected(child)
     @pdf.text("Flagged as Suspect Record", :style => :bold) if child.flag?
