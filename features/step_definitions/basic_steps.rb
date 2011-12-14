@@ -58,14 +58,20 @@ Given /^the following children exist in the system:$/ do |children_table|
             'birthplace' => 'Cairo',
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
-            'age_is' => 'Approximate'
+            'age_is' => 'Approximate',
+            'reunited' => false,
+            'flag' => false,
+            'flagged_at' => DateTime.new(1990,1,1,4,5,6)
     )
-
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
     unique_id = child_hash.delete('unique_id')
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
+    # if child_hash['flag']
+      child['histories'] ||= []
+      child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
+    # end
     child.create!
   end
 end

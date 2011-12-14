@@ -8,8 +8,9 @@ class ChildrenController < ApplicationController
   # GET /children.xml
   def index
     @page_name = "View All Children"
-    @children = Child.all
     @aside = 'shared/sidebar_links'
+    
+    filter_children_by params[:status], params[:order_by]
 
     respond_to do |format|
       format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
@@ -260,6 +261,26 @@ class ChildrenController < ApplicationController
     if @child.nil?
       flash[:error] = "Child with the given id is not found"
       redirect_to :action => :index and return
+    end
+  end
+  
+  def filter_children_by status, order
+    @filter = status unless status.nil? || status == "all"
+    @order = order if order == 'name'
+    if status.nil? || status == "all"
+      @children = Child.all
+    elsif status == "reunited"
+      @children = Child.all.select{ |c| c.reunited? }      
+    elsif status == "flagged"
+      @children = Child.all.select{ |c| c.flag? }
+      @children.each { |child| 
+        child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
+      }
+      if order != 'name'
+        @children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
+      end
+    else
+      @children = Child.all.select{ |c| !c.reunited? }      
     end
   end
 
