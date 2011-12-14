@@ -8,8 +8,9 @@ class ChildrenController < ApplicationController
   # GET /children.xml
   def index
     @page_name = "View All Children"
-    @children = Child.all
     @aside = 'shared/sidebar_links'
+    
+    filter_children_by params[:status], params[:order_by]
 
     respond_to do |format|
       format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
@@ -261,6 +262,45 @@ class ChildrenController < ApplicationController
       flash[:error] = "Child with the given id is not found"
       redirect_to :action => :index and return
     end
+  end
+  
+  def filter_children_by status, order
+    @filter, @order = status, order
+    @filter ||= "all"
+    
+    if @filter == "all"
+      @order = 'name'
+      @children = Child.all    
+      
+    elsif @filter == "reunited"
+      @order ||= 'name'
+      @children = Child.all.select{ |c| c.reunited? }   
+      if @order == 'most recently reunited' 
+        @children.each { |child| 
+          child['reunited_at'] = child['histories'].select{ |h| h['changes'].keys.include?('reunited') }.map{ |h| h['datetime'] }.max
+        }
+        @children.sort!{ |x,y| y['reunited_at'] <=> x['reunited_at'] }
+      else
+        @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+      end
+    
+    elsif @filter == "flagged"
+      @order ||= 'most recently flagged'
+      @children = Child.all.select{ |c| c.flag? }
+      @children.each { |child| 
+        child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
+      }
+      if @order == 'most recently flagged'
+        @children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
+      else
+        @children.sort!{ |x,y| x['name'] <=> y['name'] }
+      end
+    
+    elsif @filter == 'active'
+      @order = 'name'
+      @children = Child.all.select{ |c| !c.reunited? }      
+    end
+  
   end
 
 end
