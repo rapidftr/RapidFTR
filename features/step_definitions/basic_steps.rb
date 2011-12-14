@@ -58,7 +58,9 @@ Given /^the following children exist in the system:$/ do |children_table|
             'birthplace' => 'Cairo',
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
-            'age_is' => 'Approximate'
+            'age_is' => 'Approximate',
+            'reunited' => false,
+            'flag' => false
     )
 
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''

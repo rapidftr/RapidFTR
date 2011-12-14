@@ -37,5 +37,10 @@ module ChildrenHelper
 		return field_value.join ", " if field_value.instance_of? Array
 		return field_value
   end
+  
+  def link_for_filter filter, selected_filter
+    return filter.capitalize if filter == selected_filter
+    return "<a href=\"" + child_filter_path(filter) + "\">" + filter.capitalize + "</a>"
+  end
 
 end
