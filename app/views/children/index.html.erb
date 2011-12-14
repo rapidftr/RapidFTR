@@ -1,7 +1,15 @@
+<% if (@filter) %>
+<h2>All children > <%= h(@filter.capitalize) %></h2>
+<% else %>
 <h2>All children</h2>
+<% end %>
 
 <p><%= link_to 'Register New Child', new_child_path %></p>
 
+<%= render :partial => "children/filter_box" %>
+<% if (@filter == 'flagged' or @filter == 'reunited' or @filter == 'all') %>
+	<%= render :partial => "children/order_by_box" %>
+<% end %>
 <%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
 
 <br/>
