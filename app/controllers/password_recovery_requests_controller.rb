@@ -3,21 +3,22 @@ class PasswordRecoveryRequestsController < ApplicationController
   skip_before_filter :check_authentication
 
   def new
-    @password_recover_request = PasswordRecoveryRequest.new
+    @password_recovery_request = PasswordRecoveryRequest.new
   end
 
   def create
-    success_notice = "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
-    failure_notice =  "This user name does not exist. Please try again."
+    @password_recovery_request = PasswordRecoveryRequest.new params[:password_recovery_request]
     respond_to do |format|
-      if is_valid_user and PasswordRecoveryRequest.create params[:password_recovery_request]
-        format.html { flash.now[:notice] = success_notice }
-        format.json { render :json => password_recovery_json(success_notice) , :status => :ok, :head => :ok}
+      if @password_recovery_request.save
+        success_notice = "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
+        format.html do
+          flash[:notice] = success_notice
+          redirect_to login_path
+        end
+        format.json { render :json => password_recovery_json(success_notice) , :status => :ok}
       else
-        format.html { flash[:error] = failure_notice
-                      redirect_to :action => "new"
-        }
-        format.json { render :json => password_recovery_json(failure_notice) , :status => :ok}
+        format.html { render :new }
+        format.json { render :json => password_recovery_json(@password_recovery_request.errors.full_messages.join('. ')), :status => :ok}
       end
     end
   end
@@ -29,13 +30,10 @@ class PasswordRecoveryRequestsController < ApplicationController
   end
 
   private
-  def is_valid_user
-    !params[:password_recovery_request][:user_name].blank? and User.find_by_user_name(params[:password_recovery_request][:user_name])
-  end
 
   def password_recovery_json(notice)
     {
-        :response => notice
+      :response => notice
     }
   end
 
