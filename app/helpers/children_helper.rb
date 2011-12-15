@@ -38,4 +38,8 @@ module ChildrenHelper
 		return field_value
   end
 
+  def text_to_identify_child child
+    return child['name'] if child['name'] != nil && child['name'] != ""
+    return child['unique_identifier']
+  end
 end
