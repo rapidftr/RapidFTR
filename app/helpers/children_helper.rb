@@ -40,12 +40,12 @@ module ChildrenHelper
   
   def link_for_filter filter, selected_filter
     return filter.capitalize if filter == selected_filter
-    return "<a href=\"" + child_filter_path(filter) + "\">" + filter.capitalize + "</a>"
+    link_to(filter.capitalize, child_filter_path(filter))
   end
   
   def link_for_order_by filter, order, selected_order
     return order.capitalize if order == selected_order
-    return "<a href=\"" + child_filter_path(filter, :order_by => order) + "\">" + order.capitalize + "</a>"
+    link_to(order.capitalize, child_filter_path(filter, :order_by => order))
   end
 
 end
