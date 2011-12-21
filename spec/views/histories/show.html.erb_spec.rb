@@ -52,19 +52,42 @@ describe "histories/show.html.erb" do
     before do
       FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
         @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
     end
 
     describe "rendering history for a newly created record" do
       it "should render only the creation record" do
-        child = FakeRecordWithHistory.new "Bob", "2010/12/31 20:55:00 +0000"
+        child = FakeRecordWithHistory.new "Bob", "fake"
         assigns[:child] = child
         assigns[:user] = @user
         render
         response.should have_selector(".history-details li", :count => 1)
       	response.should have_tag(".history-details") do
-          with_tag("li", /2010-12-31 20:55:00 UTC Record created by Bob/)
+          with_tag("li", /Record created by Bob/)
       	end
+      end
+
+      it "should display the date/time of creation using the user's timezone setting" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        render
+
+      	response.should have_tag(".history-details") do
+          with_tag("li", /2010-12-31 09:55:00 SST Record created/)
+        end
+      end
+
+      it "should correctly format the creation's' date/time" do
+        child = FakeRecordWithHistory.new "bob", "2010/12/31 20:55:00UTC"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        @user.should_receive(:localize_date).with("2010/12/31 20:55:00UTC", "%Y-%m-%d %H:%M:%S %Z")
+
+        render
       end
     end
 
@@ -73,9 +96,10 @@ describe "histories/show.html.erb" do
         #Set up a child record and then flag it as suspect
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
       end
 
-      it "should display the time of the change using the users timezone setting" do
+      it "should display the date/time of the change using the user's timezone setting" do
         child = FakeRecordWithHistory.new "bob", "fake"
         child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "flag", "false", "true"
         assigns[:child] = child
@@ -84,8 +108,19 @@ describe "histories/show.html.erb" do
         render
 
       	response.should have_tag(".history-details") do
-          with_tag("li", "2010-12-31 09:55:00 -1100 Record was flagged by rapidftr because:")
+          with_tag("li", "2010-12-31 09:55:00 SST Record was flagged by rapidftr because:")
         end
+      end
+
+      it "should correctly format the change's' date/time" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "flag", "false", "true"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        @user.should_receive(:localize_date).with("2010/12/31 20:55:00UTC", "%Y-%m-%d %H:%M:%S %Z")
+
+        render
       end
     end
 
@@ -93,6 +128,7 @@ describe "histories/show.html.erb" do
       before do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub!(:localize_date).and_return "2010-12-31 20:55:00 UTC"
       end
 
       it "should render photo change record with links when adding a photo to an existing record" do
@@ -120,12 +156,37 @@ describe "histories/show.html.erb" do
           with_tag("li", /Photos\s+added/)
       	end
       end
+
+      it "should display the date/time of the change using the user's timezone setting" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_photo_change "rapidftr", "2010/12/31 20:55:00 +0000", "new_photo_key"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        render
+
+      	response.should have_tag(".history-details") do
+          with_tag("li", /2010-12-31 20:55:00 UTC\s+Photo\s+added by rapidftr/)
+        end
+      end
+
+      it "should correctly format the change's date/time" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_photo_change "rapidftr", "2010/12/31 20:55:00 +0000", "new_photo_key"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        @user.should_receive(:localize_date).with("2010/12/31 20:55:00 +0000", "%Y-%m-%d %H:%M:%S %Z")
+
+        render
+      end
     end
 
     describe "rendering changes to audio" do
       before do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub!(:localize_date).and_return "2010-12-31 20:55:00 UTC"
       end
 
       it "should render audio change record" do
@@ -150,8 +211,32 @@ describe "histories/show.html.erb" do
         render
 
       	response.should have_tag(".history-details") do
-          with_tag("li", /2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
+          with_tag("li", /.* UTC Audio Audio added by rapidftr/)
       	end
+      end
+
+      it "should display the date/time of the change using the user's timezone setting" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", nil, "Audio"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        render
+
+      	response.should have_tag(".history-details") do
+          with_tag("li", /2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
+        end
+      end
+
+      it "should correctly format the change's date/time" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00 +0000", "recorded_audio", nil, "Audio"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        @user.should_receive(:localize_date).with("2010/12/31 20:55:00 +0000", "%Y-%m-%d %H:%M:%S %Z")
+
+        render
       end
     end
 
@@ -159,6 +244,7 @@ describe "histories/show.html.erb" do
       before do
         @user = mock(:user)
         @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub!(:localize_date).and_return ""
       end
 
       it "should order history log from most recent change to oldest change" do
@@ -177,6 +263,71 @@ describe "histories/show.html.erb" do
           with_tag("li", /Age changed from 6 to 7/)
           with_tag("li", /Record created by/)
         end
+      end
+    end
+
+    describe "rendering changes to general attributes" do
+      before do
+        @user = mock(:user)
+        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
+      end
+
+      it "should display the date/time of the change using the user's timezone setting" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "nick_name", "", "Carrot"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        render
+
+      	response.should have_tag(".history-details") do
+          with_tag("li", "2010-12-31 09:55:00 SST Nick name initially set to Carrot by rapidftr")
+        end
+      end
+
+      it "should correctly format the change's date/time" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "nick_name", "", "Carrot"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        @user.should_receive(:localize_date).with("2010/12/31 20:55:00UTC", "%Y-%m-%d %H:%M:%S %Z")
+
+        render
+      end
+    end
+
+    describe "rendering the history of a reunited child record" do
+      before do
+        #Set up a child record and then flag it as suspect
+        @user = mock(:user)
+        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
+      end
+
+      it "should display the date/time of the change using the user's timezone setting" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "reunited", "", "true"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        render
+
+      	response.should have_tag(".history-details") do
+          with_tag("li", /2010-12-31 09:55:00 SST Child status changed to reunited.*/)
+        end
+      end
+
+      it "should correctly format the change's' date/time" do
+        child = FakeRecordWithHistory.new "bob", "fake"
+        child.add_single_change "rapidftr", "2010/12/31 20:55:00UTC", "reunited", "", "true"
+        assigns[:child] = child
+        assigns[:user] = @user
+
+        @user.should_receive(:localize_date).with("2010/12/31 20:55:00UTC", "%Y-%m-%d %H:%M:%S %Z")
+
+        render
       end
     end
   end
