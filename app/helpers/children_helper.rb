@@ -32,10 +32,10 @@ module ChildrenHelper
     "Reunited"
   end
 
-	def field_value_for_display field_value
-		return "&nbsp;" if field_value.nil? || field_value.length==0
-		return field_value.join ", " if field_value.instance_of? Array
-		return field_value
+  def field_value_for_display field_value
+    return "&nbsp;" if field_value.nil? || field_value.length==0
+    return field_value.join ", " if field_value.instance_of? Array
+    return field_value
   end
   
   def link_for_filter filter, selected_filter
@@ -47,5 +47,8 @@ module ChildrenHelper
     return order.capitalize if order == selected_order
     link_to(order.capitalize, child_filter_path(filter, :order_by => order))
   end
-
+  
+  def text_to_identify_child child
+    child['name'].blank? ? child['unique_identifier'] : child['name']
+  end
 end
