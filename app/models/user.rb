@@ -119,8 +119,8 @@ class User < CouchRestRails::Document
     end
   end
 
-  def localize_date(date_time)
-    DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime("%d %B %Y at %H:%M (%Z)")
+  def localize_date(date_time, format = "%d %B %Y at %H:%M (%Z)")
+    DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
 
   private
