@@ -7,6 +7,6 @@ class MobileLoginEvent < Hash
 
   def initialize properties
     super(properties)
-    self[:timestamp] ||= Time.now
+    self[:timestamp] ||= Clock.now
   end
 end
