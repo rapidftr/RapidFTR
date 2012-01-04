@@ -31,11 +31,21 @@
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => history['datetime'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
                                    :user_name => history['user_name'],
  								   :message => new_value_for(history, 'reunited_message')	} %>
             <% elsif field == 'reunited_message'%>
                 <%# do nothing, because we are already displaying the reunited message as a part of reunited change %>
+            <% elsif field == 'investigated'%>
+                <%= render :partial => "investigated_change",
+                           :locals => {
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
+                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
+                                   :user_name => history['user_name'],
+ 								   :message => new_value_for(history, 'investigated_message')	} %>
+            <% elsif field == 'investigated_message'%>
+                <%# do nothing, because we are already displaying the investigated message as a part of investigated change %>                
             <% else %>
                 <%= render :partial => "history_change",
                            :locals => {
