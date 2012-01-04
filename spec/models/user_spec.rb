@@ -106,7 +106,7 @@ describe User do
     user = build_user
     user.create!
 
-    Clock.fake_time_now = now
+    Clock.stub!(:now).and_return(now)
 
     user.add_mobile_login_event(imei, mobile_number)
     user.save

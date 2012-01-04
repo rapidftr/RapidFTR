@@ -26,14 +26,14 @@ describe "FileAttachment" do
 
     it "should create an instance with a name from current date and default prefix" do
       current_time = Time.parse("Jan 17 2010 14:05:32")
-      Clock.fake_time_now = current_time
+      Clock.stub!(:now).and_return(current_time)
       attachment = FileAttachment.from_file(@file, "")
       attachment.name.should == 'file-2010-01-17T140532'
     end
 
     it "should create an instance with a name from current date and prefix and postfix" do
       current_time = Time.parse("Jan 17 2010 14:05:32")
-      Clock.fake_time_now = current_time
+      Clock.stub!(:now).and_return(current_time)
       attachment = FileAttachment.from_file(@file, "", "pre", "post")
       attachment.name.should == 'pre-2010-01-17T140532-post'
     end

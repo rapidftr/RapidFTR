@@ -25,21 +25,14 @@ end
 describe ChildrenController do
   
   before do
-    Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
+    Clock.stub!(:now).and_return(Time.utc(2000, "jan", 1, 20, 15, 1))
     fake_login
     @controller.stub!(:current_user_name).and_return('foo-user')
-  end
-
-  after do
-    Clock.reset!
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
   def mock_child(stubs={})
     @mock_child ||= mock_model(Child, stubs).as_null_object
-  end
-
-  before do
-    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
   describe "GET index" do
@@ -123,7 +116,7 @@ describe ChildrenController do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
 
       current_time = Time.parse("Jan 17 2010 14:05:32")
-      Clock.fake_time_now = current_time
+      Clock.stub!(:now).and_return(current_time)
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
@@ -182,7 +175,7 @@ describe ChildrenController do
     it "should update history on flagging of record" do
       current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
       current_time = Time.parse("20 Jan 2010 17:10:32")
-      Clock.fake_time_now = current_time
+      Clock.stub!(:now).and_return(current_time)
       current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 

@@ -16,13 +16,13 @@ describe Session do
 
       it "is not expired if time is within the expiration range" do
         @session.update_expiration_time(@twenty_minutes_from_now)
-        Clock.fake_time_now = @fifteen_minutes_from_now
+        Clock.stub!(:now).and_return(@fifteen_minutes_from_now)
         @session.expired?.should be_false
       end
 
       it "expires after a given time" do
         @session.update_expiration_time(@twenty_minutes_from_now)
-        Clock.fake_time_now = @twenty_five_minutes_from_now
+        Clock.stub!(:now).and_return(@twenty_five_minutes_from_now)
         @session.expired?.should be_true
       end
     end
@@ -34,7 +34,7 @@ describe Session do
 
       it "is expiring soon after 15 minutes" do
         @session.update_expiration_time(@twenty_minutes_from_now)
-        Clock.fake_time_now = @fifteen_minutes_from_now
+        Clock.stub!(:now).and_return(@fifteen_minutes_from_now)
         @session.will_expire_soon?.should be_true
       end
     end
