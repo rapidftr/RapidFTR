@@ -49,6 +49,7 @@ begin
       t.binary = vendored_cucumber_bin
       t.fork = true # You may get faster startup if you set this to false
       t.profile = 'browser'
+      t.cucumber_opts = cucumber_opts if cucumber_opts
     end
 
     Cucumber::Rake::Task.new({:browser_wip => 'db:test:prepare'}, 'Run features that are being worked on in browser mode') do |t|
