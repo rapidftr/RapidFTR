@@ -126,10 +126,7 @@ describe Child do
     end
 
     it "should populate last_updated_at field with the time of the update" do
-      current_time_in_utc = Time.parse("17 Jan 2010 19:05UTC")
-      current_time = mock()
-      Time.stub!(:now).and_return current_time
-      current_time.stub!(:getutc).and_return current_time_in_utc
+      Clock.fake_time_now = Time.utc(2010, "jan", 17, 19, 5, 0)
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
       child['last_updated_at'].should == "2010-01-17 19:05:00UTC"
@@ -142,8 +139,7 @@ describe Child do
     end
 
     it "should update attachment when there is audio update" do
-      current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time
+      Clock.fake_time_now = Time.parse("Jan 17 2010 14:05:32")
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, uploadable_audio, {}
       child['_attachments']['audio-2010-01-17T140532']['data'].should_not be_blank
@@ -338,18 +334,15 @@ describe Child do
     end
 
 		it "should create a posted_at field with the current date" do
-			current_time_in_utc = Time.parse("22 Jan 2010 14:05UTC")
-			Time.stub!(:now).and_return current_time_in_utc 
+			Clock.fake_time_now = Time.utc(2010, "jan", 22, 14, 05, 0)
 			child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
 			child['posted_at'].should == "2010-01-22 14:05:00UTC"
 		end
 
 		describe "when the created at field is not supplied"do
 			it "should create a created_at field with time of creation" do
-				current_time_in_utc = Time.parse("14 Jan 2010 14:05UTC")
-				current_time = mock()
-				Time.stub!(:now).and_return current_time
-				current_time.stub!(:getutc).and_return current_time_in_utc
+				Clock.fake_time_now = Time.utc(2010, "jan", 14, 14, 5, 0)
+				
 				child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
 				child['created_at'].should == "2010-01-14 14:05:00UTC"
 			end
@@ -404,8 +397,7 @@ describe Child do
 
   describe "photo attachments" do
     before(:each) do
-      current_time = Time.parse("Jan 20 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
+      Clock.fake_time_now = Time.parse("Jan 20 2010 17:10:32")
     end
     
     context "with no photos" do
@@ -443,8 +435,7 @@ describe Child do
     context "when rotating an existing photo" do
       let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}  
       before(:each) do
-        updated_at_time = Time.parse("Feb 20 2010 12:04:32")
-        Time.stub!(:now).and_return updated_at_time
+       Clock.fake_time_now = Time.parse("Feb 20 2010 12:04:32")
       end
       
       it "should become the primary photo" do
@@ -551,18 +542,17 @@ describe Child do
     end
 
     it "should retrieve attachment data for attachment key" do
-      current_time = Time.parse("Feb 20 2010 12:04:32")
-      Time.stub!(:now).and_return current_time
-      child = Child.create('audio' => uploadable_audio)
+      Clock.fake_time_now = Time.parse("Feb 20 2010 12:04:32")
 
+      child = Child.create('audio' => uploadable_audio)
       child.should_receive(:read_attachment).with('audio-2010-02-20T120432').and_return("Some audio")
 
       child.audio
     end
 
     it 'should create a FileAttachment with the read attachment and the attachments content type' do
-      current_time = Time.parse("Feb 20 2010 12:04:32")
-      Time.stub!(:now).and_return current_time
+
+      Clock.fake_time_now = Time.parse("Feb 20 2010 12:04:32")
       uploaded_amr = uploadable_audio_amr
       child = Child.create('audio' => uploaded_amr)
       expected_data = 'LA! LA! LA! Audio Data'
@@ -580,8 +570,7 @@ describe Child do
   describe "audio attachment" do
 
     it "should create a field with recorded_audio on creation" do
-      current_time = Time.parse("Jan 20 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
+      Clock.fake_time_now = Time.parse("Jan 20 2010 17:10:32")
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
 
       child['audio_attachments']['original'].should == 'audio-2010-01-20T171032'
@@ -590,8 +579,7 @@ describe Child do
     it "should change audio file if a new audio file is set" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
 
-      updated_at_time = Time.parse("Feb 20 2010 12:04:32")
-      Time.stub!(:now).and_return updated_at_time
+      Clock.fake_time_now = Time.parse("Feb 20 2010 12:04:32")
       child.update_attributes :audio => uploadable_audio
       child['audio_attachments']['original'].should == 'audio-2010-02-20T120432'
     end
@@ -743,12 +731,10 @@ describe Child do
     describe "photo logging" do
 
       before :each do
-        updated_at_time = Time.parse("Jan 20 2010 12:04:24")
-        Time.stub!(:now).and_return updated_at_time
+        Clock.fake_time_now = Time.parse("Jan 20 2010 12:04:24")
         @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
-        updated_at_time = Time.parse("Feb 20 2010 12:04:24")
-        Time.stub!(:now).and_return updated_at_time
+        Clock.fake_time_now = Time.parse("Feb 20 2010 12:04:24")
       end
 
       it "should log new photo key on adding a photo" do
@@ -839,12 +825,10 @@ describe Child do
     describe "photo changes" do
 
       before :each do
-        updated_at_time = Time.parse("Jan 20 2010 12:04:24")
-        Time.stub!(:now).and_return updated_at_time
+        Clock.fake_time_now = Time.parse("Jan 20 2010 12:04:24")
         @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
 
-        updated_at_time = Time.parse("Feb 20 2010 12:04:24")
-        Time.stub!(:now).and_return updated_at_time
+        Clock.fake_time_now = Time.parse("Feb 20 2010 12:04:24")
       end
 
       it "should log new photo key on adding a photo" do

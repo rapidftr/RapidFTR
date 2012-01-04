@@ -340,7 +340,7 @@ class Child < CouchRestRails::Document
   end
 
   def current_formatted_time
-    Time.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
+    Clock.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
   end
 
   def changes_for(field_names)

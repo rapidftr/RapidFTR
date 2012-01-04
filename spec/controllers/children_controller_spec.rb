@@ -123,7 +123,7 @@ describe ChildrenController do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
 
       current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time
+      Clock.fake_time_now = current_time
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
@@ -182,7 +182,7 @@ describe ChildrenController do
     it "should update history on flagging of record" do
       current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
       current_time = Time.parse("20 Jan 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
+      Clock.fake_time_now = current_time
       current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 

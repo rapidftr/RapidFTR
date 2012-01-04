@@ -102,20 +102,22 @@ describe User do
     imei = "1337"
     mobile_number = "555-555"
     now = Time.parse("2008-06-21 13:30:00 UTC")
+    
     user = build_user
     user.create!
 
-    Time.stub(:now).and_return(now)
+    Clock.fake_time_now = now
 
     user.add_mobile_login_event(imei, mobile_number)
     user.save
-		user = User.get(user.id)
-
+    
+    user = User.get(user.id)
     event = user.mobile_login_history.first
+
     event[:imei].should == imei
     event[:mobile_number].should == mobile_number
-		event[:timestamp].should == now
-	end
+    event[:timestamp].should == now
+  end
 
   it "should store list of devices when new device is used" do
     Device.all.each(&:destroy)
@@ -152,7 +154,6 @@ describe User do
 
   end
 
-
   it "should have error on password_confirmation if no password_confirmation" do
     user = build_user( {
       :password => "timothy",
@@ -160,6 +161,20 @@ describe User do
     })
     user.should_not be_valid
     user.errors[:password_confirmation].should_not be_nil
+  end
+
+  it "should localize date using user's timezone" do
+    user = build_user({
+        :time_zone => "Samoa"
+                      })
+    user.localize_date("2011-11-12 21:22:23 UTC").should == "12 November 2011 at 10:22 (SST)"
+  end
+
+  it "should localize date using specified format" do
+    user = build_user({
+        :time_zone => "UTC"
+                      })
+    user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
   end
 
 end

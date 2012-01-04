@@ -7,23 +7,23 @@
                            :locals => {
                                    :new_photos => change['added'],
                                    :deleted_photos => change['deleted'],
-                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
+                                   :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'] } %>
             <% elsif field == 'recorded_audio' %>
                 <%= render :partial => "audio_history_change",
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
+                                   :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'] } %>
             <% elsif field == 'flag'%>
                 <%= render :partial => "flag_change",
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
+                                   :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'],
- 								   :message => new_value_for(history, 'flag_message')	} %>
+ 								   :message => new_value_for(history, 'flag_message') } %>
             <% elsif field == 'flag_message'%>
                 <%# do nothing, because we are already displaying the flag message as a part of flag change %>
             <% elsif field == 'reunited'%>
@@ -31,9 +31,9 @@
                            :locals => {
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
+                                   :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'],
- 								   :message => new_value_for(history, 'reunited_message')	} %>
+ 								   :message => new_value_for(history, 'reunited_message') } %>
             <% elsif field == 'reunited_message'%>
                 <%# do nothing, because we are already displaying the reunited message as a part of reunited change %>
             <% elsif field == 'investigated'%>
@@ -52,12 +52,12 @@
                                    :field => field.humanize,
                                    :from_value => change['from'],
                                    :to_value => change['to'],
-                                   :datetime => Time.parse(history['datetime']).in_time_zone(@user.time_zone),
+                                   :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'] } %>
             <% end %>
         <% end %>
     <% end %>
-    <li><%= Time.parse(@child['created_at']).in_time_zone(@user.time_zone) %> Record created by <%= @child['created_by'] %></li>
+    <li><%= @user.localize_date(@child['created_at'], "%Y-%m-%d %H:%M:%S %Z") %> Record created by <%= @child['created_by'] %></li>
   </ul>
 
 </div>

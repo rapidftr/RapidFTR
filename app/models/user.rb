@@ -119,8 +119,8 @@ class User < CouchRestRails::Document
     end
   end
 
-  def localize_date(date_time)
-    DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime("%d %B %Y at %H:%M (%Z)")
+  def localize_date(date_time, format = "%d %B %Y at %H:%M (%Z)")
+    DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
 
   private
@@ -133,7 +133,7 @@ class User < CouchRestRails::Document
 
   def encrypt_password
     return if password.blank?
-    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{self.user_name}--") if new_record?
+    self.salt = Digest::SHA1.hexdigest("--#{Clock.now.to_s}--#{self.user_name}--") if new_record?
     self.crypted_password = encrypt(password)
   end
 

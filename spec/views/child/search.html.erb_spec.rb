@@ -117,7 +117,7 @@ describe "children/search.html.erb" do
     end
 
     def time_now
-      Time.now.strftime("%d %B %Y at %H:%M (%Z)")
+      Clock.now.strftime("%d %B %Y at %H:%M (%Z)")
     end
   end
 end 

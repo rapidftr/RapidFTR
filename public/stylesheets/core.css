@@ -357,3 +357,55 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 .form-fields-container .fields-container .field-container {display: none;}
 .form-fields-container .prev-selected:hover {cursor: auto; }
 .form-fields-container .prev-selected { background-color: #EEE; }
+
+/* children page */
+.filter-box {
+	float: right;
+	margin-top: -70px;
+}
+.filter-box p {
+	color: #678;
+	display: inline-block;
+	font-weight: bold;
+}
+.filter-box ul {
+	display: inline-block;
+}
+.filter-box ul li {
+	display: inline-block;
+	background: none;
+	border-left: 1px solid #678;
+	padding-left: 7px;
+	padding-right: 7px;
+	color: #678;
+}
+.filter-box ul li.first {
+	border-left: none;
+}
+
+.order-by-box {
+	float: right;
+	margin-top: -46px;
+	min-width: 267px;
+}
+
+.order-by-box p, .order-by-box ul, .order-by-box ul li {
+	display: inline-block;
+}
+
+.order-by-box p {
+	color: #678;
+	font-weight: bold;
+}
+
+.order-by-box ul li {
+	background: none;
+	border-left: 1px solid #678;
+	padding-left: 7px;
+	padding-right: 7px;
+	color: #678;
+}
+
+.order-by-box ul li.first {
+	border-left: none;
+}
