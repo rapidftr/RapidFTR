@@ -115,8 +115,7 @@ describe ChildrenController do
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
 
-      current_time = Time.parse("Jan 17 2010 14:05:32")
-      Clock.stub!(:now).and_return(current_time)
+      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
