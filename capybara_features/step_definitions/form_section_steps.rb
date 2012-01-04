@@ -22,7 +22,35 @@ Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expect
   row_for(form_section).should have_css("td:nth-child(3)", :text => expected_name)
 end
 
+Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |form_section, visibility|
+  within row_xpath_for(form_section) do
+    page.should have_css("td", :text => visibility.capitalize)
+  end
+end
+
+When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|
+  check form_section_visibility_checkbox_id(form_section)
+end
+
+When /^I (show|hide) selected form sections$/ do |show_or_hide|
+  click_button show_or_hide.capitalize
+  page.driver.browser.switch_to.alert.accept
+end
+
+Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ do |form_section|
+  find_field(form_section_visibility_checkbox_id(form_section)).should_not be_checked
+end
+
+
 def row_for(section_name)
-  page.find "//tr[@id='#{section_name}_row']"
+  page.find row_xpath_for(section_name)
+end
+
+def row_xpath_for(section_name)
+  "//tr[@id='#{section_name}_row']"
+end
+
+def form_section_visibility_checkbox_id(section_name)
+  "sections_#{section_name}"
 end
 
