@@ -20,10 +20,13 @@ Feature: Create new forms
 
     When I press "Save Form"
 
-    Then I am on form section page
-    And I should see the "New Form 1" form section link
+    Then I should be on form section page
+    And I should see the following form sections in this order:
+      | basic_details     |
+      | family_details    |
+      | caregiver_details |
+      | new_form_1        |
     And I should see the description text "I am a new custom form.  Say hello!" for form section "new_form_1"
-    And "#new_form_1_row" should be "4th" in "#form_sections" table
 
   Scenario: Disallowing non alphanumeric characters in the name field
 
@@ -34,7 +37,7 @@ Feature: Create new forms
 
     When I press "Save Form"
 
-    Then I should see "Name must contain only alphanumeric characters and spaces" within "#errorExplanation"
+    Then I should see "Name must contain only alphanumeric characters and spaces"
 
   Scenario: Name field cannot be empty
 
@@ -44,7 +47,7 @@ Feature: Create new forms
 
     When I press "Save Form"
 
-    Then I should see "Name must not be blank" within "#errorExplanation"
+    Then I should see "Name must not be blank"
 
   Scenario: Cancelling the creation of a form
 
@@ -55,18 +58,22 @@ Feature: Create new forms
 
     When I follow "Cancel"
 
-    Then I am on form section page
-    And I should not see the "New Form 1" form section link
+    Then I should be on form section page
+    And I should see the following form sections in this order:
+      | basic_details     |
+      | family_details    |
+      | caregiver_details |
 
   Scenario: Can create a form section disabled
 
     Given I am on form section page
     And I follow "Create New Form Section"
-	Then I should see "Visible checkbox" with id "form_section_enabled"
+    Then I should see "Visible checkbox" with id "form_section_enabled"
     And I fill in "form_section_name" with "New Form 1"
     And I uncheck "Visible"
 
     When I press "Save Form"
 
     Then I am on form section page
-    And I should see the text "Hidden" in the enabled column for the form section "new_form_1"
+    And the form section "new_form_1" should be listed as hidden
+
