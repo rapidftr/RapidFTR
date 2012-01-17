@@ -2,6 +2,7 @@ class HighlightFieldsController < ApplicationController
   before_filter :administrators_only 
   
   def index
+    @page_name="Highlight Fields"
     @forms = FormSection.all
     @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
       { :field_name => field.name, 
@@ -11,7 +12,7 @@ class HighlightFieldsController < ApplicationController
         :form_id => field.form.unique_id 
       }
     end
-  end 
+ end
   
   def create
     form = FormSection.get_by_unique_id(params[:form_id])
