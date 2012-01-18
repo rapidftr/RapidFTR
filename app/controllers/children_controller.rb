@@ -244,7 +244,7 @@ class ChildrenController < ApplicationController
     results = results || [] # previous version handled nils - needed? 
     
     results.each do |child|
-      child['photo_url'] = child_photo_url(child, child.primary_photo_id)
+      child['photo_url'] = child_photo_url(child, child.primary_photo_id)  unless child.primary_photo_id.nil?
       child['audio_url'] = child_audio_url(child)
     end
     
