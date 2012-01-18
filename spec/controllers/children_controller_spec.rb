@@ -51,6 +51,16 @@ describe ChildrenController do
       assigns[:child].should equal(mock_child)
     end
 
+    it 'should not fail if primary_photo_id is not present' do
+      stub_out_user
+      child = Child.new('last_known_location' => "London")
+      Child.stub!(:get).with("37").and_return(child)
+      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+
+      get(:show, :format => 'csv', :id => "37")
+    end
+
+
     it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
       FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
@@ -294,7 +304,7 @@ describe ChildrenController do
     end
 
     it 'sends csv data with the correct attributes' do
-			Child.stub!(:search).and_return([])	
+			Child.stub!(:search).and_return([])
 			export_generator = stub(ExportGenerator)
 			inject_export_generator(export_generator, [])
 
