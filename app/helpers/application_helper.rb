@@ -50,8 +50,9 @@ module ApplicationHelper
   end
 
   def link_with_confirm(link_to, anchor, link_options = {})
+    @chosen_page=(@page_name =~ /Account*/)?'Current Account Page':'child record page'
     if /edit|new/.match(controller.action_name)
-      link_options.merge!(:confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.')
+      link_options.merge!(:confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The '+ @chosen_page +' Instead' )
     end
     link_to link_to, anchor, link_options
   end
