@@ -61,12 +61,15 @@ class ExportGenerator
   end
 
   def filename export_type, extension
-    return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
-    return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
+    return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_datetime_string}.#{extension}" if @child_data.length == 1
+    return "rapidftr-#{export_type}-#{filename_datetime_string}.#{extension}"
   end
 
   def filename_date_string
     Clock.now.strftime("%Y%m%d")
+  end
+  def filename_datetime_string
+    Clock.now.strftime("%Y%m%d-%H%M")
   end
 
   def add_child_photo(child)
