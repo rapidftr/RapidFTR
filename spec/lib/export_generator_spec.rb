@@ -41,7 +41,7 @@ describe ExportGenerator do
       
       it "should add the correct filename" do
         Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-        subject.options[:filename].should == "rapidftr-full-details-20000101.csv"      
+        subject.options[:filename].should == "rapidftr-full-details-20000101-2015.csv"
       end
       
       it 'should have a photo column with appropriate links' do        
