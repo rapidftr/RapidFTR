@@ -12,7 +12,7 @@ class HighlightFieldsController < ApplicationController
         :form_id => field.form.unique_id 
       }
     end
-  end 
+ end
   
   def create
     form = FormSection.get_by_unique_id(params[:form_id])
