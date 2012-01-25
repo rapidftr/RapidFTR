@@ -2,6 +2,7 @@ class HighlightFieldsController < ApplicationController
   before_filter :administrators_only 
   
   def index
+    @page_name = "Highlight fields"
     @forms = FormSection.all
     @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
       { :field_name => field.name, 
