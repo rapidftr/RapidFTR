@@ -1,4 +1,4 @@
-@javascript
+@wip
 Feature: Disable and enable forms
   In order to customise the view
   As an admin user
