@@ -15,6 +15,7 @@ class Child < CouchRestRails::Document
   property :unique_identifier
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
+  property :investigated, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {
@@ -132,6 +133,14 @@ class Child < CouchRestRails::Document
     return children if children.length > 0
     
     SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
+  end
+  
+  def self.suspect_records
+    records = []
+    self.all.each do |c| 
+      records << c if c.flag? && !c.investigated?
+    end
+    records
   end
 
   def self.new_with_user_name(user_name, fields = {})
@@ -351,7 +360,7 @@ class Child < CouchRestRails::Document
   def field_name_changes
     @from_child ||= Child.get(self.id)
 		field_names = field_definitions.map {|f| f.name}
-    other_fields = ["flag","flag_message", "reunited", "reunited_message"]
+    other_fields = ["flag","flag_message", "reunited", "reunited_message", "investigated", "investigated_message"]
 		all_fields = field_names + other_fields
 		all_fields.select { |field_name| changed?(field_name) }
   end
