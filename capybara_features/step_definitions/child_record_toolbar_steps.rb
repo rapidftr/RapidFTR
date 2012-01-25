@@ -10,3 +10,15 @@ end
 When /^I click the "(.*)" button$/ do |button_value|
   click_button button_value
 end
+
+And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
+  click_link("Mark record as Investigated")
+  fill_in("Investigation Details", :with => details)
+  click_button("Mark as Investigated")
+end
+
+And /^I mark "([^\"]*)" as not investigated with the following details:$/ do |name, details|
+  click_link("Mark as Not Investigated")
+  fill_in("Undo Investigation Details", :with => details)
+  click_button("Undo Investigated")
+end

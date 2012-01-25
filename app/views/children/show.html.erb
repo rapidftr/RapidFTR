@@ -20,6 +20,9 @@
             $(".profile-tools .reunited a").click( function(){
                 $(this).parent().siblings('form').children('.mark-as-form').toggle();
             });
+            $(".profile-tools .investigated a").click( function(){
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
+            });            
 
             $(".mark-as-submit").click(function(){
                 if(!$(this).siblings('input[type=text]').val()){
