@@ -155,6 +155,7 @@ class ChildrenController < ApplicationController
   
   # GET /children/suspect_records
   def suspect_records
+    @page_name = "Suspect Records"
     @children = Child.suspect_records
     respond_to do |format|
       format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
