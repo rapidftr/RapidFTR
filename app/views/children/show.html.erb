@@ -62,7 +62,7 @@
     <h3 class="duplicate-message"><%= duplicate_message %></h3>
 <% end %>
 <br><br>
-<%= render :partial => "show_child_toolbar"%>
+<%= toolbar_for_child(@child) %>
 
 <div id='interviewer_details'>
   <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @user.localize_date(@child['created_at']) %></h3>
@@ -75,4 +75,4 @@
 </div>
 
 <%= render :partial => "show_form_section" %>
-<%= render :partial => "show_child_toolbar" %>
+<%= toolbar_for_child(@child) %>

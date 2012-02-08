@@ -55,4 +55,8 @@ module ChildrenHelper
   def text_to_identify_child child
     child['name'].blank? ? child['unique_identifier'] : child['name']
   end
+  
+  def toolbar_for_child child
+    render :partial => "show_child_toolbar" unless child.duplicate?
+  end
 end
