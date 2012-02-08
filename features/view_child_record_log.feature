@@ -107,8 +107,8 @@ Feature:
     When the user's time zone is "(GMT-11:00) Samoa"
     And I am on the change log page for "George Harrison"
 
-    Then I should see "2010-10-29 03:12:15 -1100 Audio"
-    Then I should see "2010-10-29 03:12:15 -1100 Photo"
-    And I should see "2010-10-29 03:12:15 -1100 Name changed"
-    And I should see "2010-07-19 02:05:15 -1100 Record created"
+    Then I should see "2010-10-29 03:12:15 SST Audio"
+    Then I should see "2010-10-29 03:12:15 SST Photo"
+    And I should see "2010-10-29 03:12:15 SST Name changed"
+    And I should see "2010-07-19 02:05:15 SST Record created"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories

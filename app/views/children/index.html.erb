@@ -1,6 +1,9 @@
-<h2>All children</h2>
+<h2>All children > <%= h(@filter.capitalize) %></h2>
 
 <p><%= link_to 'Register New Child', new_child_path %></p>
+
+<%= render :partial => "children/filter_box" %>
+<%= render :partial => "children/order_by_box" %>
 
 <%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
 

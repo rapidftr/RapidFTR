@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.view("by_full_name")
+    @users_details = users_details
   end
 
   def show
@@ -13,8 +14,8 @@ class UsersController < ApplicationController
       flash[:error] = "User with the given id is not found"
       redirect_to :action => :index and return
     end
-    unless session.admin? or @user.user_name == current_user_name   
-      raise AuthorizationFailure.new('Not permitted to view page')      
+    unless session.admin? or @user.user_name == current_user_name
+      raise AuthorizationFailure.new('Not permitted to view page')
     end
   end
 
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
 
   def edit
     session = app_session
-    
+
     @user = User.get(params[:id])
     @page_name = "Account: #{@user.full_name}"
     unless session.admin? or @user.user_name == current_user_name
@@ -37,20 +38,20 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = 'User was successfully created.'
-      redirect_to(@user) 
+      redirect_to(@user)
     else
-      render :action => "new" 
+      render :action => "new"
     end
   end
 
   def update
     session = app_session
-    
+
     @user = User.get(params[:id])
     unless session.admin? or @user.user_name == current_user_name
       raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
     end
-    
+
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
       redirect_to(@user)
@@ -58,11 +59,23 @@ class UsersController < ApplicationController
       render :action => "edit"
     end
   end
-  
+
   def destroy
     @user = User.get(params[:id])
     @user.destroy
-    redirect_to(users_url) 
+    redirect_to(users_url)
   end
-  
+
+  private
+
+  def users_details
+    @users.map do |user|
+      {
+        :user_url  => user_url(:id => user),
+        :user_name => user.user_name,
+        :token     => form_authenticity_token
+      }
+    end
+  end
+
 end

@@ -21,17 +21,37 @@ describe ChildrenHelper do
       helper.link_to_update_info(child).should have_tag('a', :text => 'and others')
     end
   end
-	describe "field_for_display" do
-		it "should return the string value where set" do
-			helper.field_value_for_display("Foo").should == "Foo"
-		end
-		it "should return nbsp string if field is nil or 0 length" do
-			helper.field_value_for_display("").should == "&nbsp;"
-			helper.field_value_for_display(nil).should == "&nbsp;"
-			helper.field_value_for_display([]).should == "&nbsp;"
-		end
-		it "should comma separate values if field value is an array" do
-			helper.field_value_for_display(["A", "B", "C"]).should == "A, B, C"
-		end
-	end
+  describe "field_for_display" do
+    it "should return the string value where set" do
+      helper.field_value_for_display("Foo").should == "Foo"
+    end
+    it "should return nbsp string if field is nil or 0 length" do
+      helper.field_value_for_display("").should == "&nbsp;"
+      helper.field_value_for_display(nil).should == "&nbsp;"
+      helper.field_value_for_display([]).should == "&nbsp;"
+    end
+    it "should comma separate values if field value is an array" do
+      helper.field_value_for_display(["A", "B", "C"]).should == "A, B, C"
+    end
+  end
+
+  describe "#text_to_identify_child" do
+    it "should show the child unique identifier if name is not present" do
+      identifier = "georgelon12345"
+      child = Child.new(:unique_identifier => identifier)
+      helper.text_to_identify_child(child).should == identifier
+    end
+
+    it "should show the name if it is present" do
+      name = "Ygor"
+      child = Child.new(:name => name)
+      helper.text_to_identify_child(child).should == name
+    end
+
+    it "should show the child unique id if name is empty" do
+      unique_identifier = "AnID"
+      child = Child.new(:name => "", :unique_identifier => unique_identifier)
+      helper.text_to_identify_child(child).should == unique_identifier
+    end
+  end
 end

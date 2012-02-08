@@ -16,4 +16,3 @@ Feature: As an user I should not see disabled forms when adding new child
     And I should see the "Family Details" tab
     And I should see the "Caregiver Details" tab
     And I should not see the "Disabled Details" tab
-    And I should not see the "Disabled Details" tab name in detail section

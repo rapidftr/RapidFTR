@@ -5,7 +5,7 @@
       <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] if checkbox %>
     </p>
 
-    <h3><%= link_to summary_row['name'], child_path(summary_row) %></h3>
+    <h3><%= link_to text_to_identify_child(summary_row), child_path(summary_row) %></h3>
     <% if summary_row['flag']=="true"%>
         <%= image_tag("icon-flag.gif", :alt=> "Flagged",:size => "20x20",:class => 'flag') %>
     <% end %>
@@ -26,9 +26,6 @@
         <dd><%= summary_row[relevant_field[:name]] %></dd>
       <% end %>
     </dl>
-
-    <p><strong>Last known location:</strong> <%= summary_row["last_known_location"] %>
-      <em><%= summary_row["date_of_separation"] %> </em></p>
 
     <dl class="interviewer-details">
       <dt>Registered by:</dt>

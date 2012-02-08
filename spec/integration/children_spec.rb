@@ -30,11 +30,11 @@ describe Child do
   end
 
   it "should persist multiple photo attachments" do
-    Time.stub!(:now).and_return Time.parse("Jan 20 2010 12:04:15")
+    Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 12:04:15"))
     child = Child.create('last_known_location' => "New York", 'photo' => uploadable_photo_jeff)
 
     created_child = Child.get(child.id)
-    Time.stub!(:now).and_return Time.parse("Feb 20 2010 12:04:15")
+    Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:15"))
 
     created_child.update_attributes :photo => uploadable_photo
     

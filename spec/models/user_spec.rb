@@ -12,10 +12,10 @@ describe User do
       :user_type => 'user_type',
       :permission => Permission::LIMITED
     })
-    user = User.new( options) 
+    user = User.new( options)
     user
   end
-  
+
   def build_and_save_user( options = {} )
     user = build_user(options)
     user.save
@@ -46,7 +46,7 @@ describe User do
     user = build_user(:user_name => 'the_user_name')
     user.should be_valid
     user.create!
-    
+
     dupe_user = build_user(:user_name => 'the_user_name')
     dupe_user.should_not be_valid
   end
@@ -88,7 +88,7 @@ describe User do
     reloaded_user.should_not eql(user)
     reloaded_user.should_not equal(user)
   end
-  
+
   it "can't authenticate which isn't saved" do
     user = build_user(:password => "thepass")
     lambda { user.authenticate("thepass") }.should raise_error
@@ -98,12 +98,12 @@ describe User do
     user = build_and_save_user(:password => "thepass")
     user.authenticate("thepass").should be_true
   end
-   
+
   it "can't authenticate with the wrong password" do
     user = build_and_save_user(:password => "onepassword")
     user.authenticate("otherpassword").should be_false
   end
-  
+
   it "can't authenticate if disabled" do
     user = build_and_save_user(:disabled => "true", :password => "thepass")
     user.authenticate("thepass").should be_false
@@ -122,22 +122,24 @@ describe User do
   it "should be able to store a mobile login event" do
     imei = "1337"
     mobile_number = "555-555"
-    now = Time.parse("2008-06-21 13:30:00 UTC") 
+    now = Time.parse("2008-06-21 13:30:00 UTC")
+    
     user = build_user
     user.create!
 
-    Time.stub(:now).and_return(now)
+    Clock.stub!(:now).and_return(now)
 
     user.add_mobile_login_event(imei, mobile_number)
-    user.save	
-		user = User.get(user.id)
-
+    user.save
+    
+    user = User.get(user.id)
     event = user.mobile_login_history.first
+
     event[:imei].should == imei
     event[:mobile_number].should == mobile_number
-		event[:timestamp].should == now
-	end
-  
+    event[:timestamp].should == now
+  end
+
   it "should store list of devices when new device is used" do
     Device.all.each(&:destroy)
     user = build_user
@@ -146,31 +148,54 @@ describe User do
     user.add_mobile_login_event("b imei", "a mobile")
     user.add_mobile_login_event("a imei", "a mobile")
 
-    
+
     Device.all.map(&:imei).sort().should == (["a imei", "b imei"])
   end
-  
+
   it "should create devices as not blacklisted" do
     Device.all.each(&:destroy)
-    
+
     user = build_user
     user.create!
     user.add_mobile_login_event("an imei", "a mobile")
-    
+
     Device.all.all? {|device| device.blacklisted? }.should be_false
   end
-  
+
   it "should save blacklisted devices to the device list" do
     device = Device.new(:imei => "1234", :blacklisted => false, :user_name => "timothy")
     device.save!
-    
+
     user = build_and_save_user(:user_name => "timothy")
     user.devices = [{"imei" => "1234", "blacklisted" => "true", :user_name => "timothy"}]
     user.save!
-    
+
     blacklisted_device = user.devices.detect { |device| device.imei == "1234" }
     blacklisted_device.blacklisted.should == true
-    
+
+  end
+
+  it "should have error on password_confirmation if no password_confirmation" do
+    user = build_user( {
+      :password => "timothy",
+      :password_confirmation => ""
+    })
+    user.should_not be_valid
+    user.errors[:password_confirmation].should_not be_nil
+  end
+
+  it "should localize date using user's timezone" do
+    user = build_user({
+        :time_zone => "Samoa"
+                      })
+    user.localize_date("2011-11-12 21:22:23 UTC").should == "12 November 2011 at 10:22 (SST)"
+  end
+
+  it "should localize date using specified format" do
+    user = build_user({
+        :time_zone => "UTC"
+                      })
+    user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
   end
 
   describe "permissions" do

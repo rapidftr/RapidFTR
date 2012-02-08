@@ -14,11 +14,11 @@ module NavigationHelpers
 
       when /the home\s?page/
         '/'
-    when /the new create_custom_field page/
-      new_create_custom_field_path
+      when /the new create_custom_field page/
+        new_create_custom_field_path
 
-    when /the new create_custom_fields.feature page/
-      new_create_custom_fields.feature_path
+      when /the new create_custom_fields.feature page/
+        new_create_custom_fields.feature_path
 
       when /the new add_suggested_field_to_form_section page/
         new_add_suggested_field_to_form_section_path
@@ -66,10 +66,6 @@ module NavigationHelpers
         user = User.find_by_user_name($1)
         user_path(user, options)
 
-      when /edit user page for "(.+)"/
-        user = User.find_by_user_name($1)
-        edit_user_path(user, options)
-
       when /child search page/
         search_children_path(options)
 
@@ -104,9 +100,8 @@ module NavigationHelpers
         arbitrary_form_section = FormSection.new
         new_formsection_field_path( arbitrary_form_section, options )
 
-      when /the edit user page for "(.+)"$/
-        user = User.by_user_name(:key => $1)
-        raise "no user named #{$1}" if user.nil?
+      when /edit user page for "(.+)"/
+        user = User.find_by_user_name($1)
         edit_user_path(user)
 
       when /new field page for "(.+)"/

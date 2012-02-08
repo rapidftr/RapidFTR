@@ -47,12 +47,12 @@ class Session < CouchRestRails::Document
   end
 
   def expired?
-    return true if !expiration_time.nil? && expiration_time - Time.now <= 0
+    return true if !expiration_time.nil? && expiration_time - Clock.now <= 0
     false
   end
 
   def will_expire_soon?
-    return true if !expiration_time.nil? && expiration_time - Time.now <= 5.minutes
+    return true if !expiration_time.nil? && expiration_time - Clock.now <= 5.minutes
     false
   end
 

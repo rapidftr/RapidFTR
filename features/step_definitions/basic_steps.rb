@@ -42,13 +42,13 @@ end
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)
   current_time.stub!(:getutc).and_return Time.parse(datetime)
-  Time.stub!(:now).and_return current_time
+  Clock.stub!(:now).and_return current_time
 end
 
 When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datetime, utcdatetime|
   current_time = Time.parse(datetime)
   current_time_in_utc = Time.parse(utcdatetime)
-  Time.stub!(:now).and_return current_time
+  Clock.stub!(:now).and_return current_time
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
 
@@ -58,14 +58,21 @@ Given /^the following children exist in the system:$/ do |children_table|
             'birthplace' => 'Cairo',
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
-            'age_is' => 'Approximate'
+            'age_is' => 'Approximate',
+            'reunited' => false,
+            'reunited_at' => DateTime.new(1990,1,1,4,5,6),
+            'flag' => false,
+            'flagged_at' => DateTime.new(1990,1,1,4,5,6)
     )
-
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
     unique_id = child_hash.delete('unique_id')
     child = Child.new_with_user_name(child_hash['reporter'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
+    child['histories'] ||= []
+    child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
+    child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => 'anything' }}
+    child['created_at'] = child_hash['created_at'] if child_hash.key?('created_at')
     child.create!
   end
 end
@@ -443,6 +450,13 @@ Then /^the (view|edit) record page should show the record is flagged$/ do |page|
   path = children_path+"/#{Child.all[0].id}"
   page == "edit" ? visit(path + "/edit") : visit(path)
   response.should contain("Flagged as suspect record by")
+end
+
+Then /^the suspect records page should show the following children:$/ do |table|
+  expected_child_names = table.raw.flatten
+  visit suspect_records_children_path
+  child_records = Hpricot(response.body).search("div[@class=profiles-list-item] h3 a").map {|a| a.inner_text }
+  child_records.should == expected_child_names
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|

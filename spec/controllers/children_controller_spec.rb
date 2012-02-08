@@ -25,30 +25,22 @@ end
 describe ChildrenController do
   
   before do
-    Clock.fake_time_now = Time.utc(2000, "jan", 1, 20, 15, 1)
+    Clock.stub!(:now).and_return(Time.utc(2000, "jan", 1, 20, 15, 1))
     fake_login
     @controller.stub!(:current_user_name).and_return('foo-user')
-  end
-
-  after do
-    Clock.reset!
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
   def mock_child(stubs={})
     @mock_child ||= mock_model(Child, stubs).as_null_object
   end
 
-  before do
-    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
-  end
-
   describe "GET index" do
     it "assigns all childrens as @childrens" do
-      Child.stub!(:all).and_return([mock_child])
-      get :index
-      assigns[:children].should == [mock_child]
+        Child.stub!(:all).and_return([mock_child])
+        get :index
+        assigns[:children].should == [mock_child]
     end
-
   end
 
   describe "GET show" do
@@ -57,6 +49,16 @@ describe ChildrenController do
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
     end
+
+    it 'should not fail if primary_photo_id is not present' do
+      stub_out_user
+      child = Child.new('last_known_location' => "London")
+      Child.stub!(:get).with("37").and_return(child)
+      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+
+      get(:show, :format => 'csv', :id => "37")
+    end
+
 
     it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
@@ -122,8 +124,7 @@ describe ChildrenController do
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
 
-      current_time = Time.parse("Jan 17 2010 14:05:32")
-      Time.stub!(:now).and_return current_time
+      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
@@ -182,7 +183,7 @@ describe ChildrenController do
     it "should update history on flagging of record" do
       current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
       current_time = Time.parse("20 Jan 2010 17:10:32")
-      Time.stub!(:now).and_return current_time
+      Clock.stub!(:now).and_return(current_time)
       current_time.stub!(:getutc).and_return current_time_in_utc
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 
@@ -302,17 +303,16 @@ describe ChildrenController do
     end
 
     it 'sends csv data with the correct attributes' do
-			
-			Child.stub!(:search).and_return(:child_search_results)	
+			Child.stub!(:search).and_return([])
 			export_generator = stub(ExportGenerator)
-			inject_export_generator(export_generator, :child_search_results)
+			inject_export_generator(export_generator, [])
 
 			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
 			@controller.
         should_receive(:send_data).
         with( :csv_data, {:foo=>:bar} )
       
-			get( :search, :format => 'csv', :query => 'blah')
+			get(:search, :format => 'csv', :query => 'blah')
     end
 	end
   describe "GET photo_pdf" do
@@ -406,6 +406,14 @@ describe ChildrenController do
 
         response.should be_error
       end
+    end
+  end
+  
+  describe "GET suspect_records" do
+    it "assigns all flagged children as @children" do
+      Child.stub!(:suspect_records).and_return([mock_child])
+      get :suspect_records
+      assigns[:children].should == [mock_child]
     end
   end
 end
