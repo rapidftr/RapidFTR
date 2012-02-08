@@ -10,3 +10,8 @@ end
 When /^I click the "(.*)" button$/ do |button_value|
   click_button button_value
 end
+
+When /^I click mark as duplicate for "([^"]*)"$/ do |child_name|
+  child_with_specified_name = Child.all.detect { |c| c.name == child_name }
+  page.find_by_id("child_#{child_with_specified_name._id}").click_link("Mark as Duplicate")
+end

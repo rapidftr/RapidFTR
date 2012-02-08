@@ -15,12 +15,15 @@ class Child < CouchRestRails::Document
   property :unique_identifier
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
+  property :duplicate, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
              {
-                emit(doc['name'], doc);
+                if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                  emit(doc['name'], doc);
+                }
              }
           }"
           
@@ -28,7 +31,17 @@ class Child < CouchRestRails::Document
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
                {
-                  emit(doc['flag'],doc);
+                 if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                   emit(doc['flag'],doc);
+                 }
+               }
+            }"
+            
+  view_by :unique_identifier,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('unique_identifier'))
+               {
+                  emit(doc['unique_identifier'],doc);
                }
             }"
 
@@ -320,6 +333,10 @@ class Child < CouchRestRails::Document
     self['last_updated_by'].blank? || user_names_after_deletion.blank?
   end
 
+  def mark_as_duplicate(parent_id)
+    self['duplicate'] = true
+    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.id
+  end
 
   protected
 
