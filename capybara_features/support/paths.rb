@@ -121,8 +121,8 @@ module NavigationHelpers
       when /all child Ids/
         child_ids_path
         
-      when /suspect records page/i
-        suspect_records_children_path
+      when /the child listing filtered by (.+)/
+        child_filter_path $1
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
