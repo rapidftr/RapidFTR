@@ -1,3 +1,6 @@
+<div class="flash" id="successNotice" style="display:none;">
+         <p class="notice">Order is successfully saved. </p>
+</div>
 <p><%= link_to 'Create New Form Section', new_form_section_path %></p>
 
 <% form_tag  enable_form_url, :id => 'enable_or_disable_form_section', :method => :post, :name => 'sections'  do -%>
@@ -54,6 +57,6 @@
   <input type="button" name="SaveOrder" value="Save Order" id="save_order"/>  
 </div>
 <div class="backLink">
-  <%= link_to "Back", admin_path() %>
+  <%= link_with_confirm "Back", admin_path() %>
 </div>
 <% end %>
