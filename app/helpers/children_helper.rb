@@ -57,6 +57,10 @@ module ChildrenHelper
   end
   
   def toolbar_for_child child
-    render :partial => "show_child_toolbar" unless child.duplicate?
+    if child.duplicate?
+      link_to 'View the change log', child_history_path(child)
+    else
+      render :partial => "show_child_toolbar"
+    end
   end
 end
