@@ -59,7 +59,7 @@ class User < CouchRestRails::Document
                       :message =>"Please enter a valid email address"
 
 
-  validates_confirmation_of :password, :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method   :user_name, :method => :is_user_name_unique
 
 
@@ -143,6 +143,10 @@ class User < CouchRestRails::Document
 
   def password_required?
     crypted_password.blank? || !password.blank? || !password_confirmation.blank?
+  end
+
+  def password_confirmation_entered?
+    !password_confirmation.blank?
   end
 
   def make_user_name_lowercase
