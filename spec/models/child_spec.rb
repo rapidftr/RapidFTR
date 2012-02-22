@@ -1000,6 +1000,21 @@ describe Child do
     end
   end
 
+  describe "mark as duplicate" do
+    it "should set the duplicate field" do
+      child1 = Child.new('last_known_location' => 'Addid Ababa', 'created_by' => 'jaco')
+      child1.create_unique_id("child1")
+      child1.save!
+      child2 = Child.new('last_known_location' => 'Addid Ababa', 'created_by' => 'jaco')
+      child2.create_unique_id("child2")
+      child2.save!
+
+      child2.mark_as_duplicate child1.unique_identifier
+      child2.duplicate.should be true
+      child2.duplicate_of.should == child1.id
+    end
+  end
+
   private
   
   def create_child(name)
