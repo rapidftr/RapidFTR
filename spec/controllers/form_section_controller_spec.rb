@@ -14,14 +14,14 @@ describe FormSectionController do
     fake_admin_login
   end
   describe "get index" do
-    it "populate the view with all the form sections showing the enabled sections first" do
-      row1 = FormSection.new(name => "Form section 1", :enabled => false)
-      row2 = FormSection.new(name => "Form section 2", :enabled => true)
+    it "populate the view with all the form sections in order ignoring enabled or disabled" do
+      row1 = FormSection.new(name => "Form section 1", :enabled => false, :order => 1)
+      row2 = FormSection.new(name => "Form section 2", :enabled => true, :order => 2)
       FormSection.stub!(:all).and_return([row1, row2])
       
       get :index
-     
-      assigns[:form_sections].should == [row2, row1]
+
+      assigns[:form_sections].should == [row1, row2]
     end
   end
   describe "post create" do
