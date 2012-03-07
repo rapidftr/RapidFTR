@@ -46,3 +46,20 @@ end
 And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
   find(:css, ".blacklisted-checkbox-#{imei_number}").set(true)
 end
+
+Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
+  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }.should_not raise_error(Capybara::ElementNotFound)
+end
+
+Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
+  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }.should raise_error(Capybara::ElementNotFound)
+end
+
+Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
+  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }.should_not raise_error(Capybara::ElementNotFound)
+end
+
+Then /^I should not see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
+  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }.should raise_error(Capybara::ElementNotFound)
+end
+

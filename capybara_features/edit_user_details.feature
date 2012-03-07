@@ -56,6 +56,17 @@ Scenario: Check that an admin creates a user record and is able to edit it
   Then I should see "Please enter a valid email address"
   And I should see "Please enter full name of the user"
   
+Scenario: Admin should be able to delete another user but not themselves
+
+  Given a user "gui" with a password "123"
+  And I am logged in as an admin
+  And I am on the manage users page
+  Then user "gui" should exist on the page
+  Then I should see "Delete User" for "gui"
+  And I should not see "Delete User" for "admin"
+  When I follow "Delete User"
+  Then user "gui" should not exist on the page
+  
 Scenario: Should be able to set devices to black listed
 
   Given a user "tim" with a password "123" 
