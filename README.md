@@ -22,7 +22,7 @@ Join the google group and read through the wikis on the main repo for how to joi
 
 * [RapidFTR Repository](http://github.com/jorgej/RapidFTR/)
 * [RapidFTR BlackBerry Repository](http://github.com/jorgej/RapidFTR---BlackBerry-Edition)
-* [RapidFTR Android Repository](http://github.com/jorgej/RapidFTR-Android)
+* [RapidFTR Android Repository](http://github.com/jorgej/RapidFTR---Android)
 
 RapidFTR is being developed using Ruby on Rails and CouchDB. Alongside the development of the API,
 we've also started to develop the BlackBerry client, with an Android client to follow.
