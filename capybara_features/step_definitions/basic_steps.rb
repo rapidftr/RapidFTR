@@ -67,3 +67,15 @@ end
 When /^I sleep (\d*) seconds$/ do |sleep_time|
   sleep sleep_time.to_i
 end
+
+Given /"([^\"]*)" is logged in/ do |user_name|
+  Given "\"#{user_name}\" is the user"
+  Given "I am on the login page"
+  Given "I fill in \"#{user_name}\" for \"User name\""
+  Given "I fill in \"123\" for \"password\""
+  Given "I press \"Log in\""  
+end
+
+Given /"([^\"]*)" is the user/ do |user_name|
+  Given "a user \"#{user_name}\" with a password \"123\""
+end

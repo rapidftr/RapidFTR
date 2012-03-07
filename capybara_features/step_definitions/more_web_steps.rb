@@ -32,3 +32,17 @@ Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, elem
   page.send(should, have_css("##{id}"))
 end
 
+Then /^the "([^\"]*)" field should be disabled$/ do |label|
+  field_labeled(label)[:disabled].should be_true
+end
+
+Given /^devices exist$/ do |devices|
+  devices.hashes.each do |device_hash|
+    device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])
+    device.save!
+  end
+end
+
+And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
+  find(:css, ".blacklisted-checkbox-#{imei_number}").set(true)
+end
