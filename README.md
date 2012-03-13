@@ -14,7 +14,7 @@ and join the [google group](http://groups.google.com/group/rapidftr/)
 Developer Info
 -------------
 
-We're working with developers from ThoughtWorks and around the version on version one of the API and Web Interface.
+We're working with developers from ThoughtWorks and around the world on version one of the API and Web Interface.
 You can get the source code by forking the GitHub repositories.
 Please feel free to comment or contribute.
 
