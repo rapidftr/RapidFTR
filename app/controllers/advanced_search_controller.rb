@@ -13,7 +13,7 @@ class AdvancedSearchController < ApplicationController
     @page_name = "Advanced Search"
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
-    @highlighted_fields = []
+    @highlighted_fields = FormSection.sorted_highlighted_fields
     @user = current_user
     new_search = !params[:criteria_list]
 
