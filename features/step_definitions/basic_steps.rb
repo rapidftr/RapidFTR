@@ -325,43 +325,6 @@ Then /^I should see a current order of "([^\"]*)" for the "([^\"]*)" form sectio
 end
 
 
-Given /^the following suggested fields exist in the system:$/ do |suggested_fields_table|
-  suggested_fields_table.hashes.each do |suggested_field_hash|
-    suggested_field_hash.reverse_merge!(
-            'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase)
-
-    field = Field.new :name=> suggested_field_hash["name"],
-                      :type=>suggested_field_hash["type"],
-                      :help_text => suggested_field_hash["help_text"],
-                      :display_name => suggested_field_hash["display_name"],
-                      :option_strings=>(eval suggested_field_hash["option_strings"])
-
-    suggested_field_hash[:field] = field
-    suggested_field_hash[:is_used] = false
-    temp1 = SuggestedField.create!(suggested_field_hash)
-  end
-end
-
-Then /^I should see the following suggested fields:$/ do |suggested_fields_table|
-  suggested_fields_list = Hpricot(response.body).suggested_fields_list
-  suggested_fields_list.should_not be_nil
-  suggested_fields_table.hashes.each do |suggested_field_hash|
-    display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
-    display.should_not be_nil
-    display.at("input[@name='field[name]']")[:value].strip.should == suggested_field_hash[:name]
-    display.inner_html.should contain(suggested_field_hash[:description])
-  end
-end
-
-Then /^I should not see the following suggested fields:$/ do |suggested_fields_table|
-  suggested_fields_list = Hpricot(response.body).suggested_fields_list
-  suggested_fields_list.should_not be_nil
-  suggested_fields_table.hashes.each do |suggested_field_hash|
-    display = suggested_fields_list.suggested_field_display_for suggested_field_hash[:unique_id]
-    display.should be_nil
-  end
-end
-
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
   field_ids = Nokogiri::HTML(response.body).css("table tbody tr").map {|row| row[:id] }
   field_ids.should include("#{field_id}Row")
@@ -375,12 +338,6 @@ Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ d
 
   enabled_icon = field.enabled_icon
   enabled_icon.inner_html.strip.should == expected_text
-end
-
-And /^I press add for suggested field "([^\"]*)"$/ do |field_id|
-   within(".#{field_id}Display") do
-     click_button("Add to form")
-   end
 end
 
 Then /^"([^\"]*)" should be "([^\"]*)" in "([^\"]*)" table$/ do |row_selector, position, table_selector|
