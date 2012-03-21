@@ -15,18 +15,30 @@ class SearchCriteria
   
   def self.build_from_params(criteria_list)
     text_fields =  FormSection.all.map{ |form| form.all_text_fields }.flatten
-        
+
+    allSearchCriteria = ""
+    allSearchBeginIndex = 0
+    
+
+
     criteria_list.map do |index, criteria_params|
-      field = text_fields.detect { |text_field| text_field.name == criteria_params[:field] }
-      criteria_params[:display_name] = field.display_name_for_field_selector  
-      SearchCriteria.new(criteria_params)
+      if (criteria_params[:field] == "all_fields")
+        allSearchCriteria = criteria_params[:value]
+        SearchCriteria.new(:index => 0, :field => "all_fields", :value => criteria_params[:value], :join => "OR", :display_name => "All Text Fields")
+      else
+        field = text_fields.detect { |text_field| text_field.name == criteria_params[:field] }
+        
+        criteria_params[:display_name] = field.display_name_for_field_selector  
+        SearchCriteria.new(criteria_params)
+      end
     end.sort_by(&:index)
   end
-  
+   
   def self.lucene_query(criteria_list)
     criteria_list = criteria_list.clone
     criteria = criteria_list.shift
     build_joins(criteria_list, criteria.to_lucene_query)
+
   end
   
   # for text based fields
