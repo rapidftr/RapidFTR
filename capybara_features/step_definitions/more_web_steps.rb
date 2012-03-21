@@ -11,7 +11,6 @@ World(WithinHelpers)
 When /^I click text "([^"]*)"(?: within "([^\"]*)")?$/ do |text_value, selector|
   with_scope(selector) do
     page.find('//a', :text => text_value).click
-
   end
 end
 
@@ -63,3 +62,6 @@ Then /^I should not see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
   lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }.should raise_error(Capybara::ElementNotFound)
 end
 
+Then /^the field "([^"]*)" should have the following options:$/ do |locator, table|
+  page.should have_select(locator, :options => table.raw.flatten)
+end

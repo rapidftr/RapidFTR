@@ -53,6 +53,3 @@ Given /^the user's time zone is "([^"]*)"$/ do |timezone|
   And %Q|I press "Save"|
 end
 
-
-
-
