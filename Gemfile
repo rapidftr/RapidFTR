@@ -23,7 +23,6 @@ group :cucumber do
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
-
 end
 
 group :test do
@@ -31,6 +30,7 @@ group :test do
   gem 'rspec-rails',      '1.3.4'
   gem 'webrat',           '0.7.1'
   gem 'capybara',         '1.0.1'
+  gem 'selenium-webdriver', '2.20.0'
   gem 'jasmine'
 end
 

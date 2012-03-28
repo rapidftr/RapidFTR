@@ -12,9 +12,9 @@ Find more information at the [project website](http://rapidftr.com)
 and join the [google group](http://groups.google.com/group/rapidftr/)
 
 Developer Info
--------------
+--------------
 
-We're working with developers from ThoughtWorks and around the version on version one of the API and Web Interface.
+We're working with developers from ThoughtWorks and around the world on version one of the API and Web Interface.
 You can get the source code by forking the GitHub repositories.
 Please feel free to comment or contribute.
 
@@ -29,12 +29,12 @@ we've also started to develop the BlackBerry client, with an Android client to f
 If you've got experience with any of these and want to help, please get in touch.
 
 Install and run RapidFTR on OSX
--------------
+-------------------------------
 
 PLEASE SEE [INSTALLATION INSTRUCTIONS](http://wiki.github.com/jorgej/RapidFTR/install-and-run-rapidftr-on-osx)
 
 To run RapidFTR
--------------
+---------------
 
 1. From the command line, go to the folder where your GitHub repo is and enter this command which will start SolR and the application server:
 
