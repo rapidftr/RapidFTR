@@ -58,8 +58,7 @@ class User < CouchRestRails::Document
   validates_format_of :email, :with =>  /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message =>"Please enter a valid email address"
 
-
-  validates_confirmation_of :password, :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method   :user_name, :method => :is_user_name_unique
   validates_with_method   :permission, :method => :is_valid_permission_level
 
@@ -149,6 +148,10 @@ class User < CouchRestRails::Document
     crypted_password.blank? || !password.blank? || !password_confirmation.blank?
   end
 
+  def password_confirmation_entered?
+    !password_confirmation.blank?
+  end
+
   def make_user_name_lowercase
     user_name.downcase!
   end
@@ -157,5 +160,4 @@ class User < CouchRestRails::Document
     return true if [Permission::LIMITED, Permission::UNLIMITED].include?(permission)
     [ false, "Invalid Permission Level" ]
   end
-
 end

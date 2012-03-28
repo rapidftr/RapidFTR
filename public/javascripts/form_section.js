@@ -98,7 +98,8 @@ function saveOrder(event) {
 		$("#form_sections").html($(data).find("#form_sections"));
 		$("a.moveDown").bind("click", moveDown);
 		$("a.moveUp").bind("click", moveUp);
-		initOrderingColumns();		
+		initOrderingColumns();
+            $("#successNotice").show();
 	    }
 	}
     });

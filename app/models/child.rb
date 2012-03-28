@@ -24,6 +24,14 @@ class Child < CouchRestRails::Document
                 emit(doc['name'], doc);
              }
           }"
+          
+  view_by :flag,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('flag'))
+               {
+                  emit(doc['flag'],doc);
+               }
+            }"
 
   view_by :flag,
           :map => "function(doc) {
