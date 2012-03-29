@@ -104,7 +104,7 @@
           <%= f.label :permission_unlimited, "Unlimited" %>
         </p>
         <p>
-          <%= f.radio_button :permission, "Limited", :checked => edittable_user.new_record? || edittable_user.has_limited_access? ? "checked" : "" %>
+          <%= f.radio_button :permission, "Limited", :checked => edittable_user.new_record? || edittable_user.limited_access? ? "checked" : "" %>
           <%= f.label :permission_limited, "Limited" %>
         </p>
       </dd>

@@ -208,8 +208,12 @@ describe User do
         @user.permission = "Limited"
         @user.save!
       end
-      it { should have_limited_access }
+
       its(:permission) { should == "Limited" }
+
+      it "should have limited access" do
+        @user.limited_access?.should be_true
+      end
     end
 
     context "user with unlimited permissions" do

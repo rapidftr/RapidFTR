@@ -119,7 +119,7 @@ class User < CouchRestRails::Document
     end
   end
 
-  def has_limited_access?
+  def limited_access?
     permission == Permission::LIMITED
   end
 
