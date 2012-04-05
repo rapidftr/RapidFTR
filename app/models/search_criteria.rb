@@ -18,7 +18,8 @@ class SearchCriteria
         
     criteria_list.map do |index, criteria_params|
       field = text_fields.detect { |text_field| text_field.name == criteria_params[:field] }
-      criteria_params[:display_name] = field.display_name_for_field_selector  
+      criteria_params.merge!(:display_name => field.display_name_for_field_selector,
+                            :index => index)
       SearchCriteria.new(criteria_params)
     end.sort_by(&:index)
   end
