@@ -275,7 +275,7 @@ class Child < CouchRestRails::Document
   end
   
   def audio
-    return nil if self['audio_attachments'].nil?
+    return nil if self.id.nil? || self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']
     return nil unless has_attachment? attachment_key
 

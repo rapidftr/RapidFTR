@@ -409,3 +409,21 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 .order-by-box ul li.first {
 	border-left: none;
 }
+
+.audio_player_section li {
+    background-image: none;
+    clear: both;
+    float: left;
+    margin: 0;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.audio_player_section .profile-section-label {
+    color: #667788;
+    float: left;
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: right;
+    width: 150px;
+}
