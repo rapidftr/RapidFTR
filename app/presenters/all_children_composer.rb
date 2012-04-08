@@ -1,14 +1,13 @@
-class AllChildrenFilter
+class AllChildrenComposer
 
-  attr_reader :children, :order
+  attr_reader :order
 
-  def initialize(children, order)
-    @children = children
+  def initialize(order)
     @order = order
     @order ||= 'name'
   end
 
-  def compose
+  def compose(children)
     sort(children)
   end
 

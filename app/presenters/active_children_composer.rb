@@ -1,22 +1,22 @@
-class ActiveChildrenFilter
+class ActiveChildrenComposer
 
-  attr_reader :children, :order
+  attr_reader :order
 
-  def initialize(children, order)
-    @children = children
+  def initialize(order)
     @order = order
     @order ||= 'name'
   end
 
-  def compose
-    sort(select(children), order)
+  def compose(children)
+    non_reunited_children = select(children)
+    sort(non_reunited_children)
   end
 
   def select(children)
     children.select { |c| !c.reunited? }
   end
 
-  def sort(children, order)
+  def sort(children)
     if order == 'most recently created'
       children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
     else

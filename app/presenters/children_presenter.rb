@@ -1,23 +1,23 @@
 class ChildrenPresenter
   @@composers = {
-    "reunited" => ReunitedChildrenFilter,
-    "flagged" => FlaggedChildrenFilter,
-    "active" => ActiveChildrenFilter,
-    "all" => AllChildrenFilter
+    "reunited" => ReunitedChildrenComposer,
+    "flagged" => FlaggedChildrenComposer,
+    "active" => ActiveChildrenComposer,
+    "all" => AllChildrenComposer
   }
 
   attr_reader :children, :filter
 
   def initialize(children, status, order)
     @filter = status || 'all'
-    @composer = composer(children, order)
-    @children = @composer.compose
+    @composer = get_composer(order)
+    @children = @composer.compose(children)
   end
 
   delegate :order, :to => :@composer
 
-  def composer(children, order)
-    @@composers[@filter].new(children, order)
+  def get_composer(order)
+    @@composers[@filter].new(order)
   end
 
 end
