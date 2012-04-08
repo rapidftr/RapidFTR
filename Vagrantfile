@@ -5,5 +5,5 @@
 # http://vagrantup.com/docs/vagrantfile.html
 Vagrant::Config.run do |config|
   config.vm.box = "rapid_ftr_rails"
-  config.vm.box_url = "https://s3.amazonaws.com/RapidFTR-dist/rails_developer_20120228.box"
+  config.vm.box_url = "https://s3.amazonaws.com/RapidFTR-dist/rails_developer_20120328.box"
 end
