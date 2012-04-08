@@ -273,6 +273,10 @@ class ChildrenController < ApplicationController
   end
 
   def children_by_user_access
+    session = app_session
+    if session.admin?
+      return Child.all
+    end
     current_user.limited_access? ? Child.all_by_creator(current_user.user_name) : Child.all
   end
 

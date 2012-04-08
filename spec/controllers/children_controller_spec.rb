@@ -68,6 +68,18 @@ describe ChildrenController do
       end
     end
 
+    context "as administrator" do
+      it "should assign all the children" do
+        fake_session = Session.new()
+        fake_session.stub(:admin?).with(no_args()).and_return(true)
+        @controller.stub!(:app_session => fake_session)
+        children = [mock_child, mock_child]
+        Child.should_receive(:all).and_return(children)
+        get :index, :status => 'reunited'
+        assigns[:children].should == children
+      end
+    end
+
     context "viewing all children" do
       context "when status is passed" do
         before { @status = "all" }
