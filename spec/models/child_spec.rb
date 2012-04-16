@@ -6,7 +6,7 @@ describe Child do
   describe 'build solar schema' do
       it "should build with advanced search fields" do
         Field.stub!(:all_text_names).and_return []
-        Child.build_fields_for_solar.should == ["unique_identifier", "created_by"]
+        Child.build_fields_for_solar.should == ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by"]
       end
 
       it "fields build with all fields in form sections" do

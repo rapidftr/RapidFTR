@@ -21,20 +21,36 @@ class AdvancedSearchController < ApplicationController
       @criteria_list = [SearchCriteria.new]
       @results = []
     else
-      @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]): [])
-      append_advanced_user_criteria(params[:created_by_value], @criteria_list)
+      @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]) : [])
+      @criteria_list = add_search_filters(params)
       @results = SearchService.search(@criteria_list)
     end
   end
 
   def child_fields_selected?(criteria_list)
-     !criteria_list.first[1]["field"].blank? if !criteria_list.first[1].nil?
+    !criteria_list.first[1]["field"].blank? if !criteria_list.first[1].nil?
   end
 
-  def append_advanced_user_criteria(value, list)
-    if (value)
-      advanced_user_criteria = SearchCriteria.create_advanced_criteria({:field => "created_by", :value => value, :index => 12})
-      list.push(advanced_user_criteria)
-    end
+  private
+  def add_search_filters params
+    add_created_by_filter(params)
+    add_updated_by_filter(params)
+    @criteria_list
   end
+
+  def add_updated_by_filter(params)
+    @criteria_list.push(SearchFilter.new({:field => "last_updated_by",
+                                          :value => params[:updated_by_value],
+                                          :index => 2,
+                                          :join => "AND"})) if params[:updated_by_value]
+  end
+
+  def add_created_by_filter(params)
+    @criteria_list.push(SearchFilter.new({:field => "created_by",
+                                          :field2 => "created_by_full_name",
+                                          :value => params[:created_by_value],
+                                          :index => 1,
+                                          :join => "AND"})) if params[:created_by_value]
+  end
+
 end

@@ -71,6 +71,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     @child = Child.new_with_user_name(current_user_name, params[:child])
+    @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child record successfully created.'

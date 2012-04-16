@@ -417,4 +417,21 @@ describe ChildrenController do
       assigns[:children].should == [mock_child]
     end
   end
+
+  describe "PUT create" do
+
+    let(:new_child) { Child.new }
+
+    it "should add the full user_name of the user who created the Child record" do
+      Child.stub('new_with_user_name').and_return(new_child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      put :create, :child => {:name => 'Test Child' }
+      new_child['created_by_full_name'].should=='Bill Clinton'
+    end
+
+  end
+
 end
+
+
+
