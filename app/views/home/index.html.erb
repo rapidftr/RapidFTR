@@ -13,4 +13,4 @@
 </p>
 <%= link_to 'Register New Child', new_child_path %> <br/><br/>
 <%= link_to 'View All Children', children_path %> <br/><br/>
-<%= link_to @suspect_record_count.to_s + ' Records need Attention', suspect_records_children_path %> <br/><br/>
+<%= link_to @suspect_record_count.to_s + ' Records need Attention', child_filter_path("flagged") %> <br/><br/>
