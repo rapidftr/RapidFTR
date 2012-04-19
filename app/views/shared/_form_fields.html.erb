@@ -10,7 +10,7 @@
         </div>
 
     <ul class="form-container">
-        <% @forms.each do|form| %>
+        <% @forms.sort{ |field1, field2| field1.name <=> field2.name }.each do|form| %>
           <li id="form-<%= form.id%>" class="form">
             <%= form.name %>
             <input type="hidden" class="form-name" value="<%= form.name%>"/>
@@ -21,7 +21,7 @@
     <div class="fields-container">
       <% @forms.each do|form|%>    
         <ul id="fields-for-form-<%= form.id%>" class="field-container">
-          <% form.fields.each do |field| %>
+          <% form.fields.sort{ |field1, field2| field1.name <=> field2.name }.each do |field| %>
             <li id="field-<%= field.name%>" class="field">
               <span class="field-display-name"><%= field.display_name%></span>
               <input type="hidden" class="field-name" value="<%= field.name%>"/>
