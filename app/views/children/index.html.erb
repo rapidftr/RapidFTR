@@ -5,7 +5,9 @@
 <%= render :partial => "children/filter_box" %>
 <%= render :partial => "children/order_by_box" %>
 
-<%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
+<div class="profiles-list">
+	<%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
+</div>
 
 <br/>
 
