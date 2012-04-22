@@ -4,7 +4,7 @@ class FormSectionController < ApplicationController
 
   def index
     @page_name = "Manage Form Sections"
-    @form_sections = FormSection.all.sort_by { |row| [row.enabled ? 0 : 1, row.order] }
+    @form_sections = FormSection.all.sort_by(&:order)
   end
 
   def create
