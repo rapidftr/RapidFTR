@@ -6,9 +6,10 @@ ActionController::Routing::Routes.draw do |map|
                                             :export_csv => :post,
                                             :export_data => :post,
                                             :suspect_records => :get},
-                :member => {:export_photo_to_pdf => :get} do |child|
+                            :member => {:export_photo_to_pdf => :get} do |child|
     child.resource :history, :only => :show
-    child.resources :attachments, :only => :show    
+    child.resources :attachments, :only => :show
+    child.resource :duplicate, :only => [:new, :create]
   end
   
   map.child_ids "/children-ids", :controller => "child_ids", :action => "all"

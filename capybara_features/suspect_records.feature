@@ -1,4 +1,4 @@
-Feature: Suspect records
+Feature: Suspect Records
 
   As an admin
   I want to be able to mark suspect records as investigated
@@ -19,25 +19,25 @@ Feature: Suspect records
   Then I should see "2 Records need Attention"
 
   Scenario: Admin user should only see flagged children which have not been investigated
-  When I am on the Suspect Records page
+  When I am on the suspect records page
   Then I should see "Steve"
   And I should see "Bob"
   And I should not see "Dave"
   And I should not see "George"
   
   Scenario: Admin should be able to mark suspect record as investigated
-  When I am on the Suspect Records page
+  When I am on the suspect records page
   And I follow "Steve"
   Then I should see "Mark record as Investigated"
   
   Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
-  When I am on the Suspect Records page
+  When I am on the suspect records page
   And I follow "Steve"
   And I mark "Steve" as investigated with the following details:
     """
     I wouldn't worry about this guy
     """
-  And I am on the Suspect Records page
+  And I am on the suspect records page
   Then I should not see "Steve"
   
   Scenario: Admin should be able to mark investigated record as not investigated
@@ -52,7 +52,7 @@ Feature: Suspect records
     """
     I don't know what's going on with this record
     """  
-  And I am on the Suspect Records page
+  And I am on the suspect records page
   Then I should see "Dave"
   
   Scenario: When a record is not flagged admin should not be able to mark as investigated or not investigated
@@ -62,7 +62,7 @@ Feature: Suspect records
   And I should not see "Mark as Not Investigated"
   
   Scenario: When I mark a record as investigated the change log should display a single entry for the change
-  When I am on the Suspect Records page
+  When I am on the suspect records page
   And I follow "Steve"
   And I mark "Steve" as investigated with the following details:
     """

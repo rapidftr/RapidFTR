@@ -966,6 +966,24 @@ describe Child do
     end
   end
   
+  describe "view all duplicates" do
+    before do
+      Child.all.each { |child| child.destroy }
+      Child.duplicates.each { |child| child.destroy }
+    end
+    
+    it "should return all duplicate records" do
+      record_duplicate = Child.create(:name => "dupe")
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+      
+      record_duplicate.mark_as_duplicate(record_active.unique_identifier)
+      record_duplicate.save!
+      
+      Child.duplicates.should == [record_duplicate]
+      Child.all.should == [record_active]
+    end
+  end
+  
   describe ".audio" do
     it "should return nil if the record has no audio" do
       child = create_child "Bob McBobberson"
