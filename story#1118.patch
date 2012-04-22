@@ -1,0 +1,25 @@
+From f1ab0bc2b6af201decb352e464bfaa3974865deb Mon Sep 17 00:00:00 2001
+From: pridar2k7 <pridar2k7@gmail.com>
+Date: Mon, 19 Mar 2012 14:18:55 +0530
+Subject: [PATCH] story_1118
+
+---
+ app/controllers/advanced_search_controller.rb |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/app/controllers/advanced_search_controller.rb b/app/controllers/advanced_search_controller.rb
+index abf16e2..3be3546 100644
+--- a/app/controllers/advanced_search_controller.rb
++++ b/app/controllers/advanced_search_controller.rb
+@@ -13,7 +13,7 @@ class AdvancedSearchController < ApplicationController
+     @page_name = "Advanced Search"
+     @forms = FormSection.by_order
+     @aside = 'shared/sidebar_links'
+-    @highlighted_fields = []
++    @highlighted_fields = FormSection.sorted_highlighted_fields
+     @user = current_user
+     new_search = !params[:criteria_list]
+ 
+-- 
+1.7.4.1
+
