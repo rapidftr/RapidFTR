@@ -160,12 +160,8 @@ class Child < CouchRestRails::Document
     SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
   end
   
-  def self.suspect_records
-    records = []
-    self.all.each do |c| 
-      records << c if c.flag? && !c.investigated?
-    end
-    records
+  def self.flagged
+    by_flag(:key => 'true')
   end
 
   def self.new_with_user_name(user_name, fields = {})

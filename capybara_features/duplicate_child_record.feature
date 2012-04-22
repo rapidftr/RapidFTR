@@ -15,16 +15,16 @@ Feature: Merge Child Records
      | Fred   | fred_uid   | false   |
 
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
-    When I am on the suspect records page
+    When I am on the child listing filtered by flagged
     Then I should see "Mark as Duplicate"
     
   Scenario: Should see duplicate page when I click on "Mark as Duplicate"
-    When I am on the suspect records page
+    When I am on the child listing filtered by flagged
     And I click mark as duplicate for "Steve"
     Then I am on duplicate child page for "Steve"
     
   Scenario: Should see view child page when I click OK on confirmation
-    When I am on the suspect records page
+    When I am on the child listing filtered by flagged
     And I click mark as duplicate for "Steve"
     And I fill in "fred_uid" for "parent_id"
     And I press "Mark as duplicate"

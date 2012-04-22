@@ -46,10 +46,10 @@ describe DuplicatesController do
     end
     
     context "An admin user with a non-valid child id" do
-      it "should redirect to suspect records page" do
+      it "should redirect to flagged children page" do
         fake_admin_login        
         get :new, :child_id => "not_a_valid_child_id"
-        response.should redirect_to(:controller => :children, :action => :suspect_records)
+        response.should redirect_to(child_filter_path("flagged"))
       end
     end
   end

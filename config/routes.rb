@@ -4,13 +4,12 @@ ActionController::Routing::Routes.draw do |map|
                                             :export_photos_to_pdf => :post,
                                             :advanced_search => :get,
                                             :export_csv => :post,
-                                            :export_data => :post,
-                                            :suspect_records => :get},
-                            :member => {:export_photo_to_pdf => :get} do |child|
-    child.resource :history, :only => :show
-    child.resources :attachments, :only => :show
-    child.resource :duplicate, :only => [:new, :create]
-  end
+                                            :export_data => :post},
+                :member => {:export_photo_to_pdf => :get} do |child|
+                  child.resource :history, :only => :show
+                  child.resources :attachments, :only => :show
+                  child.resource :duplicate, :only => [:new, :create]
+                end
   
   map.child_ids "/children-ids", :controller => "child_ids", :action => "all"
   map.edit_photo '/children/:id/photo/edit', :controller => 'children', :action => 'edit_photo', :conditions => {:method => :get }

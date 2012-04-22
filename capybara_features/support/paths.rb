@@ -121,8 +121,8 @@ module NavigationHelpers
       when /all child Ids/
         child_ids_path
 
-      when /suspect records page/
-        suspect_records_children_path
+      when /the child listing filtered by (.+)/
+        child_filter_path $1
 
       when /duplicate child page for "(.+)"$/
         child = Child.by_name(:key => $1).first

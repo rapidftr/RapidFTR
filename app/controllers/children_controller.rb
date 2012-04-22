@@ -152,15 +152,6 @@ class ChildrenController < ApplicationController
       format.json { render :json => {:response => "ok"}.to_json }
     end
   end
-  
-  # GET /children/suspect_records
-  def suspect_records
-    @page_name = "Suspect Records"
-    @children = Child.suspect_records
-    respond_to do |format|
-      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
-    end
-  end
 
   def search
     @page_name = "Search"
@@ -300,7 +291,7 @@ class ChildrenController < ApplicationController
   
   def filter_flagged_children
     @order ||= 'most recently flagged'
-    @children = Child.all.select{ |c| c.flag? }
+    @children = Child.flagged
     @children.each { |child| 
       child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
     }

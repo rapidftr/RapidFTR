@@ -4,7 +4,7 @@ class DuplicatesController < ApplicationController
   
   def new    
     @child = Child.get params[:child_id]
-    redirect_to :controller => :children, :action => :suspect_records and return if @child.nil?
+    redirect_to child_filter_path("flagged") and return if @child.nil?
     
     @page_name = "Mark #{@child.name} as Duplicate"
     @highlighted_fields = FormSection.sorted_highlighted_fields
