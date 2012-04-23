@@ -200,6 +200,14 @@ describe ChildrenController do
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
 
+    it "should update the last_updated_by_full_name field with the logged in user full name" do
+      child = Child.create('name' => "Existing Child")
+      Child.stub(:get).with(child.id).and_return(child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}
+      child['last_updated_by_full_name'].should=='Bill Clinton'
+    end
+
   end
 
   describe "GET search" do

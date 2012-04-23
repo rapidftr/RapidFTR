@@ -62,7 +62,7 @@ describe AdvancedSearchController do
 
         it "should append search filter 'updated_by' to the list of search criteria" do
           SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
-          SearchFilter.should_receive(:new).with({:field => "last_updated_by", :value => "johnny_user",  :join => 'AND', :index => 2}).and_return("updated_by_filter")
+          SearchFilter.should_receive(:new).with({:field => "last_updated_by", :field2 => "last_updated_by_full_name", :value => "johnny_user",  :join => 'AND', :index => 2}).and_return("updated_by_filter")
           get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :updated_by_value => "johnny_user"
           assigns[:criteria_list].should include("updated_by_filter")
         end

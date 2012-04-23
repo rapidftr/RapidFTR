@@ -40,6 +40,7 @@ class AdvancedSearchController < ApplicationController
 
   def add_updated_by_filter(params)
     @criteria_list.push(SearchFilter.new({:field => "last_updated_by",
+                                          :field2 => "last_updated_by_full_name",
                                           :value => params[:updated_by_value],
                                           :index => 2,
                                           :join => "AND"})) if params[:updated_by_value]

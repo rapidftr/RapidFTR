@@ -19,18 +19,21 @@ class SearchFilter < SearchCriteria
       @index = (@index.to_i + OFFSET_INDEX).to_s
   end
 
-  alias super_to_lucene_query to_lucene_query
   def to_lucene_query
-    if field2 == ""
-      super_to_lucene_query
-    else
-      phrases = value.split(/\s+OR\s+/)
-      phrases.map do |phrase|
-        query1 = phrase.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}~ OR #{field}_text:#{word.downcase}*)"}.join(" AND ")
-        query2 = phrase.split(/[ ,]+/).map {|word| "(#{field2}_text:#{word.downcase}~ OR #{field2}_text:#{word.downcase}*)"}.join(" AND ")
-        "(#{query1} OR #{query2})"
+    query = create_query field, value
+    (query += " OR " + create_query(field2, value)) if field2 != ""
+    "(#{query})"
+  end
+
+  private
+  def create_query field, search
+      terms = search.split(/\s+(OR|AND)\s+/)
+      terms.delete("OR")
+      terms.delete("AND")
+      terms.map do |term|
+        query = term.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}*)"}.join(" AND ")
+        "(#{query})"
       end.join(" OR ")
     end
-  end
 
 end
