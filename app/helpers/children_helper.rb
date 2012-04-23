@@ -31,6 +31,10 @@ module ChildrenHelper
   def reunited_message
     "Reunited"
   end
+  
+  def duplicate_message
+    "This record has been marked as a duplicate and is no longer active. To see the Active record click #{link_to 'here', child_path(@child.duplicate_of)}."
+  end
 
   def field_value_for_display field_value
     return "&nbsp;" if field_value.nil? || field_value.length==0
@@ -50,5 +54,13 @@ module ChildrenHelper
   
   def text_to_identify_child child
     child['name'].blank? ? child['unique_identifier'] : child['name']
+  end
+  
+  def toolbar_for_child child
+    if child.duplicate?
+      link_to 'View the change log', child_history_path(child)
+    else
+      render :partial => "show_child_toolbar"
+    end
   end
 end

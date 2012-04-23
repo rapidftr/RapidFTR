@@ -41,7 +41,12 @@ describe ChildrenController do
       get :index
       assigns[:children].should == [mock_child]
     end
-
+    
+    it "assigns all flagged children as @children" do
+      Child.stub!(:flagged).and_return([mock_child])
+      get :index, :status => "flagged"
+      assigns[:children].should == [mock_child]
+    end
   end
 
   describe "GET show" do
@@ -409,14 +414,6 @@ describe ChildrenController do
       end
     end
   end
-  
-  describe "GET suspect_records" do
-    it "assigns all flagged children as @children" do
-      Child.stub!(:suspect_records).and_return([mock_child])
-      get :suspect_records
-      assigns[:children].should == [mock_child]
-    end
-  end
 
   describe "PUT create" do
 
@@ -432,6 +429,3 @@ describe ChildrenController do
   end
 
 end
-
-
-

@@ -18,7 +18,7 @@ Feature:
     Then the view record page should show the record is flagged
     And the edit record page should show the record is flagged
     And the record history should log "Record was flagged by praful because: He is a bad guy."
-		And the suspect records page should show the following children:
+		And the child listing page filtered by flagged should show the following children:
 			| Peter |
     
   Scenario: Removing flag from a child record

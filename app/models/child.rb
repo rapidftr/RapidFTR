@@ -16,12 +16,15 @@ class Child < CouchRestRails::Document
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
+  property :duplicate, :cast_as => :boolean
   
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
              {
-                emit(doc['name'], doc);
+                if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                  emit(doc['name'], doc);
+                }
              }
           }"
           
@@ -29,9 +32,26 @@ class Child < CouchRestRails::Document
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
                {
-                  emit(doc['flag'],doc);
+                 if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                   emit(doc['flag'],doc);
+                 }
                }
             }"
+            
+  view_by :unique_identifier,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('unique_identifier'))
+               {
+                  emit(doc['unique_identifier'],doc);
+               }
+            }"
+
+  view_by :duplicate,
+          :map => "function(doc) {
+            if (doc.hasOwnProperty('duplicate')) {
+              emit(doc['duplicate'], doc);
+            }
+          }"
 
   validates_with_method :validate_photos
   validates_with_method :validate_photos_size
@@ -125,6 +145,11 @@ class Child < CouchRestRails::Document
     view('by_name', {})
   end
   
+  # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg
+  def self.duplicates
+    by_duplicate(:key => true)
+  end
+  
   def self.search(search)
     return [] unless search.valid?
     
@@ -135,12 +160,8 @@ class Child < CouchRestRails::Document
     SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
   end
   
-  def self.suspect_records
-    records = []
-    self.all.each do |c| 
-      records << c if c.flag? && !c.investigated?
-    end
-    records
+  def self.flagged
+    by_flag(:key => 'true')
   end
 
   def self.new_with_user_name(user_name, fields = {})
@@ -329,6 +350,10 @@ class Child < CouchRestRails::Document
     self['last_updated_by'].blank? || user_names_after_deletion.blank?
   end
 
+  def mark_as_duplicate(parent_id)
+    self['duplicate'] = true
+    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.id
+  end
 
   protected
 
@@ -360,7 +385,12 @@ class Child < CouchRestRails::Document
   def field_name_changes
     @from_child ||= Child.get(self.id)
 		field_names = field_definitions.map {|f| f.name}
-    other_fields = ["flag","flag_message", "reunited", "reunited_message", "investigated", "investigated_message"]
+    other_fields = [
+      "flag", "flag_message", 
+      "reunited", "reunited_message", 
+      "investigated", "investigated_message", 
+      "duplicate", "duplicate_of"
+    ]
 		all_fields = field_names + other_fields
 		all_fields.select { |field_name| changed?(field_name) }
   end
