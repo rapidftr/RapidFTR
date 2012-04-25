@@ -24,7 +24,7 @@
 		</p>
   <div class="details">
     <dl class="basic">
-      <% @highlighted_fields.each do |relevant_field| %>
+      <% sorted_highlighted_fields.each do |relevant_field| %>
         <dt><%= relevant_field[:display_name] %>:</dt>
         <dd><%= summary_row[relevant_field[:name]] %></dd>
       <% end %>
