@@ -10,7 +10,7 @@
         </div>
 
     <ul class="form-container">
-        <% @forms.each do|form| %>
+        <% @forms.sort_by { |row| [row.enabled ? 0 : 1, row.order] }.each do|form| %>
           <li id="form-<%= form.id%>" class="form">
             <%= form.name %>
             <input type="hidden" class="form-name" value="<%= form.name%>"/>
