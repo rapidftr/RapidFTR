@@ -13,7 +13,7 @@ class AdvancedSearchController < ApplicationController
     @page_name = "Advanced Search"
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
-    @highlighted_fields = []
+    @highlighted_fields = FormSection.sorted_highlighted_fields
     @user = current_user
     new_search = !params[:criteria_list]
 
@@ -23,6 +23,7 @@ class AdvancedSearchController < ApplicationController
     else
       @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]): [])
       append_advanced_user_criteria(params[:created_by_value], @criteria_list)
+      puts @criteria_list.inspect
       @results = SearchService.search(@criteria_list)
     end
   end

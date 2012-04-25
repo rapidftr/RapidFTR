@@ -71,12 +71,14 @@ describe AdvancedSearchController do
     controller.child_fields_selected?({"0"=>{"field"=>"", "value"=>"", "index"=>"0"}}).should == false
   end
   
-  it "should show list of enabled forms" do
+  it "should assign right form field order and fields to highlight from FormSection" do
     SearchService.stub(:search).and_return([])
     FormSection.stub(:by_order).and_return :some_forms
-    
+    FormSection.stub(:sorted_highlighted_fields).and_return :highlighted_fields
+
     get :index
     assigns[:forms].should == :some_forms
+    assigns[:highlighted_fields].should == :highlighted_fields
   end
 
 end
