@@ -7,7 +7,6 @@ class DuplicatesController < ApplicationController
     redirect_to child_filter_path("flagged") and return if @child.nil?
     
     @page_name = "Mark #{@child.name} as Duplicate"
-    @highlighted_fields = FormSection.sorted_highlighted_fields
   end
   
   def create

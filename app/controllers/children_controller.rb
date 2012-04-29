@@ -13,7 +13,7 @@ class ChildrenController < ApplicationController
     filter_children_by params[:status], params[:order_by]
 
     respond_to do |format|
-      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
+      format.html
       format.xml  { render :xml => @children }
       format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
@@ -162,7 +162,6 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query]) 
       if @search.valid?    
         @results = Child.search(@search)
-        @highlighted_fields = FormSection.sorted_highlighted_fields
       else
         render :search
       end

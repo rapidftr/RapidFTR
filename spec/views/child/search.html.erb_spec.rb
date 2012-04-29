@@ -11,10 +11,12 @@ describe "children/search.html.erb" do
       @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       @user.stub!(:localize_date).and_return("some date")
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
-      @highlighted_fields = [ { :name => "field_2", :display_name => "field display 2" }, { :name => "field_4", :display_name => "field display 4" } ]
+      @highlighted_fields = [
+        { :name => "field_2", :display_name => "field display 2" },
+        { :name => "field_4", :display_name => "field display 4" } ]
+      FormSection.stub!(:sorted_highlighted_fields).and_return @highlighted_fields
       assigns[:user] = @user
       assigns[:results] = @results
-      assigns[:highlighted_fields] = @highlighted_fields
     end
 
     it "should render items for each record in the results" do

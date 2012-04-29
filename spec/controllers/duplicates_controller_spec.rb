@@ -12,7 +12,6 @@ describe DuplicatesController do
         Child.stub!(:get).with("1234").and_return(@child)
         
         @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
-        FormSection.stub!(:sorted_highlighted_fields).and_return(@form_sections)
         
         get :new, :child_id => "1234"
       end
@@ -27,10 +26,6 @@ describe DuplicatesController do
       
       it "should assign the page name" do
         assigns[:page_name].should == "Mark #{@child.name} as Duplicate"
-      end
-      
-      it "should fetch and assign highlighted fields" do
-        assigns[:highlighted_fields].should equal(@form_sections)
       end
     end
     
