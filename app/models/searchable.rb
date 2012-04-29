@@ -22,11 +22,8 @@ module Searchable
         begin
           Child.build_solar_schema
           Sunspot.index!(self)
-        rescue Exception => e
+        rescue
           puts "***Problem indexing record for searching, is SOLR running?"
-          p e
-          puts e.message
-          puts e.backtrace.inspect
         end
         true
       end
