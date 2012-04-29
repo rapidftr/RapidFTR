@@ -69,12 +69,28 @@
       <tr bgcolor="white">
         <td align="right" width=10><%= check_box_tag(:created_by, true, params[:created_by]=='true') %></td>
         <td align="left" width=80><%= label_tag(:created_by_label, "Created By:") %></td>
-        <td align="left"><%= text_field_tag(:created_by_value, params[:created_by_value], :disabled => !(params[:created_by]=='true')) %></td>
+        <td align="left" colspan="4"><%= text_field_tag(:created_by_value, params[:created_by_value], :disabled => !(params[:created_by]=='true')) %></td>
       </tr>
       <tr bgcolor="white">
         <td align="left"><%= check_box_tag(:updated_by, true, params[:updated_by]=='true') %></td>
         <td align="left"><%= label_tag(:updated_by_label, "Updated By:") %></td>
-        <td align="left"><%= text_field_tag(:updated_by_value, params[:updated_by_value], :disabled => !(params[:updated_by]=='true')) %></td>
+        <td align="left" colspan="4"><%= text_field_tag(:updated_by_value, params[:updated_by_value], :disabled => !(params[:updated_by]=='true')) %></td>
+      </tr>
+
+      <tr bgcolor="white">
+        <td align="left" colspan="6" class="help-text">
+          Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
+          Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
+          Enter dates in both boxes to see records created between the dates.
+        </td>
+      </tr>
+      <tr bgcolor="white">
+        <td align="left"><%= check_box_tag(:created_at, true, params[:created_at]=='true') %></td>
+        <td align="left"><%= label_tag(:created_at_label, "Date Created:") %></td>
+        <td align="left" width="15px"><%= label_tag(:created_at_after_label, "After:") %></td>
+        <td align="left" width="15px"><%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 10, :disabled => !(params[:created_at]=='true'))%></td>
+        <td align="left" width="15px"><%= label_tag(:created_at_before_label, "Before:") %></td>
+        <td align="left"><%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 10, :disabled => !(params[:created_at]=='true'))%></td>
       </tr>
     </table>
 

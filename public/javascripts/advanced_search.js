@@ -104,9 +104,13 @@
         $('#updated_by').bind('click', function() {
             enableInputByCheckbox($(this), $('#updated_by_value'));
         });
+        $('#created_at').bind('click', function() {
+            enableInputByCheckbox($(this), $('#created_at_after_value'));
+            enableInputByCheckbox($(this), $('#created_at_before_value'));
+        });
 
         var filterSelected = function() {
-            return $('#created_by').is(':checked') || $('#updated_by').is(':checked')
+            return $('#created_by').is(':checked') || $('#updated_by').is(':checked')  || $('#created_at').is(':checked')
         }
 
         var createdByIsValid = function() {
@@ -115,6 +119,14 @@
 
         var updatedByIsValid = function() {
             return (!$('#updated_by').is(':checked')) || ($('#updated_by_value').val() != '');
+        }
+
+        var dateValueIsValid = function(dateValue) {
+            return (dateValue!='' && dateValue.match(/^\d\d\d\d-\d\d-\d\d$/));
+        }
+
+        var createdAtIsValid = function() {
+            return (!$('#created_at').is(':checked')) || (dateValueIsValid($('#created_at_after_value').val()) || dateValueIsValid($('#created_at_before_value').val()))
         }
 
 		var validate = function(){
@@ -132,6 +144,9 @@
             }
             if (!updatedByIsValid()) {
                 result="Please enter a valid 'Updated by' value."
+            }
+            if (!createdAtIsValid()) {
+                result="Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
             }
 			return result;
 		}

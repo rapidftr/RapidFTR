@@ -2,7 +2,6 @@ require "spec_helper"
 
 describe SearchFilter do
 
-
   describe 'initialize' do
 
     let(:search_filter) {{:field => 'field', :field2 => 'field2', :index => '1'}}
@@ -58,6 +57,5 @@ describe SearchFilter do
     end
 
   end
-
 
 end

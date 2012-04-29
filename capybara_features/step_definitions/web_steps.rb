@@ -40,7 +40,7 @@ When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |fi
   end
 end
 
-When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
+When /^(?:|I )(?:can )?fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
     fill_in(field, :with => value)
   end
@@ -157,22 +157,24 @@ Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"
   end
 end
 
-Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should be checked$/ do |label, selector|
+Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
-    if defined?(Spec::Rails::Matchers)
-      find_field(label)['checked'].should == 'checked'
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      ["true", true].should include field_checked
     else
-      assert_equal 'checked', field_labeled(label)['checked']
+      field_checked
     end
   end
 end
 
-Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should not be checked$/ do |label, selector|
+Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should not be checked$/ do |label, selector|
   with_scope(selector) do
-    if defined?(Spec::Rails::Matchers)
-      find_field(label)['checked'].should_not == 'checked'
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      [nil, false].should include field_checked
     else
-      assert_not_equal 'checked', field_labeled(label)['checked']
+      !field_checked
     end
   end
 end

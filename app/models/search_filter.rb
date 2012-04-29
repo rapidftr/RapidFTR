@@ -1,12 +1,10 @@
-require 'pp'
-
 ###
 # @author: jean.damore@gmail.com
 # @date: 12/04/2012
 # @description:
 #  The Search Filter class is responsible for:
 #    1. offsetting the search criteria index of +100 so as not to clash with standard search criteria
-#    2. providing support for filtering on two fields e.g. created_by and created_by_full_name using an OR
+#    2. providing support for filtering on two fields e.g. created_by and created_by_full_name
 ##
 class SearchFilter < SearchCriteria
 
@@ -34,6 +32,6 @@ class SearchFilter < SearchCriteria
         query = term.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}*)"}.join(" AND ")
         "(#{query})"
       end.join(" OR ")
-    end
+  end
 
 end
