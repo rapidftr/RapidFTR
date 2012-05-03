@@ -14,14 +14,10 @@ Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
   Given %(a #{user_type} "#{user_name}" with password "123")
 end
 
-Given /^I am logged in as "(.+)"/ do |user_name|
-  @session = Session.for_user(User.find_by_user_name(user_name), nil)
-  @session.save!
-  @session.put_in_cookie cookies
-end
-
 Given /^I have an expired session/ do
-  @session.destroy
+  Session.all.each do |session|
+     session.destroy
+  end
 end
 
 Given /^user "(.+)" is disabled$/ do |username|
