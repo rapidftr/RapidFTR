@@ -65,3 +65,16 @@ end
 Then /^the field "([^"]*)" should have the following options:$/ do |locator, table|
   page.should have_select(locator, :options => table.raw.flatten)
 end
+
+Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
+  page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ")
+end
+
+Then /^I should not be able to see (.+)$/ do |page_name|
+  lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
+end
+
+Then /^I should be able to see (.+)$/ do |page_name|
+  When "I go to #{page_name}"
+  Then "I should be on #{page_name}"
+end
