@@ -4,6 +4,19 @@ namespace :ci do
 
   task :default => :build
 
+  task :cheap_deploy do
+    require 'pathname'
+    deploy_dir = Pathname.new(ENV['DEPLOY_DIR']).expand_path
+    safe_deploy_area = "/home/jorge/Code"
+    raise "Won't deploy outside of #{safe_deploy_area}." unless deploy_dir.to_s.start_with? safe_deploy_area
+
+    rm_rf deploy_dir
+    cp_r '.', deploy_dir
+    cd deploy_dir do
+      sh "rake passenger:restart"
+    end
+  end
+
   task :reload_nginx_conf do
     require 'pathname'
     nginx = ENV['NGINX_EXECUTABLE'] || '/opt/nginx/sbin/nginx'
