@@ -49,3 +49,10 @@ Given /^the user's time zone is "([^"]*)"$/ do |timezone|
   And %Q|I press "Save"|
 end
 
+Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*)"$/ do |field_name, child_name, field_value|
+  children = Child.by_name(:key=>child_name)
+  children.should_not be_nil
+  children.should_not be_empty
+  child = children.first
+  child[field_name.to_s].should == field_value
+end
