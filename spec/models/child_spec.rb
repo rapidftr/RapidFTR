@@ -72,6 +72,26 @@ describe Child do
       Child.search(search).map(&:name).should =~ ["timithy", "timothy"]
     end
     
+    it "should return children that have duplicate as nil" do
+      child_active = Child.create(:name => "eduardo aquiles")
+      child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
+
+      search = mock("search", :query => "aquiles", :valid? => true)
+      result = Child.search(search)
+      
+      result.map(&:name).should == ["eduardo aquiles"]
+    end
+    
+    it "should return children that have duplicate as false" do
+      child_active = Child.create(:name => "eduardo aquiles", :duplicate => false)
+      child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
+
+      search = mock("search", :query => "aquiles", :valid? => true)
+      result = Child.search(search)
+      
+      result.map(&:name).should == ["eduardo aquiles"]
+    end
+    
     it "should search by exact match for unique id" do
       uuid = UUIDTools::UUID.random_create.to_s
       Child.create("name" => "kev", :unique_identifier => uuid, "last_known_location" => "new york")
