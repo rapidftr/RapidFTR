@@ -79,6 +79,7 @@ class Child < CouchRestRails::Document
     fields = build_fields_for_solar
     Sunspot.setup(Child) do
       text *fields
+      boolean :duplicate
     end
   end
 
