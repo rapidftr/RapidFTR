@@ -42,6 +42,13 @@ class SessionsController < ApplicationController
   # POST /sessions
   # POST /sessions.xml
   def create
+    if user_is_logged_in?(params[:user_name])
+      respond_to do |format|
+        handle_login_error("This user is already logged in.", format)
+      end
+      return
+    end
+
     @login = Login.new(params)
     @session = @login.authenticate_user
     
@@ -64,13 +71,13 @@ class SessionsController < ApplicationController
         flash[:notice] = 'Hello ' + @session.user_name
         format.html { redirect_to(root_path) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
-        format.json { render_session_as_json(@session,:status => :created, :location => @session) }
+        format.json { render_session_as_json(@session, :status => :created, :location => @session) }
       else
         handle_login_error("There was a problem logging in.  Please try again.", format)
       end
     end
   end
-  
+
   # PUT /sessions/1
   # PUT /sessions/1.xml
 
@@ -79,6 +86,7 @@ class SessionsController < ApplicationController
   # DELETE /sessions/1.xml
   def destroy
     @session = get_session
+    user = User.find_by_user_name(@session.user_name)
     @session.destroy if @session
     Session.remove_from_cookies(cookies)
 
@@ -93,6 +101,11 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def user_is_logged_in? user_name
+    !(Session.find_by_user_name(user_name).blank?)
+  end
+
   def handle_login_error(notice, format)
     format.html {
       flash[:error] = notice
@@ -101,17 +114,17 @@ class SessionsController < ApplicationController
     format.json { head :unauthorized }
   end
 
-  def render_session_as_json(session,options = {})
+  def render_session_as_json(session, options = {})
     json = {
-      :session => {
-        :token => session.token,
-        :link => {
-          :rel => 'session',
-          :uri => session_path(session)
-        }
-      }
+            :session => {
+                    :token => session.token,
+                    :link => {
+                            :rel => 'session',
+                            :uri => session_path(session)
+                    }
+            }
     }
-    render( options.merge( :json => json ) )  
+    render( options.merge( :json => json ) )
   end
 
 end
