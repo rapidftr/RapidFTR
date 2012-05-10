@@ -76,14 +76,20 @@ class Child < CouchRestRails::Document
   end
 
   def self.build_solar_schema
-    fields = build_fields_for_solar
+    text_fields = build_text_fields_for_solar
+    date_fields = build_date_fields_for_solar
     Sunspot.setup(Child) do
-      text *fields
+      text *text_fields
+      date *date_fields
     end
   end
 
-  def self.build_fields_for_solar
-    ["unique_identifier", "created_by"] +  Field.all_text_names
+  def self.build_text_fields_for_solar
+    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"] +  Field.all_text_names
+  end
+
+  def self.build_date_fields_for_solar
+    ["created_at"]
   end
 
   def validate_has_at_least_one_field_value
@@ -423,7 +429,21 @@ class Child < CouchRestRails::Document
   end  
   
   def deprecated_fields
-    system_fields = ["created_at","last_updated_at","last_updated_by","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier", "current_photo_key", "photo_keys"]
+    system_fields = ["created_at",
+                     "last_updated_at",
+                     "last_updated_by",
+                     "last_updated_by_full_name",
+                     "posted_at",
+                     "posted_from",
+                     "_rev",
+                     "_id",
+                     "created_by",
+                     "created_by_full_name",
+                     "couchrest-type",
+                     "histories",
+                     "unique_identifier",
+                     "current_photo_key",
+                     "photo_keys"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end

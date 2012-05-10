@@ -71,6 +71,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     @child = Child.new_with_user_name(current_user_name, params[:child])
+    @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child record successfully created.'
@@ -121,6 +122,7 @@ class ChildrenController < ApplicationController
   # PUT /children/1.xml
   def update
     @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
+    @child['last_updated_by_full_name'] = current_user_full_name
     new_photo = params[:child].delete(:photo)
     new_audio = params[:child].delete(:audio)
     @child.update_properties_with_user_name(current_user_name, new_photo, params[:delete_child_photo], new_audio, params[:child])
