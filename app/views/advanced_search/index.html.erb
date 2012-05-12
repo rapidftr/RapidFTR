@@ -86,11 +86,19 @@
       </tr>
       <tr bgcolor="white">
         <td align="left"><%= check_box_tag(:created_at, true, params[:created_at]=='true') %></td>
-        <td align="left"><%= label_tag(:created_at_label, "Date Created:") %></td>
+        <td align="left" width="90px"><%= label_tag(:created_at_label, "Date Created:") %></td>
         <td align="left" width="15px"><%= label_tag(:created_at_after_label, "After:") %></td>
-        <td align="left" width="15px"><%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 10, :disabled => !(params[:created_at]=='true'))%></td>
+        <td align="left" width="15px"><%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :disabled => !(params[:created_at]=='true'))%></td>
         <td align="left" width="15px"><%= label_tag(:created_at_before_label, "Before:") %></td>
-        <td align="left"><%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 10, :disabled => !(params[:created_at]=='true'))%></td>
+        <td align="left"><%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :disabled => !(params[:created_at]=='true'))%></td>
+      </tr>
+      <tr bgcolor="white">
+        <td align="left"><%= check_box_tag(:updated_at, true, params[:updated_at]=='true') %></td>
+        <td align="left" width="90px"><%= label_tag(:updated_at_label, "Date Updated:") %></td>
+        <td align="left" width="15px"><%= label_tag(:updated_at_after_label, "After:") %></td>
+        <td align="left" width="15px"><%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :disabled => !(params[:updated_at]=='true'))%></td>
+        <td align="left" width="15px"><%= label_tag(:updated_at_before_label, "Before:") %></td>
+        <td align="left"><%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :disabled => !(params[:updated_at]=='true'))%></td>
       </tr>
     </table>
 

@@ -29,7 +29,7 @@ class SearchFilter < SearchCriteria
       terms.delete("OR")
       terms.delete("AND")
       terms.map do |term|
-        query = term.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}*)"}.join(" AND ")
+        query = term.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}* OR #{field}_text:#{word.downcase}~)"}.join(" AND ")
         "(#{query})"
       end.join(" OR ")
   end
