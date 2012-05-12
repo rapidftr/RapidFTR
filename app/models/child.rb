@@ -63,6 +63,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
   validates_with_method :created_at, :method => :validate_created_at
+  validates_with_method :last_updated_at, :method => :validate_last_updated_at
 
   def initialize *args
     self['photo_keys'] ||= []
@@ -81,6 +82,7 @@ class Child < CouchRestRails::Document
     Sunspot.setup(Child) do
       text *text_fields
       date *date_fields
+      date_fields.each { |date_field| date date_field }
     end
   end
 
@@ -89,7 +91,7 @@ class Child < CouchRestRails::Document
   end
 
   def self.build_date_fields_for_solar
-    ["created_at"]
+    ["created_at", "last_updated_at"]
   end
 
   def validate_has_at_least_one_field_value
@@ -134,6 +136,17 @@ class Child < CouchRestRails::Document
 			[false, '']
 		end
   end
+
+  def validate_last_updated_at
+ 		begin
+ 			if self['last_updated_at']
+ 				DateTime.parse self['last_updated_at']
+ 			end
+ 			true
+ 		rescue
+ 			[false, '']
+ 		end
+   end
 
   def method_missing(m, *args, &block)
     self[m]

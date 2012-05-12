@@ -74,6 +74,13 @@ describe AdvancedSearchController do
           assigns[:criteria_list].should include("created_at_range")
         end
 
+        it "should append search range 'updated_at' to the list of search criteria" do
+          SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
+          SearchDateFilter.should_receive(:new).with({:field => "last_updated_at", :from_value => "2012-04-23T00:00:00Z", :to_value => "2012-04-25T00:00:00Z",  :join => 'AND', :index => 2}).and_return("updated_at_range")
+          get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :updated_at_after_value => "2012-04-23", :updated_at_before_value => "2012-04-25"
+          assigns[:criteria_list].should include("updated_at_range")
+        end
+
     end
 
   end
