@@ -13,7 +13,10 @@
         <%= image_tag("icon-reunited.gif", :alt=> "Reunited",:size => "20x20",:class => 'reunited') %>
     <% end %>
 
-    <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %></p>
+    <% show_links = true unless local_assigns.has_key? :show_links %>
+    <% if show_links %>
+    <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %> | <%= link_to 'Mark as Duplicate', new_child_duplicate_path(summary_row) %></p>
+    <% end %>
 	</div>
 	
   <p class="photo">
@@ -21,7 +24,7 @@
 		</p>
   <div class="details">
     <dl class="basic">
-      <% @highlighted_fields.each do |relevant_field| %>
+      <% sorted_highlighted_fields.each do |relevant_field| %>
         <dt><%= relevant_field[:display_name] %>:</dt>
         <dd><%= summary_row[relevant_field[:name]] %></dd>
       <% end %>

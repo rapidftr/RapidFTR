@@ -23,7 +23,7 @@
                                    :to_value => change['to'],
                                    :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'],
- 								   :message => new_value_for(history, 'flag_message') } %>
+                                   :message => new_value_for(history, 'flag_message') } %>
             <% elsif field == 'flag_message'%>
                 <%# do nothing, because we are already displaying the flag message as a part of flag change %>
             <% elsif field == 'reunited'%>
@@ -33,7 +33,7 @@
                                    :to_value => change['to'],
                                    :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'],
- 								   :message => new_value_for(history, 'reunited_message') } %>
+                                   :message => new_value_for(history, 'reunited_message') } %>
             <% elsif field == 'reunited_message'%>
                 <%# do nothing, because we are already displaying the reunited message as a part of reunited change %>
             <% elsif field == 'investigated'%>
@@ -43,9 +43,19 @@
                                    :to_value => change['to'],
                                    :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
                                    :user_name => history['user_name'],
- 								   :message => new_value_for(history, 'investigated_message')	} %>
+                                   :message => new_value_for(history, 'investigated_message')	} %>
             <% elsif field == 'investigated_message'%>
                 <%# do nothing, because we are already displaying the investigated message as a part of investigated change %>                
+            <% elsif field == 'duplicate'%>
+                <%= render :partial => "duplicate_change",
+                           :locals => {
+                                   :from_value => change['from'],
+                                   :to_value => change['to'],
+                                   :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
+                                   :user_name => history['user_name'],
+                                   :duplicate_of => new_value_for(history, 'duplicate_of') } %>
+            <% elsif field == 'duplicate_of'%>
+                <%# do nothing, because we are already displaying the duplicate_of as a part of duplicate change %>                
             <% else %>
                 <%= render :partial => "history_change",
                            :locals => {
@@ -59,7 +69,6 @@
     <% end %>
     <li><%= @user.localize_date(@child['created_at'], "%Y-%m-%d %H:%M:%S %Z") %> Record created by <%= @child['created_by'] %></li>
   </ul>
-
 </div>
 <div class="profile-tools">
   <ul>

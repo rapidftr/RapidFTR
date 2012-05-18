@@ -7,8 +7,7 @@ Given /^the following children exist in the system:$/ do |children_table|
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
 						'created_by' => 'Billy',
-            'age_is' => 'Approximate',
-            'investigated' => 'false'
+            'age_is' => 'Approximate'
     )
     
     flag, flag_message = child_hash.delete('flag'), child_hash.delete('flag_message')
@@ -19,7 +18,8 @@ Given /^the following children exist in the system:$/ do |children_table|
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
     child.create!
-    
+
+    # Need this because of how children_helper grabs flag_message from child history - cg
     if flag
       child['flag'] = flag
       child['flag_message'] = flag_message

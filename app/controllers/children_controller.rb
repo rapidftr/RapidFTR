@@ -13,7 +13,7 @@ class ChildrenController < ApplicationController
     filter_children_by params[:status], params[:order_by]
 
     respond_to do |format|
-      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
+      format.html
       format.xml  { render :xml => @children }
       format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
@@ -71,6 +71,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     @child = Child.new_with_user_name(current_user_name, params[:child])
+    @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
       if @child.save
         flash[:notice] = 'Child record successfully created.'
@@ -121,6 +122,7 @@ class ChildrenController < ApplicationController
   # PUT /children/1.xml
   def update
     @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
+    @child['last_updated_by_full_name'] = current_user_full_name
     new_photo = params[:child].delete(:photo)
     new_audio = params[:child].delete(:audio)
     @child.update_properties_with_user_name(current_user_name, new_photo, params[:delete_child_photo], new_audio, params[:child])
@@ -153,15 +155,6 @@ class ChildrenController < ApplicationController
     end
   end
 
-  # GET /children/suspect_records
-  def suspect_records
-    @page_name = "Suspect Records"
-    @children = Child.suspect_records
-    respond_to do |format|
-      format.html { @highlighted_fields = FormSection.sorted_highlighted_fields }
-    end
-  end
-
   def search
     @page_name = "Search"
     @aside = "shared/sidebar_links"
@@ -169,7 +162,6 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query])
       if @search.valid?
         @results = Child.search(@search)
-        @highlighted_fields = FormSection.sorted_highlighted_fields
       else
         render :search
       end

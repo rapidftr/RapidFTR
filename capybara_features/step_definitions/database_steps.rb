@@ -15,14 +15,10 @@ Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
   Given %(a #{user_type} "#{user_name}" with password "123")
 end
 
-Given /^I am logged in as "(.+)"/ do |user_name|
-  @session = Session.for_user(User.find_by_user_name(user_name), nil)
-  @session.save!
-  @session.put_in_cookie cookies
-end
-
 Given /^I have an expired session/ do
-  @session.destroy
+  Session.all.each do |session|
+     session.destroy
+  end
 end
 
 Given /^user "(.+)" is disabled$/ do |username|
@@ -54,3 +50,10 @@ Given /^the user's time zone is "([^"]*)"$/ do |timezone|
   And %Q|I press "Save"|
 end
 
+Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*)"$/ do |field_name, child_name, field_value|
+  children = Child.by_name(:key=>child_name)
+  children.should_not be_nil
+  children.should_not be_empty
+  child = children.first
+  child[field_name.to_s].should == field_value
+end

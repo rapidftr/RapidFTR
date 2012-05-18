@@ -7,7 +7,7 @@ end
 # After each scenario...
 After do |scenario|
   if scenario.failed?
-    $stdout.puts page.body
+    #$stdout.puts page.body
   end
 #  CouchRestRails::Tests.teardown
 end

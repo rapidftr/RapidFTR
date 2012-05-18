@@ -266,19 +266,17 @@ describe ChildrenController do
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
 
+    it "should update the last_updated_by_full_name field with the logged in user full name" do
+      child = Child.create('name' => "Existing Child")
+      Child.stub(:get).with(child.id).and_return(child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}
+      child['last_updated_by_full_name'].should=='Bill Clinton'
+    end
+
   end
 
   describe "GET search" do
-
-    it "assigns the highlighted fields as @highlighted_fields on success" do
-      fields = [ mock_model(Field, { :name => "field_1", :display_name => "field display 1" }).as_null_object,
-                 mock_model(Field, { :name => "field_2", :display_name => "field display 2" }).as_null_object ]
-      FormSection.stub!(:sorted_highlighted_fields).and_return(fields)
-      search = mock("search", :query => 'the child name', :valid? => true)
-      Search.stub!(:new).and_return(search)
-      get :search, :format => 'html', :query => 'the child name'
-      assigns[:highlighted_fields].should == fields
-    end
 
     it "should not render error by default" do
       get(:search, :format => 'html')
@@ -481,11 +479,17 @@ describe ChildrenController do
     end
   end
 
-  describe "GET suspect_records" do
-    it "assigns all flagged children as @children" do
-      Child.stub!(:suspect_records).and_return([mock_child])
-      get :suspect_records
-      assigns[:children].should == [mock_child]
+  describe "PUT create" do
+
+    let(:new_child) { Child.new }
+
+    it "should add the full user_name of the user who created the Child record" do
+      Child.stub('new_with_user_name').and_return(new_child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      put :create, :child => {:name => 'Test Child' }
+      new_child['created_by_full_name'].should=='Bill Clinton'
     end
+
   end
+
 end

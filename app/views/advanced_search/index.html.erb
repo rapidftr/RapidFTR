@@ -35,13 +35,14 @@
       </div>
     </div>
   
-    <script id="criteria_template" type="text/x-jquery-tmpl">      
+    <script id="criteria_template" type="text/x-jquery-tmpl">
+      {{if index < CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX}}
       <p>
         {{if index > 0}}
           <input type='radio' name='criteria_list[${index}][join]' id='criteria_join_and' ${CriteriaTemplateHelper.andRadioSelected(join)} value='AND' /><label for='criteria_join_and'>And</label>
           <input type='radio' name='criteria_list[${index}][join]' id='criteria_join_or' ${CriteriaTemplateHelper.orRadioSelected(join)} value='OR' /><label for='criteria_join_or'>Or</label>
         {{/if}}
-        <a class='select-criteria'>${ CriteriaTemplateHelper.link(field_display_name) }</a>
+        <a class='select-criteria'>${CriteriaTemplateHelper.link(field_display_name) }</a>
         <input type='hidden' name="criteria_list[${index}][field]" value="${field}" class="criteria-field"/>
         <input type='text' name="criteria_list[${index}][value]" value="${value}" class="criteria-value"/>
         <input type='hidden' name="criteria_list[${index}][index]" value="${index}" class="criteria-index"/>
@@ -49,6 +50,7 @@
           <a class='remove-criteria'>remove</a>
         {{/if}}
       </p>
+      {{/if}}
     </script>
   
     <div class="criteria-list" style="float:left">
@@ -62,12 +64,47 @@
     </p>
 
     <hr>
+    <p style="font-size: 14px">Filter Search Results</p>
+    <table border=0 cellpadding=0 cellspacing=0 bgcolor="white">
+      <tr bgcolor="white">
+        <td align="right" width=10><%= check_box_tag(:created_by, true, params[:created_by]=='true') %></td>
+        <td align="left" width=80><%= label_tag(:created_by_label, "Created By:") %></td>
+        <td align="left" colspan="4"><%= text_field_tag(:created_by_value, params[:created_by_value], :disabled => !(params[:created_by]=='true')) %></td>
+      </tr>
+      <tr bgcolor="white">
+        <td align="left"><%= check_box_tag(:updated_by, true, params[:updated_by]=='true') %></td>
+        <td align="left"><%= label_tag(:updated_by_label, "Updated By:") %></td>
+        <td align="left" colspan="4"><%= text_field_tag(:updated_by_value, params[:updated_by_value], :disabled => !(params[:updated_by]=='true')) %></td>
+      </tr>
 
-    <%= check_box_tag(:created_by) %>
-    <%= label_tag(:created_by_label, "Created by:") %>
-    <%= text_field_tag(:created_by_value, nil, :disabled => true) %>
+      <tr bgcolor="white">
+        <td align="left" colspan="6" class="help-text">
+          Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
+          Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
+          Enter dates in both boxes to see records created between the dates.
+        </td>
+      </tr>
+      <tr bgcolor="white">
+        <td align="left"><%= check_box_tag(:created_at, true, params[:created_at]=='true') %></td>
+        <td align="left" width="90px"><%= label_tag(:created_at_label, "Date Created:") %></td>
+        <td align="left" width="15px"><%= label_tag(:created_at_after_label, "After:") %></td>
+        <td align="left" width="15px"><%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :disabled => !(params[:created_at]=='true'))%></td>
+        <td align="left" width="15px"><%= label_tag(:created_at_before_label, "Before:") %></td>
+        <td align="left"><%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :disabled => !(params[:created_at]=='true'))%></td>
+      </tr>
+      <tr bgcolor="white">
+        <td align="left"><%= check_box_tag(:updated_at, true, params[:updated_at]=='true') %></td>
+        <td align="left" width="90px"><%= label_tag(:updated_at_label, "Date Updated:") %></td>
+        <td align="left" width="15px"><%= label_tag(:updated_at_after_label, "After:") %></td>
+        <td align="left" width="15px"><%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :disabled => !(params[:updated_at]=='true'))%></td>
+        <td align="left" width="15px"><%= label_tag(:updated_at_before_label, "Before:") %></td>
+        <td align="left"><%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :disabled => !(params[:updated_at]=='true'))%></td>
+      </tr>
+    </table>
 
-  </form>      
+  </form>
+
+
 </div>
 
 <% if params[:criteria_list] %>
@@ -82,6 +119,6 @@
   CriteriaTemplateHelper.link = function(field_display_name) { 
     return field_display_name == "" ? "Select A Criteria" : field_display_name; 
   }
-  
+  CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX = 100
   $(".advanced-search").advancedSearch({criteria: <%=@criteria_list.to_json %>});
 </script>

@@ -14,6 +14,12 @@ Given /^I am logged in as an admin$/ do
   Given "I press \"Log in\""
 end
 
+Given /^I am logged in as "(.+)"/ do |user_name|
+  Given "I am on the login page"
+  Given "I fill in \"#{user_name}\" for \"user_name\""
+  Given "I fill in \"123\" for \"password\""
+  Given "I press \"Log in\""
+end
 
 
 Given /there is a User/ do

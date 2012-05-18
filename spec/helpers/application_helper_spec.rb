@@ -20,6 +20,5 @@ describe ApplicationHelper do
       url.should include('.csv')
       url.should_not include('.pdf')
     end
-
   end
 end
