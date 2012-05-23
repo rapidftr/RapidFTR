@@ -89,6 +89,8 @@ ManageUsers.init = function () {
   $('#modal-dialog').dialog({
     autoOpen: false,
     modal: true,
+    closeOnEscape: false,
+    open: function(event, ui){ $('.ui-dialog-titlebar-close', ui.dialog).hide(); },
     buttons: {
       "Yes" : function() {
         var opt = $(this).dialog('option');
@@ -102,7 +104,6 @@ ManageUsers.init = function () {
       }
     }
   });
-
 
 };
 
