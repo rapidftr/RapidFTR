@@ -9,7 +9,8 @@ describe User do
       :password => 'password',
       :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
-      :user_type => 'user_type'
+      :user_type => 'user_type',
+      :permission => Permission::LIMITED
     })
     user = User.new( options)
     user
@@ -20,6 +21,26 @@ describe User do
     user.save
     user
   end
+
+  describe "validation" do
+    it "should fail if permission is not set" do
+      user = build_user(:permission => "")
+      user.should_not be_valid
+    end
+
+    it "should fail if the permission level is not valid" do
+      user = build_user(:permission => "invalid level")
+      user.should_not be_valid
+    end
+
+    it "should succeed if permission is set appropriately" do
+      user = build_user(:permission => "Limited")
+      user.should be_valid
+      user.permission = "Unlimited"
+      user.should be_valid
+    end
+  end
+
 
   it 'should validate uniqueness of username for new users' do
     user = build_user(:user_name => 'the_user_name')
@@ -175,6 +196,33 @@ describe User do
         :time_zone => "UTC"
                       })
     user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
+  end
+
+  describe "permissions" do
+
+    before { @user = build_user }
+    subject { @user }
+
+    context "user with limited permissions" do
+      before do
+        @user.permission = "Limited"
+        @user.save!
+      end
+
+      its(:permission) { should == "Limited" }
+
+      it "should have limited access" do
+        @user.limited_access?.should be_true
+      end
+    end
+
+    context "user with unlimited permissions" do
+      before do
+        @user.permission = "Unlimited"
+        @user.save!
+      end
+      its(:permission) { should == "Unlimited" }
+    end
   end
 
 end

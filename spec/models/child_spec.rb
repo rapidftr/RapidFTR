@@ -972,6 +972,7 @@ describe Child do
 
   end
 
+
   describe ".photo" do
 
     it "should return nil if the record has no attached photo" do
