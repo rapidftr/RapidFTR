@@ -6,7 +6,8 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"$/ do |user_t
     :password_confirmation=>password, 
     :user_type=> user_type, 
     :full_name=>username, 
-    :email=>"#{username}@test.com")
+    :email=>"#{username}@test.com",
+    :permission=>Permission::UNLIMITED)
   @user.save!
 end
 

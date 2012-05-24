@@ -17,7 +17,7 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
-  
+
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
@@ -52,6 +52,16 @@ class Child < CouchRestRails::Document
               emit(doc['duplicate'], doc);
             }
           }"
+
+  view_by :flag,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('flag'))
+               {
+                  emit(doc['flag'],doc);
+               }
+            }"
+
+  view_by  :created_by
 
   validates_with_method :validate_photos
   validates_with_method :validate_photos_size
@@ -126,15 +136,15 @@ class Child < CouchRestRails::Document
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
 
-	def validate_created_at
-		begin
-			if self['created_at']
-				DateTime.parse self['created_at'] 
-			end
-			true
-		rescue
-			[false, '']
-		end
+  def validate_created_at
+    begin
+      if self['created_at']
+        DateTime.parse self['created_at'] 
+      end
+      true
+    rescue
+     [false, '']
+    end
   end
 
   def validate_last_updated_at
@@ -162,6 +172,10 @@ class Child < CouchRestRails::Document
 
   def self.all
     view('by_name', {})
+  end
+
+  def self.all_by_creator(created_by)
+    self.by_created_by :key => created_by
   end
   
   # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg

@@ -9,7 +9,7 @@ class ChildrenController < ApplicationController
   def index
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
-    
+
     filter_children_by params[:status], params[:order_by]
 
     respond_to do |format|
@@ -159,8 +159,8 @@ class ChildrenController < ApplicationController
     @page_name = "Search"
     @aside = "shared/sidebar_links"
     if (params[:query])
-      @search = Search.new(params[:query]) 
-      if @search.valid?    
+      @search = Search.new(params[:query])
+      if @search.valid?
         @results = Child.search(@search)
       else
         render :search
@@ -174,7 +174,7 @@ class ChildrenController < ApplicationController
     if selected_records.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
-    
+
     children = selected_records.sort.map{ |index, child_id| Child.get(child_id) }
 
     if params[:commit] == "Export to Photo Wall"
@@ -234,13 +234,13 @@ class ChildrenController < ApplicationController
   end
 
   def render_as_csv results, filename
-    results = results || [] # previous version handled nils - needed? 
-    
+    results = results || [] # previous version handled nils - needed?
+
     results.each do |child|
       child['photo_url'] = child_photo_url(child, child.primary_photo_id)  unless child.primary_photo_id.nil?
       child['audio_url'] = child_audio_url(child)
     end
-    
+
 		export_generator = ExportGenerator.new results
 		csv_data = export_generator.to_csv
     send_data(csv_data.data, csv_data.options)
@@ -256,61 +256,20 @@ class ChildrenController < ApplicationController
       redirect_to :action => :index and return
     end
   end
-  
+
   def filter_children_by status, order
-    @filter, @order = status, order
-    @filter ||= "all"
-    
-    filter_all_children if @filter == "all"
-    filter_reunited_children if @filter == "reunited"
-    filter_flagged_children if @filter == "flagged"
-    filter_active_children if @filter == "active"              
+    presenter = ChildrenPresenter.new(children_by_user_access, status, order)
+    @children = presenter.children
+    @filter = presenter.filter
+    @order = presenter.order
   end
-  
-  def filter_all_children
-    @order ||= 'name'
-    @children = Child.all    
-    if @order == 'most recently created'
-      @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
-    else
-      @children.sort!{ |x,y| x['name'] <=> y['name'] }  
+
+  def children_by_user_access
+    session = app_session
+    if session.admin?
+      return Child.all
     end
-  end
-  
-  def filter_reunited_children
-    @order ||= 'name'
-    @children = Child.all.select{ |c| c.reunited? }   
-    if @order == 'most recently reunited' 
-      @children.each { |child| 
-        child['reunited_at'] = child['histories'].select{ |h| h['changes'].keys.include?('reunited') }.map{ |h| h['datetime'] }.max
-      }
-      @children.sort!{ |x,y| y['reunited_at'] <=> x['reunited_at'] }
-    else
-      @children.sort!{ |x,y| x['name'] <=> y['name'] }  
-    end
-  end
-  
-  def filter_flagged_children
-    @order ||= 'most recently flagged'
-    @children = Child.flagged
-    @children.each { |child| 
-      child['flagged_at'] = child['histories'].select{ |h| h['changes'].keys.include?('flag') }.map{ |h| h['datetime'] }.max
-    }
-    if @order == 'most recently flagged'
-      @children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
-    else
-      @children.sort!{ |x,y| x['name'] <=> y['name'] }
-    end    
-  end
-  
-  def filter_active_children
-    @order ||= 'name'
-    @children = Child.all.select{ |c| !c.reunited? }
-    if @order == 'most recently created'  
-      @children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
-    else
-      @children.sort!{ |x,y| x['name'] <=> y['name'] }  
-    end
+    current_user.limited_access? ? Child.all_by_creator(current_user.user_name) : Child.all
   end
 
 end

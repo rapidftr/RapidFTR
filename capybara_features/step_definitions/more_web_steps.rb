@@ -14,6 +14,17 @@ When /^I click text "([^"]*)"(?: within "([^\"]*)")?$/ do |text_value, selector|
   end
 end
 
+Then /^the "([^\"]*)" field should be disabled$/ do |label|
+  field_labeled(label)[:disabled].should be_true
+end
+
+Given /^devices exist$/ do |devices|
+  devices.hashes.each do |device_hash|
+    device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])
+    device.save!
+  end
+end
+
 Then /^I should find the form with following attributes:$/ do |table|
   table.raw.flatten.each do |attribute|
     page.should have_field(attribute)
@@ -29,17 +40,6 @@ Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, elem
   puts "Warning: element argument '#{element}' is ignored."
   should = do_not_want ? :should_not : :should
   page.send(should, have_css("##{id}"))
-end
-
-Then /^the "([^\"]*)" field should be disabled$/ do |label|
-  field_labeled(label)[:disabled].should be_true
-end
-
-Given /^devices exist$/ do |devices|
-  devices.hashes.each do |device_hash|
-    device = Device.new(:imei => device_hash[:imei], :blacklisted => device_hash[:blacklisted], :user_name => device_hash[:user_name])
-    device.save!
-  end
 end
 
 And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
