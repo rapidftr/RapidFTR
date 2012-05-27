@@ -1,4 +1,4 @@
-Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"$/ do |user_type, username, password|
+Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   user_type = user_type == 'user' ? 'User' : 'Administrator'
   @user = User.new(
     :user_name=>username, 
@@ -7,12 +7,16 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"$/ do |user_t
     :user_type=> user_type, 
     :full_name=>username, 
     :email=>"#{username}@test.com",
-    :permission=>Permission::UNLIMITED)
+    :permission=> permission ? (permission=='limited' ? Permission::LIMITED : Permission::UNLIMITED) : Permission::UNLIMITED )
   @user.save!
 end
 
 Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
   Given %(a #{user_type} "#{user_name}" with password "123")
+end
+
+Given /^an? (user|admin) "([^"]+)" with "(limited|unlimited)" permission$/ do |user_type, user_name, permission|
+  Given %(a #{user_type} "#{user_name}" with password "123" and "#{permission}" permission)
 end
 
 Given /^I have an expired session/ do
