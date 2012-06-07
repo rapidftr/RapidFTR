@@ -53,7 +53,7 @@ class Child < CouchRestRails::Document
             }
           }"
 
-view_by :duplicates_from,
+view_by :duplicates_of,
           :map => "function(doc) {
             if (doc.hasOwnProperty('duplicate_of')) {
               emit(doc['duplicate_of'], doc);
@@ -190,8 +190,8 @@ view_by :duplicates_from,
     by_duplicate(:key => true)
   end
 
-  def self.duplicates_from(id)
-    duplicates = by_duplicates_from(:key => id)
+  def self.duplicates_of(id)
+    duplicates = by_duplicates_of(:key => id)
     duplicates ||= Array.new
     duplicates
   end

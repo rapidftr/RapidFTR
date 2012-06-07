@@ -1046,7 +1046,7 @@ describe Child do
     it "should return duplicate from a record" do
       record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
       record_duplicate = create_duplicate(record_active)
-      Child.duplicates_from(record_active.id).should == [record_duplicate]
+      Child.duplicates_of(record_active.id).should == [record_duplicate]
     end
 
   end

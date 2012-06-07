@@ -149,7 +149,7 @@ describe ChildrenController do
     it "should include duplicate records in the response" do
       Child.stub!(:get).with("37").and_return(mock_child)
       duplicates = [Child.new(:name => "duplicated")]
-      Child.should_receive(:duplicates_from).with("37").and_return(duplicates)
+      Child.should_receive(:duplicates_of).with("37").and_return(duplicates)
       get :show, :id => "37"
       assigns[:duplicates].should equal(duplicates)
     end
