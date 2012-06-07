@@ -1037,12 +1037,16 @@ describe Child do
     end
     
     it "should return all duplicate records" do
-      record_duplicate = Child.create(:name => "dupe")
       record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
-      record_duplicate.mark_as_duplicate(record_active.unique_identifier)
-      record_duplicate.save!
+      record_duplicate = create_duplicate(record_active)
       Child.duplicates.should == [record_duplicate]
       Child.all.should == [record_active]
+    end
+
+    it "should return duplicate from a record" do
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+      record_duplicate = create_duplicate(record_active)
+      Child.duplicates_from(record_active.id).should == [record_duplicate]
     end
 
   end
@@ -1051,6 +1055,13 @@ describe Child do
   
   def create_child(name)
     Child.create("name" => name, "last_known_location" => "new york")
+  end
+
+  def create_duplicate(parent)
+    duplicate = Child.create(:name => "dupe")
+    duplicate.mark_as_duplicate(parent.unique_identifier)
+    duplicate.save!
+    duplicate
   end
 
 end

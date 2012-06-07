@@ -30,3 +30,9 @@ Feature: Merge Child Records
     And I press "Mark as duplicate"
     Then I am on the child record page for "Steve"
     And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
+
+  Scenario: Should see duplicate message when viewing child record
+    And "Bob" is a duplicate of "Dave"
+    When I am on the child record page for "Dave"
+    Then I should see "Another record has been marked as a duplicate of this one"
+    
