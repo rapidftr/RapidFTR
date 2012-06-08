@@ -34,5 +34,5 @@ Feature: Merge Child Records
   Scenario: Should see duplicate message when viewing child record
     And "Bob" is a duplicate of "Dave"
     When I am on the child record page for "Dave"
-    Then I should see "Another record has been marked as a duplicate of this one"
-    
+    Then I should see "Another record has been marked as a duplicate of this one. Click here to see the duplicate record."
+   
