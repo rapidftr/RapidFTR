@@ -145,6 +145,14 @@ describe ChildrenController do
       flash[:error].should == "Child with the given id is not found"
       response.should redirect_to(:action => :index)
     end
+
+    it "should include duplicate records in the response" do
+      Child.stub!(:get).with("37").and_return(mock_child)
+      duplicates = [Child.new(:name => "duplicated")]
+      Child.should_receive(:duplicates_of).with("37").and_return(duplicates)
+      get :show, :id => "37"
+      assigns[:duplicates].should equal(duplicates)
+    end
   end
 
   describe "GET new" do

@@ -64,6 +64,10 @@
 <% if @child.duplicate? %>
     <h3 class="duplicate-message"><%= duplicate_message %></h3>
 <% end %>
+<% unless @duplicates.empty? %>
+    <h3 class="duplicate-message">Another record has been marked as a duplicate of this one. Click 
+      <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
+<% end %>
 <br><br>
 <%= toolbar_for_child(@child) %>
 

@@ -34,6 +34,8 @@ class ChildrenController < ApplicationController
     @aside = 'picture'
     @body_class = 'profile-page'
 
+    @duplicates = Child.duplicates_of(params[:id])
+
     respond_to do |format|
       format.html
       format.xml  { render :xml => @child }

@@ -50,14 +50,21 @@ module ApplicationHelper
   end
 
   def link_with_confirm(link_to, anchor, link_options = {})
-    if /edit|new/.match(controller.action_name)
-      link_options.merge!(:confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.')
-    end
-    if /form_section/.match(controller.controller_name) and /index/.match(controller.action_name)
-       link_options.merge!(:confirm =>'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Manage Form Sections Instead.')
-    end
+    link_options.merge!(link_confirm_options(controller))
     link_to link_to, anchor, link_options
   end
 
+  def link_confirm_options(controller)
+    confirm_options = { }
+    confirm_message = 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The %s Instead.'
+    if /children/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
+      confirm_options[:confirm] = confirm_message % 'Child Record'
+    elsif /user/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
+      confirm_options[:confirm] = confirm_message % 'Users Page'
+    elsif /form_section/.match(controller.controller_name) and /index/.match(controller.action_name)
+       confirm_options[:confirm] = confirm_message % 'Manage Form Sections'
+    end
+    confirm_options
+  end
 
 end

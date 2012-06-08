@@ -53,6 +53,13 @@ class Child < CouchRestRails::Document
             }
           }"
 
+view_by :duplicates_of,
+          :map => "function(doc) {
+            if (doc.hasOwnProperty('duplicate_of')) {
+              emit(doc['duplicate_of'], doc);
+            }
+          }"
+
   view_by :flag,
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
@@ -61,7 +68,7 @@ class Child < CouchRestRails::Document
                }
             }"
 
-  view_by  :created_by
+  view_by :created_by
 
   validates_with_method :validate_photos
   validates_with_method :validate_photos_size
@@ -181,6 +188,12 @@ class Child < CouchRestRails::Document
   # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg
   def self.duplicates
     by_duplicate(:key => true)
+  end
+
+  def self.duplicates_of(id)
+    duplicates = by_duplicates_of(:key => id)
+    duplicates ||= Array.new
+    duplicates
   end
   
   def self.search(search)

@@ -34,3 +34,10 @@ Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   fill_in('Birthplace', :with => 'Haiti')
   click_button('Save')
 end
+
+Given /^"([^\"]*)" is a duplicate of "([^\"]*)"$/ do |duplicate_name, parent_name|
+  duplicate = Child.by_name(:key => duplicate_name).first
+  parent = Child.by_name(:key => parent_name).first
+  duplicate.mark_as_duplicate(parent.unique_identifier)
+  duplicate.save
+end
