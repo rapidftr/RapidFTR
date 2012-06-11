@@ -22,7 +22,7 @@ Feature: Merge Child Records
     When I am on the child listing filtered by flagged
     And I click mark as duplicate for "Steve"
     Then I am on duplicate child page for "Steve"
-    
+
   Scenario: Should see view child page when I click OK on confirmation
     When I am on the child listing filtered by flagged
     And I click mark as duplicate for "Steve"
@@ -35,4 +35,6 @@ Feature: Merge Child Records
     And "Bob" is a duplicate of "Dave"
     When I am on the child record page for "Dave"
     Then I should see "Another record has been marked as a duplicate of this one. Click here to see the duplicate record."
+    And I follow "here"
+    Then I am on the child record page for "Bob"
    
