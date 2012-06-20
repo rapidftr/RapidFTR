@@ -10,6 +10,11 @@ Then /^I should see the thumbnail of "([^\"]*)"$/ do |child_name|
   check_link(response, child_name) {|child| child_thumbnail_path(child, child.primary_photo_id)}
 end
 
+Then /^I should see "([^\"]*)" thumbnails$/ do |number|
+  thumbnails = all("//*[@class='thumbnail']/img")
+  thumbnails.collect{|element| element['src']}.uniq.size.should eql number.to_i
+end
+
 def check_link(response, child_name)
   child = find_child_by_name child_name
   image_link = yield(child)
