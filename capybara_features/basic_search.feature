@@ -26,7 +26,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | andreas	| London		            | zubair   | zubairlon123 |
       | zak	    | London		            | zubair   | zubairlon456 |
 
-    When I fill in "zubairlon123" for "Name or Unique Id"
+    When I fill in "zubairlon123" for "Name or Unique ID"
     And I press "Search"
 
     Then I should be on the saved record page for child with name "andreas"
@@ -43,11 +43,11 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
   Scenario: Search parameters are displayed in the search results
 
-    When I fill in "Will" for "Name or Unique Id"
+    When I fill in "Will" for "Name or Unique ID"
     And I press "Search"
 
     Then I should be on the child search results page
-    And the "Name or Unique Id" field should contain "Will"
+    And the "Name or Unique ID" field should contain "Will"
 
   Scenario: Each search result has a link to the full child record
 

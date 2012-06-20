@@ -84,3 +84,10 @@ Given /"([^\"]*)" is the user/ do |user_name|
   Given "a user \"#{user_name}\" with a password \"123\""
 end
 
+Then /^I should not see any errors$/ do
+  Hpricot(page.body).search("div[@class=errorExplanation]").size.should == 0
+end
+
+Then /^I should see the error "([^\"]*)"$/ do |error_message|
+  Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
+end
