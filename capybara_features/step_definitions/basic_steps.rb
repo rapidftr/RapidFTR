@@ -212,6 +212,12 @@ Then /^I should see the error "([^\"]*)"$/ do |error_message|
   Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
 end
 
+Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
+  child_name = find_child_by_name name
+  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
+  child_images[0][:src].should have_content(image)
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
