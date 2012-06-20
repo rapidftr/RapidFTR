@@ -20,6 +20,12 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
   end
 end
 
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" with field type "([^\"]*)"$/ do |form_section, field_name, field_type|
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :type => field_type)
+  FormSection.add_field_to_formsection(form_section, field)
+end
+
 Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table|
   form_section = FormSection.get_by_unique_id(form_section_name)
   form_section.should_not be_nil
