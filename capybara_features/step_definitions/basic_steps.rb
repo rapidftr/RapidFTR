@@ -63,6 +63,17 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
 
+Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
+  child = Child.new( :name => name, :birthplace => 'unknown' )
+  child.photo = uploadable_photo(photo_file_path)
+  child.create
+end
+
+When /^I am editing the child with name "([^\"]*)"$/ do |name|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}/edit"
+end
+
 When /^I wait for (\d+) seconds$/ do |seconds|
   sleep seconds.to_i
 end
