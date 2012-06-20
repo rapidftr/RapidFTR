@@ -1,5 +1,10 @@
 require 'spec/spec_helper'
 
+When /^I fill in the basic details of a child$/ do
+  fill_in("Birthplace", :with => "Haiti")
+  attach_file("child[photo]0", "features/resources/jorge.jpg")
+end
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
 
