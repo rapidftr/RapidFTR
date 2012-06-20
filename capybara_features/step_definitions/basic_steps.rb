@@ -5,6 +5,12 @@ When /^I fill in the basic details of a child$/ do
   attach_file("child[photo]0", "features/resources/jorge.jpg")
 end
 
+When /^I attach a photo "([^"]*)"$/ do |photo_path|
+  steps %Q{
+    When I attach the file "#{photo_path}" to "child[photo]0"
+  }
+end
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
 
