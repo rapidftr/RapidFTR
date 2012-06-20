@@ -11,6 +11,12 @@ When /^I attach a photo "([^"]*)"$/ do |photo_path|
   }
 end
 
+When /^I attach an audio file "([^"]*)"$/ do |audio_path|
+  steps %Q{
+    When I attach the file "#{audio_path}" to "child[audio]"
+  }
+end
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
 
