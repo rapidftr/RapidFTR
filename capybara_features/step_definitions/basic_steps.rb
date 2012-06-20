@@ -84,6 +84,43 @@ Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
   page.find("//p[@class='#{button_name.downcase}Button']/a")['data-confirm'].should_not be_nil
 end
 
+Given /^I flag "([^\"]*)" as suspect$/ do  |name|
+  click_flag_as_suspect_record_link_for(name)
+  click_button("Flag")
+end
+
+When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
+  click_flag_as_suspect_record_link_for(name)
+  fill_in("Flag Reason", :with => reason)
+  click_button("Flag")
+end
+
+When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Unflag record")
+  fill_in("Unflag Reason", :with => reason)
+  click_button("Unflag")
+end
+
+Then /^the (view|edit) record page should show the record is flagged$/ do |page_type|
+  path = children_path+"/#{Child.all[0].id}"
+  (page_type == "edit") ? visit(path + "/edit") : visit(path)
+  page.should have_content("Flagged as suspect record by")
+end
+
+Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
+  expected_child_names = table.raw.flatten
+  visit child_filter_path("flagged")
+  child_records = Hpricot(page.body).search("div[@class=profiles-list-item] h3 a").map {|a| a.inner_text }
+  child_records.should == expected_child_names
+end
+
+When /^the record history should log "([^\"]*)"$/ do |field|
+  visit(children_path+"/#{Child.all[0].id}/history")
+  page.should have_content(field)
+end
+
 Then /^I should (not )?see the "([^\"]*)" tab$/ do |do_not_want, tab_name|
   should = do_not_want ? :should_not : :should
   page.all(:css, ".tab-handles a").map(&:text).send(should, include(tab_name))
@@ -119,4 +156,18 @@ end
 
 Then /^I should see the error "([^\"]*)"$/ do |error_message|
   Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
+end
+
+Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
+  child_name = find_child_by_name name
+  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
+  child_images[0][:src].should have_content(image)
+end
+
+private
+
+def click_flag_as_suspect_record_link_for(name)
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}"
+  click_link("Flag as suspect record")
 end
