@@ -77,6 +77,12 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
 
+Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
+  child = Child.new_with_user_name("Bob Creator",{:name=>name})
+  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.create!
+end
+
 Given /^I am editing an existing child record$/ do
   child = Child.new
   child["birthplace"] = "haiti"
