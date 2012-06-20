@@ -240,3 +240,6 @@ Then /^show me the page$/ do
 end
 
 
+When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
+  fill_in field, :with=>("x" * length.to_i)
+end

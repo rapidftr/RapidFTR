@@ -34,6 +34,10 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
   form_section.save!
 end
 
+Then /^there should be (\d+) child records in the database$/ do |number_of_records|
+  Child.all.length.should == number_of_records.to_i
+end
+
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)
   current_time.stub!(:getutc).and_return Time.parse(datetime)
