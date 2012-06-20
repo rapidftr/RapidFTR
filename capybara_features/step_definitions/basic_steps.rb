@@ -204,6 +204,14 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
   field_labeled(dropdown_label).value.should == selected_text
 end
 
+Then /^I should not see any errors$/ do
+  Hpricot(page.body).search("div[@class=errorExplanation]").size.should == 0
+end
+
+Then /^I should see the error "([^\"]*)"$/ do |error_message|
+  Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
