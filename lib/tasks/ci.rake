@@ -13,7 +13,7 @@ namespace :ci do
     rm_rf deploy_dir
     cp_r '.', deploy_dir
     cd deploy_dir do
-      sh "rake passenger:restart"
+      sh "rake passenger:restart ci:reload_nginx_conf"
     end
   end
 

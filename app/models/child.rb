@@ -100,6 +100,7 @@ view_by :duplicates_of,
       text *text_fields
       date *date_fields
       date_fields.each { |date_field| date date_field }
+      boolean :duplicate
     end
   end
 
