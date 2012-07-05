@@ -96,6 +96,7 @@
         </p>
     <% end %>
 
+    <% if is_admin? %>
     <dl class="radioList">
       <dt>User Permission Level:</dt>
       <dd>
@@ -109,6 +110,14 @@
         </p>
       </dd>
     </dl>
+    <% else %>
+     <p>
+        <%= f.label "User Permissions:" %>
+        <%= f.label :permission, 
+        edittable_user.limited_access? ? "Limited" : "Unlimited" %>
+    </p> 
+    
+    <% end %>
 
   </fieldset>
   <% if is_admin? %>
