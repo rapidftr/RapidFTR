@@ -6,6 +6,7 @@ describe 'users/_edittable_user.html.erb' do
       user = User.new()
       user.disabled = false
       user.user_name = "someusername"
+      @controller.template.stub!(:is_admin?).and_return(false)
       
       render :locals => { :current_user_name => "someusername", :edittable_user => user }
 
