@@ -23,7 +23,7 @@
 
 <%= form_for edittable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
-  <% trying_to_edit_ourself = (!@user.new_record? && current_user_name == @user.user_name) %>
+  <% trying_to_edit_ourself = (edittable_user.new_record? && current_user_name == edittable_user.user_name) %>
   <fieldset>
     <h3>User details</h3>
 
@@ -112,7 +112,7 @@
 
   </fieldset>
   <% if is_admin? %>
-  <%= render :partial => "devices", :object => @user.devices %>
+  <%= render :partial => "devices", :object => edittable_user.devices %>
   <% end %>
   <%= submit_button(edittable_user.new_record? ? 'Create' : 'Update') %>
   <%= cancel_button(users_path) %>
