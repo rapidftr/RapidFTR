@@ -112,7 +112,11 @@
 
   </fieldset>
   <% if is_admin? %>
+<<<<<<< HEAD:app/views/users/_editable_user.html.erb
   <%= render :partial => "devices", :object => editable_user.devices %>
+=======
+  <%= render :partial => "devices", :object => edittable_user.devices %>
+>>>>>>> Refactored the view to use only passed variable not @user:app/views/users/_edittable_user.html.erb
   <% end %>
   <%= submit_button(editable_user.new_record? ? 'Create' : 'Update') %>
   <%= cancel_button(users_path) %>
