@@ -19,6 +19,7 @@ class User < CouchRestRails::Document
   property :time_zone, :default => "UTC"
   property :permission
   attr_accessor :password_confirmation, :password
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [:user_type, :permission, :disabled]
 
 
   timestamps!
@@ -126,6 +127,9 @@ class User < CouchRestRails::Document
 
   def localize_date(date_time, format = "%d %B %Y at %H:%M (%Z)")
     DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
+  end
+  def user_assignable?(attributes)
+    not ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
   end
 
   private
