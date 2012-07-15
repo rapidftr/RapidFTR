@@ -52,6 +52,11 @@ class UsersController < ApplicationController
       raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
     end
 
+    unless session.admin?
+      unless @user.user_assignable? params[:user]
+        raise AuthorizationFailure.new('Not permitted to assign admin specific fields')
+      end
+    end
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was successfully updated.'
       redirect_to(@user)
