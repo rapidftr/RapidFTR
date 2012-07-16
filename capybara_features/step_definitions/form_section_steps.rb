@@ -45,6 +45,26 @@ Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ 
   find_field(form_section_visibility_checkbox_id(form_section)).should_not be_checked
 end
 
+Then /^I should not be able to promote the field "([^"]*)"$/ do |field|
+  page.should have_selector("//a[@id='#{field}_up' and @style='display: none;']") 
+end
+
+Then /^I should not be able to demote the field "([^"]*)"$/ do |field|
+   page.should have_selector("//a[@id='#{field}_down' and @style='display: none;']") 
+end
+
+Then /^I should be able to demote the field "([^"]*)"$/ do |field|
+  page.should have_selector("//a[@id='#{field}_down' and @style='display: inline;']")
+end
+
+When /^I demote field "([^"]*)"$/ do |field|
+  find(:css, "a##{field}_down").click
+end
+
+Then /^I should be able to promote the field "([^"]*)"$/ do |field|
+ page.should have_selector("//a[@id='#{field}_up' and @style='display: inline;']")
+end
+
 
 def row_for(section_name)
   page.find row_xpath_for(section_name)
