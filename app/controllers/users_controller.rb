@@ -53,8 +53,12 @@ class UsersController < ApplicationController
     end
 
     if @user.update_attributes(params[:user])
-      flash[:notice] = 'User was successfully updated.'
-      redirect_to(@user)
+      if request.xhr?
+        render :text => "OK"
+      else
+        flash[:notice] = 'User was successfully updated.'
+        redirect_to(@user)
+      end
     else
       render :action => "edit"
     end
