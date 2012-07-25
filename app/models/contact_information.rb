@@ -1,5 +1,8 @@
 class ContactInformation < CouchRestRails::Document
   use_database :contact_information
+  
+  include RapidFTR::Model
+  
   property :id
   property :name
   property :organization

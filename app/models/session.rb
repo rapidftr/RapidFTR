@@ -1,5 +1,7 @@
 class Session < CouchRestRails::Document
   use_database :sessions
+  
+  include RapidFTR::Model
 
   property :user
   property :imei

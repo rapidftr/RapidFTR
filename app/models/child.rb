@@ -2,6 +2,7 @@ class Child < CouchRestRails::Document
   use_database :child
   require "uuidtools"
   include CouchRest::Validation
+  include RapidFTR::Model
   include Searchable
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
