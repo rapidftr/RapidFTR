@@ -5,9 +5,9 @@ Feature: Capture caregiver details
     And I am on the new child page
 
     When I fill in the basic details of a child
-    And I fill in "Mother Teresa" for "Caregiver's name"
+    And I fill in "Mother Teresa" for "Caregiver's Name"
     And I fill in "Saint" for "If other, please provide details."
-    And I fill in "Unknown" for "Relationship to child"
+    And I fill in "Unknown" for "Relationship To Child"
     And I select "Yes" from "Does the caregiver know the family of the child?"
 
     When I press "Save"
