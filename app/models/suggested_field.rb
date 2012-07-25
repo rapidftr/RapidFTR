@@ -1,5 +1,7 @@
 class SuggestedField   < CouchRestRails::Document
   use_database :suggested_field
+  
+  include RapidFTR::Model
 
   property :unique_id
   property :name

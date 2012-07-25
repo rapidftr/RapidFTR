@@ -1,6 +1,8 @@
 class Summary < CouchRestRails::Document
   END_CHAR_AVOIDER = "aa"
   use_database :child
+  
+  include RapidFTR::Model
 
   view_by :name,
           :map => "function(doc) {

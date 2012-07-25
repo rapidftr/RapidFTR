@@ -10,7 +10,7 @@ gem 'mime-types',     '1.16'
 gem 'mini_magick',    '1.3.2'
 gem 'pdf-reader',     '0.8.6'
 gem 'prawn',          '0.8.4'
-gem 'rails',          '2.3.11'
+gem 'rails',          '3.0.15'
 gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
@@ -26,9 +26,8 @@ group :cucumber do
 end
 
 group :test do
-  gem 'rspec',            '1.3.2'
-  gem 'rspec-rails',      '1.3.4'
-  gem 'webrat',           '0.7.1'
+  gem 'rspec',            '2.11.0'
+  gem 'rspec-rails',      '2.11.0'
   gem 'capybara',         '1.0.1'
   gem 'selenium-webdriver', '2.24.0'
   gem 'jasmine'
