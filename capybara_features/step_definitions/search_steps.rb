@@ -16,8 +16,12 @@ When /^I select search result \#(\d+)$/ do |ordinal|
 end
 
 Then /^I should see "([^\"]*)" in the search results$/ do |value|
-	 match = page.find('//a', :text => value)
+	match = page.find('//a', :text => value)
   raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the search results" unless match
+end
+
+Then /^I should not see "([^\"]*)" in the search results$/ do |value|
+  lambda { page.find('//a', :text => value)}.should raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should see "(.*)" as reunited in the search results$/ do |child_name|

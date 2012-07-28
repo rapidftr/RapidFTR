@@ -9,7 +9,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "pat
 
 module WithinHelpers
   def with_scope(locator)
-    locator ? within(locator) { yield } : yield
+    locator ? within(:css, locator) { yield } : yield
   end
 end
 World(WithinHelpers)
@@ -28,10 +28,23 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
 end
 
-When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
+When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
     click_link(link)
   end
+end
+
+When /^I cannot follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
+  exception=nil
+  begin
+    with_scope(selector) do
+      click_link(link)
+    end
+  rescue Exception=>e
+    exception=e
+  end
+  exception.should_not be_nil
+  exception.class.should==Capybara::ElementNotFound
 end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
@@ -40,7 +53,7 @@ When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |fi
   end
 end
 
-When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
+When /^(?:|I )(?:can )?fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
     fill_in(field, :with => value)
   end
@@ -71,7 +84,7 @@ When /^(?:|I )select "([^\"]*)" from "([^\"]*)"(?: within "([^\"]*)")?$/ do |val
   end
 end
 
-When /^(?:|I )check "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
+When /^(?:|I )(?:can )?check "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
     check(field)
   end
@@ -83,7 +96,7 @@ When /^(?:|I )uncheck "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   end
 end
 
-When /^(?:|I )choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
+When /^(?:|I )(?:can )?choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
     choose(field)
   end
@@ -157,22 +170,48 @@ Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"
   end
 end
 
-Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should be checked$/ do |label, selector|
+
+
+Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
-    if defined?(Spec::Rails::Matchers)
-      find_field(label)['checked'].should == 'checked'
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      ["true", "checked", true].should include field_checked
     else
-      assert_equal 'checked', field_labeled(label)['checked']
+      field_checked
     end
   end
 end
 
-Then /^the "([^\"]*)" checkbox(?: within "([^\"]*)")? should not be checked$/ do |label, selector|
+Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should not be checked$/ do |label, selector|
   with_scope(selector) do
-    if defined?(Spec::Rails::Matchers)
-      find_field(label)['checked'].should_not == 'checked'
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      field_checked.should == nil
     else
-      assert_not_equal 'checked', field_labeled(label)['checked']
+      !field_checked
+    end
+  end
+end
+
+Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |label, selector|
+  with_scope(selector) do
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      ["true", true].should include field_checked
+    else
+      field_checked
+    end
+  end
+end
+
+Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should not be checked$/ do |label, selector|
+  with_scope(selector) do
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      [nil, false].should include field_checked
+    else
+      !field_checked
     end
   end
 end

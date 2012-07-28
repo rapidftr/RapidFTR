@@ -16,12 +16,15 @@ class Child < CouchRestRails::Document
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
-  
+  property :duplicate, :cast_as => :boolean
+
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
              {
-                emit(doc['name'], doc);
+                if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                  emit(doc['name'], doc);
+                }
              }
           }"
           
@@ -29,9 +32,43 @@ class Child < CouchRestRails::Document
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
                {
+                 if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                   emit(doc['flag'],doc);
+                 }
+               }
+            }"
+            
+  view_by :unique_identifier,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('unique_identifier'))
+               {
+                  emit(doc['unique_identifier'],doc);
+               }
+            }"
+
+  view_by :duplicate,
+          :map => "function(doc) {
+            if (doc.hasOwnProperty('duplicate')) {
+              emit(doc['duplicate'], doc);
+            }
+          }"
+
+view_by :duplicates_of,
+          :map => "function(doc) {
+            if (doc.hasOwnProperty('duplicate_of')) {
+              emit(doc['duplicate_of'], doc);
+            }
+          }"
+
+  view_by :flag,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('flag'))
+               {
                   emit(doc['flag'],doc);
                }
             }"
+
+  view_by :created_by
 
   validates_with_method :validate_photos
   validates_with_method :validate_photos_size
@@ -43,6 +80,7 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
   validates_with_method :created_at, :method => :validate_created_at
+  validates_with_method :last_updated_at, :method => :validate_last_updated_at
 
   def initialize *args
     self['photo_keys'] ||= []
@@ -56,14 +94,22 @@ class Child < CouchRestRails::Document
   end
 
   def self.build_solar_schema
-    fields = build_fields_for_solar
+    text_fields = build_text_fields_for_solar
+    date_fields = build_date_fields_for_solar
     Sunspot.setup(Child) do
-      text *fields
+      text *text_fields
+      date *date_fields
+      date_fields.each { |date_field| date date_field }
+      boolean :duplicate
     end
   end
 
-  def self.build_fields_for_solar
-    ["unique_identifier", "created_by"] +  Field.all_text_names
+  def self.build_text_fields_for_solar
+    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"] +  Field.all_text_names
+  end
+
+  def self.build_date_fields_for_solar
+    ["created_at", "last_updated_at"]
   end
 
   def validate_has_at_least_one_field_value
@@ -98,16 +144,27 @@ class Child < CouchRestRails::Document
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
 
-	def validate_created_at
-		begin
-			if self['created_at']
-				DateTime.parse self['created_at'] 
-			end
-			true
-		rescue
-			[false, '']
-		end
+  def validate_created_at
+    begin
+      if self['created_at']
+        DateTime.parse self['created_at'] 
+      end
+      true
+    rescue
+     [false, '']
+    end
   end
+
+  def validate_last_updated_at
+ 		begin
+ 			if self['last_updated_at']
+ 				DateTime.parse self['last_updated_at']
+ 			end
+ 			true
+ 		rescue
+ 			[false, '']
+ 		end
+   end
 
   def method_missing(m, *args, &block)
     self[m]
@@ -124,6 +181,21 @@ class Child < CouchRestRails::Document
   def self.all
     view('by_name', {})
   end
+
+  def self.all_by_creator(created_by)
+    self.by_created_by :key => created_by
+  end
+  
+  # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg
+  def self.duplicates
+    by_duplicate(:key => true)
+  end
+
+  def self.duplicates_of(id)
+    duplicates = by_duplicates_of(:key => id)
+    duplicates ||= Array.new
+    duplicates
+  end
   
   def self.search(search)
     return [] unless search.valid?
@@ -135,12 +207,8 @@ class Child < CouchRestRails::Document
     SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
   end
   
-  def self.suspect_records
-    records = []
-    self.all.each do |c| 
-      records << c if c.flag? && !c.investigated?
-    end
-    records
+  def self.flagged
+    by_flag(:key => 'true')
   end
 
   def self.new_with_user_name(user_name, fields = {})
@@ -329,6 +397,10 @@ class Child < CouchRestRails::Document
     self['last_updated_by'].blank? || user_names_after_deletion.blank?
   end
 
+  def mark_as_duplicate(parent_id)
+    self['duplicate'] = true
+    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.id
+  end
 
   protected
 
@@ -360,7 +432,12 @@ class Child < CouchRestRails::Document
   def field_name_changes
     @from_child ||= Child.get(self.id)
 		field_names = field_definitions.map {|f| f.name}
-    other_fields = ["flag","flag_message", "reunited", "reunited_message", "investigated", "investigated_message"]
+    other_fields = [
+      "flag", "flag_message", 
+      "reunited", "reunited_message", 
+      "investigated", "investigated_message", 
+      "duplicate", "duplicate_of"
+    ]
 		all_fields = field_names + other_fields
 		all_fields.select { |field_name| changed?(field_name) }
   end
@@ -393,7 +470,21 @@ class Child < CouchRestRails::Document
   end  
   
   def deprecated_fields
-    system_fields = ["created_at","last_updated_at","last_updated_by","posted_at", "posted_from", "_rev", "_id", "created_by", "couchrest-type", "histories", "unique_identifier", "current_photo_key", "photo_keys"]
+    system_fields = ["created_at",
+                     "last_updated_at",
+                     "last_updated_by",
+                     "last_updated_by_full_name",
+                     "posted_at",
+                     "posted_from",
+                     "_rev",
+                     "_id",
+                     "created_by",
+                     "created_by_full_name",
+                     "couchrest-type",
+                     "histories",
+                     "unique_identifier",
+                     "current_photo_key",
+                     "photo_keys"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k} 
   end

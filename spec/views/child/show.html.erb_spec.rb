@@ -15,6 +15,7 @@ describe "children/show.html.erb" do
       assigns[:form_sections] = [@form_section]
       assigns[:child] = @child
       assigns[:user] = User.new
+      assigns[:duplicates] = Array.new
     end
 
     it "displays the child's photo and thumbnails" do

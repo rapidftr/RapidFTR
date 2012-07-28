@@ -15,7 +15,9 @@ if should_seed? User
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
-              "email" => "rapidftr@rapidftr.com")
+              "email" => "rapidftr@rapidftr.com",
+              "permission" => Permission::UNLIMITED)
+
 end
 
 if should_seed? FormSection

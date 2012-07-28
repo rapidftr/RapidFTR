@@ -47,14 +47,15 @@
 			}
 
 			self.selectedField.find(".select-criteria").text(field.find("a").text());
-			self.selectedField.find(".criteria-field").val(field.find("input[type='hidden']").val())
+			self.selectedField.find(".criteria-field").val(field.find("input[type='hidden']").val());
 			menu.hide();
 		});
 
         	
-		element.find(".add-criteria").live("click", function() { 
-			var index = parseInt(criteriaList.find("p:last .criteria-index").val()) + 1;
-			buildCriteria({index: index, join: "AND", field_display_name: ""}) 
+		element.find(".add-criteria").live("click", function() {
+            var last_criteria_index = criteriaList.find("p:last .criteria-index").val();
+            var new_index = (last_criteria_index == undefined) ? 0 : (parseInt(last_criteria_index)+1);
+			buildCriteria({index: new_index, join: "AND", field_display_name: ""});
 		});
         
 
@@ -100,24 +101,72 @@
         $('#created_by').bind('click', function() {
             enableInputByCheckbox($(this), $('#created_by_value'));
         });
+        $('#updated_by').bind('click', function() {
+            enableInputByCheckbox($(this), $('#updated_by_value'));
+        });
+        $('#created_at').bind('click', function() {
+            enableInputByCheckbox($(this), $('#created_at_after_value'));
+            enableInputByCheckbox($(this), $('#created_at_before_value'));
+        });
+        $('#updated_at').bind('click', function() {
+            enableInputByCheckbox($(this), $('#updated_at_after_value'));
+            enableInputByCheckbox($(this), $('#updated_at_before_value'));
+        });
+
+        var filterSelected = function() {
+            return $('#created_by').is(':checked') ||
+                   $('#updated_by').is(':checked') ||
+                   $('#created_at').is(':checked') ||
+                   $('#updated_at').is(':checked')
+        }
 
         var createdByIsValid = function() {
-            return ($('#created_by').is(':checked')) && ($('#created_by_value').val() != '');
+            return (!$('#created_by').is(':checked')) || ($('#created_by_value').val() != '');
         }
+
+        var updatedByIsValid = function() {
+            return (!$('#updated_by').is(':checked')) || ($('#updated_by_value').val() != '');
+        }
+
+        var dateValueIsValid = function(dateValue) {
+            return (dateValue!='' && dateValue.match(/^\d\d\d\d-\d\d-\d\d$/));
+        }
+
+        var createdAtIsValid = function() {
+            return (!$('#created_at').is(':checked')) ||
+                    ( dateValueIsValid($('#created_at_after_value').val()) ||
+                      dateValueIsValid($('#created_at_before_value').val()) )
+        }
+
+        var updatedAtIsValid = function() {
+            return (!$('#updated_at').is(':checked')) ||
+                    ( dateValueIsValid($('#updated_at_after_value').val()) ||
+                      dateValueIsValid($('#updated_at_before_value').val()) )
+        }
+
 
 		var validate = function(){
 			var result = "";
-
-            if (createdByIsValid()) {
-                return result;
+            if(!filterSelected()) {
+                $('.criteria-list .criteria-value').each(function(){
+                    if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+                });
+                $('.criteria-list .criteria-field').each(function(){
+                    if($(this).val() == "") { result = 'Please select a valid field name.'; }
+                });
             }
-			$('.criteria-list .criteria-field').each(function(){
-				if($(this).val() == "") { result = 'Please select a valid field name.'; }
-			});
-
-			$('.criteria-list .criteria-value').each(function(){
-				if($(this).val() == "") { result = 'Please enter a valid field value.'; }
-			});
+            if (!createdByIsValid()) {
+                result="Please enter a valid 'Created by' value."
+            }
+            if (!updatedByIsValid()) {
+                result="Please enter a valid 'Updated by' value."
+            }
+            if (!createdAtIsValid()) {
+                result="Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
+            }
+            if (!updatedAtIsValid()) {
+                result="Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
+            }
 			return result;
 		}
 

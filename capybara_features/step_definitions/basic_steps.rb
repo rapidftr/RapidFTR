@@ -42,6 +42,10 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   current_time.stub!(:getutc).and_return current_time_in_utc
 end
 
+When /^I wait for (\d+) seconds$/ do |seconds|
+  sleep seconds.to_i
+end
+
 Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|
   divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
   divs.size.should == quantity.to_i
@@ -79,3 +83,4 @@ end
 Given /"([^\"]*)" is the user/ do |user_name|
   Given "a user \"#{user_name}\" with a password \"123\""
 end
+

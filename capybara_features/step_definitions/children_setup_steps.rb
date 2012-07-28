@@ -7,8 +7,7 @@ Given /^the following children exist in the system:$/ do |children_table|
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
 						'created_by' => 'Billy',
-            'age_is' => 'Approximate',
-            'investigated' => 'false'
+            'age_is' => 'Approximate'
     )
     
     flag, flag_message = child_hash.delete('flag'), child_hash.delete('flag_message')
@@ -19,7 +18,8 @@ Given /^the following children exist in the system:$/ do |children_table|
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
     child.create!
-    
+
+    # Need this because of how children_helper grabs flag_message from child history - cg
     if flag
       child['flag'] = flag
       child['flag_message'] = flag_message
@@ -33,4 +33,11 @@ Given /^someone has entered a child with the name "([^\"]*)"$/ do |child_name|
   fill_in('Name', :with => child_name)
   fill_in('Birthplace', :with => 'Haiti')
   click_button('Save')
+end
+
+Given /^"([^\"]*)" is a duplicate of "([^\"]*)"$/ do |duplicate_name, parent_name|
+  duplicate = Child.by_name(:key => duplicate_name).first
+  parent = Child.by_name(:key => parent_name).first
+  duplicate.mark_as_duplicate(parent.unique_identifier)
+  duplicate.save
 end

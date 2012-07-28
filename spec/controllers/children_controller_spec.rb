@@ -18,12 +18,15 @@ end
 
 def stub_out_user
   user = mock(:user)
+  user.stub!(:user_name).and_return "testuser"
   user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
+  user.stub!(:limited_access?).and_return(false)
   User.stub!(:find_by_user_name).and_return user
+  user
 end
 
 describe ChildrenController do
-  
+
   before do
     Clock.stub!(:now).and_return(Time.utc(2000, "jan", 1, 20, 15, 1))
     fake_login
@@ -36,12 +39,80 @@ describe ChildrenController do
   end
 
   describe "GET index" do
-    it "assigns all childrens as @childrens" do
-      Child.stub!(:all).and_return([mock_child])
-      get :index
-      assigns[:children].should == [mock_child]
+
+    shared_examples_for "viewing children by user with unlimited permissions" do
+      describe "when the signed in user has unlimited permissions" do
+        it "should assign all childrens as @childrens" do
+          @stubs ||= {}
+          user = stub_out_user
+          user.should_receive(:limited_access?).and_return(false)
+          children = [mock_child(@stubs)]
+          Child.should_receive(:all).and_return(children)
+          get :index, :status => @status
+          assigns[:children].should == children
+        end
+      end
     end
 
+    shared_examples_for "viewing children by user with limited permissions" do
+      describe "when the signed in user has limited permissions" do
+        it "should assign the children created by the signed in user as @childrens" do
+          @stubs ||= {}
+          user = stub_out_user
+          user.should_receive(:limited_access?).and_return(true)
+          children = [mock_child(@stubs)]
+          Child.should_receive(:all_by_creator).with(user.user_name).and_return(children)
+          get :index, :status => @status
+          assigns[:children].should == children
+        end
+      end
+    end
+
+    context "as administrator" do
+      it "should assign all the children" do
+        fake_session = Session.new()
+        fake_session.stub(:admin?).with(no_args()).and_return(true)
+        @controller.stub!(:app_session => fake_session)
+        children = [mock_child, mock_child]
+        Child.should_receive(:all).and_return(children)
+        get :index, :status => 'reunited'
+        assigns[:children].should == children
+      end
+    end
+
+    context "viewing all children" do
+      context "when status is passed" do
+        before { @status = "all" }
+        it_should_behave_like "viewing children by user with unlimited permissions"
+        it_should_behave_like "viewing children by user with limited permissions"
+      end
+
+      context "when status is not passed" do
+        it_should_behave_like "viewing children by user with unlimited permissions"
+        it_should_behave_like "viewing children by user with limited permissions"
+      end
+    end
+
+    context "viewing reunited children" do
+      before { @status = "reunited" }
+      it_should_behave_like "viewing children by user with unlimited permissions"
+      it_should_behave_like "viewing children by user with limited permissions"
+    end
+
+    context "viewing flagged children" do
+      before { @status = "flagged" }
+      it_should_behave_like "viewing children by user with unlimited permissions"
+      it_should_behave_like "viewing children by user with limited permissions"
+    end
+
+    context "viewing active children" do
+      before do
+        @status = "active"
+        @stubs = {:reunited? => false}
+      end
+      it_should_behave_like "viewing children by user with unlimited permissions"
+      it_should_behave_like "viewing children by user with limited permissions"
+    end
   end
 
   describe "GET show" do
@@ -73,6 +144,14 @@ describe ChildrenController do
       get :show, :id=> "invalid record"
       flash[:error].should == "Child with the given id is not found"
       response.should redirect_to(:action => :index)
+    end
+
+    it "should include duplicate records in the response" do
+      Child.stub!(:get).with("37").and_return(mock_child)
+      duplicates = [Child.new(:name => "duplicated")]
+      Child.should_receive(:duplicates_of).with("37").and_return(duplicates)
+      get :show, :id => "37"
+      assigns[:duplicates].should equal(duplicates)
     end
   end
 
@@ -195,20 +274,18 @@ describe ChildrenController do
       history['datetime'].should == "2010-01-20 17:10:32UTC"
     end
 
+    it "should update the last_updated_by_full_name field with the logged in user full name" do
+      child = Child.create('name' => "Existing Child")
+      Child.stub(:get).with(child.id).and_return(child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}
+      child['last_updated_by_full_name'].should=='Bill Clinton'
+    end
+
   end
 
   describe "GET search" do
 
-    it "assigns the highlighted fields as @highlighted_fields on success" do
-      fields = [ mock_model(Field, { :name => "field_1", :display_name => "field display 1" }).as_null_object, 
-                 mock_model(Field, { :name => "field_2", :display_name => "field display 2" }).as_null_object ]
-      FormSection.stub!(:sorted_highlighted_fields).and_return(fields)     
-      search = mock("search", :query => 'the child name', :valid? => true)
-      Search.stub!(:new).and_return(search)
-      get :search, :format => 'html', :query => 'the child name'
-      assigns[:highlighted_fields].should == fields
-    end
-    
     it "should not render error by default" do
       get(:search, :format => 'html')
       assigns[:search].should be_nil
@@ -238,10 +315,10 @@ describe ChildrenController do
     it "asks the pdf generator to render each child as a PDF" do
       stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-      
+
 			children = [:fake_child_one, :fake_child_two]
       Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
-      
+
 			inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
 
 
@@ -252,7 +329,7 @@ describe ChildrenController do
       post(
         :export_data,
         {
-          :selections => 
+          :selections =>
           {
             '0' => 'child_1',
             '1' => 'child_2'
@@ -277,7 +354,7 @@ describe ChildrenController do
       post(
         :export_data,
         {
-          :selections => 
+          :selections =>
           {
             '0' => 'child_1',
             '1' => 'child_2'
@@ -312,7 +389,7 @@ describe ChildrenController do
 			@controller.
         should_receive(:send_data).
         with( :csv_data, {:foo=>:bar} )
-      
+
 			get(:search, :format => 'csv', :query => 'blah')
     end
 	end
@@ -326,7 +403,7 @@ describe ChildrenController do
 
       post(
         :export_data,
-        :selections => 
+        :selections =>
         {
           '2' => 'child_two',
           '0' => 'child_zero',
@@ -338,7 +415,7 @@ describe ChildrenController do
     it "sends a response containing the pdf data, the correct content_type and file name, etc" do
       stub_out_user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-      
+
 			stubbed_child = stub_out_child_get
       stub_export_generator = stub_out_export_generator [stubbed_child] #this is getting a bit farcical now
       stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
@@ -354,14 +431,14 @@ describe ChildrenController do
   end
 
   describe "GET export_photo_to_pdf" do
-    
+
     before do
       user = mock(:user)
       user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
       User.stub!(:find_by_user_name).and_return user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
     end
-    
+
     it "should return the photo wall pdf for selected child" do
       Child.should_receive(:get).with('1').and_return(
         stub_child = stub('child', :unique_identifier => '1'))
@@ -409,12 +486,18 @@ describe ChildrenController do
       end
     end
   end
-  
-  describe "GET suspect_records" do
-    it "assigns all flagged children as @children" do
-      Child.stub!(:suspect_records).and_return([mock_child])
-      get :suspect_records
-      assigns[:children].should == [mock_child]
+
+  describe "PUT create" do
+
+    let(:new_child) { Child.new }
+
+    it "should add the full user_name of the user who created the Child record" do
+      Child.stub('new_with_user_name').and_return(new_child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      put :create, :child => {:name => 'Test Child' }
+      new_child['created_by_full_name'].should=='Bill Clinton'
     end
+
   end
+
 end

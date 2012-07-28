@@ -16,6 +16,7 @@ class User < CouchRestRails::Document
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :time_zone, :default => "UTC"
+  property :permission
   attr_accessor :password_confirmation, :password
 
 
@@ -49,7 +50,6 @@ class User < CouchRestRails::Document
   validates_presence_of :user_type,:message=>"Please choose a user type"
   validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
 
-
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
   validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
 
@@ -58,9 +58,9 @@ class User < CouchRestRails::Document
   validates_format_of :email, :with =>  /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message =>"Please enter a valid email address"
 
-
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method   :user_name, :method => :is_user_name_unique
+  validates_with_method   :permission, :method => :is_valid_permission_level
 
 
   def self.find_by_user_name(user_name)
@@ -119,6 +119,10 @@ class User < CouchRestRails::Document
     end
   end
 
+  def limited_access?
+    permission == Permission::LIMITED
+  end
+
   def localize_date(date_time, format = "%d %B %Y at %H:%M (%Z)")
     DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
@@ -129,7 +133,6 @@ class User < CouchRestRails::Document
     @devices.map(&:save!) if @devices
     true
   end
-
 
   def encrypt_password
     return if password.blank?
@@ -153,4 +156,8 @@ class User < CouchRestRails::Document
     user_name.downcase!
   end
 
+  def is_valid_permission_level
+    return true if [Permission::LIMITED, Permission::UNLIMITED].include?(permission)
+    [ false, "Invalid Permission Level" ]
+  end
 end
