@@ -75,7 +75,7 @@ module CouchRestRails
       databases = []
       # Ensure models are loaded
       Dir.glob(File.join(RAILS_ROOT, 'app', 'models', '*.rb')).map { |m| require_dependency m }
-      Object.subclasses_of(CouchRestRails::Document).collect do |doc|
+      CouchRestRails::Document.descendants.collect do |doc|
         raise "#{doc.name} does not have a database defined" unless doc.database
         databases << doc.unadorned_database_name
       end
