@@ -17,6 +17,7 @@ gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
 gem 'sunspot',				'1.1.0'
 gem 'tzinfo'
+gem 'rake',           '0.8.7'
 
 group :cucumber do
   gem 'cucumber',         '0.9.4'

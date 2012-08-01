@@ -1,4 +1,4 @@
-Spec::Matchers.define :match_photo do |expected|
+RSpec::Matchers.define :match_photo do |expected|
   match do |actual|
     expected.data.size == actual.data.size
   end
