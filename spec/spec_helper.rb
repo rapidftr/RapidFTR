@@ -8,6 +8,9 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+# This clears couchdb between tests.
+CouchRestRails::Tests.setup
+
 RSpec.configure do |config|
 
   config.include UploadableFiles
