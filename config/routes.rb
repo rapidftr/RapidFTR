@@ -20,7 +20,7 @@ RapidFTR::Application.routes.draw do
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
   match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index
   match '/children/:child_id/photos' => 'child_media#manage_photos', :as => :manage_photos
-  match '/children/:child_id/audio/:id' => 'child_media#download_audio', :as => :child_audio
+  match '/children/:child_id/audio(/:id)' => 'child_media#download_audio', :as => :child_audio
   match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo', :as => :child_photo
   match '/children/:child_id/photo' => 'child_media#show_photo', :as => :child_legacy_photo
   match 'children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
