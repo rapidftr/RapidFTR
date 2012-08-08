@@ -17,8 +17,8 @@ describe ChildrenHelper do
     
     it "should show link if child has been updated by multiple people" do
       child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith')
-      child.stub!(:has_one_interviewer?).and_return(false)
-      helper.link_to_update_info(child).should have_tag('a', :text => 'and others')
+      child.stub :has_one_interviewer? => false, :persisted? => true
+      helper.link_to_update_info(child).should =~ /^<a href=.+>and others<\/a>$/
     end
   end
   describe "field_for_display" do
