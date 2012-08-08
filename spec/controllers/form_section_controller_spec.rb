@@ -15,8 +15,8 @@ describe FormSectionController do
   end
   describe "get index" do
     it "populate the view with all the form sections in order ignoring enabled or disabled" do
-      row1 = FormSection.new(name => "Form section 1", :enabled => false, :order => 1)
-      row2 = FormSection.new(name => "Form section 2", :enabled => true, :order => 2)
+      row1 = FormSection.new(:enabled => false, :order => 1)
+      row2 = FormSection.new(:enabled => true, :order => 2)
       FormSection.stub!(:all).and_return([row1, row2])
       
       get :index
