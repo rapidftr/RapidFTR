@@ -55,6 +55,7 @@ GEM
       cucumber (>= 0.8.0)
     dictionary (1.0.0)
     diff-lcs (1.1.3)
+    dynamic_form (1.1.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     escape (0.0.4)
@@ -170,6 +171,7 @@ DEPENDENCIES
   cucumber (= 0.9.4)
   cucumber-rails (= 0.3.2)
   dictionary (= 1.0.0)
+  dynamic_form
   fastercsv (= 1.5.3)
   hoptoad_notifier (= 2.4.2)
   hpricot (= 0.8.2)

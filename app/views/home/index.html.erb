@@ -3,7 +3,7 @@
 <%= render 'notifications' %>
 
 <p>
-  <% form_for @user, :url => user_preference_path(current_user_name), :html => {:method => :put} do |f| %>
+  <%= form_for @user, :url => user_preference_path(current_user_name), :html => {:method => :put} do |f| %>
       <%= label_tag "user_time_zone", "Current time zone" %>
       <%= f.time_zone_select "time_zone" %>
       <p class='submitButton' >
