@@ -14,6 +14,7 @@ CouchRestRails::Tests.setup
 RSpec.configure do |config|
 
   config.include UploadableFiles
+  config.include FakeLogin, :type => :controller
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
