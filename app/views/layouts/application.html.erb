@@ -32,7 +32,7 @@
         <% unless current_user_name.nil? %>
             <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_with_confirm 'Logout', :logout %>)</li>
         <% end %>
-		<li><%= link_with_confirm 'Contact &amp; Help', contact_information_path("administrator")%></li>
+		<li><%= link_with_confirm 'Contact & Help', contact_information_path("administrator")%></li>
 		<li><%= link_with_confirm 'Home', '/'%></li>
         <% unless current_user_name.nil? %>
             <% unless !is_admin? %>
