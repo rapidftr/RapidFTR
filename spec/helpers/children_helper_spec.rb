@@ -25,10 +25,10 @@ describe ChildrenHelper do
     it "should return the string value where set" do
       helper.field_value_for_display("Foo").should == "Foo"
     end
-    it "should return nbsp string if field is nil or 0 length" do
-      helper.field_value_for_display("").should == "&nbsp;"
-      helper.field_value_for_display(nil).should == "&nbsp;"
-      helper.field_value_for_display([]).should == "&nbsp;"
+    it "should return empty string if field is nil or 0 length" do
+      helper.field_value_for_display("").should == ""
+      helper.field_value_for_display(nil).should == ""
+      helper.field_value_for_display([]).should == ""
     end
     it "should comma separate values if field value is an array" do
       helper.field_value_for_display(["A", "B", "C"]).should == "A, B, C"

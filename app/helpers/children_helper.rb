@@ -37,7 +37,7 @@ module ChildrenHelper
   end
 
   def field_value_for_display field_value
-    return "&nbsp;" if field_value.nil? || field_value.length==0
+    return "" if field_value.nil? || field_value.length == 0
     return field_value.join ", " if field_value.instance_of? Array
     return field_value
   end
