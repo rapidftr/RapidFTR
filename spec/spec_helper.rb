@@ -8,6 +8,10 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+RSpec::Rails::ControllerExampleGroup.module_eval do
+  include FakeLogin
+end
+
 # This clears couchdb between tests.
 CouchRestRails::Tests.setup
 
