@@ -151,7 +151,7 @@ describe ChildrenController do
       duplicates = [Child.new(:name => "duplicated")]
       Child.should_receive(:duplicates_of).with("37").and_return(duplicates)
       get :show, :id => "37"
-      assigns[:duplicates].should equal(duplicates)
+      assigns[:duplicates].should == duplicates
     end
   end
 
