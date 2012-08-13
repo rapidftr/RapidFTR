@@ -4,16 +4,18 @@ describe 'users/_edittable_user.html.erb' do
     before :each do
       @user = User.new()
       @user.disabled = false
+      @user.user_name = "test user"
+      @controller.template.stub!(:is_admin?)
     end 
     it "should not be updateable" do
-      @controller.template.stub!(:is_admin?).and_return(false)
+      @controller.template.stub!(:editing_ourself?).and_return(true)
 
       render :locals => { :edittable_user => @user }
 
       permissions {|p| p.should include("disabled") }
     end
-    it "should be allowed to be updated by admin" do
-      @controller.template.stub!(:is_admin?).and_return(true)
+    it "should be allowed to be updated when editing other person" do
+      @controller.template.stub!(:editing_ourself?).and_return(false)
 
       render :locals => { :edittable_user => @user }
 
