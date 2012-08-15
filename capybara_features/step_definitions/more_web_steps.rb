@@ -97,7 +97,7 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
   end
 >>>>>>> 1144 Senthil/Yekkanti user_disbale.feature moved from webart to capybara
 end
-
+  
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
   page.body.should have_selector("//audio/source", :src=>current_path + "/audio/")
 end

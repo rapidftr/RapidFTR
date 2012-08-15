@@ -104,11 +104,8 @@
           <%= f.label :permission_unlimited, "Unlimited" %>
         </p>
         <p>
-<<<<<<< HEAD:app/views/users/_editable_user.html.erb
           <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
-=======
-          <%= f.radio_button :permission, "Limited", :checked => edittable_user.new_record? || edittable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
->>>>>>> Replace is_admin with trying_to_edit_ourself:app/views/users/_edittable_user.html.erb
+          <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
           <%= f.label :permission_limited, "Limited" %>
         </p>
       </dd>
@@ -116,11 +113,8 @@
 
   </fieldset>
   <% if is_admin? %>
-<<<<<<< HEAD:app/views/users/_editable_user.html.erb
   <%= render :partial => "devices", :object => editable_user.devices %>
-=======
-  <%= render :partial => "devices", :object => edittable_user.devices %>
->>>>>>> Refactored the view to use only passed variable not @user:app/views/users/_edittable_user.html.erb
+  <%= render :partial => "devices", :object => editable_user.devices %>
   <% end %>
   <%= submit_button(editable_user.new_record? ? 'Create' : 'Update') %>
   <%= cancel_button(users_path) %>
