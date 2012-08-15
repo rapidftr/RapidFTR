@@ -21,9 +21,9 @@
   });
 </script>
 
-<% form_for edittable_user, :html => {:class=> 'default-form'} do |f| %>
+<% form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
-  <% trying_to_edit_ourself = editing_ourself? edittable_user %>
+  <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
   <fieldset>
     <h3>User details</h3>
 
@@ -34,7 +34,7 @@
 
     <p>
       <%= f.label :user_name %>
-      <%= f.text_field :user_name, :disabled => !edittable_user.new_record? %>*
+      <%= f.text_field :user_name, :disabled => !editable_user.new_record? %>*
       <span class="footnote">user name should not contain blanks</span>
     </p>
 
@@ -104,7 +104,7 @@
           <%= f.label :permission_unlimited, "Unlimited" %>
         </p>
         <p>
-          <%= f.radio_button :permission, "Limited", :checked => edittable_user.new_record? || edittable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
+          <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
           <%= f.label :permission_limited, "Limited" %>
         </p>
       </dd>
@@ -112,8 +112,8 @@
 
   </fieldset>
   <% if is_admin? %>
-  <%= render :partial => "devices", :object => edittable_user.devices %>
+  <%= render :partial => "devices", :object => editable_user.devices %>
   <% end %>
-  <%= submit_button(edittable_user.new_record? ? 'Create' : 'Update') %>
+  <%= submit_button(editable_user.new_record? ? 'Create' : 'Update') %>
   <%= cancel_button(users_path) %>
 <% end %>

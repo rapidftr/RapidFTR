@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'users/_edittable_user.html.erb' do
+describe 'users/_editable_user.html.erb' do
   describe "User permission level" do
     before :each do
       @user = User.new()
@@ -10,14 +10,14 @@ describe 'users/_edittable_user.html.erb' do
     it "should not be updateable" do
       @controller.template.stub!(:editing_ourself?).and_return(true)
 
-      render :locals => { :edittable_user => @user }
+      render :locals => { :editable_user => @user }
 
       permissions {|p| p.should include("disabled") }
     end
     it "should be allowed to be updated when editing other person" do
       @controller.template.stub!(:editing_ourself?).and_return(false)
 
-      render :locals => { :edittable_user => @user }
+      render :locals => { :editable_user => @user }
 
       permissions {|p| p.should_not include("disabled") }
     end
