@@ -1,12 +1,17 @@
 <p class="file">
   <%= label_tag "child[audio]", "Recorded Audio" %>
   <%= file_field_tag "child[audio]" %>
-  <% if audio_upload_box.help_text.present?%> 
-  <br />
+
+  <ul class="audio_player_section">
+    <%= render :partial => "field_display_audio", :locals => {:field => nil, :child => @child} %>
+  </ul>
+
+  <% if audio_upload_box.help_text.present? %>
+      <br/>
   <span class='help-text-container'>
     <span class='help-text'>
-      <%= audio_upload_box.help_text%>
+      <%= audio_upload_box.help_text %>
     </span>
   </span>
-  <% end%>
+  <% end %>
 </p>

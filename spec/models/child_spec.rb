@@ -650,6 +650,11 @@ describe Child do
 
     end
 
+    child = Child.new('audio' => uploadable_audio)
+    it 'should return nil if child has not been saved' do
+      child.audio.should be_nil
+    end
+
   end
 
 
