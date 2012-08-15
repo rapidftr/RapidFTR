@@ -169,5 +169,37 @@ describe UsersController do
     end
 
   end
+  describe "POST update" do
+    let(:mock_user) { User.new }
+    before :each do
+        fake_login
+        @fake_session = Session.new
+        controller.stub(:app_session).and_return(@fake_session)
+        mock_user.stub(:update_attributes).and_return(true)
+        User.stub(:get).with("24").and_return(mock_user)
+    end
+    context "when not admin user" do
+      before :each do
+        @fake_session.stub(:admin?).and_return(false)
+      end
+      it "should not allow to edit admin specific fields" do
+        controller.stub(:current_user_name).and_return("test_user")
 
+        mock_user.stub(:user_assignable?).and_return(false)
+        controller.should_receive(:handle_authorization_failure)
+        post :update, { :id => "24", :user => {:user_type => "Administrator"  } }
+      end
+    end
+    context "when admin user" do
+      before :each do
+        @fake_session.stub(:admin?).and_return(true)
+      end
+      it "should allow to edit admin specific fields" do
+        controller.stub(:app_session).and_return(@fake_session)
+        User.stub(:get).with("24").and_return(mock_user)
+        controller.should_not_receive(:handle_authorization_failure)
+        post :update, { :id => "24", :user => {:user_type => "Administrator"  } }
+      end
+    end
+  end
 end
