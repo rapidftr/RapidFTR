@@ -88,7 +88,7 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
     disbled_checkbox.should_not be_checked
   end
 end
-
+  
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
   page.body.should have_selector("//audio/source", :src=>current_path + "/audio/")
 end
