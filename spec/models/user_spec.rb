@@ -225,4 +225,19 @@ describe User do
     end
   end
 
+  describe "#user_assignable?" do
+    before { @user = build_user }
+    it "user_type should not be assignable" do 
+      should_not_assignable :user_type
+    end
+    it "permission should not be assignable" do
+      should_not_assignable :permission
+    end
+    it "disabled should not be assignable" do
+      should_not_assignable :disabled
+    end
+    def should_not_assignable(name)
+      @user.user_assignable?(name => "").should be_false
+    end
+  end
 end
