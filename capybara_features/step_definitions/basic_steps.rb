@@ -11,6 +11,20 @@ When /^I attach a photo "([^"]*)"$/ do |photo_path|
   }
 end
 
+When /^I attach an audio file "([^"]*)"$/ do |audio_path|
+  steps %Q{
+    When I attach the file "#{audio_path}" to "child[audio]"
+  }
+end
+
+When /^I attach the following photos:$/ do |table|
+  table.raw.each_with_index do |photo, i|
+    steps %Q{
+      When I attach the file "#{photo}" to "child[photo]#{i}"
+    }
+  end
+end
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
 
@@ -61,6 +75,32 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
   current_time_in_utc = Time.parse(utcdatetime)
   Clock.stub!(:now).and_return current_time
   current_time.stub!(:getutc).and_return current_time_in_utc
+end
+
+Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
+  child = Child.new_with_user_name("Bob Creator",{:name=>name})
+  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.create!
+end
+
+Given /^I am editing an existing child record$/ do
+  child = Child.new
+  child["birthplace"] = "haiti"
+  child.photo = uploadable_photo
+  raise "Failed to save a valid child record" unless child.save
+
+  visit children_path+"/#{child.id}/edit"
+end
+
+Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
+  child = Child.new( :name => name, :birthplace => 'unknown' )
+  child.photo = uploadable_photo(photo_file_path)
+  child.create
+end
+
+When /^I am editing the child with name "([^\"]*)"$/ do |name|
+  child = find_child_by_name name
+  visit children_path+"/#{child.id}/edit"
 end
 
 When /^I wait for (\d+) seconds$/ do |seconds|

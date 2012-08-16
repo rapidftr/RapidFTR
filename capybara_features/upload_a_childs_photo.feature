@@ -67,7 +67,7 @@ Feature:
 
     When I follow "Edit"
     Then I should see "2" thumbnails
-    And I check "Delete Photo?"
+    And I check "Delete photo?"
 
     And I press "Save"
     Then I should see "Child was successfully updated"

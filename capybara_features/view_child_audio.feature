@@ -26,7 +26,7 @@ Feature: Viewing child records
     And I fill in "28" for "Date of Birth / Age"
     And I press "Save"
 
-    Then I should see "Registered by: zubair and others on 19 July 2010 at 02:05 (SST)"
+    Then I should see /Registered by: .+ and others on 19 July 2010 at 02:05 \(SST\)/
     And I should see "Last updated: 01 March 2010 at 06:59 (SST)"
 
 	
