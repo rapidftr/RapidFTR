@@ -10,6 +10,10 @@ function onFormSectionDetailsEditPage() {
     return $('#editFormDetails').length === 1;
 }
 
+function nameIsTheFirstRow(){
+  return $("#nameRow").index() == 0;
+}
+
 function initOrderingColumns() {
     var mainContainer = "form_sections";
 
@@ -19,7 +23,7 @@ function initOrderingColumns() {
     });
     
     var fieldToStartFrom = 1;
-    if (onFormSectionDetailsEditPage()){
+    if (onFormSectionDetailsEditPage() && !nameIsTheFirstRow()){
 	fieldToStartFrom = 0;
     }
     $("#"+mainContainer+" tbody tr:eq("+fieldToStartFrom+")").each(function(index, element){
