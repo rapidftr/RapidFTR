@@ -409,6 +409,11 @@ describe Child do
       child['unique_identifier'].should == "jdoelon12345"
     end
 
+    it "should not create a unique id if already exists" do
+      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'unique_identifier' => 'rapidftrxxx5bcde')
+      child['unique_identifier'].should == "rapidftrxxx5bcde"
+    end
+
     it "should create a created_by field with the user name" do
       child = Child.new_with_user_name('jdoe', 'some_field' => 'some_value')
       child['created_by'].should == 'jdoe'
