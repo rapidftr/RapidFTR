@@ -164,6 +164,7 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query])
       if @search.valid?
         @results = Child.search(@search)
+        @results = @results.select {|child| child['created_by'] == current_user_name} if !current_user.nil? and current_user.limited_access?
       else
         render :search
       end
