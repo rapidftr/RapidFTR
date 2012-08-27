@@ -28,7 +28,7 @@ describe "form_section/edit.html.erb" do
     document.css("#fieldRow .down-link").should be_empty
   end
 
-  it "should not have edit or delete or visible UI elements for uneditable fields" do
+  it "should not have edit or delete or enable UI elements for uneditable fields" do
     fields = [{:name=>"topfield"}, {:name=>"field", :editable=>false},{:name=>"bottomfield"}]
     form_section = FormSection.new :fields => fields, :unique_id=>"foo"
     

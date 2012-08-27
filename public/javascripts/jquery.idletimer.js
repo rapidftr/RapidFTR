@@ -37,7 +37,7 @@ $.idleTimer = function f(newTimeout){
     //$.idleTimer.tId = -1     //timeout ID
 
     var idle    = false,        //indicates if the user is idle
-        enabled = true,        //indicates if the idle timer is visible
+        enabled = true,        //indicates if the idle timer is enabled
         timeout = 30000,        //the amount of time (ms) before the user is considered idle
         events  = 'mousemove keydown DOMMouseScroll mousewheel mousedown', // activity is one of these events
       //f.olddate = undefined, // olddate used for getElapsedTime. stored on the function
@@ -90,7 +90,7 @@ $.idleTimer = function f(newTimeout){
         
         
         
-        //if the idle timer is visible
+        //if the idle timer is enabled
         if (enabled){
         
           

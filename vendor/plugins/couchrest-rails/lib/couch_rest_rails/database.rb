@@ -14,7 +14,7 @@ module CouchRestRails
           response << "Created #{File.join(CouchRestRails.views_path, db, 'views')} views directory"
         end
         
-        # Setup the Lucene directory if visible
+        # Setup the Lucene directory if enabled
         if CouchRestRails.use_lucene
           database_lucene_path = File.join(RAILS_ROOT, CouchRestRails.lucene_path, db, 'lucene')
           unless File.exist?(database_lucene_path)

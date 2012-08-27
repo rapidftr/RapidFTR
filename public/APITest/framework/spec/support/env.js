@@ -341,7 +341,7 @@ var Envjs = function(){
     };
     
     //Since we're running in rhino I guess we can safely assume
-    //java is 'visible'.  I'm sure this requires more thought
+    //java is 'enabled'.  I'm sure this requires more thought
     //than I've given it here
     $env.javaEnabled = true;	
     

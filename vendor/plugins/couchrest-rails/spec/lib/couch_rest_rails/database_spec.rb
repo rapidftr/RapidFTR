@@ -29,7 +29,7 @@ describe CouchRestRails::Database do
       File.exist?(File.join(RAILS_ROOT, CouchRestRails.views_path, 'foo', 'views')).should be_true
     end
     
-    it 'should create a folder to store lucene design docs if Lucene is visible' do
+    it 'should create a folder to store lucene design docs if Lucene is enabled' do
       res = CouchRestRails::Database.create('foo')
       File.exist?(File.join(RAILS_ROOT, CouchRestRails.lucene_path, 'foo', 'lucene')).should be_true
     end
@@ -90,7 +90,7 @@ describe CouchRestRails::Database do
       res.should =~ /views path still present/
     end
     
-    it 'should warn if the Lucene path for the database still exists if Lucene is visible' do
+    it 'should warn if the Lucene path for the database still exists if Lucene is enabled' do
       CouchRestRails::Database.create('foo')
       res = CouchRestRails::Database.delete('foo')
       res.should =~ /Lucene path still present/
