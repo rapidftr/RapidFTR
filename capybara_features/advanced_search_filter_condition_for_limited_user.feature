@@ -18,6 +18,7 @@ Feature: So that I am not able to search user created by other user
 
     Then I should not see "Created By:"
 
+  @javascript
   Scenario: Should filter children created by other user in search result
     Given I am logged in as "mary"
     And I am on child advanced search page
