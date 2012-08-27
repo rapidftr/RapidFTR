@@ -89,7 +89,7 @@ class ExportGenerator
     FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
-        select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.enabled? }.
+        select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.visible? }.
         map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
       if !field_pair.empty?
         @pdf.table field_pair,

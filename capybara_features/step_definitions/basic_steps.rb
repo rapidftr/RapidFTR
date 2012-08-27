@@ -21,7 +21,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
   form_section.fields = []
   table.hashes.each do |field_hash|
     field_hash.reverse_merge!(
-      'enabled' => true,
+      'visible' => true,
       'type'=> Field::TEXT_FIELD
     )
     form_section.fields.push Field.new(field_hash)
