@@ -34,7 +34,7 @@ describe "Child record field view model" do
   
   it "should have display name with diabled if not enabled" do
     @field.display_name = "pokpok"
-    @field.enabled = false
+    @field.visible = false
     
     @field.display_name_for_field_selector.should == "pokpok (Disabled)"
     
@@ -92,11 +92,11 @@ describe "Child record field view model" do
 
   describe "save" do
     it "should be enabled" do
-      field = Field.new :name => "diff_field", :display_name => "diff_field", :enabled => "true"
+      field = Field.new :name => "diff_field", :display_name => "diff_field", :visible => "true"
       form = FormSection.new :fields => [field], :name => "test_form"
 
       form.save!
-      field.should be_enabled
+      field.should be_visible
       
       form.destroy
     end
