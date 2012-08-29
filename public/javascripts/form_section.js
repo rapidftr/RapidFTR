@@ -137,7 +137,6 @@ function saveFieldLocation(event) {
             },
             success:function(data, status, xmlHttpRequest) {
                 location.reload();
-//                alert(xmlHttpRequest.getAllResponseHeaders().toLowerCase());
             },
             error: function(xmlHttpRequest, status, error) {
                 alert("in error " + error);
