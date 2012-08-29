@@ -5,6 +5,7 @@ $(document).ready(function() {
     $("a.moveUp").click(moveUp);
     $("input#save_order").click(saveOrder);
     $("input#save_field_order").click(saveFieldOrder);
+    $("select.fieldLocation").change(saveFieldLocation)
 });
 
 function onFormSectionDetailsEditPage() {
@@ -72,41 +73,6 @@ function moveDown() {
 }
 
 function saveOrder(event) {
-    var form_order = {};
-    var updatedOrderings = $('.updatedFormSectionOrder :input');
-    $.each(updatedOrderings, function() {
-	var name = $(this).attr("name");
-	var id = /form_order\[(.*)\]/.exec(name)[1]
-	form_order[id] = $(this).attr("value");
-    });
-    var url='';
-    var formId='';
-    if ($('#editFormDetails').length === 0){
-	url = '/form_section/save_order';
-    }else{
-	url = '/form_section/save_order_single';
-	formId = $('#sectionId').html();
-    }
-
-
-    $.ajax({
-	type: "POST",
-	data: {"form_order" : form_order,
-	       "formId" : formId},
-	url: url,
-	success: function(data) {
-	    if ($('#form_sections').length === 1){
-		$("#form_sections").html($(data).find("#form_sections"));
-		$("a.moveDown").bind("click", moveDown);
-		$("a.moveUp").bind("click", moveUp);
-		initOrderingColumns();
-            $("#successNotice").show();
-	    }
-	}
-    });
-}
-
-function saveOrder(event) {
     var form_order = getUpdatedOrderings('.updatedFormSectionOrder :input');
 
     $.ajax({
@@ -146,6 +112,36 @@ function saveFieldOrder(event) {
             }
         }
     });
+}
+
+function saveFieldLocation(event) {
+    var name = $(this).attr("name");
+    var id = /(.*)_destination_form_id/.exec(name)[1];
+    var to_form_section = $(this).attr("value");
+    var selection = this.options[this.selectedIndex].text;
+    var formId = $('#sectionId').html();
+
+    var message = confirm("You are about to move this field to another form section (" + selection + "). Is this OK?");
+
+    if (message) {
+        $.ajax({
+            url: '/fields/' + id,
+            type: "PUT",
+            data: {
+                "destination_form_id" : to_form_section,
+                "formsection_id" : formId
+            },
+            success:function(data, status, xmlHttpRequest) {
+                location.reload();
+//                alert(xmlHttpRequest.getAllResponseHeaders().toLowerCase());
+            },
+            error: function(xmlHttpRequest, status, error) {
+                alert("in error " + error);
+            }
+        });
+
+    }
+
 }
 
 function getUpdatedOrderings(inputSelector) {

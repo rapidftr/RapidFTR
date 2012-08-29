@@ -84,7 +84,7 @@
 
                     <td>
                         <div>
-                            <%= select_tag "destination_form_id", options_for_select(forms_for_display, @form_section.unique_id) %>
+                            <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation"%>
                         </div>
                     </td>
 
