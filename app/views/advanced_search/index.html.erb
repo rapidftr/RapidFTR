@@ -14,7 +14,7 @@
       <div class='box-shadow content'>
           <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
 
-          <ul class='forms'>      
+          <ul class='forms'>
           <% @forms.each do |form| %>
             <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.enabled? ? "" : "(Disabled)" %></li>
           <% end %>
@@ -26,15 +26,15 @@
                 <li><a><%= field.display_name_for_field_selector %></a><input type="hidden" class="field" value='<%= field.name %>' /></li>
 		<% end %>
             <% end %>
-          
-            <% empty_lines(form.all_text_fields).times do %> 
+
+            <% empty_lines(form.all_text_fields).times do %>
               <li>&nbsp;&nbsp;</li>
             <% end %>
           </ul>
           <% end %>
       </div>
     </div>
-  
+
     <script id="criteria_template" type="text/x-jquery-tmpl">
       {{if index < CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX}}
       <p>
@@ -52,10 +52,10 @@
       </p>
       {{/if}}
     </script>
-  
+
     <div class="criteria-list" style="float:left">
     </div>
-    
+
     <div style="float:right">
       <input type='submit' value='Search'/>
     </div>
@@ -116,9 +116,9 @@
   CriteriaTemplateHelper = {}
   CriteriaTemplateHelper.andRadioSelected = function(join) { return join == "AND" ? "checked" : ""; }
   CriteriaTemplateHelper.orRadioSelected = function(join) { return join == "OR" ? "checked" : ""; }
-  CriteriaTemplateHelper.link = function(field_display_name) { 
-    return field_display_name == "" ? "Select A Criteria" : field_display_name; 
+  CriteriaTemplateHelper.link = function(field_display_name) {
+    return field_display_name == "" ? "Select A Criteria" : field_display_name;
   }
   CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX = 100
-  $(".advanced-search").advancedSearch({criteria: <%=@criteria_list.to_json %>});
+  $(".advanced-search").advancedSearch({criteria: <%= raw @criteria_list.to_json %>});
 </script>
