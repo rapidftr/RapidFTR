@@ -2,7 +2,8 @@ source :gemcutter
 
 gem 'couchrest',      '0.34'
 gem 'dictionary',     '1.0.0'
-gem 'fastercsv',      '1.5.3'
+# gem 'fastercsv',      '1.5.3'
+gem 'test-unit',	  '1.2.3'
 gem 'hoptoad_notifier', '2.4.2'
 gem 'json',           '1.4.6'
 gem 'json_pure',      '1.4.6'

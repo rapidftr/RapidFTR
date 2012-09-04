@@ -21,7 +21,7 @@
   });
 </script>
 
-<% form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
+<%= form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
   <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
   <fieldset>
