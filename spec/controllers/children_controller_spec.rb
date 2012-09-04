@@ -388,7 +388,8 @@ describe ChildrenController do
 			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
 			@controller.
         should_receive(:send_data).
-        with( :csv_data, {:foo=>:bar} )
+        with( :csv_data, {:foo=>:bar} ).
+        and_return{controller.render :nothing => true}
 
 			get(:search, :format => 'csv', :query => 'blah')
     end
@@ -400,6 +401,7 @@ describe ChildrenController do
       Child.should_receive(:get).with('child_zero').ordered
       Child.should_receive(:get).with('child_one').ordered
       Child.should_receive(:get).with('child_two').ordered
+      controller.stub!(:render) #to avoid looking for a template
 
       post(
         :export_data,
@@ -424,7 +426,8 @@ describe ChildrenController do
 
       @controller.
         should_receive(:send_data).
-        with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" )
+        with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" ).
+        and_return{controller.render :nothing => true}
 
       post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )
     end
@@ -446,7 +449,10 @@ describe ChildrenController do
       ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
 
-      @controller.should_receive(:send_data).with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf')
+      @controller.
+        should_receive(:send_data).
+        with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf').
+        and_return{controller.render :nothing => true}
 
       get :export_photo_to_pdf, :id => '1'
     end
