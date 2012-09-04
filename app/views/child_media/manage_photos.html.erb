@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
   $(function() {
-      window.Photos.refresh(<%= @photos_details.to_json %>);
+      window.Photos.refresh(<%= raw @photos_details.to_json %>);
   });
 </script>
 
