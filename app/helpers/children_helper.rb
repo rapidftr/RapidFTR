@@ -13,11 +13,11 @@ module ChildrenHelper
   def link_to_download_audio_with_key(key)
     link_to key.humanize, child_audio_url(@child.id,key),:id => key, :target => '_blank'
   end
-  
+
   def is_playable_in_browser audio
     AudioMimeTypes.browser_playable? audio.mime_type
   end
-  
+
   def link_to_update_info(child)
     link_to('and others', child_history_path(child)) unless child.has_one_interviewer?
   end
@@ -31,9 +31,9 @@ module ChildrenHelper
   def reunited_message
     "Reunited"
   end
-  
+
   def duplicate_message
-    "This record has been marked as a duplicate and is no longer active. To see the Active record click #{link_to 'here', child_path(@child.duplicate_of)}."
+    raw ("This record has been marked as a duplicate and is no longer active. To see the Active record click #{link_to 'here', child_path(@child.duplicate_of)}.")
   end
 
   def field_value_for_display field_value
@@ -41,21 +41,21 @@ module ChildrenHelper
     return field_value.join ", " if field_value.instance_of? Array
     return field_value
   end
-  
+
   def link_for_filter filter, selected_filter
     return filter.capitalize if filter == selected_filter
     link_to(filter.capitalize, child_filter_path(filter))
   end
-  
+
   def link_for_order_by filter, order, selected_order
     return order.capitalize if order == selected_order
     link_to(order.capitalize, child_filter_path(filter, :order_by => order))
   end
-  
+
   def text_to_identify_child child
     child['name'].blank? ? child['unique_identifier'] : child['name']
   end
-  
+
   def toolbar_for_child child
     if child.duplicate?
       link_to 'View the change log', child_history_path(child)
