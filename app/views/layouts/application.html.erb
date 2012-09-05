@@ -46,7 +46,7 @@
   </div>
 
   <div class="page-content">
-    <h1><%= @page_name || "&nbsp;" %></h1>
+    <h1><%= @page_name || raw("&nbsp;") %></h1>
 
     <div class="content-section">
       <% if flash[:notice].present? %>
