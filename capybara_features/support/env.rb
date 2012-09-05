@@ -21,6 +21,8 @@ require 'cucumber/rspec/doubles'
 require 'spec/support/uploadable_files'
 require 'spec/support/child_finder'
 
+require 'rack/test'
+
 Capybara.run_server = true #Whether start server when testing
 Capybara.default_selector = :xpath #default selector , you can change to :css
 Capybara.default_wait_time = 2 #When we testing AJAX, we can set a default wait time
