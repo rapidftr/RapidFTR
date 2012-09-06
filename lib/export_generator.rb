@@ -1,6 +1,5 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
-require 'csv'
 
 class ExportGenerator
   class Export
@@ -11,7 +10,7 @@ class ExportGenerator
     end
   end
   def initialize *child_data
-    @child_data = child_data.flatten
+    @child_data = child_data.flatten 
     @pdf = Prawn::Document.new
     @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
   end
@@ -28,7 +27,7 @@ class ExportGenerator
     fields = FormSection.all_enabled_child_fields
     fields.unshift Field.new_text_field("unique_identifier")
     field_names = fields.map {|field| field.name}
-    csv_data = CSV.generate do |rows|
+    csv_data = FasterCSV.generate do |rows|
       rows << field_names + ["Suspect Status", "Reunited Status"]
       @child_data.each do |child|
         child_data = fields.map { |field| format_field_for_export(field, child[field.name], child) }
@@ -38,7 +37,7 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
+    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
   end
 
   def to_full_pdf
@@ -50,7 +49,7 @@ class ExportGenerator
   end
 
   private
-
+  
   def format_field_for_export field, value, child=nil
     return "" if value.blank?
     return value.join(", ") if field.type ==  Field::CHECK_BOXES
