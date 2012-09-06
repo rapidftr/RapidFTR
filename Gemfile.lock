@@ -59,12 +59,11 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     escape (0.0.4)
+    fastercsv (1.5.3)
     ffi (1.0.11)
     gherkin (2.2.9)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
-    hoe (3.0.8)
-      rake (~> 0.8)
     hoptoad_notifier (2.4.2)
       activesupport
       builder
@@ -153,8 +152,6 @@ GEM
       escape (= 0.0.4)
       rsolr (= 0.12.1)
     term-ansicolor (1.0.7)
-    test-unit (1.2.3)
-      hoe (>= 1.5.1)
     thor (0.14.6)
     treetop (1.4.10)
       polyglot
@@ -175,6 +172,7 @@ DEPENDENCIES
   cucumber-rails (= 0.3.2)
   dictionary (= 1.0.0)
   dynamic_form
+  fastercsv (= 1.5.3)
   hoptoad_notifier (= 2.4.2)
   hpricot (= 0.8.2)
   jasmine
@@ -193,7 +191,6 @@ DEPENDENCIES
   selenium-webdriver (= 2.24.0)
   subexec (= 0.0.4)
   sunspot (= 1.1.0)
-  test-unit (= 1.2.3)
   tzinfo
   uuidtools (= 2.1.1)
   validatable (= 1.6.7)

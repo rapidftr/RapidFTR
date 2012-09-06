@@ -31,7 +31,7 @@ Then /^I should receive a CSV file with (\d+) lines?$/ do |num_lines|
 end
 
 Then /^the CSV data should be:$/ do |expected_csv|
-  downloaded_csv = CSV.parse(page.text)
+  downloaded_csv = FasterCSV.parse(page.text)
   index_of_name_column = downloaded_csv[0].index "name"
   expected_csv.hashes.each do |expected_line|
     matching_line = downloaded_csv.find do |line|
