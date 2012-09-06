@@ -5,7 +5,7 @@ Then /^I should receive a CSV file with (\d+) lines?$/ do |num_lines|
 end
 
 Then /^the CSV data should be:$/ do |expected_csv|
-  downloaded_csv = CSV.parse(response.body)
+  downloaded_csv = FasterCSV.parse(response.body)
   index_of_name_column = downloaded_csv[0].index "name"
   expected_csv.hashes.each do |expected_line|
     matching_line = downloaded_csv.find do |line|

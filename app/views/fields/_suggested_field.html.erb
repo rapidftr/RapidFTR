@@ -14,7 +14,7 @@
     <% end %>
   </td>
   <td>
-    <%= form_for suggested_field.field, :url => formsection_fields_path(form_section_id), :html => {:method => :post, :id => "Add_#{suggested_field.field.name}"} do |f| %>
+    <% form_for suggested_field.field, :url => formsection_fields_path(form_section_id), :html => {:method => :post, :id => "Add_#{suggested_field.field.name}"} do |f| %>
         <%= submit_tag "Add to form" %>
 
         <%= f.hidden_field :name %>

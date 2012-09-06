@@ -25,16 +25,16 @@
 <%= cancel_button(formsections_path) %>
 <%= submit_button 'Save Details' %>
 <% end %>
-<%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/',:html=>{ :id => 'changeDirection', :method => :post} do -%>
+<% form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/',:html=>{ :id => 'changeDirection', :method => :post} do -%>
 <input type='hidden' name='field_name' value='' id='changeDirectionFieldName' />
 <input type='submit' id='changeDirectionSubmit' style='display:none;'/>
 <% end %>
-<%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/delete',:html=>{ :id => 'delete', :method => :post} do -%>
+<% form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/delete',:html=>{ :id => 'delete', :method => :post} do -%>
 <input type='hidden' name='field_name' value='' id='deleteFieldName' />
 <input type='submit' id='deleteSubmit' style='display:none;'/>
 <% end %>
 
-<%= form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
+<% form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
 <table id="form_sections">
   <thead>
     <tr>
@@ -71,7 +71,7 @@
 	  <span class="updatedFormSectionOrder">
 	    <%= hidden_field_tag "form_order[#{field.name}]", @form_section.field_order(field.name)%>
 	  </span>
-
+	  
 	  <% if field.editable?%>
 	  <a id="<%= "#{field.name}_down"%>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
 	  <% end %>
@@ -79,8 +79,8 @@
       </td>
       <td class='field-buttons'>
 	<% if field.editable? %>
-        <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
-        <%= render :partial => "delete_button", :locals =>{:field=>field,
+        <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %> 
+        <%= render :partial => "delete_button", :locals =>{:field=>field, 
 	:url=>delete_formsection_fields_path(@form_section.unique_id),
 	:warning=>"Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
 	} %>
@@ -90,7 +90,7 @@
     </tr>
     <% end %>
   </tbody>
-
+  
   <tfoot>
     <tr>
       <% if @form_section.editable? %>
@@ -99,7 +99,7 @@
       <th colspan=6> <i>Fields on this form cannot be edited.</i> </th>
       <% end %>
     </tr>
-  </tfoot>
+  </tfoot> 
 </table>
 
 <% if @form_section.editable? %>
