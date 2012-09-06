@@ -76,14 +76,14 @@ module CouchRest
       end
     end
 
-    
+
     module ValidatesCustomFields
 
       def validates_fields_of_type field_type
         opts = opts_from_validator_args([])
-        add_validator_to_context(opts, field_type, validation_for_type(field_type))
+        add_validator_to_context(opts, [field_type], validation_for_type(field_type))
       end
-      
+
       def validation_for_type field_type
         case field_type
           when Field::NUMERIC_FIELD

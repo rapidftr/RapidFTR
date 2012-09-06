@@ -1,6 +1,6 @@
 <%= error_messages_for :password_recovery_request %>
 
-<% form_for @password_recovery_request, :class => "default-form" do |form| %>
+<%= form_for @password_recovery_request, :class => "default-form" do |form| %>
   <p>
     <%= form.label :user_name, "Enter your user name" %>
   </p>
