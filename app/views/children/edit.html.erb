@@ -1,7 +1,7 @@
 <% if @child.flag? %>
     <h3 class="flag-message"><%= flag_message%></h3>
 <% end %>
-<% form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
+<%= form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
 
     <%= error_messages_for :child %>
 

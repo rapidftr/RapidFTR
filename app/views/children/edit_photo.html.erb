@@ -5,7 +5,7 @@
   </dl>
 </div>
 
-<% form_for @child, :url => update_photo_url, :html => {:method => :put} do |f| %>
+<%= form_for @child, :url => update_photo_url, :html => {:method => :put} do |f| %>
     <div class="profile-image display_photo">
       <%= image_tag child_photo_path(@child, @child.primary_photo_id), :id => "child_picture" %>
     </div>
