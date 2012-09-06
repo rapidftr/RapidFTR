@@ -21,7 +21,7 @@
   });
 </script>
 
-<%= form_for edittable_user, :html => {:class=> 'default-form'} do |f| %>
+<% form_for edittable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
   <% trying_to_edit_ourself = (!@user.new_record? && current_user_name == @user.user_name) %>
   <fieldset>

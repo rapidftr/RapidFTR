@@ -43,7 +43,7 @@ describe ExportGenerator do
     context "in CSV generation" do
       it "should be rendered when child is flagged as suspect" do
         generated_csv = ExportGenerator.new(@suspected_child).to_csv.data
-        rows = CSV.parse(generated_csv)
+        rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Suspect Status"
         suspect_status_colummn_index = rows[0].index("Suspect Status")
         rows[1][suspect_status_colummn_index].should == "Suspect"
@@ -51,7 +51,7 @@ describe ExportGenerator do
 
       it "should not be rendered when child is not flagged as suspect" do
         generated_csv = ExportGenerator.new(@unsuspected_child).to_csv.data
-        rows = CSV.parse(generated_csv)
+        rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Suspect Status"
         suspect_status_colummn_index = rows[0].index("Suspect Status")
         rows[1][suspect_status_colummn_index].should be_nil
@@ -82,7 +82,7 @@ describe ExportGenerator do
     context "in CSV generation" do
       it "should be rendered when child is reunited" do
         generated_csv = ExportGenerator.new(@reunited_child).to_csv.data
-        rows = CSV.parse(generated_csv)
+        rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Reunited Status"
         suspect_status_colummn_index = rows[0].index("Reunited Status")
         rows[1][suspect_status_colummn_index].should == "Reunited"
@@ -90,7 +90,7 @@ describe ExportGenerator do
 
       it "should not be rendered when child is not reunited" do
         generated_csv = ExportGenerator.new(@not_reunited_child).to_csv.data
-        rows = CSV.parse(generated_csv)
+        rows = FasterCSV.parse(generated_csv)
         rows[0].should include "Reunited Status"
         reunited_status_colummn_index = rows[0].index("Reunited Status")
         rows[1][reunited_status_colummn_index].should be_nil
@@ -99,7 +99,7 @@ describe ExportGenerator do
   end
 
   describe "when a section is blank" do
-    before :all do
+    before :all do  
       form = FormSection.new(:name => "test_form", :order => 1 )
       form.save!
     end
@@ -117,5 +117,5 @@ describe ExportGenerator do
       subject.to_full_pdf
      end
   end
-
+  
 end
