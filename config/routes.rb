@@ -43,9 +43,6 @@ RapidFTR::Application.routes.draw do
   match '/active' => 'sessions#active', :as => :session_active
   resources :formsections, :controller=>'form_section' do
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
-    additional_field_actions[:new] = :get
-    additional_field_actions[:edit] = :get
-    additional_field_actions[:update] = :post
     additional_field_actions[:move_up] = :post
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
@@ -70,8 +67,8 @@ RapidFTR::Application.routes.draw do
     collection do
   post :remove
   end
-  
-  
+
+
   end
 
   match '/' => 'home#index', :as => :root

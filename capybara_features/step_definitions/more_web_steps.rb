@@ -71,7 +71,8 @@ Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
 end
 
 Then /^I should not be able to see (.+)$/ do |page_name|
-  lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
+  visit path_to(page_name)
+  page.status_code.should == 403
 end
 
 Then /^I should be able to see (.+)$/ do |page_name|
