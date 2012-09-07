@@ -10,7 +10,7 @@
   </td>
   <td class="fieldOptions">
     <% if (suggested_field.field.options) %>
-        <%= display_options suggested_field.field %>
+        <%= display_options(suggested_field.field) %>
     <% end %>
   </td>
   <td>
@@ -21,7 +21,9 @@
         <%= f.hidden_field :type %>
         <%= f.hidden_field :display_name %>
         <%= f.hidden_field :help_text %>
-        <%= option_fields_for f, suggested_field %>
+        <% option_fields_for(f, suggested_field).each do |field| %>
+          <%= field %>
+        <% end %>
         <input type="hidden" name="from_suggested_field" value="<%= suggested_field.unique_id %>"/>
 
     <% end %>
