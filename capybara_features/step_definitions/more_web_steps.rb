@@ -95,9 +95,12 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
   else
     disbled_checkbox.should_not be_checked
   end
->>>>>>> 1144 Senthil/Yekkanti user_disbale.feature moved from webart to capybara
 end
   
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
   page.body.should have_selector("//audio/source", :src=>current_path + "/audio/")
+end
+
+Then /^I should not see an audio tag$/ do
+  page.body.should_not have_selector("//audio")
 end
