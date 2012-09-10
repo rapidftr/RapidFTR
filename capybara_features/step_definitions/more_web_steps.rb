@@ -87,3 +87,13 @@ end
 Then /^I should not see an audio tag$/ do
   page.body.should_not have_selector("//audio")
 end
+
+And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
+  disbled_checkbox = find(:css, "#user-row-#{username} td.user-status input")
+  if status == "disabled"
+    disbled_checkbox.should be_checked
+  else
+    disbled_checkbox.should_not be_checked
+  end
+>>>>>>> 1144 Senthil/Yekkanti user_disbale.feature moved from webart to capybara
+end
