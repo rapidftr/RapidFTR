@@ -79,3 +79,12 @@ Then /^I should be able to see (.+)$/ do |page_name|
   When "I go to #{page_name}"
   Then "I should be on #{page_name}"
 end
+
+And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
+  disbled_checkbox = find(:css, "#user-row-#{username} td.user-status input")
+  if status == "disabled"
+    disbled_checkbox.should be_checked
+  else
+    disbled_checkbox.should_not be_checked
+  end
+end
