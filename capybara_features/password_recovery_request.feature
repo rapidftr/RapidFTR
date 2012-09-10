@@ -22,4 +22,3 @@ Feature: As an user, I should be able to request my password to be recovered.
     And I am logged in as an admin
     And I am on the home page
     Then I should see a link to the user details page for "duck"
-
