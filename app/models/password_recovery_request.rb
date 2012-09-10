@@ -1,9 +1,8 @@
 class PasswordRecoveryRequest < CouchRestRails::Document
   use_database :password_recovery_request
-  
-  include RapidFTR::Model
 
   include CouchRest::Validation
+  include RapidFTR::Model
 
   property :user_name
   property :hidden, :cast_as => :boolean, :default => false
