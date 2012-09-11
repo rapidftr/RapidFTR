@@ -222,6 +222,10 @@ Given /I am logged out/ do
   Given "I go to the logout page"
 end
 
+Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
+  field_labeled(dropdown_label).value.should == selected_text
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
@@ -229,3 +233,4 @@ def click_flag_as_suspect_record_link_for(name)
   visit children_path+"/#{child.id}"
   click_link("Flag as suspect record")
 end
+
