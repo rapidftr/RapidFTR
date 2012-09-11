@@ -204,6 +204,10 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
   child_images[0][:src].should have_content(image)
 end
 
+Given /I am logged out/ do
+  Given "I go to the logout page"
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
