@@ -1,8 +1,9 @@
 class ContactInformation < CouchRestRails::Document
   use_database :contact_information
-  
+
+  include CouchRest::Validation
   include RapidFTR::Model
-  
+
   property :id
   property :name
   property :organization
@@ -12,7 +13,7 @@ class ContactInformation < CouchRestRails::Document
   property :email
   property :position
   unique_id :id
-  
+
   def self.get_by_id id
     result = self.all.select{|x|x.id==id}.first
     raise ErrorResponse.not_found("Cannot find ContactInformation with id #{id}") if result.nil?
