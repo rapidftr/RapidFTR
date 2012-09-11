@@ -68,7 +68,7 @@ describe FieldsController do
     it "should show a flash message" do
       FormSection.stub(:add_field_to_formsection)
       post :create, :formsection_id => @form_section.unique_id, :field => @field
-      response.flash[:notice].should == "Field successfully added"
+      request.flash[:notice].should == "Field successfully added"
     end
     
     it "should mark suggested field as used if one is supplied" do 
