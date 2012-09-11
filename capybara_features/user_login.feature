@@ -4,7 +4,7 @@ Feature: As an user, I should be able to log in.
     Given a user "Harry" with a password "123"
     And I am on the login page
 
-    When I fill in "Harry" for "user name"
+    When I fill in "Harry" for "User name"
     And I fill in "123" for "password"
     And I press "Log in"
 
@@ -24,7 +24,7 @@ Feature: As an user, I should be able to log in.
 
     Given I am on the login page
 
-    When I fill in "Harry" for "user name"
+    When I fill in "Harry" for "User name"
     And I fill in "123" for "password"
     And I press "Log in"
 
@@ -35,7 +35,7 @@ Feature: As an user, I should be able to log in.
     Given a user "Harry" with a password "123"
     And I am on the login page
 
-    When I fill in "Harry" for "user name"
+    When I fill in "Harry" for "User name"
     And I fill in "1234" for "password"
     And I press "Log in"
 
@@ -47,7 +47,7 @@ Feature: As an user, I should be able to log in.
     And user "Harry" is disabled
     And I am on the login page
 
-    When I fill in "Harry" for "user name"
+    When I fill in "Harry" for "User name"
     And I fill in "123" for "password"
     And I press "Log in"
 
@@ -58,7 +58,7 @@ Feature: As an user, I should be able to log in.
 
     Given I am logged in
 
-    When I follow "logout"
+    When I follow "Logout"
 
     Then I should be on the login page
 
