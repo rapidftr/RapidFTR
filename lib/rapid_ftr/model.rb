@@ -18,7 +18,7 @@ module RapidFTR
 
     class ErrorsAdapter < SimpleDelegator
       def [](key)
-        (__getobj__.respond_to?(:[]) && __getobj__[key]) || []
+        __getobj__[key] || []
       end
 
       def length
