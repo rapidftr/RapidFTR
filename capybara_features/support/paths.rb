@@ -63,6 +63,11 @@ module NavigationHelpers
         user = User.find_by_user_name($1)
         edit_user_path(user, options)
 
+      when /user details page for "(.+)"/
+        user = User.find_by_user_name($1)
+        user_path(user, options)
+
+
       when /child search page/
         search_children_path(options)
 
@@ -127,7 +132,7 @@ module NavigationHelpers
       when /duplicate child page for "(.+)"$/
         child = Child.by_name(:key => $1).first
         new_child_duplicate_path(child)
-      
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #

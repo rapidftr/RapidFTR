@@ -1,11 +1,11 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   user_type = user_type == 'user' ? 'User' : 'Administrator'
   @user = User.new(
-    :user_name=>username, 
-    :password=>password, 
-    :password_confirmation=>password, 
-    :user_type=> user_type, 
-    :full_name=>username, 
+    :user_name=>username,
+    :password=>password,
+    :password_confirmation=>password,
+    :user_type=> user_type,
+    :full_name=>username,
     :email=>"#{username}@test.com",
     :permission=> permission ? (permission=='limited' ? Permission::LIMITED : Permission::UNLIMITED) : Permission::UNLIMITED )
   @user.save!
@@ -60,4 +60,8 @@ Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*
   children.should_not be_empty
   child = children.first
   child[field_name.to_s].should == field_value
+end
+
+Given /^a password recovery request for (.+)$/ do |username|
+  PasswordRecoveryRequest.new(:user_name => username).save
 end

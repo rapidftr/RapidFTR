@@ -84,3 +84,10 @@ Given /"([^\"]*)" is the user/ do |user_name|
   Given "a user \"#{user_name}\" with a password \"123\""
 end
 
+Given /I am logged out/ do
+  Given "I go to the logout page"
+end
+
+Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
+  field_labeled(dropdown_label).value.should == selected_text
+end

@@ -34,13 +34,13 @@ describe FormSectionController do
       FormSection.stub(:create_new_custom).and_return(MockFormSection.new)
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
-      response.flash[:notice].should == "Form section successfully added"
+      request.flash[:notice].should == "Form section successfully added"
     end
     it "does not set flash notice if form section is valid" do
       FormSection.stub(:create_new_custom).and_return(MockFormSection.new(false))
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
-      response.flash[:notice].should be_nil
+      request.flash[:notice].should be_nil
     end
     it "should redirect back to the form sections page if form section is valid" do
       FormSection.stub(:create_new_custom).and_return(MockFormSection.new)

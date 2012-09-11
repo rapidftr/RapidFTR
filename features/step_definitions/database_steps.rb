@@ -1,11 +1,11 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"$/ do |user_type, username, password|
   user_type = user_type == 'user' ? 'User' : 'Administrator'
   @user = User.new(
-    :user_name=>username, 
-    :password=>password, 
-    :password_confirmation=>password, 
-    :user_type=> user_type, 
-    :full_name=>username, 
+    :user_name=>username,
+    :password=>password,
+    :password_confirmation=>password,
+    :user_type=> user_type,
+    :full_name=>username,
     :email=>"#{username}@test.com",
     :permission => Permission::UNLIMITED)
   @user.save!
@@ -46,8 +46,4 @@ Given /^the following admin contact info:$/ do |table|
   end
   contact_info[:id] = "administrator"
   ContactInformation.create contact_info
-end
-
-Given /^a password recovery request for (.+)$/ do |username|
-  PasswordRecoveryRequest.new(:user_name => username).save
 end
