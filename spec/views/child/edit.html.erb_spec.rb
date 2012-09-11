@@ -15,10 +15,8 @@ describe "children/edit.html.erb" do
     rendered.should have_tag("form[action='#{child_path(@child)}']")
   end
 
-  xit "renders the children/form_section partial" do
-    view.should_receive(:render).with(
-            :partial => "form_section",
-            :collection => [@form_section])
+  it "renders the children/form_section partial" do
     render
+    rendered.should render_template(:partial =>  "_form_section",:collection => [@form_section])
   end
 end

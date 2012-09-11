@@ -12,11 +12,9 @@ describe "children/new.html.erb" do
     rendered.should have_tag("form[action='#{children_path}']")
   end
 
-  xit "renders the children/form_section partial" do
-    view.should_receive(:render).with(
-            :partial => "form_section",
-            :collection => [@form_section])
+  it "renders the children/form_section partial" do
     render
+    rendered.should render_template(:partial => "_form_section", :collection => [@form_section])
   end
 
 	it "renders a hidden field for the posted_from attribute" do
