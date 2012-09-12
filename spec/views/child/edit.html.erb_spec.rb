@@ -1,5 +1,4 @@
 require 'spec_helper'
-include Rails.application.routes.url_helpers
 
 describe "children/edit.html.erb" do
 

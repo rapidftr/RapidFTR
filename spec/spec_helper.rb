@@ -12,15 +12,10 @@ Dir[Rails.root.join("lib/**/*.rb")].each {|f| require f}
 # This clears couchdb between tests.
 CouchRestRails::Tests.setup
 
-class String
-  def has_tag?(tag)
-    !Nokogiri::HTML.parse(self).css(tag).empty?
-  end
-end
-
 RSpec.configure do |config|
 
   config.include UploadableFiles
+  config.include ChildFinder
   config.include FakeLogin, :type => :controller
   # ## Mock Framework
   #
