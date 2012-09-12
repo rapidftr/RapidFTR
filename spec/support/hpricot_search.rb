@@ -83,3 +83,9 @@ module HpricotSearch
 		search("input[@value='#{submit_text}']")
 	end
 end
+
+class String
+  def has_tag?(tag)
+    !Nokogiri::HTML.parse(self).css(tag).empty?
+  end
+end

@@ -19,6 +19,7 @@ require 'capybara/cucumber'
 #require 'spec/stubs/cucumber'
 require 'cucumber/rspec/doubles'
 require 'spec/support/uploadable_files'
+require 'spec/support/child_finder'
 
 Capybara.run_server = true #Whether start server when testing
 Capybara.default_selector = :xpath #default selector , you can change to :css
@@ -54,4 +55,4 @@ ActionController::Base.allow_rescue = false
 # How to clean your database when transactions are turned off. See
 # http://github.com/bmabey/database_cleaner for more info.
 
-World(UploadableFiles)
+World(UploadableFiles, ChildFinder)

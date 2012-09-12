@@ -28,7 +28,7 @@ class Child < CouchRestRails::Document
                 }
              }
           }"
-          
+
   view_by :flag,
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
@@ -38,7 +38,7 @@ class Child < CouchRestRails::Document
                  }
                }
             }"
-            
+
   view_by :unique_identifier,
           :map => "function(doc) {
                 if (doc.hasOwnProperty('unique_identifier'))
@@ -119,17 +119,17 @@ view_by :duplicates_of,
     return true if deprecated_fields.any?{|key,value| !value.nil? && value != [] }
     [false, "Please fill in at least one field or upload a file"]
   end
-  
+
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
     [false, "Age must be between 1 and 99"]
   end
-  
+
   def validate_photos
     return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
-  
+
   def validate_photos_size
     return true if @photos.blank? || @photos.all?{|photo| photo.size < 10.megabytes }
     [false, "File is too large"]
@@ -148,7 +148,7 @@ view_by :duplicates_of,
   def validate_created_at
     begin
       if self['created_at']
-        DateTime.parse self['created_at'] 
+        DateTime.parse self['created_at']
       end
       true
     rescue
@@ -170,7 +170,7 @@ view_by :duplicates_of,
   def method_missing(m, *args, &block)
     self[m]
   end
-  
+
   def to_s
     if self['name'].present?
       "#{self['name']} (#{self['unique_identifier']})"
@@ -186,7 +186,7 @@ view_by :duplicates_of,
   def self.all_by_creator(created_by)
     self.by_created_by :key => created_by
   end
-  
+
   # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg
   def self.duplicates
     by_duplicate(:key => true)
@@ -197,17 +197,17 @@ view_by :duplicates_of,
     duplicates ||= Array.new
     duplicates
   end
-  
+
   def self.search(search)
     return [] unless search.valid?
-    
+
     query = search.query
     children = sunspot_search("unique_identifier_text:#{query}")
     return children if children.length > 0
-    
+
     SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
   end
-  
+
   def self.flagged
     by_flag(:key => 'true')
   end
@@ -326,7 +326,7 @@ view_by :duplicates_of,
       }
     end
   end
-  
+
   def primary_photo
     key = self['current_photo_key']
     key ? attachment(key) : nil
@@ -338,11 +338,11 @@ view_by :duplicates_of,
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise "Failed trying to set '#{photo_key}' to primary photo: no such photo key" 
+      raise "Failed trying to set '#{photo_key}' to primary photo: no such photo key"
     end
     self['current_photo_key'] = photo_key
   end
-  
+
   def audio
     return nil if self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']
@@ -355,7 +355,7 @@ view_by :duplicates_of,
 
   def audio=(audio_file)
     return unless audio_file.respond_to? :content_type
-    @audio_file_name = audio_file.original_path
+    @audio_file_name = audio_file.original_filename
     @audio = audio_file
     attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
     self['recorded_audio'] = attachment.name
@@ -434,9 +434,9 @@ view_by :duplicates_of,
     @from_child ||= Child.get(self.id)
 		field_names = field_definitions.map {|f| f.name}
     other_fields = [
-      "flag", "flag_message", 
-      "reunited", "reunited_message", 
-      "investigated", "investigated_message", 
+      "flag", "flag_message",
+      "reunited", "reunited_message",
+      "investigated", "investigated_message",
       "duplicate", "duplicate_of"
     ]
 		all_fields = field_names + other_fields
@@ -452,7 +452,7 @@ view_by :duplicates_of,
        self[field_name] != @from_child[field_name]
     end
   end
-  
+
   def is_filled_in? field
     !(self[field.name].nil? || self[field.name] == field.default_value)
   end
@@ -461,15 +461,15 @@ view_by :duplicates_of,
   def attachment(key)
     data = read_attachment key
     content_type = self['_attachments'][key]['content_type']
-    FileAttachment.new key, content_type, data      
+    FileAttachment.new key, content_type, data
   end
-  
+
   def attach(attachment)
     create_attachment :name => attachment.name,
                       :content_type => attachment.content_type,
-                      :file => attachment.data  
-  end  
-  
+                      :file => attachment.data
+  end
+
   def deprecated_fields
     system_fields = ["created_at",
                      "last_updated_at",
@@ -487,7 +487,7 @@ view_by :duplicates_of,
                      "current_photo_key",
                      "photo_keys"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
-    self.reject {|k,v| existing_fields.include? k} 
+    self.reject {|k,v| existing_fields.include? k}
   end
 
   def setup_original_audio(attachment)
@@ -505,5 +505,5 @@ view_by :duplicates_of,
   def key_for_content_type(content_type)
     Mime::Type.lookup(content_type).to_sym.to_s
   end
-  
+
 end

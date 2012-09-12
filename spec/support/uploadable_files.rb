@@ -11,7 +11,7 @@ module UploadableFiles
       File.size self.path
     end
 
-    def photo.original_path
+    def photo.original_filename
       self.path
     end
 
@@ -67,7 +67,7 @@ module UploadableFiles
       File.size self.path
     end
 
-    def file.original_path
+    def file.original_filename
       self.path
     end
 
@@ -98,7 +98,7 @@ module UploadableFiles
       File.size self.path
     end
 
-    def audio.original_path
+    def audio.original_filename
       self.path
     end
 
