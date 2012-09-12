@@ -124,7 +124,7 @@ describe ChildrenController do
 
     it 'should not fail if primary_photo_id is not present' do
       stub_out_user
-      child = Child.new('last_known_location' => "London")
+      child = Child.create('last_known_location' => "London")
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
