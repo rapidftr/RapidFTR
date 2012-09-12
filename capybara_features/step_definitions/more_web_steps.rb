@@ -80,14 +80,6 @@ Then /^I should be able to see (.+)$/ do |page_name|
   Then "I should be on #{page_name}"
 end
 
-Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
-  page.body.should have_selector("//audio/source", :src=>current_path + "/audio/")
-end
-
-Then /^I should not see an audio tag$/ do
-  page.body.should_not have_selector("//audio")
-end
-
 And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
   disbled_checkbox = find(:css, "#user-row-#{username} td.user-status input")
   if status == "disabled"
@@ -96,7 +88,7 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
     disbled_checkbox.should_not be_checked
   end
 end
-  
+
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
   page.body.should have_selector("//audio/source", :src=>current_path + "/audio/")
 end
@@ -104,3 +96,4 @@ end
 Then /^I should not see an audio tag$/ do
   page.body.should_not have_selector("//audio")
 end
+
