@@ -198,6 +198,11 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
   field_labeled(dropdown_label).value.should == selected_text
 end
 
+And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
+  field_ids = Nokogiri::HTML(page.body).css("table tbody tr").map {|row| row[:id] }
+  field_ids.should include("#{field_id}Row")
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
