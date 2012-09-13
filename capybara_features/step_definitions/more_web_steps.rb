@@ -76,8 +76,8 @@ Then /^I should not be able to see (.+)$/ do |page_name|
 end
 
 Then /^I should be able to see (.+)$/ do |page_name|
-  When "I go to #{page_name}"
-  Then "I should be on #{page_name}"
+  step "I go to #{page_name}"
+  step "I should be on #{page_name}"
 end
 
 And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
