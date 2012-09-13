@@ -65,6 +65,16 @@ Then /^I should be able to promote the field "([^"]*)"$/ do |field|
  page.should have_selector("//a[@id='#{field}_up' and @style='display: inline;']")
 end
 
+Then /^I should not see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
+  row = Nokogiri::HTML(page.body).css("##{field_name}Row").first
+  row.inner_html.should_not include(arrow_name)
+end
+
+Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
+  row = Nokogiri::HTML(page.body).css("##{field_name}Row").first
+  row.inner_html.should include(arrow_name)
+end
+
 
 def row_for(section_name)
   page.find row_xpath_for(section_name)
