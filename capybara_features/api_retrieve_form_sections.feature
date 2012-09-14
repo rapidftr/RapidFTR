@@ -4,9 +4,11 @@ Feature:
   I want to hit a URI that gives me all published form sections
   So that an API client can have all fields related to entering information
 
+  Background:
+    Given there is a User
   Scenario: A logged in API user should be able to retrieve all published form sections
 
-    Given I am logged in
+    Given I am sending a valid session token in my request headers
 
     When I make a request for published form sections
     Then I receive a JSON array

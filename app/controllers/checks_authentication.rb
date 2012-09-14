@@ -26,7 +26,7 @@ module ChecksAuthentication
   def handle_authentication_failure(auth_failure)
     if auth_failure.token_provided?
       Session.remove_from_cookies cookies
-      render_error_response ErrorResponse.unauthorized("invalid session token")  
+      render_error_response ErrorResponse.unauthorized("invalid session token")
     else
       respond_to do |format|
         format.html { redirect_to(:login) }
@@ -40,7 +40,7 @@ module ChecksAuthentication
       format.any { render_error_response ErrorResponse.new(403, authorization_failure.message) }
     end
   end
-  
+
   def handle_device_blacklisted(session)
     render(:status => 403, :json => session.imei)
   end
