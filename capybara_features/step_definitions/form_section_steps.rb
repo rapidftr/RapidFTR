@@ -75,6 +75,20 @@ Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_na
   row.inner_html.should include(arrow_name)
 end
 
+When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
+  When 'I follow "Add Custom Field"'
+  And 'I follow "Text Field"'
+  And "I fill in \"#{display_name}\" for \"Display name\""
+  And "I fill in \"#{help_text}\" for \"Help text\""
+  And 'I press "Save"'
+end
+
+Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|
+  row = Hpricot(page.body).search("tr[@id=basic_details_row]").first
+
+  row.inner_html.should_not include(link)
+end
+
 
 def row_for(section_name)
   page.find row_xpath_for(section_name)
