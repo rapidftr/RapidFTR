@@ -3,7 +3,6 @@ Feature: Only authorized API clients should be allowed to access the system
 
   Background:
    Given there is a User
-   #And I am logged out
 
   Scenario: Unauthenticated API client gets 401 when attempting to access restricted resource
     Given I am not sending a session token in my request headers
