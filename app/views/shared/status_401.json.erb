@@ -2,5 +2,5 @@
   {
     :status => "#{@exception.status_code} #{@exception.status_text}",
     :message => @exception.message
-}.to_json
+}.to_json.html_safe
 %>

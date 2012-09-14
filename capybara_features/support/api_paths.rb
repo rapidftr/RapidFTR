@@ -1,3 +1,4 @@
+include Rails.application.routes.url_helpers
 module NavigationHelpers
   # Maps a name to a path. Used by the
   #
@@ -92,6 +93,9 @@ module NavigationHelpers
       when /form section page/
         formsections_path(options)
 
+      when /published form sections/
+        published_form_sections_path(options)
+
       when /choose field type page/
         arbitrary_form_section = FormSection.new
         new_formsection_field_path(arbitrary_form_section, options)
@@ -114,6 +118,7 @@ module NavigationHelpers
 
       when /the edit administrator contact information page/
         edit_contact_information_path(:administrator)
+
       when /(the )?administrator contact page/
         contact_information_path(:administrator, options)
 
@@ -126,7 +131,7 @@ module NavigationHelpers
       when /duplicate child page for "(.+)"$/
         child = Child.by_name(:key => $1).first
         new_child_duplicate_path(child)
-      
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #
