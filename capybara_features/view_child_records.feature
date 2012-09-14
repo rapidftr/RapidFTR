@@ -182,7 +182,6 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
     When I follow "Flagged"
-    Then show me the page
     Then I should see the order zak,meredith,jaco,andreas
 
   Scenario: Checking filter by Flagged and then ordering by name returns the flagged children in alphabetical order
