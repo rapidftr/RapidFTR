@@ -21,7 +21,7 @@ gem 'rake',           '0.8.7'
 gem 'dynamic_form'
 
 group :cucumber do
-  gem 'cucumber',         '0.9.4'
+  gem 'cucumber',         '1.2.1'
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'

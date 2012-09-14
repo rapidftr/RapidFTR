@@ -6,22 +6,16 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
-  steps %Q{
-    When I attach the file "#{photo_path}" to "child[photo]0"
-  }
+    step %Q{I attach the file "#{photo_path}" to "child[photo]0"}
 end
 
 When /^I attach an audio file "([^"]*)"$/ do |audio_path|
-  steps %Q{
-    When I attach the file "#{audio_path}" to "child[audio]"
-  }
+    step %Q{I attach the file "#{audio_path}" to "child[audio]"}
 end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    steps %Q{
-      When I attach the file "#{photo}" to "child[photo]#{i}"
-    }
+    step %Q{I attach the file "#{photo}" to "child[photo]#{i}"}
   end
 end
 
@@ -171,15 +165,15 @@ When /^I sleep (\d*) seconds$/ do |sleep_time|
 end
 
 Given /"([^\"]*)" is logged in/ do |user_name|
-  Given "\"#{user_name}\" is the user"
-  Given "I am on the login page"
-  Given "I fill in \"#{user_name}\" for \"User name\""
-  Given "I fill in \"123\" for \"password\""
-  Given "I press \"Log in\""
+  step "\"#{user_name}\" is the user"
+  step "I am on the login page"
+  step "I fill in \"#{user_name}\" for \"User name\""
+  step "I fill in \"123\" for \"password\""
+  step "I press \"Log in\""
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
-  Given "a user \"#{user_name}\" with a password \"123\""
+  step "a user \"#{user_name}\" with a password \"123\""
 end
 
 Then /^I should not see any errors$/ do
@@ -197,7 +191,7 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
 end
 
 Given /I am logged out/ do
-  Given "I go to the logout page"
+  step "I go to the logout page"
 end
 
 Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
