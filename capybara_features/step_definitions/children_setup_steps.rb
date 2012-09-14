@@ -17,6 +17,9 @@ Given /^the following children exist in the system:$/ do |children_table|
     child = Child.new_with_user_name(child_hash['created_by'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
+    child['histories'] ||= []
+    child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
+    child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => "true"} , 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
     child.create!
 
     # Need this because of how children_helper grabs flag_message from child history - cg

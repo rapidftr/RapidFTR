@@ -242,3 +242,12 @@ end
 When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
   fill_in field, :with=>("x" * length.to_i)
 end
+
+Then /^I should see the order (.+)$/ do |input|
+  current = 0
+  input.split(',').each{ |match|
+    index = page.body.index(match)
+    assert index > current, "The index of #{match} was not greater than #{current}"
+    current = index
+  }
+end
