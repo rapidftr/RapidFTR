@@ -14,12 +14,12 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Custom Field"
 
     Then I should find the following links:
-      | Text Field       | new field page for "text_field"    |
-      | Text Area        | new field page for "textarea"      |
-      | Check boxes      | new field page for "check_boxes"   |
-      | Select drop down | new field page for "select_box"    |
-      | Radio button     | new field page for "radio_button"  |
-      | Numeric Field    | new field page for "numeric_field" |
+      | Text Field       | new field page for "text_field" for form "family_details"    |
+      | Text Area        | new field page for "textarea" for form "family_details"      |
+      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
+      | Select drop down | new field page for "select_box" for form "family_details"    |
+      | Radio button     | new field page for "radio_button" for form "family_details"  |
+      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
 
     When I follow "Text Field"
 
@@ -45,7 +45,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Custom Field"
 
     Then I should find the following links:
-      | Date Field | new field page for "date_field" |
+      | Date Field | new field page for "date_field" for form "family_details"|
 
     When I follow "Date Field"
 
@@ -75,7 +75,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Custom Field"
 
     Then I should find the following links:
-      | Radio button | new field page for "radio_button" |
+      | Radio button | new field page for "radio_button" for form "family_details" |
 
     When I follow "Radio button"
 
@@ -97,7 +97,7 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Radio button name"
     When I am on children listing page
-    And I follow "Register New child"
+    And I follow "Register New Child"
 
     Then I should see "Radio button name"
 
@@ -171,7 +171,7 @@ Feature: So that admin can customize fields in a form section
     Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
     And I follow "Radio button"
-    And I fill in "Radio button name" for "Display Name"
+    And I fill in "Radio button name" for "Display name"
     And I fill the following options into "Options":
     """
     one
@@ -184,7 +184,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "radio_button_name" in the list of fields
 
     When I go to the add child page
-    And I visit the "Family Details" tab
+    And I visit the "Family details" tab
 
     Then the "Radio button name" radio_button should have the following options:
       | one |
@@ -195,7 +195,7 @@ Feature: So that admin can customize fields in a form section
     Given I am on the edit form section page for "family_details"
     And I follow "Add Custom Field"
     And I follow "Select drop down"
-    And I fill in "Favourite Toy" for "Display Name"
+    And I fill in "Favourite Toy" for "Display name"
     And I fill the following options into "Options":
     """
     Doll
@@ -209,7 +209,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "favourite_toy" in the list of fields
 
     When I go to the add child page
-    And I visit the "Family Details" tab
+    And I visit the "Family details" tab
 
     Then the "Favourite toy" dropdown should have the following options:
       | label           | selected? |
@@ -220,9 +220,9 @@ Feature: So that admin can customize fields in a form section
 
   Scenario: creating a multiple-checkbox field
     Given I am on the edit form section page for "family_details"
-    And I follow "Add custom field"
+    And I follow "Add Custom Field"
     And I follow "Check boxes"
-    And I fill in "Toys" for "Display Name"
+    And I fill in "Toys" for "Display name"
     And I fill the following options into "Options":
     """
 			Action Man
@@ -233,7 +233,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Field successfully added"
     And I should see "toys" in the list of fields
     When I go to the add child page
-    And I visit the "Family Details" tab
+    And I visit the "Family details" tab
     Then the "toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | no       |
@@ -242,9 +242,9 @@ Feature: So that admin can customize fields in a form section
     When I check "Lego" for "toys"
     And I check "Action Man" for "toys"
     And I press "Save"
-    Then I should see "Toys: Action Man, Lego"
+    Then I should see "Action Man, Lego"
     When I follow "Edit"
-    And I visit the "Family Details" tab
+    And I visit the "Family details" tab
     Then the "toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | yes      |

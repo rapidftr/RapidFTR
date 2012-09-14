@@ -113,3 +113,30 @@ Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_
   page.has_select?(dropdown_label, :options => options.collect{|element| element['label']},
                    :selected => options.collect{|element| element['label'] if element['selected?'] == 'yes'}.compact!)
 end
+
+Then /^I should find the following links:$/ do |table|
+  table.rows_hash.each do |label, named_path|
+    href = path_to(named_path)
+    page.should have_xpath "//a[@href='#{href}' and text()='#{label}']"  end
+end
+
+Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
+	checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
+
+	checkboxes = checkbox_elements.inject({}) do | result,  element |
+		result[element['value']] = !!element[:checked]
+		result
+	end
+
+  table.hashes.each do |expected_checkbox|
+    expected_value = expected_checkbox['value']
+    should_be_checked = (expected_checkbox['checked?'] == 'yes')
+    checkboxes.should have_key expected_value
+		checkboxes[expected_value].should == should_be_checked
+
+  end
+end
+
+When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
+	  page.check("child_#{checkbox_name}_#{value.dehumanize}")
+end

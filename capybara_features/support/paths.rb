@@ -107,9 +107,10 @@ module NavigationHelpers
         raise "no user named #{$1}" if user.nil?
         edit_user_path(user)
 
-      when /new field page for "(.+)"/
+      when /new field page for "(.+)" for form "(.+)"/
         field_type = $1
-        new_formsection_field_path(:type => field_type)
+        formsection_id = $2
+        new_formsection_field_path(:formsection_id => formsection_id,  :type => field_type)
 
       when /the edit form section page for "(.+)"/
         form_section = $1
