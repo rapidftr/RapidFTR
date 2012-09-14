@@ -19,7 +19,7 @@ Feature: Editing Custom Form Fields
       | Help text |
       | Visible |
     When I fill in "Edited Field" for "Display name"
-    When I fill in "false" for "Visible"
+    When I uncheck "Visible"
     And I press "Save"
     
     Then I should see "Edited Field"
@@ -29,7 +29,7 @@ Feature: Editing Custom Form Fields
   Scenario: editing text with invalid display name
     Given I am logged in as an admin
     And I am on the edit field page for "another_field" on "family_details" form
-    When I fill in "!@#$%$" for "Display Name"
+    When I fill in "!@#$%$" for "Display name"
     And I press "Save"
     Then I should see errors
 

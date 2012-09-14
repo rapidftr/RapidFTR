@@ -229,6 +229,9 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" disabled$/ do |form
   FormSection.add_field_to_formsection(form_section, field)
 end
 
+Then /^I should see errors$/ do
+  Hpricot(page.body).search("div[@class=errorExplanation]").size.should == 1
+end
 
 private
 
