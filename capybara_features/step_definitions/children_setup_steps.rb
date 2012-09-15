@@ -9,7 +9,8 @@ Given /^the following children exist in the system:$/ do |children_table|
 						'created_by' => 'Billy',
             'age_is' => 'Approximate'
     )
-    
+    child_hash['flagged_at'] = child_hash['flagged_at'] || DateTime.new(2001,2,3,4,5,6)
+    child_hash['reunited_at'] = child_hash['reunited_at'] || DateTime.new(2012,2,3,4,5,6)
     flag, flag_message = child_hash.delete('flag'), child_hash.delete('flag_message')
     
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''

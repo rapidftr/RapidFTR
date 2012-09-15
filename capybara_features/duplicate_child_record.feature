@@ -8,11 +8,11 @@ Feature: Merge Child Records
 
    Given I am logged in as an admin
    And the following children exist in the system:
-     | name   | unique_id  | flag    |
-     | Bob    | bob_uid    | true    |
-     | Steve  | steve_uid  | true    |
-     | Dave   | dave_uid   | true    |
-     | Fred   | fred_uid   | false   |
+     | name   | unique_id  | flag    |flagged_at                   |
+     | Bob    | bob_uid    | true    |DateTime.new(2001,2,3,4,5,6) |
+     | Steve  | steve_uid  | true    |DateTime.new(2004,2,3,4,5,6) |
+     | Dave   | dave_uid   | true    |DateTime.new(2002,2,3,4,5,6) |
+     | Fred   | fred_uid   | false   |DateTime.new(2003,2,3,4,5,6) |
 
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
     When I am on the child listing filtered by flagged

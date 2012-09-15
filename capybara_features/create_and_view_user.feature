@@ -17,7 +17,6 @@ Feature: As an admin, I should be able to create and view users.
     And I fill in "Amazon" for "Location"
     And I press "Create"
 
-    And show me the page
     Then I should see "User was successfully created."
     And I should see "George Harrison"
     And I should see "george"
