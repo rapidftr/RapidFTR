@@ -27,7 +27,7 @@ group :cucumber do
   gem 'launchy',          '0.4.0'
 end
 
-group :test do
+group :development, :test do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
   gem 'capybara',         '1.0.1'
