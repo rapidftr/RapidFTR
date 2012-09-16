@@ -18,7 +18,7 @@ describe ContactInformationController do
           
       get :show, :id => "foo"
       
-      response.status.should =~ /404/
+      response.status.should == 404
     end
   end
   

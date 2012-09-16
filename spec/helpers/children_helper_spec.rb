@@ -17,18 +17,18 @@ describe ChildrenHelper do
     
     it "should show link if child has been updated by multiple people" do
       child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith')
-      child.stub!(:has_one_interviewer?).and_return(false)
-      helper.link_to_update_info(child).should have_tag('a', :text => 'and others')
+      child.stub :has_one_interviewer? => false, :persisted? => true
+      helper.link_to_update_info(child).should =~ /^<a href=.+>and others<\/a>$/
     end
   end
   describe "field_for_display" do
     it "should return the string value where set" do
       helper.field_value_for_display("Foo").should == "Foo"
     end
-    it "should return nbsp string if field is nil or 0 length" do
-      helper.field_value_for_display("").should == "&nbsp;"
-      helper.field_value_for_display(nil).should == "&nbsp;"
-      helper.field_value_for_display([]).should == "&nbsp;"
+    it "should return empty string if field is nil or 0 length" do
+      helper.field_value_for_display("").should == ""
+      helper.field_value_for_display(nil).should == ""
+      helper.field_value_for_display([]).should == ""
     end
     it "should comma separate values if field value is an array" do
       helper.field_value_for_display(["A", "B", "C"]).should == "A, B, C"

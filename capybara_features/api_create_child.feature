@@ -48,4 +48,3 @@ Feature: Creating a child using the API
 			    "current_photo_key":null
 			  }
 			  """
-			  

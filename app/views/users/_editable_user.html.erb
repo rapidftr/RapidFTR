@@ -21,7 +21,7 @@
   });
 </script>
 
-<% form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
+<%= form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
   <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
   <fieldset>
@@ -104,6 +104,7 @@
           <%= f.label :permission_unlimited, "Unlimited" %>
         </p>
         <p>
+          <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
           <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
           <%= f.label :permission_limited, "Limited" %>
         </p>

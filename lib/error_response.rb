@@ -9,7 +9,7 @@ class ErrorResponse < StandardError
   def self.unauthorized(message)
     new( 401, message )
   end
-  
+
   def self.not_found(message)
     new( 404, message )
   end
@@ -20,6 +20,6 @@ class ErrorResponse < StandardError
   end
 
   def status_text
-    ActionController::StatusCodes::STATUS_CODES[status_code]
+    Rack::Utils::HTTP_STATUS_CODES[status_code]
   end
 end

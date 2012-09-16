@@ -51,16 +51,16 @@ describe "form_section/index.html.erb" do
     @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :perm_enabled => true
     @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> "false", "order"=>"101", "unique_id"=> "caregiver_details"
     @form_section_3 = FormSection.new "name" => "Family Details", "enabled" =>"true", "order"=>"20", "unique_id"=>"family_details"
-    assigns[:form_sections] = [@form_section_1, @form_section_2, @form_section_3]
+    assign(:form_sections, [@form_section_1, @form_section_2, @form_section_3])
     render
-    @searchable_response = Hpricot(response.body)
+    @searchable_response = Hpricot(rendered)
   end
 
   it "renders a table row for each form section" do
     (@searchable_response.form_section_row_for @form_section_1.unique_id).should_not be_nil
     (@searchable_response.form_section_row_for @form_section_2.unique_id).should_not be_nil
     (@searchable_response.form_section_row_for @form_section_3.unique_id).should_not be_nil
-  end
+ end
 
   it "renders the name of each form section as a link" do
     form_section_names =  @searchable_response.form_section_names

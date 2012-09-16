@@ -9,7 +9,8 @@ Given /^the following children exist in the system:$/ do |children_table|
 						'created_by' => 'Billy',
             'age_is' => 'Approximate'
     )
-    
+    child_hash['flagged_at'] = child_hash['flagged_at'] || DateTime.new(2001,2,3,4,5,6)
+    child_hash['reunited_at'] = child_hash['reunited_at'] || DateTime.new(2012,2,3,4,5,6)
     flag, flag_message = child_hash.delete('flag'), child_hash.delete('flag_message')
     
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
@@ -17,6 +18,9 @@ Given /^the following children exist in the system:$/ do |children_table|
     child = Child.new_with_user_name(child_hash['created_by'], child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
+    child['histories'] ||= []
+    child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything' }}
+    child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => "true"} , 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
     child.create!
 
     # Need this because of how children_helper grabs flag_message from child history - cg

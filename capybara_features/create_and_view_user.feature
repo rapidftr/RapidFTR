@@ -3,18 +3,18 @@ Feature: As an admin, I should be able to create and view users.
   Scenario: To check that an admin creates a user record and is able to view it
     Given I am logged in as an admin
     And I am on manage users page
-    And I follow "New user"
+    And I follow "New User"
 
     When I fill in "George Harrison" for "Full name"
-    And I fill in "george" for "user name"
-    And I fill in "password" for "password"
+    And I fill in "george" for "User name"
+    And I fill in "password" for "Password"
     And I fill in "password" for "Re-enter password"
     And I choose "User"
-    And I fill in "abcd@unicef.com" for "email"
-    And I fill in "8007778339" for "phone"
-    And I fill in "UNICEF" for "organisation"
-    And I fill in "Rescuer" for "position"
-    And I fill in "Amazon" for "location"
+    And I fill in "abcd@unicef.com" for "Email"
+    And I fill in "8007778339" for "Phone"
+    And I fill in "UNICEF" for "Organisation"
+    And I fill in "Rescuer" for "Position"
+    And I fill in "Amazon" for "Location"
     And I press "Create"
 
     Then I should see "User was successfully created."
@@ -42,17 +42,17 @@ Feature: As an admin, I should be able to create and view users.
     Given I am logged in as an admin
     And I am on new user page
 
-    When I fill in "George Bush" for "Full Name"
-    And I fill in "ge or ge" for "user name"
+    When I fill in "George Bush" for "Full name"
+    And I fill in "ge or ge" for "User name"
     And I fill in "pass word" for "password"
     And I fill in "password" for "Re-enter password"
     And I choose "User"
-    And I fill in "abcd@unicef.com" for "email"
+    And I fill in "abcd@unicef.com" for "Email"
     And I press "Create"
 
     Given I am on new user page
-    And I fill in "ge or ge" for "user name"
-    And I fill in "pass word" for "password"
+    And I fill in "ge or ge" for "User name"
+    And I fill in "pass word" for "Password"
 
     When I press "Create"
 
@@ -65,17 +65,17 @@ Feature: As an admin, I should be able to create and view users.
     And a user "george" with a password "password"
     And I am on new user page
 
-    When I fill in "George Bush" for "Full Name"
-    And I fill in "george" for "user name"
-    And I fill in "password" for "password"
+    When I fill in "George Bush" for "Full name"
+    And I fill in "george" for "User name"
+    And I fill in "password" for "Password"
     And I fill in "password" for "Re-enter password"
     And I choose "User"
-    And I fill in "abcd@unicef.com" for "email"
+    And I fill in "abcd@unicef.com" for "Email"
     And I press "Create"
 
     Then I should see "User name has already been taken! Please select a new User name"
 
-    When I fill in "bush" for "user name"
+    When I fill in "bush" for "User name"
     And I press "Create"
 
     Then I should see "George Bush"
@@ -84,13 +84,13 @@ Feature: As an admin, I should be able to create and view users.
 
     Given I am logged in as an admin
     And I am on new user page
-    And I fill in "abcdunicef.com" for "email"
+    And I fill in "abcdunicef.com" for "Email"
 
     When I press "Create"
 
     Then I should see "Please enter a valid email address"
 
-    When I fill in "abcd@unicefcom" for "email"
+    When I fill in "abcd@unicefcom" for "Email"
 
     Then I should see "Please enter a valid email address"
 
@@ -99,12 +99,12 @@ Feature: As an admin, I should be able to create and view users.
     Given I am logged in as an admin
     And I am on new user page
 
-    When I fill in "George Bush" for "Full Name"
-    And I fill in "george1" for "user name"
-    And I fill in "password" for "password"
+    When I fill in "George Bush" for "Full name"
+    And I fill in "george1" for "User name"
+    And I fill in "password" for "Password"
     And I fill in "password" for "Re-enter password"
     And I choose "User"
-    And I fill in "Aaa@Bbbb.com" for "email"
+    And I fill in "Aaa@Bbbb.com" for "Email"
 
     When I press "Create"
 
@@ -121,7 +121,7 @@ Feature: As an admin, I should be able to create and view users.
     Given I am logged in as an admin
     And I am on new user page
 
-    When I fill in "admin" for "user name"
+    When I fill in "admin" for "User name"
 
     When I press "Create"
 

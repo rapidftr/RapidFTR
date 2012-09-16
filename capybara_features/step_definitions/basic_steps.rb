@@ -6,22 +6,16 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
-  steps %Q{
-    When I attach the file "#{photo_path}" to "child[photo]0"
-  }
+    step %Q{I attach the file "#{photo_path}" to "child[photo]0"}
 end
 
 When /^I attach an audio file "([^"]*)"$/ do |audio_path|
-  steps %Q{
-    When I attach the file "#{audio_path}" to "child[audio]"
-  }
+    step %Q{I attach the file "#{audio_path}" to "child[audio]"}
 end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    steps %Q{
-      When I attach the file "#{photo}" to "child[photo]#{i}"
-    }
+    step %Q{I attach the file "#{photo}" to "child[photo]#{i}"}
   end
 end
 
@@ -121,7 +115,7 @@ Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity,
 end
 
 Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
-  page.find("//p[@class='#{button_name.downcase}Button']/a")[:onclick].should =~ /confirm/
+  page.find("//p[@class='#{button_name.downcase}Button']/a")['data-confirm'].should_not be_nil
 end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
@@ -171,15 +165,15 @@ When /^I sleep (\d*) seconds$/ do |sleep_time|
 end
 
 Given /"([^\"]*)" is logged in/ do |user_name|
-  Given "\"#{user_name}\" is the user"
-  Given "I am on the login page"
-  Given "I fill in \"#{user_name}\" for \"User name\""
-  Given "I fill in \"123\" for \"password\""
-  Given "I press \"Log in\""  
+  step "\"#{user_name}\" is the user"
+  step "I am on the login page"
+  step "I fill in \"#{user_name}\" for \"User name\""
+  step "I fill in \"123\" for \"password\""
+  step "I press \"Log in\""
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
-  Given "a user \"#{user_name}\" with a password \"123\""
+  step "a user \"#{user_name}\" with a password \"123\""
 end
 
 Then /^I should not see any errors$/ do
@@ -196,6 +190,43 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
   child_images[0][:src].should have_content(image)
 end
 
+Given /I am logged out/ do
+  step "I go to the logout page"
+end
+
+Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
+  field_labeled(dropdown_label).value.should == selected_text
+end
+
+And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
+  field_ids = Nokogiri::HTML(page.body).css("table tbody tr").map {|row| row[:id] }
+  field_ids.should include("#{field_id}Row")
+end
+
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :help_text => field_help_text)
+  FormSection.add_field_to_formsection(form_section, field)
+end
+
+Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
+  field = Hpricot(page.body).form_field_for(field_name)
+  field.should_not be_nil
+
+  enabled_icon = field.enabled_icon
+  enabled_icon.inner_html.strip.should == expected_text
+end
+
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" disabled$/ do |form_section, field_name |
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :enabled => false)
+  FormSection.add_field_to_formsection(form_section, field)
+end
+
+Then /^I should see errors$/ do
+  Hpricot(page.body).search("div[@class=errorExplanation]").size.should == 1
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
@@ -203,3 +234,4 @@ def click_flag_as_suspect_record_link_for(name)
   visit children_path+"/#{child.id}"
   click_link("Flag as suspect record")
 end
+

@@ -17,12 +17,12 @@ describe "children/_form_section.html.erb" do
         field = Field.new_field("text_field", "name")
         @form_section.add_field(field)
 
-        assigns[:child] = Child.new
-        render :locals => { :form_section => @form_section }
+        @child = Child.new
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
         @form_section.fields.each do |field|
-          response.should have_tag("label[for='#{field.tag_id}']")
-          response.should have_tag("input[id='#{field.tag_id}'][type='text'][name='#{field.tag_name_attribute}']")
+          rendered.should be_include("<label for=\"#{field.tag_id}\">")
+          rendered.should be_include("<input id=\"#{field.tag_id}\" name=\"#{field.tag_name_attribute}\" type=\"text\" />")
         end
       end
     end
@@ -33,10 +33,9 @@ describe "children/_form_section.html.erb" do
         @child = Child.new :name => "Jessica"
         @form_section.add_field(Field.new_field("text_field", "name"))
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("input#child_name", :value => "Jessica")
+        rendered.should be_include("<input id=\"child_name\" name=\"child[name]\" type=\"text\" value=\"Jessica\" />")
       end
     end
   end
@@ -49,11 +48,10 @@ describe "children/_form_section.html.erb" do
         @child = Child.new
         @form_section.add_field Field.new_field("radio_button", "is_age_exact", ["exact", "approximate"])
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='exact']")
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='approximate']")
+        rendered.should be_include("<input id=\"child_isageexact_exact\" name=\"child[isageexact]\" type=\"radio\" value=\"exact\" />")
+        rendered.should be_include("<input id=\"child_isageexact_approximate\" name=\"child[isageexact]\" type=\"radio\" value=\"approximate\" />")
       end
     end
 
@@ -64,11 +62,10 @@ describe "children/_form_section.html.erb" do
 
         @form_section.add_field Field.new_field("radio_button", "is_age_exact", ["exact", "approximate"])
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='exact']")
-        response.should have_tag("input[name='child[isageexact]'][type='radio'][value='approximate'][checked]")
+        rendered.should be_include("<input id=\"child_isageexact_exact\" name=\"child[isageexact]\" type=\"radio\" value=\"exact\" />")
+        rendered.should be_include("<input checked=\"checked\" id=\"child_isageexact_approximate\" name=\"child[isageexact]\" type=\"radio\" value=\"approximate\" />")
       end
     end
   end
@@ -81,14 +78,10 @@ describe "children/_form_section.html.erb" do
         @child = Child.new
         @form_section.add_field Field.new_field("select_box", "date_of_separation", ["1-2 weeks ago", "More than a year ago"])
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("label[for='child_dateofseparation']")
-        response.should have_tag("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
-          select.should have_tag("option[value='1-2 weeks ago']")
-          select.should have_tag("option[value='More than a year ago']")
-        end
+        rendered.should be_include("<label for=\"child_dateofseparation\">")
+        rendered.should be_include("<select id=\"child_dateofseparation\" name=\"child[dateofseparation]\"><option value=\"\" selected=\"selected\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
       end
     end
   end
@@ -99,13 +92,9 @@ describe "children/_form_section.html.erb" do
       @child = Child.new :date_of_separation => "1-2 weeks ago"
       @form_section.add_field Field.new_field("select_box","date_of_separation", ["1-2 weeks ago", "More than a year ago"])
 
-      assigns[:child] = @child
-      render :locals => { :form_section => @form_section }
+      render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-      response.should have_tag("select[name='child[dateofseparation]'][id='child_dateofseparation']") do |select|
-        select.should have_tag("option[value='1-2 weeks ago']")
-        select.should have_tag("option[value='More than a year ago']")
-      end
+      rendered.should be_include("<select id=\"child_dateofseparation\" name=\"child[dateofseparation]\"><option value=\"\" selected=\"selected\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
     end
   end
 
@@ -117,13 +106,12 @@ describe "children/_form_section.html.erb" do
         @child = Child.new
         @form_section.add_field Field.new_field("check_boxes", "siblings", ["Sister", "Brother"])
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("label[for='child_siblings_sister']")
-        response.should have_tag("label[for='child_siblings_brother']")
-        response.should have_tag("input[type='checkbox'][name='child[siblings][]'][value='Sister']")
-        response.should have_tag("input[type='checkbox'][name='child[siblings][]'][value='Brother']")
+        rendered.should be_include("<label class=\"main-label\" for=\"child_siblings\">")
+        rendered.should be_include("<label for=\"child_siblings_brother\">")
+        rendered.should be_include("<input id=\"child_siblings_sister\" name=\"child[siblings][]\" type=\"checkbox\" value=\"Sister\" />")
+        rendered.should be_include("<input id=\"child_siblings_brother\" name=\"child[siblings][]\" type=\"checkbox\" value=\"Brother\" />")
       end
     end
 
@@ -133,12 +121,10 @@ describe "children/_form_section.html.erb" do
         @child = Child.new :relatives => ["Brother", "Sister"]
         @form_section.add_field Field.new_field("check_boxes", "relatives", ["Sister", "Brother", "Cousin"])
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[type='checkbox'][name='child[relatives][]'][checked]") do |checked_tags|
-					checked_tags.map {|checked_tag| checked_tag["value"]}.should =~ ["Brother", "Sister"]
-				end
+        rendered.should be_include("<input checked=\"checked\" id=\"child_relatives_sister\" name=\"child[relatives][]\" type=\"checkbox\" value=\"Sister\" />")
+        rendered.should be_include("<input checked=\"checked\" id=\"child_relatives_sister\" name=\"child[relatives][]\" type=\"checkbox\" value=\"Sister\" />")
       end
 
     end
@@ -151,12 +137,10 @@ describe "children/_form_section.html.erb" do
         @child = Child.new
         @form_section.add_field Field.new_field("date_field", "Some date")
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
-
-        response.should have_tag("label[for='child_some_date']")
-        response.should have_tag("input[type='text'][name='child[some_date]']")
-        response.should have_tag("script[type='text/javascript']", /.*\$\("#child_some_date"\).datepicker.*/)
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
+        rendered.should be_include("label for=\"child_some_date\"")
+        rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" />")
+        rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script>")
       end
     end
 
@@ -166,11 +150,11 @@ describe "children/_form_section.html.erb" do
         @child = Child.new :some_date => "13/05/2004"
         @form_section.add_field Field.new_field("date_field", "Some date")
 
-        assigns[:child] = @child
-        render :locals => { :form_section => @form_section }
+        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        response.should have_tag("input[type='text'][name='child[some_date]'][value='13/05/2004']")
-        response.should have_tag("script[type='text/javascript']", /.*\$\("#child_some_date"\).datepicker.*/)
+
+        rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" value=\"13/05/2004\" />")
+        rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script")
       end
 
     end

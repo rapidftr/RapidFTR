@@ -17,4 +17,3 @@ Feature: Capture caregiver details
     And I should see "Unknown"
     And I should not see "Is child a refugee?:      No"
     And I should see "Yes"
-                      
