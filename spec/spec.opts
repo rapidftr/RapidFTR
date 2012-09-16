@@ -1,4 +1,5 @@
 --colour
 --format progress
---loadby mtime
---reverse
+--order random
+--backtrace
+--profile
