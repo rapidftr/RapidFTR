@@ -1,1 +1,5 @@
 --color
+--format progress
+--order default
+--backtrace
+--profile
