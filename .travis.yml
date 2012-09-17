@@ -1,6 +1,11 @@
+language: ruby
 rvm:
   - 1.8.7
   - 1.9.3
 matrix:
   allow_failures:
     - rvm: 1.9.3
+notifications:
+  irc: "irc.freenode.org#rapidftr"
+services:
+  - couchdb
