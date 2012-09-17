@@ -39,7 +39,7 @@ describe("Manage Users", function() {
         expect(ajaxArgs.data["authenticity_token"]).toEqual(obj.token);
       };
 
-      it("should set enabled user to be disabled", function() {
+      xit("should set enabled user to be disabled", function() {
         clickAndConfirmCheckbox("#user-row-isenabled");
         expectAjaxIsCalledWith({
           url: "isenabled/url",
@@ -49,7 +49,7 @@ describe("Manage Users", function() {
       });
 
 
-      it("should set disabled user to be enabled", function() {
+      xit("should set disabled user to be enabled", function() {
         clickAndConfirmCheckbox("#user-row-isdisabled");
         expectAjaxIsCalledWith({
           url: "isdisabled/url",
