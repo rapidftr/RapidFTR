@@ -61,7 +61,7 @@ ManageUsers.init = function () {
       var userName   = this.getUserName(evt);
       var nextStatus = this.getDisabledStatus(evt) ? "disable" : "enable";
       $('#modal-dialog').dialog('option', {
-        newStatus: this.getDisabledStatus(evt).toString(),
+        newStatus: nextStatus,
         userName : userName,
         title    : "Are you sure you want to " + nextStatus + " this user?"
       });
