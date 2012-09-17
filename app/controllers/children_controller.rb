@@ -2,6 +2,7 @@ class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+  before_filter :control_limited_user_access, :only => [:show, :edit, :edit_photo, :update_photo]
   before_filter :current_user
 
   # GET /children
@@ -164,6 +165,7 @@ class ChildrenController < ApplicationController
       @search = Search.new(params[:query])
       if @search.valid?
         @results = Child.search(@search)
+        @results = @results.select {|child| child['created_by'] == current_user_name} if current_user_is_limited?
       else
         render :search
       end
@@ -274,4 +276,10 @@ class ChildrenController < ApplicationController
     current_user.limited_access? ? Child.all_by_creator(current_user.user_name) : Child.all
   end
 
+  def control_limited_user_access
+    @child = Child.get(params[:id])
+    if current_user_is_limited? and @child['created_by'] != current_user_name
+      redirect_to :controller => :home
+    end
+  end
 end

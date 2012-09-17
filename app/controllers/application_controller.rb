@@ -53,6 +53,11 @@ class ApplicationController < ActionController::Base
     @user = User.find_by_user_name(current_user_name)
   end
 
+  def current_user_is_limited?
+    @user = User.find_by_user_name(current_user_name)
+    return @user.limited_access? unless @user.nil?
+  end
+
   def send_pdf(pdf_data,filename) 
     send_data pdf_data, :filename => filename, :type => "application/pdf"
   end
