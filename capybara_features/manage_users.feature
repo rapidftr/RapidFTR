@@ -3,6 +3,7 @@ Feature: Manage Users
 #Story: Changing user disabled status from user list page
 
   @javascript
+  @wip
   Scenario: Admins should be able to change user disabled status from index page
     Given a user "homersimpson"
       And user "homersimpson" is disabled

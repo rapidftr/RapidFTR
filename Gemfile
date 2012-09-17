@@ -19,6 +19,7 @@ gem 'sunspot',				'1.1.0'
 gem 'tzinfo'
 gem 'rake',           '0.8.7'
 gem 'dynamic_form'
+gem 'jquery-rails'
 
 group :cucumber do
   gem 'cucumber',         '1.2.1'
@@ -27,7 +28,7 @@ group :cucumber do
   gem 'launchy',          '0.4.0'
 end
 
-group :test do
+group :development, :test do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
   gem 'capybara',         '1.0.1'
