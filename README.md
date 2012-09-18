@@ -1,5 +1,6 @@
 RapidFTR
 =============
+[![Build Status](https://secure.travis-ci.org/jorgej/RapidFTR.png)](http://travis-ci.org/jorgej/RapidFTR)
 
 RapidFTR is a mobile application that lets aid workers collect, sort and share information about children in emergency situations. RapidFTR is
 specifically designed to streamline and speed up Family Tracing and Reunification efforts both in the immediate aftermath of a crisis and during ongoing recovery efforts.
