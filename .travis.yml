@@ -9,3 +9,4 @@ notifications:
   irc: "irc.freenode.org#rapidftr"
 services:
   - couchdb
+  - sunspot
