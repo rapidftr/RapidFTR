@@ -9,4 +9,5 @@ notifications:
   irc: "irc.freenode.org#rapidftr"
 services:
   - couchdb
-  - sunspot
+before_script:
+  - bundle exec rake sunspot:start
