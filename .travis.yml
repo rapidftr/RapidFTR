@@ -10,4 +10,4 @@ notifications:
 services:
   - couchdb
 before_script:
-  - bundle exec rake sunspot:start
+  - script/sunspot-travis.sh
