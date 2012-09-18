@@ -105,7 +105,6 @@
         </p>
         <p>
           <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
-          <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
           <%= f.label :permission_limited, "Limited" %>
         </p>
       </dd>
