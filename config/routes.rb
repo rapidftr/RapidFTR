@@ -1,76 +1,75 @@
-ActionController::Routing::Routes.draw do |map|
+RapidFTR::Application.routes.draw do
+  resources :children do
+    collection do
+      get :advanced_search
+      post :export_csv
+      post :export_data
+      get :search
+      post :export_photos_to_pdf
+    end
+    member do
+      get :export_photo_to_pdf
+    end
+    resource :history, :only => :show
+    resources :attachments, :only => :show
+    resource :duplicate, :only => [:new, :create]
+  end
 
-  map.resources :children, :collection => { :search => :get,
-                                            :export_photos_to_pdf => :post,
-                                            :advanced_search => :get,
-                                            :export_csv => :post,
-                                            :export_data => :post},
-                :member => {:export_photo_to_pdf => :get} do |child|
-                  child.resource :history, :only => :show
-                  child.resources :attachments, :only => :show
-                  child.resource :duplicate, :only => [:new, :create]
-                end
-  
-  map.child_ids "/children-ids", :controller => "child_ids", :action => "all"
-  map.edit_photo '/children/:id/photo/edit', :controller => 'children', :action => 'edit_photo', :conditions => {:method => :get }
-  map.update_photo '/children/:id/photo', :controller => 'children', :action => 'update_photo', :conditions => {:method => :put }
-
-  map.photos_index "/children/:child_id/photos_index", :controller => "child_media", :action => "index"
-  map.manage_photos "/children/:child_id/photos", :controller => "child_media", :action => "manage_photos"
-
-  map.child_audio "/children/:child_id/audio/:id", :controller => "child_media", :action => "download_audio"
-  map.child_photo "/children/:child_id/photo/:photo_id", :controller => "child_media", :action => "show_photo"
-  map.child_legacy_photo "/children/:child_id/photo", :controller => "child_media", :action => "show_photo"
-  map.child_select_primary_photo "children/:child_id/select_primary_photo/:photo_id", :controller => "children", :action => "select_primary_photo", :conditions => {:method => :put}
-  map.child_legacy_resized_photo "/children/:child_id/resized_photo/:size", :controller => "child_media", :action => "show_resized_photo"
-  map.child_resized_photo "/children/:child_id/photo/:photo_id/resized/:size", :controller => "child_media", :action => "show_resized_photo"
-  map.child_thumbnail "/children/:child_id/thumbnail/:photo_id", :controller => "child_media", :action => "show_thumbnail", :photo_id => nil
-  map.child_filter "/children/filter/:status", :controller => "children", :action => "index"  
-
-  map.resources :users
-  map.resources :user_preferences
-  map.admin 'admin', :controller=>"admin", :action=>"index"
-  map.resources :sessions, :except => :index
-  map.resources :password_recovery_requests, :only => [:new, :create]
-  map.hide_password_recovery_request 'password_recovery_request/:password_recovery_request_id/hide', :controller => "password_recovery_requests", :action => "hide", :via => :delete
-
-  map.login 'login', :controller=>'sessions', :action =>'new'
-  map.logout 'logout', :controller=>'sessions', :action =>'destroy'
-
-  map.enable_form 'form_section/enable', :controller => 'form_section', :action => 'enable', :value => true, :conditions => {:method => :post}
-  map.disable_form 'form_section/disable', :controller => 'form_section', :action => 'enable', :value => false
-  map.save_order "/form_section/save_form_order", :controller => "form_section", :action => "save_form_order"
-  map.save_order_single "/form_section/save_field_order", :controller => "form_section", :action => "save_field_order"
-
-  map.session_active '/active', :controller => 'sessions', :action => 'active'
-  map.resources :formsections, :controller=>'form_section' do |form_section|
+  match '/children-ids' => 'child_ids#all', :as => :child_ids
+  match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
+  match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
+  match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index
+  match '/children/:child_id/photos' => 'child_media#manage_photos', :as => :manage_photos
+  match '/children/:child_id/audio(/:id)' => 'child_media#download_audio', :as => :child_audio
+  match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo', :as => :child_photo
+  match '/children/:child_id/photo' => 'child_media#show_photo', :as => :child_legacy_photo
+  match 'children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
+  match '/children/:child_id/resized_photo/:size' => 'child_media#show_resized_photo', :as => :child_legacy_resized_photo
+  match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
+  match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
+  match '/children/filter/:status' => 'children#index', :as => :child_filter
+  resources :users
+  resources :user_preferences
+  match 'admin' => 'admin#index', :as => :admin
+  resources :sessions, :except => :index
+  resources :password_recovery_requests, :only => [:new, :create]
+  match 'password_recovery_request/:password_recovery_request_id/hide' => 'password_recovery_requests#hide', :as => :hide_password_recovery_request, :via => :delete
+  match 'login' => 'sessions#new', :as => :login
+  match 'logout' => 'sessions#destroy', :as => :logout
+  match 'form_section/enable' => 'form_section#enable', :as => :enable_form, :via => :post, :value => true
+  match 'form_section/disable' => 'form_section#enable', :as => :disable_form, :value => false
+  match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
+  match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
+  match '/active' => 'sessions#active', :as => :session_active
+  resources :formsections, :controller=>'form_section' do
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
-    additional_field_actions[:new] = :get
-    additional_field_actions[:edit] = :get
-    additional_field_actions[:update] = :post
     additional_field_actions[:move_up] = :post
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
     additional_field_actions[:toggle_fields] = :post
 
-    form_section.resources :fields, :controller => 'fields', :collection => additional_field_actions
+    resources :fields, :controller => 'fields' do
+      collection do
+        additional_field_actions.each do |action, method|
+          send method, action
+        end
+      end
+    end
+  end
+  match 'form_section/:formsection_id/choose_field' => 'fields#choose', :as => :choose_field
+  match '/published_form_sections' => 'publish_form_section#form_sections', :as => :published_form_sections
+  resources :advanced_search, :only => [:index, :new]
+  match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
+  resources :form_section
+  resources :fields
+  resources :contact_information
+  resources :highlight_fields do
+    collection do
+  post :remove
   end
 
-  map.choose_field 'form_section/:formsection_id/choose_field', :controller => 'fields', :action => 'choose'
 
-  map.published_form_sections '/published_form_sections', :controller => 'publish_form_section', :action => 'form_sections'
+  end
 
-  map.resources :advanced_search, :only => [:index, :new]
-  map.advanced_search_index 'advanced_search/index', :controller => 'advanced_search', :action => 'index'
-
-  map.resources :form_section
-
-  map.resources :fields
-
-  map.resources :contact_information
-
-  map.resources :highlight_fields, :collection => { :remove => :post }
-
-  map.root :controller => 'home', :action => :index
-
+  match '/' => 'home#index', :as => :root
 end

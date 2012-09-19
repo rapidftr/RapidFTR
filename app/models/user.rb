@@ -2,6 +2,7 @@ require 'digest/sha2'
 class User < CouchRestRails::Document
   use_database :user
   include CouchRest::Validation
+  include RapidFTR::Model
 
   property :full_name
   property :user_name

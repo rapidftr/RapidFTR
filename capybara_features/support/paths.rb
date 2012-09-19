@@ -63,6 +63,11 @@ module NavigationHelpers
         user = User.find_by_user_name($1)
         edit_user_path(user, options)
 
+      when /user details page for "(.+)"/
+        user = User.find_by_user_name($1)
+        user_path(user, options)
+
+
       when /child search page/
         search_children_path(options)
 
@@ -102,9 +107,10 @@ module NavigationHelpers
         raise "no user named #{$1}" if user.nil?
         edit_user_path(user)
 
-      when /new field page for "(.+)"/
+      when /new field page for "(.+)" for form "(.+)"/
         field_type = $1
-        new_formsection_field_path(:type => field_type)
+        formsection_id = $2
+        new_formsection_field_path(:formsection_id => formsection_id,  :type => field_type)
 
       when /the edit form section page for "(.+)"/
         form_section = $1
@@ -127,7 +133,7 @@ module NavigationHelpers
       when /duplicate child page for "(.+)"$/
         child = Child.by_name(:key => $1).first
         new_child_duplicate_path(child)
-      
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #

@@ -10,7 +10,7 @@
   <%= stylesheet_link_tag 'overcast/jquery-ui-1.8.6.custom.css' %>
   <%= stylesheet_link_tag 'vtip' %>
   <%= yield :stylesheet %>
-  <%= javascript_include_tag "jquery-1.4.3.min.js" %>
+  <%= javascript_include_tag :defaults%>
   <%= javascript_include_tag "jquery-ui-1.8.6.custom.min.js" %>
   <%= javascript_include_tag "jquery.idletimeout.js" %>
   <%= javascript_include_tag "jquery.idletimer.js" %>
@@ -20,7 +20,9 @@
   <%= javascript_include_tag "jquery.rotate.1-1.js" %>
   <%= javascript_include_tag "session_timeout.js" %>
   <%= javascript_include_tag "vtip-min.js" %>
+  <%= csrf_meta_tag %>
   <%= yield :javascript %>
+
 </head>
 <body class="<%= @body_class %>">
 <div class="page-container">
@@ -32,7 +34,7 @@
         <% unless current_user_name.nil? %>
             <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_with_confirm 'Logout', :logout %>)</li>
         <% end %>
-		<li><%= link_with_confirm 'Contact &amp; Help', contact_information_path("administrator")%></li>
+		<li><%= link_with_confirm 'Contact & Help', contact_information_path("administrator")%></li>
 		<li><%= link_with_confirm 'Home', '/'%></li>
         <% unless current_user_name.nil? %>
             <% unless !is_admin? %>
@@ -46,7 +48,7 @@
   </div>
 
   <div class="page-content">
-    <h1><%= @page_name || "&nbsp;" %></h1>
+    <h1><%= @page_name || raw("&nbsp;") %></h1>
 
     <div class="content-section">
       <% if flash[:notice].present? %>

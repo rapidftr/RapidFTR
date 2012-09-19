@@ -1,5 +1,6 @@
 class FormSection < CouchRestRails::Document
   include CouchRest::Validation
+  include RapidFTR::Model
 
   use_database :form_section
   property :unique_id

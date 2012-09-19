@@ -7,5 +7,5 @@ Feature: Retrieving a child photo using the API
       	| name | _id | created_at  	    	| posted_at		| 
       	| Tom  | 1   | 2011-06-22 02:07:51UTC	| 2011-06-22 02:07:51UTC|
 	When I request for the picture of the child with ID 1 and square dimensions of 400 pixels
-	Then I should have received a "200 OK" status code
+	Then I should have received a "200" status code
 

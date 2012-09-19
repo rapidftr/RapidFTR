@@ -14,23 +14,12 @@ And /^that JSON list of elements has these properties:$/ do |properties_table|
   end
 end
 
-And /^that JSON hash of elements strictly has these properties:$/ do |properties_table|
-  
-  json_response = JSON.parse(response_body)
-  json_response.length.should == properties_table.rows.count
-  properties_table.rows.each do |property|
-    lambda {json_response.has_key? property}.should be_true
-  end
-  
-end
 
 And /^that JSON hash of elements has these properties:$/ do |properties_table|
-  
   json_response = JSON.parse(response_body)
   properties_table.rows.each do |property|
     lambda {json_response.has_key? property}.should be_true
   end
-  
 end
 
 And /^that JSON response should be composed of items like (.+)$/ do |json_expectation_string|

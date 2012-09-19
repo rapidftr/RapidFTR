@@ -200,28 +200,20 @@ describe User do
 
   describe "permissions" do
 
-    before { @user = build_user }
-    subject { @user }
-
     context "user with limited permissions" do
-      before do
-        @user.permission = "Limited"
-        @user.save!
-      end
-
-      its(:permission) { should == "Limited" }
+      subject { build_and_save_user :permission => Permission::LIMITED }
 
       it "should have limited access" do
-        @user.limited_access?.should be_true
+        subject.limited_access?.should be_true
       end
     end
 
     context "user with unlimited permissions" do
-      before do
-        @user.permission = "Unlimited"
-        @user.save!
+      subject { build_and_save_user :permission => Permission::UNLIMITED }
+
+      it "should not have limited access" do
+        subject.limited_access?.should be_false
       end
-      its(:permission) { should == "Unlimited" }
     end
   end
 

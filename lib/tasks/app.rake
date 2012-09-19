@@ -1,7 +1,7 @@
 namespace :app do
   desc "Start the server in development mode with Sunspot running"
   task :run => %w( sunspot:stop sunspot:start ) do
-    sh 'script/server'
+    sh 'bundle exec rails server'
   end
 
   desc "Drop and recreate all databases, the solr index, and restart the app if you're running with passenger."

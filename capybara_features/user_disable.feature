@@ -48,4 +48,4 @@ Feature:
     When user "george" is disabled
     And I follow "Register New Child"
 
-    Then I should have received a "401 Unauthorized" status code
+    Then I should see "Unauthorized"

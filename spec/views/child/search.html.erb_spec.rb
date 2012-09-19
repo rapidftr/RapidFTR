@@ -15,18 +15,18 @@ describe "children/search.html.erb" do
         { :name => "field_2", :display_name => "field display 2" },
         { :name => "field_4", :display_name => "field display 4" } ]
       FormSection.stub!(:sorted_highlighted_fields).and_return @highlighted_fields
-      assigns[:user] = @user
-      assigns[:results] = @results
+      assign(:user, @user)
+      assign(:results, @results)
     end
 
     it "should render items for each record in the results" do
       render
 
-      Hpricot(response.body).profiles_list_items.size.should == @results.length
+      Hpricot(rendered).profiles_list_items.size.should == @results.length
     end
 
     it "should show only the highlighted fields for a child" do
-      summary = Child.new(
+      summary = Child.create(
       "_id" => "some_id", "created_by" => "dave",
       "last_updated_at" => time_now(),
       "created_at" => time_now(),
@@ -35,11 +35,11 @@ describe "children/search.html.erb" do
       summary.stub!(:has_one_interviewer?).and_return(true)
       @results = [summary]
 
-      assigns[:results] = @results
+      assign(:results, @results)
 
       render
 
-      fields = Hpricot(response.body).search(".details dl.basic")
+      fields = Hpricot(rendered).search(".details dl.basic")
       fields.search("dt").size.should == @highlighted_fields.size
       fields.search("dd").size.should == @highlighted_fields.size
       fields.search("dt").first.inner_text.should == "field display 2:"
@@ -49,14 +49,14 @@ describe "children/search.html.erb" do
     it "should have a definition list for interview timestamps details for each record in the results" do
       render
 
-      Hpricot(response.body).search(".details dl.interview-timestamp").size.should == @results.length
+      Hpricot(rendered).search(".details dl.interview-timestamp").size.should == @results.length
     end
 
     it "should include a column displaying thumbnails for each child if asked" do
-      assigns[:show_thumbnails] = true
+      assign(:show_thumbnails, true)
       render
 
-      first_content_row = Hpricot(response.body).photos
+      first_content_row = Hpricot(rendered).photos
       first_image_tag = first_content_row.at("img")
       raise 'no image tag' if first_image_tag.nil?
 
@@ -67,7 +67,7 @@ describe "children/search.html.erb" do
     it "should show thumbnails with urls for child details page for each child if asked" do
       render
 
-      first_content_row = Hpricot(response.body).photos
+      first_content_row = Hpricot(rendered).photos
       first_href = first_content_row.at("a")
       first_href.should_not nil
 
@@ -77,7 +77,7 @@ describe "children/search.html.erb" do
     it "should include checkboxes to select individual records" do
       render
 
-      select_check_boxes = Hpricot(response.body).checkboxes
+      select_check_boxes = Hpricot(rendered).checkboxes
       select_check_boxes.length.should == @results.length
       select_check_boxes.each_with_index do |check_box,i|
         check_box['name'].should == "selections[#{i}]"
@@ -88,7 +88,7 @@ describe "children/search.html.erb" do
     it "should include a view link for each record in the result" do
       render
 
-      view_links = Hpricot(response.body).link_for("View")
+      view_links = Hpricot(rendered).link_for("View")
       view_links.length.should == @results.length
       view_links.each_with_index do |link,i|
         link['href'].should == "/children/#{@results[i]['_id']}"
@@ -98,21 +98,21 @@ describe "children/search.html.erb" do
     it "should have a button to export to pdf" do
       render
 
-      export_to_photo_wall = Hpricot(response.body).submit_for("Export to PDF")
+      export_to_photo_wall = Hpricot(rendered).submit_for("Export to PDF")
       export_to_photo_wall.size.should_not == 0
     end
 
     it "should have a button to export to photo wall" do
       render
 
-      export_to_photo_wall = Hpricot(response.body).submit_for("Export to Photo Wall")
+      export_to_photo_wall = Hpricot(rendered).submit_for("Export to Photo Wall")
       export_to_photo_wall.size.should_not == 0
     end
 
     def random_child_summary(id = 'some_id')
-      summary = Child.new("_id" => id, "age_is" => "Approx", "created_by" => "dave",
+      summary = Child.create("age_is" => "Approx", "created_by" => "dave",
       "last_updated_at" => time_now(),
-      "created_at" => time_now(), 
+      "created_at" => time_now(),
       "current_photo_key" => "photo-id")
       summary.stub!(:has_one_interviewer?).and_return(true)
       summary
@@ -122,4 +122,4 @@ describe "children/search.html.erb" do
       Clock.now.strftime("%d %B %Y at %H:%M (%Z)")
     end
   end
-end 
+end

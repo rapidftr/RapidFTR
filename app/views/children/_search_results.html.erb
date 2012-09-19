@@ -1,14 +1,14 @@
 <% has_results = (@results && @results.size > 0) %>
-<%- form_tag export_data_children_path, :method => :post do %>
+<%= form_tag export_data_children_path, :method => :post do %>
   <script type="text/javascript">
   $(document).ready(function()
   {
-  	$("#all").click(function()				
+  	$("#all").click(function()
   	{
   		var checked_status = this.checked;
                 checkToggle(checked_status);
                 $("#allbottom").attr("checked", checked_status);
-        });		
+        });
         $("#allbottom").click(function(){
                 var checked_status = this.checked;
                 checkToggle(checked_status);
@@ -23,7 +23,7 @@
   }
   </script>
 
-  <br /> 
+  <br />
   <div class="profiles-list">
     <% if !@results.nil? && @results.size > 0 %>
     <%= check_box_tag 'all', 'Select all records' %>
@@ -42,5 +42,5 @@
     <%= submit_tag "Export to PDF" if has_results %>
     <%= submit_tag "Export to CSV" if has_results %>
   </div>
-<%-end%>
+<%end%>
 

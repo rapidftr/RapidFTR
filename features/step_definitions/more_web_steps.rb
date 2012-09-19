@@ -158,7 +158,3 @@ end
 When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
 	  check(field_with_id("child_#{checkbox_name}_#{value.dehumanize}"))
 end
-
-
-
-

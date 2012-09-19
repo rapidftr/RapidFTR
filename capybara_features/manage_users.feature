@@ -3,6 +3,7 @@ Feature: Manage Users
 #Story: Changing user disabled status from user list page
 
   @javascript
+  @wip
   Scenario: Admins should be able to change user disabled status from index page
     Given a user "homersimpson"
       And user "homersimpson" is disabled
@@ -75,4 +76,13 @@ Feature: Manage Users
     Then I should not see "Admin"
      And I cannot follow "Admin"
 
+  Scenario: Admins should be able view himself
+    Given I am logged in as an admin
+    And I follow "Admin"
+    And I follow "Manage Users"
+     Then I should see "Show"
+     Then I should see "Edit"
+     Then I should not see "Delete User"
+     Then I should see "Back"
+     Then I should see "New User"
 

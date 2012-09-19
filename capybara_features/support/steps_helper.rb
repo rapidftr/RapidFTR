@@ -1,4 +1,3 @@
-
 def check_link_presence(div, li_class_name, link_text)
   lis = div.all :xpath, "//li[@class=\"#{li_class_name}\"]"
   lis.size.should >= 1

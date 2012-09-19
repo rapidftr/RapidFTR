@@ -6,7 +6,7 @@
 <!-- to hook in / populate the users model in backbone -->
 <script type="text/javascript">
   $(function() {
-      window.Users.refresh(<%= @users_details.to_json %>);
+      window.Users.refresh(<%= raw @users_details.to_json %>);
   });
 </script>
 

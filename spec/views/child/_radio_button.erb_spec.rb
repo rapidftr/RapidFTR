@@ -7,28 +7,26 @@ describe "children/_radio_button.html.erb" do
   end
 
   it "should include image for tooltip when help text exists" do
-    radio_button = Field.new :name => "new field", 
+    radio_button = Field.new :name => "new field",
     :display_name => "field name",
     :type => 'radio_button',
     :option_strings => Array['M', 'F'],
     :help_text => "This is my help text"
-    
-    render :locals => { :radio_button => radio_button}
-  
-    response.should have_tag("img.vtip")
 
+    render :partial => 'children/radio_button.html.erb', :locals => { :radio_button => radio_button}
+
+    rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
   end
 
   it "should not include image for tooltip when help text not exists" do
-    radio_button = Field.new :name => "new field", 
+    radio_button = Field.new :name => "new field",
     :display_name => "field name",
     :type => 'radio_button',
     :option_strings => Array['M', 'F']
-    
-    render :locals => { :radio_button => radio_button}
-  
-    response.should_not have_tag("img.vtip")
 
+    render :partial => 'children/radio_button.html.erb', :locals => { :radio_button => radio_button}
+
+    rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
   end
-  
+
 end

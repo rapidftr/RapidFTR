@@ -1,22 +1,22 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   user_type = user_type == 'user' ? 'User' : 'Administrator'
   @user = User.new(
-    :user_name=>username, 
-    :password=>password, 
-    :password_confirmation=>password, 
-    :user_type=> user_type, 
-    :full_name=>username, 
+    :user_name=>username,
+    :password=>password,
+    :password_confirmation=>password,
+    :user_type=> user_type,
+    :full_name=>username,
     :email=>"#{username}@test.com",
     :permission=> permission ? (permission=='limited' ? Permission::LIMITED : Permission::UNLIMITED) : Permission::UNLIMITED )
   @user.save!
 end
 
 Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
-  Given %(a #{user_type} "#{user_name}" with password "123")
+  step %(a #{user_type} "#{user_name}" with password "123")
 end
 
 Given /^an? (user|admin) "([^"]+)" with "(limited|unlimited)" permission$/ do |user_type, user_name, permission|
-  Given %(a #{user_type} "#{user_name}" with password "123" and "#{permission}" permission)
+  step %(a #{user_type} "#{user_name}" with password "123" and "#{permission}" permission)
 end
 
 Given /^I have an expired session/ do
@@ -49,9 +49,9 @@ Given /^the following admin contact info:$/ do |table|
 end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|
-	Given %Q|I am on the home page|
-  When %Q|I select "#{timezone}" from "Current time zone"|
-  And %Q|I press "Save"|
+	step %Q|I am on the home page|
+  step %Q|I select "#{timezone}" from "Current time zone"|
+  step %Q|I press "Save"|
 end
 
 Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*)"$/ do |field_name, child_name, field_value|
@@ -60,4 +60,8 @@ Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*
   children.should_not be_empty
   child = children.first
   child[field_name.to_s].should == field_value
+end
+
+Given /^a password recovery request for (.+)$/ do |username|
+  PasswordRecoveryRequest.new(:user_name => username).save
 end

@@ -71,12 +71,22 @@ Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
 end
 
 Then /^I should not be able to see (.+)$/ do |page_name|
-  lambda { visit path_to(page_name) }.should raise_error(AuthorizationFailure)
+  visit path_to(page_name)
+  page.status_code.should == 403
 end
 
 Then /^I should be able to see (.+)$/ do |page_name|
-  When "I go to #{page_name}"
-  Then "I should be on #{page_name}"
+  step "I go to #{page_name}"
+  step "I should be on #{page_name}"
+end
+
+And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
+  disbled_checkbox = find(:css, "#user-row-#{username} td.user-status input")
+  if status == "disabled"
+    disbled_checkbox.should be_checked
+  else
+    disbled_checkbox.should_not be_checked
+  end
 end
 
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
@@ -85,4 +95,48 @@ end
 
 Then /^I should not see an audio tag$/ do
   page.body.should_not have_selector("//audio")
+end
+
+When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
+  click_link name_of_tab
+end
+
+Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
+   radios = Nokogiri::HTML(page.body).css(".radioList")
+   radio = radios.detect {|radio| radio.css("dt span").first.text == radio_button}
+   radio.should_not be_nil
+   radio.css("label").map(&:text).should == table.raw.map(&:first)
+end
+
+Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
+  options = table.hashes
+  page.has_select?(dropdown_label, :options => options.collect{|element| element['label']},
+                   :selected => options.collect{|element| element['label'] if element['selected?'] == 'yes'}.compact!)
+end
+
+Then /^I should find the following links:$/ do |table|
+  table.rows_hash.each do |label, named_path|
+    href = path_to(named_path)
+    page.should have_xpath "//a[@href='#{href}' and text()='#{label}']"  end
+end
+
+Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
+	checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
+
+	checkboxes = checkbox_elements.inject({}) do | result,  element |
+		result[element['value']] = !!element[:checked]
+		result
+	end
+
+  table.hashes.each do |expected_checkbox|
+    expected_value = expected_checkbox['value']
+    should_be_checked = (expected_checkbox['checked?'] == 'yes')
+    checkboxes.should have_key expected_value
+		checkboxes[expected_value].should == should_be_checked
+
+  end
+end
+
+When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
+	  page.check("child_#{checkbox_name}_#{value.dehumanize}")
 end

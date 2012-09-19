@@ -1,6 +1,7 @@
 class Field < Hash
   include CouchRest::CastedModel
   include CouchRest::Validation
+  include RapidFTR::Model
   
   property :name
   property :display_name
