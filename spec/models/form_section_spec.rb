@@ -363,14 +363,14 @@ describe FormSection do
         form_section2 = FormSection.new( :name => "Highlight Form2", :fields => [@high_fields[1]] )
         FormSection.stub(:all).and_return([form_section1, form_section2])
       end
-      
+
       it "should get fields that have highlight information" do
         highlighted_fields = FormSection.highlighted_fields
         highlighted_fields.size.should == @high_fields.size
         highlighted_fields.map do |field| field.highlight_information end.should
           include @high_fields.map do |field| field.highlight_information end
       end
-      
+
       it "should sort the highlighted fields by highlight order" do
         sorted_highlighted_fields = FormSection.sorted_highlighted_fields
         sorted_highlighted_fields.map do |field| field.highlight_information.order end.should ==
