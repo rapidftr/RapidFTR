@@ -14,7 +14,7 @@ describe ChildrenHelper do
       child.stub!(:has_one_interviewer?).and_return(true)
       helper.link_to_update_info(child).should be_nil
     end
-    
+
     it "should show link if child has been updated by multiple people" do
       child = Child.new(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith')
       child.stub :has_one_interviewer? => false, :persisted? => true
@@ -52,6 +52,19 @@ describe ChildrenHelper do
       unique_identifier = "AnID"
       child = Child.new(:name => "", :unique_identifier => unique_identifier)
       helper.text_to_identify_child(child).should == unique_identifier
+    end
+  end
+
+  describe "#flag_summary_for_child" do
+    it "should show the flag summary for the child" do
+      @user = mock(:user)
+      @user.stub!(:localize_date).and_return "19 September 2012 at 18:39 (UTC)"
+
+      child = Child.new(:name => "Flagged Child",
+                        :flag_message => "Fake entity",
+                        :histories => [{"datetime"=>"2012-09-19 18:39:05UTC", "changes"=>{"flag"=>{"to"=>"true"}}, "user_name"=>"Admin user 1"}])
+
+      helper.flag_summary_for_child(child).should == {"Flagged By" => "Admin user 1", "On" => "19 September 2012 at 18:39 (UTC)", "Because" => "Fake entity"}
     end
   end
 end

@@ -29,7 +29,13 @@
         <dd><%= summary_row[relevant_field[:name]] %></dd>
       <% end %>
     </dl>
-
+    <% if summary_row['flag'] %>
+      <dl class="flagged-details">
+        <%- flag_summary_for_child(summary_row).each do |key, value| -%>
+          <dt><%= key %>:</dt><dd><%= value %></dd>
+        <%- end -%>
+      </dl>
+    <% end -%>
     <dl class="interviewer-details">
       <dt>Registered by:</dt>
       <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></dd>

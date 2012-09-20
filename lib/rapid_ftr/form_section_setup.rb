@@ -13,7 +13,7 @@ module RapidFTR
         Field.new("name" => "id_document", "display_name" => "Personal ID Document No.", "type" => "text_field"),
         Field.new("name" => "gender", "display_name" => "Sex", "type" => "select_box", "option_strings" => ["", "Male", "Female"]),
         Field.new("name" => "nick_name", "display_name" => "Also Known As (nickname)", "type" => "text_field"),
-        Field.new("name" => "names_origin", "display_name" => "Name(s) given to child after separation?", "type" => "select_box", "option_strings" => ["", "Yes", "No"]),                		
+        Field.new("name" => "names_origin", "display_name" => "Name(s) given to child after separation?", "type" => "select_box", "option_strings" => ["", "Yes", "No"]),
         Field.new("name" => "dob_or_age", "display_name" => "Date of Birth / Age", "type" => "text_field"),
         Field.new("name" => "birthplace", "display_name" => "Birthplace", "type" => "text_field"),
         Field.new("name" => "nationality", "display_name" => "Nationality", "type" => "text_field"),
