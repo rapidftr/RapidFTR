@@ -20,72 +20,73 @@ describe "Child record field view model" do
     @field = Field.new :type => Field::SELECT_BOX, :display_name => @field_name, :option_strings_text => "option 1\noption 2"
     @field.select_options.should == [["(Select...)", ""], ["option 1", "option 1"], ["option 2", "option 2"]]
   end
-
+  
   it "should have form type" do
     @field.type.should == "radio_button"
     @field.form_type.should == "multiple_choice"
   end
-
+  
   it "should create options from text" do
     field = Field.new :display_name => "something", :option_strings_text => "tim\nrob"
-    field['option_strings_text'].should == nil
+    field['option_strings_text'].should == nil    
     field['option_strings'].should == ["tim", "rob"]
   end
-
+  
   it "should have display name with diabled if not enabled" do
     @field.display_name = "pokpok"
     @field.enabled = false
-
+    
     @field.display_name_for_field_selector.should == "pokpok (Disabled)"
-
-  end
-
+    
+  end 
+  
   describe "valid?" do
-
-    it "should not allow blank display name" do
+  
+    it "should not allow blank display name" do  
       field = Field.new(:display_name => "")
       field.valid?
-      field.errors[:display_name].first.should == "can't be blank"
+      field.errors.on(:display_name).first.should == "Display name must not be blank"
     end
 
-    it "should not allow display name without alphabetic characters" do
+    it "should not allow display name without alphabetic characters" do  
       field = Field.new(:display_name => "!@£$@")
       field.valid?.should == false
-      field.errors[:display_name].should include("Display name must contain at least one alphabetic characters")
+      field.errors.on(:display_name).should include("Display name must contain at least one alphabetic characters")
     end
-
-    it "should validate unique within form" do
-      form = FormSection.new(:name => "name", :fields => [Field.new(:name => "other", :display_name => "other")] )
+  
+    it "should validate unique within form" do  
+      form = FormSection.new(:fields => [Field.new(:name => "other", :display_name => "other")] )
       field = Field.new(:display_name => "other", :name => "other")
       form.fields << field
+    
       field.valid?
-      field.errors[:display_name].should ==  ["Field already exists on this form"]
+      field.errors.on(:display_name).should ==  ["Field already exists on this form"] 
     end
-
-    it "should validate radio button has at least 2 options" do
+    
+    it "should validate radio button has at least 2 options" do  
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::RADIO_BUTTON)
-
+    
       field.valid?
-      field.errors[:option_strings].should ==  ["Field must have at least 2 options"]
+      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"] 
     end
-
-    it "should validate select box has at least 2 options" do
+  
+    it "should validate select box has at least 2 options" do  
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::SELECT_BOX)
-
+    
       field.valid?
-      field.errors[:option_strings].should ==  ["Field must have at least 2 options"]
+      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"] 
     end
-
-    it "should validate unique within other forms" do
+    
+    it "should validate unique within other forms" do  
       other_form = FormSection.new(:name => "test form", :fields => [Field.new(:name => "other_test", :display_name => "other test")] )
       other_form.save!
-
+    
       form = FormSection.new
       field = Field.new(:display_name => "other test", :name => "other_test")
       form.fields << field
-
+    
       field.valid?
-      field.errors[:display_name].should ==  ["Field already exists on form 'test form'"]
+      field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"] 
     end
   end
 
@@ -96,11 +97,11 @@ describe "Child record field view model" do
 
       form.save!
       field.should be_enabled
-
+      
       form.destroy
     end
   end
-
+  
   describe "default_value" do
     it "should be empty string for text entry, radio, audio, photo and select fields" do
       Field.new(:type=>Field::TEXT_FIELD).default_value.should == ""
@@ -110,7 +111,7 @@ describe "Child record field view model" do
       Field.new(:type=>Field::RADIO_BUTTON).default_value.should == ""
       Field.new(:type=>Field::SELECT_BOX).default_value.should == ""
     end
-
+    
     it "should be nil for photo/audio upload boxes" do
       Field.new(:type=>Field::PHOTO_UPLOAD_BOX).default_value.should be_nil
       Field.new(:type=>Field::AUDIO_UPLOAD_BOX).default_value.should be_nil
@@ -124,20 +125,20 @@ describe "Child record field view model" do
       lambda {Field.new(:type=>"INVALID_FIELD_TYPE").default_value}.should raise_error
     end
   end
-
+  
   describe "highlight information" do
-
+    
     it "should initialize with empty highlight information" do
       field = Field.new(:name => "No highlight")
       field.is_highlighted?.should be_false
     end
-
+    
     it "should set highlight information" do
       field = Field.new(:name => "highlighted")
       field.highlight_with_order 6
       field.is_highlighted?.should be_true
     end
-
+    
     it "should unhighlight a field" do
       field = Field.new(:name => "new highlighted")
       field.highlight_with_order 1

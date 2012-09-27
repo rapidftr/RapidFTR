@@ -1,8 +1,11 @@
-class PasswordRecoveryRequest < CouchRest::Model::Base
+class PasswordRecoveryRequest < CouchRestRails::Document
   use_database :password_recovery_request
 
+  include CouchRest::Validation
+  include RapidFTR::Model
+
   property :user_name
-  property :hidden, TrueClass, :default => false
+  property :hidden, :cast_as => :boolean, :default => false
 
   timestamps!
 

@@ -47,7 +47,7 @@ Feature: Create new forms
 
     When I press "Save Form"
 
-    Then I should see "Name can't be blank"
+    Then I should see "Name must not be blank"
 
   Scenario: Cancelling the creation of a form
 

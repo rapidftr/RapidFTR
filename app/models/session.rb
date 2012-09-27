@@ -1,26 +1,20 @@
-class Session < CouchRest::Model::Base
+class Session < CouchRestRails::Document
   use_database :sessions
-
+  
+  include RapidFTR::Model
 
   property :user
   property :imei
-  property :expires_at, Time
+  property :expires_at, :cast_as => 'Time', :init_method => 'parse'
 
-  view_by :user_name,
-          :map => "function(doc) {
-                    if ((doc['type'] == 'Session') && (doc['user']['user_name'] != null)) {
-                      emit(doc['user']['user_name'], null);
-                    }
-                  }"
+  view_by :user_name
 
   COOKIE_KEY = 'rftr_session_token'
 
   def self.for_user( user, imei)
-    new_user = user.clone
-    new_user.password = nil
     Session.new(
       :user_name => user.user_name,
-      :user => new_user,
+      :user => user.clone.except("password"),
       :imei => imei
     )
   end
@@ -49,7 +43,7 @@ class Session < CouchRest::Model::Base
   def user_name
     user['user_name']
   end
-
+  
   def full_name
     user['full_name']
   end
@@ -75,12 +69,12 @@ class Session < CouchRest::Model::Base
   def admin?
     user['user_type'] == "Administrator"
   end
-
+  
   def device_blacklisted?
     if (imei)
       return true if Device.all.any? {|device| device.imei == imei && device.blacklisted? }
     end
     false
   end
-
+  
 end

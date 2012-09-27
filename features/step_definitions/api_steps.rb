@@ -4,7 +4,7 @@ When /^I make a request for (.+)$/ do |resource|
 end
 
 And /^that JSON list of elements has these properties:$/ do |properties_table|
-
+  
   json_response = JSON.parse(response_body)
   json_response.each do |item|
     item.keys.length.should == properties_table.rows.count

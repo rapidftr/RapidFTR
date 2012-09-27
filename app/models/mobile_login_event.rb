@@ -1,11 +1,12 @@
-class MobileLoginEvent
-  include CouchRest::Model::Embeddable
+class MobileLoginEvent < Hash
+  include CouchRest::CastedModel
+
   property :imei
   property :mobile_number
-  property :timestamp, Time
+  property :timestamp, :cast_as => 'Time', :init_method => 'parse' 
 
   def initialize properties
     super(properties)
-    self[:timestamp] ||= Time.now.utc
+    self[:timestamp] ||= Clock.now
   end
 end

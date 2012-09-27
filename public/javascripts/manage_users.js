@@ -59,7 +59,7 @@ ManageUsers.init = function () {
 
     confirmChangeDisabledStatus: function(evt){
       var userName   = this.getUserName(evt);
-      var nextStatus = this.getDisabledStatus(evt) ? "true" : "false";
+      var nextStatus = this.getDisabledStatus(evt) ? "disable" : "enable";
       $('#modal-dialog').dialog('option', {
         newStatus: nextStatus,
         userName : userName,

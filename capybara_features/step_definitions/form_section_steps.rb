@@ -46,11 +46,11 @@ Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ 
 end
 
 Then /^I should not be able to promote the field "([^"]*)"$/ do |field|
-  page.should have_selector("//a[@id='#{field}_up' and @style='display: none;']")
+  page.should have_selector("//a[@id='#{field}_up' and @style='display: none;']") 
 end
 
 Then /^I should not be able to demote the field "([^"]*)"$/ do |field|
-   page.should have_selector("//a[@id='#{field}_down' and @style='display: none;']")
+   page.should have_selector("//a[@id='#{field}_down' and @style='display: none;']") 
 end
 
 Then /^I should be able to demote the field "([^"]*)"$/ do |field|
@@ -76,11 +76,11 @@ Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_na
 end
 
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
-  step 'I follow "Add Custom Field"'
-  step 'I follow "Text Field"'
-  step "I fill in \"#{display_name}\" for \"Display name\""
-  step "I fill in \"#{help_text}\" for \"Help text\""
-  step 'I press "Save"'
+  When 'I follow "Add Custom Field"'
+  And 'I follow "Text Field"'
+  And "I fill in \"#{display_name}\" for \"Display name\""
+  And "I fill in \"#{help_text}\" for \"Help text\""
+  And 'I press "Save"'
 end
 
 Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|

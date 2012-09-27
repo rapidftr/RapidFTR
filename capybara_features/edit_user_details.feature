@@ -115,7 +115,7 @@ Scenario: Password field should not be blank if re-enter password field is fille
   Then I follow "Edit"
   And I fill in "pass" for "Re-enter password"
   And I press "Update"
-  Then I should see "Password doesn't match confirmation"
+  Then I should see "Password does not match the confirmation"
 
   #Editing the user with password but no re-enter password
   When I am on the edit user page for "johndoe1"

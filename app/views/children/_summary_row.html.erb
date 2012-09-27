@@ -6,10 +6,10 @@
     </p>
 
     <h3><%= link_to text_to_identify_child(summary_row), child_path(summary_row) %></h3>
-    <% if summary_row['flag']==true%>
+    <% if summary_row['flag']=="true"%>
         <%= image_tag("icon-flag.gif", :alt=> "Flagged",:size => "20x20",:class => 'flag') %>
     <% end %>
-    <% if summary_row['reunited']==true%>
+    <% if summary_row['reunited']=="true"%>
         <%= image_tag("icon-reunited.gif", :alt=> "Reunited",:size => "20x20",:class => 'reunited') %>
     <% end %>
 
@@ -18,7 +18,7 @@
     <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %> | <%= link_to 'Mark as Duplicate', new_child_duplicate_path(summary_row) %></p>
     <% end %>
 	</div>
-
+	
   <p class="photo">
     <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
 		</p>

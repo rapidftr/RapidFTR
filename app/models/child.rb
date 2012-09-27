@@ -1,32 +1,27 @@
-class Child < CouchRest::Model::Base
+class Child < CouchRestRails::Document
   use_database :child
   require "uuidtools"
+  include CouchRest::Validation
+  include RapidFTR::Model
   include Searchable
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
 
-  before_update :update_history
+  before_save :update_history, :unless => :new?
   before_save :update_photo_keys
-  before_validation do
-    self.updated_at = Time.now
-  end
 
   property :age
   property :name
   property :nickname
   property :unique_identifier
-  property :flag, TrueClass
-  property :reunited, TrueClass
-  property :investigated, TrueClass
-  property :duplicate, TrueClass
-  property :histories, :default => []
-  property :last_known_location
-  property :updated_at, Time
-
+  property :flag, :cast_as => :boolean
+  property :reunited, :cast_as => :boolean
+  property :investigated, :cast_as => :boolean
+  property :duplicate, :cast_as => :boolean
 
   view_by :name,
           :map => "function(doc) {
-              if (doc['type'] == 'Child')
+              if (doc['couchrest-type'] == 'Child')
              {
                 if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
                   emit(doc['name'], doc);
@@ -59,7 +54,7 @@ class Child < CouchRest::Model::Base
             }
           }"
 
-  view_by :duplicates_of,
+view_by :duplicates_of,
           :map => "function(doc) {
             if (doc.hasOwnProperty('duplicate_of')) {
               emit(doc['duplicate_of'], doc);
@@ -76,23 +71,23 @@ class Child < CouchRest::Model::Base
 
   view_by :created_by
 
-  validate :validate_photos
-  validate :validate_photos_size
-  validate :validate_audio_file_name
-  validate :validate_audio_size
-  validate :validate_has_at_least_one_field_value
-  validate :validate_text_areas
-  validate :validate_text_fields
-  validate :validate_date_fields
-  validate :validate_numeric_fields
-  validate :validate_created_at
-  validate :validate_last_updated_at
+  validates_with_method :validate_photos
+  validates_with_method :validate_photos_size
+  validates_with_method :validate_audio_file_name
+  validates_with_method :validate_audio_size
+  validates_fields_of_type Field::NUMERIC_FIELD
+  validates_fields_of_type Field::TEXT_FIELD
+  validates_fields_of_type Field::TEXT_AREA
+  validates_fields_of_type Field::DATE_FIELD
+  validates_with_method :validate_has_at_least_one_field_value
+  validates_with_method :created_at, :method => :validate_created_at
+  validates_with_method :last_updated_at, :method => :validate_last_updated_at
 
   def initialize *args
     self['photo_keys'] ||= []
     self['current_photo_key'] = nil
-    self['origin'] = args(args, :origin)
-    super(args.first || {}, {:directly_set_attributes => true})
+    self['histories'] = []
+    super *args
   end
 
   def field_definitions
@@ -122,65 +117,32 @@ class Child < CouchRest::Model::Base
     return true if field_definitions.any? { |field| is_filled_in? field }
     return true if !@file_name.nil? || !@audio_file_name.nil?
     return true if deprecated_fields.any?{|key,value| !value.nil? && value != [] }
-    errors.add(:validate_has_at_least_one_field_value, "Please fill in at least one field or upload a file")
-  end
-
-
-  def validate_numeric_fields
-    field_definitions.each do |field|
-      if field.type == Field::NUMERIC_FIELD
-        errors.add(field.name.to_sym, "#{field.display_name} must be a valid number") if !self[field.name.to_sym].blank? && !self[field.name.to_sym].is_number?
-      end
-    end
-  end
-
-  def validate_text_areas
-    field_definitions.each do |field|
-      if field.type == Field::TEXT_AREA
-        errors.add(field.name.to_sym, "#{field.display_name} cannot be more than 400000 characters long") if self[field.name.to_sym] && self[field.name.to_sym].length > 400000
-      end
-    end
-  end
-
-  def validate_text_fields
-    field_definitions.each do |field|
-      if field.type == Field::TEXT_FIELD
-        errors.add(field.name.to_sym, "#{field.display_name} cannot be more than 200 characters long") if self[field.name.to_sym] && self[field.name.to_sym] .length > 200
-      end
-    end
-  end
-
-  def validate_date_fields
-    field_definitions.each do |field|
-      if field.type == Field::DATE_FIELD
-        errors.add(field.name.to_sym, "#{field.display_name} must follow this format: 4 Feb 2010") unless self[field.name.to_sym] =~ /^\d{1,2}\s[a-zA-Z]{1,3}\s\d{4}$/
-      end
-    end
+    [false, "Please fill in at least one field or upload a file"]
   end
 
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-    errors.add(:base, "Age must be between 1 and 99")
+    [false, "Age must be between 1 and 99"]
   end
 
   def validate_photos
     return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    errors.add(:base ,"Please upload a valid photo file (jpg or png) for this child record")
+    [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
 
   def validate_photos_size
     return true if @photos.blank? || @photos.all?{|photo| photo.size < 10.megabytes }
-    errors.add(:base, "File is too large")
+    [false, "File is too large"]
   end
 
   def validate_audio_size
     return true if @audio.blank? || @audio.size < 10.megabytes
-    errors.add(:base, "File is too large")
+    [false, "File is too large"]
   end
 
   def validate_audio_file_name
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
-    errors.add(:base, "Please upload a valid audio file (amr or mp3) for this child record")
+    [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
 
   def validate_created_at
@@ -190,7 +152,7 @@ class Child < CouchRest::Model::Base
       end
       true
     rescue
-     errors.add(:created_at, 'Created at is not a valid date')
+     [false, '']
     end
   end
 
@@ -201,7 +163,7 @@ class Child < CouchRest::Model::Base
  			end
  			true
  		rescue
-     errors.add(:last_updated_at, 'Last updated at is not a valid date')
+ 			[false, '']
  		end
    end
 
@@ -260,7 +222,7 @@ class Child < CouchRest::Model::Base
   def create_unique_id(user_name)
     unknown_location = 'xxx'
     truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0, 3).downcase
-    self.unique_identifier = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0, 5)
+    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0, 5)
   end
 
   def set_creation_fields_for(user_name)
@@ -478,13 +440,13 @@ class Child < CouchRest::Model::Base
       "duplicate", "duplicate_of"
     ]
 		all_fields = field_names + other_fields
-		all_fields.select { |field_name| is_changed?(field_name) }
+		all_fields.select { |field_name| changed?(field_name) }
   end
 
-  def is_changed?(field_name)
+  def changed?(field_name)
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
-    if self[field_name].respond_to?(:strip) && @from_child[field_name].respond_to?(:strip)
+    if self[field_name].respond_to? :strip
        self[field_name].strip != @from_child[field_name].strip
     else
        self[field_name] != @from_child[field_name]
@@ -496,11 +458,6 @@ class Child < CouchRest::Model::Base
   end
 
   private
-
-  def args(args, key)
-    args.first ? (args.first[key.to_sym] || args.first[key.to_s]) : nil
-  end
-
   def attachment(key)
     data = read_attachment key
     content_type = self['_attachments'][key]['content_type']
@@ -515,7 +472,6 @@ class Child < CouchRest::Model::Base
 
   def deprecated_fields
     system_fields = ["created_at",
-                     "updated_at",
                      "last_updated_at",
                      "last_updated_by",
                      "last_updated_by_full_name",
@@ -525,7 +481,7 @@ class Child < CouchRest::Model::Base
                      "_id",
                      "created_by",
                      "created_by_full_name",
-                     "type",
+                     "couchrest-type",
                      "histories",
                      "unique_identifier",
                      "current_photo_key",

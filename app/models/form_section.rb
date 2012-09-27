@@ -1,16 +1,18 @@
-class FormSection < CouchRest::Model::Base
+class FormSection < CouchRestRails::Document
+  include CouchRest::Validation
+  include RapidFTR::Model
 
   use_database :form_section
   property :unique_id
   property :name
   property :description
   property :help_text
-  property :enabled, TrueClass, :default => true
-  property :order
-  property :fields, [Field]
-  property :editable, TrueClass ,:default => true
-  property :perm_enabled, TrueClass, :default => false
-  property :validations, [String]
+  property :enabled, :cast_as => 'boolean', :default => true
+  property :order, :type      => Integer
+  property :fields, :cast_as => ['Field']
+  property :editable, :cast_as => 'boolean', :default => true
+  property :perm_enabled, :cast_as => 'boolean', :default => false
+  property :validations, :type => [String]
 
   view_by :unique_id
   view_by :order
@@ -19,11 +21,11 @@ class FormSection < CouchRest::Model::Base
 
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
-  validate :validate_unique_name
+  validates_with_method :name, :method => :validate_unique_name
 
-  def initialize *args
+  def initialize args={}
     self["fields"] = []
-    super *args
+    super args
   end
 
   alias to_param unique_id
@@ -36,19 +38,19 @@ class FormSection < CouchRest::Model::Base
     def all_child_field_names
       all_child_fields.map{ |field| field["name"] }
     end
-
+    
     def all_enabled_child_fields
       enabled_by_order.map do |form_section|
         form_section.fields.find_all(&:enabled)
       end.flatten
     end
-
+    
     def all_child_fields
       all.map do |form_section|
         form_section.fields
       end.flatten
     end
-
+    
     def enabled_by_order_without_disabled_fields
       enabled_by_order.each do |form_section|
         form_section['fields'].map! { |field| field if field.enabled }
@@ -56,7 +58,7 @@ class FormSection < CouchRest::Model::Base
       end
     end
   end
-
+  
   def all_text_fields
     self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
   end
@@ -77,10 +79,10 @@ class FormSection < CouchRest::Model::Base
 
   def self.create_new_custom name, description = "", help_text = "", enabled=true
     max_order= (all.map{|form_section| form_section.order}).max || 0
-    form_section = FormSection.new :name=>name,
-                                   :description=>description,
-                                   :help_text=>help_text,
-                                   :enabled=>enabled,
+    form_section = FormSection.new :name=>name, 
+                                   :description=>description, 
+                                   :help_text=>help_text, 
+                                   :enabled=>enabled, 
                                    :order=>max_order+1
     form_section = create! form_section if form_section.valid?
     form_section
@@ -96,7 +98,7 @@ class FormSection < CouchRest::Model::Base
       self[name] = value unless value == nil
     end
   end
-
+  
   def add_text_field field_name
     self["fields"] << Field.new_text_field(field_name)
   end
@@ -104,15 +106,15 @@ class FormSection < CouchRest::Model::Base
   def add_field field
     self["fields"] << Field.new(field)
   end
-
+  
   def update_field_as_highlighted field_name
     field = fields.find {|field| field.name == field_name }
     existing_max_order = FormSection.highlighted_fields.
                                      map(&:highlight_information).
                                      map(&:order).
-                                     max
-    order = existing_max_order.nil? ? 1 : existing_max_order + 1
-    field.highlight_with_order order
+                                     max 
+    order = existing_max_order.nil? ? 1 : existing_max_order + 1 
+    field.highlight_with_order order 
     save
   end
 
@@ -131,11 +133,11 @@ class FormSection < CouchRest::Model::Base
   def self.sorted_highlighted_fields
     highlighted_fields.sort{ |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
   end
-
+  
   def section_name
     unique_id
   end
-
+  
   def is_first field_to_check
     field_to_check == fields.at(0)
   end
@@ -147,7 +149,7 @@ class FormSection < CouchRest::Model::Base
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
     raise "Uneditable field cannot be deleted" if !field.editable?
-    if (field)
+    if (field) 
       field_index = fields.index(field)
       fields.delete_at(field_index)
       save()
@@ -187,12 +189,12 @@ class FormSection < CouchRest::Model::Base
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
     matching_fields.each{ |field| field.enabled = true}
   end
-
+  
   protected
 
   def validate_unique_name
     unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
-    unique || errors.add(:name, "The name '#{name}' is already taken.")
+    unique || [false, "The name '#{name}' is already taken."]
   end
 
   def create_unique_id

@@ -1,7 +1,7 @@
-class HighlightInformation
-  include CouchRest::Model::Embeddable
+class HighlightInformation < Hash
+  include CouchRest::CastedModel
 
-  property :order, :default => "0"
-  property :highlighted, TrueClass, :default => false
-
+  property :order
+  property :highlighted, :cast_as => :boolean, :default => false
+  
 end

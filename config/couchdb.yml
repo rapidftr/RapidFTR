@@ -1,6 +1,6 @@
 base: &base
- prefix: rapidftr
- suffix: <%= Rails.env %>
+ database_prefix: rapidftr_
+ database_suffix: _<%= Rails.env %>
 
 development:
   host: localhost
