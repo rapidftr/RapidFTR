@@ -22,7 +22,7 @@
 </script>
 
 <%= form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
-  <%= f.error_messages :header_tag => :h3 %>
+  <%= error_messages_for :user %>
   <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
   <fieldset>
     <h3>User details</h3>

@@ -1,10 +1,8 @@
-class Device < CouchRestRails::Document
+class Device < CouchRest::Model::Base
   use_database :device
-  
-  include RapidFTR::Model
-  
+
   property :imei
-  property :blacklisted, :cast_as => :boolean
+  property :blacklisted, TrueClass
   property :user_name
-  
+
 end

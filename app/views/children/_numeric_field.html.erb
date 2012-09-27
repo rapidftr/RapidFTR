@@ -5,9 +5,9 @@
         <img class="tool-tip-icon vtip" title="<%=numeric_field.help_text%>" src="/images/tool_tip_icon.gif"/>
       <% end%>
   </span>
-  <% klass = @child.errors.on(numeric_field.name) == nil ? "" : "field-error"%>
+  <% klass = @child.errors[numeric_field.name.to_sym] == nil ? "" : "field-error"%>
   <span class="<%= klass %>">
-    <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %> 
+    <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %>
   </span>
 
 </p>

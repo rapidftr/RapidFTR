@@ -2,7 +2,7 @@ class FieldsController < ApplicationController
 
   before_filter :administrators_only
   before_filter :read_form_section
-  
+
   FIELD_TYPES = %w{ text_field textarea check_box select_box radio_button numeric_field date_field }
 
   def read_form_section
@@ -16,12 +16,12 @@ class FieldsController < ApplicationController
     @page_name = "New #{@field.type.humanize}"
     render params[:fieldtype]
   end
-  
+
   def edit
     @body_class = 'forms-page'
     @field = @form_section.fields.detect {|field| field.name == params[:id] }
   end
-  
+
   def choose
     @body_class = 'forms-page'
     @suggested_fields = SuggestedField.all_unused
@@ -29,10 +29,10 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new params[:field]
-    @field.name = @field.display_name.dehumanize 
-        
+    @field.name = @field.display_name.dehumanize
+
     FormSection.add_field_to_formsection @form_section, @field
-        
+
     if (@field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = "Field successfully added"
@@ -41,7 +41,7 @@ class FieldsController < ApplicationController
       render :action => "new"
     end
   end
-  
+
   def update
     @field = @form_section.fields.detect { |field| field.name == params[:id] }
     @field.attributes = params[:field]
@@ -53,7 +53,7 @@ class FieldsController < ApplicationController
       destination_form.add_field @field
       destination_form.save
     end
-    
+
     if (@field.errors.length == 0)
       flash[:notice] = "Field updated"
       redirect_to(edit_form_section_path(params[:formsection_id]))
@@ -72,7 +72,7 @@ class FieldsController < ApplicationController
     @form_section.move_down_field(params[:field_name])
     redirect_to(edit_form_section_path(params[:formsection_id]))
   end
-  
+
   def delete
     field = @form_section.fields.find { |field| field.name == params[:field_name] }
     @form_section.delete_field(field.name)
@@ -84,7 +84,7 @@ class FieldsController < ApplicationController
     if params[:fields].nil?
       flash[:error] = "Please select atleast one field to #{params[:toggle_fields]}"
       redirect_to(edit_form_section_path(params[:formsection_id])) and return
-    end  
+    end
 
     if(params[:toggle_fields] == 'Hide')
        @form_section.disable_fields(params[:fields])

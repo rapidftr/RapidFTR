@@ -143,8 +143,8 @@ def item_valid(item, json_expectation, expectation_key)
 end
 
 def match_value (input, match_text)
-#  puts input
-#  puts match_text
+  #puts input
+  #puts match_text
   #check simple string match?
   checkval = (input == match_text || match_text == "%SOME_STRING%" )
 

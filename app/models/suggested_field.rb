@@ -1,17 +1,15 @@
-class SuggestedField   < CouchRestRails::Document
+class SuggestedField   < CouchRest::Model::Base
   use_database :suggested_field
-  
-  include RapidFTR::Model
 
   property :unique_id
   property :name
   property :display_name
   property :help_text
-  property :field, :cast_as => 'Field'
-  property :is_used, :cast_as => 'boolean'
+  property :field, Field
+  property :is_used, TrueClass
 
   view_by :is_used , :map=> "function(doc) {
-  if ((doc['couchrest-type'] == 'SuggestedField') ) {
+  if ((doc['type'] == 'SuggestedField') ) {
     emit(doc['is_used'], null);
   }
 }"
@@ -26,7 +24,7 @@ class SuggestedField   < CouchRestRails::Document
   def self.get_by_unique_id unique_id
     self.by_unique_id(:key=>unique_id).first
   end
-  def self.all_unused 
+  def self.all_unused
     return self.by_is_used(:key=>false)
   end
 

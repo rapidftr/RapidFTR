@@ -84,9 +84,8 @@ describe User do
 
     reloaded_user = User.get( user.id )
 
-    reloaded_user.should_not == user
-    reloaded_user.should_not eql(user)
-    reloaded_user.should_not equal(user)
+    reloaded_user.should == user
+    reloaded_user.should eql(user)
   end
 
   it "can't authenticate which isn't saved" do
@@ -122,22 +121,22 @@ describe User do
   it "should be able to store a mobile login event" do
     imei = "1337"
     mobile_number = "555-555"
-    now = Time.parse("2008-06-21 13:30:00 UTC")
-    
+    Timecop.freeze(Time.now)
+    now = Time.now.utc
+
     user = build_user
     user.create!
 
-    Clock.stub!(:now).and_return(now)
-
     user.add_mobile_login_event(imei, mobile_number)
     user.save
-    
+
     user = User.get(user.id)
     event = user.mobile_login_history.first
 
-    event[:imei].should == imei
-    event[:mobile_number].should == mobile_number
-    event[:timestamp].should == now
+    event.imei.should == imei
+    event.mobile_number.should == mobile_number
+    event.timestamp.to_s.should == now.to_s
+    Timecop.return
   end
 
   it "should store list of devices when new device is used" do
@@ -169,10 +168,8 @@ describe User do
     user = build_and_save_user(:user_name => "timothy")
     user.devices = [{"imei" => "1234", "blacklisted" => "true", :user_name => "timothy"}]
     user.save!
-
     blacklisted_device = user.devices.detect { |device| device.imei == "1234" }
     blacklisted_device.blacklisted.should == true
-
   end
 
   it "should have error on password_confirmation if no password_confirmation" do
@@ -219,7 +216,7 @@ describe User do
 
   describe "#user_assignable?" do
     before { @user = build_user }
-    it "user_type should not be assignable" do 
+    it "user_type should not be assignable" do
       should_not_assignable :user_type
     end
     it "permission should not be assignable" do

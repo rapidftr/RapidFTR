@@ -15,9 +15,9 @@ class FlaggedChildrenComposer
 
   def sort(children)
     if order == 'most recently flagged'
-      children.sort!{ |x,y| y['flagged_at'] <=> x['flagged_at'] }
+      children.sort_by{ |child| child['flagged_at'] || Time.now}.reverse!
     else
-      children.sort!{ |x,y| x['name'] <=> y['name'] }
+      children.sort_by{ |child| child['name'] || "" }
     end
   end
 

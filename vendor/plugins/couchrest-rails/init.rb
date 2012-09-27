@@ -4,9 +4,9 @@ require 'couch_rest_rails'
   begin
     require g
   rescue LoadError
-    puts "Could not load required gem '#{g}'" 
+    puts "Could not load required gem '#{g}'"
     exit
   end
 end
 
-require 'couchrest/custom_fields_validator'
+#require 'couchrest/custom_fields_validator'

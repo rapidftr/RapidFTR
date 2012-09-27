@@ -1,12 +1,10 @@
-class Summary < CouchRestRails::Document
+class Summary < CouchRest::Model::Base
   END_CHAR_AVOIDER = "aa"
   use_database :child
-  
-  include RapidFTR::Model
 
   view_by :name,
           :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'Child') && doc['name'])
+              if ((doc['type'] == 'Child') && doc['name'])
              {
                 emit(doc['name'],doc);
              }
@@ -14,19 +12,19 @@ class Summary < CouchRestRails::Document
 
   view_by :unique_identifier,
           :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'Child') && doc['unique_identifier'])
+              if ((doc['type'] == 'Child') && doc['unique_identifier'])
              {
                 emit(doc['unique_identifier'],doc);
              }
           }"
-  
+
   def self.basic_search(child_name, unique_id)
     results = search_by_unique_identifier(unique_id)
     results = search_by_name(child_name) if results.nil?
 
     return [] unless results
 
-    results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]} 
+    results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]}
   end
 
   def self.and_arrays(*arrays)

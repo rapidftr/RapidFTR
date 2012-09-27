@@ -1,6 +1,7 @@
 source :gemcutter
 
-gem 'couchrest',      '0.34'
+gem 'couchrest',      '1.1.2'
+gem 'couchrest_model','1.1.2'
 gem 'dictionary',     '1.0.0'
 gem 'fastercsv',      '1.5.3'
 gem 'hoptoad_notifier', '2.4.2'
@@ -11,7 +12,7 @@ gem 'mini_magick',    '1.3.2'
 gem 'pdf-reader',     '0.8.6'
 gem 'prawn',          '0.8.4'
 gem 'rails',          '3.0.15'
-gem 'rest-client',    '1.3.0'
+gem 'rest-client',    '1.6.1'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
@@ -31,6 +32,7 @@ end
 group :development, :test do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
+  gem 'timecop',          '0.5.2'
   gem 'capybara',         '1.0.1'
   gem 'selenium-webdriver', '2.24.0'
   gem 'jasmine'

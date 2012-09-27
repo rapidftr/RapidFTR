@@ -1,8 +1,6 @@
 require 'digest/sha2'
-class User < CouchRestRails::Document
+class User < CouchRest::Model::Base
   use_database :user
-  include CouchRest::Validation
-  include RapidFTR::Model
 
   property :full_name
   property :user_name
@@ -14,8 +12,8 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
-  property :disabled, :cast_as => :boolean
-  property :mobile_login_history, :cast_as => ['MobileLoginEvent']
+  property :disabled, TrueClass
+  property :mobile_login_history, [MobileLoginEvent], :default => []
   property :time_zone, :default => "UTC"
   property :permission
   attr_accessor :password_confirmation, :password
@@ -24,16 +22,12 @@ class User < CouchRestRails::Document
 
   timestamps!
 
-  view_by :user_name,
-    :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-             {
-                emit(doc['user_name'],doc);
-             }
-          }"
+  design do
+    view :by_user_name
+  end
   view_by :full_name,
   :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+              if ((doc['type'] == 'User') && doc['full_name'])
              {
                 emit(doc['full_name'],doc);
              }
@@ -52,26 +46,27 @@ class User < CouchRestRails::Document
   validates_presence_of :user_type,:message=>"Please choose a user type"
   validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
 
-  validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
-  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
+  validates_format_of :user_name, :with => /^[^ ]+$/, :message=>"Please enter a valid user name"
+  validates_format_of :password, :with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
 
-  validates_format_of :email, :as => :email_address, :if => :email_entered?
+  validates_presence_of :email
 
   validates_format_of :email, :with =>  /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message =>"Please enter a valid email address"
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
-  validates_with_method   :user_name, :method => :is_user_name_unique
-  validates_with_method   :permission, :method => :is_valid_permission_level
+  validate :is_user_name_unique
+  validate :is_valid_permission_level
 
 
   def self.find_by_user_name(user_name)
-     User.by_user_name(:key => user_name.downcase).first
+    return nil if user_name.blank?
+    User.by_user_name(:key => user_name.downcase).first
   end
 
-  def initialize args={}
-    self["mobile_login_history"] = []
-    super args
+  def initialize *args
+    self.mobile_login_history = []
+    super *args
   end
 
   def email_entered?
@@ -81,7 +76,7 @@ class User < CouchRestRails::Document
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
     return true if user.nil? or self.id == user.id
-    [false, "User name has already been taken! Please select a new User name"]
+    errors.add(:user_name, "User name has already been taken! Please select a new User name")
   end
 
   def authenticate(check)
@@ -117,6 +112,7 @@ class User < CouchRestRails::Document
     @devices = device_hashes.map do |device_hash|
       device = all_devices.detect { |device| device.imei == device_hash["imei"] }
       device.blacklisted = device_hash["blacklisted"] == "true"
+      device.save!
       device
     end
   end
@@ -163,6 +159,6 @@ class User < CouchRestRails::Document
 
   def is_valid_permission_level
     return true if [Permission::LIMITED, Permission::UNLIMITED].include?(permission)
-    [ false, "Invalid Permission Level" ]
+    errors.add(:permission, "Invalid Permission Level")
   end
 end

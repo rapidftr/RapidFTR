@@ -1,8 +1,5 @@
-class ContactInformation < CouchRestRails::Document
+class ContactInformation < CouchRest::Model::Base
   use_database :contact_information
-
-  include CouchRest::Validation
-  include RapidFTR::Model
 
   property :id
   property :name
@@ -19,6 +16,7 @@ class ContactInformation < CouchRestRails::Document
     raise ErrorResponse.not_found("Cannot find ContactInformation with id #{id}") if result.nil?
     return result
   end
+
   def self.get_or_create id
     result = self.all.select{|x|x.id==id}.first
     return result if !result.nil?
