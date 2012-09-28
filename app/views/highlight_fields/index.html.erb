@@ -11,7 +11,7 @@
       <tr class="add-field-section">
        <td></td>
        <td></td>
-       <td><a class="add_field">add</a></td>
+       <td><a href="javascript:void(0)" class="add_field">add</a></td>
       </tr>
     </tbody>
   </table>
@@ -62,7 +62,7 @@ $(".remove_field").live("click", function(){
 });
 
 <% if @highlighted_fields %>
-  $(".add-field-section").before($("#highlight-field-template").tmpl(<%=@highlighted_fields.to_json %>));
+  $(".add-field-section").before($("#highlight-field-template").tmpl(<%=raw @highlighted_fields.to_json %>));
 <% end %>
 
 </script>
