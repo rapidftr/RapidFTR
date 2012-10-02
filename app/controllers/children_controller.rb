@@ -251,7 +251,7 @@ class ChildrenController < ApplicationController
   end
 
   def load_child_or_redirect
-    @child = Child.get(params[:id])
+    @child ||= Child.get(params[:id])
 
     return unless request.format.html?
 
@@ -277,7 +277,7 @@ class ChildrenController < ApplicationController
   end
 
   def control_limited_user_access
-    @child = Child.get(params[:id])
+    @child ||= Child.get(params[:id])
     if current_user.limited_access? and @child['created_by'] != current_user_name
       redirect_to :controller => :home
     end
