@@ -202,10 +202,14 @@ view_by :duplicates_of,
     return [] unless search.valid?
 
     query = search.query
-    children = sunspot_search("unique_identifier_text:#{query}")
+    created_by = search.limitation[:created_by] if search.limitation.key?(:created_by)
+    search_text = "unique_identifier_text:#{query}"
+    search_text += "AND created_by_text:#{created_by}" if !created_by.nil?
+    children = sunspot_search(search_text)
     return children if children.length > 0
-
-    SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
+    criteria = [SearchCriteria.new(:field => "name", :value => query)]
+    criteria += [SearchCriteria.new(:field => "created_by", :value => created_by, :join => "AND")] if !created_by.nil?
+    SearchService.search criteria
   end
 
   def self.flagged

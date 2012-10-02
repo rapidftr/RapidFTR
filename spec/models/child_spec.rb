@@ -49,79 +49,89 @@ describe Child do
     
     it "should return empty array if search is not valid" do
       search = mock("search", :query => "", :valid? => false)
-      Child.search(search).should == []      
+      Child.search(search).should == []
     end
-    
+
     it "should return empty array for no match" do
-      search = mock("search", :query => "Nothing", :valid? => true)
+      search = mock("search", :query => "Nothing", :valid? => true, :limitation => {})
       Child.search(search).should == []
     end
 
     it "should return an exact match" do
       create_child("Exact")
-      search = mock("search", :query => "Exact", :valid? => true)
+      search = mock("search", :query => "Exact", :valid? => true, :limitation => {})
       Child.search(search).map(&:name).should == ["Exact"]
     end
-  
+
     it "should return a match that starts with the query" do
       create_child("Starts With")
-      search = mock("search", :query => "Star", :valid? => true)      
+      search = mock("search", :query => "Star", :valid? => true, :limitation => {})
       Child.search(search).map(&:name).should == ["Starts With"]
     end
-    
+
     it "should return a fuzzy match" do
       create_child("timithy")
       create_child("timothy")
-      search = mock("search", :query => "timothy", :valid? => true)      
+      search = mock("search", :query => "timothy", :valid? => true, :limitation => {})
       Child.search(search).map(&:name).should =~ ["timithy", "timothy"]
     end
-    
+
     it "should return children that have duplicate as nil" do
       child_active = Child.create(:name => "eduardo aquiles")
       child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
 
-      search = mock("search", :query => "aquiles", :valid? => true)
+      search = mock("search", :query => "aquiles", :valid? => true, :limitation => {})
       result = Child.search(search)
-      
+
       result.map(&:name).should == ["eduardo aquiles"]
     end
-    
+
     it "should return children that have duplicate as false" do
       child_active = Child.create(:name => "eduardo aquiles", :duplicate => false)
       child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
 
-      search = mock("search", :query => "aquiles", :valid? => true)
+      search = mock("search", :query => "aquiles", :valid? => true, :limitation => {})
       result = Child.search(search)
-      
+
       result.map(&:name).should == ["eduardo aquiles"]
     end
-    
+
     it "should search by exact match for unique id" do
       uuid = UUIDTools::UUID.random_create.to_s
       Child.create("name" => "kev", :unique_identifier => uuid, "last_known_location" => "new york")
       Child.create("name" => "kev", :unique_identifier => UUIDTools::UUID.random_create, "last_known_location" => "new york")
-      search = mock("search", :query => uuid, :valid? => true)      
+      search = mock("search", :query => uuid, :valid? => true, :limitation => {})
       results = Child.search(search)
       results.length.should == 1
       results.first[:unique_identifier].should == uuid
     end
-    
+
     it "should match more than one word" do
-      create_child("timothy cochran") 
-      search = mock("search", :query => "timothy cochran", :valid? => true)           
+      create_child("timothy cochran")
+      search = mock("search", :query => "timothy cochran", :valid? => true, :limitation => {})
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
-    
+
     it "should match more than one word with fuzzy search" do
-      create_child("timothy cochran")      
-      search = mock("search", :query => "timithy cichran", :valid? => true)           
+      create_child("timothy cochran")
+      search = mock("search", :query => "timithy cichran", :valid? => true, :limitation => {})
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
-    
+
     it "should match more than one word with starts with" do
       create_child("timothy cochran")
-      search = mock("search", :query => "timo coch", :valid? => true)                 
+      search = mock("search", :query => "timo coch", :valid? => true, :limitation => {})
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
+    end
+
+    it "should return children create by specific user when limitation is provided" do
+      uuid = UUIDTools::UUID.random_create.to_s
+      Child.create("name" => "kev", :unique_identifier => uuid, "last_known_location" => "new york", :created_by => "user")
+      Child.create("name" => "kev", :unique_identifier => UUIDTools::UUID.random_create, "last_known_location" => "new york", :created_by => "other")
+      search = mock("search", :query => "kev", :valid? => true, :limitation => {:created_by => "user"})
+      results = Child.search(search)
+      results.length.should == 1
+      results.first[:unique_identifier].should == uuid
     end
   end
 
@@ -176,17 +186,17 @@ describe Child do
     end
 
   end
-  
+
   describe "validation" do
 
-    it "should fail to validate if all fields are nil" do      
+    it "should fail to validate if all fields are nil" do
       child = Child.new
       FormSection.stub!(:all_enabled_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
       child.should_not be_valid
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
 
-    it "should fail to validate if all fields on child record are the default values" do      
+    it "should fail to validate if all fields on child record are the default values" do
       child = Child.new({:height=>"",:reunite_with_mother=>""})
       FormSection.stub!(:all_enabled_child_fields).and_return [
                 Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
@@ -195,17 +205,17 @@ describe Child do
       child.should_not be_valid
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
-    
+
     it "should validate numeric types" do
       fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
       child = Child.new
       child[:height] = "very tall"
       FormSection.stub!(:all_enabled_child_fields).and_return(fields)
-      
+
       child.should_not be_valid
       child.errors.on(:height).should == ["height must be a valid number"]
     end
-    
+
     it "should validate multiple numeric types" do
       fields = [
         {:type => 'numeric_field', :name => 'height', :display_name => "height"},
@@ -214,7 +224,7 @@ describe Child do
       child[:height] = "very tall"
       child[:new_age] = "very old"
       FormSection.stub!(:all_enabled_child_fields).and_return(fields)
-      
+
       child.should_not be_valid
       child.errors.on(:height).should == ["height must be a valid number"]
       child.errors.on(:new_age).should == ["new age must be a valid number"]
@@ -222,7 +232,7 @@ describe Child do
 
     it "should disallow text field values to be more than 200 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
-          [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"), 
+          [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
            Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
       child = Child.new :name => ('a' * 201)
       child.should_not be_valid
@@ -240,7 +250,7 @@ describe Child do
     it "should allow text area values to be 400,000 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
           [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-      child = Child.new :a_textfield => ('a' * 400_000)      
+      child = Child.new :a_textfield => ('a' * 400_000)
       child.should be_valid
     end
 
@@ -332,7 +342,7 @@ describe Child do
   end
 
   describe 'save' do
-    
+
     it "should not save file formats that are not photo formats" do
       child = Child.new
       child.photo = uploadable_photo_gif
@@ -340,14 +350,14 @@ describe Child do
       child.photo = uploadable_photo_bmp
       child.save.should == false
     end
-    
+
     it "should save file based on content type" do
       child = Child.new
       photo = uploadable_jpg_photo_without_file_extension
       child.photo = photo
       child.save.should == true
     end
-    
+
     it "should not save with file formats that are not supported audio formats" do
       child = Child.new
       child.audio = uploadable_photo_gif
@@ -361,7 +371,7 @@ describe Child do
       child.audio = uploadable_audio_ogg
       child.save.should == false
     end
-    
+
     it "should save blank age" do
       child = Child.new({:age => "", :another_field=>"blah"})
       child.save.should == true
@@ -486,12 +496,12 @@ describe Child do
     before(:each) do
       Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 17:10:32"))
     end
-    
+
     context "with no photos" do
       it "should have an empty set" do
         Child.new.photos.should be_empty
       end
-      
+
       it "should not have a primary photo" do
         Child.new.primary_photo.should be_nil
       end
@@ -518,13 +528,13 @@ describe Child do
       it "should have corrent number of photos after creation" do
         child.photos.size.should eql 2
       end
-      
+
       it "should return the first photo as a primary photo" do
         child.primary_photo.should match_photo uploadable_photo_jeff
       end
 
     end
-    
+
     context "when rotating an existing photo" do
 
       let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}
@@ -532,7 +542,7 @@ describe Child do
       before(:each) do
        Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       end
-      
+
       it "should become the primary photo" do
         existing_photo = child.primary_photo
         child.rotate_photo(180)
@@ -540,13 +550,13 @@ describe Child do
         #TODO: should be a better way to check rotation other than stubbing Minimagic ?
         child.primary_photo.should_not match_photo existing_photo
       end
-      
+
       it "should delete the original orientation" do
         existing_photo = child.primary_photo
         child.rotate_photo(180)
         child.save
         child.primary_photo.name.should eql existing_photo.name
-        existing_photo.should_not match_photo child.primary_photo  
+        existing_photo.should_not match_photo child.primary_photo
         child.photos.size.should eql 1
       end
 
@@ -936,39 +946,39 @@ describe Child do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child.has_one_interviewer?.should be_true
     end
-    
+
     it "should be true if was created and updated by the same person" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"}, 
-                                          "age"=>{"from"=>"1", "to"=>"15"}}, 
-                                          "user_name"=>"john", 
-                                          "datetime"=>"03/02/2011 21:48"}, 
-                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
-                                         "datetime"=>"03/02/2011 21:34", 
-                                         "user_name"=>"john"}, 
-                             {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
-                                          "user_name"=>"john", 
+      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
+                                          "age"=>{"from"=>"1", "to"=>"15"}},
+                                          "user_name"=>"john",
+                                          "datetime"=>"03/02/2011 21:48"},
+                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                                         "datetime"=>"03/02/2011 21:34",
+                                         "user_name"=>"john"},
+                             {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                                          "user_name"=>"john",
                                           "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'john'
       child.has_one_interviewer?.should be_true
     end
-    
+
     it "should be false if created by one person and updated by another" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"}, 
-                                          "age"=>{"from"=>"1", "to"=>"15"}}, 
-                                          "user_name"=>"jane", 
-                                          "datetime"=>"03/02/2011 21:48"}, 
-                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
-                                         "datetime"=>"03/02/2011 21:34", 
-                                         "user_name"=>"john"}, 
-                             {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}}, 
-                                          "user_name"=>"john", 
+      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
+                                          "age"=>{"from"=>"1", "to"=>"15"}},
+                                          "user_name"=>"jane",
+                                          "datetime"=>"03/02/2011 21:48"},
+                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                                         "datetime"=>"03/02/2011 21:34",
+                                         "user_name"=>"john"},
+                             {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                                          "user_name"=>"john",
                                           "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'jane'
       child.has_one_interviewer?.should be_false
     end
-    
+
   end
 
   describe "when fetching children" do
@@ -1006,7 +1016,7 @@ describe Child do
     end
 
   end
-  
+
   describe ".audio" do
 
     it "should return nil if the record has no audio" do
@@ -1015,7 +1025,7 @@ describe Child do
     end
 
   end
- 
+
   describe "primary_photo =" do
 
     before :each do
@@ -1052,7 +1062,7 @@ describe Child do
       Child.all.each { |child| child.destroy }
       Child.duplicates.each { |child| child.destroy }
     end
-    
+
     it "should set the duplicate field" do
       child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
       child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
@@ -1060,7 +1070,7 @@ describe Child do
       child_duplicate.duplicate?.should be_true
       child_duplicate.duplicate_of.should == child_active.id
     end
-    
+
     it "should return all duplicate records" do
       record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
       record_duplicate = create_duplicate(record_active)
