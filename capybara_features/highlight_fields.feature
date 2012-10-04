@@ -1,3 +1,4 @@
+@wip
 Feature: So that I can select fields to be highlighted in view children page
 
   Background:
