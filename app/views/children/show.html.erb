@@ -1,17 +1,17 @@
 <% content_for :javascript do %>
-    <%= javascript_include_tag "jquery.lightbox-0.5.min" %>
-    <%= javascript_include_tag "jquery.jplayer.min" %>
-    <script type="text/javascript" language="javascript">
-        $(function() {
-            $('.profile-image .image a').lightBox({fixedNavigation:true, 
-                                                  imageLoading:			'/images/lightbox-ico-loading.gif',
-                                            			imageBtnPrev:			'/images/lightbox-btn-prev.gif',	
-                                            			imageBtnNext:			'/images/lightbox-btn-next.gif',	
-                                            			imageBtnClose:			'/images/lightbox-btn-close.gif',
-                                            			imageBlank:				'/images/lightbox-blank.gif'			
-                                          			});
+  <%= javascript_include_tag "jquery.lightbox-0.5.min" %>
+<%= javascript_include_tag "jquery.jplayer.min" %>
+<script type="text/javascript" language="javascript">
+$(function() {
+  $('.profile-image .image a').lightBox({fixedNavigation:true,
+                                        imageLoading:			'/images/lightbox-ico-loading.gif',
+                                        imageBtnPrev:			'/images/lightbox-btn-prev.gif',
+                                        imageBtnNext:			'/images/lightbox-btn-next.gif',
+                                        imageBtnClose:			'/images/lightbox-btn-close.gif',
+                                        imageBlank:				'/images/lightbox-blank.gif'
+  });
 
-            $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
+  $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
 
             $(".profile-tools .mark-as-form").hide();
             $(".profile-tools .flag a").click( function(){
@@ -24,49 +24,49 @@
                 $(this).parent().siblings('form').children('.mark-as-form').toggle();
             });
 
-            $(".mark-as-submit").click(function(){
-                if(!$(this).siblings('input[type=text]').val()){
-                  alert($(this).attr('data-error-message'));
-                  return false;
-                }
-            });
+  $(".mark-as-submit").click(function(){
+    if(!$(this).siblings('input[type=text]').val()){
+      alert($(this).attr('data-error-message'));
+      return false;
+    }
+  });
 
-            $('.sub_export_record').hide();
+  $('.sub_export_record').hide();
 
-            $('.export_record_link').click( function(e) {
-              e.preventDefault();
-            });
+  $('.export_record_link').click( function(e) {
+    e.preventDefault();
+  });
 
-            $('.export_record').click( function(e) {
-              var $sub = $(this).find(".sub_export_record");
+  $('.export_record').click( function(e) {
+    var $sub = $(this).find(".sub_export_record");
 
-              if ( $sub.is(":hidden") ) {
-                $sub.slideDown("slow");
-              }
-              else {
-                  $sub.hide();
-              }
-            });
+    if ( $sub.is(":hidden") ) {
+      $sub.slideDown("slow");
+    }
+    else {
+      $sub.hide();
+    }
+  });
 
-        });
-    </script>
+});
+</script>
 <% end %>
 <% content_for :stylesheet do %>
-    <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
+  <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
 <% end %>
 
 <% if @child.reunited? %>
-    <div class="reunited-message"><%= reunited_message %></div>
+  <div class="reunited-message"><%= reunited_message %></div>
 <% end %>
 <% if @child.flag? %>
-    <h3 class="flag-message"><%= flag_message %></h3>
+  <h3 class="flag-message"><%= flag_message %></h3>
 <% end %>
 <% if @child.duplicate? %>
-    <h3 class="duplicate-message"><%= duplicate_message %></h3>
+  <h3 class="duplicate-message"><%= duplicate_message %></h3>
 <% end %>
 <% unless @duplicates.empty? %>
-    <h3 class="duplicate-message">Another record has been marked as a duplicate of this one. Click 
-      <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
+  <h3 class="duplicate-message">Another record has been marked as a duplicate of this one. Click
+  <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
 <% end %>
 <br><br>
 <%= toolbar_for_child(@child) %>
@@ -75,11 +75,12 @@
   <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @user.localize_date(@child['created_at']) %></h3>
   <% if @child['last_updated_at']%>
     <h3>Last updated: <%= @user.localize_date(@child['last_updated_at']) %> </h3>
-  <% end %>
+<% end %>
   <% if @child['posted_from']=="Mobile" %>
     <h3>Posted from the mobile client at: <%= @user.localize_date(@child['posted_at']) %> </h3>
-  <% end %>
+<% end %>
 </div>
 
+<%= render :partial => "tabs", :object => @form_sections %>
 <%= render :partial => "show_form_section" %>
 <%= toolbar_for_child(@child) %>

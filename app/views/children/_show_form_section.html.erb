@@ -1,5 +1,5 @@
 <% @form_sections.each do |section| %>
-  <div id='<%= section.section_name.underscore %>' class='profile-section'>
+  <fieldset id='tab_<%= section.section_name.underscore %>' class='<%= section.section_name %> tab profile-section'>
     <h2><%= section.name %></h2>
     <ul class="<%= section.section_name %>">
       <%= render :partial => "form_section_info", :locals => {:form_section => section} %>
@@ -9,5 +9,5 @@
 
       <% end %>
     </ul>
-  </div>
-<% end %>    
+  </fieldset>
+<% end %>
