@@ -3,7 +3,7 @@ Feature: As an admin, I should be able to create and view users.
   Scenario: To check that an admin creates a user record and is able to view it
     Given I am logged in as an admin
     And I am on manage users page
-    And I follow "New User"
+    And I follow "Create an User"
 
     When I fill in "George Harrison" for "Full name"
     And I fill in "george" for "User name"

@@ -19,7 +19,7 @@ Feature: Manage Users
     Given I am logged in as an admin
      When I follow "Admin"
       And I follow "Manage Users"
-      And I follow "New User"
+      And I follow "Create an User"
      Then I should see "User Permission Level"
       And the "user_permission_limited" radio-button should be checked
       And the "user_permission_unlimited" radio-button should not be checked
@@ -86,5 +86,5 @@ Feature: Manage Users
      Then I should see "Edit"
      Then I should not see "Delete User"
      Then I should see "Back"
-     Then I should see "New User"
+     Then I should see "Create an User"
 
