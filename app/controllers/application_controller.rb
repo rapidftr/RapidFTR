@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @user = User.find_by_user_name(current_user_name)
+    @user ||= User.find_by_user_name(current_user_name)
   end
 
   def send_pdf(pdf_data,filename) 

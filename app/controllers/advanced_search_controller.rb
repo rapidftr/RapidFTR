@@ -4,6 +4,7 @@ class AdvancedSearchController < ApplicationController
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     @page_name = "Advanced Search"
+    @is_current_user_limited = current_user.limited_access?
     @criteria_list = [SearchCriteria.new]
     @results = []
     render :index
@@ -14,6 +15,7 @@ class AdvancedSearchController < ApplicationController
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     @user = current_user
+    @is_current_user_limited = current_user.limited_access?
     new_search = !params[:criteria_list]
 
     if new_search
@@ -42,6 +44,9 @@ class AdvancedSearchController < ApplicationController
   end
 
   def add_created_by_filter params
+    if @is_current_user_limited
+      params[:created_by_value] = current_user_name
+    end
     @criteria_list.push(SearchFilter.new({:field => "created_by",
                                           :field2 => "created_by_full_name",
                                           :value => params[:created_by_value],
