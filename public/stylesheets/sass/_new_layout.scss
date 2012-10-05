@@ -1,0 +1,52 @@
+.page-content{
+  background:#fff;
+  margin-top:20px;
+  padding:10px;
+  min-height: 400px;
+
+  h1{
+      font-size: 1.5em;
+      border-bottom:1px solid #d4d4d4;
+      color: $text-color;
+      padding-bottom:5px;
+  }
+
+  .page-content-new{
+      @extend .clearfix;
+      height: 300px;
+      overflow-y: visible;
+      border-bottom:1px solid #d4d4d4;
+
+      .side-tab{
+          float: left;
+          background:#eee;
+          width:20%;
+          height: 100%;
+
+
+        ul{
+            list-style: none;
+            margin-top: 10px;
+            list-style-position: inside;
+
+            a{
+                background:#fff;
+                padding: 5px;
+                width: 90%;
+                display: block;
+                border:1px solid #666;
+                @include borderRadius;
+
+            }
+        }
+      }
+
+      .side-tab-content{
+          float:left;
+          width:75%;
+          padding:10px;
+
+
+      }
+  }
+}

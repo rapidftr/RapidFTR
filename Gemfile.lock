@@ -42,6 +42,13 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.3.5)
       ffi (~> 1.0, >= 1.0.6)
+    chunky_png (1.2.6)
+    compass (0.12.2)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+    compass-rails (1.0.3)
+      compass (>= 0.12.2, < 0.14)
     configuration (1.3.2)
     couchrest (0.34)
       mime-types (>= 1.15)
@@ -59,8 +66,11 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     escape (0.0.4)
+    execjs (1.4.0)
+      multi_json (~> 1.0)
     fastercsv (1.5.3)
     ffi (1.1.5)
+    fssm (0.2.9)
     gherkin (2.11.2)
       json (>= 1.4.6)
     hoptoad_notifier (2.4.2)
@@ -144,6 +154,7 @@ GEM
       railties (>= 3.0)
       rspec (~> 2.11.0)
     rubyzip (0.9.9)
+    sass (3.2.1)
     selenium-webdriver (2.24.0)
       childprocess (>= 0.2.5)
       libwebsocket (~> 0.1.3)
@@ -158,6 +169,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
+    uglifier (1.3.0)
+      execjs (>= 0.3.0)
+      multi_json (~> 1.0, >= 1.0.2)
     uuidtools (2.1.1)
     validatable (1.6.7)
     xpath (0.1.4)
@@ -169,6 +183,7 @@ PLATFORMS
 DEPENDENCIES
   cancan
   capybara (= 1.0.1)
+  compass-rails
   couchrest (= 0.34)
   cucumber (= 1.2.1)
   cucumber-rails (= 0.3.2)
@@ -191,9 +206,11 @@ DEPENDENCIES
   rest-client (= 1.3.0)
   rspec (= 2.11.0)
   rspec-rails (= 2.11.0)
+  sass
   selenium-webdriver (= 2.24.0)
   subexec (= 0.0.4)
   sunspot (= 1.1.0)
   tzinfo
+  uglifier
   uuidtools (= 2.1.1)
   validatable (= 1.6.7)

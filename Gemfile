@@ -22,6 +22,10 @@ gem 'dynamic_form'
 gem 'jquery-rails'
 gem 'cancan'
 
+gem 'sass'
+gem 'compass-rails'
+gem 'uglifier'
+
 group :cucumber do
   gem 'cucumber',         '1.2.1'
   gem 'cucumber-rails',   '0.3.2'

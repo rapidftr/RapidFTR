@@ -1,0 +1,157 @@
+/* line 13, sass/_new_global.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: Arial;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+/* line 23, sass/_new_global.scss */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* line 26, sass/_new_global.scss */
+body {
+  line-height: 1;
+  font-size: 13px;
+  background: #eee;
+}
+
+/* line 31, sass/_new_global.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 34, sass/_new_global.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 40, sass/_new_global.scss */
+a {
+  color: #6ec3ff;
+  text-decoration: none;
+}
+
+/* line 44, sass/_new_global.scss */
+a:hover {
+  color: #0096ff;
+}
+
+/* For modern browsers */
+/* line 49, sass/_new_global.scss */
+.clearfix:before, .page-content .page-content-new:before, .clearfix:after, .page-content .page-content-new:after {
+  content: "";
+  display: table;
+}
+
+/* line 53, sass/_new_global.scss */
+.clearfix:after, .page-content .page-content-new:after {
+  clear: both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+/* line 57, sass/_new_global.scss */
+.clearfix, .page-content .page-content-new {
+  zoom: 1;
+}
+
+/* line 73, sass/_new_global.scss */
+input[type=text] {
+  background: white;
+  font-size: 1em;
+  padding: 2px;
+  border: 1px solid #ddd;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+
+/* line 81, sass/_new_global.scss */
+input[type=button] {
+  background: url(../images/new/bg_gray_btn.png) #ababab repeat-x;
+  padding: 2px 5px;
+  font-size: 1em;
+  cursor: pointer;
+  border: 1px solid #333;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+
+/* line 89, sass/_new_global.scss */
+input[type=button]:hover {
+  background: url(../images/new/bg_gray_btn.png) #ababab repeat-x;
+}
+
+/* line 1, sass/_new_layout.scss */
+.page-content {
+  background: #fff;
+  margin-top: 20px;
+  padding: 10px;
+  min-height: 400px;
+}
+/* line 7, sass/_new_layout.scss */
+.page-content h1 {
+  font-size: 1.5em;
+  border-bottom: 1px solid #d4d4d4;
+  color: #333333;
+  padding-bottom: 5px;
+}
+/* line 14, sass/_new_layout.scss */
+.page-content .page-content-new {
+  height: 300px;
+  overflow-y: visible;
+  border-bottom: 1px solid #d4d4d4;
+}
+/* line 20, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab {
+  float: left;
+  background: #eee;
+  width: 20%;
+  height: 100%;
+}
+/* line 27, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab ul {
+  list-style: none;
+  margin-top: 10px;
+  list-style-position: inside;
+}
+/* line 32, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab ul a {
+  background: #fff;
+  padding: 5px;
+  width: 90%;
+  display: block;
+  border: 1px solid #666;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+/* line 44, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content {
+  float: left;
+  width: 75%;
+  padding: 10px;
+}
