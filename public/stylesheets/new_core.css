@@ -58,24 +58,24 @@ a:hover {
 
 /* For modern browsers */
 /* line 49, sass/_new_global.scss */
-.clearfix:before, .page-content .page-content-new:before, .clearfix:after, .page-content .page-content-new:after {
+.clearfix:before, fieldset p:before, .page-content .page-content-new:before, .clearfix:after, fieldset p:after, .page-content .page-content-new:after {
   content: "";
   display: table;
 }
 
 /* line 53, sass/_new_global.scss */
-.clearfix:after, .page-content .page-content-new:after {
+.clearfix:after, fieldset p:after, .page-content .page-content-new:after {
   clear: both;
 }
 
 /* For IE 6/7 (trigger hasLayout) */
 /* line 57, sass/_new_global.scss */
-.clearfix, .page-content .page-content-new {
+.clearfix, fieldset p, .page-content .page-content-new {
   zoom: 1;
 }
 
 /* line 80, sass/_new_global.scss */
-input[type=text] {
+input[type=text], input[type=password] {
   background: white;
   font-size: 1em;
   padding: 2px;
@@ -87,7 +87,7 @@ input[type=text] {
 }
 
 /* line 88, sass/_new_global.scss */
-a.btn {
+.btn {
   background: url(../images/new/bg-gray-btn.png) #cfcfcf repeat-x;
   text-align: left;
   font-size: 1em;
@@ -101,19 +101,19 @@ a.btn {
 }
 
 /* line 97, sass/_new_global.scss */
-input[type=button]:hover, a.btn:hover {
+.btn:hover {
   background: url(../images/new/bg-gray-btn-hover.png) #bababa repeat-x;
 }
 
 /* line 102, sass/_new_global.scss */
-a.btn span {
+.btn span {
   display: block;
   padding: 8px 10px 8px 50px;
   background-repeat: no-repeat;
   background-position: 10px center;
 }
 /* line 108, sass/_new_global.scss */
-a.btn span.create_user {
+.btn span.create_user {
   background-image: url(../images/new/icon_create_user.png);
 }
 
@@ -137,6 +137,29 @@ a.btn span.create_user {
 /* line 131, sass/_new_global.scss */
 .list_table tr:nth-child(even) td {
   background: #eee;
+}
+
+/* line 136, sass/_new_global.scss */
+fieldset {
+  margin-top: 10px;
+}
+/* line 139, sass/_new_global.scss */
+fieldset p {
+  padding: 10px;
+}
+/* line 143, sass/_new_global.scss */
+fieldset p .key {
+  width: 150px;
+  float: left;
+  display: block;
+}
+/* line 153, sass/_new_global.scss */
+fieldset p:nth-child(odd) {
+  background: #f1f1f1;
+}
+/* line 157, sass/_new_global.scss */
+fieldset p:nth-child(even) {
+  background: #fff;
 }
 
 /* line 1, sass/_new_layout.scss */
@@ -215,6 +238,14 @@ a.btn span.create_user {
   float: right;
 }
 /* line 71, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content div.mandate_panel {
+  float: right;
+}
+/* line 74, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content div.mandate_panel span {
+  color: red;
+}
+/* line 80, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content .filter_bar {
   background: blanchedalmond;
 }

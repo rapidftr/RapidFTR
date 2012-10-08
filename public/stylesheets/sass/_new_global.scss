@@ -77,7 +77,7 @@ a:hover{
   box-shadow: $attr;
 }
 
-input[type=text]{
+input[type=text], input[type=password]{
   background: $bg-textbox;
   font-size: 1em;
   padding:2px;
@@ -85,7 +85,7 @@ input[type=text]{
   @include borderRadius(3px);
 }
 
-a.btn{
+.btn{
   background:$bg-gray-btn;
   text-align: left;
   font-size:1em;
@@ -94,11 +94,11 @@ a.btn{
   @include borderRadius(5px);
   color:$btn-text-color;
 }
-input[type=button]:hover, a.btn:hover{
+.btn:hover{
   background:$bg-gray-btn-hover;
 }
 
-a.btn{
+.btn{
   span{
     display: block;
     padding:8px 10px 8px 50px;
@@ -130,5 +130,31 @@ a.btn{
 
     tr:nth-child(even) td{
         background:#eee;
+    }
+}
+
+fieldset{
+    margin-top:10px;
+
+    p{
+        padding:10px;
+        @extend .clearfix;
+
+        .key{
+            width:150px;
+            float: left;
+            display: block;
+
+        }
+
+
+    }
+
+    p:nth-child(odd){
+        background:#f1f1f1;
+    }
+
+    p:nth-child(even){
+        background:#fff;
     }
 }

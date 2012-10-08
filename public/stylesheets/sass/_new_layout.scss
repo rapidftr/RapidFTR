@@ -68,9 +68,20 @@
             float: right;
           }
 
+          div.mandate_panel{
+             float:right;
+
+              span{
+                  color:red;
+
+              }
+          }
+
           .filter_bar{
             background:$bg_filterbar;
           }
+
+
 
 
 
