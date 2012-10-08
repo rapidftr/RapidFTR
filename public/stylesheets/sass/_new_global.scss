@@ -63,11 +63,18 @@ a:hover{
   text-indent: -100000px;
 }
 
-@mixin borderRadius{
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  -o-border-radius:3px;
-  border-radius:3px;
+@mixin borderRadius($radius){
+  -moz-border-radius:$radius;
+  -webkit-border-radius:$radius;
+  -o-border-radius:$radius;
+  border-radius:$radius;
+}
+
+@mixin boxShadow($attr){
+  -moz-box-shadow: $attr;
+  -webkit-box-shadow: $attr;
+  -o-box-shadow: $attr;
+  box-shadow: $attr;
 }
 
 input[type=text]{
@@ -75,17 +82,53 @@ input[type=text]{
   font-size: 1em;
   padding:2px;
   border:1px solid #ddd;
-  @include borderRadius;
+  @include borderRadius(3px);
 }
 
-input[type=button]{
+a.btn{
   background:$bg-gray-btn;
-  padding:2px 5px;
+  text-align: left;
   font-size:1em;
   cursor:pointer;
-  border:1px solid #333;
-  @include borderRadius;
+  border:1px solid #9f9f9f;
+  @include borderRadius(5px);
+  color:$btn-text-color;
 }
-input[type=button]:hover{
-  background:$bg-gray-btn;
+input[type=button]:hover, a.btn:hover{
+  background:$bg-gray-btn-hover;
+}
+
+a.btn{
+  span{
+    display: block;
+    padding:8px 10px 8px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+  span.create_user{
+      background-image:url(../images/new/icon_create_user.png);
+  }
+
+}
+
+.list_table{
+
+    @extend clearfix;
+    margin-top:10px;
+
+    th,td{
+        padding:8px;
+    }
+    th{
+        background:$bg_table_header;
+        color:$text_color_table_header;
+    }
+
+    tr:nth-child(odd) td{
+        background:#fff;
+    }
+
+    tr:nth-child(even) td{
+        background:#eee;
+    }
 }

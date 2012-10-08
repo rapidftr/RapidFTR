@@ -1,6 +1,7 @@
 <h2>List of Users</h2>
-<%= link_to 'Create an User', new_user_path %>
-<table id="users">
+<%= link_to content_tag(:span, 'Create an User', :class => 'create_user'), new_user_path, :class=>'btn' %>
+<div class="clearfix"></div>
+<table id="users" class="list_table">
   <thead>
     <%= render :partial => 'users_header' %>
   </thead>

@@ -3,6 +3,7 @@ $default-font-family:verdana, arial, helvetica, sans-serif;
 $text-color: #333;
 $link-color: #6ec3ff;
 $link-hover-color:#0096ff;
+$btn-text-color: #000;
 
 $bg-header: #30343d;
 $header-text-color: #fff;
@@ -13,4 +14,11 @@ $main-nav-sel-color:#fff;
 
 
 $bg-textbox: #fff;
-$bg-gray-btn: url(../images/new/bg_gray_btn.png) #ababab repeat-x;
+$bg-gray-btn: url(../images/new/bg-gray-btn.png) #cfcfcf repeat-x;
+$bg-gray-btn-hover: url(../images/new/bg-gray-btn-hover.png) #bababa repeat-x;
+
+$bg-filterbar: #ffebcd;
+$border-filterbar: #ffce81;
+
+$bg-table-header: #4b515f;
+$text-color-table-header: #fff;
