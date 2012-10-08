@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :administrators_only, :except =>[:show, :edit, :update]
+  before_filter :set_permissions_params, :only => [ :update, :create ]
 
   def index
     @users = User.view("by_full_name")
@@ -76,6 +77,19 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def set_permissions_params
+    permissions = []
+    user = params[:user]
+
+    permissions.push("limited") if user[:permission] == "Limited"
+    permissions.push("unlimited") if user[:permission] == "Unlimited"
+    permissions.push("admin") if user[:user_type] == "Administrator"
+
+    user.delete(:permission)
+    user.delete(:user_type)
+    user[:permissions] = permissions
+  end
 
   def users_details
     @users.map do |user|

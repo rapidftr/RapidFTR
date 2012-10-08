@@ -10,14 +10,26 @@ def should_seed? model
 end
 
 if should_seed? User
-  User.create("user_type" => "Administrator",
-              "user_name" => "rapidftr",
+  User.create("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
               "email" => "rapidftr@rapidftr.com",
-              "permission" => Permission::UNLIMITED)
+              "permissions" => [ "admin" ] )
 
+  User.create("user_name" => "limited",
+              "password" => "limited",
+              "password_confirmation" => "limited",
+              "full_name" => "RapidFTR",
+              "email" => "limited@rapidftr.com",
+              "permissions" => [ "limited" ] )
+
+  User.create("user_name" => "unlimited",
+              "password" => "unlimited",
+              "password_confirmation" => "unlimited",
+              "full_name" => "RapidFTR",
+              "email" => "unlimited@rapidftr.com",
+              "permissions" => [ "unlimited" ] )
 end
 
 if should_seed? FormSection

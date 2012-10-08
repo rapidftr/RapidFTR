@@ -68,13 +68,28 @@ describe Session do
     end
 
     it "should return true when user is an administrator" do
-      @user.user_type = "Administrator"
+      @user.permissions = [ "admin" ]
       Session.for_user(@user, "").admin?.should == true
     end
 
     it "should return false when user is just a basic user" do
-      @user.user_type = "BasicUser"
+      @user.permissions = [ ]
       Session.for_user(@user, "").admin?.should == false
+    end
+  end
+
+  describe "has_permission?" do
+    before :each do
+      @user = User.new :permissions => [ "a", "b" ]
+      @session = Session.for_user(@user, "")
+    end
+
+    it "should return true when user has permission" do
+      @session.has_permission?(:a).should be_true
+    end
+
+    it "should return false when user has permission" do
+      @session.has_permission?(:c).should be_false
     end
   end
 end

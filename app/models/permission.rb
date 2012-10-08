@@ -1,6 +1,11 @@
 class Permission
 
-  LIMITED = "Limited"
-  UNLIMITED = "Unlimited"
+  ADMIN = "admin"
+  LIMITED = "limited"
+  UNLIMITED = "unlimited"
+
+  def self.all
+    [ ADMIN, LIMITED, UNLIMITED ].sort
+  end
 
 end

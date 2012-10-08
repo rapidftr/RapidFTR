@@ -44,6 +44,10 @@ class ApplicationController < ActionController::Base
     return session.user_name unless session.nil?
   end
 
+  def current_ability
+    @current_ability ||= Ability.new(app_session)
+  end
+
   def current_user_full_name
     session = Session.get_from_cookies(cookies)
     session.user['full_name'] unless session.nil? or session.user.nil?

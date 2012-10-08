@@ -20,6 +20,7 @@ gem 'tzinfo'
 gem 'rake',           '0.8.7'
 gem 'dynamic_form'
 gem 'jquery-rails'
+gem 'cancan'
 
 group :cucumber do
   gem 'cucumber',         '1.2.1'

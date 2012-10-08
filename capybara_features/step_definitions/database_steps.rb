@@ -1,13 +1,17 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
-  user_type = user_type == 'user' ? 'User' : 'Administrator'
+  permissions = []
+  permissions.push("admin") if user_type.downcase == "admin"
+  permissions.push("unlimited") if user_type.downcase == "user"
+  permissions.push(permission.downcase) if permission
+
   @user = User.new(
     :user_name=>username,
     :password=>password,
     :password_confirmation=>password,
-    :user_type=> user_type,
     :full_name=>username,
     :email=>"#{username}@test.com",
-    :permission=> permission ? (permission=='limited' ? Permission::LIMITED : Permission::UNLIMITED) : Permission::UNLIMITED )
+    :permissions => permissions.uniq
+  )
   @user.save!
 end
 
