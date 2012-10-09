@@ -278,11 +278,14 @@ class ChildrenController < ApplicationController
   def load_child_or_redirect
     @child = Child.get(params[:id])
 
-    return unless request.format.html?
-
     if @child.nil?
-      flash[:error] = "Child with the given id is not found"
-      redirect_to :action => :index and return
+      respond_to do |format|
+        format.json { render :json => @child.to_json }
+        format.html do
+          flash[:error] = "Child with the given id is not found"
+          redirect_to :action => :index and return
+        end
+      end
     end
   end
 
