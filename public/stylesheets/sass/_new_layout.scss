@@ -11,6 +11,10 @@
       padding:5px 10px 10px 0px;
   }
 
+  a.btn{
+    float: right;
+  }
+
   .page-content-new{
       @extend .clearfix;
       border-bottom:1px solid #d4d4d4;

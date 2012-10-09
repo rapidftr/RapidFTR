@@ -158,3 +158,55 @@ fieldset{
         background:#fff;
     }
 }
+
+.no_border{
+    border:0px !important;
+}
+.float_left{
+    float:left;
+}
+
+.filter_bar{
+    background:$bg-filterbar;
+    border:1px solid $border-filterbar;
+    @include borderRadius(5px);
+    padding:10px;
+    @extend .clearfix;
+    margin:5px 0px 10px;
+
+    .filter_panel{
+        float:left;
+
+        ul{
+            display: inline-block;
+
+            li{
+                display: inline-block;
+                border-left:1px solid #666;
+                padding:0px 10px;
+            }
+            .first{
+                border:0px;
+              padding-left:5px;
+            }
+        }
+    }
+
+    .orderby_panel{
+        float:right;
+
+      ul{
+        display: inline-block;
+
+        li{
+          display: inline-block;
+          border-left:1px solid #666;
+          padding:0px 10px;
+        }
+        .first{
+          border:0px;
+          padding-left:5px;
+        }
+      }
+    }
+}

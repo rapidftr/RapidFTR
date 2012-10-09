@@ -58,19 +58,19 @@ a:hover {
 
 /* For modern browsers */
 /* line 49, sass/_new_global.scss */
-.clearfix:before, fieldset p:before, .page-content .page-content-new:before, .clearfix:after, fieldset p:after, .page-content .page-content-new:after {
+.clearfix:before, fieldset p:before, .filter_bar:before, .page-content .page-content-new:before, .clearfix:after, fieldset p:after, .filter_bar:after, .page-content .page-content-new:after {
   content: "";
   display: table;
 }
 
 /* line 53, sass/_new_global.scss */
-.clearfix:after, fieldset p:after, .page-content .page-content-new:after {
+.clearfix:after, fieldset p:after, .filter_bar:after, .page-content .page-content-new:after {
   clear: both;
 }
 
 /* For IE 6/7 (trigger hasLayout) */
 /* line 57, sass/_new_global.scss */
-.clearfix, fieldset p, .page-content .page-content-new {
+.clearfix, fieldset p, .filter_bar, .page-content .page-content-new {
   zoom: 1;
 }
 
@@ -162,6 +162,66 @@ fieldset p:nth-child(even) {
   background: #fff;
 }
 
+/* line 162, sass/_new_global.scss */
+.no_border {
+  border: 0px !important;
+}
+
+/* line 165, sass/_new_global.scss */
+.float_left {
+  float: left;
+}
+
+/* line 169, sass/_new_global.scss */
+.filter_bar {
+  background: blanchedalmond;
+  border: 1px solid #ffce81;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0px 10px;
+}
+/* line 177, sass/_new_global.scss */
+.filter_bar .filter_panel {
+  float: left;
+}
+/* line 180, sass/_new_global.scss */
+.filter_bar .filter_panel ul {
+  display: inline-block;
+}
+/* line 183, sass/_new_global.scss */
+.filter_bar .filter_panel ul li {
+  display: inline-block;
+  border-left: 1px solid #666;
+  padding: 0px 10px;
+}
+/* line 188, sass/_new_global.scss */
+.filter_bar .filter_panel ul .first {
+  border: 0px;
+  padding-left: 5px;
+}
+/* line 195, sass/_new_global.scss */
+.filter_bar .orderby_panel {
+  float: right;
+}
+/* line 198, sass/_new_global.scss */
+.filter_bar .orderby_panel ul {
+  display: inline-block;
+}
+/* line 201, sass/_new_global.scss */
+.filter_bar .orderby_panel ul li {
+  display: inline-block;
+  border-left: 1px solid #666;
+  padding: 0px 10px;
+}
+/* line 206, sass/_new_global.scss */
+.filter_bar .orderby_panel ul .first {
+  border: 0px;
+  padding-left: 5px;
+}
+
 /* line 1, sass/_new_layout.scss */
 .page-content {
   background: #fff;
@@ -177,24 +237,28 @@ fieldset p:nth-child(even) {
   padding: 5px 10px 10px 0px;
 }
 /* line 14, sass/_new_layout.scss */
+.page-content a.btn {
+  float: right;
+}
+/* line 18, sass/_new_layout.scss */
 .page-content .page-content-new {
   border-bottom: 1px solid #d4d4d4;
   background: #eee;
   min-height: 300px;
 }
-/* line 20, sass/_new_layout.scss */
+/* line 24, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab {
   float: left;
   width: 200px;
   height: 100%;
 }
-/* line 26, sass/_new_layout.scss */
+/* line 30, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul {
   list-style: none;
   margin-top: 10px;
   list-style-position: inside;
 }
-/* line 31, sass/_new_layout.scss */
+/* line 35, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul a {
   background: #fff;
   padding: 10px;
@@ -214,11 +278,11 @@ fieldset p:nth-child(even) {
   left: 9px;
   font-size: 1.1em;
 }
-/* line 46, sass/_new_layout.scss */
+/* line 50, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul a.sel {
   color: #000;
 }
-/* line 52, sass/_new_layout.scss */
+/* line 56, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content {
   float: left;
   width: 720px;
@@ -226,26 +290,26 @@ fieldset p:nth-child(even) {
   background: #fff;
   min-height: 280px;
 }
-/* line 59, sass/_new_layout.scss */
+/* line 63, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content h2 {
   font-size: 1.2em;
   color: #000;
   padding: 5px 10px 10px 5px;
   float: left;
 }
-/* line 67, sass/_new_layout.scss */
+/* line 71, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content a.btn {
   float: right;
 }
-/* line 71, sass/_new_layout.scss */
+/* line 75, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content div.mandate_panel {
   float: right;
 }
-/* line 74, sass/_new_layout.scss */
+/* line 78, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content div.mandate_panel span {
   color: red;
 }
-/* line 80, sass/_new_layout.scss */
+/* line 84, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content .filter_bar {
   background: blanchedalmond;
 }
