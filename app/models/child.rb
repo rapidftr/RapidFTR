@@ -75,6 +75,7 @@ view_by :duplicates_of,
   validates_with_method :validate_photos_size
   validates_with_method :validate_audio_file_name
   validates_with_method :validate_audio_size
+  validates_with_method :validate_duplicate_of
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
@@ -400,7 +401,7 @@ view_by :duplicates_of,
 
   def mark_as_duplicate(parent_id)
     self['duplicate'] = true
-    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.id
+    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.try(:id)
   end
 
   protected
@@ -504,6 +505,11 @@ view_by :duplicates_of,
 
   def key_for_content_type(content_type)
     Mime::Type.lookup(content_type).to_sym.to_s
+  end
+
+  def validate_duplicate_of
+    return [false, "A valid duplicate ID must be provided"] if self["duplicate"] && self["duplicate_of"].blank?
+    true
   end
 
 end

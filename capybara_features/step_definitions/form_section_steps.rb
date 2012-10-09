@@ -46,11 +46,11 @@ Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ 
 end
 
 Then /^I should not be able to promote the field "([^"]*)"$/ do |field|
-  page.should have_selector("//a[@id='#{field}_up' and @style='display: none;']") 
+  page.should have_selector("//a[@id='#{field}_up' and @style='display: none;']")
 end
 
 Then /^I should not be able to demote the field "([^"]*)"$/ do |field|
-   page.should have_selector("//a[@id='#{field}_down' and @style='display: none;']") 
+   page.should have_selector("//a[@id='#{field}_down' and @style='display: none;']")
 end
 
 Then /^I should be able to demote the field "([^"]*)"$/ do |field|
