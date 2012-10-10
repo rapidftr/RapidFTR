@@ -2,8 +2,13 @@
 
 <%= render :partial => "children/summary_row", :object => @child, :locals => { :checkbox => false, :show_links => false } %>
 
-<%= form_tag child_duplicate_path(@child), :method => :post do %>
-  <%= label_tag(:parent_id, "Enter the ID of the record this is a duplicate of:") %>
+<%= form_tag child_duplicate_path(@child), :method => :post, :class => 'mark-duplicate' do %>
+  <div class="form-label">
+  <%= label_tag(:parent_id, "Enter the Record ID of the Original Record:") %>
+  <p>
+    <img class="tool-tip-icon vtip" title="The record you have chosen as a duplicate will be linked to this Original Record and removed from the search and view pages." src="/images/tool_tip_icon.gif"/>
+  </p>
+  </div>
   <%= text_field_tag(:parent_id) %>
   <%= content_tag(:p, :class => 'submitButton') do %>
     <%= submit_tag("Mark as duplicate", :confirm => 'Are you sure you want to continue? If so, click OK. If not, click Cancel.') %>
