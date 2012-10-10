@@ -146,4 +146,19 @@ describe "Child record field view model" do
       field.is_highlighted?.should be_false
     end
   end
+
+  describe '#generate_name' do
+    it "should generate english name" do
+      @field = Field.new :display_name => 'Test Name'
+      @field.generate_name
+      @field.name.should == @field.display_name.dehumanize
+    end
+
+    it "should generate random name" do
+      I18n.stub! :default_locale => :de
+      @field = Field.new :display_name => 'तेरा नाम क्या है'
+      @field.generate_name
+      @field.name.length.should == 9
+    end
+  end
 end

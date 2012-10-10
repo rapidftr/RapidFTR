@@ -1,6 +1,6 @@
 <p>
   <span class="tool-tip-label">
-      <%= label_tag date_field.tag_name_attribute, date_field.display_name %>
+      <%= label_tag date_field.tag_name_attribute, t(date_field.name, :default => date_field.display_name) %>
       <% if date_field.help_text.present?%>
         <img class="tool-tip-icon vtip" title="<%=date_field.help_text%>" src="/images/tool_tip_icon.gif"/>
       <% end%>
