@@ -29,7 +29,7 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new params[:field]
-    @field.name = @field.display_name.dehumanize
+    @field.generate_name
 
     FormSection.add_field_to_formsection @form_section, @field
 

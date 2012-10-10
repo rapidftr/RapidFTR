@@ -20,6 +20,12 @@ gem 'tzinfo'
 gem 'rake',           '0.8.7'
 gem 'dynamic_form'
 gem 'jquery-rails'
+gem 'cancan'
+
+group :test do
+  gem 'mocha'
+  gem 'test_declarative'
+end
 
 group :cucumber do
   gem 'cucumber',         '1.2.1'

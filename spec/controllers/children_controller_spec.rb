@@ -16,21 +16,11 @@ def stub_out_child_get(mock_child = mock(Child))
 	mock_child
 end
 
-def stub_out_user
-  user = mock(:user)
-  user.stub!(:user_name).and_return "testuser"
-  user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
-  user.stub!(:limited_access?).and_return(false)
-  User.stub!(:find_by_user_name).and_return user
-  user
-end
-
 describe ChildrenController do
 
   before do
+    fake_admin_login
     Clock.stub!(:now).and_return(Time.utc(2000, "jan", 1, 20, 15, 1))
-    fake_login
-    @controller.stub!(:current_user_name).and_return('foo-user')
     FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
@@ -38,14 +28,85 @@ describe ChildrenController do
     @mock_child ||= mock_model(Child, stubs).as_null_object
   end
 
+  describe '#authorizations' do
+    describe 'collection' do
+      it "GET index" do
+        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
+        expect { get :index }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "GET search" do
+        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
+        expect { get :search }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "GET export_data" do
+        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
+        expect { get :export_data }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "GET new" do
+        @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
+        expect { get :new }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "POST create" do
+        @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
+        expect { post :create }.to raise_error(CanCan::AccessDenied)
+      end
+    end
+    
+    describe 'member' do
+      before :each do
+        @child = Child.create('last_known_location' => "London")
+        @child_arg = hash_including("_id" => @child.id)
+      end
+
+      it "GET show" do
+        @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
+        expect { get :show, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+      end
+      
+      it "PUT update" do
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        expect { put :update, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+      end
+      
+      it "PUT edit_photo" do
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        expect { put :edit_photo, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "PUT update_photo" do
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        expect { put :update_photo, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "PUT select_primary_photo" do
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        expect { put :select_primary_photo, :child_id => @child.id, :photo_id => 0 }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "GET export_photo_to_pdf" do
+        @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
+        expect { get :export_photo_to_pdf, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+      end
+
+      it "DELETE destroy" do
+        @controller.current_ability.should_receive(:can?).with(:destroy, @child_arg).and_return(false);
+        expect { delete :destroy, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+      end
+    end    
+  end
+
   describe "GET index" do
 
     shared_examples_for "viewing children by user with unlimited permissions" do
       describe "when the signed in user has unlimited permissions" do
         it "should assign all childrens as @childrens" do
+          session = fake_unlimited_login
+
           @stubs ||= {}
-          user = stub_out_user
-          user.should_receive(:limited_access?).and_return(false)
           children = [mock_child(@stubs)]
           Child.should_receive(:all).and_return(children)
           get :index, :status => @status
@@ -57,11 +118,11 @@ describe ChildrenController do
     shared_examples_for "viewing children by user with limited permissions" do
       describe "when the signed in user has limited permissions" do
         it "should assign the children created by the signed in user as @childrens" do
+          session = fake_limited_login
+
           @stubs ||= {}
-          user = stub_out_user
-          user.should_receive(:limited_access?).and_return(true)
           children = [mock_child(@stubs)]
-          Child.should_receive(:all_by_creator).with(user.user_name).and_return(children)
+          Child.should_receive(:all_by_creator).with(session.user_name).and_return(children)
           get :index, :status => @status
           assigns[:children].should == children
         end
@@ -70,9 +131,7 @@ describe ChildrenController do
 
     context "as administrator" do
       it "should assign all the children" do
-        fake_session = Session.new()
-        fake_session.stub(:admin?).with(no_args()).and_return(true)
-        @controller.stub!(:app_session => fake_session)
+        session = fake_admin_login
         children = [mock_child, mock_child]
         Child.should_receive(:all).and_return(children)
         get :index, :status => 'reunited'
@@ -123,7 +182,6 @@ describe ChildrenController do
     end
 
     it 'should not fail if primary_photo_id is not present' do
-      stub_out_user
       child = Child.create('last_known_location' => "London")
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
@@ -313,7 +371,6 @@ describe ChildrenController do
     end
 
     it "asks the pdf generator to render each child as a PDF" do
-      stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
 
 			children = [:fake_child_one, :fake_child_two]
@@ -340,7 +397,6 @@ describe ChildrenController do
     end
 
     it "asks the pdf generator to render each child as a Photo Wall" do
-      stub_out_user
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       children = [:fake_one, :fake_two]
       inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
@@ -415,18 +471,15 @@ describe ChildrenController do
     end
 
     it "sends a response containing the pdf data, the correct content_type and file name, etc" do
-      stub_out_user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
 
 			stubbed_child = stub_out_child_get
       stub_export_generator = stub_out_export_generator [stubbed_child] #this is getting a bit farcical now
       stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
 
-      @controller.stub!(:current_user_name).and_return('foo-user')
-
       @controller.
         should_receive(:send_data).
-        with( :fake_pdf_data, :filename => "foo-user-20000101-2015.pdf", :type => "application/pdf" ).
+        with( :fake_pdf_data, :filename => "fakeadmin-20000101-2015.pdf", :type => "application/pdf" ).
         and_return{controller.render :nothing => true}
 
       post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )

@@ -27,6 +27,7 @@ Feature: Manage Users
      Then the "user_permission_unlimited" radio-button should be checked
       And the "user_permission_limited" radio-button should not be checked
 
+  @wip
   Scenario: Edit existing User - Should see options to set User Permission Level
     Given I am logged in as an admin
       And a user "homersimpson" with "limited" permission
@@ -52,6 +53,7 @@ Feature: Manage Users
      Then I should see "Andrew"
       And I should see "Peter"
 
+  @wip
   Scenario: User with limited access cannot see all children
     Given a user "unlimited" with "unlimited" permission
       And a user "limited" with "limited" permission

@@ -28,6 +28,11 @@ module ChildrenHelper
     "Flagged as suspect record by #{user}#{message}"
   end
 
+  def flag_summary_for_child child
+    flag_history = child["histories"].select{|h| h["changes"].keys.include?("flag") }.first
+    { "Flagged By" => flag_history["user_name"], "On" => @user.localize_date(flag_history["datetime"]), "Because" => child["flag_message"]}
+  end
+
   def reunited_message
     "Reunited"
   end

@@ -47,5 +47,10 @@ module RapidFTR
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # Add our custom CouchDB I18n backend
+    config.after_initialize do
+        I18n.backend = I18n::Backend::Chain.new(I18nBackendCouch.new, I18n.backend)
+    end
   end
 end

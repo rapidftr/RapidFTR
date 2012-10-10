@@ -5,6 +5,7 @@ describe 'users/_editable_user.html.erb' do
       @user = User.new()
       @user.disabled = false
       @user.user_name = "test user"
+      @user.permissions = [ ]
       view.stub!(:is_admin?)
     end
     it "should not be updateable" do

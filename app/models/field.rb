@@ -67,6 +67,14 @@ class Field < Hash
     FIELD_FORM_TYPES[type]
   end
 
+  def generate_name
+    if I18n.default_locale == :en
+      self.name = display_name.dehumanize
+    else
+      self.name = Digest::SHA1.hexdigest(display_name)[8..16]
+    end
+  end
+
 	def display_type
 		FIELD_DISPLAY_TYPES[type]
 	end

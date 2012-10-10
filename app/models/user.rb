@@ -8,7 +8,7 @@ class User < CouchRestRails::Document
   property :user_name
   property :crypted_password
   property :salt
-  property :user_type
+
   property :phone
   property :email
   property :organisation
@@ -17,9 +17,10 @@ class User < CouchRestRails::Document
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :time_zone, :default => "UTC"
-  property :permission
+  property :permissions, :type => [ String ]
+
   attr_accessor :password_confirmation, :password
-  ADMIN_ASSIGNABLE_ATTRIBUTES = [:user_type, :permission, :disabled]
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [ :permissions, :disabled ]
 
 
   timestamps!
@@ -40,7 +41,7 @@ class User < CouchRestRails::Document
           }"
 
 
-  before_save :make_user_name_lowercase, :encrypt_password
+  before_save :make_user_name_lowercase, :encrypt_password, :normalize_permissions
   after_save :save_devices
 
 
@@ -49,7 +50,6 @@ class User < CouchRestRails::Document
   end
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
-  validates_presence_of :user_type,:message=>"Please choose a user type"
   validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
@@ -62,7 +62,7 @@ class User < CouchRestRails::Document
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method   :user_name, :method => :is_user_name_unique
-  validates_with_method   :permission, :method => :is_valid_permission_level
+  validates_with_method   :permissions, :method => :is_valid_permission_level
 
 
   def self.find_by_user_name(user_name)
@@ -91,12 +91,24 @@ class User < CouchRestRails::Document
     !disabled? && crypted_password == encrypt(check)
   end
 
-  def encrypt(password)
-    self.class.encrypt(password, salt)
+  def user_type # Temporary method for backward compatibility should be removed after the UI is changed
+    has_permission?(:admin) ? "Administrator" : "User"
   end
 
-  def make_admin
-    self.user_type = "Administrator"
+  def permission # Temporary method for backward compatibility should be removed after the UI is changed
+    has_permission?(:unlimited) ? "Unlimited" : "Limited"
+  end
+
+  def limited_access? # Temporary method for backward compatibility should be removed after the UI is changed
+    (has_permission?(:unlimited) || has_permission?(:admin)) == false
+  end
+
+  def has_permission?(permission)
+    permissions && permissions.include?(permission.to_s)
+  end
+
+  def encrypt(password)
+    self.class.encrypt(password, salt)
   end
 
   def add_mobile_login_event imei, mobile_number
@@ -121,13 +133,10 @@ class User < CouchRestRails::Document
     end
   end
 
-  def limited_access?
-    permission == Permission::LIMITED
-  end
-
   def localize_date(date_time, format = "%d %B %Y at %H:%M (%Z)")
     DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
+
   def user_assignable?(attributes)
     not ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
   end
@@ -161,8 +170,13 @@ class User < CouchRestRails::Document
     user_name.downcase!
   end
 
+  def normalize_permissions
+    permissions ||= []
+    permissions = permissions.compact
+  end
+
   def is_valid_permission_level
-    return true if [Permission::LIMITED, Permission::UNLIMITED].include?(permission)
+    return true if permissions.present? && permissions.sort == (Permission.all & permissions.sort)
     [ false, "Invalid Permission Level" ]
   end
 end

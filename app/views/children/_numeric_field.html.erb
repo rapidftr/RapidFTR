@@ -1,6 +1,6 @@
 <p>
   <span class="tool-tip-label">
-      <%= label_tag numeric_field.tag_name_attribute, numeric_field.display_name %>
+      <%= label_tag numeric_field.tag_name_attribute, t(numeric_field.name, :default => numeric_field.display_name) %>
       <% if numeric_field.help_text.present?%>
         <img class="tool-tip-icon vtip" title="<%=numeric_field.help_text%>" src="/images/tool_tip_icon.gif"/>
       <% end%>

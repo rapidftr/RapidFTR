@@ -17,7 +17,6 @@ Feature: As an admin, I should be able to create and view users.
     And I fill in "Amazon" for "Location"
     And I press "Create"
 
-    And show me the page
     Then I should see "User was successfully created."
     And I should see "George Harrison"
     And I should see "george"
@@ -36,7 +35,6 @@ Feature: As an admin, I should be able to create and view users.
     Then I should see "Please enter full name of the user"
     And I should see "Please enter a valid user name"
     And I should see "Please enter a valid password"
-    And I should see "Please choose a user type"
 
   Scenario: Check that user name and password does not contain spaces
 
