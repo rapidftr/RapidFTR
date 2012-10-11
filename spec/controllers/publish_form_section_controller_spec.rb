@@ -14,7 +14,7 @@ describe PublishFormSectionController do
 
   it "should only show fields on a form that are enabled" do
     enabled = Field.new(:name => "enabled", :type => "text_field", :display_name => "Enabled")
-    disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :enabled => false)
+    disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :visible => false)
 
     @form_sections.first.fields = [enabled, disabled]
 

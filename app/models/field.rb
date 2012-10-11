@@ -5,7 +5,7 @@ class Field < Hash
   
   property :name
   property :display_name
-  property :enabled, :cast_as => 'boolean', :default => true
+  property :visible, :cast_as => 'boolean', :default => true
   property :help_text
   property :type
   property :option_strings
@@ -84,12 +84,12 @@ class Field < Hash
   end
   
   def display_name_for_field_selector
-    disabled = self.enabled? ? "" : " (Disabled)"
+    disabled = self.visible? ? "" : " (Disabled)"
     "#{display_name}#{disabled}"
   end
 
   def initialize properties
-    self.enabled = true if properties["enabled"].nil?
+    self.visible = true if properties["visible"].nil?
     self.highlight_information = HighlightInformation.new
     self.editable = true if properties["editable"].nil?
     self.attributes = properties
@@ -150,11 +150,11 @@ class Field < Hash
   
   #TODO - remove this is just for testing
   def self.new_field(type, name, options=[])
-    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :enabled => true, :option_strings => options
+    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :visible => true, :option_strings => options
   end
   
   def self.new_check_boxes_field field_name, display_name = nil, option_strings = []
-    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :enabled => true, :option_strings => option_strings
+    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :visible => true, :option_strings => option_strings
   end
   
   def self.new_text_field field_name, display_name = nil

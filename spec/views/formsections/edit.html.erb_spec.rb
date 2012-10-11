@@ -3,7 +3,7 @@ require 'nokogiri'
 
 describe "form_section/edit.html.erb" do
   it "should not allow to enable/disable fields for non editable formsections" do
-    fields = [Field.new :name => 'my_field', :display_name => 'My Field', :enabled => true]
+    fields = [Field.new :name => 'my_field', :display_name => 'My Field', :visible => true]
     form_section = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => fields
 
     assign(:form_section, form_section)
@@ -28,7 +28,7 @@ describe "form_section/edit.html.erb" do
     document.css("#fieldRow .down-link").should be_empty
   end
 
-  it "should not have edit or delete or enabled UI elements for uneditable fields" do
+  it "should not have edit or delete or enable UI elements for uneditable fields" do
     fields = [{:name=>"topfield"}, {:name=>"field", :editable=>false},{:name=>"bottomfield"}]
     form_section = FormSection.new :fields => fields, :unique_id=>"foo"
 
