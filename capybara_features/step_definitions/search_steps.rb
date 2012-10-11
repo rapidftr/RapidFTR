@@ -30,7 +30,7 @@ Then /^I should see "(.*)" as reunited in the search results$/ do |child_name|
   child_id = nil
   link.each('/') { |s| child_id=s }
   child_id = 'child_'+child_id
-  lambda { page.find(:xpath, "//div[@id=\"#{child_id}\"]/div/img[@class=\"reunited\"]") }.should_not raise_error(Capybara::ElementNotFound)
+  Hpricot(page.body).search("#child_#{child_id}]").search(".reunited")
 end
 
 Then /^I should not see "(.*)" as reunited in the search results$/ do |child_name|

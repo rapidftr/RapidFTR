@@ -8,6 +8,8 @@ class ChildrenController < ApplicationController
   # GET /children
   # GET /children.xml
   def index
+    authorize! :list, Child
+
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
 
@@ -28,6 +30,8 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
+    authorize! :read, @child
+
     @form_sections = get_form_sections
 
     @page_name = "View Child: #{@child}"
@@ -55,6 +59,8 @@ class ChildrenController < ApplicationController
   # GET /children/new
   # GET /children/new.xml
   def new
+    authorize! :create, Child
+
     @page_name = "Register New Child"
     @child = Child.new
     @form_sections = get_form_sections
@@ -66,6 +72,8 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
+    authorize! :edit, @child
+
     @page_name = "Edit Child"
     @form_sections = get_form_sections
   end
@@ -73,6 +81,8 @@ class ChildrenController < ApplicationController
   # POST /children
   # POST /children.xml
   def create
+    authorize! :create, Child
+
     @child = Child.new_with_user_name(current_user_name, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
@@ -92,10 +102,14 @@ class ChildrenController < ApplicationController
   end
 
   def edit_photo
+    authorize! :edit, @child
+
     @page_name = "Edit Photo"
   end
 
   def update_photo
+    authorize! :edit, @child
+
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
       @child.rotate_photo(orientation)
@@ -108,6 +122,8 @@ class ChildrenController < ApplicationController
   # POST
   def select_primary_photo
     @child = Child.get(params[:child_id])
+    authorize! :edit, @child
+    
     begin
       @child.primary_photo_id = params[:photo_id]
       @child.save
@@ -125,6 +141,8 @@ class ChildrenController < ApplicationController
   # PUT /children/1.xml
   def update
     @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
+    authorize! :edit, @child
+
     @child['last_updated_by_full_name'] = current_user_full_name
     new_photo = params[:child].delete(:photo)
     new_audio = params[:child].delete(:audio)
@@ -149,6 +167,7 @@ class ChildrenController < ApplicationController
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
+    authorize! :destroy, @child
     @child.destroy
 
     respond_to do |format|
@@ -159,6 +178,8 @@ class ChildrenController < ApplicationController
   end
 
   def search
+    authorize! :list, Child
+
     @page_name = "Search"
     @aside = "shared/sidebar_links"
     if (params[:query])
@@ -174,6 +195,8 @@ class ChildrenController < ApplicationController
   end
 
   def export_data
+    authorize! :list, Child
+
     selected_records = params["selections"] || {}
     if selected_records.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
@@ -192,11 +215,15 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
+    authorize! :list, Child
+
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf( pdf_data, filename)
   end
 
   def export_photo_to_pdf
+    authorize! :read, @child
+
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
@@ -253,11 +280,14 @@ class ChildrenController < ApplicationController
   def load_child_or_redirect
     @child ||= Child.get(params[:id])
 
-    return unless request.format.html?
-
     if @child.nil?
-      flash[:error] = "Child with the given id is not found"
-      redirect_to :action => :index and return
+      respond_to do |format|
+        format.json { render :json => @child.to_json }
+        format.html do
+          flash[:error] = "Child with the given id is not found"
+          redirect_to :action => :index and return
+        end
+      end
     end
   end
 
@@ -269,11 +299,11 @@ class ChildrenController < ApplicationController
   end
 
   def children_by_user_access
-    session = app_session
-    if session.admin?
+    if can? :view_all, Child
       return Child.all
+    else
+      Child.all_by_creator(app_session.user_name)
     end
-    current_user.limited_access? ? Child.all_by_creator(current_user.user_name) : Child.all
   end
 
   def control_limited_user_access

@@ -1,5 +1,5 @@
 <p class="file">
-  <%= label_tag "child[audio]", "Recorded Audio" %>
+  <%= label_tag "child[audio]", "Recorded Audio", :class=>'key' %>
   <%= file_field_tag "child[audio]" %>
   <% if audio_upload_box.help_text.present?%> 
   <br />

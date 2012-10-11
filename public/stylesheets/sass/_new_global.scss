@@ -1,0 +1,221 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: Arial;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+  font-size: $default-font-size;
+  background:#eee;
+}
+ol, ul {
+  list-style: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+a{
+  color:$link_color;
+  text-decoration: none;
+}
+a:hover{
+  color:$link_hover_color;
+}
+
+/* For modern browsers */
+.clearfix:before, .clearfix:after {
+  content:"";
+  display:table;
+}
+.clearfix:after {
+  clear:both;
+}
+/* For IE 6/7 (trigger hasLayout) */
+.clearfix {
+  zoom:1;
+}
+
+@mixin hide_text{
+  font-size:0px;
+  text-indent: -100000px;
+}
+
+@mixin borderRadius($radius){
+  -moz-border-radius:$radius;
+  -webkit-border-radius:$radius;
+  -o-border-radius:$radius;
+  border-radius:$radius;
+}
+
+@mixin boxShadow($attr){
+  -moz-box-shadow: $attr;
+  -webkit-box-shadow: $attr;
+  -o-box-shadow: $attr;
+  box-shadow: $attr;
+}
+
+input[type=text], input[type=password], textarea, input[type=file]{
+  background: $bg-textbox;
+  font-size: 1em;
+  padding:2px;
+  border:1px solid #ddd;
+  @include borderRadius(3px);
+}
+
+.btn{
+  background:$bg-gray-btn;
+  text-align: left;
+  font-size:1em;
+  cursor:pointer;
+  border:1px solid #9f9f9f;
+  @include borderRadius(5px);
+  color:$btn-text-color;
+}
+.btn:hover{
+  background:$bg-gray-btn-hover;
+}
+
+.btn{
+  span{
+    display: block;
+    padding:8px 10px 8px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+  span.create_user{
+      background-image:url(../images/new/icon_create_user.png);
+  }
+
+}
+
+.list_table{
+
+    @extend clearfix;
+    margin-top:10px;
+
+    th,td{
+        padding:8px;
+    }
+    th{
+        background:$bg_table_header;
+        color:$text_color_table_header;
+    }
+
+    tr:nth-child(odd) td{
+        background:#fff;
+    }
+
+    tr:nth-child(even) td{
+        background:#eee;
+    }
+}
+
+fieldset{
+
+
+    p{
+        padding:10px;
+        @extend .clearfix;
+
+        .key{
+            width:150px;
+            float: left;
+            display: block;
+
+        }
+
+
+    }
+
+    p:nth-child(odd){
+        background:#f1f1f1;
+    }
+
+    p:nth-child(even){
+        background:#fff;
+    }
+}
+
+.no_border{
+    border:0px !important;
+}
+.float_left{
+    float:left;
+}
+
+.filter_bar{
+    background:$bg-filterbar;
+    border:1px solid $border-filterbar;
+    @include borderRadius(5px);
+    padding:10px;
+    @extend .clearfix;
+    margin:5px 0px 10px;
+
+    .filter_panel{
+        float:left;
+
+        ul{
+            display: inline-block;
+
+            li{
+                display: inline-block;
+                border-left:1px solid #666;
+                padding:0px 10px;
+            }
+            .first{
+                border:0px;
+              padding-left:5px;
+            }
+        }
+    }
+
+    .orderby_panel{
+        float:right;
+
+      ul{
+        display: inline-block;
+
+        li{
+          display: inline-block;
+          border-left:1px solid #666;
+          padding:0px 10px;
+        }
+        .first{
+          border:0px;
+          padding-left:5px;
+        }
+      }
+    }
+}
+
+a.edit{
+  background:url(../images/new/icon_edit.png) no-repeat 0px 0px;
+  padding-left:17px;
+}
+a.mark_as_duplicate{
+  background:url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
+  padding-left:20px;
+}

@@ -1,4 +1,3 @@
-
 var ManagePhotos = ManagePhotos || {};
 
 ManagePhotos.init = function() {
@@ -87,7 +86,6 @@ ManagePhotos.init = function() {
     clickThumbnail: function() {
       this.model.select();
     }
-
   });
 
   window.AppView = Backbone.View.extend({
@@ -103,10 +101,27 @@ ManagePhotos.init = function() {
       Photos.bind('refresh', this.addAll);
 
       $("#selectPrimaryPhotoButton").click(function(e) {
+
+        var showMessage = function(msg, msgType) {
+          var noticeElement = $('#notice');
+          noticeElement.text(msg);
+          noticeElement.addClass(msgType);
+          setTimeout(function() {
+            $('.flash').fadeOut(function() {
+              noticeElement.removeClass(msgType);
+            });
+          }, 5000);
+          $('.flash').fadeIn();
+        }
+
         e.preventDefault();
         var selectedPhoto = Photos.getSelectedPhoto();
         if (selectedPhoto) {
           selectedPhoto.makePrimaryPhoto();
+          showMessage('Primary photo changed.', 'notice');
+        }
+        else {
+          showMessage('Please select a photo.', 'error');
         }
       });
     },
@@ -123,10 +138,8 @@ ManagePhotos.init = function() {
   });
 
   window.App = new AppView;
-
 }
 
 $(function() {
   ManagePhotos.init();
 });
-

@@ -1,45 +1,67 @@
 <!-- BEGIN: item -->
-<div id="child_<%= summary_row['_id'] %>" class="profiles-list-item">
-  <div class="header">
+<div id="child_<%= summary_row['_id'] %>" class="child_summary_panel">
+
+  <div class="photo_panel">
+    <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
+  </div>
+  <div class="summary_panel">
     <p class="checkbox">
       <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] if checkbox %>
     </p>
 
-    <h3><%= link_to text_to_identify_child(summary_row), child_path(summary_row) %></h3>
+    <h2><%= link_to text_to_identify_child(summary_row), child_path(summary_row) %></h2>
     <% if summary_row['flag']=="true"%>
-        <%= image_tag("icon-flag.gif", :alt=> "Flagged",:size => "20x20",:class => 'flag') %>
+        <div class="flag suspect">
+
+        </div>
     <% end %>
     <% if summary_row['reunited']=="true"%>
-        <%= image_tag("icon-reunited.gif", :alt=> "Reunited",:size => "20x20",:class => 'reunited') %>
+        <div class="flag reunited">
+
+        </div>
     <% end %>
 
+
+
+
+
+      <% sorted_highlighted_fields.each do |relevant_field| %>
+        <div class="summary_item">
+          <div class="key"><%= relevant_field[:display_name] %>:</div>
+          <div class="value"><%= summary_row[relevant_field[:name]] %></div>
+        </div>
+      <% end %>
+
+    <% if summary_row['flag'] %>
+
+          <%- flag_summary_for_child(summary_row).each do |key, value| -%>
+            <div class="summary_item">
+              <div class="key"><%= key %>:</div><div class="value"><%= value %></div>
+            </div>
+          <%- end -%>
+
+    <% end -%>
+    <div class="summary_item">
+      <div class="key">Registered by:</div>
+      <div class="value"><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></div>
+      </div>
+
+      <% if summary_row['last_updated_at'] %>
+        <div class="summary_item">
+          <div class="key">Last updated:</div>
+          <div class="value"><%= @user.localize_date(summary_row['last_updated_at']) %></div>
+        </div>
+      <% end %>
+
+  </div>
+
+	
+  <div class="clearfix"></div>
+  <div class="action_panel">
     <% show_links = true unless local_assigns.has_key? :show_links %>
     <% if show_links %>
-    <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row) %> | <%= link_to 'Mark as Duplicate', new_child_duplicate_path(summary_row) %></p>
+        <p class="view-edit"><%= link_to 'View', child_path(summary_row) %> | <%= link_to 'Edit', edit_child_path(summary_row), :class=>'edit' %> | <%= link_to 'Mark as Duplicate', new_child_duplicate_path(summary_row), :class=>'mark_as_duplicate' %></p>
     <% end %>
-	</div>
-	
-  <p class="photo">
-    <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
-		</p>
-  <div class="details">
-    <dl class="basic">
-      <% sorted_highlighted_fields.each do |relevant_field| %>
-        <dt><%= relevant_field[:display_name] %>:</dt>
-        <dd><%= summary_row[relevant_field[:name]] %></dd>
-      <% end %>
-    </dl>
-
-    <dl class="interviewer-details">
-      <dt>Registered by:</dt>
-      <dd><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></dd>
-    </dl>
-    <dl class="interview-timestamp">
-      <% if summary_row['last_updated_at'] %>
-        <dt>Last updated:</dt>
-        <dd><%= @user.localize_date(summary_row['last_updated_at']) %></dd>
-      <% end %>
-    </dl>
-  </div>
+</div>
 </div>
 <!-- END: item -->

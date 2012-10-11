@@ -12,7 +12,7 @@ Scenario: Check that an admin creates a user record and is able to edit it
   # Create an user
   Given I am logged in as an admin
   And I am on manage users page
-  And I follow "New User"
+  And I follow "Create an User"
 
   When I fill in "George Harrison" for "Full name"
   And I fill in "george" for "User name"
@@ -78,6 +78,7 @@ Scenario: Should be able to set devices to black listed
   And I am on the edit user page for "tim"
   And I should see "123456"
   When I check the device with an imei of "123456"
+  Then I wait for 3 seconds
   And I press "Update"
   Then I should see "123456 (blacklisted)"
 
@@ -98,7 +99,7 @@ Scenario: Password field should not be blank if re-enter password field is fille
   # Create an user
   Given I am logged in as an admin
   And I am on manage users page
-  And I follow "New User"
+  And I follow "Create an User"
 
   When I fill in "John Doe" for "Full name"
   And I fill in "johndoe1" for "User name"

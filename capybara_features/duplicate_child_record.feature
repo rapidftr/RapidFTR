@@ -37,4 +37,12 @@ Feature: Merge Child Records
     Then I should see "Another record has been marked as a duplicate of this one. Click here to see the duplicate record."
     And I follow "here"
     Then I am on the child record page for "Bob"
-   
+
+
+   Scenario: Should see error message when wrong Duplicate id/name is given
+
+     When I am on the child listing filtered by flagged
+     And I click mark as duplicate for "Steve"
+     And I fill in "fred_uid" for "Wrong user id"
+     And I press "Mark as duplicate"
+#     And I should see "This is not a valid rapidftr id."

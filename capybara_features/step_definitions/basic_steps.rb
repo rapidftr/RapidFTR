@@ -146,7 +146,7 @@ end
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
   visit child_filter_path("flagged")
-  child_records = Hpricot(page.body).search("div[@class=profiles-list-item] h3 a").map {|a| a.inner_text }
+  child_records = Hpricot(page.body).search("h2 a").map {|a| a.inner_text }
   child_records.should == expected_child_names
 end
 
@@ -184,10 +184,10 @@ Then /^I should see the error "([^\"]*)"$/ do |error_message|
   Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
 end
 
-Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
+Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, flag|
   child_name = find_child_by_name name
-  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
-  child_images[0][:src].should have_content(image)
+  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search(".#{flag}")
+  child_images.should_not be_nil
 end
 
 Given /I am logged out/ do

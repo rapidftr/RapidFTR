@@ -10,7 +10,7 @@ describe User do
       :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
       :user_type => 'user_type',
-      :permission => Permission::LIMITED
+      :permissions => [ "limited" ]
     })
     user = User.new( options)
     user
@@ -24,19 +24,17 @@ describe User do
 
   describe "validation" do
     it "should fail if permission is not set" do
-      user = build_user(:permission => "")
+      user = build_user(:permissions => [])
       user.should_not be_valid
     end
 
     it "should fail if the permission level is not valid" do
-      user = build_user(:permission => "invalid level")
+      user = build_user(:permissions => [ "admin", "invalid level" ])
       user.should_not be_valid
     end
 
     it "should succeed if permission is set appropriately" do
-      user = build_user(:permission => "Limited")
-      user.should be_valid
-      user.permission = "Unlimited"
+      user = build_user(:permissions => [ "admin", "limited", "unlimited" ])
       user.should be_valid
     end
   end
@@ -201,7 +199,7 @@ describe User do
   describe "permissions" do
 
     context "user with limited permissions" do
-      subject { build_and_save_user :permission => Permission::LIMITED }
+      subject { build_and_save_user :permissions => [ "limited" ] }
 
       it "should have limited access" do
         subject.limited_access?.should be_true
@@ -209,7 +207,7 @@ describe User do
     end
 
     context "user with unlimited permissions" do
-      subject { build_and_save_user :permission => Permission::UNLIMITED }
+      subject { build_and_save_user :permissions => [ "unlimited" ] }
 
       it "should not have limited access" do
         subject.limited_access?.should be_false
@@ -219,11 +217,8 @@ describe User do
 
   describe "#user_assignable?" do
     before { @user = build_user }
-    it "user_type should not be assignable" do 
-      should_not_assignable :user_type
-    end
     it "permission should not be assignable" do
-      should_not_assignable :permission
+      should_not_assignable :permissions
     end
     it "disabled should not be assignable" do
       should_not_assignable :disabled

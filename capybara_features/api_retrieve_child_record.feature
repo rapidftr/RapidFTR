@@ -11,6 +11,7 @@ Feature: Retrieving a child record using the API
 	     | _id     | name  | created_by | created_at | posted_at | 
 	     | 1       | Tom   | zubair	    | 2011-06-22 02:07:51UTC|2011-06-22 02:07:51UTC|
 
+  @wip
 	Scenario: Should give empty json return value for a requested child not in system
     	Given I am sending a valid session token in my request headers
     	And the following children exist in the system:

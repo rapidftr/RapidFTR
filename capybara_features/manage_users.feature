@@ -19,7 +19,7 @@ Feature: Manage Users
     Given I am logged in as an admin
      When I follow "Admin"
       And I follow "Manage Users"
-      And I follow "New User"
+      And I follow "Create an User"
      Then I should see "User Permission Level"
       And the "user_permission_limited" radio-button should be checked
       And the "user_permission_unlimited" radio-button should not be checked
@@ -27,6 +27,7 @@ Feature: Manage Users
      Then the "user_permission_unlimited" radio-button should be checked
       And the "user_permission_limited" radio-button should not be checked
 
+  @wip
   Scenario: Edit existing User - Should see options to set User Permission Level
     Given I am logged in as an admin
       And a user "homersimpson" with "limited" permission
@@ -52,6 +53,7 @@ Feature: Manage Users
      Then I should see "Andrew"
       And I should see "Peter"
 
+  @wip
   Scenario: User with limited access cannot see all children
     Given a user "unlimited" with "unlimited" permission
       And a user "limited" with "limited" permission
@@ -84,5 +86,5 @@ Feature: Manage Users
      Then I should see "Edit"
      Then I should not see "Delete User"
      Then I should see "Back"
-     Then I should see "New User"
+     Then I should see "Create an User"
 
