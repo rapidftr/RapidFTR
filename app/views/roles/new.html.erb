@@ -1,13 +1,24 @@
-<%= form_for @role do |f|%>
+<%= form_for @role, :html => {:class => 'default-form'} do |f|%>
   <%= error_messages_for :role %>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <%= f.label :description %>
-  <%= f.text_area :description %>
-  <%= f.label :permissions %>
-  <% Permission.all.each do |permission| %>
-    <%= f.check_box :permissions, {:name => "role[permissions][]"}, permission, "" %>
-    <%= f.label :permissions, permission %>
-  <% end %>
-  <%= f.submit %>
+  <span class="left"><span class="required">*</span>marked fields are mandatory</span>
+  <fieldset>
+    <h3>Create Role</h3>
+    <p>
+    <%= f.label :name %><span class="required">*</span>
+    <%= f.text_field :name %>
+    </p>
+    <p>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+    </p>
+    <p>
+    <%= f.label :permissions %><span class="required">*</span>
+    <% Permission.all.each do |permission| %>
+      <%= f.check_box :permissions, {:name => "role[permissions][]"}, permission, "" %>
+      <span><%= permission %></span>
+    <% end %>
+    </p>
+    <%= cancel_button(admin_path) %>
+    <%= submit_button('Save') %>
+  </fieldset>
 <% end %>
