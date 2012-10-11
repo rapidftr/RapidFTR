@@ -4,12 +4,13 @@
 <% 5.times do |i|%>
 <p class="file">
   <span class="tool-tip-label">
-      <%= label_tag "child[photo]#{i}", "Add Photo" %>
-      <% if photo_upload_box.help_text.present?%>
-        <img class="tool-tip-icon vtip" title="<%=photo_upload_box.help_text%>" src="/images/tool_tip_icon.gif"/>
-      <% end%>
+      <%= label_tag "child[photo]#{i}", "Add Photo", :class=>'key' %>
+
   </span>
-  <%= file_field_tag "child[photo]#{i}" %>
+  <%= file_field_tag "child[photo]#{i}", :size=>'30' %>
+  <% if photo_upload_box.help_text.present?%>
+      <img class="tool-tip-icon vtip" title="<%=photo_upload_box.help_text%>" src="/images/new/icon_help.png"/>
+  <% end%>
 </p>
 <% end %>
 

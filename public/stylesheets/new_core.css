@@ -47,7 +47,7 @@ table {
 
 /* line 40, sass/_new_global.scss */
 a {
-  color: #6ec3ff;
+  color: #1d76fb;
   text-decoration: none;
 }
 
@@ -58,24 +58,24 @@ a:hover {
 
 /* For modern browsers */
 /* line 49, sass/_new_global.scss */
-.clearfix:before, fieldset p:before, .filter_bar:before, .page-content .page-content-new:before, .clearfix:after, fieldset p:after, .filter_bar:after, .page-content .page-content-new:after {
+.clearfix:before, fieldset p:before, .filter_bar:before, .page-content .page-content-new:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summmary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, .page-content .page-content-new:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summmary_item:after {
   content: "";
   display: table;
 }
 
 /* line 53, sass/_new_global.scss */
-.clearfix:after, fieldset p:after, .filter_bar:after, .page-content .page-content-new:after {
+.clearfix:after, fieldset p:after, .filter_bar:after, .page-content .page-content-new:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summmary_item:after {
   clear: both;
 }
 
 /* For IE 6/7 (trigger hasLayout) */
 /* line 57, sass/_new_global.scss */
-.clearfix, fieldset p, .filter_bar, .page-content .page-content-new {
+.clearfix, fieldset p, .filter_bar, .page-content .page-content-new, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summmary_item {
   zoom: 1;
 }
 
 /* line 80, sass/_new_global.scss */
-input[type=text], input[type=password] {
+input[type=text], input[type=password], textarea, input[type=file] {
   background: white;
   font-size: 1em;
   padding: 2px;
@@ -139,10 +139,6 @@ input[type=text], input[type=password] {
   background: #eee;
 }
 
-/* line 136, sass/_new_global.scss */
-fieldset {
-  margin-top: 10px;
-}
 /* line 139, sass/_new_global.scss */
 fieldset p {
   padding: 10px;
@@ -222,6 +218,18 @@ fieldset p:nth-child(even) {
   padding-left: 5px;
 }
 
+/* line 214, sass/_new_global.scss */
+a.edit {
+  background: url(../images/new/icon_edit.png) no-repeat 0px 0px;
+  padding-left: 17px;
+}
+
+/* line 218, sass/_new_global.scss */
+a.mark_as_duplicate {
+  background: url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
+  padding-left: 20px;
+}
+
 /* line 1, sass/_new_layout.scss */
 .page-content {
   background: #fff;
@@ -259,11 +267,27 @@ fieldset p:nth-child(even) {
   list-style-position: inside;
 }
 /* line 35, sass/_new_layout.scss */
-.page-content .page-content-new .side-tab ul a {
-  background: #fff;
+.page-content .page-content-new .side-tab ul li {
+  margin: 5px 0px;
+}
+/* line 38, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab ul li a {
   padding: 10px;
   width: 170px;
   display: block;
+  position: relative;
+  left: 9px;
+  font-size: 1.1em;
+  color: #aaa;
+}
+/* line 49, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab ul li a:hover {
+  color: #666;
+}
+/* line 59, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab ul li.current a {
+  color: #000;
+  background: #fff;
   border: 1px solid #ccc;
   -moz-border-radius: 5px 0px 0px 5px;
   -webkit-border-radius: 5px 0px 0px 5px;
@@ -274,15 +298,8 @@ fieldset p:nth-child(even) {
   -o-box-shadow: -5px 0px 5px #cccccc;
   box-shadow: -5px 0px 5px #cccccc;
   border-right: 0px;
-  position: relative;
-  left: 9px;
-  font-size: 1.1em;
 }
-/* line 50, sass/_new_layout.scss */
-.page-content .page-content-new .side-tab ul a.sel {
-  color: #000;
-}
-/* line 56, sass/_new_layout.scss */
+/* line 71, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content {
   float: left;
   width: 720px;
@@ -290,26 +307,115 @@ fieldset p:nth-child(even) {
   background: #fff;
   min-height: 280px;
 }
-/* line 63, sass/_new_layout.scss */
+/* line 78, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content h2 {
   font-size: 1.2em;
   color: #000;
   padding: 5px 10px 10px 5px;
   float: left;
 }
-/* line 71, sass/_new_layout.scss */
+/* line 86, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content a.btn {
   float: right;
 }
-/* line 75, sass/_new_layout.scss */
+/* line 90, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content div.mandate_panel {
   float: right;
 }
-/* line 78, sass/_new_layout.scss */
+/* line 93, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content div.mandate_panel span {
   color: red;
 }
-/* line 84, sass/_new_layout.scss */
+/* line 99, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content .filter_bar {
   background: blanchedalmond;
+}
+/* line 103, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content .form_info {
+  border-top: 1px solid #ccc;
+  padding: 10px 0px;
+  font-style: italic;
+  color: #b66f00;
+}
+
+/* line 5, sass/_child_summary.scss */
+.child_list .child_summary_panel {
+  background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
+  border: 1px solid #d4d1d1;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  margin: 10px;
+  float: left;
+}
+/* line 13, sass/_child_summary.scss */
+.child_list .child_summary_panel .photo_panel {
+  float: left;
+  width: 160px;
+  height: 160px;
+  margin: 10px;
+  background: #fff;
+  border: 10px solid #fff;
+}
+/* line 23, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel {
+  float: left;
+  padding: 10px 10px 10px 0px;
+  width: 695px;
+  position: relative;
+}
+/* line 29, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel h2 {
+  font-size: 1.4em;
+  padding: 5px 10px 10px 0px;
+}
+/* line 35, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel .flag {
+  position: absolute;
+  top: 0px;
+  width: 22px;
+  height: 36px;
+}
+/* line 43, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel .reunited {
+  right: 10px;
+  background: url(../images/new/icon_reunited.png) no-repeat;
+}
+/* line 48, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel .suspect {
+  right: 40px;
+  background: url(../images/new/icon_flagged.png) no-repeat;
+}
+/* line 53, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel .summmary_item {
+  border-top: 1px solid #ddd;
+  font-size: 0.95em;
+}
+/* line 58, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel .summmary_item .key {
+  color: #666;
+  padding: 10px 0px 10px 20px;
+  float: left;
+  width: 180px;
+}
+/* line 64, sass/_child_summary.scss */
+.child_list .child_summary_panel .summary_panel .summmary_item .value {
+  color: #000;
+  padding: 10px;
+  float: left;
+  width: 470px;
+}
+/* line 75, sass/_child_summary.scss */
+.child_list .child_summary_panel .action_panel {
+  background: #e8e8e8;
+  padding: 5px 10px 8px;
+  border-top: 1px solid #d4d1d1;
+  font-size: 1.3em;
+  color: #aaa;
+}
+/* line 82, sass/_child_summary.scss */
+.child_list .child_summary_panel .action_panel a {
+  margin: 0px 10px;
+  font-size: 0.8em;
 }

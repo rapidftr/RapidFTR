@@ -77,7 +77,7 @@ a:hover{
   box-shadow: $attr;
 }
 
-input[type=text], input[type=password]{
+input[type=text], input[type=password], textarea, input[type=file]{
   background: $bg-textbox;
   font-size: 1em;
   padding:2px;
@@ -134,7 +134,7 @@ input[type=text], input[type=password]{
 }
 
 fieldset{
-    margin-top:10px;
+
 
     p{
         padding:10px;
@@ -209,4 +209,13 @@ fieldset{
         }
       }
     }
+}
+
+a.edit{
+  background:url(../images/new/icon_edit.png) no-repeat 0px 0px;
+  padding-left:17px;
+}
+a.mark_as_duplicate{
+  background:url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
+  padding-left:20px;
 }

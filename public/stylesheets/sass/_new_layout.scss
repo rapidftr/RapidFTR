@@ -32,23 +32,38 @@
             margin-top: 10px;
             list-style-position: inside;
 
-            a{
-                background:#fff;
-                padding: 10px;
-                width: 170px;
-                display: block;
-                border:1px solid #ccc;
-                @include borderRadius(5px 0px 0px 5px);
-                @include boxShadow(-5px 0px 5px #ccc);
-                border-right: 0px;
-                position: relative;
-                left:9px;
-                font-size: 1.1em;
+            li{
+                margin:5px 0px;
+
+                a{
+
+                    padding: 10px;
+                    width: 170px;
+                    display: block;
+
+                    position: relative;
+                    left:9px;
+                    font-size: 1.1em;
+                    color:#aaa;
+
+                    &:hover{
+                        color:#666;
+                    }
+                }
+
+
 
             }
 
-            a.sel{
-                color:#000;
+            li.current{
+                a{
+                    color:#000;
+                    background:#fff;
+                  border:1px solid #ccc;
+                  @include borderRadius(5px 0px 0px 5px);
+                  @include boxShadow(-5px 0px 5px #ccc);
+                  border-right: 0px;
+                }
             }
         }
       }
@@ -84,6 +99,14 @@
           .filter_bar{
             background:$bg_filterbar;
           }
+
+          .form_info {
+            border-top: 1px solid #ccc;
+            padding:10px 0px;
+            font-style: italic;
+            color:$form_info;
+          }
+
 
 
 

@@ -1,0 +1,89 @@
+.child_list {
+  @extend .clearfix;
+
+
+  .child_summary_panel {
+    background: $bg-child-summary;
+    border: 1px solid $border-child-summary;
+    @include borderRadius(2px);
+    margin: 10px;
+    float:left;
+    @extend .clearfix;
+
+    .photo_panel {
+      float: left;
+      width: 160px;
+      height: 160px;
+
+      margin:10px;
+      background: #fff;
+      border: 10px solid #fff;
+    }
+
+    .summary_panel {
+      float: left;
+      padding: 10px 10px 10px 0px;
+      width:695px;
+      position: relative;
+
+      h2 {
+        font-size: 1.4em;
+
+        padding:5px 10px 10px 0px;
+      }
+
+      .flag{
+        position:absolute;
+        top:0px;
+
+        width:22px;
+        height:36px;
+      }
+
+      .reunited{
+        right:10px;
+        background:url(../images/new/icon_reunited.png) no-repeat;
+      }
+
+      .suspect{
+        right: 40px;
+        background:url(../images/new/icon_flagged.png) no-repeat;
+      }
+
+      .summmary_item{
+        @extend .clearfix;
+        border-top: 1px solid #ddd;
+        font-size: 0.95em;
+
+      .key {
+        color: #666;
+        padding:10px 0px 10px 20px;
+        float: left;
+        width:180px;
+      }
+      .value {
+        color: #000;
+        padding:10px;
+        float:left;
+        width:470px;
+
+      }
+      }
+
+    }
+
+    .action_panel {
+      background: #e8e8e8;
+      padding: 5px 10px 8px;
+      border-top: 1px solid $border-child-summary;
+      font-size: 1.3em;
+      color:#aaa;
+
+        a{
+            margin:0px 10px;
+            font-size: 0.8em;
+        }
+
+    }
+  }
+}

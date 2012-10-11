@@ -94,10 +94,7 @@ tfoot th { font-weight: normal; font-size: 0.75em;}
 .content-section-search { float: left; width: 630px; padding: 10px 25px 25px; background: url(../images/content-section-bg-1.gif) no-repeat 0 100%; }
 
 /* tabbed content  */
-ul.tab-handles { border-left: 1px solid #678; margin-bottom: 0; position: relative; top: 1px; }
-.tab-handles li { padding: 0; background: none; margin: 0; float: left; font-weight: bold; }
-.tab-handles li a { display: block; border: solid #678; border-width: 1px 1px 0 0; background: #f3f0e9; padding: 5px 10px; }
-.tab-handles li.current a { background: #ddd; color: #678; }
+
 
 /* CONTENT SPECIFIC STYLES*/
 
@@ -147,9 +144,7 @@ td.checkbox { text-align: center;}
 .profiles-button-wrapper label { font-size:0.75em;font-weight:bold;color:#678;}
 
 /* profile and edit page */
-.form-section-info { border-bottom: 1px solid #678; margin-bottom: 1em; padding-bottom: .5em; font-size: 12px; }
-.form-section-info .form-section-help-text { padding-top: .7em; font-style: italic; }
-.form-section-info div { margin-bottom: 3px; }
+
 
 /* profile page */
 .profile-page .page-content { background-position: 650px 0;}
