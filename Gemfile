@@ -25,12 +25,17 @@ gem 'cancan'
 gem 'sass'
 gem 'compass-rails'
 gem 'uglifier'
+group :test do
+  gem 'mocha'
+  gem 'test_declarative'
+end
 
 group :cucumber do
   gem 'cucumber',         '1.2.1'
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
+  gem 'rcov'
 end
 
 group :development, :test do

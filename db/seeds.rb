@@ -34,6 +34,7 @@ end
 
 if should_seed? FormSection
   RapidFTR::FormSectionSetup.reset_definitions
+  RapidFTR::I18nSetup.reset_definitions
 end
 
 if should_seed? SuggestedField
@@ -43,4 +44,3 @@ end
 if should_seed? ContactInformation
   ContactInformation.create(:id=>"administrator")
 end
-

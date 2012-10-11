@@ -1,7 +1,6 @@
 <p>
   <span class="tool-tip-label">
-      <%= label_tag textarea.tag_name_attribute, textarea.display_name, :class=>'key' %>
-
+      <%= label_tag textarea.tag_name_attribute, t(textarea.name,:default => textarea.display_name), :class=>'key' %>
   </span>
   <%= text_area_tag textarea.tag_name_attribute, @child[textarea.name]%>
   <% if textarea.help_text.present?%>

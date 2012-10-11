@@ -1,5 +1,5 @@
 <dl class="radioList">
-  <dt><span><%= radio_button.name.humanize %></span>
+  <dt><span><%= t(radio_button.name , :default => radio_button.display_name)  %></span>
     <% if radio_button.help_text.present?%>
 	<img class="tool-tip-icon vtip" title="<%=radio_button.help_text%>" src="/images/tool_tip_icon.gif"/>
     <% end%>

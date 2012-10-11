@@ -1,6 +1,6 @@
 <p>
   <span class="tool-tip-label">
-	<%= label_tag check_boxes.tag_name_attribute, check_boxes.display_name, {:class=>"main-label"}%>
+	<%= label_tag check_boxes.tag_name_attribute, t(check_boxes.name, :default => check_boxes.display_name), {:class=>"main-label"}%>
     <% if check_boxes.help_text.present? %>
 	    <img class="tool-tip-icon vtip" title="<%=check_boxes.help_text%>" src="/images/tool_tip_icon.gif"/>
     <% end%>
