@@ -3,7 +3,7 @@
       <%= label_tag text_field.tag_name_attribute, text_field.display_name, :class=>'key' %>
 
   </span>
-  <%= text_field_tag text_field.tag_name_attribute, @child[text_field.name], :size=>'30' %>
+  <%= text_field_tag text_field.tag_name_attribute, @child[text_field.name] %>
   <% if text_field.help_text.present?%>
       <img class="tool-tip-icon vtip" title="<%=text_field.help_text%>" src="/images/new/icon_help.png"/>
   <% end%>

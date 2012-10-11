@@ -5,7 +5,7 @@
   </span>
   <% klass = @child.errors.on(numeric_field.name) == nil ? "" : "field-error"%>
   <span class="<%= klass %>">
-    <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name], :size=>'30' %>
+    <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %>
   </span>
   <% if numeric_field.help_text.present?%>
       <img class="tool-tip-icon vtip" title="<%=numeric_field.help_text%>" src="/images/new/icon_help.png"/>
