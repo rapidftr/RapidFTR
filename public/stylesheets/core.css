@@ -409,20 +409,3 @@ ul.history-details li { list-style:none; background: none; padding-left: 0; bord
 .order-by-box ul li.first {
 	border-left: none;
 }
-
-/* duplicates page */
-.mark-duplicate .form-label {
-  float: left;
-}
-.mark-duplicate .tool-tip-icon {
-  width: 14px;
-  height: 14px;
-  float: right;
-}
-.mark-duplicate text {
-  float: left;
-}
-.mark-duplicate .submitButton {
-  clear: both;
-  float: left;
-}
