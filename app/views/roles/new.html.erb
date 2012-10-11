@@ -1,0 +1,13 @@
+<%= form_for @role do |f|%>
+  <%= error_messages_for :role %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+  <%= f.label :permissions %>
+  <% Permission.all.each do |permission| %>
+    <%= f.check_box :permissions, {:name => "role[permissions][]"}, permission, "" %>
+    <%= f.label :permissions, permission %>
+  <% end %>
+  <%= f.submit %>
+<% end %>
