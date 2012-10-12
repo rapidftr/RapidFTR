@@ -134,6 +134,12 @@ module NavigationHelpers
         child = Child.by_name(:key => $1).first
         new_child_duplicate_path(child)
 
+      when /create role page/
+        new_role_path
+
+      when /roles index page/
+        roles_path
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #
