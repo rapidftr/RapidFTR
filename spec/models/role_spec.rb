@@ -20,6 +20,12 @@ describe Role do
     role.errors.on(:name).should == ["A role with that name already exists, please enter a different name"]
   end
 
+  it "should titleize role name before validating it" do
+    role = Role.new(:name => "should be titleized")
+    role.valid?
+    role.name.should == "Should Be Titleized"
+  end
+
   it "should create a valid role" do
     Role.new(:name => "some_role", :permissions => [Permission::ADMIN]).should be_valid
   end
