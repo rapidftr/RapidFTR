@@ -21,7 +21,7 @@ describe "children/_form_section.html.erb" do
         render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
         @form_section.fields.each do |field|
-          rendered.should be_include("<label for=\"#{field.tag_id}\">")
+          rendered.should be_include("<label class=\"key\" for=\"#{field.tag_id}\">")
           rendered.should be_include("<input id=\"#{field.tag_id}\" name=\"#{field.tag_name_attribute}\" type=\"text\" />")
         end
       end
@@ -80,7 +80,7 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        rendered.should be_include("<label for=\"child_dateofseparation\">")
+        rendered.should be_include("<label class=\"key\" for=\"child_dateofseparation\">")
         rendered.should be_include("<select id=\"child_dateofseparation\" name=\"child[dateofseparation]\"><option value=\"\" selected=\"selected\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
       end
     end

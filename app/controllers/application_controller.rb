@@ -7,11 +7,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   include ChecksAuthentication
-
   before_filter :check_authentication
+  before_filter :set_locale
+
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
-
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
 
   def render_error_response(ex)
@@ -81,6 +81,10 @@ class ApplicationController < ActionController::Base
       session.update_expiration_time(20.minutes.from_now)
       session.save
     end
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || cookies[:locale] || I18n.default_locale
   end
 
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|

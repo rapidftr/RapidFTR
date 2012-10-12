@@ -10,9 +10,16 @@
   });
 </script>
 
-<h2>Manage Users</h2>
+<h1>Manage Users</h1>
 
-<p><%= link_to 'New User', new_user_path %></p>
+<div class="page-content-new">
+<div class="side-tab">
+    <ul>
+        <li><a href="#" class="sel">Users</a></li>
+    </ul>
+</div>
+<div class="side-tab-content">
+
 
 <%= render :partial => 'users_table' %>
 
@@ -20,3 +27,5 @@
 
 <p><%= link_to 'Back', admin_path %></p>
 <div id="modal-dialog" />
+</div>
+</div>

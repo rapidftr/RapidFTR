@@ -1,11 +1,5 @@
 var RapidFTR = {};
 
-RapidFTR.backButton = function(selector){
-	$(".back a").click(function(e){
-		e.preventDefault();
-		history.go(-1);	
-	});
-}
 RapidFTR.tabControl = function() {
   $(".tab").hide();
   $(".tab-handles li:first").addClass("current").show();
@@ -105,7 +99,6 @@ $(document).ready(function() {
   RapidFTR.enableSubmitLinks();
   RapidFTR.activateToggleFormSectionLinks();
   RapidFTR.hideDirectionalButtons();
-  RapidFTR.backButton();
   RapidFTR.followTextFieldControl("#field_display_name", "#field_name", RapidFTR.Utils.dehumanize);
   RapidFTR.childPhotoRotation.init();
     $('#dialog').hide();

@@ -37,5 +37,5 @@ Feature:
         | Paul   | false|
       And I flag "Peter" as suspect
       When I search using a name of "P"
-      Then the "Peter" result should have a "flag" image
+      Then the "Peter" result should have a "suspect" image
     
