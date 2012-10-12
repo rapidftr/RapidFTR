@@ -77,11 +77,11 @@ a:hover{
   box-shadow: $attr;
 }
 
-input[type=text], input[type=password], textarea, input[type=file]{
+input[type=text], input[type=password], textarea, input[type=file], select{
   background: $bg-textbox;
   font-size: 1em;
   padding:2px;
-  border:1px solid #ddd;
+  border:1px solid #AAA;
   @include borderRadius(3px);
 }
 
@@ -141,10 +141,10 @@ fieldset{
         @extend .clearfix;
 
         .key{
-            width:150px;
+            width:200px;
             float: left;
             display: block;
-
+            padding-top:4px;
         }
 
 
@@ -218,4 +218,21 @@ a.edit{
 a.mark_as_duplicate{
   background:url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
   padding-left:20px;
+}
+
+.submitButton{
+  float: right;
+  padding: 10px;
+
+  input{
+    @extend .btn;
+
+  }
+}
+
+.discardButton{
+  float: right;
+  padding: 14px 10px;
+
+
 }

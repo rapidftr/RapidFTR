@@ -1,13 +1,14 @@
 <% @form_sections.each do |section| %>
-  <fieldset id='tab_<%= section.section_name.underscore %>' class='<%= section.section_name %> tab profile-section'>
+  <fieldset id='tab_<%= section.section_name.underscore %>' class='<%= section.section_name %> tab '>
     <h2><%= section.name %></h2>
-    <ul class="<%= section.section_name %>">
+    <%= render :partial => 'shared/sidebar' %>
+    <div class="clearfix"></div>
       <%= render :partial => "form_section_info", :locals => {:form_section => section} %>
 
       <% (section.fields.select{|field| field.enabled?}).each do |field| %>
 				<%= render :partial => "field_display_#{field.display_type}",  :locals=>{:field => field, :child=>@child} %>
 
       <% end %>
-    </ul>
+
   </fieldset>
 <% end %>

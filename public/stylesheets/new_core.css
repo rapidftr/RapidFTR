@@ -75,11 +75,11 @@ a:hover {
 }
 
 /* line 80, sass/_new_global.scss */
-input[type=text], input[type=password], textarea, input[type=file] {
+input[type=text], input[type=password], textarea, input[type=file], select {
   background: white;
   font-size: 1em;
   padding: 2px;
-  border: 1px solid #ddd;
+  border: 1px solid #AAA;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   -o-border-radius: 3px;
@@ -87,7 +87,7 @@ input[type=text], input[type=password], textarea, input[type=file] {
 }
 
 /* line 88, sass/_new_global.scss */
-.btn {
+.btn, .submitButton input {
   background: url(../images/new/bg-gray-btn.png) #cfcfcf repeat-x;
   text-align: left;
   font-size: 1em;
@@ -101,19 +101,19 @@ input[type=text], input[type=password], textarea, input[type=file] {
 }
 
 /* line 97, sass/_new_global.scss */
-.btn:hover {
+.btn:hover, .submitButton input:hover {
   background: url(../images/new/bg-gray-btn-hover.png) #bababa repeat-x;
 }
 
 /* line 102, sass/_new_global.scss */
-.btn span {
+.btn span, .submitButton input span {
   display: block;
   padding: 8px 10px 8px 50px;
   background-repeat: no-repeat;
   background-position: 10px center;
 }
 /* line 108, sass/_new_global.scss */
-.btn span.create_user {
+.btn span.create_user, .submitButton input span.create_user {
   background-image: url(../images/new/icon_create_user.png);
 }
 
@@ -145,9 +145,10 @@ fieldset p {
 }
 /* line 143, sass/_new_global.scss */
 fieldset p .key {
-  width: 150px;
+  width: 200px;
   float: left;
   display: block;
+  padding-top: 4px;
 }
 /* line 153, sass/_new_global.scss */
 fieldset p:nth-child(odd) {
@@ -230,6 +231,18 @@ a.mark_as_duplicate {
   padding-left: 20px;
 }
 
+/* line 223, sass/_new_global.scss */
+.submitButton {
+  float: right;
+  padding: 10px;
+}
+
+/* line 233, sass/_new_global.scss */
+.discardButton {
+  float: right;
+  padding: 14px 10px;
+}
+
 /* line 1, sass/_new_layout.scss */
 .page-content {
   background: #fff;
@@ -249,28 +262,39 @@ a.mark_as_duplicate {
   float: right;
 }
 /* line 18, sass/_new_layout.scss */
+.page-content .flag-message {
+  padding: 10px;
+  font-weight: normal;
+  font-size: 1.2em;
+}
+/* line 24, sass/_new_layout.scss */
+.page-content #interviewer_details {
+  padding: 10px;
+}
+/* line 28, sass/_new_layout.scss */
 .page-content .page-content-new {
   border-bottom: 1px solid #d4d4d4;
+  border-top: 1px solid #d4d4d4;
   background: #eee;
   min-height: 300px;
 }
-/* line 24, sass/_new_layout.scss */
+/* line 35, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab {
   float: left;
   width: 200px;
   height: 100%;
 }
-/* line 30, sass/_new_layout.scss */
+/* line 41, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul {
   list-style: none;
   margin-top: 10px;
   list-style-position: inside;
 }
-/* line 35, sass/_new_layout.scss */
+/* line 46, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul li {
   margin: 5px 0px;
 }
-/* line 38, sass/_new_layout.scss */
+/* line 49, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul li a {
   padding: 10px;
   width: 170px;
@@ -280,11 +304,11 @@ a.mark_as_duplicate {
   font-size: 1.1em;
   color: #aaa;
 }
-/* line 49, sass/_new_layout.scss */
+/* line 60, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul li a:hover {
   color: #666;
 }
-/* line 59, sass/_new_layout.scss */
+/* line 70, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab ul li.current a {
   color: #000;
   background: #fff;
@@ -299,43 +323,68 @@ a.mark_as_duplicate {
   box-shadow: -5px 0px 5px #cccccc;
   border-right: 0px;
 }
-/* line 71, sass/_new_layout.scss */
+/* line 82, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content {
   float: left;
   width: 720px;
   padding: 10px;
   background: #fff;
-  min-height: 280px;
+  min-height: 350px;
+  position: relative;
 }
-/* line 78, sass/_new_layout.scss */
+/* line 90, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content h2 {
   font-size: 1.2em;
   color: #000;
   padding: 5px 10px 10px 5px;
   float: left;
 }
-/* line 86, sass/_new_layout.scss */
+/* line 98, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content a.btn {
   float: right;
 }
-/* line 90, sass/_new_layout.scss */
+/* line 102, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content div.mandate_panel {
   float: right;
+  font-style: italic;
 }
-/* line 93, sass/_new_layout.scss */
+/* line 106, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content div.mandate_panel span {
   color: red;
 }
-/* line 99, sass/_new_layout.scss */
+/* line 112, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content .filter_bar {
   background: blanchedalmond;
 }
-/* line 103, sass/_new_layout.scss */
+/* line 116, sass/_new_layout.scss */
 .page-content .page-content-new .side-tab-content .form_info {
   border-top: 1px solid #ccc;
   padding: 10px 0px;
   font-style: italic;
   color: #b66f00;
+}
+/* line 123, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content input[type=text], .page-content .page-content-new .side-tab-content input[type=password], .page-content .page-content-new .side-tab-content input[type=file], .page-content .page-content-new .side-tab-content textarea, .page-content .page-content-new .side-tab-content select {
+  width: 250px;
+}
+/* line 128, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content .profile-image {
+  position: absolute;
+  padding: 10px;
+  background: #fff;
+  right: 0px;
+  width: 200px;
+  min-height: 200px;
+  top: 50px;
+}
+/* line 138, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content .profile-image img {
+  max-width: 100%;
+  max-height: 100%;
+}
+/* line 143, sass/_new_layout.scss */
+.page-content .page-content-new .side-tab-content .profile-image .thumbnails {
+  padding: 10px;
 }
 
 /* line 5, sass/_child_summary.scss */

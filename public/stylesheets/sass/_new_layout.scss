@@ -15,9 +15,20 @@
     float: right;
   }
 
+  .flag-message{
+    padding:10px;
+    font-weight: normal;
+    font-size: 1.2em;
+  }
+
+  #interviewer_details{
+    padding:10px;
+  }
+
   .page-content-new{
       @extend .clearfix;
       border-bottom:1px solid #d4d4d4;
+      border-top:1px solid #d4d4d4;
       background:#eee;
       min-height: 300px;
 
@@ -73,7 +84,8 @@
           width:720px;
           padding:10px;
           background:#fff;
-          min-height: 280px;
+          min-height: 350px;
+          position: relative;
 
           h2{
               font-size:1.2em;
@@ -88,7 +100,8 @@
           }
 
           div.mandate_panel{
-             float:right;
+              float:right;
+              font-style: italic;
 
               span{
                   color:red;
@@ -107,9 +120,30 @@
             color:$form_info;
           }
 
+          input[type=text], input[type=password], input[type=file], textarea, select{
+            width:250px;
 
+          }
 
+          .profile-image{
+            position: absolute;
+            padding:10px;
+            background:#fff;
+            right:0px;
+            width:200px;
+            min-height:200px;
 
+            top:50px;
+
+            img{
+                max-width:100%;
+                max-height:100%;
+            }
+
+            .thumbnails{
+                padding:10px;
+            }
+          }
 
 
       }
