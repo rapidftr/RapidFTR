@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 describe RolesController do
+
+  describe "non-admin user" do
+
+    it "should not allow non-admin user to access any roles action" do
+      fake_limited_login
+      expect { get :index }.to raise_error(CanCan::AccessDenied)
+      expect { post :create }.to raise_error(CanCan::AccessDenied)
+      expect { get :new }.to raise_error(CanCan::AccessDenied)
+    end
+
+  end
+
   before(:each) do
     fake_admin_login
   end
