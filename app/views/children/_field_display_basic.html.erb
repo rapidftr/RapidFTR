@@ -1,5 +1,5 @@
 <li>
-	<span class="profile-section-label"><%= field.display_name %>:</span>
+	<span class="profile-section-label"><%= t(field.name, :default => field.display_name) %>:</span>
 	<span class="profile-section-value"><%= field_value_for_display child[field.name] %></span>
 </li>
         
