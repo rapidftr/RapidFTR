@@ -1,0 +1,14 @@
+<div>
+  <p>
+  <span>Role Name</span>
+  <span>Description</span>
+  <span>Permissions</span>
+  </p>
+  <% @roles.each do |role| %>
+    <p>
+    <span><%= role.name %></span>
+    <span><%= role.description %></span>
+    <span><%= role.permissions.join(",")%></span>
+    </p>
+  <% end %>
+</div>
