@@ -23,12 +23,11 @@ Feature: So that admin can customize form section details
       | Description |
       | Visible |
     When I fill in "Edited Form" for "Name"
-    When I fill in "Some Description" for "Description"
+    When I fill in "Edited Description" for "Description"
     And I press "Save"
 
     Then I should be on the form section page
-    And I should see the description text "Some Description" for form section "family_details"
-    And I should see the name "Edited Form" for form section "family_details"
+    And I should see the description text "Edited Description" for form section "Edited Form"
 
   Scenario: Admins should be able to cancel edit and return to the formsections page
     Given I am logged in as an admin

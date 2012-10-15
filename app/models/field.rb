@@ -188,8 +188,8 @@ class Field < Hash
   
   def validate_unique
     return true unless new? && form
-    return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.name == name})
-    other_form = FormSection.get_form_containing_field name
+    return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    other_form = FormSection.get_form_containing_field display_name
     return [false, "Field already exists on form '#{other_form.name}'"] if other_form  != nil
     true
   end

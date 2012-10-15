@@ -6,11 +6,11 @@ Feature: So that admin can see Manage Form Sections Page
     And I follow "Manage Form Sections"
 
   Scenario: Admins should see correct re-ordering links for each section
-    Then I should see the "basic_identity" section without any ordering links
-    And I should see the "basic_identity" section without an enabled checkbox
-    And I should see the "care_arrangements" section with an enabled checkbox
-    And I should see "family_details" with order of "2"
-    And I should see "care_arrangements" with order of "3"
+    Then I should see the "Basic Identity" section without any ordering links
+    And I should see the "Basic Identity" section without an enabled checkbox
+    And I should see the "Care Arrangements" section with an enabled checkbox
+    And I should see "Family details" with order of "2"
+    And I should see "Care Arrangements" with order of "3"
 
   Scenario: Admins should see a back button
     Then I should see "Back"

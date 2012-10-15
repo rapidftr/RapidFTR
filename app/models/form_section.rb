@@ -73,7 +73,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.get_form_containing_field field_name
-    all.find { |form| form.fields.find { |field| field.name == field_name } }
+    all.find { |form| form.fields.find { |field| field.name == field_name || field.display_name == field_name } }
   end
 
   def self.create_new_custom name, description = "", help_text = "", enabled=true

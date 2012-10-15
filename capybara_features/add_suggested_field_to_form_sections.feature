@@ -31,7 +31,7 @@ Feature: Adding a suggested field to a form section
 
      Then I should see "Field successfully added"
      And I should be on the edit form section page for "basic_details"
-     And I should see "a_suggested_field" in the list of enabled fields
+     And I should see "A_suggested_field" in the list of enabled fields
 
      When I follow "Add Custom Field"
 

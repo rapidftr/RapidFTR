@@ -198,9 +198,8 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
   field_labeled(dropdown_label).value.should == selected_text
 end
 
-And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
-  field_ids = Nokogiri::HTML(page.body).css("table tbody tr").map {|row| row[:id] }
-  field_ids.should include("#{field_id}Row")
+And /^I should see "([^\"]*)" in the list of fields$/ do |field_name|
+  page.should have_xpath("//table[@id='form_sections']//td[@class='breakword' and contains(., '#{field_name}')]")
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|

@@ -17,9 +17,6 @@ module NavigationHelpers
       when /the new create_custom_field page/
         new_create_custom_field_path
 
-      when /the new create_custom_fields.feature page/
-        new_create_custom_fields.feature_path
-
       when /the new add_suggested_field_to_form_section page/
         new_add_suggested_field_to_form_section_path
 
