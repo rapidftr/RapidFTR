@@ -4,7 +4,7 @@ module HpricotSearch
   end
 
   def photos
-    search("p[@class=photo]")
+    search("div[@class=photo_panel]")
   end
 
   def definition_lists
@@ -12,7 +12,7 @@ module HpricotSearch
   end
 
   def profiles_list_items
-    search("div[@class=profiles-list-item]")
+    search("div[@class=child_summary_panel]")
   end
 
   def child_name

@@ -1,0 +1,7 @@
+# Mainly used for testing purpose
+# Contains the mappings for translation pertaining to the locale "de"
+
+de:
+  name: "DEName"
+  basic_identity: "DEBasic"
+

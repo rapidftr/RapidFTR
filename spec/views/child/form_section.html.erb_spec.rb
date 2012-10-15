@@ -6,7 +6,43 @@ end
 describe "children/_form_section.html.erb" do
 
   before :each do
-    @form_section = FormSection.new "unique_id" => "section_name"
+    @form_section = FormSection.new "unique_id" => "translated", "name" => "displayed_form_name"
+  end
+
+  describe "translating form section name" do
+    it "should be shown with translated name" do
+      translated_name = "translated_form_name"
+      I18n.locale = :de
+      I18n.backend.store_translations("de", @form_section.unique_id => translated_name)
+      render :partial => 'children/tabs.html.erb' , :object => [@form_section]
+      rendered.should be_include(translated_name)
+      rendered.should_not be_include(@form_section.name)
+    end
+    it "should not be shown with translated name" do
+      I18n.backend.store_translations("de", @form_section.unique_id => nil)
+      render :partial => 'children/tabs.html.erb', :object => [@form_section]
+      rendered.should be_include(@form_section.name)
+    end
+  end
+
+  describe "translating form section heading" do
+    it "should be shown with translated heading" do
+      translated_name = "translated_heading"
+      I18n.locale = :de
+      I18n.backend.store_translations("de", @form_section.unique_id => translated_name)
+      @form_sections = [ @form_section ]
+
+      render :partial => 'children/show_form_section.html.erb'
+
+      rendered.should be_include(translated_name)
+      rendered.should_not be_include(@form_section.name)
+    end
+
+      it "should not be shown with translated heading" do
+        I18n.backend.store_translations("de", @form_section.unique_id => nil)
+        @form_sections = [ @form_section ]
+        render :partial => 'children/show_form_section.html.erb'
+      end
   end
 
   describe "rendering text fields" do
@@ -21,7 +57,7 @@ describe "children/_form_section.html.erb" do
         render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
         @form_section.fields.each do |field|
-          rendered.should be_include("<label for=\"#{field.tag_id}\">")
+          rendered.should be_include("<label class=\"key\" for=\"#{field.tag_id}\">")
           rendered.should be_include("<input id=\"#{field.tag_id}\" name=\"#{field.tag_name_attribute}\" type=\"text\" />")
         end
       end
@@ -80,7 +116,7 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
 
-        rendered.should be_include("<label for=\"child_dateofseparation\">")
+        rendered.should be_include("<label class=\"key\" for=\"child_dateofseparation\">")
         rendered.should be_include("<select id=\"child_dateofseparation\" name=\"child[dateofseparation]\"><option value=\"\" selected=\"selected\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
       end
     end

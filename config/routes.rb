@@ -28,9 +28,16 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
   match '/children/filter/:status' => 'children#index', :as => :child_filter
+
+
   resources :users
   resources :user_preferences
+
+
+  resources :roles
   match 'admin' => 'admin#index', :as => :admin
+
+
   resources :sessions, :except => :index
   resources :password_recovery_requests, :only => [:new, :create]
   match 'password_recovery_request/:password_recovery_request_id/hide' => 'password_recovery_requests#hide', :as => :hide_password_recovery_request, :via => :delete

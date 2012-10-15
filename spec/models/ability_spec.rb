@@ -32,7 +32,7 @@ describe Ability do
   describe '#admin' do
     before :each do @session.stub! :user_permissions => [ "admin" ] end
 
-    include_examples "control classes and objects", [ Child, ContactInformation, Device, FormSection, Session, SuggestedField, User ], true
+    include_examples "control classes and objects", [ Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], true
   end
 
   describe '#unlimited' do
@@ -40,16 +40,17 @@ describe Ability do
 
     include_examples "control class", Child, true
     include_examples "control object", Child.new, true
-    include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User ], false
+    include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], false
   end
 
-  describe '#unlimited' do
+  describe '#limited' do
     before :each do @session.stub! :user_permissions => [ "limited" ] end
 
     include_examples "control class", Child, true
     include_examples "control object", Child.new, false
     include_examples "control object", Child.new(:created_by => 'test'), true
-    include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User ], false
+    include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], false
   end
+
 
 end

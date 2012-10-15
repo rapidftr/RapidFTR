@@ -8,6 +8,8 @@
 # files.
 
 
+
+
 unless ARGV.any? {|a| a =~ /^gems/} # Don't load anything when running the gems:* tasks
 
 if ENV['CUCUMBER_OPTS'] =~ /Teamcity/
@@ -61,6 +63,12 @@ begin
       t.profile = 'browser_wip'
     end
 
+    Cucumber::Rake::Task.new(:features1) do |t|
+      t.cucumber_opts = "--format pretty"
+      t.rcov = true
+    end
+
+    task :features => 'db:test:prepare'
     desc 'Run all features in headless and browser modes'
     task :all => [:headless, :browser]
   end

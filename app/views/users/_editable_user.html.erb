@@ -21,96 +21,89 @@
   });
 </script>
 
-<%= form_for editable_user, :html => {:class=> 'default-form'} do |f| %>
+<%= form_for editable_user, :html => {:class=> ''} do |f| %>
   <%= f.error_messages :header_tag => :h3 %>
   <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
-  <fieldset>
-    <h3>User details</h3>
 
+    <h2><a href="#">List of Users</a> &gt; Create an User</h2>
+    <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
+    <div class="clearfix"></div>
+    <fieldset>
     <p>
-      <%= f.label :full_name, "Full name" %>
+      <%= f.label :full_name, "Full name", :class=>'key' %>
       <%= f.text_field :full_name %>*
     </p>
 
     <p>
-      <%= f.label :user_name %>
+      <%= f.label :user_name, :class=>'key'  %>
       <%= f.text_field :user_name, :disabled => !editable_user.new_record? %>*
       <span class="footnote">user name should not contain blanks</span>
     </p>
 
     <p>
-      <%= f.label :password %>
+      <%= f.label :password, :class=>'key'  %>
       <%= f.password_field :password %>*
       <span class="footnote">password should not contain blanks</span>
     </p>
 
     <p>
-      <%= f.label :password_confirmation,"Re-enter password" %>
+      <%= f.label :password_confirmation,"Re-enter password", :class=>'key'  %>
       <%= f.password_field :password_confirmation %>*
     </p>
 
   <% if !trying_to_edit_ourself %>
-    <dl class="radioList">
-      <dt>User type:</dt>
-      <dd>
-        <p>
+    <p><label class="key">User type</label>
+
           <%= f.radio_button :user_type, "Administrator" %>
           <%= f.label :user_type_administrator, "Administrator" %>
-        </p>
-        <p>
+
+
           <%= f.radio_button :user_type, "User" %>
           <%= f.label :user_type_user, "User" %>
-        </p>
-      </dd>
-    </dl>
-   <% end %>
+    </p>
+    <% end %>
 
     <p>
-      <%= f.label :phone %>
+      <%= f.label :phone, :class=>'key'  %>
       <%= f.text_field :phone %>
     </p>
     <p>
-      <%= f.label :email %>
+      <%= f.label :email, :class=>'key'  %>
       <%= f.text_field :email %>
     </p>
 
     <p>
-      <%= f.label :organisation %>
+      <%= f.label :organisation, :class=>'key'  %>
       <%= f.text_field :organisation, :disabled => !is_admin?%>
     </p>
 
     <p>
-      <%= f.label :position %>
+      <%= f.label :position, :class=>'key'  %>
       <%= f.text_field :position %>
     </p>
 
     <p>
-      <%= f.label :location %>
+      <%= f.label :location, :class=>'key'  %>
       <%= f.text_field :location %>
     </p>
 
     <% if !trying_to_edit_ourself %>
         <p>
-          <%= f.label :disabled, "Disabled?" %>
+          <%= f.label :disabled, "Disabled?", :class=>'key' %>
           <%= f.check_box :disabled, {}, "true", "false" %>
         </p>
     <% end %>
 
-    <dl class="radioList">
-      <dt>User Permission Level:</dt>
-      <dd>
-        <p>
+    <p>
+            <label class="key">User Permission Level:</label>
           <%= f.radio_button :permission, "Unlimited", :disabled => trying_to_edit_ourself %>
           <%= f.label :permission_unlimited, "Unlimited" %>
-        </p>
-        <p>
+
           <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
           <%= f.label :permission_limited, "Limited" %>
         </p>
-      </dd>
-    </dl>
+    </fieldset>
 
-  </fieldset>
   <% if is_admin? %>
   <%= render :partial => "devices", :object => editable_user.devices %>
   <% end %>

@@ -39,17 +39,11 @@ describe "children/search.html.erb" do
 
       render
 
-      fields = Hpricot(rendered).search(".details dl.basic")
-      fields.search("dt").size.should == @highlighted_fields.size
-      fields.search("dd").size.should == @highlighted_fields.size
-      fields.search("dt").first.inner_text.should == "field display 2:"
-      fields.search("dd").first.inner_text.should == "field 2"
-    end
+      fields = Hpricot(rendered).search(".summary_panel")
+      fields.search(".summary_item").size.should == @highlighted_fields.size + 2 #including the registered by and last_updated_by keys
 
-    it "should have a definition list for interview timestamps details for each record in the results" do
-      render
-
-      Hpricot(rendered).search(".details dl.interview-timestamp").size.should == @results.length
+      fields.search(".key").first.inner_text.should == "field display 2:"
+      fields.search(".value").first.inner_text.should == "field 2"
     end
 
     it "should include a column displaying thumbnails for each child if asked" do

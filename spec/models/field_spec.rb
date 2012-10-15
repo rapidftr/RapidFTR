@@ -8,6 +8,18 @@ describe "Child record field view model" do
     @field = Field.new :name => "gender", :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
   end
 
+  describe '#name' do
+    it "should be generated when not provided" do
+      field = Field.new
+      field.name.should_not be_empty
+    end
+
+    it "should not be generated when provided" do
+      field = Field.new :name => 'test_name'
+      field.name.should == 'test_name'
+    end
+  end
+
   it "converts field name to a HTML tag ID" do
     @field.tag_id.should == "child_#{@field_name}"
   end
@@ -147,18 +159,4 @@ describe "Child record field view model" do
     end
   end
 
-  describe '#generate_name' do
-    it "should generate english name" do
-      @field = Field.new :display_name => 'Test Name'
-      @field.generate_name
-      @field.name.should == @field.display_name.dehumanize
-    end
-
-    it "should generate random name" do
-      I18n.stub! :default_locale => :de
-      @field = Field.new :display_name => 'तेरा नाम क्या है'
-      @field.generate_name
-      @field.name.length.should == 9
-    end
-  end
 end

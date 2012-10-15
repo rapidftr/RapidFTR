@@ -1,11 +1,13 @@
-<h2>All children > <%= h(@filter.capitalize) %></h2>
+<h1 class="no_border float_left">List of Children</h1>
+<%= link_to content_tag(:span, 'Register New Child', :class => 'create_user'), new_child_path, :class=>'btn' %>
+<div class="clearfix"></div>
 
-<p><%= link_to 'Register New Child', new_child_path %></p>
-
+<div class="filter_bar">
 <%= render :partial => "children/filter_box" %>
 <%= render :partial => "children/order_by_box" %>
+</div>
 
-<div class="profiles-list">
+<div class="child_list">
 	<%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
 </div>
 
