@@ -1,7 +1,7 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   permissions = []
-  permissions.push("admin") if user_type.downcase == "admin"
-  permissions.push("unlimited") if user_type.downcase == "user"
+  permissions.push(Permission::ADMIN) if user_type.downcase == "admin"
+  permissions.push(Permission::ACCESS_ALL_DATA) if user_type.downcase == "user"
   permissions.push(permission.downcase) if permission
 
   @user = User.new(
@@ -19,7 +19,7 @@ Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
   step %(a #{user_type} "#{user_name}" with password "123")
 end
 
-Given /^an? (user|admin) "([^"]+)" with "(limited|unlimited)" permission$/ do |user_type, user_name, permission|
+Given /^an? (user|admin) "([^"]+)" with "(#{Permission::LIMITED}|#{Permission::ACCESS_ALL_DATA})" permission$/ do |user_type, user_name, permission|
   step %(a #{user_type} "#{user_name}" with password "123" and "#{permission}" permission)
 end
 
