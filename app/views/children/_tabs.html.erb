@@ -6,7 +6,7 @@
       <% else %>
           <li>
       <% end %>
-      <a href="#tab_<%= form_section.section_name %>"><%= form_section.name %></a>
+          <a href="#tab_<%= form_section.section_name %>"><%= t(form_section.unique_id, :default => form_section.name) %></a>
       </li>
       <% is_first_tab = false %>
   <% end %>
