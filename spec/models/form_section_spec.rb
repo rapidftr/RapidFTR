@@ -27,6 +27,30 @@ describe FormSection do
     }
   end
 
+  describe '#unique_id' do
+    it "should be generated when not provided" do
+      f = FormSection.new
+      f.unique_id.should_not be_empty
+    end
+
+    it "should not be generated when provided" do
+      f = FormSection.new :unique_id => 'test_form'
+      f.unique_id.should == 'test_form'
+    end
+
+    it "should not allow duplicate unique ids" do
+      FormSection.new(:unique_id => "test", :name => "test").save!
+
+      expect {
+        FormSection.new(:unique_id => "test").save!
+      }.to raise_error
+
+      expect {
+        FormSection.get_by_unique_id("test").save!
+      }.to_not raise_error
+    end
+  end
+
   describe "repository methods" do
     before { FormSection.all.each &:destroy }
 
@@ -246,11 +270,6 @@ describe FormSection do
     it "should create a new form section" do
       FormSection.should_receive(:create!)
       FormSection.create_new_custom "basic"
-    end
-    it "should give the formsection a new unique id based on the name" do
-      form_section_name = "basic details"
-      form_section = FormSection.create_new_custom form_section_name
-      form_section.unique_id.should == "basic_details"
     end
     it "should populate the name" do
       form_section_name = "basic details"

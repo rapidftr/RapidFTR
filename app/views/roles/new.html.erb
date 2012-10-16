@@ -14,7 +14,7 @@
     <p>
     <%= f.label :permissions %><span class="required">*</span>
     <% Permission.all.each do |permission| %>
-      <%= f.check_box :permissions, {:name => "role[permissions][]"}, permission, "" %>
+      <%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
       <span><%= permission %></span>
     <% end %>
     </p>

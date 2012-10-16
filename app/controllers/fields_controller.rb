@@ -29,8 +29,7 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new params[:field]
-    @field.generate_name
-    
+
     FormSection.add_field_to_formsection @form_section, @field
         
     if (@field.errors.length == 0)

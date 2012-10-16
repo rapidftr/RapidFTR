@@ -21,11 +21,10 @@ Feature: Editing Custom Form Fields
     When I fill in "Edited Field" for "Display name"
     When I uncheck "Visible"
     And I press "Save"
-    
-    Then I should see "Edited Field"
+
+    And I should see "Edited Field" in the list of fields
     Then I should see "Hidden"
-    And I should see "another_field" in the list of fields
-    
+
   Scenario: editing text with invalid display name
     Given I am logged in as an admin
     And I am on the edit field page for "another_field" on "family_details" form

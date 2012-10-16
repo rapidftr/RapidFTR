@@ -22,11 +22,11 @@ Feature: Create new forms
 
     Then I should be on form section page
     And I should see the following form sections in this order:
-      | basic_details     |
-      | family_details    |
-      | caregiver_details |
-      | new_form_1        |
-    And I should see the description text "I am a new custom form.  Say hello!" for form section "new_form_1"
+      | Basic Details     |
+      | Family Details    |
+      | Caregiver Details |
+      | New Form 1        |
+    And I should see the description text "I am a new custom form.  Say hello!" for form section "New Form 1"
 
   Scenario: Disallowing non alphanumeric characters in the name field
 
@@ -60,9 +60,9 @@ Feature: Create new forms
 
     Then I should be on form section page
     And I should see the following form sections in this order:
-      | basic_details     |
-      | family_details    |
-      | caregiver_details |
+      | Basic Details     |
+      | Family Details    |
+      | Caregiver Details |
 
   Scenario: Can create a form section disabled
 
@@ -75,5 +75,5 @@ Feature: Create new forms
     When I press "Save Form"
 
     Then I am on form section page
-    And the form section "new_form_1" should be listed as hidden
+    And the form section "New Form 1" should be listed as hidden
 

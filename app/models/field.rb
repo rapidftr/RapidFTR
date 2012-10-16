@@ -58,21 +58,13 @@ class Field < Hash
   validates_with_method :display_name, :method => :validate_unique
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
-    
+
   def form
     base_doc
   end
   
   def form_type
     FIELD_FORM_TYPES[type]
-  end
-
-  def generate_name
-    if I18n.default_locale == :en
-      self.name = display_name.dehumanize
-    else
-      self.name = Digest::SHA1.hexdigest(display_name)[8..16]
-    end
   end
 
 	def display_type
@@ -88,11 +80,12 @@ class Field < Hash
     "#{display_name}#{disabled}"
   end
 
-  def initialize properties
+  def initialize properties={}
     self.enabled = true if properties["enabled"].nil?
     self.highlight_information = HighlightInformation.new
     self.editable = true if properties["editable"].nil?
     self.attributes = properties
+    create_unique_id
   end
   
   def attributes= properties
@@ -182,7 +175,11 @@ class Field < Hash
   end
 
   private
-  
+
+  def create_unique_id
+    self.name = UUIDTools::UUID.timestamp_create.to_s.split('-').last() if self.name.nil?
+  end
+
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
     return [false, "Field must have at least 2 options"] if option_strings == nil || option_strings.length < 2
@@ -191,8 +188,8 @@ class Field < Hash
   
   def validate_unique
     return true unless new? && form
-    return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.name == name})
-    other_form = FormSection.get_form_containing_field name
+    return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    other_form = FormSection.get_form_containing_field display_name
     return [false, "Field already exists on form '#{other_form.name}'"] if other_form  != nil
     true
   end
