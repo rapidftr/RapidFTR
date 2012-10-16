@@ -16,7 +16,7 @@ Feature: Manage Users
 #Story 745: Create "Limited Access" User Level
 
   Scenario: User with unlimited access can see all children
-    Given a user "unlimited" with "unlimited" permission
+    Given a user "unlimited" with "Access all data" permission
       And a user "limited" with "limited" permission
       And the following children exist in the system:
        | name   | created_by |
@@ -40,7 +40,7 @@ Feature: Manage Users
       And I should not see "Peter"
 
   Scenario: User with unlimited access should not see the Admin menu
-   Given a user "unlimited" with "unlimited" permission
+    Given a user "unlimited" with "Access all data" permission
     When I am logged in as "unlimited"
     Then I should not see "Admin"
      And I cannot follow "Admin"

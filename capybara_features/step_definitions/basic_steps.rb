@@ -173,7 +173,7 @@ Given /"([^\"]*)" is logged in/ do |user_name|
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
-  step "a user \"#{user_name}\" with a password \"123\""
+  step "a user \"#{user_name}\" with a password \"123\" and \"Access all data\" permission"
 end
 
 Then /^I should not see any errors$/ do
