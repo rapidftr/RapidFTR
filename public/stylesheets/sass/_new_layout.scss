@@ -1,117 +1,161 @@
-.page-content{
-  background:#fff;
-  margin-top:20px;
-  padding:10px;
+.page-content {
+  background: #fff;
+  margin-top: 20px;
+  padding: 10px;
   min-height: 400px;
 
-  h1{
-      font-size: 1.5em;
-      border-bottom:1px solid #d4d4d4;
-      color: $text-color;
-      padding:5px 10px 10px 0px;
+  h1 {
+    font-size: 1.5em;
+    border-bottom: 1px solid #d4d4d4;
+    color: $text-color;
+    padding: 5px 10px 10px 0px;
   }
 
-  a.btn{
+  a.btn {
     float: right;
   }
 
-  .page-content-new{
-      @extend .clearfix;
-      border-bottom:1px solid #d4d4d4;
-      background:#eee;
-      min-height: 300px;
+  .flag-message {
+    padding: 10px;
+    font-weight: normal;
+    font-size: 1.2em;
+  }
 
-      .side-tab{
-          float: left;
-          width:200px;
-          height: 100%;
+  #interviewer_details {
+    padding: 10px;
+  }
 
+  .page-content-new {
+    @extend .clearfix;
+    border-bottom: 1px solid #d4d4d4;
+    border-top: 1px solid #d4d4d4;
+    background: #eee;
+    min-height: 300px;
 
-        ul{
-            list-style: none;
-            margin-top: 10px;
-            list-style-position: inside;
+    .side-tab {
+      float: left;
+      width: 200px;
+      height: 100%;
 
-            li{
-                margin:5px 0px;
+      ul {
+        list-style: none;
+        margin-top: 10px;
+        list-style-position: inside;
 
-                a{
+        li {
+          margin: 5px 0px;
 
-                    padding: 10px;
-                    width: 170px;
-                    display: block;
+          a {
 
-                    position: relative;
-                    left:9px;
-                    font-size: 1.1em;
-                    color:#aaa;
+            padding: 10px;
+            width: 170px;
+            display: block;
 
-                    &:hover{
-                        color:#666;
-                    }
-                }
+            position: relative;
+            left: 9px;
+            font-size: 1.1em;
+            color: #aaa;
 
-
-
+            &:hover {
+              color: #666;
             }
+          }
 
-            li.current{
-                a{
-                    color:#000;
-                    background:#fff;
-                  border:1px solid #ccc;
-                  @include borderRadius(5px 0px 0px 5px);
-                  @include boxShadow(-5px 0px 5px #ccc);
-                  border-right: 0px;
-                }
-            }
+        }
+
+        li.current {
+          a {
+            color: #000;
+            background: #fff;
+            border: 1px solid #ccc;
+            @include borderRadius(5px 0px 0px 5px);
+            @include boxShadow(-5px 0px 5px #ccc);
+            border-right: 0px;
+          }
+        }
+      }
+    }
+
+    .side-tab-content {
+      float: left;
+      width: 720px;
+      padding: 10px;
+      background: #fff;
+      min-height: 350px;
+      position: relative;
+
+      h2 {
+        font-size: 1.2em;
+        color: #000;
+        padding: 5px 10px 10px 5px;
+        float: left;
+
+      }
+
+      a.btn {
+        float: right;
+      }
+
+      div.mandate_panel {
+        float: right;
+        font-style: italic;
+
+        span {
+          color: red;
+
         }
       }
 
-      .side-tab-content{
-          float:left;
-          width:720px;
-          padding:10px;
-          background:#fff;
-          min-height: 280px;
+      .filter_bar {
+        background: $bg_filterbar;
+      }
 
-          h2{
-              font-size:1.2em;
-              color:#000;
-              padding:5px 10px 10px 5px;
-              float: left;
+      .form_info {
+        border-top: 1px solid #ccc;
+        padding: 10px 0px;
+        font-style: italic;
+        color: $form_info;
+      }
 
-          }
-
-          a.btn{
-            float: right;
-          }
-
-          div.mandate_panel{
-             float:right;
-
-              span{
-                  color:red;
-
-              }
-          }
-
-          .filter_bar{
-            background:$bg_filterbar;
-          }
-
-          .form_info {
-            border-top: 1px solid #ccc;
-            padding:10px 0px;
-            font-style: italic;
-            color:$form_info;
-          }
-
-
-
-
-
+      input[type=text], input[type=password], input[type=file], textarea, select {
+        width: 250px;
 
       }
+
+      .profile-image {
+        position: absolute;
+        padding: 10px;
+        background: #fff;
+        right: 0px;
+        width: 200px;
+        min-height: 200px;
+
+        top: 50px;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+
+        .thumbnails {
+          padding: 10px;
+        }
+      }
+
+      .choose_field {
+        padding: 10px;
+
+        p {
+          font-style: italic;
+          padding: 0px 0px 10px 0px;
+        }
+
+        li {
+          padding: 5px;
+        }
+      }
+
+    }
+
   }
 }

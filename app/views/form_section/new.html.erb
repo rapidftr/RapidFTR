@@ -1,31 +1,37 @@
-<p>We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier.</p>
+<h1 class="no_border">Forms</h1>
+<div class="page-content-new">
+  <div class="side-tab-content full_width">
+<div>We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier.</div>
 
 <%= error_messages_for  :form_section,
                         :header_tag => :h3,
                         :header_message => "Form section could not be created",
                         :message => 'Please correct the following errors and resubmit:' %>
 
-<%= form_for @form_section, :url => formsections_path, :html => {:method => :post, :class => "new-form-section default-form"}  do |f| %>
+<%= form_for @form_section, :url => formsections_path, :html => {:method => :post, :class => ""}  do |f| %>
   <fieldset>
     <h3>Form details</h3>
     <p>
-      <%= f.label :name %>
+      <%= f.label :name, :class=>'key' %>
       <%= f.text_field :name %>
     </p>
     <p>
-      <%= f.label :description %>
+      <%= f.label :description, :class=>'key' %>
       <%= f.text_field :description %>
     </p>
     <p>
-      <%= f.label :help_text %>
+      <%= f.label :help_text, :class=>'key' %>
       <%= f.text_field :help_text %>
     </p>
     <p class="checkbox">
+      <%= f.label :enabled, "Visible", :class=>'key' %>
       <%= f.check_box :enabled, {:checked => true}, :true, :false %>
-      <%= f.label :enabled, "Visible" %>
+
     </p>
   </fieldset>
-
+  <br />
   <%= submit_button 'Save Form' %>
   <%= cancel_button formsections_path %>
 <% end %>
+      </div>
+    </div>

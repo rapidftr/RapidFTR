@@ -51,36 +51,44 @@ $(function() {
 });
 </script>
 <% end %>
-<% content_for :stylesheet do %>
-  <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
-<% end %>
+<h1>Children</h1>
 
-<% if @child.reunited? %>
-  <div class="reunited-message"><%= reunited_message %></div>
-<% end %>
-<% if @child.flag? %>
-  <h3 class="flag-message"><%= flag_message %></h3>
-<% end %>
-<% if @child.duplicate? %>
-  <h3 class="duplicate-message"><%= duplicate_message %></h3>
-<% end %>
-<% unless @duplicates.empty? %>
-  <h3 class="duplicate-message">Another record has been marked as a duplicate of this one. Click
-  <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
-<% end %>
-<br><br>
-<%= toolbar_for_child(@child) %>
+    <% content_for :stylesheet do %>
+      <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
+    <% end %>
 
-<div id='interviewer_details'>
-  <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @user.localize_date(@child['created_at']) %></h3>
-  <% if @child['last_updated_at']%>
-    <h3>Last updated: <%= @user.localize_date(@child['last_updated_at']) %> </h3>
-<% end %>
-  <% if @child['posted_from']=="Mobile" %>
-    <h3>Posted from the mobile client at: <%= @user.localize_date(@child['posted_at']) %> </h3>
-<% end %>
+    <% if @child.reunited? %>
+      <div class="reunited-message"><%= reunited_message %></div>
+    <% end %>
+    <% if @child.flag? %>
+      <h3 class="flag-message"><%= flag_message %></h3>
+    <% end %>
+    <% if @child.duplicate? %>
+      <h3 class="duplicate-message"><%= duplicate_message %></h3>
+    <% end %>
+    <% unless @duplicates.empty? %>
+      <h3 class="duplicate-message">Another record has been marked as a duplicate of this one. Click
+      <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
+    <% end %>
+
+    <%= toolbar_for_child(@child) %>
+
+    <div id='interviewer_details'>
+      <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @user.localize_date(@child['created_at']) %></h3>
+      <% if @child['last_updated_at']%>
+        <h3>Last updated: <%= @user.localize_date(@child['last_updated_at']) %> </h3>
+    <% end %>
+      <% if @child['posted_from']=="Mobile" %>
+        <h3>Posted from the mobile client at: <%= @user.localize_date(@child['posted_at']) %> </h3>
+    <% end %>
+    </div>
+<div class="page-content-new">
+  <div class="side-tab">
+    <%= render :partial => "tabs", :object => @form_sections %>
+  </div>
+  <div class="side-tab-content">
+    <%= render :partial => "show_form_section" %>
+    </div>
+
 </div>
-
-<%= render :partial => "tabs", :object => @form_sections %>
-<%= render :partial => "show_form_section" %>
 <%= toolbar_for_child(@child) %>

@@ -121,12 +121,14 @@ Then /^I should find the following links:$/ do |table|
 end
 
 Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
-	checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_name}][]']")
+  checkbox_label = page.find "//label[contains(., '#{checkbox_name}')]"
+  checkbox_id = checkbox_label["for"].split("_").last
+	checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_id}][]']")
 
 	checkboxes = checkbox_elements.inject({}) do | result,  element |
 		result[element['value']] = !!element[:checked]
 		result
-	end
+  end
 
   table.hashes.each do |expected_checkbox|
     expected_value = expected_checkbox['value']
@@ -138,5 +140,7 @@ Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbo
 end
 
 When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
-	  page.check("child_#{checkbox_name}_#{value.dehumanize}")
+  label = page.find '//label', :text => checkbox_name
+  checkbox_id = label["for"].split("_").last
+	page.check("child_#{checkbox_id}_#{value.dehumanize}")
 end

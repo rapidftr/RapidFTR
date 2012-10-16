@@ -147,12 +147,7 @@ td.checkbox { text-align: center;}
 
 
 /* profile page */
-.profile-page .page-content { background-position: 650px 0;}
-.profile-page .page-content h1 { background-image: url(../images/content-head-bg-2.gif); margin-right:340px; }
-.profile-page .content-section { width: 555px; background-image: url(../images/content-section-bg-2-sliver.gif); background-repeat:repeat-y; background-position: 0 0}
-.profile-page .content-aside { width: 355px; margin: -9px 0 0; padding: 0; }
-.profile-page .navigation-group, .profile-page .participation { margin:0 58px;}
-.profile-page .form-section-info { padding-top: .5em; }
+
 
 
 /* forms page */
@@ -160,19 +155,7 @@ td.checkbox { text-align: center;}
 
 /* profile page > header */
 
-/* profile section */
-.profile-section { margin-bottom:.5em; border: 1px solid #678; }
-.profile-section h2 { margin-bottom: 0; background-color: #678; color: #ddd; padding: 9px; }
 
-.profile-section ul { margin: 0 0 10px; padding: 0 10px 10px; zoom: 1; }
-.profile-section li { margin: 0; background-image: none ;  padding:5px 0px; float: left; clear: both; width: 100%; border-bottom:1px #678 solid;}
-.profile-section .profile-section-label {  display:block; float:left; width:170px; font-weight: bold; color: #678;}
-.profile-section .profile-section-value {  display:block; float:left}
-.profile-section .boolean span { background: url(../images/icon-circle.gif) no-repeat 0 0; display: block; padding: 3px 0 3px 30px; }
-.profile-section .boolean .true { background-image: url(../images/icon-tick.gif); }
-.profile-section .boolean .false { background-image: url(../images/icon-x.gif); }
-.accordion .profile-section h2 { cursor: pointer; background: #678 url(../images/icon-accordion.gif) no-repeat 98% 6px; }
-.accordion .profile-section .ui-state-active { background-position: 98% -92px; }
 
 /* overriding JQuery UI CSS to achieve Alex M's design... */
 ul.ui-widget-content { background: none; }
@@ -181,7 +164,7 @@ ul.ui-widget-content { background: none; }
 #basic_details ul { font-size: 1.2em; }
 
 /* profile page > tools */
-.profile-tools { padding: 10px; border: 1px solid #678; margin-bottom: 10px; overflow: hidden; }
+.profile-tools { padding: 10px; border: 1px solid #678; margin: 10px 0px; overflow: hidden; }
 .profile-tools ul { text-align: right; margin-bottom: 0; }
 .profile-tools li { float: left; font-weight: bold;  padding: 3px; background-image: none; }
 .profile-tools li a { display: block; padding: 3px 15px 3px 30px; background: url(../images/icon-download.gif) no-repeat 0 0; }
@@ -226,9 +209,7 @@ ul.ui-widget-content { background: none; }
 
 
 /* profile page > image */
-.profile-image { background-color: #fff; padding: 11px 15px 25px 12px; margin-bottom: 1em; background: url(../images/profile-image-bg.gif) no-repeat 0 100%;  }
-.profile-image img { width: 100%;}
-.profile-image .view-full-size { margin-bottom: 0; text-align: right; font-weight: bold; }
+
 
 /* edit page */
 .edit-profile { position: relative; }
@@ -247,7 +228,7 @@ span.moveDown { cursor:pointer; color: #3399FF;}
 div input#enable_form, div input#disable_form { float: left; margin-right: 5px; }
 div input#save_order { float: right; }
 div.formSectionButtons { overflow:hidden; }
-div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
+
 div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 tr.rowDisabled {  font-style: italic; }
 td.breakword {word-wrap:break-word;max-width:100px;}

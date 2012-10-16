@@ -1,24 +1,28 @@
-<%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => { :class => "edit-form-section default-form" } do |f| %>
+<h1 class="no_border">Forms</h1>
+<div class="page-content-new">
+  <div class="side-tab-content full_width">
+<%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => { :class => "" } do |f| %>
 
 <fieldset>
   <h3 id='editFormDetails'>Details</h3>
   <div id='sectionId' class='hidden'><%= @form_section.unique_id%></div>
   <p>
-    <%= f.label :name %>
+    <%= f.label :name, :class=>'key' %>
     <%= f.text_field :name %>
   </p>
   <p>
-    <%= f.label :description %>
+    <%= f.label :description, :class=>'key' %>
     <%= f.text_field :description %>
   </p>
   <p>
-    <%= f.label :help_text %>
+    <%= f.label :help_text, :class=>'key' %>
     <%= f.text_field :help_text %>
   </p>
   <% if not @form_section.perm_enabled? %>
-  <p class="checkbox">
+  <p>
+    <%= f.label :enabled, "Visible", :class=>'key' %>
     <%= f.check_box :enabled?, {}, true, false %>
-    <%= f.label :enabled, "Visible" %>
+
   </p>
   <% end %>
 </fieldset>
@@ -33,9 +37,9 @@
 <input type='hidden' name='field_name' value='' id='deleteFieldName' />
 <input type='submit' id='deleteSubmit' style='display:none;'/>
 <% end %>
-
+<div class="clearfix"></div>
 <%= form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
-<table id="form_sections">
+<table id="form_sections" class="list_table">
   <thead>
     <tr>
       <th></th>
@@ -111,5 +115,6 @@
 <% end %>
 <% end %>
 <p><%= link_to "Back To Forms Page", formsections_path()%></p>
-
+</div>
+</div>
 

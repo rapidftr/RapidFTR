@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
   def create
     @login = Login.new(params)
     @session = @login.authenticate_user
-    
+
     if not @session
       respond_to do |format|
         handle_login_error("Invalid credentials. Please try again!", format)
@@ -52,12 +52,12 @@ class SessionsController < ApplicationController
 
       return
     end
-    
+
     if @session.device_blacklisted?
-      handle_device_blacklisted(@session) 
+      handle_device_blacklisted(@session)
       return
     end
-    
+
     respond_to do |format|
       if @session.save
         @session.put_in_cookie(cookies)
@@ -70,7 +70,7 @@ class SessionsController < ApplicationController
       end
     end
   end
-  
+
   # PUT /sessions/1
   # PUT /sessions/1.xml
 
@@ -109,9 +109,10 @@ class SessionsController < ApplicationController
           :rel => 'session',
           :uri => session_path(session)
         }
-      }
+      },
+      :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key
     }
-    render( options.merge( :json => json ) )  
+    render( options.merge( :json => json ) )
   end
 
 end
