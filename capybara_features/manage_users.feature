@@ -15,32 +15,6 @@ Feature: Manage Users
 
 #Story 745: Create "Limited Access" User Level
 
-  Scenario: Create new User - Should see options to set User Permission Level
-    Given I am logged in as an admin
-     When I follow "Admin"
-      And I follow "Manage Users"
-      And I follow "Create an User"
-     Then I should see "User Permission Level"
-      And the "user_permission_limited" radio-button should be checked
-      And the "user_permission_unlimited" radio-button should not be checked
-     When I choose "user_permission_unlimited"
-     Then the "user_permission_unlimited" radio-button should be checked
-      And the "user_permission_limited" radio-button should not be checked
-
-  @wip
-  Scenario: Edit existing User - Should see options to set User Permission Level
-    Given I am logged in as an admin
-      And a user "homersimpson" with "limited" permission
-     When I follow "Admin"
-      And I follow "Manage Users"
-      And I "Edit" user "homersimpson"
-     Then I should see "User Permission Level"
-      And the "user_permission_limited" radio-button should be checked
-      And the "user_permission_unlimited" radio-button should not be checked
-     When I choose "user_permission_unlimited"
-     Then the "user_permission_unlimited" radio-button should be checked
-      And the "user_permission_limited" radio-button should not be checked
-
   Scenario: User with unlimited access can see all children
     Given a user "unlimited" with "unlimited" permission
       And a user "limited" with "limited" permission
@@ -53,9 +27,8 @@ Feature: Manage Users
      Then I should see "Andrew"
       And I should see "Peter"
 
-  @wip
   Scenario: User with limited access cannot see all children
-    Given a user "unlimited" with "unlimited" permission
+    Given a user "unlimited" with "Access all data" permission
       And a user "limited" with "limited" permission
       And the following children exist in the system:
        | name   | created_by |
