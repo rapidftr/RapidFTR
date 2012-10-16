@@ -23,12 +23,12 @@ describe "children/show.html.erb" do
 
       render :template => 'children/show', :layout => 'layouts/application'
 
-      rendered.should have_tag(".content-aside .profile-image .image") do
+      rendered.should have_tag(".profile-image") do
         with_tag("a[href=?]", child_resized_photo_path(@child, @child.primary_photo_id, 640))
         with_tag("img[src=?]", child_resized_photo_path(@child, @child.primary_photo_id, 328))
       end
 
-      rendered.should have_tag(".content-aside .thumbnails") do
+      rendered.should have_tag(".profile-image .thumbnails") do
         with_tag("img[alt=?][src=?]", @child['name'], child_thumbnail_path(@child, @child.primary_photo_id))
       end
 
@@ -47,10 +47,10 @@ describe "children/show.html.erb" do
         with_tag(".profile-section-label", /Date of separation/)
       end
 
-      rendered.should have_tag(".section_name .profile-section-value") do
-        with_tag(".profile-section-value", "27")
-        with_tag(".profile-section-value", "male")
-        with_tag(".profile-section-value", "1-2 weeks ago")
+      rendered.should have_tag(".key") do
+        with_tag(".value", "27")
+        with_tag(".value", "male")
+        with_tag(".value", "1-2 weeks ago")
       end
     end
 

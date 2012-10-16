@@ -228,7 +228,7 @@ span.moveDown { cursor:pointer; color: #3399FF;}
 div input#enable_form, div input#disable_form { float: left; margin-right: 5px; }
 div input#save_order { float: right; }
 div.formSectionButtons { overflow:hidden; }
-div.formSectionButtons input { font-size: .75em; margin-top: 5px;}
+
 div.backLink { font-size: 1em; margin-left: 5px; margin-top: 5px;}
 tr.rowDisabled {  font-style: italic; }
 td.breakword {word-wrap:break-word;max-width:100px;}
