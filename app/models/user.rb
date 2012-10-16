@@ -176,7 +176,7 @@ class User < CouchRestRails::Document
   end
 
   def is_valid_permission_level
-    return true if permissions.present? && permissions.sort == (Permission.all & permissions.sort)
+    return true if permissions.present? && permissions.sort == (Permission.all_including_default & permissions.sort)
     [ false, "Invalid Permission Level" ]
   end
 end

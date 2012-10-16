@@ -201,5 +201,20 @@ describe UsersController do
         post :update, { :id => "24", :user => {:user_type => "Administrator"  } }
       end
     end
+    context "create a user" do
+      before :each do
+        fake_admin_login
+      end
+      it "should create limited user by default " do
+        User.should_receive(:new).with({"permissions"=>["limited"]}).and_return(mock_user)
+        mock_user.should_receive(:save).and_return(true)
+        put :create, { :user => {:user_type => "User"  } }
+      end
+      it "should create admin user if the admin user type is specified" do
+        User.should_receive(:new).with({"permissions"=>["admin"]}).and_return(mock_user)
+        mock_user.should_receive(:save).and_return(true)
+        put :create, {:user => {:user_type => "Administrator"}}
+      end
+    end
   end
 end

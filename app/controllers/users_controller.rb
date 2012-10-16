@@ -82,8 +82,7 @@ class UsersController < ApplicationController
     permissions = []
     user = params[:user]
 
-    permissions.push(Permission::LIMITED) if user[:permission] == "Limited"
-    permissions.push(Permission::ACCESS_ALL_DATA) if user[:permission] == "Unlimited"
+    permissions.push(Permission::LIMITED) if user[:permission].nil? && user[:user_type]=="User"
     permissions.push(Permission::ADMIN) if user[:user_type] == "Administrator"
 
     user.delete(:permission)

@@ -5,7 +5,10 @@ class Permission
   ACCESS_ALL_DATA = "Access all data"
 
   def self.all
-    [ ADMIN, LIMITED, ACCESS_ALL_DATA ].sort
+    [ ADMIN, ACCESS_ALL_DATA ].sort
   end
 
+  def self.all_including_default
+    [ ADMIN, LIMITED, ACCESS_ALL_DATA ].sort
+  end
 end

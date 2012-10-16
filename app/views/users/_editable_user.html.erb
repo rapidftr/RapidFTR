@@ -94,14 +94,6 @@
         </p>
     <% end %>
 
-    <p>
-            <label class="key">User Permission Level:</label>
-          <%= f.radio_button :permission, "Unlimited", :disabled => trying_to_edit_ourself %>
-          <%= f.label :permission_unlimited, "Unlimited" %>
-
-          <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
-          <%= f.label :permission_limited, "Limited" %>
-        </p>
     </fieldset>
 
   <% if is_admin? %>
