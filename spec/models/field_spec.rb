@@ -72,7 +72,8 @@ describe "Child record field view model" do
       form.fields << field
     
       field.valid?
-      field.errors.on(:display_name).should ==  ["Field already exists on this form"] 
+      field.errors.on(:name).should ==  ["Field already exists on this form"]
+      field.errors.on(:display_name).should ==  ["Field already exists on this form"]
     end
     
     it "should validate radio button has at least 2 options" do  
@@ -98,6 +99,7 @@ describe "Child record field view model" do
       form.fields << field
     
       field.valid?
+      field.errors.on(:name).should ==  ["Field already exists on form 'test form'"] 
       field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"] 
     end
   end
