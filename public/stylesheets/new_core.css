@@ -189,6 +189,12 @@ a.mark_as_duplicate {
 .full_width {
   width: 920px !important; }
 
+.required {
+  color: red;
+  float: left;
+  display: block;
+  padding-right: 2px; }
+
 .page-content {
   background: #fff;
   margin-top: 20px;
@@ -293,6 +299,15 @@ a.mark_as_duplicate {
           padding: 0px 0px 10px 0px; }
         .page-content .page-content-new .side-tab-content .choose_field li {
           padding: 5px; }
+      .page-content .page-content-new .side-tab-content .btn_panel {
+        padding: 5px;
+        border-top: 1px solid #333;
+        text-align: right; }
+        .page-content .page-content-new .side-tab-content .btn_panel a {
+          margin: 0px 20px;
+          padding: 0px 20px;
+          border-right: 1px dashed #999;
+          text-decoration: underline; }
 
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
