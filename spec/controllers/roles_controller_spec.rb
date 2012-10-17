@@ -6,9 +6,12 @@ describe RolesController do
 
     it "should not allow non-admin user to access any roles action" do
       fake_limited_login
-      expect { get :index }.to raise_error(CanCan::AccessDenied)
-      expect { post :create }.to raise_error(CanCan::AccessDenied)
-      expect { get :new }.to raise_error(CanCan::AccessDenied)
+      get :index
+      response.should render_template("#{Rails.root}/public/403.html")
+      post :create
+      response.should render_template("#{Rails.root}/public/403.html")
+      get :new
+      response.should render_template("#{Rails.root}/public/403.html")
     end
 
   end
