@@ -1,13 +1,14 @@
 <% content_for :javascript do %>
+  <%= javascript_include_tag "jquery.jplayer.min" %>
   <script language="javascript" type="text/javascript">
     $(document).ready(function(){
-      $("#child_audio").hide();
+      $("#audio_player").hide();
       $("#jplayer-placeholder").jPlayer({
         ready: function () {
           var audio = $("#audio_link").attr("href");
           $(this).jPlayer("setMedia", { mp3: audio });
         },
-        swfPath: "../javascripts",
+        swfPath: "/javascripts",
         supplied: "mp3"
       });
     });
