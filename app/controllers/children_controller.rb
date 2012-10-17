@@ -2,6 +2,7 @@ class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+  before_filter :control_limited_user_access, :only => [:show, :edit, :edit_photo, :update_photo]
   before_filter :current_user
 
   # GET /children
@@ -182,7 +183,8 @@ class ChildrenController < ApplicationController
     @page_name = "Search"
     @aside = "shared/sidebar_links"
     if (params[:query])
-      @search = Search.new(params[:query])
+      limitation = current_user.limited_access?? {:created_by => "#{current_user_name}"} : {}
+      @search = Search.new(params[:query], limitation)
       if @search.valid?
         @results = Child.search(@search)
       else
@@ -276,7 +278,7 @@ class ChildrenController < ApplicationController
   end
 
   def load_child_or_redirect
-    @child = Child.get(params[:id])
+    @child ||= Child.get(params[:id])
 
     if @child.nil?
       respond_to do |format|
@@ -304,4 +306,10 @@ class ChildrenController < ApplicationController
     end
   end
 
+  def control_limited_user_access
+    @child ||= Child.get(params[:id])
+    if current_user.limited_access? and @child['created_by'] != current_user_name
+      redirect_to :controller => :home
+    end
+  end
 end

@@ -66,7 +66,7 @@ Scenario: Admin should be able to delete another user but not themselves
   And I should not see "Delete User" for "admin"
   When I follow "Delete User"
   Then user "gui" should not exist on the page
-  
+
 Scenario: Should be able to set devices to black listed
 
   Given a user "tim" with a password "123" 

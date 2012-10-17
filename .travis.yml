@@ -13,14 +13,14 @@ rvm:
 matrix:
   allow_failures:
     - rvm: 1.9.3
-    - rvm:ree
-    - rvm:ruby-head
-    - rvm:jruby-head
-    - rvm:rbx-18mode
-    - rvm:rbx-19mode
-    - rvm:jruby-18mode
-    - rvm:jruby-19mode
-    - rvm:1.9.2
+    - rvm: ree
+    - rvm: ruby-head
+    - rvm: jruby-head
+    - rvm: rbx-18mode
+    - rvm: rbx-19mode
+    - rvm: jruby-18mode
+    - rvm: jruby-19mode
+    - rvm: 1.9.2
 notifications:
   irc: "irc.freenode.org#rapidftr"
 services:
