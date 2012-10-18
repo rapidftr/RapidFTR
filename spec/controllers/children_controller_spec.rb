@@ -32,27 +32,32 @@ describe ChildrenController do
     describe 'collection' do
       it "GET index" do
         @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
-        expect { get :index }.to raise_error(CanCan::AccessDenied)
+        get :index
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET search" do
         @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
-        expect { get :search }.to raise_error(CanCan::AccessDenied)
+        get :search
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_data" do
         @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
-        expect { get :export_data }.to raise_error(CanCan::AccessDenied)
+        get :export_data
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET new" do
         @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
-        expect { get :new }.to raise_error(CanCan::AccessDenied)
+        get :new
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "POST create" do
         @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
-        expect { post :create }.to raise_error(CanCan::AccessDenied)
+        post :create
+        response.should render_template("#{Rails.root}/public/403.html")
       end
     end
     
@@ -64,37 +69,44 @@ describe ChildrenController do
 
       it "GET show" do
         @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
-        expect { get :show, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+         get :show, :id => @child.id
+         response.should render_template("#{Rails.root}/public/403.html")
       end
       
       it "PUT update" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :update, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        put :update, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
       
       it "PUT edit_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :edit_photo, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        put :edit_photo, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT update_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :update_photo, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        put :update_photo, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT select_primary_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :select_primary_photo, :child_id => @child.id, :photo_id => 0 }.to raise_error(CanCan::AccessDenied)
+        put :select_primary_photo, :child_id => @child.id, :photo_id => 0
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_photo_to_pdf" do
         @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
-        expect { get :export_photo_to_pdf, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        get :export_photo_to_pdf, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "DELETE destroy" do
         @controller.current_ability.should_receive(:can?).with(:destroy, @child_arg).and_return(false);
-        expect { delete :destroy, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        delete :destroy, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
     end    
   end
@@ -449,7 +461,22 @@ describe ChildrenController do
 
 			get(:search, :format => 'csv', :query => 'blah')
     end
-	end
+  end
+  describe "Limited search" do
+    before :each do
+      @session = fake_limited_login
+    end
+    it "should only list the children which limited user has registered" do
+      search = mock("search", :query => 'some_name', :valid? => true)
+      Search.stub!(:new).and_return(search)
+
+      fake_results = [:fake_child,:fake_child]
+      Child.should_receive(:search_by_created_user).with(search, @session.user_name).and_return(fake_results)
+
+      get(:search, :query => 'some_name')
+      assigns[:results].should == fake_results
+    end
+  end
   describe "GET photo_pdf" do
 
     it 'extracts multiple selected ids from post params in correct order' do

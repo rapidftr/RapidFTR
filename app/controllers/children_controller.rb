@@ -184,7 +184,7 @@ class ChildrenController < ApplicationController
     if (params[:query])
       @search = Search.new(params[:query])
       if @search.valid?
-        @results = Child.search(@search)
+        search_by_user_access
       else
         render :search
       end
@@ -303,5 +303,14 @@ class ChildrenController < ApplicationController
       Child.all_by_creator(app_session.user_name)
     end
   end
+
+  def search_by_user_access
+    if can? :view_all, Child
+      @results = Child.search(@search)
+    else
+      @results = Child.search_by_created_user(@search, app_session.user_name)
+    end
+  end
+
 
 end
