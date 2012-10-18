@@ -3,7 +3,7 @@ class RolesController < ApplicationController
   before_filter :authorize
 
   def index
-    @roles = Role.all
+    @roles = params[:sort] == "desc" ? Role.by_name.reverse : Role.by_name
   end
 
   def new
