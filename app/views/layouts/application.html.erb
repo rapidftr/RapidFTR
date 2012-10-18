@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -26,26 +25,32 @@
 
 </head>
 <body class="<%= @body_class %>">
-<div class="page-container">
-  <div class="page-header">
-    <p class="brand"><%= link_with_confirm image_tag("logo.jpg"), '/'%></p>
-
-    <div class="nav">
-      <ul>
-        <% unless current_user_name.nil? %>
-            <li class="userInfo">Logged in as <em><%= current_user_name %></em> (<%= link_with_confirm 'Logout', :logout %>)</li>
-        <% end %>
-		<li><%= link_with_confirm 'Contact & Help', contact_information_path("administrator")%></li>
-		<li><%= link_with_confirm 'Home', '/'%></li>
-        <% unless current_user_name.nil? %>
-            <% unless !is_admin? %>
-                <li><%= link_with_confirm 'Admin', admin_path %></li>
-			<% end %>
-            <li><%= link_with_confirm 'Search', :search_children %></li>
-	        <li><%= link_with_confirm 'Account', edit_user_path(User.find_by_user_name(current_user_name)) %></li>
-        <% end %>
-      </ul>
+<div class="page_container">
+  <header>
+    <div class="logo">RapidFTR logo</div>
+    <div class="links">
+      <% unless current_user_name.nil? %>
+          Welcome <%= current_user_name %>, <%= link_with_confirm 'Logout', :logout %> | <%= link_with_confirm 'My Account', edit_user_path(User.find_by_user_name(current_user_name)) %> |
+      <% end %>
+      <%= link_with_confirm 'Contact & Help', contact_information_path("administrator")%>
     </div>
+  </header>
+  <div class="main_bar">
+    <nav>
+      <ul>
+        <li><%= link_to 'CHILDREN', children_path %></li>
+        <li><%= link_to 'FORMS', formsections_path %></li>
+        <li><%= link_to 'USERS', users_path %></li>
+        <li><a href="#">DEVICES</a></li>
+        <li><a href="#">REPORTS</a></li>
+      </ul>
+    </nav>
+    <div class="search">
+      <%= link_to 'Advanced Search', new_advanced_search_path %>
+      <input type="text" />
+      <input type="button" value="Go" />
+    </div>
+
   </div>
 
   <div class="page-content">

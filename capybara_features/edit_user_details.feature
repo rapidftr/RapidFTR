@@ -78,7 +78,7 @@ Scenario: Should be able to set devices to black listed
   And I am on the edit user page for "tim"
   And I should see "123456"
   When I check the device with an imei of "123456"
-  Then I wait for 3 seconds
+  Then I wait for 10 seconds
   And I press "Update"
   Then I should see "123456 (blacklisted)"
 

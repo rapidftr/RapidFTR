@@ -2,8 +2,8 @@ Feature: So that admin can see Manage Form Sections Page
 
   Background:
     Given I am logged in as an admin
-    And I follow "Admin"
-    And I follow "Manage Form Sections"
+    And I follow "FORMS"
+
 
   Scenario: Admins should see correct re-ordering links for each section
     Then I should see the "Basic Identity" section without any ordering links

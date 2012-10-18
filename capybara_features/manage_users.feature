@@ -8,8 +8,8 @@ Feature: Manage Users
     Given a user "homersimpson"
       And user "homersimpson" is disabled
       And I am logged in as an admin
-      And I follow "Admin"
-      And I follow "Manage Users"
+      And I follow "USERS"
+
      When I uncheck the disabled checkbox for user "homersimpson"
      Then user "homersimpson" should not be disabled
 
@@ -39,22 +39,24 @@ Feature: Manage Users
      Then I should see "Andrew"
       And I should not see "Peter"
 
-  Scenario: User with unlimited access should not see the Admin menu
+  @wip
+  Scenario: User with unlimited access should not see the Users menu
     Given a user "unlimited" with "Access all data" permission
     When I am logged in as "unlimited"
-    Then I should not see "Admin"
-     And I cannot follow "Admin"
+    Then I should not see "USERS"
 
-  Scenario: User with limited access should not see the Admin menu
+
+  @wip
+  Scenario: User with limited access should not see the Users menu
    Given a user "limited" with "limited" permission
     When I am logged in as "limited"
-    Then I should not see "Admin"
-     And I cannot follow "Admin"
+    Then I should not see "USERS"
+
 
   Scenario: Admins should be able view himself
     Given I am logged in as an admin
-    And I follow "Admin"
-    And I follow "Manage Users"
+    And I follow "USERS"
+
      Then I should see "Show"
      Then I should see "Edit"
      Then I should not see "Delete User"
