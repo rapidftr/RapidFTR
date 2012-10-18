@@ -27,8 +27,10 @@ function initOrderingColumns() {
 	fieldToStartFrom = 0;
     }
     $("#"+mainContainer+" tbody tr:eq("+fieldToStartFrom+")").each(function(index, element){
-	$("a.moveDown", element).show();
+
 	$("a.moveUp", element).hide();
+    $("a.moveDown",element).css("display","inline");
+
     });
     
     $("#"+mainContainer+" tbody tr:last").each(function(index, element){
