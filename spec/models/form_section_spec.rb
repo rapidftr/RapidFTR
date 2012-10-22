@@ -38,7 +38,8 @@ describe FormSection do
       f.unique_id.should == 'test_form'
     end
 
-    it "should not allow duplicate unique ids" do
+    it "should not allow duplic
+    ate unique ids" do
       FormSection.new(:unique_id => "test", :name => "test").save!
 
       expect {
@@ -316,11 +317,13 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
+
     it "should validate name is alpha_num" do
       form_section = FormSection.new(:name=>"££ss")
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
+
     it "should validate name is unique" do
       same_name = 'Same Name'
       valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true, :order => 0}
@@ -328,21 +331,12 @@ describe FormSection do
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
-    end
-    
-    it "should validate name is unique via a case-insensitive search" do
-      upcase_name = "UPCASE NAME"
-      valid_attributes = {:name=> upcase_name, :unique_id => upcase_name.dehumanize, :description => '', :enabled => true, :order => 0}
-      FormSection.create! valid_attributes
-      form_section = FormSection.new valid_attributes.merge(:name => upcase_name.downcase)
-      form_section.should_not be_valid
-      form_section.errors.on(:name).should be_present
+      form_section.errors.on(:unique_id).should be_present
     end
     
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!
-      form_section.should be_valid
     end
   end
 

@@ -123,6 +123,19 @@ describe Child do
       search = mock("search", :query => "timo coch", :valid? => true)                 
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
+
+    it "should return the children registered by the user if the user has limited permission" do
+      create_child("suganthi", {"created_by" => "thirumani"})
+      create_child("kavitha", {"created_by" => "rajagopalan"})
+      search = mock("search", :query => "kavitha", :valid? => true)
+      Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ ["kavitha"]
+    end
+    it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
+      create_child("suganthi", {"created_by" => "thirumani", "unique_identifier" => "thirumanixxx12345"})
+      create_child("kavitha", {"created_by" => "rajagopalan", "unique_identifier" => "rajagopalanxxx12345"})
+      search = mock("search", :query => "thirumanixxx12345", :valid? => true)
+      Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ []
+    end
   end
 
   describe "update_properties_with_user_name" do
@@ -655,6 +668,11 @@ describe Child do
 
     end
 
+    it 'should return nil if child has not been saved' do
+      child = Child.new('audio' => uploadable_audio)
+      child.audio.should be_nil
+    end
+
   end
 
 
@@ -1078,8 +1096,9 @@ describe Child do
   
   private
   
-  def create_child(name)
-    Child.create("name" => name, "last_known_location" => "new york")
+  def create_child(name, options={})
+    options.merge!("name" => name, "last_known_location" => "new york")
+    Child.create(options)
   end
 
   def create_duplicate(parent)

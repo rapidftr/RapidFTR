@@ -1,117 +1,274 @@
-.page-content{
-  background:#fff;
-  margin-top:20px;
-  padding:10px;
-  min-height: 400px;
+body {
+  background: url(../images/new/bg_body.png) repeat-x;
+  font: $default-font-size $default-font-family;
+  background-attachment: fixed;
 
-  h1{
-      font-size: 1.5em;
-      border-bottom:1px solid #d4d4d4;
-      color: $text-color;
-      padding:5px 10px 10px 0px;
-  }
 
-  a.btn{
-    float: right;
-  }
+  .page_container {
+    width: 980px;
+    margin: 20px auto;
+    text-align: left;
 
-  .page-content-new{
+    header {
+      background: $bg-header;
+      padding: 15px;
       @extend .clearfix;
-      border-bottom:1px solid #d4d4d4;
-      background:#eee;
-      min-height: 300px;
 
-      .side-tab{
+      .logo {
+        background: url(../images/new/logo.png) no-repeat;
+        float: left;
+        width: 200px;
+        height: 35px;
+        @include hide_text;
+
+      }
+      .links {
+        float: right;
+        color: $header-text-color;
+
+        a {
+          padding-bottom:2px;
+          color:#76bcfd;
+          margin:0px 5px;
+          border-bottom: 1px dashed #76bcfd;
+
+          &:hover{
+            color:#b0d8fd;
+            border-bottom:1px solid #b0d8fd;
+          }
+        }
+      }
+    }
+
+    .main_bar {
+      background: $bg-main-nav;
+      margin-top: 1px;
+      @extend .clearfix;
+
+      nav {
+        float: left;
+
+        ul {
+          list-style: none;
+
+          li {
+            display: inline-block;
+            height: 30px;
+            border-right: 1px solid #111;
+
+            a {
+              padding: 7px 17px;
+              color: $main-nav-color;
+              display: block;
+              font-size: 1.1em;
+            }
+            a:hover {
+              color: $main-nav-hover-color;
+            }
+            a.sel {
+              color: $main-nav-sel-color;
+              background: url(../images/new/main_tab_pointer.png) no-repeat center 30px;
+              height: 45px;
+            }
+          }
+        }
+      }
+
+      .search {
+        float: right;
+        margin: 3px 5px 0px 10px;
+
+        a {
+          padding-bottom:2px;
+          color:#76bcfd;
+          margin:0px 5px;
+          border-bottom: 1px dashed #76bcfd;
+
+          &:hover{
+            color:#b0d8fd;
+            border-bottom:1px solid #b0d8fd;
+          }
+        }
+
+        input[type=button], input[type=submit]{
+          margin-top:0px;
+          padding:3px 5px;
+        }
+      }
+    }
+    .page-content {
+      background: #fff;
+      margin-top: 20px;
+      padding: 10px;
+      min-height: 400px;
+
+      h1 {
+        font-size: 1.5em;
+        border-bottom: 1px solid #d4d4d4;
+        color: $text-color;
+        padding: 5px 10px 10px 0px;
+      }
+
+      a.btn {
+        float: right;
+      }
+
+      .flag-message {
+        padding: 10px;
+        font-weight: normal;
+        font-size: 1.2em;
+      }
+
+      #interviewer_details {
+        padding: 10px;
+      }
+
+      .page-content-new {
+        @extend .clearfix;
+        border-bottom: 1px solid #d4d4d4;
+        border-top: 1px solid #d4d4d4;
+        background: #eee;
+        min-height: 300px;
+
+        .side-tab {
           float: left;
-          width:200px;
+          width: 200px;
           height: 100%;
 
-
-        ul{
+          ul {
             list-style: none;
             margin-top: 10px;
             list-style-position: inside;
 
-            li{
-                margin:5px 0px;
+            li {
+              margin: 5px 0px;
 
-                a{
+              a {
 
-                    padding: 10px;
-                    width: 170px;
-                    display: block;
+                padding: 10px;
+                width: 170px;
+                display: block;
 
-                    position: relative;
-                    left:9px;
-                    font-size: 1.1em;
-                    color:#aaa;
+                position: relative;
+                left: 9px;
+                font-size: 1.1em;
+                color: #aaa;
 
-                    &:hover{
-                        color:#666;
-                    }
+                &:hover {
+                  color: #666;
                 }
-
-
+              }
 
             }
 
-            li.current{
-                a{
-                    color:#000;
-                    background:#fff;
-                  border:1px solid #ccc;
-                  @include borderRadius(5px 0px 0px 5px);
-                  @include boxShadow(-5px 0px 5px #ccc);
-                  border-right: 0px;
-                }
+            li.current {
+              a {
+                color: #000;
+                background: #fff;
+                border: 1px solid #ccc;
+                @include borderRadius(5px 0px 0px 5px);
+                @include boxShadow(-5px 0px 5px #ccc);
+                border-right: 0px;
+              }
             }
+          }
         }
-      }
 
-      .side-tab-content{
-          float:left;
-          width:720px;
-          padding:10px;
-          background:#fff;
-          min-height: 280px;
+        .side-tab-content {
+          float: left;
+          width: 740px;
+          padding: 10px;
+          background: #fff;
+          min-height: 350px;
+          position: relative;
 
-          h2{
-              font-size:1.2em;
-              color:#000;
-              padding:5px 10px 10px 5px;
-              float: left;
+          h2 {
+            font-size: 1.2em;
+            color: #000;
+            padding: 5px 10px 10px 5px;
+            float: left;
 
           }
 
-          a.btn{
+          a.btn {
             float: right;
           }
 
-          div.mandate_panel{
-             float:right;
+          div.mandate_panel {
+            float: right;
+            font-style: italic;
 
-              span{
-                  color:red;
+            span {
+              color: red;
 
-              }
+            }
           }
 
-          .filter_bar{
-            background:$bg_filterbar;
+          .filter_bar {
+            background: $bg_filterbar;
           }
 
           .form_info {
             border-top: 1px solid #ccc;
-            padding:10px 0px;
+            padding: 10px 0px;
             font-style: italic;
-            color:$form_info;
+            color: $form_info;
           }
 
+          input[type=text], input[type=password], input[type=file], textarea, select {
+            width: 250px;
 
+          }
 
+          .profile-image {
+            position: absolute;
+            padding: 10px;
+            background: #fff;
+            right: 0px;
+            width: 200px;
+            min-height: 200px;
 
+            top: 50px;
 
+            img {
+              max-width: 100%;
+              max-height: 100%;
+            }
+
+            .thumbnails {
+              padding: 10px;
+            }
+          }
+
+          .choose_field {
+            padding: 10px;
+
+            p {
+              font-style: italic;
+              padding: 0px 0px 10px 0px;
+            }
+
+            li {
+              padding: 5px;
+            }
+          }
+
+          .btn_panel {
+            padding: 5px;
+            border-top: 1px solid #333;
+            text-align: right;
+
+            a {
+              margin: 0px 20px;
+              padding: 0px 20px;
+              border-right: 1px dashed #999;
+              text-decoration: underline;
+            }
+          }
+
+        }
 
       }
+    }
   }
 }

@@ -25,7 +25,7 @@
   <%= f.error_messages :header_tag => :h3 %>
   <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
 
-    <h2><a href="#">List of Users</a> &gt; Create an User</h2>
+
     <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
     <div class="clearfix"></div>
     <fieldset>
@@ -94,14 +94,6 @@
         </p>
     <% end %>
 
-    <p>
-            <label class="key">User Permission Level:</label>
-          <%= f.radio_button :permission, "Unlimited", :disabled => trying_to_edit_ourself %>
-          <%= f.label :permission_unlimited, "Unlimited" %>
-
-          <%= f.radio_button :permission, "Limited", :checked => editable_user.new_record? || editable_user.limited_access? ? "checked" : "", :disabled => trying_to_edit_ourself %>
-          <%= f.label :permission_limited, "Limited" %>
-        </p>
     </fieldset>
 
   <% if is_admin? %>

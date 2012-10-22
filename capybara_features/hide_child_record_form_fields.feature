@@ -21,7 +21,7 @@ Feature: Hide Child Record Form Fields
 
 
   Scenario: Hidden field does not appear of form
-   Given I follow "Home"
+   Given I follow "CHILDREN"
      And I am on children listing page
      And I follow "Register New Child"
      And I follow "Family details"
@@ -33,7 +33,7 @@ Feature: Hide Child Record Form Fields
      And I should not see "Hidden Field"
 
   Scenario: Hidden field does not appear on PDF
-   Given I follow "Home"
+   Given I follow "CHILDREN"
      And I am on children listing page
      And I follow "Register New Child"
      And I follow "Family details"

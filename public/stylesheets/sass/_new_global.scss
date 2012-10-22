@@ -18,204 +18,262 @@ time, mark, audio, video {
   font-family: Arial;
   vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
+
 body {
   line-height: 1;
   font-size: $default-font-size;
-  background:#eee;
+  background: #eee;
 }
+
 ol, ul {
   list-style: none;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
 }
 
-
-a{
-  color:$link_color;
+a {
+  color: $link_color;
   text-decoration: none;
 }
-a:hover{
-  color:$link_hover_color;
+
+a:hover {
+  color: $link_hover_color;
 }
 
 /* For modern browsers */
 .clearfix:before, .clearfix:after {
-  content:"";
-  display:table;
-}
-.clearfix:after {
-  clear:both;
-}
-/* For IE 6/7 (trigger hasLayout) */
-.clearfix {
-  zoom:1;
+  content: "";
+  display: table;
 }
 
-@mixin hide_text{
-  font-size:0px;
+.clearfix:after {
+  clear: both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+.clearfix {
+  zoom: 1;
+}
+
+@mixin hide_text {
+  font-size: 0px;
   text-indent: -100000px;
 }
 
-@mixin borderRadius($radius){
-  -moz-border-radius:$radius;
-  -webkit-border-radius:$radius;
-  -o-border-radius:$radius;
-  border-radius:$radius;
+@mixin borderRadius($radius) {
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
 }
 
-@mixin boxShadow($attr){
+@mixin boxShadow($attr) {
   -moz-box-shadow: $attr;
   -webkit-box-shadow: $attr;
   -o-box-shadow: $attr;
   box-shadow: $attr;
 }
 
-input[type=text], input[type=password], textarea, input[type=file]{
+input[type=text], input[type=password], textarea, input[type=file], select {
   background: $bg-textbox;
   font-size: 1em;
-  padding:2px;
-  border:1px solid #ddd;
+  padding: 2px;
+  border: 1px solid #AAA;
   @include borderRadius(3px);
 }
 
-.btn{
-  background:$bg-gray-btn;
+.btn {
+  background: $bg-gray-btn;
   text-align: left;
-  font-size:1em;
-  cursor:pointer;
-  border:1px solid #9f9f9f;
+  font-size: 1em;
+  cursor: pointer;
+  border: 1px solid #9f9f9f;
   @include borderRadius(5px);
-  color:$btn-text-color;
-}
-.btn:hover{
-  background:$bg-gray-btn-hover;
+  color: $btn-text-color;
 }
 
-.btn{
-  span{
+.btn:hover {
+  background: $bg-gray-btn-hover;
+}
+
+.btn {
+  span {
     display: block;
-    padding:8px 10px 8px 50px;
+    padding: 8px 10px 8px 50px;
     background-repeat: no-repeat;
     background-position: 10px center;
   }
-  span.create_user{
-      background-image:url(../images/new/icon_create_user.png);
+  span.create_user {
+    background-image: url(../images/new/icon_create_user.png);
   }
 
 }
 
-.list_table{
-
-    @extend clearfix;
-    margin-top:10px;
-
-    th,td{
-        padding:8px;
-    }
-    th{
-        background:$bg_table_header;
-        color:$text_color_table_header;
-    }
-
-    tr:nth-child(odd) td{
-        background:#fff;
-    }
-
-    tr:nth-child(even) td{
-        background:#eee;
-    }
+input[type=button], input[type=submit] {
+  background: $bg-gray-btn;
+  text-align: left;
+  cursor: pointer;
+  border: 1px solid #9f9f9f;
+  @include borderRadius(5px);
+  color: $btn-text-color;
+  padding: 5px 10px;
+  margin-top: 10px;
 }
 
-fieldset{
+.list_table {
 
+  @extend clearfix;
+  margin-top: 10px;
 
-    p{
-        padding:10px;
-        @extend .clearfix;
-
-        .key{
-            width:150px;
-            float: left;
-            display: block;
-
-        }
-
-
+  th, td {
+    padding: 8px;
+  }
+  thead {
+    th {
+      background: $bg_table_header;
+      color: $text_color_table_header;
     }
+  }
 
-    p:nth-child(odd){
-        background:#f1f1f1;
-    }
+  tr:nth-child(odd) td {
+    background: #fff;
+  }
 
-    p:nth-child(even){
-        background:#fff;
-    }
+  tr:nth-child(even) td {
+    background: #eee;
+  }
 }
 
-.no_border{
-    border:0px !important;
-}
-.float_left{
-    float:left;
-}
+fieldset {
 
-.filter_bar{
-    background:$bg-filterbar;
-    border:1px solid $border-filterbar;
-    @include borderRadius(5px);
-    padding:10px;
+  h3 {
+    color: #666;
+    font-size: 1.1em;
+    padding: 5px 0px;
+  }
+
+  p {
+    padding: 10px;
     @extend .clearfix;
-    margin:5px 0px 10px;
 
-    .filter_panel{
-        float:left;
-
-        ul{
-            display: inline-block;
-
-            li{
-                display: inline-block;
-                border-left:1px solid #666;
-                padding:0px 10px;
-            }
-            .first{
-                border:0px;
-              padding-left:5px;
-            }
-        }
+    .key {
+      width: 200px;
+      float: left;
+      display: block;
+      padding-top: 4px;
     }
 
-    .orderby_panel{
-        float:right;
+  }
 
-      ul{
+  p:nth-child(odd) {
+    background: #f1f1f1;
+  }
+
+  p:nth-child(even) {
+    background: #fff;
+  }
+}
+
+.no_border {
+  border: 0px !important;
+}
+
+.float_left {
+  float: left;
+}
+
+.filter_bar {
+  background: $bg-filterbar;
+  border: 1px solid $border-filterbar;
+  @include borderRadius(5px);
+  padding: 10px;
+  @extend .clearfix;
+  margin: 5px 0px 10px;
+
+  .filter_panel {
+    float: left;
+
+    ul {
+      display: inline-block;
+
+      li {
         display: inline-block;
-
-        li{
-          display: inline-block;
-          border-left:1px solid #666;
-          padding:0px 10px;
-        }
-        .first{
-          border:0px;
-          padding-left:5px;
-        }
+        border-left: 1px solid #666;
+        padding: 0px 10px;
+      }
+      .first {
+        border: 0px;
+        padding-left: 5px;
       }
     }
+  }
+
+  .orderby_panel {
+    float: right;
+
+    ul {
+      display: inline-block;
+
+      li {
+        display: inline-block;
+        border-left: 1px solid #666;
+        padding: 0px 10px;
+      }
+      .first {
+        border: 0px;
+        padding-left: 5px;
+      }
+    }
+  }
 }
 
-a.edit{
-  background:url(../images/new/icon_edit.png) no-repeat 0px 0px;
-  padding-left:17px;
+a.edit {
+  background: url(../images/new/icon_edit.png) no-repeat 0px 0px;
+  padding-left: 17px;
 }
-a.mark_as_duplicate{
-  background:url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
-  padding-left:20px;
+
+a.mark_as_duplicate {
+  background: url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
+  padding-left: 20px;
+}
+
+.submitButton {
+  float: right;
+  padding: 10px;
+
+  input {
+    @extend .btn;
+
+  }
+}
+
+.cancelButton {
+  float: left;
+  padding: 10px;
+}
+
+.discardButton {
+  float: right;
+  padding: 14px 10px;
+}
+
+.full_width {
+  width: 940px !important;
+}
+
+.required{
+  color:red;
+  float: left;
+  display: block;
+  padding-right:2px;
 }

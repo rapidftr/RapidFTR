@@ -1,11 +1,13 @@
-<h1>Users</h1>
+<h1 class="no_border">Users</h1>
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li><a href="#" class="sel">Users</a></li>
+      <li class="current"><%= link_to "Users", users_path %></li>
+      <li><%= link_to "Roles", roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
-<%= render :partial => "editable_user", :object => @user %>
-      </div>
-    </div>
+    <h2><a href="#">List of Users</a> &gt; Create an User</h2>
+    <%= render :partial => "editable_user", :object => @user %>
+  </div>
+</div>

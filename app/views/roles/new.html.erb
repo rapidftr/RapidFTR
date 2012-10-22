@@ -1,24 +1,46 @@
-<%= form_for @role, :html => {:class => 'default-form'} do |f|%>
-  <%= error_messages_for :role %>
-  <span class="left"><span class="required">*</span>marked fields are mandatory</span>
-  <fieldset>
-    <h3>Create Role</h3>
-    <p>
-    <%= f.label :name %><span class="required">*</span>
-    <%= f.text_field :name %>
-    </p>
-    <p>
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-    </p>
-    <p>
-    <%= f.label :permissions %><span class="required">*</span>
-    <% Permission.all.each do |permission| %>
-      <%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
-      <span><%= permission %></span>
+<h1 class="no_border">Roles</h1>
+<div class="page-content-new">
+  <div class="side-tab">
+    <ul>
+      <li><%= link_to "Users", users_path %></li>
+      <li class="current"><%= link_to "Roles", roles_path %></li>
+    </ul>
+  </div>
+  <div class="side-tab-content">
+    <h2><%= link_to "List of Roles", roles_path %> &gt; Create a Role</h2>
+    <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
+    <div class="clearfix"></div>
+    <%= form_for @role, :html => {:class => ''} do |f| %>
+        <%= error_messages_for :role %>
+
+        <fieldset>
+
+
+          <p>
+
+            <%= f.label :name, 'Name <span class="required">*</span>'.html_safe, :class=>'key'  %>
+            <%= f.text_field :name %>
+          </p>
+
+          <p>
+            <%= f.label :description, :class=>'key'  %>
+            <%= f.text_area :description %>
+          </p>
+
+          <p>
+
+            <%= f.label :permissions, 'Permissions <span class="required">*</span>'.html_safe, :class=>'key'  %>
+            <% Permission.all.each do |permission| %>
+                <%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
+                <span><%= permission %></span>
+            <% end %>
+          </p>
+
+          <div class="btn_panel">
+            <%= cancel_button(admin_path) %>
+            <%= submit_button('Save') %>
+          </div>
+        </fieldset>
     <% end %>
-    </p>
-    <%= cancel_button(admin_path) %>
-    <%= submit_button('Save') %>
-  </fieldset>
-<% end %>
+  </div>
+</div>

@@ -19,6 +19,7 @@ class FormSection < CouchRestRails::Document
 
   validates_presence_of :name
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
+  validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
 
   def initialize args={}
@@ -193,16 +194,16 @@ class FormSection < CouchRestRails::Document
 
   def validate_unique_id
     form_section = FormSection.get_by_unique_id(self.unique_id)
-    unique = form_section.nil? or form_section["_id"] == self["_id"]
+    unique = form_section.nil? || form_section.id == self.id
     unique || [false, "The unique id '#{unique_id}' is already taken."]
   end
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != nil && name.downcase != f.name.downcase }
+    unique = FormSection.all.all? {|f| id == f.id || name != nil && name != f.name }
     unique || [false, "The name '#{name}' is already taken."]
   end
 
   def create_unique_id
-    self.unique_id = UUIDTools::UUID.timestamp_create.to_s.split('-').last() if self.unique_id.nil?
+    self.unique_id = UUIDTools::UUID.timestamp_create.to_s.split('-').first if self.unique_id.nil?
   end
 end

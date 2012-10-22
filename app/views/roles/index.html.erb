@@ -1,17 +1,47 @@
-<div>
-  <p>
-  <%= link_to "Create Role", new_role_path%>
-  </p>
-  <p>
-  <span>Role Name</span>
-  <span>Description</span>
-  <span>Permissions</span>
-  </p>
-  <% @roles.each do |role| %>
-    <p>
-    <span><%= role.name %></span>
-    <span><%= role.description %></span>
-    <span><%= role.permissions.join(",")%></span>
-    </p>
-  <% end %>
+<h1 class="no_border">Roles</h1>
+<div class="page-content-new">
+  <div class="side-tab">
+    <ul>
+      <li><%= link_to "Users", users_path %></li>
+      <li class="current"><%= link_to "Roles", roles_path %></li>
+    </ul>
+  </div>
+  <div class="side-tab-content">
+    <h2>List of Roles</h2>
+    <%= link_to content_tag(:span, "Create Role", :class => 'create_user'), new_role_path, :class => 'btn' %>
+    <div class="clearfix"></div>
+
+    <div class="filter_bar">
+      <div>
+      <ul>
+      <li class="first">showing all <%= pluralize(@roles.length, "record") %></li>
+      </ul>
+    </div>
+    <div>
+	    Order by Role Name:
+    <ul>
+	  	<li><%= link_to("Ascending", roles_path)%></li>
+      <li><%= link_to("Descending", roles_path(:sort => "desc"))%></li>
+    </ul>
+    </div>
+  </div>
+    <table class="list_table">
+      <thead>
+        <tr>
+            <th>Role Name</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @roles.each do |role| %>
+            <tr>
+              <td><%= role.name %></td>
+              <td><%= truncate(role.description, :length => 40) %></td>
+              <td><%= link_to("Edit", edit_role_path(role))%></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

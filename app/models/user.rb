@@ -92,15 +92,15 @@ class User < CouchRestRails::Document
   end
 
   def user_type # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(:admin) ? "Administrator" : "User"
+    has_permission?(Permission::ADMIN) ? "Administrator" : "User"
   end
 
   def permission # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(:unlimited) ? "Unlimited" : "Limited"
+    has_permission?(Permission::ACCESS_ALL_DATA) ? "Unlimited" : "Limited"
   end
 
   def limited_access? # Temporary method for backward compatibility should be removed after the UI is changed
-    (has_permission?(:unlimited) || has_permission?(:admin)) == false
+    (has_permission?(Permission::ACCESS_ALL_DATA) || has_permission?(Permission::ADMIN)) == false
   end
 
   def has_permission?(permission)
@@ -176,7 +176,7 @@ class User < CouchRestRails::Document
   end
 
   def is_valid_permission_level
-    return true if permissions.present? && permissions.sort == (Permission.all & permissions.sort)
+    return true if permissions.present? && permissions.sort == (Permission.all_including_default & permissions.sort)
     [ false, "Invalid Permission Level" ]
   end
 end

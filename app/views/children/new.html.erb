@@ -1,7 +1,7 @@
 <h1>Children</h1>
-<div class="page-content-new">
-<%= form_tag children_path, :multipart => true do %>
 
+<%= form_tag children_path, :multipart => true do %>
+    <div class="page-content-new">
   	<%= hidden_field_tag "child[posted_from]", "Browser" %>
     <%= error_messages_for :child %>
     <div class="side-tab">
@@ -13,9 +13,12 @@
       <div class="clearfix"></div>
         <%= render :partial => "form_section", :collection => @form_sections %>
     </div>
+    </div>
     <%= submit_button %>
+
     <%= discard_button :back %>
+    <div class="clearfix"></div>
 <% end %>
 
 
-    </div>
+

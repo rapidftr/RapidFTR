@@ -30,13 +30,13 @@ describe Ability do
   end
 
   describe '#admin' do
-    before :each do @session.stub! :user_permissions => [ "admin" ] end
+    before :each do @session.stub! :user_permissions => [ Permission::ADMIN ] end
 
     include_examples "control classes and objects", [ Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], true
   end
 
-  describe '#unlimited' do
-    before :each do @session.stub! :user_permissions => [ "unlimited" ] end
+  describe '#access all data' do
+    before :each do @session.stub! :user_permissions => [ Permission::ACCESS_ALL_DATA ] end
 
     include_examples "control class", Child, true
     include_examples "control object", Child.new, true
@@ -44,7 +44,7 @@ describe Ability do
   end
 
   describe '#limited' do
-    before :each do @session.stub! :user_permissions => [ "limited" ] end
+    before :each do @session.stub! :user_permissions => [ Permission::LIMITED ] end
 
     include_examples "control class", Child, true
     include_examples "control object", Child.new, false

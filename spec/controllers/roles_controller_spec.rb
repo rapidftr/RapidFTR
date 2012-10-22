@@ -6,9 +6,12 @@ describe RolesController do
 
     it "should not allow non-admin user to access any roles action" do
       fake_limited_login
-      expect { get :index }.to raise_error(CanCan::AccessDenied)
-      expect { post :create }.to raise_error(CanCan::AccessDenied)
-      expect { get :new }.to raise_error(CanCan::AccessDenied)
+      get :index
+      response.should render_template("#{Rails.root}/public/403.html")
+      post :create
+      response.should render_template("#{Rails.root}/public/403.html")
+      get :new
+      response.should render_template("#{Rails.root}/public/403.html")
     end
 
   end
@@ -44,12 +47,20 @@ describe RolesController do
   end
 
   it "should render the index page" do
-    Role.should_receive(:all).and_return("all the roles!")
+    Role.should_receive(:by_name).and_return(["A role", "Z role"])
 
     get :index
 
     response.should render_template :index
-    assigns(:roles).should == "all the roles!"
+    assigns(:roles).should == ["A role", "Z role"]
+  end
+
+  it "should render the role names with given sorting order" do
+    Role.should_receive(:by_name).and_return(['A Role', 'Z Role'])
+    get :index, :sort => "desc"
+
+    response.should render_template :index
+    assigns(:roles).should == ['Z Role', 'A Role']
   end
 
   it "should render the new page" do

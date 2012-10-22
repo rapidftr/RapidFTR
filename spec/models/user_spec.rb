@@ -29,12 +29,12 @@ describe User do
     end
 
     it "should fail if the permission level is not valid" do
-      user = build_user(:permissions => [ "admin", "invalid level" ])
+      user = build_user(:permissions => [ Permission::ADMIN, "invalid level" ])
       user.should_not be_valid
     end
 
     it "should succeed if permission is set appropriately" do
-      user = build_user(:permissions => [ "admin", "limited", "unlimited" ])
+      user = build_user(:permissions => [ Permission::ADMIN , Permission::LIMITED, Permission::ACCESS_ALL_DATA ])
       user.should be_valid
     end
   end
@@ -199,7 +199,7 @@ describe User do
   describe "permissions" do
 
     context "user with limited permissions" do
-      subject { build_and_save_user :permissions => [ "limited" ] }
+      subject { build_and_save_user :permissions => [ Permission::LIMITED ] }
 
       it "should have limited access" do
         subject.limited_access?.should be_true
@@ -207,7 +207,7 @@ describe User do
     end
 
     context "user with unlimited permissions" do
-      subject { build_and_save_user :permissions => [ "unlimited" ] }
+      subject { build_and_save_user :permissions => [ Permission::ACCESS_ALL_DATA ] }
 
       it "should not have limited access" do
         subject.limited_access?.should be_false

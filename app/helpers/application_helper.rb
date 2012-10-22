@@ -23,21 +23,15 @@ module ApplicationHelper
   end
 
   def submit_button(name = 'Save')
-    content_tag(:p, :class => 'submitButton') do
-      submit_tag(name)
-    end
+      submit_tag(name, :class => 'btn_submit')
   end
 
   def cancel_button(path)
-    content_tag(:p, :class => 'cancelButton') do
-      link_to 'Cancel', path, :confirm => 'Are you sure you want to cancel?'
-    end
+      link_to 'Cancel', path, :confirm => 'Are you sure you want to cancel?', :class => "link_cancel"
   end
 
   def discard_button(path)
-    content_tag(:p, :class => 'discardButton') do
-      link_to 'Discard', path, :confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.'
-    end
+      link_to 'Discard', path, :confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.', :class => 'link_discard'
   end
   
   def show_sidebar_links

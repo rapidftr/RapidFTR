@@ -110,5 +110,16 @@ describe "SearchService" do
     result.should =~ [child1, child2]
   end
 
-  
+  it "Should find children by created_by" do
+    child1 = Child.create( :name => "tim", :company => "fireman", :created_by => "john")
+    child2 = Child.create( :name => "tom", :company => "student", :created_by => "jill")
+    child3 = Child.create( :name => "tox", :company => "student", :created_by => "jill")
+
+    criteria1 = SearchCriteria.new(:field => "name", :value => "t")
+    criteria2 = SearchCriteria.new(:field => "created_by", :value => "jill", :join => "AND")
+
+    result = SearchService.search [criteria1,criteria2]
+    result.should == [child2, child3]
+  end
+
 end

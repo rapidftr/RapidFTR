@@ -115,7 +115,7 @@ Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity,
 end
 
 Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
-  page.find("//p[@class='#{button_name.downcase}Button']/a")['data-confirm'].should_not be_nil
+  page.find("//a[@class='link_#{button_name.downcase}']")['data-confirm'].should_not be_nil
 end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
@@ -173,7 +173,7 @@ Given /"([^\"]*)" is logged in/ do |user_name|
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
-  step "a user \"#{user_name}\" with a password \"123\""
+  step "a user \"#{user_name}\" with a password \"123\" and \"Access all data\" permission"
 end
 
 Then /^I should not see any errors$/ do

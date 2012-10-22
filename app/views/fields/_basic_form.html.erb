@@ -1,15 +1,22 @@
-<%= form_for @field, :url => url, :html => {:class => "new-field default-form"} do |f| %>
-    <%= error_messages_for :field %>
+<h1 class="no_border">Forms</h1>
+<div class="page-content-new">
+  <div class="side-tab-content full_width">
+    <%= form_for @field, :url => url, :html => {:class => ""} do |f| %>
+        <%= error_messages_for :field %>
 
-    <%= f.hidden_field 'type', :value => @field.type %>
+        <%= f.hidden_field 'type', :value => @field.type %>
 
-    <fieldset>
-      <h3><%= @field.type.humanize %> details</h3>
- 			<%= render :partial => "common", :locals => {:f => f} %>
-    </fieldset>
-    <p class='submitButton' >
-      <%= f.submit 'Save' %>
-    </p>   
-  
-    <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
-<% end %>
+        <fieldset>
+          <h3><%= @field.type.humanize %> details</h3>
+          <%= render :partial => "common", :locals => {:f => f} %>
+        </fieldset>
+        <br>
+
+        <p class='submitButton'>
+          <%= f.submit 'Save' %>
+        </p>
+
+        <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
+    <% end %>
+  </div>
+</div>

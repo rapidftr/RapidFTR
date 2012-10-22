@@ -55,7 +55,8 @@ class Field < Hash
                         NUMERIC_FIELD    => ""}
   
   validates_presence_of :display_name 
-  validates_with_method :display_name, :method => :validate_unique
+  validates_with_method :name, :method => :validate_unique_name
+  validates_with_method :display_name, :method => :validate_unique_display_name
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
 
@@ -177,7 +178,7 @@ class Field < Hash
   private
 
   def create_unique_id
-    self.name = UUIDTools::UUID.timestamp_create.to_s.split('-').last() if self.name.nil?
+    self.name = UUIDTools::UUID.timestamp_create.to_s.split('-').first if self.name.nil?
   end
 
   def validate_has_2_options
@@ -186,7 +187,15 @@ class Field < Hash
     true
   end
   
-  def validate_unique
+  def validate_unique_name
+    return true unless new? && form
+    return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.name == name})
+    other_form = FormSection.get_form_containing_field name
+    return [false, "Field already exists on form '#{other_form.name}'"] if other_form  != nil
+    true
+  end
+
+  def validate_unique_display_name
     return true unless new? && form
     return [false, "Field already exists on this form"] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
     other_form = FormSection.get_form_containing_field display_name

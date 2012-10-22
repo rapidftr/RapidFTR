@@ -22,13 +22,17 @@ gem 'dynamic_form'
 gem 'jquery-rails'
 gem 'cancan'
 
+group :development, :assets do
+  gem 'sass'
+end
+
 group :assets do
   gem 'execjs'
   gem 'therubyracer'
-  gem 'sass'
   gem 'compass-rails'
   gem 'uglifier'
 end
+
 group :test do
   gem 'mocha'
   gem 'test_declarative'

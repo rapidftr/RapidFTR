@@ -24,7 +24,7 @@ end
 
 Given /there is a User/ do
   unless @user
-    step "a user \"mary\" with a password \"123\""
+    step "a user \"mary\" with a password \"123\" and \"Access all data\" permission"
   end
 end
 

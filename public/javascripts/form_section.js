@@ -28,9 +28,12 @@ function initOrderingColumns() {
     if (onFormSectionDetailsEditPage() && !nameIsTheFirstRow()){
         fieldToStartFrom = 0;
     }
-    $("#" + mainContainer + " tbody tr:eq(" + fieldToStartFrom + ")").each(function(index, element) {
-        $("a.moveDown", element).show();
-        $("a.moveUp", element).hide();
+
+    $("#"+mainContainer+" tbody tr:eq("+fieldToStartFrom+")").each(function(index, element){
+
+	$("a.moveUp", element).hide();
+    $("a.moveDown",element).css("display","inline");
+
     });
 
     $("#" + mainContainer + " tbody tr:last").each(function(index, element) {
