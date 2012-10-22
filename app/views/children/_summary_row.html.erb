@@ -21,10 +21,6 @@
         </div>
     <% end %>
 
-
-
-
-
       <% sorted_highlighted_fields.each do |relevant_field| %>
         <div class="summary_item">
           <div class="key"><%= relevant_field[:display_name] %>:</div>
@@ -32,15 +28,13 @@
         </div>
       <% end %>
 
-    <% if summary_row['flag'] %>
+    <% if summary_row['flag'] == 'true' %>
 
-          <%- flag_summary_for_child(summary_row).each do |key, value| -%>
-            <div class="summary_item">
-              <div class="key"><%= key %>:</div><div class="value"><%= value %></div>
-            </div>
-          <%- end -%>
+        <div class="summary_item">
+              <div class="key">Flag summary:</div><div class="value"><%= (flag_summary_for_child(summary_row)).html_safe %></div>
+        </div>
+  <% end -%>
 
-    <% end -%>
     <div class="summary_item">
       <div class="key">Registered by:</div>
       <div class="value"><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @user.localize_date(summary_row['created_at']) %></div>
