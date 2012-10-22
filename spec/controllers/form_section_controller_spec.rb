@@ -71,7 +71,7 @@ describe FormSectionController do
       form_one = FormSection.create(:unique_id => "first_form", :name => "first form", :order => 1)
       form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)
       form_three = FormSection.create(:unique_id => "third_form", :name => "third form", :order => 3)
-      post :save_order, :form_order => {form_one.unique_id.to_s => "3", form_two.unique_id.to_s => "1", form_three.unique_id.to_s => "2"}
+      post :save_form_order, :form_order => {form_one.unique_id.to_s => "3", form_two.unique_id.to_s => "1", form_three.unique_id.to_s => "2"}
       FormSection.get_by_unique_id(form_one.unique_id).order.should == 3
       FormSection.get_by_unique_id(form_two.unique_id).order.should == 1
       FormSection.get_by_unique_id(form_three.unique_id).order.should == 2

@@ -45,8 +45,8 @@ RapidFTR::Application.routes.draw do
   match 'logout' => 'sessions#destroy', :as => :logout
   match 'form_section/enable' => 'form_section#enable', :as => :enable_form, :via => :post, :value => true
   match 'form_section/disable' => 'form_section#enable', :as => :disable_form, :value => false
-  match '/form_section/save_order' => 'form_section#save_order', :as => :save_order
-  match '/form_section/save_order_single' => 'form_section#save_order_single', :as => :save_order_single
+  match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
+  match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
   match '/active' => 'sessions#active', :as => :session_active
   resources :formsections, :controller=>'form_section' do
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
