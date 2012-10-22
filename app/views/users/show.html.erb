@@ -25,6 +25,10 @@
       <label class="key">User Type:</label>
       <%= h @user.user_type %>
     </p>
+    <p>
+      <label class="key">Roles:</label>
+      <%= @user.roles.map(&:name).join(",") %>
+    </p>
 
     <p>
       <label class="key">Phone number:</label>

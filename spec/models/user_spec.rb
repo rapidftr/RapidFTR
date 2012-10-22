@@ -10,7 +10,8 @@ describe User do
       :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
       :user_type => 'user_type',
-      :permissions => [ "limited" ]
+      :role_ids => options[:role_ids] || ['random_role_id'],
+      :permissions => [ "limited" ],
     })
     user = User.new( options)
     user
@@ -121,7 +122,7 @@ describe User do
     imei = "1337"
     mobile_number = "555-555"
     now = Time.parse("2008-06-21 13:30:00 UTC")
-    
+
     user = build_user
     user.create!
 
@@ -129,7 +130,7 @@ describe User do
 
     user.add_mobile_login_event(imei, mobile_number)
     user.save
-    
+
     user = User.get(user.id)
     event = user.mobile_login_history.first
 
@@ -225,6 +226,22 @@ describe User do
     end
     def should_not_assignable(name)
       @user.user_assignable?(name => "").should be_false
+    end
+  end
+
+  describe "user roles" do
+    it "should store the roles and retrive them back as Roles" do
+      roles = [Role.create!(:name => "Admin", :permissions => [Permission::ADMIN]), Role.create!(:name => "Child Protection Specialist", :permissions => [Permission::ADMIN])]
+      user = build_and_save_user(:roles => roles)
+      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',:email => 'em@dd.net',:user_type => 'user_type',:permissions => [ "limited" ], :role_ids => [roles.first.id, roles.last.id] })
+      user = User.find_by_user_name(user.user_name)
+      user.roles.should == roles
+    end
+
+    it "should require atleast one role" do
+      user = build_user(:role_ids => [])
+      user.should_not be_valid
+      user.errors.on(:role_ids).should == ["Please select at least one role"]
     end
   end
 end

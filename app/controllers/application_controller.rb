@@ -18,20 +18,20 @@ class ApplicationController < ActionController::Base
   end
   def render_error_response(ex)
     @exception = ex
- 
+
     # Only add the error page to the status code if the request-format was HTML
     respond_to do |format|
       format.html do
-        render( 
+        render(
           :template => "shared/status_#{ex.status_code.to_s}",
-          :status => ex.status_code 
+          :status => ex.status_code
         )
       end
       format.any(:xml,:json) do
         begin
-        render( 
+        render(
           :template => "shared/status_#{ex.status_code.to_s}",
-          :status => ex.status_code 
+          :status => ex.status_code
         )
         rescue ActionView::MissingTemplate
           head ex.status_code # only return the status code
@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
     @user = User.find_by_user_name(current_user_name)
   end
 
-  def send_pdf(pdf_data,filename) 
+  def send_pdf(pdf_data,filename)
     send_data pdf_data, :filename => filename, :type => "application/pdf"
   end
 
@@ -87,6 +87,10 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = params[:locale] || cookies[:locale] || I18n.default_locale
+  end
+
+  def clean_params(param)
+    param.reject!{|value| value.empty?}
   end
 
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|

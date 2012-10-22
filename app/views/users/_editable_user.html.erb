@@ -31,73 +31,69 @@
     <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
     <div class="clearfix"></div>
     <fieldset>
+    <p>
+      <%= f.label :full_name, "Full name", :class=>'key' %>
+      <%= f.text_field :full_name %>*
+    </p>
+
+    <p>
+      <%= f.label :user_name, :class=>'key'  %>
+      <%= f.text_field :user_name, :disabled => !editable_user.new_record? %>*
+      <span class="footnote">user name should not contain blanks</span>
+    </p>
+
+    <p>
+      <%= f.label :password, :class=>'key'  %>
+      <%= f.password_field :password %>*
+      <span class="footnote">password should not contain blanks</span>
+    </p>
+
+    <p>
+      <%= f.label :password_confirmation,"Re-enter password", :class=>'key'  %>
+      <%= f.password_field :password_confirmation %>*
+    </p>
+
+    <% if !trying_to_edit_ourself %>
       <p>
-        <%= f.label :full_name, "Full name", :class => 'key' %>
-        <%= f.text_field :full_name %>*
-      </p>
-
-      <p>
-        <%= f.label :user_name, :class => 'key' %>
-        <%= f.text_field :user_name, :disabled => !editable_user.new_record? %>*
-        <span class="footnote">user name should not contain blanks</span>
-      </p>
-
-      <p>
-        <%= f.label :password, :class => 'key' %>
-        <%= f.password_field :password %>*
-        <span class="footnote">password should not contain blanks</span>
-      </p>
-
-      <p>
-        <%= f.label :password_confirmation, "Re-enter password", :class => 'key' %>
-        <%= f.password_field :password_confirmation %>*
-      </p>
-
-      <% if !trying_to_edit_ourself %>
-          <p><label class="key">User type</label>
-
-            <%= f.radio_button :user_type, "Administrator" %>
-            <%= f.label :user_type_administrator, "Administrator" %>
-
-
-            <%= f.radio_button :user_type, "User" %>
-            <%= f.label :user_type_user, "User" %>
-          </p>
+        <label class="key">Roles</label>
+      <% @roles.each do |role| %>
+          <%= f.check_box :role_ids, {:id => role.name.dehumanize, :name => "user[role_ids][]"}, role.id, "" %>
+          <span><%= role.name %></span>
       <% end %>
-
-      <p>
-        <%= f.label :phone, :class => 'key' %>
-        <%= f.text_field :phone %>
       </p>
+    <% end %>
 
-      <p>
-        <%= f.label :email, :class => 'key' %>
-        <%= f.text_field :email %>
-      </p>
+    <p>
+      <%= f.label :phone, :class=>'key'  %>
+      <%= f.text_field :phone %>
+    </p>
+    <p>
+      <%= f.label :email, :class=>'key'  %>
+      <%= f.text_field :email %>
+    </p>
 
-      <p>
-        <%= f.label :organisation, :class => 'key' %>
-        <%= f.text_field :organisation, :disabled => !is_admin? %>
-      </p>
+    <p>
+      <%= f.label :organisation, :class=>'key'  %>
+      <%= f.text_field :organisation, :disabled => !is_admin?%>
+    </p>
 
-      <p>
-        <%= f.label :position, :class => 'key' %>
-        <%= f.text_field :position %>
-      </p>
+    <p>
+      <%= f.label :position, :class=>'key'  %>
+      <%= f.text_field :position %>
+    </p>
 
-      <p>
-        <%= f.label :location, :class => 'key' %>
-        <%= f.text_field :location %>
-      </p>
+    <p>
+      <%= f.label :location, :class=>'key'  %>
+      <%= f.text_field :location %>
+    </p>
 
-      <% if !trying_to_edit_ourself %>
-          <p>
-            <%= f.label :disabled, "Disabled?", :class => 'key' %>
-            <%= f.check_box :disabled, {}, "true", "false" %>
-          </p>
-      <% end %>
+    <% if !trying_to_edit_ourself %>
+        <p>
+          <%= f.label :disabled, "Disabled?", :class=>'key' %>
+          <%= f.check_box :disabled, {}, "true", "false" %>
+        </p>
+    <% end %>
 
-      <%= f.hidden_field :permissions %>
     </fieldset>
 
     <% if is_admin? %>

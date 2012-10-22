@@ -16,6 +16,7 @@ class User < CouchRestRails::Document
   property :location
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
+  property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
   property :permissions, :type => [ String ]
 
@@ -51,6 +52,7 @@ class User < CouchRestRails::Document
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
   validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
+  validates_presence_of :role_ids, :message => "Please select at least one role"
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
   validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
@@ -97,6 +99,10 @@ class User < CouchRestRails::Document
 
   def permission # Temporary method for backward compatibility should be removed after the UI is changed
     has_permission?(Permission::ACCESS_ALL_DATA) ? "Unlimited" : "Limited"
+  end
+
+  def roles
+    role_ids.collect{|id| Role.get(id)}
   end
 
   def limited_access? # Temporary method for backward compatibility should be removed after the UI is changed
