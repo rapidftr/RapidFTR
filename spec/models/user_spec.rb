@@ -10,7 +10,7 @@ describe User do
       :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
       :user_type => 'user_type',
-      :role_ids => options[:role_ids] || ['random_role_id'],
+      :role_names => options[:role_names] || ['random_role_name'],
     })
     user = User.new( options)
     user
@@ -182,7 +182,7 @@ describe User do
   it "should load roles only once" do
     role = mock("roles")
     user = build_and_save_user
-    Role.should_receive(:get).with(user.role_ids.first).and_return(role)
+    Role.should_receive(:by_name).with(:key => user.role_names.first).and_return(role)
     user.roles.should == [role]
     Role.should_not_receive(:get)
     user.roles.should == [role]
@@ -191,13 +191,13 @@ describe User do
   describe "permissions" do
     it "should have limited access" do
       limited_role = Role.create(:name => 'limited', :permissions => Permission::LIMITED)
-      user = build_and_save_user(:role_ids => [limited_role.id])
+      user = build_and_save_user(:role_names => [limited_role.name])
       user.limited_access?.should be_true
     end
 
     it "should not have limited access" do
       access_all = Role.create(:name => "all", :permissions => Permission::ACCESS_ALL_DATA)
-      user = build_and_save_user(:role_ids => [access_all.id])
+      user = build_and_save_user(:role_names => [access_all.name])
       user.limited_access?.should be_false
     end
   end
@@ -205,7 +205,7 @@ describe User do
   describe "#user_assignable?" do
     before { @user = build_user }
     it "role ids should not be assignable" do
-      should_not_assignable :role_ids
+      should_not_assignable :role_names
     end
     it "disabled should not be assignable" do
       should_not_assignable :disabled
@@ -219,15 +219,15 @@ describe User do
     it "should store the roles and retrive them back as Roles" do
       roles = [Role.create!(:name => "Admin", :permissions => [Permission::ADMIN]), Role.create!(:name => "Child Protection Specialist", :permissions => [Permission::ADMIN])]
       user = build_and_save_user(:roles => roles)
-      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',:email => 'em@dd.net',:user_type => 'user_type',:permissions => [ "limited" ], :role_ids => [roles.first.id, roles.last.id] })
+      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',:email => 'em@dd.net',:user_type => 'user_type',:permissions => [ "limited" ], :role_names => [roles.first.name, roles.last.name] })
       user = User.find_by_user_name(user.user_name)
       user.roles.should == roles
     end
 
     it "should require atleast one role" do
-      user = build_user(:role_ids => [])
+      user = build_user(:role_names => [])
       user.should_not be_valid
-      user.errors.on(:role_ids).should == ["Please select at least one role"]
+      user.errors.on(:role_names).should == ["Please select at least one role"]
     end
   end
 end

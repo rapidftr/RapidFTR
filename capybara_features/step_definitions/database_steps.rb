@@ -10,7 +10,7 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\
     :password_confirmation=>password,
     :full_name=>username,
     :email=>"#{username}@test.com",
-    :role_ids => [role.id]
+    :role_names => [role.name]
   )
   @user.save!
 end

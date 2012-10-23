@@ -70,7 +70,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "17 Nov 2010"
 
   Scenario: Admins should be able to add new radio button
-    When I am on the edit form section page for "family_details"
+    Given I am on the edit form section page for "family_details"
 
     When I follow "Add Custom Field"
 

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :administrators_only, :except =>[:show, :edit, :update]
-  before_filter :clean_role_ids, :only => [ :update, :create ]
+  before_filter :clean_role_names, :only => [ :update, :create ]
 
   def index
     @users = User.view("by_full_name")
@@ -81,21 +81,8 @@ class UsersController < ApplicationController
 
   private
 
-  def clean_role_ids
-    params[:user][:role_ids] = clean_params(params[:user][:role_ids]) if params[:user][:role_ids]
-  end
-
-  def set_permissions_params
-    return unless app_session.admin?
-    permissions = []
-    user = params[:user]
-
-    permissions.push(Permission::LIMITED) if user[:permission].nil? && user[:user_type]=="User"
-    permissions.push(Permission::ADMIN) if user[:user_type] == "Administrator"
-
-    user.delete(:permission)
-    user.delete(:user_type)
-    user[:permissions] = permissions
+  def clean_role_names
+    params[:user][:role_names] = clean_params(params[:user][:role_names]) if params[:user][:role_names]
   end
 
   def users_details

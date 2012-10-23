@@ -188,10 +188,10 @@ describe UsersController do
         User.stub(:get).with("24").and_return(mock_user)
     end
 
-    it "should clean the params for role_ids" do
+    it "should clean the params for role_names" do
       @fake_session.stub(:admin?).and_return(true)
-      mock_user.should_receive(:update_attributes).with({"role_ids"=>["some_id"], "permissions"=>["admin"]}).and_return(true)
-      post :update, {:id => "24", :user => {:user_type => "Administrator", :role_ids => ["", "some_id"]}}
+      mock_user.should_receive(:update_attributes).with({"role_names"=>["some_name"]}).and_return(true)
+      post :update, {:id => "24", :user => {:role_names => ["", "some_name"]}}
     end
 
     context "when not admin user" do
@@ -232,29 +232,24 @@ describe UsersController do
       before :each do
         fake_admin_login
       end
-      it "should create limited user by default " do
-        User.should_receive(:new).with({"permissions"=>["limited"]}).and_return(mock_user)
-        mock_user.should_receive(:save).and_return(true)
-        put :create, { :user => {:user_type => "User"  } }
-      end
 
       it "should create admin user if the admin user type is specified" do
-        User.should_receive(:new).with({"permissions"=>["admin"]}).and_return(mock_user)
+        User.should_receive(:new).with({"role_names"=>["Adminstrator"]}).and_return(mock_user)
         mock_user.should_receive(:save).and_return(true)
-        put :create, {:user => {:user_type => "Administrator"}}
+        post :create, {"user" => {"role_names" => ["Adminstrator"]}}
       end
 
-      it "should clean the role_ids params" do
-        User.should_receive(:new).with({"permissions" => ["admin"], "role_ids" => ["some_id"]}).and_return(mock_user)
+      it "should clean the role_names params" do
+        User.should_receive(:new).with({ "role_names" => ["some_name"]}).and_return(mock_user)
         mock_user.stub(:save).and_return(true)
-        put :create, {:user => {:user_type => "Administrator", :role_ids => ["", "", "some_id"]}}
+        put :create, {:user => {:role_names => ["", "", "some_name"]}}
       end
 
       it "should render new if the given user is invalid and assign user,roles" do
         Role.stub(:all).and_return("some roles")
         User.should_receive(:new).and_return(mock_user)
         mock_user.should_receive(:save).and_return(false)
-        put :create, {:user => {:user_type => "Administrator"}}
+        put :create, {:user => {:role_names => ["Administrator"]}}
         response.should render_template :new
         assigns[:user].should == mock_user
         assigns[:roles].should == "some roles"

@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clean_params(param)
-    param.reject!{|value| value.empty?}
+    param.reject{|value| value.blank?}
   end
 
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|

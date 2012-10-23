@@ -7,6 +7,7 @@ describe 'users/_editable_user.html.erb' do
       @user.disabled = false
       @user.user_name = "test user"
       view.stub!(:is_admin?)
+      view.stub!(:session).and_return(mock(:session, :user => mock(User)))
     end
     it "should not be updateable" do
       view.stub!(:editing_ourself?).and_return(true)
