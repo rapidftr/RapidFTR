@@ -52,5 +52,6 @@ group :development, :test do
   gem 'capybara',         '1.0.1'
   gem 'selenium-webdriver', '2.24.0'
   gem 'jasmine'
+  gem 'pry'
 end
 
