@@ -11,7 +11,6 @@ describe User do
       :email => 'email@ddress.net',
       :user_type => 'user_type',
       :role_ids => options[:role_ids] || ['random_role_id'],
-      :permissions => [ "limited" ],
     })
     user = User.new( options)
     user
@@ -21,23 +20,6 @@ describe User do
     user = build_user(options)
     user.save
     user
-  end
-
-  describe "validation" do
-    it "should fail if permission is not set" do
-      user = build_user(:permissions => [])
-      user.should_not be_valid
-    end
-
-    it "should fail if the permission level is not valid" do
-      user = build_user(:permissions => [ Permission::ADMIN, "invalid level" ])
-      user.should_not be_valid
-    end
-
-    it "should succeed if permission is set appropriately" do
-      user = build_user(:permissions => [ Permission::ADMIN , Permission::LIMITED, Permission::ACCESS_ALL_DATA ])
-      user.should be_valid
-    end
   end
 
 
@@ -185,41 +167,45 @@ describe User do
 
   it "should localize date using user's timezone" do
     user = build_user({
-        :time_zone => "Samoa"
-                      })
+      :time_zone => "Samoa"
+    })
     user.localize_date("2011-11-12 21:22:23 UTC").should == "12 November 2011 at 10:22 (SST)"
   end
 
   it "should localize date using specified format" do
     user = build_user({
-        :time_zone => "UTC"
-                      })
+      :time_zone => "UTC"
+    })
     user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
   end
 
+  it "should load roles only once" do
+    role = mock("roles")
+    user = build_and_save_user
+    Role.should_receive(:get).with(user.role_ids.first).and_return(role)
+    user.roles.should == [role]
+    Role.should_not_receive(:get)
+    user.roles.should == [role]
+  end
+
   describe "permissions" do
-
-    context "user with limited permissions" do
-      subject { build_and_save_user :permissions => [ Permission::LIMITED ] }
-
-      it "should have limited access" do
-        subject.limited_access?.should be_true
-      end
+    it "should have limited access" do
+      limited_role = Role.create(:name => 'limited', :permissions => Permission::LIMITED)
+      user = build_and_save_user(:role_ids => [limited_role.id])
+      user.limited_access?.should be_true
     end
 
-    context "user with unlimited permissions" do
-      subject { build_and_save_user :permissions => [ Permission::ACCESS_ALL_DATA ] }
-
-      it "should not have limited access" do
-        subject.limited_access?.should be_false
-      end
+    it "should not have limited access" do
+      access_all = Role.create(:name => "all", :permissions => Permission::ACCESS_ALL_DATA)
+      user = build_and_save_user(:role_ids => [access_all.id])
+      user.limited_access?.should be_false
     end
   end
 
   describe "#user_assignable?" do
     before { @user = build_user }
-    it "permission should not be assignable" do
-      should_not_assignable :permissions
+    it "role ids should not be assignable" do
+      should_not_assignable :role_ids
     end
     it "disabled should not be assignable" do
       should_not_assignable :disabled

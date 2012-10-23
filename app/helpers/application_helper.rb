@@ -7,12 +7,12 @@ module ApplicationHelper
   # TODO Remove duplication in ApplicationController
   def current_user_name
     session = Session.get_from_cookies(cookies)
-    return session.user_name unless session.nil? or session.user.nil?
+    return session.user_name unless session.nil? or session.user_name.nil?
   end
-  
+
   def is_admin?
     session = Session.get_from_cookies(cookies)
-    return session.admin? if session 
+    return session.admin? if session
   end
 
 
@@ -33,10 +33,10 @@ module ApplicationHelper
   def discard_button(path)
       link_to 'Discard', path, :confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.', :class => 'link_discard'
   end
-  
+
   def show_sidebar_links
-    sidebar_links = {"View All Children" => children_path, 
-                     "Search" => search_children_path, 
+    sidebar_links = {"View All Children" => children_path,
+                     "Search" => search_children_path,
                      "Advanced Search" => new_advanced_search_path}
     sidebar_links.select do |_, link|
       !current_page?(link)

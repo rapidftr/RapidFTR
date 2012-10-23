@@ -122,7 +122,7 @@ class ChildrenController < ApplicationController
   def select_primary_photo
     @child = Child.get(params[:child_id])
     authorize! :edit, @child
-    
+
     begin
       @child.primary_photo_id = params[:photo_id]
       @child.save
@@ -221,7 +221,6 @@ class ChildrenController < ApplicationController
 
   def export_photo_to_pdf
     authorize! :read, @child
-
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end

@@ -3,13 +3,14 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\
   permissions.push(Permission::ADMIN) if user_type.downcase == "admin"
   permissions.push(Permission::LIMITED) if user_type.downcase == "user" and permission.nil?
   permissions.push(permission) if permission
+  role = Role.create(:name => permissions.join("-"), :permissions => permissions)
   @user = User.new(
     :user_name=>username,
     :password=>password,
     :password_confirmation=>password,
     :full_name=>username,
     :email=>"#{username}@test.com",
-    :permissions => permissions.uniq
+    :role_ids => [role.id]
   )
   @user.save!
 end

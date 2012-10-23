@@ -60,7 +60,7 @@ describe ChildrenController do
         response.should render_template("#{Rails.root}/public/403.html")
       end
     end
-    
+
     describe 'member' do
       before :each do
         @child = Child.create('last_known_location' => "London")
@@ -72,13 +72,13 @@ describe ChildrenController do
          get :show, :id => @child.id
          response.should render_template("#{Rails.root}/public/403.html")
       end
-      
+
       it "PUT update" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
         put :update, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
-      
+
       it "PUT edit_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
         put :edit_photo, :id => @child.id
@@ -108,7 +108,7 @@ describe ChildrenController do
         delete :destroy, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
-    end    
+    end
   end
 
   describe "GET index" do
@@ -516,15 +516,16 @@ describe ChildrenController do
   describe "GET export_photo_to_pdf" do
 
     before do
-      user = mock(:user)
+      user = User.new(:user_name => "some-name")
       user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      User.stub!(:find_by_user_name).and_return user
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::ACCESS_ALL_DATA])])
+      fake_login user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
     end
 
     it "should return the photo wall pdf for selected child" do
       Child.should_receive(:get).with('1').and_return(
-        stub_child = stub('child', :unique_identifier => '1'))
+        stub_child = stub('child', :unique_identifier => '1', :class => Child))
 
       ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)

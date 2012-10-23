@@ -47,16 +47,16 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
-    @current_ability ||= Ability.new(app_session)
+    @current_ability ||= Ability.new(app_session.user)
   end
 
   def current_user_full_name
     session = Session.get_from_cookies(cookies)
-    session.user['full_name'] unless session.nil? or session.user.nil?
+    session.user.full_name unless session.nil? or session.user.nil?
   end
 
   def current_user
-    @user = User.find_by_user_name(current_user_name)
+    @user = app_session.user
   end
 
   def send_pdf(pdf_data,filename)

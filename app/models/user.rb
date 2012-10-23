@@ -18,10 +18,9 @@ class User < CouchRestRails::Document
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
-  property :permissions, :type => [ String ]
 
   attr_accessor :password_confirmation, :password
-  ADMIN_ASSIGNABLE_ATTRIBUTES = [ :permissions, :disabled ]
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [ :role_ids, :disabled ]
 
 
   timestamps!
@@ -42,7 +41,7 @@ class User < CouchRestRails::Document
           }"
 
 
-  before_save :make_user_name_lowercase, :encrypt_password, :normalize_permissions
+  before_save :make_user_name_lowercase, :encrypt_password
   after_save :save_devices
 
 
@@ -64,7 +63,6 @@ class User < CouchRestRails::Document
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method   :user_name, :method => :is_user_name_unique
-  validates_with_method   :permissions, :method => :is_valid_permission_level
 
 
   def self.find_by_user_name(user_name)
@@ -102,7 +100,7 @@ class User < CouchRestRails::Document
   end
 
   def roles
-    role_ids.collect{|id| Role.get(id)}
+    @roles ||= role_ids.nil? ? [] : role_ids.collect{|id| Role.get(id)}
   end
 
   def limited_access? # Temporary method for backward compatibility should be removed after the UI is changed
@@ -111,6 +109,10 @@ class User < CouchRestRails::Document
 
   def has_permission?(permission)
     permissions && permissions.include?(permission.to_s)
+  end
+
+  def permissions
+    roles.collect(&:permissions).flatten
   end
 
   def encrypt(password)
@@ -174,15 +176,5 @@ class User < CouchRestRails::Document
 
   def make_user_name_lowercase
     user_name.downcase!
-  end
-
-  def normalize_permissions
-    permissions ||= []
-    permissions = permissions.compact
-  end
-
-  def is_valid_permission_level
-    return true if permissions.present? && permissions.sort == (Permission.all_including_default & permissions.sort)
-    [ false, "Invalid Permission Level" ]
   end
 end
