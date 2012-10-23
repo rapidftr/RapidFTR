@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :administrators_only, :except =>[:show, :edit, :update]
-  before_filter :set_permissions_params, :only => [ :update, :create ]
+  before_filter :set_permissions_params, :only => [:create ]
 
   def index
     @users = User.view("by_full_name")

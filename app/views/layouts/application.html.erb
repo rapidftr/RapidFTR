@@ -30,7 +30,7 @@
     <div class="logo">RapidFTR logo</div>
     <div class="links">
       <% unless current_user_name.nil? %>
-          Welcome <%= current_user_name %>, <%= link_with_confirm 'Logout', :logout %> | <%= link_with_confirm 'My Account', edit_user_path(User.find_by_user_name(current_user_name)) %> |
+          Welcome <%= current_user_name %>, <%= link_with_confirm 'Logout', :logout %> | <%= link_with_confirm 'My Account', user_path(User.find_by_user_name(current_user_name)) %> |
       <% end %>
       <%= link_with_confirm 'Contact & Help', contact_information_path("administrator")%>
     </div>
