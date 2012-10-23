@@ -5,7 +5,9 @@ class AdvancedSearchController < ApplicationController
     @aside = 'shared/sidebar_links'
     @page_name = "Advanced Search"
     @criteria_list = [SearchCriteria.new]
+    @user = current_user
     @results = []
+    prepare_params_for_limited_access_user(@user) if @user.limited_access?
     render :index
   end
 
@@ -14,8 +16,8 @@ class AdvancedSearchController < ApplicationController
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     @user = current_user
+    prepare_params_for_limited_access_user(@user) if @user.limited_access?
     new_search = !params[:criteria_list]
-
     if new_search
       @criteria_list = [SearchCriteria.new]
       @results = []
@@ -80,6 +82,12 @@ class AdvancedSearchController < ApplicationController
 
   def self.nil_or_empty params, key
     params[key].nil? || params[key].empty?
+  end
+
+  def prepare_params_for_limited_access_user user
+    params[:created_by_value] = user.user_name
+    params[:created_by] = "true"
+    params[:disable_create] = "true"
   end
 
 end
