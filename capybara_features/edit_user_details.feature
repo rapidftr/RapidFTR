@@ -92,6 +92,7 @@ Scenario: Admin should not see "Disable" control or change user type control whe
 Scenario: User should be able to edit their own general information, but should not be able to edit their devices
   Given "mary" is logged in
   And I follow "Account"
+  And I click text "Edit"
   Then I should not see "IMEI"
   Then the "Organisation" field should be disabled
 

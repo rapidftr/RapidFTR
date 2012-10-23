@@ -36,6 +36,7 @@ end
 group :test do
   gem 'mocha'
   gem 'test_declarative'
+  gem 'rspec-instafail'
 end
 
 group :cucumber do
