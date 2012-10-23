@@ -20,3 +20,11 @@ And /^I see the following roles$/ do |role_table|
 
 end
 
+Then /^I should see error messages$/ do
+  page.should have_content("Please select at least one permission")
+  page.should have_content("Name must not be blank")
+end
+
+Then /^I should see message "([^"]*)"$/ do |error_message|
+  page.should have_content(error_message)
+end
