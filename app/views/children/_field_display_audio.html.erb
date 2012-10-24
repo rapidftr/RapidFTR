@@ -1,5 +1,5 @@
-<% if child.has_valid_audio? %>
-    <% if child && child.audio %>
+<% if child && child.has_valid_audio? %>
+    <% if child.audio %>
         <li>
           <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
           <%= link_to "download", child_audio_url(child), {:id => "audio_link"} %></li>
