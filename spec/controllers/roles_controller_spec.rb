@@ -71,17 +71,18 @@ describe RolesController do
   end
 
   it "should load the corresponding role object to edit" do
-    role = Role.create(:name => "name", :description => "description", :permissions => %w(admin))
-    get :edit, :id => role.id
-    assigns(:role).should == role
+    role_mock = mock({})
+    Role.should_receive(:get).with(20).and_return(role_mock)
+    get :edit, :id => 20
+    assigns(:role).should == role_mock
   end
 
   it "should update the role object with the passed params" do
-    role = Role.create!(:name => "name2", :description => "description", :permissions => %w(admin))
+    role_mock = mock({})
+    Role.should_receive(:get).with(20).and_return(role_mock)
     latest_desc = "Updated Description"
-    post :update, {:id => role.id, :role => {:description => latest_desc}}
-    latest_role = Role.get(role.id)
-    latest_role.description.should == latest_desc
+    role_mock.should_receive(:update_attributes).with({"description" => latest_desc}).and_return(true)
+    post :update, {:id => 20, :role => {:description => latest_desc}}
     flash[:notice].should == "Role details are successfully updated."
   end
 
