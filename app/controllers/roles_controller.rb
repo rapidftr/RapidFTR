@@ -6,12 +6,26 @@ class RolesController < ApplicationController
     @roles = params[:sort] == "desc" ? Role.by_name.reverse : Role.by_name
   end
 
+  def edit
+    @role = Role.get(params[:id])
+  end
+
+  def update
+    @role = Role.get(params[:id])
+    if @role.update_attributes(params[:role])
+      flash[:notice] = "Role details are successfully updated."
+    else
+      flash[:error] = "Error in updating the Role details."
+    end
+    redirect_to(roles_path)
+  end
+
   def new
     @role = Role.new
   end
 
   def create
-    params[:role][:permissions].reject!{|permission| permission.blank? }
+    params[:role][:permissions].reject! { |permission| permission.blank? }
     @role = Role.new(params[:role])
     return redirect_to roles_path if @role.save
     render :new

@@ -20,9 +20,13 @@ class Role < CouchRestRails::Document
   validates_presence_of :permissions, :message => "Please select at least one permission"
   validates_with_method :name, :method => :is_name_unique, :if => :name
 
+  def self.find_by_name(name)
+    Role.by_name(:key => name).first
+  end
 
   def is_name_unique
-    return true if Role.by_name(:key => name).empty?
+    role = Role.find_by_name(name)
+    return true if role.nil? or self.id == role.id
     [false, "A role with that name already exists, please enter a different name"]
   end
 
