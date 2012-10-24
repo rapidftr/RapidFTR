@@ -145,6 +145,10 @@ view_by :duplicates_of,
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
 
+  def has_valid_audio?
+    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
+  end
+
   def validate_created_at
     begin
       if self['created_at']
