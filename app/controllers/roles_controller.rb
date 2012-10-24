@@ -17,7 +17,7 @@ class RolesController < ApplicationController
     else
       flash[:error] = "Error in updating the Role details."
     end
-    redirect_to(roles_path)
+    render :nothing => true
   end
 
   def new

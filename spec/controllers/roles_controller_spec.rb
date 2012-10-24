@@ -77,7 +77,7 @@ describe RolesController do
   end
 
   it "should update the role object with the passed params" do
-    role = Role.create(:name => "name", :description => "description", :permissions => %w(admin))
+    role = Role.create!(:name => "name2", :description => "description", :permissions => %w(admin))
     latest_desc = "Updated Description"
     post :update, {:id => role.id, :role => {:description => latest_desc}}
     latest_role = Role.get(role.id)
