@@ -5,7 +5,7 @@
 
 <fieldset>
   <h3 id='editFormDetails'>Details</h3>
-  <div id='sectionId' class='hidden'><%= @form_section.unique_id%></div>
+  <div id='sectionId' class='hidden'><%= @form_section.name%></div>
   <p>
     <%= f.label :name, :class=>'key' %>
     <%= f.text_field :name %>

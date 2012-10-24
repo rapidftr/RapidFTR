@@ -10,6 +10,7 @@ Feature:
       | name   |
       | Peter  |
 
+  @javascript
   Scenario: Flagging a child record
     When I flag "Peter" as suspect with the following reason:
       """
@@ -22,6 +23,9 @@ Feature:
 			| Peter |
     When I am on the children listing page
     Then I should see "Flagged By"
+
+#    And I follow "View All Children"
+#    Then I should see flagged details
     
   Scenario: Removing flag from a child record
     Given I flag "Peter" as suspect
