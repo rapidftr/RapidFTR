@@ -53,7 +53,7 @@ class User < CouchRestRails::Document
   validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
-  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password"
+  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
 
   validates_format_of :email, :as => :email_address, :if => :email_entered?
 
