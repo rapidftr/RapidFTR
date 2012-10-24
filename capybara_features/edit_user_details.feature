@@ -1,3 +1,4 @@
+@roles
 Feature: As an admin, I should be able to edit existing users.
 
 Scenario: When editing a user I cannot edit their user name
@@ -6,7 +7,7 @@ Scenario: When editing a user I cannot edit their user name
   And I am on the edit user page for "mary"
 
   Then the "User name" field should be disabled
-  
+
 Scenario: Check that an admin creates a user record and is able to edit it
 
   # Create an user
@@ -18,7 +19,7 @@ Scenario: Check that an admin creates a user record and is able to edit it
   And I fill in "george" for "User name"
   And I fill in "password" for "user_password"
   And I fill in "password" for "Re-enter password"
-  And I choose "User"
+  And I check "limited"
   And I fill in "abcd@unicef.com" for "Email"
   And I fill in "UNICEF" for "Organisation"
   And I fill in "Rescuer" for "Position"
@@ -30,7 +31,7 @@ Scenario: Check that an admin creates a user record and is able to edit it
   When I fill in "Julia Roberts" for "Full name"
   And I fill in "pass" for "user_password"
   And I fill in "pass" for "Re-enter password"
-  And I choose "Administrator"
+  And I check "admin"
   And I fill in "xyz@nyu.com" for "Email"
   And I fill in "NYU" for "Organisation"
   And I fill in "student" for "Position"
@@ -41,7 +42,7 @@ Scenario: Check that an admin creates a user record and is able to edit it
   Then I should see "User was successfully updated"
   And I should see "Julia Roberts"
   And I should see "george"
-  And I should see "Administrator"
+  And I should see "admin"
   And I should see "xyz@nyu.com"
   And I should see "NYU"
   And I should see "student"
@@ -82,11 +83,12 @@ Scenario: Should be able to set devices to black listed
   And I press "Update"
   Then I should see "123456 (blacklisted)"
 
-Scenario: Admin should not see "Disable" control or change user type control when she is editing her own record
+@javascript  
+Scenario: Admin should not see "Disable" control or change role control when she is editing her own record
   Given I am logged in as an admin
   And I am on manage users page
   And I follow "Edit"
-  And I should not see "User type"
+  And I should not see "Roles" within "form"
   Then I should not see "Disabled"
 
 Scenario: User should be able to edit their own general information, but should not be able to edit their devices
@@ -106,7 +108,7 @@ Scenario: Password field should not be blank if re-enter password field is fille
   And I fill in "johndoe1" for "User name"
   And I fill in "password" for "user_password"
   And I fill in "password" for "Re-enter password"
-  And I choose "User"
+  And I check "limited"
   And I fill in "abcde@unicef.com" for "Email"
   And I fill in "UNICEF" for "Organisation"
   And I fill in "Rescuer" for "Position"

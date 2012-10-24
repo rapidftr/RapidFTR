@@ -1,5 +1,6 @@
+@roles
 Feature: As an admin, I should be able to create and view users.
-
+  
   Scenario: To check that an admin creates a user record and is able to view it
     Given I am logged in as an admin
     And I am on manage users page
@@ -9,7 +10,7 @@ Feature: As an admin, I should be able to create and view users.
     And I fill in "george" for "User name"
     And I fill in "password" for "Password"
     And I fill in "password" for "Re-enter password"
-    And I choose "User"
+    And I check "limited"
     And I fill in "abcd@unicef.com" for "Email"
     And I fill in "8007778339" for "Phone"
     And I fill in "UNICEF" for "Organisation"
@@ -20,7 +21,7 @@ Feature: As an admin, I should be able to create and view users.
     Then I should see "User was successfully created."
     And I should see "George Harrison"
     And I should see "george"
-    And I should see "User"
+    And I should see "Limited"
     And I should see "8007778339"
     And I should see "abcd@unicef.com"
     And I should see "UNICEF"
@@ -45,7 +46,7 @@ Feature: As an admin, I should be able to create and view users.
     And I fill in "ge or ge" for "User name"
     And I fill in "pass word" for "password"
     And I fill in "password" for "Re-enter password"
-    And I choose "User"
+    And I check "limited"
     And I fill in "abcd@unicef.com" for "Email"
     And I press "Create"
 
@@ -68,7 +69,7 @@ Feature: As an admin, I should be able to create and view users.
     And I fill in "george" for "User name"
     And I fill in "password" for "Password"
     And I fill in "password" for "Re-enter password"
-    And I choose "User"
+    And I check "limited"
     And I fill in "abcd@unicef.com" for "Email"
     And I press "Create"
 
@@ -102,7 +103,7 @@ Feature: As an admin, I should be able to create and view users.
     And I fill in "george1" for "User name"
     And I fill in "password" for "Password"
     And I fill in "password" for "Re-enter password"
-    And I choose "User"
+    And I check "limited"
     And I fill in "Aaa@Bbbb.com" for "Email"
 
     When I press "Create"
@@ -124,5 +125,4 @@ Feature: As an admin, I should be able to create and view users.
 
     When I press "Create"
 
-    Then I should see "User type"
     And I should see "Disabled"
