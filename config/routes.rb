@@ -28,9 +28,16 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
   match '/children/filter/:status' => 'children#index', :as => :child_filter
+
+
   resources :users
   resources :user_preferences
+
+
+  resources :roles
   match 'admin' => 'admin#index', :as => :admin
+
+
   resources :sessions, :except => :index
   resources :password_recovery_requests, :only => [:new, :create]
   match 'password_recovery_request/:password_recovery_request_id/hide' => 'password_recovery_requests#hide', :as => :hide_password_recovery_request, :via => :delete
@@ -38,8 +45,8 @@ RapidFTR::Application.routes.draw do
   match 'logout' => 'sessions#destroy', :as => :logout
   match 'form_section/enable' => 'form_section#enable', :as => :enable_form, :via => :post, :value => true
   match 'form_section/disable' => 'form_section#enable', :as => :disable_form, :value => false
-  match '/form_section/save_order' => 'form_section#save_order', :as => :save_order
-  match '/form_section/save_order_single' => 'form_section#save_order_single', :as => :save_order_single
+  match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
+  match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
   match '/active' => 'sessions#active', :as => :session_active
   resources :formsections, :controller=>'form_section' do
     additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }

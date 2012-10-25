@@ -8,8 +8,9 @@ Feature:
    Given "Praful" is logged in
    And the following children exist in the system:
       | name   |
-      | Peter |
+      | Peter  |
 
+  @javascript
   Scenario: Flagging a child record
     When I flag "Peter" as suspect with the following reason:
       """
@@ -20,6 +21,11 @@ Feature:
     And the record history should log "Record was flagged by praful because: He is a bad guy."
 		And the child listing page filtered by flagged should show the following children:
 			| Peter |
+    When I am on the children listing page
+    Then I should see "Flagged By"
+
+#    And I follow "View All Children"
+#    Then I should see flagged details
     
   Scenario: Removing flag from a child record
     Given I flag "Peter" as suspect
@@ -30,6 +36,8 @@ Feature:
       """
     Then I should see "Child was successfully updated."
     And the record history should log "Record was unflagged by praful because: He is a not such a bad guy after all."
+    When I am on the children listing page
+    Then I should not see "Flagged By"
 
     Scenario: Seeing Flagged Child in Search Results
       Given the following children exist in the system:
@@ -37,5 +45,5 @@ Feature:
         | Paul   | false|
       And I flag "Peter" as suspect
       When I search using a name of "P"
-      Then the "Peter" result should have a "flag" image
-    
+      Then the "Peter" result should have a "suspect" image
+

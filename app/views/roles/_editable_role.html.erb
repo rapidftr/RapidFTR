@@ -1,0 +1,32 @@
+<%= form_for editable_role, :html => {:class => ''} do |f| %>
+    <%= f.error_messages :header_tag => :h3 %>
+
+    <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
+    <div class="clearfix"></div>
+    <fieldset>
+
+
+      <p>
+
+        <%= f.label :name, 'Name <span class="required">*</span>'.html_safe, :class => 'key' %>
+        <%= f.text_field :name %>
+      </p>
+
+      <p>
+        <%= f.label :description, :class => 'key' %>
+        <%= f.text_area :description %>
+      </p>
+
+      <p>
+
+        <%= f.label :permissions, 'Permissions <span class="required">*</span>'.html_safe, :class => 'key' %>
+        <% Permission.all.each do |permission| %>
+            <%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
+            <span><%= permission %></span>
+        <% end %>
+      </p>
+    </fieldset>
+    <%= submit_button(editable_role.new_record? ? 'Create' : 'Update') %>
+    <!--TODO: After we got the user object in the session replace the DB query with User object-->
+    <%= cancel_button(roles_path) %>
+<% end %>

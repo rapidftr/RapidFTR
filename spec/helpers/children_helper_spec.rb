@@ -63,8 +63,7 @@ describe ChildrenHelper do
       child = Child.new(:name => "Flagged Child",
                         :flag_message => "Fake entity",
                         :histories => [{"datetime"=>"2012-09-19 18:39:05UTC", "changes"=>{"flag"=>{"to"=>"true"}}, "user_name"=>"Admin user 1"}])
-
-      helper.flag_summary_for_child(child).should == {"Flagged By" => "Admin user 1", "On" => "19 September 2012 at 18:39 (UTC)", "Because" => "Fake entity"}
+      helper.strip_tags(flag_summary_for_child(child)).should == "Flagged By Admin user 1 On 19 September 2012 at 18:39 (UTC) Because Fake entity"
     end
   end
 end

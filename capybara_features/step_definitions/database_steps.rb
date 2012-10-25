@@ -1,16 +1,16 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   permissions = []
-  permissions.push("admin") if user_type.downcase == "admin"
-  permissions.push("unlimited") if user_type.downcase == "user"
-  permissions.push(permission.downcase) if permission
-
+  permissions.push(Permission::ADMIN) if user_type.downcase == "admin"
+  permissions.push(Permission::LIMITED) if user_type.downcase == "user" and permission.nil?
+  permissions.push(permission) if permission
+  role = Role.create(:name => permissions.join("-"), :permissions => permissions)
   @user = User.new(
     :user_name=>username,
     :password=>password,
     :password_confirmation=>password,
     :full_name=>username,
     :email=>"#{username}@test.com",
-    :permissions => permissions.uniq
+    :role_names => [role.name]
   )
   @user.save!
 end
@@ -19,7 +19,7 @@ Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
   step %(a #{user_type} "#{user_name}" with password "123")
 end
 
-Given /^an? (user|admin) "([^"]+)" with "(limited|unlimited)" permission$/ do |user_type, user_name, permission|
+Given /^an? (user|admin) "([^"]+)" with "(limited|Access all data)" permission$/ do |user_type, user_name, permission|
   step %(a #{user_type} "#{user_name}" with password "123" and "#{permission}" permission)
 end
 

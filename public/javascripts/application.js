@@ -1,11 +1,25 @@
 var RapidFTR = {};
 
-RapidFTR.backButton = function(selector){
-	$(".back a").click(function(e){
-		e.preventDefault();
-		history.go(-1);	
-	});
+RapidFTR.maintabControl = function(){
+    var currentURL = window.location.href;
+    var module = currentURL.split("/");
+    var moduleName = module[3];
+    switch (moduleName)
+    {
+        case "children" : $(".main_bar li a:contains('CHILDREN')").addClass("sel");
+        break;
+
+        case "formsections" : $(".main_bar li a:contains('FORMS')").addClass("sel");
+        break;
+
+        case "users":
+        case "roles":   $(".main_bar li a:contains('USERS')").addClass("sel");
+        break;
+    }
+
+
 }
+
 RapidFTR.tabControl = function() {
   $(".tab").hide();
   $(".tab-handles li:first").addClass("current").show();
@@ -101,11 +115,11 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+  RapidFTR.maintabControl();
   RapidFTR.tabControl();
   RapidFTR.enableSubmitLinks();
   RapidFTR.activateToggleFormSectionLinks();
   RapidFTR.hideDirectionalButtons();
-  RapidFTR.backButton();
   RapidFTR.followTextFieldControl("#field_display_name", "#field_name", RapidFTR.Utils.dehumanize);
   RapidFTR.childPhotoRotation.init();
     $('#dialog').hide();

@@ -19,7 +19,7 @@ describe Child do
       form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
       form.save!
       Child.build_text_fields_for_solar.should include("name")
-      FormSection.all.each{ |form| form.destroy }
+      FormSection.all.each { |form_section| form_section.destroy }
     end
 
     it "should call Sunspot with all fields" do
@@ -44,7 +44,7 @@ describe Child do
     end
 
     after :all do
-      FormSection.all.each{ |form| form.destroy }
+      FormSection.all.each { |form| form.destroy }
     end
 
     it "should return empty array if search is not valid" do
@@ -122,6 +122,19 @@ describe Child do
       create_child("timothy cochran")
       search = mock("search", :query => "timo coch", :valid? => true)
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
+    end
+
+    it "should return the children registered by the user if the user has limited permission" do
+      create_child("suganthi", {"created_by" => "thirumani"})
+      create_child("kavitha", {"created_by" => "rajagopalan"})
+      search = mock("search", :query => "kavitha", :valid? => true)
+      Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ ["kavitha"]
+    end
+    it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
+      create_child("suganthi", {"created_by" => "thirumani", "unique_identifier" => "thirumanixxx12345"})
+      create_child("kavitha", {"created_by" => "rajagopalan", "unique_identifier" => "rajagopalanxxx12345"})
+      search = mock("search", :query => "thirumanixxx12345", :valid? => true)
+      Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ []
     end
   end
 
@@ -288,9 +301,9 @@ describe Child do
     end
 
     it "should allow blank age" do
-      child = Child.new({:age => "", :another_field=>"blah"})
+      child = Child.new({:age => "", :another_field => "blah"})
       child.should be_valid
-      child = Child.new :foo=>"bar"
+      child = Child.new :foo => "bar"
       child.should be_valid
     end
 
@@ -376,9 +389,9 @@ describe Child do
     end
 
     it "should save blank age" do
-      child = Child.new({:age => "", :another_field=>"blah"})
+      child = Child.new({:age => "", :another_field => "blah"})
       child.save.should == true
-      child = Child.new :foo=>"bar"
+      child = Child.new :foo => "bar"
       child.save.should == true
     end
 
@@ -460,35 +473,35 @@ describe Child do
   end
 
   it "should create a unique id based on the last known location and the user name" do
-    child = Child.new({'last_known_location'=>'london'})
+    child = Child.new({'last_known_location' => 'london'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgelon12345"
   end
 
   it "should use a default location if last known location is empty" do
-    child = Child.new({'last_known_location'=>nil})
+    child = Child.new({'last_known_location' => nil})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgexxx12345"
   end
 
   it "should downcase the last known location of a child before generating the unique id" do
-    child = Child.new({'last_known_location'=>'New York'})
+    child = Child.new({'last_known_location' => 'New York'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgenew12345"
   end
 
   it "should append a five digit random number to the unique child id" do
-    child = Child.new({'last_known_location'=>'New York'})
+    child = Child.new({'last_known_location' => 'New York'})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
     child["unique_identifier"].should == "georgenew12345"
   end
 
   it "should handle special characters in last known location when creating unique id" do
-    child = Child.new({'last_known_location'=> "\215\303\304n"})
+    child = Child.new({'last_known_location' => "\215\303\304n"})
     UUIDTools::UUID.stub("random_create").and_return('12345abcd')
     child.create_unique_id("george")
     child["unique_identifier"].should == "george\215\303\30412345"
@@ -512,7 +525,7 @@ describe Child do
 
     context "with a single new photo" do
 
-      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}
+      let(:child) { Child.create('photo' => uploadable_photo, 'last_known_location' => 'London') }
 
       it "should only have one photo on creation" do
         child.photos.size.should eql 1
@@ -526,7 +539,7 @@ describe Child do
 
     context "with multiple new photos" do
 
-      let(:child) {Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London')}
+      let(:child) { Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London') }
 
       it "should have corrent number of photos after creation" do
         child.photos.size.should eql 2
@@ -540,7 +553,7 @@ describe Child do
 
     context "when rotating an existing photo" do
 
-      let(:child) {Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')}
+      let(:child) { Child.create('photo' => uploadable_photo, 'last_known_location' => 'London') }
 
       before(:each) do
         Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
@@ -602,7 +615,7 @@ describe Child do
 
   describe ".add_audio_file" do
 
-    before (:each) do
+    before :each do
       @file = stub!("File")
       @file.stub!(:read).and_return("ABC")
       @file_attachment = FileAttachment.new("attachment_file_name", "audio/mpeg", "data")
@@ -668,6 +681,11 @@ describe Child do
 
     end
 
+    it 'should return nil if child has not been saved' do
+      child = Child.new('audio' => uploadable_audio)
+      child.audio.should be_nil
+    end
+
   end
 
 
@@ -692,13 +710,13 @@ describe Child do
 
     before do
       fields = [
-        Field.new_text_field("last_known_location"),
-        Field.new_text_field("age"),
-        Field.new_text_field("origin"),
-        Field.new_radio_button("gender", ["male", "female"]),
-        Field.new_photo_upload_box("current_photo_key"),
-        Field.new_audio_upload_box("recorded_audio")]
-        FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+          Field.new_text_field("last_known_location"),
+          Field.new_text_field("age"),
+          Field.new_text_field("origin"),
+          Field.new_radio_button("gender", ["male", "female"]),
+          Field.new_photo_upload_box("current_photo_key"),
+          Field.new_audio_upload_box("recorded_audio")]
+      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
     end
 
     it "should not update history on initial creation of child document without a photo" do
@@ -1015,7 +1033,7 @@ describe Child do
 
     it "should return nil if the record has no attached photo" do
       child = create_child "Bob McBobberson"
-      Child.all.find{|c| c.id == child.id}.photo.should be_nil
+      Child.all.find { |c| c.id == child.id }.photo.should be_nil
     end
 
   end
@@ -1035,7 +1053,7 @@ describe Child do
       @photo1 = uploadable_photo("features/resources/jorge.jpg")
       @photo2 = uploadable_photo("features/resources/jeff.png")
       @child = Child.new("name" => "Tom")
-      @child.photo= { 0 => @photo1, 1 => @photo2 }
+      @child.photo= {0 => @photo1, 1 => @photo2}
       @child.save
     end
 
@@ -1079,20 +1097,29 @@ describe Child do
         child_duplicate.mark_as_duplicate "I am not a valid id"
         child_duplicate.duplicate_of.should be_nil
       end
+
+      it "should set the duplicate field" do
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
+        child_duplicate.mark_as_duplicate child_active.unique_identifier
+        child_duplicate.duplicate?.should be_true
+        child_duplicate.duplicate_of.should == child_active.id
+      end
     end
 
-    it "should return all duplicate records" do
-      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
-      record_duplicate = create_duplicate(record_active)
-      Child.duplicates.should == [record_duplicate]
-      Child.all.should == [record_active]
-    end
+      it "should return all duplicate records" do
+        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+        record_duplicate = create_duplicate(record_active)
+        Child.duplicates.should == [record_duplicate]
+        Child.all.should == [record_active]
+      end
 
-    it "should return duplicate from a record" do
-      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
-      record_duplicate = create_duplicate(record_active)
-      Child.duplicates_of(record_active.id).should == [record_duplicate]
-    end
+      it "should return duplicate from a record" do
+        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+        record_duplicate = create_duplicate(record_active)
+        Child.duplicates_of(record_active.id).should == [record_duplicate]
+      end
+
   end
 
   private

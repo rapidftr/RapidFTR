@@ -2,10 +2,15 @@ class Permission
 
   ADMIN = "admin"
   LIMITED = "limited"
-  UNLIMITED = "unlimited"
+  ACCESS_ALL_DATA = "Access all data"
+  REGISTER_CHILD = "Register Child"
+  EDIT_CHILD = "Edit Child"
 
   def self.all
-    [ ADMIN, LIMITED, UNLIMITED ].sort
+    [ ADMIN, ACCESS_ALL_DATA ].sort
   end
 
+  def self.all_including_default
+    [ ADMIN, LIMITED, ACCESS_ALL_DATA ].sort
+  end
 end

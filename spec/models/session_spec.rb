@@ -39,7 +39,7 @@ describe Session do
       end
     end
   end
-  
+
   describe "device blacklisting" do
     it "should not allow blacklisted imei to login" do
       imei = "1335"
@@ -56,32 +56,36 @@ describe Session do
       Device.stub(:all).and_return([Device.new({:imei => "1335", :blacklisted => false})])
 
       session = Session.for_user(user, imei)
-      session.device_blacklisted?.should == false 
+      session.device_blacklisted?.should == false
     end
   end
 
   describe "admin?" do
 
     before(:each) do
-      @user = User.new 
-      @session = Session.for_user(@user, "")
+      @user = User.new
+      User.stub!(:find_by_user_name).and_return(@user)
     end
 
     it "should return true when user is an administrator" do
-      @user.permissions = [ "admin" ]
+      @user.should_receive(:roles).and_return([Role.new(:name => 'admin', :permissions => [Permission::ADMIN])])
       Session.for_user(@user, "").admin?.should == true
     end
 
     it "should return false when user is just a basic user" do
-      @user.permissions = [ ]
+      @user.should_receive(:roles).and_return([Role.new(:name => 'limited', :permissions => [Permission::LIMITED])])
       Session.for_user(@user, "").admin?.should == false
     end
   end
 
   describe "has_permission?" do
     before :each do
-      @user = User.new :permissions => [ "a", "b" ]
-      @session = Session.for_user(@user, "")
+      user = User.new
+      mock_roles = [mock("roles")]
+      user.stub!(:roles).and_return(mock_roles)
+      mock_roles.first.stub!(:permissions).and_return(["a", "b"])
+      User.stub!(:find_by_user_name).and_return(user)
+      @session = Session.for_user(user, "")
     end
 
     it "should return true when user has permission" do
@@ -90,6 +94,17 @@ describe Session do
 
     it "should return false when user has permission" do
       @session.has_permission?(:c).should be_false
+    end
+  end
+
+  describe "user" do
+    it "should load the user only once" do
+      user = User.new(:user_name => "some_name")
+      User.should_receive(:find_by_user_name).with(user.user_name).and_return(user)
+      session = Session.for_user(user, "")
+      session.user.should == user
+      User.should_not_receive(:find_by_user_name)
+      session.user.should == user
     end
   end
 end

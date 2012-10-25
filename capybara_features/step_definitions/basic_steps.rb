@@ -115,7 +115,7 @@ Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity,
 end
 
 Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
-  page.find("//p[@class='#{button_name.downcase}Button']/a")['data-confirm'].should_not be_nil
+  page.find("//a[@class='link_#{button_name.downcase}']")['data-confirm'].should_not be_nil
 end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
@@ -146,7 +146,7 @@ end
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
   visit child_filter_path("flagged")
-  child_records = Hpricot(page.body).search("div[@class=profiles-list-item] h3 a").map {|a| a.inner_text }
+  child_records = Hpricot(page.body).search("h2 a").map {|a| a.inner_text }
   child_records.should == expected_child_names
 end
 
@@ -173,7 +173,7 @@ Given /"([^\"]*)" is logged in/ do |user_name|
 end
 
 Given /"([^\"]*)" is the user/ do |user_name|
-  step "a user \"#{user_name}\" with a password \"123\""
+  step "a user \"#{user_name}\" with a password \"123\" and \"Access all data\" permission"
 end
 
 Then /^I should not see any errors$/ do
@@ -184,10 +184,10 @@ Then /^I should see the error "([^\"]*)"$/ do |error_message|
   Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
 end
 
-Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, image|
+Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, flag|
   child_name = find_child_by_name name
-  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search("img[@class='flag']")
-  child_images[0][:src].should have_content(image)
+  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search(".#{flag}")
+  child_images.should_not be_nil
 end
 
 Given /I am logged out/ do
@@ -198,9 +198,8 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
   field_labeled(dropdown_label).value.should == selected_text
 end
 
-And /^I should see "([^\"]*)" in the list of fields$/ do |field_id|
-  field_ids = Nokogiri::HTML(page.body).css("table tbody tr").map {|row| row[:id] }
-  field_ids.should include("#{field_id}Row")
+And /^I should see "([^\"]*)" in the list of fields$/ do |field_name|
+  page.should have_xpath("//table[@id='form_sections']//td[@class='breakword' and contains(., '#{field_name}')]")
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|

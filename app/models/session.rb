@@ -1,10 +1,10 @@
 class Session < CouchRestRails::Document
   use_database :sessions
-  
+
   include RapidFTR::Model
 
-  property :user
   property :imei
+  property :user_name
   property :expires_at, :cast_as => 'Time', :init_method => 'parse'
 
   view_by :user_name
@@ -14,9 +14,12 @@ class Session < CouchRestRails::Document
   def self.for_user( user, imei)
     Session.new(
       :user_name => user.user_name,
-      :user => user.clone.except("password"),
       :imei => imei
     )
+  end
+
+  def user
+    @user ||= User.find_by_user_name(user_name)
   end
 
   def self.get_from_cookies(cookies)
@@ -49,15 +52,11 @@ class Session < CouchRestRails::Document
   end
 
   def user_permissions
-    user['permissions'] || []
+    user.permissions
   end
 
-  def user_name
-    user['user_name']
-  end
-  
   def full_name
-    user['full_name']
+    user.full_name
   end
 
   def expired?
@@ -84,5 +83,5 @@ class Session < CouchRestRails::Document
     end
     false
   end
-  
+
 end

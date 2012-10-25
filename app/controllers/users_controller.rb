@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   before_filter :administrators_only, :except =>[:show, :edit, :update]
-  before_filter :set_permissions_params, :only => [ :update, :create ]
+  before_filter :clean_role_names, :only => [ :update, :create ]
 
   def index
     @users = User.view("by_full_name")
@@ -23,13 +23,14 @@ class UsersController < ApplicationController
   def new
     @page_name = 'New User'
     @user = User.new
+    @roles = Role.all
   end
 
   def edit
     session = app_session
-
     @user = User.get(params[:id])
     @page_name = "Account: #{@user.full_name}"
+    @roles = Role.all
     unless session.admin? or @user.user_name == current_user_name
       raise AuthorizationFailure.new('Not permitted to view page')
     end
@@ -41,6 +42,7 @@ class UsersController < ApplicationController
       flash[:notice] = 'User was successfully created.'
       redirect_to(@user)
     else
+      @roles = Role.all
       render :action => "new"
     end
   end
@@ -66,6 +68,7 @@ class UsersController < ApplicationController
         redirect_to(@user)
       end
     else
+      @roles = Role.all
       render :action => "edit"
     end
   end
@@ -78,17 +81,8 @@ class UsersController < ApplicationController
 
   private
 
-  def set_permissions_params
-    permissions = []
-    user = params[:user]
-
-    permissions.push("limited") if user[:permission] == "Limited"
-    permissions.push("unlimited") if user[:permission] == "Unlimited"
-    permissions.push("admin") if user[:user_type] == "Administrator"
-
-    user.delete(:permission)
-    user.delete(:user_type)
-    user[:permissions] = permissions
+  def clean_role_names
+    params[:user][:role_names] = clean_params(params[:user][:role_names]) if params[:user][:role_names]
   end
 
   def users_details

@@ -7,7 +7,7 @@ end
 
 Then /^I should see the "([^\"]*)" section with(out)? an enabled checkbox$/ do |section_name, without|
   should = without ? :should_not : :should
-  row_for(section_name).send(should, have_css("input#sections_#{section_name}"))
+  row_for(section_name).send(should, have_css("input[id^='sections_'][type='checkbox']"))
 end
 
 Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form_order|
@@ -15,7 +15,7 @@ Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form
 end
 
 Then /^I should see the following form sections in this order:$/ do |table|
-  all(:css, "#form_sections tbody tr").map {|e| e['id'].sub(/_row$/,'') }.should == table.raw.flatten
+  all(:css, "#form_sections tbody tr td a[@class='formSectionLink']").map(&:text).should == table.raw.flatten
 end
 
 Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|
@@ -95,10 +95,9 @@ def row_for(section_name)
 end
 
 def row_xpath_for(section_name)
-  "//tr[@id='#{section_name}_row']"
+  "//a[@class='formSectionLink' and contains(., '#{section_name}')]/ancestor::tr"
 end
 
 def form_section_visibility_checkbox_id(section_name)
   "sections_#{section_name}"
 end
-

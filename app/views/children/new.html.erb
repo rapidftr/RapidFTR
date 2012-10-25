@@ -1,12 +1,24 @@
-<%= form_tag children_path, :multipart => true, :class => "edit-profile default-form" do %>
+<h1>Children</h1>
 
+<%= form_tag children_path, :multipart => true do %>
+    <div class="page-content-new">
   	<%= hidden_field_tag "child[posted_from]", "Browser" %>
     <%= error_messages_for :child %>
-
-    <%= render :partial => "tabs", :object => @form_sections %>
-
-    <%= render :partial => "form_section", :collection => @form_sections %>
-
+    <div class="side-tab">
+        <%= render :partial => "tabs", :object => @form_sections %>
+    </div>
+    <div class="side-tab-content">
+      <h2><a href="#">List of Children</a> &gt; Register New Child</h2>
+      <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
+      <div class="clearfix"></div>
+        <%= render :partial => "form_section", :collection => @form_sections %>
+    </div>
+    </div>
     <%= submit_button %>
+
     <%= discard_button :back %>
+    <div class="clearfix"></div>
 <% end %>
+
+
+

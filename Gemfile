@@ -22,11 +22,29 @@ gem 'dynamic_form'
 gem 'jquery-rails'
 gem 'cancan'
 
+group :development, :assets do
+  gem 'sass'
+end
+
+group :assets do
+  gem 'execjs'
+  gem 'therubyracer'
+  gem 'compass-rails'
+  gem 'uglifier'
+end
+
+group :test do
+  gem 'mocha'
+  gem 'test_declarative'
+  gem 'rspec-instafail'
+end
+
 group :cucumber do
   gem 'cucumber',         '1.2.1'
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
+  gem 'rcov'
 end
 
 group :development, :test do
@@ -35,5 +53,6 @@ group :development, :test do
   gem 'capybara',         '1.0.1'
   gem 'selenium-webdriver', '2.24.0'
   gem 'jasmine'
+  gem 'pry'
 end
 

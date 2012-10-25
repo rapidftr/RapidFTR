@@ -7,7 +7,8 @@ Given /^the following children exist in the system:$/ do |children_table|
             'photo_path' => 'features/resources/jorge.jpg',
             'reporter' => 'zubair',
 						'created_by' => 'Billy',
-            'age_is' => 'Approximate'
+            'age_is' => 'Approximate',
+            'flag_message' => 'Reason for flagging'
     )
     child_hash['flagged_at'] = child_hash['flagged_at'] || DateTime.new(2001,2,3,4,5,6)
     child_hash['reunited_at'] = child_hash['reunited_at'] || DateTime.new(2012,2,3,4,5,6)

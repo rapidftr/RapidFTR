@@ -54,13 +54,22 @@ describe UsersController do
       get :new
       assigns[:user].should equal(mock_user)
     end
+
+    it "should assign all the available roles as @roles" do
+      roles = ["roles"]
+      Role.stub!(:all).and_return(roles)
+      get :new
+      assigns[:roles].should == roles
+    end
   end
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
+      Role.stub!(:all).and_return(["roles"])
       User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
       get :edit, :id => "37"
       assigns[:user].should equal(mock_user)
+      assigns[:roles].should == ["roles"]
     end
   end
 
@@ -178,27 +187,72 @@ describe UsersController do
         mock_user.stub(:update_attributes).and_return(true)
         User.stub(:get).with("24").and_return(mock_user)
     end
+
+    it "should clean the params for role_names" do
+      @fake_session.stub(:admin?).and_return(true)
+      mock_user.should_receive(:update_attributes).with({"role_names"=>["some_name"]}).and_return(true)
+      post :update, {:id => "24", :user => {:role_names => ["", "some_name"]}}
+    end
+
     context "when not admin user" do
       before :each do
         @fake_session.stub(:admin?).and_return(false)
       end
       it "should not allow to edit admin specific fields" do
         controller.stub(:current_user_name).and_return("test_user")
-
         mock_user.stub(:user_assignable?).and_return(false)
         controller.should_receive(:handle_authorization_failure)
         post :update, { :id => "24", :user => {:user_type => "Administrator"  } }
       end
     end
     context "when admin user" do
+
       before :each do
         @fake_session.stub(:admin?).and_return(true)
       end
+
       it "should allow to edit admin specific fields" do
         controller.stub(:app_session).and_return(@fake_session)
         User.stub(:get).with("24").and_return(mock_user)
         controller.should_not_receive(:handle_authorization_failure)
         post :update, { :id => "24", :user => {:user_type => "Administrator"  } }
+      end
+
+      it "should render edit page and assign roles if validation fails" do
+        controller.stub(:app_session).and_return(@fake_session)
+        Role.stub(:all).and_return(["roles"])
+        User.stub(:get).with("24").and_return(mock_user)
+        mock_user.should_receive(:update_attributes).and_return(false)
+        post :update, { :id => "24", :user => {:user_type => "Administrator"  } }
+        assigns[:roles].should == ["roles"]
+      end
+    end
+
+    context "create a user" do
+      before :each do
+        fake_admin_login
+      end
+
+      it "should create admin user if the admin user type is specified" do
+        User.should_receive(:new).with({"role_names"=>["Adminstrator"]}).and_return(mock_user)
+        mock_user.should_receive(:save).and_return(true)
+        post :create, {"user" => {"role_names" => ["Adminstrator"]}}
+      end
+
+      it "should clean the role_names params" do
+        User.should_receive(:new).with({ "role_names" => ["some_name"]}).and_return(mock_user)
+        mock_user.stub(:save).and_return(true)
+        put :create, {:user => {:role_names => ["", "", "some_name"]}}
+      end
+
+      it "should render new if the given user is invalid and assign user,roles" do
+        Role.stub(:all).and_return("some roles")
+        User.should_receive(:new).and_return(mock_user)
+        mock_user.should_receive(:save).and_return(false)
+        put :create, {:user => {:role_names => ["Administrator"]}}
+        response.should render_template :new
+        assigns[:user].should == mock_user
+        assigns[:roles].should == "some roles"
       end
     end
   end

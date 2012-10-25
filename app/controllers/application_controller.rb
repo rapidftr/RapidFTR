@@ -7,29 +7,31 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   include ChecksAuthentication
-
   before_filter :check_authentication
+  before_filter :set_locale
+
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
-
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
-
+  rescue_from CanCan::AccessDenied do |exception|
+    render :file => "#{Rails.root}/public/403.html", :status => 403, :layout => false
+  end
   def render_error_response(ex)
     @exception = ex
- 
+
     # Only add the error page to the status code if the request-format was HTML
     respond_to do |format|
       format.html do
-        render( 
+        render(
           :template => "shared/status_#{ex.status_code.to_s}",
-          :status => ex.status_code 
+          :status => ex.status_code
         )
       end
       format.any(:xml,:json) do
         begin
-        render( 
+        render(
           :template => "shared/status_#{ex.status_code.to_s}",
-          :status => ex.status_code 
+          :status => ex.status_code
         )
         rescue ActionView::MissingTemplate
           head ex.status_code # only return the status code
@@ -45,19 +47,19 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
-    @current_ability ||= Ability.new(app_session)
+    @current_ability ||= Ability.new(app_session.user)
   end
 
   def current_user_full_name
     session = Session.get_from_cookies(cookies)
-    session.user['full_name'] unless session.nil? or session.user.nil?
+    session.user.full_name unless session.nil? or session.user.nil?
   end
 
   def current_user
-    @user = User.find_by_user_name(current_user_name)
+    @user = app_session.user
   end
 
-  def send_pdf(pdf_data,filename) 
+  def send_pdf(pdf_data,filename)
     send_data pdf_data, :filename => filename, :type => "application/pdf"
   end
 
@@ -81,6 +83,14 @@ class ApplicationController < ActionController::Base
       session.update_expiration_time(20.minutes.from_now)
       session.save
     end
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || cookies[:locale] || I18n.default_locale
+  end
+
+  def clean_params(param)
+    param.reject{|value| value.blank?}
   end
 
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|

@@ -1,18 +1,19 @@
 <p>
-  <%= f.label :display_name %>
+  <%= f.label :display_name, :class => 'key' %>
   <%= f.text_field :display_name %> <i>required</i>
 </p>
 <p>
-  <%= f.label :help_text %>
+  <%= f.label :help_text, :class => 'key' %>
   <%= f.text_area :help_text %>
 </p>
 <p>
-  <%= f.label :enabled, "Visible" %>
+
+  <%= f.label :enabled, "Visible", :class => 'key' %>
   <%= f.check_box :enabled?, {}, true, false %>
 </p>
 <p>
-	<% unless @field.new? || !@field.editable?%>
-		<%= label_tag "destination_form_id", "Form" %>
-  	<%= select_tag "destination_form_id", options_for_select(forms_for_display, @form_section.unique_id) %>
-	<% end %>
+  <% unless @field.new? || !@field.editable? %>
+      <%= label_tag "destination_form_id", "Form", :class => 'key' %>
+      <%= select_tag "destination_form_id", options_for_select(forms_for_display, @form_section.unique_id) %>
+  <% end %>
 </p>

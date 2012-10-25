@@ -16,11 +16,11 @@ class User < CouchRestRails::Document
   property :location
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
+  property :role_names, :type => [String]
   property :time_zone, :default => "UTC"
-  property :permissions, :type => [ String ]
 
   attr_accessor :password_confirmation, :password
-  ADMIN_ASSIGNABLE_ATTRIBUTES = [ :permissions, :disabled ]
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [ :role_names, :disabled ]
 
 
   timestamps!
@@ -41,7 +41,7 @@ class User < CouchRestRails::Document
           }"
 
 
-  before_save :make_user_name_lowercase, :encrypt_password, :normalize_permissions
+  before_save :make_user_name_lowercase, :encrypt_password
   after_save :save_devices
 
 
@@ -51,6 +51,7 @@ class User < CouchRestRails::Document
 
   validates_presence_of :full_name,:message=>"Please enter full name of the user"
   validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
+  validates_presence_of :role_names, :message => "Please select at least one role"
 
   validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
   validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
@@ -62,7 +63,6 @@ class User < CouchRestRails::Document
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method   :user_name, :method => :is_user_name_unique
-  validates_with_method   :permissions, :method => :is_valid_permission_level
 
 
   def self.find_by_user_name(user_name)
@@ -92,19 +92,27 @@ class User < CouchRestRails::Document
   end
 
   def user_type # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(:admin) ? "Administrator" : "User"
+    has_permission?(Permission::ADMIN) ? "Administrator" : "User"
   end
 
   def permission # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(:unlimited) ? "Unlimited" : "Limited"
+    has_permission?(Permission::ACCESS_ALL_DATA) ? "Unlimited" : "Limited"
+  end
+
+  def roles
+    @roles ||= role_names.collect{|name| Role.by_name(:key => name)}.flatten
   end
 
   def limited_access? # Temporary method for backward compatibility should be removed after the UI is changed
-    (has_permission?(:unlimited) || has_permission?(:admin)) == false
+    (has_permission?(Permission::ACCESS_ALL_DATA) || has_permission?(Permission::ADMIN)) == false
   end
 
   def has_permission?(permission)
     permissions && permissions.include?(permission.to_s)
+  end
+
+  def permissions
+    roles.compact.collect(&:permissions).flatten
   end
 
   def encrypt(password)
@@ -168,15 +176,5 @@ class User < CouchRestRails::Document
 
   def make_user_name_lowercase
     user_name.downcase!
-  end
-
-  def normalize_permissions
-    permissions ||= []
-    permissions = permissions.compact
-  end
-
-  def is_valid_permission_level
-    return true if permissions.present? && permissions.sort == (Permission.all & permissions.sort)
-    [ false, "Invalid Permission Level" ]
   end
 end

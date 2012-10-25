@@ -16,8 +16,8 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @children }
-      format.csv  { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
+      format.xml { render :xml => @children }
+      format.csv { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
       format.json { render :json => @children }
       format.pdf do
         pdf_data = ExportGenerator.new(@children).to_full_pdf
@@ -42,7 +42,7 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @child }
+      format.xml { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
         child_ids = [@child]
@@ -50,7 +50,7 @@ class ChildrenController < ApplicationController
       end
       format.pdf do
         pdf_data = ExportGenerator.new(@child).to_full_pdf
-        send_pdf( pdf_data, "#{file_basename(@child)}.pdf" )
+        send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
       end
     end
   end
@@ -65,7 +65,7 @@ class ChildrenController < ApplicationController
     @form_sections = get_form_sections
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @child }
+      format.xml { render :xml => @child }
     end
   end
 
@@ -88,14 +88,14 @@ class ChildrenController < ApplicationController
       if @child.save
         flash[:notice] = 'Child record successfully created.'
         format.html { redirect_to(@child) }
-        format.xml  { render :xml => @child, :status => :created, :location => @child }
+        format.xml { render :xml => @child, :status => :created, :location => @child }
         format.json { render :json => @child.to_json }
       else
         format.html {
           @form_sections = get_form_sections
           render :action => "new"
         }
-        format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -122,7 +122,7 @@ class ChildrenController < ApplicationController
   def select_primary_photo
     @child = Child.get(params[:child_id])
     authorize! :edit, @child
-    
+
     begin
       @child.primary_photo_id = params[:photo_id]
       @child.save
@@ -151,14 +151,15 @@ class ChildrenController < ApplicationController
       if @child.save
         flash[:notice] = 'Child was successfully updated.'
         format.html { redirect_to(@child) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
         format.json { render :json => @child.to_json }
       else
         format.html {
           @form_sections = get_form_sections
+          p '@@@@@@@@@@@@@@@' << @form_sections.inspect
           render :action => "edit"
         }
-        format.xml  { render :xml => @child.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -171,7 +172,7 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(children_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
       format.json { render :json => {:response => "ok"}.to_json }
     end
   end
@@ -184,7 +185,7 @@ class ChildrenController < ApplicationController
     if (params[:query])
       @search = Search.new(params[:query])
       if @search.valid?
-        @results = Child.search(@search)
+        search_by_user_access
       else
         render :search
       end
@@ -200,13 +201,13 @@ class ChildrenController < ApplicationController
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
 
-    children = selected_records.sort.map{ |index, child_id| Child.get(child_id) }
+    children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
 
     if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to PDF"
-			pdf_data = ExportGenerator.new(children).to_full_pdf
-			send_pdf(pdf_data, "#{file_basename}.pdf")
+      pdf_data = ExportGenerator.new(children).to_full_pdf
+      send_pdf(pdf_data, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to CSV"
       render_as_csv(children, "#{file_basename}.csv")
     end
@@ -216,12 +217,11 @@ class ChildrenController < ApplicationController
     authorize! :list, Child
 
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
-    send_pdf( pdf_data, filename)
+    send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf
     authorize! :read, @child
-
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
@@ -229,10 +229,10 @@ class ChildrenController < ApplicationController
 
   private
 
-	def file_basename(child = nil)
-		prefix = child.nil? ? current_user_name : child.unique_identifier
+  def file_basename(child = nil)
+    prefix = child.nil? ? current_user_name : child.unique_identifier
     user = User.find_by_user_name(current_user_name)
-		"#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+    "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
   end
 
   def file_name_datetime_string
@@ -251,11 +251,11 @@ class ChildrenController < ApplicationController
 
   def default_search_respond_to
     respond_to do |format|
-     format.html do
-       if @results && @results.length == 1
-         redirect_to child_path( @results.first )
-       end
-     end
+      format.html do
+        if @results && @results.length == 1
+          redirect_to child_path(@results.first)
+        end
+      end
       format.csv do
         render_as_csv(@results, 'rapidftr_search_results.csv') if @results
       end
@@ -266,12 +266,12 @@ class ChildrenController < ApplicationController
     results = results || [] # previous version handled nils - needed?
 
     results.each do |child|
-      child['photo_url'] = child_photo_url(child, child.primary_photo_id)  unless child.primary_photo_id.nil?
+      child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless child.primary_photo_id.nil?
       child['audio_url'] = child_audio_url(child)
     end
 
-		export_generator = ExportGenerator.new results
-		csv_data = export_generator.to_csv
+    export_generator = ExportGenerator.new results
+    csv_data = export_generator.to_csv
     send_data(csv_data.data, csv_data.options)
   end
 
@@ -303,5 +303,14 @@ class ChildrenController < ApplicationController
       Child.all_by_creator(app_session.user_name)
     end
   end
+
+  def search_by_user_access
+    if can? :view_all, Child
+      @results = Child.search(@search)
+    else
+      @results = Child.search_by_created_user(@search, app_session.user_name)
+    end
+  end
+
 
 end

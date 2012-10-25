@@ -32,30 +32,35 @@ describe ChildrenController do
     describe 'collection' do
       it "GET index" do
         @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
-        expect { get :index }.to raise_error(CanCan::AccessDenied)
+        get :index
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET search" do
         @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
-        expect { get :search }.to raise_error(CanCan::AccessDenied)
+        get :search
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_data" do
         @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
-        expect { get :export_data }.to raise_error(CanCan::AccessDenied)
+        get :export_data
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET new" do
         @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
-        expect { get :new }.to raise_error(CanCan::AccessDenied)
+        get :new
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "POST create" do
         @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
-        expect { post :create }.to raise_error(CanCan::AccessDenied)
+        post :create
+        response.should render_template("#{Rails.root}/public/403.html")
       end
     end
-    
+
     describe 'member' do
       before :each do
         @child = Child.create('last_known_location' => "London")
@@ -64,39 +69,46 @@ describe ChildrenController do
 
       it "GET show" do
         @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
-        expect { get :show, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+         get :show, :id => @child.id
+         response.should render_template("#{Rails.root}/public/403.html")
       end
-      
+
       it "PUT update" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :update, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        put :update, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
-      
+
       it "PUT edit_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :edit_photo, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        put :edit_photo, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT update_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :update_photo, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        put :update_photo, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT select_primary_photo" do
         @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
-        expect { put :select_primary_photo, :child_id => @child.id, :photo_id => 0 }.to raise_error(CanCan::AccessDenied)
+        put :select_primary_photo, :child_id => @child.id, :photo_id => 0
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_photo_to_pdf" do
         @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
-        expect { get :export_photo_to_pdf, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        get :export_photo_to_pdf, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "DELETE destroy" do
         @controller.current_ability.should_receive(:can?).with(:destroy, @child_arg).and_return(false);
-        expect { delete :destroy, :id => @child.id }.to raise_error(CanCan::AccessDenied)
+        delete :destroy, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
       end
-    end    
+    end
   end
 
   describe "GET index" do
@@ -449,7 +461,22 @@ describe ChildrenController do
 
 			get(:search, :format => 'csv', :query => 'blah')
     end
-	end
+  end
+  describe "Limited search" do
+    before :each do
+      @session = fake_limited_login
+    end
+    it "should only list the children which limited user has registered" do
+      search = mock("search", :query => 'some_name', :valid? => true)
+      Search.stub!(:new).and_return(search)
+
+      fake_results = [:fake_child,:fake_child]
+      Child.should_receive(:search_by_created_user).with(search, @session.user_name).and_return(fake_results)
+
+      get(:search, :query => 'some_name')
+      assigns[:results].should == fake_results
+    end
+  end
   describe "GET photo_pdf" do
 
     it 'extracts multiple selected ids from post params in correct order' do
@@ -489,15 +516,16 @@ describe ChildrenController do
   describe "GET export_photo_to_pdf" do
 
     before do
-      user = mock(:user)
+      user = User.new(:user_name => "some-name")
       user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      User.stub!(:find_by_user_name).and_return user
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::ACCESS_ALL_DATA])])
+      fake_login user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
     end
 
     it "should return the photo wall pdf for selected child" do
       Child.should_receive(:get).with('1').and_return(
-        stub_child = stub('child', :unique_identifier => '1'))
+        stub_child = stub('child', :unique_identifier => '1', :class => Child))
 
       ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)

@@ -1,11 +1,16 @@
+<h1 class="no_border float_left">Forms</h1>
+<%= link_to content_tag(:span,'Create New Form Section',:class=>'create_user') , new_form_section_path, :class=>'btn' %>
+<div class="clearfix"></div>
+<div class="page-content-new">
+  <div class="side-tab-content full_width">
 <div class="flash" id="successNotice" style="display:none;">
          <p class="notice">Order is successfully saved. </p>
 </div>
-<p><%= link_to 'Create New Form Section', new_form_section_path %></p>
+<p></p>
 
 <%= form_tag  enable_form_url, :id => 'enable_or_disable_form_section', :method => :post, :name => 'sections'  do -%>
 
-<table id="form_sections">
+<table id="form_sections" class="list_table">
 <thead>
   <tr>
     <th><input type="checkbox" disabled=true /></th>
@@ -52,11 +57,13 @@
 </tbody>
 </table>
 <div class="formSectionButtons">
-  <input type="button" name="Enable" value="Show" id="enable_form"/>
-  <input type="button" name="Disable" value="Hide" id="disable_form"/>
-  <input type="button" name="SaveOrder" value="Save Order" id="save_order"/>  
+  <input type="button" name="Enable" value="Show" id="enable_form" class="btn"/>
+  <input type="button" name="Disable" value="Hide" id="disable_form" class="btn"/>
+  <input type="button" name="SaveOrder" value="Save Order" id="save_order" class="btn" />
 </div>
 <div class="backLink">
   <%= link_with_confirm "Back", admin_path() %>
 </div>
 <% end %>
+</div>
+    </div>

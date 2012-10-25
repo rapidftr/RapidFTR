@@ -5,7 +5,9 @@ class AdvancedSearchController < ApplicationController
     @aside = 'shared/sidebar_links'
     @page_name = "Advanced Search"
     @criteria_list = [SearchCriteria.new]
+    @user = current_user
     @results = []
+    prepare_params_for_limited_access_user(@user) unless can? :view_all, Child
     render :index
   end
 
@@ -14,8 +16,8 @@ class AdvancedSearchController < ApplicationController
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     @user = current_user
+    prepare_params_for_limited_access_user(@user) unless can? :view_all, Child
     new_search = !params[:criteria_list]
-
     if new_search
       @criteria_list = [SearchCriteria.new]
       @results = []
@@ -59,18 +61,18 @@ class AdvancedSearchController < ApplicationController
 
   def add_created_at_filter params
     @criteria_list.push(SearchDateFilter.new({:field => "created_at",
-                                         :from_value => (self.class.nil_or_empty(params, :created_at_after_value) ? "*" : "#{params[:created_at_after_value]}T00:00:00Z"),
-                                         :to_value => (self.class.nil_or_empty(params, :created_at_before_value) ? "*" : "#{params[:created_at_before_value]}T00:00:00Z"),
-                                         :index => 1,
-                                         :join => "AND"})) if (!self.class.nil_or_empty(params, :created_at_after_value) || !self.class.nil_or_empty(params, :created_at_before_value))
+                                              :from_value => (self.class.nil_or_empty(params, :created_at_after_value) ? "*" : "#{params[:created_at_after_value]}T00:00:00Z"),
+                                              :to_value => (self.class.nil_or_empty(params, :created_at_before_value) ? "*" : "#{params[:created_at_before_value]}T00:00:00Z"),
+                                              :index => 1,
+                                              :join => "AND"})) if (!self.class.nil_or_empty(params, :created_at_after_value) || !self.class.nil_or_empty(params, :created_at_before_value))
   end
 
   def add_updated_at_filter params
     @criteria_list.push(SearchDateFilter.new({:field => "last_updated_at",
-                                         :from_value => (self.class.nil_or_empty(params, :updated_at_after_value) ? "*" : "#{params[:updated_at_after_value]}T00:00:00Z"),
-                                         :to_value => (self.class.nil_or_empty(params, :updated_at_before_value) ? "*" : "#{params[:updated_at_before_value]}T00:00:00Z"),
-                                         :index => 2,
-                                         :join => "AND"})) if (!self.class.nil_or_empty(params, :updated_at_after_value) || !self.class.nil_or_empty(params, :updated_at_before_value))
+                                              :from_value => (self.class.nil_or_empty(params, :updated_at_after_value) ? "*" : "#{params[:updated_at_after_value]}T00:00:00Z"),
+                                              :to_value => (self.class.nil_or_empty(params, :updated_at_before_value) ? "*" : "#{params[:updated_at_before_value]}T00:00:00Z"),
+                                              :index => 2,
+                                              :join => "AND"})) if (!self.class.nil_or_empty(params, :updated_at_after_value) || !self.class.nil_or_empty(params, :updated_at_before_value))
   end
 
   def add_search_criteria_if_none params
@@ -80,6 +82,12 @@ class AdvancedSearchController < ApplicationController
 
   def self.nil_or_empty params, key
     params[key].nil? || params[key].empty?
+  end
+
+  def prepare_params_for_limited_access_user user
+    params[:created_by_value] = user.user_name
+    params[:created_by] = "true"
+    params[:disable_create] = "true"
   end
 
 end

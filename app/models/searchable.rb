@@ -23,7 +23,7 @@ module Searchable
           Child.build_solar_schema
           Sunspot.index!(self)
         rescue
-          puts "***Problem indexing record for searching, is SOLR running?"
+          Rails.logger.error "***Problem indexing record for searching, is SOLR running?"
         end
         true
       end

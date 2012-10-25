@@ -1,4 +1,4 @@
-require 'spec_helper'
+  require 'spec_helper'
 
 describe "children/edit.html.erb" do
 
@@ -17,5 +17,10 @@ describe "children/edit.html.erb" do
   it "renders the children/form_section partial" do
     render
     rendered.should render_template(:partial =>  "_form_section",:collection => [@form_section])
+  end
+
+  it "renders a form whose discard button links to the edited child's view page" do
+    render
+    rendered.should have_tag("a[href='#{child_path(@child)}']")
   end
 end

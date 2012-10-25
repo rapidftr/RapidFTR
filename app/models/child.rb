@@ -146,6 +146,10 @@ view_by :duplicates_of,
     [false, "Please upload a valid audio file (amr or mp3) for this child record"]
   end
 
+  def has_valid_audio?
+    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
+  end
+
   def validate_created_at
     begin
       if self['created_at']
@@ -199,14 +203,22 @@ view_by :duplicates_of,
     duplicates
   end
 
-  def self.search(search)
+  def self.search_by_created_user(search, created_by)
+    created_by_criteria = [SearchCriteria.new(:field => "created_by", :value => created_by, :join => "AND")]
+    search(search, created_by_criteria, created_by)
+  end
+
+  def self.search(search, criteria = [], created_by = "")
     return [] unless search.valid?
 
     query = search.query
-    children = sunspot_search("unique_identifier_text:#{query}")
+    solr_query = "unique_identifier_text:#{query}"
+    solr_query = solr_query + "AND created_by_text:#{created_by}" unless created_by.empty?
+    children = sunspot_search(solr_query)
     return children if children.length > 0
 
-    SearchService.search [ SearchCriteria.new(:field => "name", :value => query) ]
+    search_criteria = [SearchCriteria.new(:field => "name", :value => search.query)].concat(criteria)
+    SearchService.search search_criteria
   end
 
   def self.flagged
@@ -345,7 +357,7 @@ view_by :duplicates_of,
   end
 
   def audio
-    return nil if self['audio_attachments'].nil?
+    return nil if self.id.nil? || self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']
     return nil unless has_attachment? attachment_key
 

@@ -50,8 +50,9 @@ class FormSectionController < ApplicationController
     end
     redirect_to formsections_url
   end
-  
-  def save_order
+
+
+  def save_form_order
     params[:form_order].each do |key, value|
       form_section = FormSection.get_by_unique_id(key)
       form_section.order = value.to_i
@@ -60,8 +61,8 @@ class FormSectionController < ApplicationController
     redirect_to formsections_url
   end
 
-  def save_order_single
-    form_section = FormSection.get_by_unique_id(params[:formId]);
+  def save_field_order
+    form_section = FormSection.get_by_unique_id(params[:formId])
     oldFields = Array.new()
     form_section.fields.each do |field|
       oldFields.push field

@@ -10,30 +10,34 @@ def should_seed? model
 end
 
 if should_seed? User
+  admin = Role.create(:name => "admin", :permissions => [Permission::ADMIN])
+  limited = Role.create(:name => "limited", :permissions => [Permission::LIMITED])
+  unlimited = Role.create(:name => "unlimited", :permissions => [Permission::ACCESS_ALL_DATA])
   User.create("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
               "email" => "rapidftr@rapidftr.com",
-              "permissions" => [ "admin" ] )
+              "role_names" => [admin.name])
 
   User.create("user_name" => "limited",
               "password" => "limited",
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
-              "permissions" => [ "limited" ] )
+              "role_names" => [ limited.name ] )
 
   User.create("user_name" => "unlimited",
               "password" => "unlimited",
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
               "email" => "unlimited@rapidftr.com",
-              "permissions" => [ "unlimited" ] )
+              "role_names" => [ unlimited.name ] )
 end
 
 if should_seed? FormSection
   RapidFTR::FormSectionSetup.reset_definitions
+  RapidFTR::I18nSetup.reset_definitions
 end
 
 if should_seed? SuggestedField
@@ -43,4 +47,3 @@ end
 if should_seed? ContactInformation
   ContactInformation.create(:id=>"administrator")
 end
-

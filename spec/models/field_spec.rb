@@ -8,6 +8,18 @@ describe "Child record field view model" do
     @field = Field.new :name => "gender", :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
   end
 
+  describe '#name' do
+    it "should be generated when not provided" do
+      field = Field.new
+      field.name.should_not be_empty
+    end
+
+    it "should not be generated when provided" do
+      field = Field.new :name => 'test_name'
+      field.name.should == 'test_name'
+    end
+  end
+
   it "converts field name to a HTML tag ID" do
     @field.tag_id.should == "child_#{@field_name}"
   end
@@ -60,7 +72,8 @@ describe "Child record field view model" do
       form.fields << field
     
       field.valid?
-      field.errors.on(:display_name).should ==  ["Field already exists on this form"] 
+      field.errors.on(:name).should ==  ["Field already exists on this form"]
+      field.errors.on(:display_name).should ==  ["Field already exists on this form"]
     end
     
     it "should validate radio button has at least 2 options" do  
@@ -86,6 +99,7 @@ describe "Child record field view model" do
       form.fields << field
     
       field.valid?
+      field.errors.on(:name).should ==  ["Field already exists on form 'test form'"] 
       field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"] 
     end
   end
@@ -146,4 +160,5 @@ describe "Child record field view model" do
       field.is_highlighted?.should be_false
     end
   end
+
 end

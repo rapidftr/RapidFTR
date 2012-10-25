@@ -10,7 +10,7 @@ describe User do
       :password_confirmation => options[:password] || 'password',
       :email => 'email@ddress.net',
       :user_type => 'user_type',
-      :permissions => [ "limited" ]
+      :role_names => options[:role_names] || ['random_role_name'],
     })
     user = User.new( options)
     user
@@ -20,23 +20,6 @@ describe User do
     user = build_user(options)
     user.save
     user
-  end
-
-  describe "validation" do
-    it "should fail if permission is not set" do
-      user = build_user(:permissions => [])
-      user.should_not be_valid
-    end
-
-    it "should fail if the permission level is not valid" do
-      user = build_user(:permissions => [ "admin", "invalid level" ])
-      user.should_not be_valid
-    end
-
-    it "should succeed if permission is set appropriately" do
-      user = build_user(:permissions => [ "admin", "limited", "unlimited" ])
-      user.should be_valid
-    end
   end
 
 
@@ -121,7 +104,7 @@ describe User do
     imei = "1337"
     mobile_number = "555-555"
     now = Time.parse("2008-06-21 13:30:00 UTC")
-    
+
     user = build_user
     user.create!
 
@@ -129,7 +112,7 @@ describe User do
 
     user.add_mobile_login_event(imei, mobile_number)
     user.save
-    
+
     user = User.get(user.id)
     event = user.mobile_login_history.first
 
@@ -184,47 +167,67 @@ describe User do
 
   it "should localize date using user's timezone" do
     user = build_user({
-        :time_zone => "Samoa"
-                      })
+      :time_zone => "Samoa"
+    })
     user.localize_date("2011-11-12 21:22:23 UTC").should == "12 November 2011 at 10:22 (SST)"
   end
 
   it "should localize date using specified format" do
     user = build_user({
-        :time_zone => "UTC"
-                      })
+      :time_zone => "UTC"
+    })
     user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
   end
 
+  it "should load roles only once" do
+    role = mock("roles")
+    user = build_and_save_user
+    Role.should_receive(:by_name).with(:key => user.role_names.first).and_return(role)
+    user.roles.should == [role]
+    Role.should_not_receive(:get)
+    user.roles.should == [role]
+  end
+
   describe "permissions" do
-
-    context "user with limited permissions" do
-      subject { build_and_save_user :permissions => [ "limited" ] }
-
-      it "should have limited access" do
-        subject.limited_access?.should be_true
-      end
+    it "should have limited access" do
+      limited_role = Role.create(:name => 'limited', :permissions => [Permission::LIMITED])
+      user = build_and_save_user(:role_names => [limited_role.name])
+      user.limited_access?.should be_true
     end
 
-    context "user with unlimited permissions" do
-      subject { build_and_save_user :permissions => [ "unlimited" ] }
-
-      it "should not have limited access" do
-        subject.limited_access?.should be_false
-      end
+    it "should not have limited access" do
+      access_all = Role.create(:name => "all", :permissions => [Permission::ACCESS_ALL_DATA])
+      user = build_and_save_user(:role_names => [access_all.name])
+      user.limited_access?.should be_false
     end
   end
 
   describe "#user_assignable?" do
     before { @user = build_user }
-    it "permission should not be assignable" do
-      should_not_assignable :permissions
+    it "role ids should not be assignable" do
+      should_not_assignable :role_names
     end
     it "disabled should not be assignable" do
       should_not_assignable :disabled
     end
     def should_not_assignable(name)
       @user.user_assignable?(name => "").should be_false
+    end
+  end
+
+  describe "user roles" do
+    it "should store the roles and retrive them back as Roles" do
+      roles = [Role.create!(:name => "Admin", :permissions => [Permission::ADMIN]), Role.create!(:name => "Child Protection Specialist", :permissions => [Permission::ADMIN])]
+      user = build_and_save_user(:roles => roles)
+      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',:email => 'em@dd.net',:user_type => 'user_type',:permissions => [ "limited" ], :role_names => [roles.first.name, roles.last.name] })
+      user = User.find_by_user_name(user.user_name)
+      user.roles.should == roles
+    end
+
+    it "should require atleast one role" do
+      user = build_user(:role_names => [])
+      user.should_not be_valid
+      user.errors.on(:role_names).should == ["Please select at least one role"]
     end
   end
 end

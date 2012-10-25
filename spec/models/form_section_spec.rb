@@ -27,6 +27,31 @@ describe FormSection do
     }
   end
 
+  describe '#unique_id' do
+    it "should be generated when not provided" do
+      f = FormSection.new
+      f.unique_id.should_not be_empty
+    end
+
+    it "should not be generated when provided" do
+      f = FormSection.new :unique_id => 'test_form'
+      f.unique_id.should == 'test_form'
+    end
+
+    it "should not allow duplic
+    ate unique ids" do
+      FormSection.new(:unique_id => "test", :name => "test").save!
+
+      expect {
+        FormSection.new(:unique_id => "test").save!
+      }.to raise_error
+
+      expect {
+        FormSection.get_by_unique_id("test").save!
+      }.to_not raise_error
+    end
+  end
+
   describe "repository methods" do
     before { FormSection.all.each &:destroy }
 
@@ -247,11 +272,6 @@ describe FormSection do
       FormSection.should_receive(:create!)
       FormSection.create_new_custom "basic"
     end
-    it "should give the formsection a new unique id based on the name" do
-      form_section_name = "basic details"
-      form_section = FormSection.create_new_custom form_section_name
-      form_section.unique_id.should == "basic_details"
-    end
     it "should populate the name" do
       form_section_name = "basic details"
       create_should_be_called_with :name, "basic details"
@@ -297,11 +317,13 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
+
     it "should validate name is alpha_num" do
       form_section = FormSection.new(:name=>"££ss")
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
+
     it "should validate name is unique" do
       same_name = 'Same Name'
       valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true, :order => 0}
@@ -309,21 +331,12 @@ describe FormSection do
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
-    end
-    
-    it "should validate name is unique via a case-insensitive search" do
-      upcase_name = "UPCASE NAME"
-      valid_attributes = {:name=> upcase_name, :unique_id => upcase_name.dehumanize, :description => '', :enabled => true, :order => 0}
-      FormSection.create! valid_attributes
-      form_section = FormSection.new valid_attributes.merge(:name => upcase_name.downcase)
-      form_section.should_not be_valid
-      form_section.errors.on(:name).should be_present
+      form_section.errors.on(:unique_id).should be_present
     end
     
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!
-      form_section.should be_valid
     end
   end
 
