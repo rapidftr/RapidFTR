@@ -98,6 +98,12 @@ describe UsersController do
       get :index
       assigns[:users].should == nil
     end
+
+    it "should throw exception if user is not authorized" do
+      fake_limited_login
+      controller.should_receive(:handle_authorization_failure).with(anything)
+      get :index
+    end
   end
 
   describe "GET show" do
@@ -256,4 +262,5 @@ describe UsersController do
       end
     end
   end
+
 end

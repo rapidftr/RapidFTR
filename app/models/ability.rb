@@ -21,6 +21,10 @@ class Ability
       can [:manage], Child
     end
 
+    if user.has_permission?(Permission::VIEW_USERS)
+      can [:read], User
+    end
+
     if user.has_permission?(Permission::ADMIN)
       can :manage, :all
     end

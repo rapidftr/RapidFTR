@@ -23,7 +23,7 @@ describe Ability do
       @session.stub! :user => mock(:permissions => [ Permission::ADMIN])
       end
 
-    include_examples "control classes and objects", [ Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], true
+    include_examples "control classes and objects", [Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], true
   end
 
   describe '#access all data' do
@@ -59,6 +59,27 @@ describe Ability do
     end
   end
 
+  describe '#view users' do
+    it "it should view object" do
+      @session.stub! :user_permissions => [Permission::VIEW_USERS]
+      @ability = Ability.new(@session)
+      @ability.can?(:list, User).should == true
+      @ability.can?(:read, User.new).should == true
+    end
+
+    it "should not view object " do
+      @session.stub! :user_permissions => [Permission::LIMITED]
+      @ability = Ability.new(@session)
+      @ability.can?(:list, User).should == false
+      @ability.can?(:read, User.new).should == false
+    end
+    it "cannot update user " do
+      @session.stub! :user_permissions => [Permission::VIEW_USERS]
+      @ability = Ability.new(@session)
+      @ability.can?(:update, User.new).should == false
+      @ability.can?(:create, User.new).should == false
+    end
+  end
   describe '#edit child' do
     before :each do 
       @session.stub! :user => mock(:permissions => [ Permission::EDIT_CHILD])
