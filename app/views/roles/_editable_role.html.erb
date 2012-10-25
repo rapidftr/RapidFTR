@@ -28,5 +28,5 @@
     </fieldset>
     <%= submit_button(editable_role.new_record? ? 'Create' : 'Update') %>
     <!--TODO: After we got the user object in the session replace the DB query with User object-->
-    <!--<%= cancel_button(user_path(User.find_by_user_name(current_user_name))) %>-->
+    <%= cancel_button(roles_path) %>
 <% end %>

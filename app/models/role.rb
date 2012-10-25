@@ -24,6 +24,10 @@ class Role < CouchRestRails::Document
     Role.by_name(:key => name).first
   end
 
+  def sanitize_permissions
+    self.permissions.reject! { |permission| permission.blank? } if self.permissions
+  end
+
   def is_name_unique
     role = Role.find_by_name(name)
     return true if role.nil? or self.id == role.id
@@ -32,6 +36,7 @@ class Role < CouchRestRails::Document
 
   def valid?(context = :default)
     self.name = self.name.try(:titleize)
+    sanitize_permissions
     super(context)
   end
 

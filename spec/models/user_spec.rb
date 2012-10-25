@@ -190,13 +190,13 @@ describe User do
 
   describe "permissions" do
     it "should have limited access" do
-      limited_role = Role.create(:name => 'limited', :permissions => Permission::LIMITED)
+      limited_role = Role.create(:name => 'limited', :permissions => [Permission::LIMITED])
       user = build_and_save_user(:role_names => [limited_role.name])
       user.limited_access?.should be_true
     end
 
     it "should not have limited access" do
-      access_all = Role.create(:name => "all", :permissions => Permission::ACCESS_ALL_DATA)
+      access_all = Role.create(:name => "all", :permissions => [Permission::ACCESS_ALL_DATA])
       user = build_and_save_user(:role_names => [access_all.name])
       user.limited_access?.should be_false
     end

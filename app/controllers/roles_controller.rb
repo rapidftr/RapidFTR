@@ -14,10 +14,11 @@ class RolesController < ApplicationController
     @role = Role.get(params[:id])
     if @role.update_attributes(params[:role])
       flash[:notice] = "Role details are successfully updated."
+      redirect_to(roles_path)
     else
       flash[:error] = "Error in updating the Role details."
+      render :action => "edit"
     end
-    render :nothing => true
   end
 
   def new
@@ -25,7 +26,6 @@ class RolesController < ApplicationController
   end
 
   def create
-    params[:role][:permissions].reject! { |permission| permission.blank? }
     @role = Role.new(params[:role])
     return redirect_to roles_path if @role.save
     render :new

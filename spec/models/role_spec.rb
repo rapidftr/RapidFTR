@@ -13,6 +13,12 @@ describe Role do
     role.errors.on(:permissions).should == ["Please select at least one permission"]
   end
 
+  it "should sanitize and check for permissions" do
+    role = Role.new(:name => "Name", :permissions => [""]) #Need empty array, can't use %w here.
+    role.should_not be_valid
+    role.errors.on(:permissions).should == ["Please select at least one permission"]
+  end
+
   it "should not be valid if a role name has been taken already" do
     Role.create({:name => "Unique", :permissions => [Permission::ADMIN]})
     role = Role.new({:name => "Unique", :permissions => [Permission::ADMIN]})

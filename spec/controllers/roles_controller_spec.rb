@@ -41,8 +41,8 @@ describe RolesController do
   end
 
   it "should remove empty permission before storing it" do
-    params = {:permissions => ["", "admin", "", "limited"]}
-    Role.should_receive(:new).with({"permissions" => ["admin", "limited"]}).and_return(role = mock_model(Role, :save => true))
+    params = {:permissions => %w(admin limited)}
+    Role.should_receive(:new).with({"permissions" => %w(admin limited)}).and_return(role = mock_model(Role, :save => true))
     post :create, {:role => params}
   end
 
@@ -84,6 +84,7 @@ describe RolesController do
     role_mock.should_receive(:update_attributes).with({"description" => latest_desc}).and_return(true)
     post :update, {:id => 20, :role => {:description => latest_desc}}
     flash[:notice].should == "Role details are successfully updated."
+    response.should redirect_to(roles_path)
   end
 
   it "should flash error if the update fails" do
@@ -92,6 +93,7 @@ describe RolesController do
     role_mock.should_receive(:update_attributes).with(anything).and_return(false)
     post :update, {:id => 21, :role => {:description => 'latest_desc'}}
     flash[:error].should == "Error in updating the Role details."
+    response.should render_template :edit
   end
 
 end
