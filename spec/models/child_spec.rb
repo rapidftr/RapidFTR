@@ -1124,8 +1124,9 @@ describe Child do
 
   private
 
-  def create_child(name)
-    Child.create("name" => name, "last_known_location" => "new york")
+  def create_child(name, options={})
+    options.merge!("name" => name, "last_known_location" => "new york")
+    Child.create(options)
   end
 
   def create_duplicate(parent)
