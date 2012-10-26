@@ -21,8 +21,35 @@ describe User do
     user.save
     user
   end
+  
+  describe "validations" do
+    
+    it "should not be valid when username contains whitespace" do
+      user = build_user :user_name => "in val id"
+      user.should_not be_valid
+      user.errors.on(:user_name).should == ["Please enter a valid user name"]
+    end
 
+    it "should not be valid when password contains whitespace" do
+      user = build_user :password => "in val id"
+      user.should_not be_valid
+      user.errors.on(:password).should be_include "Please enter a valid password"
+    end
 
+    it "should not be valid when username already exists" do
+      build_and_save_user :user_name => "existing_user" 
+      user = build_user :user_name => "existing_user"
+      user.should_not be_valid
+      user.errors.on(:user_name).should == ["User name has already been taken! Please select a new User name"]
+    end
+        
+    it "should not be valid when email address is invalid" do
+      user = build_user :email => "invalid_email"
+      user.should_not be_valid
+      user.errors.on(:email).should == ["Please enter a valid email address"]      
+    end    
+  end
+  
   it 'should validate uniqueness of username for new users' do
     user = build_user(:user_name => 'the_user_name')
     user.should be_valid
