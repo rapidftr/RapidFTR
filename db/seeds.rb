@@ -20,14 +20,14 @@ if should_seed? User
               "email" => "rapidftr@rapidftr.com",
               "role_names" => [admin.name])
 
-  User.create("user_name" => "limited",
+  User.create("user_name" => "field_worker",
               "password" => "limited",
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
               "role_names" => [field_worker.name])
 
-  User.create("user_name" => "unlimited",
+  User.create("user_name" => "field_admin",
               "password" => "unlimited",
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
