@@ -187,21 +187,7 @@ describe User do
     Role.should_not_receive(:get)
     user.roles.should == [role]
   end
-
-  describe "permissions" do
-    it "should have limited access" do
-      limited_role = Role.create(:name => 'limited', :permissions => [Permission::LIMITED])
-      user = build_and_save_user(:role_names => [limited_role.name])
-      user.limited_access?.should be_true
-    end
-
-    it "should not have limited access" do
-      access_all = Role.create(:name => "all", :permissions => [Permission::ACCESS_ALL_DATA])
-      user = build_and_save_user(:role_names => [access_all.name])
-      user.limited_access?.should be_false
-    end
-  end
-
+  
   describe "#user_assignable?" do
     before { @user = build_user }
     it "role ids should not be assignable" do
@@ -217,11 +203,13 @@ describe User do
 
   describe "user roles" do
     it "should store the roles and retrive them back as Roles" do
-      roles = [Role.create!(:name => "Admin", :permissions => [Permission::ADMIN]), Role.create!(:name => "Child Protection Specialist", :permissions => [Permission::ADMIN])]
-      user = build_and_save_user(:roles => roles)
-      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',:email => 'em@dd.net',:user_type => 'user_type',:permissions => [ "limited" ], :role_names => [roles.first.name, roles.last.name] })
-      user = User.find_by_user_name(user.user_name)
-      user.roles.should == roles
+      admin_role = Role.create!(:name => "Admin", :permissions => [Permission::ADMIN])
+      field_worker_role = Role.create!(:name => "Field Worker", :permissions => [Permission::REGISTER_CHILD])
+      user = build_and_save_user(:roles => [admin_role, field_worker_role])
+      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',
+                          :email => 'em@dd.net',:user_type => 'user_type', :role_names => [admin_role.name, field_worker_role.name] })
+
+      User.find_by_user_name(user.user_name).roles.should == [admin_role, field_worker_role]
     end
 
     it "should require atleast one role" do

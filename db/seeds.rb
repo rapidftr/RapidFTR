@@ -11,8 +11,8 @@ end
 
 if should_seed? User
   admin = Role.create(:name => "admin", :permissions => [Permission::ADMIN])
-  limited = Role.create(:name => "limited", :permissions => [Permission::LIMITED])
-  unlimited = Role.create(:name => "unlimited", :permissions => [Permission::ACCESS_ALL_DATA])
+  field_worker = Role.create(:name => "field worker", :permissions => [Permission::REGISTER_CHILD])
+  field_admin = Role.create(:name => "field admin", :permissions => [Permission::ACCESS_ALL_DATA])
   User.create("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",
@@ -25,14 +25,14 @@ if should_seed? User
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
-              "role_names" => [ limited.name ] )
+              "role_names" => [field_worker.name])
 
   User.create("user_name" => "unlimited",
               "password" => "unlimited",
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
               "email" => "unlimited@rapidftr.com",
-              "role_names" => [ unlimited.name ] )
+              "role_names" => [field_admin.name])
 end
 
 if should_seed? FormSection

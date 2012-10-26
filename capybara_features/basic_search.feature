@@ -106,3 +106,29 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I fill in "\" for "Name"
     And I press "Search"
     Then I should be on the child search results page
+
+  Scenario: User with unlimited access can see all children
+    Given a user "field_admin" with "Access all data" permission
+      And a user "field_worker" with "Register Child" permission
+      And the following children exist in the system:
+       | name   | created_by   |
+       | Andrew | field_worker |
+       | Peter  | field_admin  |
+     And I am logged out
+     When I am logged in as "field_admin"
+      And I follow "View All Children"
+     Then I should see "Andrew"
+      And I should see "Peter"
+
+  Scenario: User with limited access cannot see all children
+    Given a user "field_admin" with "Access all data" permission
+      And a user "field_worker" with "Register Child" permission
+      And the following children exist in the system:
+       | name   | created_by   |
+       | Andrew | field_worker |
+       | Peter  | field_admin  |
+     And I am logged out
+     When I am logged in as "field_worker"
+      And I follow "View All Children"
+     Then I should see "Andrew"
+      And I should not see "Peter"

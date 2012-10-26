@@ -31,19 +31,19 @@ describe ChildrenController do
   describe '#authorizations' do
     describe 'collection' do
       it "GET index" do
-        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :index
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET search" do
-        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :search
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_data" do
-        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :export_data
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -74,25 +74,25 @@ describe ChildrenController do
       end
 
       it "PUT update" do
-        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :update, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT edit_photo" do
-        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :edit_photo, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT update_photo" do
-        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :update_photo, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT select_primary_photo" do
-        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :select_primary_photo, :child_id => @child.id, :photo_id => 0
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -113,10 +113,10 @@ describe ChildrenController do
 
   describe "GET index" do
 
-    shared_examples_for "viewing children by user with unlimited permissions" do
-      describe "when the signed in user has unlimited permissions" do
+    shared_examples_for "viewing children by user with access to all data" do
+      describe "when the signed in user has access all data" do
         it "should assign all childrens as @childrens" do
-          session = fake_unlimited_login
+          session = fake_field_admin_login
 
           @stubs ||= {}
           children = [mock_child(@stubs)]
@@ -127,10 +127,10 @@ describe ChildrenController do
       end
     end
 
-    shared_examples_for "viewing children by user with limited permissions" do
-      describe "when the signed in user has limited permissions" do
-        it "should assign the children created by the signed in user as @childrens" do
-          session = fake_limited_login
+    shared_examples_for "viewing children as a field worker" do
+      describe "when the signed in user is a field worker" do
+        it "should assign the children created by the user as @childrens" do
+          session = fake_field_worker_login
 
           @stubs ||= {}
           children = [mock_child(@stubs)]
@@ -154,26 +154,26 @@ describe ChildrenController do
     context "viewing all children" do
       context "when status is passed" do
         before { @status = "all" }
-        it_should_behave_like "viewing children by user with unlimited permissions"
-        it_should_behave_like "viewing children by user with limited permissions"
+        it_should_behave_like "viewing children by user with access to all data"
+        it_should_behave_like "viewing children as a field worker"
       end
 
       context "when status is not passed" do
-        it_should_behave_like "viewing children by user with unlimited permissions"
-        it_should_behave_like "viewing children by user with limited permissions"
+        it_should_behave_like "viewing children by user with access to all data"
+        it_should_behave_like "viewing children as a field worker"
       end
     end
 
     context "viewing reunited children" do
       before { @status = "reunited" }
-      it_should_behave_like "viewing children by user with unlimited permissions"
-      it_should_behave_like "viewing children by user with limited permissions"
+      it_should_behave_like "viewing children by user with access to all data"
+      it_should_behave_like "viewing children as a field worker"
     end
 
     context "viewing flagged children" do
       before { @status = "flagged" }
-      it_should_behave_like "viewing children by user with unlimited permissions"
-      it_should_behave_like "viewing children by user with limited permissions"
+      it_should_behave_like "viewing children by user with access to all data"
+      it_should_behave_like "viewing children as a field worker"
     end
 
     context "viewing active children" do
@@ -181,8 +181,8 @@ describe ChildrenController do
         @status = "active"
         @stubs = {:reunited? => false}
       end
-      it_should_behave_like "viewing children by user with unlimited permissions"
-      it_should_behave_like "viewing children by user with limited permissions"
+      it_should_behave_like "viewing children by user with access to all data"
+      it_should_behave_like "viewing children as a field worker"
     end
   end
 
@@ -462,11 +462,11 @@ describe ChildrenController do
 			get(:search, :format => 'csv', :query => 'blah')
     end
   end
-  describe "Limited search" do
+  describe "searching as field worker" do
     before :each do
-      @session = fake_limited_login
+      @session = fake_field_worker_login
     end
-    it "should only list the children which limited user has registered" do
+    it "should only list the children which the user has registered" do
       search = mock("search", :query => 'some_name', :valid? => true)
       Search.stub!(:new).and_return(search)
 

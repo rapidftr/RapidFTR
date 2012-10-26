@@ -10,7 +10,7 @@ Scenario: When editing a user I cannot edit their user name
 
 Scenario: Check that an admin creates a user record and is able to edit it
 
-  # Create an user
+  # Create a user
   Given I am logged in as an admin
   And I am on manage users page
   And I follow "Create an User"
@@ -19,16 +19,28 @@ Scenario: Check that an admin creates a user record and is able to edit it
   And I fill in "george" for "User name"
   And I fill in "password" for "user_password"
   And I fill in "password" for "Re-enter password"
-  And I check "limited"
+  And I check "field_worker"
+  And I fill in "8007778339" for "Phone"
   And I fill in "abcd@unicef.com" for "Email"
   And I fill in "UNICEF" for "Organisation"
   And I fill in "Rescuer" for "Position"
   And I fill in "Amazon" for "Location"
   And I press "Create"
 
+  # View user
+  Then I should see "User was successfully created."
+  And I should see "George Harrison"
+  And I should see "george"
+  And I should see "Field Worker"
+  And I should see "8007778339"
+  And I should see "abcd@unicef.com"
+  And I should see "UNICEF"
+  And I should see "Rescuer"
+  And I should see "Amazon"
+
   # Editing the user
-  Then I follow "Edit"
-  When I fill in "Julia Roberts" for "Full name"
+  When I follow "Edit"
+  And I fill in "Julia Roberts" for "Full name"
   And I fill in "pass" for "user_password"
   And I fill in "pass" for "Re-enter password"
   And I check "admin"
@@ -48,15 +60,6 @@ Scenario: Check that an admin creates a user record and is able to edit it
   And I should see "student"
   And I should see "new york"
 
-  # Verifying some of the validations
-  When I follow "Edit"
-  And I fill in "xyz@nyu" for "Email"
-  And I fill in "" for "Full name"
-      And I press "Update"
-
-  Then I should see "Please enter a valid email address"
-  And I should see "Please enter full name of the user"
-  
 Scenario: Admin should be able to delete another user but not themselves
 
   Given a user "gui" with a password "123"
@@ -70,7 +73,7 @@ Scenario: Admin should be able to delete another user but not themselves
   
 Scenario: Should be able to set devices to black listed
 
-  Given a user "tim" with a password "123" 
+  Given a user "tim"
   And devices exist
     | imei | blacklisted | user_name |
     | 123456 | false | tim |
@@ -98,32 +101,13 @@ Scenario: User should be able to edit their own general information, but should 
   Then I should not see "IMEI"
   Then the "Organisation" field should be disabled
 
-Scenario: Password field should not be blank if re-enter password field is filled in and vice versa
-  # Create an user
+Scenario: Check that a basic user cannot create a user record
+  Given I am logged in
+  Then I should not be able to see new user page
+
+ Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username 
   Given I am logged in as an admin
-  And I am on manage users page
-  And I follow "Create an User"
-
-  When I fill in "John Doe" for "Full name"
-  And I fill in "johndoe1" for "User name"
-  And I fill in "password" for "user_password"
-  And I fill in "password" for "Re-enter password"
-  And I check "limited"
-  And I fill in "abcde@unicef.com" for "Email"
-  And I fill in "UNICEF" for "Organisation"
-  And I fill in "Rescuer" for "Position"
-  And I fill in "Amazon" for "Location"
-  And I press "Create"
-
-  # Editing the user with re-enter password but no password
-  Then I follow "Edit"
-  And I fill in "pass" for "Re-enter password"
-  And I press "Update"
-  Then I should see "Password does not match the confirmation"
-
-  #Editing the user with password but no re-enter password
-  When I am on the edit user page for "johndoe1"
-  Then I fill in "pass" for "user_password"
-  And I press "Update"
-  Then I should see "Please enter password confirmation"
-  And I should not see "Password does not match the confirmation"
+  And I am on new user page
+  When I fill in "admin" for "User name"
+  When I press "Create"
+  And I should see "Disabled"

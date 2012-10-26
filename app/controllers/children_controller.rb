@@ -7,7 +7,7 @@ class ChildrenController < ApplicationController
   # GET /children
   # GET /children.xml
   def index
-    authorize! :list, Child
+    authorize! :index, Child
 
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
@@ -71,7 +71,7 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
-    authorize! :edit, @child
+    authorize! :update, @child
 
     @page_name = "Edit Child"
     @form_sections = get_form_sections
@@ -101,13 +101,13 @@ class ChildrenController < ApplicationController
   end
 
   def edit_photo
-    authorize! :edit, @child
+    authorize! :update, @child
 
     @page_name = "Edit Photo"
   end
 
   def update_photo
-    authorize! :edit, @child
+    authorize! :update, @child
 
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
@@ -121,7 +121,7 @@ class ChildrenController < ApplicationController
   # POST
   def select_primary_photo
     @child = Child.get(params[:child_id])
-    authorize! :edit, @child
+    authorize! :update, @child
 
     begin
       @child.primary_photo_id = params[:photo_id]
@@ -140,7 +140,7 @@ class ChildrenController < ApplicationController
   # PUT /children/1.xml
   def update
     @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
-    authorize! :edit, @child
+    authorize! :update, @child
 
     @child['last_updated_by_full_name'] = current_user_full_name
     new_photo = params[:child].delete(:photo)
@@ -178,7 +178,7 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    authorize! :list, Child
+    authorize! :index, Child
 
     @page_name = "Search"
     @aside = "shared/sidebar_links"
@@ -194,7 +194,7 @@ class ChildrenController < ApplicationController
   end
 
   def export_data
-    authorize! :list, Child
+    authorize! :index, Child
 
     selected_records = params["selections"] || {}
     if selected_records.empty?
@@ -214,7 +214,7 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
-    authorize! :list, Child
+    authorize! :index, Child
 
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf(pdf_data, filename)

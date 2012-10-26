@@ -95,16 +95,8 @@ class User < CouchRestRails::Document
     has_permission?(Permission::ADMIN) ? "Administrator" : "User"
   end
 
-  def permission # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(Permission::ACCESS_ALL_DATA) ? "Unlimited" : "Limited"
-  end
-
   def roles
     @roles ||= role_names.collect{|name| Role.by_name(:key => name)}.flatten
-  end
-
-  def limited_access? # Temporary method for backward compatibility should be removed after the UI is changed
-    (has_permission?(Permission::ACCESS_ALL_DATA) || has_permission?(Permission::ADMIN)) == false
   end
 
   def has_permission?(permission)

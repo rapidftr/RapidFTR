@@ -73,7 +73,7 @@ describe Session do
     end
 
     it "should return false when user is just a basic user" do
-      @user.should_receive(:roles).and_return([Role.new(:name => 'limited', :permissions => [Permission::LIMITED])])
+      @user.should_receive(:roles).and_return([Role.new(:name => 'field worker', :permissions => [Permission::REGISTER_CHILD])])
       Session.for_user(@user, "").admin?.should == false
     end
   end

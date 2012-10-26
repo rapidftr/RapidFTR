@@ -31,5 +31,3 @@ end
 Given /^there is a admin$/ do
 	step "a admin \"admin\" with a password \"123\""
 end
-
-
