@@ -44,7 +44,7 @@ describe UsersController do
     end
 
     it "should throw exception if user is not authorized" do
-      fake_limited_login
+      fake_login
       fake_session = Session.new()
       Session.stub(:get).and_return(fake_session)
       mock_user = mock_user({:merge => {}, :user_name => "someone"})
@@ -87,7 +87,7 @@ describe UsersController do
     end
 
     it "should not show non-self user for non-admin" do
-      fake_limited_login
+      fake_login
       mock_user = mock({:user_name => 'some_random'})
       User.stub!(:get).with("37").and_return(mock_user)
       controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
@@ -166,7 +166,7 @@ describe UsersController do
   describe "POST update" do
     context "when not admin user" do
       it "should not allow to edit admin specific fields" do
-        fake_limited_login
+        fake_login
         mock_user = mock({:user_name => "User_name"})
         User.stub(:get).with("24").and_return(mock_user)
         controller.stub(:current_user_name).and_return("test_user")
