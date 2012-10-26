@@ -1,22 +1,21 @@
 class UsersController < ApplicationController
 
-  before_filter :administrators_only, :except =>[:show, :edit, :update]
+  before_filter :administrators_only, :only =>[:destroy]
   before_filter :clean_role_names, :only => [ :update, :create ]
 
   def index
     @users = User.view("by_full_name")
     @users_details = users_details
-    raise AuthorizationFailure.new('Not permitted to view page') if cannot? :read, User
+    raise AuthorizationFailure.new('Not permitted to view page') if cannot? :read , User
   end
 
   def show
-    session = app_session
     @user = User.get(params[:id])
     if @user.nil?
       flash[:error] = "User with the given id is not found"
       redirect_to :action => :index and return
     end
-    unless session.admin? or @user.user_name == current_user_name
+    if @user.user_name != current_user_name and cannot?(:show, User)
       raise AuthorizationFailure.new('Not permitted to view page')
     end
   end
@@ -28,11 +27,10 @@ class UsersController < ApplicationController
   end
 
   def edit
-    session = app_session
     @user = User.get(params[:id])
     @page_name = "Account: #{@user.full_name}"
     @roles = Role.all
-    unless session.admin? or @user.user_name == current_user_name
+    if @user.user_name != current_user_name and cannot?(:edit, User)
       raise AuthorizationFailure.new('Not permitted to view page')
     end
   end
@@ -49,14 +47,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    session = app_session
-
     @user = User.get(params[:id])
-    unless session.admin? or @user.user_name == current_user_name
-      raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
+    if  @user.user_name != current_user_name and cannot?(:update, User)
+      raise AuthorizationFailure.new('Not permitted to view page')
     end
 
-    unless session.admin?
+    if cannot?(:update,User)
       unless @user.user_assignable? params[:user]
         raise AuthorizationFailure.new('Not permitted to assign admin specific fields')
       end

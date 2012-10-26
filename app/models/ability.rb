@@ -22,7 +22,11 @@ class Ability
     end
 
     if user.has_permission?(Permission::VIEW_USERS)
-      can [:read], User
+      can [:read,:show], User
+    end
+
+    if user.has_permission?(Permission::CREATE_EDIT_USERS)
+      can :manage, User
     end
 
     if user.has_permission?(Permission::ADMIN)

@@ -97,4 +97,20 @@ describe Ability do
     end
   end
 
+  describe '#create and edit users' do
+    it "should be able to create users" do
+      @session.stub! :user_permissions => [Permission::CREATE_EDIT_USERS]
+      @ability = Ability.new(@session)
+      @ability.can?(:create, User.new).should == true
+      @ability.can?(:update, User.new).should == true
+      end
+    it "should be able to view users" do
+      @session.stub! :user_permissions => [Permission::CREATE_EDIT_USERS]
+      @ability = Ability.new(@session)
+      @ability.can?(:list, User).should == true
+      @ability.can?(:read, User.new).should == true
+    end
+  end
+
+
 end
