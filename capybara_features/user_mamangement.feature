@@ -102,7 +102,8 @@ Scenario: User should be able to edit their own general information, but should 
   Then the "Organisation" field should be disabled
 
 Scenario: Check that a basic user cannot create a user record
-  Given I am logged in
+  Given I am logged in as a User with "limited" permission
+  Then I should not see "IMEI"
   Then I should not be able to see new user page
 
  Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username 

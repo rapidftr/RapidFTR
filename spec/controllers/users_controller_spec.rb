@@ -108,6 +108,12 @@ describe UsersController do
       get :new
       assigns[:roles].should == roles
     end
+
+    it "should throw error if an user without authorization tries to access" do
+      fake_view_user_login
+      controller.should_receive(:handle_authorization_failure).with(anything)
+      get :new
+    end
   end
 
   describe "GET edit" do

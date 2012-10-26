@@ -24,6 +24,7 @@ class UsersController < ApplicationController
     @page_name = 'New User'
     @user = User.new
     @roles = Role.all
+    raise AuthorizationFailure.new('Not permitted to view page') if cannot? :create , User
   end
 
   def edit
