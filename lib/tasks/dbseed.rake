@@ -2,9 +2,10 @@ namespace :db do
   desc "Seed with data (task manually created during the 3.0 upgrade, as it went missing)"
   task :seed => :environment do
      load(Rails.root.join("db", "seeds.rb"))
-     Dir.new(Rails.root.join("db")).entries.select{|file| file.ends_with?"_updation.rb"}.each do |file|
-      puts "Applying updation #{file}"
-      load(Rails.root.join("db", file))
+     migrations_dir = "db/migration"
+     Dir.new(Rails.root.join(migrations_dir)).entries.select{|file| file.ends_with?".rb"}.sort.each do |file|
+      puts "Applying migration: #{file}"
+      load(Rails.root.join(migrations_dir, file))
      end
   end
 end
