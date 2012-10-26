@@ -10,13 +10,13 @@ describe UsersController do
 
   def fake_view_user_login
     user = User.new(:user_name => 'fakelimited')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::VIEW_USERS])])
+    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
     fake_login user
   end
 
   def fake_create_edit_user_login
     user = User.new(:user_name => 'fakelimited')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CREATE_EDIT_USERS])])
+    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:create_and_edit]])])
     fake_login user
   end
 
@@ -55,7 +55,7 @@ describe UsersController do
 
     it "should authorize index page for read only users" do
       user = User.new(:user_name => 'view_user')
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::VIEW_USERS])])
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
       fake_login user
       controller.should_not_receive(:handle_authorization_failure).with(anything)
       get :index

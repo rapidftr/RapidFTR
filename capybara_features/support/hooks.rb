@@ -12,7 +12,7 @@ Before do
 end
 
 Before('@roles') do |scenario|
-  Role.create(:name => 'Field Worker', :permissions => [Permission::REGISTER_CHILD])
-  Role.create(:name => 'Field Admin', :permissions => [Permission::ACCESS_ALL_DATA])
-  Role.create(:name => 'Admin', :permissions => [Permission::ADMIN])
+  Role.create(:name => 'Field Worker', :permissions => [Permission::CHILDREN[:register]])
+  Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:access_all_data]])
+  Role.create(:name => 'Admin', :permissions => [Permission::ADMIN[:admin]])
 end

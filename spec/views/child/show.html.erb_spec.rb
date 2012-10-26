@@ -8,6 +8,8 @@ describe "children/show.html.erb" do
   describe "displaying a child's details"  do
 
     before :each do
+      mock_user = mock('user', :has_permission? => true)
+      controller.stub(:current_user).and_return(mock_user)
       @form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
       @child = Child.create(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :photo => uploadable_photo_jeff)
       @child.stub!(:has_one_interviewer?).and_return(true)

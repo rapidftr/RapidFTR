@@ -156,7 +156,6 @@ class ChildrenController < ApplicationController
       else
         format.html {
           @form_sections = get_form_sections
-          p '@@@@@@@@@@@@@@@' << @form_sections.inspect
           render :action => "edit"
         }
         format.xml { render :xml => @child.errors, :status => :unprocessable_entity }

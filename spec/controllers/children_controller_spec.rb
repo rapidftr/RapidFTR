@@ -518,7 +518,7 @@ describe ChildrenController do
     before do
       user = User.new(:user_name => "some-name")
       user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::ACCESS_ALL_DATA])])
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:access_all_data]])])
       fake_login user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
     end

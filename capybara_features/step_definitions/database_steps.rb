@@ -1,7 +1,7 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   permissions = []
-  permissions.push(Permission::ADMIN) if user_type.downcase == "admin" and permission.nil?
-  permissions.push(Permission::REGISTER_CHILD) if user_type.downcase == "user" and permission.nil?
+  permissions.push(Permission::ADMIN[:admin]) if user_type.downcase == "admin" and permission.nil?
+  permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
   permissions.push(permission) if permission
   role = Role.create(:name => permissions.join("-"), :permissions => permissions)
   @user = User.new(

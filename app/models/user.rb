@@ -90,7 +90,7 @@ class User < CouchRestRails::Document
   end
 
   def user_type # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(Permission::ADMIN) ? "Administrator" : "User"
+    has_permission?(Permission::ADMIN[:admin]) ? "Administrator" : "User"
   end
 
   def roles

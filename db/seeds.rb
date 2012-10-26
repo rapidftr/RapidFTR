@@ -10,9 +10,9 @@ def should_seed? model
 end
 
 if should_seed? User
-  admin = Role.create(:name => "admin", :permissions => [Permission::ADMIN])
-  field_worker = Role.create(:name => "field worker", :permissions => [Permission::REGISTER_CHILD])
-  field_admin = Role.create(:name => "field admin", :permissions => [Permission::ACCESS_ALL_DATA])
+  admin = Role.create(:name => "admin", :permissions => [Permission::ADMIN[:admin]])
+  field_worker = Role.create(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
+  field_admin = Role.create(:name => "field admin", :permissions => [Permission::CHILDREN[:access_all_data]])
   User.create("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",

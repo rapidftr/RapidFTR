@@ -23,7 +23,7 @@ describe RolesController do
     end
 
     it "should create the role with the given params" do
-      params = {"name" => "some_role", "description" => "roles description", "permissions" => [Permission::EDIT_CHILD, Permission::REGISTER_CHILD]}
+      params = {"name" => "some_role", "description" => "roles description", "permissions" => [Permission::CHILDREN[:edit], Permission::CHILDREN[:register_child]]}
       Role.should_receive(:new).with(params).and_return(mock(:save => true))
 
       post :create, {:role => params}
@@ -32,7 +32,7 @@ describe RolesController do
     end
 
     it "should throw error if the role is invalid" do
-      params = {"permissions" => [Permission::ADMIN]}
+      params = {"permissions" => [Permission::ADMIN[:admin]]}
       Role.should_receive(:new).and_return(role = mock_model(Role))
       role.should_receive(:save).and_return(false)
 

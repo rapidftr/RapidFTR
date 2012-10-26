@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'spec_helper'
 
-def should_populate_form_section(action)
-  get action, :formsection_id => @form_section.unique_id, :type => "text_field"
-  assigns[:form_section].should == @form_section
-end
-
 describe FieldsController do
   before :each do
     fake_admin_login
@@ -18,7 +13,8 @@ describe FieldsController do
      end
      
      it "populates the view with the selected form section"do
-       should_populate_form_section(:new)
+      get :new, {:formsection_id => @form_section.unique_id, :type => "text_field"}
+      assigns[:form_section].should == @form_section
      end
      
      it "populates suggested fields with all unused suggested fields" do
@@ -29,21 +25,6 @@ describe FieldsController do
      end
      
    end
-   
-   describe "get new text field" do
-     
-     before :each do
-       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
-       FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
-     end
-     
-     it "populates the view with the selected form section"do
-        should_populate_form_section(:new)
-      end
-     
-   end
-   
- 
    
   describe "post create" do
 

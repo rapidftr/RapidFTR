@@ -1,18 +1,14 @@
 class Permission
-
-  ADMIN = "admin"
-  LIMITED = "limited"
-  ACCESS_ALL_DATA = "Access all data"
-  REGISTER_CHILD = "Register Child"
-  EDIT_CHILD = "Edit Child"
-  CREATE_EDIT_USERS = "Create and Edit Users"
-  VIEW_USERS = "View Users"
+  
+  ADMIN = {:admin => "Admin"}
+  CHILDREN = {:register => "Register Child", :edit => "Edit Child", :access_all_data => "Access all data"}
+  FORMS = {}
+  USERS = {:create_and_edit => "Create and Edit Users", :view => "View Users"}
+  DEVICES = {}
+  REPORTS = {}
 
   def self.all
-    [ADMIN, ACCESS_ALL_DATA, REGISTER_CHILD, EDIT_CHILD,CREATE_EDIT_USERS,VIEW_USERS].sort
+    {"Admin" => ADMIN, "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS}
   end
 
-  def self.all_including_default
-    [ ADMIN, LIMITED, ACCESS_ALL_DATA ].sort
-  end
 end

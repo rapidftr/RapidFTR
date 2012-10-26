@@ -68,12 +68,12 @@ describe Session do
     end
 
     it "should return true when user is an administrator" do
-      @user.should_receive(:roles).and_return([Role.new(:name => 'admin', :permissions => [Permission::ADMIN])])
+      @user.should_receive(:roles).and_return([Role.new(:name => 'admin', :permissions => [Permission::ADMIN[:admin]])])
       Session.for_user(@user, "").admin?.should == true
     end
 
     it "should return false when user is just a basic user" do
-      @user.should_receive(:roles).and_return([Role.new(:name => 'field worker', :permissions => [Permission::REGISTER_CHILD])])
+      @user.should_receive(:roles).and_return([Role.new(:name => 'field worker', :permissions => [Permission::CHILDREN[:register]])])
       Session.for_user(@user, "").admin?.should == false
     end
   end
@@ -89,11 +89,11 @@ describe Session do
     end
 
     it "should return true when user has permission" do
-      @session.has_permission?(:a).should be_true
+      @session.has_permission?("a").should be_true
     end
 
     it "should return false when user has permission" do
-      @session.has_permission?(:c).should be_false
+      @session.has_permission?("c").should be_false
     end
   end
 
