@@ -1,5 +1,6 @@
 .idea/*
-db/*
+db/couch
+db/couch/*
 log/*
 tmp/*
 rerun.txt
