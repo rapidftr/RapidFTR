@@ -78,6 +78,7 @@ Scenario: Should be able to set devices to black listed
     | imei | blacklisted | user_name |
     | 123456 | false | tim |
     | 555666 | false | tim |
+  And I am logged out
   And I am logged in as an admin
   And I am on the edit user page for "tim"
   And I should see "123456"
