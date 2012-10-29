@@ -70,7 +70,7 @@ Scenario: Admin should be able to delete another user but not themselves
   And I should not see "Delete User" for "admin"
   When I follow "Delete User"
   Then user "gui" should not exist on the page
-  
+
 Scenario: Should be able to set devices to black listed
 
   Given a user "tim"
@@ -95,8 +95,10 @@ Scenario: Admin should not see "Disable" control or change role control when she
   And I should not see "Roles" within "form"
   Then I should not see "Disabled"
 
-Scenario: User should be able to edit their own general information, but should not be able to edit their devices
-  Given "mary" is logged in
+Scenario: User with Create/Edit Users permission should be able to edit their own general information, but should not be able to edit their devices
+  Given a user "jerry" with a password "123" and "Create and Edit Users" permission
+  And I am logged out
+  And I am logged in as "jerry"
   And I follow "Account"
   And I click text "Edit"
   Then I should not see "IMEI"
