@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
 
-  before_filter :administrators_only, :only =>[:destroy]
   before_filter :clean_role_names, :only => [ :update, :create ]
 
   def index
@@ -72,6 +71,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    raise AuthorizationFailure.new('Not permitted to delete the User') if cannot? :destroy , User
     @user = User.get(params[:id])
     @user.destroy
     redirect_to(users_url)

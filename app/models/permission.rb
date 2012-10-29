@@ -2,7 +2,7 @@ class Permission
   
   def self.to_ordered_hash2 *hashes
     ordered = ActiveSupport::OrderedHash.new
-    
+
     hashes.each do |hash|
       hash.each {|key, value| ordered[key] = value}
     end

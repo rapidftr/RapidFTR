@@ -8,15 +8,9 @@ describe UsersController do
     Session.stub(:get).and_return(fake_session)
   end
 
-  def fake_view_user_login
+  def fake_login_as(permission)
     user = User.new(:user_name => 'fakelimited')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
-    fake_login user
-  end
-
-  def fake_create_edit_user_login
-    user = User.new(:user_name => 'fakelimited')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:create_and_edit]])])
+    user.stub!(:roles).and_return([Role.new(:permissions => [permission])])
     fake_login user
   end
 
@@ -110,7 +104,7 @@ describe UsersController do
     end
 
     it "should throw error if an user without authorization tries to access" do
-      fake_view_user_login
+      fake_login_as(Permission::USERS[:view])
       controller.should_receive(:handle_authorization_failure).with(anything)
       get :new
     end
@@ -127,7 +121,7 @@ describe UsersController do
     end
 
     it "should not allow editing a non-self user for users without access" do
-      fake_view_user_login
+      fake_login_as(Permission::USERS[:view])
       User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
       mock_user.should_receive(:user_name).with(no_args()).and_return('not-self')
       controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
@@ -135,7 +129,7 @@ describe UsersController do
     end
 
     it "should allow editing a non-self user for user having edit permission" do
-      fake_create_edit_user_login
+      fake_login_as(Permission::USERS[:create_and_edit])
       mock_user = mock(:full_name => "Test Name", :user_name => 'fakeuser')
       User.stub!(:get).with("24").and_return(mock_user)
       controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
@@ -158,13 +152,18 @@ describe UsersController do
     end
 
     it "should not allow a destroy" do
-      fake_login
-      fake_session = Session.new()
-      fake_session.stub(:admin?).with(no_args()).and_return(false)
-      Session.stub(:get).and_return(fake_session)
-
+      fake_login_as(Permission::USERS[:create_and_edit])
       User.should_not_receive(:get).with("37").and_return(mock_user)
-      mock_user.should_not_receive(:destroy)
+      controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
+      delete :destroy, :id => "37"
+    end
+
+    it "should allow user deletion for relevant user role" do
+      fake_login_as(Permission::USERS[:destroy])
+      mock_user = mock()
+      User.should_receive(:get).with("37").and_return(mock_user)
+      mock_user.should_receive(:destroy).and_return(true)
+      controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
       delete :destroy, :id => "37"
     end
   end
@@ -184,7 +183,7 @@ describe UsersController do
 
     context "when admin user" do
       it "should allow to edit admin specific fields" do
-        fake_create_edit_user_login
+        fake_login_as(Permission::USERS[:create_and_edit])
         mock_user = mock({:user_name => "Some_name"})
         mock_user.should_receive(:update_attributes).with({"user_type" => "Administrator"})
         User.stub(:get).with("24").and_return(mock_user)
@@ -193,7 +192,7 @@ describe UsersController do
       end
 
       it "should render edit page and assign roles if validation fails" do
-        fake_create_edit_user_login
+        fake_login_as(Permission::USERS[:create_and_edit])
         Role.stub(:all).and_return(["roles"])
         mock_user = mock({:user_name => "Some_name"})
         User.stub(:get).with("24").and_return(mock_user)
@@ -204,7 +203,7 @@ describe UsersController do
     end
     context "create a user" do
       it "should create admin user if the admin user type is specified" do
-        fake_create_edit_user_login
+        fake_login_as(Permission::USERS[:create_and_edit])
         mock_user = User.new
         User.should_receive(:new).with({"role_names" => %w(Administrator)}).and_return(mock_user)
         mock_user.should_receive(:save).and_return(true)
