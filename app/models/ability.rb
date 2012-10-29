@@ -2,7 +2,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    
     if user.has_permission?(Permission::CHILDREN[:register])
         can [:index, :create], Child
         can [:read], Child do |child|

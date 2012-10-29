@@ -4,11 +4,10 @@ describe Ability do
 
   before :each do
     @user = User.new :user_name => 'test'
-    @session = Session.for_user(@user, "")
   end
   
   shared_examples "control classes and objects" do |classes, result|
-    before :each do @ability = Ability.new(@session) end
+    before :each do @ability = Ability.new(@user) end
     
     classes.each do |clazz|
       it "list child"   do @ability.can?(:index, clazz).should == result  end
@@ -20,7 +19,7 @@ describe Ability do
 
   describe '#admin' do
     before :each do 
-      @session.stub! :user => mock(:permissions => [ Permission::ADMIN[:admin]])
+      @user.stub!(:permissions => [ Permission::ADMIN[:admin]])
       end
 
     include_examples "control classes and objects", [Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], true
@@ -28,13 +27,13 @@ describe Ability do
 
   describe '#access all data' do
     before :each do 
-      @session.stub! :user => mock(:permissions => [ Permission::CHILDREN[:access_all_data]])
+      @user.stub!(:permissions => [ Permission::CHILDREN[:access_all_data]])
     end
       
       include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], false
 
       it "should have appropriate permissions" do 
-        ability = Ability.new(@session)
+        ability = Ability.new(@user)
         ability.can?(:index, Child).should be_true
         ability.can?(:create, Child).should be_true
         ability.can?(:read, Child.new).should be_true
@@ -44,13 +43,13 @@ describe Ability do
 
   describe '#register child' do
     before :each do 
-      @session.stub! :user => mock(:permissions => [ Permission::CHILDREN[:register]])
+      @user.stub!(:permissions => [ Permission::CHILDREN[:register]])
     end
 
     include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], false
 
     it "should have appropriate permissions" do 
-      ability = Ability.new(@session)
+      ability = Ability.new(@user)
       ability.can?(:index, Child).should be_true
       ability.can?(:create, Child).should be_true
       ability.can?(:read, Child.new).should be_false
@@ -61,34 +60,34 @@ describe Ability do
 
   describe '#view users' do
     it "it should view object" do
-      @session.stub! :user => mock(:permissions => [ Permission::USERS[:view]])
-      @ability = Ability.new(@session)
+      @user.stub!(:permissions => [ Permission::USERS[:view]])
+      @ability = Ability.new(@user)
       @ability.can?(:list, User).should == true
       @ability.can?(:read, User.new).should == true
     end
 
     it "should not view object " do
-      @session.stub! :user => mock(:permissions => [ Permission::CHILDREN[:register]])
-      @ability = Ability.new(@session)
+      @user.stub!(:permissions => [ Permission::CHILDREN[:register]])
+      @ability = Ability.new(@user)
       @ability.can?(:list, User).should == false
       @ability.can?(:read, User.new).should == false
     end
     it "cannot update user " do
-      @session.stub! :user => mock(:permissions => [ Permission::USERS[:view]])
-      @ability = Ability.new(@session)
+      @user.stub!(:permissions => [ Permission::USERS[:view]])
+      @ability = Ability.new(@user)
       @ability.can?(:update, User.new).should == false
       @ability.can?(:create, User.new).should == false
     end
   end
   describe '#edit child' do
     before :each do 
-      @session.stub! :user => mock(:permissions => [ Permission::CHILDREN[:edit]])
+      @user.stub!(:permissions => [ Permission::CHILDREN[:edit]])
     end
     
     include_examples "control classes and objects", [ ContactInformation, Device, FormSection, Session, SuggestedField, User, Role ], false
       
     it "should have appropriate permissions" do
-      ability = Ability.new(@session)
+      ability = Ability.new(@user)
       ability.can?(:index, Child).should be_true
       ability.can?(:read, Child.new).should be_false
       ability.can?(:update, Child.new).should be_false
@@ -99,14 +98,14 @@ describe Ability do
 
   describe '#create and edit users' do
     it "should be able to create users" do
-      @session.stub! :user => mock(:permissions => [ Permission::USERS[:create_and_edit]])
-      @ability = Ability.new(@session)
+      @user.stub!(:permissions => [ Permission::USERS[:create_and_edit]])
+      @ability = Ability.new(@user)
       @ability.can?(:create, User.new).should == true
       @ability.can?(:update, User.new).should == true
       end
     it "should be able to view users" do
-      @session.stub! :user => mock(:permissions => [ Permission::USERS[:create_and_edit]])
-      @ability = Ability.new(@session)
+      @user.stub!(:permissions => [ Permission::USERS[:create_and_edit]])
+      @ability = Ability.new(@user)
       @ability.can?(:list, User).should == true
       @ability.can?(:read, User.new).should == true
     end

@@ -43,14 +43,6 @@ class Session < CouchRestRails::Document
     self.id
   end
 
-  def has_permission?(permission)
-    user.permissions.include?(permission)
-  end
-
-  def admin? # Temporary method for backward compatibility, remove later
-    has_permission?(Permission::ADMIN[:admin])
-  end
-
   def full_name
     user.full_name
   end
