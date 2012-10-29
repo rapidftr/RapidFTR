@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def is_admin?
-    return session.admin? if session
+    return session.user.has_permission?(Permission::ADMIN[:admin]) if session
   end
 
   def submit_button(name = 'Save')
