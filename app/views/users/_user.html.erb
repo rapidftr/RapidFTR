@@ -1,15 +1,21 @@
-<tr id="user-row-<%=user.user_name%>">
-  <td><%=h user.full_name %></td>
-  <td class="user-name"><%=h user.user_name %></td>
-  <td><%=h user.user_type %></td>
+<tr id="user-row-<%= user.user_name %>">
+  <td><%= h user.full_name %></td>
+  <td class="user-name"><%= h user.user_name %></td>
+  <td><%= h user.user_type %></td>
   <td class="user-status">
     <%= render :partial => 'user_disabled_checkbox', :locals => {:user => user} %>
   </td>
-    <td><%= link_to 'Show', user %></td>
-    <td><%= link_to 'Edit', edit_user_path(user) %></td>
-    <td>
-      <% if current_user_name != user.user_name %>
-        <%= link_to 'Delete User', user, :confirm => 'Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User.', :method => :delete %></td>
-    <% end %>
+  <% if can? :show, User %>
+      <td><%= link_to 'Show', user %></td>
+  <% end %>
+  <% if can? :edit, User %>
+      <td><%= link_to 'Edit', edit_user_path(user) %></td>
+  <% end %>
+  <% if can? :delete, User %>
+      <td>
+        <% if current_user_name != user.user_name %>
+            <%= link_to 'Delete User', user, :confirm => 'Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User.', :method => :delete %></td>
+        <% end %>
+  <% end %>
   </td>
 </tr>

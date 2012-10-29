@@ -3,7 +3,13 @@
   <th>User Name</th>
   <th>User Type</th>
   <th>Disabled?</th>
-  <th></th>
-  <th></th>
-  <th></th>
+  <% if can? :show, User %>
+    <th></th>
+  <% end %>
+  <% if can? :edit, User %>
+      <th></th>
+  <% end %>
+  <% if can? :delete, User %>
+      <th></th>
+  <% end %>
 </tr>
