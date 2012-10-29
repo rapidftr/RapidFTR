@@ -98,7 +98,7 @@ class User < CouchRestRails::Document
   end
 
   def has_permission?(permission)
-    permissions && permissions.include?(permission.to_s)
+    permissions && permissions.include?(permission)
   end
 
   def permissions
