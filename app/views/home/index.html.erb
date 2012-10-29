@@ -11,7 +11,10 @@
       </p>
   <% end %>
 </p>
-<%= link_to 'Register New Child', new_child_path %> <br/><br/>
+	<% if can? :create, Child %>
+		<%= link_to 'Register New Child', new_child_path %> <br/><br/>
+	<% end %>
+	
 <%= link_to 'View All Children', children_path %> <br/><br/>
 <% if is_admin? %>
   <%= link_to @suspect_record_count.to_s + ' Records need Attention', child_filter_path("flagged") %> 
