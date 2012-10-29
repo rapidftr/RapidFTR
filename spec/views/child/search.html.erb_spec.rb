@@ -10,6 +10,9 @@ describe "children/search.html.erb" do
       @user = mock(:user)
       @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       @user.stub!(:localize_date).and_return("some date")
+      @user.stub!(:has_permission?).and_return(true)
+      controller.stub(:current_user).and_return(@user)
+      
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       @highlighted_fields = [
         { :name => "field_2", :display_name => "field display 2" },
