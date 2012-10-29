@@ -1,6 +1,6 @@
 class Permission
   
-  ADMIN = {:admin => "Admin"}
+  ADMIN = {:admin => "admin"}
   CHILDREN = {:register => "Register Child", :edit => "Edit Child", :access_all_data => "Access all data"}
   FORMS = {}
   USERS = {:create_and_edit => "Create and Edit Users", :view => "View Users"}

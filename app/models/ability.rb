@@ -27,6 +27,7 @@ class Ability
 
     if user.has_permission?(Permission::USERS[:create_and_edit])
       can :manage, User
+      cannot :destroy, User
     end
 
     if user.has_permission?(Permission::ADMIN[:admin])
