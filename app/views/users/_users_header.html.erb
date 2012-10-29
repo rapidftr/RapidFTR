@@ -2,7 +2,9 @@
   <th>Full Name</th>
   <th>User Name</th>
   <th>User Type</th>
-  <th>Disabled?</th>
+  <% if current_user.can_disable? %>
+    <th>Disabled?</th>
+  <% end %>
   <% if can? :show, User %>
     <th></th>
   <% end %>

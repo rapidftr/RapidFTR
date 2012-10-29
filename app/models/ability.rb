@@ -33,6 +33,10 @@ class Ability
       can [:destroy, :read], User
     end
 
+    if user.has_permission?(Permission::USERS[:disable])
+      can [:update,:read], User
+    end
+
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all
     end

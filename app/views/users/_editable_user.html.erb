@@ -87,7 +87,7 @@
       <%= f.text_field :location %>
     </p>
 
-    <% if !trying_to_edit_ourself %>
+    <% if !trying_to_edit_ourself  && current_user.can_disable?%>
         <p>
           <%= f.label :disabled, "Disabled?", :class=>'key' %>
           <%= f.check_box :disabled, {}, "true", "false" %>

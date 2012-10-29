@@ -2,9 +2,11 @@
   <td><%= h user.full_name %></td>
   <td class="user-name"><%= h user.user_name %></td>
   <td><%= h user.user_type %></td>
-  <td class="user-status">
-    <%= render :partial => 'user_disabled_checkbox', :locals => {:user => user} %>
-  </td>
+  <% if current_user.can_disable? %>
+      <td class="user-status">
+        <%= render :partial => 'user_disabled_checkbox', :locals => {:user => user} %>
+      </td>
+  <% end %>
   <% if can? :show, User %>
       <td><%= link_to 'Show', user %></td>
   <% end %>

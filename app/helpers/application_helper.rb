@@ -13,6 +13,10 @@ module ApplicationHelper
     Session.get_from_cookies(cookies)
   end
 
+  def current_user
+    session.user
+  end
+
   def is_admin?
     return session.user.has_permission?(Permission::ADMIN[:admin]) if session
   end
@@ -55,5 +59,7 @@ module ApplicationHelper
     end
     confirm_options
   end
+
+
 
 end

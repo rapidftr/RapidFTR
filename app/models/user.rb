@@ -20,20 +20,20 @@ class User < CouchRestRails::Document
   property :time_zone, :default => "UTC"
 
   attr_accessor :password_confirmation, :password
-  ADMIN_ASSIGNABLE_ATTRIBUTES = [ :role_names, :disabled ]
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_names, :disabled]
 
 
   timestamps!
 
   view_by :user_name,
-    :map => "function(doc) {
+          :map => "function(doc) {
               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
              {
                 emit(doc['user_name'],doc);
              }
           }"
   view_by :full_name,
-  :map => "function(doc) {
+          :map => "function(doc) {
               if ((doc['couchrest-type'] == 'User') && doc['full_name'])
              {
                 emit(doc['full_name'],doc);
@@ -49,22 +49,22 @@ class User < CouchRestRails::Document
     Session.delete_for user
   end
 
-  validates_presence_of :full_name,:message=>"Please enter full name of the user"
-  validates_presence_of :password_confirmation, :message=>"Please enter password confirmation", :if => :password_required?
+  validates_presence_of :full_name, :message => "Please enter full name of the user"
+  validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
   validates_presence_of :role_names, :message => "Please select at least one role"
 
-  validates_format_of :user_name,:with => /^[^ ]+$/, :message=>"Please enter a valid user name"
-  validates_format_of :password,:with => /^[^ ]+$/, :message=>"Please enter a valid password", :if => :new?
+  validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
+  validates_format_of :password, :with => /^[^ ]+$/, :message => "Please enter a valid password", :if => :new?
 
-  validates_format_of :email, :with =>  /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
-                      :message =>"Please enter a valid email address"
+  validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
+                      :message => "Please enter a valid email address"
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
-  validates_with_method   :user_name, :method => :is_user_name_unique
+  validates_with_method :user_name, :method => :is_user_name_unique
 
 
   def self.find_by_user_name(user_name)
-     User.by_user_name(:key => user_name.downcase).first
+    User.by_user_name(:key => user_name.downcase).first
   end
 
   def initialize args={}
@@ -94,7 +94,7 @@ class User < CouchRestRails::Document
   end
 
   def roles
-    @roles ||= role_names.collect{|name| Role.by_name(:key => name)}.flatten
+    @roles ||= role_names.collect { |name| Role.by_name(:key => name) }.flatten
   end
 
   def has_permission?(permission)
@@ -112,7 +112,7 @@ class User < CouchRestRails::Document
   def add_mobile_login_event imei, mobile_number
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
 
-    if (Device.all.none? {|device| device.imei == imei})
+    if (Device.all.none? { |device| device.imei == imei })
       device = Device.new(:imei => imei, :blacklisted => false, :user_name => self.user_name)
       device.save!
     end
@@ -137,6 +137,10 @@ class User < CouchRestRails::Document
 
   def user_assignable?(attributes)
     not ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
+  end
+
+  def can_disable?
+    has_permission?(Permission::USERS[:disable]) || has_permission?(Permission::ADMIN[:admin])
   end
 
   private
@@ -167,4 +171,5 @@ class User < CouchRestRails::Document
   def make_user_name_lowercase
     user_name.downcase!
   end
+
 end

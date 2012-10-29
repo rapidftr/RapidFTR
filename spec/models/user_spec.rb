@@ -2,28 +2,28 @@ require 'spec_helper'
 
 describe User do
 
-  def build_user( options = {} )
-    options.reverse_merge!( {
-      :user_name => "user_name_#{rand(10000)}",
-      :full_name => 'full name',
-      :password => 'password',
-      :password_confirmation => options[:password] || 'password',
-      :email => 'email@ddress.net',
-      :user_type => 'user_type',
-      :role_names => options[:role_names] || ['random_role_name'],
-    })
-    user = User.new( options)
+  def build_user(options = {})
+    options.reverse_merge!({
+                               :user_name => "user_name_#{rand(10000)}",
+                               :full_name => 'full name',
+                               :password => 'password',
+                               :password_confirmation => options[:password] || 'password',
+                               :email => 'email@ddress.net',
+                               :user_type => 'user_type',
+                               :role_names => options[:role_names] || ['random_role_name'],
+                           })
+    user = User.new(options)
     user
   end
 
-  def build_and_save_user( options = {} )
+  def build_and_save_user(options = {})
     user = build_user(options)
     user.save
     user
   end
-  
+
   describe "validations" do
-    
+
     it "should not be valid when username contains whitespace" do
       user = build_user :user_name => "in val id"
       user.should_not be_valid
@@ -37,19 +37,19 @@ describe User do
     end
 
     it "should not be valid when username already exists" do
-      build_and_save_user :user_name => "existing_user" 
+      build_and_save_user :user_name => "existing_user"
       user = build_user :user_name => "existing_user"
       user.should_not be_valid
       user.errors.on(:user_name).should == ["User name has already been taken! Please select a new User name"]
     end
-        
+
     it "should not be valid when email address is invalid" do
       user = build_user :email => "invalid_email"
       user.should_not be_valid
-      user.errors.on(:email).should == ["Please enter a valid email address"]      
-    end    
+      user.errors.on(:email).should == ["Please enter a valid email address"]
+    end
   end
-  
+
   it 'should validate uniqueness of username for new users' do
     user = build_user(:user_name => 'the_user_name')
     user.should be_valid
@@ -64,7 +64,7 @@ describe User do
     raise user.errors.full_messages.inspect unless user.valid?
     user.create!
 
-    reloaded_user = User.get( user.id )
+    reloaded_user = User.get(user.id)
     raise reloaded_user.errors.full_messages.inspect unless reloaded_user.valid?
     reloaded_user.should be_valid
   end
@@ -90,7 +90,7 @@ describe User do
     user = build_user
     user.create!
 
-    reloaded_user = User.get( user.id )
+    reloaded_user = User.get(user.id)
 
     reloaded_user.should_not == user
     reloaded_user.should_not eql(user)
@@ -167,7 +167,7 @@ describe User do
     user.create!
     user.add_mobile_login_event("an imei", "a mobile")
 
-    Device.all.all? {|device| device.blacklisted? }.should be_false
+    Device.all.all? { |device| device.blacklisted? }.should be_false
   end
 
   it "should save blacklisted devices to the device list" do
@@ -184,25 +184,25 @@ describe User do
   end
 
   it "should have error on password_confirmation if no password_confirmation" do
-    user = build_user( {
-      :password => "timothy",
-      :password_confirmation => ""
-    })
+    user = build_user({
+                          :password => "timothy",
+                          :password_confirmation => ""
+                      })
     user.should_not be_valid
     user.errors[:password_confirmation].should_not be_nil
   end
 
   it "should localize date using user's timezone" do
     user = build_user({
-      :time_zone => "Samoa"
-    })
+                          :time_zone => "Samoa"
+                      })
     user.localize_date("2011-11-12 21:22:23 UTC").should == "12 November 2011 at 10:22 (SST)"
   end
 
   it "should localize date using specified format" do
     user = build_user({
-      :time_zone => "UTC"
-    })
+                          :time_zone => "UTC"
+                      })
     user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
   end
 
@@ -214,7 +214,7 @@ describe User do
     Role.should_not_receive(:get)
     user.roles.should == [role]
   end
-  
+
   describe "#user_assignable?" do
     before { @user = build_user }
     it "role ids should not be assignable" do
@@ -223,6 +223,7 @@ describe User do
     it "disabled should not be assignable" do
       should_not_assignable :disabled
     end
+
     def should_not_assignable(name)
       @user.user_assignable?(name => "").should be_false
     end
@@ -232,9 +233,8 @@ describe User do
     it "should store the roles and retrive them back as Roles" do
       admin_role = Role.create!(:name => "Admin", :permissions => [Permission::ADMIN[:admin]])
       field_worker_role = Role.create!(:name => "Field Worker", :permissions => [Permission::CHILDREN[:register]])
-      user = build_and_save_user(:roles => [admin_role, field_worker_role])
-      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password',:password_confirmation => 'password',
-                          :email => 'em@dd.net',:user_type => 'user_type', :role_names => [admin_role.name, field_worker_role.name] })
+      user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password', :password_confirmation => 'password',
+                          :email => 'em@dd.net', :user_type => 'user_type', :role_names => [admin_role.name, field_worker_role.name]})
 
       User.find_by_user_name(user.user_name).roles.should == [admin_role, field_worker_role]
     end
@@ -243,6 +243,25 @@ describe User do
       user = build_user(:role_names => [])
       user.should_not be_valid
       user.errors.on(:role_names).should == ["Please select at least one role"]
+    end
+  end
+
+  describe "can disable" do
+    it "should return true if the user has permission to disable or if the user is admin" do
+      Role.all.each { |r| r.destroy }
+      admin_role = Role.create!(:name => "Admin", :permissions => [Permission::ADMIN[:admin]])
+      disable_user = Role.create!(:name => "Disable User", :permissions => [Permission::USERS[:disable]])
+      create_user = Role.create!(:name => "Create User", :permissions => [Permission::USERS[:create_and_edit]])
+
+      user = build_and_save_user(:role_names => [admin_role.name])
+      user.can_disable?.should == true
+
+      user = build_and_save_user(:role_names => [disable_user.name])
+      user.can_disable?.should == true
+
+      user = build_and_save_user(:role_names => [create_user.name])
+      user.can_disable?.should == false
+
     end
   end
 end
