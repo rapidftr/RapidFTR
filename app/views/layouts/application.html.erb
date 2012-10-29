@@ -26,6 +26,7 @@
 </head>
 <body class="<%= @body_class %>">
 <div class="page_container">
+  <% if render_header? %>
   <header>
     <div class="logo">RapidFTR logo</div>
     <div class="links">
@@ -52,6 +53,7 @@
     </div>
 
   </div>
+  <% end %>
 
   <div class="page-content">
 
