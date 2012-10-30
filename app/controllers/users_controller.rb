@@ -1,38 +1,29 @@
 class UsersController < ApplicationController
 
-  before_filter :clean_role_names, :only => [ :update, :create ]
+  before_filter :clean_role_names, :only => [:update, :create]
+  before_filter :load_user, :only => [:show, :edit, :update, :destroy]
 
   def index
+    authorize! :read, User
     @users = User.view("by_full_name")
     @users_details = users_details
-    raise AuthorizationFailure.new('Not permitted to view page') if cannot? :read , User
   end
 
   def show
-    @user = User.get(params[:id])
-    if @user.nil?
-      flash[:error] = "User with the given id is not found"
-      redirect_to :action => :index and return
-    end
-    if @user.user_name != current_user_name and cannot?(:show, User)
-      raise AuthorizationFailure.new('Not permitted to view page')
-    end
+    authorize! :show, User unless @user.user_name == current_user.user_name
   end
 
   def new
+    authorize! :create, User
     @page_name = 'New User'
     @user = User.new
     @roles = Role.all
-    raise AuthorizationFailure.new('Not permitted to view page') if cannot? :create , User
   end
 
   def edit
-    @user = User.get(params[:id])
+    authorize! :edit, User unless @user.user_name == current_user.user_name
     @page_name = "Account: #{@user.full_name}"
     @roles = Role.all
-    if @user.user_name != current_user_name and cannot?(:edit, User)
-      raise AuthorizationFailure.new('Not permitted to view page')
-    end
   end
 
   def create
@@ -47,12 +38,9 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.get(params[:id])
-    if  @user.user_name != current_user_name and cannot?(:update, User)
-      raise AuthorizationFailure.new('Not permitted to view page')
-    end
+    authorize! :update, User unless @user.user_name == current_user.user_name
 
-    if cannot?(:update,User)
+    if cannot?(:update, User)
       unless @user.user_assignable? params[:user]
         raise AuthorizationFailure.new('Not permitted to assign admin specific fields')
       end
@@ -71,13 +59,19 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    raise AuthorizationFailure.new('Not permitted to delete the User') if cannot? :destroy , User
-    @user = User.get(params[:id])
+    authorize! :destroy, User
     @user.destroy
     redirect_to(users_url)
   end
 
   private
+  def load_user
+    @user = User.get(params[:id])
+    if @user.nil?
+      flash[:error] = "User with the given id is not found"
+      redirect_to :action => :index and return
+    end
+  end
 
   def clean_role_names
     params[:user][:role_names] = clean_params(params[:user][:role_names]) if params[:user][:role_names]

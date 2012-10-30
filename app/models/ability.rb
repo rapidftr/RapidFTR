@@ -25,8 +25,8 @@ class Ability
     end
 
     if user.has_permission?(Permission::USERS[:create_and_edit])
-      can :manage, User
-      cannot :destroy, User
+      can [:manage], User
+      cannot [:destroy], User
     end
 
     if user.has_permission?(Permission::USERS[:destroy])
@@ -34,11 +34,12 @@ class Ability
     end
 
     if user.has_permission?(Permission::USERS[:disable])
-      can [:update,:read], User
+      can [:update, :read], User
     end
 
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all
     end
+
   end
 end

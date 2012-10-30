@@ -43,22 +43,22 @@ describe UsersController do
       Session.stub(:get).and_return(fake_session)
       mock_user = mock_user({:merge => {}, :user_name => "someone"})
       User.stub!(:view).and_return([mock_user])
-      controller.should_receive(:handle_authorization_failure).with(anything)
       get :index
+      response.should render_template("#{Rails.root}/public/403.html")
     end
 
     it "should authorize index page for read only users" do
       user = User.new(:user_name => 'view_user')
       user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
       fake_login user
-      controller.should_not_receive(:handle_authorization_failure).with(anything)
       get :index
+      response.should_not render_template("#{Rails.root}/public/403.html")
     end
   end
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      mock_user = mock(:user_name => "UserName")
+      mock_user = mock(:user_name => "fakeadmin")
       User.stub!(:get).with("37").and_return(mock_user)
       get :show, :id => "37"
       assigns[:user].should equal(mock_user)
@@ -77,6 +77,7 @@ describe UsersController do
       User.stub!(:get).with("24").and_return(mock_user)
       controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
       get :show, :id => "24"
+      response.should_not render_template("#{Rails.root}/public/403.html")
       assigns[:user].should_not == nil
     end
 
@@ -84,8 +85,8 @@ describe UsersController do
       fake_login
       mock_user = mock({:user_name => 'some_random'})
       User.stub!(:get).with("37").and_return(mock_user)
-      controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
       get :show, :id => "37"
+      response.should render_template("#{Rails.root}/public/403.html")
     end
   end
 
@@ -105,8 +106,8 @@ describe UsersController do
 
     it "should throw error if an user without authorization tries to access" do
       fake_login_as(Permission::USERS[:view])
-      controller.should_receive(:handle_authorization_failure).with(anything)
       get :new
+      response.should render_template("#{Rails.root}/public/403.html")
     end
   end
 
@@ -124,16 +125,16 @@ describe UsersController do
       fake_login_as(Permission::USERS[:view])
       User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
       mock_user.should_receive(:user_name).with(no_args()).and_return('not-self')
-      controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
       get :edit, :id => "37"
+      response.should render_template("#{Rails.root}/public/403.html")
     end
 
     it "should allow editing a non-self user for user having edit permission" do
       fake_login_as(Permission::USERS[:create_and_edit])
       mock_user = mock(:full_name => "Test Name", :user_name => 'fakeuser')
       User.stub!(:get).with("24").and_return(mock_user)
-      controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
       get :edit, :id => "24"
+      response.should_not render_template("#{Rails.root}/public/403.html")
     end
   end
 
@@ -153,9 +154,9 @@ describe UsersController do
 
     it "should not allow a destroy" do
       fake_login_as(Permission::USERS[:create_and_edit])
-      User.should_not_receive(:get).with("37").and_return(mock_user)
-      controller.should_receive(:handle_authorization_failure).with(anything).and_return(anything)
+      User.stub!(:get).and_return(mock_user(:destroy => true))
       delete :destroy, :id => "37"
+      response.should render_template("#{Rails.root}/public/403.html")
     end
 
     it "should allow user deletion for relevant user role" do
@@ -163,8 +164,8 @@ describe UsersController do
       mock_user = mock()
       User.should_receive(:get).with("37").and_return(mock_user)
       mock_user.should_receive(:destroy).and_return(true)
-      controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
       delete :destroy, :id => "37"
+      response.should_not render_template("#{Rails.root}/public/403.html")
     end
   end
 
@@ -176,8 +177,8 @@ describe UsersController do
         User.stub(:get).with("24").and_return(mock_user)
         controller.stub(:current_user_name).and_return("test_user")
         mock_user.stub(:user_assignable?).and_return(false)
-        controller.should_receive(:handle_authorization_failure)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
+        response.should render_template("#{Rails.root}/public/403.html")
       end
     end
 
@@ -187,8 +188,9 @@ describe UsersController do
         mock_user = mock({:user_name => "Some_name"})
         mock_user.should_receive(:update_attributes).with({"user_type" => "Administrator"})
         User.stub(:get).with("24").and_return(mock_user)
-        controller.should_not_receive(:handle_authorization_failure)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
+        response.should_not render_template("#{Rails.root}/public/403.html")
+
       end
 
       it "should render edit page and assign roles if validation fails" do

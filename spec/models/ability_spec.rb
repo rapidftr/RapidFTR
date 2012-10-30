@@ -117,7 +117,6 @@ describe Ability do
     it "should be able to view users" do
       @user.stub!(:permissions => [Permission::USERS[:create_and_edit]])
       @ability = Ability.new(@user)
-      @ability.can?(:list, User).should == true
       @ability.can?(:read, User.new).should == true
     end
   end
