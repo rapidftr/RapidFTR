@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    app_session.user
+    @current_user = app_session.user
   end
 
   def send_pdf(pdf_data,filename)

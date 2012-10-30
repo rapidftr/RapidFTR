@@ -9,7 +9,7 @@ describe "users/_mobile_login_history.html.erb" do
       user.add_mobile_login_event('1234', '01234 56789')
       user.time_zone = TZInfo::Timezone.get("US/Samoa")
 
-      assign(:user, user)
+      assign(:current_user, user)
       render
 
       rendered.should have_tag(".device-information") do

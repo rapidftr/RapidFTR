@@ -18,7 +18,7 @@ describe "children/search.html.erb" do
         { :name => "field_2", :display_name => "field display 2" },
         { :name => "field_4", :display_name => "field display 4" } ]
       FormSection.stub!(:sorted_highlighted_fields).and_return @highlighted_fields
-      assign(:user, @user)
+      assign(:current_user, @user)
       assign(:results, @results)
     end
 
