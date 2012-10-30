@@ -180,15 +180,6 @@ describe UsersController do
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
         response.should render_template("#{Rails.root}/public/403.html")
       end
-
-      it "should not allow users with disabled permission to update other fields" do
-        fake_login_as(Permission::USERS[:disable])
-        mock_user = mock({:user_name => "Some_name"})
-        mock_user.should_not_receive(:update_attributes).with(anything)
-        User.stub(:get).with("24").and_return(mock_user)
-        controller.should_receive(:handle_authorization_failure).with(anything)
-        post :update, {:id => "24", :user => {:user_type => "Administrator",:disabled => true}}
-      end
     end
 
     context "when admin user" do
