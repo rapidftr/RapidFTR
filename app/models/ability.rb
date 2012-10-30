@@ -20,6 +20,10 @@ class Ability
       can :manage, Child
     end
 
+    if user.has_permission?(Permission::CHILDREN[:export])
+      can :export, Child
+    end
+
     if user.has_permission?(Permission::USERS[:view])
       can [:read, :show, :list], User
     end
