@@ -41,6 +41,7 @@ class UsersController < ApplicationController
     authorize! :update, User unless @user.user_name == current_user.user_name
     raise_authorization_exception('Not permitted to assign role names') if illegal_access_to_role_names?
     raise_authorization_exception('Not permitted to assign admin specific fields') if illegal_access_to_disable_flag?
+    raise_authorization_exception('Not permitted to update any other fields') if illegal_access_of_params?
 
     if @user.update_attributes(params[:user])
       if request.xhr?
@@ -91,6 +92,11 @@ class UsersController < ApplicationController
   def illegal_access_to_disable_flag?
     cannot?(:update_disable_flag, User) and @user.has_disable_field? params[:user]
   end
+
+  def illegal_access_of_params?
+    can?(:update_disable_flag, User) and params[:user].keys != %w(disabled)
+  end
+
 
   def raise_authorization_exception(message)
     raise AuthorizationFailure.new(message)
