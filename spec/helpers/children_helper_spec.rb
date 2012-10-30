@@ -57,8 +57,8 @@ describe ChildrenHelper do
 
   describe "#flag_summary_for_child" do
     it "should show the flag summary for the child" do
-      @user = mock(:user)
-      @user.stub!(:localize_date).and_return "19 September 2012 at 18:39 (UTC)"
+      @current_user = mock(:user)
+      @current_user.stub!(:localize_date).and_return "19 September 2012 at 18:39 (UTC)"
 
       child = Child.new(:name => "Flagged Child",
                         :flag_message => "Fake entity",

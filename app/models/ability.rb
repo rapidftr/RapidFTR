@@ -2,6 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+
     if user.has_permission?(Permission::CHILDREN[:register])
       can [:index, :create], Child
       can [:read], Child do |child|
@@ -30,6 +31,7 @@ class Ability
 
     if user.has_permission?(Permission::USERS[:create_and_edit])
       can [:manage], User
+      cannot [:update_disable_flag], User
       cannot [:destroy], User
     end
 
@@ -39,7 +41,7 @@ class Ability
 
     if user.has_permission?(Permission::USERS[:disable])
       can [:update, :read], User
-      cannot [:edit], User
+      can [:update_disable_flag], User
     end
 
     if user.has_permission?(Permission::ADMIN[:admin])

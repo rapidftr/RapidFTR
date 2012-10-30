@@ -215,18 +215,15 @@ describe User do
     user.roles.should == [role]
   end
 
-  describe "#user_assignable?" do
+  describe "check params in hash" do
     before { @user = build_user }
     it "role ids should not be assignable" do
-      should_not_assignable :role_names
+      @user.has_role_names?({:role_names => ""}).should be_true
     end
     it "disabled should not be assignable" do
-      should_not_assignable :disabled
+      @user.has_disable_field?({:disabled => ""}).should be_true
     end
 
-    def should_not_assignable(name)
-      @user.user_assignable?(name => "").should be_false
-    end
   end
 
   describe "user roles" do
