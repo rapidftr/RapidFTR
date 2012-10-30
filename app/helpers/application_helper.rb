@@ -9,10 +9,6 @@ module ApplicationHelper
     return session.user_name unless session.nil? or session.user_name.nil?
   end
 
-  def render_header?
-    current_user_name != nil
-  end
-
   def session
     Session.get_from_cookies(cookies)
   end
