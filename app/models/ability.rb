@@ -39,6 +39,7 @@ class Ability
 
     if user.has_permission?(Permission::USERS[:disable])
       can [:update, :read], User
+      cannot [:edit], User
     end
 
     if user.has_permission?(Permission::ADMIN[:admin])

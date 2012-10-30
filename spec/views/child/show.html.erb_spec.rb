@@ -15,7 +15,7 @@ describe "children/show.html.erb" do
 
       assign(:form_sections,[@form_section])
       assign(:child, @child)
-      assign(:user, User.new)
+      assign(:current_user, User.new)
       assign(:duplicates, Array.new)
     end
 
