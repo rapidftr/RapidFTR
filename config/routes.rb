@@ -32,6 +32,7 @@ RapidFTR::Application.routes.draw do
 
   resources :users
   resources :user_preferences
+  resources :devices
 
 
   resources :roles
