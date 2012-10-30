@@ -34,7 +34,7 @@ describe ChildrenController do
       end
 
       it "GET search" do
-        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:read, Child).and_return(false);
         get :search
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -478,7 +478,7 @@ describe ChildrenController do
     before do
       user = User.new(:user_name => "some-name")
       user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:access_all_data]])])
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search]])])
       fake_login user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
     end

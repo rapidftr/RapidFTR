@@ -16,7 +16,8 @@ module FakeLogin
 
   def fake_field_admin_login
     user = User.new(:user_name => 'fakefieldadmin')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:access_all_data]])])
+    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search],
+                                                             Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])])
     fake_login user
   end
 

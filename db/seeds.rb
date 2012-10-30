@@ -12,7 +12,8 @@ end
 if should_seed? User
   admin = Role.create(:name => "admin", :permissions => [Permission::ADMIN[:admin]])
   field_worker = Role.create(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
-  field_admin = Role.create(:name => "field admin", :permissions => [Permission::CHILDREN[:access_all_data]])
+  field_admin = Role.create(:name => "field admin", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create],
+                                                                     Permission::CHILDREN[:edit]])
   User.create("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",

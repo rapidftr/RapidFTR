@@ -15,10 +15,13 @@ class Ability
       can [:read, :update], Child do |child|
         child.created_by == user.user_name
       end
+      if user.has_permission?(Permission::CHILDREN[:view_and_search])
+        can [:update], Child
+      end
     end
 
-    if user.has_permission?(Permission::CHILDREN[:access_all_data])
-      can :manage, Child
+    if user.has_permission?(Permission::CHILDREN[:view_and_search])
+      can [:index, :read], Child
     end
 
     if user.has_permission?(Permission::CHILDREN[:export])

@@ -1,5 +1,5 @@
 class Permission
-  
+
   def self.to_ordered_hash2 *hashes
     ordered = ActiveSupport::OrderedHash.new
 
@@ -10,7 +10,8 @@ class Permission
   end
 
   ADMIN    = Permission.to_ordered_hash2({:admin, "Admin"})
-  CHILDREN = Permission.to_ordered_hash2({:register => "Register Child"}, {:edit => "Edit Child"},{:export => "Export to Photowall/CSV/PDF"}, {:access_all_data => "Access all data"})
+  CHILDREN = Permission.to_ordered_hash2({:register => "Register Child"}, {:edit => "Edit Child"},
+                                         {:view_and_search => "View And Search Child"}, {:export => "Export to Photowall/CSV/PDF"})
   FORMS    = Permission.to_ordered_hash2({})
   USERS    = Permission.to_ordered_hash2({:create_and_edit => "Create and Edit Users"},{:view => "View Users"},{:destroy => "Delete Users"},{:disable => "Disable Users"})
   DEVICES  = Permission.to_ordered_hash2({:black_list => "BlackList Devices"})

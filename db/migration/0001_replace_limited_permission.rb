@@ -8,7 +8,9 @@ end
 
 field_admin = User.find_by_user_name("unlimited")
 if field_admin
-  role = Role.find_by_name("Field Admin") || Role.create(:name => "field admin", :permissions => [Permission::CHILDREN[:access_all_data]])
+  role = Role.find_by_name("Field Admin") || Role.create(:name => "field admin",
+                                                         :permissions => [Permission::CHILDREN[:view_and_search],
+Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
   field_admin.user_name = "field_admin"
   field_admin.role_names = [role.name]
   field_admin.save!
