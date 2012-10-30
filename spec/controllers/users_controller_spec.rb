@@ -176,7 +176,7 @@ describe UsersController do
         mock_user = mock({:user_name => "User_name"})
         User.stub(:get).with("24").and_return(mock_user)
         controller.stub(:current_user_name).and_return("test_user")
-        mock_user.stub(:user_assignable?).and_return(false)
+        mock_user.stub(:has_role_names?).and_return(false)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -186,22 +186,43 @@ describe UsersController do
       it "should allow to edit admin specific fields" do
         fake_login_as(Permission::USERS[:create_and_edit])
         mock_user = mock({:user_name => "Some_name"})
+        mock_user.should_receive(:has_disable_field?).with({"user_type" => "Administrator"}).and_return(false)
         mock_user.should_receive(:update_attributes).with({"user_type" => "Administrator"})
         User.stub(:get).with("24").and_return(mock_user)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
         response.should_not render_template("#{Rails.root}/public/403.html")
-
       end
 
       it "should render edit page and assign roles if validation fails" do
         fake_login_as(Permission::USERS[:create_and_edit])
         Role.stub(:all).and_return(["roles"])
         mock_user = mock({:user_name => "Some_name"})
+        mock_user.should_receive(:has_disable_field?).with({"user_type" => "Administrator"}).and_return(false)
         User.stub(:get).with("24").and_return(mock_user)
         mock_user.should_receive(:update_attributes).and_return(false)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
         assigns[:roles].should == ["roles"]
       end
+
+      it "should not allow to edit disable fields for non-disable users" do
+        fake_login_as(Permission::USERS[:create_and_edit])
+        mock_user = mock({:user_name => "Some_name"})
+        mock_user.should_receive(:has_disable_field?).with({"user_type"=>"Administrator", "disabled"=>true}).and_return(true)
+        mock_user.should_not_receive(:update_attributes).with(anything)
+        User.stub(:get).with("24").and_return(mock_user)
+        controller.should_receive(:handle_authorization_failure).with(anything)
+        post :update, {:id => "24", :user => {:user_type => "Administrator", :disabled => true}}
+      end
+
+      it "should allow to edit disable fields for disable users" do
+        fake_login_as(Permission::USERS[:disable])
+        mock_user = mock({:user_name => "Some_name"})
+        mock_user.should_receive(:update_attributes).with({"disabled"=>true})
+        User.stub(:get).with("24").and_return(mock_user)
+        controller.should_not_receive(:handle_authorization_failure).with(anything)
+        post :update, {:id => "24", :user => {:disabled => true}}
+      end
+
     end
     context "create a user" do
       it "should create admin user if the admin user type is specified" do

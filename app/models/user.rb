@@ -20,7 +20,7 @@ class User < CouchRestRails::Document
   property :time_zone, :default => "UTC"
 
   attr_accessor :password_confirmation, :password
-  ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_names, :disabled]
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_names]
 
 
   timestamps!
@@ -135,8 +135,12 @@ class User < CouchRestRails::Document
     DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
 
-  def user_assignable?(attributes)
-    not ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
+  def has_role_names?(attributes)
+    ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
+  end
+
+  def has_disable_field?(attributes)
+    [:disabled].any? { |e| attributes.keys.include? e }
   end
 
   def can_disable?

@@ -39,12 +39,9 @@ class UsersController < ApplicationController
 
   def update
     authorize! :update, User unless @user.user_name == current_user.user_name
+    raise_authorization_exception('Not permitted to assign role names') if illegal_access_to_role_names?
+    raise_authorization_exception('Not permitted to assign admin specific fields') if illegal_access_to_disable_flag?
 
-    if cannot?(:update, User)
-      unless @user.user_assignable? params[:user]
-        raise AuthorizationFailure.new('Not permitted to assign admin specific fields')
-      end
-    end
     if @user.update_attributes(params[:user])
       if request.xhr?
         render :text => "OK"
@@ -85,6 +82,18 @@ class UsersController < ApplicationController
           :token => form_authenticity_token
       }
     end
+  end
+
+  def illegal_access_to_role_names?
+    cannot?(:update, User) and @user.has_role_names? params[:user]
+  end
+
+  def illegal_access_to_disable_flag?
+    cannot?(:update_disable_flag, User) and @user.has_disable_field? params[:user]
+  end
+
+  def raise_authorization_exception(message)
+    raise AuthorizationFailure.new(message)
   end
 
 end
