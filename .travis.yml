@@ -10,6 +10,7 @@ rvm:
   - jruby-19mode
   - 1.9.2
   - 1.9.3
+
 matrix:
   allow_failures:
     - rvm: 1.9.3
@@ -21,9 +22,20 @@ matrix:
     - rvm:jruby-18mode
     - rvm:jruby-19mode
     - rvm:1.9.2
+
 notifications:
   irc: "irc.freenode.org#rapidftr"
+
 services:
   - couchdb
+
 before_script:
-  - script/sunspot-travis.sh
+  - RAILS_ENV=test bundle exec rake sunspot:start
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script: bundle exec rake spec cucumber:all
+
+notifications:
+  email: false
+  irc: "irc.freenode.org#rapidftr"
