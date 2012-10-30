@@ -10,7 +10,7 @@ RapidFTR allows for quick input of essential data about a child on a mobile phon
 Initial development is focused on building an API and web interface, with subsequent development of on-phone applications for multiple mobile platforms.
 
 Find more information at the [project website](http://rapidftr.com)
-and join the [google group](http://groups.google.com/group/rapidftr/)
+, join the [google group](http://groups.google.com/group/rapidftr/) and join us in irc on freenode in #rapidftr channel
 
 Developer Info
 --------------
