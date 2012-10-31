@@ -28,11 +28,11 @@ Given /there is a User/ do
   end
 end
 
-Given /there is a user with "(.+)" permission/ do |permission|
+Given /there is a user with "(.+)" permissions?/ do |permission|
   step "a user \"mary\" with a password \"123\" and \"#{permission}\" permission"
 end
 
-Given /^"([^\"]*)" logs in with "([^\"]*)" permissions$/ do |user_name, permissions|
+Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permissions|
   step "a user \"#{user_name}\" with a password \"123\" and \"#{permissions}\" permission"
   step "I am on the login page"
   step "I fill in \"#{User.first.user_name}\" for \"user_name\""
@@ -40,7 +40,7 @@ Given /^"([^\"]*)" logs in with "([^\"]*)" permissions$/ do |user_name, permissi
   step "I press \"Log in\""
 end
 
-Given /^I am logged in as a user with "(.+)" permission$/ do |permissions|
+Given /^I am logged in as a user with "(.+)" permissions?$/ do |permissions|
   step "\"mary\" logs in with \"#{permissions}\" permissions"
 end
 

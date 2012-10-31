@@ -5,7 +5,7 @@ Feature:
   So that I can identify suspect and duplicate records to admin
 
   Background:
-   Given I am logged in as user name "Praful" with "Edit Child,View And Search Child" permission
+   Given "Praful" logs in with "Edit Child,View And Search Child" permissions
    And the following children exist in the system:
       | name   |
       | Peter  |

@@ -6,7 +6,7 @@ Feature:
 
   Scenario: Creates a child record and checks the log
 
-    Given "Harry" is logged in
+    Given "Harry" logs in with "Register Child" permission
     And I am on the children listing page
     And I follow "Register New Child"
 
@@ -28,7 +28,7 @@ Feature:
     | name       | dob_or_age | gender | birthplace |
     | Jorge Just | 27  | Male   | Haiti               |
     And the date/time is "March 01 2010 17:59:33 UTC"
-    And "Mary" is logged in
+    And "Mary" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
 
     When I follow "Edit"
@@ -51,7 +51,7 @@ Feature:
     | name       | dob_or_age | gender | birthplace |
     | Jorge Just | 27  | Male   | Haiti               |
     And the date/time is "Oct 29 2010 10:12 UTC"
-    And "Bobby" is logged in
+    And "Bobby" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
 
     When I follow "Edit"
@@ -75,7 +75,7 @@ Feature:
 
   Scenario: Clicking back from the change log
 
-    Given "Harry" is logged in
+    Given "Harry" logs in with "Edit Child,View And Search Child" permissions
     And the following children exist in the system:
     | name       | age | age_is | gender | birthplace |
     | Bob | 12  | Exact  | Male   | Spain               |
@@ -92,7 +92,7 @@ Feature:
     | name       | age | age_is | gender | last_known_location |
     | Jorge Just | 27  | Exact  | Male   | Haiti               |
     And the date/time is "Oct 29 2010 10:12UTC"
-    And "Bobby" is logged in
+    And "Bobby" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
 
     When I follow "Edit"

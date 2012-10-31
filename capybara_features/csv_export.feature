@@ -12,7 +12,7 @@ Feature:
       | Mike    | mike_789 |
 
   Scenario: Users can export to CSV as the result of a search
-    Given I am logged in
+    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "D"
     And I select search result #1
     And I press "Export to CSV"
@@ -22,7 +22,7 @@ Feature:
 			| Dan     |dan_123  |
 
   Scenario: When there are no search results, there is no csv export link
-    Given I am logged in
+    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "Z" 
     Then I should not see "Export to CSV"
 

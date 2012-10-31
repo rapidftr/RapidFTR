@@ -38,7 +38,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    puts authorize!:udate, User
     authorize! :update, User unless @user.user_name == current_user.user_name
     raise_authorization_exception('Not permitted to assign role names') if illegal_access_to_role_names?
     raise_authorization_exception('Not permitted to assign admin specific fields') if illegal_access_to_disable_flag?

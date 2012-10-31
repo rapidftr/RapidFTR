@@ -105,7 +105,7 @@ Scenario: User with Create/Edit Users permission should be able to edit their ow
   Then the "Organisation" field should be disabled
 
 Scenario: Check that a basic user cannot create a user record
-  Given I am logged in as a User with "limited" permission
+  Given I am logged in as a user with "limited" permission
   Then I should not see "IMEI"
   Then I should not be able to see new user page
 
