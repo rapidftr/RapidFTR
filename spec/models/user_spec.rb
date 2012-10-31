@@ -30,10 +30,9 @@ describe User do
       user.errors.on(:user_name).should == ["Please enter a valid user name"]
     end
 
-    it "should not be valid when password contains whitespace" do
+    it "should be valid when password contains whitespace" do
       user = build_user :password => "in val id"
-      user.should_not be_valid
-      user.errors.on(:password).should be_include "Please enter a valid password"
+      user.should be_valid
     end
 
     it "should not be valid when username already exists" do

@@ -54,7 +54,7 @@ class User < CouchRestRails::Document
   validates_presence_of :role_names, :message => "Please select at least one role"
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
-  validates_format_of :password, :with => /^[^ ]+$/, :message => "Please enter a valid password", :if => :new?
+  # validates_format_of :password, :with => /^[^ ]+$/, :message => "Please enter a valid password", :if => :new?
 
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message => "Please enter a valid email address"
