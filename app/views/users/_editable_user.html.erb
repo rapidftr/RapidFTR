@@ -57,7 +57,7 @@
       <p>
         <label class="key">Roles</label>
       <% @roles.each do |role| %>
-          <%= f.check_box :role_names, {:id => role.name.dehumanize, :name => "user[role_names][]"}, role.name, "" %>
+          <%= f.check_box :role_ids, {:id => role.name.dehumanize, :name => "user[role_ids][]"}, role.id, "" %>
           <span><%= role.name %></span>
       <% end %>
       </p>

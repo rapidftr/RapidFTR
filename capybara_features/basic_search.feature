@@ -104,6 +104,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     Then I should be on the child search results page
 
+@javascript
   Scenario: User with unlimited access can see all children
     Given a user "field_admin" with "View And Search Child" permission
       And a user "field_worker" with "Register Child" permission

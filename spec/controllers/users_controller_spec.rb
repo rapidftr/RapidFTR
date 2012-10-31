@@ -170,7 +170,7 @@ describe UsersController do
         mock_user = mock({:user_name => "User_name"})
         User.stub(:get).with("24").and_return(mock_user)
         controller.stub(:current_user_name).and_return("test_user")
-        mock_user.stub(:has_role_names?).and_return(false)
+        mock_user.stub(:has_role_ids?).and_return(false)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -222,9 +222,9 @@ describe UsersController do
       it "should create admin user if the admin user type is specified" do
         fake_login_as(Permission::USERS[:create_and_edit])
         mock_user = User.new
-        User.should_receive(:new).with({"role_names" => %w(Administrator)}).and_return(mock_user)
+        User.should_receive(:new).with({"role_ids" => %w(abcd)}).and_return(mock_user)
         mock_user.should_receive(:save).and_return(true)
-        post :create, {"user" => {"role_names" => %w(Administrator)}}
+        post :create, {"user" => {"role_ids" => %w(abcd)}}
       end
 
       it "should render new if the given user is invalid and assign user,roles" do
@@ -232,7 +232,7 @@ describe UsersController do
         Role.stub(:all).and_return("some roles")
         User.should_receive(:new).and_return(mock_user)
         mock_user.should_receive(:save).and_return(false)
-        put :create, {:user => {:role_names => ["Administrator"]}}
+        put :create, {:user => {:role_ids => ["wxyz"]}}
         response.should render_template :new
         assigns[:user].should == mock_user
         assigns[:roles].should == "some roles"

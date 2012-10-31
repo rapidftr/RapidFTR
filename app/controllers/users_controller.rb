@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :clean_role_names, :only => [:update, :create]
+  before_filter :clean_role_ids, :only => [:update, :create]
   before_filter :load_user, :only => [:show, :edit, :update, :destroy]
 
   def index
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 
   def update
     authorize! :update, User unless @user.user_name == current_user.user_name
-    raise_authorization_exception('Not permitted to assign role names') if illegal_access_to_role_names?
+    raise_authorization_exception('Not permitted to assign role names') if illegal_access_to_role_ids?
     raise_authorization_exception('Not permitted to assign admin specific fields') if illegal_access_to_disable_flag?
 
     if @user.update_attributes(params[:user])
@@ -70,8 +70,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def clean_role_names
-    params[:user][:role_names] = clean_params(params[:user][:role_names]) if params[:user][:role_names]
+  def clean_role_ids
+    params[:user][:role_ids] = clean_params(params[:user][:role_ids]) if params[:user][:role_ids]
   end
 
   def users_details
@@ -84,8 +84,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def illegal_access_to_role_names?
-    cannot?(:update, User) and @user.has_role_names? params[:user]
+  def illegal_access_to_role_ids?
+    cannot?(:update, User) and @user.has_role_ids? params[:user]
   end
 
   def illegal_access_to_disable_flag?

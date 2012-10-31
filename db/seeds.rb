@@ -19,21 +19,21 @@ if should_seed? User
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
               "email" => "rapidftr@rapidftr.com",
-              "role_names" => [admin.name])
+              "role_ids" => [admin.id])
 
   User.create("user_name" => "field_worker",
               "password" => "limited",
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
-              "role_names" => [field_worker.name])
+              "role_ids" => [field_worker.id])
 
   User.create("user_name" => "field_admin",
               "password" => "unlimited",
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
               "email" => "unlimited@rapidftr.com",
-              "role_names" => [field_admin.name])
+              "role_ids" => [field_admin.id])
 end
 
 if should_seed? FormSection
