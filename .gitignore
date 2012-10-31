@@ -15,6 +15,7 @@ debug.html
 *.iml
 tags
 vendor/ruby/1.8/bin/
+couchdb.*
 vendor/ruby/1.8/doc/
 vendor/ruby/1.8/specifications/
 vendor/ruby/1.8/gems/
