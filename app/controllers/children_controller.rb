@@ -17,9 +17,13 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
-      format.csv { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
+      format.csv do
+        authorize! :export, Child
+        render_as_csv @children, "all_records_#{file_name_date_string}.csv" 
+      end
       format.json { render :json => @children }
       format.pdf do
+        authorize! :export, Child
         pdf_data = ExportGenerator.new(@children).to_full_pdf
         send_pdf(pdf_data, "#{file_basename}.pdf")
       end
@@ -45,10 +49,11 @@ class ChildrenController < ApplicationController
       format.xml { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
-        child_ids = [@child]
-        render_as_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
+        authorize! :export, Child
+        render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
+        authorize! :export, Child
         pdf_data = ExportGenerator.new(@child).to_full_pdf
         send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
       end
@@ -193,7 +198,7 @@ class ChildrenController < ApplicationController
   end
 
   def export_data
-    authorize! :index, Child
+    authorize! :export, Child
 
     selected_records = params["selections"] || {}
     if selected_records.empty?
@@ -213,14 +218,14 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
-    authorize! :index, Child
+    authorize! :export, Child
 
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf
-    authorize! :read, @child
+    authorize! :export, Child
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end

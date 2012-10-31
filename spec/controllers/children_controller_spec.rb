@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 def inject_export_generator( fake_export_generator, child_data )
 	ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
 end
@@ -20,8 +19,6 @@ describe ChildrenController do
 
   before do
     fake_admin_login
-    Clock.stub!(:now).and_return(Time.utc(2000, "jan", 1, 20, 15, 1))
-    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
   def mock_child(stubs={})
@@ -43,7 +40,7 @@ describe ChildrenController do
       end
 
       it "GET export_data" do
-        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
         get :export_data
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -98,7 +95,7 @@ describe ChildrenController do
       end
 
       it "GET export_photo_to_pdf" do
-        @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
         get :export_photo_to_pdf, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -200,7 +197,6 @@ describe ChildrenController do
 
       get(:show, :format => 'csv', :id => "37")
     end
-
 
     it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
@@ -384,52 +380,24 @@ describe ChildrenController do
 
     it "asks the pdf generator to render each child as a PDF" do
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-
 			children = [:fake_child_one, :fake_child_two]
       Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
 
 			inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
+      mock_export_generator.should_receive(:to_full_pdf).and_return('')
 
-
-      mock_export_generator.
-        should_receive(:to_full_pdf).
-        and_return('')
-
-      post(
-        :export_data,
-        {
-          :selections =>
-          {
-            '0' => 'child_1',
-            '1' => 'child_2'
-          },
-          :commit => "Export to PDF"
-        }
-      )
+      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to PDF"}
     end
 
     it "asks the pdf generator to render each child as a Photo Wall" do
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       children = [:fake_one, :fake_two]
       inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
-
       Child.stub(:get).and_return(*children )
 
-      mock_export_generator.
-        should_receive(:to_photowall_pdf).
-        and_return('')
+      mock_export_generator.should_receive(:to_photowall_pdf).and_return('')
 
-      post(
-        :export_data,
-        {
-          :selections =>
-          {
-            '0' => 'child_1',
-            '1' => 'child_2'
-          },
-          :commit => "Export to Photo Wall"
-        }
-      )
+      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to Photo Wall"}
     end
 
     describe "with no results" do
@@ -486,15 +454,7 @@ describe ChildrenController do
       Child.should_receive(:get).with('child_two').ordered
       controller.stub!(:render) #to avoid looking for a template
 
-      post(
-        :export_data,
-        :selections =>
-        {
-          '2' => 'child_two',
-          '0' => 'child_zero',
-          '1' => 'child_one'
-        }
-      )
+      post :export_data, :selections =>{'2' => 'child_two','0' => 'child_zero','1' => 'child_one'}
     end
 
     it "sends a response containing the pdf data, the correct content_type and file name, etc" do
@@ -575,16 +535,12 @@ describe ChildrenController do
   end
 
   describe "PUT create" do
-
-    let(:new_child) { Child.new }
-
     it "should add the full user_name of the user who created the Child record" do
-      Child.stub('new_with_user_name').and_return(new_child)
-      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      Child.should_receive('new_with_user_name').and_return(child = Child.new)
+      controller.should_receive('current_user_full_name').and_return('Bill Clinton')
       put :create, :child => {:name => 'Test Child' }
-      new_child['created_by_full_name'].should=='Bill Clinton'
+      child['created_by_full_name'].should=='Bill Clinton'
     end
-
   end
 
 end
