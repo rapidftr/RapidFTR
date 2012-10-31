@@ -6,7 +6,7 @@ Feature: Reunited Child
 
   Background:
 
-   Given I am logged in
+   Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
    And the following children exist in the system:
      | name   | unique_id  | reunited |
      | Will   | will_uid   | false    |

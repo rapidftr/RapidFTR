@@ -1,7 +1,7 @@
 Feature: Creating a child using the API
 
   Background:
-    Given there is a User
+    Given I am logged in as a user with "Register Child" permission
 
   Scenario: Should save created at and posted by fields as posted to the server
     Given I am sending a valid session token in my request headers

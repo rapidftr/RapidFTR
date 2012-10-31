@@ -1,7 +1,7 @@
 Feature: Add family details
 
   Scenario: Storing family names
-    Given I am logged in
+    Given I am logged in as a user with "Register Child" permission
     Given I am on the new child page
 
     When I fill in the basic details of a child

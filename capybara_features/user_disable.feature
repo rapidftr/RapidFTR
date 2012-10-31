@@ -10,8 +10,7 @@ Feature:
   Scenario: Admin disables a user from the edit page
 
     Given a user "george"
-    And an admin "adam"
-    And I am logged in as "adam"
+    And "adam" logs in with "Admin,Disable Users" permissions
     And I am on edit user page for "george"
 
     When I check "Disabled?"
@@ -25,9 +24,8 @@ Feature:
   Scenario: Admin re-enables a user from the edit page
 
     Given a user "george"
-    And an admin "adam"
     And user "george" is disabled
-    And I am logged in as "adam"
+    And "adam" logs in with "Admin,Disable Users" permissions
     And I am on edit user page for "george"
 
     When I uncheck "Disabled?"

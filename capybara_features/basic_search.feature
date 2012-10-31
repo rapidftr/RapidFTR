@@ -105,7 +105,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should be on the child search results page
 
   Scenario: User with unlimited access can see all children
-    Given a user "field_admin" with "Access all data" permission
+    Given a user "field_admin" with "View And Search Child" permission
       And a user "field_worker" with "Register Child" permission
       And the following children exist in the system:
        | name   | created_by   |
@@ -118,7 +118,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I should see "Peter"
 
   Scenario: User with limited access cannot see all children
-    Given a user "field_admin" with "Access all data" permission
+    Given a user "field_admin" with "View And Search Child" permission
       And a user "field_worker" with "Register Child" permission
       And the following children exist in the system:
        | name   | created_by   |

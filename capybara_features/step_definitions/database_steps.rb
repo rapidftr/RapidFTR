@@ -1,8 +1,10 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
+
   permissions = []
   permissions.push(Permission::ADMIN[:admin]) if user_type.downcase == "admin" and permission.nil?
   permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
-  permissions.push(permission) if permission
+  permissions.push(permission.split(",")) if permission
+  permissions.flatten!
   role = Role.create(:name => permissions.join("-"), :permissions => permissions)
   @user = User.new(
     :user_name=>username,
@@ -19,7 +21,7 @@ Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
   step %(a #{user_type} "#{user_name}" with password "123")
 end
 
-Given /^an? (user|admin) "([^"]+)" with "(Register Child|Access all data)" permission$/ do |user_type, user_name, permission|
+Given /^an? (user|admin) "([^"]+)" with "(Register Child|View And Search Child|Edit Child)" permission$/ do |user_type, user_name, permission|
   step %(a #{user_type} "#{user_name}" with password "123" and "#{permission}" permission)
 end
 

@@ -34,7 +34,7 @@ describe ChildrenController do
       end
 
       it "GET search" do
-        @controller.current_ability.should_receive(:can?).with(:read, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :search
         response.should render_template("#{Rails.root}/public/403.html")
       end

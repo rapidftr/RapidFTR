@@ -163,6 +163,7 @@ describe Ability do
       @ability = Ability.new(@user)
       @ability.can?(:index, Child.new).should == true
       @ability.can?(:read, Child.new).should == true
+      @ability.can?(:view_all, Child).should == true
     end
   end
 
