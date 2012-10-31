@@ -25,4 +25,11 @@ module FakeLogin
     user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:register]])])
     fake_login user
   end
+
+  def fake_login_as(permission = Permission::ADMIN[:admin])
+    user = User.new(:user_name => 'fakelimited')
+    user.stub!(:roles).and_return([Role.new(:permissions => [permission])])
+    fake_login user
+  end
+
 end

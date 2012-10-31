@@ -147,13 +147,29 @@ describe Ability do
     end
 
     include_examples "control classes and objects", [ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], false
-    
+
     it "should be able to export children" do
       ability = Ability.new(@user)
       ability.can?(:export, Child).should be_true
       ability.can?(:index, Child).should be_false
       ability.can?(:read, Child.new).should be_false
       ability.can?(:update, Child.new).should be_false      
+    end
+  end
+
+  describe "blacklist" do
+
+    before :each do
+      @user.stub!(:permissions => [Permission::DEVICES[:black_list]])
+    end
+
+    include_examples "control classes and objects", [Child, ContactInformation, FormSection, Session, SuggestedField, User, Role], false
+
+    it "should blacklist a device for users with relevant permission alone" do
+      ability = Ability.new(@user)
+      ability.can?(:update, Device).should be_true
+      ability.can?(:index, Device).should be_true
+      ability.can?(:read, User.new).should be_false
     end
   end
 

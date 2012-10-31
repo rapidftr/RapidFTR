@@ -8,12 +8,6 @@ describe UsersController do
     Session.stub(:get).and_return(fake_session)
   end
 
-  def fake_login_as(permission)
-    user = User.new(:user_name => 'fakelimited')
-    user.stub!(:roles).and_return([Role.new(:permissions => [permission])])
-    fake_login user
-  end
-
   def mock_user(stubs={})
     @mock_user ||= mock_model(User, stubs)
   end

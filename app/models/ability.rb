@@ -44,6 +44,10 @@ class Ability
       can [:update_disable_flag], User
     end
 
+    if user.has_permission?(Permission::DEVICES[:black_list])
+      can [:read,:update], Device
+    end
+
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all
     end
