@@ -1,10 +1,10 @@
+@javascript
 Feature: So that I can find a child that has been entered in to RapidFTR
   As a user of the website
   I want to enter a search query in to a search box and see all relevant results
 
   Background:
-    Given I am logged in
-    And I am on the child search page
+    Given I am logged in as an admin
 
   Scenario: Searching for a child given his name
 
@@ -14,9 +14,11 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will   |
 
     When I fill in "Will" for "query"
-    And I press "Search"
+    Then show me the page
 
-    Then I should be on the child search results page
+    And I press "Go"
+
+    Then show me the page
     And I should see "Willis" in the search results
 
   Scenario: Searching for a child given his unique identifier
@@ -27,7 +29,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | zak	    | London		            | zubair   | zubairlon456 |
 
     When I fill in "zubairlon123" for "Name or Unique ID"
-    And I press "Search"
+    And I press "Go"
 
     Then I should be on the saved record page for child with name "andreas"
 
@@ -37,14 +39,14 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   	| 
       | Lisa	|
 
-    When I search using a name of "Lisa"
-
+    When I fill in "Lisa" for "query"
+    Then show me the page
     Then I should be on the saved record page for child with name "Lisa"
 
   Scenario: Search parameters are displayed in the search results
 
     When I fill in "Will" for "Name or Unique ID"
-    And I press "Search"
+    And I press "Go"
 
     Then I should be on the child search results page
     And the "Name or Unique ID" field should contain "Will"
@@ -68,7 +70,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will	|
 
     When I fill in "W" for "Name"
-    And I press "Search"
+    And I press "Go"
 
     Then I should see the thumbnail of "Willis"
     And I should see the thumbnail of "Will"
@@ -81,7 +83,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will   |
 
     When I fill in "Will" for "Name"
-    And I press "Search"
+    And I press "Go"
 
     Then I should be on the child search results page
     And I should see "Willis" in the search results
@@ -97,14 +99,14 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should not see any errors
 
     When I fill in "" for "Name"
-    And I press "Search"
+    And I press "Go"
     Then I should see the error "Query can't be empty"
 
   Scenario: Creating a search with non standard queries
     Given I am on the child search page
     Then I should not see any errors
     When I fill in "\" for "Name"
-    And I press "Search"
+    And I press "Go"
     Then I should be on the child search results page
 
   Scenario: User with unlimited access can see all children

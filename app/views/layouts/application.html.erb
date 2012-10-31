@@ -45,11 +45,13 @@
         <li><a href="#">REPORTS</a></li>
       </ul>
     </nav>
-    <div class="search">
-      <%= link_to 'Advanced Search', new_advanced_search_path %>
-      <input type="text" />
-      <input type="button" value="Go" />
-    </div>
+    <%= form_tag search_children_path, :method => :get, :id => "search_form" do %>
+        <div class="search">
+        <%= link_to 'Advanced Search', new_advanced_search_path %>
+          <%= text_field_tag 'query', params[:query] %>
+          <%= submit_tag "Go", :action=>"children/search", :method=>"get"%>
+        </div>
+    <%-end  %>
 
   </div>
 
