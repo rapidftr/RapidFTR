@@ -5,7 +5,8 @@ class UsersController < ApplicationController
 
   def index
     authorize! :read, User
-    @users = User.view("by_full_name")
+    sort_option = params[:sort] || "full_name"
+    @users = User.view("by_#{sort_option}")
     @users_details = users_details
   end
 
