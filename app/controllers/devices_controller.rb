@@ -6,13 +6,13 @@ class DevicesController < ApplicationController
 
   def update_blacklist
     authorize! :update, Device
-    status = 'Success'
+    status = :ok
     @devices = Device.by_imei(params[:imei])
     @devices.each do |device|
       unless device.update_attributes({:blacklisted => params[:blacklisted]})
-        status = 'Failure'
+        status = :error
       end
     end
-    render :json => status
+    render :json => {:status => status}
   end
 end
