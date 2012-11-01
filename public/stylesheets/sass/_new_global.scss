@@ -65,6 +65,10 @@ a:hover {
   zoom: 1;
 }
 
+.hide{
+  display:none;
+}
+
 @mixin hide_text {
   font-size: 0px;
   text-indent: -100000px;
