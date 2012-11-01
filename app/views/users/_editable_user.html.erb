@@ -33,24 +33,24 @@
     <fieldset>
     <p>
       <%= f.label :full_name, "Full name", :class=>'key' %>
-      <%= f.text_field :full_name %>*
+      <%= f.text_field :full_name, :autocomplete => "off"%>*
     </p>
 
     <p>
       <%= f.label :user_name, :class=>'key'  %>
-      <%= f.text_field :user_name, :disabled => !editable_user.new_record? %>*
+      <%= f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
       <span class="footnote">user name should not contain blanks</span>
     </p>
 
     <p>
       <%= f.label :password, :class=>'key'  %>
-      <%= f.password_field :password %>*
+      <%= f.password_field :password, :autocomplete => "off" %>*
       <span class="footnote">password should not contain blanks</span>
     </p>
 
     <p>
       <%= f.label :password_confirmation,"Re-enter password", :class=>'key'  %>
-      <%= f.password_field :password_confirmation %>*
+      <%= f.password_field :password_confirmation, :autocomplete => "off" %>*
     </p>
 
     <% if !trying_to_edit_ourself %>
