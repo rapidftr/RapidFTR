@@ -1,7 +1,6 @@
 $(document).ready(function () {
     $(".device_blacklist_check_box").click(function (event) {
         setModalText();
-        var fail = false;
         $("#modal-dialog").dialog({
             modal:true,
             width:400,
@@ -12,9 +11,8 @@ $(document).ready(function () {
                     $(this).dialog('close');
                     updateBlackListFlag();
                 },
-                'No':function () {
+                'Cancel':function () {
                     $(this).dialog('close');
-                    fail = true;
                 }
             }
         });
