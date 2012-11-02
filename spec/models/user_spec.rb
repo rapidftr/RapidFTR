@@ -10,7 +10,7 @@ describe User do
                                :password_confirmation => options[:password] || 'password',
                                :email => 'email@ddress.net',
                                :user_type => 'user_type',
-                               :role_names => options[:role_names] || ['random_role_name'],
+                               :role_ids => options[:role_ids] || ['random_role_id'],
                            })
     user = User.new(options)
     user
@@ -208,16 +208,14 @@ describe User do
   it "should load roles only once" do
     role = mock("roles")
     user = build_and_save_user
-    Role.should_receive(:by_name).with(:key => user.role_names.first).and_return(role)
-    user.roles.should == [role]
-    Role.should_not_receive(:get)
+    Role.should_receive(:get).with(user.role_ids.first).and_return(role)
     user.roles.should == [role]
   end
 
   describe "check params in hash" do
     before { @user = build_user }
     it "role ids should not be assignable" do
-      @user.has_role_names?({:role_names => ""}).should be_true
+      @user.has_role_ids?({:role_ids => ""}).should be_true
     end
     it "disabled should not be assignable" do
       @user.has_disable_field?({:disabled => ""}).should be_true
@@ -230,15 +228,15 @@ describe User do
       admin_role = Role.create!(:name => "Admin", :permissions => [Permission::ADMIN[:admin]])
       field_worker_role = Role.create!(:name => "Field Worker", :permissions => [Permission::CHILDREN[:register]])
       user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password', :password_confirmation => 'password',
-                          :email => 'em@dd.net', :user_type => 'user_type', :role_names => [admin_role.name, field_worker_role.name]})
+                          :email => 'em@dd.net', :user_type => 'user_type', :role_ids => [admin_role.id, field_worker_role.id]})
 
       User.find_by_user_name(user.user_name).roles.should == [admin_role, field_worker_role]
     end
 
     it "should require atleast one role" do
-      user = build_user(:role_names => [])
+      user = build_user(:role_ids => [])
       user.should_not be_valid
-      user.errors.on(:role_names).should == ["Please select at least one role"]
+      user.errors.on(:role_ids).should == ["Please select at least one role"]
     end
   end
 
@@ -249,13 +247,13 @@ describe User do
       disable_user = Role.create!(:name => "Disable User", :permissions => [Permission::USERS[:disable]])
       create_user = Role.create!(:name => "Create User", :permissions => [Permission::USERS[:create_and_edit]])
 
-      user = build_and_save_user(:role_names => [admin_role.name])
+      user = build_and_save_user(:role_ids => [admin_role.id])
       user.can_disable?.should == true
 
-      user = build_and_save_user(:role_names => [disable_user.name])
+      user = build_and_save_user(:role_ids => [disable_user.id])
       user.can_disable?.should == true
 
-      user = build_and_save_user(:role_names => [create_user.name])
+      user = build_and_save_user(:role_ids => [create_user.id])
       user.can_disable?.should == false
 
     end

@@ -20,7 +20,7 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created."
-    
+
   @javascript
   Scenario: create child with numeric custom field
     Given the following form sections exist in the system:
@@ -38,3 +38,10 @@ Feature:
     Given I am logged in as a user with "Register Child" permission
     Given I am on new child page
     Then the "Discard" button presents a confirmation message
+
+  Scenario: List on children link should link to Children List page
+    Given I am logged in as a user with "Register Child" permission
+    And I am on new child page
+    When I follow "List of Children"
+    Then I should be on children listing page
+

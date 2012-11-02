@@ -5,14 +5,15 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\
   permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
   permissions.push(permission.split(",")) if permission
   permissions.flatten!
-  role = Role.create(:name => permissions.join("-"), :permissions => permissions)
+  role_name = permissions.join("-")
+  role = Role.find_by_name(role_name) || Role.create!(:name => role_name, :permissions => permissions)
   @user = User.new(
     :user_name=>username,
     :password=>password,
     :password_confirmation=>password,
     :full_name=>username,
     :email=>"#{username}@test.com",
-    :role_names => [role.name]
+    :role_ids => [role.id]
   )
   @user.save!
 end

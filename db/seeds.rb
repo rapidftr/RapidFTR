@@ -10,30 +10,30 @@ def should_seed? model
 end
 
 if should_seed? User
-  admin = Role.create(:name => "admin", :permissions => [Permission::ADMIN[:admin]])
-  field_worker = Role.create(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
-  field_admin = Role.create(:name => "field admin", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create],
+  admin = Role.create!(:name => "admin", :permissions => [Permission::ADMIN[:admin]])
+  field_worker = Role.create!(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
+  field_admin = Role.create!(:name => "field admin", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create],
                                                                      Permission::CHILDREN[:edit]])
-  User.create("user_name" => "rapidftr",
+  User.create!("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
               "email" => "rapidftr@rapidftr.com",
-              "role_names" => [admin.name])
+              "role_ids" => [admin.id])
 
-  User.create("user_name" => "field_worker",
+  User.create!("user_name" => "field_worker",
               "password" => "limited",
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
-              "role_names" => [field_worker.name])
+              "role_ids" => [field_worker.id])
 
-  User.create("user_name" => "field_admin",
+  User.create!("user_name" => "field_admin",
               "password" => "unlimited",
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
               "email" => "unlimited@rapidftr.com",
-              "role_names" => [field_admin.name])
+              "role_ids" => [field_admin.id])
 end
 
 if should_seed? FormSection

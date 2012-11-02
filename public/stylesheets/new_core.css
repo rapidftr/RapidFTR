@@ -55,6 +55,9 @@ a:hover {
 .clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
   zoom: 1; }
 
+.hide {
+  display: none; }
+
 input[type=text], input[type=password], textarea, input[type=file], select {
   background: white;
   font-size: 1em;

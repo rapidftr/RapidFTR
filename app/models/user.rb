@@ -16,11 +16,11 @@ class User < CouchRestRails::Document
   property :location
   property :disabled, :cast_as => :boolean
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
-  property :role_names, :type => [String]
+  property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
 
   attr_accessor :password_confirmation, :password
-  ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_names]
+  ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]
 
 
   timestamps!
@@ -51,7 +51,7 @@ class User < CouchRestRails::Document
 
   validates_presence_of :full_name, :message => "Please enter full name of the user"
   validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
-  validates_presence_of :role_names, :message => "Please select at least one role"
+  validates_presence_of :role_ids, :message => "Please select at least one role"
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
 
@@ -93,7 +93,7 @@ class User < CouchRestRails::Document
   end
 
   def roles
-    @roles ||= role_names.collect { |name| Role.by_name(:key => name) }.flatten
+    @roles ||= role_ids.collect { |id| Role.get(id) }.flatten
   end
 
   def has_permission?(permission)
@@ -134,7 +134,7 @@ class User < CouchRestRails::Document
     DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
 
-  def has_role_names?(attributes)
+  def has_role_ids?(attributes)
     ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
   end
 

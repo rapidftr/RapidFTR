@@ -21,7 +21,7 @@ ManageUsers.init = function () {
 
     url: function() {
       return this.get("user_url");
-    },
+    }
 
   });
 
@@ -59,11 +59,12 @@ ManageUsers.init = function () {
 
     confirmChangeDisabledStatus: function(evt){
       var userName   = this.getUserName(evt);
-      var nextStatus = this.getDisabledStatus(evt) ? "disable" : "enable";
+      var nextStatus = this.getDisabledStatus(evt) ? "true" : "false";
+      var displayStatus = this.getDisabledStatus(evt) ? "disable" : "enable";
       $('#modal-dialog').dialog('option', {
         newStatus: nextStatus,
         userName : userName,
-        title    : "Are you sure you want to " + nextStatus + " this user?"
+        title    : "Are you sure you want to " + displayStatus + " this user?"
       });
       $('#modal-dialog').dialog("open");
     },
@@ -80,7 +81,7 @@ ManageUsers.init = function () {
       } else {
         checkBox.attr('checked', 'checked');
       }
-    },
+    }
   });
 
   window.App = new AppView;
