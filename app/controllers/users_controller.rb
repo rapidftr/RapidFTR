@@ -8,6 +8,10 @@ class UsersController < ApplicationController
     sort_option = params[:sort] || "full_name"
     @users = User.view("by_#{sort_option}")
     @users_details = users_details
+
+    if params[:ajax] == "true"
+      render :partial => "users/user", :collection => @users
+    end
   end
 
   def show

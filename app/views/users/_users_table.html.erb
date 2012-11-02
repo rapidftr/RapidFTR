@@ -1,4 +1,11 @@
+<%= javascript_include_tag "sort.js" %>
 <h2>List of Users</h2>
+<br>
+<br>
+<tr id="sort_options">
+  Sort by:  <%= select_tag "sort", options_for_select([["Full Name","full_name"],[ "User Name", "user_name"]]), { :onchange => "testing(this.value)"} %>
+</tr>
+
 <% if can? :create,User %>
     <%= link_to content_tag(:span, 'Create an User', :class => 'create_user'), new_user_path, :class => 'btn' %>
 <% end %>
