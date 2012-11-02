@@ -1,15 +1,15 @@
-<%= javascript_include_tag "sort.js" %>
 <h2>List of Users</h2>
-<br>
-<br>
-<tr id="sort_options">
-  Sort by:  <%= select_tag "sort", options_for_select([["Full Name","full_name"],[ "User Name", "user_name"]]), { :onchange => "testing(this.value)"} %>
-</tr>
 
 <% if can? :create,User %>
     <%= link_to content_tag(:span, 'Create an User', :class => 'create_user'), new_user_path, :class => 'btn' %>
 <% end %>
 <div class="clearfix"></div>
+
+<form class="filter_bar">
+    <div class="float_left"> Showing all 4 records </div>
+    <div class="float_left"> Show: <%= select_tag :show, options_for_select([[ "All", "all" ]], params[:show]) %> </div>
+    <div class="float_left"> Sort by:  <%= select_tag :sort, options_for_select([["Full Name","full_name"],[ "User Name", "user_name"]], params[:sort]), { :onchange => "this.form.submit();"} %> </div>
+</form>
 <table id="users" class="list_table">
   <thead>
   <%= render :partial => 'users_header' %>
