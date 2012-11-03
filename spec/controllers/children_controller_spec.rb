@@ -149,6 +149,7 @@ describe ChildrenController do
     end
 
     context "viewing all children" do
+      before { @stubs = { :reunited? => false } }
       context "when status is passed" do
         before { @status = "all" }
         it_should_behave_like "viewing children by user with access to all data"
@@ -162,7 +163,10 @@ describe ChildrenController do
     end
 
     context "viewing reunited children" do
-      before { @status = "reunited" }
+      before do
+        @status = "reunited"
+        @stubs = {:reunited? => true}
+      end
       it_should_behave_like "viewing children by user with access to all data"
       it_should_behave_like "viewing children as a field worker"
     end
