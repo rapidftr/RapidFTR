@@ -42,6 +42,7 @@ class Ability
     if user.has_permission?(Permission::USERS[:disable])
       can [:update, :read], User
       can [:update_disable_flag], User
+      cannot [:edit], User
     end
 
     if user.has_permission?(Permission::DEVICES[:black_list])

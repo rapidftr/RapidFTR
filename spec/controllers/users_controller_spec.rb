@@ -20,6 +20,20 @@ describe UsersController do
       assigns[:users].should == [@user]
     end
 
+    it "should sort based on sort-parameter" do
+      @user = mock_user({:merge => {}, :user_name => "someone"})
+      User.should_receive(:view).with("by_user_name").and_return([@user])
+      get :index, :sort => "user_name"
+      assigns[:users].should == [@user]
+    end
+
+    it "should sort by full_name by default" do
+      @user = mock_user({:merge => {}, :user_name => "someone"})
+      User.should_receive(:view).with("by_full_name").and_return([@user])
+      get :index
+      assigns[:users].should == [@user]
+    end
+
     it "assigns users_details for backbone" do
       @user = mock_user({:merge => {}, :user_name => "someone"})
       User.stub!(:view).and_return([@user])

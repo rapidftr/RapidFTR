@@ -27,7 +27,7 @@ describe DevicesController do
       Device.should_receive(:by_imei).with("123").and_return([device])
       device.should_receive(:update_attributes).with({:blacklisted => "true"}).and_return(true)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
-      response.body.should == "Success"
+      response.body.should == "{\"status\":\"ok\"}"
     end
 
     it "should return failure if blacklist fails" do
@@ -36,7 +36,7 @@ describe DevicesController do
       Device.should_receive(:by_imei).with("123").and_return([device])
       device.should_receive(:update_attributes).with({:blacklisted => "true"}).and_return(false)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
-      response.body.should == "Failure"
+      response.body.should == "{\"status\":\"error\"}"
     end
 
     it "should not update the device by user without blacklist permission" do

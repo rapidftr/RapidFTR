@@ -5,8 +5,13 @@ class UsersController < ApplicationController
 
   def index
     authorize! :read, User
-    @users = User.view("by_full_name")
+    sort_option = params[:sort] || "full_name"
+    @users = User.view("by_#{sort_option}")
     @users_details = users_details
+
+    if params[:ajax] == "true"
+      render :partial => "users/user", :collection => @users
+    end
   end
 
   def show
@@ -77,9 +82,9 @@ class UsersController < ApplicationController
   def users_details
     @users.map do |user|
       {
-          :user_url => user_url(:id => user),
+          :user_url =>  user_url(:id => user),
           :user_name => user.user_name,
-          :token => form_authenticity_token
+          :token =>     form_authenticity_token
       }
     end
   end

@@ -71,23 +71,7 @@ Scenario: Admin should be able to delete another user but not themselves
   When I follow "Delete User"
   Then user "gui" should not exist on the page
 
-Scenario: Should be able to set devices to black listed
-
-  Given a user "tim"
-  And devices exist
-    | imei | blacklisted | user_name |
-    | 123456 | false | tim |
-    | 555666 | false | tim |
-  And I am logged out
-  And I am logged in as an admin
-  And I am on the edit user page for "tim"
-  And I should see "123456"
-  When I check the device with an imei of "123456"
-  Then I wait for 10 seconds
-  And I press "Update"
-  Then I should see "123456 (blacklisted)"
-
-@javascript  
+@javascript
 Scenario: Admin should not see "Disable" control or change role control when she is editing her own record
   Given I am logged in as an admin
   And I am on manage users page
