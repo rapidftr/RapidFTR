@@ -82,16 +82,6 @@ describe "children/search.html.erb" do
       end
     end
 
-    it "should include a view link for each record in the result" do
-      render
-
-      view_links = Hpricot(rendered).link_for("View")
-      view_links.length.should == @results.length
-      view_links.each_with_index do |link,i|
-        link['href'].should == "/children/#{@results[i]['_id']}"
-      end
-    end
-
     it "should have a button to export to pdf" do
       render
 

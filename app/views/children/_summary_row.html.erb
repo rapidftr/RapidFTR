@@ -55,9 +55,8 @@
     <% show_links = true unless local_assigns.has_key? :show_links %>
     <% if show_links %>
         <p class="view-edit">
-			<%= link_to 'View', child_path(summary_row) %> |
-	 		<% if can?(:update, summary_row) %>
-        <%= link_to('Edit', edit_child_path(summary_row), :class=>'edit') %> |
+			<% if can?(:update, summary_row) %>
+              <%= link_to('Edit', edit_child_path(summary_row), :class=>'edit') %> |
 			  <%= link_to 'Mark as Duplicate', new_child_duplicate_path(summary_row), :class=>'mark_as_duplicate' %></p>
 		  <% end %>
     <% end %>
