@@ -45,7 +45,6 @@
     <p>
       <%= f.label :password, :class=>'key'  %>
       <%= f.password_field :password, :autocomplete => "off" %>*
-      <span class="footnote">password should not contain blanks</span>
     </p>
 
     <p>
@@ -57,8 +56,8 @@
       <p>
         <label class="key">Roles</label>
       <% @roles.each do |role| %>
-          <%= f.check_box :role_ids, {:id => role.name.dehumanize, :name => "user[role_ids][]"}, role.id, "" %>
-          <span><%= role.name %></span>
+        <%= f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, "" %>
+          <%= f.label role.name %>
       <% end %>
       </p>
     <% end %>
