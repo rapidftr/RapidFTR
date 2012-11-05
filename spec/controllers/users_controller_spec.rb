@@ -52,7 +52,7 @@ describe UsersController do
       mock_user = mock_user({:merge => {}, :user_name => "someone"})
       User.stub!(:view).and_return([mock_user])
       get :index
-      assigns(:access_error).should == "You are not allowed to access this page."
+      assigns(:access_error).should == "You are not permitted to access this page."
     end
 
     it "should authorize index page for read only users" do

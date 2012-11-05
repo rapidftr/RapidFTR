@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :load_user, :only => [:show, :edit, :update, :destroy]
 
   def index
-    return @access_error = "You are not allowed to access this page." if cannot? :read, User
+    return @access_error = "You are not permitted to access this page." if cannot? :read, User
     sort_option = params[:sort] || "full_name"
     @users = User.view("by_#{sort_option}")
     @users_details = users_details

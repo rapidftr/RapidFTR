@@ -21,7 +21,7 @@
   </div>
   <div class="side-tab-content">
     <% if @access_error.present? %>
-        <strong> You are not permitted to access this page.</strong>
+        <strong><%= @access_error %></strong>
     <% end %>
     <% if @users.present? %>
         <%= render :partial => 'users_table' %>
