@@ -11,8 +11,11 @@ class MockFormSection
 end
 describe FormSectionController do
   before do
-    fake_admin_login
+    user = User.new(:user_name => 'manager_of_forms')
+    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
+    fake_login user
   end
+
   describe "get index" do
     it "populate the view with all the form sections in order ignoring enabled or disabled" do
       row1 = FormSection.new(:enabled => false, :order => 1)

@@ -1,6 +1,6 @@
 class FieldsController < ApplicationController
 
-  before_filter :administrators_only
+  before_filter { authorize! :manage, Field }
   before_filter :read_form_section
 
   FIELD_TYPES = %w{ text_field textarea check_box select_box radio_button numeric_field date_field }

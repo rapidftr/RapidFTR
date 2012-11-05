@@ -201,10 +201,17 @@ describe Ability do
   end
 
   describe "manage forms" do
+    before :each do
+      @user.stub!(:permissions => [Permission::FORMS[:manage]])      
+    end
+
+    include_examples "control classes and objects", [Child, ContactInformation, Device, Session, SuggestedField, User, Role], false
+
     it "allow full access to form section" do
       @user.stub!(:permissions => [Permission::FORMS[:manage]])
       @ability = Ability.new(@user)
       @ability.can?(:manage, FormSection.new).should be_true
+      @ability.can?(:manage, Field.new).should be_true      
     end
   end
 

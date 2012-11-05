@@ -74,8 +74,8 @@ class Ability
     #   
     if user.has_permission?(Permission::FORMS[:manage])
       can [:manage], FormSection
+      can [:manage], Field
     end
-    
 
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all

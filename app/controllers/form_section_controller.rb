@@ -1,6 +1,6 @@
 class FormSectionController < ApplicationController
 
-  before_filter :administrators_only
+  before_filter { authorize! :manage, FormSection }
 
   def index
     @page_name = "Manage Form Sections"
@@ -83,5 +83,5 @@ class FormSectionController < ApplicationController
   def save
     puts "Saved"
   end
-
+  
 end
