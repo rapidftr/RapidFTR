@@ -168,7 +168,6 @@ describe Ability do
   end
 
   describe "blacklist" do
-
     before :each do
       @user.stub!(:permissions => [Permission::DEVICES[:black_list]])
     end
@@ -180,6 +179,24 @@ describe Ability do
       ability.can?(:update, Device).should be_true
       ability.can?(:index, Device).should be_true
       ability.can?(:read, User.new).should be_false
+    end
+  end
+  
+  define "roles permission" do
+    it "should allow only to list roles for 'view' roles user" do
+      @user.stub!(:permissions => [Permission::ROLES[:view]])
+      @ability = Ability.new(@user)
+      @ability.can?(:list, Role.new).should == true
+      @ability.can?(:create, Role.new).should == false
+      @ability.can?(:update, Role.new).should == false
+    end
+
+    it "should only to manage roles for 'create_and_edit' roles user" do
+      @user.stub!(:permissions => [Permission::ROLES[:create_and_edit]])
+      @ability = Ability.new(@user)
+      @ability.can?(:list, Role.new).should == true
+      @ability.can?(:create, Role.new).should == true
+      @ability.can?(:update, Role.new).should == true
     end
   end
 end

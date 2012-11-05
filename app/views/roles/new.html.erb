@@ -12,25 +12,17 @@
     <div class="clearfix"></div>
     <%= form_for @role, :html => {:class => ''} do |f| %>
         <%= error_messages_for :role %>
-
         <fieldset>
-
-
           <p>
-
             <%= f.label :name, 'Name <span class="required">*</span>'.html_safe, :class=>'key'  %>
             <%= f.text_field :name %>
           </p>
-
           <p>
             <%= f.label :description, :class=>'key'  %>
             <%= f.text_area :description %>
           </p>
-
           <p>
-
             <%= f.label :permissions, 'Permissions <span class="required">*</span>'.html_safe, :class=>'key'  %>
-
             <% Permission.all.each do |group_name, permissions| %>
 				<h3><%= group_name %></h3>
 				<% permissions.values.each do |permission| %>
@@ -38,9 +30,7 @@
                 	<span><%= permission %></span>
 				<% end %>
             <% end %>
-
           </p>
-
           <div class="btn_panel">
             <%= cancel_button(admin_path) %>
             <%= submit_button('Save') %>

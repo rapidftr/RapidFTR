@@ -17,9 +17,10 @@ class Permission
                                          {:destroy => "Delete Users"},{:disable => "Disable Users"})
   DEVICES  = Permission.to_ordered_hash2({:black_list => "BlackList Devices"})
   REPORTS  = Permission.to_ordered_hash2({})
+  ROLES    = Permission.to_ordered_hash2({:create_and_edit => "Create and Edit Roles"},{:view => "View roles"})
 
   def self.all
-    {"Admin" => ADMIN, "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS}
+    {"Admin" => ADMIN, "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES}
   end
 
 end

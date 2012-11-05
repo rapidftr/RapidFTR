@@ -8,7 +8,9 @@
   </div>
   <div class="side-tab-content">
     <h2>List of Roles</h2>
+    <% if can?(:create, Role) %>
     <%= link_to content_tag(:span, "Create Role", :class => 'create_user'), new_role_path, :class => 'btn' %>
+    <% end %>
     <div class="clearfix"></div>
 
     <div class="filter_bar">
@@ -30,7 +32,9 @@
         <tr>
             <th>Role Name</th>
             <th>Description</th>
+          <% if can?(:edit, Role) %>
             <th></th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -38,8 +42,10 @@
             <tr>
               <td><%= role.name %></td>
               <td><%= truncate(role.description, :length => 40) %></td>
+             <% if can?(:edit, Role) %>
               <td><%= link_to("Edit", edit_role_path(role))%></td>
-            </tr>
+             <% end %>
+      </tr>
         <% end %>
       </tbody>
     </table>

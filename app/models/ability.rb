@@ -49,6 +49,14 @@ class Ability
       can [:read,:update], Device
     end
 
+    if user.has_permission?(Permission::ROLES[:view])
+      can [:list], Role
+    end
+
+    if user.has_permission?(Permission::ROLES[:create_and_edit])
+      can [:manage], Role
+    end
+
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all
     end
