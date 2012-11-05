@@ -5,28 +5,31 @@
 
 <!-- to hook in / populate the users model in backbone -->
 <script type="text/javascript">
-  $(function() {
-      window.Users.refresh(<%= raw @users_details.to_json %>);
-  });
+    $(function () {
+        window.Users.refresh(<%= raw @users_details.to_json %>);
+    });
 </script>
 
 <h1>Manage Users</h1>
 
 <div class="page-content-new">
-<div class="side-tab">
+  <div class="side-tab">
     <ul>
-        <li class="current"><%= link_to "Users", users_path %></li>
-        <li><%= link_to "Roles", roles_path%></li>
+      <li class="current"><%= link_to "Users", users_path %></li>
+      <li><%= link_to "Roles", roles_path %></li>
     </ul>
-</div>
-<div class="side-tab-content">
+  </div>
+  <div class="side-tab-content">
+    <% if @access_error.present? %>
+        <strong> You are not permitted to access this page.</strong>
+    <% end %>
+    <% if @users.present? %>
+        <%= render :partial => 'users_table' %>
+        <p><%= link_to 'Back', admin_path %></p>
 
+        <div id="modal-dialog"/>
+    <% end %>
 
-<%= render :partial => 'users_table' %>
+  </div>
 
-<br />
-
-<p><%= link_to 'Back', admin_path %></p>
-<div id="modal-dialog" />
-</div>
 </div>

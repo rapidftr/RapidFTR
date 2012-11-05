@@ -45,14 +45,14 @@ describe UsersController do
       user_detail[:user_url].should_not be_blank
     end
 
-    it "should throw exception if user is not authorized" do
+    it "should return error if user is not authorized" do
       fake_login
       fake_session = Session.new()
       Session.stub(:get).and_return(fake_session)
       mock_user = mock_user({:merge => {}, :user_name => "someone"})
       User.stub!(:view).and_return([mock_user])
       get :index
-      response.should render_template("#{Rails.root}/public/403.html")
+      assigns(:access_error).should == "You are not allowed to access this page."
     end
 
     it "should authorize index page for read only users" do
@@ -60,7 +60,7 @@ describe UsersController do
       user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
       fake_login user
       get :index
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      assigns(:access_error).should be_nil
     end
   end
 
