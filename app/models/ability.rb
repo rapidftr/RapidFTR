@@ -3,6 +3,9 @@ class Ability
 
   def initialize(user)
 
+    # 
+    # CHILDREN 
+    #   
     if user.has_permission?(Permission::CHILDREN[:register])
       can [:index, :create], Child
       can [:read], Child do |child|
@@ -25,6 +28,9 @@ class Ability
       can :export, Child
     end
 
+    # 
+    # USERS
+    #   
     if user.has_permission?(Permission::USERS[:view])
       can [:read, :show, :list], User
     end
@@ -45,10 +51,16 @@ class Ability
       cannot [:edit], User
     end
 
+    # 
+    # DEVICES
+    #   
     if user.has_permission?(Permission::DEVICES[:black_list])
       can [:read,:update], Device
     end
 
+    # 
+    # ROLES
+    #   
     if user.has_permission?(Permission::ROLES[:view])
       can [:list], Role
     end
@@ -56,6 +68,14 @@ class Ability
     if user.has_permission?(Permission::ROLES[:create_and_edit])
       can [:manage], Role
     end
+    
+    # 
+    # FORMS
+    #   
+    if user.has_permission?(Permission::FORMS[:manage])
+      can [:manage], FormSection
+    end
+    
 
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all

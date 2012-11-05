@@ -72,21 +72,21 @@ describe Ability do
     it "it should view object" do
       @user.stub!(:permissions => [Permission::USERS[:view]])
       ability = Ability.new(@user)
-      ability.can?(:list, User).should == true
-      ability.can?(:read, User.new).should == true
+      ability.can?(:list, User).should be_true
+      ability.can?(:read, User.new).should be_true
     end
 
     it "should not view object " do
       @user.stub!(:permissions => [Permission::CHILDREN[:register]])
       ability = Ability.new(@user)
-      ability.can?(:list, User).should == false
-      ability.can?(:read, User.new).should == false
+      ability.can?(:list, User).should be_false
+      ability.can?(:read, User.new).should be_false
     end
     it "cannot update user " do
       @user.stub!(:permissions => [Permission::USERS[:view]])
       ability = Ability.new(@user)
-      ability.can?(:update, User.new).should == false
-      ability.can?(:create, User.new).should == false
+      ability.can?(:update, User.new).should be_false
+      ability.can?(:create, User.new).should be_false
     end
   end
   describe '#edit child' do
@@ -161,9 +161,9 @@ describe Ability do
     it "should be able to view and search any child record" do
       @user.stub!(:permissions => [ Permission::CHILDREN[:view_and_search]])
       @ability = Ability.new(@user)
-      @ability.can?(:index, Child.new).should == true
-      @ability.can?(:read, Child.new).should == true
-      @ability.can?(:view_all, Child).should == true
+      @ability.can?(:index, Child.new).should be_true
+      @ability.can?(:read, Child.new).should  be_true
+      @ability.can?(:view_all, Child).should  be_true
     end
   end
 
@@ -182,21 +182,30 @@ describe Ability do
     end
   end
   
-  define "roles permission" do
+  describe "roles permission" do
     it "should allow only to list roles for 'view' roles user" do
       @user.stub!(:permissions => [Permission::ROLES[:view]])
       @ability = Ability.new(@user)
-      @ability.can?(:list, Role.new).should == true
-      @ability.can?(:create, Role.new).should == false
-      @ability.can?(:update, Role.new).should == false
+      @ability.can?(:list, Role.new).should   be_true
+      @ability.can?(:create, Role.new).should be_false
+      @ability.can?(:update, Role.new).should be_false
     end
 
     it "should only to manage roles for 'create_and_edit' roles user" do
       @user.stub!(:permissions => [Permission::ROLES[:create_and_edit]])
       @ability = Ability.new(@user)
-      @ability.can?(:list, Role.new).should == true
-      @ability.can?(:create, Role.new).should == true
-      @ability.can?(:update, Role.new).should == true
+      @ability.can?(:list, Role.new).should   be_true
+      @ability.can?(:create, Role.new).should be_true
+      @ability.can?(:update, Role.new).should be_true
     end
   end
+
+  describe "manage forms" do
+    it "allow full access to form section" do
+      @user.stub!(:permissions => [Permission::FORMS[:manage]])
+      @ability = Ability.new(@user)
+      @ability.can?(:manage, FormSection.new).should be_true
+    end
+  end
+
 end
