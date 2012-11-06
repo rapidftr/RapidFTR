@@ -39,6 +39,25 @@ describe RolesController do
 
   end
 
+    describe "GET show" do
+
+    it "should allow user to view roles " do
+      fake_login_as(Permission::ROLES[:create_and_edit])
+      mock = mock()
+      Role.should_receive(:get).with(10).and_return(mock)
+      get :show, :id => 10
+      assigns(:role).should == mock
+    end
+
+    it "should not allow user without permission to edit roles" do
+      fake_login_as(Permission::USERS[:view])
+      Role.should_not_receive(:get).with(anything)
+      get :show, :id => 10
+      response.should render_template("#{Rails.root}/public/403.html")
+    end
+
+  end
+
   describe "POST new" do
     it "should allow valid user to create roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])

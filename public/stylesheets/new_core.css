@@ -127,6 +127,11 @@ fieldset p {
     float: left;
     display: block;
     padding-top: 4px; }
+  fieldset p .value {
+    display: block;
+    float: left;
+    width: 500px;
+    padding-top: 4px; }
 fieldset p:nth-child(odd) {
   background: #f1f1f1; }
 fieldset p:nth-child(even) {

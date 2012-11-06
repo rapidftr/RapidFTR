@@ -45,6 +45,9 @@
              <% if can?(:edit, Role) %>
               <td><%= link_to("Edit", edit_role_path(role))%></td>
              <% end %>
+              <% if can?(:view, Role) %>
+              <td><%= link_to("Show", role_path(role))%></td>
+             <% end %>
       </tr>
         <% end %>
       </tbody>

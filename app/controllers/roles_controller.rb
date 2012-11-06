@@ -5,6 +5,11 @@ class RolesController < ApplicationController
     @roles = params[:sort] == "desc" ? Role.by_name.reverse : Role.by_name
   end
 
+  def show
+    authorize! :list, Role
+    @role = Role.get(params[:id])
+  end
+
   def edit
     authorize! :edit, Role
     @role = Role.get(params[:id])
