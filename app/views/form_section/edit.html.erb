@@ -3,32 +3,32 @@
   <div class="side-tab-content full_width">
     <%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => {:class => ""} do |f| %>
 
-<fieldset>
-  <h3 id='editFormDetails'>Details</h3>
-  <div id='sectionId' class='hidden'><%= @form_section.name%></div>
-    <p>
-      <%= f.label :name, :class=>'key' %>
-      <%= f.text_field :name %>
-    </p>
+			<fieldset>
+			  <h3 id='editFormDetails'>Details</h3>
+			  <div id='sectionId' class='hidden'><%= @form_section.unique_id%></div>
+			    <p>
+			      <%= f.label :name, :class=>'key' %>
+			      <%= f.text_field :name %>
+			    </p>
 
-    <p>
-      <%= f.label :description, :class=>'key' %>
-      <%= f.text_field :description %>
-    </p>
+			    <p>
+			      <%= f.label :description, :class=>'key' %>
+			      <%= f.text_field :description %>
+			    </p>
 
-    <p>
-      <%= f.label :help_text, :class=>'key' %>
-      <%= f.text_field :help_text %>
-    </p>
+			    <p>
+			      <%= f.label :help_text, :class=>'key' %>
+			      <%= f.text_field :help_text %>
+			    </p>
     
-	<% if not @form_section.perm_enabled? %>
-      <p>
-        <%= f.label :enabled, "Visible", :class=>'key' %>
-        <%= f.check_box :enabled?, {}, true, false %>
-      </p>
-    <% end %>
+				<% if not @form_section.perm_enabled? %>
+			      <p>
+			        <%= f.label :enabled, "Visible", :class=>'key' %>
+			        <%= f.check_box :enabled?, {}, true, false %>
+			      </p>
+			    <% end %>
       
-</fieldset>
+			</fieldset>
       <%= cancel_button(formsections_path) %>
       <%= submit_button 'Save Details' %>
     <% end %>
