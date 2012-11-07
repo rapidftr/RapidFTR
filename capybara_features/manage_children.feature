@@ -10,6 +10,6 @@ Feature: So that an admin/normal user can manage listed children
   Scenario: Normal users should have a back link for easy access
     Given I am logged in
     And I am on the home page
-    When I follow "View All Children"
+    When I follow "View Records"
     And I follow "Back"
     Then I am on the home page
