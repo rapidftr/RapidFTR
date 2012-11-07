@@ -21,4 +21,4 @@ Feature: View Child Record Toolbar
     | View the change log    | view-log        |
     | Export this Record     | export_record   |
     | Mark child as Reunited | reunited        |
-    | Flag as suspect record | flag            |
+    | Flag Record | flag            |

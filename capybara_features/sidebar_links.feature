@@ -5,7 +5,7 @@ Feature: So that a user can view sidebar links
 
   Background:
 
-    Scenario: Users should be able to navigate 'Search' and 'Advanced Search' links on the 'View All Children' page
+    Scenario: Users should be able to navigate 'Search' and 'Advanced Search' links on the 'View Records' page
 
       Given I am logged in
 
@@ -15,7 +15,7 @@ Feature: So that a user can view sidebar links
 
       Then I should see a link to the advanced child search page
 
-    Scenario: Users should be able to navigate 'View All Children' and 'Advanced Search' links on the 'Search' page
+    Scenario: Users should be able to navigate 'View Records' and 'Advanced Search' links on the 'Search' page
 
       Given I am logged in
 
@@ -25,7 +25,7 @@ Feature: So that a user can view sidebar links
 
       Then I should see a link to the advanced child search page
 
-    Scenario: Users should be able to navigate 'View All Children' and 'Search' links on the 'Advanced Search' page
+    Scenario: Users should be able to navigate 'View Records' and 'Search' links on the 'Advanced Search' page
 
       Given I am logged in
 

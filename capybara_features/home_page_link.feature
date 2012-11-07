@@ -22,7 +22,7 @@ Feature: So that a user can get back to their initial start page from anywhere w
     And I am on the home page
     Then I should see "Welcome to RapidFTR"
     And I should see "Register New Child"
-    And I should see "View All Children"
+    And I should see "View Records"
     And I should not see "Records need Attention"
 
    Scenario: Admin users should see records need Attention

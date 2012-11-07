@@ -24,7 +24,7 @@ Feature:
     When I am on the children listing page
     Then I should see "Flagged By"
 
-#    And I follow "View All Children"
+#    And I follow "View Records"
 #    Then I should see flagged details
     
   Scenario: Removing flag from a child record
