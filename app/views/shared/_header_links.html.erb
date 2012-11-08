@@ -5,10 +5,7 @@
     Welcome <%= current_user_name %>, 
     <%= link_with_confirm 'Logout', :logout %> | 
     <%= link_with_confirm 'My Account', user_path(User.find_by_user_name(current_user_name)) %> |
-
-    <% if is_admin? %>
-      <%= link_to 'System settings', admin_path %> |
-    <%end%>
+    <%= link_to 'System settings', admin_path %> |
   <% end %>
 
   <%= link_with_confirm 'Contact & Help', contact_information_path("administrator") %>
