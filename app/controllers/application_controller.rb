@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   include ChecksAuthentication
-#  before_filter :check_authentication
+  before_filter :check_authentication
   before_filter :set_locale
 
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
