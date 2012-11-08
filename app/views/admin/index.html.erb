@@ -1,13 +1,4 @@
 <p>
-    <%= link_to 'Manage Children', children_path %>
-</p>
-<p>
-    <%= link_to 'Manage Form Sections', formsections_path  %>
-</p>
-<p>
-    <%= link_to 'Manage Users', users_path %>
-</p>
-<p>
     <%= link_to 'Export All Child Records to CSV', url_for(:controller=>"children", :action=>"index", :escape => false, :format=>"csv") %>
 </p>
 <p>
