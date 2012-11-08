@@ -42,8 +42,7 @@ class ApplicationController < ActionController::Base
 
   # TODO Remove duplication in ApplicationHelper
   def current_user_name
-    session = app_session
-    return session.user_name unless session.nil?
+    current_user.try(:user_name)
   end
 
   def current_ability
@@ -56,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user = app_session.user
+    @current_user ||= app_session.user
   end
 
   def send_pdf(pdf_data,filename)
