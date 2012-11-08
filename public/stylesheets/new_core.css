@@ -131,11 +131,30 @@ fieldset p {
     display: block;
     float: left;
     width: 500px;
-    padding-top: 4px; }
+    padding-top: 4px;
+    color: #666; }
+    fieldset p .value .section {
+      margin-bottom: 20px;
+      display: block;
+      padding: 10px; }
+      fieldset p .value .section .title {
+        display: block;
+        border-bottom: 1px dashed #ddd;
+        padding-bottom: 8px;
+        margin-bottom: 5px;
+        font-style: italic;
+        color: #333; }
+      fieldset p .value .section label {
+        display: block;
+        padding: 3px; }
 fieldset p:nth-child(odd) {
   background: #f1f1f1; }
+  fieldset p:nth-child(odd) .section {
+    background: #fff; }
 fieldset p:nth-child(even) {
   background: #fff; }
+  fieldset p:nth-child(even) .section {
+    background: #eee; }
 
 .no_border {
   border: 0px !important; }
@@ -152,28 +171,35 @@ fieldset p:nth-child(even) {
   border-radius: 5px;
   padding: 10px;
   margin: 5px 0px 10px; }
+  .filter_bar .pagination_panel {
+    float: left;
+    padding: 0px 5px; }
   .filter_bar .filter_panel {
-    float: left; }
+    float: left;
+    padding: 0px 5px; }
     .filter_bar .filter_panel ul {
       display: inline-block; }
       .filter_bar .filter_panel ul li {
         display: inline-block;
         border-left: 1px solid #666;
         padding: 0px 10px; }
-      .filter_bar .filter_panel ul .first {
+      .filter_bar .filter_panel ul li:first-child {
         border: 0px;
         padding-left: 5px; }
   .filter_bar .orderby_panel {
-    float: right; }
+    float: right;
+    padding: 0px 5px; }
     .filter_bar .orderby_panel ul {
       display: inline-block; }
       .filter_bar .orderby_panel ul li {
         display: inline-block;
         border-left: 1px solid #666;
         padding: 0px 10px; }
-      .filter_bar .orderby_panel ul .first {
+      .filter_bar .orderby_panel ul li:first-child {
         border: 0px;
         padding-left: 5px; }
+  .filter_bar select {
+    width: 230px !important; }
 
 a.edit {
   background: url(../images/new/icon_edit.png) no-repeat 0px 0px;
@@ -375,7 +401,7 @@ body {
               padding: 5px; }
           body .page_container .page-content .page-content-new .side-tab-content .btn_panel {
             padding: 5px;
-            border-top: 1px solid #333;
+            border-top: 1px solid #ccc;
             text-align: right; }
             body .page_container .page-content .page-content-new .side-tab-content .btn_panel a {
               margin: 0px 20px;
