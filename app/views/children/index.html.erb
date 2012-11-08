@@ -1,17 +1,4 @@
 <h1 class="no_border float_left">List of Children</h1>
-<% if can?(:export, Child) %>
-  <% if can?(:view_all, Child) %>
-  <span class="float_right">
-      <%= link_to 'Export All Child Records to CSV', url_for(:controller=>"children", :action=>"index", :escape => false, :format=>"csv") %> |
-  </span>
-  <span class = "float_right">
-      <%= link_to 'Export All Child Records to PDF', url_for(:controller=>"children", :action=>"index", :escape => false, :format=>"pdf") %> |
-  </span>
-  <%end%>
-<span class = "float_right">
-    <%= link_to 'Export Some Records to CSV', :advanced_search_index %>
-</span>
-<%end%>
 
 <% if can? :create, Child %>
 	<%= link_to content_tag(:span, 'Register New Child', :class => 'create_user'), new_child_path, :class=>'btn' %>
@@ -29,4 +16,4 @@
 
 <br/>
 
-<p><%= link_to "Back",:back %></p>
+<%= render :partial => "children/footer" %>
