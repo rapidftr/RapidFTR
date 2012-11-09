@@ -2,39 +2,23 @@ require 'spec_helper'
 
 describe Ability do
 
+  CRUD = [ :index, :create, :view, :edit, :update, :destroy ]
+
   let(:permissions) { [] }
   let(:user) { stub_model User, :user_name => 'test', :permissions => permissions }
 
-  subject    { Ability.new user }
-
-  shared_examples "authorize classes/objects" do |*classes|
-    classes.each do |clazz|
-      it { should authorize :index, clazz }
-      it { should authorize :create, clazz }
-      it { should authorize :read, clazz }
-      it { should authorize :update, clazz }
-    end
-  end
-
-  shared_examples "restrict classes/objects" do |*classes|
-    classes.each do |clazz|
-      it { should_not authorize :index, clazz }
-      it { should_not authorize :create, clazz }
-      it { should_not authorize :read, clazz }
-      it { should_not authorize :update, clazz }
-    end
-  end
+  subject { Ability.new user }
 
   describe '#admin' do
     let(:permissions) { [Permission::ADMIN[:admin]] }
 
-    it_should_behave_like "authorize classes/objects", Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role
+    it { should authorize_all CRUD, Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
   end
 
   describe '#view,search all data and edit' do
     let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }
 
-    it_should_behave_like "restrict classes/objects", ContactInformation, Device, FormSection, Session, SuggestedField, User, Role
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
     it { should authorize :index, Child }
     it { should_not authorize :create, Child }
@@ -45,7 +29,7 @@ describe Ability do
   describe '#register child' do
     let(:permissions) { [Permission::CHILDREN[:register]] }
 
-    it_should_behave_like "restrict classes/objects", ContactInformation, Device, FormSection, Session, SuggestedField, User, Role
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
     it { should authorize :index, Child }
     it { should authorize :create, Child }
@@ -66,7 +50,7 @@ describe Ability do
   describe '#edit child' do
     let(:permissions) { [Permission::CHILDREN[:edit]] }
 
-    it_should_behave_like "restrict classes/objects", ContactInformation, Device, FormSection, Session, SuggestedField, User, Role
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
     it { should authorize :index, Child }
     it { should_not authorize :read, Child.new }
@@ -103,7 +87,7 @@ describe Ability do
   describe "export children to photowall" do
     let(:permissions) { [Permission::CHILDREN[:export]] }
 
-    it_should_behave_like "restrict classes/objects", ContactInformation, Device, FormSection, Session, SuggestedField, User, Role
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
     it { should authorize :export, Child }
     it { should_not authorize :index, Child }
@@ -122,7 +106,7 @@ describe Ability do
   describe "blacklist" do
     let(:permissions) { [Permission::DEVICES[:black_list]] }
 
-    it_should_behave_like "restrict classes/objects", Child, ContactInformation, FormSection, Session, SuggestedField, User, Role
+    it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role }
 
     it { should authorize :update, Device }
     it { should authorize :index, Device }
@@ -148,7 +132,7 @@ describe Ability do
   describe "manage forms" do
     let(:permissions) { [Permission::FORMS[:manage]] }
 
-    it_should_behave_like "restrict classes/objects", Child, ContactInformation, Device, Session, SuggestedField, User, Role
+    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role }
 
     it { should authorize :manage, FormSection.new }
     it { should authorize :manage, Field.new }
