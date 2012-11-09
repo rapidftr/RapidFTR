@@ -2,16 +2,16 @@ RSpec::Matchers.define :authorize do |action, object|
   match do |actual|
     actual.can?(action, object).should == true
   end
+end
 
-  failure_message_for_should do |actual|
-    "expected to authorize #{action.to_s} on #{object.inspect}"
+RSpec::Matchers.define :authorize_all do |actions, *objects|
+  match do |actual|
+    actions.product(objects).all? { |(action, object)| actual.can?(action, object) }.should == true
   end
+end
 
-  failure_message_for_should_not do |actual|
-    "expected to restrict #{action.to_s} on #{object.inspect}"
-  end
-
-  description do
-    "authorize #{action.to_s} on #{object.to_s}"
+RSpec::Matchers.define :authorize_any do |actions, *objects|
+  match do |actual|
+    actions.product(objects).any? { |(action, object)| actual.can?(action, object) }.should == true
   end
 end
