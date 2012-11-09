@@ -162,6 +162,9 @@ fieldset p:nth-child(even) {
 .float_left {
   float: left; }
 
+.float_right {
+  float: right; }
+
 .filter_bar {
   background: blanchedalmond;
   border: 1px solid #ffce81;

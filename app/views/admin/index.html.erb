@@ -1,17 +1,5 @@
-<p>
-    <%= link_to 'Export All Child Records to CSV', url_for(:controller=>"children", :action=>"index", :escape => false, :format=>"csv") %>
-</p>
-<p>
-    <%= link_to 'Export All Child Records to PDF', url_for(:controller=>"children", :action=>"index", :escape => false, :format=>"pdf") %>
-</p>
-<p>
-    <%= link_to 'Export Some Records to CSV', :advanced_search_index %>
-</p>
-	<br/>
-<h4>System Settings</h4>
-<p>
-	<%= link_to 'Admin Contact Information', edit_contact_information_path(:administrator) %>
-</p>
-<p>
-	<%= link_to 'Highlight Fields', highlight_fields_path %>
-</p>        
+<h1>System Settings</h1>
+
+  <br /><p><%= link_to 'Admin Contact Information', edit_contact_information_path(:administrator) %></p>
+
+  <br /><p><%= link_to 'Highlight Fields', highlight_fields_path %></p>
