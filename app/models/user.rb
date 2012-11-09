@@ -100,6 +100,10 @@ class User < CouchRestRails::Document
     permissions && permissions.include?(permission)
   end
 
+  def has_any_permission?(*any_of_permissions)
+    (any_of_permissions.flatten - permissions).count < any_of_permissions.flatten.count
+  end
+
   def permissions
     roles.compact.collect(&:permissions).flatten
   end

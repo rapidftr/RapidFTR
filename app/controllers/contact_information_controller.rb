@@ -1,8 +1,6 @@
 class ContactInformationController < ApplicationController
   skip_before_filter :check_authentication, :only => %w{show}
   
-  before_filter :administrators_only, :except => %w{show}
-
   # GET /contact_information/Administrator  
   def show
     @page_name = "Contact & Help"
@@ -17,11 +15,14 @@ class ContactInformationController < ApplicationController
   def edit
     @page_name = "Edit Contact Information"
     @contact_information = ContactInformation.get_or_create(params[:id])
+    authorize! :edit, @contact_information
   end
   
   # PUT /contact_information/Administrator
   def update
     @contact_information = ContactInformation.get_by_id(params[:id])
+    authorize! :update, @contact_information
+    
     @contact_information.update_attributes(params[:contact_information])  
     @contact_information.save!
     flash[:notice] = 'Contact information was successfully updated.'
