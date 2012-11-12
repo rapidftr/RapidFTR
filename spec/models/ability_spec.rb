@@ -2,217 +2,140 @@ require 'spec_helper'
 
 describe Ability do
 
-  before :each do
-    @user = User.new :user_name => 'test'
-  end
+  CRUD = [ :index, :create, :view, :edit, :update, :destroy ]
 
-  shared_examples "control classes and objects" do |classes, result|
-    before :each do
-      @ability = Ability.new(@user)
-    end
+  let(:permissions) { [] }
+  let(:user) { stub_model User, :user_name => 'test', :permissions => permissions }
 
-    classes.each do |clazz|
-      it "list child" do
-        @ability.can?(:index, clazz).should == result
-      end
-      it "create child" do
-        @ability.can?(:create, clazz).should == result
-      end
-      it "view object" do
-        @ability.can?(:read, clazz.new).should == result
-      end
-      it "edit object" do
-        @ability.can?(:update, clazz.new).should == result
-      end
-    end
-  end
+  subject { Ability.new user }
 
   describe '#admin' do
-    before :each do
-      @user.stub!(:permissions => [Permission::ADMIN[:admin]])
-    end
+    let(:permissions) { [Permission::ADMIN[:admin]] }
 
-    include_examples "control classes and objects", [Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], true
+    it { should authorize_all CRUD, Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
   end
 
   describe '#view,search all data and edit' do
-    before :each do
-      @user.stub!(:permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]])
-    end
+    let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }
 
-    include_examples "control classes and objects", [ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], false
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
-    it "should have appropriate permissions" do
-      ability = Ability.new(@user)
-      ability.can?(:index, Child).should be_true
-      ability.can?(:create, Child).should be_false
-      ability.can?(:read, Child.new).should be_true
-      ability.can?(:update, Child.new).should be_true
-    end
+    it { should authorize :index, Child }
+    it { should_not authorize :create, Child }
+    it { should authorize :read, Child.new }
+    it { should authorize :update, Child.new }
   end
 
   describe '#register child' do
-    before :each do
-      @user.stub!(:permissions => [Permission::CHILDREN[:register]])
-    end
+    let(:permissions) { [Permission::CHILDREN[:register]] }
 
-    include_examples "control classes and objects", [ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], false
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
-    it "should have appropriate permissions" do
-      ability = Ability.new(@user)
-      ability.can?(:index, Child).should be_true
-      ability.can?(:create, Child).should be_true
-      ability.can?(:read, Child.new).should be_false
-      ability.can?(:update, Child.new).should be_false
-      ability.can?(:read, Child.new(:created_by => 'test')).should be_true
-    end
+    it { should authorize :index, Child }
+    it { should authorize :create, Child }
+    it { should_not authorize :read, Child.new }
+    it { should_not authorize :update, Child.new }
+    it { should authorize :read, Child.new(:created_by => 'test') }
   end
 
   describe '#view users' do
-    it "it should view object" do
-      @user.stub!(:permissions => [Permission::USERS[:view]])
-      ability = Ability.new(@user)
-      ability.can?(:list, User).should be_true
-      ability.can?(:read, User.new).should be_true
-    end
+    let(:permissions) { [Permission::USERS[:view]] }
 
-    it "should not view object " do
-      @user.stub!(:permissions => [Permission::CHILDREN[:register]])
-      ability = Ability.new(@user)
-      ability.can?(:list, User).should be_false
-      ability.can?(:read, User.new).should be_false
-    end
-    it "cannot update user " do
-      @user.stub!(:permissions => [Permission::USERS[:view]])
-      ability = Ability.new(@user)
-      ability.can?(:update, User.new).should be_false
-      ability.can?(:create, User.new).should be_false
-    end
+    it { should authorize :list, User }
+    it { should authorize :read, User.new }
+    it { should_not authorize :update, User.new }
+    it { should_not authorize :create, User.new }
   end
+
   describe '#edit child' do
-    before :each do
-      @user.stub!(:permissions => [Permission::CHILDREN[:edit]])
-    end
+    let(:permissions) { [Permission::CHILDREN[:edit]] }
 
-    include_examples "control classes and objects", [ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], false
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
-    it "should have appropriate permissions" do
-      ability = Ability.new(@user)
-      ability.can?(:index, Child).should be_true
-      ability.can?(:read, Child.new).should be_false
-      ability.can?(:update, Child.new).should be_false
-      ability.can?(:read, Child.new(:created_by => 'test')).should be_true
-      ability.can?(:update, Child.new(:created_by => 'test')).should be_true
-    end
+    it { should authorize :index, Child }
+    it { should_not authorize :read, Child.new }
+    it { should_not authorize :update, Child.new }
+    it { should authorize :read, Child.new(:created_by => 'test') }
+    it { should authorize :update, Child.new(:created_by => 'test') }
   end
 
   describe '#create and edit users' do
-    it "should be able to create users" do
-      @user.stub!(:permissions => [Permission::USERS[:create_and_edit]])
-      ability = Ability.new(@user)
-      ability.can?(:create, User.new).should be_true
-      ability.can?(:update, User.new).should be_true
-      ability.can?(:destroy, User.new).should be_false
-    end
-    it "should be able to view users" do
-      @user.stub!(:permissions => [Permission::USERS[:create_and_edit]])
-      ability = Ability.new(@user)
-      ability.can?(:read, User.new).should be_true
-    end
+    let(:permissions) { [Permission::USERS[:create_and_edit]] }
+
+    it { should authorize :create, User.new }
+    it { should authorize :update, User.new }
+    it { should_not authorize :destroy, User.new }
+    it { should authorize :read, User.new }
   end
 
   describe "destroy users" do
-    it "should be able to delete users" do
-      @user.stub!(:permissions => [Permission::USERS[:destroy]])
-      ability = Ability.new(@user)
-      ability.can?(:destroy, User.new).should be_true
-      ability.can?(:read, User.new).should be_true
-      ability.can?(:edit, User.new).should be_false
-    end
+    let(:permissions) { [Permission::USERS[:destroy]] }
+
+    it { should authorize :destroy, User.new }
+    it { should authorize :read, User.new }
+    it { should_not authorize :edit, User.new }
   end
 
   describe "disable users" do
-    it "should be able to disable users" do
-      @user.stub!(:permissions => [Permission::USERS[:disable]])
-      ability = Ability.new(@user)
-      ability.can?(:create, User.new).should be_false
-      ability.can?(:update, User.new).should be_true
-      ability.can?(:read, User.new).should be_true
-    end
+    let(:permissions) { [Permission::USERS[:disable]] }
+
+    it { should_not authorize :create, User.new }
+    it { should authorize :update, User.new }
+    it { should authorize :read, User.new }
   end
 
   describe "export children to photowall" do
-    before :each do
-      @user.stub!(:permissions => [Permission::CHILDREN[:export]])
-    end
+    let(:permissions) { [Permission::CHILDREN[:export]] }
 
-    include_examples "control classes and objects", [ContactInformation, Device, FormSection, Session, SuggestedField, User, Role], false
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
 
-    it "should be able to export children" do
-      ability = Ability.new(@user)
-      ability.can?(:export, Child).should be_true
-      ability.can?(:index, Child).should be_false
-      ability.can?(:read, Child.new).should be_false
-      ability.can?(:update, Child.new).should be_false
-    end
+    it { should authorize :export, Child }
+    it { should_not authorize :index, Child }
+    it { should_not authorize :read, Child.new }
+    it { should_not authorize :update, Child.new }
   end
 
   describe "view and search child records" do
-    it "should be able to view and search any child record" do
-      @user.stub!(:permissions => [ Permission::CHILDREN[:view_and_search]])
-      @ability = Ability.new(@user)
-      @ability.can?(:index, Child.new).should be_true
-      @ability.can?(:read, Child.new).should  be_true
-      @ability.can?(:view_all, Child).should  be_true
-    end
+    let(:permissions) { [ Permission::CHILDREN[:view_and_search]] }
+
+    it { should authorize :index, Child.new }
+    it { should authorize :read, Child.new }
+    it { should authorize :view_all, Child }
   end
 
   describe "blacklist" do
-    before :each do
-      @user.stub!(:permissions => [Permission::DEVICES[:black_list]])
-    end
+    let(:permissions) { [Permission::DEVICES[:black_list]] }
 
-    include_examples "control classes and objects", [Child, ContactInformation, FormSection, Session, SuggestedField, User, Role], false
+    it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role }
 
-    it "should blacklist a device for users with relevant permission alone" do
-      ability = Ability.new(@user)
-      ability.can?(:update, Device).should be_true
-      ability.can?(:index, Device).should be_true
-      ability.can?(:read, User.new).should be_false
-    end
+    it { should authorize :update, Device }
+    it { should authorize :index, Device }
+    it { should_not authorize :read, User.new }
   end
   
-  describe "roles permission" do
-    it "should allow only to list roles for 'view' roles user" do
-      @user.stub!(:permissions => [Permission::ROLES[:view]])
-      @ability = Ability.new(@user)
-      @ability.can?(:list, Role.new).should   be_true
-      @ability.can?(:create, Role.new).should be_false
-      @ability.can?(:update, Role.new).should be_false
-    end
+  describe "view roles permission" do
+    let(:permissions) { [Permission::ROLES[:view]] }
 
-    it "should only to manage roles for 'create_and_edit' roles user" do
-      @user.stub!(:permissions => [Permission::ROLES[:create_and_edit]])
-      @ability = Ability.new(@user)
-      @ability.can?(:list, Role.new).should   be_true
-      @ability.can?(:create, Role.new).should be_true
-      @ability.can?(:update, Role.new).should be_true
-    end
+    it { should authorize :list, Role.new }
+    it { should_not authorize :create, Role.new }
+    it { should_not authorize :update, Role.new }
+  end
+
+  describe "create and edit roles permission" do
+    let(:permissions) { [Permission::ROLES[:create_and_edit]] }
+
+    it { should authorize :list, Role.new }
+    it { should authorize :create, Role.new }
+    it { should authorize :update, Role.new }
   end
 
   describe "manage forms" do
-    before :each do
-      @user.stub!(:permissions => [Permission::FORMS[:manage]])      
-    end
+    let(:permissions) { [Permission::FORMS[:manage]] }
 
-    include_examples "control classes and objects", [Child, ContactInformation, Device, Session, SuggestedField, User, Role], false
+    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role }
 
-    it "allow full access to form section" do
-      @user.stub!(:permissions => [Permission::FORMS[:manage]])
-      @ability = Ability.new(@user)
-      @ability.can?(:manage, FormSection.new).should be_true
-      @ability.can?(:manage, Field.new).should be_true      
-    end
+    it { should authorize :manage, FormSection.new }
+    it { should authorize :manage, Field.new }
   end
 
 end

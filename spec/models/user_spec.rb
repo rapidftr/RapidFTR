@@ -238,6 +238,17 @@ describe User do
       user.should_not be_valid
       user.errors.on(:role_ids).should == ["Please select at least one role"]
     end
+
+    describe 'permissions' do
+      subject { stub_model User, :permissions => [ 1, 2, 3, 4 ] }
+
+      it { should have_permission 1 }
+      it { should_not have_permission 5 }
+
+      it { should have_any_permission 1 }
+      it { should have_any_permission 1,2,3,4 }
+      it { should_not have_any_permission 5 }
+    end
   end
 
   describe "can disable" do
@@ -258,4 +269,5 @@ describe User do
 
     end
   end
+
 end

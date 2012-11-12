@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $(".device_blacklist_check_box").click(function (event) {
         setModalText();
+        var _this = this;
         $("#modal-dialog").dialog({
             modal:true,
             width:400,
@@ -9,7 +10,7 @@ $(document).ready(function () {
             buttons:{
                 'Yes':function () {
                     $(this).dialog('close');
-                    updateBlackListFlag();
+                    updateBlackListFlag(_this);
                 },
                 'Cancel':function () {
                     $(this).dialog('close');
@@ -20,16 +21,16 @@ $(document).ready(function () {
     })
 });
 
-function updateBlackListFlag() {
+function updateBlackListFlag(check_box) {
     var $checkbox = $(".device_blacklist_check_box");
     $.ajax({
         url:"/devices/update_blacklist",
         type:"POST",
         dataType:'json',
-        data:{blacklisted:!($checkbox.is(':checked')), id:$checkbox.attr('id')},
+        data:{blacklisted:!($(check_box).is(':checked')), imei:$(check_box).attr('id')},
         success:function (json) {
             if (json.status == 'ok') {
-                $checkbox.attr('checked', !$checkbox.attr('checked'));
+                location.reload();
             }
         }
     })

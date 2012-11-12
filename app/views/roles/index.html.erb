@@ -14,19 +14,15 @@
     <div class="clearfix"></div>
 
     <div class="filter_bar">
-      <div>
-      <ul>
-      <li class="first">showing all <%= pluralize(@roles.length, "record") %></li>
-      </ul>
+        <div class="pagination_panel">showing all <%= pluralize(@roles.length, "record") %></div>
+        <div class="orderby_panel">
+            Order by Role Name:
+            <ul>
+                <li><%= link_to("Ascending", roles_path)%></li>
+                <li><%= link_to("Descending", roles_path(:sort => "desc"))%></li>
+            </ul>
+        </div>
     </div>
-    <div>
-	    Order by Role Name:
-    <ul>
-	  	<li><%= link_to("Ascending", roles_path)%></li>
-      <li><%= link_to("Descending", roles_path(:sort => "desc"))%></li>
-    </ul>
-    </div>
-  </div>
     <table class="list_table">
       <thead>
         <tr>
@@ -35,10 +31,13 @@
           <% if can?(:edit, Role) %>
             <th></th>
           <% end %>
+          <% if can?(:view, Role) %>
+              <th></th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
-        <% @roles.each do |role| %>:
+        <% @roles.each do |role| %>
             <tr>
               <td><%= role.name %></td>
               <td><%= truncate(role.description, :length => 40) %></td>

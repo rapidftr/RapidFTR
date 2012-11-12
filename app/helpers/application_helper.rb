@@ -6,7 +6,7 @@ module ApplicationHelper
 
   # TODO Remove duplication in ApplicationController
   def current_user_name
-    return session.user_name unless session.nil? or session.user_name.nil?
+    return current_user.try(:user_name)
   end
 
   def session
@@ -14,11 +14,11 @@ module ApplicationHelper
   end
 
   def current_user
-    session.user
+    session.try(:user)
   end
 
   def is_admin?
-    return session.user.has_permission?(Permission::ADMIN[:admin]) if session
+    return current_user.has_permission?(Permission::ADMIN[:admin]) if session
   end
 
   def submit_button(name = 'Save')

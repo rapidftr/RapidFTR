@@ -7,10 +7,8 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2>List of Roles</h2>
-    <% if can?(:create, Role) %>
-        <%= link_to content_tag(:span, "Create Role", :class => 'create_user'), new_role_path, :class => 'btn' %>
-    <% end %>
+    <h2><%= link_to "List of Roles", roles_path %> &gt; View Role (<%= @role.name %>)</h2>
+
     <div class="clearfix"></div>
 
     <%= form_for @role, :html => {:class => ''} do |f| %>
@@ -27,14 +25,16 @@
           <p>
             <%= f.label :permissions, 'Permissions'.html_safe, :class=>'key'  %>
             <span class="value">
-            <% Permission.all.each do |group_name, permissions| %>
-                    <strong style="display: block; "><%= group_name %></strong>
-              <% permissions.values.each do |permission| %>
-                  <%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]", :disabled => "disabled"}, permission, "" %>
-                  <span><%= permission %></span>
-              <% end %>
-          <% end %>
-                </span>
+                <% Permission.all.each do |group_name, permissions| %>
+                    <span class="section">
+                      <span class="title"><%= group_name %></span>
+                        <% permissions.values.each do |permission| %>
+                        <label><%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]", :disabled => "disabled"}, permission, "" %>
+                            <%= permission %></label>
+                        <% end %>
+                    </span>
+                <% end %>
+            </span>
           </p>
         </fieldset>
     <% end %>

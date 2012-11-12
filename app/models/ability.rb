@@ -77,6 +77,16 @@ class Ability
       can [:manage], Field
     end
 
+    #
+    # SYSTEM SETTINGS
+    #
+    if user.has_permission?(Permission::SYSTEM[:settings])
+      can [:manage], ContactInformation
+    end
+
+    #
+    # EVERYTHING AT ONCE
+    #
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all
     end
