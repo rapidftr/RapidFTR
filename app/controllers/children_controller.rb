@@ -36,14 +36,10 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     authorize! :read, @child
-
     @form_sections = get_form_sections
-
     @page_name = "View Child: #{@child}"
-
     @aside = 'picture'
     @body_class = 'profile-page'
-
     @duplicates = Child.duplicates_of(params[:id])
 
     respond_to do |format|
@@ -106,6 +102,39 @@ class ChildrenController < ApplicationController
       end
     end
   end
+  
+  def update    
+    respond_to do |format|
+      format.json do
+        params[:child] = JSON.parse params[:child]
+        child = update_child_from params
+        child.save
+        
+        render :json => child.to_json
+      end
+        
+      format.html do 
+        @child = update_child_from params
+        if @child.save
+          flash[:notice] = 'Child was successfully updated.'
+          redirect_to @child 
+        else
+          @form_sections = get_form_sections
+          render :action => "edit"          
+        end
+      end
+
+      format.xml do
+        @child = update_child_from params
+        if @child.save
+          head :ok        
+        else
+          render :xml => @child.errors, :status => :unprocessable_entity
+        end
+      end    
+    end
+  end
+  
 
   def edit_photo
     authorize! :update, @child
@@ -140,70 +169,6 @@ class ChildrenController < ApplicationController
   end
 
   def new_search
-
-  end
-
-  # PUT /children/1
-  # PUT /children/1.xml
-  def update    
-    @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
-    authorize! :update, @child
-  
-    @child['last_updated_by_full_name'] = current_user_full_name
-    new_photo = params[:child].delete("photo")
-    new_audio = params[:child].delete("audio")
-    @child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
-  
-    respond_to do |format|
-      if @child.save
-        flash[:notice] = 'Child was successfully updated.'
-        format.html { redirect_to(@child) }
-        format.xml { head :ok }
-  
-        format.json do
-           render :json => @child.to_json 
-         end
-      else
-        format.html {
-          @form_sections = get_form_sections
-          render :action => "edit"
-        }
-        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  def update    
-
-    respond_to do |format|
-      format.json do
-        params[:child] = JSON.parse params[:child]
-        child = update_child_from params
-        child.save
-        
-        render :json => child.to_json
-      end
-        
-      format.html do 
-        @child = update_child_from params
-        if @child.save
-          flash[:notice] = 'Child was successfully updated.'
-          redirect_to @child 
-        else
-          @form_sections = get_form_sections
-          render :action => "edit"          
-        end
-      end
-
-      format.xml do
-        @child = update_child_from params
-        if @child.save
-          head :ok        
-        else
-          render :xml => @child.errors, :status => :unprocessable_entity
-        end
-      end    
-    end
   end
   
   # DELETE /children/1
