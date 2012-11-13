@@ -92,9 +92,10 @@ describe FormSectionController do
       
       form.field_order("name").should == 0
       form.field_order("protection_status").should == 1
-      @request.env['HTTP_REFERER'] = edit_form_section_path(form.id)
+      controller.stub(:save_field_order_redirect_path).and_return(edit_form_section_path(form.id))
       
       post :save_field_order, :form_order => {"name" => "2", "protection_status" => "1"}, :formId => "children_information"
+      response.should redirect_to(edit_form_section_path(form.id))
       
       form = FormSection.get_by_unique_id("children_information")
       form.field_order("name").should == 1
