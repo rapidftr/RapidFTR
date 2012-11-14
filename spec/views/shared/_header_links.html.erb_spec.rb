@@ -38,7 +38,7 @@ describe 'shared/_header_links.html.erb' do
   end
 
   describe 'with manage forms permisssion' do
-    let(:permissions) { [Permission::FORMS[:manage]] }
+    let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
     it { should have_link('System settings', admin_path) }
   end
 

@@ -4,6 +4,6 @@
     <br /><p><%= link_to 'Admin Contact Information', edit_contact_information_path(:administrator) %></p>
   <% end %>
 
-  <% if can? :manage, FormSection %>
+  <% if can? :highlight, Field %>
     <br /><p><%= link_to 'Highlight Fields', highlight_fields_path %></p>
   <% end %>

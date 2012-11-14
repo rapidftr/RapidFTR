@@ -75,6 +75,14 @@ class Ability
     if user.has_permission?(Permission::FORMS[:manage])
       can [:manage], FormSection
       can [:manage], Field
+      cannot [:highlight], Field
+    end
+
+    # 
+    # HIGHLIGHT FIELDS
+    #   
+    if user.has_permission?(Permission::SYSTEM[:highlight_fields])
+      can [:highlight], Field
     end
 
     #
