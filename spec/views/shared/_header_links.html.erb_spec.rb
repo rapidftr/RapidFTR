@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe 'shared/_header_links.html.erb' do
-  before :each do
-    view.stub :current_user => user
-    User.stub :find_by_user_name => user
-  end
+  let(:permissions) { [] }
+  let(:user) { stub_model User, :id => 'test_id', :user_name => 'test_user', :permissions => permissions }
 
   subject do
+    controller.stub :current_user => user
+    view.stub :current_user => user
     render :partial => 'shared/header_links'
   end
 
@@ -20,25 +20,26 @@ describe 'shared/_header_links.html.erb' do
   end
 
   describe 'when logged in' do
-    let(:user) do
-      user = User.new :user_name => 'test_user'
-      user.stub :id => 'testid'
-      user
-    end
-
     it { should have_content('Welcome test_user') }
     it { should have_link('Logout', logout_path) }
     it { should have_link('My Account', user_path(user.id)) }
     it { should_not have_link('System settings') }
     it { should have_link('Contact & Help', :href => contact_information_path("administrator")) }
+  end
 
-    describe 'as admin' do
-      before :each do
-        view.stub :is_admin? => true
-      end
+  describe 'with admin permission' do
+    let(:permissions) { [Permission::ADMIN[:admin]] }
+    it { should have_link('System settings', admin_path) }
+  end
 
-      it { should have_link('System settings', admin_path) }
-    end
+  describe 'with system settings permission' do
+    let(:permissions) { [Permission::SYSTEM[:settings]] }
+    it { should have_link('System settings', admin_path) }
+  end
+
+  describe 'with manage forms permisssion' do
+    let(:permissions) { [Permission::FORMS[:manage]] }
+    it { should have_link('System settings', admin_path) }
   end
 
 end
