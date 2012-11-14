@@ -6,7 +6,6 @@ Feature: Only administrators should have access to certain sections of the site
       | Basic Details | Basic details about a child | basic_details | 1     |
 
   Scenario: An admin can get to all sorts of interesting pages
-
     Given I am logged in as an admin
 
     Then I should be able to see the admin page
@@ -14,6 +13,7 @@ Feature: Only administrators should have access to certain sections of the site
     And I should be able to see the form section page
     And I should be able to see the edit form section page for "basic_details"
 
+  @wip
   Scenario: A normal user can't see administrator stuff
 
     Given I am logged in
