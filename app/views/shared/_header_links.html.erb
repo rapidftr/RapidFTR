@@ -6,7 +6,7 @@
     <%= link_with_confirm 'Logout', logout_path %> | 
     <%= link_with_confirm 'My Account', user_path(current_user.id) %> |
 
-    <% if is_admin? %>
+    <% if can?(:manage, ContactInformation) or can?(:manage, FormSection) %>
       <%= link_to 'System settings', admin_path %> |
     <% end %>
   <% end %>
