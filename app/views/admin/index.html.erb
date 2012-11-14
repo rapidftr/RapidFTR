@@ -1,5 +1,9 @@
 <h1>System Settings</h1>
 
-  <br /><p><%= link_to 'Admin Contact Information', edit_contact_information_path(:administrator) %></p>
+  <% if can? :manage, ContactInformation %>
+    <br /><p><%= link_to 'Admin Contact Information', edit_contact_information_path(:administrator) %></p>
+  <% end %>
 
-  <br /><p><%= link_to 'Highlight Fields', highlight_fields_path %></p>
+  <% if can? :highlight, Field %>
+    <br /><p><%= link_to 'Highlight Fields', highlight_fields_path %></p>
+  <% end %>

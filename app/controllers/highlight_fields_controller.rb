@@ -1,6 +1,6 @@
 class HighlightFieldsController < ApplicationController
   
-  before_filter { authorize! :manage, FormSection }
+  before_filter { authorize! :highlight, Field }
   
   def index
     @page_name = "Highlight fields"
