@@ -13,9 +13,7 @@ Feature: Only administrators should have access to certain sections of the site
     And I should be able to see the form section page
     And I should be able to see the edit form section page for "basic_details"
 
-  @wip
   Scenario: A normal user can't see administrator stuff
-
     Given I am logged in
     Then I should not be able to see the admin page
     And I should be able to see manage users page
