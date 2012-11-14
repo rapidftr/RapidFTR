@@ -22,7 +22,7 @@ describe 'admin/index.html.erb' do
   end
 
   describe 'with manage forms permisssion' do
-    let(:permissions) { [Permission::FORMS[:manage]] }
+    let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
     it { should have_link 'Highlight Fields', highlight_fields_path }
   end
 

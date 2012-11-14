@@ -136,6 +136,17 @@ describe Ability do
 
     it { should authorize :manage, FormSection.new }
     it { should authorize :manage, Field.new }
+    it { should_not authorize :highlight, Field }
+  end
+
+  describe "system settings" do
+    let(:permissions) { [Permission::SYSTEM[:settings]] }
+    it { should authorize :manage, ContactInformation }
+  end
+
+  describe "highlight fields" do
+    let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
+    it { should authorize :highlight, Field }
   end
 
 end
