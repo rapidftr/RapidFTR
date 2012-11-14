@@ -7,7 +7,6 @@ Feature:
   # Scenario: Disabled user can't log in
   #   see user_login.feature
 
-  @wip
   Scenario: Admin disables a user from the edit page
 
     Given a user "george"
@@ -22,7 +21,6 @@ Feature:
 	  When I follow "Show" within "#user-row-george"
 	  Then I should see "Disabled"
 
-  @wip
   Scenario: Admin re-enables a user from the edit page
 
     Given a user "george"
