@@ -52,5 +52,7 @@ module RapidFTR
     config.after_initialize do
         I18n.backend = I18n::Backend::Chain.new(I18nBackendCouch.new, I18n.backend)
     end
+
+    config.gem "jammit"
   end
 end
