@@ -1,0 +1,17 @@
+server {
+  server_name <%= deploy_domain %>;
+  listen 80;
+  rewrite ^(.*)$ https://$host$1 redirect;
+}
+
+server {
+  server_name <%= deploy_domain %>;
+  listen 443;
+  ssl on;
+
+  passenger_enabled on;
+  rails_env <%= deploy_env %>;
+  root <%= fetch :current_path %>/public;
+  access_log <%= fetch :current_path %>/log/server.log;
+  error_log <%= fetch :current_path %>/log/error.log error;
+}
