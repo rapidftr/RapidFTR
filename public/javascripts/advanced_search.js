@@ -17,14 +17,25 @@
 
 		self.selectedField = "";
 
+		var showCriteriaMenu = function()	{
+			disableSelectedFields();
+			var position = $(this).position();
+			menu.css("top", position.top + "px");
+			menu.css("left", position.left + "px");
+			menu.show();
+
+			self.selectedField = $(this).parent();
+		};
+
 		var buildCriteria = function(condition) {
 			var criteria = $("#criteria_template").tmpl(condition);
 			criteria.appendTo( criteriaList );
+		  element.find(".select-criteria").trigger("click");
 		};
 
-		$.each(criteria, function(index, element){
-			buildCriteria(element);
-		});
+		 // $.each(criteria, function(index, element){
+		 // 	buildCriteria(element);
+		 // });
 
 		var selectForm = function(formLink){
 			formList.removeClass("selected");
@@ -47,14 +58,29 @@
 			}
 
 			self.selectedField.find(".select-criteria").text(field.find("a").text());
-			self.selectedField.find(".criteria-field").val(field.find("input[type='hidden']").val());
+			self.selectedField.find(".criteria-field").val(field.find(".field").val());
+      var field_type = field.find(".field_type").val();
+			self.selectedField.find(".criteria-field-type").val(field_type);
+      if(field_type == "select_box"){
+        $(self.selectedField.find(".criteria-value-text")).hide();
+        var select_box = $(self.selectedField.find(".criteria-value-select"));
+        select_box.show();
+        var select_options = field.find(".option_values").val();
+        $.each(select_options.split(","), function(index, value){
+          select_box.append("<option value="+value+">"+value+"</option>");
+        });
+      }else{
+        $(self.selectedField.find(".criteria-value-select")).hide();
+        $(self.selectedField.find(".criteria-value-text")).show();
+      }
+      self.selectedField.find(".criteria")
 			menu.hide();
 		});
 
         	
 		element.find(".add-criteria").live("click", function() {
-            var last_criteria_index = criteriaList.find("p:last .criteria-index").val();
-            var new_index = (last_criteria_index == undefined) ? 0 : (parseInt(last_criteria_index)+1);
+      var last_criteria_index = criteriaList.find("p:last .criteria-index").val();
+      var new_index = (last_criteria_index == undefined) ? 0 : (parseInt(last_criteria_index)+1);
 			buildCriteria({index: new_index, join: "AND", field_display_name: ""});
 		});
         
@@ -74,15 +100,6 @@
 			}).addClass("disabled");
 		};
 
-		var showCriteriaMenu = function()	{
-			disableSelectedFields();
-			var position = $(this).position();
-			menu.css("top", position.top + "px");
-			menu.css("left", position.left + "px");
-			menu.show();
-
-			self.selectedField = $(this).parent();
-		};
 
 		element.find(".select-criteria").live("click", showCriteriaMenu);
 

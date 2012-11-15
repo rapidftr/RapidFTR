@@ -15,7 +15,11 @@ set :deploy_to, deploy_dir
 set :scm, :git
 set :repository,  "git://github.com/jorgej/RapidFTR.git"
 set :deploy_via, :remote_cache
-set :branch, "master"
+set :branch, fetch(:branch, "master")
+#to deploy a specific revision to any environment use
+#RAILS_ENV=<env_name> cap -S branch=<commit-sha> deploy
+#If you want to deploy the latest master use the command
+#RAILS_ENV=<env_name> cap deploy
 
 load 'config/recipes/base'
 load 'config/recipes/deploy'
@@ -24,3 +28,6 @@ load 'config/recipes/db'
 
 before 'deploy:update_code', 'deploy:create_release_dir'
 after  'deploy:update', 'deploy:setup_application', 'deploy:setup_nginx', 'db:migrate'
+
+#use RAILS_ENV=<env> cap deploy:pending and cap deploy:pending:diff to find out the diff between the master and the
+#current deployed revision in the server.

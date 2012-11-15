@@ -12,13 +12,13 @@ describe Ability do
   describe '#admin' do
     let(:permissions) { [Permission::ADMIN[:admin]] }
 
-    it { should authorize_all CRUD, Child, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
+    it { should authorize_all CRUD, Child, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
   end
 
   describe '#view,search all data and edit' do
     let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }
 
-    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
 
     it { should authorize :index, Child }
     it { should_not authorize :create, Child }
@@ -29,7 +29,7 @@ describe Ability do
   describe '#register child' do
     let(:permissions) { [Permission::CHILDREN[:register]] }
 
-    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
 
     it { should authorize :index, Child }
     it { should authorize :create, Child }
@@ -50,7 +50,7 @@ describe Ability do
   describe '#edit child' do
     let(:permissions) { [Permission::CHILDREN[:edit]] }
 
-    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
 
     it { should authorize :index, Child }
     it { should_not authorize :read, Child.new }
@@ -87,7 +87,7 @@ describe Ability do
   describe "export children to photowall" do
     let(:permissions) { [Permission::CHILDREN[:export]] }
 
-    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Session, SuggestedField, User, Role }
+    it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
 
     it { should authorize :export, Child }
     it { should_not authorize :index, Child }
@@ -141,11 +141,13 @@ describe Ability do
 
   describe "system settings" do
     let(:permissions) { [Permission::SYSTEM[:settings]] }
+    it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field }
     it { should authorize :manage, ContactInformation }
   end
 
   describe "highlight fields" do
     let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
+    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field }
     it { should authorize :highlight, Field }
   end
 

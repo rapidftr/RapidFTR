@@ -107,7 +107,7 @@ view_by :duplicates_of,
   end
 
   def self.build_text_fields_for_solar
-    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"] +  Field.all_text_names
+    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"] +  Field.all_searchable_field_names
   end
 
   def self.build_date_fields_for_solar

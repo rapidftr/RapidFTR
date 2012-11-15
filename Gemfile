@@ -31,6 +31,7 @@ group :assets do
   gem 'therubyracer'
   gem 'compass-rails'
   gem 'uglifier'
+  gem 'jammit'
 end
 
 group :test do
