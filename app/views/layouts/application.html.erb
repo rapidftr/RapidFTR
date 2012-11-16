@@ -19,6 +19,7 @@
     <%= render :partial => "shared/header_links" %>
   </header>
   <div class="main_bar">
+    <% if render_nav_bar? %>
     <nav>
       <ul>
         <li><%= link_to 'CHILDREN', children_path %></li>
@@ -35,7 +36,7 @@
           <%= submit_tag "Go", :action => "children/search", :method => "get" %>
         </div>
     <%- end %>
-
+    <% end %>
   </div>
 
   <div class="page-content">
