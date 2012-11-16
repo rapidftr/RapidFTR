@@ -19,7 +19,7 @@ namespace :deploy do
   desc "Create application configuration files"
   task :setup_application do
     template "rails_env.erb", File.join(current_path, "config", "environments", "#{deploy_env}.rb")
-    template "couchdb.erb", File.join(current_path, "config", "couchdb.yml")
+    template "couch_config.erb", File.join(current_path, "config", "couchdb.yml")
   end
 
 end
