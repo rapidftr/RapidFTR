@@ -165,9 +165,15 @@
 		var validate = function(){
 			var result = "";
             if(!filterSelected()) {
-                $('.criteria-list .criteria-value').each(function(){
+                $('.criteria-list .criteria-value-text').each(function(){
                     if($(this).val() == "") { result = 'Please enter a valid field value.'; }
                 });
+                $('.criteria-list .criteria-value-select').each(function(){
+                    if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+                });
+                if($('.criteria-list .criteria-field').length == 0){
+                   result = 'Please select a valid field name.';
+                };
                 $('.criteria-list .criteria-field').each(function(){
                     if($(this).val() == "") { result = 'Please select a valid field name.'; }
                 });
