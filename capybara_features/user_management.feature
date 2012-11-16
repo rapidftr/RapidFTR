@@ -13,7 +13,7 @@ Feature: As an admin, I should be able to edit existing users.
     # Create a user
     Given I am logged in as an admin
     And I am on manage users page
-    And I follow "Create an User"
+    And I follow "Create User"
     When I fill in the following:
       | Full name         | George Harrison     |
       | User name         | george              |
