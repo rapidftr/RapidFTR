@@ -18,7 +18,7 @@ module AdvancedSearchHelper
   end
 
   def generate_html(criteria, all_fields)
-    return "" if criteria.field.blank?
+    return "" if criteria.field_display_name.blank?
     field = all_fields.find{|field| field.name == criteria.field}
     html = criteria.index.to_i > 0 ? AND_OR.gsub("#AND_CHECKED", criteria.join == "AND" ?  "checked=''" : "").gsub("#OR_CHECKED", criteria.join == "OR" ?  "checked=''" : "") : ""
     html += DISPLAY_LABEL.gsub("#DISPLAY_NAME", criteria.field_display_name)

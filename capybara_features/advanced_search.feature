@@ -1,4 +1,3 @@
-@wip
 Feature: So that I can find a child that has been entered in to RapidFTR
   As a user of the website
   I want to use the advanced search to find all relevant results
@@ -22,10 +21,11 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of search criteria field value
    Given I am logged in
      And I am on child advanced search page
-    When I click text "+ add more search options"
+    When I click text "Select A Criteria"
     And  I click text "Name"
     And  I press "Search"
     Then I should see "Please enter a valid field value."
+
   @javascript
   Scenario: Searching by 'Name'
    Given I am logged in
@@ -34,9 +34,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   |
       | Willis |
       | Will   |
-   When I click text "+ add more search options"
+   When I click text "Select A Criteria"
     And I click text "Name"
-    And I fill in "Will" for "criteria_list[0][value-text]"
+    And I fill in "Will" for "criteria_list[0][value]"
     And I press "Search"
    Then I should see "Will" in the search results
     And I should see "Willis" in the search results
@@ -78,6 +78,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And the "created_by" checkbox should be checked
      And I can fill in "rob" for "created_by_value"
 
+  
   @javascript
   Scenario: Searching by 'Created By'
    Given I am logged in
@@ -92,9 +93,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I fill in "bob" for "created_by_value"
     And I press "Search"
     Then I should see "Andrew" in the search results
-    And I should see "Peter" in the search results
-    And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' - fuzzy search
    Given I am logged in
@@ -111,6 +111,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' - OR search
    Given I am logged in
@@ -127,6 +128,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' - AND search
    Given I am logged in
@@ -145,6 +147,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "James" in the search results
     And I should not see "David" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' - search with two terms
    Given I am logged in
@@ -170,9 +173,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Andrew1 | bob         | john                 |
        | Andrew2 | john        | bob                  |
        | James   | bob         | smith                |
-    When I click text "+ add more search options"
+    When I click text "Select A Criteria"
      And I click text "Name"
-     And I fill in "Andrew" for "criteria_list[0][value-text]"
+     And I fill in "Andrew" for "criteria_list[0][value]"
      And I check "created_by"
      And I fill in "bob" for "created_by_value"
      And I press "Search"
@@ -213,10 +216,11 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I check "updated_by"
     Then I can fill in "bob" for "updated_by_value"
      And I press "Search"
-    Then I should see "bob"
+    Then the "updated_by_value" field should contain "bob"
      And the "updated_by" checkbox should be checked
      And I can fill in "rob" for "updated_by_value"
 
+  
   @javascript
   Scenario: Searching by 'Updated By'
    Given I am logged in
@@ -233,6 +237,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Updated By' - fuzzy search
    Given I am logged in
@@ -249,6 +254,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Updated By' - OR search
    Given I am logged in
@@ -265,6 +271,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Updated By' - AND search
    Given I am logged in
@@ -283,6 +290,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "James" in the search results
     And I should not see "David" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Updated By' - search with two terms
   Given I am logged in
@@ -308,9 +316,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Andrew1 | bob             | john                      |
        | Andrew2 | john            | bob                       |
        | James   | bob             | smith                     |
-    When I click text "+ add more search options"
+    When I click text "Select A Criteria"
      And I click text "Name"
-     And I fill in "Andrew" for "criteria_list[0][value-text]"
+     And I fill in "Andrew" for "criteria_list[0][value]"
      And I check "updated_by"
      And I fill in "bob" for "updated_by_value"
      And I press "Search"
@@ -318,6 +326,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I should see "Andrew2" in the search results
      And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' and 'Updated By' - match on user names
    Given I am logged in
@@ -332,6 +341,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Search"
    Then I should see "Andrew" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' after un-checking 'Updated By'
    Given I am logged in
@@ -351,6 +361,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "James" in the search results
     And I should not see "Peter" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Updated By' after un-checking 'Created By'
    Given I am logged in
@@ -370,6 +381,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should not see "James" in the search results
     And I should see "Peter" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Created By' and 'Updated By' - match on user names and full names
    Given I am logged in
@@ -401,9 +413,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James   | john        | bob                  | tim             | jane                      |
       | William | tim         | bob                  | bob             | jane                      |
       | Wilfred | jane        | john                 | bob             | tim                       |
-   When I click text "+ add more search options"
+   When I click text "Select A Criteria"
     And I click text "Name"
-    And I fill in "Wil" for "criteria_list[0][value-text]"
+    And I fill in "Wil" for "criteria_list[0][value]"
     And I check "created_by"
     And I fill in "john" for "created_by_value"
     And I check "updated_by"
@@ -508,6 +520,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I can fill in "2012-12-21" for "created_at_after_value"
       And I can fill in "2012-12-22" for "created_at_before_value"
 
+  
   @javascript
   Scenario: Searching by 'Date Created' specifying only the 'After' date
    Given I am logged in
@@ -526,6 +539,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Date Created' specifying only the 'Before' date
    Given I am logged in
@@ -544,6 +558,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should not see "Peter" in the search results
     And I should not see "James" in the search results
 
+  
   @javascript
   Scenario: Searching by 'Date Created' specifying both 'After' and 'Before' dates
    Given I am logged in
@@ -708,9 +723,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James   | john        | bob                  | tim             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | William | tim         | bob                  | bob             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | Wilfred | jane        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC | 2012-05-24 14:10:03UTC |
-   When I click text "+ add more search options"
+   When I click text "Select A Criteria"
     And I click text "Name"
-    And I fill in "Wil" for "criteria_list[0][value-text]"
+    And I fill in "Wil" for "criteria_list[0][value]"
     And I check "created_by"
     And I fill in "bob" for "created_by_value"
     And I check "updated_by"
