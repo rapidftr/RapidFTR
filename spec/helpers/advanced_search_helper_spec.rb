@@ -10,13 +10,13 @@ describe AdvancedSearchHelper do
 <input class="criteria-value-text" type="text" value="test" name="criteria_list[0][value]" style=""></p>}.gsub("\n", '')
   end
 
-  it "should generate the appropritate html for given select box criteria" do
+  it "should generate the appropriate html for given select box criteria" do
     field = Field.new(:name => "protection_status", :display_name => "Protection Status", :type => Field::SELECT_BOX, :option_strings => ["", "Unaccompanied", "Separated"])
     criteria = SearchCriteria.new({:join => "AND", :display_name => "Protection Status", :index => "1", :field => "protection_status", :value => "Separated"})
     helper.generate_html(criteria, [field]).gsub("\n", '').should == %Q{<p>
-<input id="criteria_join_and" type="radio" value="AND" checked="" name="criteria_list[1][join]">
+<input id="criteria_join_and" type="radio" value="AND" checked='' name="criteria_list[1][join]">
 <label for="criteria_join_and">And</label>
-<input id="criteria_join_or" type="radio" value="OR" name="criteria_list[1][join]">
+<input id="criteria_join_or" type="radio" value="OR"  name="criteria_list[1][join]">
 <label for="criteria_join_or">Or</label>
 <a class="select-criteria">Protection Status</a>
 <input class="criteria-field" type="hidden" value="protection_status" name="criteria_list[1][field]">
@@ -28,5 +28,9 @@ describe AdvancedSearchHelper do
 </select>
 <a class="remove-criteria">remove</a>
 </p>}.gsub("\n", "")
+  end
+
+  it "should return '' string if criteria is empty" do
+    helper.generate_html(SearchCriteria.new, []).should == ""
   end
 end

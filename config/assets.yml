@@ -1,4 +1,4 @@
-package_assets: always
+package_assets: on
 javascript_compressor: uglifier
 gzip_assets: on
 compress_assets: on
