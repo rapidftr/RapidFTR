@@ -1,5 +1,6 @@
 server {
-  server_name <%= deploy_domain %>;
+  # Temporary hack until we get the DNS entries right in our newly provisioned linode.
+  #server_name <%= deploy_domain %>;
   listen 80;
   rewrite ^(.*)$ https://$host$1 redirect;
 }
