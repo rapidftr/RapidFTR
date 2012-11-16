@@ -22,11 +22,10 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of search criteria field value
    Given I am logged in
      And I am on child advanced search page
-    When I click text "Select A Criteria"
+    When I click text "+ add more search options"
     And  I click text "Name"
     And  I press "Search"
-    Then I should see "Please enter a valid field value"
-
+    Then I should see "Please enter a valid field value."
   @javascript
   Scenario: Searching by 'Name'
    Given I am logged in
@@ -35,9 +34,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   |
       | Willis |
       | Will   |
-   When I click text "Select A Criteria"
+   When I click text "+ add more search options"
     And I click text "Name"
-    And I fill in "Will" for "criteria_list[0][value]"
+    And I fill in "Will" for "criteria_list[0][value-text]"
     And I press "Search"
    Then I should see "Will" in the search results
     And I should see "Willis" in the search results
@@ -75,7 +74,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I check "created_by"
     Then I can fill in "bob" for "created_by_value"
      And I press "Search"
-    Then I should see "bob"
+    Then the "created_by_value" field should contain "bob"
      And the "created_by" checkbox should be checked
      And I can fill in "rob" for "created_by_value"
 
@@ -83,6 +82,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Searching by 'Created By'
    Given I am logged in
      And I am on child advanced search page
+    Then I wait for 7 seconds
      And the following children exist in the system:
       | name   | created_by | created_by_full_name |
       | Andrew | bob        | john                 |
@@ -91,7 +91,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
    When I check "created_by"
     And I fill in "bob" for "created_by_value"
     And I press "Search"
-   Then I should see "Andrew" in the search results
+    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
@@ -170,9 +170,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Andrew1 | bob         | john                 |
        | Andrew2 | john        | bob                  |
        | James   | bob         | smith                |
-    When I click text "Select A Criteria"
+    When I click text "+ add more search options"
      And I click text "Name"
-     And I fill in "Andrew" for "criteria_list[0][value]"
+     And I fill in "Andrew" for "criteria_list[0][value-text]"
      And I check "created_by"
      And I fill in "bob" for "created_by_value"
      And I press "Search"
@@ -308,9 +308,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Andrew1 | bob             | john                      |
        | Andrew2 | john            | bob                       |
        | James   | bob             | smith                     |
-    When I click text "Select A Criteria"
+    When I click text "+ add more search options"
      And I click text "Name"
-     And I fill in "Andrew" for "criteria_list[0][value]"
+     And I fill in "Andrew" for "criteria_list[0][value-text]"
      And I check "updated_by"
      And I fill in "bob" for "updated_by_value"
      And I press "Search"
@@ -401,9 +401,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James   | john        | bob                  | tim             | jane                      |
       | William | tim         | bob                  | bob             | jane                      |
       | Wilfred | jane        | john                 | bob             | tim                       |
-   When I click text "Select A Criteria"
+   When I click text "+ add more search options"
     And I click text "Name"
-    And I fill in "Wil" for "criteria_list[0][value]"
+    And I fill in "Wil" for "criteria_list[0][value-text]"
     And I check "created_by"
     And I fill in "john" for "created_by_value"
     And I check "updated_by"
@@ -708,9 +708,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James   | john        | bob                  | tim             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | William | tim         | bob                  | bob             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | Wilfred | jane        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC | 2012-05-24 14:10:03UTC |
-   When I click text "Select A Criteria"
+   When I click text "+ add more search options"
     And I click text "Name"
-    And I fill in "Wil" for "criteria_list[0][value]"
+    And I fill in "Wil" for "criteria_list[0][value-text]"
     And I check "created_by"
     And I fill in "bob" for "created_by_value"
     And I check "updated_by"
