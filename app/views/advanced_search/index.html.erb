@@ -61,6 +61,13 @@
     </script>
 
     <div class="criteria-list" style="float:left">
+      <p>
+        <a class="select-criteria">Select A Criteria</a>
+        <input class="criteria-field" type="hidden" value="" name="criteria_list[0][field]">
+        <input class="criteria-value-text" type="text" value="" name="criteria_list[0][value]">
+        <select class="criteria-value-select" value="" name="criteria_list[1][value]" style="display:none"></select>
+        <input class="criteria-index" type="hidden" value="0" name="criteria_list[0][index]">
+      </p>
       <%= @criteria_list.map{|criteria| generate_html(criteria, @all_fields)}.join("").html_safe %>
     </div>
 

@@ -30,7 +30,7 @@ describe AdvancedSearchHelper do
 </p>}.gsub("\n", "")
   end
 
-  it "should return '' string if criteria is empty" do
-    helper.generate_html(SearchCriteria.new, []).should == ""
+  it "should return '' string if criteria's display_name is empty" do
+    helper.generate_html(SearchCriteria.new(:name => "some_name", :field => "some_field", :display_name => ""), []).should == ""
   end
 end
