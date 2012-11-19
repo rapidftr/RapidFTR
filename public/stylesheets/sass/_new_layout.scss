@@ -272,3 +272,46 @@ body {
     }
   }
 }
+
+.login_page{
+  text-align:center;
+
+  .login_panel{
+    text-align: left;
+    width:300px;
+    margin:30px auto;
+    padding:10px;
+    background: url(../images/new/bg_login.png) repeat-x #eee;
+    border:3px solid #fff;
+    @include borderRadius(3px);
+    @include boxShadow(0px 0px 3px #aaa);
+
+    h3{
+      font-size: 1.2em;
+      font-weight: bold;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #aaa;
+      margin-bottom: 10px;
+    }
+
+    p{
+      padding: 10px 15px;
+
+      label{
+        width:70px;
+        display: inline-block;
+      }
+    }
+
+    .btn_panel{
+      border-top: 1px solid #aaa;
+      margin-top: 10px;
+      text-align: right;
+    }
+  }
+
+  a{
+    margin:0px auto;
+    display: inline-block;
+  }
+}

@@ -27,6 +27,15 @@ describe FormSection do
     }
   end
 
+  it "should return all the searchable fields" do
+    text_field = Field.new(:name => "text_field", :type => Field::TEXT_FIELD)
+    text_area = Field.new(:name => "text_area", :type => Field::TEXT_AREA)
+    select_box = Field.new(:name => "select_box", :type => Field::SELECT_BOX)
+    radio_button = Field.new(:name => "radio_button", :type => Field::RADIO_BUTTON)
+    f = FormSection.new(:fields => [text_field, text_area, select_box, radio_button])
+    f.all_searchable_fields.should == [text_field, text_area, select_box]
+  end
+
   describe '#unique_id' do
     it "should be generated when not provided" do
       f = FormSection.new
@@ -91,22 +100,22 @@ describe FormSection do
       FormSection.stub(:by_unique_id).with(:key=>unique_id).and_return([expected])
       FormSection.get_by_unique_id(unique_id).should == expected
     end
-    
+
     it "should save fields" do
       section = FormSection.new :name => 'somename', :unique_id => "someform"
       section.save!
-      
+
       section.fields = [Field.new(:name => "a field", :type => "text_field", :display_name => "A Field")]
       section.save!
-      
-      field = section.fields.first 
+
+      field = section.fields.first
       field.name = "kev"
       section.save!
-      
+
       section = FormSection.get_by_unique_id("someform")
-      section.name.should == 'somename' 
+      section.name.should == 'somename'
     end
-    
+
   end
 
   describe "add_field_to_formsection" do
@@ -131,7 +140,7 @@ describe FormSection do
       formsection = FormSection.new :editable => false
       lambda { FormSection.add_field_to_formsection formsection, field }.should raise_error
     end
-    
+
   end
 
 
@@ -181,14 +190,14 @@ describe FormSection do
     end
 
   end
-  
+
   describe "perm_enabled" do
-    
+
     it "should not be perm_enabled by default" do
       formsection = FormSection.new
       formsection.perm_enabled?.should be_false
     end
-    
+
     it "should be perm_enabled when set" do
       formsection = FormSection.new(:perm_enabled => true)
       formsection.perm_enabled?.should be_true
@@ -333,7 +342,7 @@ describe FormSection do
       form_section.errors.on(:name).should be_present
       form_section.errors.on(:unique_id).should be_present
     end
-    
+
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!
@@ -396,8 +405,8 @@ describe FormSection do
       it "should update field as highlighted" do
         attrs = { :field_name => "h1", :form_id => "highlight_form" }
         existing_field = Field.new :name => attrs[:field_name]
-        form = FormSection.new(:name => "Some Form", 
-                               :unique_id => attrs[:form_id], 
+        form = FormSection.new(:name => "Some Form",
+                               :unique_id => attrs[:form_id],
                                :fields => [existing_field])
         FormSection.stub(:all).and_return([form])
         form.update_field_as_highlighted attrs[:field_name]
@@ -410,24 +419,24 @@ describe FormSection do
         existing_field = Field.new :name => attrs[:field_name]
         existing_highlighted_field = Field.new :name => "highlighted_field"
         existing_highlighted_field.highlight_with_order 3
-        form = FormSection.new(:name => "Some Form", 
-                               :unique_id => attrs[:form_id], 
+        form = FormSection.new(:name => "Some Form",
+                               :unique_id => attrs[:form_id],
                                :fields => [existing_field, existing_highlighted_field])
         FormSection.stub(:all).and_return([form])
         form.update_field_as_highlighted attrs[:field_name]
         existing_field.is_highlighted?.should be_true
         existing_field.highlight_information.order.should == 4
       end
-      
+
       it "should un-highlight a field" do
         existing_highlighted_field = Field.new :name => "highlighted_field"
         existing_highlighted_field.highlight_with_order 1
-        form = FormSection.new(:name => "Some Form", :unique_id => "form_id", 
+        form = FormSection.new(:name => "Some Form", :unique_id => "form_id",
                                :fields => [existing_highlighted_field])
         FormSection.stub(:all).and_return([form])
         form.remove_field_as_highlighted existing_highlighted_field.name
-        existing_highlighted_field.is_highlighted?.should be_false  
+        existing_highlighted_field.is_highlighted?.should be_false
       end
     end
-  end  
+  end
 end

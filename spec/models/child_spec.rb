@@ -6,7 +6,7 @@ describe Child do
   describe 'build solar schema' do
 
     it "should build with free text search fields" do
-      Field.stub!(:all_text_names).and_return []
+      Field.stub!(:all_searchable_field_names).and_return []
       Child.build_text_fields_for_solar.should == ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"]
     end
 
