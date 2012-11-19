@@ -412,6 +412,42 @@ body {
               border-right: 1px dashed #999;
               text-decoration: underline; }
 
+.login_page {
+  text-align: center; }
+  .login_page .login_panel {
+    text-align: left;
+    width: 300px;
+    margin: 30px auto;
+    padding: 10px;
+    background: url(../images/new/bg_login.png) repeat-x #eeeeee;
+    border: 3px solid #fff;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0px 0px 3px #aaaaaa;
+    -webkit-box-shadow: 0px 0px 3px #aaaaaa;
+    -o-box-shadow: 0px 0px 3px #aaaaaa;
+    box-shadow: 0px 0px 3px #aaaaaa; }
+    .login_page .login_panel h3 {
+      font-size: 1.2em;
+      font-weight: bold;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #aaa;
+      margin-bottom: 10px; }
+    .login_page .login_panel p {
+      padding: 10px 15px; }
+      .login_page .login_panel p label {
+        width: 70px;
+        display: inline-block; }
+    .login_page .login_panel .btn_panel {
+      border-top: 1px solid #aaa;
+      margin-top: 10px;
+      text-align: right; }
+  .login_page a {
+    margin: 0px auto;
+    display: inline-block; }
+
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
   border: 1px solid #d4d1d1;
