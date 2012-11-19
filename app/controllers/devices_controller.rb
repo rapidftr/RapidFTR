@@ -9,7 +9,7 @@ class DevicesController < ApplicationController
     status = :ok
     @devices = Device.by_imei(:key => params[:imei].to_i)
     @devices.each do |device|
-      unless device.update_attributes({:blacklisted => params[:blacklisted]})
+      unless device.update_attributes({:blacklisted => params[:blacklisted] == "true"})
         status = :error
       end
     end

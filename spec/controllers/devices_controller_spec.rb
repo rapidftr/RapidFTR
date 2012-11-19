@@ -25,7 +25,7 @@ describe DevicesController do
       fake_login_as(Permission::DEVICES[:black_list])
       device = mock()
       Device.should_receive(:by_imei).with(:key => 123).and_return([device])
-      device.should_receive(:update_attributes).with({:blacklisted => "true"}).and_return(true)
+      device.should_receive(:update_attributes).with({:blacklisted => true}).and_return(true)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
       response.body.should == "{\"status\":\"ok\"}"
     end
@@ -34,7 +34,7 @@ describe DevicesController do
       fake_login_as(Permission::DEVICES[:black_list])
       device = mock()
       Device.should_receive(:by_imei).with(:key => 123).and_return([device])
-      device.should_receive(:update_attributes).with({:blacklisted => "true"}).and_return(false)
+      device.should_receive(:update_attributes).with({:blacklisted => true}).and_return(false)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
       response.body.should == "{\"status\":\"error\"}"
     end

@@ -1,7 +1,7 @@
-package_assets: on
+package_assets: off
 javascript_compressor: uglifier
 gzip_assets: on
-compress_assets: on
+compress_assets: off
 allow_debugging: off
 javascripts:
   common:

@@ -17,6 +17,7 @@ $(document).ready(function () {
                 }
             }
         });
+        $('#modal-dialog').dialog("open");
         event.preventDefault();
     })
 });

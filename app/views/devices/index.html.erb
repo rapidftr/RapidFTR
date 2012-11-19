@@ -15,7 +15,7 @@
             <td><%= device.imei %></td>
             <td><%= device.user_name %></td>
             <td><input class="device_blacklist_check_box" type="checkbox" id="<%= device.imei %>"
-                       <% if device.blacklisted == "true" %> checked="checked"
+                       <% if device.blacklisted %> checked="checked"
                        <% end %>>
             </td>
           </tr>
