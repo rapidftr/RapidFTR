@@ -25,7 +25,7 @@ describe 'children/_footer.html.erb' do
 
   describe "export some records to CSV" do
     before :each do
-      @url = advanced_search_index_path
+      @url = new_advanced_search_path
     end
 
     it_should_behave_like "not show links", []
