@@ -69,7 +69,7 @@
       <input type='submit' value='Search'/>
     </div>
     <p style='clear:both'>
-      <a class='add-criteria'>Select a criteria</a>
+      <a class='add-criteria'>Select A Criteria</a>
     </p>
 
     <hr>
@@ -116,7 +116,7 @@
 
 </div>
 
-<% if params[:criteria_list] %>
+<% if @results && @results.size > 0 %>
   <%= render :partial => 'children/search_results' %>
 <% end %>
 

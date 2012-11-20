@@ -17,20 +17,17 @@ class AdvancedSearchController < ApplicationController
     @aside = 'shared/sidebar_links'
     @user = current_user
     prepare_params_for_limited_access_user(@user) unless can? :view_all, Child
-    new_search = !params[:criteria_list]
-    if new_search
-      @criteria_list = [SearchCriteria.new]
-      @results = []
-    else
-      @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]) : [])
-      @criteria_list = add_search_filters(params)
-      @results = SearchService.search(@criteria_list)
-      @criteria_list = add_search_criteria_if_none(params)
-    end
+    @criteria_list = []
+    @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]) : []) unless !params[:criteria_list]
+    @criteria_list = add_search_filters(params)
+    @results = SearchService.search(@criteria_list)
+    @criteria_list = add_search_criteria_if_none(params)
   end
 
   def child_fields_selected? criteria_list
-    !criteria_list.first[1]["field"].blank? if !criteria_list.first[1].nil?
+    if !criteria_list.nil?
+      !criteria_list.first[1]["field"].blank? if !criteria_list.first[1].nil?
+    end
   end
 
   private

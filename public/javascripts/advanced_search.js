@@ -62,9 +62,8 @@
             self.selectedField.find(".criteria-field-type").val(field_type);
             var criteria_values_span = self.selectedField.find(".criteria-values")
             var index = self.selectedField.find(".criteria-index").val()
-            console.log(field_type)
             if (field_type == "select_box") {
-                criteria_values_div.html("<select name='criteria_list[" + index + "][value]' class='criteria-value-select'/>")
+                criteria_values_span.html("<select name='criteria_list[" + index + "][value]' class='criteria-value-select'/>")
                 var select_box = $(self.selectedField.find(".criteria-value-select"));
                 var select_options = field.find(".option_values").val();
                 $.each(select_options.split(","), function (index, value) {
