@@ -14,7 +14,7 @@ Feature:
   Scenario: Users can export to CSV as the result of a search
     Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "D"
-    Then I wait for 3 seconds
+    Then I wait for 6 seconds
     And I select search result #1
     And I press "Export to CSV"
     Then I should receive a CSV file with 2 lines
