@@ -1144,7 +1144,7 @@ describe Child do
   end
 
   def create_child_with_created_by(created_by,options = {})
-    user = User.new(:user_name => created_by)
+    user = User.new({:user_name => created_by, :organisation=> "UNICEF"})
     Child.new_with_user_name user, options
   end
 
