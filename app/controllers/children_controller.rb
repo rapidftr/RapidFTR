@@ -237,7 +237,7 @@ class ChildrenController < ApplicationController
   private
 
     def file_basename(child = nil)
-      prefix = child.nil? ? current_user_name : child.unique_identifier
+      prefix = child.nil? ? current_user_name : child.short_id
       user = User.find_by_user_name(current_user_name)
       "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
     end

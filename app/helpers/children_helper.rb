@@ -58,7 +58,7 @@ module ChildrenHelper
   end
 
   def text_to_identify_child child
-    child['name'].blank? ? child['unique_identifier'] : child['name']
+    child['name'].blank? ? child.short_id : child['name']
   end
 
   def toolbar_for_child child
