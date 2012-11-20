@@ -1,7 +1,7 @@
 <li>
     <% if to_value == 'true' %>
-        <%= datetime %> Record was marked as Investigated by <%= user_name %> because: <%= message%>
+        <%= datetime %> Record was marked as Investigated by <%= user_name %> belonging to <%= organisation %> because: <%= message%>
     <% else %>
-        <%= datetime %> Record was marked as Not Investigated by <%= user_name %> because: <%= message%>
+        <%= datetime %> Record was marked as Not Investigated by <%= user_name %> belonging to <%= organisation %> because: <%= message%>
     <% end %>
 </li>
