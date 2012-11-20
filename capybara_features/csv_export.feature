@@ -36,7 +36,7 @@ Feature:
       | name    |unique_identifier|
       | Dan     |dan_123  |
       | Dave    |dave_456 |
-			| Mike    |mike_789 |
+	  | Mike    |mike_789 |
     When I am on the children listing page
     And I follow "Export Some Records to CSV"
     And I search using a name of "D"
@@ -55,4 +55,4 @@ Feature:
     Then I should receive a CSV file with 2 lines
     And the CSV data should be:
       | name    |unique_id|
-			| Dan     |dan_123  |
+	  | Dan     |dan_123  |
