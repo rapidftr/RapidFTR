@@ -717,6 +717,8 @@ describe Child do
           Field.new_photo_upload_box("current_photo_key"),
           Field.new_audio_upload_box("recorded_audio")]
       FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+      mock_user = mock({:organisation => 'UNICEF'})
+      User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
     end
 
     it "should not update history on initial creation of child document without a photo" do
@@ -816,6 +818,7 @@ describe Child do
       child['last_updated_by'] = 'some_user'
       child.save!
       child['histories'].first['user_name'].should == 'some_user'
+      child['histories'].first['user_organisation'].should == 'UNICEF'
     end
 
     it "should update history with the datetime from last_updated_at" do
@@ -1108,6 +1111,8 @@ describe Child do
     end
 
       it "should return all duplicate records" do
+        mock_user = mock({:organisation => 'UNICEF'})
+        User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
         record_duplicate = create_duplicate(record_active)
         Child.duplicates.should == [record_duplicate]
@@ -1115,6 +1120,8 @@ describe Child do
       end
 
       it "should return duplicate from a record" do
+        mock_user = mock({:organisation => 'UNICEF'})
+        User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
         record_duplicate = create_duplicate(record_active)
         Child.duplicates_of(record_active.id).should == [record_duplicate]

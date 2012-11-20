@@ -421,10 +421,16 @@ view_by :duplicates_of,
   protected
 
   def add_to_history(changes)
+      last_updated_user_name = last_updated_by
       self['histories'].unshift({
-              'user_name' => last_updated_by,
+              'user_name' => last_updated_user_name,
+              'user_organisation' => organisation_of(last_updated_user_name),
               'datetime' => last_updated_at,
               'changes' => changes })
+  end
+
+  def organisation_of(user_name)
+    User.find_by_user_name(user_name).try(:organisation)
   end
 
   def current_formatted_time

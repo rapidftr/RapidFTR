@@ -30,6 +30,8 @@ describe Child do
   end
 
   it "should persist multiple photo attachments" do
+    mock_user = mock({:organisation => 'UNICEF'})
+    User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
     Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 12:04:15"))
     child = Child.create('last_known_location' => "New York", 'photo' => uploadable_photo_jeff)
 
