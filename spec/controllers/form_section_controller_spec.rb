@@ -81,6 +81,28 @@ describe FormSectionController do
     end
   end
   
+  describe "post save_field_order" do
+    after { FormSection.all.each &:destroy }
+    
+    it "should save the order of the fields" do
+      form = FormSection.create(:unique_id => "children_information", :name => "children information")
+      form.fields << Field.new(:name => "name", :display_name => "Name")
+      form.fields << Field.new(:name => "protection_status", :display_name => "Prevention Status")
+      form.save!
+      
+      form.field_order("name").should == 0
+      form.field_order("protection_status").should == 1
+      controller.stub(:save_field_order_redirect_path).and_return(edit_form_section_path(form.id))
+      
+      post :save_field_order, :form_order => {"name" => "2", "protection_status" => "1"}, :formId => "children_information"
+      response.should redirect_to(edit_form_section_path(form.id))
+      
+      form = FormSection.get_by_unique_id("children_information")
+      form.field_order("name").should == 1
+      form.field_order("protection_status").should == 0
+    end
+  end
+  
   describe "post update" do
     it "should save update if valid" do
       form_section = FormSection.new
