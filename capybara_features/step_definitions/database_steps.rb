@@ -12,6 +12,7 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\
     :password=>password,
     :password_confirmation=>password,
     :full_name=>username,
+    :organisation=>"UNICEF",
     :email=>"#{username}@test.com",
     :role_ids => [role.id]
   )

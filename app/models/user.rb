@@ -52,6 +52,7 @@ class User < CouchRestRails::Document
   validates_presence_of :full_name, :message => "Please enter full name of the user"
   validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
   validates_presence_of :role_ids, :message => "Please select at least one role"
+  validates_presence_of :organisation, :message => "Please enter the user's organisation name"
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
 

@@ -14,6 +14,7 @@ class Child < CouchRestRails::Document
   property :name
   property :nickname
   property :unique_identifier
+  property :created_organisation
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
@@ -225,10 +226,10 @@ view_by :duplicates_of,
     by_flag(:key => 'true')
   end
 
-  def self.new_with_user_name(user_name, fields = {})
+  def self.new_with_user_name(user, fields = {})
     child = new(fields)
     child.create_unique_id
-    child.set_creation_fields_for user_name
+    child.set_creation_fields_for user
     child
   end
 
@@ -240,8 +241,9 @@ view_by :duplicates_of,
     self['unique_identifier'].last 7
   end
 
-  def set_creation_fields_for(user_name)
-    self['created_by'] = user_name
+  def set_creation_fields_for(user)
+    self['created_by'] = user.try(:user_name)
+    self['created_organisation'] = user.try(:organisation)
     self['created_at'] ||= current_formatted_time
     self['posted_at'] = current_formatted_time
   end
@@ -421,10 +423,16 @@ view_by :duplicates_of,
   protected
 
   def add_to_history(changes)
+      last_updated_user_name = last_updated_by
       self['histories'].unshift({
-              'user_name' => last_updated_by,
+              'user_name' => last_updated_user_name,
+              'user_organisation' => organisation_of(last_updated_user_name),
               'datetime' => last_updated_at,
               'changes' => changes })
+  end
+
+  def organisation_of(user_name)
+    User.find_by_user_name(user_name).try(:organisation)
   end
 
   def current_formatted_time
@@ -500,6 +508,7 @@ view_by :duplicates_of,
                      "histories",
                      "unique_identifier",
                      "current_photo_key",
+                     "created_organisation",
                      "photo_keys"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k}

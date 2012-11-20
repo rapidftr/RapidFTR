@@ -149,7 +149,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I am on child advanced search page
      And the following children exist in the system:
       | name   | created_by | created_by_full_name |
-      | Andrew | bob jane   | john                 |
+      | Andrew | bob_jane   | john                 |
       | Peter  | john       | jane bob             |
       | James  | bob        | jane                 |
       | David  | tim        | tom                  |
@@ -168,7 +168,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I am on child advanced search page
      And the following children exist in the system:
       | name   | created_by     | created_by_full_name |
-      | Andrew | bob smith jane | john                 |
+      | Andrew | bob_smith_jane | john                 |
       | Peter  | john           | bob jane smith       |
       | James  | bob            | smith                |
    When I check "created_by"
@@ -311,7 +311,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I am on child advanced search page
     And the following children exist in the system:
       | name   | last_updated_by | last_updated_by_full_name |
-      | Andrew | bob smith jane  | john                      |
+      | Andrew | bob_smith_jane  | john                      |
       | Peter  | john            | bob jane smith            |
       | James  | bob             | smith                     |
    When I check "updated_by"
