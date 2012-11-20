@@ -84,8 +84,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     authorize! :create, Child
-
-    @child = Child.new_with_user_name(current_user_name, params[:child])
+    @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
       if @child.save
@@ -320,7 +319,7 @@ class ChildrenController < ApplicationController
     end
 
     def update_child_from params
-      child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
+      child = Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
       authorize! :update, child
 
       child['last_updated_by_full_name'] = current_user_full_name

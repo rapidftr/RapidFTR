@@ -329,14 +329,14 @@ describe Child do
     end
 
     it "created_at should be a be a valid ISO date" do
-      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
+      child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
       child.should_not be_valid
       child['created_at']='2010-01-14 14:05:00UTC'
       child.should be_valid
     end
 
     it "last_updated_at should be a be a valid ISO date" do
-      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'last_updated_at' => 'I am not a date')
+      child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'last_updated_at' => 'I am not a date')
       child.should_not be_valid
       child['last_updated_at']='2010-01-14 14:05:00UTC'
       child.should be_valid
@@ -424,30 +424,30 @@ describe Child do
   describe "new_with_user_name" do
 
     it "should create regular child fields" do
-      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'age' => '6')
+      child = create_child_with_created_by('jdoe', 'last_known_location' => 'London', 'age' => '6')
       child['last_known_location'].should == 'London'
       child['age'].should == '6'
     end
 
     it "should create a unique id" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
-      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+      child = create_child_with_created_by('jdoe', 'last_known_location' => 'London')
       child['unique_identifier'].should == "jdoelon12345"
     end
 
     it "should not create a unique id if already exists" do
-      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'unique_identifier' => 'rapidftrxxx5bcde')
+      child = create_child_with_created_by('jdoe', 'last_known_location' => 'London', 'unique_identifier' => 'rapidftrxxx5bcde')
       child['unique_identifier'].should == "rapidftrxxx5bcde"
     end
 
     it "should create a created_by field with the user name" do
-      child = Child.new_with_user_name('jdoe', 'some_field' => 'some_value')
+      child = create_child_with_created_by('jdoe', 'some_field' => 'some_value')
       child['created_by'].should == 'jdoe'
     end
 
     it "should create a posted_at field with the current date" do
       Clock.stub!(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
-      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
+      child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
       child['posted_at'].should == "2010-01-22 14:05:00UTC"
     end
 
@@ -455,7 +455,7 @@ describe Child do
 
       it "should create a created_at field with time of creation" do
         Clock.stub!(:now).and_return(Time.utc(2010, "jan", 14, 14, 5, 0))
-        child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
+        child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
         child['created_at'].should == "2010-01-14 14:05:00UTC"
       end
 
@@ -464,7 +464,7 @@ describe Child do
     describe "when the created at field is supplied" do
 
       it "should use the supplied created at value" do
-        child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
+        child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
         child['created_at'].should == "2010-01-14 14:05:00UTC"
       end
 
@@ -1134,6 +1134,11 @@ describe Child do
     duplicate.mark_as_duplicate(parent.unique_identifier)
     duplicate.save!
     duplicate
+  end
+
+  def create_child_with_created_by(created_by,options = {})
+    user = User.new(:user_name => created_by)
+    Child.new_with_user_name user, options
   end
 
 end
