@@ -112,11 +112,12 @@ describe Ability do
     it { should authorize :index, Device }
     it { should_not authorize :read, User.new }
   end
-  
+
   describe "view roles permission" do
     let(:permissions) { [Permission::ROLES[:view]] }
 
     it { should authorize :list, Role.new }
+    it { should authorize :view, Role.new }
     it { should_not authorize :create, Role.new }
     it { should_not authorize :update, Role.new }
   end

@@ -3,9 +3,9 @@ class Ability
 
   def initialize(user)
 
-    # 
-    # CHILDREN 
-    #   
+    #
+    # CHILDREN
+    #
     if user.has_permission?(Permission::CHILDREN[:register])
       can [:index, :create], Child
       can [:read], Child do |child|
@@ -28,9 +28,9 @@ class Ability
       can :export, Child
     end
 
-    # 
+    #
     # USERS
-    #   
+    #
     if user.has_permission?(Permission::USERS[:view])
       can [:read, :show, :list], User
     end
@@ -51,36 +51,36 @@ class Ability
       cannot [:edit], User
     end
 
-    # 
+    #
     # DEVICES
-    #   
+    #
     if user.has_permission?(Permission::DEVICES[:black_list])
       can [:read,:update], Device
     end
 
-    # 
+    #
     # ROLES
-    #   
+    #
     if user.has_permission?(Permission::ROLES[:view])
-      can [:list], Role
+      can [:list, :view], Role
     end
 
     if user.has_permission?(Permission::ROLES[:create_and_edit])
       can [:manage], Role
     end
-    
-    # 
+
+    #
     # FORMS
-    #   
+    #
     if user.has_permission?(Permission::FORMS[:manage])
       can [:manage], FormSection
       can [:manage], Field
       cannot [:highlight], Field
     end
 
-    # 
+    #
     # HIGHLIGHT FIELDS
-    #   
+    #
     if user.has_permission?(Permission::SYSTEM[:highlight_fields])
       can [:highlight], Field
     end
