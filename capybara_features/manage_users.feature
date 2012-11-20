@@ -35,5 +35,5 @@ Feature: Manage Users
      Then I should see "Edit"
      Then I should not see "Delete User"
      Then I should see "Back"
-     Then I should see "Create an User"
+     Then I should see "Create User"
 
