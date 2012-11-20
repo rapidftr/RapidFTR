@@ -161,55 +161,47 @@
         }
 
 
-        var validate = function () {
-            var result = "";
-            if (!filterSelected()) {
-                $('.criteria-list .criteria-value-text').each(function () {
-                    if ($(this).val() == "") {
-                        result = 'Please enter a valid field value.';
-                    }
-                });
-                $('.criteria-list .criteria-value-select').each(function () {
-                    if ($(this).val() == "") {
-                        result = 'Please enter a valid field value.';
-                    }
-                });
-                if ($('.criteria-list .criteria-field').length == 0) {
-                    result = 'Please select a valid field name.';
-                }
-                ;
-                $('.criteria-list .criteria-field').each(function () {
-                    if ($(this).val() == "") {
-                        result = 'Please select a valid field name.';
-                    }
-                });
-            }
-            if (!createdByIsValid()) {
-                result = "Please enter a valid 'Created by' value."
-            }
-            if (!updatedByIsValid()) {
-                result = "Please enter a valid 'Updated by' value."
-            }
-            if (!createdAtIsValid()) {
-                result = "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
-            }
-            if (!updatedAtIsValid()) {
-                result = "Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
-            }
-            return result;
-        }
 
-        element.find("form").submit(function () {
-            result = validate();
+		var validate = function(){
+			var result = "";
+      $('.criteria-list .criteria-value-text').each(function(){
+          if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+      });
+      $('.criteria-list .criteria-value-select').each(function(){
+          if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+      });
+//      if($('.criteria-list .criteria-field').length == 0){
+//         result = 'Please select a valid field name.';
+//      };
+      $('.criteria-list .criteria-field').each(function(){
+          if($(this).val() == "") { result = 'Please select a valid field name.'; }
+      });
+      if (!createdByIsValid()) {
+          result="Please enter a valid 'Created by' value."
+      }
+      if (!updatedByIsValid()) {
+          result="Please enter a valid 'Updated by' value."
+      }
+      if (!createdAtIsValid()) {
+          result="Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
+      }
+      if (!updatedAtIsValid()) {
+          result="Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
+      }
+			return result;
+		}
 
-            if (result == '') {
-                $('.flash .error').hide();
-                return true;
-            } else {
-                $('.flash .error').show();
-                $('.flash .error').text(result);
-                return false;
-            }
-        });
-    }
+		element.find("form").submit(function() {
+			result = validate();
+
+			if(result == ''){
+				$('.flash .error').hide();
+				return true;
+			} else {
+				$('.flash .error').show();
+				$('.flash .error').text(result);
+				return false;
+			}
+		});
+	}
 })(jQuery);

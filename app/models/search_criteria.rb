@@ -47,6 +47,8 @@ class SearchCriteria
 
     return query if criteria.nil?
 
+    return criteria.to_lucene_query if query.length == 0
+
     if criteria.join == "AND"
       query = "(#{query} AND #{criteria.to_lucene_query})"
       return build_joins(list, query)
