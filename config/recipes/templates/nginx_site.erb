@@ -12,6 +12,8 @@ server {
 
   passenger_enabled on;
   rails_env <%= deploy_env %>;
+  gzip on;
+  gzip_disable "MSIE [1-6]\.";
   root <%= fetch :current_path %>/public;
   access_log <%= fetch :current_path %>/log/server.log;
   error_log <%= fetch :current_path %>/log/error.log error;
