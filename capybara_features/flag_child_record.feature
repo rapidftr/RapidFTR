@@ -18,7 +18,7 @@ Feature:
       """
     Then the view record page should show the record is flagged
     And the edit record page should show the record is flagged
-    And the record history should log "Record was flagged by praful because: He is a bad guy."
+    And the record history should log "Record was flagged by praful belonging to UNICEF because: He is a bad guy."
 		And the child listing page filtered by flagged should show the following children:
 			| Peter |
     When I am on the children listing page
@@ -35,7 +35,7 @@ Feature:
       He is a not such a bad guy after all.
       """
     Then I should see "Child was successfully updated."
-    And the record history should log "Record was unflagged by praful because: He is a not such a bad guy after all."
+    And the record history should log "Record was unflagged by praful belonging to UNICEF because: He is a not such a bad guy after all."
     When I am on the children listing page
     Then I should not see "Flagged By"
 

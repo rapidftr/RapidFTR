@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ExportGenerator do
 
   it "should generate a PDF file for a single child record" do
-    child = Child.new_with_user_name("jdoe", {
+    child = build_child("jdoe", {
         "name" => "Dave",
         "age" => "28",
         "last_known_location" => "London"})
@@ -13,8 +13,8 @@ describe ExportGenerator do
   end
 
   it "should generate a PDF file for multiple child records" do
-    child_a = Child.new_with_user_name "Bob"
-    child_b = Child.new_with_user_name "Gerald"
+    child_a = build_child "Bob"
+    child_b = build_child "Gerald"
     pdf_generator = ExportGenerator.new [child_a, child_b]
     pdf_generator.to_full_pdf
     pdf_generator.to_photowall_pdf
@@ -22,8 +22,8 @@ describe ExportGenerator do
 
   describe "Suspect status" do
     before do
-      @suspected_child = Child.new_with_user_name "Suhas", :flag => true
-      @unsuspected_child = Child.new_with_user_name "Suhas", :flag => false
+      @suspected_child = build_child "Suhas", :flag => true
+      @unsuspected_child = build_child "Suhas", :flag => false
     end
 
     context "in PDF generation" do
@@ -61,8 +61,8 @@ describe ExportGenerator do
 
   describe "Reunification status" do
     before do
-      @reunited_child = Child.new_with_user_name "Bob", :reunited => true
-      @not_reunited_child = Child.new_with_user_name "Bob", :reunited => false
+      @reunited_child = build_child "Bob", :reunited => true
+      @not_reunited_child = build_child "Bob", :reunited => false
     end
 
     context "in PDF generation" do
@@ -109,7 +109,7 @@ describe ExportGenerator do
     end
 
     it "should not fail" do
-      child = Child.new_with_user_name("jdoe", {
+      child = build_child("jdoe", {
           "name" => "Dave",
           "age" => "28",
           "last_known_location" => "London"})
@@ -117,5 +117,13 @@ describe ExportGenerator do
       subject.to_full_pdf
      end
   end
-  
+
+  private
+
+  def build_child(created_by,options = {})
+    user = User.new(:user_name => created_by)
+    Child.new_with_user_name user, options
+  end
+
+
 end
