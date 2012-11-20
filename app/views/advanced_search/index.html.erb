@@ -41,17 +41,18 @@
     </div>
 
     <script id="criteria_template" type="text/x-jquery-tmpl">
+
       {{if index < CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX}}
       <p>
         {{if index > 0}}
           <input type='radio' name='criteria_list[${index}][join]' id='criteria_join_and' ${CriteriaTemplateHelper.andRadioSelected(join)} value='AND' /><label for='criteria_join_and'>And</label>
           <input type='radio' name='criteria_list[${index}][join]' id='criteria_join_or' ${CriteriaTemplateHelper.orRadioSelected(join)} value='OR' /><label for='criteria_join_or'>Or</label>
         {{/if}}
+
         <a class='select-criteria'>${CriteriaTemplateHelper.link(field_display_name) }</a>
         <input type='hidden' name="criteria_list[${index}][field]" value="${field}" class="criteria-field"/>
         <input type='hidden' name="criteria_list[${index}][field_type]" value="${field}" class="criteria-field-type"/>
-        <input style="display:none" type='text'  name="criteria_list[${index}][value]" value="${value}" class="criteria-value-text"/>
-        <select style="display:none" name="criteria_list[${index}][value]" value="${value}" class="criteria-value-select"></select>
+       <span class="criteria-values"></span>
         <input type='hidden' name="criteria_list[${index}][index]" value="${index}" class="criteria-index"/>
         {{if index > 0}}
           <a class='remove-criteria'>remove</a>
@@ -61,13 +62,6 @@
     </script>
 
     <div class="criteria-list" style="float:left">
-      <p>
-        <a class="select-criteria">Select A Criteria</a>
-        <input class="criteria-field" type="hidden" value="" name="criteria_list[0][field]">
-        <input class="criteria-value-text" type="text" value="" name="criteria_list[0][value]">
-        <select class="criteria-value-select" value="" name="criteria_list[1][value]" style="display:none"></select>
-        <input class="criteria-index" type="hidden" value="0" name="criteria_list[0][index]">
-      </p>
       <%= @criteria_list.map{|criteria| generate_html(criteria, @all_fields)}.join("").html_safe %>
     </div>
 
@@ -75,7 +69,7 @@
       <input type='submit' value='Search'/>
     </div>
     <p style='clear:both'>
-      <a class='add-criteria'>+ add more search options</a>
+      <a class='add-criteria'>Select A Criteria</a>
     </p>
 
     <hr>
@@ -122,7 +116,7 @@
 
 </div>
 
-<% if params[:criteria_list] %>
+<% if @results && @results.size > 0 %>
   <%= render :partial => 'children/search_results' %>
 <% end %>
 

@@ -69,7 +69,7 @@ module NavigationHelpers
         search_children_path(options)
 
       when /child advanced search page/
-        advanced_search_index_path(options)
+        new_advanced_search_path(options)
 
       when /login page/
         login_path(options)

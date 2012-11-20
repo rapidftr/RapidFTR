@@ -6,9 +6,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Search Criteria - Check presence of required form elements
   Given I am logged in
     And I am on child advanced search page
-   Then I should see "Separate words by OR to search for more than one option eg. Tim OR Rahul"
+    Then I should see "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     And I should see "Select A Criteria"
-    And I should see "+ add more search options"
 
   @javascript
   Scenario: Validation of search criteria field name
@@ -40,6 +39,21 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Search"
    Then I should see "Will" in the search results
     And I should see "Willis" in the search results
+
+  @javascript
+  Scenario: Searching by a dropdown field
+    Given I am logged in
+    And I am on child advanced search page
+    And the following children exist in the system:
+      | name    | gender           |
+      | Andrew  | Male             |
+      | mary    | Female           |
+    When I click text "Select A Criteria"
+    And I click text "Sex"
+    And I select "Male" from "criteria_list[0][value]"
+    And I press "Search"
+    Then I should see "Andrew" in the search results
+    And I should not see "mary" in the search results
 
   @javascript
   Scenario: Search Filters - Created By - Check presence of required form elements
