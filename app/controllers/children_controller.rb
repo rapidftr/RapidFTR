@@ -84,6 +84,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     authorize! :create, Child
+    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
@@ -105,7 +106,7 @@ class ChildrenController < ApplicationController
   def update    
     respond_to do |format|
       format.json do
-        params[:child] = JSON.parse params[:child]
+        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
         
