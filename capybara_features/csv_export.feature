@@ -11,7 +11,7 @@ Feature:
       | Dave    | dave_456 |
       | Mike    | mike_789 |
 
-  @wip #TODO Have a look at it once the ci infrastructure problems are out.
+  @wip
   Scenario: Users can export to CSV as the result of a search
     Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "D"
