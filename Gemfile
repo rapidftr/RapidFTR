@@ -22,6 +22,8 @@ gem 'dynamic_form'
 gem 'jquery-rails'
 gem 'cancan'
 gem 'capistrano'
+gem 'newrelic_rpm'
+
 group :development, :assets do
   gem 'sass'
 end
