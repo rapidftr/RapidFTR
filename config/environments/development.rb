@@ -7,6 +7,7 @@ RapidFTR::Application.configure do
   config.cache_classes = false
 
   # Log error messages when you accidentally call methods on nil.
+  config.log_level = :debug
   config.whiny_nils = true
 
   # Show full error reports and disable caching
