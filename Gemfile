@@ -52,7 +52,7 @@ group :development, :test do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
   gem 'capybara',         '1.0.1'
-  gem 'selenium-webdriver', '2.24.0'
+  gem 'selenium-webdriver', '2.25.0'
   gem 'jasmine'
   gem 'pry'
 end
