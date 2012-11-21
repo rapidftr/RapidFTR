@@ -1,27 +1,31 @@
 language: ruby
 rvm:
   - 1.8.7
-  - ree
-  - ruby-head
-  - jruby-head
-  - rbx-18mode
-  - rbx-19mode
-  - jruby-18mode
-  - jruby-19mode
-  - 1.9.2
-  - 1.9.3
+  # - ree
+  # - ruby-head
+  # - jruby-head
+  # - rbx-18mode
+  # - rbx-19mode
+  # - jruby-18mode
+  # - jruby-19mode
+  # - 1.9.2
+  # - 1.9.3
 
-matrix:
-  allow_failures:
-    - rvm: 1.9.3
-    - rvm:ree
-    - rvm:ruby-head
-    - rvm:jruby-head
-    - rvm:rbx-18mode
-    - rvm:rbx-19mode
-    - rvm:jruby-18mode
-    - rvm:jruby-19mode
-    - rvm:1.9.2
+env:
+  - RAILS_ENV=test
+  - RAILS_ENV=cucumber
+
+# matrix:
+#   allow_failures:
+#     - rvm: 1.9.3
+#     - rvm:ree
+#     - rvm:ruby-head
+#     - rvm:jruby-head
+#     - rvm:rbx-18mode
+#     - rvm:rbx-19mode
+#     - rvm:jruby-18mode
+#     - rvm:jruby-19mode
+#     - rvm:1.9.2
 
 notifications:
   irc: "irc.freenode.org#rapidftr"
@@ -29,12 +33,17 @@ notifications:
 services:
   - couchdb
 
+before_install:
+  - gem update --system
+  - gem --version
+
 before_script:
-  - script/sunspot-travis.sh
+  - bundle exec rake sunspot:start
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-script: bundle exec rake spec cucumber:all
+script:
+  - bundle exec rake travis:run
 
 notifications:
   email: false
