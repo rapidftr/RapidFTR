@@ -196,6 +196,7 @@ describe ChildrenController do
 
     it 'should not fail if primary_photo_id is not present' do
       child = Child.create('last_known_location' => "London")
+      child.create_unique_id
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
@@ -488,8 +489,7 @@ describe ChildrenController do
     end
 
     it "should return the photo wall pdf for selected child" do
-      Child.should_receive(:get).with('1').and_return(
-        stub_child = stub('child', :unique_identifier => '1', :class => Child))
+      Child.should_receive(:get).with('1').and_return(stub_child = stub('child', :short_id => '1', :class => Child))
 
       ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)

@@ -36,10 +36,10 @@ describe ChildrenHelper do
   end
 
   describe "#text_to_identify_child" do
-    it "should show the child unique identifier if name is not present" do
-      identifier = "georgelon12345"
+    it "should show the child short id if name is not present" do
+      identifier = "00001234567"
       child = Child.new(:unique_identifier => identifier)
-      helper.text_to_identify_child(child).should == identifier
+      helper.text_to_identify_child(child).should == "1234567"
     end
 
     it "should show the name if it is present" do

@@ -228,15 +228,17 @@ view_by :duplicates_of,
 
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
-    child.create_unique_id user.try(:user_name) unless child['unique_identifier']
+    child.create_unique_id
     child.set_creation_fields_for user
     child
   end
 
-  def create_unique_id(user_name)
-    unknown_location = 'xxx'
-    truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0, 3).downcase
-    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0, 5)
+  def create_unique_id
+    self['unique_identifier'] ||= UUIDTools::UUID.random_create.to_s
+  end
+  
+  def short_id
+    self['unique_identifier'].last 7
   end
 
   def set_creation_fields_for(user)
