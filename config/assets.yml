@@ -16,6 +16,7 @@ javascripts:
     - public/javascripts/plugins/jquery.idletimeout.js
     - public/javascripts/plugins/jquery.lightbox-0.5.min.js
     - public/javascripts/plugins/jquery.jplayer.min.js
+    - public/javascripts/plugins/jquery.rotate.1-1.js
     - public/javascripts/plugins/vtip-min.js
     - public/javascripts/application.js
     - public/javascripts/jquery_plugin.js
