@@ -60,7 +60,7 @@
             self.selectedField.find(".criteria-field").val(field.find(".field").val());
             var field_type = field.find(".field_type").val();
             self.selectedField.find(".criteria-field-type").val(field_type);
-            var criteria_values_span = self.selectedField.find(".criteria-values")
+            var criteria_values_span = self.selectedField.find(".criteria-values");
             var index = self.selectedField.find(".criteria-index").val()
             if (field_type == "select_box") {
                 criteria_values_span.html("<select name='criteria_list[" + index + "][value]' class='criteria-value-select'/>")

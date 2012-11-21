@@ -30,13 +30,13 @@ module AdvancedSearchHelper
 
   private
   def select_box_criteria(criteria, field)
-    html = %Q{<select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">}
+    html = %Q{<span class="criteria-values"/><select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">}
     field.option_strings.each{|option| html += "<option #{criteria.value == option ? "selected=\"selected\"" : ""} value=\"#{option}\">#{option}</option>"}
     html += "</select>"
   end
 
   def text_field_criteria(criteria, field)
-    %Q{<input class="criteria-value-text" type="text" value="#{criteria.value}" name="criteria_list[#INDEX][value]" style="">}
+    %Q{<span class="criteria-values"/><input class="criteria-value-text" type="text" value="#{criteria.value}" name="criteria_list[#INDEX][value]" style="">}
   end
 
   def textarea_criteria(criteria, field)

@@ -11,6 +11,8 @@ rvm:
   # - 1.9.2
   # - 1.9.3
 
+# Make unit and cucumber tests run in parallel
+# This also fixes some Spec gems not being installed due to RAILS_ENV not being set (those gems inside Bundler env groups)
 env:
   - RAILS_ENV=test
   - RAILS_ENV=cucumber
@@ -38,12 +40,12 @@ before_install:
   - gem --version
 
 before_script:
-  - bundle exec rake sunspot:start
+  - bundle exec rake sunspot:start --trace
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
 script:
-  - bundle exec rake travis:run
+  - bundle exec rake couchdb:create travis:run
 
 notifications:
   email: false

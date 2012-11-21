@@ -432,7 +432,7 @@ describe Child do
     it "should create a unique id" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
       child = create_child_with_created_by('jdoe', 'last_known_location' => 'London')
-      child['unique_identifier'].should == "jdoelon12345"
+      child['unique_identifier'].should == "12345"
     end
 
     it "should not create a unique id if already exists" do
@@ -472,39 +472,18 @@ describe Child do
 
   end
 
-  it "should create a unique id based on the last known location and the user name" do
-    child = Child.new({'last_known_location' => 'london'})
+  it "should create a unique id" do
+    child = Child.new
     UUIDTools::UUID.stub("random_create").and_return(12345)
-    child.create_unique_id("george")
-    child["unique_identifier"].should == "georgelon12345"
+    child.create_unique_id
+    child["unique_identifier"].should == "12345"
   end
 
-  it "should use a default location if last known location is empty" do
-    child = Child.new({'last_known_location' => nil})
-    UUIDTools::UUID.stub("random_create").and_return(12345)
-    child.create_unique_id("george")
-    child["unique_identifier"].should == "georgexxx12345"
-  end
-
-  it "should downcase the last known location of a child before generating the unique id" do
-    child = Child.new({'last_known_location' => 'New York'})
-    UUIDTools::UUID.stub("random_create").and_return(12345)
-    child.create_unique_id("george")
-    child["unique_identifier"].should == "georgenew12345"
-  end
-
-  it "should append a five digit random number to the unique child id" do
-    child = Child.new({'last_known_location' => 'New York'})
-    UUIDTools::UUID.stub("random_create").and_return('12345abcd')
-    child.create_unique_id("george")
-    child["unique_identifier"].should == "georgenew12345"
-  end
-
-  it "should handle special characters in last known location when creating unique id" do
-    child = Child.new({'last_known_location' => "\215\303\304n"})
-    UUIDTools::UUID.stub("random_create").and_return('12345abcd')
-    child.create_unique_id("george")
-    child["unique_identifier"].should == "george\215\303\30412345"
+  it "should return last 7 characters of unique id as short id" do
+    child = Child.new
+    UUIDTools::UUID.stub("random_create").and_return(1212127654321)
+    child.create_unique_id
+    child.short_id.should == "7654321"
   end
 
   describe "photo attachments" do
