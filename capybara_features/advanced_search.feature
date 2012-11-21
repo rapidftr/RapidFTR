@@ -55,6 +55,24 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should see "Andrew" in the search results
     And I should not see "mary" in the search results
 
+    @javascript
+    Scenario: Change the existing search criteria after a Search is performed
+      Given I am logged in
+      And I am on child advanced search page
+      And the following children exist in the system:
+        | name    | gender           |
+        | Andrew  | Male             |
+        | mary    | Female           |
+      When I click text "Select A Criteria"
+      And I click text "Sex"
+      And I select "Male" from "criteria_list[0][value]"
+      And I press "Search"
+      Then I click text "Sex"
+      And I click text "Name"
+      Then I fill in "mary" for "criteria_list[0][value]"
+      Then I press "Search"
+      And I should see "mary" in the search results
+
   @javascript
   Scenario: Search Filters - Created By - Check presence of required form elements
    Given I am logged in

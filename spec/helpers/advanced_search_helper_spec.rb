@@ -7,8 +7,10 @@ describe AdvancedSearchHelper do
     helper.generate_html(criteria, [field]).gsub("\n", '').should == %Q{<p><a class="select-criteria">Name</a>
 <input class="criteria-field" type="hidden" value="name" name="criteria_list[0][field]">
 <input class="criteria-index" type="hidden" value="0" name="criteria_list[0][index]">
+<span class=\"criteria-values\"/>
 <input class="criteria-value-text" type="text" value="test" name="criteria_list[0][value]" style=""></p>}.gsub("\n", '')
   end
+
 
   it "should generate the appropriate html for given select box criteria" do
     field = Field.new(:name => "protection_status", :display_name => "Protection Status", :type => Field::SELECT_BOX, :option_strings => ["", "Unaccompanied", "Separated"])
@@ -21,6 +23,7 @@ describe AdvancedSearchHelper do
 <a class="select-criteria">Protection Status</a>
 <input class="criteria-field" type="hidden" value="protection_status" name="criteria_list[1][field]">
 <input class="criteria-index" type="hidden" value="1" name="criteria_list[1][index]">
+<span class=\"criteria-values\"/>
 <select class="criteria-value-select" value="" name="criteria_list[1][value]" style="">
 <option  value=""></option>
 <option  value="Unaccompanied">Unaccompanied</option>
