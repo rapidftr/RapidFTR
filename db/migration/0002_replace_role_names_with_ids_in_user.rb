@@ -5,7 +5,7 @@ User.all.each do |user|
       role = Role.find_by_name(role_name)
       role.id if role
     end
-    user.organisation = 'UNICEF'
+    user.organisation = 'N/A'
     user.save!
   end
 
