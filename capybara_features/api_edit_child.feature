@@ -1,6 +1,6 @@
 Feature: Editing a child using the API
   Background:
-   Given there is a User
+   Given I am logged in as a user with "Edit Child,View And Search Child" permission
 	Scenario: Should save created at and posted by fields as posted to the server
     	Given I am sending a valid session token in my request headers
     	And the following children exist in the system:

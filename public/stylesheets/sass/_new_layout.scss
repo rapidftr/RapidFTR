@@ -227,7 +227,6 @@ body {
             right: 0px;
             width: 200px;
             min-height: 200px;
-
             top: 50px;
 
             img {
@@ -237,6 +236,18 @@ body {
 
             .thumbnails {
               padding: 10px;
+            }
+
+            .edit_photo, .manage_photo{
+              padding:2px 10px;
+              margin:1px;
+              background: #eee;
+              border:1px dashed #bbb;
+              @include borderRadius(2px);
+
+              &:hover{
+                border:1px solid #bbb;
+              }
             }
           }
 
@@ -255,7 +266,7 @@ body {
 
           .btn_panel {
             padding: 5px;
-            border-top: 1px solid #333;
+            border-top: 1px solid #ccc;
             text-align: right;
 
             a {
@@ -270,5 +281,127 @@ body {
 
       }
     }
+  }
+}
+
+.login_page{
+  text-align:center;
+
+  .login_panel{
+    text-align: left;
+    width:300px;
+    margin:30px auto;
+    padding:10px;
+    background: url(../images/new/bg_login.png) repeat-x #eee;
+    border:3px solid #fff;
+    @include borderRadius(3px);
+    @include boxShadow(0px 0px 3px #aaa);
+
+    h3{
+      font-size: 1.2em;
+      font-weight: bold;
+      padding-bottom: 7px;
+      border-bottom: 1px solid #aaa;
+      margin-bottom: 10px;
+    }
+
+    p{
+      padding: 10px 15px;
+
+      label{
+        width:70px;
+        display: inline-block;
+      }
+    }
+
+    .btn_panel{
+      border-top: 1px solid #aaa;
+      margin-top: 10px;
+      text-align: right;
+    }
+  }
+
+  a{
+    margin:0px auto;
+    display: inline-block;
+  }
+}
+
+.edit_photo_page{
+
+  .profile-header{
+    @extend .clearfix;
+
+    label, div{
+      float:left;
+      padding:5px;
+    }
+
+  }
+
+  .profile-image{
+    width: 520px;
+    height: 320px;
+    background: #eee;
+    padding:10px;
+    text-align: center;
+    border:1px dashed #ddd;
+    margin-left: 220px;
+
+    img{
+      max-width: 500px;
+      max-height: 300px;
+    }
+  }
+
+  .profile-tools{
+    border: none;
+    margin: 10px 0px 10px 170px;
+    padding:0px 10px 10px;
+
+    a{
+      background:url(../images/new/photo_rotate.png) no-repeat #eee;
+      padding:6px 0 6px 30px;
+      border:1px dashed #bbb;
+      @include borderRadius(2px);
+      width:170px;
+      text-align: left;
+      color:#666;
+
+      &:hover{
+        border:1px solid #bbb;
+        color:#333;
+      }
+    }
+
+    a.rotate_anti_clockwise{
+      background-position: 5px 2px;
+
+      &:hover{
+        background-position: 5px -87px;
+      }
+    }
+
+    a.rotate_clockwise{
+      background-position: 5px -27px;
+
+      &:hover{
+        background-position: 5px -116px;
+      }
+    }
+
+    a.restore_image{
+      background-position: 5px -56px;
+
+      &:hover{
+        background-position: 5px -145px;
+      }
+    }
+  }
+
+  .btn_panel{
+    padding: 5px;
+    border-top: 1px solid #ccc;
+    text-align: right;
   }
 }

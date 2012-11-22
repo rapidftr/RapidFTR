@@ -36,10 +36,10 @@ describe ChildrenHelper do
   end
 
   describe "#text_to_identify_child" do
-    it "should show the child unique identifier if name is not present" do
-      identifier = "georgelon12345"
+    it "should show the child short id if name is not present" do
+      identifier = "00001234567"
       child = Child.new(:unique_identifier => identifier)
-      helper.text_to_identify_child(child).should == identifier
+      helper.text_to_identify_child(child).should == "1234567"
     end
 
     it "should show the name if it is present" do
@@ -57,8 +57,8 @@ describe ChildrenHelper do
 
   describe "#flag_summary_for_child" do
     it "should show the flag summary for the child" do
-      @user = mock(:user)
-      @user.stub!(:localize_date).and_return "19 September 2012 at 18:39 (UTC)"
+      @current_user = mock(:user)
+      @current_user.stub!(:localize_date).and_return "19 September 2012 at 18:39 (UTC)"
 
       child = Child.new(:name => "Flagged Child",
                         :flag_message => "Fake entity",

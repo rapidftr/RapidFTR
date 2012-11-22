@@ -15,6 +15,9 @@ RapidFTR.maintabControl = function(){
         case "users":
         case "roles":   $(".main_bar li a:contains('USERS')").addClass("sel");
         break;
+
+        case "devices":   $(".main_bar li a:contains('DEVICES')").addClass("sel");
+        break;
     }
 
 
@@ -108,6 +111,12 @@ RapidFTR.childPhotoRotation = {
         $("#image_rotation_links .rotate_clockwise").click(this.rotateClockwise);
         $("#image_rotation_links .rotate_anti_clockwise").click(this.rotateAntiClockwise);
         $("#image_rotation_links .restore_image").click(this.restoreOrientation);
+    }
+};
+
+RapidFTR.Utils = {
+    dehumanize: function(val){
+        return jQuery.trim(val.toString()).replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
     }
 };
 

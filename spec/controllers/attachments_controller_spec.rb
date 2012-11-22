@@ -4,6 +4,8 @@ describe AttachmentsController do
   
   before do
     fake_login
+    mock_user = mock({:organisation => 'UNICEF'})
+    User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
   end
   
   it "should have restful route for GET" do

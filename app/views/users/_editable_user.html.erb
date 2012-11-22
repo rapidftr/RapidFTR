@@ -33,32 +33,31 @@
     <fieldset>
     <p>
       <%= f.label :full_name, "Full name", :class=>'key' %>
-      <%= f.text_field :full_name %>*
+      <%= f.text_field :full_name, :autocomplete => "off"%>*
     </p>
 
     <p>
       <%= f.label :user_name, :class=>'key'  %>
-      <%= f.text_field :user_name, :disabled => !editable_user.new_record? %>*
+      <%= f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
       <span class="footnote">user name should not contain blanks</span>
     </p>
 
     <p>
       <%= f.label :password, :class=>'key'  %>
-      <%= f.password_field :password %>*
-      <span class="footnote">password should not contain blanks</span>
+      <%= f.password_field :password, :autocomplete => "off" %>*
     </p>
 
     <p>
       <%= f.label :password_confirmation,"Re-enter password", :class=>'key'  %>
-      <%= f.password_field :password_confirmation %>*
+      <%= f.password_field :password_confirmation, :autocomplete => "off" %>*
     </p>
 
     <% if !trying_to_edit_ourself %>
       <p>
         <label class="key">Roles</label>
       <% @roles.each do |role| %>
-          <%= f.check_box :role_names, {:id => role.name.dehumanize, :name => "user[role_names][]"}, role.name, "" %>
-          <span><%= role.name %></span>
+        <%= f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, "" %>
+          <%= f.label role.name %>
       <% end %>
       </p>
     <% end %>
@@ -74,7 +73,7 @@
 
     <p>
       <%= f.label :organisation, :class=>'key'  %>
-      <%= f.text_field :organisation, :disabled => !is_admin?%>
+      <%= f.text_field :organisation, :disabled => !is_admin?%>*
     </p>
 
     <p>
@@ -87,7 +86,7 @@
       <%= f.text_field :location %>
     </p>
 
-    <% if !trying_to_edit_ourself %>
+    <% if !trying_to_edit_ourself  && current_user.can_disable?%>
         <p>
           <%= f.label :disabled, "Disabled?", :class=>'key' %>
           <%= f.check_box :disabled, {}, "true", "false" %>
@@ -96,9 +95,6 @@
 
     </fieldset>
 
-    <% if is_admin? %>
-        <%= render :partial => "devices", :object => editable_user.devices %>
-    <% end %>
     <%= submit_button(editable_user.new_record? ? 'Create' : 'Update') %>
     <!--TODO: After we got the user object in the session replace the DB query with User object-->
     <%= cancel_button(user_path(User.find_by_user_name(current_user_name))) %>

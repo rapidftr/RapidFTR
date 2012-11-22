@@ -2,6 +2,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     Ascii85 (1.0.1)
+    POpen4 (0.1.4)
+      Platform (>= 0.4.0)
+      open4
+    Platform (0.4.0)
     abstract (1.0.0)
     actionmailer (3.0.15)
       actionpack (= 3.0.15)
@@ -29,10 +33,15 @@ GEM
       activemodel (= 3.0.15)
       activesupport (= 3.0.15)
     activesupport (3.0.15)
-    addressable (2.3.2)
     arel (2.0.10)
     builder (2.1.2)
     cancan (1.6.8)
+    capistrano (2.8.0)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     capybara (1.0.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -40,7 +49,7 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
-    childprocess (0.3.5)
+    childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
     chunky_png (1.2.6)
     coderay (1.0.8)
@@ -70,15 +79,18 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     fastercsv (1.5.3)
-    ffi (1.1.5)
+    ffi (1.2.0)
     fssm (0.2.9)
     gherkin (2.11.2)
       json (>= 1.4.6)
+    highline (1.6.13)
     hoptoad_notifier (2.4.2)
       activesupport
       builder
     hpricot (0.8.2)
     i18n (0.5.0)
+    jammit (0.6.5)
+      yui-compressor (>= 0.9.3)
     jasmine (1.2.1)
       jasmine-core (>= 1.2.0)
       rack (~> 1.0)
@@ -94,8 +106,8 @@ GEM
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     libv8 (3.3.10.4)
-    libwebsocket (0.1.5)
-      addressable
+    libwebsocket (0.1.6.1)
+      websocket
     mail (2.2.19)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -108,8 +120,17 @@ GEM
       subexec (~> 0.0.4)
     mocha (0.12.6)
       metaclass (~> 0.0.1)
-    multi_json (1.3.6)
+    multi_json (1.3.7)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.2.2)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
+    newrelic_rpm (3.5.2.17)
     nokogiri (1.5.5)
+    open4 (1.3.0)
     pdf-reader (0.8.6)
       Ascii85 (>= 0.9)
     polyglot (0.3.3)
@@ -167,7 +188,7 @@ GEM
       rspec (~> 2.11.0)
     rubyzip (0.9.9)
     sass (3.2.1)
-    selenium-webdriver (2.24.0)
+    selenium-webdriver (2.25.0)
       childprocess (>= 0.2.5)
       libwebsocket (~> 0.1.3)
       multi_json (~> 1.0)
@@ -190,14 +211,18 @@ GEM
       multi_json (~> 1.0, >= 1.0.2)
     uuidtools (2.1.1)
     validatable (1.6.7)
+    websocket (1.0.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
+    yui-compressor (0.9.6)
+      POpen4 (>= 0.1.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   cancan
+  capistrano
   capybara (= 1.0.1)
   compass-rails
   couchrest (= 0.34)
@@ -209,6 +234,7 @@ DEPENDENCIES
   fastercsv (= 1.5.3)
   hoptoad_notifier (= 2.4.2)
   hpricot (= 0.8.2)
+  jammit
   jasmine
   jquery-rails
   json (= 1.4.6)
@@ -217,6 +243,7 @@ DEPENDENCIES
   mime-types (= 1.16)
   mini_magick (= 1.3.2)
   mocha
+  newrelic_rpm
   pdf-reader (= 0.8.6)
   prawn (= 0.8.4)
   pry
@@ -228,7 +255,7 @@ DEPENDENCIES
   rspec-instafail
   rspec-rails (= 2.11.0)
   sass
-  selenium-webdriver (= 2.24.0)
+  selenium-webdriver (= 2.25.0)
   subexec (= 0.0.4)
   sunspot (= 1.1.0)
   test_declarative

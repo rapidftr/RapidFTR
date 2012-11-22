@@ -6,7 +6,7 @@ Feature: View Child Record Toolbar
   So that I can perform various operations on that record
 
   Background:
-    Given I am logged in
+    Given I am logged in as a user with "Register Child,Edit Child,View And Search Child,Export to Photowall/CSV/PDF" permission
     And someone has entered a child with the name "Fred"
     When I am on the child record page for "Fred"
 

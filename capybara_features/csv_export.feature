@@ -11,9 +11,11 @@ Feature:
       | Dave    | dave_456 |
       | Mike    | mike_789 |
 
+  @wip
   Scenario: Users can export to CSV as the result of a search
-    Given I am logged in
+    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "D"
+    Then I wait for 6 seconds
     And I select search result #1
     And I press "Export to CSV"
     Then I should receive a CSV file with 2 lines
@@ -22,22 +24,22 @@ Feature:
 			| Dan     |dan_123  |
 
   Scenario: When there are no search results, there is no csv export link
-    Given I am logged in
+    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "Z" 
     Then I should not see "Export to CSV"
 
   Scenario: Admins can export some or all child records to CSV
     Given I am logged in as an admin
     And the date/time is "Oct 23 2010"
-    When I am on the admin page
+    When I am on the children listing page
     And I follow "Export All Child Records to CSV"
     Then I should receive a CSV file with 4 lines
     And the CSV data should be:
       | name    |unique_identifier|
       | Dan     |dan_123  |
       | Dave    |dave_456 |
-			| Mike    |mike_789 |
-    When I go to the admin page
+	  | Mike    |mike_789 |
+    When I am on the children listing page
     And I follow "Export Some Records to CSV"
     And I search using a name of "D"
     And I select search result #1
@@ -55,4 +57,4 @@ Feature:
     Then I should receive a CSV file with 2 lines
     And the CSV data should be:
       | name    |unique_id|
-			| Dan     |dan_123  |
+	  | Dan     |dan_123  |

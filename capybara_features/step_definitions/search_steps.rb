@@ -3,9 +3,8 @@ require 'spec/spec_helper'
 include HpricotSearch
 
 When /^I search using a name of "([^\"]*)"$/ do |name|
-  step %q{I am on the child search page}
-  step "I fill in \"#{name}\" for \"Name\""
-  step %q{I press "Search"}
+  step "I fill in \"#{name}\" for \"query\""
+  step %q{I press "Go"}
 end
 
 When /^I select search result \#(\d+)$/ do |ordinal|

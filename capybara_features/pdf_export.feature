@@ -3,7 +3,7 @@ Feature: So that hard copy printout of missing child photos are available
   I want to be able to export selected children to a PDF file
 
   Background:
-    Given I am logged in
+    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     And the following children exist in the system:
       | name      | unique_id  |
       | Will      | will_uid   |
@@ -11,20 +11,18 @@ Feature: So that hard copy printout of missing child photos are available
       | Wilma     | wilma_uid  |
 
   Scenario: In search results, when a single record is selected and the export button is clicked, a pdf file is generated  
-    Given I am on the child search page
 
-    When I fill in "Wil" for "Name"
-    And I press "Search"
+    When I fill in "Wil" for "query"
+    And I press "Go"
     And I select search result #1
     And I press "Export to PDF"
 
     Then I should receive a PDF file
 
   Scenario: In search results, when two records are selected a pdf referring to those two records is generated  
-    Given I am on the child search page
 
-    When I fill in "Wil" for "Name"
-    And I press "Search"
+    When I fill in "Wil" for "query"
+    And I press "Go"
     And I select search result #1
     And I select search result #3
     And I press "Export to Photo Wall"
@@ -38,8 +36,8 @@ Feature: So that hard copy printout of missing child photos are available
   Scenario: In search results, when no records are selected and the export button is clicked, the user is shown an error message
     Given I am on the child search page
 
-    When I fill in "Wil" for "Name"
-    And I press "Search"
+    When I fill in "Wil" for "query"
+    And I press "Go"
     And I press "Export to PDF"
 
     Then I should see "You must select at least one record to be exported"

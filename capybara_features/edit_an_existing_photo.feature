@@ -4,7 +4,7 @@ Feature:
   I would like to edit the photograph so that it represents the correct orientation
 
   Background:
-    Given I am logged in
+    Given I am logged in as a user with "Register Child,Edit Child" permission
 
   Scenario: Editing the primary photo
 

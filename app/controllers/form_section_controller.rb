@@ -1,6 +1,6 @@
 class FormSectionController < ApplicationController
 
-  before_filter :administrators_only
+  before_filter { authorize! :manage, FormSection }
 
   def index
     @page_name = "Manage Form Sections"
@@ -72,7 +72,11 @@ class FormSectionController < ApplicationController
       form_section.fields[value.to_i - 1] = oldFields.find{|field| field.name == key}
     end
     form_section.save!
-    redirect_to request.env['HTTP_REFERER']
+    redirect_to save_field_order_redirect_path
+  end
+  
+  def save_field_order_redirect_path
+    request.env['HTTP_REFERER']
   end
   
   def new
@@ -83,5 +87,5 @@ class FormSectionController < ApplicationController
   def save
     puts "Saved"
   end
-
+  
 end

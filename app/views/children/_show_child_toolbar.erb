@@ -1,8 +1,13 @@
 <div class="profile-tools">
   <ul>
     <li class="back"><%= link_to 'Back', children_path %></li>
-    <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
+	<% if can? :update, @child %>
+      <li class="edit"><%= link_to 'Edit', edit_child_path(@child) %> </li>
+	<% end %>
+
     <li class="view-log"><%= link_to 'View the change log', child_history_path(@child) %></li>
+	
+	<% if can? :export, Child %>
     <li class="export_record">
       <%= link_to "Export this Record", "#", :class => "export_record_link"%>
       <ul class="sub_export_record" >
@@ -11,6 +16,8 @@
         <li><%= link_to "Export to CSV", child_path(@child, :format => 'csv') %></li>
       </ul>
     </li>
+	<% end %>
+	
     <% unless @child.flag? %>
       <%= render :partial => "mark_as",
         :locals=> { :mark_as_label => "Flag as suspect record",

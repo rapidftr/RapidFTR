@@ -13,43 +13,17 @@ Feature: Manage Users
      When I uncheck the disabled checkbox for user "homersimpson"
      Then user "homersimpson" should not be disabled
 
-#Story 745: Create "Limited Access" User Level
-
-  Scenario: User with unlimited access can see all children
-    Given a user "unlimited" with "Access all data" permission
-      And a user "limited" with "limited" permission
-      And the following children exist in the system:
-       | name   | created_by |
-       | Andrew | limited    |
-       | Peter  | unlimited  |
-     When I am logged in as "unlimited"
-      And I follow "View All Children"
-     Then I should see "Andrew"
-      And I should see "Peter"
-
-  Scenario: User with limited access cannot see all children
-    Given a user "unlimited" with "Access all data" permission
-      And a user "limited" with "limited" permission
-      And the following children exist in the system:
-       | name   | created_by |
-       | Andrew | limited    |
-       | Peter  | unlimited  |
-     When I am logged in as "limited"
-      And I follow "View All Children"
-     Then I should see "Andrew"
-      And I should not see "Peter"
-
   @wip
-  Scenario: User with unlimited access should not see the Users menu
-    Given a user "unlimited" with "Access all data" permission
+  Scenario: User with access to all data should not see the Users menu
+    Given a user "field admin" with "Access all data" permission
     When I am logged in as "unlimited"
     Then I should not see "USERS"
 
 
   @wip
   Scenario: User with limited access should not see the Users menu
-   Given a user "limited" with "limited" permission
-    When I am logged in as "limited"
+   Given a user "field worker" with "Register Child" permission
+    When I am logged in as "field worker"
     Then I should not see "USERS"
 
 
@@ -61,5 +35,5 @@ Feature: Manage Users
      Then I should see "Edit"
      Then I should not see "Delete User"
      Then I should see "Back"
-     Then I should see "Create an User"
+     Then I should see "Create User"
 

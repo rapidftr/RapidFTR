@@ -5,7 +5,7 @@ Feature:
   I want to upload a picture of the child record that I'm adding
 
   Background:
-    Given I am logged in
+    Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
 
   Scenario: Uploading a standard JPG image
 

@@ -30,7 +30,7 @@ module ChildrenHelper
 
   def flag_summary_for_child child
     flag_history = child["histories"].select{|h| h["changes"].keys.include?("flag") }.first
-     "<b>Flagged By </b>"+ flag_history["user_name"] +"<b> On</b> " +@user.localize_date(flag_history["datetime"]) +"<b> Because</b> "+ child["flag_message"]
+     "<b>Flagged By </b>"+ flag_history["user_name"] +"<b> On</b> " +@current_user.localize_date(flag_history["datetime"]) +"<b> Because</b> "+ child["flag_message"]
   end
 
   def reunited_message
@@ -58,7 +58,7 @@ module ChildrenHelper
   end
 
   def text_to_identify_child child
-    child['name'].blank? ? child['unique_identifier'] : child['name']
+    child['name'].blank? ? child.short_id : child['name']
   end
 
   def toolbar_for_child child

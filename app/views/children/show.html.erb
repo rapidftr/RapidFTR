@@ -1,7 +1,4 @@
 <% content_for :javascript do %>
-    <%= javascript_include_tag "jquery.lightbox-0.5.min" %>
-  <%= javascript_include_tag "jquery.lightbox-0.5.min" %>
-<%= javascript_include_tag "jquery.jplayer.min" %>
 <script type="text/javascript" language="javascript">
 $(function() {
   $('.profile-image .image a').lightBox({fixedNavigation:true,
@@ -75,12 +72,12 @@ $(function() {
     <%= toolbar_for_child(@child) %>
 
     <div id='interviewer_details'>
-      <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @user.localize_date(@child['created_at']) %></h3>
+      <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @current_user.localize_date(@child['created_at']) %></h3>
       <% if @child['last_updated_at']%>
-        <h3>Last updated: <%= @user.localize_date(@child['last_updated_at']) %> </h3>
+        <h3>Last updated: <%= @current_user.localize_date(@child['last_updated_at']) %> </h3>
     <% end %>
       <% if @child['posted_from']=="Mobile" %>
-        <h3>Posted from the mobile client at: <%= @user.localize_date(@child['posted_at']) %> </h3>
+        <h3>Posted from the mobile client at: <%= @current_user.localize_date(@child['posted_at']) %> </h3>
     <% end %>
     </div>
 <div class="page-content-new">

@@ -1,0 +1,34 @@
+package_assets: on
+javascript_compressor: uglifier
+gzip_assets: on
+compress_assets: on
+allow_debugging: off
+javascripts:
+  common:
+    - public/javascripts/plugins/jquery-1.7.1.min.js
+    - public/javascripts/plugins/jquery-ui-1.8.6.custom.min.js
+    - public/javascripts/plugins/jquery.tmpl.min.js
+    - public/javascripts/plugins/jquery_ujs.js
+    - public/javascripts/plugins/json2.js
+    - public/javascripts/plugins/underscore.js
+    - public/javascripts/plugins/backbone.js
+    - public/javascripts/plugins/jquery.idletimer.js
+    - public/javascripts/plugins/jquery.idletimeout.js
+    - public/javascripts/plugins/jquery.lightbox-0.5.min.js
+    - public/javascripts/plugins/jquery.jplayer.min.js
+    - public/javascripts/plugins/jquery.rotate.1-1.js
+    - public/javascripts/plugins/vtip-min.js
+    - public/javascripts/application.js
+    - public/javascripts/jquery_plugin.js
+    - public/javascripts/advanced_search.js
+    - public/javascripts/form_fields.js
+    - public/javascripts/form_section.js
+    - public/javascripts/manage_devices.js
+    - public/javascripts/manage_photos.js
+    - public/javascripts/manage_users.js
+    - public/javascripts/session_timeout.js
+
+stylesheets:
+  common:
+    - public/stylesheets/*.css
+    - public/stylesheets/overcast/jquery-ui-1.8.6.custom.css

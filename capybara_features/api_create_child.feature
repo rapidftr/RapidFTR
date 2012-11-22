@@ -1,7 +1,7 @@
 Feature: Creating a child using the API
 
   Background:
-    Given there is a User
+    Given I am logged in as a user with "Register Child" permission
 
   Scenario: Should save created at and posted by fields as posted to the server
     Given I am sending a valid session token in my request headers
@@ -14,10 +14,11 @@ Feature: Creating a child using the API
       | created_at  | 2011-03-28 13:23:12UTC |
       | posted_from | Mobile                 |
     Then I receive a JSON hash
-    And that hash should be composed of 13 elements
+    And that hash should be composed of 14 elements
     And that JSON hash of elements strictly has these properties:
       | JSONPropertyName     |
       | name                 |
+      | created_organisation |
       | created_at           |
       | posted_from          |
       | _rev                 |
@@ -35,6 +36,7 @@ Feature: Creating a child using the API
 		    { 
 		      "name":"bob",
 			    "created_at":"2011-03-28 13:23:12UTC",
+			    "created_organisation":"UNICEF",
 			    "posted_from":"Mobile",
 			    "_rev":"%SOME_STRING%",
 			    "unique_identifier":"%SOME_STRING%",

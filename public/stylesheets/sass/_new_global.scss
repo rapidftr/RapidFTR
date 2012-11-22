@@ -65,6 +65,10 @@ a:hover {
   zoom: 1;
 }
 
+.hide{
+  display:none;
+}
+
 @mixin hide_text {
   font-size: 0px;
   text-indent: -100000px;
@@ -173,14 +177,50 @@ fieldset {
       padding-top: 4px;
     }
 
+    .value{
+      display: block;
+      float:left;
+      width:500px;
+      padding-top:4px;
+      color:#666;
+
+      .section{
+        margin-bottom: 20px;
+        display:block;
+        padding:10px;
+
+        .title{
+          display: block;
+          border-bottom:1px dashed #ddd;
+          padding-bottom:8px;
+          margin-bottom:5px;
+          font-style: italic;
+          color:#333;
+        }
+
+        label{
+          display:block;
+          padding:3px;
+        }
+      }
+    }
+
   }
 
   p:nth-child(odd) {
     background: #f1f1f1;
+
+    .section{
+      background:#fff;
+    }
   }
 
   p:nth-child(even) {
     background: #fff;
+
+    .section{
+      background:#eee;
+    }
   }
 }
 
@@ -192,6 +232,10 @@ fieldset {
   float: left;
 }
 
+.float_right {
+  float: right;
+}
+
 .filter_bar {
   background: $bg-filterbar;
   border: 1px solid $border-filterbar;
@@ -200,8 +244,14 @@ fieldset {
   @extend .clearfix;
   margin: 5px 0px 10px;
 
+  .pagination_panel{
+    float:left;
+    padding:0px 5px;
+  }
+
   .filter_panel {
     float: left;
+    padding:0px 5px;
 
     ul {
       display: inline-block;
@@ -211,7 +261,7 @@ fieldset {
         border-left: 1px solid #666;
         padding: 0px 10px;
       }
-      .first {
+      li:first-child {
         border: 0px;
         padding-left: 5px;
       }
@@ -220,6 +270,7 @@ fieldset {
 
   .orderby_panel {
     float: right;
+    padding:0px 5px;
 
     ul {
       display: inline-block;
@@ -229,11 +280,16 @@ fieldset {
         border-left: 1px solid #666;
         padding: 0px 10px;
       }
-      .first {
+      li:first-child {
         border: 0px;
         padding-left: 5px;
       }
     }
+
+  }
+
+  select{
+    width:230px !important;
   }
 }
 
