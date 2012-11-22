@@ -117,6 +117,9 @@
         $('#created_by').bind('click', function () {
             enableInputByCheckbox($(this), $('#created_by_value'));
         });
+        $('#created_by_organisation').bind('click', function () {
+            enableInputByCheckbox($(this), $('#created_by_organisation_value'));
+        });
         $('#updated_by').bind('click', function () {
             enableInputByCheckbox($(this), $('#updated_by_value'));
         });
@@ -133,11 +136,16 @@
             return $('#created_by').is(':checked') ||
                 $('#updated_by').is(':checked') ||
                 $('#created_at').is(':checked') ||
-                $('#updated_at').is(':checked')
+                $('#updated_at').is(':checked') ||
+                $('#created_by_organisation').is(':checked')
+
         }
 
         var createdByIsValid = function () {
             return (!$('#created_by').is(':checked')) || ($('#created_by_value').val() != '');
+        }
+        var createdByOrganisationIsValid = function () {
+            return (!$('#created_by_organisation').is(':checked')) || ($('#created_by_organisation_value').val() != '');
         }
 
         var updatedByIsValid = function () {
@@ -178,6 +186,9 @@
       });
       if (!createdByIsValid()) {
           result="Please enter a valid 'Created by' value."
+      }
+      if (!createdByOrganisationIsValid()) {
+          result="Please enter a valid 'Created by organisation' value."
       }
       if (!updatedByIsValid()) {
           result="Please enter a valid 'Updated by' value."
