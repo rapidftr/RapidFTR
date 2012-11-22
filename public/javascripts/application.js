@@ -15,6 +15,9 @@ RapidFTR.maintabControl = function(){
         case "users":
         case "roles":   $(".main_bar li a:contains('USERS')").addClass("sel");
         break;
+
+        case "devices":   $(".main_bar li a:contains('DEVICES')").addClass("sel");
+        break;
     }
 
 
