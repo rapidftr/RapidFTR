@@ -251,7 +251,3 @@ Then /^I should see the order (.+)$/ do |input|
     current = index
   }
 end
-
-Then /^(.+) button is disabled$/ do |text|
-  assert !find_button(text).visible?
-end

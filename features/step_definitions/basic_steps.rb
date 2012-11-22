@@ -111,7 +111,7 @@ end
 Given /^a user "([^\"]*)" has entered a child found in "([^\"]*)" whose name is "([^\"]*)"$/ do |user, location, name|
   new_child_record = Child.new
   new_child_record['last_known_location'] = location
-  new_child_record.create_unique_id
+  new_child_record.create_unique_id(user)
   new_child_record['name'] = name
   new_child_record.photo = uploadable_photo("features/resources/jorge.jpg")
   raise "couldn't save a child record!" unless new_child_record.save

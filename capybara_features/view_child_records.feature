@@ -24,7 +24,6 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | false |
 
     When I am on the children listing page
-    And I filter by "All"
     Then I should see "andreas"
     And I should see "zak"
     And I should see "jaco"
@@ -221,7 +220,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  |
       | meredith | Austin              | james    | james123     | false    | false |
 
-    When I go to the children listing page
+    When I follow "Active"
     Then I should see "zak"
     And I should see "meredith"
 
@@ -234,7 +233,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  |
       | meredith | Austin              | james    | james123     | false    | false |
 
-    When I go to the children listing page
+    When I follow "Active"
     Then I should see the order meredith,zak
 
   Scenario: Checking filter by Active shows the Order by options
@@ -246,7 +245,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true |
       | meredith | Austin              | james    | james123     | false    | true |
 
-    When I go to the children listing page
+    When I follow "Active"
     Then I should see "Order by"
     And I should see "Most recently created"
 
@@ -259,7 +258,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | false    | true | 2002-02-03 04:05:06UTC |
       | meredith | Austin              | james    | james123     | false    | true | 2001-02-03 04:05:06UTC |
 
-    When I go to the children listing page
+    When I follow "Active"
     And I follow "Most recently created"
     Then I should see the order zak,jaco,meredith
 
@@ -272,7 +271,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | false    | true  |
       | meredith | Austin              | james    | james123     | false    | false |
 
-    When I go to the children listing page
+    When I follow "Active"
     And I follow "Most recently created"
     And I follow "Name"
     Then I should see the order jaco,meredith,zak

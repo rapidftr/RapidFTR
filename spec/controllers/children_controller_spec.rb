@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 def inject_export_generator( fake_export_generator, child_data )
 	ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
 end
@@ -19,6 +20,8 @@ describe ChildrenController do
 
   before do
     fake_admin_login
+    Clock.stub!(:now).and_return(Time.utc(2000, "jan", 1, 20, 15, 1))
+    FormSection.stub!(:all_child_field_names).and_return(["name", "age", "origin","current_photo_key", "flag", "flag_message"])
   end
 
   def mock_child(stubs={})
@@ -28,19 +31,19 @@ describe ChildrenController do
   describe '#authorizations' do
     describe 'collection' do
       it "GET index" do
-        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
         get :index
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET search" do
-        @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
         get :search
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_data" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:list, Child).and_return(false);
         get :export_data
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -71,31 +74,31 @@ describe ChildrenController do
       end
 
       it "PUT update" do
-        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
         put :update, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT edit_photo" do
-        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
         put :edit_photo, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT update_photo" do
-        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
         put :update_photo, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "PUT select_primary_photo" do
-        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:edit, @child_arg).and_return(false);
         put :select_primary_photo, :child_id => @child.id, :photo_id => 0
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
       it "GET export_photo_to_pdf" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
         get :export_photo_to_pdf, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -110,10 +113,10 @@ describe ChildrenController do
 
   describe "GET index" do
 
-    shared_examples_for "viewing children by user with access to all data" do
-      describe "when the signed in user has access all data" do
+    shared_examples_for "viewing children by user with unlimited permissions" do
+      describe "when the signed in user has unlimited permissions" do
         it "should assign all childrens as @childrens" do
-          session = fake_field_admin_login
+          session = fake_unlimited_login
 
           @stubs ||= {}
           children = [mock_child(@stubs)]
@@ -124,10 +127,10 @@ describe ChildrenController do
       end
     end
 
-    shared_examples_for "viewing children as a field worker" do
-      describe "when the signed in user is a field worker" do
-        it "should assign the children created by the user as @childrens" do
-          session = fake_field_worker_login
+    shared_examples_for "viewing children by user with limited permissions" do
+      describe "when the signed in user has limited permissions" do
+        it "should assign the children created by the signed in user as @childrens" do
+          session = fake_limited_login
 
           @stubs ||= {}
           children = [mock_child(@stubs)]
@@ -149,32 +152,28 @@ describe ChildrenController do
     end
 
     context "viewing all children" do
-      before { @stubs = { :reunited? => false } }
       context "when status is passed" do
         before { @status = "all" }
-        it_should_behave_like "viewing children by user with access to all data"
-        it_should_behave_like "viewing children as a field worker"
+        it_should_behave_like "viewing children by user with unlimited permissions"
+        it_should_behave_like "viewing children by user with limited permissions"
       end
 
       context "when status is not passed" do
-        it_should_behave_like "viewing children by user with access to all data"
-        it_should_behave_like "viewing children as a field worker"
+        it_should_behave_like "viewing children by user with unlimited permissions"
+        it_should_behave_like "viewing children by user with limited permissions"
       end
     end
 
     context "viewing reunited children" do
-      before do
-        @status = "reunited"
-        @stubs = {:reunited? => true}
-      end
-      it_should_behave_like "viewing children by user with access to all data"
-      it_should_behave_like "viewing children as a field worker"
+      before { @status = "reunited" }
+      it_should_behave_like "viewing children by user with unlimited permissions"
+      it_should_behave_like "viewing children by user with limited permissions"
     end
 
     context "viewing flagged children" do
       before { @status = "flagged" }
-      it_should_behave_like "viewing children by user with access to all data"
-      it_should_behave_like "viewing children as a field worker"
+      it_should_behave_like "viewing children by user with unlimited permissions"
+      it_should_behave_like "viewing children by user with limited permissions"
     end
 
     context "viewing active children" do
@@ -182,8 +181,8 @@ describe ChildrenController do
         @status = "active"
         @stubs = {:reunited? => false}
       end
-      it_should_behave_like "viewing children by user with access to all data"
-      it_should_behave_like "viewing children as a field worker"
+      it_should_behave_like "viewing children by user with unlimited permissions"
+      it_should_behave_like "viewing children by user with limited permissions"
     end
   end
 
@@ -196,12 +195,12 @@ describe ChildrenController do
 
     it 'should not fail if primary_photo_id is not present' do
       child = Child.create('last_known_location' => "London")
-      child.create_unique_id
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
       get(:show, :format => 'csv', :id => "37")
     end
+
 
     it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
@@ -385,24 +384,52 @@ describe ChildrenController do
 
     it "asks the pdf generator to render each child as a PDF" do
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
+
 			children = [:fake_child_one, :fake_child_two]
       Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
 
 			inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
-      mock_export_generator.should_receive(:to_full_pdf).and_return('')
 
-      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to PDF"}
+
+      mock_export_generator.
+        should_receive(:to_full_pdf).
+        and_return('')
+
+      post(
+        :export_data,
+        {
+          :selections =>
+          {
+            '0' => 'child_1',
+            '1' => 'child_2'
+          },
+          :commit => "Export to PDF"
+        }
+      )
     end
 
     it "asks the pdf generator to render each child as a Photo Wall" do
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
       children = [:fake_one, :fake_two]
       inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
+
       Child.stub(:get).and_return(*children )
 
-      mock_export_generator.should_receive(:to_photowall_pdf).and_return('')
+      mock_export_generator.
+        should_receive(:to_photowall_pdf).
+        and_return('')
 
-      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to Photo Wall"}
+      post(
+        :export_data,
+        {
+          :selections =>
+          {
+            '0' => 'child_1',
+            '1' => 'child_2'
+          },
+          :commit => "Export to Photo Wall"
+        }
+      )
     end
 
     describe "with no results" do
@@ -435,11 +462,11 @@ describe ChildrenController do
 			get(:search, :format => 'csv', :query => 'blah')
     end
   end
-  describe "searching as field worker" do
+  describe "Limited search" do
     before :each do
-      @session = fake_field_worker_login
+      @session = fake_limited_login
     end
-    it "should only list the children which the user has registered" do
+    it "should only list the children which limited user has registered" do
       search = mock("search", :query => 'some_name', :valid? => true)
       Search.stub!(:new).and_return(search)
 
@@ -459,7 +486,15 @@ describe ChildrenController do
       Child.should_receive(:get).with('child_two').ordered
       controller.stub!(:render) #to avoid looking for a template
 
-      post :export_data, :selections =>{'2' => 'child_two','0' => 'child_zero','1' => 'child_one'}
+      post(
+        :export_data,
+        :selections =>
+        {
+          '2' => 'child_two',
+          '0' => 'child_zero',
+          '1' => 'child_one'
+        }
+      )
     end
 
     it "sends a response containing the pdf data, the correct content_type and file name, etc" do
@@ -483,13 +518,14 @@ describe ChildrenController do
     before do
       user = User.new(:user_name => "some-name")
       user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export]])])
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::ACCESS_ALL_DATA])])
       fake_login user
       Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
     end
 
     it "should return the photo wall pdf for selected child" do
-      Child.should_receive(:get).with('1').and_return(stub_child = stub('child', :short_id => '1', :class => Child))
+      Child.should_receive(:get).with('1').and_return(
+        stub_child = stub('child', :unique_identifier => '1', :class => Child))
 
       ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
@@ -539,12 +575,16 @@ describe ChildrenController do
   end
 
   describe "PUT create" do
+
+    let(:new_child) { Child.new }
+
     it "should add the full user_name of the user who created the Child record" do
-      Child.should_receive('new_with_user_name').and_return(child = Child.new)
-      controller.should_receive('current_user_full_name').and_return('Bill Clinton')
+      Child.stub('new_with_user_name').and_return(new_child)
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
       put :create, :child => {:name => 'Test Child' }
-      child['created_by_full_name'].should=='Bill Clinton'
+      new_child['created_by_full_name'].should=='Bill Clinton'
     end
+
   end
 
 end

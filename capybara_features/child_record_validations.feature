@@ -3,7 +3,7 @@ Feature:
 
 Scenario: Should be restricted to 200 characters in a text field
 
-  Given I am logged in as a user with "Register Child" permission
+  Given I am logged in
   And I am on children listing page
   And I follow "Register New Child"
   When I fill in a 201 character long string for "Name" 
@@ -18,7 +18,7 @@ Scenario: Should be restricted to 400,000 characters in a text area
 	Given the following fields exists on "basic_details":
 		| name | type | display_name |
 		| my_text_area | textarea | my text area |
-  Given I am logged in as a user with "Register Child" permission
+	Given I am logged in
 	And I am on children listing page
 	And I follow "Register New Child"
 	When I fill in a 400001 character long string for "my text area" 
@@ -27,7 +27,7 @@ Scenario: Should be restricted to 400,000 characters in a text area
   	And there should be 0 child records in the database
     
 Scenario: Should be prevented from saving a record that has no data filled in
-  Given I am logged in as a user with "Register Child" permission
+	Given I am logged in
 	And I am on children listing page
 	And I follow "Register New Child"
 	And I press "Save" 

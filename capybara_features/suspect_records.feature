@@ -57,7 +57,7 @@ Feature: Suspect Records
     I wouldn't worry about this guy
     """
   And I follow "View the change log"
-  Then I should see "Record was marked as Investigated by admin belonging to UNICEF because: I wouldn't worry about this guy"
+  Then I should see "Record was marked as Investigated by admin because: I wouldn't worry about this guy"
 
   Scenario: When I mark a record as not investigated the change log should display a single entry for the change
   When I am on the children listing page
@@ -67,4 +67,4 @@ Feature: Suspect Records
     I don't know what's going on with this record
     """
   And I follow "View the change log"
-  Then I should see "Record was marked as Not Investigated by admin belonging to UNICEF because: I don't know what's going on with this record"
+  Then I should see "Record was marked as Not Investigated by admin because: I don't know what's going on with this record"  

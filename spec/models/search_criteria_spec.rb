@@ -121,11 +121,5 @@ describe SearchCriteria do
       SearchCriteria.lucene_query(criteria_list).should == "(QUERY1 AND QUERY2) OR ((QUERY3 AND QUERY4) AND QUERY5)"
   end
 
-  it "should build query for criteria without query" do
-    criteria_list = [
-      mock(:join => "", :to_lucene_query => ""), 
-      mock(:join => "AND", :to_lucene_query => "CRITERIA")
-    ]
-    SearchCriteria.lucene_query(criteria_list).should == "CRITERIA"
-  end
+  
 end

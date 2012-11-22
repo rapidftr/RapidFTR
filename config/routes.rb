@@ -32,8 +32,7 @@ RapidFTR::Application.routes.draw do
 
   resources :users
   resources :user_preferences
-  resources :devices
-  match 'devices/update_blacklist' => 'devices#update_blacklist', :via => :post
+
 
   resources :roles
   match 'admin' => 'admin#index', :as => :admin
@@ -49,8 +48,8 @@ RapidFTR::Application.routes.draw do
   match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
   match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
   match '/active' => 'sessions#active', :as => :session_active
-  resources :formsections, :controller => 'form_section' do
-    additional_field_actions = FieldsController::FIELD_TYPES.inject({}) { |h, type| h["new_#{type}"] = :get; h }
+  resources :formsections, :controller=>'form_section' do
+    additional_field_actions = FieldsController::FIELD_TYPES.inject({}){|h, type| h["new_#{type}"] = :get; h }
     additional_field_actions[:move_up] = :post
     additional_field_actions[:move_down] = :post
     additional_field_actions[:delete] = :post
@@ -73,8 +72,8 @@ RapidFTR::Application.routes.draw do
   resources :contact_information
   resources :highlight_fields do
     collection do
-      post :remove
-    end
+  post :remove
+  end
 
 
   end

@@ -26,12 +26,11 @@ class ExportGenerator
   def to_csv
     fields = FormSection.all_enabled_child_fields
     fields.unshift Field.new_text_field("unique_identifier")
-    fields.unshift Field.new_text_field("short_id")
     field_names = fields.map {|field| field.name}
     csv_data = FasterCSV.generate do |rows|
       rows << field_names + ["Suspect Status", "Reunited Status"]
       @child_data.each do |child|
-        child_data = fields.map { |field| format_field_for_export(field, child[field.name] || child.send(field.name), child) }
+        child_data = fields.map { |field| format_field_for_export(field, child[field.name], child) }
         child_data << (child.flag? ? "Suspect" : nil)
         child_data << (child.reunited? ? "Reunited" : nil)
         rows << child_data
@@ -80,10 +79,6 @@ class ExportGenerator
     @pdf.y -= 5.mm
     @pdf.text(
       child.unique_identifier,
-      :align => :center
-    )
-    @pdf.text(
-      child.short_id,
       :align => :center
     )
   end

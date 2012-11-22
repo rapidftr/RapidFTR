@@ -5,7 +5,7 @@ Feature:
   I want to upload an audio for the child record that I'm adding
 
   Background:
-    Given "bob" logs in with "Register Child,Edit Child" permissions
+    Given "bob" is logged in
 
   Scenario: Uploading a standard mp3 file to new child record
     Given I am on the new child page 

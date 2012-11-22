@@ -5,7 +5,7 @@ Feature:
   So that I can update details of children that are found in the field
 
   Scenario: Editing a child record
-    Given I am logged in as a user with "Register Child,Edit Child" permission
+    Given I am logged in
 
     # creating a record
     Given I am on children listing page
@@ -48,7 +48,7 @@ Feature:
     And the "Discard" button presents a confirmation message    
 
   Scenario: Should not be able to successfully edit child record with all empty fields
-    Given I am logged in as a user with "Register Child,Edit Child" permission
+    Given I am logged in
 
     # creating a record
     Given I am on children listing page

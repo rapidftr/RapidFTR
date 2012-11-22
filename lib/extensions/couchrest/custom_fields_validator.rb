@@ -51,7 +51,6 @@ module CouchRest
         "#{field[:display_name]} cannot be more than 200 characters long"
       end
     end
-
     class CustomTextAreasValidator < CustomFieldsValidator
       MAX_LENGTH = 400_000
       def is_not_valid value

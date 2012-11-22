@@ -20,7 +20,7 @@ module ChecksAuthentication
   # a before filter requiring user to be an admin
   def administrators_only
     session = app_session
-    raise AuthorizationFailure.new('Not permitted to view page') unless session.user.has_permission?(Permission::ADMIN[:admin])
+    raise AuthorizationFailure.new('Not permitted to view page') unless session.admin?
   end
 
   def handle_authentication_failure(auth_failure)

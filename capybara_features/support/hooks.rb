@@ -1,3 +1,5 @@
+
+# Before each scenario...
 Before do
   Session.all.each {|s| s.destroy }
   Child.all.each {|c| c.destroy }
@@ -9,10 +11,11 @@ Before do
   RapidFTR::FormSectionSetup.reset_definitions
   Sunspot.remove_all!(Child)
   Sunspot.commit
+#  CouchRestRails::Tests.setup
 end
 
 Before('@roles') do |scenario|
-  Role.create(:name => 'Field Worker', :permissions => [Permission::CHILDREN[:register]])
-  Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
-  Role.create(:name => 'Admin', :permissions => [Permission::ADMIN[:admin]])
+  Role.create(:name => 'limited', :permissions => [Permission::LIMITED])
+  Role.create(:name => 'unlimited', :permissions => [Permission::ACCESS_ALL_DATA])
+  Role.create(:name => 'admin', :permissions => [Permission::ADMIN])
 end

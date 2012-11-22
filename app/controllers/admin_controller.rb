@@ -1,11 +1,8 @@
 class AdminController < ApplicationController
 
-  before_filter {
-    authorize!(false, false) if cannot?(:manage, ContactInformation) and cannot?(:highlight, Field)
-  }
+  before_filter :administrators_only
 
   def index
     @page_name = "Administration"
   end
-
 end

@@ -7,7 +7,7 @@ class ChildrenController < ApplicationController
   # GET /children
   # GET /children.xml
   def index
-    authorize! :index, Child
+    authorize! :list, Child
 
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
@@ -17,15 +17,9 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv @children, "all_records_#{file_name_date_string}.csv" 
-      end
-      format.json do
-        render :json => @children 
-      end
+      format.csv { render_as_csv @children, "all_records_#{file_name_date_string}.csv" }
+      format.json { render :json => @children }
       format.pdf do
-        authorize! :export, Child
         pdf_data = ExportGenerator.new(@children).to_full_pdf
         send_pdf(pdf_data, "#{file_basename}.pdf")
       end
@@ -36,10 +30,14 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     authorize! :read, @child
+
     @form_sections = get_form_sections
+
     @page_name = "View Child: #{@child}"
+
     @aside = 'picture'
     @body_class = 'profile-page'
+
     @duplicates = Child.duplicates_of(params[:id])
 
     respond_to do |format|
@@ -47,11 +45,10 @@ class ChildrenController < ApplicationController
       format.xml { render :xml => @child }
       format.json { render :json => @child.to_json }
       format.csv do
-        authorize! :export, Child
-        render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
+        child_ids = [@child]
+        render_as_csv(child_ids, current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
-        authorize! :export, Child
         pdf_data = ExportGenerator.new(@child).to_full_pdf
         send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
       end
@@ -74,7 +71,7 @@ class ChildrenController < ApplicationController
 
   # GET /children/1/edit
   def edit
-    authorize! :update, @child
+    authorize! :edit, @child
 
     @page_name = "Edit Child"
     @form_sections = get_form_sections
@@ -84,7 +81,8 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     authorize! :create, Child
-    @child = Child.new_with_user_name(current_user, params[:child])
+
+    @child = Child.new_with_user_name(current_user_name, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
       if @child.save
@@ -101,48 +99,15 @@ class ChildrenController < ApplicationController
       end
     end
   end
-  
-  def update    
-    respond_to do |format|
-      format.json do
-        params[:child] = JSON.parse params[:child]
-        child = update_child_from params
-        child.save
-        
-        render :json => child.to_json
-      end
-        
-      format.html do 
-        @child = update_child_from params
-        if @child.save
-          flash[:notice] = 'Child was successfully updated.'
-          redirect_to @child 
-        else
-          @form_sections = get_form_sections
-          render :action => "edit"          
-        end
-      end
-
-      format.xml do
-        @child = update_child_from params
-        if @child.save
-          head :ok        
-        else
-          render :xml => @child.errors, :status => :unprocessable_entity
-        end
-      end    
-    end
-  end
-  
 
   def edit_photo
-    authorize! :update, @child
+    authorize! :edit, @child
 
     @page_name = "Edit Photo"
   end
 
   def update_photo
-    authorize! :update, @child
+    authorize! :edit, @child
 
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
@@ -156,7 +121,7 @@ class ChildrenController < ApplicationController
   # POST
   def select_primary_photo
     @child = Child.get(params[:child_id])
-    authorize! :update, @child
+    authorize! :edit, @child
 
     begin
       @child.primary_photo_id = params[:photo_id]
@@ -168,8 +133,37 @@ class ChildrenController < ApplicationController
   end
 
   def new_search
+
   end
-  
+
+  # PUT /children/1
+  # PUT /children/1.xml
+  def update
+    @child = Child.get(params[:id]) || Child.new_with_user_name(current_user_name, params[:child])
+    authorize! :edit, @child
+
+    @child['last_updated_by_full_name'] = current_user_full_name
+    new_photo = params[:child].delete(:photo)
+    new_audio = params[:child].delete(:audio)
+    @child.update_properties_with_user_name(current_user_name, new_photo, params[:delete_child_photo], new_audio, params[:child])
+
+    respond_to do |format|
+      if @child.save
+        flash[:notice] = 'Child was successfully updated.'
+        format.html { redirect_to(@child) }
+        format.xml { head :ok }
+        format.json { render :json => @child.to_json }
+      else
+        format.html {
+          @form_sections = get_form_sections
+          p '@@@@@@@@@@@@@@@' << @form_sections.inspect
+          render :action => "edit"
+        }
+        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
@@ -184,7 +178,7 @@ class ChildrenController < ApplicationController
   end
 
   def search
-    authorize! :index, Child
+    authorize! :list, Child
 
     @page_name = "Search"
     @aside = "shared/sidebar_links"
@@ -200,7 +194,7 @@ class ChildrenController < ApplicationController
   end
 
   def export_data
-    authorize! :export, Child
+    authorize! :list, Child
 
     selected_records = params["selections"] || {}
     if selected_records.empty?
@@ -220,14 +214,14 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
-    authorize! :export, Child
+    authorize! :list, Child
 
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf
-    authorize! :export, Child
+    authorize! :read, @child
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
@@ -235,98 +229,88 @@ class ChildrenController < ApplicationController
 
   private
 
-    def file_basename(child = nil)
-      prefix = child.nil? ? current_user_name : child.short_id
-      user = User.find_by_user_name(current_user_name)
-      "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+  def file_basename(child = nil)
+    prefix = child.nil? ? current_user_name : child.unique_identifier
+    user = User.find_by_user_name(current_user_name)
+    "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+  end
+
+  def file_name_datetime_string
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
+  end
+
+  def file_name_date_string
+    user = User.find_by_user_name(current_user_name)
+    Clock.now.in_time_zone(user.time_zone).strftime("%Y%m%d")
+  end
+
+  def get_form_sections
+    FormSection.enabled_by_order
+  end
+
+  def default_search_respond_to
+    respond_to do |format|
+      format.html do
+        if @results && @results.length == 1
+          redirect_to child_path(@results.first)
+        end
+      end
+      format.csv do
+        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
+      end
+    end
+  end
+
+  def render_as_csv results, filename
+    results = results || [] # previous version handled nils - needed?
+
+    results.each do |child|
+      child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless child.primary_photo_id.nil?
+      child['audio_url'] = child_audio_url(child)
     end
 
-    def file_name_datetime_string
-      user = User.find_by_user_name(current_user_name)
-      Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
-    end
+    export_generator = ExportGenerator.new results
+    csv_data = export_generator.to_csv
+    send_data(csv_data.data, csv_data.options)
+  end
 
-    def file_name_date_string
-      user = User.find_by_user_name(current_user_name)
-      Clock.now.in_time_zone(user.time_zone).strftime("%Y%m%d")
-    end
+  def load_child_or_redirect
+    @child = Child.get(params[:id])
 
-    def get_form_sections
-      FormSection.enabled_by_order
-    end
-
-    def default_search_respond_to
+    if @child.nil?
       respond_to do |format|
+        format.json { render :json => @child.to_json }
         format.html do
-          if @results && @results.length == 1
-            redirect_to child_path(@results.first)
-          end
-        end
-        format.csv do
-          render_as_csv(@results, 'rapidftr_search_results.csv') if @results
+          flash[:error] = "Child with the given id is not found"
+          redirect_to :action => :index and return
         end
       end
     end
+  end
 
-    def render_as_csv results, filename
-      results = results || [] # previous version handled nils - needed?
+  def filter_children_by status, order
+    presenter = ChildrenPresenter.new(children_by_user_access, status, order)
+    @children = presenter.children
+    @filter = presenter.filter
+    @order = presenter.order
+  end
 
-      results.each do |child|
-        child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless child.primary_photo_id.nil?
-        child['audio_url'] = child_audio_url(child)
-      end
-
-      export_generator = ExportGenerator.new results
-      csv_data = export_generator.to_csv
-      send_data(csv_data.data, csv_data.options)
+  def children_by_user_access
+    if can? :view_all, Child
+      return Child.all
+    else
+      Child.all_by_creator(app_session.user_name)
     end
+  end
 
-    def load_child_or_redirect
-      @child = Child.get(params[:id])
-
-      if @child.nil?
-        respond_to do |format|
-          format.json { render :json => @child.to_json }
-          format.html do
-            flash[:error] = "Child with the given id is not found"
-            redirect_to :action => :index and return
-          end
-        end
-      end
+  def search_by_user_access
+    if can? :view_all, Child
+      @results = Child.search(@search)
+    else
+      @results = Child.search_by_created_user(@search, app_session.user_name)
     end
+  end
 
-    def filter_children_by status, order
-      presenter = ChildrenPresenter.new(children_by_user_access, status, order)
-      @children = presenter.children
-      @filter = presenter.filter
-      @order = presenter.order
-    end
 
-    def children_by_user_access
-      if can? :view_all, Child
-        return Child.all
-      else
-        Child.all_by_creator(app_session.user_name)
-      end
-    end
-
-    def search_by_user_access
-      if can? :view_all, Child
-        @results = Child.search(@search)
-      else
-        @results = Child.search_by_created_user(@search, app_session.user_name)
-      end
-    end
-
-    def update_child_from params
-      child = Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
-      authorize! :update, child
-
-      child['last_updated_by_full_name'] = current_user_full_name
-      new_photo = params[:child].delete("photo")
-      new_audio = params[:child].delete("audio")
-      child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
-      child
-    end
-    
 end

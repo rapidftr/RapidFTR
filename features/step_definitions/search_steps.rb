@@ -12,7 +12,7 @@ When /^I select search result \#(\d+)$/ do |ordinal|
   ordinal = ordinal.to_i - 1
   checkbox = Hpricot(response.body).checkboxes[ordinal]
   raise 'result row to select has not checkbox' if checkbox.nil?
-  check(checkbox)
+  check(checkbox[:id])
 end
 
 Then /^I should see "([^\"]*)" in the search results$/ do |value|

@@ -8,9 +8,9 @@
       </tr>
 
 
-    <% @current_user.mobile_login_history.reverse.each do |event| %>
+    <% @user.mobile_login_history.reverse.each do |event| %>
       <tr>
-        <td><%= event[:timestamp].in_time_zone(@current_user.time_zone) %></td>
+        <td><%= event[:timestamp].in_time_zone(@user.time_zone) %></td>
         <td><%= event[:imei] %></td>
         <td><%= event[:mobile_number] %></td>
       </tr>

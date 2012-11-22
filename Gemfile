@@ -21,8 +21,6 @@ gem 'rake',           '0.8.7'
 gem 'dynamic_form'
 gem 'jquery-rails'
 gem 'cancan'
-gem 'capistrano'
-gem 'newrelic_rpm'
 
 group :development, :assets do
   gem 'sass'
@@ -33,7 +31,6 @@ group :assets do
   gem 'therubyracer'
   gem 'compass-rails'
   gem 'uglifier'
-  gem 'jammit'
 end
 
 group :test do
@@ -47,14 +44,14 @@ group :cucumber do
   gem 'cucumber-rails',   '0.3.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
-  gem 'rcov', :platforms => :ruby_18
+  gem 'rcov'
 end
 
 group :development, :test do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
   gem 'capybara',         '1.0.1'
-  gem 'selenium-webdriver', '2.25.0'
+  gem 'selenium-webdriver', '2.24.0'
   gem 'jasmine'
   gem 'pry'
 end

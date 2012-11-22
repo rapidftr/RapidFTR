@@ -10,15 +10,12 @@ describe "children/search.html.erb" do
       @user = mock(:user)
       @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
       @user.stub!(:localize_date).and_return("some date")
-      @user.stub!(:has_permission?).and_return(true)
-      controller.stub(:current_user).and_return(@user)
-      
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       @highlighted_fields = [
         { :name => "field_2", :display_name => "field display 2" },
         { :name => "field_4", :display_name => "field display 4" } ]
       FormSection.stub!(:sorted_highlighted_fields).and_return @highlighted_fields
-      assign(:current_user, @user)
+      assign(:user, @user)
       assign(:results, @results)
     end
 
@@ -29,15 +26,14 @@ describe "children/search.html.erb" do
     end
 
     it "should show only the highlighted fields for a child" do
-      child = Child.create(
+      summary = Child.create(
       "_id" => "some_id", "created_by" => "dave",
       "last_updated_at" => time_now(),
       "created_at" => time_now(),
       "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4",
       "current_photo_key" => "some-photo-id")
-      child.stub!(:has_one_interviewer?).and_return(true)
-      child.create_unique_id
-      @results = [child]
+      summary.stub!(:has_one_interviewer?).and_return(true)
+      @results = [summary]
 
       assign(:results, @results)
 
@@ -83,6 +79,16 @@ describe "children/search.html.erb" do
       end
     end
 
+    it "should include a view link for each record in the result" do
+      render
+
+      view_links = Hpricot(rendered).link_for("View")
+      view_links.length.should == @results.length
+      view_links.each_with_index do |link,i|
+        link['href'].should == "/children/#{@results[i]['_id']}"
+      end
+    end
+
     it "should have a button to export to pdf" do
       render
 
@@ -98,13 +104,12 @@ describe "children/search.html.erb" do
     end
 
     def random_child_summary(id = 'some_id')
-      child = Child.create("age_is" => "Approx", "created_by" => "dave",
+      summary = Child.create("age_is" => "Approx", "created_by" => "dave",
       "last_updated_at" => time_now(),
       "created_at" => time_now(),
       "current_photo_key" => "photo-id")
-      child.create_unique_id
-      child.stub!(:has_one_interviewer?).and_return(true)
-      child
+      summary.stub!(:has_one_interviewer?).and_return(true)
+      summary
     end
 
     def time_now

@@ -21,7 +21,6 @@ describe AdvancedSearchController do
 
     before do
       SearchService.stub(:search).and_return([])
-      :criteria_list
     end
 
     it "should show list of enabled forms" do
@@ -65,6 +64,13 @@ describe AdvancedSearchController do
       get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
       assigns[:criteria_list].should include "criteria_list"
       assigns[:criteria_list].should include created_by_mock
+    end
+
+    it "should order by criteria index" do
+      get :index
+      assigns[:criteria_list].length.should == 1
+      assigns[:criteria_list].first.field.should == ""
+      assigns[:criteria_list].first.value.should == ""
     end
 
     context 'search filters' do

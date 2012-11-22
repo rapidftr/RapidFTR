@@ -21,14 +21,4 @@ describe ApplicationHelper do
       url.should_not include('.pdf')
     end
   end
-
-  describe "user" do
-    it "should return me the current logged in user" do
-      user = User.new(:user_name => 'user_name', :role_names => ["default"])
-      User.should_receive(:find_by_user_name).with('user_name').and_return(user)
-      session = Session.new :user_name => user.user_name
-      Session.should_receive(:get_from_cookies).with(anything).and_return(session)
-      helper.current_user.user_name.should == 'user_name'
-    end
-  end
 end

@@ -9,7 +9,7 @@ class ChildrenPresenter
   attr_reader :children, :filter
 
   def initialize(children, status, order)
-    @filter = status || 'active'
+    @filter = status || 'all'
     @composer = get_composer(order)
     @children = @composer.compose(children)
   end

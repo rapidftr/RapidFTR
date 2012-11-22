@@ -6,16 +6,15 @@ end
 describe "children/show.html.erb" do
 
   describe "displaying a child's details"  do
+
     before :each do
-      @user = mock('user', :has_permission? => true)
-      controller.stub(:current_user).and_return(@user)
       @form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
       @child = Child.create(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :photo => uploadable_photo_jeff)
       @child.stub!(:has_one_interviewer?).and_return(true)
 
       assign(:form_sections,[@form_section])
       assign(:child, @child)
-      assign(:current_user, User.new)
+      assign(:user, User.new)
       assign(:duplicates, Array.new)
     end
 
@@ -97,44 +96,32 @@ describe "children/show.html.erb" do
         rendered.should_not be_include("and others")
       end
 
-      it "should always show the posted at details when the record has been posted from a mobile client" do
-        child = Child.create(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob",
-        :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
-        child.stub!(:has_one_interviewer?).and_return(true)
+   		it "should always show the posted at details when the record has been posted from a mobile client" do
+					child = Child.create(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob",
+                            :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+      	  child.stub!(:has_one_interviewer?).and_return(true)
 
-        user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
+          user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
 
-        assign(:child,child)
-        assign(:user,user)
+    	  	assign(:child,child)
+          assign(:user,user)
 
-        render
+       		render
 
-        rendered.should have_selector("#interviewer_details") do |fields|
-          fields[0].should contain("Posted from the mobile client at: 01 January 2007 at 03:04 (SST)")
-        end
-      end
+        	rendered.should have_selector("#interviewer_details") do |fields|
+          		fields[0].should contain("Posted from the mobile client at: 01 January 2007 at 03:04 (SST)")
+        	end
+			end
 
-      it "should not show the posted at details when the record has not been posted from mobile client" do
-        render
+			it "should not show the posted at details when the record has not been posted from mobile client" do
+       		render
 
-        rendered.should have_selector("#interviewer_details") do |fields|
-          fields[0].should_not contain("Posted from the mobile client")
-        end
-      end
-    end
-    
-    it "should not show links to export when user doesn't have appropriate permissions" do
-      @user.stub!(:has_permission?).with(:export, Child).and_return(false)
-      render
-      rendered.should have_tag(".export_record_link")      
-    end
-    
-    it "should show links to export when user has appropriate permissions" do
-      @user.stub!(:has_permission?).with(:export, Child).and_return(true)
-      render
-      rendered.should have_tag(".export_record_link")      
-    end
-    
+        	rendered.should have_selector("#interviewer_details") do |fields|
+          		fields[0].should_not contain("Posted from the mobile client")
+        	end
+			end
+		end
+
   end
-  
+
 end

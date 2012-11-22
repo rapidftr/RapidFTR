@@ -1,8 +1,7 @@
 Feature: Capture caregiver details
 
   Scenario: Adding caregiver details to an existing child record
-    Given an user "field_worker" with "Register Child" permission
-    And I am logged in as "field_worker"
+    Given I am logged in
     And I am on the new child page
 
     When I fill in the basic details of a child

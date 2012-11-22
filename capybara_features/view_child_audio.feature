@@ -1,7 +1,7 @@
 Feature: Viewing child records
   
   Scenario: Viewing a child record with audio attached - mp3
-    Given I am logged in as a user with "Edit Child,View And Search Child" permission
+    Given I am logged in
     And a child record named "Fred" exists with a audio file with the name "sample.mp3"
     When I am on the child record page for "Fred"
     Then I should see an audio element that can play the audio file named "sample.mp3"
@@ -9,13 +9,13 @@ Feature: Viewing child records
     Then I should see an audio element that can play the audio file named "sample.mp3"
 
   Scenario: Viewing a child record with audio attached - amr
-    Given I am logged in as a user with "View And Search Child" permission
+    Given I am logged in
     And a child record named "Barney" exists with a audio file with the name "sample.amr"
     When I am on the child record page for "Barney"
     Then I should not see an audio tag
 
   Scenario: Date-times should be displayed according to the current user's timezone setting.
-    Given I am logged in as a user with "Edit Child,View And Search Child" permission
+    Given I am logged in
     And the date/time is "July 19 2010 13:05:32UTC"
     And the following children exist in the system:
     | name       | age | age_is | gender | last_known_location |

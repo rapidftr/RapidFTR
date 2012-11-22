@@ -6,7 +6,7 @@ Feature:
 
   Scenario: Seeing thumbnail when editing a child record
 
-    Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
+    Given I am logged in
     And an existing child with name "John" and a photo from "features/resources/jorge.jpg"
 
     When I am editing the child with name "John"

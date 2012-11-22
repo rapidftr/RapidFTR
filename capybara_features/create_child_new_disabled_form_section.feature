@@ -2,7 +2,7 @@ Feature: As an user I should not see disabled forms when adding new child
 
   Scenario:      User creates new child record and does not see disabled forms
 
-    Given I am logged in as a user with "Register Child" permission
+    Given I am logged in
     And the following form sections exist in the system:
       | name   | description | unique_id | order | enabled |
       | Basic Details | Basic details about a child | basic_details | 1 | true |

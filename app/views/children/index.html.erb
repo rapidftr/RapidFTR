@@ -1,8 +1,5 @@
 <h1 class="no_border float_left">List of Children</h1>
-
-<% if can? :create, Child %>
-	<%= link_to content_tag(:span, 'Register New Child', :class => 'create_user'), new_child_path, :class=>'btn' %>
-<% end %>
+<%= link_to content_tag(:span, 'Register New Child', :class => 'create_user'), new_child_path, :class=>'btn' %>
 <div class="clearfix"></div>
 
 <div class="filter_bar">
@@ -16,4 +13,4 @@
 
 <br/>
 
-<%= render :partial => "children/footer" %>
+<p><%= link_to "Back",:back %></p>

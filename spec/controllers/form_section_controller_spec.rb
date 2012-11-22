@@ -11,11 +11,8 @@ class MockFormSection
 end
 describe FormSectionController do
   before do
-    user = User.new(:user_name => 'manager_of_forms')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
-    fake_login user
+    fake_admin_login
   end
-
   describe "get index" do
     it "populate the view with all the form sections in order ignoring enabled or disabled" do
       row1 = FormSection.new(:enabled => false, :order => 1)
@@ -78,28 +75,6 @@ describe FormSectionController do
       FormSection.get_by_unique_id(form_one.unique_id).order.should == 3
       FormSection.get_by_unique_id(form_two.unique_id).order.should == 1
       FormSection.get_by_unique_id(form_three.unique_id).order.should == 2
-    end
-  end
-  
-  describe "post save_field_order" do
-    after { FormSection.all.each &:destroy }
-    
-    it "should save the order of the fields" do
-      form = FormSection.create(:unique_id => "children_information", :name => "children information")
-      form.fields << Field.new(:name => "name", :display_name => "Name")
-      form.fields << Field.new(:name => "protection_status", :display_name => "Prevention Status")
-      form.save!
-      
-      form.field_order("name").should == 0
-      form.field_order("protection_status").should == 1
-      controller.stub(:save_field_order_redirect_path).and_return(edit_form_section_path(form.id))
-      
-      post :save_field_order, :form_order => {"name" => "2", "protection_status" => "1"}, :formId => "children_information"
-      response.should redirect_to(edit_form_section_path(form.id))
-      
-      form = FormSection.get_by_unique_id("children_information")
-      form.field_order("name").should == 1
-      form.field_order("protection_status").should == 0
     end
   end
   

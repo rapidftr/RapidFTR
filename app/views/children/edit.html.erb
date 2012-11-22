@@ -1,23 +1,26 @@
+<h1>Children</h1>
+
 <% if @child.flag? %>
     <h3 class="flag-message"><%= flag_message%></h3>
 <% end %>
 <%= form_tag child_path(@child), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
-  <div class="page-content-new">
-    <%= error_messages_for :child %>
-    <div class="side-tab">
-      <%= render :partial => "tabs", :object => @form_sections %>
-    </div>
+    <div class="page-content-new">
+        <%= error_messages_for :child %>
 
-    <div class="side-tab-content">
-      <h2><%= link_to "List of Children", children_path %> &gt; Edit Child</h2>
-      <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
-      <div class="clearfix"></div>
-      <%= render :partial => "form_section", :collection => @form_sections %>
+        <div class="side-tab">
+            <%= render :partial => "tabs", :object => @form_sections %>
+        </div>
+
+        <div class="side-tab-content">
+            <h2><%= link_to 'List of Children', children_path %> &gt; Edit Child</h2>
+            <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
+            <div class="clearfix"></div>
+            <%= render :partial => "form_section", :collection => @form_sections %>
+        </div>
     </div>
-  </div>
 
     <%= submit_button %>
 
     <%= discard_button child_path(@child) %>
-      <div class="clearfix"></div>
+    <div class="clearfix"></div>
 <% end %>

@@ -20,8 +20,8 @@ describe Role do
   end
 
   it "should not be valid if a role name has been taken already" do
-    Role.create({:name => "Unique", :permissions => [Permission::ADMIN[:admin]]})
-    role = Role.new({:name => "Unique", :permissions => [Permission::ADMIN[:admin]]})
+    Role.create({:name => "Unique", :permissions => [Permission::ADMIN]})
+    role = Role.new({:name => "Unique", :permissions => [Permission::ADMIN]})
     role.should_not be_valid
     role.errors.on(:name).should == ["A role with that name already exists, please enter a different name"]
   end
@@ -33,7 +33,7 @@ describe Role do
   end
 
   it "should create a valid role" do
-    Role.new(:name => "some_role", :permissions => [Permission::ADMIN[:admin]]).should be_valid
+    Role.new(:name => "some_role", :permissions => [Permission::ADMIN]).should be_valid
   end
 
 end

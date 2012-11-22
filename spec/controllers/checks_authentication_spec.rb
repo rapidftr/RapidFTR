@@ -99,7 +99,7 @@ describe ChecksAuthentication, :type => :normal do
     def stub_session(is_admin)
       set_session_token_cookie
       session = Session.new()
-      session.stub!(:user).and_return(mock(:has_permission? => is_admin))
+      session.stub!(:admin?).and_return(is_admin)
       Session.stub!(:get).and_return(session)
     end
     

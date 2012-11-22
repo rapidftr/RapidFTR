@@ -14,7 +14,6 @@ class Child < CouchRestRails::Document
   property :name
   property :nickname
   property :unique_identifier
-  property :created_organisation
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
@@ -76,7 +75,6 @@ view_by :duplicates_of,
   validates_with_method :validate_photos_size
   validates_with_method :validate_audio_file_name
   validates_with_method :validate_audio_size
-  validates_with_method :validate_duplicate_of
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
@@ -108,7 +106,7 @@ view_by :duplicates_of,
   end
 
   def self.build_text_fields_for_solar
-    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"] +  Field.all_searchable_field_names
+    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"] +  Field.all_text_names
   end
 
   def self.build_date_fields_for_solar
@@ -226,24 +224,21 @@ view_by :duplicates_of,
     by_flag(:key => 'true')
   end
 
-  def self.new_with_user_name(user, fields = {})
+  def self.new_with_user_name(user_name, fields = {})
     child = new(fields)
-    child.create_unique_id
-    child.set_creation_fields_for user
+    child.create_unique_id user_name unless child['unique_identifier']
+    child.set_creation_fields_for user_name
     child
   end
 
-  def create_unique_id
-    self['unique_identifier'] ||= UUIDTools::UUID.random_create.to_s
-  end
-  
-  def short_id
-    self['unique_identifier'].last 7
+  def create_unique_id(user_name)
+    unknown_location = 'xxx'
+    truncated_location = self['last_known_location'].blank? ? unknown_location : self['last_known_location'].slice(0, 3).downcase
+    self['unique_identifier'] = user_name + truncated_location + UUIDTools::UUID.random_create.to_s.slice(0, 5)
   end
 
-  def set_creation_fields_for(user)
-    self['created_by'] = user.try(:user_name)
-    self['created_organisation'] = user.try(:organisation)
+  def set_creation_fields_for(user_name)
+    self['created_by'] = user_name
     self['created_at'] ||= current_formatted_time
     self['posted_at'] = current_formatted_time
   end
@@ -417,22 +412,16 @@ view_by :duplicates_of,
 
   def mark_as_duplicate(parent_id)
     self['duplicate'] = true
-    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.try(:id)
+    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.id
   end
 
   protected
 
   def add_to_history(changes)
-      last_updated_user_name = last_updated_by
       self['histories'].unshift({
-              'user_name' => last_updated_user_name,
-              'user_organisation' => organisation_of(last_updated_user_name),
+              'user_name' => last_updated_by,
               'datetime' => last_updated_at,
               'changes' => changes })
-  end
-
-  def organisation_of(user_name)
-    User.find_by_user_name(user_name).try(:organisation)
   end
 
   def current_formatted_time
@@ -508,7 +497,6 @@ view_by :duplicates_of,
                      "histories",
                      "unique_identifier",
                      "current_photo_key",
-                     "created_organisation",
                      "photo_keys"]
     existing_fields = system_fields + field_definitions.map {|x| x.name}
     self.reject {|k,v| existing_fields.include? k}
@@ -528,11 +516,6 @@ view_by :duplicates_of,
 
   def key_for_content_type(content_type)
     Mime::Type.lookup(content_type).to_sym.to_s
-  end
-
-  def validate_duplicate_of
-    return [false, "A valid duplicate ID must be provided"] if self["duplicate"] && self["duplicate_of"].blank?
-    true
   end
 
 end

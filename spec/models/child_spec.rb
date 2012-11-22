@@ -6,7 +6,7 @@ describe Child do
   describe 'build solar schema' do
 
     it "should build with free text search fields" do
-      Field.stub!(:all_searchable_field_names).and_return []
+      Field.stub!(:all_text_names).and_return []
       Child.build_text_fields_for_solar.should == ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name"]
     end
 
@@ -19,7 +19,7 @@ describe Child do
       form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
       form.save!
       Child.build_text_fields_for_solar.should include("name")
-      FormSection.all.each { |form_section| form_section.destroy }
+      FormSection.all.each { |form| form.destroy }
     end
 
     it "should call Sunspot with all fields" do
@@ -200,13 +200,13 @@ describe Child do
     end
 
     it "should fail to validate if all fields on child record are the default values" do
-      child = Child.new({:height=>"",:reunite_with_mother=>""})
+      child = Child.new({:height => "", :reunite_with_mother => ""})
       FormSection.stub!(:all_enabled_child_fields).and_return [
-        Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
-        Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
-        Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
-        child.should_not be_valid
-        child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
+                                                                  Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
+                                                                  Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
+                                                                  Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key')]
+      child.should_not be_valid
+      child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
 
     it "should validate numeric types" do
@@ -221,61 +221,61 @@ describe Child do
 
     it "should validate multiple numeric types" do
       fields = [
-        {:type => 'numeric_field', :name => 'height', :display_name => "height"},
-        {:type => 'numeric_field', :name => 'new_age', :display_name => "new age"}]
-        child = Child.new
-        child[:height] = "very tall"
-        child[:new_age] = "very old"
-        FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+          {:type => 'numeric_field', :name => 'height', :display_name => "height"},
+          {:type => 'numeric_field', :name => 'new_age', :display_name => "new age"}]
+      child = Child.new
+      child[:height] = "very tall"
+      child[:new_age] = "very old"
+      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
 
-        child.should_not be_valid
-        child.errors.on(:height).should == ["height must be a valid number"]
-        child.errors.on(:new_age).should == ["new age must be a valid number"]
+      child.should_not be_valid
+      child.errors.on(:height).should == ["height must be a valid number"]
+      child.errors.on(:new_age).should == ["new age must be a valid number"]
     end
 
     it "should disallow text field values to be more than 200 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
-                        [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
-                         Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
-                        child = Child.new :name => ('a' * 201)
-                        child.should_not be_valid
-                        child.errors[:name].should == ["Name cannot be more than 200 characters long"]
+                            [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
+                             Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
+      child = Child.new :name => ('a' * 201)
+      child.should_not be_valid
+      child.errors[:name].should == ["Name cannot be more than 200 characters long"]
     end
 
     it "should disallow text area values to be more than 400,000 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
-                        [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-                        child = Child.new :a_textfield => ('a' * 400_001)
-                        child.should_not be_valid
-                        child.errors[:a_textfield].should == ["A textfield cannot be more than 400000 characters long"]
+                            [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
+      child = Child.new :a_textfield => ('a' * 400_001)
+      child.should_not be_valid
+      child.errors[:a_textfield].should == ["A textfield cannot be more than 400000 characters long"]
     end
 
     it "should allow text area values to be 400,000 chars" do
       FormSection.stub!(:all_enabled_child_fields =>
-                        [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-                        child = Child.new :a_textfield => ('a' * 400_000)
-                        child.should be_valid
+                            [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
+      child = Child.new :a_textfield => ('a' * 400_000)
+      child.should be_valid
     end
 
     it "should disallow date fields not formatted as dd M yy" do
       FormSection.stub!(:all_enabled_child_fields =>
-                        [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
-                        child = Child.new :a_datefield => ('2/27/2010')
-                        child.should_not be_valid
-                        child.errors[:a_datefield].should == ["A datefield must follow this format: 4 Feb 2010"]
+                            [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
+      child = Child.new :a_datefield => ('2/27/2010')
+      child.should_not be_valid
+      child.errors[:a_datefield].should == ["A datefield must follow this format: 4 Feb 2010"]
     end
 
     it "should allow date fields formatted as dd M yy" do
       FormSection.stub!(:all_enabled_child_fields =>
-                        [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
-                        child = Child.new :a_datefield => ('27 Feb 2010')
-                        child.should be_valid
+                            [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
+      child = Child.new :a_datefield => ('27 Feb 2010')
+      child.should be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
       FormSection.stub!(:all_enabled_child_fields =>
-                        [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
-                        Child.new(:height => "10.2").should be_valid
+                            [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
+      Child.new(:height => "10.2").should be_valid
     end
 
     it "should disallow file formats that are not photo formats" do
@@ -329,32 +329,19 @@ describe Child do
     end
 
     it "created_at should be a be a valid ISO date" do
-      child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
+      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
       child.should_not be_valid
       child['created_at']='2010-01-14 14:05:00UTC'
       child.should be_valid
     end
 
     it "last_updated_at should be a be a valid ISO date" do
-      child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'last_updated_at' => 'I am not a date')
+      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'last_updated_at' => 'I am not a date')
       child.should_not be_valid
       child['last_updated_at']='2010-01-14 14:05:00UTC'
       child.should be_valid
     end
 
-    describe "validate_duplicate_of" do
-      it "should validate duplicate_of field present when duplicate flag true" do
-        child = Child.new('duplicate' => true, 'duplicate_of' => nil)
-        child.should_not be_valid
-        child.errors.full_messages.should include("A valid duplicate ID must be provided")
-      end
-
-      it "should not validate duplicate_of field present when duplicate flag is false" do
-        child = Child.new('duplicate' => false, 'duplicate_of' => nil)
-        child.valid?
-        child.errors.full_messages.should_not include("A valid duplicate ID must be provided")
-      end
-    end
   end
 
   describe 'save' do
@@ -424,30 +411,30 @@ describe Child do
   describe "new_with_user_name" do
 
     it "should create regular child fields" do
-      child = create_child_with_created_by('jdoe', 'last_known_location' => 'London', 'age' => '6')
+      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'age' => '6')
       child['last_known_location'].should == 'London'
       child['age'].should == '6'
     end
 
     it "should create a unique id" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
-      child = create_child_with_created_by('jdoe', 'last_known_location' => 'London')
-      child['unique_identifier'].should == "12345"
+      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London')
+      child['unique_identifier'].should == "jdoelon12345"
     end
 
     it "should not create a unique id if already exists" do
-      child = create_child_with_created_by('jdoe', 'last_known_location' => 'London', 'unique_identifier' => 'rapidftrxxx5bcde')
+      child = Child.new_with_user_name('jdoe', 'last_known_location' => 'London', 'unique_identifier' => 'rapidftrxxx5bcde')
       child['unique_identifier'].should == "rapidftrxxx5bcde"
     end
 
     it "should create a created_by field with the user name" do
-      child = create_child_with_created_by('jdoe', 'some_field' => 'some_value')
+      child = Child.new_with_user_name('jdoe', 'some_field' => 'some_value')
       child['created_by'].should == 'jdoe'
     end
 
     it "should create a posted_at field with the current date" do
       Clock.stub!(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
-      child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
+      child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
       child['posted_at'].should == "2010-01-22 14:05:00UTC"
     end
 
@@ -455,7 +442,7 @@ describe Child do
 
       it "should create a created_at field with time of creation" do
         Clock.stub!(:now).and_return(Time.utc(2010, "jan", 14, 14, 5, 0))
-        child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
+        child = Child.new_with_user_name('some_user', 'some_field' => 'some_value')
         child['created_at'].should == "2010-01-14 14:05:00UTC"
       end
 
@@ -464,7 +451,7 @@ describe Child do
     describe "when the created at field is supplied" do
 
       it "should use the supplied created at value" do
-        child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
+        child = Child.new_with_user_name('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
         child['created_at'].should == "2010-01-14 14:05:00UTC"
       end
 
@@ -472,18 +459,39 @@ describe Child do
 
   end
 
-  it "should create a unique id" do
-    child = Child.new
+  it "should create a unique id based on the last known location and the user name" do
+    child = Child.new({'last_known_location' => 'london'})
     UUIDTools::UUID.stub("random_create").and_return(12345)
-    child.create_unique_id
-    child["unique_identifier"].should == "12345"
+    child.create_unique_id("george")
+    child["unique_identifier"].should == "georgelon12345"
   end
 
-  it "should return last 7 characters of unique id as short id" do
-    child = Child.new
-    UUIDTools::UUID.stub("random_create").and_return(1212127654321)
-    child.create_unique_id
-    child.short_id.should == "7654321"
+  it "should use a default location if last known location is empty" do
+    child = Child.new({'last_known_location' => nil})
+    UUIDTools::UUID.stub("random_create").and_return(12345)
+    child.create_unique_id("george")
+    child["unique_identifier"].should == "georgexxx12345"
+  end
+
+  it "should downcase the last known location of a child before generating the unique id" do
+    child = Child.new({'last_known_location' => 'New York'})
+    UUIDTools::UUID.stub("random_create").and_return(12345)
+    child.create_unique_id("george")
+    child["unique_identifier"].should == "georgenew12345"
+  end
+
+  it "should append a five digit random number to the unique child id" do
+    child = Child.new({'last_known_location' => 'New York'})
+    UUIDTools::UUID.stub("random_create").and_return('12345abcd')
+    child.create_unique_id("george")
+    child["unique_identifier"].should == "georgenew12345"
+  end
+
+  it "should handle special characters in last known location when creating unique id" do
+    child = Child.new({'last_known_location' => "\215\303\304n"})
+    UUIDTools::UUID.stub("random_create").and_return('12345abcd')
+    child.create_unique_id("george")
+    child["unique_identifier"].should == "george\215\303\30412345"
   end
 
   describe "photo attachments" do
@@ -594,7 +602,7 @@ describe Child do
 
   describe ".add_audio_file" do
 
-    before :each do
+    before (:each) do
       @file = stub!("File")
       @file.stub!(:read).and_return("ABC")
       @file_attachment = FileAttachment.new("attachment_file_name", "audio/mpeg", "data")
@@ -696,8 +704,6 @@ describe Child do
           Field.new_photo_upload_box("current_photo_key"),
           Field.new_audio_upload_box("recorded_audio")]
       FormSection.stub!(:all_enabled_child_fields).and_return(fields)
-      mock_user = mock({:organisation => 'UNICEF'})
-      User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
     end
 
     it "should not update history on initial creation of child document without a photo" do
@@ -797,7 +803,6 @@ describe Child do
       child['last_updated_by'] = 'some_user'
       child.save!
       child['histories'].first['user_name'].should == 'some_user'
-      child['histories'].first['user_organisation'].should == 'UNICEF'
     end
 
     it "should update history with the datetime from last_updated_at" do
@@ -952,32 +957,32 @@ describe Child do
 
     it "should be true if was created and updated by the same person" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
-                                         "age"=>{"from"=>"1", "to"=>"15"}},
-                                         "user_name"=>"john",
-                                         "datetime"=>"03/02/2011 21:48"},
-                                         {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                          "datetime"=>"03/02/2011 21:34",
-                                          "user_name"=>"john"},
-                                          {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                           "user_name"=>"john",
-                                           "datetime"=>"03/02/2011 21:33"}]
+      child['histories'] = [{"changes" => {"gender" => {"from" => nil, "to" => "Male"},
+                                           "age" => {"from" => "1", "to" => "15"}},
+                             "user_name" => "john",
+                             "datetime" => "03/02/2011 21:48"},
+                            {"changes" => {"last_known_location" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "datetime" => "03/02/2011 21:34",
+                             "user_name" => "john"},
+                            {"changes" => {"origin" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "user_name" => "john",
+                             "datetime" => "03/02/2011 21:33"}]
       child['last_updated_by'] = 'john'
       child.has_one_interviewer?.should be_true
     end
 
     it "should be false if created by one person and updated by another" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
-                                         "age"=>{"from"=>"1", "to"=>"15"}},
-                                         "user_name"=>"jane",
-                                         "datetime"=>"03/02/2011 21:48"},
-                                         {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                          "datetime"=>"03/02/2011 21:34",
-                                          "user_name"=>"john"},
-                                          {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                           "user_name"=>"john",
-                                           "datetime"=>"03/02/2011 21:33"}]
+      child['histories'] = [{"changes" => {"gender" => {"from" => nil, "to" => "Male"},
+                                           "age" => {"from" => "1", "to" => "15"}},
+                             "user_name" => "jane",
+                             "datetime" => "03/02/2011 21:48"},
+                            {"changes" => {"last_known_location" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "datetime" => "03/02/2011 21:34",
+                             "user_name" => "john"},
+                            {"changes" => {"origin" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "user_name" => "john",
+                             "datetime" => "03/02/2011 21:33"}]
       child['last_updated_by'] = 'jane'
       child.has_one_interviewer?.should be_false
     end
@@ -1059,54 +1064,65 @@ describe Child do
 
   end
 
-  context "duplicate" do
+  describe "mark as duplicate" do
+
     before do
       Child.all.each { |child| child.destroy }
       Child.duplicates.each { |child| child.destroy }
     end
 
-    describe "mark_as_duplicate" do
-      it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
-        child_duplicate.mark_as_duplicate child_active.unique_identifier
-        child_duplicate.duplicate?.should be_true
-        child_duplicate.duplicate_of.should == child_active.id
-      end
-
-      it "should set not set the duplicate field if child " do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
-        child_duplicate.mark_as_duplicate "I am not a valid id"
-        child_duplicate.duplicate_of.should be_nil
-      end
-
-      it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
-        child_duplicate.mark_as_duplicate child_active.unique_identifier
-        child_duplicate.duplicate?.should be_true
-        child_duplicate.duplicate_of.should == child_active.id
-      end
+    it "should set the duplicate field" do
+      child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
+      child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
+      child_duplicate.mark_as_duplicate child_active.unique_identifier
+      child_duplicate.duplicate?.should be_true
+      child_duplicate.duplicate_of.should == child_active.id
     end
 
-      it "should return all duplicate records" do
-        mock_user = mock({:organisation => 'UNICEF'})
-        User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
-        record_duplicate = create_duplicate(record_active)
-        Child.duplicates.should == [record_duplicate]
-        Child.all.should == [record_active]
-      end
+    it "should return all duplicate records" do
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+      record_duplicate = create_duplicate(record_active)
+      Child.duplicates.should == [record_duplicate]
+      Child.all.should == [record_active]
+    end
 
-      it "should return duplicate from a record" do
-        mock_user = mock({:organisation => 'UNICEF'})
-        User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
-        record_duplicate = create_duplicate(record_active)
-        Child.duplicates_of(record_active.id).should == [record_duplicate]
-      end
+    it "should return duplicate from a record" do
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+      record_duplicate = create_duplicate(record_active)
+      Child.duplicates_of(record_active.id).should == [record_duplicate]
+    end
 
   end
+
+  describe "validate audio file" do
+    it "should return true if there is no audio file" do
+      child = Child.new()
+      child.instance_variable_set(:@audio,nil)
+      child.has_valid_audio?.should == true
+    end
+
+    it "should return false if audio file is of invalid format" do
+      child = Child.new()
+      child.instance_variable_set(:@audio,mock({:size => 100}))
+      child.instance_variable_set(:@audio_file_name,"some.txt")
+      child.has_valid_audio?.should == false
+    end
+
+    it "should return false if audio file is exceeds the size" do
+      child = Child.new()
+      child.instance_variable_set(:@audio,mock({:size => 10000000000000000}))
+      child.instance_variable_set(:@audio_file_name,"some.mp3")
+      child.has_valid_audio?.should == false
+    end
+
+    it "should return true if audio file is valid" do
+      child = Child.new()
+      child.instance_variable_set(:@audio,mock({:size => 1000}))
+      child.instance_variable_set(:@audio_file_name,"some.mp3")
+      child.has_valid_audio?.should == true
+    end
+  end
+
 
   private
 
@@ -1120,11 +1136,6 @@ describe Child do
     duplicate.mark_as_duplicate(parent.unique_identifier)
     duplicate.save!
     duplicate
-  end
-
-  def create_child_with_created_by(created_by,options = {})
-    user = User.new({:user_name => created_by, :organisation=> "UNICEF"})
-    Child.new_with_user_name user, options
   end
 
 end

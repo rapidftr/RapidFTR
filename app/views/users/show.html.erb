@@ -7,77 +7,75 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><a href="#">List of Users</a> &gt; View User</h2>
+    <h2><a href="#">List of Users</a> &gt; View an User</h2>
+     <div class="clearfix"></div>
 
-    <div class="clearfix"></div>
+  <fieldset>
+    <p>
+      <label class="key">Name:</label>
+      <%= h @user.full_name %>
+    </p>
 
-    <fieldset>
-      <p>
-        <label class="key">Name:</label>
-        <%= h @user.full_name %>
-      </p>
+    <p>
+      <label class="key">User Name:</label>
+      <%= h @user.user_name %>
+    </p>
 
-      <p>
-        <label class="key">User Name:</label>
-        <%= h @user.user_name %>
-      </p>
+    <p>
+      <label class="key">User Type:</label>
+      <%= h @user.user_type %>
+    </p>
+    <p>
+      <label class="key">Roles:</label>
+      <%= @user.roles.map(&:name).join(",") %>
+    </p>
 
-      <p>
-        <label class="key">User Type:</label>
-        <%= h @user.user_type %>
-      </p>
+    <p>
+      <label class="key">Phone number:</label>
+      <%= h @user.phone %>
+    </p>
 
-      <p>
-        <label class="key">Roles:</label>
-        <%= @user.roles.map(&:name).join(",") %>
-      </p>
+    <p>
+      <label class="key">Email Address:</label>
+      <%= h @user.email %>
+    </p>
 
-      <p>
-        <label class="key">Phone number:</label>
-        <%= h @user.phone %>
-      </p>
+    <p>
+      <label class="key">Organisation:</label>
+      <%= h @user.organisation %>
+    </p>
 
-      <p>
-        <label class="key">Email Address:</label>
-        <%= h @user.email %>
-      </p>
+    <p>
+      <label class="key">Position:</label>
+      <%= h @user.position %>
+    </p>
 
-      <p>
-        <label class="key">Organisation:</label>
-        <%= h @user.organisation %>
-      </p>
+    <p>
+      <label class="key">Location:</label>
+      <%= h @user.location %>
+    </p>
 
-      <p>
-        <label class="key">Position:</label>
-        <%= h @user.position %>
-      </p>
+    <p>
+      <label class="key">Status:</label>
+      <%= h @user.disabled=="true" ? "Disabled" : "Enabled" %>
+    </p>
 
-      <p>
-        <label class="key">Location:</label>
-        <%= h @user.location %>
-      </p>
-
-      <p>
-        <label class="key">Status:</label>
-        <%= h @user.disabled=="true" ? "Disabled" : "Enabled" %>
-      </p>
-
-      <p>
-        <label>Devices:</label><br/>
-        <% @user.devices.each do |device| %>
-            <% if device.blacklisted? %>
-                <span class='device-blacklisted'><%= device.imei %> (blacklisted)</span><br/>
-            <% else %>
-                <%= device.imei %> <br/>
-            <% end %>
-        <% end %>
-      </p>
-
-      <% if can? :edit, User %>
-          <%= link_to 'Edit', edit_user_path(@user) %> |
+    <p>
+      <label>Devices:</label><br/>
+      <% @user.devices.each do |device| %>
+          <% if device.blacklisted? %>
+              <span class='device-blacklisted'><%= device.imei %> (blacklisted)</span><br/>
+          <% else %>
+              <%= device.imei %> <br/>
+          <% end %>
       <% end %>
-      <%= link_to 'Back', users_path %>
-    </fieldset>
+    </p>
+
+
+
+    <%= link_to 'Edit', edit_user_path(@user) %> |
+    <%= link_to 'Back', users_path %>
+  </fieldset>
     <%= render :partial => "mobile_login_history", :object => @user %>
   </div>
 </div>

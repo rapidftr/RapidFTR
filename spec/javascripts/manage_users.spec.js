@@ -73,11 +73,11 @@ describe("Manage Users", function() {
         expect(ajaxSpy).not.toHaveBeenCalled();
       });
 
-//      it("should reset the checkbox to its previous state", function(){
-//        clickAndCancelCheckbox("#user-row-isdisabled");
-//        var checkBox = $('#user-row-isdisabled input.user-disabled-status');
-//        expect(checkBox.attr('checked')).toEqual(true);
-//      });
+      it("should reset the checkbox to its previous state", function(){
+        clickAndCancelCheckbox("#user-row-isdisabled");
+        var checkBox = $('#user-row-isdisabled input.user-disabled-status');
+        expect(checkBox.attr('checked')).toEqual(true);
+      });
     });
 
   });

@@ -6,7 +6,7 @@ Feature: Reunited Child
 
   Background:
 
-   Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
+   Given I am logged in
    And the following children exist in the system:
      | name   | unique_id  | reunited |
      | Will   | will_uid   | false    |
@@ -36,8 +36,9 @@ Feature: Reunited Child
      And I fill in "child_reunited_message" with "Because I say it is reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
-     When I fill in "Will" for "query"
-     And I press "Go"
+    When I am on the child search page
+     And I fill in "Will" for "query"
+     And I press "Search"
     Then I should be on the child search results page
      And I should see "Will" in the search results
      And I should see "Will" as reunited in the search results
@@ -48,8 +49,9 @@ Feature: Reunited Child
      And I fill in "child_reunited_message" with "Because I say it is not reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
-     When I fill in "Fred" for "query"
-     And I press "Go"
+    When I am on the child search page
+     And I fill in "Fred" for "query"
+     And I press "Search"
     Then I should be on the child search results page
      And I should see "Fred" in the search results
      And I should not see "Fred" as reunited in the search results

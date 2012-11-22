@@ -4,6 +4,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
   Background:
     Given I am logged in
+    And I am on the child search page
 
   Scenario: Searching for a child given his name
 
@@ -13,8 +14,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will   |
 
     When I fill in "Will" for "query"
-    And I press "Go"
+    And I press "Search"
 
+    Then I should be on the child search results page
     And I should see "Willis" in the search results
 
   Scenario: Searching for a child given his unique identifier
@@ -24,8 +26,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | andreas	| London		            | zubair   | zubairlon123 |
       | zak	    | London		            | zubair   | zubairlon456 |
 
-    When I fill in "zubairlon123" for "query"
-    And I press "Go"
+    When I fill in "zubairlon123" for "Name or Unique ID"
+    And I press "Search"
 
     Then I should be on the saved record page for child with name "andreas"
 
@@ -35,17 +37,17 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   	| 
       | Lisa	|
 
-    When I fill in "Lisa" for "query"
-    And I press "Go"
+    When I search using a name of "Lisa"
+
     Then I should be on the saved record page for child with name "Lisa"
 
   Scenario: Search parameters are displayed in the search results
 
-    When I fill in "Will" for "query"
-    And I press "Go"
+    When I fill in "Will" for "Name or Unique ID"
+    And I press "Search"
 
     Then I should be on the child search results page
-    And the "query" field should contain "Will"
+    And the "Name or Unique ID" field should contain "Will"
 
   Scenario: Each search result has a link to the full child record
 
@@ -65,8 +67,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Willis	|
       | Will	|
 
-    When I fill in "W" for "query"
-    And I press "Go"
+    When I fill in "W" for "Name"
+    And I press "Search"
+
     Then I should see the thumbnail of "Willis"
     And I should see the thumbnail of "Will"
 
@@ -77,8 +80,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Willis |
       | Will   |
 
-    When I fill in "Will" for "query"
-    And I press "Go"
+    When I fill in "Will" for "Name"
+    And I press "Search"
 
     Then I should be on the child search results page
     And I should see "Willis" in the search results
@@ -93,49 +96,13 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Given I am on the child search page
     Then I should not see any errors
 
-    When I fill in "" for "query"
-    And I press "Go"
+    When I fill in "" for "Name"
+    And I press "Search"
     Then I should see the error "Query can't be empty"
 
   Scenario: Creating a search with non standard queries
     Given I am on the child search page
     Then I should not see any errors
-    When I fill in "\" for "query"
-    And I press "Go"
+    When I fill in "\" for "Name"
+    And I press "Search"
     Then I should be on the child search results page
-
-@javascript
-  Scenario: User with unlimited access can see all children
-    Given a user "field_admin" with "View And Search Child" permission
-      And a user "field_worker" with "Register Child" permission
-      And the following children exist in the system:
-       | name   | created_by   |
-       | Andrew | field_worker |
-       | Peter  | field_admin  |
-     And I am logged out
-     When I am logged in as "field_admin"
-      And I follow "View All Children"
-     Then I should see "Andrew"
-      And I should see "Peter"
-
-  Scenario: User with limited access cannot see all children
-    Given a user "field_admin" with "View And Search Child" permission
-      And a user "field_worker" with "Register Child" permission
-      And the following children exist in the system:
-       | name   | created_by   |
-       | Andrew | field_worker |
-       | Peter  | field_admin  |
-     And I am logged out
-     When I am logged in as "field_worker"
-      And I follow "View All Children"
-     Then I should see "Andrew"
-      And I should not see "Peter"
-
-  Scenario: User should be able to search from any page
-    Given I am on children listing page
-    And the following children exist in the system:
-      | name   |
-      | Andrew |
-    And I fill in "Andrew" for "query"
-    And I press "Go"
-    Then I should be on the saved record page for child with name "Andrew"

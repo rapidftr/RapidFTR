@@ -99,7 +99,7 @@ end
 
 When /^I edit the following child:$/ do |input_json|
   input_child_hash = JSON.parse(input_json)
-  put("/children/" + input_child_hash["_id"], {:child => input_json, :format => 'json'})
+  put("/children/" + input_child_hash["_id"], {:child => input_child_hash, :format => 'json'})
 end
 
 And /^that JSON hash of elements has these properties:$/ do |properties_table|
