@@ -19,6 +19,7 @@ if should_seed? User
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
               "email" => "rapidftr@rapidftr.com",
+              "organisation" => "N/A",
               "role_ids" => [admin.id])
 
   User.create!("user_name" => "field_worker",
@@ -26,6 +27,7 @@ if should_seed? User
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
+              "organisation" => "N/A",
               "role_ids" => [field_worker.id])
 
   User.create!("user_name" => "field_admin",
@@ -33,6 +35,7 @@ if should_seed? User
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
               "email" => "unlimited@rapidftr.com",
+              "organisation" => "N/A",
               "role_ids" => [field_admin.id])
 end
 
