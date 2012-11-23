@@ -85,6 +85,7 @@ class ChildrenController < ApplicationController
   def create
     authorize! :create, Child
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
+    params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
     @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
