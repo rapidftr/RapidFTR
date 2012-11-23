@@ -1,6 +1,6 @@
 RapidFTR
 =============
-[![Build Status](https://secure.travis-ci.org/jorgej/RapidFTR.png)](http://travis-ci.org/jorgej/RapidFTR)   [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jorgej/RapidFTR)
+[![Build Status](https://secure.travis-ci.org/rapidftr/RapidFTR.png)](http://travis-ci.org/rapidftr/RapidFTR)   [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
 
 RapidFTR is a mobile application that lets aid workers collect, sort and share information about children in emergency situations. RapidFTR is
 specifically designed to streamline and speed up Family Tracing and Reunification efforts both in the immediate aftermath of a crisis and during ongoing recovery efforts.
@@ -21,9 +21,9 @@ Please feel free to comment or contribute.
 
 Join the google group and read through the wikis on the main repo for how to join the project.
 
-* [RapidFTR Repository](http://github.com/jorgej/RapidFTR/)
-* [RapidFTR BlackBerry Repository](http://github.com/jorgej/RapidFTR---BlackBerry-Edition)
-* [RapidFTR Android Repository](http://github.com/jorgej/RapidFTR---Android)
+* [RapidFTR Repository](http://github.com/rapidftr/RapidFTR/)
+* [RapidFTR BlackBerry Repository](http://github.com/rapidftr/RapidFTR---BlackBerry-Edition)
+* [RapidFTR Android Repository](http://github.com/rapidftr/RapidFTR---Android)
 
 RapidFTR is being developed using Ruby on Rails and CouchDB. Alongside the development of the API,
 we've also started to develop the BlackBerry client, with an Android client to follow.
@@ -32,7 +32,7 @@ If you've got experience with any of these and want to help, please get in touch
 Install and run RapidFTR on OSX
 -------------------------------
 
-PLEASE SEE [INSTALLATION INSTRUCTIONS](http://wiki.github.com/jorgej/RapidFTR/install-and-run-rapidftr-on-osx)
+PLEASE SEE [INSTALLATION INSTRUCTIONS](http://wiki.github.com/rapidftr/RapidFTR/install-and-run-rapidftr-on-osx)
 
 To run RapidFTR
 ---------------

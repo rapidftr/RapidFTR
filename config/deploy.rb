@@ -13,7 +13,7 @@ set :user, "admin"  # The server's user for deploys
 set :deploy_to, deploy_dir
 
 set :scm, :git
-set :repository,  "git://github.com/jorgej/RapidFTR.git"
+set :repository,  "git://github.com/rapidftr/RapidFTR.git"
 set :deploy_via, :remote_cache
 set :branch, fetch(:branch, "master")
 #to deploy a specific revision to any environment use
