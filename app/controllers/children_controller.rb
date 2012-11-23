@@ -324,6 +324,7 @@ class ChildrenController < ApplicationController
 
       child['last_updated_by_full_name'] = current_user_full_name
       new_photo = params[:child].delete("photo")
+      new_photo = params[:current_photo_key] if new_photo.nil?
       new_audio = params[:child].delete("audio")
       child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
       child
