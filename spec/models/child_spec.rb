@@ -157,6 +157,34 @@ describe Child do
       child['origin'].should == "Croydon"
     end
 
+    it "should not replace old properties when the existing records last_updated at is latest than the given last_updated_at" do
+      child = Child.new("name" => "existing name", "last_updated_at" => "2013-01-01 00:00:01UTC")
+      given_properties = {"name" => "given name", "last_updated_at" => "2012-12-12 00:00:00UTC"}
+      child.update_properties_with_user_name "some_user", nil, nil, nil, given_properties
+      child["name"].should == "existing name"
+      child["last_updated_at"].should == "2013-01-01 00:00:01UTC"
+    end
+
+    it "should merge the histories of the given record with the current record if the last updated at of current record is greater than given record's" do
+      existing_histories = JSON.parse "{\"user_name\":\"rapidftr\", \"datetime\":\"2013-01-01 00:00:01UTC\",\"changes\":{\"sex\":{\"to\":\"male\",\"from\":\"female\"}}}"
+      given_histories = [existing_histories, JSON.parse("{\"user_name\":\"rapidftr\",\"datetime\":\"2012-01-01 00:00:02UTC\",\"changes\":{\"name\":{\"to\":\"new\",\"from\":\"old\"}}}")]
+      child = Child.new("name" => "existing name", "last_updated_at" => "2013-01-01 00:00:01UTC", "histories" =>  [existing_histories])
+      given_properties = {"name" => "given name", "last_updated_at" => "2012-12-12 00:00:00UTC", "histories" => given_histories}
+      child.update_properties_with_user_name "rapidftr", nil, nil, nil, given_properties
+      histories = child["histories"]
+      histories.size.should == 2
+      histories.first["changes"]["sex"]["from"].should == "female"
+      histories.last["changes"]["name"]["to"].should == "new"
+    end
+
+    it "should assign the history of the given properties as it is if the current record has no history" do
+      child = Child.new("name" => "existing name", "last_updated_at" => "2013-01-01 00:00:01UTC")
+      given_properties = {"name" => "given name", "last_updated_at" => "2012-12-12 00:00:00UTC", "histories" => [JSON.parse("{\"user_name\":\"rapidftr\",\"changes\":{\"name\":{\"to\":\"new\",\"from\":\"old\"}}}")]}
+      child.update_properties_with_user_name "rapidftr", nil, nil, nil, given_properties
+      histories = child["histories"]
+      histories.last["changes"]["name"]["to"].should == "new"
+    end
+
     it "should populate last_updated_by field with the user_name who is updating" do
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
