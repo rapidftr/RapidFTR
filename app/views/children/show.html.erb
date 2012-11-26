@@ -49,7 +49,7 @@ $(function() {
 });
 </script>
 <% end %>
-<h1>Children</h1>
+<h1>View Child: <span><%= @child.name %> (<%= @child.unique_identifier %>)</span></h1>
 
     <% content_for :stylesheet do %>
       <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
