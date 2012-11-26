@@ -10,7 +10,7 @@ Feature:
       | name   |
       | Peter  |
 
-  @javascript
+
   Scenario: Flagging a child record
     When I flag "Peter" as suspect with the following reason:
       """
@@ -26,7 +26,7 @@ Feature:
 
 #    And I follow "View All Children"
 #    Then I should see flagged details
-    
+  @javascript
   Scenario: Removing flag from a child record
     Given I flag "Peter" as suspect
     When I am on the child record page for "Peter"
@@ -46,4 +46,18 @@ Feature:
       And I flag "Peter" as suspect
       When I search using a name of "P"
       Then the "Peter" result should have a "suspect" image
+
+
+  Scenario: Flagging a child record from listing page.
+    When I am on the children listing page
+    And I should not see "Flagged By" for "Peter"
+    And I flag "Peter" as suspect with the following reason:
+    """
+      He is a bad guy.
+      """
+    Then I should see "Flagged By" for "Peter"
+    And the record history should log "Record was flagged by praful belonging to UNICEF because: He is a bad guy."
+    And the child listing page filtered by flagged should show the following children:
+      | Peter |
+
 
