@@ -29,8 +29,8 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should receive a PDF file
     And the PDF file should have 2 pages
-    And the PDF file should contain the string "will_uid"
-    And the PDF file should contain the string "wilma_uid"
+    And the PDF file should contain the string "ill_uid"
+    And the PDF file should contain the string "lma_uid"
 
   @allow-rescue
   Scenario: In search results, when no records are selected and the export button is clicked, the user is shown an error message
@@ -48,7 +48,7 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should receive a PDF file
     And the PDF file should have 6 pages
-    And the PDF file should contain the string "will_uid"
+    And the PDF file should contain the string "ill_uid"
     And the PDF file should contain the string "Will"
 
   Scenario: Exporting photo wall PDF from the child page
@@ -57,7 +57,7 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should receive a PDF file
     And the PDF file should have 1 page
-    And the PDF file should contain the string "will_uid"
+    And the PDF file should contain the string "ill_uid"
     And the PDF file should not contain the string "Will"
 
   Scenario: Exporting PDF when there is no photo
