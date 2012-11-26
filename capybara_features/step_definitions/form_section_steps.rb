@@ -41,6 +41,11 @@ When /^I (show|hide) selected form sections$/ do |show_or_hide|
   page.driver.browser.switch_to.alert.accept
 end
 
+Then /^I (show|hide) selected form fields/ do |show_or_hide|
+  click_button show_or_hide.capitalize
+  page.driver.browser.switch_to.alert.accept
+end
+
 Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ do |form_section|
   find_field(form_section_visibility_checkbox_id(form_section)).should_not be_checked
 end

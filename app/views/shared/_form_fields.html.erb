@@ -14,17 +14,20 @@
         <%end%> 
     </ul>
     <div class="fields-container">
-      <% @forms.each do|form|%>    
+      <% @forms.each do|form|%>
         <ul id="fields-for-form-<%= form.id%>" class="field-container">
           <% form.fields.each do |field| %>
+              <% if field.enabled? %>
             <li id="field-<%= field.name%>" class="field">
               <span class="field-display-name"><%= field.display_name%></span>
               <input type="hidden" class="field-name" value="<%= field.name%>"/>
               <input type="hidden" class="display-name" value="<%= field.display_name%>"/>
             </li>
+              <% end %>
+
           <%end%>
         </ul>
-      <%end%>  
+      <%end%>
     </div>     
   <div>
 </div>
@@ -32,10 +35,13 @@
 <script>
   
 var formFields = $(".form-fields-container").formFields({onItemSelect: <%=on_item_select%>}).data("formFields");
-$(<%= "'#{menu_selector}'"%>).live("click", function(){ formFields.show({ 
-                                    actionElement: $(this), 
-                                    prevSelectedFields: $(<%= "'#{prev_selected_field_selector}'"%>).map( function(){ return $(this).val(); }) 
-                                  })  
+$(<%= "'#{menu_selector}'"%>).live("click", function () {
+    formFields.show({
+        actionElement:$(this),
+        prevSelectedFields:$(<%= "'#{prev_selected_field_selector}'"%>).map(function () {
+            return $(this).val();
+        })
+    })
 });
 </script>
  </div>
