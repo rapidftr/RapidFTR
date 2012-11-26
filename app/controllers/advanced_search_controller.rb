@@ -37,7 +37,15 @@ class AdvancedSearchController < ApplicationController
     add_updated_by_filter params
     add_created_at_filter params
     add_updated_at_filter params
+    add_created_by_organisation_filter params
     @criteria_list
+  end
+
+  def add_created_by_organisation_filter params
+    @criteria_list.push(SearchFilter.new({:field => "created_organisation",
+                                          :value => params[:created_by_organisation_value],
+                                          :index => 1,
+                                          :join => "AND"})) if !self.class.nil_or_empty(params, :created_by_organisation_value)
   end
 
   def add_created_by_filter params

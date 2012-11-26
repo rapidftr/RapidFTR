@@ -76,6 +76,11 @@
     <p style="font-size: 14px">Filter Search Results</p>
     <table border=0 cellpadding=0 cellspacing=0 bgcolor="white">
       <tr bgcolor="white">
+        <td align="right" width=10><%= check_box_tag(:created_by_organisation, true, params[:created_by_organisation]=='true', :disabled => (params[:disable_create]=='true')) %></td>
+        <td align="left" width=80><%= label_tag(:created_by_organisation_value, "Created By Organisation:") %></td>
+        <td align="left" colspan="4"><%= text_field_tag(:created_by_organisation_value, params[:created_by_organisation_value], :disabled => (params[:disable_create]=='true') || !(params[:created_by_organisation]=='true')) %></td>
+      </tr>
+      <tr bgcolor="white">
         <td align="right" width=10><%= check_box_tag(:created_by, true, params[:created_by]=='true', :disabled => (params[:disable_create]=='true')) %></td>
         <td align="left" width=80><%= label_tag(:created_by_label, "Created By:") %></td>
         <td align="left" colspan="4"><%= text_field_tag(:created_by_value, params[:created_by_value], :disabled => (params[:disable_create]=='true') || !(params[:created_by]=='true')) %></td>

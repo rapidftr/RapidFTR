@@ -89,6 +89,14 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should see "Please enter a valid 'Created by' value"
 
   @javascript
+  Scenario: Validation of 'Created by Organisation'
+   Given I am logged in
+     And I am on child advanced search page
+    When I check "created_by_organisation"
+     And I press "Search"
+    Then I should see "Please enter a valid 'Created by organisation' value"
+
+  @javascript
   Scenario: 'Created By' can only be entered if checkbox selected
    Given I am logged in
      And I am on child advanced search page
@@ -123,6 +131,21 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James  | john       | john                 |
    When I check "created_by"
     And I fill in "bob" for "created_by_value"
+    And I press "Search"
+    Then I should see "Andrew" in the search results
+
+  @javascript
+  Scenario: Searching by 'Created By'
+   Given I am logged in
+     And I am on child advanced search page
+    Then I wait for 2 seconds
+     And the following children exist in the system:
+       | name   | created_by | created_by_full_name | created_organisation |
+       | Andrew | bob        | john                 | stc                  |
+       | Peter  | john       | bob                  | unicef               |
+       | James  | john       | john                 | unicef               |
+    When I check "created_by_organisation"
+    And I fill in "stc" for "created_by_organisation_value"
     And I press "Search"
     Then I should see "Andrew" in the search results
 

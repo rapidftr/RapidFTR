@@ -300,6 +300,20 @@ describe ChildrenController do
       assigns[:child]['_attachments'].size.should == 1
     end
 
+    it "should fetch photo from current_photo_key param if exists as mobile clients send this extra parameter" do
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
+
+      put :update, :id => child.id, :current_photo_key => uploadable_photo_jeff,
+        :child => {
+          :last_known_location => "Manchester",
+          :age => '7'}
+
+      assigns[:child]['last_known_location'].should == "Manchester"
+      assigns[:child]['age'].should == "7"
+      assigns[:child]['_attachments'].size.should == 2
+
+    end
+
     it "should not update history on photo rotation" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff)
 

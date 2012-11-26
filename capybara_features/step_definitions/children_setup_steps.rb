@@ -26,6 +26,9 @@ Given /^the following children exist in the system:$/ do |children_table|
       create_user(user_name)
     end
 
+    User.find_by_user_name(user_name).
+        update_attributes({:organisation => child_hash['created_organisation']}) if child_hash['created_organisation']
+
     child_hash['flagged_at'] = child_hash['flagged_at'] || DateTime.new(2001, 2, 3, 4, 5, 6)
     child_hash['reunited_at'] = child_hash['reunited_at'] || DateTime.new(2012, 2, 3, 4, 5, 6)
     flag, flag_message = child_hash.delete('flag'), child_hash.delete('flag_message')
