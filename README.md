@@ -1,4 +1,5 @@
 RapidFTR
+<<<<<<< HEAD
 =============
 [![Build Status](https://secure.travis-ci.org/jorgej/RapidFTR.png)](http://travis-ci.org/jorgej/RapidFTR)   [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jorgej/RapidFTR)
 
@@ -69,3 +70,8 @@ To run rspec tests, type in the command line:
 
     rake spec
 
+=======
+========
+
+##Appreciate your interest in RapidFTR. This repository is moved to rapidftr organization at [https://github.com/rapidftr/RapidFTR](https://github.com/rapidftr/RapidFTR)
+>>>>>>> upstream/master
