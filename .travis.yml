@@ -36,7 +36,6 @@ script:
 notifications:
   email: false
   irc:
-    use_notice: true
     channels:
       - "irc.freenode.org#rapidftr"
     template:
