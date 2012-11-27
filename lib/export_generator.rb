@@ -79,10 +79,6 @@ class ExportGenerator
     ) if child.primary_photo
     @pdf.y -= 5.mm
     @pdf.text(
-      child.unique_identifier,
-      :align => :center
-    )
-    @pdf.text(
       child.short_id,
       :align => :center
     )
