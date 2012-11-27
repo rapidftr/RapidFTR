@@ -55,7 +55,7 @@ class Child < CouchRestRails::Document
             }
           }"
 
-view_by :duplicates_of,
+  view_by :duplicates_of,
           :map => "function(doc) {
             if (doc.hasOwnProperty('duplicate_of')) {
               emit(doc['duplicate_of'], doc);
@@ -322,6 +322,7 @@ view_by :duplicates_of,
 
     self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
 
+    self['current_photo_key'] = @new_photo_keys.first if @new_photo_keys
     add_to_history(photo_changes_for(@new_photo_keys, @deleted_photo_keys)) unless id.nil?
 
     @new_photo_keys, @deleted_photo_keys = nil, nil
