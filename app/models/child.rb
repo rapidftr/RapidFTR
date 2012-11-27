@@ -236,7 +236,7 @@ view_by :duplicates_of,
   def create_unique_id
     self['unique_identifier'] ||= UUIDTools::UUID.random_create.to_s
   end
-  
+
   def short_id
     self['unique_identifier'].last 7
   end
@@ -394,10 +394,7 @@ view_by :duplicates_of,
   end
 
   def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
-    properties.each_pair do |name, value|
-      self[name] = value unless value == nil
-    end
-    self.set_updated_fields_for user_name
+    update_properties(properties, user_name)
     self.delete_photos(delete_photos)
     self.photo = new_photo
     self.audio = new_audio
@@ -481,6 +478,31 @@ view_by :duplicates_of,
   end
 
   private
+
+  def update_properties(properties, user_name)
+    should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
+    if should_update
+      properties.each_pair do |name, value|
+        self[name] = value unless value == nil
+      end
+      self.set_updated_fields_for user_name
+    else
+      merge_histories(properties['histories'])
+    end
+  end
+
+  def merge_histories(given_histories)
+    current_histories = self['histories']
+    to_be_merged = []
+    (given_histories || []).each do |history|
+      matched = current_histories.find do |c_history|
+        c_history["user_name"] == history["user_name"] && c_history["datetime"] == history["datetime"] && c_history["changes"].keys == history["changes"].keys
+      end
+      to_be_merged.push(history) unless matched
+    end
+    self["histories"] = current_histories.push(to_be_merged).flatten!
+  end
+
   def attachment(key)
     data = read_attachment key
     content_type = self['_attachments'][key]['content_type']
