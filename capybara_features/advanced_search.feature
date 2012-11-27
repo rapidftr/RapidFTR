@@ -219,7 +219,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
-  @javascript
+  # This fails routinely in Travis with a TimeoutError in CouchRest
+  @javascript @wip
    Scenario: Searching by 'Name' and 'Created By'
     Given I am logged in
       And I am on child advanced search page
