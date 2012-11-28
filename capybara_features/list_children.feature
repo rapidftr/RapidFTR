@@ -21,12 +21,10 @@ Feature: Verify in the list of children that
     Then I should see "Basic Identity"
     And I should see "andreas"
 
-    @javascript
+    @wip
   Scenario: A hidden highlighted field must not be visible in Child Summary
     Given I am on the edit form section page for "basic_identity"
     When I check "fields_birthplace"
-      Then I "Hide" selected form fields
-      Then I wait for 10 seconds
-      When I am on the children listing page
-      Then I wait for 20 seconds
+    When I hide selected form sections
+    When I am on the children listing page
     Then I should not see "birthplace"
