@@ -19,8 +19,8 @@ describe "children/edit.html.erb" do
     rendered.should render_template(:partial =>  "_form_section",:collection => [@form_section])
   end
 
-  it "renders a form whose discard button links to the edited child's view page" do
+  it "renders a form whose discard button links to the child listing page" do
     render
-    rendered.should have_tag("a[href='#{child_path(@child)}']")
+    rendered.should have_tag("a[href='#{children_path}']")
   end
 end
