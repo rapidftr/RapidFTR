@@ -6,7 +6,7 @@
   </div>
   <div class="summary_panel">
     <p class="checkbox">
-      <%= check_box_tag "selections[#{summary_row_counter}]", child.id if checkbox %>
+      <%= check_box_tag "selections[#{child_counter}]", child.id if checkbox %>
     </p>
 
     <h2><%= link_to text_to_identify_child(child), child_path(child) %></h2>
@@ -24,16 +24,15 @@
       <% sorted_highlighted_fields.each do |relevant_field| %>
         <div class="summary_item">
           <div class="key"><%= relevant_field[:display_name] %>:</div>
-          <div class="value"><%= child.name %></div>
+          <div class="value"><%= child[relevant_field[:name]] %></div>
         </div>
       <% end %>
 
     <% if child.flag? %>
-
         <div class="summary_item">
-              <div class="key">Flag summary:</div><div class="value"><%= (flag_summary_for_child(child)).html_safe %></div>
+          <div class="key">Flag summary:</div><div class="value"><%= (flag_summary_for_child(child)).html_safe %></div>
         </div>
-  <% end -%>
+    <% end -%>
 
     <div class="summary_item">
       <div class="key">Registered by:</div>
@@ -68,6 +67,5 @@
         <% end %>
         </ul>
     <% end %>
-</div>
 </div>
 <!-- END: item -->

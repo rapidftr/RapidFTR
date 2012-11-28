@@ -54,6 +54,15 @@ Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
   lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }.should raise_error(Capybara::ElementNotFound)
 end
 
+Then /^I should not see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
+  page.find(:xpath, "//a[text()=\"#{full_name}\"]/parent::*/parent::*").should_not have_content(text);
+end
+
+
+Then /^I should see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
+  page.find(:xpath, "//a[text()=\"#{full_name}\"]/parent::*/parent::*").should have_content(text);
+end
+
 Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
   lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }.should_not raise_error(Capybara::ElementNotFound)
 end

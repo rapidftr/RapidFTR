@@ -110,7 +110,7 @@ class ChildrenController < ApplicationController
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
-        
+
         render :json => child.to_json
       end
         
@@ -118,6 +118,8 @@ class ChildrenController < ApplicationController
         @child = update_child_from params
         if @child.save
           flash[:notice] = 'Child was successfully updated.'
+
+          return redirect_to params[:child][:redirect_url] if params[:child][:redirect_url]
           redirect_to @child 
         else
           @form_sections = get_form_sections
