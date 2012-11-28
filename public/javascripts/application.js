@@ -114,6 +114,14 @@ RapidFTR.childPhotoRotation = {
     }
 };
 
+RapidFTR.showDropdown = function(){
+    $(".dropdown_btn").click( function(){
+        var showObj = $(".dropdown",this);
+        showObj.toggleClass("hide");
+    });
+
+}
+
 RapidFTR.Utils = {
     dehumanize: function(val){
         return jQuery.trim(val.toString()).replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
@@ -135,4 +143,6 @@ $(document).ready(function() {
     if (window.location.href.indexOf('login') === -1) {
     IdleSessionTimeout.start();
   }
+    RapidFTR.showDropdown();
+
 });

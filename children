@@ -1,0 +1,138 @@
+            advanced_search_children GET    /children/advanced_search(.:format)                                     {:controller=>"children", :action=>"advanced_search"}
+                 export_csv_children POST   /children/export_csv(.:format)                                          {:controller=>"children", :action=>"export_csv"}
+                export_data_children POST   /children/export_data(.:format)                                         {:controller=>"children", :action=>"export_data"}
+                     search_children GET    /children/search(.:format)                                              {:controller=>"children", :action=>"search"}
+       export_photos_to_pdf_children POST   /children/export_photos_to_pdf(.:format)                                {:controller=>"children", :action=>"export_photos_to_pdf"}
+           export_photo_to_pdf_child GET    /children/:id/export_photo_to_pdf(.:format)                             {:controller=>"children", :action=>"export_photo_to_pdf"}
+                       child_history GET    /children/:child_id/history(.:format)                                   {:controller=>"histories", :action=>"show"}
+                    child_attachment GET    /children/:child_id/attachments/:id(.:format)                           {:controller=>"attachments", :action=>"show"}
+                     child_duplicate POST   /children/:child_id/duplicate(.:format)                                 {:controller=>"duplicates", :action=>"create"}
+                 new_child_duplicate GET    /children/:child_id/duplicate/new(.:format)                             {:controller=>"duplicates", :action=>"new"}
+                            children GET    /children(.:format)                                                     {:controller=>"children", :action=>"index"}
+                                     POST   /children(.:format)                                                     {:controller=>"children", :action=>"create"}
+                           new_child GET    /children/new(.:format)                                                 {:controller=>"children", :action=>"new"}
+                          edit_child GET    /children/:id/edit(.:format)                                            {:controller=>"children", :action=>"edit"}
+                               child GET    /children/:id(.:format)                                                 {:controller=>"children", :action=>"show"}
+                                     PUT    /children/:id(.:format)                                                 {:controller=>"children", :action=>"update"}
+                                     DELETE /children/:id(.:format)                                                 {:controller=>"children", :action=>"destroy"}
+                           child_ids        /children-ids(.:format)                                                 {:controller=>"child_ids", :action=>"all"}
+                          edit_photo GET    /children/:id/photo/edit(.:format)                                      {:controller=>"children", :action=>"edit_photo"}
+                        update_photo PUT    /children/:id/photo(.:format)                                           {:controller=>"children", :action=>"update_photo"}
+                        photos_index        /children/:child_id/photos_index(.:format)                              {:controller=>"child_media", :action=>"index"}
+                       manage_photos        /children/:child_id/photos(.:format)                                    {:controller=>"child_media", :action=>"manage_photos"}
+                         child_audio        /children/:child_id/audio(/:id)(.:format)                               {:controller=>"child_media", :action=>"download_audio"}
+                         child_photo        /children/:child_id/photo/:photo_id(.:format)                           {:controller=>"child_media", :action=>"show_photo"}
+                  child_legacy_photo        /children/:child_id/photo(.:format)                                     {:controller=>"child_media", :action=>"show_photo"}
+          child_select_primary_photo PUT    /children/:child_id/select_primary_photo/:photo_id(.:format)            {:controller=>"children", :action=>"select_primary_photo"}
+          child_legacy_resized_photo        /children/:child_id/resized_photo/:size(.:format)                       {:controller=>"child_media", :action=>"show_resized_photo"}
+                 child_resized_photo        /children/:child_id/photo/:photo_id/resized/:size(.:format)             {:controller=>"child_media", :action=>"show_resized_photo"}
+                     child_thumbnail        /children/:child_id/thumbnail(/:photo_id)(.:format)                     {:controller=>"child_media", :action=>"show_thumbnail"}
+                        child_filter        /children/filter/:status(.:format)                                      {:controller=>"children", :action=>"index"}
+                               users GET    /users(.:format)                                                        {:controller=>"users", :action=>"index"}
+                                     POST   /users(.:format)                                                        {:controller=>"users", :action=>"create"}
+                            new_user GET    /users/new(.:format)                                                    {:controller=>"users", :action=>"new"}
+                           edit_user GET    /users/:id/edit(.:format)                                               {:controller=>"users", :action=>"edit"}
+                                user GET    /users/:id(.:format)                                                    {:controller=>"users", :action=>"show"}
+                                     PUT    /users/:id(.:format)                                                    {:controller=>"users", :action=>"update"}
+                                     DELETE /users/:id(.:format)                                                    {:controller=>"users", :action=>"destroy"}
+                    user_preferences GET    /user_preferences(.:format)                                             {:controller=>"user_preferences", :action=>"index"}
+                                     POST   /user_preferences(.:format)                                             {:controller=>"user_preferences", :action=>"create"}
+                 new_user_preference GET    /user_preferences/new(.:format)                                         {:controller=>"user_preferences", :action=>"new"}
+                edit_user_preference GET    /user_preferences/:id/edit(.:format)                                    {:controller=>"user_preferences", :action=>"edit"}
+                     user_preference GET    /user_preferences/:id(.:format)                                         {:controller=>"user_preferences", :action=>"show"}
+                                     PUT    /user_preferences/:id(.:format)                                         {:controller=>"user_preferences", :action=>"update"}
+                                     DELETE /user_preferences/:id(.:format)                                         {:controller=>"user_preferences", :action=>"destroy"}
+                             devices GET    /devices(.:format)                                                      {:controller=>"devices", :action=>"index"}
+                                     POST   /devices(.:format)                                                      {:controller=>"devices", :action=>"create"}
+                          new_device GET    /devices/new(.:format)                                                  {:controller=>"devices", :action=>"new"}
+                         edit_device GET    /devices/:id/edit(.:format)                                             {:controller=>"devices", :action=>"edit"}
+                              device GET    /devices/:id(.:format)                                                  {:controller=>"devices", :action=>"show"}
+                                     PUT    /devices/:id(.:format)                                                  {:controller=>"devices", :action=>"update"}
+                                     DELETE /devices/:id(.:format)                                                  {:controller=>"devices", :action=>"destroy"}
+            devices_update_blacklist POST   /devices/update_blacklist(.:format)                                     {:controller=>"devices", :action=>"update_blacklist"}
+                               roles GET    /roles(.:format)                                                        {:controller=>"roles", :action=>"index"}
+                                     POST   /roles(.:format)                                                        {:controller=>"roles", :action=>"create"}
+                            new_role GET    /roles/new(.:format)                                                    {:controller=>"roles", :action=>"new"}
+                           edit_role GET    /roles/:id/edit(.:format)                                               {:controller=>"roles", :action=>"edit"}
+                                role GET    /roles/:id(.:format)                                                    {:controller=>"roles", :action=>"show"}
+                                     PUT    /roles/:id(.:format)                                                    {:controller=>"roles", :action=>"update"}
+                                     DELETE /roles/:id(.:format)                                                    {:controller=>"roles", :action=>"destroy"}
+                               admin        /admin(.:format)                                                        {:controller=>"admin", :action=>"index"}
+                            sessions POST   /sessions(.:format)                                                     {:controller=>"sessions", :action=>"create"}
+                         new_session GET    /sessions/new(.:format)                                                 {:controller=>"sessions", :action=>"new"}
+                        edit_session GET    /sessions/:id/edit(.:format)                                            {:controller=>"sessions", :action=>"edit"}
+                             session GET    /sessions/:id(.:format)                                                 {:controller=>"sessions", :action=>"show"}
+                                     PUT    /sessions/:id(.:format)                                                 {:controller=>"sessions", :action=>"update"}
+                                     DELETE /sessions/:id(.:format)                                                 {:controller=>"sessions", :action=>"destroy"}
+          password_recovery_requests POST   /password_recovery_requests(.:format)                                   {:controller=>"password_recovery_requests", :action=>"create"}
+       new_password_recovery_request GET    /password_recovery_requests/new(.:format)                               {:controller=>"password_recovery_requests", :action=>"new"}
+      hide_password_recovery_request DELETE /password_recovery_request/:password_recovery_request_id/hide(.:format) {:controller=>"password_recovery_requests", :action=>"hide"}
+                               login        /login(.:format)                                                        {:controller=>"sessions", :action=>"new"}
+                              logout        /logout(.:format)                                                       {:controller=>"sessions", :action=>"destroy"}
+                         enable_form POST   /form_section/enable(.:format)                                          {:controller=>"form_section", :action=>"enable"}
+                        disable_form        /form_section/disable(.:format)                                         {:controller=>"form_section", :action=>"enable"}
+                          save_order        /form_section/save_form_order(.:format)                                 {:controller=>"form_section", :action=>"save_form_order"}
+                   save_order_single        /form_section/save_field_order(.:format)                                {:controller=>"form_section", :action=>"save_field_order"}
+                      session_active        /active(.:format)                                                       {:controller=>"sessions", :action=>"active"}
+   new_text_field_formsection_fields GET    /formsections/:formsection_id/fields/new_text_field(.:format)           {:controller=>"fields", :action=>"new_text_field"}
+new_numeric_field_formsection_fields GET    /formsections/:formsection_id/fields/new_numeric_field(.:format)        {:controller=>"fields", :action=>"new_numeric_field"}
+   new_select_box_formsection_fields GET    /formsections/:formsection_id/fields/new_select_box(.:format)           {:controller=>"fields", :action=>"new_select_box"}
+     new_textarea_formsection_fields GET    /formsections/:formsection_id/fields/new_textarea(.:format)             {:controller=>"fields", :action=>"new_textarea"}
+ new_radio_button_formsection_fields GET    /formsections/:formsection_id/fields/new_radio_button(.:format)         {:controller=>"fields", :action=>"new_radio_button"}
+   new_date_field_formsection_fields GET    /formsections/:formsection_id/fields/new_date_field(.:format)           {:controller=>"fields", :action=>"new_date_field"}
+           delete_formsection_fields POST   /formsections/:formsection_id/fields/delete(.:format)                   {:controller=>"fields", :action=>"delete"}
+          move_up_formsection_fields POST   /formsections/:formsection_id/fields/move_up(.:format)                  {:controller=>"fields", :action=>"move_up"}
+    new_check_box_formsection_fields GET    /formsections/:formsection_id/fields/new_check_box(.:format)            {:controller=>"fields", :action=>"new_check_box"}
+        move_down_formsection_fields POST   /formsections/:formsection_id/fields/move_down(.:format)                {:controller=>"fields", :action=>"move_down"}
+    toggle_fields_formsection_fields POST   /formsections/:formsection_id/fields/toggle_fields(.:format)            {:controller=>"fields", :action=>"toggle_fields"}
+                  formsection_fields GET    /formsections/:formsection_id/fields(.:format)                          {:controller=>"fields", :action=>"index"}
+                                     POST   /formsections/:formsection_id/fields(.:format)                          {:controller=>"fields", :action=>"create"}
+               new_formsection_field GET    /formsections/:formsection_id/fields/new(.:format)                      {:controller=>"fields", :action=>"new"}
+              edit_formsection_field GET    /formsections/:formsection_id/fields/:id/edit(.:format)                 {:controller=>"fields", :action=>"edit"}
+                   formsection_field GET    /formsections/:formsection_id/fields/:id(.:format)                      {:controller=>"fields", :action=>"show"}
+                                     PUT    /formsections/:formsection_id/fields/:id(.:format)                      {:controller=>"fields", :action=>"update"}
+                                     DELETE /formsections/:formsection_id/fields/:id(.:format)                      {:controller=>"fields", :action=>"destroy"}
+                        formsections GET    /formsections(.:format)                                                 {:controller=>"form_section", :action=>"index"}
+                                     POST   /formsections(.:format)                                                 {:controller=>"form_section", :action=>"create"}
+                     new_formsection GET    /formsections/new(.:format)                                             {:controller=>"form_section", :action=>"new"}
+                    edit_formsection GET    /formsections/:id/edit(.:format)                                        {:controller=>"form_section", :action=>"edit"}
+                         formsection GET    /formsections/:id(.:format)                                             {:controller=>"form_section", :action=>"show"}
+                                     PUT    /formsections/:id(.:format)                                             {:controller=>"form_section", :action=>"update"}
+                                     DELETE /formsections/:id(.:format)                                             {:controller=>"form_section", :action=>"destroy"}
+                        choose_field        /form_section/:formsection_id/choose_field(.:format)                    {:controller=>"fields", :action=>"choose"}
+             published_form_sections        /published_form_sections(.:format)                                      {:controller=>"publish_form_section", :action=>"form_sections"}
+               advanced_search_index GET    /advanced_search(.:format)                                              {:controller=>"advanced_search", :action=>"index"}
+                 new_advanced_search GET    /advanced_search/new(.:format)                                          {:controller=>"advanced_search", :action=>"new"}
+               advanced_search_index        /advanced_search/index(.:format)                                        {:controller=>"advanced_search", :action=>"index"}
+                  form_section_index GET    /form_section(.:format)                                                 {:controller=>"form_section", :action=>"index"}
+                                     POST   /form_section(.:format)                                                 {:controller=>"form_section", :action=>"create"}
+                    new_form_section GET    /form_section/new(.:format)                                             {:controller=>"form_section", :action=>"new"}
+                   edit_form_section GET    /form_section/:id/edit(.:format)                                        {:controller=>"form_section", :action=>"edit"}
+                        form_section GET    /form_section/:id(.:format)                                             {:controller=>"form_section", :action=>"show"}
+                                     PUT    /form_section/:id(.:format)                                             {:controller=>"form_section", :action=>"update"}
+                                     DELETE /form_section/:id(.:format)                                             {:controller=>"form_section", :action=>"destroy"}
+                              fields GET    /fields(.:format)                                                       {:controller=>"fields", :action=>"index"}
+                                     POST   /fields(.:format)                                                       {:controller=>"fields", :action=>"create"}
+                           new_field GET    /fields/new(.:format)                                                   {:controller=>"fields", :action=>"new"}
+                          edit_field GET    /fields/:id/edit(.:format)                                              {:controller=>"fields", :action=>"edit"}
+                               field GET    /fields/:id(.:format)                                                   {:controller=>"fields", :action=>"show"}
+                                     PUT    /fields/:id(.:format)                                                   {:controller=>"fields", :action=>"update"}
+                                     DELETE /fields/:id(.:format)                                                   {:controller=>"fields", :action=>"destroy"}
+           contact_information_index GET    /contact_information(.:format)                                          {:controller=>"contact_information", :action=>"index"}
+                                     POST   /contact_information(.:format)                                          {:controller=>"contact_information", :action=>"create"}
+             new_contact_information GET    /contact_information/new(.:format)                                      {:controller=>"contact_information", :action=>"new"}
+            edit_contact_information GET    /contact_information/:id/edit(.:format)                                 {:controller=>"contact_information", :action=>"edit"}
+                 contact_information GET    /contact_information/:id(.:format)                                      {:controller=>"contact_information", :action=>"show"}
+                                     PUT    /contact_information/:id(.:format)                                      {:controller=>"contact_information", :action=>"update"}
+                                     DELETE /contact_information/:id(.:format)                                      {:controller=>"contact_information", :action=>"destroy"}
+             remove_highlight_fields POST   /highlight_fields/remove(.:format)                                      {:controller=>"highlight_fields", :action=>"remove"}
+                    highlight_fields GET    /highlight_fields(.:format)                                             {:controller=>"highlight_fields", :action=>"index"}
+                                     POST   /highlight_fields(.:format)                                             {:controller=>"highlight_fields", :action=>"create"}
+                 new_highlight_field GET    /highlight_fields/new(.:format)                                         {:controller=>"highlight_fields", :action=>"new"}
+                edit_highlight_field GET    /highlight_fields/:id/edit(.:format)                                    {:controller=>"highlight_fields", :action=>"edit"}
+                     highlight_field GET    /highlight_fields/:id(.:format)                                         {:controller=>"highlight_fields", :action=>"show"}
+                                     PUT    /highlight_fields/:id(.:format)                                         {:controller=>"highlight_fields", :action=>"update"}
+                                     DELETE /highlight_fields/:id(.:format)                                         {:controller=>"highlight_fields", :action=>"destroy"}
+            database_delete_children DELETE /database/delete_children(.:format)                                     {:controller=>"database", :action=>"delete_children"}
+                                root        /(.:format)                                                             {:controller=>"home", :action=>"index"}
+                              jammit        /assets/:package.:extension(.:format)                                   {:extension=>/.+/, :controller=>"jammit", :action=>"package"}

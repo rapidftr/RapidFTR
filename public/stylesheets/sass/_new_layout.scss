@@ -109,7 +109,7 @@ body {
         padding: 5px 10px 10px 0px;
       }
 
-      a.btn {
+      .btn {
         float: right;
       }
 
@@ -190,7 +190,7 @@ body {
 
           }
 
-          a.btn {
+          .btn {
             float: right;
           }
 
@@ -348,7 +348,7 @@ body {
     border:1px dashed #ddd;
     margin-left: 220px;
 
-    img{
+    img, canvas{
       max-width: 500px;
       max-height: 300px;
     }

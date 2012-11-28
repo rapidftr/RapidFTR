@@ -110,7 +110,8 @@ class SessionsController < ApplicationController
           :uri => session_path(session)
         }
       },
-      :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key
+      :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key,
+      :user_org => User.find_by_user_name(session.user_name).organisation
     }
     render( options.merge( :json => json ) )
   end
