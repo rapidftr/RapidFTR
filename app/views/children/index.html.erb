@@ -3,6 +3,20 @@
 <% if can? :create, Child %>
 	<%= link_to content_tag(:span, 'Register New Child', :class => 'create_user'), new_child_path, :class=>'btn' %>
 <% end %>
+
+<% if can?(:export, Child) %>
+    <div class="btn dropdown_btn">
+      <span class="export">Export</span>
+      <div class="dropdown hide">
+        <% if can?(:view_all, Child) %>
+            <%= link_to 'Export All Child Records to CSV', children_path(:format => :csv) %>
+            <%= link_to 'Export All Child Records to PDF', children_path(:format => :pdf) %>
+        <%end%>
+        <%= link_to 'Export Some Records to CSV', new_advanced_search_path %>
+      </div>
+    </div>
+
+<%end%>
 <div class="clearfix"></div>
 
 <div class="filter_bar">
@@ -16,4 +30,3 @@
 
 <br/>
 
-<%= render :partial => "children/footer" %>
