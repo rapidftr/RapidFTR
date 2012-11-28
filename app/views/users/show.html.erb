@@ -7,7 +7,11 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><a href="#">List of Users</a> &gt; View User</h2>
+    <h2><%= link_to 'Users', users_path %> &gt; <%= @user.user_name %>
+      <% if can? :edit, User %>
+          <%= link_to '(Edit)', edit_user_path(@user), :class => 'edit_crumb'%>
+      <% end %>
+    </h2>
 
     <div class="clearfix"></div>
 
@@ -73,10 +77,6 @@
         <% end %>
       </p>
 
-      <% if can? :edit, User %>
-          <%= link_to 'Edit', edit_user_path(@user) %> |
-      <% end %>
-      <%= link_to 'Back', users_path %>
     </fieldset>
     <%= render :partial => "mobile_login_history", :object => @user %>
   </div>

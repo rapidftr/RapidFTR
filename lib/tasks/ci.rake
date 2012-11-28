@@ -1,6 +1,6 @@
 namespace :ci do
 
-  task :build => %w( sunspot:stop sunspot:start couchdb:create spec jasmine:ci cucumber:all )
+  task :build => %w( couchdb:create sunspot:clean_start spec jasmine:ci cucumber:all )
 
   task :default => :build
 

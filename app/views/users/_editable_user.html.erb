@@ -95,7 +95,9 @@
 
     </fieldset>
 
-    <%= submit_button(editable_user.new_record? ? 'Create' : 'Update') %>
+    <div class="btn_panel">
     <!--TODO: After we got the user object in the session replace the DB query with User object-->
-    <%= cancel_button(user_path(User.find_by_user_name(current_user_name))) %>
+      <%= cancel_button(users_path) %>
+      <%= submit_button(editable_user.new_record? ? 'Create' : 'Update') %>
+    </div>
 <% end %>

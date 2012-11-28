@@ -22,10 +22,12 @@
     <% end %>
 
       <% sorted_highlighted_fields.each do |relevant_field| %>
+        <% if relevant_field.enabled? %>
         <div class="summary_item">
           <div class="key"><%= relevant_field[:display_name] %>:</div>
           <div class="value"><%= summary_row[relevant_field[:name]] %></div>
         </div>
+         <% end %>
       <% end %>
 
     <% if summary_row['flag'] == 'true' %>

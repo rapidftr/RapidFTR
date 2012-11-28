@@ -79,5 +79,6 @@ RapidFTR::Application.routes.draw do
 
   end
 
+  match 'database/delete_children' => 'database#delete_children', :via => :delete
   match '/' => 'home#index', :as => :root
 end
