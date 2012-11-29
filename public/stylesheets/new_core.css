@@ -78,19 +78,32 @@ input[type=text], input[type=password], textarea, input[type=file], select {
   -webkit-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  color: black;
+  color: #555555;
   margin: 0px 5px; }
   .btn:hover, .submitButton input:hover {
     background: url(../images/new/bg-gray-btn-hover.png) #bababa repeat-x; }
   .btn span, .submitButton input span {
     display: block;
-    padding: 8px 10px 8px 50px;
+    padding: 7px 10px 7px 41px;
     background-repeat: no-repeat;
-    background-position: 10px center; }
+    background-position: 10px center;
+    background-image: url(../images/new/icons_btn.png); }
+    .btn span:hover, .submitButton input span:hover {
+      color: black; }
   .btn span.create_user, .submitButton input span.create_user {
-    background-image: url(../images/new/icon_create_user.png); }
+    background-position: 0px 0px; }
+  .btn span.download, .submitButton input span.download {
+    background-position: 0px 3px; }
+  .btn span.edit, .submitButton input span.edit {
+    background-position: 0px -61px; }
   .btn span.export, .submitButton input span.export {
-    background-image: url(../images/new/icon_export.png); }
+    background-position: 0px -96px; }
+  .btn span.flag, .submitButton input span.flag {
+    background-position: 0px -134px; }
+  .btn span.log, .submitButton input span.log {
+    background-position: 0px -169px; }
+  .btn span.reunite, .submitButton input span.reunite {
+    background-position: 0px -203px; }
 
 input[type=button], input[type=submit] {
   background: url(../images/new/bg-gray-btn.png) #cfcfcf repeat-x;
@@ -101,7 +114,7 @@ input[type=button], input[type=submit] {
   -webkit-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  color: black;
+  color: #555555;
   padding: 5px 10px;
   margin-top: 10px; }
 
@@ -252,6 +265,8 @@ a.mark_as_duplicate {
     .dropdown a:hover {
       background: #ddd;
       color: #333; }
+  .dropdown .mark-as-form {
+    padding: 10px; }
 
 body {
   background: url(../images/new/bg_body.png) repeat-x;
