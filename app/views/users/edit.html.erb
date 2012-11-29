@@ -7,7 +7,7 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><a href="#">List of Users</a> &gt; Edit User</h2>
+    <h2><%= link_to 'Users', users_path %> &gt; <%= @user.user_name %></h2>
     <%= render :partial => "editable_user", :object => @user %>
     <% if is_admin? %>
         <%= render :partial => "mobile_login_history", :object => @user %>

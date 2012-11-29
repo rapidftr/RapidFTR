@@ -26,7 +26,7 @@ services:
   - couchdb
 
 before_script:
-  - bundle exec rake couchdb:create sunspot:start --trace
+  - bundle exec rake couchdb:create sunspot:clean_start --trace
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
@@ -35,4 +35,8 @@ script:
 
 notifications:
   email: false
-  irc: "irc.freenode.org#rapidftr"
+  irc:
+    channels:
+      - "irc.freenode.org#rapidftr"
+    template:
+      - "[%{repository}] [%{commit}] [%{author}] %{message} - %{build_url}"

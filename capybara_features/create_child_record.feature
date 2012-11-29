@@ -1,4 +1,4 @@
-Feature:
+ Feature:
   So that we can keep track of children that are found in the field, a user should be able to go to a website and upload
   basic information about the lost child.
 
@@ -42,6 +42,6 @@ Feature:
   Scenario: List on children link should link to Children List page
     Given I am logged in as a user with "Register Child" permission
     And I am on new child page
-    When I follow "List of Children"
+    When I follow "Children"
     Then I should be on children listing page
 
