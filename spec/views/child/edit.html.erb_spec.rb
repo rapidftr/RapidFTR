@@ -7,6 +7,9 @@ describe "children/edit.html.erb" do
     assign(:form_sections, [@form_section])
     @child = Child.create(:name => "name")
     assign(:child, @child)
+    @user = User.new
+    @user.stub(:permissions => Permission::USERS[:create_and_edit])
+    controller.stub(:current_user).and_return(@user)
   end
 
   it "renders a form that posts to the children url" do
