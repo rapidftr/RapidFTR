@@ -1,4 +1,4 @@
-<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %></h1>
+<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
 
 <% if can?(:export, Child) %>
     <div class="btn dropdown_btn">

@@ -49,7 +49,7 @@ $(function() {
 });
 </script>
 <% end %>
-<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %></h1>
+<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
 <% if can? :update, @child %>
     <%= link_to content_tag(:span, 'Edit', :class => 'edit'), edit_child_path(@child), :class=>'btn' %>
 <% end %>
