@@ -4,7 +4,8 @@ server {
 }
 
 server {
-  listen <%= deploy_port.to_i + 1 %> ssl;
+  listen <%= deploy_port.to_i + 1 %>;
+  ssl on;
 
   passenger_enabled on;
   rails_env <%= deploy_env %>;
