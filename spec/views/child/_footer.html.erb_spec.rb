@@ -11,6 +11,7 @@ describe 'children/_footer.html.erb' do
     it do
       @user.stub(:permissions => permissions)
       render :partial => "children/footer"
+      p "***", rendered, "**",have_tag("a[href='#{@url}']")
       rendered.should have_tag("a[href='#{@url}']")
     end
   end
@@ -19,6 +20,7 @@ describe 'children/_footer.html.erb' do
     it do
       @user.stub(:permissions => permissions)
       render :partial => "children/footer"
+      p "###",@url
       rendered.should_not have_tag("a[href='#{@url}']")
     end
   end
