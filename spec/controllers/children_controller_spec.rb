@@ -203,6 +203,14 @@ describe ChildrenController do
       get(:show, :format => 'csv', :id => "37")
     end
 
+    it "should set current photo key as blank instead of nil" do
+      child = Child.create('last_known_location' => "London")
+      child.create_unique_id
+      Child.stub!(:get).with("37").and_return(child)
+      assigns[child[:current_photo_key]] == ""
+      get(:show, :format => 'json', :id => "37")
+    end
+
     it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
       FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])

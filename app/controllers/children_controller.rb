@@ -45,7 +45,10 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
-      format.json { render :json => @child.to_json }
+
+      format.json {
+        render :json => @child.compact.to_json
+      }
       format.csv do
         authorize! :export, Child
         render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
@@ -93,7 +96,9 @@ class ChildrenController < ApplicationController
         flash[:notice] = 'Child record successfully created.'
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
-        format.json { render :json => @child.to_json }
+        format.json {
+          render :json => @child.compact.to_json
+        }
       else
         format.html {
           @form_sections = get_form_sections
