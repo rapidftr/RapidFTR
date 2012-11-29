@@ -76,9 +76,6 @@
     </div>
 
     <div class="side-tab-content">
-      <h2><%= link_to "Children", children_path %> &gt; <%= @child.name %></h2>
-      <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
-      <div class="clearfix"></div>
       <%= render :partial => "form_section", :collection => @form_sections %>
       <div class="btn_panel">
         <%= discard_button children_path %>
