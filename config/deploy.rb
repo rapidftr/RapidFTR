@@ -1,15 +1,27 @@
 require "bundler/capistrano"
 
+def config(variable, description)
+  value = exists?(variable) ? fetch(variable) : nil
+  if value.to_s.empty? and $stdout.isatty
+    print description, ": "
+    value = $stdin.gets.strip
+  end
+
+  raise "#{description} not provided" if value.to_s.empty?
+  set variable, value
+end
+
+config :deploy_server, "Deploy to Server"
+config :deploy_user, "User Name"
+config :deploy_env, "RAILS_ENV"
+config :deploy_port, "HTTP Port"
+
 set :application, "RapidFTR"
-set :deploy_env, ENV['RAILS_ENV']
-set :deploy_domain, "#{deploy_env}.rapidftr.com"
 set :deploy_dir, "/srv/rapid_ftr_#{deploy_env}"
 
-raise "Rails env not specified" if deploy_env.nil? or deploy_env.empty?
-
-server "li301-66.members.linode.com", :web, :app, :db
-default_run_options[:pty] = true  # Must be set for the password prompt
-set :user, "admin"  # The server's user for deploys
+server deploy_server, :web, :app, :db
+default_run_options[:pty] = $stdout.isatty
+set :user, deploy_user
 set :deploy_to, deploy_dir
 
 set :scm, :git
@@ -24,10 +36,10 @@ set :branch, fetch(:branch, "master")
 load 'config/recipes/base'
 load 'config/recipes/deploy'
 load 'config/recipes/db'
-# load 'config/recipes/sunspot'
+load 'config/recipes/sunspot'
 
 before 'deploy:update_code', 'deploy:create_release_dir'
-after  'deploy:update', 'deploy:setup_application', 'deploy:setup_nginx', 'db:migrate'
+after  'deploy:update', 'deploy:setup_application', 'deploy:setup_nginx', 'db:migrate', 'sunspot:clean_start', 'deploy:restart'
 
 #use RAILS_ENV=<env> cap deploy:pending and cap deploy:pending:diff to find out the diff between the master and the
 #current deployed revision in the server.
