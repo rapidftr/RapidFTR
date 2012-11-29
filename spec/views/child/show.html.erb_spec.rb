@@ -12,6 +12,7 @@ describe "children/show.html.erb" do
       @form_section = FormSection.new :unique_id => "section_name", :enabled => "true"
       @child = Child.create(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :photo => uploadable_photo_jeff)
       @child.stub!(:has_one_interviewer?).and_return(true)
+      @child.stub!(:short_id).and_return('2341234')
 
       assign(:form_sections,[@form_section])
       assign(:child, @child)
@@ -101,6 +102,7 @@ describe "children/show.html.erb" do
         child = Child.create(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob",
         :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
         child.stub!(:has_one_interviewer?).and_return(true)
+        child.stub!(:short_id).and_return('2341234')
 
         user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
 
@@ -126,13 +128,13 @@ describe "children/show.html.erb" do
     it "should not show links to export when user doesn't have appropriate permissions" do
       @user.stub!(:has_permission?).with(:export, Child).and_return(false)
       render
-      rendered.should have_tag(".export_record_link")      
+      rendered.should have_tag("a[href='#{child_path(@child,:format => :csv)}']")
     end
     
     it "should show links to export when user has appropriate permissions" do
       @user.stub!(:has_permission?).with(:export, Child).and_return(true)
       render
-      rendered.should have_tag(".export_record_link")      
+      rendered.should have_tag("a[href='#{child_path(@child,:format => :csv)}']")
     end
     
   end
