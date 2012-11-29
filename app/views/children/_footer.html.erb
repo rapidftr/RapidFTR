@@ -2,18 +2,4 @@
   <p><%= link_to "Back",:back %></p>
 </div>
 
-<% if can?(:export, Child) %>
-  <div class="float_right">
-    <% if can?(:view_all, Child) %>
-      <span>
-          <%= link_to 'Export All Child Records to CSV', children_path(:format => :csv) %> |
-      </span>
-      <span>
-          <%= link_to 'Export All Child Records to PDF', children_path(:format => :pdf) %> |
-      </span>
-    <%end%>
-    <span>
-        <%= link_to 'Export Some Records to CSV', new_advanced_search_path %>
-    </span>
-  </div>
-<%end%>
+

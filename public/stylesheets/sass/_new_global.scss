@@ -104,23 +104,26 @@ input[type=text], input[type=password], textarea, input[type=file], select {
   border: 1px solid #9f9f9f;
   @include borderRadius(5px);
   color: $btn-text-color;
-}
+  margin:0px 5px;
 
-.btn:hover {
-  background: $bg-gray-btn-hover;
-}
+  &:hover{
+    background: $bg-gray-btn-hover;
+  }
 
-.btn {
   span {
     display: block;
     padding: 8px 10px 8px 50px;
     background-repeat: no-repeat;
     background-position: 10px center;
   }
+
   span.create_user {
     background-image: url(../images/new/icon_create_user.png);
   }
 
+  span.export {
+    background-image: url(../images/new/icon_export.png);
+  }
 }
 
 input[type=button], input[type=submit] {
@@ -332,4 +335,26 @@ a.mark_as_duplicate {
   float: left;
   display: block;
   padding-right:2px;
+}
+
+.dropdown{
+  background:#eee;
+  position:absolute;
+  margin-top:2px;
+  border:1px solid #9F9F9F;
+  @include borderRadius(3px);
+  z-index: 999;
+
+  a{
+    display: block;
+    padding:7px 10px;
+    border-bottom: 1px dashed #ddd;
+    color:#666;
+
+
+    &:hover{
+      background:#ddd;
+      color:#333;
+    }
+  }
 }

@@ -33,7 +33,7 @@ Feature: Manage Users
 
   Scenario: On the edit User page, the breadcrumb consists of Edit User link and User Name
     When I follow "Edit" within "#user-row-jerry"
-    Then I should see "List of Users > jerry"
+    Then I should see "Users > jerry"
     Then I follow "Users"
    And I am on manage users page
 

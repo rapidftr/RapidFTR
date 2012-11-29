@@ -49,7 +49,7 @@ $(function() {
 });
 </script>
 <% end %>
-<h1>Children</h1>
+<h1><%= link_to 'Children', children_path %> &gt; <%= @child.name %><%= link_to ' (Edit)', edit_child_path(@child), :class => 'edit_crumb' %></h1>
 
     <% content_for :stylesheet do %>
       <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
