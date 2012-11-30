@@ -70,18 +70,21 @@ class ExportGenerator
     Clock.now.strftime("%Y%m%d")
   end
 
-  def add_child_photo(child)
+  def add_child_photo(child, with_full_id = false)
     @pdf.image(
       child.primary_photo.data,
       :position => :center,
       :vposition => :top,
       :fit => @image_bounds
     ) if child.primary_photo
+
+    if with_full_id
+      @pdf.y -= 5.mm
+      @pdf.text child.unique_identifier, :align => :center
+    end 
+
     @pdf.y -= 5.mm
-    @pdf.text(
-      child.short_id,
-      :align => :center
-    )
+    @pdf.text child.short_id, :align => :center
   end
 
   def add_child_details(child)
@@ -103,7 +106,7 @@ class ExportGenerator
   end
 
   def add_child_page(child)
-    add_child_photo(child)
+    add_child_photo(child, true)
     add_child_details(child)
   end
 

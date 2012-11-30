@@ -167,6 +167,10 @@ class Child < CouchRestRails::Document
     end
   end
 
+  def ordered_histories
+    (self["histories"] || []).sort{|that, this| DateTime.parse(this["datetime"]) <=> DateTime.parse(that["datetime"])}
+  end
+
   def validate_last_updated_at
  		begin
  			if self['last_updated_at']
