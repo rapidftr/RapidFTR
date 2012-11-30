@@ -65,6 +65,12 @@ When /^I create the following child:$/ do |table|
   post(children_path(params), {:child => table.rows_hash})
 end
 
+When /^I create the following device:$/ do |table|
+  params={}
+  params[:format] ||= 'json'
+  post(devices_path(params), {:device => table.rows_hash})
+end
+
 Then /^the following child should be returned:$/ do |table|
   json_response = JSON.parse(last_response.body)
   table.rows_hash.each do |key,value|

@@ -137,6 +137,10 @@ module NavigationHelpers
       when /roles index page/
         roles_path
 
+      when /devices listing page/
+        devices_path
+
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #
