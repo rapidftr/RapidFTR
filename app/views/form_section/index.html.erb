@@ -20,9 +20,9 @@
 <div class="clearfix"></div>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
-<div class="flash" id="successNotice" style="display:none;">
-         <p class="notice">Order is successfully saved. </p>
-</div>
+    <div class="flash" id="successNotice" style="display:none;">
+             <p class="notice">Order is successfully saved. </p>
+    </div>
 <p></p>
 
 <%= form_tag enable_form_url, :id => 'enable_or_disable_form_section', :method => :post, :name => 'sections'  do -%>
@@ -76,7 +76,7 @@
 <div class="formSectionButtons">
   <input type="submit" name="Enable" value="Show" id="enable_form" class="btn"/>
   <input type="submit" name="Disable" value="Hide" id="disable_form" class="btn"/>
-  <input type="submit" name="SaveOrder" value="Save Order" id="save_order" class="btn" />
+  <input type="button" name="SaveOrder" value="Save Order" id="save_order" class="btn" />
 </div>
 <div class="backLink">
   <%= link_with_confirm "Back", admin_path() %>

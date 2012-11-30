@@ -9,9 +9,9 @@
     </thead>
     <tbody id="highlighted-fields">
       <tr class="add-field-section">
-       <td></td>
-       <td></td>
-       <td><a href="javascript:void(0)" class="add_field">add</a></td>
+        <td><a href="javascript:void(0)" class="add_field">add</a></td>
+        <td></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -67,6 +67,6 @@ $(".remove_field").live("click", function(){
 
 </script>
 
-<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" , 
+<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" ,
                                                           :on_item_select => "updateWithSelectedItem", 
                                                           :prev_selected_field_selector => ".highlighted-field"} %>
