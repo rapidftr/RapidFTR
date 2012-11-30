@@ -164,7 +164,7 @@ def match_value (input, match_text)
   checkval = checkval || (match_text == "%SOME_FIELD_ARRAY%" && input.class.should == Array && check_field_array_validity(input))
 
   #check for field type?
-  checkval = checkval || (match_text == "%SOME_FIELD_TYPE%" && (input == "text_field" || input == "select_box" || input == "textarea" || input == "photo_upload_box" || input == "audio_upload_box" || input == "radio_button" || input == "check_box" || input == "numeric_field" || input == "date_field"))
+  checkval = checkval || (match_text == "%SOME_FIELD_TYPE%" && (input == "text_field" || input == "select_box" || input == "textarea" || input == "photo_upload_box" || input == "audio_upload_box" || input == "radio_button" || input == "check_boxes" || input == "numeric_field" || input == "date_field"))
 
   checkval.should be_true
 end
