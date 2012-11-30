@@ -6,7 +6,7 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
-    step %Q{I attach the file "#{photo_path}" to "child[photo]0"}
+    step %Q{I attach the file "#{photo_path}" to "child_photo0"}
 end
 
 When /^I attach an audio file "([^"]*)"$/ do |audio_path|
@@ -88,6 +88,7 @@ Given /^I am editing an existing child record$/ do
   child = Child.new
   child["birthplace"] = "haiti"
   child.photo = uploadable_photo
+  child["unique_identifier"] = "UNIQUE_IDENTIFIER"
   raise "Failed to save a valid child record" unless child.save
 
   visit children_path+"/#{child.id}/edit"
