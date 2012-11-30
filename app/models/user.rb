@@ -27,10 +27,10 @@ class User < CouchRestRails::Document
 
   view_by :user_name,
           :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-             {
-                emit(doc['user_name'],doc);
-             }
+                if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+                {
+                     emit(doc['user_name'],doc);
+                }
           }"
   view_by :full_name,
           :map => "function(doc) {
@@ -39,6 +39,27 @@ class User < CouchRestRails::Document
                 emit(doc['full_name'],doc);
              }
           }"
+
+  view_by :user_name_filter_view,
+          :map => "function(doc) {
+                if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+                {
+                    emit(['all',doc['user_name']],doc);
+                    if(doc['disabled'] == 'false')
+                      emit(['active',doc['user_name']],doc);
+                }
+          }"
+  view_by :full_name_filter_view,
+          :map => "function(doc) {
+              if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+             {
+                emit(['all',doc['full_name']],doc);
+                if(doc['disabled'] == 'false')
+                  emit(['active',doc['full_name']],doc);
+
+             }
+          }"
+
 
 
   before_save :make_user_name_lowercase, :encrypt_password
