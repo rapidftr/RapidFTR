@@ -5,8 +5,11 @@ describe "children/edit.html.erb" do
   before :each do
     @form_section = FormSection.new :unique_id => "section_name", :enabled=>"true"
     assign(:form_sections, [@form_section])
-    @child = Child.create(:name => "name")
+    @child = Child.create(:name => "name", :unique_identifier => '12341234123')
     assign(:child, @child)
+    @user = User.new
+    @user.stub(:permissions => Permission::USERS[:create_and_edit])
+    controller.stub(:current_user).and_return(@user)
   end
 
   it "renders a form that posts to the children url" do

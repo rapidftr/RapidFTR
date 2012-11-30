@@ -115,12 +115,18 @@ RapidFTR.childPhotoRotation = {
 };
 
 RapidFTR.showDropdown = function(){
-    $(".dropdown_btn").click( function(){
-        var showObj = $(".dropdown",this);
-        showObj.toggleClass("hide");
+    $(".dropdown_btn").click( function(event){
+        $(".dropdown").not(this).hide();
+        $(".dropdown",this).show();
+        event.stopPropagation();
     });
-
-}
+    $(".dropdown").click(function(event){
+        event.stopPropagation();
+    });
+    $('html').click(function(event){
+        $(".dropdown").hide();
+    });
+};
 
 RapidFTR.Utils = {
     dehumanize: function(val){

@@ -2,7 +2,7 @@ def template(from, to)
   temp = "/tmp/#{File.basename to}"
   erb = File.read(File.expand_path("../templates/#{from}", __FILE__))
   put ERB.new(erb).result(binding), temp
-  run "mv #{temp} #{to}"
+  sudo "mv #{temp} #{to}"
 end
 
 def run_rake(task, options={}, &block)

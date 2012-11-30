@@ -92,6 +92,11 @@ class Child < CouchRestRails::Document
     super *args
   end
 
+  def compact
+    self['current_photo_key'] = '' if self['current_photo_key'].nil?
+    self
+  end
+
   def field_definitions
     @field_definitions ||= FormSection.all_enabled_child_fields
   end

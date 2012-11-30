@@ -149,6 +149,21 @@ module RapidFTR
       ]	            	            
       FormSection.create!("name" =>"Interview Details", "enabled"=>true, :description =>"", :order=> 9, :unique_id=>"interview_details", :fields => interview_details_fields)   	            	            
 
+       if Rails.env = "android"
+         automation_form_fields =[
+               Field.new("display_name" => "Automation TextField" ,"type" => "text_field"),
+               Field.new("display_name" => "Automation TextArea","type" => "textarea"),
+               Field.new("display_name" => "Automation CheckBoxes", "type" =>"check_boxes" ,"option_strings" =>["Check 1","Check 2","Check 3"]) ,
+               Field.new("display_name" => "Automation Select", "type" => "select_box","option_strings"=>["Select 1","Select 2","Select 3"]),
+               Field.new("display_name" => "Automation Radio", "type" => "radio_button","option_strings"=>["Radio 1","Radio 2", "Radio 3"]),
+               Field.new("display_name" => "Automation Number","type" => "numeric_field"),
+               Field.new("display_name" => "Automation Date", "type" => "date_field"),
+               Field.new("display_name" => "Hidden TextField" ,"type" => "text_field" ,"enabled" =>false)
+
+         ]
+         FormSection.create!("name" => "Automation Form", "enabled" => true, :description => "Automation Form" , :order => 10, :fields => automation_form_fields)
+
+       end
       return true
     end
   end

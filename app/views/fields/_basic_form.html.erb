@@ -1,4 +1,4 @@
-<h1 class="no_border">Forms</h1>
+<h1 class="no_border"><%= link_to 'Form', formsections_path %> &gt; <%= link_to @form_section.name, edit_form_section_path(@form_section) %></h1>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
     <%= form_for @field, :url => url, :html => {:class => ""} do |f| %>
@@ -11,12 +11,12 @@
           <%= render :partial => "common", :locals => {:f => f} %>
         </fieldset>
         <br>
-
-        <p class='submitButton'>
+        <div class="btn_panel">
+          <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
+          <p class='submitButton'>
           <%= f.submit 'Save' %>
         </p>
-
-        <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
+        </div>
     <% end %>
   </div>
 </div>

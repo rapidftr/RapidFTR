@@ -74,7 +74,7 @@ describe ChildMediaController do
 
       get :show_thumbnail, :child_id => "1", :photo_id => "other"
 
-      thumbnail = to_thumbnail(60, uploadable_photo.original_filename)
+      thumbnail = to_thumbnail(160, uploadable_photo.original_filename)
       response.should represent_inline_attachment(thumbnail)
     end
 
