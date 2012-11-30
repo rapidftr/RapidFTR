@@ -41,13 +41,13 @@
             <tr>
               <td><%= role.name %></td>
               <td><%= truncate(role.description, :length => 40) %></td>
-             <% if can?(:edit, Role) %>
-              <td><%= link_to("Edit", edit_role_path(role))%></td>
-             <% end %>
               <% if can?(:view, Role) %>
-              <td><%= link_to("Show", role_path(role))%></td>
-             <% end %>
-      </tr>
+                  <td><%= link_to("Show", role_path(role))%></td>
+            <% end %>
+              <% if can?(:edit, Role) %>
+                  <td><%= link_to("Edit", edit_role_path(role))%></td>
+              <% end %>
+            </tr>
         <% end %>
       </tbody>
     </table>

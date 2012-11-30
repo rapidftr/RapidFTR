@@ -47,6 +47,20 @@ Then /^user "(.+)" should not be disabled$/ do |username|
   User.find_by_user_name(username).should_not be_disabled
 end
 
+Then /^device "(.+)" should be blacklisted/ do |imei|
+  devices = Device.find_by_imei(imei)
+  devices.each do |device|
+    device[:blacklisted].should be_true
+  end
+end
+
+Then /^device "(.+)" should not be blacklisted/ do |imei|
+  devices = Device.find_by_imei(imei)
+  devices.each do |device|
+    device[:blacklisted].should be_false
+  end
+end
+
 Given /^the following admin contact info:$/ do |table|
   contact_info = table.hashes.inject({}) do |result, current|
     result[current["key"]] = current["value"]
@@ -54,6 +68,13 @@ Given /^the following admin contact info:$/ do |table|
   end
   contact_info[:id] = "administrator"
   ContactInformation.create contact_info
+end
+
+Given /^I have the following devices:$/ do |table|
+  table.hashes.each do |row_hash|
+    Device.create(row_hash)
+  end
+  p Device.all
 end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|

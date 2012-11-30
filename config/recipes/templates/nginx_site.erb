@@ -1,13 +1,10 @@
 server {
-  # Temporary hack until we get the DNS entries right in our newly provisioned linode.
-  #server_name <%= deploy_domain %>;
-  listen 80;
-  rewrite ^(.*)$ https://$host$1 redirect;
+  listen <%= deploy_port %>;
+  rewrite ^(.*)$ https://$host:<%= deploy_port.to_i + 1%>$1 redirect;
 }
 
 server {
-  server_name <%= deploy_domain %>;
-  listen 443;
+  listen <%= deploy_port.to_i + 1 %>;
   ssl on;
 
   passenger_enabled on;
@@ -20,17 +17,16 @@ server {
 
   #Need to change this accordingly once we move to rails3.1
   location ~* ^/(images|javascripts|stylesheets)/ {
-  # Per RFC2616 - 1 year maximum expiry
-  # http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-  expires 1y;
-  add_header Cache-Control public;
+    # Per RFC2616 - 1 year maximum expiry
+    # http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+    expires 1y;
+    add_header Cache-Control public;
 
-  # Some browsers still send conditional-GET requests if there's a
-  # Last-Modified header or an ETag header even if they haven't
-  # reached the expiry date sent in the Expires header.
-  add_header Last-Modified "";
-  add_header ETag "";
-  break;
-}
-
+    # Some browsers still send conditional-GET requests if there's a
+    # Last-Modified header or an ETag header even if they haven't
+    # reached the expiry date sent in the Expires header.
+    add_header Last-Modified "";
+    add_header ETag "";
+    break;
+  }
 }

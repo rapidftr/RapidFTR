@@ -375,6 +375,15 @@ describe ChildrenController do
       child['last_updated_by_full_name'].should=='Bill Clinton'
     end
 
+    it "should not set current_photo_key if photo is not passed" do
+      child = Child.new('name' => 'some name')
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child
+    end
+
   end
 
   describe "GET search" do

@@ -20,7 +20,7 @@ class ChildMediaController < ApplicationController
 
   def show_thumbnail
     image = MiniMagick::Image.from_blob(@attachment.data.read)
-    thumbnail = image.resize "60x60"
+    thumbnail = image.resize "160x160"
     send_data(thumbnail.to_blob, :type => @attachment.content_type, :disposition => 'inline')
   end
 

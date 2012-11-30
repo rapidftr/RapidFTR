@@ -22,7 +22,7 @@ Feature: Manage Users
   Scenario: Admins should be able view himself
      Then I should see "Show"
     Then I should see "Edit"
-     Then I should not see "Delete User" within "#user-row-admin"
+     Then I should not see "Delete" within "#user-row-admin"
      Then I should see "Back"
      Then I should see "Create User"
 

@@ -191,6 +191,16 @@ describe Child do
       child['last_updated_by'].should == 'jdoe'
     end
 
+
+    it "should assign histories order by datetime of history" do
+      child = Child.new()
+      first_history = mock("history", :[] => "2010-01-01 01:01:02UTC")
+      second_history = mock("history", :[] => "2010-01-02 01:01:02UTC")
+      third_history = mock("history", :[] => "2010-01-02 01:01:03UTC")
+      child["histories"] = [first_history, second_history, third_history]
+      child.ordered_histories.should == [third_history, second_history, first_history]
+    end
+
     it "should populate last_updated_at field with the time of the update" do
       Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = Child.new
