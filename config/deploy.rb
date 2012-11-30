@@ -2,19 +2,24 @@ require "bundler/capistrano"
 
 def config(variable, description)
   value = exists?(variable) ? fetch(variable) : nil
+  if value.nil? and ENV[variable]
+    value = ENV[variable]
+  end
   if value.to_s.empty? and $stdout.isatty
-    print description, ": "
-    value = $stdin.gets.strip
+    value = Capistrano::CLI.ui.ask(description).strip
   end
 
   raise "#{description} not provided" if value.to_s.empty?
   set variable, value
 end
 
-config :deploy_server, "Deploy to Server"
-config :deploy_user, "User Name"
-config :deploy_env, "RAILS_ENV"
-config :deploy_port, "HTTP Port"
+config "deploy_server", "Deploy to Server"
+config "deploy_user", "User Name"
+config "deploy_env", "RAILS_ENV"
+config "deploy_port", "HTTP Port"
+
+#Use the below script to deploy the app with environment variables.
+#Ex: RAILS_ENV=android cap deploy_server=151.236.218.124 deploy_user=admin deploy_env=android deploy_port=5000  deploy
 
 set :application, "RapidFTR"
 set :deploy_dir, "/srv/rapid_ftr_#{deploy_env}"
