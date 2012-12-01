@@ -19,9 +19,10 @@ config :deploy_port, "HTTP Port"
 
 set :deploy_port_https, deploy_port.to_i + 1  unless exists?(:deploy_port_https)
 set :deploy_port_solr,  deploy_port.to_i + 2  unless exists?(:deploy_port_solr)
+set :ssh_options, {:keys => %w{/root/.ssh/id_rsa} } if ENV["ci"]
 
 #Use the below script to deploy the app with environment variables.
-#Ex: RAILS_ENV=android cap deploy_server=151.236.218.124 deploy_user=admin deploy_env=android deploy_port=5000  deploy
+#Ex: cap deploy_server=xxx.xxx.xxx.xxx deploy_user=admin deploy_env=android deploy_port=5000  deploy
 
 set :application, "RapidFTR"
 set :deploy_dir, "/srv/rapid_ftr_#{deploy_env}"
