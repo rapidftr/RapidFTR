@@ -8,7 +8,7 @@ namespace :deploy do
   desc "Restart passenger"
   task :restart do
     run "touch #{File.join(current_path, 'tmp', 'restart.txt')}"
-    sudo "/opt/local/nginx/sbin/nginx -s reload"
+    run "/opt/local/nginx/sbin/nginx -s reload"
   end
 
   desc "Create releases and log folder"
