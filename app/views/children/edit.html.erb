@@ -83,6 +83,12 @@
         <div class="clearfix"></div>
       </div>
     </div>
+
+    <div class="hidden_params">
+      <% (params["delete_child_photo"] || {}).each do |key, value| %>
+        <%= hidden_field_tag "delete_child_photo[#{key}]", value %>
+      <% end %>
+    </div>
   </div>
 
 <% end %>
