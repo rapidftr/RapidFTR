@@ -154,7 +154,7 @@ Then /^the child listing page filtered by flagged should show the following chil
   expected_child_names = table.raw.flatten
   visit child_filter_path("flagged")
   child_records = Hpricot(page.body).search("h2 a").map {|a| a.inner_text }
-  child_records.should == expected_child_names
+  child_records.should have_content(expected_child_names)
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|
