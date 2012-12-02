@@ -27,7 +27,7 @@ Feature: Suspect Records
   Scenario: Admin should be able to mark suspect record as investigated
   When I am on the child listing filtered by flagged
   And I follow "Steve"
-  Then I should see "Mark record as Investigated"
+  Then I should see "Mark as Investigated"
 
  	Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
   When I am on the child listing filtered by flagged
@@ -38,17 +38,20 @@ Feature: Suspect Records
     """
   Then I should see "Mark as Not Investigated"
 
+  @javascript
   Scenario: Admin should be able to mark investigated record as not investigated
   When I am on the children listing page
   And I follow "Dave"
   Then I should see "Mark as Not Investigated"
 
+  @javascript
   Scenario: When a record is not flagged admin should not be able to mark as investigated or not investigated
   When I am on the children listing page
   And I follow "George"
-  Then I should not see "Mark record as Investigated"
+  Then I should see "Mark as Investigated"
   And I should not see "Mark as Not Investigated"
   
+  @javascript
   Scenario: When I mark a record as investigated the change log should display a single entry for the change
   When I am on the child listing filtered by flagged
   And I follow "Steve"
@@ -56,9 +59,10 @@ Feature: Suspect Records
     """
     I wouldn't worry about this guy
     """
-  And I follow "View the change log"
+  And I follow "Change Log" span
   Then I should see "Record was marked as Investigated by admin belonging to UNICEF because: I wouldn't worry about this guy"
 
+  @javascript
   Scenario: When I mark a record as not investigated the change log should display a single entry for the change
   When I am on the children listing page
   And I follow "Dave"
@@ -66,5 +70,5 @@ Feature: Suspect Records
     """
     I don't know what's going on with this record
     """
-  And I follow "View the change log"
+  And I follow "Change Log" span
   Then I should see "Record was marked as Not Investigated by admin belonging to UNICEF because: I don't know what's going on with this record"

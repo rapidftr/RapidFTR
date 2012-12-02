@@ -39,7 +39,7 @@ Feature: Hide Child Record Form Fields
      And I follow "Family details"
      And I fill in "Name" with "Will"
     When I press "Save"
-    Then I follow "Export this Record"
+    Then I follow "Export" span
     Then I follow "Export to PDF"
      And I should receive a PDF file
      And the PDF file should contain the string "Visible Field"

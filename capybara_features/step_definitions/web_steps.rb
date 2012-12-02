@@ -34,6 +34,10 @@ When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, sele
   end
 end
 
+When /^I follow "(.+)" span$/ do |locator|
+  find(:xpath, "//span[text()='#{locator}']").click
+end
+
 When /^I cannot follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   exception=nil
   begin

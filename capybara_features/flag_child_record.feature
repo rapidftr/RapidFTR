@@ -5,7 +5,7 @@ Feature:
   So that I can identify suspect and duplicate records to admin
 
   Background:
-   Given "Praful" logs in with "Edit Child,View And Search Child" permissions
+   Given "Praful" logs in with "Edit Child,View And Search Child,Export to Photowall/CSV/PDF" permissions
    And the following children exist in the system:
       | name   |
       | Peter  |
@@ -26,7 +26,7 @@ Feature:
 
 #    And I follow "View All Children"
 #    Then I should see flagged details
-    
+
   Scenario: Removing flag from a child record
     Given I flag "Peter" as suspect
     When I am on the child record page for "Peter"

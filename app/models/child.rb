@@ -247,7 +247,7 @@ class Child < CouchRestRails::Document
   end
 
   def short_id
-    self['unique_identifier'].last 7
+    (self['unique_identifier'] || "").last 7
   end
 
   def set_creation_fields_for(user)
