@@ -1,10 +1,7 @@
-<h1>Children &gt; View Children &gt; Edit Photo</h1>
-<div class="edit_photo_page">
-  <div class="profile-header">
-    <label>Unique Id:</label>
-    <div class="value"><%= @child["unique_identifier"] %></div>
-  </div>
+<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+<div class="clearfix"></div>
 
+<div class="edit_photo_page">
   <%= form_for @child, :url => update_photo_url, :html => {:method => :put} do |f| %>
       <div class="profile-image display_photo">
         <%= image_tag child_photo_path(@child, @child.primary_photo_id), :id => "child_picture" %>
