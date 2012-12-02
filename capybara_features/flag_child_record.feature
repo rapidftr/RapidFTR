@@ -7,8 +7,8 @@ Feature:
   Background:
    Given "Praful" logs in with "Edit Child,View And Search Child,Export to Photowall/CSV/PDF" permissions
    And the following children exist in the system:
-      | name   |
-      | Peter  |
+      | name   | unique_id |
+      | Peter  | id_1      |
 
   @javascript
   Scenario: Flagging a child record
@@ -20,7 +20,7 @@ Feature:
     And the edit record page should show the record is flagged
     And the record history should log "Record was flagged by praful belonging to UNICEF because: He is a bad guy."
 		And the child listing page filtered by flagged should show the following children:
-			| Peter |
+			| Peter (id_1) |
     When I am on the children listing page
     Then I should see "Flagged By"
 
@@ -46,4 +46,3 @@ Feature:
       And I flag "Peter" as suspect
       When I search using a name of "P"
       Then the "Peter" result should have a "suspect" image
-
