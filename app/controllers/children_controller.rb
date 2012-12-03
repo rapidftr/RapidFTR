@@ -116,7 +116,7 @@ class ChildrenController < ApplicationController
         child = update_child_from params
         child.save
 
-        render :json => child.to_json
+        render :json => child.compact.to_json
       end
 
       format.html do
