@@ -136,21 +136,6 @@ describe "children/_form_section.html.erb" do
 
   describe "rendering check boxes" do
 
-    context "new record" do
-
-      it "renders checkboxes" do
-        @child = Child.new
-        @form_section.add_field Field.new_field("check_boxes", "siblings", ["Sister", "Brother"])
-
-        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
-
-        rendered.should be_include("<label class=\"main-label\" for=\"child_siblings\">")
-        rendered.should be_include("<label for=\"child_siblings_brother\">")
-        rendered.should be_include("<input id=\"child_siblings_sister\" name=\"child[siblings][]\" type=\"checkbox\" value=\"Sister\" />")
-        rendered.should be_include("<input id=\"child_siblings_brother\" name=\"child[siblings][]\" type=\"checkbox\" value=\"Brother\" />")
-      end
-    end
-
     context "existing record" do
 
       it "renders checkboxes as checked if the underlying field is set to Yes" do
@@ -166,34 +151,36 @@ describe "children/_form_section.html.erb" do
     end
   end
 
-  describe "rendering date field" do
+  #TODO Date picker must be implemented in Advanced Search Page
 
-    context "new record" do
-      it "renders date field" do
-        @child = Child.new
-        @form_section.add_field Field.new_field("date_field", "Some date")
+  #describe "rendering date field" do
 
-        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
-        rendered.should be_include("label for=\"child_some_date\"")
-        rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" />")
-        rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script>")
-      end
-    end
-
-    context "existing record" do
-
-      it "renders date field with the previous date" do
-        @child = Child.new :some_date => "13/05/2004"
-        @form_section.add_field Field.new_field("date_field", "Some date")
-
-        render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
-
-
-        rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" value=\"13/05/2004\" />")
-        rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script")
-      end
-
-    end
-  end
+    #context "new record" do
+    #  it "renders date field" do
+    #    @child = Child.new
+    #    @form_section.add_field Field.new_field("date_field", "Some date")
+    #
+    #    render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
+    #    rendered.should be_include("label for=\"child_some_date\"")
+    #    rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" />")
+    #    rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script>")
+    #  end
+    #end
+    #
+    #context "existing record" do
+    #
+    #  it "renders date field with the previous date" do
+    #    @child = Child.new :some_date => "13/05/2004"
+    #    @form_section.add_field Field.new_field("date_field", "Some date")
+    #
+    #    render :partial => 'children/form_section.html.erb', :locals => { :form_section => @form_section }
+    #
+    #
+    #    rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" value=\"13/05/2004\" />")
+    #    rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script")
+    #  end
+    #
+    #end
+  #end
 
 end
