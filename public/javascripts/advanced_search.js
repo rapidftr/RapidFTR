@@ -110,64 +110,41 @@
                 self.selectedField.remove();
         });
 
-        var enableInputByCheckbox = function (checkbox, inputElement) {
-            if (checkbox.is(':checked')) {
-                inputElement.removeAttr('disabled');
-            } else {
-                inputElement.attr('disabled', true);
-            }
+        var createdByIsEmpty = function () {
+            return ($('#created_by_value').val() == '');
+        }
+        var createdByOrganisationIsEmpty = function () {
+            return ($('#created_by_organisation_value').val() == '');
         }
 
-        $('#created_by').bind('click', function () {
-            enableInputByCheckbox($(this), $('#created_by_value'));
-        });
-        $('#created_by_organisation').bind('click', function () {
-            enableInputByCheckbox($(this), $('#created_by_organisation_value'));
-        });
-        $('#updated_by').bind('click', function () {
-            enableInputByCheckbox($(this), $('#updated_by_value'));
-        });
-        $('#created_at').bind('click', function () {
-            enableInputByCheckbox($(this), $('#created_at_after_value'));
-            enableInputByCheckbox($(this), $('#created_at_before_value'));
-        });
-        $('#updated_at').bind('click', function () {
-            enableInputByCheckbox($(this), $('#updated_at_after_value'));
-            enableInputByCheckbox($(this), $('#updated_at_before_value'));
-        });
-
-        var filterSelected = function () {
-            return $('#created_by').is(':checked') ||
-                $('#updated_by').is(':checked') ||
-                $('#created_at').is(':checked') ||
-                $('#updated_at').is(':checked') ||
-                $('#created_by_organisation').is(':checked')
-
-        }
-
-        var createdByIsValid = function () {
-            return (!$('#created_by').is(':checked')) || ($('#created_by_value').val() != '');
-        }
-        var createdByOrganisationIsValid = function () {
-            return (!$('#created_by_organisation').is(':checked')) || ($('#created_by_organisation_value').val() != '');
-        }
-
-        var updatedByIsValid = function () {
-            return (!$('#updated_by').is(':checked')) || ($('#updated_by_value').val() != '');
+        var updatedByIsEmpty = function () {
+            return ($('#updated_by_value').val() == '');
         }
 
         var dateValueIsValid = function (dateValue) {
             return (dateValue != '' && dateValue.match(/^\d\d\d\d-\d\d-\d\d$/));
         }
 
+        var dateValueIsEmpty = function (){
+            return (dateValue == '');
+        }
+
+        var createdAtIsEmpty = function () {
+            return ($('#created_at_after_value').val() == '') || ($('#created_at_before_value').val() == '');
+        }
+
+        var updatedAtIsEmpty = function () {
+            return ($('#updated_at_after_value').val() == '') || ($('#updated_at_before_value').val() == '');
+        }
+
         var createdAtIsValid = function () {
-            return (!$('#created_at').is(':checked')) ||
-                ( dateValueIsValid($('#created_at_after_value').val()) ||
+            return
+                ( !createdAtIsEmpty() && dateValueIsValid($('#created_at_after_value').val()) ||
                     dateValueIsValid($('#created_at_before_value').val()) )
         }
 
         var updatedAtIsValid = function () {
-            return (!$('#updated_at').is(':checked')) ||
+            return
                 ( dateValueIsValid($('#updated_at_after_value').val()) ||
                     dateValueIsValid($('#updated_at_before_value').val()) )
         }
@@ -176,33 +153,19 @@
 
 		var validate = function(){
 			var result = "";
-      $('.criteria-list .criteria-value-text').each(function(){
-          if($(this).val() == "") { result = 'Please enter a valid field value.'; }
-      });
-      $('.criteria-list .criteria-value-select').each(function(){
-          if($(this).val() == "") { result = 'Please enter a valid field value.'; }
-      });
-      if($('.criteria-list .criteria-field').length == 0 && !filterSelected()){
-         result = 'Please select a valid field name.';
-      };
-      $('.criteria-list .criteria-field').each(function(){
-          if($(this).val() == "") { result = 'Please select a valid field name.'; }
-      });
-      if (!createdByIsValid()) {
-          result="Please enter a valid 'Created by' value."
-      }
-      if (!createdByOrganisationIsValid()) {
-          result="Please enter a valid 'Created by organisation' value."
-      }
-      if (!updatedByIsValid()) {
-          result="Please enter a valid 'Updated by' value."
-      }
-      if (!createdAtIsValid()) {
-          result="Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
-      }
-      if (!updatedAtIsValid()) {
-          result="Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
-      }
+
+            $('.criteria-list .criteria-value-text').each(function(){
+                if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+            });
+            $('.criteria-list .criteria-value-select').each(function(){
+                if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+            });
+
+            if ((result == "") && ($('.criteria-list .criteria-value-text').length == 0) && ($('.criteria-list .criteria-value-select').length == 0)) {
+                if (createdByIsEmpty() && createdByOrganisationIsEmpty() && updatedByIsEmpty() && createdAtIsEmpty() && updatedAtIsEmpty()) {
+                    result = "Please enter at least one search criteria";
+                }
+            }
 			return result;
 		}
 

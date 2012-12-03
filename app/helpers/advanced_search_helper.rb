@@ -24,7 +24,7 @@ module AdvancedSearchHelper
     html += DISPLAY_LABEL.gsub("#DISPLAY_NAME", criteria.field_display_name)
     html += FIELD_INDEX.gsub("#FIELD", criteria.field)
     html += send("#{field.type}_criteria", criteria, field)
-    html += REMOVE_LINK if criteria.index.to_i > 0
+    html += REMOVE_LINK
     "<p>#{html.gsub("#INDEX", criteria.index)}</p>"
   end
 

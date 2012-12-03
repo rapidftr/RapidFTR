@@ -74,12 +74,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I should see "mary" in the search results
 
   @javascript
-  Scenario: Search Filters - Created By - Check presence of required form elements
-   Given I am logged in
-     And I am on child advanced search page
-     And I should see "Created By:"
-
-  @javascript
   Scenario: Searching by 'Created By'
    Given I am logged in
      And I am on child advanced search page
