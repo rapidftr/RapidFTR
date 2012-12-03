@@ -599,8 +599,16 @@ body {
   -webkit-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  margin: 10px;
+  margin: 10px 26px;
   float: left; }
+  .child_list .child_summary_panel p.checkbox {
+    background: #EEE;
+    border: 1px solid #D4D1D1;
+    border-right: 0px;
+    left: -231px;
+    padding: 5px;
+    position: absolute;
+    top: -1px; }
   .child_list .child_summary_panel .photo_panel {
     float: left;
     width: 160px;
@@ -649,3 +657,10 @@ body {
     .child_list .child_summary_panel .action_panel a {
       margin: 0px 10px;
       font-size: 0.8em; }
+.child_list .child_summary_panel.sel {
+  background: #e5efff;
+  border: 1px solid #bdd7ff; }
+  .child_list .child_summary_panel.sel p.checkbox {
+    background: #e5efff;
+    border: 1px solid #bdd7ff;
+    border-right: 0px; }

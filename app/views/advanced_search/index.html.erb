@@ -129,3 +129,25 @@
   CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX = 100
   $(".advanced-search").advancedSearch({criteria: <%= raw @criteria_list.to_json %>});
 </script>
+<script type="text/javascript">
+  $(function(){
+
+      $(".child_summary_panel :checkbox").click(function(){
+          var thisCheck = $(this);
+          if (thisCheck.is (':checked'))
+          {
+              thisCheck.closest(".child_summary_panel").addClass("sel");
+          }
+          else
+          {
+              thisCheck.closest(".child_summary_panel").removeClass("sel");
+          }
+      });
+
+      $(".child_summary_panel :checkbox").each(function(i,elem){
+          if($(elem).is(':checked')){
+              $(elem).closest(".child_summary_panel").addClass("sel");
+          }
+      })
+  });
+</script>
