@@ -27,13 +27,9 @@ Feature: Suspect Records
   Scenario: Admin should be able to mark suspect record as investigated
   When I am on the child listing filtered by flagged
   And I follow "Steve"
-<<<<<<< HEAD
   Then I should see "Mark as Investigated"
-=======
-  Then I should see "Investigate Record"
->>>>>>> #Features - Suganthi - Fixed suspect records and flag child record feature
 
- 	Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
+  Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
   When I am on the child listing filtered by flagged
   And I follow "Steve"
   And I mark "Steve" as investigated with the following details:

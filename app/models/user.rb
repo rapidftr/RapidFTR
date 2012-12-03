@@ -74,6 +74,7 @@ class User < CouchRestRails::Document
   validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
   validates_presence_of :role_ids, :message => "Please select at least one role"
   validates_presence_of :organisation, :message => "Please enter the user's organisation name"
+  validates_presence_of :disabled, :message => "Disabled attribute is required."
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
 
@@ -82,6 +83,7 @@ class User < CouchRestRails::Document
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method :user_name, :method => :is_user_name_unique
+
 
 
   def self.find_by_user_name(user_name)
