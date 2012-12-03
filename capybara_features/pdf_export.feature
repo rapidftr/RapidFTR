@@ -5,10 +5,10 @@ Feature: So that hard copy printout of missing child photos are available
   Background:
     Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     And the following children exist in the system:
-      | name      | unique_id  |
-      | Will      | will_uid   |
-      | Willis    | willis_uid |
-      | Wilma     | wilma_uid  |
+      | name      | unique_id  | created_by |
+      | Will      | will_uid   | user1      |
+      | Willis    | willis_uid | user1      |
+      | Wilma     | wilma_uid  | user1      |
 
   Scenario: In search results, when a single record is selected and the export button is clicked, a pdf file is generated  
 

@@ -25,8 +25,7 @@ class ExportGenerator
 
   def to_csv
     fields = FormSection.all_enabled_child_fields
-    fields.unshift Field.new_text_field("unique_identifier")
-    fields.unshift Field.new_text_field("short_id")
+    fields = metadata_fields(fields)
     field_names = fields.map {|field| field.name}
     csv_data = FasterCSV.generate do |rows|
       rows << field_names + ["Suspect Status", "Reunited Status"]
@@ -39,6 +38,14 @@ class ExportGenerator
     end
 
     return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
+  end
+
+  def metadata_fields(fields)
+    extras =  ["last_updated_at", "last_updated_by_full_name", "posted_at", "created_organisation", "created_by", "short_id", "unique_identifier"]
+    extras.each do |extra|
+      fields.unshift Field.new_text_field(extra)
+    end
+    fields
   end
 
   def to_full_pdf
@@ -90,19 +97,26 @@ class ExportGenerator
   def add_child_details(child)
     flag_if_suspected(child)
     flag_if_reunited(child)
+    fields = metadata_fields []
+    field_pair = fields.map { |field| [field.name, format_field_for_export(field, child[field.name])] }
+    render_pdf(field_pair)
     FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
         select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.enabled? }.
         map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
-      if !field_pair.empty?
-        @pdf.table field_pair,
-          :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
-          :width => 500, :column_widths => {0 => 200, 1 => 300},
-          :position => :left
-      end
-      @pdf.move_down 10
+      render_pdf(field_pair)
     end
+  end
+
+  def render_pdf(field_pair)
+    if !field_pair.empty?
+      @pdf.table field_pair,
+                 :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
+                 :width => 500, :column_widths => {0 => 200, 1 => 300},
+                 :position => :left
+    end
+    @pdf.move_down 10
   end
 
   def add_child_page(child)
