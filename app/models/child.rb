@@ -7,6 +7,7 @@ class Child < CouchRestRails::Document
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
 
+  before_save :update_organisation
   before_save :update_history, :unless => :new?
   before_save :update_photo_keys
 
@@ -248,6 +249,14 @@ class Child < CouchRestRails::Document
 
   def short_id
     (self['unique_identifier'] || "").last 7
+  end
+
+  def update_organisation
+    self['created_organisation'] ||= created_by_user.try(:organisation)
+  end
+
+  def created_by_user
+    User.find_by_user_name self['created_by'] unless self['created_by'].to_s.empty?
   end
 
   def set_creation_fields_for(user)
