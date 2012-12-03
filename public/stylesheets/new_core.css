@@ -44,15 +44,15 @@ a:hover {
   color: #0096ff; }
 
 /* For modern browsers */
-.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   content: "";
   display: table; }
 
-.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   clear: both; }
 
 /* For IE 6/7 (trigger hasLayout) */
-.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
+.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
   zoom: 1; }
 
 .hide {
@@ -106,6 +106,8 @@ input[type=text], input[type=password], textarea, input[type=file], select {
     background-position: 0px -169px; }
   .btn span.reunite, .submitButton input span.reunite {
     background-position: 0px -203px; }
+  .btn span.photo, .submitButton input span.photo {
+    background-position: 0px -269px; }
 
 input[type=button], input[type=submit] {
   background: url(../images/new/bg-gray-btn.png) #cfcfcf repeat-x;
@@ -591,6 +593,21 @@ body {
     margin-right: 765px; }
     .advanced-search .add-criteria:hover {
       border-bottom: 1px solid #b0d8fd; }
+
+.manage_photos .thumbnails {
+  padding: 10px; }
+  .manage_photos .thumbnails div {
+    float: left; }
+    .manage_photos .thumbnails div .thumbnail {
+      background: #fff;
+      padding: 10px;
+      margin: 10px;
+      cursor: pointer;
+      float: none; }
+    .manage_photos .thumbnails div .thumbnail.selected {
+      background: #aaccff; }
+.manage_photos .btn, .manage_photos .submitButton input, .submitButton .manage_photos input {
+  float: left !important; }
 
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
