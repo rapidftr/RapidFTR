@@ -134,6 +134,16 @@ RapidFTR.Utils = {
     }
 };
 
+RapidFTR.validateSearch = function() {
+  var query = $("#query").val();
+  if (query == undefined || query == null || query.toString().trim() == "") {
+    alert("Please enter a search query");
+    return false;
+  }
+
+  return true;
+}
+
 $(document).ready(function() {
 });
 

@@ -23,6 +23,6 @@ RapidFTR::Application.configure do
     # For nginx:
     # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
 
-    ENV['SOLR_PORT'] = "<%= deploy_port.to_i + 2 %>"
+    ENV['SOLR_PORT'] = "<%= deploy_port_solr %>"
 
 end

@@ -2,7 +2,8 @@ def template(from, to)
   temp = "/tmp/#{File.basename to}"
   erb = File.read(File.expand_path("../templates/#{from}", __FILE__))
   put ERB.new(erb).result(binding), temp
-  sudo "mv #{temp} #{to}"
+  run "mv #{temp} #{to}"
+  #CI will propmt for password if ran with sudo. Need to give full access for the deploy user to copy from /tmp to the required folder.
 end
 
 def run_rake(task, options={}, &block)

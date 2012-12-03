@@ -226,6 +226,13 @@ describe Child do
       child.photo.should == nil
     end
 
+    it "should update photo keys" do
+      child = Child.new
+      child.should_receive(:update_photo_keys)
+      child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
+      child.photos.should be_empty
+    end
+
   end
 
   describe "validation" do
@@ -1159,6 +1166,27 @@ describe Child do
         Child.duplicates_of(record_active.id).should == [record_duplicate]
       end
 
+  end
+
+  describe 'organisation' do
+    it 'should get created user' do
+      child = Child.new
+      child['created_by'] = 'test'
+
+      User.should_receive(:find_by_user_name).with('test').and_return('test1')
+      child.created_by_user.should == 'test1'
+    end
+
+    it 'should be set from user' do
+      child = Child.create 'name' => 'Jaco'
+      child.created_organisation.should == nil
+
+      user = stub_model User, :organisation => 'UNICEF', :user_name => 'test'
+      child.stub :created_by_user => user
+      child.save
+
+      child.created_organisation.should == 'UNICEF'
+    end
   end
 
   private

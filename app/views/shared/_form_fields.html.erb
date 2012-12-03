@@ -1,48 +1,57 @@
-<div class="form-fields-container">
+<div class="form-fields-container hide">
+  <div class="criteria_menu">
   <div class='box-shadow content'>
-        <div style="float:right; margin-left: 6px;">
-          <a class='close-link'><%= image_tag("dialog-close.png") %></a>
-        </div>
+          <a class="close-link" style="float:right;margin-left:6px;">
+            <img src="/images/dialog-close.png?1353996373" alt="Dialog-close">
+          </a>
 
-    <ul class="form-container">
+    <ul class="forms">
         <% FormSection.enabled_by_order.each do|form| %>
           <li id="form-<%= form.id%>" class="form">
             <%= form.name %>
-            <input type="hidden" class="form-name" value="<%= form.name%>"/>
-            <input type="hidden" class="form-id" value="<%= form.unique_id%>"/>
-          </li>      
+          </li>
         <%end%> 
     </ul>
-    <div class="fields-container">
       <% @forms.each do|form|%>
-        <ul id="fields-for-form-<%= form.id%>" class="field-container">
+        <ul id="fields-for-form-<%= form.id%>" class="fields" data-id="<%= form.unique_id %>">
           <% form.fields.each do |field| %>
               <% if field.enabled? %>
-            <li id="field-<%= field.name%>" class="field">
-              <span class="field-display-name"><%= field.display_name%></span>
-              <input type="hidden" class="field-name" value="<%= field.name%>"/>
-              <input type="hidden" class="display-name" value="<%= field.display_name%>"/>
-            </li>
+                <li id="field-<%= field.name%>" data-name="<%= field.name %>"><%= field.display_name %></li>
               <% end %>
 
           <%end%>
         </ul>
       <%end%>
-    </div>     
   <div>
 </div>
 
 <script>
-  
-var formFields = $(".form-fields-container").formFields({onItemSelect: <%=on_item_select%>}).data("formFields");
-$(<%= "'#{menu_selector}'"%>).live("click", function () {
-    formFields.show({
-        actionElement:$(this),
-        prevSelectedFields:$(<%= "'#{prev_selected_field_selector}'"%>).map(function () {
-            return $(this).val();
-        })
-    })
-});
+
+        $(".add_field").click(function(){
+            $(".form-fields-container").toggleClass("hide");
+        });
+
+        $("ul.forms li").click(function(){
+            $("ul.forms li").removeClass("selected");
+            $(this).addClass("selected");
+            var item = $(this).attr("id");
+            var list = "fields-for-" + item;
+            $("ul.fields").removeClass("selected");
+            $("#" + list).addClass("selected");
+
+        });
+
+        $(".close-link").click(function(){
+            $(".form-fields-container").addClass("hide");
+        });
+
+        $("ul.fields li").click(function() {
+          updateWithSelectedItem({
+            field_name: $(this).data("name"),
+            form_id : $(this).parents("ul").data("id")
+          });
+        });
 </script>
  </div>
+    </div>
     </div>
