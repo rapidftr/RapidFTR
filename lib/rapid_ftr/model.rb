@@ -16,6 +16,10 @@ module RapidFTR
       ErrorsAdapter.new super
     end
 
+    def logger
+      Rails.logger
+    end
+
     class ErrorsAdapter < SimpleDelegator
       def [](key)
         __getobj__[key] || []

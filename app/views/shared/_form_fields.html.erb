@@ -13,14 +13,10 @@
         <%end%> 
     </ul>
       <% @forms.each do|form|%>
-        <ul id="fields-for-form-<%= form.id%>" class="fields">
+        <ul id="fields-for-form-<%= form.id%>" class="fields" data-id="<%= form.unique_id %>">
           <% form.fields.each do |field| %>
               <% if field.enabled? %>
-            <li id="field-<%= field.name%>">
-              <span class="field-display-name"><%= field.display_name%></span>
-              <input type="hidden" class="field-name" value="<%= field.name%>"/>
-              <input type="hidden" class="display-name" value="<%= field.display_name%>"/>
-            </li>
+                <li id="field-<%= field.name%>" data-name="<%= field.name %>"><%= field.display_name %></li>
               <% end %>
 
           <%end%>
@@ -47,6 +43,13 @@
 
         $(".close-link").click(function(){
             $(".form-fields-container").addClass("hide");
+        });
+
+        $("ul.fields li").click(function() {
+          updateWithSelectedItem({
+            field_name: $(this).data("name"),
+            form_id : $(this).parents("ul").data("id")
+          });
         });
 </script>
  </div>

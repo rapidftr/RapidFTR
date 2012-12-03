@@ -128,6 +128,7 @@ end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
   click_flag_as_suspect_record_link_for(name)
+  fill_in("Flag Reason", :with => "Test")
   click_button("Flag")
 end
 
@@ -138,9 +139,7 @@ When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reaso
 end
 
 When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
-  child = find_child_by_name name
-  visit children_path+"/#{child.id}"
-  click_link("Unflag record")
+  click_flag_as_suspect_record_link_for(name)
   fill_in("Unflag Reason", :with => reason)
   click_button("Unflag")
 end
@@ -239,6 +238,6 @@ private
 def click_flag_as_suspect_record_link_for(name)
   child = find_child_by_name name
   visit children_path+"/#{child.id}"
-  click_link("Flag")
+  find(:css, ".btn_flag").click
 end
 

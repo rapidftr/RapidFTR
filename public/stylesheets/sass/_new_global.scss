@@ -106,6 +106,10 @@ input[type=text], input[type=password], textarea, input[type=file], select {
   color: $btn-text-color;
   margin:0px 5px;
 
+  a {
+    color: $btn-text-color;
+  }
+
   &:hover{
     background: $bg-gray-btn-hover;
   }
