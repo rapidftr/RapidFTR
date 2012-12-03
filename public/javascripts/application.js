@@ -115,9 +115,8 @@ RapidFTR.childPhotoRotation = {
 };
 
 RapidFTR.showDropdown = function(){
-    $(".dropdown_btn").click( function(){
-        var showObj = $(".dropdown",this);
-        showObj.toggleClass("hide");
+    $(".dropdown_btn span").click( function(){
+        $(".dropdown").toggleClass("hide");
     });
 
 }

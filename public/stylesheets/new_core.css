@@ -543,6 +543,53 @@ body {
   border-top: 1px solid #ccc;
   text-align: right; }
 
+.advanced-search {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D4D4D4; }
+  .advanced-search .filter_bar div {
+    float: left;
+    padding: 5px 15px; }
+  .advanced-search .filter_bar .help-text {
+    font-style: italic;
+    color: #666;
+    border-top: 1px solid #ffdeaa;
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 0.9em; }
+  .advanced-search .filter_bar .sub_label {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em; }
+  .advanced-search .help-text {
+    padding: 10px 0px; }
+  .advanced-search .criteria-list {
+    padding: 10px; }
+    .advanced-search .criteria-list p {
+      padding: 7px;
+      border-bottom: 1px solid #fff; }
+      .advanced-search .criteria-list p:nth-child(odd) {
+        background: #f6f6f6; }
+      .advanced-search .criteria-list p:nth-child(even) {
+        background: #f1f1f1; }
+    .advanced-search .criteria-list .select-criteria {
+      width: 300px;
+      display: inline-block;
+      padding: 0px 5px;
+      cursor: pointer; }
+    .advanced-search .criteria-list .select-criteria:first-child {
+      width: 387px; }
+    .advanced-search .criteria-list .remove-criteria {
+      cursor: pointer;
+      color: red;
+      padding: 0px 5px; }
+  .advanced-search .add-criteria {
+    padding: 5px;
+    border-bottom: 1px dashed #76BCFD;
+    cursor: pointer;
+    margin-right: 765px; }
+    .advanced-search .add-criteria:hover {
+      border-bottom: 1px solid #b0d8fd; }
+
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
   border: 1px solid #d4d1d1;
