@@ -1168,6 +1168,27 @@ describe Child do
 
   end
 
+  describe 'organisation' do
+    it 'should get created user' do
+      child = Child.new
+      child['created_by'] = 'test'
+
+      User.should_receive(:find_by_user_name).with('test').and_return('test1')
+      child.created_by_user.should == 'test1'
+    end
+
+    it 'should be set from user' do
+      child = Child.create 'name' => 'Jaco'
+      child.created_organisation.should == nil
+
+      user = stub_model User, :organisation => 'UNICEF', :user_name => 'test'
+      child.stub :created_by_user => user
+      child.save
+
+      child.created_organisation.should == 'UNICEF'
+    end
+  end
+
   private
 
   def create_child(name, options={})
