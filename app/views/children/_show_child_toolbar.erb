@@ -63,6 +63,7 @@
   </div>
 
   <div class="btn dropdown_btn btn_investigate">
+    <% if @child.flag? %>
     <% unless @child.investigated? %>
       <%= render :partial => "mark_as",
         :locals=> { :mark_as_label => "Mark as Investigated",
@@ -85,6 +86,7 @@
           :error_message => "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have.",
           :style => "flag"
       } %>    
+    <% end %>
     <% end %>
   </div>
 <% end %>

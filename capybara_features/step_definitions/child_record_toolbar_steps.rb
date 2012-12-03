@@ -12,13 +12,13 @@ When /^I click the "(.*)" button$/ do |button_value|
 end
 
 And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
-  click_link("Investigate Record")
+  click_link("Mark as Investigated")
   fill_in("Investigation Details", :with => details)
-  click_button("Investigate Record")
+  click_button("Mark as Investigated")
 end
 
 And /^I mark "([^\"]*)" as not investigated with the following details:$/ do |name, details|
-  click_link("Undo Investigated")
+  click_link("Mark as Not Investigated")
   fill_in("Undo Investigation Details", :with => details)
   click_button("Undo Investigated")
 end
