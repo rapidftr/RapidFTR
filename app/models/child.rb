@@ -121,9 +121,9 @@ class Child < CouchRestRails::Document
   end
 
   def validate_has_at_least_one_field_value
-    return true if field_definitions.any? { |field| is_filled_in? field }
+    return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
-    return true if deprecated_fields.any?{|key,value| !value.nil? && value != [] }
+    return true if deprecated_fields && deprecated_fields.any?{ |key,value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
     [false, "Please fill in at least one field or upload a file"]
   end
 
@@ -247,7 +247,7 @@ class Child < CouchRestRails::Document
   end
 
   def short_id
-    self['unique_identifier'].last 7
+    (self['unique_identifier'] || "").last 7
   end
 
   def set_creation_fields_for(user)
@@ -327,7 +327,10 @@ class Child < CouchRestRails::Document
 
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
 
-    @deleted_photo_keys.each { |p| self['photo_keys'].delete(p) } if @deleted_photo_keys
+    @deleted_photo_keys.each { |p| 
+      self['photo_keys'].delete p
+      self['_attachments'].delete p
+    } if @deleted_photo_keys
 
     self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
 
@@ -406,6 +409,7 @@ class Child < CouchRestRails::Document
   def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
     update_properties(properties, user_name)
     self.delete_photos(delete_photos)
+    self.update_photo_keys
     self.photo = new_photo
     self.audio = new_audio
   end
@@ -484,7 +488,7 @@ class Child < CouchRestRails::Document
   end
 
   def is_filled_in? field
-    !(self[field.name].nil? || self[field.name] == field.default_value)
+    !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
   end
 
   private

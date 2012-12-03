@@ -49,73 +49,14 @@ $(function() {
 });
 </script>
 <% end %>
+
 <h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+
 <% if can? :update, @child %>
     <%= link_to content_tag(:span, 'Edit', :class => 'edit'), edit_child_path(@child), :class=>'btn' %>
 <% end %>
-<% if can?(:export, Child) %>
-    <div class="btn dropdown_btn">
-      <span class="export">Export</span>
-      <div class="dropdown hide">
-        <%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
-        <%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %>
-        <%= link_to "Export to CSV", child_path(@child, :format => 'csv') %>
-      </div>
-    </div>
-<%end%>
-<div class="btn dropdown_btn">
-    <% unless @child.flag? %>
-        <%= render :partial => "mark_as",
-                       :locals=> { :mark_as_label => "Flag",
-                                   :mark_as_message_id => "flag_message",
-                                   :mark_as_message => "Flag Reason:",
-                                   :mark_as_property => "flag",
-                                   :mark_as_property_value => "true",
-                                   :mark_as_submit_label => "Flag",
-                                   :error_message => "Please explain why you are flagging this record.",
-                                   :style => "flag"
-                       } %>
-        <% else %>
-        <%= render :partial => "mark_as",
-                   :locals=> { :mark_as_label => "Unflag record",
-                               :mark_as_message_id => "flag_message",
-                               :mark_as_message => "Unflag Reason:",
-                               :mark_as_property => "flag",
-                               :mark_as_property_value => "false",
-                               :mark_as_submit_label => "Unflag",
-                               :error_message => "Please explain why you are unflagging this record." ,
-                               :style => "flag"
-                   } %>
-    <%end%>
-</div>
 
-<div class="btn dropdown_btn">
-  <% if can?(:flag, Child) %>
-      <%= render :partial => "mark_as",
-                 :locals=> { :mark_as_label => "Mark as Reunited",
-                             :mark_as_message_id => "reunited_message",
-                             :mark_as_message => "Reunite Details:",
-                             :mark_as_property => "reunited",
-                             :mark_as_property_value => "true",
-                             :mark_as_submit_label => "Reunite",
-                             :error_message => "Please confirm this child has been reunited with family or caregivers, and enter any details you have.",
-                             :style => "reunite"
-                 } %>
-  <% else %>
-      <%= render :partial => "mark_as",
-                 :locals=> { :mark_as_label => "Mark as Not Reunited",
-                             :mark_as_message_id => "reunited_message",
-                             :mark_as_message => "Undo reunite Reason:",
-                             :mark_as_property => "reunited",
-                             :mark_as_property_value => "false",
-                             :mark_as_submit_label => "Undo Reunite",
-                             :error_message => "Please confirm child should be marked as Not Reunited, and enter any details you have.",
-                             :style => "reunited"
-                 } %>
-  <%end%>
-</div>
-
-<%= link_to content_tag(:span, 'Change Log', :class => 'log'), child_history_path(@child), :class=>'btn' %>
+<%= render :partial => "show_child_toolbar", :locals => { :child => @child } %>
 
 <div class="clearfix"></div>
     <% content_for :stylesheet do %>
