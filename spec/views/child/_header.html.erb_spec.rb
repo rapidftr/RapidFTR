@@ -43,7 +43,7 @@ describe "children/_header.html.erb" do
 
   describe "export all records to PDF" do
     before :each do
-      @url = children_path(:format => :csv)
+      @url = children_path(:format => :pdf)
     end
 
     it_should_behave_like "not show links", []

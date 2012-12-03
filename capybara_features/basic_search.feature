@@ -6,96 +6,79 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Given I am logged in
 
   Scenario: Searching for a child given his name
-
     Given the following children exist in the system:
       | name   |
       | Willis |
       | Will   |
-
     When I fill in "Will" for "query"
     And I press "Go"
-
     And I should see "Willis" in the search results
 
   Scenario: Searching for a child given his unique identifier
-
     Given the following children exist in the system:
       | name   	| last_known_location 	| reporter | unique_id |
       | andreas	| London		            | zubair   | zubairlon123 |
       | zak	    | London		            | zubair   | zubairlon456 |
-
     When I fill in "zubairlon123" for "query"
     And I press "Go"
 
     Then I should be on the saved record page for child with name "andreas"
 
   Scenario: Searches that yield a single record should redirect directly to that record
-
     Given the following children exist in the system:
       | name   	| 
       | Lisa	|
-
     When I fill in "Lisa" for "query"
     And I press "Go"
     Then I should be on the saved record page for child with name "Lisa"
 
   Scenario: Search parameters are displayed in the search results
-
     When I fill in "Will" for "query"
     And I press "Go"
-
     Then I should be on the child search results page
     And the "query" field should contain "Will"
 
   Scenario: Each search result has a link to the full child record
-
     Given the following children exist in the system:
       | name   	| 
       | Willis	|
       | Will	|
     When I search using a name of "W"
-
     Then I should see a link to the saved record page for child with name "Willis"
     And I should see a link to the saved record page for child with name "Will"
  
   Scenario: Thumbnails are displayed for each search result, if requested
-
     Given the following children exist in the system:
       | name   	| 
       | Willis	|
       | Will	|
-
     When I fill in "W" for "query"
     And I press "Go"
     Then I should see the thumbnail of "Willis"
     And I should see the thumbnail of "Will"
 
   Scenario: Not seing "No results found" when first enter search page
-
     Given the following children exist in the system:
       | name   |
       | Willis |
       | Will   |
-
     When I fill in "Will" for "query"
     And I press "Go"
-
     Then I should be on the child search results page
     And I should see "Willis" in the search results
 
   Scenario: Searching for a child given his name returns no results
-
     Given I am on the child search page
-
     Then I should not see "No results found"
   
+  @wip
   Scenario: Creating an invalid search
-    Given I am on the child search page
+    Given I am on the children listing page
     Then I should not see any errors
-
-    When I fill in "" for "query"
+    When I fill in "   " for "query"
     And I press "Go"
-    Then I should see the error "Query can't be empty"
+    Then I should be on the children listing page
+
 
   Scenario: Creating a search with non standard queries
     Given I am on the child search page

@@ -17,7 +17,7 @@ Feature:
     And I attach a photo "features/resources/jorge.jpg"
     And the local date/time is "March 19 2010 13:05" and UTC time is "March 19 2010 13:05UTC"
     And I press "Save"
-    And I follow "View the change log"
+    And I follow "Change Log"
 
     Then I should see "2010-03-19 13:05:00 UTC Record created by harry"
 
@@ -34,7 +34,7 @@ Feature:
     When I follow "Edit"
     And I attach a photo "features/resources/jeff.png"
     And I press "Save"
-    And I follow "View the change log"
+    And I follow "Change Log"
 
     Then I should see "2010-03-01 17:59:33 UTC Photo added"
     And I should see the thumbnail of "Jorge Just" with timestamp "2010-03-01T175933"
@@ -65,7 +65,7 @@ Feature:
     And the date/time is "Oct 29 2010 14:12:15 UTC"
     And I press "Save"
 
-    When I follow "View the change log"
+    When I follow "Change Log"
 
     Then I should see "2010-10-29 14:12:15 UTC Birthplace changed from Haiti to Zambia by bobby"
     And I should see "2010-10-29 14:12:15 UTC Nationality initially set to Bombay by bobby"

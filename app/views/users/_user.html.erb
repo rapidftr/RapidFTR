@@ -16,7 +16,7 @@
   <% if can? :destroy, User %>
       <td>
         <% if current_user_name != user.user_name %>
-            <%= link_to 'Delete User', user, :confirm => 'Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User.', :method => :delete %></td>
+            <%= link_to 'Delete', user, :confirm => 'Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User.', :method => :delete %></td>
         <% end %>
   <% end %>
   </td>

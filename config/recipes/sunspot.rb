@@ -1,18 +1,8 @@
 namespace :sunspot do
 
-  desc "Start Solr"
-  task :start do
-    run_rake "sunspot:start"
-  end
-
-  desc "Stop Solr"
-  task :stop do
-    run_rake "sunspot:stop"
-  end
-
-  desc "Restart Solr"
-  task :restart do
-    run_rake "sunspot:restart"
+  desc "Clean Start Solr"
+  task :clean_start do
+    run_rake "sunspot:clean_start"
   end
 
 end

@@ -4,6 +4,7 @@
   <%= f.hidden_field 'type', :value => @field.type %>
 
   <fieldset>
+    <h1 class="no_border"><%= link_to 'Form', formsections_path %> &gt; <%= link_to @form_section.name, edit_form_section_path(@form_section) %></h1>
     <h3><%= @field.type.humanize %> details</h3>
  		<%= render :partial => "common", :locals => {:f => f} %>
     <div class="help-text-container">
@@ -18,9 +19,11 @@
  		  <%= f.text_area :option_strings_text %>
    	</div>
   </fieldset>
-  <p class='submitButton' >
-    <%= f.submit 'Save' %>
-  </p>
-  <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
+    <div class="btn_panel">
+      <%= cancel_button(edit_form_section_path(@form_section)) %>
+      <p class='submitButton' >
+      <%= f.submit 'Save' %>
+      </p>
+    </div>
 <% end %>
 

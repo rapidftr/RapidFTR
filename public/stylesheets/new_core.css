@@ -80,6 +80,8 @@ input[type=text], input[type=password], textarea, input[type=file], select {
   border-radius: 5px;
   color: #555555;
   margin: 0px 5px; }
+  .btn a, .submitButton input a {
+    color: #555555; }
   .btn:hover, .submitButton input:hover {
     background: url(../images/new/bg-gray-btn-hover.png) #bababa repeat-x; }
   .btn span, .submitButton input span {

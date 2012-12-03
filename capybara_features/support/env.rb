@@ -23,6 +23,12 @@ require 'spec/support/child_finder'
 
 require 'rack/test'
 
+Capybara.register_driver :selenium do |app|
+  http_client = Selenium::WebDriver::Remote::Http::Default.new
+  http_client.timeout = 100
+  Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => http_client)
+end
+
 Capybara.run_server = true #Whether start server when testing
 Capybara.default_selector = :xpath #default selector , you can change to :css
 Capybara.default_wait_time = 2 #When we testing AJAX, we can set a default wait time

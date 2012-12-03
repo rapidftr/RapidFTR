@@ -104,6 +104,10 @@
 
         menu.find(".close-link").click(function () {
             menu.hide();
+            var field = self.selectedField.find(".criteria-field-type").val();
+
+            if (!field)
+                self.selectedField.remove();
         });
 
         var enableInputByCheckbox = function (checkbox, inputElement) {

@@ -47,6 +47,6 @@ Feature: Creating a child using the API
 			    "histories":[],
 			    "posted_at":"%SOME_STRING%",
 			    "photo_keys":[],
-			    "current_photo_key":null
+			    "current_photo_key":""
 			  }
 			  """

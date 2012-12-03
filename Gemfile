@@ -36,26 +36,24 @@ group :assets do
   gem 'jammit'
 end
 
-group :test do
-  gem 'mocha'
-  gem 'test_declarative'
-  gem 'rspec-instafail'
-end
-
-group :cucumber do
-  gem 'cucumber',         '1.2.1'
-  gem 'cucumber-rails',   '0.3.2'
-  gem 'hpricot',          '0.8.2'
-  gem 'launchy',          '0.4.0'
-  gem 'rcov', :platforms => :ruby_18
-end
-
-group :development, :test do
+group :development, :test, :cucumber do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
+  gem 'rspec-instafail'
+
   gem 'capybara',         '1.0.1'
-  gem 'selenium-webdriver', '2.25.0'
   gem 'jasmine'
   gem 'pry'
+  gem 'mocha'
+  gem 'test_declarative'
 end
 
+group :test, :cucumber do
+  gem 'cucumber',         '1.2.1'
+  gem 'cucumber-rails',   '0.3.2'
+  gem 'selenium-webdriver', '2.25.0'
+  gem 'hpricot',          '0.8.2'
+  gem 'launchy',          '0.4.0'
+  gem 'pry'
+  gem 'rcov', :platforms => :ruby_18
+end

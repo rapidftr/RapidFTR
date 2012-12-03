@@ -1,5 +1,5 @@
 <% if can? :update, @child %>
-    <span id="<%= mark_as_property %>" class="<%= style %>"><%= mark_as_label %></span>
+    <span id="<%= mark_as_property %>" class="<%= style %>"><a href="#"><%= mark_as_label %></a></span>
     <div class="dropdown hide">
         <%= form_for @child, :method => :put do |f| %>
           <div class="mark-as-form">

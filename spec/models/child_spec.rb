@@ -191,6 +191,16 @@ describe Child do
       child['last_updated_by'].should == 'jdoe'
     end
 
+
+    it "should assign histories order by datetime of history" do
+      child = Child.new()
+      first_history = mock("history", :[] => "2010-01-01 01:01:02UTC")
+      second_history = mock("history", :[] => "2010-01-02 01:01:02UTC")
+      third_history = mock("history", :[] => "2010-01-02 01:01:03UTC")
+      child["histories"] = [first_history, second_history, third_history]
+      child.ordered_histories.should == [third_history, second_history, first_history]
+    end
+
     it "should populate last_updated_at field with the time of the update" do
       Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = Child.new
@@ -214,6 +224,13 @@ describe Child do
     it "should respond nil for photo when there is no photo associated with the child" do
       child = Child.new
       child.photo.should == nil
+    end
+
+    it "should update photo keys" do
+      child = Child.new
+      child.should_receive(:update_photo_keys)
+      child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
+      child.photos.should be_empty
     end
 
   end
@@ -1149,6 +1166,27 @@ describe Child do
         Child.duplicates_of(record_active.id).should == [record_duplicate]
       end
 
+  end
+
+  describe 'organisation' do
+    it 'should get created user' do
+      child = Child.new
+      child['created_by'] = 'test'
+
+      User.should_receive(:find_by_user_name).with('test').and_return('test1')
+      child.created_by_user.should == 'test1'
+    end
+
+    it 'should be set from user' do
+      child = Child.create 'name' => 'Jaco'
+      child.created_organisation.should == nil
+
+      user = stub_model User, :organisation => 'UNICEF', :user_name => 'test'
+      child.stub :created_by_user => user
+      child.save
+
+      child.created_organisation.should == 'UNICEF'
+    end
   end
 
   private

@@ -1,6 +1,6 @@
 <% if is_admin? %>
   <% unless @notifications.empty? %>
-    <p>These users requested password reset. Please contact them immediately.<ul>
+    <p>These users requested password reset. Please contact them immediately.</p>
     <ul>
       <% @notifications.each do |notification| %>
         <% notification_for_user = User.find_by_user_name notification.user_name %>
