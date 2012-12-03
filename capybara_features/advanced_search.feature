@@ -77,48 +77,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Search Filters - Created By - Check presence of required form elements
    Given I am logged in
      And I am on child advanced search page
-    Then I should see "Filter Search Results"
      And I should see "Created By:"
 
-  @javascript
-  Scenario: Validation of 'Created by'
-   Given I am logged in
-     And I am on child advanced search page
-    When I check "created_by"
-     And I press "Search"
-    Then I should see "Please enter a valid 'Created by' value"
-
-  @javascript
-  Scenario: Validation of 'Created by Organisation'
-   Given I am logged in
-     And I am on child advanced search page
-    When I check "created_by_organisation"
-     And I press "Search"
-    Then I should see "Please enter a valid 'Created by organisation' value"
-
-  @javascript
-  Scenario: 'Created By' can only be entered if checkbox selected
-   Given I am logged in
-     And I am on child advanced search page
-    Then the "created_by" checkbox should not be checked
-     And the "created_by_value" field should be disabled
-    When I check "created_by"
-    Then I can fill in "bob" for "created_by_value"
-
-  @javascript
-  Scenario: 'Created By' value still present and modifiable after search
-   Given I am logged in
-     And I am on child advanced search page
-    Then the "created_by" checkbox should not be checked
-     And the "created_by_value" field should be disabled
-    When I check "created_by"
-    Then I can fill in "bob" for "created_by_value"
-     And I press "Search"
-    Then the "created_by_value" field should contain "bob"
-     And the "created_by" checkbox should be checked
-     And I can fill in "rob" for "created_by_value"
-
-  
   @javascript
   Scenario: Searching by 'Created By'
    Given I am logged in
@@ -129,7 +89,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob        | john                 |
       | Peter  | john       | bob                  |
       | James  | john       | john                 |
-   When I check "created_by"
     And I fill in "bob" for "created_by_value"
     And I press "Search"
     Then I should see "Andrew" in the search results
@@ -144,12 +103,10 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Andrew | bob        | john                 | stc                  |
        | Peter  | john       | bob                  | unicef               |
        | James  | john       | john                 | unicef               |
-    When I check "created_by_organisation"
-    And I fill in "stc" for "created_by_organisation_value"
+    Then I fill in "stc" for "created_by_organisation_value"
     And I press "Search"
     Then I should see "Andrew" in the search results
 
-  
   @javascript
   Scenario: Searching by 'Created By' - fuzzy search
    Given I am logged in
@@ -159,14 +116,12 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob        | john                 |
       | Peter  | john       | bob                  |
       | James  | john       | john                 |
-   When I check "created_by"
-    And I fill in "rob" for "created_by_value"
+    Then I fill in "rob" for "created_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
 
-  
   @javascript
   Scenario: Searching by 'Created By' - OR search
    Given I am logged in
@@ -176,8 +131,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob        | john                 |
       | Peter  | john       | jane                 |
       | James  | john       | john                 |
-   When I check "created_by"
-    And I fill in "bob OR jane" for "created_by_value"
+    Then I fill in "bob OR jane" for "created_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -194,8 +148,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Peter  | john       | jane bob             |
       | James  | bob        | jane                 |
       | David  | tim        | tom                  |
-   When I check "created_by"
-    And I fill in "bob AND jane" for "created_by_value"
+    Then I fill in "bob AND jane" for "created_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -212,8 +165,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob_smith_jane | john                 |
       | Peter  | john           | bob jane smith       |
       | James  | bob            | smith                |
-   When I check "created_by"
-    And I fill in "bob smith" for "created_by_value"
+    Then I fill in "bob smith" for "created_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -232,7 +184,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I click text "Select A Criteria"
      And I click text "Name"
      And I fill in "Andrew" for "criteria_list[0][value]"
-     And I check "created_by"
      And I fill in "bob" for "created_by_value"
      And I press "Search"
     Then I should see "Andrew1" in the search results
@@ -240,43 +191,12 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I should not see "James" in the search results
 
   @javascript
-  Scenario: Search Filters - Updated By - Check presence of required form elements
-   Given I am logged in
-     And I am on child advanced search page
-    Then I should see "Filter Search Results"
-     And I should see "Updated By:"
-
-  @javascript
   Scenario: Validation of 'Updated by'
    Given I am logged in
      And I am on child advanced search page
-    When I check "updated_by"
      And I press "Search"
     Then I should see "Please enter a valid 'Updated by' value"
 
-  @javascript
-  Scenario: 'Updated By' can only be entered if checkbox selected
-   Given I am logged in
-     And I am on child advanced search page
-    Then the "updated_by" checkbox should not be checked
-     And the "updated_by_value" field should be disabled
-    When I check "updated_by"
-    Then I can fill in "bob" for "updated_by_value"
-
-  @javascript
-  Scenario: 'Updated By' value still present and modifiable after search
-   Given I am logged in
-     And I am on child advanced search page
-    Then the "updated_by" checkbox should not be checked
-     And the "updated_by_value" field should be disabled
-    When I check "updated_by"
-    Then I can fill in "bob" for "updated_by_value"
-     And I press "Search"
-    Then the "updated_by_value" field should contain "bob"
-     And the "updated_by" checkbox should be checked
-     And I can fill in "rob" for "updated_by_value"
-
-  
   @javascript
   Scenario: Searching by 'Updated By'
    Given I am logged in
@@ -286,7 +206,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob             | john                      |
       | Peter  | john            | bob                       |
       | James  | john            | john                      |
-   When I check "updated_by"
     And I fill in "bob" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
@@ -303,8 +222,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob             | john                      |
       | Peter  | john            | bob                       |
       | James  | john            | john                      |
-   When I check "updated_by"
-    And I fill in "rob" for "updated_by_value"
+    Then I fill in "rob" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -320,7 +238,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob             | john                      |
       | Peter  | john            | jane                      |
       | James  | john            | john                      |
-   When I check "updated_by"
     And I fill in "bob OR jane" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
@@ -338,7 +255,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Peter  | john            | jane bob                  |
       | James  | bob             | jane                      |
       | David  | tim             | tom                       |
-   When I check "updated_by"
     And I fill in "bob AND jane" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
@@ -356,7 +272,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob_smith_jane  | john                      |
       | Peter  | john            | bob jane smith            |
       | James  | bob             | smith                     |
-   When I check "updated_by"
     And I fill in "bob smith" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
@@ -375,7 +290,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I click text "Select A Criteria"
      And I click text "Name"
      And I fill in "Andrew" for "criteria_list[0][value]"
-     And I check "updated_by"
      And I fill in "bob" for "updated_by_value"
      And I press "Search"
     Then I should see "Andrew1" in the search results
@@ -390,9 +304,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And the following children exist in the system:
       | name    | created_by  | last_updated_by |
       | Andrew  | john        | tim             |
-   When I check "created_by"
     And I fill in "john" for "created_by_value"
-    And I check "updated_by"
     And I fill in "tim" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
@@ -407,11 +319,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew  | john        | rose            |
       | James   | john        | tom             |
       | Peter   | jane        | rose            |
-   When I check "created_by"
     And I fill in "john" for "created_by_value"
-    And I check "updated_by"
     And I fill in "rose" for "updated_by_value"
-    And I uncheck "updated_by"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should see "James" in the search results
@@ -427,11 +336,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew  | john        | rose            |
       | James   | john        | tom             |
       | Peter   | jane        | rose            |
-   When I check "created_by"
     And I fill in "john" for "created_by_value"
-    And I check "updated_by"
     And I fill in "rose" for "updated_by_value"
-    And I uncheck "created_by"
     And I press "Search"
    Then I should see "Andrew" in the search results
     And I should not see "James" in the search results
@@ -448,9 +354,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Peter   | jane        | john                 | bob             | tim                       |
       | James   | tim         | jane                 | john            | bob                       |
       | David   | bob         | tim                  | jane            | john                      |
-   When I check "created_by"
     And I fill in "john" for "created_by_value"
-    And I check "updated_by"
     And I fill in "tim" for "updated_by_value"
     And I press "Search"
    Then I should see "Andrew" in the search results
@@ -472,9 +376,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
    When I click text "Select A Criteria"
     And I click text "Name"
     And I fill in "Wil" for "criteria_list[0][value]"
-    And I check "created_by"
     And I fill in "john" for "created_by_value"
-    And I check "updated_by"
     And I fill in "tim" for "updated_by_value"
     And I press "Search"
    Then I should see "Willis" in the search results
@@ -498,18 +400,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I should see "Before:"
 
   @javascript
-  Scenario: Validation of 'Date Created' - entering no date
-   Given I am logged in
-     And I am on child advanced search page
-    When I check "created_at"
-     And I press "Search"
-    Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
-
-  @javascript
   Scenario: Validation of 'Date Created' - entering 'After Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-    When I check "created_at"
      And I fill in "11/12/2012" for "created_at_after_value"
      And I press "Search"
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
@@ -518,7 +411,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Created' - entering 'Before Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-    When I check "created_at"
      And I fill in "11/12/2012" for "created_at_before_value"
      And I press "Search"
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
@@ -527,7 +419,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Created' - entering both 'After Date' and 'Before Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-    When I check "created_at"
      And I fill in "11/12/2012" for "created_at_after_value"
      And I fill in "11/12/2012" for "created_at_before_value"
      And I press "Search"
@@ -537,7 +428,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Created' - entering 'After Date' with correct format
    Given I am logged in
      And I am on child advanced search page
-    When I check "created_at"
      And I fill in "2012-12-11" for "created_at_after_value"
      And I press "Search"
     Then I should not see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
@@ -546,7 +436,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Created' - entering 'Before Date' with correct format
     Given I am logged in
       And I am on child advanced search page
-     When I check "created_at"
       And I fill in "2012-12-11" for "created_at_before_value"
       And I press "Search"
      Then I should not see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
@@ -558,7 +447,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      Then the "created_at" checkbox should not be checked
       And the "created_at_after_value" field should be disabled
       And the "created_at_before_value" field should be disabled
-     When I check "created_at"
      Then I can fill in "2012-12-11" for "created_at_after_value"
       And I can fill in "2012-12-12" for "created_at_before_value"
 
@@ -566,7 +454,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: 'Date Created' 'After' and 'Before' values still present and modifiable after search
     Given I am logged in
       And I am on child advanced search page
-     When I check "created_at"
      Then I can fill in "2012-12-11" for "created_at_after_value"
       And I can fill in "2012-12-12" for "created_at_before_value"
       And I press "Search"
@@ -587,7 +474,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |
       | James  | 2012-04-24 14:10:03UTC |
-   When I check "created_at"
     And I fill in "2012-04-23" for "created_at_after_value"
     And I press "Search"
    Then I should not see "Emma" in the search results
@@ -606,7 +492,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |
       | James  | 2012-04-24 14:10:03UTC |
-   When I check "created_at"
     And I fill in "2012-04-22" for "created_at_before_value"
     And I press "Search"
    Then I should see "Emma" in the search results
@@ -625,7 +510,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      | Andrew | 2012-04-22 11:23:58UTC |
      | Peter  | 2012-04-23 03:32:12UTC |
      | James  | 2012-04-24 14:10:03UTC |
-   When I check "created_at"
     And I fill in "2012-04-22" for "created_at_after_value"
     And I fill in "2012-04-23" for "created_at_before_value"
     And I press "Search"
@@ -638,7 +522,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Updated' - entering no date
    Given I am logged in
      And I am on child advanced search page
-    When I check "updated_at"
      And I press "Search"
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
 
@@ -646,7 +529,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Updated' - entering 'After Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-    When I check "updated_at"
      And I fill in "11/12/2012" for "updated_at_after_value"
      And I press "Search"
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
@@ -655,7 +537,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Updated' - entering 'Before Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-    When I check "updated_at"
      And I fill in "11/12/2012" for "updated_at_before_value"
      And I press "Search"
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
@@ -664,7 +545,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Updated' - entering both 'After Date' and 'Before Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-    When I check "updated_at"
      And I fill in "11/12/2012" for "updated_at_after_value"
      And I fill in "11/12/2012" for "updated_at_before_value"
      And I press "Search"
@@ -674,7 +554,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Updated' - entering 'After Date' with correct format
    Given I am logged in
      And I am on child advanced search page
-    When I check "updated_at"
      And I fill in "2012-12-11" for "updated_at_after_value"
      And I press "Search"
     Then I should not see "Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
@@ -683,35 +562,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Updated' - entering 'Before Date' with correct format
     Given I am logged in
       And I am on child advanced search page
-     When I check "updated_at"
       And I fill in "2012-12-11" for "updated_at_before_value"
       And I press "Search"
      Then I should not see "Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
-
-  @javascript
-  Scenario: 'Date Updated' 'After' and 'Before' values can only be entered if checkbox selected
-    Given I am logged in
-      And I am on child advanced search page
-     Then the "updated_at" checkbox should not be checked
-      And the "updated_at_after_value" field should be disabled
-      And the "updated_at_before_value" field should be disabled
-     When I check "updated_at"
-     Then I can fill in "2012-12-11" for "updated_at_after_value"
-      And I can fill in "2012-12-12" for "updated_at_before_value"
-
-  @javascript
-  Scenario: 'Date Created' 'After' and 'Before' values still present and modifiable after search
-    Given I am logged in
-      And I am on child advanced search page
-     When I check "updated_at"
-     Then I can fill in "2012-12-11" for "updated_at_after_value"
-      And I can fill in "2012-12-12" for "updated_at_before_value"
-      And I press "Search"
-     Then I should see "2012-12-11"
-     Then I should see "2012-12-12"
-      And the "updated_at" checkbox should be checked
-      And I can fill in "2012-12-21" for "updated_at_after_value"
-      And I can fill in "2012-12-22" for "updated_at_before_value"
 
   @javascript
   Scenario: Searching by 'Date Updated' specifying only the 'After' date
@@ -723,7 +576,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |
       | James  | 2012-04-24 14:10:03UTC |
-   When I check "updated_at"
     And I fill in "2012-04-23" for "updated_at_after_value"
     And I press "Search"
    Then I should not see "Emma" in the search results
@@ -741,7 +593,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |
       | James  | 2012-04-24 14:10:03UTC |
-   When I check "updated_at"
     And I fill in "2012-04-22" for "updated_at_before_value"
     And I press "Search"
    Then I should see "Emma" in the search results
@@ -759,7 +610,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      | Andrew | 2012-04-22 11:23:58UTC |
      | Peter  | 2012-04-23 03:32:12UTC |
      | James  | 2012-04-24 14:10:03UTC |
-   When I check "updated_at"
     And I fill in "2012-04-22" for "updated_at_after_value"
     And I fill in "2012-04-23" for "updated_at_before_value"
     And I press "Search"
@@ -782,14 +632,10 @@ Feature: So that I can find a child that has been entered in to RapidFTR
    When I click text "Select A Criteria"
     And I click text "Name"
     And I fill in "Wil" for "criteria_list[0][value]"
-    And I check "created_by"
     And I fill in "bob" for "created_by_value"
-    And I check "updated_by"
     And I fill in "jan" for "updated_by_value"
-    And I check "created_at"
     And I fill in "2012-04-22" for "created_at_after_value"
     And I fill in "2012-04-24" for "created_at_before_value"
-    And I check "updated_at"
     And I fill in "2012-05-21" for "updated_at_after_value"
     And I fill in "2012-05-23" for "updated_at_before_value"
     And I press "Search"

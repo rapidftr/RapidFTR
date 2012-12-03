@@ -5,9 +5,11 @@
     <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
   </div>
   <div class="summary_panel">
+    <% if checkbox %>
     <p class="checkbox">
-      <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] if checkbox %>
+      <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] %>
     </p>
+       <% end %>
 
     <h2><%= link_to text_to_identify_child(summary_row), child_path(summary_row) %></h2>
     <div class="clearfix"></div>
