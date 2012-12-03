@@ -1,9 +1,8 @@
 <p>
   <span class="tool-tip-label">
-	<%= label_tag check_boxes.tag_name_attribute, t(check_boxes.name, :default => check_boxes.display_name), {:class=>"main-label"}%>
-    <% if check_boxes.help_text.present? %>
-	    <img class="tool-tip-icon vtip" title="<%=check_boxes.help_text%>" src="/images/tool_tip_icon.gif"/>
-    <% end%>
+
+	<%= label_tag check_boxes.tag_name_attribute, t(check_boxes.name, :default => check_boxes.display_name), {:class=>"key"}%>
+
   </span>
     <span class="checkbox">
 	    <% check_boxes.options.each do |option| %>
@@ -11,4 +10,7 @@
 				<%= label_tag option.tag_id, option.option_name %>
 		<% end %>
     </span>
+  <% if check_boxes.help_text.present? %>
+      <img class="tool-tip-icon vtip" title="<%=check_boxes.help_text%>" src="/images/new/icon_help.png"/>
+  <% end%>
 </p>

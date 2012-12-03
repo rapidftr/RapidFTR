@@ -1,16 +1,15 @@
-<dl class="radioList">
-  <dt><span><%= t(radio_button.name , :default => radio_button.display_name)  %></span>
-    <% if radio_button.help_text.present?%>
-	<img class="tool-tip-icon vtip" title="<%=radio_button.help_text%>" src="/images/tool_tip_icon.gif"/>
-    <% end%>
-  </dt>
+<p>
+    <span class="tool-tip-label">
+        <label class='key'><%= t(radio_button.name , :default => radio_button.display_name)  %></label>
+    </span>
 
-  <dd>
+
     <% radio_button.options.each do |option| %>
-        <p>
           <%= radio_button_tag radio_button.tag_name_attribute, option.option_name, option.option_name == @child[radio_button.name] %>
           <%= label_tag option.tag_id, option.option_name %>
-        </p>
     <% end %>
-  </dd>
-</dl>
+  <% if radio_button.help_text.present?%>
+      <img class="tool-tip-icon vtip" title="<%=radio_button.help_text%>" src="/images/new/icon_help.png"/>
+  <% end%>
+</p>
+
