@@ -1,5 +1,6 @@
 (function ($) {
-    $.fn.advancedSearch = function (options) {
+	
+	$.fn.advancedSearch = function (options) {
         var element = $(this);
         var self = this;
 
@@ -122,7 +123,7 @@
         }
 
         var dateValueIsValid = function (dateValue) {
-            return (dateValue != '' && dateValue.match(/^\d\d\d\d-\d\d-\d\d$/));
+            return (dateValue == '' || dateValue.match(/^\d\d\d\d-\d\d-\d\d$/));
         }
 
         var dateValueIsEmpty = function (){
@@ -130,44 +131,46 @@
         }
 
         var createdAtIsEmpty = function () {
-            return ($('#created_at_after_value').val() == '') || ($('#created_at_before_value').val() == '');
+            return ($('#created_at_after_value').val() == '') && ($('#created_at_before_value').val() == '');
         }
 
         var updatedAtIsEmpty = function () {
-            return ($('#updated_at_after_value').val() == '') || ($('#updated_at_before_value').val() == '');
+            return ($('#updated_at_after_value').val() == '') && ($('#updated_at_before_value').val() == '');
         }
 
         var createdAtIsValid = function () {
-            return
-                ( !createdAtIsEmpty() && dateValueIsValid($('#created_at_after_value').val()) ||
-                    dateValueIsValid($('#created_at_before_value').val()) )
+            return dateValueIsValid($('#created_at_after_value').val()) && dateValueIsValid($('#created_at_before_value').val())
         }
 
         var updatedAtIsValid = function () {
-            return
-                ( dateValueIsValid($('#updated_at_after_value').val()) ||
-                    dateValueIsValid($('#updated_at_before_value').val()) )
+            return dateValueIsValid($('#updated_at_after_value').val()) && dateValueIsValid($('#updated_at_before_value').val())
         }
 
+	var validate = function(){
+		var result = "";
 
-
-		var validate = function(){
-			var result = "";
-
-            $('.criteria-list .criteria-value-text').each(function(){
-                if($(this).val() == "") { result = 'Please enter a valid field value.'; }
-            });
-            $('.criteria-list .criteria-value-select').each(function(){
-                if($(this).val() == "") { result = 'Please enter a valid field value.'; }
-            });
-
-            if ((result == "") && ($('.criteria-list .criteria-value-text').length == 0) && ($('.criteria-list .criteria-value-select').length == 0)) {
-                if (createdByIsEmpty() && createdByOrganisationIsEmpty() && updatedByIsEmpty() && createdAtIsEmpty() && updatedAtIsEmpty()) {
-                    result = "Please enter at least one search criteria";
-                }
-            }
-			return result;
+		if (!createdAtIsValid()) {
+			result="Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
 		}
+	
+		if (!updatedAtIsValid()) {
+			result="Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
+		}
+
+		$('.criteria-list .criteria-value-text').each(function(){
+			if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+		});
+		$('.criteria-list .criteria-value-select').each(function(){
+			if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+		});
+
+		if ((result == "") && ($('.criteria-list .criteria-value-text').length == 0) && ($('.criteria-list .criteria-value-select').length == 0)) {
+			if (createdByIsEmpty() && createdByOrganisationIsEmpty() && updatedByIsEmpty() && createdAtIsEmpty() && updatedAtIsEmpty()) {
+				result = "Please enter at least one search criteria";
+			}
+		}
+		return result;
+	}
 
 		element.find("form").submit(function() {
 			result = validate();
@@ -181,5 +184,10 @@
 				return false;
 			}
 		});
-	}
+	},
+	$('.datepicker').each(function(){$(this).datepicker()})
 })(jQuery);
+
+$(function(){
+	$('.datepicker').each(function(){$(this).datepicker({ dateFormat: "yy-mm-dd" })})
+})

@@ -85,17 +85,17 @@
       <div>
         <%= label_tag(:created_at_label, "Date Created:") %>
         <%= label_tag(:created_at_after_label, "After:", :class=>"sub_label") %>
-        <%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12)%>
+        <%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :class => "datepicker")%>
         <%= label_tag(:created_at_before_label, "Before:", :class=>"sub_label") %>
-        <%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12)%>
+        <%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :class => "datepicker")%>
       </div>
 
       <div>
         <%= label_tag(:updated_at_label, "Date Updated:") %>
         <%= label_tag(:updated_at_after_label, "After:", :class=>"sub_label") %>
-        <%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12)%>
+        <%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :class => "datepicker")%>
         <%= label_tag(:updated_at_before_label, "Before:", :class=>"sub_label") %>
-        <%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12)%>
+        <%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :class => "datepicker")%>
       </div>
 
     </div>
