@@ -3,38 +3,44 @@ require 'spec_helper'
 describe ExportGenerator do
   describe "when generating a CSV download" do
     describe "with just a name field" do
-      child1 = Child.new(
-        '_id' => '3-123451', 'name' => 'Dave', 'unique_identifier' => "xxxy", 
-        'photo_url' => 'http://testmachine:3000/some-photo-path/1', 
+      user = User.new(
+          :user_name=>'user',
+          :full_name=>'name',
+          :organisation=>"UNICEF"
+      )
+      child1 = Child.new_with_user_name(user,
+        '_id' => '3-123451', 'name' => 'Dave', 'unique_identifier' => "xxxy",
+        'photo_url' => 'http://testmachine:3000/some-photo-path/1',
         'audio_url' => 'http://testmachine:3000/some-audio-path/1',
         'current_photo_key' => "photo-some-id-1", 'some_audio' => 'audio-some-id-1')
         child1.create_unique_id
-      child2 = Child.new( 
+      child2 = Child.new_with_user_name(user,
         '_id' => '4-153213', 'name' => 'Mary', 'unique_identifier' => "yyyx", 
-        'photo_url' => 'http://testmachine:3000/some-photo-path/2', 
+        'photo_url' => 'http://testmachine:3000/some-photo-path/2',
         'audio_url' => 'http://testmachine:3000/some-audio-path/2',
         'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
       child2.create_unique_id
         
-      subject do        
+      subject do
         ExportGenerator.new( [child1, child2]).to_csv
       end
       
-      it 'should have a header for unique_identifier followed by all the user defined fields' do
+      it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
         fields = Field.new_text_field("field_one"), Field.new_text_field("field_two")
         FormSection.stub!(:all_enabled_child_fields).and_return fields 
         csv_data =  FasterCSV.parse subject.data
         
         headers = csv_data[0]
-        headers.should == ["short_id", "unique_identifier", "field_one", "field_two", "Suspect Status", "Reunited Status"]
+        headers.should == ["Unique identifier", "Short", "Field one", "Field two", "Suspect status", "Reunited status", "Created by", "Created organisation", "Posted at", "Last updated by full name", "Last updated at"]
       end
       
       it 'should render a row for each result, plus a header row' do
         FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field("name")]
         csv_data = FasterCSV.parse subject.data
         csv_data.length.should == 3
+        csv_data[1][0].should == "xxxy"
         csv_data[1][2].should == "Dave"
-        csv_data[2][2].should == "Mary"
+        csv_data[2][0].should == "yyyx"
       end
       
       it "should add the correct mime type" do
@@ -61,6 +67,19 @@ describe ExportGenerator do
         csv_data[2][4].should == "http://testmachine:3000/some-audio-path/2"
         csv_data.length.should == 3
       end
+
+      it "should add metadata of children at the end" do
+        csv_data = FasterCSV.parse subject.data
+        csv_data[1][4].should == 'user'
+        csv_data[1][5].should == 'UNICEF'
+        csv_data[1][4].should_not == ''
+      end
+
+      it "should not have updated_by info for child that was not edited" do
+        csv_data = FasterCSV.parse subject.data
+        csv_data[1][7].should == ''
+      end
+
     end
     
     describe "with a multi checkbox field" do

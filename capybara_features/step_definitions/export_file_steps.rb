@@ -32,12 +32,11 @@ end
 
 Then /^the CSV data should be:$/ do |expected_csv|
   downloaded_csv = FasterCSV.parse(page.text)
-  index_of_name_column = downloaded_csv[0].index "name"
+  index_of_name_column = downloaded_csv[0].index "Name"
   expected_csv.hashes.each do |expected_line|
     matching_line = downloaded_csv.find do |line|
       line[index_of_name_column] == expected_line["name"]
     end
-
     matching_line.should_not be_nil
     expected_line.each_key do |key|
       matching_line.should include expected_line[key]
