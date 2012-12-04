@@ -16,7 +16,7 @@ Feature: Reunited Child
 
   Scenario: Mark a child as Reunited and check flag on the View Child Record Page
     When I am on the child record page for "Will"
-     And I follow "Mark as Reunited" span
+    And I follow "Mark as Reunited"
      And I fill in "child_reunited_message" with "Because I say it is reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
@@ -24,7 +24,7 @@ Feature: Reunited Child
 
   Scenario: Mark a child as Not Reunited  and check flag on the View Child Record Page
     When I am on the child record page for "Fred"
-     And I follow "Mark as Not Reunited" span
+     And I follow "Mark as Not Reunited"
      And I fill in "child_reunited_message" with "Because I say it is not reunited"
      And I click the "Undo Reunite" button
     Then I should see "Child was successfully updated."
@@ -32,7 +32,7 @@ Feature: Reunited Child
 
   Scenario: Mark a child as Reunited and check flag on the Search Results page
     When I am on the child record page for "Will"
-     And I follow "Mark as Reunited" span
+     And I follow "Mark as Reunited"
      And I fill in "child_reunited_message" with "Because I say it is reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
@@ -43,7 +43,7 @@ Feature: Reunited Child
 
   Scenario: Mark a child as Reunited and check flag on the Search Results page
     When I am on the child record page for "Fred"
-     And I follow "Mark as Not Reunited" span
+     And I follow "Mark as Not Reunited"
      And I fill in "child_reunited_message" with "Because I say it is not reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
