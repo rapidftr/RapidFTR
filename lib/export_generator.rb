@@ -3,7 +3,7 @@ require 'prawn/layout'
 
 CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
 CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
-CHILD_STATUS = ["suspect_status","reunited_status"]
+CHILD_STATUS = ["Suspect status","Reunited status"]
 
 class ExportGenerator
   class Export
@@ -29,19 +29,25 @@ class ExportGenerator
 
   def to_csv
     fields = metadata_fields([],CHILD_IDENTIFIERS) + FormSection.all_enabled_child_fields
-    fields = metadata_fields(fields , CHILD_STATUS + CHILD_METADATA)
-    field_names = fields.map {|field| field.name}
+    field_names = fields.map {|field| field.display_name}
     csv_data = FasterCSV.generate do |rows|
-      rows << field_names
+      rows << field_names + CHILD_STATUS + metadata_fields([],CHILD_METADATA).map {|field| field.display_name}
       @child_data.each do |child|
-        child_data = fields.map { |field| format_field_for_export(field, child[field.name] || child.send(field.name), child) }
-        child_data << (child.flag? ? "Suspect" : nil)
-        child_data << (child.reunited? ? "Reunited" : nil)
+        child_data = map_field_with_value(child, fields)
+        child_data << (child.flag? ? "Suspect" : "")
+        child_data << (child.reunited? ? "Reunited" : "")
+        metadata = metadata_fields([],CHILD_METADATA)
+        metadata_value = map_field_with_value(child, metadata)
+        child_data = child_data + metadata_value
         rows << child_data
       end
     end
 
     return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
+  end
+
+  def map_field_with_value(child, fields)
+    fields.map { |field| format_field_for_export(field, child[field.name] || child.send(field.name), child) }
   end
 
   def metadata_fields(fields,extras)
@@ -81,26 +87,30 @@ class ExportGenerator
   end
 
   def add_child_photo(child, with_full_id = false)
-    @pdf.image(
-      child.primary_photo.data,
-      :position => :center,
-      :vposition => :top,
-      :fit => @image_bounds
-    ) if child.primary_photo
-
-    if with_full_id
-      @pdf.y -= 5.mm
-      @pdf.text child.unique_identifier, :align => :center
+    if child.primary_photo
+      render_image(child.primary_photo.data)
+    else
+      data = File.read("public/images/no_photo_clip.jpg")
+      @attachment = FileAttachment.new("no_photo", "image/jpg", data)
+      render_image(@attachment.data)
     end
 
-    @pdf.y -= 5.mm
-    @pdf.text child.short_id, :align => :center
+    @pdf.y -= 3.mm
+  end
+
+  def render_image(data)
+    @pdf.image(
+        data,
+        :position => :center,
+        :vposition => :top,
+        :fit => @image_bounds
+    )
   end
 
   def add_child_details(child)
     flag_if_suspected(child)
     flag_if_reunited(child)
-    fields = metadata_fields([], CHILD_METADATA)
+    fields = metadata_fields([], CHILD_IDENTIFIERS + CHILD_METADATA)
     field_pair = fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
     render_pdf(field_pair)
     FormSection.enabled_by_order.each do |section|

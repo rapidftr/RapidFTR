@@ -36,9 +36,9 @@ Feature:
     Then I should receive a CSV file with 4 lines
     And the CSV data should be:
       | name    |unique_identifier| created_by | created_organisation |
-      | Dan     |dan_123  | user1 | UNICEF                            |
-      | Dave    |dave_456 | user1 | UNICEF                            |
-      | Mike    |mike_789 | user1 | UNICEF                            |
+      | Dan     |dan_123          | user1      | UNICEF               |
+      | Dave    |dave_456         | user1      | UNICEF               |
+      | Mike    |mike_789         | user1      | UNICEF               |
     When I am on the children listing page
     And I follow "Export Some Records to CSV"
     And I search using a name of "D"

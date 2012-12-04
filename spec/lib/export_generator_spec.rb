@@ -16,12 +16,12 @@ describe ExportGenerator do
         child1.create_unique_id
       child2 = Child.new_with_user_name(user,
         '_id' => '4-153213', 'name' => 'Mary', 'unique_identifier' => "yyyx", 
-        'photo_url' => 'http://testmachine:3000/some-photo-path/2', 
+        'photo_url' => 'http://testmachine:3000/some-photo-path/2',
         'audio_url' => 'http://testmachine:3000/some-audio-path/2',
         'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
       child2.create_unique_id
         
-      subject do        
+      subject do
         ExportGenerator.new( [child1, child2]).to_csv
       end
       
@@ -31,7 +31,7 @@ describe ExportGenerator do
         csv_data =  FasterCSV.parse subject.data
         
         headers = csv_data[0]
-        headers.should == ["unique_identifier", "short_id", "field_one", "field_two", "suspect_status", "reunited_status",  "created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
+        headers.should == ["Unique identifier", "Short", "Field one", "Field two", "Suspect status", "Reunited status", "Created by", "Created organisation", "Posted at", "Last updated by full name", "Last updated at"]
       end
       
       it 'should render a row for each result, plus a header row' do
@@ -72,7 +72,7 @@ describe ExportGenerator do
         csv_data = FasterCSV.parse subject.data
         csv_data[1][4].should == 'user'
         csv_data[1][5].should == 'UNICEF'
-        csv_data[1][6].should_not == ''
+        csv_data[1][4].should_not == ''
       end
 
       it "should not have updated_by info for child that was not edited" do
