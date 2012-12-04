@@ -25,4 +25,8 @@ class Permission
     { "Admin" => ADMIN, "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM }
   end
 
+  def self.hashed_values
+    {"ALL" =>["All"], "Admin" => ADMIN.values, "Children" => CHILDREN.values, "Forms" => FORMS.values, "Users" => USERS.values, "Devices" => DEVICES.values, "Reports" => REPORTS.values, "Roles" => ROLES.values, "System" => SYSTEM.values }
+  end
+
 end
