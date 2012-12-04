@@ -14,7 +14,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
    Given I am logged in
      And I am on child advanced search page
     When I press "Search"
-    Then I should see "Please select a valid field name"
+    Then I should see "Please enter at least one search criteria"
 
   @javascript
   Scenario: Validation of search criteria field value
@@ -185,13 +185,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I should not see "James" in the search results
 
   @javascript
-  Scenario: Validation of 'Updated by'
-   Given I am logged in
-     And I am on child advanced search page
-     And I press "Search"
-    Then I should see "Please enter a valid 'Updated by' value"
-
-  @javascript
   Scenario: Searching by 'Updated By'
    Given I am logged in
      And I am on child advanced search page
@@ -303,41 +296,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Search"
    Then I should see "Andrew" in the search results
 
-  
-  @javascript
-  Scenario: Searching by 'Created By' after un-checking 'Updated By'
-   Given I am logged in
-     And I am on child advanced search page
-     And the following children exist in the system:
-      | name    | created_by  | last_updated_by |
-      | Andrew  | john        | rose            |
-      | James   | john        | tom             |
-      | Peter   | jane        | rose            |
-    And I fill in "john" for "created_by_value"
-    And I fill in "rose" for "updated_by_value"
-    And I press "Search"
-   Then I should see "Andrew" in the search results
-    And I should see "James" in the search results
-    And I should not see "Peter" in the search results
-
-  
-  @javascript
-  Scenario: Searching by 'Updated By' after un-checking 'Created By'
-   Given I am logged in
-     And I am on child advanced search page
-     And the following children exist in the system:
-      | name    | created_by  | last_updated_by |
-      | Andrew  | john        | rose            |
-      | James   | john        | tom             |
-      | Peter   | jane        | rose            |
-    And I fill in "john" for "created_by_value"
-    And I fill in "rose" for "updated_by_value"
-    And I press "Search"
-   Then I should see "Andrew" in the search results
-    And I should not see "James" in the search results
-    And I should see "Peter" in the search results
-
-  
   @javascript
   Scenario: Searching by 'Created By' and 'Updated By' - match on user names and full names
    Given I am logged in
