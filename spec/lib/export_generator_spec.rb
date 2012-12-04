@@ -31,15 +31,16 @@ describe ExportGenerator do
         csv_data =  FasterCSV.parse subject.data
         
         headers = csv_data[0]
-        headers.should == ["unique_identifier", "short_id", "created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at", "field_one", "field_two", "Suspect Status", "Reunited Status"]
+        headers.should == ["unique_identifier", "short_id", "field_one", "field_two",  "created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at", "Suspect Status", "Reunited Status"]
       end
       
       it 'should render a row for each result, plus a header row' do
         FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field("name")]
         csv_data = FasterCSV.parse subject.data
         csv_data.length.should == 3
-        csv_data[1][7].should == "Dave"
-        csv_data[2][7].should == "Mary"
+        csv_data[1][0].should == "xxxy"
+        csv_data[1][2].should == "Dave"
+        csv_data[2][0].should == "yyyx"
       end
       
       it "should add the correct mime type" do
@@ -54,20 +55,20 @@ describe ExportGenerator do
       it 'should have a photo column with appropriate links' do        
         FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("current_photo_key")]
         csv_data = FasterCSV.parse subject.data
-        csv_data[1][9].should == "http://testmachine:3000/some-photo-path/1"
-        csv_data[2][9].should == "http://testmachine:3000/some-photo-path/2"
+        csv_data[1][4].should == "http://testmachine:3000/some-photo-path/1"
+        csv_data[2][4].should == "http://testmachine:3000/some-photo-path/2"
         csv_data.length.should == 3
       end
       
       it 'should have an audio column with appropriate links' do
         FormSection.stub!(:all_enabled_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("some_audio")]
         csv_data = FasterCSV.parse subject.data
-        csv_data[1][9].should == "http://testmachine:3000/some-audio-path/1"
-        csv_data[2][9].should == "http://testmachine:3000/some-audio-path/2"
+        csv_data[1][4].should == "http://testmachine:3000/some-audio-path/1"
+        csv_data[2][4].should == "http://testmachine:3000/some-audio-path/2"
         csv_data.length.should == 3
       end
 
-      it "should have metadata of children" do
+      it "should add metadata of children at the end" do
         csv_data = FasterCSV.parse subject.data
         csv_data[1][2].should == 'user'
         csv_data[1][3].should == 'UNICEF'
@@ -93,9 +94,9 @@ describe ExportGenerator do
       
       it "should render multi checkbox fields as a comma separated list" do
         csv_data = FasterCSV.parse subject.data
-        csv_data[1][7].should == "Dogs, Cats"
-        csv_data[2][7].should == ""
-        csv_data[3][7].should == "Cats, Fish"
+        csv_data[1][2].should == "Dogs, Cats"
+        csv_data[2][2].should == ""
+        csv_data[3][2].should == "Cats, Fish"
       end
     end
     

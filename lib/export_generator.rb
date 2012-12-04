@@ -1,6 +1,9 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
 
+CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
+CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
+
 class ExportGenerator
   class Export
     attr_accessor :data, :options
@@ -24,8 +27,8 @@ class ExportGenerator
   end
 
   def to_csv
-    fields = FormSection.all_enabled_child_fields
-    fields = metadata_fields(fields)
+    fields = metadata_fields([],CHILD_IDENTIFIERS) + FormSection.all_enabled_child_fields
+    fields = metadata_fields(fields , CHILD_METADATA)
     field_names = fields.map {|field| field.name}
     csv_data = FasterCSV.generate do |rows|
       rows << field_names + ["Suspect Status", "Reunited Status"]
@@ -40,10 +43,9 @@ class ExportGenerator
     return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
   end
 
-  def metadata_fields(fields)
-    extras =  ["last_updated_at", "last_updated_by_full_name", "posted_at", "created_organisation", "created_by", "short_id", "unique_identifier"]
+  def metadata_fields(fields,extras)
     extras.each do |extra|
-      fields.unshift Field.new_text_field(extra)
+      fields.push Field.new_text_field(extra)
     end
     fields
   end
@@ -97,8 +99,8 @@ class ExportGenerator
   def add_child_details(child)
     flag_if_suspected(child)
     flag_if_reunited(child)
-    fields = metadata_fields []
-    field_pair = fields.map { |field| [field.name, format_field_for_export(field, child[field.name])] }
+    fields = metadata_fields([], CHILD_METADATA)
+    field_pair = fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
     render_pdf(field_pair)
     FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
