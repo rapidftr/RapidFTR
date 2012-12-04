@@ -31,7 +31,7 @@ describe ExportGenerator do
         csv_data =  FasterCSV.parse subject.data
         
         headers = csv_data[0]
-        headers.should == ["unique_identifier", "short_id", "field_one", "field_two",  "created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at", "Suspect Status", "Reunited Status"]
+        headers.should == ["unique_identifier", "short_id", "field_one", "field_two", "suspect_status", "reunited_status",  "created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
       end
       
       it 'should render a row for each result, plus a header row' do
@@ -70,14 +70,14 @@ describe ExportGenerator do
 
       it "should add metadata of children at the end" do
         csv_data = FasterCSV.parse subject.data
-        csv_data[1][2].should == 'user'
-        csv_data[1][3].should == 'UNICEF'
-        csv_data[1][4].should_not == ''
+        csv_data[1][4].should == 'user'
+        csv_data[1][5].should == 'UNICEF'
+        csv_data[1][6].should_not == ''
       end
 
       it "should not have updated_by info for child that was not edited" do
         csv_data = FasterCSV.parse subject.data
-        csv_data[1][5].should == ''
+        csv_data[1][7].should == ''
       end
 
     end

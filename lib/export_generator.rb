@@ -3,6 +3,7 @@ require 'prawn/layout'
 
 CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
 CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
+CHILD_STATUS = ["suspect_status","reunited_status"]
 
 class ExportGenerator
   class Export
@@ -13,7 +14,7 @@ class ExportGenerator
     end
   end
   def initialize *child_data
-    @child_data = child_data.flatten 
+    @child_data = child_data.flatten
     @pdf = Prawn::Document.new
     @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
   end
@@ -28,10 +29,10 @@ class ExportGenerator
 
   def to_csv
     fields = metadata_fields([],CHILD_IDENTIFIERS) + FormSection.all_enabled_child_fields
-    fields = metadata_fields(fields , CHILD_METADATA)
+    fields = metadata_fields(fields , CHILD_STATUS + CHILD_METADATA)
     field_names = fields.map {|field| field.name}
     csv_data = FasterCSV.generate do |rows|
-      rows << field_names + ["Suspect Status", "Reunited Status"]
+      rows << field_names
       @child_data.each do |child|
         child_data = fields.map { |field| format_field_for_export(field, child[field.name] || child.send(field.name), child) }
         child_data << (child.flag? ? "Suspect" : nil)
@@ -40,7 +41,7 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")} 
+    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
   end
 
   def metadata_fields(fields,extras)
@@ -59,7 +60,7 @@ class ExportGenerator
   end
 
   private
-  
+
   def format_field_for_export field, value, child=nil
     return "" if value.blank?
     return value.join(", ") if field.type ==  Field::CHECK_BOXES
@@ -90,7 +91,7 @@ class ExportGenerator
     if with_full_id
       @pdf.y -= 5.mm
       @pdf.text child.unique_identifier, :align => :center
-    end 
+    end
 
     @pdf.y -= 5.mm
     @pdf.text child.short_id, :align => :center
