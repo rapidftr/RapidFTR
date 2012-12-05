@@ -450,6 +450,17 @@ body {
       &:nth-child(even){
         background: #f1f1f1;
       }
+
+      label.userlabels{
+        width:398px;
+        display:inline-block;
+      }
+
+      label.sub_label{
+        font-size: 0.9em;
+        font-style: italic;
+        color:#666;
+      }
     }
 
     .select-criteria{
