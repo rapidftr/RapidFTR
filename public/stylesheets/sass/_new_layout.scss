@@ -525,3 +525,28 @@ body {
     float: left !important;
   }
 }
+
+.contact_info_page{
+  padding:0px 20px;
+  div{
+    padding:20px 0px;
+    font-style: italic;
+  }
+  p{
+    padding:10px;
+
+    strong{
+      display:inline-block;
+      width:200px;
+    }
+
+    &:nth-child(odd){
+      background: #f6f6f6;
+    }
+
+    &:nth-child(even){
+      background: #f1f1f1;
+    }
+  }
+
+}

@@ -616,6 +616,21 @@ body {
 .manage_photos .btn, .manage_photos .submitButton input, .submitButton .manage_photos input {
   float: left !important; }
 
+.contact_info_page {
+  padding: 0px 20px; }
+  .contact_info_page div {
+    padding: 20px 0px;
+    font-style: italic; }
+  .contact_info_page p {
+    padding: 10px; }
+    .contact_info_page p strong {
+      display: inline-block;
+      width: 200px; }
+    .contact_info_page p:nth-child(odd) {
+      background: #f6f6f6; }
+    .contact_info_page p:nth-child(even) {
+      background: #f1f1f1; }
+
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
   border: 1px solid #d4d1d1;
