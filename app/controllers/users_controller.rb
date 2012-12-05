@@ -6,7 +6,9 @@ class UsersController < ApplicationController
   def index
     return @access_error = "You are not permitted to access this page." if cannot? :read, User
     sort_option = params[:sort] || "full_name"
-    @users = User.view("by_#{sort_option}")
+    filter_option=params[:filter] || "active"
+
+    @users=User.view("by_#{sort_option}_filter_view", {:startkey => [filter_option], :endkey => [filter_option, {}]})
     @users_details = users_details
 
     if params[:ajax] == "true"

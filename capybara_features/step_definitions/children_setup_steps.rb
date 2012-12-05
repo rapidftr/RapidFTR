@@ -6,6 +6,7 @@ def create_user(user_name)
                "password_confirmation" => "rapidftr",
                "full_name" => user_name,
                "organisation" => "UNICEF",
+               "disabled" => "false",
                "email" => "rapidftr@rapidftr.com",
                "role_ids" => "ADMIN")
 end

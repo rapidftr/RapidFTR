@@ -7,7 +7,7 @@
 
 <form class="filter_bar">
     <div class="show_count"> Showing all <%= pluralize(@users.length, "user") %> </div>
-    <div class="float_left" style="display: none;"> Show: <%= select_tag :show, options_for_select([[ "All", "all" ]], params[:show]) %> </div>
+    <div class="float_left"> Show: <%= select_tag :filter, options_for_select([["Active","active"],[ "All", "all" ]], params[:filter]), { :onchange => "this.form.submit();"} %> </div>
     <div class="float_left"> Sort by:  <%= select_tag :sort, options_for_select([["Full Name","full_name"],[ "User Name", "user_name"]], params[:sort]), { :onchange => "this.form.submit();"} %> </div>
 </form>
 <table id="users" class="list_table">

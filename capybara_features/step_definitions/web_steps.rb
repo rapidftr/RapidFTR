@@ -270,3 +270,4 @@ end
 Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
+

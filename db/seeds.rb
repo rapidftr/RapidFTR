@@ -19,6 +19,7 @@ if should_seed? User
               "password_confirmation" => "rapidftr",
               "full_name" => "RapidFTR",
               "email" => "rapidftr@rapidftr.com",
+              "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [admin.id])
 
@@ -27,6 +28,7 @@ if should_seed? User
               "password_confirmation" => "limited",
               "full_name" => "RapidFTR",
               "email" => "limited@rapidftr.com",
+              "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [field_worker.id])
 
@@ -35,6 +37,7 @@ if should_seed? User
               "password_confirmation" => "unlimited",
               "full_name" => "RapidFTR",
               "email" => "unlimited@rapidftr.com",
+              "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [field_admin.id])
 end
