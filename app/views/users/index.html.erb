@@ -21,7 +21,7 @@
     <% end %>
     <% if @users.present? %>
         <%= render :partial => 'users_table' %>
-        <p><%= link_to 'Back', admin_path %></p>
+        <p><%= link_to 'Back', :back %></p>
 
         <div id="modal-dialog"/>
     <% end %>

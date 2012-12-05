@@ -12,7 +12,7 @@ When /^I click the "(.*)" button$/ do |button_value|
 end
 
 And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
-  click_link("Mark record as Investigated")
+  click_link("Mark as Investigated")
   fill_in("Investigation Details", :with => details)
   click_button("Mark as Investigated")
 end
@@ -26,4 +26,12 @@ end
 When /^I click mark as duplicate for "([^"]*)"$/ do |child_name|
   child_with_specified_name = Child.all.detect { |c| c.name == child_name }
   page.find_by_id("child_#{child_with_specified_name._id}").click_link("Mark as Duplicate")
+end
+
+When /^I click blacklist for "([^"]*)"$/ do |imei|
+  page.find_by_id("#{imei}").click
+end
+
+def click_span(locator)
+  find(:xpath, "//span[text()='#{locator}']").click
 end

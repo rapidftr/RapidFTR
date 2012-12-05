@@ -16,6 +16,10 @@ class FakeRecordWithHistory
     @fields["histories"].unshift(history)
   end
 
+  def ordered_histories
+    @fields["histories"]
+  end
+
   def add_photo_change username, date, *new_photos
     self.add_history({
              "changes" => {

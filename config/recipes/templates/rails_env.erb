@@ -7,7 +7,7 @@ RapidFTR::Application.configure do
     config.cache_classes = true
 
     # Log error messages when you accidentally call methods on nil.
-    config.whiny_nils = true
+    config.whiny_nils = false
 
     # Full error reports are disabled and caching is turned on
     config.action_controller.consider_all_requests_local = false
@@ -23,6 +23,6 @@ RapidFTR::Application.configure do
     # For nginx:
     # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
 
-    ENV['SOLR_PORT'] = "8901"
+    ENV['SOLR_PORT'] = "<%= deploy_port_solr %>"
 
 end

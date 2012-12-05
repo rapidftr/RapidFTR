@@ -68,9 +68,9 @@ Feature: As an admin, I should be able to edit existing users.
     And I am logged in as an admin
     And I am on the manage users page
     Then user "gui" should exist on the page
-    Then I should see "Delete User" for "gui"
-    And I should not see "Delete User" for "admin"
-    When I follow "Delete User"
+    Then I should see "Delete" for "gui"
+    And I should not see "Delete" for "admin"
+    When I follow "Delete"
     Then user "gui" should not exist on the page
 
   Scenario: Admin should not see "Disable" control or change role control when she is editing her own record

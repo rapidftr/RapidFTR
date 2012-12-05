@@ -1,3 +1,8 @@
+<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+
+<%= render :partial => "show_child_toolbar", :locals => { :child => @child } %>
+
+<div class="clearfix"></div>
 <% if @child.flag? %>
     <h3 class="flag-message"><%= flag_message%></h3>
 <% end %>
@@ -9,15 +14,19 @@
     </div>
 
     <div class="side-tab-content">
-      <h2><%= link_to "Children", children_path %> &gt; <%= @child.name %></h2>
-      <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
-      <div class="clearfix"></div>
       <%= render :partial => "form_section", :collection => @form_sections %>
+      <div class="btn_panel">
+        <%= discard_button children_path %>
+        <%= submit_button %>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+
+    <div class="hidden_params">
+      <% (params["delete_child_photo"] || {}).each do |key, value| %>
+        <%= hidden_field_tag "delete_child_photo[#{key}]", value %>
+      <% end %>
     </div>
   </div>
 
-    <%= submit_button %>
-
-    <%= discard_button children_path %>
-      <div class="clearfix"></div>
 <% end %>

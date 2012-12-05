@@ -8,7 +8,7 @@ describe AdvancedSearchHelper do
 <input class="criteria-field" type="hidden" value="name" name="criteria_list[0][field]">
 <input class="criteria-index" type="hidden" value="0" name="criteria_list[0][index]">
 <span class=\"criteria-values\"/>
-<input class="criteria-value-text" type="text" value="test" name="criteria_list[0][value]" style=""></p>}.gsub("\n", '')
+<input class="criteria-value-text" type="text" value="test" name="criteria_list[0][value]" style=""><a class=\"remove-criteria\">remove</a></p>}.gsub("\n", '')
   end
 
 

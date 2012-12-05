@@ -6,9 +6,19 @@
     background: $bg-child-summary;
     border: 1px solid $border-child-summary;
     @include borderRadius(2px);
-    margin: 10px;
+    margin: 10px 26px;
     float:left;
     @extend .clearfix;
+
+    p.checkbox{
+      background: #EEE;
+      border: 1px solid #D4D1D1;
+      border-right:0px;
+      left: -231px;
+      padding: 5px;
+      position: absolute;
+      top: -1px;
+    }
 
     .photo_panel {
       float: left;
@@ -83,6 +93,17 @@
             font-size: 0.8em;
         }
 
+    }
+  }
+
+  .child_summary_panel.sel{
+    background:#e5efff;
+    border:1px solid #bdd7ff;
+
+    p.checkbox{
+      background:#e5efff;
+      border:1px solid #bdd7ff;
+      border-right: 0px;
     }
   }
 }

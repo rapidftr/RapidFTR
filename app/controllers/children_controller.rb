@@ -14,15 +14,16 @@ class ChildrenController < ApplicationController
 
     filter_children_by params[:status], params[:order_by]
 
+
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
       format.csv do
         authorize! :export, Child
-        render_as_csv @children, "all_records_#{file_name_date_string}.csv" 
+        render_as_csv @children, "all_records_#{file_name_date_string}.csv"
       end
       format.json do
-        render :json => @children 
+        render :json => @children
       end
       format.pdf do
         authorize! :export, Child
@@ -45,7 +46,10 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
-      format.json { render :json => @child.to_json }
+
+      format.json {
+        render :json => @child.compact.to_json
+      }
       format.csv do
         authorize! :export, Child
         render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
@@ -93,7 +97,9 @@ class ChildrenController < ApplicationController
         flash[:notice] = 'Child record successfully created.'
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
-        format.json { render :json => @child.to_json }
+        format.json {
+          render :json => @child.compact.to_json
+        }
       else
         format.html {
           @form_sections = get_form_sections
@@ -103,41 +109,39 @@ class ChildrenController < ApplicationController
       end
     end
   end
-  
-  def update    
+
+  def update
     respond_to do |format|
       format.json do
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
-
-        render :json => child.to_json
+        render :json => child.compact.to_json
       end
-        
-      format.html do 
+
+      format.html do
         @child = update_child_from params
         if @child.save
           flash[:notice] = 'Child was successfully updated.'
-
-          return redirect_to params[:child][:redirect_url] if params[:child][:redirect_url]
+          return redirect_to params[:redirect_url] if params[:redirect_url]
           redirect_to @child 
         else
           @form_sections = get_form_sections
-          render :action => "edit"          
+          render :action => "edit"
         end
       end
 
       format.xml do
         @child = update_child_from params
         if @child.save
-          head :ok        
+          head :ok
         else
           render :xml => @child.errors, :status => :unprocessable_entity
         end
-      end    
+      end
     end
   end
-  
+
 
   def edit_photo
     authorize! :update, @child
@@ -173,7 +177,7 @@ class ChildrenController < ApplicationController
 
   def new_search
   end
-  
+
   # DELETE /children/1
   # DELETE /children/1.xml
   def destroy
@@ -304,6 +308,8 @@ class ChildrenController < ApplicationController
       @children = presenter.children
       @filter = presenter.filter
       @order = presenter.order
+
+
     end
 
     def children_by_user_access
@@ -328,10 +334,10 @@ class ChildrenController < ApplicationController
 
       child['last_updated_by_full_name'] = current_user_full_name
       new_photo = params[:child].delete("photo")
-      new_photo = params[:current_photo_key] if new_photo.nil?
+      new_photo = (params[:current_photo_key] || "") if new_photo.nil?
       new_audio = params[:child].delete("audio")
       child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
       child
     end
-    
+
 end

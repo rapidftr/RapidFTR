@@ -106,23 +106,52 @@ input[type=text], input[type=password], textarea, input[type=file], select {
   color: $btn-text-color;
   margin:0px 5px;
 
+  a {
+    color: $btn-text-color;
+  }
+
   &:hover{
     background: $bg-gray-btn-hover;
   }
 
   span {
     display: block;
-    padding: 8px 10px 8px 50px;
+    padding: 7px 10px 7px 41px;
     background-repeat: no-repeat;
     background-position: 10px center;
+    background-image: url(../images/new/icons_btn.png);
+
+    &:hover{
+      color: $btn-hover-text-color;
+    }
   }
 
   span.create_user {
-    background-image: url(../images/new/icon_create_user.png);
+    background-position: 0px 0px;
+  }
+
+  span.download {
+    background-position: 0px 3px;
+  }
+
+  span.edit {
+    background-position: 0px -61px;
   }
 
   span.export {
-    background-image: url(../images/new/icon_export.png);
+    background-position: 0px -96px;
+  }
+
+  span.flag {
+    background-position: 0px -134px;
+  }
+
+  span.log {
+    background-position: 0px -169px;
+  }
+
+  span.reunite {
+    background-position: 0px -203px;
   }
 }
 
@@ -356,5 +385,9 @@ a.mark_as_duplicate {
       background:#ddd;
       color:#333;
     }
+  }
+
+  .mark-as-form{
+    padding:10px;
   }
 }

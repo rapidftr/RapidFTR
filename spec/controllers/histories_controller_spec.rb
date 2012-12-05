@@ -6,12 +6,12 @@ describe HistoriesController do
   end
 
   it "should have restful route for GET" do
-    assert_routing( {:method => 'get', :path => '/children/1/history'}, 
+    assert_routing( {:method => 'get', :path => '/children/1/history'},
                     {:controller => "histories", :action => "show", :child_id => "1"})
   end
-  
+
   it "should use child_id param when retrieving the child" do
-    Child.should_receive(:get).with "1"
+    Child.should_receive(:get).with("1").and_return(mock('child', :[] => []))
     get :show, :child_id => "1"
   end
 
@@ -26,5 +26,4 @@ describe HistoriesController do
     get :show, :child_id => "some_id"
     assigns(:page_name).should == "History of some_child"
   end
-
 end

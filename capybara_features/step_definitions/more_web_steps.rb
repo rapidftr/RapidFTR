@@ -111,10 +111,10 @@ When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
 end
 
 Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
-   radios = Nokogiri::HTML(page.body).css(".radioList")
-   radio = radios.detect {|radio| radio.css("dt span").first.text == radio_button}
+   radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(" ", "")}")
    radio.should_not be_nil
-   radio.css("label").map(&:text).should == table.raw.map(&:first)
+   table.raw.each { |row| radio.css("label").map(&:text).should include row.first }
+   
 end
 
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|

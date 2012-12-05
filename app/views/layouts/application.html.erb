@@ -32,7 +32,7 @@
         <div class="search">
           <%= link_to 'Advanced Search', new_advanced_search_path %>
           <%= text_field_tag 'query', params[:query] %>
-          <%= submit_tag "Go", :action => "children/search", :method => "get" %>
+          <%= submit_tag "Go", :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();" %>
         </div>
     <%- end %>
 

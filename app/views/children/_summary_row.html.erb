@@ -5,11 +5,14 @@
     <%= link_to thumbnail_tag(child, child.primary_photo_id), child_path(child.id) %>
   </div>
   <div class="summary_panel">
+    <% if checkbox %>
     <p class="checkbox">
       <%= check_box_tag "selections[#{child_counter}]", child.id if checkbox %>
     </p>
+       <% end %>
 
     <h2><%= link_to text_to_identify_child(child), child_path(child) %></h2>
+    <div class="clearfix"></div>
     <% if child.flag? %>
         <div class="flag suspect">
 
@@ -69,5 +72,6 @@
         <% end %>
         </ul>
     <% end %>
+</div>
 </div>
 <!-- END: item -->

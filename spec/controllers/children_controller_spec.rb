@@ -203,6 +203,14 @@ describe ChildrenController do
       get(:show, :format => 'csv', :id => "37")
     end
 
+    it "should set current photo key as blank instead of nil" do
+      child = Child.create('last_known_location' => "London")
+      child.create_unique_id
+      Child.stub!(:get).with("37").and_return(child)
+      assigns[child[:current_photo_key]] == ""
+      get(:show, :format => 'json', :id => "37")
+    end
+
     it "orders and assigns the forms" do
       Child.stub!(:get).with("37").and_return(mock_child)
       FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
@@ -365,6 +373,36 @@ describe ChildrenController do
       subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
       put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}
       child['last_updated_by_full_name'].should=='Bill Clinton'
+    end
+
+    it "should not set current_photo_key if photo is not passed" do
+      child = Child.new('name' => 'some name')
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child
+      end
+
+
+    it "should redirect to redirect_url if it is present in params" do
+      child = Child.new('name' => 'some name')
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child, :redirect_url => '/children'
+      response.should redirect_to '/children'
+    end
+
+    it "should redirect to child page if redirect_url is not present in params" do
+      child = Child.new('name' => 'some name')
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child
+      response.should redirect_to "/children/#{child.id}"
     end
 
   end

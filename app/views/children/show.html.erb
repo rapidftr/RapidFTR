@@ -51,8 +51,16 @@ $(".profile-tools .investigated a").click( function(){
 });
 </script>
 <% end %>
-<h1><%= link_to 'Children', children_path %> &gt; <%= @child.name %><%= link_to ' (Edit)', edit_child_path(@child), :class => 'edit_crumb' %></h1>
 
+<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+
+<% if can? :update, @child %>
+    <%= link_to content_tag(:span, 'Edit', :class => 'edit'), edit_child_path(@child), :class=>'btn' %>
+<% end %>
+
+<%= render :partial => "show_child_toolbar", :locals => { :child => @child } %>
+
+<div class="clearfix"></div>
     <% content_for :stylesheet do %>
       <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
     <% end %>
@@ -71,9 +79,9 @@ $(".profile-tools .investigated a").click( function(){
       <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
     <% end %>
 
-    <%= toolbar_for_child(@child) %>
 
-    <div id='interviewer_details'>
+
+    <div id='interviewer_details' class="filter_bar">
       <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @current_user.localize_date(@child['created_at']) %></h3>
       <% if @child['last_updated_at']%>
         <h3>Last updated: <%= @current_user.localize_date(@child['last_updated_at']) %> </h3>
@@ -91,4 +99,3 @@ $(".profile-tools .investigated a").click( function(){
     </div>
 
 </div>
-<%= toolbar_for_child(@child) %>

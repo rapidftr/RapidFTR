@@ -2,12 +2,13 @@ namespace :deploy do
 
   desc "Create nginx/passenger configuration for deployment"
   task :setup_nginx do
-    template "nginx_site.erb", "/opt/local/nginx/conf/sites.d/#{deploy_domain}.conf"
+    template "nginx_site.erb", "/opt/local/nginx/conf/sites.d/#{deploy_env}_#{deploy_port}.conf"
   end
 
   desc "Restart passenger"
   task :restart do
     run "touch #{File.join(current_path, 'tmp', 'restart.txt')}"
+    sudo "/opt/local/nginx/sbin/nginx -s reload"
   end
 
   desc "Create releases and log folder"

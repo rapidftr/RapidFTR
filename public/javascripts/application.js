@@ -115,18 +115,34 @@ RapidFTR.childPhotoRotation = {
 };
 
 RapidFTR.showDropdown = function(){
-    $(".dropdown_btn").click( function(){
-        var showObj = $(".dropdown",this);
-        showObj.toggleClass("hide");
+    $(".dropdown_btn").click( function(event){
+        $(".dropdown").not(this).hide();
+        $(".dropdown",this).show();
+        event.stopPropagation();
     });
-
-}
+    $(".dropdown").click(function(event){
+        event.stopPropagation();
+    });
+    $('html').click(function(event){
+        $(".dropdown").hide();
+    });
+};
 
 RapidFTR.Utils = {
     dehumanize: function(val){
         return jQuery.trim(val.toString()).replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
     }
 };
+
+RapidFTR.validateSearch = function() {
+  var query = $("#query").val();
+  if (query == undefined || query == null || query.toString().trim() == "") {
+    alert("Please enter a search query");
+    return false;
+  }
+
+  return true;
+}
 
 $(document).ready(function() {
 });
