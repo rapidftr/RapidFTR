@@ -13,29 +13,50 @@ describe UsersController do
   end
 
   describe "GET index" do
-    it "assigns all users as @users" do
+    before do
       @user = mock_user({:merge => {}, :user_name => "someone"})
-      User.stub!(:view).and_return([@user])
-      get :index
-      assigns[:users].should == [@user]
     end
 
-    it "should sort based on sort-parameter" do
-      @user = mock_user({:merge => {}, :user_name => "someone"})
-      User.should_receive(:view).with("by_user_name").and_return([@user])
-      get :index, :sort => "user_name"
-      assigns[:users].should == [@user]
+    context "filter and sort users" do
+       before do
+         @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one",:disabled=>false,:full_name=>"XYZ"})
+         @active_user_two = mock_user({:merge => {}, :user_name => "active_user_two",:disabled=>false,:full_name=>"ABC"})
+         @inactive_user = mock_user({:merge => {}, :user_name => "inactive_user",:disabled=>true,:full_name=>"inactive_user"})
+
+       end
+       it "should filter active users and sort them by full_name by default" do
+         User.should_receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+         get :index
+         assigns[:users].should == [@active_user_two,@active_user_one]
+       end
+
+       it "should filter all users and sort them by full_name" do
+         User.should_receive(:view).with("by_full_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_two,@inactive_user,@active_user_one])
+         get :index, :sort => "full_name", :filter=>"all"
+         assigns[:users].should == [@active_user_two,@inactive_user,@active_user_one]
+       end
+
+       it "should filter all users and sort them by user_name" do
+         User.should_receive(:view).with("by_user_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_one,@active_user_two,@inactive_user])
+         get :index, :sort => "user_name",:filter=>"all"
+         assigns[:users].should == [@active_user_one,@active_user_two,@inactive_user]
+       end
+
+       it "should filter active users and sort them by full_name" do
+         User.should_receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+         get :index, :sort => "full_name", :filter=>"active"
+         assigns[:users].should == [@active_user_two,@active_user_one]
+       end
+
+       it "should filter active users and sort them by user_name" do
+         User.should_receive(:view).with("by_user_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_one,@active_user_two])
+         get :index, :sort => "user_name", :filter=>"active"
+         assigns[:users].should == [@active_user_one,@active_user_two]
+       end
     end
 
-    it "should sort by full_name by default" do
-      @user = mock_user({:merge => {}, :user_name => "someone"})
-      User.should_receive(:view).with("by_full_name").and_return([@user])
-      get :index
-      assigns[:users].should == [@user]
-    end
 
     it "assigns users_details for backbone" do
-      @user = mock_user({:merge => {}, :user_name => "someone"})
       User.stub!(:view).and_return([@user])
       get :index
       users_details = assigns[:users_details]

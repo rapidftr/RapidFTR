@@ -44,17 +44,17 @@ describe ExportGenerator do
       it "should be rendered when child is flagged as suspect" do
         generated_csv = ExportGenerator.new(@suspected_child).to_csv.data
         rows = FasterCSV.parse(generated_csv)
-        rows[0].should include "Suspect Status"
-        suspect_status_colummn_index = rows[0].index("Suspect Status")
+        rows[0].should include "Suspect status"
+        suspect_status_colummn_index = rows[0].index("Suspect status")
         rows[1][suspect_status_colummn_index].should == "Suspect"
       end
 
       it "should not be rendered when child is not flagged as suspect" do
         generated_csv = ExportGenerator.new(@unsuspected_child).to_csv.data
         rows = FasterCSV.parse(generated_csv)
-        rows[0].should include "Suspect Status"
-        suspect_status_colummn_index = rows[0].index("Suspect Status")
-        rows[1][suspect_status_colummn_index].should be_nil
+        rows[0].should include "Suspect status"
+        suspect_status_colummn_index = rows[0].index("Suspect status")
+        rows[1][suspect_status_colummn_index].should == ""
       end
     end
   end
@@ -83,17 +83,17 @@ describe ExportGenerator do
       it "should be rendered when child is reunited" do
         generated_csv = ExportGenerator.new(@reunited_child).to_csv.data
         rows = FasterCSV.parse(generated_csv)
-        rows[0].should include "Reunited Status"
-        suspect_status_colummn_index = rows[0].index("Reunited Status")
+        rows[0].should include "Reunited status"
+        suspect_status_colummn_index = rows[0].index("Reunited status")
         rows[1][suspect_status_colummn_index].should == "Reunited"
       end
 
       it "should not be rendered when child is not reunited" do
         generated_csv = ExportGenerator.new(@not_reunited_child).to_csv.data
         rows = FasterCSV.parse(generated_csv)
-        rows[0].should include "Reunited Status"
-        reunited_status_colummn_index = rows[0].index("Reunited Status")
-        rows[1][reunited_status_colummn_index].should be_nil
+        rows[0].should include "Reunited status"
+        reunited_status_colummn_index = rows[0].index("Reunited status")
+        rows[1][reunited_status_colummn_index].should == ""
       end
     end
   end

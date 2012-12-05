@@ -5,10 +5,10 @@ Feature: So that hard copy printout of missing child photos are available
   Background:
     Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     And the following children exist in the system:
-      | name      | unique_id  |
-      | Will      | will_uid   |
-      | Willis    | willis_uid |
-      | Wilma     | wilma_uid  |
+      | name      | unique_id  | created_by |
+      | Will      | will_uid   | user1      |
+      | Willis    | willis_uid | user1      |
+      | Wilma     | wilma_uid  | user1      |
 
   Scenario: In search results, when a single record is selected and the export button is clicked, a pdf file is generated  
 
@@ -19,18 +19,16 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should receive a PDF file
 
-  Scenario: In search results, when two records are selected a pdf referring to those two records is generated  
+  Scenario: In search results, when two records are selected a pdf referring to those two records is generated
 
     When I fill in "Wil" for "query"
     And I press "Go"
     And I select search result #1
     And I select search result #3
     And I press "Export to Photo Wall"
-
+     Then I wait for 10 seconds
     Then I should receive a PDF file
     And the PDF file should have 2 pages
-    And the PDF file should contain the string "ill_uid"
-    And the PDF file should contain the string "lma_uid"
 
   @allow-rescue
   Scenario: In search results, when no records are selected and the export button is clicked, the user is shown an error message
@@ -47,8 +45,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I follow "Export to PDF"
 
     Then I should receive a PDF file
-    And the PDF file should have 6 pages
-    And the PDF file should contain the string "ill_uid"
+     And the PDF file should have 6 pages
     And the PDF file should contain the string "Will"
 
   Scenario: Exporting photo wall PDF from the child page
@@ -57,7 +54,6 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should receive a PDF file
     And the PDF file should have 1 page
-    And the PDF file should contain the string "ill_uid"
     And the PDF file should not contain the string "Will"
 
   Scenario: Exporting PDF when there is no photo

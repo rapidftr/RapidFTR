@@ -1,4 +1,4 @@
-<h1>Children</h1>
+<h1><%= link_to "Children", children_path %> &gt; Register New Child</h1>
 
 <%= form_tag children_path, :multipart => true do %>
     <div class="page-content-new">
@@ -8,8 +8,6 @@
         <%= render :partial => "tabs", :object => @form_sections %>
     </div>
     <div class="side-tab-content">
-      <h2><%= link_to "Children", children_path %> &gt; Register New Child</h2>
-      <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
       <div class="clearfix"></div>
         <%= render :partial => "form_section", :collection => @form_sections %>
     </div>

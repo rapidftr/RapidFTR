@@ -27,10 +27,10 @@ class User < CouchRestRails::Document
 
   view_by :user_name,
           :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-             {
-                emit(doc['user_name'],doc);
-             }
+                if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+                {
+                     emit(doc['user_name'],doc);
+                }
           }"
   view_by :full_name,
           :map => "function(doc) {
@@ -39,6 +39,27 @@ class User < CouchRestRails::Document
                 emit(doc['full_name'],doc);
              }
           }"
+
+  view_by :user_name_filter_view,
+          :map => "function(doc) {
+                if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+                {
+                    emit(['all',doc['user_name']],doc);
+                    if(doc['disabled'] == 'false')
+                      emit(['active',doc['user_name']],doc);
+                }
+          }"
+  view_by :full_name_filter_view,
+          :map => "function(doc) {
+              if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+             {
+                emit(['all',doc['full_name']],doc);
+                if(doc['disabled'] == 'false')
+                  emit(['active',doc['full_name']],doc);
+
+             }
+          }"
+
 
 
   before_save :make_user_name_lowercase, :encrypt_password
@@ -53,6 +74,7 @@ class User < CouchRestRails::Document
   validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
   validates_presence_of :role_ids, :message => "Please select at least one role"
   validates_presence_of :organisation, :message => "Please enter the user's organisation name"
+  validates_presence_of :disabled, :message => "Disabled attribute is required."
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
 
@@ -61,6 +83,7 @@ class User < CouchRestRails::Document
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method :user_name, :method => :is_user_name_unique
+
 
 
   def self.find_by_user_name(user_name)
