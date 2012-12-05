@@ -1,7 +1,7 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
 
   permissions = []
-  permissions.push(Permission::ADMIN[:admin]) if user_type.downcase == "admin" and permission.nil?
+  permissions.push(Permission.all_permissions) if user_type.downcase == "admin" and permission.nil?
   permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
   permissions.push(permission.split(",")) if permission
   permissions.flatten!

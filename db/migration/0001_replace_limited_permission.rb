@@ -17,4 +17,4 @@ Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
 end
 
 role = Role.find_by_name("Admin")
-role.update_attributes(:permissions => [Permission::ADMIN[:admin]]) if role
+role.update_attributes(:permissions => Permission.all_permissions) if role

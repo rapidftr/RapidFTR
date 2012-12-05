@@ -22,13 +22,17 @@ class Ability
     end
 
     if user.has_permission?(Permission::CHILDREN[:edit])
-      can [:read, :update], Child do |child|
-        (user.has_permission?(Permission::CHILDREN[:view_and_search]) || child.created_by == user.user_name)
+      can [:read, :update, :destroy], Child do |child|
+        child.created_by == user.user_name
       end
     end
 
     if user.has_permission?(Permission::CHILDREN[:view_and_search])
       can [:read, :view_all], Child
+    end
+
+    if user.has_permission?(Permission::CHILDREN[:view_and_search]) and user.has_permission?(Permission::CHILDREN[:edit])
+      can [:read, :update, :destroy], Child
     end
 
     if user.has_permission?(Permission::CHILDREN[:export])
@@ -81,8 +85,7 @@ class Ability
     #
     if user.has_permission?(Permission::FORMS[:manage])
       can [:manage], FormSection
-      can [:manage], Field
-      cannot [:highlight], Field
+      can [:manage], Field, :except => :highlight
     end
 
     #
@@ -97,13 +100,6 @@ class Ability
     #
     if user.has_permission?(Permission::SYSTEM[:settings])
       can [:manage], ContactInformation
-    end
-
-    #
-    # EVERYTHING AT ONCE
-    #
-    if user.has_permission?(Permission::ADMIN[:admin])
-      can :manage, :all
     end
   end
 

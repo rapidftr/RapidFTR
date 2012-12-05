@@ -60,7 +60,7 @@ describe UsersController do
       User.stub!(:view).and_return([@user])
       get :index
       users_details = assigns[:users_details]
-      users_details.should_not == nil
+      users_details.should_not be_nil
       user_detail = users_details[0]
       user_detail[:user_name].should == "someone"
       user_detail[:user_url].should_not be_blank

@@ -14,7 +14,7 @@ module FakeLogin
 
   def fake_admin_login
     user = User.new(:user_name => 'fakeadmin')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::ADMIN[:admin]])])
+    user.stub!(:roles).and_return([Role.new(:permissions => Permission.all_permissions)])
     fake_login user
   end
 
@@ -31,9 +31,9 @@ module FakeLogin
     fake_login user
   end
 
-  def fake_login_as(permission = Permission::ADMIN[:admin])
+  def fake_login_as(permission = Permission.all_permissions)
     user = User.new(:user_name => 'fakelimited')
-    user.stub!(:roles).and_return([Role.new(:permissions => [permission])])
+    user.stub!(:roles).and_return([Role.new(:permissions => [permission].flatten)])
     fake_login user
   end
 

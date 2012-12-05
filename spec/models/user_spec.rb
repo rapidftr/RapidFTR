@@ -239,7 +239,7 @@ describe User do
 
   describe "user roles" do
     it "should store the roles and retrive them back as Roles" do
-      admin_role = Role.create!(:name => "Admin", :permissions => [Permission::ADMIN[:admin]])
+      admin_role = Role.create!(:name => "Admin", :permissions => Permission.all_permissions)
       field_worker_role = Role.create!(:name => "Field Worker", :permissions => [Permission::CHILDREN[:register]])
       user = User.create({:user_name => "user_123", :full_name => 'full', :password => 'password', :password_confirmation => 'password',
                           :email => 'em@dd.net', :organisation => 'TW', :user_type => 'user_type', :role_ids => [admin_role.id, field_worker_role.id], :disabled => 'false'})

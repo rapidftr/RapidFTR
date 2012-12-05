@@ -21,10 +21,6 @@ module ApplicationHelper
     session.try(:user)
   end
 
-  def is_admin?
-    current_user.has_permission?(Permission::ADMIN[:admin]) if current_user
-  end
-
   def submit_button(name = 'Save')
       submit_tag(name, :class => 'btn_submit')
   end

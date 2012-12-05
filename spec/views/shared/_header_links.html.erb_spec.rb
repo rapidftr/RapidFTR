@@ -27,8 +27,8 @@ describe 'shared/_header_links.html.erb' do
     it { should have_link('Contact & Help', :href => contact_information_path("administrator")) }
   end
 
-  describe 'with admin permission' do
-    let(:permissions) { [Permission::ADMIN[:admin]] }
+  describe 'with all permission' do
+    let(:permissions) { Permission.all_permissions }
     it { should have_link('System settings', admin_path) }
   end
 
