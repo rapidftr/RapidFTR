@@ -450,6 +450,17 @@ body {
       &:nth-child(even){
         background: #f1f1f1;
       }
+
+      label.userlabels{
+        width:398px;
+        display:inline-block;
+      }
+
+      label.sub_label{
+        font-size: 0.9em;
+        font-style: italic;
+        color:#666;
+      }
     }
 
     .select-criteria{
@@ -482,4 +493,60 @@ body {
       border-bottom: 1px solid #b0d8fd;
     }
   }
+}
+
+.manage_photos{
+
+  .thumbnails{
+    padding:10px;
+
+    div{
+      float: left;
+
+      .thumbnail{
+        background:#fff;
+        padding:10px;
+        margin:10px;
+        cursor: pointer;
+        float:none;
+      }
+
+      .thumbnail.selected{
+        background: #aaccff;
+      }
+    }
+
+    div.flash{
+      @extend .clearfix;
+    }
+  }
+
+  .btn{
+    float: left !important;
+  }
+}
+
+.contact_info_page{
+  padding:0px 20px;
+  div{
+    padding:20px 0px;
+    font-style: italic;
+  }
+  p{
+    padding:10px;
+
+    strong{
+      display:inline-block;
+      width:200px;
+    }
+
+    &:nth-child(odd){
+      background: #f6f6f6;
+    }
+
+    &:nth-child(even){
+      background: #f1f1f1;
+    }
+  }
+
 }

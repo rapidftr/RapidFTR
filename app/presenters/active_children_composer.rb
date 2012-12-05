@@ -20,7 +20,7 @@ class ActiveChildrenComposer
     if order == 'most recently created'
       children.sort!{ |x,y| y['created_at'] <=> x['created_at'] }
     else
-      children.sort!{ |x,y| x['name'] <=> y['name'] }
+      children.sort!{ |x,y| (x['name'] || '') <=> (y['name'] || '') }
     end
   end
 end

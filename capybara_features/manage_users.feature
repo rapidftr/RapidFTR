@@ -53,9 +53,58 @@ Feature: Manage Users
      And I press "Update"
      Then I should see "9876543210"
 
+  @javascript
+   Scenario: User should be able to see active users sorted by Full Name by default on User Listing page
+     Given a user "henry"
+     And a user "homer"
+     And user "homer" is disabled
+     And I am on manage users page
+     Then I should see the following users:
+     |name |
+     |admin|
+     |henry|
+     |jerry|
+     And I should not see "homer"
 
+  @javascript
+  Scenario: User should be able to see active users sorted by User Name on User Listing page
+    Given a user "henry"
+    And a user "homer"
+    And user "homer" is disabled
+    And I am on manage users page
+    And I select "User Name" from "sort"
+    Then I should see the following users:
+      |name |
+      |admin|
+      |henry|
+      |jerry|
+    And I should not see "homer"
 
+  @javascript
+  Scenario: User should be able to see all users sorted by Full Name on User Listing page
+    Given a user "henry"
+    And a user "homer"
+    And user "homer" is disabled
+    And I am on manage users page
+    And I select "All" from "filter"
+    Then I should see the following users:
+      |name |
+      |admin|
+      |henry|
+      |homer|
+      |jerry|
 
-
-
-
+  @javascript
+  Scenario: User should be able to see all users sorted by User Name on User Listing page
+    Given a user "henry"
+    And a user "homer"
+    And user "homer" is disabled
+    And I am on manage users page
+    And I select "All" from "filter"
+    And I select "User Name" from "sort"
+    Then I should see the following users:
+      |name |
+      |admin|
+      |henry|
+      |homer|
+      |jerry|
