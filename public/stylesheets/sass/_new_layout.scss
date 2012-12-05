@@ -405,3 +405,148 @@ body {
     text-align: right;
   }
 }
+.advanced-search{
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D4D4D4;
+  .filter_bar{
+
+    div{
+      float: left;
+      padding: 5px 15px;
+    }
+
+    .help-text{
+      font-style: italic;
+      color:#666;
+      border-top: 1px solid #ffdeaa;
+      margin-top:8px;
+      padding-top:10px;
+      font-size: 0.9em;
+    }
+
+    .sub_label{
+      color:#666;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+
+  }
+
+  .help-text{
+    padding: 10px 0px;
+  }
+
+  .criteria-list{
+    padding:10px;
+
+    p{
+      padding:7px;
+      border-bottom: 1px solid #fff;
+
+      &:nth-child(odd){
+        background: #f6f6f6;
+      }
+
+      &:nth-child(even){
+        background: #f1f1f1;
+      }
+
+      label.userlabels{
+        width:398px;
+        display:inline-block;
+      }
+
+      label.sub_label{
+        font-size: 0.9em;
+        font-style: italic;
+        color:#666;
+      }
+    }
+
+    .select-criteria{
+      width:300px;
+      display: inline-block;
+      padding:0px 5px;
+      cursor: pointer;
+    }
+    .select-criteria:first-child{
+      width:387px;
+    }
+    .criteria-values{
+
+    }
+    .remove-criteria{
+      cursor: pointer;
+      color:red;
+      padding:0px 5px;
+    }
+
+  }
+
+  .add-criteria{
+    padding:5px;
+    border-bottom:1px dashed #76BCFD;
+    cursor: pointer;
+    margin-right: 765px;
+
+    &:hover{
+      border-bottom: 1px solid #b0d8fd;
+    }
+  }
+}
+
+.manage_photos{
+
+  .thumbnails{
+    padding:10px;
+
+    div{
+      float: left;
+
+      .thumbnail{
+        background:#fff;
+        padding:10px;
+        margin:10px;
+        cursor: pointer;
+        float:none;
+      }
+
+      .thumbnail.selected{
+        background: #aaccff;
+      }
+    }
+
+    div.flash{
+      @extend .clearfix;
+    }
+  }
+
+  .btn{
+    float: left !important;
+  }
+}
+
+.contact_info_page{
+  padding:0px 20px;
+  div{
+    padding:20px 0px;
+    font-style: italic;
+  }
+  p{
+    padding:10px;
+
+    strong{
+      display:inline-block;
+      width:200px;
+    }
+
+    &:nth-child(odd){
+      background: #f6f6f6;
+    }
+
+    &:nth-child(even){
+      background: #f1f1f1;
+    }
+  }
+
+}

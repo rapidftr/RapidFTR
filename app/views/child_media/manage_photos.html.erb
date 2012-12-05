@@ -1,19 +1,20 @@
 
+<h1><%= link_to 'Children', children_path %> &gt; <%= link_to @child.name, child_path(@child) %> (<%= @child.short_id %>) &gt; Manage photo</h1>
 <script type="text/javascript">
-  $(function() {
+    $(function() {
       window.Photos.refresh(<%= @photos_details.to_json.html_safe %>);
   });
 </script>
+ <div class="clearfix"></div>
+<div class="manage_photos">
 
-<div class="profile-tools">
-  <ul>
-    <li class="no-fancy-spancy-js-back"><%= link_to 'Back to child', child_path(@child) %></li>
-    <li class=""><a href="#" id="selectPrimaryPhotoButton">Choose as primary photo</a></li>
-  </ul>
-</div>
 
 <div class="thumbnails">
-  <div class="flash" style="display:none"><div id="notice" class="error"></div></div>
+  <div class="flash" style="display:none"><div id="notice" class="error"></div></div><br class="clearfix" />
+</div>
+  <div class="clearfix"></div>
+  <a href="#" id="selectPrimaryPhotoButton" class="btn"><span class="photo">Choose as primary photo</span></a>
+  <div class="clearfix"></div>
 </div>
 
 

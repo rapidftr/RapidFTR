@@ -1,4 +1,4 @@
-<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= link_to @child.name, child_path(@child)%>(<%=@child.short_id%>)&gt; Edit photo  </h1>
 <div class="clearfix"></div>
 
 <div class="page-content-new">

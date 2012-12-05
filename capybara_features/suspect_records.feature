@@ -17,6 +17,7 @@ Feature: Suspect Records
   When I am on the home page
   Then I should see "3 Records need Attention"
 
+    @javascript
   Scenario: Admin user should only see flagged children which have not been investigated
   When I am on the child listing filtered by flagged
   Then I should see "Steve"
@@ -24,6 +25,7 @@ Feature: Suspect Records
   And I should see "Dave"
   And I should not see "George"
 
+  @javascript
   Scenario: Admin should be able to mark suspect record as investigated
   When I am on the child listing filtered by flagged
   And I follow "Steve"
@@ -36,21 +38,22 @@ Feature: Suspect Records
     """
     I wouldn't worry about this guy
     """
-  Then I should see "Undo Investigated"
+  Then I should see "Mark as Not Investigated"
 
   @javascript
   Scenario: Admin should be able to mark investigated record as not investigated
   When I am on the children listing page
   And I follow "Dave"
-  Then I should see "Undo Investigated"
+  Then I should see "Mark as Not Investigated"
 
   @javascript
   Scenario: When a record is not flagged admin should not be able to mark as investigated or not investigated
   When I am on the children listing page
   And I follow "George"
-  Then I should not see "Investigate Record"
-  And I should not see "Not Investigated"
+  Then I should not see "Mark as Investigated"
+  And I should not see "Mark as Not Investigated"
 
+  @javascript
   Scenario: When I mark a record as investigated the change log should display a single entry for the change
   When I am on the child listing filtered by flagged
   And I follow "Steve"

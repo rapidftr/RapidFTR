@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ActiveChildrenComposer do
-  
+
   def mock_child(reunited = false, created_at = Time.now, name = "abc")
     child = Child.new({:created_at => created_at, :reunited => reunited, :name => name})
   end
@@ -26,6 +26,12 @@ describe ActiveChildrenComposer do
       composer = ActiveChildrenComposer.new("some other order")
       children_composed = composer.compose(children)
       children_composed.should == [children[1], children[0]]
+    end
+
+    it "should not break if the name is not present for the child" do
+      children = [mock_child(false, 1.day.ago, ''), mock_child(false, 1.day.ago, 'a')]
+      composer = ActiveChildrenComposer.new('name')
+      composer.compose(children).should == [children[0], children[1]]
     end
   end
 end

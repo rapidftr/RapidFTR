@@ -1,10 +1,11 @@
-
+<h1>Advanced Search</h1>
 <div class='advanced-search'>
   <div class="flash">
     <div class="error" style="display:none"></div>
   </div>
-  <div class="help-text">Separate words by OR to search for more than one option eg. Tim OR Rahul</div>
+
   <form action="index">
+
     <div class='criteria_menu' style='display:none;' >
       <div class='box-shadow content'>
           <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
@@ -54,68 +55,54 @@
         <input type='hidden' name="criteria_list[${index}][field_type]" value="${field}" class="criteria-field-type"/>
        <span class="criteria-values"></span>
         <input type='hidden' name="criteria_list[${index}][index]" value="${index}" class="criteria-index"/>
-        {{if index > 0}}
           <a class='remove-criteria'>remove</a>
-        {{/if}}
       </p>
       {{/if}}
     </script>
+    <div class="help-text">Separate words by OR to search for more than one option eg. Tim OR Rahul</div>
+    <div class="help-text">
+      Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
+      Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
+      Enter dates in both boxes to see records created between the dates.
+    </div>
+    <div class="criteria-list">
+      <p>
+        <%= label_tag(:created_by_organisation_value, "Created Organisation :", :class=>"userlabels") %>
+        <%= text_field_tag(:created_by_organisation_value, params[:created_by_organisation_value]) %>
+      </p>
 
-    <div class="criteria-list" style="float:left">
+      <p>
+        <%= label_tag(:created_by_label, "Created by(User) :", :class=>"userlabels") %>
+        <%= text_field_tag(:created_by_value, params[:created_by_value]) %>
+      </p>
+
+      <p>
+        <%= label_tag(:updated_by_label, "Updated by(User) :", :class=>"userlabels") %>
+        <%= text_field_tag(:updated_by_value, params[:updated_by_value]) %>
+      </p>
+
+      <p>
+        <%= label_tag(:created_at_label, "Date Created :", :class=>"userlabels") %>
+        <%= label_tag(:created_at_after_label, "After :", :class=>"sub_label") %>
+        <%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :class => "datepicker")%>
+        <%= label_tag(:created_at_before_label, "Before :", :class=>"sub_label") %>
+        <%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :class => "datepicker")%>
+      </p>
+
+      <p>
+        <%= label_tag(:updated_at_label, "Date Updated :", :class=>"userlabels") %>
+        <%= label_tag(:updated_at_after_label, "After :", :class=>"sub_label") %>
+        <%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :class => "datepicker")%>
+        <%= label_tag(:updated_at_before_label, "Before :", :class=>"sub_label") %>
+        <%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :class => "datepicker")%>
+      </p>
+
       <%= @criteria_list.map{|criteria| generate_html(criteria, @all_fields)}.join("").html_safe %>
     </div>
 
-    <div style="float:right">
-      <input type='submit' value='Search'/>
-    </div>
-    <p style='clear:both'>
-      <a class='add-criteria'>Select A Criteria</a>
-    </p>
+    <a class='add-criteria'>Select A Criteria</a>
 
-    <hr>
-    <p style="font-size: 14px">Filter Search Results</p>
-    <table border=0 cellpadding=0 cellspacing=0 bgcolor="white">
-      <tr bgcolor="white">
-        <td align="right" width=10><%= check_box_tag(:created_by_organisation, true, params[:created_by_organisation]=='true', :disabled => (params[:disable_create]=='true')) %></td>
-        <td align="left" width=80><%= label_tag(:created_by_organisation_value, "Created By Organisation:") %></td>
-        <td align="left" colspan="4"><%= text_field_tag(:created_by_organisation_value, params[:created_by_organisation_value], :disabled => (params[:disable_create]=='true') || !(params[:created_by_organisation]=='true')) %></td>
-      </tr>
-      <tr bgcolor="white">
-        <td align="right" width=10><%= check_box_tag(:created_by, true, params[:created_by]=='true', :disabled => (params[:disable_create]=='true')) %></td>
-        <td align="left" width=80><%= label_tag(:created_by_label, "Created By:") %></td>
-        <td align="left" colspan="4"><%= text_field_tag(:created_by_value, params[:created_by_value], :disabled => (params[:disable_create]=='true') || !(params[:created_by]=='true')) %></td>
-      </tr>
-      <tr bgcolor="white">
-        <td align="left"><%= check_box_tag(:updated_by, true, params[:updated_by]=='true') %></td>
-        <td align="left"><%= label_tag(:updated_by_label, "Updated By:") %></td>
-        <td align="left" colspan="4"><%= text_field_tag(:updated_by_value, params[:updated_by_value], :disabled => !(params[:updated_by]=='true')) %></td>
-      </tr>
-
-      <tr bgcolor="white">
-        <td align="left" colspan="6" class="help-text">
-          Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
-          Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
-          Enter dates in both boxes to see records created between the dates.
-        </td>
-      </tr>
-      <tr bgcolor="white">
-        <td align="left"><%= check_box_tag(:created_at, true, params[:created_at]=='true') %></td>
-        <td align="left" width="90px"><%= label_tag(:created_at_label, "Date Created:") %></td>
-        <td align="left" width="15px"><%= label_tag(:created_at_after_label, "After:") %></td>
-        <td align="left" width="15px"><%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :disabled => !(params[:created_at]=='true'))%></td>
-        <td align="left" width="15px"><%= label_tag(:created_at_before_label, "Before:") %></td>
-        <td align="left"><%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :disabled => !(params[:created_at]=='true'))%></td>
-      </tr>
-      <tr bgcolor="white">
-        <td align="left"><%= check_box_tag(:updated_at, true, params[:updated_at]=='true') %></td>
-        <td align="left" width="90px"><%= label_tag(:updated_at_label, "Date Updated:") %></td>
-        <td align="left" width="15px"><%= label_tag(:updated_at_after_label, "After:") %></td>
-        <td align="left" width="15px"><%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :disabled => !(params[:updated_at]=='true'))%></td>
-        <td align="left" width="15px"><%= label_tag(:updated_at_before_label, "Before:") %></td>
-        <td align="left"><%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :disabled => !(params[:updated_at]=='true'))%></td>
-      </tr>
-    </table>
-
+    <input type='submit' value='Search'/>
   </form>
 
 
