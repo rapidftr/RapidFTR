@@ -8,7 +8,7 @@ describe DuplicatesController do
       before :each do
         fake_admin_login
 
-        @child = mock_model(Child, :name => "John")
+        @child = stub_model(Child, :name => "John")
         Child.stub!(:get).with("1234").and_return(@child)
 
         @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
