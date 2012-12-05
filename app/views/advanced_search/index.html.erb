@@ -60,47 +60,43 @@
       {{/if}}
     </script>
     <div class="help-text">Separate words by OR to search for more than one option eg. Tim OR Rahul</div>
-    <div class="filter_bar">
-      <div>
-        <%= label_tag(:created_by_organisation_value, "Created Organisation:") %>
-        <%= text_field_tag(:created_by_organisation_value, params[:created_by_organisation_value]) %>
-      </div>
-
-      <div>
-        <%= label_tag(:created_by_label, "Created By:") %>
-        <%= text_field_tag(:created_by_value, params[:created_by_value]) %>
-      </div>
-
-      <div>
-        <%= label_tag(:updated_by_label, "Updated By:") %>
-        <%= text_field_tag(:updated_by_value, params[:updated_by_value]) %>
-      </div>
-
-      <div class="help-text">
-        Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
-        Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
-        Enter dates in both boxes to see records created between the dates.
-      </div>
-
-      <div>
-        <%= label_tag(:created_at_label, "Date Created:") %>
-        <%= label_tag(:created_at_after_label, "After:", :class=>"sub_label") %>
-        <%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12)%>
-        <%= label_tag(:created_at_before_label, "Before:", :class=>"sub_label") %>
-        <%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12)%>
-      </div>
-
-      <div>
-        <%= label_tag(:updated_at_label, "Date Updated:") %>
-        <%= label_tag(:updated_at_after_label, "After:", :class=>"sub_label") %>
-        <%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12)%>
-        <%= label_tag(:updated_at_before_label, "Before:", :class=>"sub_label") %>
-        <%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12)%>
-      </div>
-
+    <div class="help-text">
+      Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
+      Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
+      Enter dates in both boxes to see records created between the dates.
     </div>
-
     <div class="criteria-list">
+      <p>
+        <%= label_tag(:created_by_organisation_value, "Created Organisation :", :class=>"userlabels") %>
+        <%= text_field_tag(:created_by_organisation_value, params[:created_by_organisation_value]) %>
+      </p>
+
+      <p>
+        <%= label_tag(:created_by_label, "Created by(User) :", :class=>"userlabels") %>
+        <%= text_field_tag(:created_by_value, params[:created_by_value]) %>
+      </p>
+
+      <p>
+        <%= label_tag(:updated_by_label, "Updated by(User) :", :class=>"userlabels") %>
+        <%= text_field_tag(:updated_by_value, params[:updated_by_value]) %>
+      </p>
+
+      <p>
+        <%= label_tag(:created_at_label, "Date Created :", :class=>"userlabels") %>
+        <%= label_tag(:created_at_after_label, "After :", :class=>"sub_label") %>
+        <%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :class => "datepicker")%>
+        <%= label_tag(:created_at_before_label, "Before :", :class=>"sub_label") %>
+        <%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :class => "datepicker")%>
+      </p>
+
+      <p>
+        <%= label_tag(:updated_at_label, "Date Updated :", :class=>"userlabels") %>
+        <%= label_tag(:updated_at_after_label, "After :", :class=>"sub_label") %>
+        <%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :class => "datepicker")%>
+        <%= label_tag(:updated_at_before_label, "Before :", :class=>"sub_label") %>
+        <%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :class => "datepicker")%>
+      </p>
+
       <%= @criteria_list.map{|criteria| generate_html(criteria, @all_fields)}.join("").html_safe %>
     </div>
 
