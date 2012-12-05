@@ -1,23 +1,24 @@
 class RolesController < ApplicationController
 
   def index
-    authorize! :list, Role
+    authorize! :index, Role
     @roles = params[:sort] == "desc" ? Role.by_name.reverse : Role.by_name
   end
 
   def show
-    authorize! :list, Role
     @role = Role.get(params[:id])
+    authorize! :view, @role
   end
 
   def edit
-    authorize! :edit, Role
     @role = Role.get(params[:id])
+    authorize! :update, @role
   end
 
   def update
-    authorize! :update, Role
     @role = Role.get(params[:id])
+    authorize! :update, @role
+
     if @role.update_attributes(params[:role])
       flash[:notice] = "Role details are successfully updated."
       redirect_to(roles_path)

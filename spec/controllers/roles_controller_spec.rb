@@ -8,14 +8,14 @@ describe RolesController do
       mock = mock()
       Role.should_receive(:by_name).and_return([mock])
       get :index
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
       assigns(:roles).should == [mock]
     end
 
     it "should not allow user without view permission to view roles" do
       fake_login_as(Permission::USERS[:view])
       get :index
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
   end
 
@@ -23,18 +23,18 @@ describe RolesController do
 
     it "should allow user to edit roles " do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      mock = mock()
+      mock = stub_model Role
       Role.should_receive(:get).with(10).and_return(mock)
       get :edit, :id => 10
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
       assigns(:role).should == mock
     end
 
     it "should not allow user without permission to edit roles" do
       fake_login_as(Permission::USERS[:view])
-      Role.should_not_receive(:get).with(anything)
+      Role.stub :get => stub_model(Role)
       get :edit, :id => 10
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
 
   end
@@ -43,7 +43,7 @@ describe RolesController do
 
     it "should allow user to view roles " do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      mock = mock()
+      mock = stub_model Role
       Role.should_receive(:get).with(10).and_return(mock)
       get :show, :id => 10
       assigns(:role).should == mock
@@ -51,9 +51,9 @@ describe RolesController do
 
     it "should not allow user without permission to edit roles" do
       fake_login_as(Permission::USERS[:view])
-      Role.should_not_receive(:get).with(anything)
+      Role.stub :get => stub_model(Role)
       get :show, :id => 10
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
 
   end
@@ -61,10 +61,10 @@ describe RolesController do
   describe "POST new" do
     it "should allow valid user to create roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      mock = mock()
+      mock = stub_model Role
       Role.should_receive(:new).and_return(mock)
       post :new
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
       assigns(:role).should == mock
     end
 
@@ -72,43 +72,44 @@ describe RolesController do
       fake_login_as(Permission::USERS[:view])
       Role.should_not_receive(:new)
       post :new
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
   end
 
   describe "POST update" do
     it "should allow valid user to update roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      mock = mock()
+      mock = stub_model Role
       role_mock = mock()
 
       mock.should_receive(:update_attributes).with(role_mock).and_return(true)
       Role.should_receive(:get).with(1).and_return(mock)
       post :update, :id => 1, :role => role_mock
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
       assigns(:role).should == mock
       flash[:notice].should == "Role details are successfully updated."
     end
 
     it "should return error if update attributes is not invoked " do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      mock = mock()
+      mock = stub_model Role
       role_mock = mock()
 
       mock.should_receive(:update_attributes).with(role_mock).and_return(false)
       Role.should_receive(:get).with(1).and_return(mock)
       post :update, :id => 1, :role => role_mock
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
       assigns(:role).should == mock
       flash[:error].should == "Error in updating the Role details."
     end
 
     it "should not allow invalid user to update roles" do
       fake_login_as(Permission::ROLES[:view])
+      mock = stub_model Role
       mock.should_not_receive(:update_attributes).with(anything)
-      Role.should_not_receive(:get).with(anything)
+      Role.should_receive(:get).with(1).and_return(mock)
       post :update, :id => 1, :role => {}
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
   end
 
@@ -118,7 +119,7 @@ describe RolesController do
       role_mock = mock()
       Role.should_not_receive(:new).with(anything)
       post :create, :role => role_mock
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
 
     it "should allow valid user to create roles" do
@@ -128,7 +129,7 @@ describe RolesController do
       Role.should_receive(:new).with(role_mock).and_return(role_mock)
       post :create, :role => role_mock
       response.should redirect_to(roles_path)
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
     end
 
     it "should take back to new page if save failed" do
@@ -138,7 +139,7 @@ describe RolesController do
       Role.should_receive(:new).with(anything).and_return(role_mock)
       post :create, :role => role_mock
       response.should render_template(:new)
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.should_not be_forbidden
     end
 
   end
