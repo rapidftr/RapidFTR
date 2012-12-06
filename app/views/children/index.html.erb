@@ -1,4 +1,6 @@
 <%= render :partial => "children/header" %>
+<script type="text/javascript" src="public/javascripts/flag_children.js">
+</script>
 <div class="clearfix"></div>
 
 <div class="filter_bar">
@@ -7,7 +9,7 @@
 </div>
 
 <div class="child_list">
-	<%= render :partial => "children/summary_row", :collection => @children, :locals => { :checkbox => false } %>
+	<%= render :partial => "children/summary_row", :collection => @children, :as => :child, :locals => { :checkbox => false }  %>
 </div>
 
 <br/>

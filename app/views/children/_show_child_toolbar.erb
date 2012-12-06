@@ -9,37 +9,16 @@
   </div>
 <% end %>
 
-<% if can? :update, @child %>
-  <div class="btn dropdown_btn btn_flag">
-    <% unless @child.flag? %>
-      <%= render :partial => "mark_as",
-                 :locals=> { :mark_as_label => "Flag",
-                             :mark_as_message_id => "flag_message",
-                             :mark_as_message => "Flag Reason:",
-                             :mark_as_property => "flag",
-                             :mark_as_property_value => "true",
-                             :mark_as_submit_label => "Flag",
-                             :error_message => "Please explain why you are flagging this record.",
-                             :style => "flag"
-                 } %>
-    <% else %>
-      <%= render :partial => "mark_as",
-                 :locals=> { :mark_as_label => "Unflag record",
-                             :mark_as_message_id => "flag_message",
-                             :mark_as_message => "Unflag Reason:",
-                             :mark_as_property => "flag",
-                             :mark_as_property_value => "false",
-                             :mark_as_submit_label => "Unflag",
-                             :error_message => "Please explain why you are unflagging this record." ,
-                             :style => "flag"
-                 } %>
-    <% end %>
-  </div>
+<% if can? :update, child %>
+    <div class="btn dropdown_btn btn_flag">
+    <%= render :partial =>"suspect_flag", :locals => { :child => @child } %>
+    </div>
 
-  <div class="btn dropdown_btn btn_reunite">
+    <div class="btn dropdown_btn btn_reunite">
     <% unless @child.reunited? %>
       <%= render :partial => "mark_as",
-                 :locals=> { :mark_as_label => "Mark as Reunited",
+                 :locals=> {:child => @child,
+                             :mark_as_label => "Mark as Reunited",
                              :mark_as_message_id => "reunited_message",
                              :mark_as_message => "Reunite Details:",
                              :mark_as_property => "reunited",
@@ -50,7 +29,8 @@
                  } %>
     <% else %>
       <%= render :partial => "mark_as",
-                 :locals=> { :mark_as_label => "Mark as Not Reunited",
+                 :locals=> { :child => @child,
+                             :mark_as_label => "Mark as Not Reunited",
                              :mark_as_message_id => "reunited_message",
                              :mark_as_message => "Undo reunite Reason:",
                              :mark_as_property => "reunited",
@@ -63,21 +43,22 @@
   </div>
 
   <div class="btn dropdown_btn btn_investigate">
-    <% if @child.flag? %>
     <% unless @child.investigated? %>
       <%= render :partial => "mark_as",
-        :locals=> { :mark_as_label => "Mark as Investigated",
-          :mark_as_message_id => "investigated_message",
-          :mark_as_message => "Investigation Details:",
-          :mark_as_property => "investigated",
-          :mark_as_property_value => "true",
-          :mark_as_submit_label => "Mark as Investigated",
-          :error_message => "Please confirm the flagged record should be marked as investigated, and enter any details you have.",
-          :style => "flag"
+        :locals=> { :child => @child,
+                    :mark_as_label => "Mark as Investigated",
+                  :mark_as_message_id => "investigated_message",
+                  :mark_as_message => "Investigation Details:",
+                  :mark_as_property => "investigated",
+                  :mark_as_property_value => "true",
+                  :mark_as_submit_label => "Mark as Investigated",
+                  :error_message => "Please confirm the flagged record should be marked as investigated, and enter any details you have.",
+                  :style => "flag"
       } %>
     <% else %>
       <%= render :partial => "mark_as",
-        :locals=> { :mark_as_label => "Mark as Not Investigated",
+        :locals=> { :child => @child,
+            :mark_as_label => "Mark as Not Investigated",
           :mark_as_message_id => "investigated_message",
           :mark_as_message => "Undo Investigation Details:",
           :mark_as_property => "investigated",
@@ -85,10 +66,9 @@
           :mark_as_submit_label => "Undo Investigated",
           :error_message => "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have.",
           :style => "flag"
-      } %>    
+      } %>
     <% end %>
-    <% end %>
-  </div>
+</div>
 <% end %>
 
 <%= link_to content_tag(:span, 'Change Log', :class => 'log'), child_history_path(@child), :class=>'btn' %>

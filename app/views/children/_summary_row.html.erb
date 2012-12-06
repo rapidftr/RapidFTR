@@ -1,24 +1,24 @@
 <!-- BEGIN: item -->
-<div id="child_<%= summary_row['_id'] %>" class="child_summary_panel">
+<div id="child_<%= child.id %>" class="child_summary_panel">
 
   <div class="photo_panel">
-    <%= link_to thumbnail_tag(summary_row, summary_row.primary_photo_id), child_path(summary_row['_id']) %>
+    <%= link_to thumbnail_tag(child, child.primary_photo_id), child_path(child.id) %>
   </div>
   <div class="summary_panel">
     <% if checkbox %>
     <p class="checkbox">
-      <%= check_box_tag "selections[#{summary_row_counter}]", summary_row['_id'] %>
+      <%= check_box_tag "selections[#{child_counter}]", child.id if checkbox %>
     </p>
        <% end %>
 
-    <h2><%= link_to text_to_identify_child(summary_row), child_path(summary_row) %></h2>
+    <h2><%= link_to text_to_identify_child(child), child_path(child) %></h2>
     <div class="clearfix"></div>
-    <% if summary_row['flag']=="true"%>
+    <% if child.flag? %>
         <div class="flag suspect">
 
         </div>
     <% end %>
-    <% if summary_row['reunited']=="true"%>
+    <% if child.reunited? %>
         <div class="flag reunited">
 
         </div>
@@ -28,27 +28,26 @@
         <% if relevant_field.enabled? %>
         <div class="summary_item">
           <div class="key"><%= relevant_field[:display_name] %>:</div>
-          <div class="value"><%= summary_row[relevant_field[:name]] %></div>
+          <div class="value"><%= child[relevant_field[:name]] %></div>
         </div>
          <% end %>
       <% end %>
 
-    <% if summary_row['flag'] == 'true' %>
-
+    <% if child.flag? %>
         <div class="summary_item">
-              <div class="key">Flag summary:</div><div class="value"><%= (flag_summary_for_child(summary_row)).html_safe %></div>
+          <div class="key">Flag summary:</div><div class="value"><%= (flag_summary_for_child(child)).html_safe %></div>
         </div>
-  <% end -%>
+    <% end -%>
 
     <div class="summary_item">
       <div class="key">Registered by:</div>
-      <div class="value"><%= summary_row["created_by"] %> <%= link_to_update_info(summary_row)%> on <%= @current_user.localize_date(summary_row['created_at']) %></div>
+      <div class="value"><%= child.created_by %> <%= link_to_update_info(child)%> on <%= @current_user.localize_date(child.created_at) %></div>
       </div>
 
-      <% if summary_row['last_updated_at'] %>
+      <% if child.last_updated_at %>
         <div class="summary_item">
           <div class="key">Last updated:</div>
-          <div class="value"><%= @current_user.localize_date(summary_row['last_updated_at']) %></div>
+          <div class="value"><%= @current_user.localize_date(child.last_updated_at) %></div>
         </div>
       <% end %>
 
@@ -59,11 +58,19 @@
   <div class="action_panel">
     <% show_links = true unless local_assigns.has_key? :show_links %>
     <% if show_links %>
-        <p class="view-edit">
-			<% if can?(:update, summary_row) %>
-              <%= link_to('Edit', edit_child_path(summary_row), :class=>'edit') %> |
-			  <%= link_to 'Mark as Duplicate', new_child_duplicate_path(summary_row), :class=>'mark_as_duplicate' %></p>
-		  <% end %>
+        <ul class="view-edit">
+          <% if can?(:update, child) %>
+              <li>
+              <%= link_to('Edit', edit_child_path(child), :class=>'edit') %> |
+              </li>
+              <li>
+              <%= link_to 'Mark as Duplicate', new_child_duplicate_path(child), :class=>'mark_as_duplicate' %> |
+              </li>
+              <li>
+              <%= render :partial =>"suspect_flag", :object => child, :as => :child %>
+              </li>
+        <% end %>
+        </ul>
     <% end %>
 </div>
 </div>

@@ -1,11 +1,12 @@
-<% if can? :update, @child %>
+<% if can? :update, child %>
     <span id="<%= mark_as_property %>" class="<%= style %>"><a href="#"><%= mark_as_label %></a></span>
     <div class="dropdown hide">
-        <%= form_for @child, :method => :put do |f| %>
+        <%= form_for child, :method => :put do |f| %>
           <div class="mark-as-form">
             <h3><%= f.label("#{mark_as_message_id}", "#{mark_as_message}") %></h3>
             <%=	f.text_field "#{mark_as_message_id}", :size => 30, :value => "" %>
             <%= f.hidden_field("#{mark_as_property}", :value => "#{mark_as_property_value}") %>
+            <input id="child_redirect_url" name="redirect_url" type="hidden" value=<%= "#{request.url}"%> >
             <%=	f.submit "#{mark_as_submit_label}", "data-error-message" => "#{error_message}", :class => 'mark-as-submit' %>
           </div>
         <% end %>

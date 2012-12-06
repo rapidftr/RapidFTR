@@ -382,6 +382,27 @@ describe ChildrenController do
       child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
       Child.stub(:get).and_return(child)
       put :update, :id => '1', :child => params_child
+      end
+
+
+    it "should redirect to redirect_url if it is present in params" do
+      child = Child.new('name' => 'some name')
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child, :redirect_url => '/children'
+      response.should redirect_to '/children'
+    end
+
+    it "should redirect to child page if redirect_url is not present in params" do
+      child = Child.new('name' => 'some name')
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child
+      response.should redirect_to "/children/#{child.id}"
     end
 
   end

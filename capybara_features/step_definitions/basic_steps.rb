@@ -134,7 +134,7 @@ Given /^I flag "([^\"]*)" as suspect$/ do  |name|
 end
 
 When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
-  click_flag_as_suspect_record_link_for(name)
+  page.find(:xpath, "//div[text()=\"#{name}\"]/parent::*/parent::*/parent::*").click_link('Flag as suspect record')
   fill_in("Flag Reason", :with => reason)
   click_button("Flag")
 end

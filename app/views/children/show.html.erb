@@ -9,18 +9,20 @@ $(function() {
                                         imageBlank:				'/images/lightbox-blank.gif'
   });
 
-  $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
+$(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
 
-            $(".profile-tools .mark-as-form").hide();
-            $(".profile-tools .flag a").click( function(){
-                $(this).parent().siblings('form').children('.mark-as-form').toggle();
-            });
-            $(".profile-tools .reunited a").click( function(){
-                $(this).parent().siblings('form').children('.mark-as-form').toggle();
-            });
-            $(".profile-tools .investigated a").click( function(){
-                $(this).parent().siblings('form').children('.mark-as-form').toggle();
-            });
+$(".profile-tools .mark-as-form").hide();
+
+$(".profile-tools .flag a").click( function(){
+    $(this).parent().siblings('form').children('.mark-as-form').toggle();
+});
+
+$(".profile-tools .reunited a").click( function(){
+    $(this).parent().siblings('form').children('.mark-as-form').toggle();
+});
+$(".profile-tools .investigated a").click( function(){
+    $(this).parent().siblings('form').children('.mark-as-form').toggle();
+});
 
   $(".mark-as-submit").click(function(){
     if(!$(this).siblings('input[type=text]').val()){
