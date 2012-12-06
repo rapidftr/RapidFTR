@@ -36,4 +36,10 @@ describe Role do
     Role.new(:name => "some_role", :permissions => [Permission::ADMIN[:admin]]).should be_valid
   end
 
+  it "should only grant permissions that are assigned to a role" do
+    role = Role.new(:name => "some_role", :permissions => [Permission::CHILDREN[:register]])
+    role.valid?
+    role.has_permission(Permission::CHILDREN[:register]).should == true
+    role.has_permission(Permission::CHILDREN[:edit]).should == false
+  end
 end
