@@ -25,6 +25,6 @@ Feature: Add new role
     And I submit the form
 
     When I try to filter user roles by permission "Edit Child"
-    Then I should see the following users:
-      |Role Name|
-      | Can Edit Child   |
+    Then I see the following roles
+      | name           | description              | permissions       |
+      | Can Edit Child | can edit child           | edit_child        |

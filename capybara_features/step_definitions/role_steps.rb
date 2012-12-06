@@ -35,10 +35,3 @@ When /^I try to filter user roles by permission "([^"]*)"$/ do |permission|
   select(permission, :from => 'show')
 end
 
-Then /^I should see the following users:$/ do |table|
-  table.rows.each do |user|
-    within("//table[@class='list_table']") do
-      assert page.has_content?(user.first)
-    end
-  end
-end
