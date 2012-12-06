@@ -137,7 +137,7 @@ describe UsersController do
   describe "GET edit" do
     it "assigns the requested user as @user" do
       Role.stub!(:all).and_return(["roles"])
-      mock_user = mock(:user_name => "Test Name", :full_name => "Test")
+      mock_user = stub_model(User, :user_name => "Test Name", :full_name => "Test")
       User.stub!(:get).with("37").and_return(mock_user)
       get :edit, :id => "37"
       assigns[:user].should equal(mock_user)
