@@ -24,6 +24,10 @@ class Role < CouchRestRails::Document
     Role.by_name(:key => name).first
   end
 
+  def has_permission(permission)
+    self.permissions.include? permission
+  end
+
   def sanitize_permissions
     self.permissions.reject! { |permission| permission.blank? } if self.permissions
   end
