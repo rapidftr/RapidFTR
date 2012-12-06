@@ -226,17 +226,6 @@ describe User do
     user.roles.should == [role]
   end
 
-  describe "check params in hash" do
-    before { @user = build_user }
-    it "role ids should not be assignable" do
-      @user.has_role_ids?({:role_ids => ""}).should be_true
-    end
-    it "disabled should not be assignable" do
-      @user.has_disable_field?({:disabled => ""}).should be_true
-    end
-
-  end
-
   describe "user roles" do
     it "should store the roles and retrive them back as Roles" do
       admin_role = Role.create!(:name => "Admin", :permissions => Permission.all_permissions)
@@ -262,25 +251,6 @@ describe User do
       it { should have_any_permission 1 }
       it { should have_any_permission 1,2,3,4 }
       it { should_not have_any_permission 5 }
-    end
-  end
-
-  describe "can disable" do
-    it "should return true if the user has permission to disable or if the user is admin" do
-      Role.all.each { |r| r.destroy }
-      admin_role = Role.create!(:name => "Admin", :permissions => [Permission::ADMIN[:admin]])
-      disable_user = Role.create!(:name => "Disable User", :permissions => [Permission::USERS[:disable]])
-      create_user = Role.create!(:name => "Create User", :permissions => [Permission::USERS[:create_and_edit]])
-
-      user = build_and_save_user(:role_ids => [admin_role.id])
-      user.can_disable?.should == true
-
-      user = build_and_save_user(:role_ids => [disable_user.id])
-      user.can_disable?.should == true
-
-      user = build_and_save_user(:role_ids => [create_user.id])
-      user.can_disable?.should == false
-
     end
   end
 

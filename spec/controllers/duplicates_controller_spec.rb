@@ -44,7 +44,7 @@ describe DuplicatesController do
       it "should redirect to flagged children page" do
         fake_admin_login
         get :new, :child_id => "not_a_valid_child_id"
-        response.should redirect_to(child_filter_path("flagged"))
+        response.should be_forbidden
       end
     end
   end
