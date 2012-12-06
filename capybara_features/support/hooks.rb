@@ -14,5 +14,5 @@ end
 Before('@roles') do |scenario|
   Role.create(:name => 'Field Worker', :permissions => [Permission::CHILDREN[:register]])
   Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
-  Role.create(:name => 'Admin', :permissions => [Permission::ADMIN[:admin]])
+  Role.create(:name => 'Admin', :permissions => Permission.all_permissions)
 end

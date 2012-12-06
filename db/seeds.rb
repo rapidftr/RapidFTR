@@ -10,7 +10,7 @@ def should_seed? model
 end
 
 if should_seed? User
-  admin = Role.create!(:name => "admin", :permissions => [Permission::ADMIN[:admin]])
+  admin = Role.create!(:name => "admin", :permissions => Permission.all_permissions)
   field_worker = Role.create!(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
   field_admin = Role.create!(:name => "field admin", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create],
                                                                      Permission::CHILDREN[:edit]])

@@ -72,8 +72,8 @@
     </p>
 
     <p>
-      <%= f.label :organisation, :class=>'key'  %>
-      <%= f.text_field :organisation, :disabled => !is_admin?%>*
+      <%= f.label :organisation, :class=>'key'  %>*
+      <%= f.text_field :organisation %>
     </p>
 
     <p>
@@ -86,7 +86,7 @@
       <%= f.text_field :location %>
     </p>
 
-    <% if !trying_to_edit_ourself  && current_user.can_disable?%>
+    <% if !trying_to_edit_ourself && can?(:disable, @user) %>
         <p>
           <%= f.label :disabled, "Disabled?", :class=>'key' %>
           <%= f.check_box :disabled, {}, "true", "false" %>

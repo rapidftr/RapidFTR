@@ -1,8 +1,7 @@
 <tr>
   <th>Full Name</th>
   <th>User Name</th>
-  <th>User Type</th>
-  <% if current_user.can_disable? %>
+  <% if can?(:disable, User) %>
     <th>Disabled?</th>
   <% end %>
   <% if can? :show, User %>

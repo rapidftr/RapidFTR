@@ -17,12 +17,6 @@ module ChecksAuthentication
     raise AuthenticationFailure.bad_token('invalid session token') if session.nil?
   end
 
-  # a before filter requiring user to be an admin
-  def administrators_only
-    session = app_session
-    raise AuthorizationFailure.new('Not permitted to view page') unless session.user.has_permission?(Permission::ADMIN[:admin])
-  end
-
   def handle_authentication_failure(auth_failure)
     if auth_failure.token_provided?
       Session.remove_from_cookies cookies

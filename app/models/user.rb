@@ -112,10 +112,6 @@ class User < CouchRestRails::Document
     !disabled? && crypted_password == encrypt(check)
   end
 
-  def user_type # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(Permission::ADMIN[:admin]) ? "Administrator" : "User"
-  end
-
   def roles
     @roles ||= role_ids.collect { |id| Role.get(id) }.flatten
   end
@@ -164,14 +160,6 @@ class User < CouchRestRails::Document
 
   def has_role_ids?(attributes)
     ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
-  end
-
-  def has_disable_field?(attributes)
-    [:disabled].any? { |e| attributes.keys.include? e }
-  end
-
-  def can_disable?
-    has_permission?(Permission::USERS[:disable]) || has_permission?(Permission::ADMIN[:admin])
   end
 
   private

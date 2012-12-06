@@ -23,10 +23,6 @@ describe ChecksAuthentication, :type => :normal do
     @controller.send(:check_authentication)
   end
 
-  def exercise_authorization_check
-    @controller.send(:administrators_only)
-  end
-
   def set_header(key,value)
     @controller.request.headers[key] = value
   end
@@ -95,33 +91,6 @@ describe ChecksAuthentication, :type => :normal do
     end
   end
 
-  describe "Authorization" do
-    def stub_session(is_admin)
-      set_session_token_cookie
-      session = Session.new()
-      session.stub!(:user).and_return(mock(:has_permission? => is_admin))
-      Session.stub!(:get).and_return(session)
-    end
-    
-    it "should raise AuthorizationFailure if user is not an admin" do
-      stub_session(false)
-
-      begin
-        exercise_authorization_check
-      rescue AuthorizationFailure => ex
-        ex.message.should == 'Not permitted to view page'
-      else
-        fail( 'AuthoratizatonFailure not raised' )
-      end
-    end
-
-    it "should not raise AuthorizationFailure when user is an administrator" do
-      stub_session(true)
-
-      exercise_authorization_check
-    end
-  end
-  
   describe "Blacklisted" do
 
     it "should return 403 if a device is blacklisted" do
