@@ -2,7 +2,8 @@ class RolesController < ApplicationController
 
   def index
     authorize! :list, Role
-    @roles = params[:sort] == "desc" ? Role.by_name.reverse : Role.by_name
+    params[:show] ||= "All"
+    @roles = params[:show] == "All" ? Role.by_name : Role.by_name.find_all{|role| role.has_permission(params[:show])}
   end
 
   def show
