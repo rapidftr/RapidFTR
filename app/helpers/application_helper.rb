@@ -9,6 +9,10 @@ module ApplicationHelper
     return current_user.try(:user_name)
   end
 
+  def render_nav_bar?
+    current_user_name != nil
+  end
+
   def session
     Session.get_from_cookies(cookies)
   end
