@@ -8,11 +8,11 @@ Feature: Merge Child Records
 
    Given I am logged in as an admin
    And the following children exist in the system:
-     | name   | unique_id  | flag    |flagged_at                   |
-     | Bob    | bob_uid    | true    |DateTime.new(2001,2,3,4,5,6) |
-     | Steve  | steve_uid  | true    |DateTime.new(2004,2,3,4,5,6) |
-     | Dave   | dave_uid   | true    |DateTime.new(2002,2,3,4,5,6) |
-     | Fred   | fred_uid   | false   |DateTime.new(2003,2,3,4,5,6) |
+     | name   | unique_id  | flag    |flagged_at                   | short_id |
+     | Bob    | bob_uid    | true    |DateTime.new(2001,2,3,4,5,6) | bob_uid  |
+     | Steve  | steve_uid  | true    |DateTime.new(2004,2,3,4,5,6) | eve_uid  |
+     | Dave   | dave_uid   | true    |DateTime.new(2002,2,3,4,5,6) | ave_uid  |
+     | Fred   | fred_uid   | false   |DateTime.new(2003,2,3,4,5,6) | red_uid  |
 
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
     When I am on the child listing filtered by flagged
@@ -26,10 +26,10 @@ Feature: Merge Child Records
   Scenario: Should see view child page when I click OK on confirmation
     When I am on the child listing filtered by flagged
     And I click mark as duplicate for "Steve"
-    And I fill in "fred_uid" for "parent_id"
+    And I fill in "red_uid" for "parent_id"
     And I press "Mark as duplicate"
-    Then I am on the child record page for "Steve"
-    And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
+      Then I am on the child record page for "Steve"
+      And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
 
   Scenario: Should see duplicate message when viewing child record
     And "Bob" is a duplicate of "Dave"
