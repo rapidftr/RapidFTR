@@ -556,6 +556,7 @@ class Child < CouchRestRails::Document
                      "posted_from",
                      "_rev",
                      "_id",
+                     "short_id",
                      "created_by",
                      "created_by_full_name",
                      "couchrest-type",
