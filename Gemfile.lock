@@ -107,6 +107,8 @@ GEM
       rake (>= 0.8.1)
     libv8 (3.3.10.4)
     libwebsocket (0.1.6.1)
+    libwebsocket (0.1.7.1)
+      addressable
       websocket
     mail (2.2.19)
       activesupport (>= 2.3.6)
@@ -259,7 +261,7 @@ DEPENDENCIES
   subexec (= 0.0.4)
   sunspot (= 1.1.0)
   test_declarative
-  therubyracer
+  therubyracer (= 0.10.2)
   tzinfo
   uglifier
   uuidtools (= 2.1.1)

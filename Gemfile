@@ -30,7 +30,7 @@ end
 
 group :assets do
   gem 'execjs'
-  gem 'therubyracer'
+  gem 'therubyracer', '0.10.2'
   gem 'compass-rails'
   gem 'uglifier'
   gem 'jammit'

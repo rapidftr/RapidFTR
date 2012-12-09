@@ -16,3 +16,12 @@ Before('@roles') do |scenario|
   Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
   Role.create(:name => 'Admin', :permissions => [Permission::ADMIN[:admin]])
 end
+
+Before do
+  GC.disable
+end
+
+After do
+  GC.enable
+  GC.start
+end
