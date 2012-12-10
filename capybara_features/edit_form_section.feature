@@ -57,3 +57,11 @@ Feature: So that admin can customize form section details
     Then I should not be able to promote the field "second_name"
     And I should be able to promote the field "nick_name"
 
+  @javascript
+  Scenario: name field form section should not be editable
+    Given I am logged in as an admin
+    And I am on the edit form section page for "basic_details"
+    Then I should not be able to edit "Name" field
+    Then I should be able to edit "Nick Name" field
+
+

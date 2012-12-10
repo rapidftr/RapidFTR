@@ -93,7 +93,9 @@
                 </td>
                 <td>
                   <div>
-                    <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation" %>
+                    <% if field.editable? %>
+                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation" %>
+                    <% end %>
                   </div>
                 </td>
 
