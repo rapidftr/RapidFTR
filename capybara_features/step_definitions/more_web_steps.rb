@@ -55,12 +55,12 @@ Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
 end
 
 Then /^I should not see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
-  page.find(:xpath, "//a[text()=\"#{full_name}\"]/parent::*/parent::*").should_not have_content(text);
+  page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*").should_not have_content(text);
 end
 
 
 Then /^I should see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
-  page.find(:xpath, "//a[text()=\"#{full_name}\"]/parent::*/parent::*").should have_content(text);
+  page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*").should have_content(text);
 end
 
 Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
