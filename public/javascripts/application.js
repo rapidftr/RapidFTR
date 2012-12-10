@@ -132,6 +132,9 @@ RapidFTR.showDropdown = function(){
     });
 
     $('html').click(function(event){
+
+        $(".dropdown").undelegate("click");
+
         $(".dropdown").children().each(function() {
             if ($(this).is('form')) {
                 $(this).remove();
@@ -159,8 +162,8 @@ RapidFTR.Utils = {
         selector.toggleClass('hide').show();
         if (selector.children().size() == 0) {
             selector.append(RapidFTR.Utils.generateForm(selector));
+            RapidFTR.Utils.enableFormErrorChecking(selector);
         }
-        RapidFTR.Utils.enableFormErrorChecking(selector);
     },
 
     generateForm: function(selector) {
