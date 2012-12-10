@@ -12,7 +12,7 @@ And /^I submit the form$/ do
   click_button('Save')
 end
 
-And /^I see the following roles$/ do |role_table|
+And /^I should see the following roles$/ do |role_table|
   role_table.hashes.each do |role_row|
     page.should have_content(role_row['name'].titleize)
     page.should have_content(role_row['description'])
@@ -27,4 +27,10 @@ end
 
 Then /^I should see message "([^"]*)"$/ do |error_message|
   page.should have_content(error_message)
+end
+
+When /^I try to filter user roles by permission "([^"]*)"$/ do |permission|
+  click_link('USERS')
+  click_link('Roles')
+  select(permission, :from => 'show')
 end

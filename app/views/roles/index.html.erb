@@ -13,16 +13,11 @@
     <% end %>
     <div class="clearfix"></div>
 
-    <div class="filter_bar">
-        <div class="pagination_panel">Showing all <%= pluralize(@roles.length, "record") %></div>
-        <div class="orderby_panel">
-            Order by Role Name:
-            <ul>
-                <li><%= link_to("Ascending", roles_path)%></li>
-                <li><%= link_to("Descending", roles_path(:sort => "desc"))%></li>
-            </ul>
-        </div>
-    </div>
+    <form class="filter_bar">
+      <div class="show_count"> Showing all <%= pluralize(@roles.length, "record") %> </div>
+      <div class="float_left"> Show: <%= select_tag :show, grouped_options_for_select(Permission.hashed_values,params[:show]), :onchange => "this.form.submit()"  %> </div>
+      <div class="float_left"> Sort by:  <%= select_tag :sort, options_for_select([["Role Name","Role Name"]],params[:sort])%> </div>
+    </form>
     <table class="list_table">
       <thead>
         <tr>
