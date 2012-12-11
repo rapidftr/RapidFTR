@@ -31,6 +31,7 @@ Feature: Suspect Records
   And I follow "Steve"
   Then I should see "Mark as Investigated"
 
+  @javascript
   Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
   When I am on the child listing filtered by flagged
   And I follow "Steve"

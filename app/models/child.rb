@@ -229,7 +229,6 @@ class Child < CouchRestRails::Document
 
   def self.search(search, criteria = [], created_by = "")
     return [] unless search.valid?
-
     query = search.query
     solr_query = "short_id_text:#{query}"
     solr_query = solr_query + "AND created_by_text:#{created_by}" unless created_by.empty?

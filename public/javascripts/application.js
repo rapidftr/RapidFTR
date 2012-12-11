@@ -115,15 +115,29 @@ RapidFTR.childPhotoRotation = {
 };
 
 RapidFTR.showDropdown = function(){
+
+    $(".dropdown_form").click(function(event) {
+        var dropdownDOM = $(".dropdown",this);
+        RapidFTR.Utils.toggle(dropdownDOM);
+    });
+
     $(".dropdown_btn").click( function(event){
         $(".dropdown").not(this).hide();
         $(".dropdown",this).show();
         event.stopPropagation();
     });
+
     $(".dropdown").click(function(event){
         event.stopPropagation();
     });
+
     $('html').click(function(event){
+
+        $(".dropdown").children().each(function() {
+            if ($(this).is('form')) {
+                $(this).remove();
+            }
+        });
         $(".dropdown").hide();
     });
 };
@@ -131,6 +145,51 @@ RapidFTR.showDropdown = function(){
 RapidFTR.Utils = {
     dehumanize: function(val){
         return jQuery.trim(val.toString()).replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
+    },
+
+    enableFormErrorChecking: function() {
+        $('.dropdown').delegate(".mark-as-submit", 'click', function(){
+            if(!$(this).siblings('input[type=text]').val()){
+                alert($(this).attr('data-error-message'));
+                return false;
+            }
+        });
+    },
+
+    toggle: function(selector) {
+        selector.toggleClass('hide').show();
+        if (selector.children().size() == 0) {
+            selector.append(RapidFTR.Utils.generateForm(selector));
+        }
+    },
+
+    generateForm: function(selector) {
+        var form_action = selector.data('form_action');
+        var form_id = selector.data('form_id');
+        var authenticity_token =  selector.data('authenticity_token');
+        var message_id = selector.data('message_id');
+        var message = selector.data('message');
+        var property = selector.data('property');
+        var property_value = selector.data('property_value');
+        var redirect_url = selector.data('request_url');
+        var submit_label = selector.data('submit_label');
+        var submit_error_message = selector.data('submit_error_message');
+
+        return "<form accept-charset=\"UTF-8\" action=\""+ form_action +"\" class=\"edit_child\" " +
+            "id=\""+ form_id +"\" method=\"post\">" +
+            "<div style=\"margin:0;padding:0;display:inline\">" +
+            "<input name=\"utf8\" type=\"hidden\" value=\"✓\">" +
+            "<input name=\"_method\" type=\"hidden\" value=\"put\">" +
+            "<input name=\"authenticity_token\" type=\"hidden\" value=\""+ authenticity_token +"\"></div>" +
+
+            "<div class=\"mark-as-form\">" +
+            "<h3><label for=\"child_"+ message_id +"\">"+ message +"</label></h3>" +
+            "<input id=\"child_"+ message_id +"\" name=\"child["+ message_id +"]\" size=\"30\" type=\"text\" value=\"\">" +
+            "<input id=\"child_"+ property +"\" name=\"child["+ property +"]\" type=\"hidden\" value=\""+ property_value +"\">" +
+            "<input id=\"child_redirect_url\" name=\"redirect_url\" type=\"hidden\" value=\""+ redirect_url +"\">" +
+            "<input class=\"mark-as-submit\" data-error-message=\""+ submit_error_message +"\" id=\"child_submit\"" +
+            " name=\"commit\" type=\"submit\" value=\""+ submit_label +"\">" +
+            "</div></form>"
     }
 };
 
@@ -159,6 +218,8 @@ $(document).ready(function() {
     if (window.location.href.indexOf('login') === -1) {
     IdleSessionTimeout.start();
   }
+
+    RapidFTR.Utils.enableFormErrorChecking();
     RapidFTR.showDropdown();
 
 });
