@@ -133,8 +133,6 @@ RapidFTR.showDropdown = function(){
 
     $('html').click(function(event){
 
-        $(".dropdown").undelegate("click");
-
         $(".dropdown").children().each(function() {
             if ($(this).is('form')) {
                 $(this).remove();
@@ -149,8 +147,8 @@ RapidFTR.Utils = {
         return jQuery.trim(val.toString()).replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
     },
 
-    enableFormErrorChecking: function(selector) {
-        selector.delegate(".mark-as-submit", 'click', function(){
+    enableFormErrorChecking: function() {
+        $('.dropdown').delegate(".mark-as-submit", 'click', function(){
             if(!$(this).siblings('input[type=text]').val()){
                 alert($(this).attr('data-error-message'));
                 return false;
@@ -162,7 +160,6 @@ RapidFTR.Utils = {
         selector.toggleClass('hide').show();
         if (selector.children().size() == 0) {
             selector.append(RapidFTR.Utils.generateForm(selector));
-            RapidFTR.Utils.enableFormErrorChecking(selector);
         }
     },
 
@@ -221,6 +218,8 @@ $(document).ready(function() {
     if (window.location.href.indexOf('login') === -1) {
     IdleSessionTimeout.start();
   }
+
+    RapidFTR.Utils.enableFormErrorChecking();
     RapidFTR.showDropdown();
 
 });
