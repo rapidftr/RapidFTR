@@ -24,8 +24,8 @@ class FormSection < CouchRestRails::Document
 
   def initialize args={}
     self["fields"] = []
-    create_unique_id
     super args
+    create_unique_id
   end
 
   alias to_param unique_id
