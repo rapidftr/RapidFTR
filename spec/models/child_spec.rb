@@ -1127,9 +1127,9 @@ describe Child do
 
     describe "mark_as_duplicate" do
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
-        child_duplicate.mark_as_duplicate child_active.unique_identifier
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id'=> 'nique12')
+        child_duplicate.mark_as_duplicate child_active['short_id']
         child_duplicate.duplicate?.should be_true
         child_duplicate.duplicate_of.should == child_active.id
       end
@@ -1141,9 +1141,9 @@ describe Child do
       end
 
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxxunique')
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique')
-        child_duplicate.mark_as_duplicate child_active.unique_identifier
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique','short_id'=> 'nique12')
+        child_duplicate.mark_as_duplicate child_active['short_id']
         child_duplicate.duplicate?.should be_true
         child_duplicate.duplicate_of.should == child_active.id
       end
@@ -1152,7 +1152,7 @@ describe Child do
       it "should return all duplicate records" do
         mock_user = mock({:organisation => 'UNICEF'})
         User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids')
         record_duplicate = create_duplicate(record_active)
         Child.duplicates.should == [record_duplicate]
         Child.all.should == [record_active]
@@ -1161,7 +1161,7 @@ describe Child do
       it "should return duplicate from a record" do
         mock_user = mock({:organisation => 'UNICEF'})
         User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someid")
+        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids')
         record_duplicate = create_duplicate(record_active)
         Child.duplicates_of(record_active.id).should == [record_duplicate]
       end
@@ -1198,7 +1198,7 @@ describe Child do
 
   def create_duplicate(parent)
     duplicate = Child.create(:name => "dupe")
-    duplicate.mark_as_duplicate(parent.unique_identifier)
+    duplicate.mark_as_duplicate(parent['short_id'])
     duplicate.save!
     duplicate
   end

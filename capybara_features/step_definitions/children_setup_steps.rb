@@ -36,9 +36,11 @@ Given /^the following children exist in the system:$/ do |children_table|
 
     photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
     unique_id = child_hash.delete('unique_id')
+    short_id = child_hash.delete('short_id')
     child = Child.new_with_user_name(User.find_by_user_name(user_name), child_hash)
     child.photo = photo
     child['unique_identifier'] = unique_id if unique_id
+    child['short_id'] = short_id if short_id
     child['histories'] ||= []
     child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything'}}
     child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => "true"}, 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
@@ -63,7 +65,7 @@ end
 Given /^"([^\"]*)" is a duplicate of "([^\"]*)"$/ do |duplicate_name, parent_name|
   duplicate = Child.by_name(:key => duplicate_name).first
   parent = Child.by_name(:key => parent_name).first
-  duplicate.mark_as_duplicate(parent.unique_identifier)
+  duplicate.mark_as_duplicate(parent['short_id'])
   duplicate.save
 end
 

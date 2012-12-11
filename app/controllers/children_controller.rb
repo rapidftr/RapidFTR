@@ -14,7 +14,6 @@ class ChildrenController < ApplicationController
 
     filter_children_by params[:status], params[:order_by]
 
-
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }

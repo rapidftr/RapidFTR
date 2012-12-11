@@ -15,6 +15,7 @@ class Child < CouchRestRails::Document
   property :name
   property :nickname
   property :unique_identifier
+  property :short_id
   property :created_organisation
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean
@@ -46,6 +47,13 @@ class Child < CouchRestRails::Document
                 if (doc.hasOwnProperty('unique_identifier'))
                {
                   emit(doc['unique_identifier'],doc);
+               }
+            }"
+  view_by :short_id,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('short_id'))
+               {
+                  emit(doc['short_id'],doc);
                }
             }"
 
@@ -221,7 +229,6 @@ class Child < CouchRestRails::Document
 
   def self.search(search, criteria = [], created_by = "")
     return [] unless search.valid?
-
     query = search.query
     solr_query = "unique_identifier_text:#{query}"
     solr_query = solr_query + "AND created_by_text:#{created_by}" unless created_by.empty?
@@ -239,6 +246,7 @@ class Child < CouchRestRails::Document
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
     child.create_unique_id
+    child['short_id'] = child.short_id
     child.set_creation_fields_for user
     child
   end
@@ -437,7 +445,7 @@ class Child < CouchRestRails::Document
 
   def mark_as_duplicate(parent_id)
     self['duplicate'] = true
-    self['duplicate_of'] = Child.by_unique_identifier(:key => parent_id).first.try(:id)
+    self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
   end
 
   protected
@@ -547,6 +555,7 @@ class Child < CouchRestRails::Document
                      "posted_from",
                      "_rev",
                      "_id",
+                     "short_id",
                      "created_by",
                      "created_by_full_name",
                      "couchrest-type",

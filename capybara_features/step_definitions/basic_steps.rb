@@ -135,7 +135,13 @@ end
 
 When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
   page.find(:xpath, "//div[text()=\"#{name}\"]/parent::*/parent::*/parent::*").click_link('Flag as suspect record')
-  fill_in("Flag Reason", :with => reason)
+  fill_in("Flag Reason:", :with => reason)
+  click_button("Flag")
+end
+
+When /^I flag as suspect with the following reason:$/ do |reason|
+  click_link('Flag as suspect record')
+  fill_in("Flag Reason:", :with => reason)
   click_button("Flag")
 end
 
