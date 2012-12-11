@@ -7,7 +7,7 @@ describe Child do
 
     it "should build with free text search fields" do
       Field.stub!(:all_searchable_field_names).and_return []
-      Child.build_text_fields_for_solar.should == ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name","created_organisation"]
+      Child.build_text_fields_for_solar.should == ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name","created_organisation"]
     end
 
     it "should build with date search fields" do
@@ -96,15 +96,16 @@ describe Child do
       result.map(&:name).should == ["eduardo aquiles"]
     end
 
-    it "should search by exact match for unique id" do
+    it "should search by exact match for short id" do
       uuid = UUIDTools::UUID.random_create.to_s
-      Child.create("name" => "kev", :unique_identifier => uuid, "last_known_location" => "new york")
-      Child.create("name" => "kev", :unique_identifier => UUIDTools::UUID.random_create, "last_known_location" => "new york")
-      search = mock("search", :query => uuid, :valid? => true)
+      Child.create("name" => "kev", :unique_identifier => "1234567890", "last_known_location" => "new york")
+      Child.create("name" => "kev", :unique_identifier => "0987654321", "last_known_location" => "new york")
+      search = mock("search", :query => "7654321", :valid? => true)
       results = Child.search(search)
       results.length.should == 1
-      results.first[:unique_identifier].should == uuid
+      results.first[:unique_identifier].should == "0987654321"
     end
+
 
     it "should match more than one word" do
       create_child("timothy cochran")
@@ -130,12 +131,15 @@ describe Child do
       search = mock("search", :query => "kavitha", :valid? => true)
       Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ ["kavitha"]
     end
+
     it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
       create_child("suganthi", {"created_by" => "thirumani", "unique_identifier" => "thirumanixxx12345"})
       create_child("kavitha", {"created_by" => "rajagopalan", "unique_identifier" => "rajagopalanxxx12345"})
       search = mock("search", :query => "thirumanixxx12345", :valid? => true)
       Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ []
     end
+
+
   end
 
   describe "update_properties_with_user_name" do
