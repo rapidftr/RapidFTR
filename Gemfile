@@ -15,7 +15,8 @@ gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
-gem 'sunspot',				'1.1.0'
+gem 'sunspot',				'1.3.3'
+gem 'sunspot_solr',   '1.3.3'
 gem 'tzinfo'
 gem 'rake',           '0.8.7'
 gem 'dynamic_form'
@@ -30,7 +31,7 @@ end
 
 group :assets do
   gem 'execjs'
-  gem 'therubyracer'
+  gem 'therubyracer', '0.10.2'
   gem 'compass-rails'
   gem 'uglifier'
   gem 'jammit'

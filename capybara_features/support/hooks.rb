@@ -27,3 +27,12 @@ After do |scenario|
     end
   end
 end
+
+Before do
+  GC.disable
+end
+
+After do
+  GC.enable
+  GC.start
+end
