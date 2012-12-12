@@ -47,7 +47,7 @@ namespace :sunspot do
   end
 
   desc "restart solr"
-  task :restart => %w( sunspot:stop sunspot:start )
+  task :restart => %w( sunspot:solr:stop sunspot:solr:start )
 
   desc "ensure solr is cleanly started"
   task :clean_start => %w( sunspot:restart sunspot:reindex )
