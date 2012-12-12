@@ -5,7 +5,7 @@ $(document).ready(function() {
     $("a.moveUp").click(moveUp);
     $("input#save_order").click(saveOrder);
     $("input#save_field_order").click(saveFieldOrder);
-    $("select.fieldLocation").change(saveFieldLocation);
+    $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
 });
 
 function onFormSectionDetailsEditPage() {
