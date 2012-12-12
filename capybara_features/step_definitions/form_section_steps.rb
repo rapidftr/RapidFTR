@@ -75,6 +75,23 @@ Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_na
   row.inner_html.should include(arrow_name)
 end
 
+And /^I move field "([^\"]*)" up$/ do |field_name|
+  page.find(:xpath, "//td[text()=\"#{field_name}\"]/parent::*").find(:css, "a.moveUp").click
+end
+
+
+And /^I move field "([^\"]*)" down$/ do |field_name|
+  page.find(:xpath, "//td[text()=\"#{field_name}\"]/parent::*").find(:css, "a.moveDown").click
+end
+
+Then /^I should find the form section with following attributes:$/ do |form_section_fields|
+  expected_order = form_section_fields.hashes.collect { |section_field| section_field['Name'] }
+  actual_order=page.all(:xpath, "//td[@class='breakword']").collect(&:text)
+  actual_order.should == expected_order
+end
+
+
+
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
   step 'I follow "Add Custom Field"'
   step 'I follow "Text Field"'
@@ -99,3 +116,5 @@ end
 def form_section_visibility_checkbox_id(section_name)
   "sections_#{section_name}"
 end
+
+
