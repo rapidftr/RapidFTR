@@ -1,4 +1,13 @@
 Before do
+  GC.disable
+end
+
+After do
+  GC.enable
+  GC.start
+end
+
+Before do
   Session.all.each {|s| s.destroy }
   Child.all.each {|c| c.destroy }
   Child.duplicates.each {|c| c.destroy }
@@ -17,11 +26,13 @@ Before('@roles') do |scenario|
   Role.create(:name => 'Admin', :permissions => [Permission::ADMIN[:admin]])
 end
 
-Before do
-  GC.disable
-end
-
-After do
-  GC.enable
-  GC.start
+After do |scenario|
+  if scenario.failed?
+    begin
+      encoded_img = page.driver.browser.screenshot_as(:base64)
+      embed("data:image/png;base64,#{encoded_img}", 'image/png')
+    rescue
+      # ignore the error in taking screenshot as it does not affect test outcome
+    end
+  end
 end

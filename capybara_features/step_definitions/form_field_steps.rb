@@ -21,6 +21,11 @@ And /^I should see "([^\"]*)" in the list of enabled fields$/ do |field_id|
   field_ids.should include("#{field_id}Row")
 end
 
+
+When /^I click the "(.*?)" arrow on "(.*?)" field$/ do |arrow_name, field_name|
+  click_link(field_name.dehumanize + "_" + arrow_name.dehumanize);
+end
+
 Then /^I should (not )?see the following suggested fields:$/ do |negative, expected_table|
   within :css, '#suggestedFields' do
     expected_table.hashes.each do |expected_row|

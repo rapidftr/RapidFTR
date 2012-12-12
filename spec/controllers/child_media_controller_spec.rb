@@ -38,31 +38,37 @@ describe ChildMediaController do
     it "should return current child's photo" do
       given_a_child.
               with_id("1").
-              with_photo(uploadable_photo)
+              with_photo(uploadable_photo, 'current')
 
       get :show_photo, :child_id => "1"
-
-      response.should represent_inline_attachment(uploadable_photo)
+      response.should redirect_to(:photo_id => 'current')
     end
 
     it "should return requested child's photo" do
       given_a_child.
               with_id("1")
-      with_photo(uploadable_photo, "current").
+              with_photo(uploadable_photo, "current").
               with_photo(uploadable_photo_jeff, "other", false)
 
       get :show_photo, :child_id => "1", :photo_id => "other"
-
       response.should represent_inline_attachment(uploadable_photo_jeff)
     end
 
     it "should return current child's photo resized to a particular size" do
       given_a_child.
               with_id("1").
-              with_photo(uploadable_photo)
+              with_photo(uploadable_photo, 'current')
 
       get :show_resized_photo, :child_id => "1", :size => 300
+      response.should redirect_to(:photo_id => 'current')
+    end
 
+    it "should return current child's photo resized to a particular size" do
+      given_a_child.
+              with_id("1").
+              with_photo(uploadable_photo, 'current')
+
+      get :show_resized_photo, :child_id => "1", :photo_id => 'current', :size => 300
       to_image(response.body)[:width].should == 300
     end
 
@@ -80,14 +86,42 @@ describe ChildMediaController do
 
     it "should return no photo available clip when no image is found" do
       given_a_child.
-              with_id("1")
-      with_no_photos
+              with_id("1").
+              with_no_photos
 
       get :show_photo, :child_id => "1"
-
-      response.should represent_inline_attachment(no_photo_clip)
+      response.should redirect_to(:photo_id => '_missing_')
     end
 
+    it "should return no photo available clip when no image is found" do
+      given_a_child.
+              with_id("1").
+              with_no_photos
+
+      get :show_photo, :child_id => "1", :photo_id => '_missing_'
+      response.should represent_inline_attachment(no_photo_clip)
+    end
+  end
+
+  describe 'caching' do
+    before :each do
+      given_a_child.
+            with_id("1").
+            with_photo(uploadable_photo_jeff).
+            with_photo(uploadable_photo, "other", false).
+            with(:current_photo_key => 'test')
+    end
+
+    it "should cache thumbnail if photo ID is given" do
+      get :show_thumbnail, :child_id => "1", :photo_id => "other"
+      response.cache_control[:public].should == true
+      response.cache_control[:max_age].should == 1.year
+    end
+
+    it "should redirect to proper cacheable URL if photo ID is not given" do
+      get :show_thumbnail, :child_id => "1"
+      response.should redirect_to(:action => :show_thumbnail, :photo_id => 'test')
+    end
   end
 
   describe "download audio" do

@@ -431,7 +431,5 @@ end
 
 private
   def click_flag_as_suspect_record_link_for(name)
-    child = find_child_by_name name
-    visit children_path+"/#{child.id}"
     click_link("Flag as suspect record")
   end

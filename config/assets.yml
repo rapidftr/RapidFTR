@@ -27,6 +27,7 @@ javascripts:
     - public/javascripts/manage_photos.js
     - public/javascripts/manage_users.js
     - public/javascripts/session_timeout.js
+    - public/javascripts/flag_children.js
 
 stylesheets:
   common:
