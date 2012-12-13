@@ -346,7 +346,9 @@ class Child < CouchRestRails::Document
 
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
-      self['_attachments'].delete p
+      self['_attachments'].keys.each do |key|
+        self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
+      end
     } if @deleted_photo_keys
 
     self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
