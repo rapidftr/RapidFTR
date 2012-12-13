@@ -115,7 +115,6 @@ class ChildrenController < ApplicationController
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
-
         render :json => child.compact.to_json
       end
 
@@ -123,7 +122,8 @@ class ChildrenController < ApplicationController
         @child = update_child_from params
         if @child.save
           flash[:notice] = 'Child was successfully updated.'
-          redirect_to @child
+          return redirect_to params[:redirect_url] if params[:redirect_url]
+          redirect_to @child 
         else
           @form_sections = get_form_sections
           render :action => "edit"
@@ -303,10 +303,14 @@ class ChildrenController < ApplicationController
     end
 
     def filter_children_by status, order
+      filter_option=params[:filter] || params[:status] || "all"
+      status = filter_option
       presenter = ChildrenPresenter.new(children_by_user_access, status, order)
       @children = presenter.children
       @filter = presenter.filter
       @order = presenter.order
+
+
     end
 
     def children_by_user_access

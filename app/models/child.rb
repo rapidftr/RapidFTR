@@ -122,7 +122,7 @@ class Child < CouchRestRails::Document
   end
 
   def self.build_text_fields_for_solar
-    ["unique_identifier", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name", "created_organisation"] +  Field.all_searchable_field_names
+    ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name", "created_organisation"] + Field.all_searchable_field_names
   end
 
   def self.build_date_fields_for_solar
@@ -132,7 +132,7 @@ class Child < CouchRestRails::Document
   def validate_has_at_least_one_field_value
     return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
-    return true if deprecated_fields && deprecated_fields.any?{ |key,value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
+    return true if deprecated_fields && deprecated_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
     [false, "Please fill in at least one field or upload a file"]
   end
 
@@ -142,12 +142,12 @@ class Child < CouchRestRails::Document
   end
 
   def validate_photos
-    return true if @photos.blank? || @photos.all?{|photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
+    return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
     [false, "Please upload a valid photo file (jpg or png) for this child record"]
   end
 
   def validate_photos_size
-    return true if @photos.blank? || @photos.all?{|photo| photo.size < 10.megabytes }
+    return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
     [false, "File is too large"]
   end
 
@@ -172,24 +172,24 @@ class Child < CouchRestRails::Document
       end
       true
     rescue
-     [false, '']
+      [false, '']
     end
   end
 
   def ordered_histories
-    (self["histories"] || []).sort{|that, this| DateTime.parse(this["datetime"]) <=> DateTime.parse(that["datetime"])}
+    (self["histories"] || []).sort { |that, this| DateTime.parse(this["datetime"]) <=> DateTime.parse(that["datetime"]) }
   end
 
   def validate_last_updated_at
- 		begin
- 			if self['last_updated_at']
- 				DateTime.parse self['last_updated_at']
- 			end
- 			true
- 		rescue
- 			[false, '']
- 		end
-   end
+    begin
+      if self['last_updated_at']
+        DateTime.parse self['last_updated_at']
+      end
+      true
+    rescue
+      [false, '']
+    end
+  end
 
   def method_missing(m, *args, &block)
     self[m]
@@ -229,9 +229,8 @@ class Child < CouchRestRails::Document
 
   def self.search(search, criteria = [], created_by = "")
     return [] unless search.valid?
-
     query = search.query
-    solr_query = "unique_identifier_text:#{query}"
+    solr_query = "short_id_text:#{query}"
     solr_query = solr_query + "AND created_by_text:#{created_by}" unless created_by.empty?
     children = sunspot_search(solr_query)
     return children if children.length > 0
@@ -297,7 +296,7 @@ class Child < CouchRestRails::Document
     image = MiniMagick::Image.from_blob(existing_photo.data.read)
     image.rotate(angle)
 
-    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob)
+    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob, self)
 
     photo_key_index = self['photo_keys'].find_index(existing_photo.name)
     self['photo_keys'].delete_at(photo_key_index)
@@ -313,8 +312,8 @@ class Child < CouchRestRails::Document
   def delete_photos(delete_photos)
     return unless delete_photos
     if delete_photos.is_a? Hash
-          delete_photos = delete_photos.keys
-        end
+      delete_photos = delete_photos.keys
+    end
     @deleted_photo_keys ||= []
     @deleted_photo_keys.concat(delete_photos)
   end
@@ -323,7 +322,7 @@ class Child < CouchRestRails::Document
     return unless new_photos
     #basically to support any client passing a single photo param, only used by child_spec AFAIK
     if new_photos.is_a? Hash
-      photos = new_photos.to_a.sort.map {|k, v| v }
+      photos = new_photos.to_a.sort.map { |k, v| v }
     else
       photos = [new_photos]
     end
@@ -332,8 +331,8 @@ class Child < CouchRestRails::Document
 
   def photos=(new_photos)
     @photos = []
-    @new_photo_keys = new_photos.select {|photo| photo.respond_to? :content_type}.collect do |photo|
-      @photos <<  photo
+    @new_photo_keys = new_photos.select { |photo| photo.respond_to? :content_type }.collect do |photo|
+      @photos << photo
       attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
       attach(attachment)
       attachment.name
@@ -345,9 +344,11 @@ class Child < CouchRestRails::Document
 
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
 
-    @deleted_photo_keys.each { |p| 
+    @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
-      self['_attachments'].delete p
+      self['_attachments'].keys.each do |key|
+        self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
+      end
     } if @deleted_photo_keys
 
     self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
@@ -369,8 +370,8 @@ class Child < CouchRestRails::Document
     return [] if self['photo_keys'].blank?
     self['photo_keys'].collect do |key|
       {
-        :photo_uri => child_photo_url(self, key),
-        :thumbnail_uri => child_photo_url(self, key)
+          :photo_uri => child_photo_url(self, key),
+          :thumbnail_uri => child_photo_url(self, key)
       }
     end
   end
@@ -421,7 +422,7 @@ class Child < CouchRestRails::Document
   def media_for_key(media_key)
     data = read_attachment media_key
     content_type = self['_attachments'][media_key]['content_type']
-    FileAttachment.new media_key, content_type, data
+    FileAttachment.new media_key, content_type, data, self
   end
 
   def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
@@ -449,15 +450,21 @@ class Child < CouchRestRails::Document
     self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
   end
 
+  def attach(attachment)
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
+  end
+
   protected
 
   def add_to_history(changes)
-      last_updated_user_name = last_updated_by
-      self['histories'].unshift({
-              'user_name' => last_updated_user_name,
-              'user_organisation' => organisation_of(last_updated_user_name),
-              'datetime' => last_updated_at,
-              'changes' => changes })
+    last_updated_user_name = last_updated_by
+    self['histories'].unshift({
+                                  'user_name' => last_updated_user_name,
+                                  'user_organisation' => organisation_of(last_updated_user_name),
+                                  'datetime' => last_updated_at,
+                                  'changes' => changes})
   end
 
   def organisation_of(user_name)
@@ -471,37 +478,37 @@ class Child < CouchRestRails::Document
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
       changes.merge(field_name => {
-        'from' => @from_child[field_name],
-        'to' => self[field_name]
+          'from' => @from_child[field_name],
+          'to' => self[field_name]
       })
     end
   end
 
   def photo_changes_for(new_photo_keys, deleted_photo_keys)
     return if new_photo_keys.blank? && deleted_photo_keys.blank?
-    { 'photo_keys' => { 'added' => new_photo_keys, 'deleted' => deleted_photo_keys } }
+    {'photo_keys' => {'added' => new_photo_keys, 'deleted' => deleted_photo_keys}}
   end
 
   def field_name_changes
     @from_child ||= Child.get(self.id)
-		field_names = field_definitions.map {|f| f.name}
+    field_names = field_definitions.map { |f| f.name }
     other_fields = [
-      "flag", "flag_message",
-      "reunited", "reunited_message",
-      "investigated", "investigated_message",
-      "duplicate", "duplicate_of"
+        "flag", "flag_message",
+        "reunited", "reunited_message",
+        "investigated", "investigated_message",
+        "duplicate", "duplicate_of"
     ]
-		all_fields = field_names + other_fields
-		all_fields.select { |field_name| changed?(field_name) }
+    all_fields = field_names + other_fields
+    all_fields.select { |field_name| changed?(field_name) }
   end
 
   def changed?(field_name)
     return false if self[field_name].blank? && @from_child[field_name].blank?
     return true if @from_child[field_name].blank?
     if self[field_name].respond_to? :strip
-       self[field_name].strip != @from_child[field_name].strip
+      self[field_name].strip != @from_child[field_name].strip
     else
-       self[field_name] != @from_child[field_name]
+      self[field_name] != @from_child[field_name]
     end
   end
 
@@ -541,12 +548,6 @@ class Child < CouchRestRails::Document
     FileAttachment.new key, content_type, data
   end
 
-  def attach(attachment)
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
-  end
-
   def deprecated_fields
     system_fields = ["created_at",
                      "last_updated_at",
@@ -565,8 +566,8 @@ class Child < CouchRestRails::Document
                      "current_photo_key",
                      "created_organisation",
                      "photo_keys"]
-    existing_fields = system_fields + field_definitions.map {|x| x.name}
-    self.reject {|k,v| existing_fields.include? k}
+    existing_fields = system_fields + field_definitions.map { |x| x.name }
+    self.reject { |k, v| existing_fields.include? k }
   end
 
   def setup_original_audio(attachment)

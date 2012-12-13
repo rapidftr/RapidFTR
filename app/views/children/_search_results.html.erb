@@ -1,35 +1,36 @@
-<% has_results = (@results && @results.size > 0) %>
-<%= form_tag export_data_children_path, :method => :post do %>
-  <script type="text/javascript">
-  $(document).ready(function()
-  {
-  	$("#all").click(function()
-  	{
-  		var checked_status = this.checked;
-                checkToggle(checked_status);
-                $("#allbottom").attr("checked", checked_status);
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("#all").click(function()
+        {
+            var checked_status = this.checked;
+            checkToggle(checked_status);
+            $("#allbottom").attr("checked", checked_status);
         });
         $("#allbottom").click(function(){
-                var checked_status = this.checked;
-                checkToggle(checked_status);
-                $("#all").attr("checked", checked_status);
+            var checked_status = this.checked;
+            checkToggle(checked_status);
+            $("#all").attr("checked", checked_status);
         });
-  });
-  function checkToggle(checkStatus){
+    });
+
+    function checkToggle(checkStatus){
         $(".profiles-list :checkbox").each(function()
         {
-                this.checked = checkStatus;
+            this.checked = checkStatus;
         });
-  }
-  </script>
+    }
+</script>
 
+<% has_results = (@results && @results.size > 0) %>
+<%= form_tag export_data_children_path, :method => :post do %>
   <br />
   <div class="profiles-list child_list">
     <% if !@results.nil? && @results.size > 0 %>
     <%= check_box_tag 'all', 'Select all records' %>
     <%= label_tag 'all', 'Select all records' %>
     <% end %>
-    <%= render :partial => "children/summary_row", :collection => @results, :locals => { :checkbox => true } %>
+    <%= render :partial => "children/summary_row", :collection => @results, :as => :child, :locals => { :checkbox => true } %>
     <%= "No results found" if @results.try(:size) == 0 %>
 
   </div>

@@ -75,7 +75,6 @@ Given /^I have the following devices:$/ do |table|
   table.hashes.each do |row_hash|
     Device.create(row_hash)
   end
-  p Device.all
 end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|
