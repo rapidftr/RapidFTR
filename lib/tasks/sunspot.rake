@@ -28,7 +28,7 @@ namespace :sunspot do
   task :wait, :timeout, :needs => :environment do |t, args|
     puts 'Waiting for Solr to start...'
     connected = false
-    seconds = args[:timeout] ? args[:timeout].to_i : 30
+    seconds = args[:timeout] ? args[:timeout].to_i : 60
     timeout(seconds) do
       until connected do
         begin
