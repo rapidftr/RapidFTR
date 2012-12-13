@@ -247,7 +247,7 @@ class Child < CouchRestRails::Document
     child = new(fields)
     child.create_unique_id
     child['short_id'] = child.short_id
-    child['name'] = fields['name'] || ''
+    child['name'] = fields['name'] || child.name || ''
     child.set_creation_fields_for user
     child
   end
