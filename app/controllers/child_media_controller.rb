@@ -8,23 +8,17 @@ class ChildMediaController < ApplicationController
   end
 
   def show_photo
-    expires_in 1.year, :public => true
-    send_data(@attachment.data.read, :type => @attachment.content_type, :disposition => 'inline')
+    send_photo_data(@attachment.data.read, :type => @attachment.content_type, :disposition => 'inline')
   end
 
   def show_resized_photo
-    new_size = params[:size]
-    photo_data = @attachment.data.read
-    resized_photo = MiniMagick::Image.from_blob(photo_data).resize new_size
-    expires_in 1.year, :public => true
-    send_data(resized_photo.to_blob, :type => @attachment.content_type, :disposition => 'inline')
+    resized = @attachment.resize params[:size]
+    send_photo_data(resized.data.read, :type => @attachment.content_type, :disposition => 'inline')
   end
 
   def show_thumbnail
-    image = MiniMagick::Image.from_blob(@attachment.data.read)
-    thumbnail = image.resize "160x160"
-    expires_in 1.year, :public => true
-    send_data(thumbnail.to_blob, :type => @attachment.content_type, :disposition => 'inline')
+    resized = @attachment.resize "160x160"
+    send_photo_data(resized.data.read, :type => @attachment.content_type, :disposition => 'inline')
   end
 
   def download_audio
@@ -38,6 +32,7 @@ class ChildMediaController < ApplicationController
   end
 
   private
+
   def find_child
     @child = Child.get(params[:child_id])
   end
@@ -51,7 +46,7 @@ class ChildMediaController < ApplicationController
   end
 
   def find_photo_attachment
-    redirect_to(:photo_id => @child.current_photo_key) and return if
+    redirect_to(:photo_id => @child.current_photo_key, :ts => @child.last_updated_at) and return if
       params[:photo_id].to_s.empty? and @child.current_photo_key.present?
 
     begin
@@ -81,5 +76,10 @@ class ChildMediaController < ApplicationController
         :select_primary_photo_url => child_select_primary_photo_url(@child, photo_key)
       }
     end
+  end
+
+  def send_photo_data(*args)
+    expires_in 1.year, :public => true if params[:ts]
+    send_data *args
   end
 end
