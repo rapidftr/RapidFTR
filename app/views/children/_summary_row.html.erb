@@ -41,13 +41,13 @@
 
     <div class="summary_item">
       <div class="key">Registered by:</div>
-      <div class="value"><%= child.created_by %> <%= link_to_update_info(child)%> on <%= @current_user.localize_date(child.created_at) %></div>
+      <div class="value"><%= child.created_by %> <%= link_to_update_info(child)%> on <%= current_user.localize_date(child.created_at) %></div>
     </div>
 
     <% if child.last_updated_at %>
       <div class="summary_item">
         <div class="key">Last updated:</div>
-        <div class="value"><%= @current_user.localize_date(child.last_updated_at) %></div>
+        <div class="value"><%= current_user.localize_date(child.last_updated_at) %></div>
       </div>
     <% end %>
   </div>

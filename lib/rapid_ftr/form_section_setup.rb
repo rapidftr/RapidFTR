@@ -4,7 +4,8 @@ module RapidFTR
 
     def self.reset_definitions
 
-      FormSection.all.each {|u| u.destroy }
+      FormSection.database.delete!
+      FormSection.database.create!
 
       basic_identity_fields = [
         Field.new("name" => "name", "display_name" => "Name", "type" => "text_field", "editable" => false,"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>1)),

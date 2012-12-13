@@ -1,5 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  include LoadsSession
+
   def current_url_with_format_of( format )
     url_for( params.merge( 'format' => format, 'escape' => false ) )
   end
@@ -9,12 +11,8 @@ module ApplicationHelper
     return current_user.try(:user_name)
   end
 
-  def render_nav_bar?
-    current_user_name != nil
-  end
-
   def session
-    Session.get_from_cookies(cookies)
+    get_session
   end
 
   def current_user

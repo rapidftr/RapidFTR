@@ -8,13 +8,24 @@ After do
 end
 
 Before do
-  Session.all.each {|s| s.destroy }
-  Child.all.each {|c| c.destroy }
-  Child.duplicates.each {|c| c.destroy }
-  User.all.each {|u| u.destroy }
-  Role.all.each {|role| role.destroy}
-  SuggestedField.all.each {|u| u.destroy }
-  ContactInformation.all.each {|c| c.destroy }
+  Session.database.delete!
+  Session.database.create!
+
+  Child.database.delete!
+  Child.database.create!
+
+  User.database.delete!
+  User.database.create!
+
+  Role.database.delete!
+  Role.database.create!
+
+  SuggestedField.database.delete!
+  SuggestedField.database.create!
+
+  ContactInformation.database.delete!
+  ContactInformation.database.create!
+
   RapidFTR::FormSectionSetup.reset_definitions
   Sunspot.remove_all!(Child)
   Sunspot.commit
