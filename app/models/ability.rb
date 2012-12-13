@@ -48,7 +48,7 @@ class Ability
     if user.has_permission?(Permission::USERS[:disable])
       can [:update, :read], User
       can [:update_disable_flag], User
-      cannot [:edit], User
+      cannot [:edit], User unless user.has_permission?(Permission::USERS[:create_and_edit])
     end
 
     #
@@ -98,7 +98,6 @@ class Ability
     if user.has_permission?(Permission::ADMIN[:admin])
       can :manage, :all
     end
-
   end
 
 end
