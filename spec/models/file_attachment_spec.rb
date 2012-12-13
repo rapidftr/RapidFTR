@@ -59,10 +59,10 @@ describe "FileAttachment" do
       new_data = mock()
       StringIO.stub :new => new_data
 
-      @child.stub! :has_attachment? => false
-      @child.stub! :attach => false
-      @child.stub! :save => false
-      @attachment.stub! :resized_blob => new_data
+      @child.should_receive(:has_attachment?).with('test_160').and_return(false)
+      @child.should_receive(:attach).and_return(false)
+      @child.should_receive(:save).and_return(false)
+      @attachment.should_receive(:resized_blob).and_return(new_data)
 
       actual = @attachment.resize("160")
       actual.data.should == new_data

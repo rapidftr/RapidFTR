@@ -38,7 +38,7 @@ class FileAttachment
     resized_data = resized_blob(new_size)
     new_attachment = FileAttachment.new new_name, content_type, resized_data, child
 
-    if child
+    unless child.nil?
       child.attach new_attachment
       child.save
     end

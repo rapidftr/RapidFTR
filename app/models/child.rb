@@ -422,7 +422,7 @@ class Child < CouchRestRails::Document
   def media_for_key(media_key)
     data = read_attachment media_key
     content_type = self['_attachments'][media_key]['content_type']
-    FileAttachment.new media_key, content_type, data
+    FileAttachment.new media_key, content_type, data, self
   end
 
   def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
@@ -448,6 +448,12 @@ class Child < CouchRestRails::Document
   def mark_as_duplicate(parent_id)
     self['duplicate'] = true
     self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
+  end
+
+  def attach(attachment)
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
   end
 
   protected
@@ -540,12 +546,6 @@ class Child < CouchRestRails::Document
     data = read_attachment key
     content_type = self['_attachments'][key]['content_type']
     FileAttachment.new key, content_type, data
-  end
-
-  def attach(attachment)
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
   end
 
   def deprecated_fields
