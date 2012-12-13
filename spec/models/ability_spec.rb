@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ability do
 
-  CRUD = [ :index, :create, :view, :edit, :update, :destroy ]
+  CRUD = [:index, :create, :view, :edit, :update, :destroy]
 
   let(:permissions) { [] }
   let(:user) { stub_model User, :user_name => 'test', :permissions => permissions }
@@ -84,6 +84,14 @@ describe Ability do
     it { should authorize :read, User.new }
   end
 
+  describe "user to have edit permissions when both 'create_and_edit', and 'disable' permissions given" do
+    let(:permissions) {
+      [Permission::USERS[:disable], Permission::USERS[:destroy], Permission::USERS[:create_and_edit]]
+    }
+
+    it { should authorize :edit, User.new }
+  end
+
   describe "export children to photowall" do
     let(:permissions) { [Permission::CHILDREN[:export]] }
 
@@ -96,7 +104,7 @@ describe Ability do
   end
 
   describe "view and search child records" do
-    let(:permissions) { [ Permission::CHILDREN[:view_and_search]] }
+    let(:permissions) { [Permission::CHILDREN[:view_and_search]] }
 
     it { should authorize :index, Child.new }
     it { should authorize :read, Child.new }
