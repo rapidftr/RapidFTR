@@ -296,7 +296,7 @@ class Child < CouchRestRails::Document
     image = MiniMagick::Image.from_blob(existing_photo.data.read)
     image.rotate(angle)
 
-    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob)
+    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob, self)
 
     photo_key_index = self['photo_keys'].find_index(existing_photo.name)
     self['photo_keys'].delete_at(photo_key_index)
