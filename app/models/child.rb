@@ -296,7 +296,7 @@ class Child < CouchRestRails::Document
     image = MiniMagick::Image.from_blob(existing_photo.data.read)
     image.rotate(angle)
 
-    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob)
+    attachment = FileAttachment.new(existing_photo.name, existing_photo.content_type, image.to_blob, self)
 
     photo_key_index = self['photo_keys'].find_index(existing_photo.name)
     self['photo_keys'].delete_at(photo_key_index)
@@ -346,7 +346,9 @@ class Child < CouchRestRails::Document
 
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
-      self['_attachments'].delete p
+      self['_attachments'].keys.each do |key|
+        self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
+      end
     } if @deleted_photo_keys
 
     self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
@@ -420,7 +422,7 @@ class Child < CouchRestRails::Document
   def media_for_key(media_key)
     data = read_attachment media_key
     content_type = self['_attachments'][media_key]['content_type']
-    FileAttachment.new media_key, content_type, data
+    FileAttachment.new media_key, content_type, data, self
   end
 
   def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
@@ -446,6 +448,12 @@ class Child < CouchRestRails::Document
   def mark_as_duplicate(parent_id)
     self['duplicate'] = true
     self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
+  end
+
+  def attach(attachment)
+    create_attachment :name => attachment.name,
+                      :content_type => attachment.content_type,
+                      :file => attachment.data
   end
 
   protected
@@ -538,12 +546,6 @@ class Child < CouchRestRails::Document
     data = read_attachment key
     content_type = self['_attachments'][key]['content_type']
     FileAttachment.new key, content_type, data
-  end
-
-  def attach(attachment)
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
   end
 
   def deprecated_fields

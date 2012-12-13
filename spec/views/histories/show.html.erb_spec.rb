@@ -5,11 +5,11 @@ class FakeRecordWithHistory
 
   def initialize user = "Bob", created = "2010/12/31 22:06:00 +0000"
     @id = "ChildId"
-   @fields = {
-     "histories"=> [],
-     "created_at" => created,
-     "created_by" => user
-   }
+    @fields = {
+      "histories"=> [],
+      "created_at" => created,
+      "created_by" => user
+    }
   end
 
   def add_history history
@@ -46,8 +46,12 @@ class FakeRecordWithHistory
   end
 
   def [](field)
-     @fields[field]
-   end
+    @fields[field]
+  end
+
+  def last_updated_at
+    Date.today
+  end
 end
 
 describe "histories/show.html.erb" do

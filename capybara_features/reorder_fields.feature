@@ -30,7 +30,7 @@ Feature: So that admin can customize fields in a form section
     And I should see the "Up" arrow for the "father" field
     And I should see the "Down" arrow for the "father" field
 
-  @WIP
+  @wip
   Scenario: Reordering fields and saving should change the order number
 
     Given I am logged in as an admin
