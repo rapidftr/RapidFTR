@@ -230,9 +230,9 @@ class Child < CouchRestRails::Document
   def self.search(search, criteria = [], created_by = "")
     return [] unless search.valid?
     query = search.query
-    solr_query = "short_id_text:#{query}"
-    solr_query = solr_query + "AND created_by_text:#{created_by}" unless created_by.empty?
-    children = sunspot_search(solr_query)
+    search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
+    search_criteria.concat(criteria)
+    children = SearchService.search(search_criteria)
     return children if children.length > 0
 
     search_criteria = [SearchCriteria.new(:field => "name", :value => search.query)].concat(criteria)

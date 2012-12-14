@@ -14,14 +14,14 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     And I should see "Willis" in the search results
 
+  @javascript
   Scenario: Searching for a child given his short id
     Given the following children exist in the system:
-      | name   	| last_known_location 	| reporter | unique_id    |
-      | andreas	| London		        | zubair   | zubairlon123 |
-      | zak	    | London		        | zubair   | zubairlon456 |
-    When I fill in "rlon123" for "query"
+      | name   	| last_known_location 	| reporter | unique_id     |
+      | andreas	| London		            | zubair   | zubairlon123  |
+      | zak	    | London		            | zubair   | somerlion     |
+    When I fill in "rlon" for "query"
     And I press "Go"
-
     Then I should be on the saved record page for child with name "andreas"
 
   Scenario: Searches that yield a single record should redirect directly to that record
