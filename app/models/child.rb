@@ -301,7 +301,10 @@ class Child < CouchRestRails::Document
 
     photo_key_index = self['photo_keys'].find_index(existing_photo.name)
     self['photo_keys'].delete_at(photo_key_index)
-    delete_attachment(existing_photo.name)
+    self['_attachments'].keys.each do |key|
+      delete_attachment(key) if key == existing_photo.name || key.starts_with?(existing_photo.name)
+    end
+
     self['photo_keys'].insert(photo_key_index, existing_photo.name)
     attach(attachment)
   end
