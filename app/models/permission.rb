@@ -9,7 +9,6 @@ class Permission
     ordered
   end
 
-  ADMIN    = Permission.to_ordered_hash({:admin, "Admin"})
   CHILDREN = Permission.to_ordered_hash({:register => "Register Child"}, {:edit => "Edit Child"},
                                          {:view_and_search => "View And Search Child"}, {:export => "Export to Photowall/CSV/PDF"})
   FORMS    = Permission.to_ordered_hash({:manage => "Manage Forms"})
@@ -22,11 +21,15 @@ class Permission
                                           :highlight_fields => "Highlight Fields" })
 
   def self.all
-    { "Admin" => ADMIN, "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM }
+    { "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM }
+  end
+
+  def self.all_permissions
+    self.all.values.map(&:values).flatten
   end
 
   def self.hashed_values
-    {"ALL" =>["All"], "Admin" => ADMIN.values, "Children" => CHILDREN.values, "Forms" => FORMS.values, "Users" => USERS.values, "Devices" => DEVICES.values, "Reports" => REPORTS.values, "Roles" => ROLES.values, "System" => SYSTEM.values }
+    {"ALL" =>["All"], "Children" => CHILDREN.values, "Forms" => FORMS.values, "Users" => USERS.values, "Devices" => DEVICES.values, "Reports" => REPORTS.values, "Roles" => ROLES.values, "System" => SYSTEM.values }
   end
 
 end

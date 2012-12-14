@@ -8,7 +8,7 @@ describe DuplicatesController do
       before :each do
         fake_admin_login
 
-        @child = mock_model(Child, :name => "John")
+        @child = stub_model(Child, :name => "John")
         Child.stub!(:get).with("1234").and_return(@child)
 
         @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
@@ -44,7 +44,7 @@ describe DuplicatesController do
       it "should redirect to flagged children page" do
         fake_admin_login
         get :new, :child_id => "not_a_valid_child_id"
-        response.should redirect_to(child_filter_path("flagged"))
+        response.should be_forbidden
       end
     end
   end
