@@ -1,4 +1,4 @@
-<% if is_admin? %>
+<% if can? :update, User %>
   <% unless @notifications.empty? %>
     <p>These users requested password reset. Please contact them immediately.</p>
     <ul>

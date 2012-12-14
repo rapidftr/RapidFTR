@@ -172,14 +172,14 @@ end
 
 Given /"([^\"]*)" is the user/ do |user_name|
   Given "a user \"#{user_name}\" with a password \"123\""
-end  
- 
+end
+
 Given /"([^\"]*)" is logged in/ do |user_name|
   Given "\"#{user_name}\" is the user"
   Given "I am on the login page"
   Given "I fill in \"#{user_name}\" for \"user name\""
   Given "I fill in \"123\" for \"password\""
-  Given "I press \"Log In\""  
+  Given "I press \"Log In\""
 end
 
 When /^I create a new child$/ do
@@ -223,14 +223,14 @@ end
 
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
-  
+
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
       'enabled' => true,
       'fields'=> Array.new
     )
-    
+
     form_section_hash["order"] = form_section_hash["order"].to_i
     FormSection.create!(form_section_hash)
   end
@@ -249,7 +249,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
   table.hashes.each do |field_hash|
     field_hash.reverse_merge!(
       'enabled' => true,
-      'type'=> Field::TEXT_FIELD 
+      'type'=> Field::TEXT_FIELD
     )
     form_section.fields.push Field.new(field_hash)
   end
@@ -431,5 +431,5 @@ end
 
 private
   def click_flag_as_suspect_record_link_for(name)
-    click_link("Flag as suspect record")
+    click_link("Flag record")
   end

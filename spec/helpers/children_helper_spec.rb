@@ -68,13 +68,15 @@ describe ChildrenHelper do
 
   describe "#flag_summary_for_child" do
     it "should show the flag summary for the child" do
-      @current_user = mock(:user)
+      @current_user = stub_model(User)
       @current_user.stub!(:localize_date).and_return "19 September 2012 at 18:39 (UTC)"
 
       child = Child.new(:name => "Flagged Child",
                         :flag_message => "Fake entity",
                         :histories => [{"datetime"=>"2012-09-19 18:39:05UTC", "changes"=>{"flag"=>{"to"=>"true"}}, "user_name"=>"Admin user 1"}])
-      helper.strip_tags(flag_summary_for_child(child)).should == "Flagged By Admin user 1 On 19 September 2012 at 18:39 (UTC) Because Fake entity"
+
+      helper.stub!(:current_user => @current_user)
+      helper.strip_tags(helper.flag_summary_for_child(child)).should == "Flagged By Admin user 1 On 19 September 2012 at 18:39 (UTC) Because Fake entity"
     end
   end
 end

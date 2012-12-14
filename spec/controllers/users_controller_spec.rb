@@ -9,7 +9,7 @@ describe UsersController do
   end
 
   def mock_user(stubs={})
-    @mock_user ||= mock_model(User, stubs)
+    @mock_user ||= stub_model(User, stubs)
   end
 
   describe "GET index" do
@@ -60,7 +60,7 @@ describe UsersController do
       User.stub!(:view).and_return([@user])
       get :index
       users_details = assigns[:users_details]
-      users_details.should_not == nil
+      users_details.should_not be_nil
       user_detail = users_details[0]
       user_detail[:user_name].should == "someone"
       user_detail[:user_url].should_not be_blank
@@ -68,12 +68,9 @@ describe UsersController do
 
     it "should return error if user is not authorized" do
       fake_login
-      fake_session = Session.new()
-      Session.stub(:get).and_return(fake_session)
-      mock_user = mock_user({:merge => {}, :user_name => "someone"})
-      User.stub!(:view).and_return([mock_user])
+      mock_user = stub_model User
       get :index
-      assigns(:access_error).should == "You are not permitted to access this page."
+      response.should be_forbidden
     end
 
     it "should authorize index page for read only users" do
@@ -101,13 +98,9 @@ describe UsersController do
     end
 
     it "should show self user for non-admin" do
-      fake_login
-      mock_user = mock({:user_name => 'fakeuser'})
-      User.stub!(:get).with("24").and_return(mock_user)
-      controller.should_not_receive(:handle_authorization_failure).with(anything).and_return(anything)
-      get :show, :id => "24"
-      response.should_not render_template("#{Rails.root}/public/403.html")
-      assigns[:user].should_not == nil
+      session = fake_login
+      get :show, :id => session.user.id
+      response.should_not be_forbidden
     end
 
     it "should not show non-self user for non-admin" do
@@ -121,9 +114,10 @@ describe UsersController do
 
   describe "GET new" do
     it "assigns a new user as @user" do
-      User.stub!(:new).and_return(mock_user)
+      user = stub_model User
+      User.stub!(:new).and_return(user)
       get :new
-      assigns[:user].should equal(mock_user)
+      assigns[:user].should equal(user)
     end
 
     it "should assign all the available roles as @roles" do
@@ -143,7 +137,7 @@ describe UsersController do
   describe "GET edit" do
     it "assigns the requested user as @user" do
       Role.stub!(:all).and_return(["roles"])
-      mock_user = mock(:user_name => "Test Name", :full_name => "Test")
+      mock_user = stub_model(User, :user_name => "Test Name", :full_name => "Test")
       User.stub!(:get).with("37").and_return(mock_user)
       get :edit, :id => "37"
       assigns[:user].should equal(mock_user)
@@ -153,14 +147,13 @@ describe UsersController do
     it "should not allow editing a non-self user for users without access" do
       fake_login_as(Permission::USERS[:view])
       User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
-      mock_user.should_receive(:user_name).with(no_args()).and_return('not-self')
       get :edit, :id => "37"
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should be_forbidden
     end
 
     it "should allow editing a non-self user for user having edit permission" do
       fake_login_as(Permission::USERS[:create_and_edit])
-      mock_user = mock(:full_name => "Test Name", :user_name => 'fakeuser')
+      mock_user = stub_model(User, :full_name => "Test Name", :user_name => 'fakeuser')
       User.stub!(:get).with("24").and_return(mock_user)
       get :edit, :id => "24"
       response.should_not render_template("#{Rails.root}/public/403.html")
@@ -190,7 +183,7 @@ describe UsersController do
 
     it "should allow user deletion for relevant user role" do
       fake_login_as(Permission::USERS[:destroy])
-      mock_user = mock()
+      mock_user = stub_model User
       User.should_receive(:get).with("37").and_return(mock_user)
       mock_user.should_receive(:destroy).and_return(true)
       delete :destroy, :id => "37"
@@ -211,45 +204,24 @@ describe UsersController do
       end
     end
 
-    context "when admin user" do
-      it "should allow to edit admin specific fields" do
-        fake_login_as(Permission::USERS[:create_and_edit])
-        mock_user = mock({:user_name => "Some_name"})
-        mock_user.should_receive(:has_disable_field?).with({"user_type" => "Administrator"}).and_return(false)
-        mock_user.should_receive(:update_attributes).with({"user_type" => "Administrator"})
-        User.stub(:get).with("24").and_return(mock_user)
-        post :update, {:id => "24", :user => {:user_type => "Administrator"}}
-        response.should_not render_template("#{Rails.root}/public/403.html")
-      end
-
-      it "should render edit page and assign roles if validation fails" do
-        fake_login_as(Permission::USERS[:create_and_edit])
-        Role.stub(:all).and_return(["roles"])
-        mock_user = mock({:user_name => "Some_name"})
-        mock_user.should_receive(:has_disable_field?).with({"user_type" => "Administrator"}).and_return(false)
-        User.stub(:get).with("24").and_return(mock_user)
-        mock_user.should_receive(:update_attributes).and_return(false)
-        post :update, {:id => "24", :user => {:user_type => "Administrator"}}
-        assigns[:roles].should == ["roles"]
-      end
-
+    context "disabled flag" do
       it "should not allow to edit disable fields for non-disable users" do
         fake_login_as(Permission::USERS[:create_and_edit])
-        mock_user = mock({:user_name => "Some_name"})
-        mock_user.should_receive(:has_disable_field?).with({"user_type"=>"Administrator", "disabled"=>true}).and_return(true)
-        mock_user.should_not_receive(:update_attributes).with(anything)
-        User.stub(:get).with("24").and_return(mock_user)
-        controller.should_receive(:handle_authorization_failure).with(anything)
-        post :update, {:id => "24", :user => {:user_type => "Administrator", :disabled => true}}
+        user = stub_model User, :user_name => 'some name'
+        params = { :id => '24', :user => { :disabled => true } }
+        User.stub :get => user
+        post :update, params
+        response.should be_forbidden
       end
 
       it "should allow to edit disable fields for disable users" do
         fake_login_as(Permission::USERS[:disable])
-        mock_user = mock({:user_name => "Some_name"})
-        mock_user.should_receive(:update_attributes).with({"disabled"=>true})
-        User.stub(:get).with("24").and_return(mock_user)
-        controller.should_not_receive(:handle_authorization_failure).with(anything)
-        post :update, {:id => "24", :user => {:disabled => true}}
+        user = stub_model User, :user_name => 'some name'
+        params = { :id => '24', :user => { :disabled => true } }
+        User.stub :get => user
+        User.stub!(:find_by_user_name).with(user.user_name).and_return(user)
+        post :update, params
+        response.should_not be_forbidden
       end
 
     end

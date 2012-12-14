@@ -1,4 +1,4 @@
 <form class="filter_panel">
 	Filter by:
-  <div class="float_left"> <%= select_tag :filter, options_for_select([["Active","active"],[ "All", "all" ],["Reunited","reunited"],["Flagged","flagged"]], params[:filter]), { :onchange => "this.form.submit();"} %> </div>
+  <span> <%= select_tag :filter, options_for_select([[ "All", "all" ],["Active","active"],["Reunited","reunited"],["Flagged","flagged"]], params[:filter]), { :onchange => "this.form.submit();"} %> </span>
 </form>
