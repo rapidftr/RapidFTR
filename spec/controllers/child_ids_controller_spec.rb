@@ -27,8 +27,8 @@ describe ChildIdsController do
       child_ids.length.should == 1
 
       child_id = child_ids[0]
-      child_id['id'].should == "child-id"
-      child_id['rev'].should == "child-revision-id"
+      child_id['_id'].should == "child-id"
+      child_id['_rev'].should == "child-revision-id"
     end
   end
 end
