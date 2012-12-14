@@ -7,13 +7,6 @@ Feature: So that I can filter the types of records being show when viewing searc
     Given I am logged in
     And I am on the children listing page
 
-  Scenario: Checking to verify there is a filter box
-    Then I should see "Filter by:"
-    And I should see "All"
-    And I should see "Reunited"
-    And I should see "Flagged"
-    And I should see "Active"
-
   Scenario: Checking filter by All returns all the children in the system
 
     Given the following children exist in the system:
@@ -24,7 +17,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | false |
 
     When I am on the children listing page
-    And I filter by "All"
+    And I select "All" from "filter"
     Then I should see "andreas"
     And I should see "zak"
     And I should see "jaco"
@@ -82,6 +75,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I follow "Name"
     Then I should see the order andreas,jaco,meredith,zak
 
+    @javascript
   Scenario: Checking filter by Reunited returns all the reunited children in the system
 
     Given the following children exist in the system:
@@ -91,10 +85,11 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  |
       | meredith | Austin              | james    | james123     | false    | false |
 
-    When I follow "Reunited"
+    And I select "Reunited" from "filter"
     Then I should see "andreas"
     And I should see "jaco"
 
+  @javascript
   Scenario: Checking filter by Reunited shows the Order by options
 
     Given the following children exist in the system:
@@ -104,10 +99,11 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Reunited"
+    And I select "Reunited" from "filter"
     Then I should see "Order by"
     And I should see "Most recently reunited"
 
+  @javascript
   Scenario: Checking filter by Reunited should by default show the records ordered alphabetically
 
     Given the following children exist in the system:
@@ -117,9 +113,10 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Reunited"
+    And I select "Reunited" from "filter"
     Then I should see the order andreas,jaco,meredith,zak
 
+  @javascript
   Scenario: Checking filter by Reunited and then selecting order by most recently reunited children returns the children in the order of most recently reunited
 
     Given the following children exist in the system:
@@ -129,10 +126,11 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Reunited"
+    And I select "Reunited" from "filter"
     And I follow "Most recently reunited"
     Then I should see the order zak,meredith,jaco,andreas
 
+  @javascript
   Scenario: Checking filter by Reunited by name should show records in alphabetical order
 
     Given the following children exist in the system:
@@ -142,11 +140,12 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Reunited"
+    And I select "Reunited" from "filter"
     And I follow "Most recently reunited"
     And I follow "Name"
     Then I should see the order andreas,jaco,meredith,zak
 
+  @javascript
   Scenario: Checking filter by Flagged returns all the flagged children in the system
 
     Given the following children exist in the system:
@@ -156,10 +155,11 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  |   DateTime.new(2002,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | false    | false |   DateTime.new(2003,2,3,4,5,6) | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Flagged"
+    And I select "Flagged" from "filter"
     Then I should see "zak"
     And I should see "jaco"
 
+  @javascript
   Scenario: Checking filter by Flagged shows the Order by options
 
     Given the following children exist in the system:
@@ -169,10 +169,11 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Flagged"
+    And I select "Flagged" from "filter"
     Then I should see "Order by"
     And I should see "Most recently flagged"
 
+  @javascript
   Scenario: Checking filter by Flagged returns all the flagged children in the system by order of most recently flagged
 
     Given the following children exist in the system:
@@ -182,9 +183,10 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Flagged"
+    And I select "Flagged" from "filter"
     Then I should see the order zak,meredith,jaco,andreas
 
+  @javascript
   Scenario: Checking filter by Flagged and then ordering by name returns the flagged children in alphabetical order
 
     Given the following children exist in the system:
@@ -194,10 +196,11 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Flagged"
+    And I select "Flagged" from "filter"
     And I follow "Name"
     Then I should see the order andreas,jaco,meredith,zak
 
+  @javascript
   Scenario: Checking filter by Flagged and ordering by most recently flagged returns the children in most recently flagged order
 
     Given the following children exist in the system:
@@ -207,11 +210,12 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true | DateTime.new(2002,2,3,4,5,6) |
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
-    When I follow "Flagged"
+    And I select "Flagged" from "filter"
     And I follow "Name"
     And I follow "Most recently flagged"
     Then I should see the order zak,meredith,jaco,andreas
 
+  @javascript
   Scenario: Checking filter by Active returns all the children who are not reunited in the system
 
     Given the following children exist in the system:
@@ -225,6 +229,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     Then I should see "zak"
     And I should see "meredith"
 
+  @javascript
   Scenario: Checking filter by Active should by default show the records ordered alphabetically
 
     Given the following children exist in the system:
@@ -237,6 +242,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     When I go to the children listing page
     Then I should see the order meredith,zak
 
+  @javascript
   Scenario: Checking filter by Active shows the Order by options
 
     Given the following children exist in the system:
@@ -250,6 +256,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     Then I should see "Order by"
     And I should see "Most recently created"
 
+  @javascript
   Scenario: Checking filter by Active and then ordering by most recently created returns the children in the order of most recently created
 
     Given the following children exist in the system:
@@ -263,6 +270,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I follow "Most recently created"
     Then I should see the order zak,jaco,meredith
 
+  @javascript
   Scenario: Checking filter by Active and order by name should return the children in alphabetical order
 
     Given the following children exist in the system:

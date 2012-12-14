@@ -303,6 +303,8 @@ class ChildrenController < ApplicationController
     end
 
     def filter_children_by status, order
+      filter_option=params[:filter] || params[:status] || "all"
+      status = filter_option
       presenter = ChildrenPresenter.new(children_by_user_access, status, order)
       @children = presenter.children
       @filter = presenter.filter

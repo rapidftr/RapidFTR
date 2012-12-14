@@ -1,9 +1,4 @@
-<div class="filter_panel">
+<form class="filter_panel">
 	Filter by:
-	<ul>
-		<li class="first"><%= link_for_filter('all', @filter) %></li>
-		<li><%= link_for_filter('reunited', @filter) %></li>
-		<li><%= link_for_filter('flagged', @filter) %></li>
-		<li><%= link_for_filter('active', @filter) %></li>
-	</ul>
-</div>
+  <div class="float_left"> <%= select_tag :filter, options_for_select([["Active","active"],[ "All", "all" ],["Reunited","reunited"],["Flagged","flagged"]], params[:filter]), { :onchange => "this.form.submit();"} %> </div>
+</form>
