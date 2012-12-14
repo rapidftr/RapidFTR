@@ -37,6 +37,13 @@ group :assets do
   gem 'jammit'
 end
 
+group :development do
+  gem 'guard-rspec'
+  gem 'rb-readline'
+  gem 'rb-fsevent', :require => false
+  gem 'terminal-notifier-guard'
+end
+
 group :development, :test, :cucumber do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'

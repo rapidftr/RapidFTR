@@ -6,13 +6,13 @@ Feature: Add new role
     And I am on create role page 
     When I enter the following role details
       | name        | description              | permissions       |
-      | super admin | like an admin, but super | admin             |
+      | super admin | like an admin, but super | system_settings   |
 
     And I submit the form
     Then I should be on roles index page
     And I should see the following roles
       | name        | description              | permissions       |
-      | super admin | like an admin, but super | admin             |
+      | super admin | like an admin, but super | system_settings   |
 
   @javascript
   Scenario: Filtering by role

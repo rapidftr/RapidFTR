@@ -16,8 +16,9 @@
 	<% end %>
 	
 <%= link_to 'View All Children', children_path %> <br/><br/>
-<% if is_admin? %>
+<% if can? :read, Child %>
   <%= link_to @suspect_record_count.to_s + ' Records need Attention', child_filter_path("flagged") %> 
 <% end %>
+
 <br/>
 <br/>
