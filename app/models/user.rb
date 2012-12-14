@@ -14,7 +14,7 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
-  property :disabled, :cast_as => :boolean
+  property :disabled, :cast_as => :boolean, :default => false
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
@@ -74,7 +74,6 @@ class User < CouchRestRails::Document
   validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
   validates_presence_of :role_ids, :message => "Please select at least one role"
   validates_presence_of :organisation, :message => "Please enter the user's organisation name"
-  validates_presence_of :disabled, :message => "Disabled attribute is required."
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
 
