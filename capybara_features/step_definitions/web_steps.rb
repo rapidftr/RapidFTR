@@ -133,14 +133,6 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   end
 end
 
-Then /^(?:|I )should see "([^"]*)"$/ do |text|
-  if defined?(Spec::Rails::Matchers)
-    page.should have_content(text)
-  else
-    assert page.has_content?(text)
-  end
-end
-
 Then /^(?:|I )should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
