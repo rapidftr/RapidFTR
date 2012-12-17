@@ -133,14 +133,11 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   end
 end
 
-Then /^(?:|I )should see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
-  regexp = Regexp.new(regexp)
-  with_scope(selector) do
-    if defined?(Spec::Rails::Matchers)
-      page.should have_xpath('//*', :text => regexp)
-    else
-      assert page.has_xpath?('//*', :text => regexp)
-    end
+Then /^(?:|I )should see "([^"]*)"$/ do |text|
+  if defined?(Spec::Rails::Matchers)
+    page.should have_content(text)
+  else
+    assert page.has_content?(text)
   end
 end
 
