@@ -8,6 +8,7 @@
 
 <div class="child_list">
 	<%= render :partial => "children/summary_row", :collection => @children, :as => :child, :locals => { :checkbox => false }  %>
+    <%= paginate @children %>
 </div>
 
 <br/>

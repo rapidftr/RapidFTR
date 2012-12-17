@@ -14,6 +14,8 @@ class ChildrenController < ApplicationController
 
     filter_children_by params[:status], params[:order_by]
 
+    @children =  Kaminari.paginate_array(@children).page(params[:page]).per(20)
+
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
