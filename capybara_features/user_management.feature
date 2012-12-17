@@ -80,18 +80,8 @@ Feature: As an admin, I should be able to edit existing users.
     And I should not see "Roles" within "form"
     Then I should not see "Disabled"
 
-  Scenario: User with Create/Edit Users permission should be able to edit their own general information, but should not be able to edit their devices
-    Given a user "jerry" with a password "123" and "Create and Edit Users" permission
-    And I am logged out
-    And I am logged in as "jerry"
-    And I follow "Account"
-    And I click text "Edit"
-    Then I should not see "IMEI"
-    Then the "Organisation" field should be disabled
-
   Scenario: Check that a basic user cannot create a user record
     Given I am logged in as a user with "limited" permission
-    Then I should not see "IMEI"
     Then I should not be able to see new user page
 
   Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username

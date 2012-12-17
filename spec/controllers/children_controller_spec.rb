@@ -17,7 +17,7 @@ end
 
 describe ChildrenController do
 
-  before do
+  before :each do
     fake_admin_login
   end
 
@@ -597,7 +597,7 @@ describe ChildrenController do
 
   describe "PUT select_primary_photo" do
     before :each do
-      @child = mock(Child, :id => :id)
+      @child = stub_model(Child, :id => :id)
       @photo_key = "key"
       @child.stub(:primary_photo_id=)
       @child.stub(:save)

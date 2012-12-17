@@ -230,9 +230,9 @@ class Child < CouchRestRails::Document
   def self.search(search, criteria = [], created_by = "")
     return [] unless search.valid?
     query = search.query
-    solr_query = "short_id_text:#{query}"
-    solr_query = solr_query + "AND created_by_text:#{created_by}" unless created_by.empty?
-    children = sunspot_search(solr_query)
+    search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
+    search_criteria.concat(criteria)
+    children = SearchService.search(search_criteria)
     return children if children.length > 0
 
     search_criteria = [SearchCriteria.new(:field => "name", :value => search.query)].concat(criteria)
@@ -301,7 +301,10 @@ class Child < CouchRestRails::Document
 
     photo_key_index = self['photo_keys'].find_index(existing_photo.name)
     self['photo_keys'].delete_at(photo_key_index)
-    delete_attachment(existing_photo.name)
+    self['_attachments'].keys.each do |key|
+      delete_attachment(key) if key == existing_photo.name || key.starts_with?(existing_photo.name)
+    end
+
     self['photo_keys'].insert(photo_key_index, existing_photo.name)
     attach(attachment)
   end

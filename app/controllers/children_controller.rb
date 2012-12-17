@@ -125,7 +125,7 @@ class ChildrenController < ApplicationController
         if @child.save
           flash[:notice] = 'Child was successfully updated.'
           return redirect_to params[:redirect_url] if params[:redirect_url]
-          redirect_to @child 
+          redirect_to @child
         else
           @form_sections = get_form_sections
           render :action => "edit"

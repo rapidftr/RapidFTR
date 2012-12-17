@@ -12,6 +12,7 @@ describe "children/search.html.erb" do
       @user.stub!(:localize_date).and_return("some date")
       @user.stub!(:has_permission?).and_return(true)
       controller.stub(:current_user).and_return(@user)
+      view.stub(:current_user).and_return(@user)
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       @highlighted_fields = [

@@ -38,6 +38,13 @@ group :assets do
   gem 'jammit'
 end
 
+group :development do
+  gem 'guard-rspec'
+  gem 'rb-readline'
+  gem 'rb-fsevent', :require => false
+  gem 'terminal-notifier-guard'
+end
+
 group :development, :test, :cucumber do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
@@ -53,7 +60,7 @@ end
 group :test, :cucumber do
   gem 'cucumber',         '1.2.1'
   gem 'cucumber-rails',   '0.3.2'
-  gem 'selenium-webdriver', '2.25.0'
+  gem 'selenium-webdriver', '2.27.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
   gem 'pry'

@@ -27,11 +27,6 @@
       </p>
 
       <p>
-        <label class="key">User Type:</label>
-        <%= h @user.user_type %>
-      </p>
-
-      <p>
         <label class="key">Permissions:</label>
         <%= @user.roles.map(&:name).join(",") %>
       </p>
