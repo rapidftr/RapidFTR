@@ -123,6 +123,15 @@ When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"(?: within "([^\"]*)")?$/ 
   end
 end
 
+Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
+  if defined?(Spec::Rails::Matchers)
+    page.should have_content(regexp)
+  else
+    page.text.should match(regexp)
+  end
+  end
+
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
