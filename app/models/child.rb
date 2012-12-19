@@ -32,6 +32,27 @@ class Child < CouchRestRails::Document
              }
           }"
 
+  view_by :all_view,
+          :map => "function(doc) {
+              if (doc['couchrest-type'] == 'Child')
+             {
+                emit(['all', doc['created_by']], doc);
+                if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                  emit(['flagged', doc['created_by']], doc);
+                }
+
+                if (doc.hasOwnProperty('reunited')) {
+                  if (doc['reunited'] == 'true') {
+                    emit(['reunited', doc['created_by']], doc);
+                  } else {
+                    emit(['active', doc['created_by']], doc);
+                  }
+                } else {
+                  emit(['active', doc['created_by']], doc);
+                }
+             }
+          }"
+
   view_by :flag,
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
@@ -70,14 +91,6 @@ class Child < CouchRestRails::Document
               emit(doc['duplicate_of'], doc);
             }
           }"
-
-  view_by :flag,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('flag'))
-               {
-                  emit(doc['flag'],doc);
-               }
-            }"
 
   view_by :created_by
 

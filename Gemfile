@@ -24,7 +24,7 @@ gem 'jquery-rails'
 gem 'cancan'
 gem 'capistrano'
 gem 'newrelic_rpm'
-gem 'kaminari'
+gem 'will_paginate'
 
 group :development, :assets do
   gem 'sass'

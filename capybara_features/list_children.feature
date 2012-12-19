@@ -48,19 +48,13 @@ Feature: User should be able to list children
     Then I should see "20" children on the page
     And I should see pagination links for first page
 
-    And I click text "Next ›"
+    And I click text "Next →"
     Then I should see "2" children on the page
     And I should see children listing page "2"
     And I should see pagination links for last page
 
-    And I click text "‹ Prev"
+    And I click text "← Previous"
     And I should see children listing page "1"
-
-    And I click text "Last »"
-    And I should see pagination links for last page
-
-    And I click text "« First"
-    And I should see pagination links for first page
 
     And I visit children listing page "2"
     And I should see children listing page "2"

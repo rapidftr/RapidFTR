@@ -113,33 +113,19 @@ describe ChildrenController do
     shared_examples_for "viewing children by user with access to all data" do
       describe "when the signed in user has access all data" do
         before do
-          session = fake_field_admin_login
+          fake_field_admin_login
 
           @stubs ||= {}
-          @children = [mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs)]
         end
 
         it "should assign all childrens as @childrens" do
           children = [mock_child(@stubs)]
-          Child.should_receive(:all).and_return(children)
+          @status ||= "all"
+          children.expects(:paginate).returns(children)
+          Child.should_receive(:view).with(:by_all_view, :startkey => [@status], :endkey => [@status , {}]).and_return(children)
+
           get :index, :status => @status
           assigns[:children].should == children
-        end
-
-        it "should return only 20 records for first request, given we have more than 20 records" do
-          Child.should_receive(:all).and_return(@children)
-          get :index, :status => @status
-          assigns[:children].count.should == 20
-        end
-
-        it "should return 5 records for 2nd request, given we have 25 records" do
-          Child.should_receive(:all).and_return(@children)
-          get :index, :status => @status, :page => 2
-          assigns[:children].count.should == 5
         end
       end
     end
@@ -149,42 +135,17 @@ describe ChildrenController do
         before do
           @session = fake_field_worker_login
           @stubs ||= {}
-          @children = [mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),
-                       mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs),mock_child(@stubs)]
         end
 
         it "should assign the children created by the user as @childrens" do
           children = [mock_child(@stubs)]
-          Child.should_receive(:all_by_creator).with(@session.user_name).and_return(children)
+          @status ||= "all"
+          children.expects(:paginate).returns(children)
+          Child.should_receive(:view).with(:by_all_view, :startkey => [@status, @session.user_name], :endkey => [@status , @session.user_name]).and_return(children)
+
           get :index, :status => @status
           assigns[:children].should == children
         end
-
-        it "should return only 20 records for first request, given we have more than 20 records" do
-          Child.should_receive(:all_by_creator).with(@session.user_name).and_return(@children)
-          get :index, :status => @status
-          assigns[:children].count.should == 20
-        end
-
-        it "should return 5 records for 2nd request, given we have 25 records" do
-          Child.should_receive(:all_by_creator).with(@session.user_name).and_return(@children)
-          get :index, :status => @status, :page => 2
-          assigns[:children].count.should == 5
-        end
-
-      end
-    end
-
-    context "as administrator" do
-      it "should assign all the children" do
-        session = fake_admin_login
-        children = [mock_child, mock_child]
-        Child.should_receive(:all).and_return(children)
-        get :index, :status => 'reunited'
-        assigns[:children].should == children
       end
     end
 
