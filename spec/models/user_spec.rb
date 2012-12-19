@@ -56,10 +56,9 @@ describe User do
       user.errors.on(:organisation).should == ["Please enter the user's organisation name"]
       end
 
-    it "should throw error if disabled field is not set" do
-      user = build_user :disabled => nil
-      user.should_not be_valid
-      user.errors.on(:disabled).should == ["Disabled attribute is required."]
+    it "should default disabled to false" do
+      user = User.new :disabled => nil
+      user.disabled.should be_false
     end
   end
 

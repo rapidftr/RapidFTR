@@ -10,9 +10,17 @@ namespace :sunspot do
     server
   end
 
+  def copy_solr_config
+    puts "Copying config"
+    solr_config_location = "#{Gem.loaded_specs['sunspot_solr'].full_gem_path}/solr/solr/conf/solrconfig.xml"
+    FileUtils.cp( "#{Rails.root}/config/solrconfig.xml" ,solr_config_location)
+    puts "Done: Copying config"
+  end
+
   desc "start solr"
   task :start => :environment do
     puts 'Starting Solr...'
+    copy_solr_config
     solr_server.start
   end
 

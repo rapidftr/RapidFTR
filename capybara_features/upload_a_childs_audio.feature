@@ -7,6 +7,7 @@ Feature:
   Background:
     Given "bob" logs in with "Register Child,Edit Child" permissions
 
+  @gc
   Scenario: Uploading a standard mp3 file to new child record
     Given I am on the new child page 
     And I fill in "John" for "Name"
@@ -39,6 +40,7 @@ Feature:
     And the record history should log "Audio changed from"
     And the record history should log "by bob"
 
+  @gc
   Scenario: Uploading an invalid file in the audio field
     Given I am on the new child page
     And I fill in "John" for "Name"
