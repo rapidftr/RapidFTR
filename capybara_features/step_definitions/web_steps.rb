@@ -123,23 +123,21 @@ When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"(?: within "([^\"]*)")?$/ 
   end
 end
 
+Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
+  if defined?(Spec::Rails::Matchers)
+    page.should have_content(regexp)
+  else
+    page.text.should match(regexp)
+  end
+  end
+
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
       page.should have_content(text)
     else
       assert page.has_content?(text)
-    end
-  end
-end
-
-Then /^(?:|I )should see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
-  regexp = Regexp.new(regexp)
-  with_scope(selector) do
-    if defined?(Spec::Rails::Matchers)
-      page.should have_xpath('//*', :text => regexp)
-    else
-      assert page.has_xpath?('//*', :text => regexp)
     end
   end
 end

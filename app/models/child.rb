@@ -231,11 +231,7 @@ class Child < CouchRestRails::Document
     return [] unless search.valid?
     query = search.query
     search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
-    search_criteria.concat(criteria)
-    children = SearchService.search(search_criteria)
-    return children if children.length > 0
-
-    search_criteria = [SearchCriteria.new(:field => "name", :value => search.query)].concat(criteria)
+    search_criteria.concat([SearchCriteria.new(:field => "name", :value => search.query, :join => "OR")]).concat(criteria)
     SearchService.search search_criteria
   end
 
