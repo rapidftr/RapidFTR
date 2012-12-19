@@ -6,7 +6,7 @@ namespace :sunspot do
     server = Sunspot::Solr::Server.new
     server.port = ENV['SOLR_PORT'] || '8983'
     server.pid_file = "sunspot_#{server.port}.pid"
-    server.pid_dir = Dir.tmpdir
+    server.pid_dir = ENV['SOLR_PID_LOCATION'] || Dir.tmpdir
     server
   end
 
