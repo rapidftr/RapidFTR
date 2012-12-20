@@ -12,6 +12,7 @@ describe "children/search.html.erb" do
       @user.stub!(:localize_date).and_return("some date")
       @user.stub!(:has_permission?).and_return(true)
       controller.stub(:current_user).and_return(@user)
+      view.stub(:current_user).and_return(@user)
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       @highlighted_fields = [
@@ -98,10 +99,7 @@ describe "children/search.html.erb" do
     end
 
     def random_child_summary(id = 'some_id')
-      child = Child.create("age_is" => "Approx", "created_by" => "dave",
-      "last_updated_at" => time_now(),
-      "created_at" => time_now(),
-      "current_photo_key" => "photo-id")
+      child = Child.create("age_is" => "Approx", "created_by" => "dave", "current_photo_key" => "photo-id")
       child.create_unique_id
       child.stub!(:has_one_interviewer?).and_return(true)
       child

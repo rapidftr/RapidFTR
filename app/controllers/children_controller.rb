@@ -123,7 +123,7 @@ class ChildrenController < ApplicationController
         if @child.save
           flash[:notice] = 'Child was successfully updated.'
           return redirect_to params[:redirect_url] if params[:redirect_url]
-          redirect_to @child 
+          redirect_to @child
         else
           @form_sections = get_form_sections
           render :action => "edit"
@@ -303,6 +303,8 @@ class ChildrenController < ApplicationController
     end
 
     def filter_children_by status, order
+      filter_option=params[:filter] || params[:status] || "all"
+      status = filter_option
       presenter = ChildrenPresenter.new(children_by_user_access, status, order)
       @children = presenter.children
       @filter = presenter.filter

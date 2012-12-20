@@ -14,11 +14,17 @@ describe "advanced_search/index.html.erb" do
   end
 
   it "show navigation links for logged in user" do
-    Session.stub(:get).and_return(mock(:user => mock(:user_name => "bob")))
-    controller.stub(:current_user).and_return mock(:user_name => "bob", :has_permission? => true)
+    user = stub_model(User, :user_name => "bob", :has_permission? => true)
     form_sections = [FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => []]
     assign(:forms, form_sections)
     assign(:criteria_list, [])
+
+    view.stub!(:current_user).and_return(user)
+    controller.stub!(:current_user).and_return(user)
+
+    controller.stub!(:logged_in?).and_return(true)
+    view.stub!(:logged_in?).and_return(true)
+    
     render :template => "advanced_search/index", :layout => "layouts/application"
 
     rendered.should have_tag("nav")

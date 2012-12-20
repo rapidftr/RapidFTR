@@ -20,17 +20,17 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
   @javascript
   Scenario: Searching by 'Name'
-   Given I am logged in
-     And I am on child advanced search page
-   And the following children exist in the system:
+    Given I am logged in
+    And I am on child advanced search page
+    And the following children exist in the system:
       | name   |
       | Willis |
       | Will   |
-   When I click text "Select A Criteria"
+    When I click text "Select A Criteria"
     And I click text "Name"
     And I fill in "Will" for "criteria_list[0][value]"
     And I search
-   Then I should see "Will" in the search results
+    Then I should see "Will" in the search results
     And I should see "Willis" in the search results
 
   @javascript

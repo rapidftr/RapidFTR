@@ -27,26 +27,8 @@ describe ApplicationHelper do
       user = User.new(:user_name => 'user_name', :role_names => ["default"])
       User.should_receive(:find_by_user_name).with('user_name').and_return(user)
       session = Session.new :user_name => user.user_name
-      Session.should_receive(:get_from_cookies).with(anything).and_return(session)
+      helper.should_receive(:session).and_return(session)
       helper.current_user.user_name.should == 'user_name'
     end
   end
-  
-  describe "render_nav_bar?" do
-      it "should return false when no user is logged in" do
-        helper.render_nav_bar?.should_not be_true        
-      end
-
-      it "should return true when a user is logged in" do
-        user = User.new(:user_name => 'user_name', :role_names => ["default"])
-        User.should_receive(:find_by_user_name).with('user_name').and_return(user)
-        session = Session.new :user_name => user.user_name
-        Session.should_receive(:get_from_cookies).with(anything).and_return(session)        
-        
-        helper.render_nav_bar?.should be_true
-      end
-      
-  end
-  
-
 end

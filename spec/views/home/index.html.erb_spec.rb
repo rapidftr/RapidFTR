@@ -5,7 +5,7 @@ describe "home/index.html.erb" do
     mock_password_recovery_request = mock("PasswordRecoveryRequest", :user_name =>'mjhasson', :created_at => Time.parse("Jan 31 2011"), :to_param => '123')
     assign(:notifications,[ mock_password_recovery_request ])
 
-    view.stub!(:is_admin?).and_return(true)
+    view.stub!(:can?).with(:update, User).and_return(true)
 
     render :template=>'home/_notifications'
     rendered.should be_include("mjhasson at 2011/01/31.")
@@ -18,7 +18,7 @@ describe "home/index.html.erb" do
     # to_param is because the CI build is failing when trying to generate named route for this mock object - CG Nov 24 2011
     mock_user = mock("user", :user_name => 'jpretorius', :to_param => 'foo')
     User.stub!(:find_by_user_name).and_return(mock_user)
-    view.stub!(:is_admin?).and_return(true)
+    view.stub!(:can?).with(:update, User).and_return(true)
 
     render :template=>'home/_notifications'
     rendered.should be_include("jpretorius")

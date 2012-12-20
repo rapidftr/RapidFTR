@@ -21,13 +21,13 @@
           </elementProp>
           <elementProp name="host" elementType="Argument">
             <stringProp name="Argument.name">host</stringProp>
-            <stringProp name="Argument.value">10.16.3.140</stringProp>
+            <stringProp name="Argument.value">10.10.5.2</stringProp>
             <stringProp name="Argument.desc">host</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="port" elementType="Argument">
             <stringProp name="Argument.name">port</stringProp>
-            <stringProp name="Argument.value">3000</stringProp>
+            <stringProp name="Argument.value">3001</stringProp>
             <stringProp name="Argument.desc">port</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -43,12 +43,22 @@
           </elementProp>
           <elementProp name="view_children_loop" elementType="Argument">
             <stringProp name="Argument.name">view_children_loop</stringProp>
-            <stringProp name="Argument.value">50</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="export_path" elementType="Argument">
             <stringProp name="Argument.name">export_path</stringProp>
             <stringProp name="Argument.value">/Users/yekkanti/projects/sip/RapidFTR</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="scheme" elementType="Argument">
+            <stringProp name="Argument.name">scheme</stringProp>
+            <stringProp name="Argument.value">https</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="search_children_loop" elementType="Argument">
+            <stringProp name="Argument.name">search_children_loop</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -60,7 +70,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">15</stringProp>
         <stringProp name="ThreadGroup.ramp_time">120</stringProp>
         <longProp name="ThreadGroup.start_time">1354597736000</longProp>
         <longProp name="ThreadGroup.end_time">1354597736000</longProp>
@@ -77,12 +87,38 @@
           <stringProp name="HTTPSampler.port">${port}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.protocol">${scheme}</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.implementation">Java</stringProp>
           <boolProp name="HTTPSampler.image_parser">true</boolProp>
           <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
         </ConfigTestElement>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="Accept-Language" elementType="Header">
+              <stringProp name="Header.name">Accept-Language</stringProp>
+              <stringProp name="Header.value">en-US,en;q=0.8</stringProp>
+            </elementProp>
+            <elementProp name="Accept" elementType="Header">
+              <stringProp name="Header.name">Accept</stringProp>
+              <stringProp name="Header.value">application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5</stringProp>
+            </elementProp>
+            <elementProp name="User-Agent" elementType="Header">
+              <stringProp name="Header.name">User-Agent</stringProp>
+              <stringProp name="Header.value">Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_5; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.44 Safari/534.7</stringProp>
+            </elementProp>
+            <elementProp name="Accept-Encoding" elementType="Header">
+              <stringProp name="Header.name">Accept-Encoding</stringProp>
+              <stringProp name="Header.value">gzip,deflate,sdch</stringProp>
+            </elementProp>
+            <elementProp name="Accept-Charset" elementType="Header">
+              <stringProp name="Header.name">Accept-Charset</stringProp>
+              <stringProp name="Header.value">ISO-8859-1,utf-8;q=0.7,*;q=0.3</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
         <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="RapidFTR Cookie Manager" enabled="true">
           <collectionProp name="CookieManager.cookies"/>
@@ -95,7 +131,7 @@
           <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Login to RapidFTR" enabled="true">
             <collectionProp name="ModuleController.node_path">
               <stringProp name="-1227702913">WorkBench</stringProp>
-              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="1227970223">RapidFTR Performance Test Plan</stringProp>
               <stringProp name="-142935387">RapidFTR Webapp</stringProp>
               <stringProp name="73596745">Login</stringProp>
             </collectionProp>
@@ -109,7 +145,7 @@
             <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Create Children" enabled="true">
               <collectionProp name="ModuleController.node_path">
                 <stringProp name="-1227702913">WorkBench</stringProp>
-                <stringProp name="764597751">Test Plan</stringProp>
+                <stringProp name="1227970223">RapidFTR Performance Test Plan</stringProp>
                 <stringProp name="-142935387">RapidFTR Webapp</stringProp>
                 <stringProp name="-450947933">Create Children</stringProp>
               </collectionProp>
@@ -122,7 +158,7 @@
           <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Login to RapidFTR" enabled="true">
             <collectionProp name="ModuleController.node_path">
               <stringProp name="-1227702913">WorkBench</stringProp>
-              <stringProp name="764597751">Test Plan</stringProp>
+              <stringProp name="1227970223">RapidFTR Performance Test Plan</stringProp>
               <stringProp name="-142935387">RapidFTR Webapp</stringProp>
               <stringProp name="73596745">Login</stringProp>
             </collectionProp>
@@ -136,9 +172,36 @@
             <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="View Children" enabled="true">
               <collectionProp name="ModuleController.node_path">
                 <stringProp name="-1227702913">WorkBench</stringProp>
-                <stringProp name="764597751">Test Plan</stringProp>
+                <stringProp name="1227970223">RapidFTR Performance Test Plan</stringProp>
                 <stringProp name="-142935387">RapidFTR Webapp</stringProp>
                 <stringProp name="-2087599846">View Children</stringProp>
+              </collectionProp>
+            </ModuleController>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Search Children" enabled="true"/>
+        <hashTree>
+          <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Login to RapidFTR" enabled="true">
+            <collectionProp name="ModuleController.node_path">
+              <stringProp name="-1227702913">WorkBench</stringProp>
+              <stringProp name="1227970223">RapidFTR Performance Test Plan</stringProp>
+              <stringProp name="-142935387">RapidFTR Webapp</stringProp>
+              <stringProp name="73596745">Login</stringProp>
+            </collectionProp>
+          </ModuleController>
+          <hashTree/>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop On Search Children" enabled="true">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="LoopController.loops">${search_children_loop}</stringProp>
+          </LoopController>
+          <hashTree>
+            <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Search Children" enabled="true">
+              <collectionProp name="ModuleController.node_path">
+                <stringProp name="-1227702913">WorkBench</stringProp>
+                <stringProp name="1227970223">RapidFTR Performance Test Plan</stringProp>
+                <stringProp name="-142935387">RapidFTR Webapp</stringProp>
+                <stringProp name="-855715465">Search Children</stringProp>
               </collectionProp>
             </ModuleController>
             <hashTree/>
@@ -1501,7 +1564,7 @@
                 </elementProp>
                 <elementProp name="child[rc_id_no]" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">12324235</stringProp>
+                  <stringProp name="Argument.value">${rc_id_no}</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">child[rc_id_no]</stringProp>
@@ -1819,6 +1882,15 @@
             <boolProp name="CounterConfig.per_user">false</boolProp>
           </CounterConfig>
           <hashTree/>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="RC ID counter" enabled="true">
+            <stringProp name="CounterConfig.start">123456</stringProp>
+            <stringProp name="CounterConfig.end">123500</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">rc_id_no</stringProp>
+            <stringProp name="CounterConfig.format"></stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+          </CounterConfig>
+          <hashTree/>
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Create child Assertion" enabled="true">
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
@@ -1903,6 +1975,70 @@
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="View Child Duration Assertion" enabled="true">
             <stringProp name="DurationAssertion.duration">3000</stringProp>
             <stringProp name="Assertion.scope">all</stringProp>
+          </DurationAssertion>
+          <hashTree/>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Search Children" enabled="true"/>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Advanced Search Children by name" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="authenticity_token" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${LOGIN_AUTH_TOKEN}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">authenticity_token</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/advanced_search/index?created_by_organisation_value=N&amp;created_by_value=&amp;updated_by_value=&amp;created_at_after_value=&amp;created_at_before_value=&amp;updated_at_after_value=&amp;updated_at_before_value=&amp;criteria_list[0][field]=name&amp;criteria_list[0][index]=0&amp;criteria_list[0][value]=chi</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">true</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Advanced search by name and rc_id_no" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="authenticity_token" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${LOGIN_AUTH_TOKEN}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">authenticity_token</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${host}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/advanced_search/index?created_by_organisation_value=N&amp;created_by_value=&amp;updated_by_value=&amp;created_at_after_value=&amp;created_at_before_value=&amp;updated_at_after_value=&amp;updated_at_before_value=&amp;criteria_list[0][field]=name&amp;criteria_list[0][index]=0&amp;criteria_list[0][value]=chi&amp;criteria_list[1][join]=AND&amp;criteria_list[1][field]=rc_id_no&amp;criteria_list[1][field_type]=text_field&amp;criteria_list[1][value]=${rc_id_no}&amp;criteria_list[1][index]=1 </stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Search Child Assertion" enabled="true">
+            <stringProp name="DurationAssertion.duration">3000</stringProp>
           </DurationAssertion>
           <hashTree/>
         </hashTree>

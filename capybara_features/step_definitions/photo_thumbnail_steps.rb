@@ -24,5 +24,5 @@ end
 def check_link(response, child_name)
   child = find_child_by_name child_name
   image_link = yield(child)
-  page.body.should have_xpath("//img[@src='#{image_link}']")
+  page.body.should have_css("img[src^='#{image_link}']")
 end

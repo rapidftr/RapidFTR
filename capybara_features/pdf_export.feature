@@ -45,7 +45,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I follow "Export to PDF"
 
     Then I should receive a PDF file
-     And the PDF file should have 6 pages
+     And the PDF file should have 2 pages
     And the PDF file should contain the string "Will"
 
   Scenario: Exporting photo wall PDF from the child page

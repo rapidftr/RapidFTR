@@ -14,7 +14,7 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
-  property :disabled, :cast_as => :boolean
+  property :disabled, :cast_as => :boolean, :default => false
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
@@ -74,7 +74,6 @@ class User < CouchRestRails::Document
   validates_presence_of :password_confirmation, :message => "Please enter password confirmation", :if => :password_required?
   validates_presence_of :role_ids, :message => "Please select at least one role"
   validates_presence_of :organisation, :message => "Please enter the user's organisation name"
-  validates_presence_of :disabled, :message => "Disabled attribute is required."
 
   validates_format_of :user_name, :with => /^[^ ]+$/, :message => "Please enter a valid user name"
 
@@ -110,10 +109,6 @@ class User < CouchRestRails::Document
       raise Exception.new, "Can't authenticate a un-saved user"
     end
     !disabled? && crypted_password == encrypt(check)
-  end
-
-  def user_type # Temporary method for backward compatibility should be removed after the UI is changed
-    has_permission?(Permission::ADMIN[:admin]) ? "Administrator" : "User"
   end
 
   def roles
@@ -164,14 +159,6 @@ class User < CouchRestRails::Document
 
   def has_role_ids?(attributes)
     ADMIN_ASSIGNABLE_ATTRIBUTES.any? { |e| attributes.keys.include? e }
-  end
-
-  def has_disable_field?(attributes)
-    [:disabled].any? { |e| attributes.keys.include? e }
-  end
-
-  def can_disable?
-    has_permission?(Permission::USERS[:disable]) || has_permission?(Permission::ADMIN[:admin])
   end
 
   private

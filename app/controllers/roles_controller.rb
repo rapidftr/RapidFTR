@@ -1,24 +1,25 @@
 class RolesController < ApplicationController
 
   def index
-    authorize! :list, Role
+    authorize! :index, Role
     params[:show] ||= "All"
     @roles = params[:show] == "All" ? Role.by_name : Role.by_name.find_all{|role| role.has_permission(params[:show])}
   end
 
   def show
-    authorize! :list, Role
     @role = Role.get(params[:id])
+    authorize! :view, @role
   end
 
   def edit
-    authorize! :edit, Role
     @role = Role.get(params[:id])
+    authorize! :update, @role
   end
 
   def update
-    authorize! :update, Role
     @role = Role.get(params[:id])
+    authorize! :update, @role
+
     if @role.update_attributes(params[:role])
       flash[:notice] = "Role details are successfully updated."
       redirect_to(roles_path)

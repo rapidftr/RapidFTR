@@ -515,6 +515,13 @@ describe Child do
       child['posted_at'].should == "2010-01-22 14:05:00UTC"
     end
 
+    it "should assign name property as '' if name is not passed before saving child record" do
+      child = Child.new_with_user_name(mock('user', :user_name => 'user', :organisation => 'org'), {'some_field' => 'some_value'})
+      child.save
+      child = Child.get(child.id)
+      child.name.should == ''
+    end
+
     describe "when the created at field is not supplied" do
 
       it "should create a created_at field with time of creation" do

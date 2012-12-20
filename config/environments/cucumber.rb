@@ -18,5 +18,15 @@ RapidFTR::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-end
 
+  # http://jira.codehaus.org/browse/JRUBY-6511
+  class Net::BufferedIO
+    def rbuf_fill
+      if IO.select [@io], [@io], nil, @read_timeout
+        @io.sysread BUFSIZE, @rbuf
+      else
+        raise Timeout::Error.new 'execution expired'
+      end
+    end
+  end
+end

@@ -1,8 +1,8 @@
 <% unless child.flag? %>
-        <%= render :partial => "mark_as",
+        <%= render :partial => "children/mark_as",
                    :locals=> {
                                :child => child,
-                               :mark_as_label => "Flag as suspect record",
+                               :mark_as_label => "Flag record",
                                :mark_as_message_id => "flag_message",
                                :mark_as_message => "Flag Reason:",
                                :mark_as_property => "flag",
@@ -13,7 +13,7 @@
                    }
         %>
     <% else %>
-        <%= render :partial => "mark_as",
+        <%= render :partial => "children/mark_as",
                    :locals=> {
                                :child => child,
                                :mark_as_label => "Unflag record",

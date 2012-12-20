@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :load_user, :only => [:show, :edit, :update, :destroy]
 
   def index
-    return @access_error = "You are not permitted to access this page." if cannot? :read, User
+    authorize! :read, User
     sort_option = params[:sort] || "full_name"
     filter_option=params[:filter] || "active"
 
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    authorize! :show, User unless @user.user_name == current_user.user_name
+    authorize! :show, @user
   end
 
   def new
@@ -28,13 +28,15 @@ class UsersController < ApplicationController
   end
 
   def edit
-    authorize! :edit, User unless @user.user_name == current_user.user_name
+    authorize! :update, @user
     @page_name = "Account: #{@user.full_name}"
     @roles = Role.all
   end
 
   def create
+    authorize! :create, User
     @user = User.new(params[:user])
+
     if @user.save
       flash[:notice] = 'User was successfully created.'
       redirect_to(@user)
@@ -45,9 +47,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    authorize! :update, User unless @user.user_name == current_user.user_name
-    raise_authorization_exception('Not permitted to assign role names') if illegal_access_to_role_ids?
-    raise_authorization_exception('Not permitted to assign admin specific fields') if illegal_access_to_disable_flag?
+    authorize! :disable, @user if params[:user].include?(:disabled)
+    authorize! :update, @user  if params[:user].except(:disabled).present?
 
     if @user.update_attributes(params[:user])
       if request.xhr?
@@ -63,7 +64,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, User
+    authorize! :destroy, @user
     @user.destroy
     redirect_to(users_url)
   end
@@ -89,18 +90,6 @@ class UsersController < ApplicationController
           :token => form_authenticity_token
       }
     end
-  end
-
-  def illegal_access_to_role_ids?
-    cannot?(:update, User) and @user.has_role_ids? params[:user]
-  end
-
-  def illegal_access_to_disable_flag?
-    cannot?(:update_disable_flag, User) and @user.has_disable_field? params[:user]
-  end
-
-  def raise_authorization_exception(message)
-    raise AuthorizationFailure.new(message)
   end
 
 end

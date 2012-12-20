@@ -1,11 +1,11 @@
 module ChildrenHelper
   def thumbnail_tag(child, key = nil)
-    image_tag(child_thumbnail_path(child, key || child.current_photo_key), :alt=> child['name'])
+    image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt=> child['name'])
   end
 
   def link_to_photo_with_key(key)
     link_to thumbnail_tag(@child, key),
-      child_photo_path(@child, key),
+      child_photo_path(@child, key, :ts => @child.last_updated_at),
       :id => key,
       :target => '_blank'
   end
@@ -28,9 +28,9 @@ module ChildrenHelper
     "Flagged as suspect record by #{user}#{message}"
   end
 
-  def flag_summary_for_child child
+  def flag_summary_for_child(child)
     flag_history = child["histories"].select{|h| h["changes"].keys.include?("flag") }.first
-     "<b>Flagged By </b>"+ flag_history["user_name"] +"<b> On</b> " +@current_user.localize_date(flag_history["datetime"]) +"<b> Because</b> "+ child["flag_message"]
+     "<b>Flagged By </b>"+ flag_history["user_name"] +"<b> On</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> Because</b> "+ child["flag_message"]
   end
 
   def reunited_message

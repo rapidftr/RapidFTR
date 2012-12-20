@@ -1,12 +1,15 @@
 Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
 
   permissions = []
-  permissions.push(Permission::ADMIN[:admin]) if user_type.downcase == "admin" and permission.nil?
+  permissions.push(Permission.all_permissions) if user_type.downcase == "admin" and permission.nil?
   permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
+  permissions.push(Permission.all_permissions) if permission.to_s.downcase.split(',').include?('admin')
   permissions.push(permission.split(",")) if permission
   permissions.flatten!
+
   role_name = permissions.join("-")
   role = Role.find_by_name(role_name) || Role.create!(:name => role_name, :permissions => permissions)
+
   @user = User.new(
     :user_name=>username,
     :password=>password,
@@ -60,6 +63,12 @@ Then /^device "(.+)" should not be blacklisted/ do |imei|
   devices.each do |device|
     device[:blacklisted].should be_false
   end
+end
+
+Given /^a user "(.+)" has logged in from a device$/ do |user_name|
+  user = User.find_by_user_name(user_name)
+  user.mobile_login_history << MobileLoginEvent.new(:imei => "45345", :mobile_number => "244534", :timestamp => "2012-12-17 09:53:51 UTC")
+  user.save!
 end
 
 Given /^the following admin contact info:$/ do |table|
