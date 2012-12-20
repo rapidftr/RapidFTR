@@ -7,29 +7,22 @@ describe ActiveChildrenComposer do
   end
 
   describe "#compose" do
-    it "should select children who are not reunited" do
-      children = [mock_child, mock_child, mock_child(true)]
-      composer = ActiveChildrenComposer.new("most recently created")
-      children_composed = composer.compose(children)
-      children_composed.map{|c| c.reunited? }.should == [false, false]
-    end
-
     it "should sort children based on created_at if order passed is 'most recently created'" do
-      children = [mock_child(false, 2.day.ago), mock_child(false, 1.days.ago), mock_child(true)]
+      children = [mock_child(false, 2.days.ago), mock_child(false, 1.days.ago)]
       composer = ActiveChildrenComposer.new("most recently created")
       children_composed = composer.compose(children)
-      children_composed.should == [children[1], children[0]]
+      children_composed.should == [children[0], children[1]]
     end
 
     it "should sort children based on name if order passed is not 'most recently created'" do
-      children = [mock_child(false, 2.day.ago, "def"), mock_child(false, 1.days.ago, "abc"), mock_child(true, 1.day.ago, "does not matter")]
+      children = [mock_child(false, 2.days.ago, "def"), mock_child(false, 1.days.ago, "abc")]
       composer = ActiveChildrenComposer.new("some other order")
       children_composed = composer.compose(children)
-      children_composed.should == [children[1], children[0]]
+      children_composed.should == [children[0], children[1]]
     end
 
     it "should not break if the name is not present for the child" do
-      children = [mock_child(false, 1.day.ago, ''), mock_child(false, 1.day.ago, 'a')]
+      children = [mock_child(false, 1.days.ago, ''), mock_child(false, 1.days.ago, 'a')]
       composer = ActiveChildrenComposer.new('name')
       composer.compose(children).should == [children[0], children[1]]
     end

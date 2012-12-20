@@ -7,8 +7,7 @@ class FlaggedChildrenComposer
     @order ||= 'most recently flagged'
   end
 
-  def compose(children)
-    flagged_children = select(children)
+  def compose(flagged_children)
     set_flagged_at(flagged_children)
     sort(flagged_children)
   end
@@ -19,10 +18,6 @@ class FlaggedChildrenComposer
     else
       children.sort!{ |x,y| x['name'] <=> y['name'] }
     end
-  end
-
-  def select(children)
-    children.select { |c| c.flag? }
   end
 
   def set_flagged_at(children)

@@ -12,7 +12,9 @@ class ChildrenController < ApplicationController
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
 
-    filter_children_by params[:status], params[:order_by]
+    status = params[:filter] || params[:status] || "all"
+
+    filter_children_by status, params[:order_by]
 
     respond_to do |format|
       format.html
@@ -302,22 +304,28 @@ class ChildrenController < ApplicationController
       end
     end
 
-    def filter_children_by status, order
-      filter_option=params[:filter] || params[:status] || "all"
-      status = filter_option
-      presenter = ChildrenPresenter.new(children_by_user_access, status, order)
-      @children = presenter.children
+    def filter_children_by filter_option, order
+      children = children_by_user_access filter_option
+      total_rows = children.count
+      paginated_records = children.paginate(:page => params[:page], :per_page => ChildrenHelper::View::PER_PAGE)
+      presenter = ChildrenPresenter.new(paginated_records, filter_option, order)
+      @children =  paginated_collection presenter.children, total_rows
       @filter = presenter.filter
       @order = presenter.order
-
-
     end
 
-    def children_by_user_access
+    def children_by_user_access filter_option
       if can? :view_all, Child
-        return Child.all
+        return Child.view(:by_all_view, :startkey => [filter_option], :endkey => [filter_option, {}])
       else
-        Child.all_by_creator(app_session.user_name)
+        return Child.view(:by_all_view, :startkey => [filter_option, app_session.user_name], :endkey => [filter_option, app_session.user_name])
+      end
+    end
+
+    def paginated_collection instances, total_rows
+      page = params[:page] || 1
+      WillPaginate::Collection.create(page, ChildrenHelper::View::PER_PAGE, total_rows) do |pager|
+        pager.replace(instances)
       end
     end
 

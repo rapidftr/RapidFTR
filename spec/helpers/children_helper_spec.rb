@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe ChildrenHelper do
 
+  context "View module" do
+    it "should have PER_PAGE constant" do
+      ChildrenHelper::View::PER_PAGE.should == 20
+    end
+  end
+
   describe '#thumbnail_tag' do
     it 'should use current photo key if photo ID is not specified' do
       child = stub_model Child, :id => 1001, :current_photo_key => 'current'
