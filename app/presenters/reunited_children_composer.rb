@@ -3,18 +3,12 @@ class ReunitedChildrenComposer
   attr_reader :order
 
   def initialize(order)
-    @order = order
-    @order ||= 'name'
+    @order = order || "name"
   end
 
-  def compose(children)
-    reunited_children = select(children)
+  def compose(reunited_children)
     apply_reunited_at(reunited_children)
     sort(reunited_children)
-  end
-
-  def select(children)
-    children.select { |c| c.reunited? }
   end
 
   def sort(children)

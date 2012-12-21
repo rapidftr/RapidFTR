@@ -7,13 +7,8 @@ class ActiveChildrenComposer
     @order ||= 'name'
   end
 
-  def compose(children)
-    non_reunited_children = select(children)
+  def compose( non_reunited_children)
     sort(non_reunited_children)
-  end
-
-  def select(children)
-    children.select { |c| !c.reunited? }
   end
 
   def sort(children)

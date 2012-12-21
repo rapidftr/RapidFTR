@@ -1,4 +1,9 @@
 module ChildrenHelper
+
+  module View
+    PER_PAGE = 20
+  end
+
   def thumbnail_tag(child, key = nil)
     image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt=> child['name'])
   end
@@ -54,7 +59,7 @@ module ChildrenHelper
 
   def link_for_order_by filter, order, selected_order
     return order.capitalize if order == selected_order
-    link_to(order.capitalize, child_filter_path(filter, :order_by => order))
+    link_to(order.capitalize, child_filter_path(:filter => filter, :order_by => order))
   end
 
   def text_to_identify_child child

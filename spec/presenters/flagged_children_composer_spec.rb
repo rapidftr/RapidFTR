@@ -20,12 +20,6 @@ describe FlaggedChildrenComposer do
         @composer = FlaggedChildrenComposer.new("most recently flagged")
       end
 
-      it "should select the children whose flag attribute is true" do
-        children = [flag_child('false'), add_history(flag_child('true')), add_history(flag_child('true'))]
-        flagged_children = @composer.compose(children)
-        flagged_children.map(&:flag?).uniq.should == [true]
-      end
-
       it "should set the flagged_at attribute for each flagged child" do
         now = Time.now
         yesterday = Time.new.yesterday
