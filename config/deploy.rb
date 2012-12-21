@@ -19,7 +19,7 @@ config :deploy_port, "HTTP Port"
 
 set :deploy_port_https, deploy_port.to_i + 1  unless exists?(:deploy_port_https)
 set :deploy_port_solr,  deploy_port.to_i + 2  unless exists?(:deploy_port_solr)
-set :ssh_options, {:keys => %w{/root/.ssh/id_rsa} } if ENV["ci"]
+set :ssh_options, {:keys => ENV["SSH_PATH"] } if ENV["SSH_PATH"]
 
 #Use the below script to deploy the app with environment variables.
 #Ex: cap deploy_server=xxx.xxx.xxx.xxx deploy_user=admin deploy_env=android deploy_port=5000  deploy
