@@ -54,3 +54,6 @@ end
 Then /^I should be able to edit "([^\"]*)" field$/ do |field_name|
   page.should have_selector(:xpath, "//td[text()=\"#{field_name}\"]/parent::*/td/div/select")
 end
+
+
+

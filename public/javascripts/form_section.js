@@ -5,7 +5,7 @@ $(document).ready(function() {
     $("a.moveUp").click(moveUp);
     $("input#save_order").click(saveOrder);
     $("input#save_field_order").click(saveFieldOrder);
-    $("select.fieldLocation").change(saveFieldLocation)
+    $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
 });
 
 function onFormSectionDetailsEditPage() {
@@ -79,21 +79,26 @@ function moveDown() {
     return false;
 }
 
+function callback(data) {
+    if ($('#form_sections').length === 1) {
+        $("#form_sections").html($(data).find("#form_sections"));
+        $("a.moveDown").bind("click", moveDown);
+        $("a.moveUp").bind("click", moveUp);
+        initOrderingColumns();
+        $("#successNotice").show();
+    }
+}
 function saveOrder(event) {
     var form_order = getUpdatedOrderings('.updatedFormSectionOrder :input');
 
+
     $.ajax({
+
         url: '/form_section/save_form_order',
         type: "POST",
         data: {"form_order" : form_order},
         success: function(data) {
-            if ($('#form_sections').length === 1) {
-                $("#form_sections").html($(data).find("#form_sections"));
-                $("a.moveDown").bind("click", moveDown);
-                $("a.moveUp").bind("click", moveUp);
-                initOrderingColumns();
-                $("#successNotice").show();
-            }
+            callback(data);
         }
     });
 }
@@ -101,22 +106,17 @@ function saveOrder(event) {
 function saveFieldOrder(event) {
     var form_order = getUpdatedOrderings('.updatedFormSectionOrder :input');
     var formId = $('#sectionId').html();
+   var saveFieldOrderURL=$(this).data('submit_url');
 
     $.ajax({
-        url: '/form_section/save_field_order',
+        url: saveFieldOrderURL,
         type: "POST",
         data: {
             "form_order" : form_order,
             "formId" : formId
         },
         success: function(data) {
-            if ($('#form_sections').length === 1) {
-                $("#form_sections").html($(data).find("#form_sections"));
-                $("a.moveDown").bind("click", moveDown);
-                $("a.moveUp").bind("click", moveUp);
-                initOrderingColumns();
-                $("#successNotice").show();
-            }
+           callback(data);
         }
     });
 }
@@ -127,7 +127,6 @@ function saveFieldLocation(event) {
     var to_form_section = $(this).attr("value");
     var selection = this.options[this.selectedIndex].text;
     var formId = $('#sectionId').html();
-
     var message = confirm("You are about to move this field to another form section (" + selection + "). Is this OK?");
 
     if (message) {
