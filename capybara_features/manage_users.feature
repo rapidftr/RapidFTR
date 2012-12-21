@@ -108,3 +108,10 @@ Feature: Manage Users
       |henry|
       |homer|
       |jerry|
+
+  @javascript
+  Scenario: Admin should be able to see the timestamp under device information
+    Given a user "jerry" has logged in from a device
+    And I am on manage users page
+    And I follow "Show" within "#user-row-jerry"
+    Then I should see "2012-12-17 09:53:51 UTC"

@@ -63,10 +63,10 @@
               <%= link_to('Edit', edit_child_path(child), :class=>'edit') %> |
               </li>
               <li>
-              <%= link_to 'Mark as Duplicate', new_child_duplicate_path(child), :class=>'mark_as_duplicate' %> |
+              <%= link_to 'Mark as Duplicate', new_child_duplicate_path(child), :class=>'children/mark_as_duplicate' %> |
               </li>
               <li>
-              <%= render :partial =>"suspect_flag", :object => child, :as => :child %>
+              <%= render :partial =>"children/suspect_flag", :object => child, :as => :child %>
               </li>
         <% end %>
         </ul>

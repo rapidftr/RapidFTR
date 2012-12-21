@@ -56,7 +56,10 @@ To run RapidFTR
 Story Development
 -------------
 
-Stories should be on the [website](http://rapidftr.com/userstories/) which pulls from  [mingle](https://minglehosting.thoughtworks.com/unicef/projects/rapidftr/)
+Stories that are ready to picked up can be seen at [(2) Development Wall](http://bit.ly/U1obJ7) in  [Mingle](https://minglehosting.thoughtworks.com/rapidftr/projects/rapidftr).
+Please drop a signup email to rapidftr@googlegroups.com.
+You can signup for RapidFTR Mingle from [Signup](http://bit.ly/TfPpfb) and move cards by yourself.
+
 
 Cucumber & RSPEC Tests
 -------------
