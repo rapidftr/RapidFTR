@@ -54,7 +54,7 @@ module ChildrenHelper
 
   def link_for_order_by filter, order, selected_order
     return order.capitalize if order == selected_order
-    link_to(order.capitalize, child_filter_path(filter, :order_by => order))
+    link_to(order.capitalize, child_filter_path(:filter => filter, :order_by => order))
   end
 
   def text_to_identify_child child

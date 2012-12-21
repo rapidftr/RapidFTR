@@ -11,7 +11,6 @@ class ChildrenController < ApplicationController
 
     @page_name = "View All Children"
     @aside = 'shared/sidebar_links'
-
     filter_children_by params[:status], params[:order_by]
 
     respond_to do |format|
