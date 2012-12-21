@@ -159,7 +159,7 @@ end
 
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
-  visit child_filter_path("flagged")
+  visit child_filter_path(:filter => "flagged")
   child_records = Hpricot(page.body).search("h2 a").map {|a| a.inner_text }
   child_records.should have_content(expected_child_names)
 end
