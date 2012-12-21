@@ -112,12 +112,18 @@ describe ChildrenController do
 
     shared_examples_for "viewing children by user with access to all data" do
       describe "when the signed in user has access all data" do
-        it "should assign all childrens as @childrens" do
-          session = fake_field_admin_login
+        before do
+          fake_field_admin_login
 
           @stubs ||= {}
+        end
+
+        it "should assign all childrens as @childrens" do
           children = [mock_child(@stubs)]
-          Child.should_receive(:all).and_return(children)
+          @status ||= "all"
+          children.expects(:paginate).returns(children)
+          Child.should_receive(:view).with(:by_all_view, :startkey => [@status], :endkey => [@status , {}]).and_return(children)
+
           get :index, :status => @status
           assigns[:children].should == children
         end
@@ -126,25 +132,20 @@ describe ChildrenController do
 
     shared_examples_for "viewing children as a field worker" do
       describe "when the signed in user is a field worker" do
-        it "should assign the children created by the user as @childrens" do
-          session = fake_field_worker_login
-
+        before do
+          @session = fake_field_worker_login
           @stubs ||= {}
+        end
+
+        it "should assign the children created by the user as @childrens" do
           children = [mock_child(@stubs)]
-          Child.should_receive(:all_by_creator).with(session.user_name).and_return(children)
+          @status ||= "all"
+          children.expects(:paginate).returns(children)
+          Child.should_receive(:view).with(:by_all_view, :startkey => [@status, @session.user_name], :endkey => [@status , @session.user_name]).and_return(children)
+
           get :index, :status => @status
           assigns[:children].should == children
         end
-      end
-    end
-
-    context "as administrator" do
-      it "should assign all the children" do
-        session = fake_admin_login
-        children = [mock_child, mock_child]
-        Child.should_receive(:all).and_return(children)
-        get :index, :status => 'reunited'
-        assigns[:children].should == children
       end
     end
 

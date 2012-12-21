@@ -9,13 +9,6 @@ describe ReunitedChildrenComposer do
       child
     end
 
-    it "should select reunited children" do
-      children = [mock_child(false), mock_child, mock_child]
-      composer = ReunitedChildrenComposer.new("most recently reunited")
-      composed_children = composer.compose(children)
-      composed_children.should =~ [children[1], children[2]]
-    end
-
     it "should apply reunited_at data on each reunited child" do
       children = [mock_child, mock_child]
       composer = ReunitedChildrenComposer.new("most recently reunited")
@@ -24,17 +17,17 @@ describe ReunitedChildrenComposer do
     end
 
     it "should sort by reunited_at if the order passed in is 'most recently reunited'" do
-      children = [mock_child(true, 3.day.ago), mock_child(true, 2.days.ago)]
+      children = [mock_child(true, 3.days.ago), mock_child(true, 2.days.ago)]
       composer = ReunitedChildrenComposer.new("most recently reunited")
       composed_children = composer.compose(children)
-      composed_children.should == [children[1], children[0]]
+      composed_children.should == [children[0], children[1]]
     end
 
     it "should sort by name if the order passed in is not 'most recently reunited'" do
-      children = [mock_child(true, 3.day.ago, "def"), mock_child(true, 2.days.ago, "abc"), mock_child(true, 1.day.ago, "ghi")]
+      children = [mock_child(true, 3.days.ago, "def"), mock_child(true, 2.days.ago, "abc"), mock_child(true, 1.days.ago, "ghi")]
       composer = ReunitedChildrenComposer.new("some other order")
       composed_children = composer.compose(children)
-      composed_children.should == [children[1], children[0], children[2]]
+      composed_children.should eq [children[0], children[1], children[2]]
     end
   end
 end
