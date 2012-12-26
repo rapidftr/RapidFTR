@@ -1,6 +1,6 @@
 <tr>
   <th>Full Name</th>
-  <th>User Name</th>
+  <th><%= t("login.username") %></th>
   <% if can?(:disable, User) %>
     <th>Disabled?</th>
   <% end %>

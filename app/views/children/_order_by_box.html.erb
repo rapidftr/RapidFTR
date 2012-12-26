@@ -1,9 +1,9 @@
 <div class="orderby_panel">
-	Order by:
+	<%= t("children.order_by.label") %>:
 	<ul>
 	  <% filter_name = @filter %>
 	  <% filter_name = 'created' if @filter == 'all' or @filter == 'active' or @filter.nil? %>
-		<li class="first"><%= link_for_order_by(@filter, "most recently #{filter_name}", @order) %></li>
-		<li><%= link_for_order_by(@filter, 'name', @order) %></li>
+		<li class="first"><%= link_for_order_by(@filter, t("children.order_by.most_recently")+" #{filter_name}", @order) %></li>
+		<li><%= link_for_order_by(@filter, t('children.order_by.name'), @order) %></li>
 	</ul>
 </div>

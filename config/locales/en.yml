@@ -2,4 +2,78 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  home:
+    welcome: "Welcome to RapidFTR"
+    current_time_zone: "Current time zone"
+    view_all_children: "View All Children"
+    records_need_attention: "Records need Attention"
+
+  login:
+    details: "Login details"
+    username: "User Name"
+    password:
+      label: "Password"
+      reset: "Request Password Reset"
+
+  header:
+    contact: "Contact & Help"
+    welcome: "Welcome"
+    logout: "Logout"
+    my_account: "My Account"
+    system_settings: "System settings"
+
+  navigation:
+     children: "CHILDREN"
+     forms: "FORMS"
+     users: "USERS"
+     devices: "DEVICES"
+     reports: "REPORTS"
+     advanced_search: "Advanced Search"
+     go: "Go"
+
+  buttons:
+     save: "Save"
+     login: "Log in"
+
+  children:
+    label: "Children"
+    register_new_child: "Register New Child"
+    export: "Export"
+    export_all_child_records_to_csv: "Export All Child Records to CSV"
+    export_all_child_records_to_pdf: "Export All Child Records to PDF"
+    export_some_records_to_csv: "Export Some Records to CSV"
+    filter_by:
+      label: "Filter by"
+      all: "All"
+      active: "Active"
+      reunited: "Reunited"
+      flagged: "Flagged"
+    order_by:
+      most_recently: "Most recently"
+      label: "Order by"
+      name: "name"
+    flag_summary: "Flag summary"
+  child:
+    flagged_by: "Flagged By"
+    last_updated: "Last updated"
+    registered_by: "Registered by"
+    edit: "Edit"
+    mark_as_duplicate: "Mark as Duplicate"
+    flag_record: "Flag record"
+    flag_label: "Flag"
+    flag_reason: "Flag Reason"
+    unflag_record: "Unflag record"
+    unflag_reason: "Unflag Reason"
+    unflag_label: "Unflag"
+    unflag_error_message: "Please explain why you are unflagging this record."
+    flag_error_message: "Please explain why you are flagging this record."
+    messages:
+      update_success: "Child was successfully updated."
+  preposition:
+    on_label: "On"
+    because: "Because"
+
+  will_paginate:
+    previous_label: "&#8592; Previous"
+    next_label: "Next &#8594;"
+    page_gap: "&hellip;"

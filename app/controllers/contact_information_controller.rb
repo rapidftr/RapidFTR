@@ -3,7 +3,7 @@ class ContactInformationController < ApplicationController
   
   # GET /contact_information/Administrator  
   def show
-    @page_name = "Contact & Help"
+    @page_name = I18n.t("header.contact")
     @contact_information = ContactInformation.get_by_id(params[:id])
     respond_to do |format|
       format.html # index.html.erb

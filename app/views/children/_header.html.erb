@@ -1,17 +1,17 @@
-<h1 class="no_border float_left">Children</h1>
+<h1 class="no_border float_left"><%= t("children.label") %></h1>
 <% if can? :create, Child %>
-    <%= link_to content_tag(:span, 'Register New Child', :class => 'create_user'), new_child_path, :class=>'btn' %>
+    <%= link_to content_tag(:span, t("children.register_new_child"), :class => 'create_user'), new_child_path, :class=>'btn' %>
 <% end %>
 
 <% if can?(:export, Child) %>
     <div class="btn dropdown_btn">
-      <span class="export">Export</span>
+      <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
         <% if can?(:view_all, Child) %>
-            <%= link_to 'Export All Child Records to CSV', children_path(:format => :csv) %>
-            <%= link_to 'Export All Child Records to PDF', children_path(:format => :pdf) %>
+            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv) %>
+            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf) %>
         <%end%>
-        <%= link_to 'Export Some Records to CSV', new_advanced_search_path %>
+        <%= link_to t("children.export_some_records_to_csv"), new_advanced_search_path %>
       </div>
     </div>
 

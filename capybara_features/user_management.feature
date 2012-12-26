@@ -6,7 +6,7 @@ Feature: As an admin, I should be able to edit existing users.
     And I am logged in as an admin
     And I am on the edit user page for "mary"
 
-    Then the "User name" field should be disabled
+    Then the "User Name" field should be disabled
 
   Scenario: Check that an admin creates a user record and is able to edit it
 
@@ -16,7 +16,7 @@ Feature: As an admin, I should be able to edit existing users.
     And I follow "Create User"
     When I fill in the following:
       | Full name         | George Harrison     |
-      | User name         | george              |
+      | User Name         | george              |
       | Password          | password with space |
       | Re-enter password | password with space |
       | Phone             | 8007778339          |
@@ -42,7 +42,7 @@ Feature: As an admin, I should be able to edit existing users.
     When I follow "Edit"
     And I fill in the following:
       | Full name         | Julia Roberts      |
-      | User name         | george             |
+      | User Name         | george             |
       | Password          | different password |
       | Re-enter password | different password |
       | Email             | xyz@nyu.com        |
@@ -87,6 +87,6 @@ Feature: As an admin, I should be able to edit existing users.
   Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username
     Given I am logged in as an admin
     And I am on new user page
-    When I fill in "admin" for "User name"
+    When I fill in "admin" for "User Name"
     When I press "Create"
     And I should see "Disabled"

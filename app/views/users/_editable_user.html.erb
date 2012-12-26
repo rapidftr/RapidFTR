@@ -37,13 +37,13 @@
     </p>
 
     <p>
-      <%= f.label :user_name, :class=>'key'  %>
+      <%= f.label  :user_name, t("login.username"), :class=>'key'  %>
       <%= f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
       <span class="footnote">user name should not contain blanks</span>
     </p>
 
     <p>
-      <%= f.label :password, :class=>'key'  %>
+      <%= f.label :password, t('login.password.label'), :class=>'key'  %>
       <%= f.password_field :password, :autocomplete => "off" %>*
     </p>
 

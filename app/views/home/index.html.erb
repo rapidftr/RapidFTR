@@ -1,23 +1,23 @@
-<h2>Welcome to RapidFTR</h2>
+<h2><%= t "home.welcome" %></h2>
 
 <%= render 'notifications' %>
 
 <p>
   <%= form_for @user, :url => user_preference_path(current_user_name), :html => {:method => :put} do |f| %>
-      <%= label_tag "user_time_zone", "Current time zone" %>
+      <%= label_tag "user_time_zone", t("home.current_time_zone") %>
       <%= f.time_zone_select "time_zone" %>
       <p class='submitButton' >
-        <%= f.submit 'Save' %>
+        <%= f.submit t("buttons.save") %>
       </p>
   <% end %>
 </p>
 	<% if can? :create, Child %>
-		<%= link_to 'Register New Child', new_child_path %> <br/><br/>
+		<%= link_to t("children.register_new_child"), new_child_path %> <br/><br/>
 	<% end %>
 	
-<%= link_to 'View All Children', children_path %> <br/><br/>
+<%= link_to t("home.view_all_children"), children_path %> <br/><br/>
 <% if can? :read, Child %>
-  <%= link_to @suspect_record_count.to_s + ' Records need Attention', child_filter_path(:filter => "flagged") %>
+  <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flagged") %>
 <% end %>
 
 <br/>

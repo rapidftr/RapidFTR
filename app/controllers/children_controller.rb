@@ -123,7 +123,7 @@ class ChildrenController < ApplicationController
       format.html do
         @child = update_child_from params
         if @child.save
-          flash[:notice] = 'Child was successfully updated.'
+          flash[:notice] = I18n.t("child.messages.update_success")
           return redirect_to params[:redirect_url] if params[:redirect_url]
           redirect_to @child
         else

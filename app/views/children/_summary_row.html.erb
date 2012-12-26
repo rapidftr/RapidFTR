@@ -35,18 +35,18 @@
 
     <% if child.flag? %>
         <div class="summary_item">
-          <div class="key">Flag summary:</div><div class="value"><%= (flag_summary_for_child(child)).html_safe %></div>
+          <div class="key"><%= t("children.flag_summary") %>:</div><div class="value"><%= (flag_summary_for_child(child)).html_safe %></div>
         </div>
     <% end -%>
 
     <div class="summary_item">
-      <div class="key">Registered by:</div>
-      <div class="value"><%= child.created_by %> <%= link_to_update_info(child)%> on <%= current_user.localize_date(child.created_at) %></div>
+      <div class="key"><%= t("child.registered_by") %>:</div>
+      <div class="value"><%= child.created_by %> <%= link_to_update_info(child)%> <%= t("preposition.on_label") %> <%= current_user.localize_date(child.created_at) %></div>
     </div>
 
     <% if child.last_updated_at %>
       <div class="summary_item">
-        <div class="key">Last updated:</div>
+        <div class="key"><%= t("child.last_updated") %>:</div>
         <div class="value"><%= current_user.localize_date(child.last_updated_at) %></div>
       </div>
     <% end %>
@@ -60,10 +60,10 @@
         <ul class="view-edit">
           <% if can?(:update, child) %>
               <li>
-              <%= link_to('Edit', edit_child_path(child), :class=>'edit') %> |
+              <%= link_to(t('child.edit'), edit_child_path(child), :class=>'edit') %> |
               </li>
               <li>
-              <%= link_to 'Mark as Duplicate', new_child_duplicate_path(child), :class=>'children/mark_as_duplicate' %> |
+              <%= link_to t('child.mark_as_duplicate'), new_child_duplicate_path(child), :class=>'children/mark_as_duplicate' %> |
               </li>
               <li>
               <%= render :partial =>"children/suspect_flag", :object => child, :as => :child %>
