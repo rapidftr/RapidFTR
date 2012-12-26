@@ -49,7 +49,7 @@ en:
       reunited: "Reunited"
       flagged: "Flagged"
     order_by:
-      most_recently: "Most recently"
+      most_recently: "most recently"
       label: "Order by"
       name: "name"
     flag_summary: "Flag summary"
