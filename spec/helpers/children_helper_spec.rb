@@ -82,7 +82,7 @@ describe ChildrenHelper do
                         :histories => [{"datetime"=>"2012-09-19 18:39:05UTC", "changes"=>{"flag"=>{"to"=>"true"}}, "user_name"=>"Admin user 1"}])
 
       helper.stub!(:current_user => @current_user)
-      helper.strip_tags(helper.flag_summary_for_child(child)).should == "Flagged By Admin user 1 On 19 September 2012 at 18:39 (UTC) Because Fake entity"
+      helper.strip_tags(helper.flag_summary_for_child(child)).should == "Flagged By Admin user 1 on 19 September 2012 at 18:39 (UTC) Because Fake entity"
     end
   end
 end

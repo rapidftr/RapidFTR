@@ -60,7 +60,7 @@
         <ul class="view-edit">
           <% if can?(:update, child) %>
               <li>
-              <%= link_to(t('child.edit'), edit_child_path(child), :class=>'edit') %> |
+              <%= link_to(t('buttons.edit'), edit_child_path(child), :class=>'edit') %> |
               </li>
               <li>
               <%= link_to t('child.mark_as_duplicate'), new_child_duplicate_path(child), :class=>'children/mark_as_duplicate' %> |

@@ -1,29 +1,29 @@
-<h1 class="no_border"><%= link_to 'Form',formsections_path %> &gt; <%= @form_section.unique_id%></h1>
+<h1 class="no_border"><%= link_to t('form'),formsections_path %> &gt; <%= @form_section.unique_id%></h1>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
     <%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => {:class => ""} do |f| %>
 
 			<fieldset>
-			  <h3 id='editFormDetails'>Details</h3>
+			  <h3 id='editFormDetails'><%= t("details") %></h3>
 			  <div id='sectionId' class='hidden'></div>
 			    <p>
-			      <%= f.label :name, :class=>'key' %>
+			      <%= f.label :name, t("name"), :class=>'key' %>
 			      <%= f.text_field :name %>
 			    </p>
 
 			    <p>
-			      <%= f.label :description, :class=>'key' %>
+			      <%= f.label :description, t("description"), :class=>'key' %>
 			      <%= f.text_field :description %>
 			    </p>
 
 			    <p>
-			      <%= f.label :help_text, :class=>'key' %>
+			      <%= f.label :help_text, t("help_text"), :class=>'key' %>
 			      <%= f.text_field :help_text %>
 			    </p>
     
 				<% if not @form_section.perm_enabled? %>
 			      <p>
-			        <%= f.label :enabled, "Visible", :class=>'key' %>
+			        <%= f.label :enabled, t("visible"), :class=>'key' %>
 			        <%= f.check_box :enabled?, {}, true, false %>
 			      </p>
 			    <% end %>
@@ -31,7 +31,7 @@
 			</fieldset>
       <div class="btn_panel">
         <%= cancel_button(formsections_path) %>
-        <%= submit_button 'Save Details' %>
+        <%= submit_button t("forms.save_details") %>
       </div>
     <% end %>
 
@@ -52,10 +52,10 @@
         <thead>
           <tr>
             <th></th>
-            <th>Visibility</th>
-            <th>Name</th>
-            <th colspan=2>Ordering</th>
-            <th>Form Section</th>
+            <th><%= t("form_section.visibility") %></th>
+            <th><%= t("name") %></th>
+            <th colspan=2><%= t("form_section.ordering") %></th>
+            <th><%= t("form_section.label") %></th>
             <th></th>
           </tr>
         </thead>
@@ -101,10 +101,9 @@
 
                 <td class='field-buttons'>
                   <% if field.editable? %>
-                    <%= link_to "Edit", edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
+                    <%= link_to t("buttons.edit"), edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
                     <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id),
-                       :warning=>"Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."} %>
-<%= hidden_field_tag "field_name", "#{field.name}"%>
+                       :warning=>I18n.t("message.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}"%>
                                                                        
                   <% end %>
                 </td>
@@ -116,7 +115,7 @@
         <tfoot>
           <tr>
             <% if @form_section.editable? %>
-              <th colspan=6><%= link_to "Add Custom Field", choose_field_path(@form_section.unique_id) %></th>
+              <th colspan=6><%= link_to t("form_section.actions.add_custom_field"), choose_field_path(@form_section.unique_id) %></th>
             <% else %>
               <th colspan=6><i>Fields on this form cannot be edited.</i></th>
             <% end %>
@@ -132,6 +131,6 @@
         </div>
       <% end %>
     <% end %>
-    <p><%= link_to "Back To Forms Page", formsections_path() %></p>
+    <p><%= link_to t("form_section.back"), formsections_path() %></p>
   </div>
 </div>

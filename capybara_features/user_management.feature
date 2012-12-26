@@ -15,7 +15,7 @@ Feature: As an admin, I should be able to edit existing users.
     And I am on manage users page
     And I follow "Create User"
     When I fill in the following:
-      | Full name         | George Harrison     |
+      | Full Name         | George Harrison     |
       | User Name         | george              |
       | Password          | password with space |
       | Re-enter password | password with space |
@@ -41,7 +41,7 @@ Feature: As an admin, I should be able to edit existing users.
     # Editing the user
     When I follow "Edit"
     And I fill in the following:
-      | Full name         | Julia Roberts      |
+      | Full Name         | Julia Roberts      |
       | User Name         | george             |
       | Password          | different password |
       | Re-enter password | different password |

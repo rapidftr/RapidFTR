@@ -29,7 +29,7 @@
                     <span class="title"><%= group_name %></span>
                     <% permissions.values.each do |permission| %>
                         <label><%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
-                        <%= permission %></label>
+                        <%= t("permissions."+permission.dehumanize) %></label>
                     <% end %>
                     </span>
                 <% end %>

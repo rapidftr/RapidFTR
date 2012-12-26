@@ -15,13 +15,13 @@
         });
     }
 </script>
-<h1 class="no_border float_left">Forms</h1>
-<%= link_to content_tag(:span,'Create New Form Section',:class=>'create_user') , new_form_section_path, :class=>'btn' %>
+<h1 class="no_border float_left"><%= t("forms.label") %></h1>
+<%= link_to content_tag(:span,t("form_section.create"),:class=>'create_user') , new_form_section_path, :class=>'btn' %>
 <div class="clearfix"></div>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
     <div class="flash" id="successNotice" style="display:none;">
-             <p class="notice">Order is successfully saved. </p>
+             <p class="notice"><%= t("form_section.messages.order_saved") %> </p>
     </div>
 <p></p>
 
@@ -31,10 +31,10 @@
 <thead>
   <tr>
     <th><input type="checkbox" id="all" /></th>
-    <th>Visibility</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th colspan="3">Ordering</th>
+    <th><%= t("form_section.visibility") %></th>
+    <th><%= t("name") %></th>
+    <th><%= t("description") %></th>
+    <th colspan="3"><%= t("form_section.ordering") %></th>
   </tr>
 </thead>
 <tbody>
@@ -47,7 +47,7 @@
           </td>
           <td>
 	    <span class="enabledStatus <%= section.enabled? ? "tick" : "cross" %>">
-              <%= section.enabled? ? "Visible" : "Hidden" %>
+              <%= section.enabled? ? t("visible") : t("hidden") %>
             </span>
           </td>
           <td><%= link_to section.name, edit_form_section_path(section), :class => "formSectionLink" %></td>
@@ -79,7 +79,7 @@
   <input type="button" name="SaveOrder" value="Save Order" id="save_order" class="btn" />
 </div>
 <div class="backLink">
-  <%= link_with_confirm "Back", admin_path() %>
+  <%= link_with_confirm t("buttons.back"), admin_path() %>
 </div>
 <% end %>
 </div>

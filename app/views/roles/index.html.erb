@@ -1,28 +1,28 @@
-<h1 class="no_border">Roles</h1>
+<h1 class="no_border"><%= t("roles.label") %></h1>
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li><%= link_to "Users", users_path %></li>
-      <li class="current"><%= link_to "Roles", roles_path %></li>
+      <li><%= link_to t("users.label"), users_path %></li>
+      <li class="current"><%= link_to t("roles.label"), roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2>List of Roles</h2>
+    <h2><%= t("roles.list") %></h2>
     <% if can?(:create, Role) %>
-    <%= link_to content_tag(:span, "Create Role", :class => 'create_user'), new_role_path, :class => 'btn' %>
+    <%= link_to content_tag(:span, t("role.create"), :class => 'create_user'), new_role_path, :class => 'btn' %>
     <% end %>
     <div class="clearfix"></div>
 
     <form class="filter_bar">
-      <div class="show_count"> Showing all <%= pluralize(@roles.length, "record") %> </div>
-      <div class="float_left"> Show: <%= select_tag :show, grouped_options_for_select(Permission.hashed_values,params[:show]), :onchange => "this.form.submit()"  %> </div>
-      <div class="float_left"> Sort by:  <%= select_tag :sort, options_for_select([["Role Name","Role Name"]],params[:sort])%> </div>
+      <div class="show_count"> <%= t("roles.actions.show_all") %> <%= pluralize(@roles.length, t("record")) %> </div>
+      <div class="float_left"> <%= t("roles.actions.show") %>: <%= select_tag :show, grouped_options_for_select(Permission.hashed_values,params[:show]), :onchange => "this.form.submit()"  %> </div>
+      <div class="float_left"> <%= t("roles.sort_by.label") %>:  <%= select_tag :sort, options_for_select([[t("roles.name"),"Role Name"]],params[:sort])%> </div>
     </form>
     <table class="list_table">
       <thead>
         <tr>
-            <th>Role Name</th>
-            <th>Description</th>
+            <th><%= t("role.name") %></th>
+            <th><%= t("description") %></th>
           <% if can?(:edit, Role) %>
             <th></th>
           <% end %>

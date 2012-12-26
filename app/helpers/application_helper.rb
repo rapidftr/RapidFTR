@@ -24,17 +24,17 @@ module ApplicationHelper
   end
 
   def cancel_button(path)
-      link_to 'Cancel', path, :confirm => 'Are you sure you want to cancel?', :class => "link_cancel"
+      link_to t('cancel'), path, :confirm => t('message.cancel_confirmation'), :class => "link_cancel"
   end
 
   def discard_button(path)
-      link_to 'Discard', path, :confirm => 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead.', :class => 'link_discard'
+      link_to t('discard'), path, :confirm => t('message.confirmation_message'), :class => 'link_discard'
   end
 
   def show_sidebar_links
-    sidebar_links = {"View All Children" => children_path,
-                     "Search" => search_children_path,
-                     "Advanced Search" => new_advanced_search_path}
+    sidebar_links = {t("home.view_all_children") => children_path,
+                     t("navigation.search") => search_children_path,
+                     t("navigation.advanced_search") => new_advanced_search_path}
     sidebar_links.select do |_, link|
       !current_page?(link)
     end
@@ -47,7 +47,7 @@ module ApplicationHelper
 
   def link_confirm_options(controller)
     confirm_options = { }
-    confirm_message = 'Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The %s Instead.'
+    confirm_message = t('confirmation_message')
     if /children/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
       confirm_options[:confirm] = confirm_message % 'Child Record'
     elsif /user/.match(controller.controller_name) and /edit|new/.match(controller.action_name)

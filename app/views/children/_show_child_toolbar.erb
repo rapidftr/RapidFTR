@@ -1,76 +1,76 @@
 <% if can? :export, Child %>
-  <div class="btn dropdown_btn btn_export">
-    <span class="export">Export</span>
-    <div class="dropdown hide">
-      <%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
-      <%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %>
-      <%= link_to "Export to CSV", child_path(@child, :format => 'csv') %>
+    <div class="btn dropdown_btn btn_export">
+      <span class="export">Export</span>
+      <div class="dropdown hide">
+        <%= link_to "Export to Photo Wall", export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
+        <%= link_to "Export to PDF", child_path(@child, :format => 'pdf') %>
+        <%= link_to "Export to CSV", child_path(@child, :format => 'csv') %>
+      </div>
     </div>
-  </div>
 <% end %>
 
 <% if can? :update, child %>
     <div class="btn dropdown_btn btn_flag dropdown_form">
-    <%= render :partial =>"suspect_flag", :locals => { :child => @child } %>
+      <%= render :partial =>"suspect_flag", :locals => { :child => @child } %>
     </div>
 
     <div class="btn dropdown_btn btn_reunite dropdown_form">
-    <% unless @child.reunited? %>
-      <%= render :partial => "mark_as",
-                 :locals=> {:child => @child,
-                             :mark_as_label => "Mark as Reunited",
-                             :mark_as_message_id => "reunited_message",
-                             :mark_as_message => "Reunite Details:",
-                             :mark_as_property => "reunited",
-                             :mark_as_property_value => "true",
-                             :mark_as_submit_label => "Reunite",
-                             :error_message => "Please confirm this child has been reunited with family or caregivers, and enter any details you have.",
-                             :style => "flag"
-                 } %>
-    <% else %>
-      <%= render :partial => "mark_as",
-                 :locals=> { :child => @child,
-                             :mark_as_label => "Mark as Not Reunited",
-                             :mark_as_message_id => "reunited_message",
-                             :mark_as_message => "Undo reunite Reason:",
-                             :mark_as_property => "reunited",
-                             :mark_as_property_value => "false",
-                             :mark_as_submit_label => "Undo Reunite",
-                             :error_message => "Please confirm child should be marked as Not Reunited, and enter any details you have.",
-                             :style => "flag"
-                 } %>
-    <% end %>
-  </div>
+      <% unless @child.reunited? %>
+          <%= render :partial => "mark_as",
+                     :locals=> {:child => @child,
+                                :mark_as_label => t("child.actions.reunited"),
+                                :mark_as_message_id => "reunited_message",
+                                :mark_as_message => t("child.actions.reunited_details"),
+                                :mark_as_property => "reunited",
+                                :mark_as_property_value => "true",
+                                :mark_as_submit_label => t("child.actions.reunite"),
+                                :error_message => t("child.messages.reunite_error_message"),
+                                :style => "flag"
+                     } %>
+      <% else %>
+          <%= render :partial => "mark_as",
+                     :locals=> { :child => @child,
+                                 :mark_as_label => t("child.actions.not_reunited"),
+                                 :mark_as_message_id => "reunited_message",
+                                 :mark_as_message => t("child.actions.undo_reunited_details"),
+                                 :mark_as_property => "reunited",
+                                 :mark_as_property_value => "false",
+                                 :mark_as_submit_label => t("child.actions.undo_reunite"),
+                                 :error_message => t("child.messages.undo_reunite_error_message"),
+                                 :style => "flag"
+                     } %>
+      <% end %>
+    </div>
 
-  <div class="btn dropdown_btn btn_investigate dropdown_form">
-    <% if @child.flag? %>
-      <% unless @child.investigated? %>
-          <%= render :partial => "mark_as",
-            :locals=> { :child => @child,
-                        :mark_as_label => "Mark as Investigated",
-                      :mark_as_message_id => "investigated_message",
-                      :mark_as_message => "Investigation Details:",
-                      :mark_as_property => "investigated",
-                      :mark_as_property_value => "true",
-                      :mark_as_submit_label => "Mark as Investigated",
-                      :error_message => "Please confirm the flagged record should be marked as investigated, and enter any details you have.",
-                      :style => "flag"
-          } %>
-        <% else %>
-          <%= render :partial => "mark_as",
-            :locals=> { :child => @child,
-                :mark_as_label => "Mark as Not Investigated",
-              :mark_as_message_id => "investigated_message",
-              :mark_as_message => "Undo Investigation Details:",
-              :mark_as_property => "investigated",
-              :mark_as_property_value => "false",
-              :mark_as_submit_label => "Undo Investigated",
-              :error_message => "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have.",
-              :style => "flag"
-          } %>
-        <% end %>
-    <% end %>
-</div>
+    <div class="btn dropdown_btn btn_investigate dropdown_form">
+      <% if @child.flag? %>
+          <% unless @child.investigated? %>
+              <%= render :partial => "mark_as",
+                         :locals=> { :child => @child,
+                                     :mark_as_label => t("child.actions.mark_as_investigated"),
+                                     :mark_as_message_id => "investigated_message",
+                                     :mark_as_message => t("child.actions.investigation_details"),
+                                     :mark_as_property => "investigated",
+                                     :mark_as_property_value => "true",
+                                     :mark_as_submit_label => t("child.actions.mark_as_investigated"),
+                                     :error_message => t("child.messages.investigation_error_message"),
+                                     :style => "flag"
+                         } %>
+          <% else %>
+              <%= render :partial => "mark_as",
+                         :locals=> { :child => @child,
+                                     :mark_as_label => t("child.actions.mark_as_not_investigated"),
+                                     :mark_as_message_id => "investigated_message",
+                                     :mark_as_message => t("child.actions.undo_investigation_details"),
+                                     :mark_as_property => "investigated",
+                                     :mark_as_property_value => "false",
+                                     :mark_as_submit_label => t("child.actions.undo_investigated"),
+                                     :error_message => t("child.messages.undo_investigation_error_message"),
+                                     :style => "flag"
+                         } %>
+          <% end %>
+      <% end %>
+    </div>
 <% end %>
 
-<%= link_to content_tag(:span, 'Change Log', :class => 'log'), child_history_path(@child), :class=>'btn' %>
+<%= link_to content_tag(:span, t("child.change_log") , :class => 'log'), child_history_path(@child), :class=>'btn' %>

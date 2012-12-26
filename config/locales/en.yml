@@ -14,6 +14,7 @@ en:
     password:
       label: "Password"
       reset: "Request Password Reset"
+      re_enter: "Re-enter password"
 
   header:
     contact: "Contact & Help"
@@ -30,10 +31,14 @@ en:
      reports: "REPORTS"
      advanced_search: "Advanced Search"
      go: "Go"
+     search: "Search"
 
   buttons:
      save: "Save"
      login: "Log in"
+     reunite: "Reunite"
+     edit: "Edit"
+     back: "Back"
 
   children:
     label: "Children"
@@ -53,11 +58,11 @@ en:
       label: "Order by"
       name: "name"
     flag_summary: "Flag summary"
+
   child:
     flagged_by: "Flagged By"
     last_updated: "Last updated"
     registered_by: "Registered by"
-    edit: "Edit"
     mark_as_duplicate: "Mark as Duplicate"
     flag_record: "Flag record"
     flag_label: "Flag"
@@ -67,13 +72,144 @@ en:
     unflag_label: "Unflag"
     unflag_error_message: "Please explain why you are unflagging this record."
     flag_error_message: "Please explain why you are flagging this record."
+    investigation_details: "Investigation Details:"
+    reunite_details: "Reunite Details:"
+    another_duplicate_before_link: "Another record has been marked as a duplicate of this one. Click"
+    another_duplicate_after_link: " to see the duplicate record."
     messages:
       update_success: "Child was successfully updated."
+      investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
+      undo_investigation_error_message: "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have."
+      undo_investigation_error_message: "Undo Investigation Details:"
+      reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
+      undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
+      see_full_size: "Click on the Image to see full size"
+    actions:
+      mark_as_investigated: "Mark as Investigated"
+      mark_as_reunited: "Mark as Reunited"
+      export_to_photo_wall: "Export to Photo Wall"
+      export_to_pdf: "Export to PDF"
+      export_to_csv: "Export to CSV"
+      change_log: "Change Log"
+      mark_as_not_investigated: "Mark as Not Investigated"
+      reunited: "Mark as Reunited"
+      reunited_details: "Reunite Details:"
+      reunite: "Reunite"
+      not_reunited: "Mark as Not Reunited"
+      undo_reunited_details: "Undo reunite Reason:"
+      undo_reunite: "Undo Reunite"
+      investigation_details: "Investigation Details"
+      undo_investigation_details: "Undo Investigation Details"
+      undo_investigated: "Undo Investigated"
+    change_log: "Change Log"
+    flagged_as_suspected: "Flagged as suspect record by"
+    posted_from_mobile: "Posted from the mobile client at:"
+    edit_photo: "Edit photo"
+    manage_photos: "Manage photos"
+
   preposition:
-    on_label: "On"
+    on_label: "on"
     because: "Because"
 
   will_paginate:
     previous_label: "&#8592; Previous"
     next_label: "Next &#8594;"
     page_gap: "&hellip;"
+
+  imei: "IMEI"
+  blacklisted: "Blacklisted?"
+
+  users:
+    manage: "Manage Users"
+    label: "Users"
+    create: "Create User"
+    actions:
+      show_all: "Showing all"
+      show: "Show"
+    sort_by:
+      label: "Sort by"
+      full_name: "Full Name"
+
+  roles:
+    label: "Roles"
+    list: "List of Roles"
+    sort_by:
+      label: "Sort by"
+    name: "Role Name"
+    actions:
+      show_all: "Showing all"
+      show: "Show"
+
+  user:
+    label: "user"
+    full_name: "Full Name"
+    disabled: "Disabled?"
+    actions:
+      delete: "Delete"
+    messages:
+      confirmation: "Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User."
+    update: "Update"
+    create: "Create"
+    no_blank: "user name should not contain blanks"
+
+  phone: "Phone"
+  email: "Email"
+  organisation: "Organisation"
+  position: "Position"
+  location: "Location"
+  false: "false"
+  true: "true"
+  mandatory_field: "marked fields are mandatory"
+
+  role:
+    create: "Create Role"
+
+  record: "record"
+  description: "Description"
+  name: "Name"
+
+  permissions:
+    label: "Permissions"
+    group:
+      Reports: Reports
+      Devices: Devices
+      System: System
+      Roles: Roles
+      Children: Children
+      Forms: Forms
+      Users: Users
+
+  forms:
+    label: "Forms"
+    save: "Save Form"
+    save_details: "Save Details"
+    messages:
+      use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
+
+  form_section:
+    create: "Create New Form Section"
+    visibility: "Visibility"
+    ordering: "Ordering"
+    details: "Form details"
+    label: "Form Section"
+    back: "Back To Forms Page"
+    actions:
+      add_custom_field: "Add Custom Field"
+    messages:
+      order_saved: "Order is successfully saved."
+      cannot_create: "Form section could not be created"
+      correct_errors: "Please correct the following errors and resubmit:"
+
+  message:
+    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
+    cancel_confirmation: "Are you sure you want to cancel?"
+    warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+
+  visible: "Visible"
+  hidden: "Hidden"
+  help_text: "Help text"
+  cancel: "Cancel"
+  discard: "Discard"
+  form: "Form"
+  details: "Details"
+  enabled: "Enabled"
