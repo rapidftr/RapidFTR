@@ -23,4 +23,8 @@ namespace :deploy do
     template "couch_config.erb", File.join(current_path, "config", "couchdb.yml")
   end
 
+  desc "Create release version files"
+  task :setup_revision do
+    template "version.erb", File.join(current_path, "public", "version.txt")
+  end
 end
