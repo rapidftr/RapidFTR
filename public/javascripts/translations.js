@@ -1,0 +1,2 @@
+en:
+    confirmation: "Confirmed translate"

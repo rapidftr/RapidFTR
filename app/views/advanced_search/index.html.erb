@@ -59,50 +59,48 @@
       </p>
       {{/if}}
     </script>
-    <div class="help-text">Separate words by OR to search for more than one option eg. Tim OR Rahul</div>
+    <div class="help-text"><%= t("advanced_search.instruction") %></div>
     <div class="help-text">
-      Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.
-      Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.
-      Enter dates in both boxes to see records created between the dates.
+      <%= t("advanced_search.date_instruction") %>
     </div>
     <div class="criteria-list">
       <p>
-        <%= label_tag(:created_by_organisation_value, "Created Organisation :", :class=>"userlabels") %>
+        <%= label_tag(:created_by_organisation_value, t("advanced_search.created_by_org"), :class=>"userlabels") %>
         <%= text_field_tag(:created_by_organisation_value, params[:created_by_organisation_value]) %>
       </p>
 
       <p>
-        <%= label_tag(:created_by_label, "Created by(User) :", :class=>"userlabels") %>
+        <%= label_tag(:created_by_label, t("advanced_search.created_by"), :class=>"userlabels") %>
         <%= text_field_tag(:created_by_value, params[:created_by_value]) %>
       </p>
 
       <p>
-        <%= label_tag(:updated_by_label, "Updated by(User) :", :class=>"userlabels") %>
+        <%= label_tag(:updated_by_label, t("advanced_search.updated_by"), :class=>"userlabels") %>
         <%= text_field_tag(:updated_by_value, params[:updated_by_value]) %>
       </p>
 
       <p>
-        <%= label_tag(:created_at_label, "Date Created :", :class=>"userlabels") %>
-        <%= label_tag(:created_at_after_label, "After :", :class=>"sub_label") %>
+        <%= label_tag(:created_at_label, t("advanced_search.date_created"), :class=>"userlabels") %>
+        <%= label_tag(:created_at_after_label, t("advanced_search.after"), :class=>"sub_label") %>
         <%= text_field_tag(:created_at_after_value, params[:created_at_after_value], :size => 12, :class => "datepicker")%>
-        <%= label_tag(:created_at_before_label, "Before :", :class=>"sub_label") %>
+        <%= label_tag(:created_at_before_label, t("advanced_search.before"), :class=>"sub_label") %>
         <%= text_field_tag(:created_at_before_value,params[:created_at_before_value], :size => 12, :class => "datepicker")%>
       </p>
 
       <p>
-        <%= label_tag(:updated_at_label, "Date Updated :", :class=>"userlabels") %>
-        <%= label_tag(:updated_at_after_label, "After :", :class=>"sub_label") %>
+        <%= label_tag(:updated_at_label, t("advanced_search.date_updated"), :class=>"userlabels") %>
+        <%= label_tag(:updated_at_after_label, t("advanced_search.after"), :class=>"sub_label") %>
         <%= text_field_tag(:updated_at_after_value, params[:updated_at_after_value], :size => 12, :class => "datepicker")%>
-        <%= label_tag(:updated_at_before_label, "Before :", :class=>"sub_label") %>
+        <%= label_tag(:updated_at_before_label, t("advanced_search.before"), :class=>"sub_label") %>
         <%= text_field_tag(:updated_at_before_value,params[:updated_at_before_value], :size => 12, :class => "datepicker")%>
       </p>
 
       <%= @criteria_list.map{|criteria| generate_html(criteria, @all_fields)}.join("").html_safe %>
     </div>
 
-    <a class='add-criteria'>Select A Criteria</a>
+    <a class='add-criteria'><%= t("advanced_search.select_a_criteria") %></a>
 
-    <input type='submit' value='Search'/>
+    <button type="submit"><%= t("search") %></button>
   </form>
 
 
