@@ -47,7 +47,7 @@ load 'config/recipes/db'
 load 'config/recipes/sunspot'
 
 before 'deploy:update_code', 'deploy:create_release_dir'
-after  'deploy:update', 'deploy:setup_application', 'deploy:setup_nginx', 'deploy:setup_revision' 'db:migrate', 'sunspot:clean_start', 'deploy:restart'
+after  'deploy:update', 'deploy:setup_application', 'deploy:setup_nginx', 'deploy:setup_revision', 'db:migrate', 'sunspot:clean_start', 'deploy:restart'
 
 #use RAILS_ENV=<env> cap deploy:pending and cap deploy:pending:diff to find out the diff between the master and the
 #current deployed revision in the server.
