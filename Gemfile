@@ -25,6 +25,7 @@ gem 'cancan'
 gem 'capistrano'
 gem 'newrelic_rpm'
 gem 'will_paginate'
+gem "i18n-js"
 
 group :development, :assets do
   gem 'sass'
