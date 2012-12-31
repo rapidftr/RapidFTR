@@ -8,6 +8,29 @@ en:
     view_all_children: "View All Children"
     records_need_attention: "Records need Attention"
 
+  messages:
+    delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+    move_item_prefix: "You are about to move this field to another form section ("
+    move_item_suffix: "). Is this OK?"
+    enter_valid_date: "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
+    enter_valid_field_value: "Please enter a valid field value."
+    valid_search_criteria: "Please enter at least one search criteria"
+    show_hide_forms: "Please select form(s) you want to show/hide."
+    show_forms: "Are you sure you want to make these form(s) visible?"
+    hide_forms: "Are you sure you want to hide these form(s)?"
+    primary_photo_changed: "Primary photo changed."
+    select_photo: "Please select a photo."
+    are_you_sure: "Are you sure you want to "
+    this_user: " this user?"
+    keep_working: "Yes, Keep Working"
+    logoff: "No, Logoff"
+    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
+    cancel_confirmation: "Are you sure you want to cancel?"
+    logoff_warning_prefix: "You will be logged off in"
+    logoff_warning_suffix: "seconds."
+    logoff_confirmation: "Do you want to continue your session?"
+    warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+
   login:
     details: "Login details"
     username: "User Name"
@@ -59,6 +82,12 @@ en:
       name: "name"
     flag_summary: "Flag summary"
 
+    filer_by:
+      all: "All"
+      active: "Active"
+      reunited: "Reunited"
+      flagged: "Flagged"
+
   child:
     flagged_by: "Flagged By"
     last_updated: "Last updated"
@@ -84,6 +113,8 @@ en:
       reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
+      flag_prefix: "Record was flagged by"
+      unflag_prefix: "Record was unflagged by"
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"
@@ -116,9 +147,6 @@ en:
     next_label: "Next &#8594;"
     page_gap: "&hellip;"
 
-  imei: "IMEI"
-  blacklisted: "Blacklisted?"
-
   users:
     manage: "Manage Users"
     label: "Users"
@@ -126,6 +154,8 @@ en:
     actions:
       show_all: "Showing all"
       show: "Show"
+    messages:
+      disable: 'Are you sure you want to disable this user?'
     sort_by:
       label: "Sort by"
       full_name: "Full Name"
@@ -139,7 +169,7 @@ en:
     actions:
       show_all: "Showing all"
       show: "Show"
-
+      edit: "Edit"
   user:
     label: "user"
     full_name: "Full Name"
@@ -160,10 +190,26 @@ en:
   false: "false"
   true: "true"
   mandatory_field: "marked fields are mandatory"
+  add: "add"
+  belonging_to: "belonging to"
+  hello: "Hello"
+  imei: "IMEI"
+  blacklisted: "Blacklisted?"
+  visible: "Visible"
+  hidden: "Hidden"
+  help_text: "Help text"
+  cancel: "Cancel"
+  discard: "Discard"
+  form: "Form"
+  details: "Details"
+  enabled: "Enabled"
+  status: "Status"
+  devices: "Devices"
 
   role:
     create: "Create Role"
 
+    name: "Name"
   record: "record"
   description: "Description"
   name: "Name"
@@ -186,6 +232,7 @@ en:
     messages:
       use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
 
+    cannot_be_edited: "Fields on this form cannot be edited."
   form_section:
     create: "Create New Form Section"
     visibility: "Visibility"
@@ -195,24 +242,17 @@ en:
     back: "Back To Forms Page"
     actions:
       add_custom_field: "Add Custom Field"
+      save_order: "Save Order"
     messages:
       order_saved: "Order is successfully saved."
       cannot_create: "Form section could not be created"
       correct_errors: "Please correct the following errors and resubmit:"
 
+    hide: "Hide"
+    show: "Show"
   message:
-    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
-    cancel_confirmation: "Are you sure you want to cancel?"
-    warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
 
-  visible: "Visible"
-  hidden: "Hidden"
-  help_text: "Help text"
-  cancel: "Cancel"
-  discard: "Discard"
-  form: "Form"
-  details: "Details"
-  enabled: "Enabled"
+
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
@@ -224,9 +264,14 @@ en:
     created_by: "Created by(User) :"
     date_updated: "Date Updated :"
     select_a_criteria: "Select A Criteria"
+
   search: "Search"
   select_all: "Select all records"
   no_results_found: "No results found"
+  date_format: "yy-mm-dd"
+  yes_label: "Yes"
+  cancel: "Cancel"
+
   contact:
     message: "If you experience any problems with RapidFTR, or believe your password has been exposed, please contact the system administrator immediately."
     field:
@@ -238,3 +283,22 @@ en:
       location: "Location"
       other_information: "Other information"
     updated: "Contact information was successfully updated."
+    edit_info: "Edit Contact Information"
+    info_label: "Contact Information"
+  device:
+    blacklist: "Blacklist Device"
+    messages:
+      blacklist: "Do you want to add this device to blacklist?"
+      remove_blacklist: "Do you want to remove this device from blacklist?"
+      disable: 'Are you sure you want to disable this device?'
+    information: "Device Information"
+    mobile_number: "Mobile Number"
+    timestamp: "Timestamp"
+  admin:
+    contact_info: "Admin Contact Information"
+    highlight_fields: "Highlight Fields"
+  fields:
+    field_name: "Field Name"
+    form_name: "Form Name"
+    action: "Action"
+    remove: "remove"

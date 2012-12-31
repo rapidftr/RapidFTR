@@ -1,6 +1,8 @@
 var IdleSessionTimeout = {};
 
 IdleSessionTimeout.start = function() {
+    var keep_working = I18n.t("messages.keep_working")
+    var logoff = I18n.t("messages.logoff")
     $("#dialog").dialog({
         autoOpen: false,
         modal: true,
@@ -10,10 +12,10 @@ IdleSessionTimeout.start = function() {
         draggable: false,
         resizable: false,
         buttons: {
-            'Yes, Keep Working': function() {
+            keep_working: function() {
                 $(this).dialog('close');
             },
-            'No, Logoff': function() {
+            logoff: function() {
                 $.idleTimeout.options.onTimeout.call(this);
             }
         }

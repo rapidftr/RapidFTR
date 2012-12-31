@@ -19,16 +19,16 @@ module ApplicationHelper
     session.try(:user)
   end
 
-  def submit_button(name = 'Save')
+  def submit_button(name = t("buttons.save"))
       submit_tag(name, :class => 'btn_submit')
   end
 
   def cancel_button(path)
-      link_to t('cancel'), path, :confirm => t('message.cancel_confirmation'), :class => "link_cancel"
+      link_to t('cancel'), path, :confirm => t('messages.cancel_confirmation'), :class => "link_cancel"
   end
 
   def discard_button(path)
-      link_to t('discard'), path, :confirm => t('message.confirmation_message'), :class => 'link_discard'
+      link_to t('discard'), path, :confirm => t('messages.confirmation_message'), :class => 'link_discard'
   end
 
   def show_sidebar_links

@@ -1,15 +1,15 @@
-<h1 class="no_border">Users</h1>
+<h1 class="no_border"><%= t("users.label") %></h1>
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li class="current"><%= link_to "Users", users_path %></li>
-      <li><%= link_to "Roles", roles_path %></li>
+      <li class="current"><%= link_to t("users.label"), users_path %></li>
+      <li><%= link_to I18n.t("roles.label"), roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to 'Users', users_path %> &gt; <%= @user.user_name %>
+    <h2><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %>
       <% if can? :edit, User %>
-          <%= link_to '(Edit)', edit_user_path(@user), :class => 'edit_crumb'%>
+          <%= link_to '('+I18n.t("buttons.edit")+')', edit_user_path(@user), :class => 'edit_crumb'%>
       <% end %>
     </h2>
 
@@ -17,7 +17,7 @@
 
     <fieldset>
       <p>
-        <label class="key">Name:</label>
+        <label class="key"><%= t("name") %>:</label>
         <%= h @user.full_name %>
       </p>
 
@@ -27,42 +27,42 @@
       </p>
 
       <p>
-        <label class="key">Permissions:</label>
+        <label class="key"><%= t("permissions.label") %></label>
         <%= @user.roles.map(&:name).join(",") %>
       </p>
 
       <p>
-        <label class="key">Phone number:</label>
+        <label class="key"><%= t("contact.field.phone") %>:</label>
         <%= h @user.phone %>
       </p>
 
       <p>
-        <label class="key">Email Address:</label>
+        <label class="key"><%= t("email") %>:</label>
         <%= h @user.email %>
       </p>
 
       <p>
-        <label class="key">Organisation:</label>
+        <label class="key"><%= t("organisation") %>:</label>
         <%= h @user.organisation %>
       </p>
 
       <p>
-        <label class="key">Position:</label>
+        <label class="key"><%= t("position") %>:</label>
         <%= h @user.position %>
       </p>
 
       <p>
-        <label class="key">Location:</label>
+        <label class="key"><%= t("location") %>:</label>
         <%= h @user.location %>
       </p>
 
       <p>
-        <label class="key">Status:</label>
-        <%= h @user.disabled=="true" ? "Disabled" : "Enabled" %>
+        <label class="key"><%= t("status") %>:</label>
+        <%= h @user.disabled=="true" ? t("user.disabled") : t("enabled") %>
       </p>
 
       <p>
-        <label>Devices:</label><br/>
+        <label><%= t("devices") %>:</label><br/>
         <% @user.devices.each do |device| %>
             <% if device.blacklisted? %>
                 <span class='device-blacklisted'><%= device.imei %> (blacklisted)</span><br/>

@@ -69,7 +69,7 @@
                   <% end %>
                 </td>
                 <td>
-                  <span class="enabledStatus"><%= field.enabled? ? "Visible" : "Hidden" %></span>
+                  <span class="enabledStatus"><%= field.enabled? ? I18n.t("visible") : I18n.t("hidden") %></span>
                 </td>
               <% end %>
               <td class='breakword'><%= field.display_name %></td>
@@ -103,7 +103,7 @@
                   <% if field.editable? %>
                     <%= link_to t("buttons.edit"), edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
                     <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id),
-                       :warning=>I18n.t("message.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}"%>
+                       :warning=>I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}"%>
                                                                        
                   <% end %>
                 </td>
@@ -117,7 +117,7 @@
             <% if @form_section.editable? %>
               <th colspan=6><%= link_to t("form_section.actions.add_custom_field"), choose_field_path(@form_section.unique_id) %></th>
             <% else %>
-              <th colspan=6><i>Fields on this form cannot be edited.</i></th>
+              <th colspan=6><i><%= I18n.t("forms.cannot_be_edited") %></i></th>
             <% end %>
           </tr>
         </tfoot>
@@ -125,9 +125,9 @@
 
       <% if @form_section.editable? %>
         <div class="formSectionButtons">
-          <%= submit_tag "Hide", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to hide fields?')"} %>
-          <%= submit_tag "Show", {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to show fields?')"} %>
-          <input type="button" name="SaveFieldOrder" value="Save Order" id="save_field_order"/>
+          <%= submit_tag I18n.t("form_section.hide") , {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to hide fields?')"} %>
+          <%= submit_tag I18n.t("form_section.show"), {:name => "toggle_fields", :onclick => "return confirm('Are you sure you want to show fields?')"} %>
+          <input type="button" name="SaveFieldOrder" value="<%= I18n.t("form_section.actions.save_order")%>" id="save_field_order"/>
         </div>
       <% end %>
     <% end %>

@@ -150,23 +150,23 @@
 		var result = "";
 
 		if (!createdAtIsValid()) {
-			result="Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
+			result=I18n.t("messages.enter_valid_date")
 		}
 	
 		if (!updatedAtIsValid()) {
-			result="Please enter a valid 'After' and/or 'Before' Date Updated (format yyyy-mm-dd)."
-		}
+            result=I18n.t("messages.enter_valid_date")
+        }
 
 		$('.criteria-list .criteria-value-text').each(function(){
-			if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+			if($(this).val() == "") { result = I18n.t("messages.enter_valid_field_value"); }
 		});
 		$('.criteria-list .criteria-value-select').each(function(){
-			if($(this).val() == "") { result = 'Please enter a valid field value.'; }
+			if($(this).val() == "") { result = I18n.t("messages.enter_valid_field_value"); }
 		});
 
 		if ((result == "") && ($('.criteria-list .criteria-value-text').length == 0) && ($('.criteria-list .criteria-value-select').length == 0)) {
 			if (createdByIsEmpty() && createdByOrganisationIsEmpty() && updatedByIsEmpty() && createdAtIsEmpty() && updatedAtIsEmpty()) {
-				result = "Please enter at least one search criteria";
+				result = I18n.t("messages.valid_search_criteria");
 			}
 		}
 		return result;
@@ -189,5 +189,5 @@
 })(jQuery);
 
 $(function(){
-	$('.datepicker').each(function(){$(this).datepicker({ dateFormat: "yy-mm-dd" })})
+	$('.datepicker').each(function(){$(this).datepicker({ dateFormat: I18n.t("date_format") })})
 })

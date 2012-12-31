@@ -7,7 +7,7 @@
 
 <form class="filter_bar">
     <div class="show_count"> <%= t("users.actions.show_all") %> <%= pluralize(@users.length, t("user.label")) %> </div>
-    <div class="float_left"> <%= t("users.actions.show") %>: <%= select_tag :filter, options_for_select([["Active","active"],[ "All", "all" ]], params[:filter]), { :onchange => "this.form.submit();"} %> </div>
+    <div class="float_left"> <%= t("users.actions.show") %>: <%= select_tag :filter, options_for_select([[t("children.filer_by.active"),"active"],[ t("children.filer_by.all"), "all" ]], params[:filter]), { :onchange => "this.form.submit();"} %> </div>
     <div class="float_left"> <%= t("users.sort_by.label") %>:  <%= select_tag :sort, options_for_select([[t("users.sort_by.full_name"),"full_name"],[ t("login.username"), "user_name"]], params[:sort]), { :onchange => "this.form.submit();"} %> </div>
 </form>
 <table id="users" class="list_table">

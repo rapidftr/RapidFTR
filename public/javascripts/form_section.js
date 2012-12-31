@@ -67,7 +67,7 @@ function deleteItem() {
     var td = $(this).parents("td");
     var fieldName = td.find("input[name=field_name]").val();
     $('#deleteFieldName').val(fieldName);
-    if (confirm("Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field.")) {
+    if (confirm(I18n.t("messages.delete_item"))) {
         $('#deleteSubmit').click();
     }
 }
@@ -128,7 +128,7 @@ function saveFieldLocation(event) {
     var selection = this.options[this.selectedIndex].text;
     var formId = $('#sectionId').html();
 
-    var message = confirm("You are about to move this field to another form section (" + selection + "). Is this OK?");
+    var message = confirm(I18n.t("messages.move_item_prefix") + selection + I18n.t("messages.move_item_suffix"));
 
     if (message) {
         $.ajax({

@@ -69,9 +69,9 @@
 
 <!-- idle dialog window markup -->
 <div id="dialog" title="Your session is about to expire!">
-  <p>You will be logged off in <span id="dialog-countdown"></span> seconds.</p>
+  <p> <%= t('messages.logoff_warning_prefix') %> <span id="dialog-countdown"></span> <%= t("messages.logoff_warning_suffix") %>seconds.</p>
 
-  <p>Do you want to continue your session?</p>
+  <p><%= t("messages.logoff_confirmation") %></p>
 </div>
 
 </body>

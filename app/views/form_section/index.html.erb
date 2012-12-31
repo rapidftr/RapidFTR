@@ -74,9 +74,9 @@
 </tbody>
 </table>
 <div class="formSectionButtons">
-  <input type="submit" name="Enable" value="Show" id="enable_form" class="btn"/>
-  <input type="submit" name="Disable" value="Hide" id="disable_form" class="btn"/>
-  <input type="button" name="SaveOrder" value="Save Order" id="save_order" class="btn" />
+  <input type="submit" name="Enable" value="<%= t("form_section.show") %>" id="enable_form" class="btn"/>
+  <input type="submit" name="Disable" value="<%= t("form_section.hide") %>" id="disable_form" class="btn"/>
+  <input type="button" name="SaveOrder" value="<%= t("form_section.actions.save_order") %>" id="save_order" class="btn" />
 </div>
 <div class="backLink">
   <%= link_with_confirm t("buttons.back"), admin_path() %>
