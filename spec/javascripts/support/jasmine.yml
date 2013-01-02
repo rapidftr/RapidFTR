@@ -21,6 +21,9 @@ src_files:
   - public/javascripts/plugins/backbone.js
   - public/javascripts/manage_photos.js
   - public/javascripts/manage_users.js
+  - public/javascripts/i18n.js
+  - public/javascripts/translations.js
+
 #  - public/javascripts/**/*.js
 
 # stylesheets

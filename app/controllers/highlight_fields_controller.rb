@@ -3,7 +3,7 @@ class HighlightFieldsController < ApplicationController
   before_filter { authorize! :highlight, Field }
   
   def index
-    @page_name = "Highlight fields"
+    @page_name = I18n.t("admin.highlight_fields")
     @forms = FormSection.all
     @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
       { :field_name => field.name, 

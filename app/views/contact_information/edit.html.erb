@@ -1,4 +1,4 @@
-<h1>Contact Information</h1>
+<h1><%= I18n.t("contact.info_label") %></h1>
 
 <div class="page-content-new">
   <div class="side-tab-content full_width">
@@ -6,38 +6,38 @@
       <fieldset>
 
         <p>
-          <%= f.label :name, "Name", :class => "key" %>
+          <%= f.label :name, t("contact.field.name"), :class => "key" %>
           <%= f.text_field :name %>
         </p>
         <p>
-          <%= f.label :organization, "Organization", :class => "key" %>
+          <%= f.label :organization, t("contact.field.organisation"), :class => "key" %>
           <%= f.text_field :organization %>
         </p>
         <p>
-          <%= f.label :position, "Position", :class => "key" %>
+          <%= f.label :position, t("contact.field.position"), :class => "key" %>
           <%= f.text_field :position %>
         </p>
         <p>
-          <%= f.label :phone, "Phone", :class => "key" %>
+          <%= f.label :phone, t("contact.field.phone"), :class => "key" %>
           <%= f.text_field:phone %>
         </p>
         <p>
-          <%= f.label :email, "Email", :class => "key" %>
+          <%= f.label :email, t("contact.field.email"), :class => "key" %>
           <%= f.text_field :email %>
         </p>
         <p>
-          <%= f.label :location, "Location", :class => "key" %>
+          <%= f.label :location, t("contact.field.location"), :class => "key" %>
           <%= f.text_area :location %>
         </p>
         <p>
-          <%= f.label :other_information, "Other information", :class => "key" %>
+          <%= f.label :other_information, t("contact.field.other_information"), :class => "key" %>
           <%= f.text_area :other_information %>
         </p>
       </fieldset>
 
       <div class="btn_panel">
-        <%= link_to "Back", admin_path %>
-        <%= submit_button("Save") %>
+        <%= link_to t("buttons.back"), admin_path %>
+        <%= submit_button(t("buttons.save")) %>
       </div>
     <% end %>
   </div>

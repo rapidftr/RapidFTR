@@ -13,7 +13,7 @@ class FieldsController < ApplicationController
     @body_class = 'forms-page'
     @suggested_fields = SuggestedField.all_unused
     @field = Field.new(:type => params[:type])
-    @page_name = "New #{@field.type.humanize}"
+    @page_name = t("new")+" #{@field.type.humanize}"
     render params[:fieldtype]
   end
 

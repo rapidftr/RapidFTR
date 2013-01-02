@@ -1,13 +1,13 @@
-<h1 class="no_border">Users</h1>
+<h1 class="no_border"><%= t("users.manage") %></h1>
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li class="current"><%= link_to "Users", users_path %></li>
-      <li><%= link_to "Roles", roles_path %></li>
+      <li class="current"><%= link_to I18n.t("users.label"), users_path %></li>
+      <li><%= link_to I18n.t("roles.label"), roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to 'Users', users_path %> &gt; <%= @user.user_name %></h2>
+    <h2><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %></h2>
     <%= render :partial => "editable_user", :object => @user %>
     <%= render :partial => "mobile_login_history", :object => @user %>
   </div>

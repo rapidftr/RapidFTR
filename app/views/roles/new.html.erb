@@ -2,34 +2,34 @@
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li><%= link_to "Users", users_path %></li>
-      <li class="current"><%= link_to "Roles", roles_path %></li>
+      <li><%= link_to t("users.label"), users_path %></li>
+      <li class="current"><%= link_to t("roles.label"), roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to "List of Roles", roles_path %> &gt; Create a Role</h2>
-    <div class="mandate_panel"><span>*</span> marked fields are mandatory</div>
+    <h2><%= link_to t("roles.list"), roles_path %> &gt; Create a Role</h2>
+    <div class="mandate_panel"><span>*</span> <%= t("mandatory_field") %></div>
     <div class="clearfix"></div>
     <%= form_for @role, :html => {:class => ''} do |f| %>
         <%= error_messages_for :role %>
         <fieldset>
           <p>
-            <%= f.label :name, 'Name <span class="required">*</span>'.html_safe, :class=>'key'  %>
+            <%= f.label :name, '<span class="required">*</span>'.html_safe + t("name"), :class=>'key'  %>
             <%= f.text_field :name %>
           </p>
           <p>
-            <%= f.label :description, :class=>'key'  %>
+            <%= f.label :description,t("description"), :class=>'key'  %>
             <%= f.text_area :description %>
           </p>
           <p>
-            <%= f.label :permissions, 'Permissions <span class="required">*</span>'.html_safe, :class=>'key'  %>
+            <%= f.label :permissions, '<span class="required">*</span>'.html_safe+t("permissions.label"), :class=>'key'  %>
             <span class="value">
                 <% Permission.all.each do |group_name, permissions| %>
                     <span class="section">
                     <span class="title"><%= group_name %></span>
                     <% permissions.values.each do |permission| %>
                         <label><%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
-                        <%= permission %></label>
+                        <%= t("permissions."+permission.dehumanize) %></label>
                     <% end %>
                     </span>
                 <% end %>
@@ -37,7 +37,7 @@
           </p>
           <div class="btn_panel">
             <%= cancel_button(roles_path) %>
-            <%= submit_button('Save') %>
+            <%= submit_button(t("buttons.save")) %>
           </div>
         </fieldset>
     <% end %>

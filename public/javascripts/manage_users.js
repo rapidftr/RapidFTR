@@ -64,7 +64,7 @@ ManageUsers.init = function () {
       $('#modal-dialog').dialog('option', {
         newStatus: nextStatus,
         userName : userName,
-        title    : "Are you sure you want to " + displayStatus + " this user?"
+        title    : I18n.t("messages.are_you_sure") + displayStatus + I18n.t("messages.this_user")
       });
       $('#modal-dialog').dialog("open");
     },

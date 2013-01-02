@@ -22,14 +22,14 @@ class UsersController < ApplicationController
 
   def new
     authorize! :create, User
-    @page_name = 'New User'
+    @page_name = t("user.new")
     @user = User.new
     @roles = Role.all
   end
 
   def edit
     authorize! :update, @user
-    @page_name = "Account: #{@user.full_name}"
+    @page_name = t("account")+": #{@user.full_name}"
     @roles = Role.all
   end
 
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save
-      flash[:notice] = 'User was successfully created.'
+      flash[:notice] = t("user.messages.created")
       redirect_to(@user)
     else
       @roles = Role.all
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
       if request.xhr?
         render :text => "OK"
       else
-        flash[:notice] = 'User was successfully updated.'
+        flash[:notice] = t("user.messages.updated")
         redirect_to(@user)
       end
     else
@@ -73,7 +73,7 @@ class UsersController < ApplicationController
   def load_user
     @user = User.get(params[:id])
     if @user.nil?
-      flash[:error] = "User with the given id is not found"
+      flash[:error] = t("user.messages.not_found")
       redirect_to :action => :index and return
     end
   end

@@ -1,4 +1,4 @@
-<h1><%= link_to "Children", children_path %> &gt; Register New Child</h1>
+<h1><%= link_to t("children.label"), children_path %> &gt; <%= t("children.register_new_child") %></h1>
 
 <%= form_tag children_path, :multipart => true do %>
     <div class="page-content-new">

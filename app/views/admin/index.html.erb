@@ -1,9 +1,9 @@
-<h1>System Settings</h1>
+<h1><%= t("header.system_settings") %></h1>
 
   <% if can? :manage, ContactInformation %>
-    <br /><p><%= link_to 'Admin Contact Information', edit_contact_information_path(:administrator) %></p>
+    <br /><p><%= link_to t("admin.contact_info"), edit_contact_information_path(:administrator) %></p>
   <% end %>
 
   <% if can? :highlight, Field %>
-    <br /><p><%= link_to 'Highlight Fields', highlight_fields_path %></p>
+    <br /><p><%= link_to t("admin.highlight_fields"), highlight_fields_path %></p>
   <% end %>

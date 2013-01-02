@@ -2,19 +2,19 @@
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li><%= link_to "Users", users_path %></li>
-      <li class="current"><%= link_to "Roles", roles_path %></li>
+      <li><%= link_to t("users.label"), users_path %></li>
+      <li class="current"><%= link_to t("roles.label"), roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
     <% if can? :update, @role %>
       <a class="btn" href="<%= edit_role_path @role %>">
-        <span class="edit">Edit</span>
+        <span class="edit"><%= t("buttons.edit") %></span>
       </a>
     <% end %>
 
     <h2>
-      <%= link_to "List of Roles", roles_path %> &gt; View Role (<%= @role.name %>)
+      <%= link_to t("roles.list"), roles_path %> &gt; View Role (<%= @role.name %>)
     </h2>
 
     <div class="clearfix"></div>
@@ -23,15 +23,15 @@
         <%= error_messages_for :role %>
         <fieldset>
           <p>
-            <%= f.label :name, 'Name '.html_safe, :class=>'key'  %>
+            <%= f.label :name, t("name"), :class=>'key'  %>
             <span class="value"><%= @role.name %></span>
           </p>
           <p>
-            <%= f.label :description, :class=>'key'  %>
+            <%= f.label :description, t("description"), :class=>'key'  %>
             <%= @role.description %>
           </p>
           <p>
-            <%= f.label :permissions, 'Permissions'.html_safe, :class=>'key'  %>
+            <%= f.label :permissions, t("permissions.label"), :class=>'key'  %>
             <span class="value">
                 <% Permission.all.each do |group_name, permissions| %>
                     <span class="section">

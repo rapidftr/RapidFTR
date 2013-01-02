@@ -5,7 +5,7 @@ class AdminController < ApplicationController
   }
 
   def index
-    @page_name = "Administration"
+    @page_name = t("administration")
   end
 
 end

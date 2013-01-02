@@ -1,30 +1,30 @@
 <h1 class="no_border">Forms</h1>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
-<div>We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier.</div>
+<div><%= t("forms.messages.use_existing") %></div>
 
 <%= error_messages_for  :form_section,
                         :header_tag => :h3,
-                        :header_message => "Form section could not be created",
-                        :message => 'Please correct the following errors and resubmit:' %>
+                        :header_message => t("form_section.messages.cannot_create"),
+                        :message => t('form_section.messages.correct_errors') %>
 
 <%= form_for @form_section, :url => formsections_path, :html => {:method => :post, :class => ""}  do |f| %>
   <fieldset>
-    <h3>Form details</h3>
+    <h3><%= t("form_section.details") %></h3>
     <p>
-      <%= f.label :name, :class=>'key' %>
+      <%= f.label :name, t("name"), :class=>'key' %>
       <%= f.text_field :name %>
     </p>
     <p>
-      <%= f.label :description, :class=>'key' %>
+      <%= f.label :description, t("description"), :class=>'key' %>
       <%= f.text_field :description %>
     </p>
     <p>
-      <%= f.label :help_text, :class=>'key' %>
+      <%= f.label :help_text, t("help_text"), :class=>'key' %>
       <%= f.text_field :help_text %>
     </p>
     <p class="checkbox">
-      <%= f.label :enabled, "Visible", :class=>'key' %>
+      <%= f.label :enabled, t("visible"), :class=>'key' %>
       <%= f.check_box :enabled, {:checked => true}, :true, :false %>
 
     </p>
@@ -32,7 +32,7 @@
   <br />
   <div class="btn_panel">
     <%= cancel_button formsections_path %>
-    <%= submit_button 'Save Form' %>
+    <%= submit_button t("forms.save") %>
   </div>
 <% end %>
       </div>

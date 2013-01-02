@@ -1,6 +1,9 @@
 var IdleSessionTimeout = {};
 
 IdleSessionTimeout.start = function() {
+    var dialog_buttons = {};
+    dialog_buttons[I18n.t("keep_working")] = function () {$(this).dialog('close');};
+    dialog_buttons[I18n.t("cancel")] = function () {$.idleTimeout.options.onTimeout.call(this);};
     $("#dialog").dialog({
         autoOpen: false,
         modal: true,
@@ -9,14 +12,7 @@ IdleSessionTimeout.start = function() {
         closeOnEscape: false,
         draggable: false,
         resizable: false,
-        buttons: {
-            'Yes, Keep Working': function() {
-                $(this).dialog('close');
-            },
-            'No, Logoff': function() {
-                $.idleTimeout.options.onTimeout.call(this);
-            }
-        }
+        buttons: dialog_buttons
     });
 
     $.idleTimeout('#dialog', 'div.ui-dialog-buttonpane button:first', {

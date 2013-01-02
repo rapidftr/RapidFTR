@@ -18,6 +18,8 @@ javascripts:
     - public/javascripts/plugins/jquery.jplayer.min.js
     - public/javascripts/plugins/jquery.rotate.1-1.js
     - public/javascripts/plugins/vtip-min.js
+    - public/javascripts/i18n.js
+    - public/javascripts/translations.js
     - public/javascripts/application.js
     - public/javascripts/jquery_plugin.js
     - public/javascripts/advanced_search.js

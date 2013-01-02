@@ -3,7 +3,7 @@ class ContactInformationController < ApplicationController
   
   # GET /contact_information/Administrator  
   def show
-    @page_name = "Contact & Help"
+    @page_name = I18n.t("header.contact")
     @contact_information = ContactInformation.get_by_id(params[:id])
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class ContactInformationController < ApplicationController
 
   # GET /contact_information/Administrator/edit
   def edit
-    @page_name = "Edit Contact Information"
+    @page_name =I18n.t("contact.edit_info")
     @contact_information = ContactInformation.get_or_create(params[:id])
     authorize! :edit, @contact_information
   end
@@ -25,7 +25,7 @@ class ContactInformationController < ApplicationController
     
     @contact_information.update_attributes(params[:contact_information])  
     @contact_information.save!
-    flash[:notice] = 'Contact information was successfully updated.'
+    flash[:notice] = I18n.t("contact.updated")
     redirect_to edit_contact_information_path(params[:id]) 
   end
 end

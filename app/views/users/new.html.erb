@@ -1,13 +1,13 @@
-<h1 class="no_border">Users</h1>
+<h1 class="no_border"><%= t("users.label") %></h1>
 <div class="page-content-new">
   <div class="side-tab">
     <ul>
-      <li class="current"><%= link_to "Users", users_path %></li>
-      <li><%= link_to "Roles", roles_path %></li>
+      <li class="current"><%= link_to t("users.label"), users_path %></li>
+      <li><%= link_to t("roles.label"), roles_path %></li>
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to 'Users', users_path %>&gt; Create User</h2>
+    <h2><%= link_to t("users.label"), users_path %>&gt; <%= t("users.create") %></h2>
     <%= render :partial => "editable_user", :object => @user %>
   </div>
 </div>
