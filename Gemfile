@@ -25,14 +25,13 @@ gem 'cancan'
 gem 'capistrano'
 gem 'newrelic_rpm'
 gem 'will_paginate'
+gem "i18n-js"
 
 group :development, :assets do
   gem 'sass'
 end
 
 group :assets do
-  gem 'execjs'
-  gem 'therubyracer', '0.10.2'
   gem 'compass-rails'
   gem 'uglifier'
   gem 'jammit'
@@ -63,6 +62,5 @@ group :test, :cucumber do
   gem 'selenium-webdriver', '2.27.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
-  gem 'pry'
   gem 'rcov', :platforms => :ruby_18
 end

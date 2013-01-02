@@ -1,4 +1,4 @@
-<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+<h1 class="float_left no_border"><%= link_to t("children.label"), children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
 
 <%= render :partial => "show_child_toolbar", :locals => { :child => @child } %>
 

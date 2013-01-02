@@ -1,8 +1,8 @@
 <tr>
-  <th>Full Name</th>
-  <th>User Name</th>
+  <th><%= t("user.full_name") %></th>
+  <th><%= t("login.username") %></th>
   <% if can?(:disable, User) %>
-    <th>Disabled?</th>
+    <th><%= t("disabled") %></th>
   <% end %>
   <% if can? :show, User %>
     <th></th>

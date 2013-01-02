@@ -23,4 +23,14 @@ namespace :deploy do
     template "couch_config.erb", File.join(current_path, "config", "couchdb.yml")
   end
 
+  desc "Create release version files"
+  task :setup_revision do
+    #TODO Refactor this part!
+    if fetch(:branch) == "release1"
+      set(:app_version, "1.0")
+    else
+      set(:app_version, "1.1-development")
+    end
+    template "version.erb", File.join(current_path, "public", "version.txt")
+  end
 end

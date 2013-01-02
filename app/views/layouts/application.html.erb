@@ -10,7 +10,13 @@
   <%= include_javascripts :common %>
   <%= csrf_meta_tag %>
   <%= yield :javascript %>
-
+  <%= javascript_include_tag "i18n" %>
+  <%= javascript_include_tag "translations" %>
+  <%= javascript_tag do %>
+      I18n.defaultLocale = "<%= I18n.default_locale %>";
+      I18n.locale = "<%= I18n.locale %>";
+      I18n.fallbacks = true;
+  <% end %>
 </head>
 <body class="<%= @body_class %>">
 <div class="page_container">
@@ -22,20 +28,20 @@
     <% if logged_in? %>
     <nav>
       <ul>
-        <li><%= link_to 'CHILDREN', children_path %></li>
+        <li><%= link_to t("navigation.children"), children_path %></li>
         <% if current_user_name==nil or can? :manage, FormSection %>
-            <li><%= link_to 'FORMS', formsections_path %></li>
+            <li><%= link_to t("navigation.forms"), formsections_path %></li>
         <% end %>
-        <li><%= link_to 'USERS', users_path %></li>
-        <li><%= link_to 'DEVICES', devices_path %></li>
-        <li><a href="#">REPORTS</a></li>
+        <li><%= link_to t("navigation.users"), users_path %></li>
+        <li><%= link_to t("navigation.devices"), devices_path %></li>
+        <li><a href="#"><%= t("navigation.reports") %></a></li>
       </ul>
     </nav>
     <%= form_tag search_children_path, :method => :get, :id => "search_form" do %>
         <div class="search">
-          <%= link_to 'Advanced Search', new_advanced_search_path %>
+          <%= link_to t("navigation.advanced_search"), new_advanced_search_path %>
           <%= text_field_tag 'query', params[:query] %>
-          <%= submit_tag "Go", :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();" %>
+          <%= submit_tag t("navigation.go"), :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();" %>
         </div>
     <%- end %>
     <% end %>
@@ -62,10 +68,10 @@
 </div>
 
 <!-- idle dialog window markup -->
-<div id="dialog" title="Your session is about to expire!">
-  <p>You will be logged off in <span id="dialog-countdown"></span> seconds.</p>
+<div id="dialog" title="<%= t("session_expire") %>">
+  <p> <%= t('messages.logoff_warning_prefix') %> <span id="dialog-countdown"></span> <%= t("messages.logoff_warning_suffix") %></p>
 
-  <p>Do you want to continue your session?</p>
+  <p><%= t("messages.logoff_confirmation") %></p>
 </div>
 
 </body>
