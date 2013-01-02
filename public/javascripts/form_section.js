@@ -128,7 +128,7 @@ function saveFieldLocation(event) {
     var selection = this.options[this.selectedIndex].text;
     var formId = $('#sectionId').html();
 
-    var message = confirm(I18n.t("messages.move_item_prefix") + selection + I18n.t("messages.move_item_suffix"));
+    var message = confirm(I18n.t("messages.move_item", {selection_key: selection}));
 
     if (message) {
         $.ajax({
