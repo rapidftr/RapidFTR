@@ -9,7 +9,7 @@ class ChildrenController < ApplicationController
   def index
     authorize! :index, Child
 
-    @page_name = "View All Children"
+    @page_name = t("home.view_all_children")
     @aside = 'shared/sidebar_links'
 
     status = params[:filter] || params[:status] || "all"
@@ -39,7 +39,7 @@ class ChildrenController < ApplicationController
   def show
     authorize! :read, @child
     @form_sections = get_form_sections
-    @page_name = "View Child: #{@child}"
+    @page_name = t("child.view")+": #{@child}"
     @aside = 'picture'
     @body_class = 'profile-page'
     @duplicates = Child.duplicates_of(params[:id])
@@ -68,7 +68,7 @@ class ChildrenController < ApplicationController
   def new
     authorize! :create, Child
 
-    @page_name = "Register New Child"
+    @page_name = t("children.register_new_child")
     @child = Child.new
     @form_sections = get_form_sections
     respond_to do |format|
@@ -81,7 +81,7 @@ class ChildrenController < ApplicationController
   def edit
     authorize! :update, @child
 
-    @page_name = "Edit Child"
+    @page_name = t("child.edit")
     @form_sections = get_form_sections
   end
 
@@ -147,7 +147,7 @@ class ChildrenController < ApplicationController
   def edit_photo
     authorize! :update, @child
 
-    @page_name = "Edit Photo"
+    @page_name = t("child.edit_photo")
   end
 
   def update_photo
@@ -195,7 +195,7 @@ class ChildrenController < ApplicationController
   def search
     authorize! :index, Child
 
-    @page_name = "Search"
+    @page_name = t("search")
     @aside = "shared/sidebar_links"
     if (params[:query])
       @search = Search.new(params[:query])
