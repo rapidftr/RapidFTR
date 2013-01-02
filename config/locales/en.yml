@@ -78,10 +78,11 @@ en:
       active: "Active"
       reunited: "Reunited"
       flagged: "Flagged"
+      created: "Created"
     order_by:
-      most_recently: "most recently"
+      most_recently: "Most recently"
       label: "Order by"
-      name: "name"
+      name: "Name"
     flag_summary: "Flag summary"
 
     filer_by:
