@@ -168,6 +168,8 @@ en:
     list: "List of Roles"
     sort_by:
       label: "Sort by"
+      ascending: "Ascending"
+      descending: "Descending"
     name: "Role Name"
     actions:
       show_all: "Showing all"
