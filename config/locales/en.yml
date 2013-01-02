@@ -302,3 +302,4 @@ en:
     form_name: "Form Name"
     action: "Action"
     remove: "remove"
+  session_expire: "Your session is about to expire!"
