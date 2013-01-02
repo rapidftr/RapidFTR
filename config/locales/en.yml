@@ -8,6 +8,7 @@ en:
     view_all_children: "View All Children"
     records_need_attention: "Records need Attention"
 
+    label: "Home"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item_prefix: "You are about to move this field to another form section ("
@@ -39,6 +40,7 @@ en:
       reset: "Request Password Reset"
       re_enter: "Re-enter password"
 
+    label: "Login"
   header:
     contact: "Contact & Help"
     welcome: "Welcome"
@@ -181,10 +183,14 @@ en:
       delete: "Delete"
     messages:
       confirmation: "Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User."
+      created: "User was successfully created."
+      updated: "User was successfully updated."
+      not_found: "User with the given id is not found"
     update: "Update"
     create: "Create"
     no_blank: "user name should not contain blanks"
 
+    new: "New User"
   phone: "Phone"
   email: "Email"
   organisation: "Organisation"
@@ -251,8 +257,11 @@ en:
       cannot_create: "Form section could not be created"
       correct_errors: "Please correct the following errors and resubmit:"
 
+      updated: "Form section successfully added"
     hide: "Hide"
     show: "Show"
+    manage: "Manage Form Sections"
+    edit: "Edit Form Sections"
   message:
 
 
@@ -307,3 +316,7 @@ en:
     remove: "remove"
   session_expire: "Your session is about to expire!"
   administration: "Administration"
+  new: "New"
+  saved: "Saved"
+  history_of: "History of"
+  account: "Account"

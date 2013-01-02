@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
 
     @session = Session.new(params[:login])
 
-    @page_name = "Login"
+    @page_name = t("login.label")
 
     respond_to do |format|
       format.html # new.html.erb
