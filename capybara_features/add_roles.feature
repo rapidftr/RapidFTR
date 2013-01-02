@@ -28,3 +28,26 @@ Feature: Add new role
     Then I should see the following roles
     | name           | description    | permissions |
     | Can Edit Child | can edit child | edit_child  |
+
+  @javascript
+  @roles
+  Scenario: Sorting by Ascending Order
+    Given I am logged in as a user with "Admin" permission
+    When I try to filter user roles sorted by "Ascending"
+    Then I should see the following roles sorted:
+      |name         |
+      |Admin        |
+      |Field Admin  |
+      |Field Worker |
+
+  @javascript
+  @roles
+  Scenario: Sorting by Descending Order
+    Given I am logged in as a user with "Admin" permission
+    When I try to filter user roles sorted by "Descending"
+    Then I should see the following roles sorted:
+      |name         |
+      |Field Worker |
+      |Field Admin  |
+      |Admin        |
+      

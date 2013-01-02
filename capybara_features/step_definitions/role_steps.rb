@@ -30,7 +30,29 @@ Then /^I should see message "([^"]*)"$/ do |error_message|
 end
 
 When /^I try to filter user roles by permission "([^"]*)"$/ do |permission|
-  click_link('USERS')
-  click_link('Roles')
+  go_to_roles_page
   select(permission, :from => 'show')
 end
+
+When /^I try to filter user roles sorted by "(.*?)"$/ do |order|
+  go_to_roles_page
+  select(order, :from => 'sort_by_descending_order')
+end
+
+Then /^I should see the following roles sorted:$/ do |table|
+  expected_order = table.hashes.collect { |role| role['name'] }
+  actual_order_against(expected_order).should == expected_order
+end
+
+private
+  def go_to_roles_page
+    click_link('USERS')
+    click_link('Roles')
+  end
+
+  def actual_order_against(expected_order)
+    list = page.all(:xpath, "//td[@class='role_name']").collect(&:text)
+    actual_order = []
+    list.each { |item| actual_order << item if expected_order.include?(item) }
+    actual_order
+  end
