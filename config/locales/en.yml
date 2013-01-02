@@ -138,6 +138,9 @@ en:
     edit_photo: "Edit photo"
     manage_photos: "Manage photos"
 
+    view: "View Children"
+    edit: "Edit Child"
+    mark_as_duplicate_with_param: "Mark %{child_name} as Duplicate"
   preposition:
     on_label: "on"
     because: "Because"
@@ -303,3 +306,4 @@ en:
     action: "Action"
     remove: "remove"
   session_expire: "Your session is about to expire!"
+  administration: "Administration"

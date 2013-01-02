@@ -3,7 +3,7 @@ class AdvancedSearchController < ApplicationController
   def new
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
-    @page_name = "Advanced Search"
+    @page_name = t("navigation.advanced_search")
     @criteria_list = [SearchCriteria.new]
     @user = current_user
     @results = []
@@ -12,7 +12,7 @@ class AdvancedSearchController < ApplicationController
   end
 
   def index
-    @page_name = "Advanced Search"
+    @page_name = t("navigation.advanced_search")
     @forms = FormSection.by_order
     @aside = 'shared/sidebar_links'
     @user = current_user
