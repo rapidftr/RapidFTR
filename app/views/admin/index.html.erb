@@ -7,3 +7,9 @@
   <% if can? :highlight, Field %>
     <br /><p><%= link_to t("admin.highlight_fields"), highlight_fields_path %></p>
   <% end %>
+
+  <%= form_tag admin_update_path, :method => "put"  do |f| %>
+      <%= label_tag "user_locale", t("home.language") %>
+      <%= select_tag :locale, options_for_select([['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']], I18n.default_locale) %>
+        <%= submit_tag t("buttons.save") %>
+  <% end %>

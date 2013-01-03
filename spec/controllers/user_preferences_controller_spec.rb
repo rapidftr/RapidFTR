@@ -6,6 +6,10 @@ describe UserPreferencesController do
     fake_field_worker_login
   end
 
+  after :each do
+    I18n.default_locale = :en
+  end
+
   it "should save the given local in user" do
     mock_user = mock("user", :user_name => "UserName")
     user_params = {"locale" => "fr"}

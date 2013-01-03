@@ -7,7 +7,7 @@
       <%= label_tag "user_time_zone", t("home.current_time_zone") %>
       <%= f.time_zone_select "time_zone" %>
       <%= label_tag "user_locale", t("home.language") %>
-      <%= f.select "locale", [['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']] %>
+      <%= f.select "locale", [['-',nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']] %>
       <p class='submitButton' >
         <%= f.submit t("buttons.save") %>
       </p>
@@ -16,7 +16,7 @@
 	<% if can? :create, Child %>
 		<%= link_to t("children.register_new_child"), new_child_path %> <br/><br/>
 	<% end %>
-	
+
 <%= link_to t("home.view_all_children"), children_path %> <br/><br/>
 <% if can? :read, Child %>
   <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flagged") %>

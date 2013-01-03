@@ -85,8 +85,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = params[:locale] || cookies[:locale] || I18n.default_locale
-    I18n.locale = current_user.locale if logged_in?
+    I18n.locale = (current_user.locale || I18n.default_locale) if logged_in?
   end
 
   def clean_params(param)

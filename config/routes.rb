@@ -37,6 +37,7 @@ RapidFTR::Application.routes.draw do
 
   resources :roles
   match 'admin' => 'admin#index', :as => :admin
+  match 'admin/update' => 'admin#update', :as => :admin_update
 
 
   resources :sessions, :except => :index

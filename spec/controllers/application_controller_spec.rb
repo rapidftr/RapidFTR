@@ -16,13 +16,6 @@ describe ApplicationController do
   end
 
   describe 'locale' do
-    before :each do
-      @controller = ApplicationController.new
-      @params, @cookies = {}, {}
-      @controller.stub! :params => @params
-      @controller.stub! :cookies => @cookies
-    end
-
     after :each do
       I18n.locale = I18n.default_locale
     end
@@ -30,25 +23,6 @@ describe ApplicationController do
     it "should be set to default" do
       @controller.set_locale
       I18n.locale.should == I18n.default_locale
-    end
-
-    it "should be set from parameters" do
-      @params[:locale] = :de
-      @controller.set_locale
-      I18n.locale.should == :de
-    end
-
-    it "should be set from parameters even if cookie is set" do
-      @params[:locale] = :de
-      @cookies[:locale] = :fr
-      @controller.set_locale
-      I18n.locale.should == :de
-    end
-
-    it "should be set from cookies" do
-      @cookies[:locale] = :fr
-      @controller.set_locale
-      I18n.locale.should == :fr
     end
   end
 

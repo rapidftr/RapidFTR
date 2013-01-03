@@ -8,4 +8,9 @@ class AdminController < ApplicationController
     @page_name = t("administration")
   end
 
+  def update
+    I18n.default_locale = params[:locale]
+    redirect_to admin_path
+  end
+
 end
