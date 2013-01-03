@@ -1,16 +1,18 @@
 <p>
   Photos should be no larger than 10mb. Audio files should be no larger than 10mb. The smaller the better.
 </p>
+<% 5.times do |i|%>
 <p class="file">
   <span class="tool-tip-label">
-      <%= label_tag "child[photo]", photo_upload_box.display_name, :class=>'key' %>
+      <%= label_tag "child[photo]#{i}", "Add Photo", :class=>'key' %>
 
   </span>
-  <%= file_field_tag "child[photo]#{photo_upload_box.name}" %>
+  <%= file_field_tag "child[photo]#{i}" %>
   <% if photo_upload_box.help_text.present?%>
       <img class="tool-tip-icon vtip" title="<%=photo_upload_box.help_text%>" src="/images/new/icon_help.png"/>
   <% end%>
 </p>
+<% end %>
 
 <% @child.photos.each do |photo| %>
     <p class="thumbnail">
@@ -18,4 +20,4 @@
       <%= check_box_tag("delete_child_photo[#{photo.name}]") %>
       <%= thumbnail_tag(@child, photo.name) %>
     </p>
-<% end %>
+<% end %> 
