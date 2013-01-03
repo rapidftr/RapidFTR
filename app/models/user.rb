@@ -18,6 +18,7 @@ class User < CouchRestRails::Document
   property :mobile_login_history, :cast_as => ['MobileLoginEvent']
   property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
+  property :locale
 
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]

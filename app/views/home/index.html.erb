@@ -6,6 +6,8 @@
   <%= form_for @user, :url => user_preference_path(current_user_name), :html => {:method => :put} do |f| %>
       <%= label_tag "user_time_zone", t("home.current_time_zone") %>
       <%= f.time_zone_select "time_zone" %>
+      <%= label_tag "user_locale", t("home.language") %>
+      <%= f.select "locale", [['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']] %>
       <p class='submitButton' >
         <%= f.submit t("buttons.save") %>
       </p>
