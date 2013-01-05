@@ -41,7 +41,7 @@ class FormSection < CouchRestRails::Document
 
     def all_enabled_child_fields
       enabled_by_order.map do |form_section|
-        form_section.fields.find_all(&:enabled)
+        form_section.fields.find_all(&:visible)
       end.flatten
     end
 
@@ -53,7 +53,7 @@ class FormSection < CouchRestRails::Document
 
     def enabled_by_order_without_disabled_fields
       enabled_by_order.each do |form_section|
-        form_section['fields'].map! { |field| field if field.enabled }
+        form_section['fields'].map! { |field| field if field.visible }
         form_section['fields'].compact!
       end
     end
@@ -186,12 +186,12 @@ class FormSection < CouchRestRails::Document
 
   def disable_fields fields_to_disable
     matching_fields = fields.select { |field| fields_to_disable.include? field.name }
-    matching_fields.each{ |field| field.enabled = false }
+    matching_fields.each{ |field| field.visible = false }
   end
 
   def enable_fields fields_to_enable
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
-    matching_fields.each{ |field| field.enabled = true}
+    matching_fields.each{ |field| field.visible = true}
   end
 
   protected

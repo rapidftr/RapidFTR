@@ -82,7 +82,7 @@ describe FormSection do
     describe "enabled_by_order_without_disabled_fields" do
       it "should exclude disabled fields" do
         enabled = Field.new(:name => "enabled", :type => "text_field", :display_name => "Enabled")
-        disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :enabled => false)
+        disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :visible => false)
 
         section = FormSection.new :name => 'section', :order => 1, :unique_id => 'section'
         section.fields = [disabled, enabled]
@@ -351,25 +351,25 @@ describe FormSection do
 
   describe "disable_fields" do
     it "should set all given fields to disabled" do
-      field_blub = Field.new :name => 'blub', :enabled => true
-      field_bla = Field.new :name => 'bla', :enabled => true
+      field_blub = Field.new :name => 'blub', :visible => true
+      field_bla = Field.new :name => 'bla', :visible => true
       form_section = FormSection.new :fields => [field_blub, field_bla]
 
       form_section.disable_fields([field_bla.name])
-      field_blub.should be_enabled
-      field_bla.should_not be_enabled
+      field_blub.should be_visible
+      field_bla.should_not be_visible
     end
   end
 
   describe "enable_fields" do
     it "should set all given fields to enabled" do
-      field_one = Field.new :name => 'one', :enabled => false
-      field_two = Field.new :name => 'two', :enabled => false
+      field_one = Field.new :name => 'one', :visible => false
+      field_two = Field.new :name => 'two', :visible => false
       form_section = FormSection.new :fields => [field_one, field_two]
 
       form_section.enable_fields([field_two.name])
-      field_one.should_not be_enabled
-      field_two.should be_enabled
+      field_one.should_not be_visible
+      field_two.should be_visible
     end
   end
 

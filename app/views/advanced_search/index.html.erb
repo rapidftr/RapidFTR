@@ -21,7 +21,7 @@
 
           <%  form.all_searchable_fields.each do |field|%>
             <% @all_fields << field %>
-      	    <% if field.enabled? %>
+      	    <% if field.visible? %>
               <li>
                 <a><%= field.display_name_for_field_selector %></a>
                 <input type="hidden" class="field" value='<%= field.name %>' />

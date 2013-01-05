@@ -61,7 +61,7 @@
         </thead>
         <tbody>
           <% @form_section.fields.each do |field| %>
-            <tr id="<%= "#{field.name}Row" %>" class="<%= field.enabled? ? "rowEnabled" : "rowDisabled" %>">
+            <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
               <% if @form_section.editable? %>
                 <td>
                   <% if field.editable? %>
@@ -69,7 +69,7 @@
                   <% end %>
                 </td>
                 <td>
-                  <span class="enabledStatus"><%= field.enabled? ? I18n.t("visible") : I18n.t("hidden") %></span>
+                  <span class="enabledStatus"><%= field.visible? ? I18n.t("visible") : I18n.t("hidden") %></span>
                 </td>
               <% end %>
               <td class='breakword'><%= field.display_name %></td>

@@ -248,7 +248,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
   form_section.fields = []
   table.hashes.each do |field_hash|
     field_hash.reverse_merge!(
-      'enabled' => true,
+      'visible' => true,
       'type'=> Field::TEXT_FIELD
     )
     form_section.fields.push Field.new(field_hash)
@@ -270,7 +270,7 @@ end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" disabled$/ do |form_section, field_name |
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
-  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :enabled => false)
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :visible => false)
   FormSection.add_field_to_formsection(form_section, field)
 end
 

@@ -134,22 +134,22 @@ describe FieldsController do
     before { FormSection.all.each &:destroy }
     
     it "should update all attributes on field at once" do
-      field_to_change = Field.new(:name => "country_of_origin", :display_name => "Origin Country", :enabled => true,
+      field_to_change = Field.new(:name => "country_of_origin", :display_name => "Origin Country", :visible => true,
         :help_text => "old help text")
       some_form = FormSection.create!(:name => "Some Form", :unique_id => "some_form", :fields => [field_to_change])
       
       put :update, :id => "country_of_origin", :formsection_id => some_form.unique_id, :destination_form_id => some_form.unique_id, 
-        :field => {:display_name => "What Country Are You From", :enabled => false, :help_text => "new help text"}
+        :field => {:display_name => "What Country Are You From", :visible => false, :help_text => "new help text"}
       
       updated_field = FormSection.get(some_form.id).fields.first
       updated_field.display_name.should == "What Country Are You From"
-      updated_field.enabled.should == false
+      updated_field.visible.should == false
       updated_field.help_text.should == "new help text"
     end
       
     it "should move field to specified form section with update to display name" do
-      mothers_name_field = Field.new(:name => "mothers_name", :enabled => true, :display_name => "Mother's Name")
-      another_field = Field.new(:name => "childs_name", :enabled => true, :display_name => "Child's Name")
+      mothers_name_field = Field.new(:name => "mothers_name", :visible => true, :display_name => "Mother's Name")
+      another_field = Field.new(:name => "childs_name", :visible => true, :display_name => "Child's Name")
       family_details_form = FormSection.create!(:name => "Family Details", :unique_id => "family_details", :fields => [mothers_name_field])
       mother_details_form = FormSection.create!(:name => "Mother Details", :unique_id => "mother_details", :fields => [another_field])
   
@@ -157,7 +157,7 @@ describe FieldsController do
         :id => "mothers_name", 
         :formsection_id => "family_details", 
         :destination_form_id => "mother_details",
-        :field => {:display_name => "Name", :enabled => true}
+        :field => {:display_name => "Name", :visible => true}
       
       FormSection.get(family_details_form.id).fields.find {|field| field.name == "mothers_name"}.should be_nil
       updated_field = FormSection.get(mother_details_form.id).fields.find {|field| field.name == "mothers_name"}
