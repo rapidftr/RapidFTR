@@ -16,8 +16,8 @@ describe "children/search.html.erb" do
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
       @highlighted_fields = [
-        Field.new(:name => "field_2", :display_name => "field display 2", :enabled => true ),
-        Field.new(:name => "field_4", :display_name => "field display 4", :enabled => true ) ]
+        Field.new(:name => "field_2", :display_name => "field display 2", :visible => true ),
+        Field.new(:name => "field_4", :display_name => "field display 4", :visible => true ) ]
       FormSection.stub!(:sorted_highlighted_fields).and_return @highlighted_fields
       assign(:current_user, @user)
       assign(:results, @results)

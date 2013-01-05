@@ -15,7 +15,7 @@ Given /^the following suggested fields exist in the system:$/ do |suggested_fiel
   end
 end
 
-And /^I should see "([^\"]*)" in the list of enabled fields$/ do |field_id|
+And /^I should see "([^\"]*)" in the list of visible fields$/ do |field_id|
   page.should have_css(".rowEnabled")
   field_ids = page.all(:css, ".rowEnabled").map {|row| row[:id] }
   field_ids.should include("#{field_id}Row")

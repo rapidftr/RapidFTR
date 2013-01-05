@@ -1,27 +1,24 @@
 require 'spec_helper'
 
 describe PublishFormSectionController do
+
   before do
     fake_admin_login
-    @form_sections = [FormSection.new(:name => 'Some Name', :description => 'Some description')]
-    FormSection.should_receive(:enabled_by_order).and_return(@form_sections)
+  end
+
+  it "should only retrieve fields on a form that are visible" do
+    FormSection.should_receive(:enabled_by_order_without_hidden_fields).and_return({})
+    get :form_sections
   end
 
   it "should publish form section documents as json" do
+    form_sections = [FormSection.new(:name => 'Some Name', :description => 'Some description')]
+    FormSection.stub(:enabled_by_order_without_hidden_fields).and_return(form_sections)
+    
     get :form_sections
-    response.body.should == @form_sections.to_json
-  end
-
-  it "should only show fields on a form that are enabled" do
-    enabled = Field.new(:name => "enabled", :type => "text_field", :display_name => "Enabled")
-    disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :visible => false)
-
-    @form_sections.first.fields = [enabled, disabled]
-
-    get :form_sections
-
+    
     returned_form_section = JSON.parse(response.body).first
-    returned_form_section['fields'].should == [enabled]
+    returned_form_section['name'].should == 'Some Name'
+    returned_form_section['description'].should == 'Some description'
   end
-
 end

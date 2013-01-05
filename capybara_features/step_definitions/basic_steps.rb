@@ -230,9 +230,9 @@ Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ d
   enabled_icon.inner_html.strip.should == expected_text
 end
 
-Given /^the "([^\"]*)" form section has the field "([^\"]*)" disabled$/ do |form_section, field_name |
+Given /^the "([^\"]*)" form section has the field "([^\"]*)" hidden$/ do |form_section, field_name |
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
-  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :enabled => false)
+  field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :visible => false)
   FormSection.add_field_to_formsection(form_section, field)
 end
 

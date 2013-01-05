@@ -243,14 +243,14 @@ describe Child do
 
     it "should fail to validate if all fields are nil" do
       child = Child.new
-      FormSection.stub!(:all_enabled_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
+      FormSection.stub!(:all_visible_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
       child.should_not be_valid
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
 
     it "should fail to validate if all fields on child record are the default values" do
       child = Child.new({:height=>"",:reunite_with_mother=>""})
-      FormSection.stub!(:all_enabled_child_fields).and_return [
+      FormSection.stub!(:all_visible_child_fields).and_return [
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
         Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
@@ -262,7 +262,7 @@ describe Child do
       fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
       child = Child.new
       child[:height] = "very tall"
-      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+      FormSection.stub!(:all_visible_child_fields).and_return(fields)
 
       child.should_not be_valid
       child.errors.on(:height).should == ["height must be a valid number"]
@@ -275,7 +275,7 @@ describe Child do
         child = Child.new
         child[:height] = "very tall"
         child[:new_age] = "very old"
-        FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+        FormSection.stub!(:all_visible_child_fields).and_return(fields)
 
         child.should_not be_valid
         child.errors.on(:height).should == ["height must be a valid number"]
@@ -283,7 +283,7 @@ describe Child do
     end
 
     it "should disallow text field values to be more than 200 chars" do
-      FormSection.stub!(:all_enabled_child_fields =>
+      FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
                          Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
                         child = Child.new :name => ('a' * 201)
@@ -292,7 +292,7 @@ describe Child do
     end
 
     it "should disallow text area values to be more than 400,000 chars" do
-      FormSection.stub!(:all_enabled_child_fields =>
+      FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
                         child = Child.new :a_textfield => ('a' * 400_001)
                         child.should_not be_valid
@@ -300,14 +300,14 @@ describe Child do
     end
 
     it "should allow text area values to be 400,000 chars" do
-      FormSection.stub!(:all_enabled_child_fields =>
+      FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
                         child = Child.new :a_textfield => ('a' * 400_000)
                         child.should be_valid
     end
 
     it "should disallow date fields not formatted as dd M yy" do
-      FormSection.stub!(:all_enabled_child_fields =>
+      FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
                         child = Child.new :a_datefield => ('2/27/2010')
                         child.should_not be_valid
@@ -315,14 +315,14 @@ describe Child do
     end
 
     it "should allow date fields formatted as dd M yy" do
-      FormSection.stub!(:all_enabled_child_fields =>
+      FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
                         child = Child.new :a_datefield => ('27 Feb 2010')
                         child.should be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
-      FormSection.stub!(:all_enabled_child_fields =>
+      FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
                         Child.new(:height => "10.2").should be_valid
     end
@@ -766,7 +766,7 @@ describe Child do
           Field.new_radio_button("gender", ["male", "female"]),
           Field.new_photo_upload_box("current_photo_key"),
           Field.new_audio_upload_box("recorded_audio")]
-      FormSection.stub!(:all_enabled_child_fields).and_return(fields)
+      FormSection.stub!(:all_visible_child_fields).and_return(fields)
       mock_user = mock({:organisation => 'UNICEF'})
       User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
     end

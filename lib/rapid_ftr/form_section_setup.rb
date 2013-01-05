@@ -159,7 +159,7 @@ module RapidFTR
            Field.new("display_name" => "Automation Radio", "type" => "radio_button","option_strings"=>["Radio 1","Radio 2", "Radio 3"]),
            Field.new("display_name" => "Automation Number","type" => "numeric_field"),
            Field.new("display_name" => "Automation Date", "type" => "date_field"),
-           Field.new("display_name" => "Hidden TextField" ,"type" => "text_field" ,"enabled" =>false)
+           Field.new("display_name" => "Hidden TextField" ,"type" => "text_field" ,"visible" =>false)
 
         ]
         FormSection.create!("name" => "Automation Form", "enabled" => true, :description => "Automation Form" , :order => 10, :fields => automation_form_fields)

@@ -109,23 +109,23 @@ describe FieldsController do
       FormSection.stub!(:get_by_unique_id).with(@formsection_id).and_return(@form_section)
     end
 
-    it "should disable all selected fields" do
-      fields_to_disable = ['bla']
+    it "should hide all selected fields" do
+      fields_to_hide = ['bla']
 
-      @form_section.should_receive(:disable_fields).with(fields_to_disable)
+      @form_section.should_receive(:hide_fields).with(fields_to_hide)
       @form_section.should_receive(:save)
 
-      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Hide', :fields => fields_to_disable
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Hide', :fields => fields_to_hide
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
 
-    it "should enable all selected fields" do
-      fields_to_enable = ["bla"]
+    it "should show all selected fields" do
+      fields_to_show = ["bla"]
 
-      @form_section.should_receive(:enable_fields).with(fields_to_enable)
+      @form_section.should_receive(:show_fields).with(fields_to_show)
       @form_section.should_receive(:save)
 
-      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Show', :fields => fields_to_enable
+      post :toggle_fields, :formsection_id => @formsection_id, :toggle_fields => 'Show', :fields => fields_to_show
       response.should redirect_to(edit_form_section_path(@formsection_id))
     end
   end

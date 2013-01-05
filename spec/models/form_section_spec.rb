@@ -79,16 +79,17 @@ describe FormSection do
       end
     end
 
-    describe "enabled_by_order_without_disabled_fields" do
-      it "should exclude disabled fields" do
-        enabled = Field.new(:name => "enabled", :type => "text_field", :display_name => "Enabled")
-        disabled = Field.new(:name => "disabled", :type => "text_field", :display_name => "Disabled", :visible => false)
+    describe "enabled_by_order_without_hidden_fields" do
+      it "should exclude hidden fields" do
+        visible_field = Field.new(:name => "visible_field", :display_name => "Visible Field", :visible => true)
+        hidden_field = Field.new(:name => "hidden_field", :display_name => "Hidden Field", :visible => false)
 
         section = FormSection.new :name => 'section', :order => 1, :unique_id => 'section'
-        section.fields = [disabled, enabled]
+        section.fields = [visible_field, hidden_field]
         section.save!
 
-        FormSection.enabled_by_order_without_disabled_fields.first.fields.should == [enabled]
+        form_section = FormSection.enabled_by_order_without_hidden_fields.first
+        form_section.fields.should == [visible_field]
       end
     end
   end
@@ -349,25 +350,25 @@ describe FormSection do
     end
   end
 
-  describe "disable_fields" do
+  describe "hide_fields" do
     it "should set all given fields to disabled" do
       field_blub = Field.new :name => 'blub', :visible => true
       field_bla = Field.new :name => 'bla', :visible => true
       form_section = FormSection.new :fields => [field_blub, field_bla]
 
-      form_section.disable_fields([field_bla.name])
+      form_section.hide_fields([field_bla.name])
       field_blub.should be_visible
       field_bla.should_not be_visible
     end
   end
 
-  describe "enable_fields" do
-    it "should set all given fields to enabled" do
+  describe "show_fields" do
+    it "should set all given fields to visible" do
       field_one = Field.new :name => 'one', :visible => false
       field_two = Field.new :name => 'two', :visible => false
       form_section = FormSection.new :fields => [field_one, field_two]
 
-      form_section.enable_fields([field_two.name])
+      form_section.show_fields([field_two.name])
       field_one.should_not be_visible
       field_two.should be_visible
     end

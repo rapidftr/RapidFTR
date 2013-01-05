@@ -15,7 +15,7 @@
       <% @forms.each do|form|%>
         <ul id="fields-for-form-<%= form.id%>" class="fields" data-id="<%= form.unique_id %>">
           <% form.fields.each do |field| %>
-              <% if field.enabled? %>
+              <% if field.visible? %>
                 <li id="field-<%= field.name%>" data-name="<%= field.name %>"><%= field.display_name %></li>
               <% end %>
 

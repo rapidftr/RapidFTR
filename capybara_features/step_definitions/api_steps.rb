@@ -172,7 +172,7 @@ end
 def check_field_validity(input_field)
   return_val = true
   return_val = return_val && (input_field.has_key? "name") && match_value(input_field["name"], "%SOME_STRING%")
-  return_val = return_val && (input_field.has_key? "enabled") && match_value(input_field["enabled"], "%SOME_BOOL%")
+  return_val = return_val && (input_field.has_key? "visible") && match_value(input_field["visible"], "%SOME_BOOL%")
   return_val = return_val && (input_field.has_key? "editable") && match_value(input_field["editable"], "%SOME_BOOL%")
   return_val = return_val && (input_field.has_key? "type") && match_value(input_field["type"], "%SOME_FIELD_TYPE%")
   if (input_field["type"] == "select_box")

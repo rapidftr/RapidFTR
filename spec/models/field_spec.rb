@@ -44,11 +44,11 @@ describe "Child record field view model" do
     field['option_strings'].should == ["tim", "rob"]
   end
   
-  it "should have display name with diabled if not enabled" do
+  it "should have display name with hidden text if not visible" do
     @field.display_name = "pokpok"
     @field.visible = false
     
-    @field.display_name_for_field_selector.should == "pokpok (Disabled)"
+    @field.display_name_for_field_selector.should == "pokpok (Hidden)"
     
   end 
   
@@ -105,14 +105,13 @@ describe "Child record field view model" do
   end
 
   describe "save" do
-    it "should be enabled" do
-      field = Field.new :name => "diff_field", :display_name => "diff_field", :visible => "true"
-      form = FormSection.new :fields => [field], :name => "test_form"
-
-      form.save!
-      field.should be_visible
+    it "should set visible" do
+      field = Field.new(:name => "diff_field", :display_name => "diff_field", :visible => "true")
+      form = FormSection.new(:fields => [field], :name => "test_form")
       
-      form.destroy
+      form.save!
+      
+      form.fields.first.should be_visible
     end
   end
   

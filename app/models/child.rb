@@ -120,7 +120,7 @@ class Child < CouchRestRails::Document
   end
 
   def field_definitions
-    @field_definitions ||= FormSection.all_enabled_child_fields
+    @field_definitions ||= FormSection.all_visible_child_fields
   end
 
   def self.build_solar_schema

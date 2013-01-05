@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'nokogiri'
 
 describe "form_section/edit.html.erb" do
-  it "should not allow to enable/disable fields for non editable formsections" do
+  it "should not allow to show/hide fields for non editable formsections" do
     fields = [Field.new :name => 'my_field', :display_name => 'My Field', :visible => true]
     form_section = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => fields
 
