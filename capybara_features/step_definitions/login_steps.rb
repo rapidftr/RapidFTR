@@ -35,7 +35,7 @@ end
 Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permissions|
   step "a user \"#{user_name}\" with a password \"123\" and \"#{permissions}\" permission"
   step "I am on the login page"
-  step "I fill in \"#{User.first.user_name}\" for \"user_name\""
+  step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
   step "I press \"Log in\""
 end
