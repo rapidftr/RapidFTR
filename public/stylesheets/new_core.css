@@ -222,6 +222,14 @@ fieldset p:nth-child(even) {
   .filter_bar select {
     width: 230px !important; }
 
+a.edit {
+  background: url(../images/new/icon_edit.png) no-repeat 0px 0px;
+  padding-left: 17px; }
+
+a.mark_as_duplicate {
+  background: url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
+  padding-left: 20px; }
+
 .submitButton {
   float: right;
   padding: 10px; }
@@ -263,6 +271,9 @@ fieldset p:nth-child(even) {
       color: #333; }
   .dropdown .mark-as-form {
     padding: 10px; }
+
+.children_info {
+  width: 70%; }
 
 body {
   background: url(../images/new/bg_body.png) repeat-x;
@@ -680,42 +691,14 @@ body {
         float: left;
         width: 470px; }
   .child_list .child_summary_panel .action_panel {
-      background: #e8e8e8;
+    background: #e8e8e8;
     padding: 5px 10px 8px;
     border-top: 1px solid #d4d1d1;
     font-size: 1.3em;
     color: #aaa; }
     .child_list .child_summary_panel .action_panel a {
-        margin: 0px 10px;
-      font-size: 0.8em;
-    }
-
-.child_list .child_summary_panel .action_panel li {
-    display: block;
-    background-image: none;
-}
-.child_list .child_summary_panel .action_panel li span.flag a {
-    background: no-repeat scroll 0 0 transparent;
-    background-image: url(../images/icon-flag.gif?1353907856);
-    padding-left: 25px;
-}
-
-a.edit {
-    background: url(../images/new/icon_edit.png) no-repeat 0px 0px;
-    padding-left: 17px; }
-
-a.mark_as_duplicate {
-    background: url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
-    padding-left: 20px; }
-
-ul.view-edit{
-    overflow: auto;
-}
-
-ul.view-edit li{
-    float: left;
-}
-
+      margin: 0px 10px;
+      font-size: 0.8em; }
 .child_list .child_summary_panel.sel {
   background: #e5efff;
   border: 1px solid #bdd7ff; }

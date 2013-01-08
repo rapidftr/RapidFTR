@@ -10,9 +10,8 @@ class Role < CouchRestRails::Document
 
   view_by :name,
     :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'Role') && doc['name'])
-             {
-                emit(doc['name'],doc);
+              if ((doc['couchrest-type'] == 'Role') && doc['name']) {
+                emit(doc['name'], doc);
              }
           }"
 

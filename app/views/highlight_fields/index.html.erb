@@ -1,15 +1,15 @@
-  <h1>Hightlight Fields</h1>
+  <h1><%= t("admin.highlight_fields") %></h1>
   <table class="highlight-fields list_table">
     <thead>
       <tr>
-        <th>Field Name</th>
-        <th>Form Name</th>
-        <th>Action</th>
+        <th><%= t("fields.field_name") %></th>
+        <th><%= t("fields.form_name") %></th>
+        <th><%= t("fields.action") %></th>
       </tr>
     </thead>
     <tbody id="highlighted-fields">
       <tr class="add-field-section">
-        <td><a href="javascript:void(0)" class="add_field">add</a></td>
+        <td><a href="javascript:void(0)" class="add_field"><%= t("add") %></a></td>
         <td></td>
         <td></td>
       </tr>
@@ -33,7 +33,7 @@
     <td>${display_name}</td>
     <td>${form_name}</td>
     <td>
-      <a href="javascript:void(0)" class="remove_field">remove</a>
+      <a href="javascript:void(0)" class="remove_field"><%= t("fields.remove") %></a>
       <input type="hidden" name="field_name" class="highlighted-field" value="${field_name}"/>
       <input type="hidden" name="form_id" class="highlighted-form" value="${form_id}"/>
     </td>

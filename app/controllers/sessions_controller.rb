@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
 
     @session = Session.new(params[:login])
 
-    @page_name = "Login"
+    @page_name = t("login.label")
 
     respond_to do |format|
       format.html # new.html.erb
@@ -61,7 +61,7 @@ class SessionsController < ApplicationController
     respond_to do |format|
       if @session.save
         @session.put_in_cookie(cookies)
-        flash[:notice] = 'Hello ' + @session.user_name
+        flash[:notice] = t("hello") + " " + @session.user_name
         format.html { redirect_to(root_path) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
         format.json { render_session_as_json(@session,:status => :created, :location => @session) }

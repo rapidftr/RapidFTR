@@ -6,7 +6,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
-
+require "lib/i18n_backend_chain"
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -50,7 +50,7 @@ module RapidFTR
 
     # Add our custom CouchDB I18n backend
     config.after_initialize do
-        I18n.backend = I18n::Backend::Chain.new(I18nBackendCouch.new, I18n.backend)
+        I18n.backend = I18n::Backend::CustomChain.new(I18nBackendCouch.new, I18n.backend)
     end
 
     config.gem "jammit"

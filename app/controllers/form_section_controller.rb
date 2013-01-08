@@ -3,7 +3,7 @@ class FormSectionController < ApplicationController
   before_filter { authorize! :manage, FormSection }
 
   def index
-    @page_name = "Manage Form Sections"
+    @page_name = t("form_section.manage")
     @form_sections = FormSection.all.sort_by(&:order)
   end
 
@@ -15,7 +15,7 @@ class FormSectionController < ApplicationController
                                            form_section_vals[:enabled]=="true"
 
     if (result.valid?) then
-      flash[:notice] = "Form section successfully added"
+      flash[:notice] = t("form_section.messages.updated")
       redirect_to(formsections_path())
     else
       @form_section = result
@@ -24,7 +24,7 @@ class FormSectionController < ApplicationController
   end
   
   def edit
-    @page_name = "Edit Form Sections"
+    @page_name = t("form_section.edit")
     @form_section = FormSection.get_by_unique_id(params[:id])
   end
   
@@ -80,12 +80,12 @@ class FormSectionController < ApplicationController
   end
   
   def new
-    @page_name = "Create New Form Section"
+    @page_name = t("form_section.create")
     @form_section = FormSection.new(params[:form_section])
   end
 
   def save
-    puts "Saved"
+    puts t("saved")
   end
   
 end

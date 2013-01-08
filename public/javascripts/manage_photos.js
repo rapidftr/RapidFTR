@@ -118,10 +118,10 @@ ManagePhotos.init = function() {
         var selectedPhoto = Photos.getSelectedPhoto();
         if (selectedPhoto) {
           selectedPhoto.makePrimaryPhoto();
-          showMessage('Primary photo changed.', 'notice');
+          showMessage(I18n.t('messages.primary_photo_changed'), 'notice');
         }
         else {
-          showMessage('Please select a photo.', 'error');
+          showMessage(I18n.t('messages.select_photo'), 'error');
         }
       });
     },

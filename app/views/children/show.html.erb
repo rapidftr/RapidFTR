@@ -48,7 +48,7 @@ $(".profile-tools .investigated a").click( function(){
 <h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
 
 <% if can? :update, @child %>
-    <%= link_to content_tag(:span, 'Edit', :class => 'edit'), edit_child_path(@child), :class=>'btn' %>
+    <%= link_to content_tag(:span, t("buttons.edit"), :class => 'edit'), edit_child_path(@child), :class=>'btn' %>
 <% end %>
 
 <%= render :partial => "show_child_toolbar", :locals => { :child => @child } %>
@@ -68,19 +68,19 @@ $(".profile-tools .investigated a").click( function(){
       <h3 class="duplicate-message"><%= duplicate_message %></h3>
     <% end %>
     <% unless @duplicates.empty? %>
-      <h3 class="duplicate-message">Another record has been marked as a duplicate of this one. Click
-      <%= link_to 'here', child_path(@duplicates.first) %> to see the duplicate record.</h3>
+      <h3 class="duplicate-message"><%= t("child.another_duplicate_before_link") %>
+      <%= link_to 'here', child_path(@duplicates.first) %><%= t("child.another_duplicate_after_link") %></h3>
     <% end %>
 
 
 
     <div id='interviewer_details' class="filter_bar">
-      <h3>Registered by: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> on <%= @current_user.localize_date(@child['created_at']) %></h3>
+      <h3><%= t("child.registered_by") %>: <%= @child['created_by'] %> <%= link_to_update_info(@child) %> <%= t("preposition.on_label") %> <%= @current_user.localize_date(@child['created_at']) %></h3>
       <% if @child['last_updated_at']%>
-        <h3>Last updated: <%= @current_user.localize_date(@child['last_updated_at']) %> </h3>
+        <h3><%= t("child.last_updated") %>: <%= @current_user.localize_date(@child['last_updated_at']) %> </h3>
     <% end %>
       <% if @child['posted_from']=="Mobile" %>
-        <h3>Posted from the mobile client at: <%= @current_user.localize_date(@child['posted_at']) %> </h3>
+        <h3><%= t("child.posted_from_mobile")  %> <%= @current_user.localize_date(@child['posted_at']) %> </h3>
     <% end %>
     </div>
 <div class="page-content-new">

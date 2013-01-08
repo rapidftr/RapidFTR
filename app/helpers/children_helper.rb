@@ -30,12 +30,12 @@ module ChildrenHelper
   def flag_message
     user = @child.histories.select{|h| h["changes"]["flag"]}.first["user_name"]
     message = (@child.flag_message.blank? && "") || ": \"#{@child.flag_message}\""
-    "Flagged as suspect record by #{user}#{message}"
+    I18n.t("child.flagged_as_suspected")+" #{user}#{message}"
   end
 
   def flag_summary_for_child(child)
     flag_history = child["histories"].select{|h| h["changes"].keys.include?("flag") }.first
-     "<b>Flagged By </b>"+ flag_history["user_name"] +"<b> On</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> Because</b> "+ child["flag_message"]
+     "<b>"+ I18n.t("child.flagged_by")+" </b>"+ flag_history["user_name"] +"<b> "+I18n.t("preposition.on_label")+"</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> "+I18n.t("preposition.because")+"</b> "+ child["flag_message"]
   end
 
   def reunited_message
@@ -57,9 +57,9 @@ module ChildrenHelper
     link_to(filter.capitalize, child_filter_path(filter))
   end
 
-  def link_for_order_by filter, order, selected_order
-    return order.capitalize if order == selected_order
-    link_to(order.capitalize, child_filter_path(:filter => filter, :order_by => order))
+  def link_for_order_by filter, order, order_id, selected_order
+    return order_id.capitalize if order == selected_order
+    link_to(order_id.capitalize, child_filter_path(:filter => filter, :order_by => order))
   end
 
   def text_to_identify_child child
