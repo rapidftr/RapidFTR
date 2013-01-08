@@ -10,8 +10,6 @@ class ChildrenController < ApplicationController
     authorize! :index, Child
 
     @page_name = t("home.view_all_children")
-    @aside = 'shared/sidebar_links'
-
     status = params[:filter] || params[:status] || "all"
 
     filter_children_by status, params[:order_by]
@@ -195,7 +193,6 @@ class ChildrenController < ApplicationController
     authorize! :index, Child
 
     @page_name = t("search")
-    @aside = "shared/sidebar_links"
     if (params[:query])
       @search = Search.new(params[:query])
       if @search.valid?

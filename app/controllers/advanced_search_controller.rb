@@ -2,7 +2,6 @@ class AdvancedSearchController < ApplicationController
 
   def new
     @forms = FormSection.by_order
-    @aside = 'shared/sidebar_links'
     @page_name = t("navigation.advanced_search")
     @criteria_list = [SearchCriteria.new]
     @user = current_user
@@ -14,7 +13,7 @@ class AdvancedSearchController < ApplicationController
   def index
     @page_name = t("navigation.advanced_search")
     @forms = FormSection.by_order
-    @aside = 'shared/sidebar_links'
+
     @user = current_user
     prepare_params_for_limited_access_user(@user) unless can? :view_all, Child
     @criteria_list = []
