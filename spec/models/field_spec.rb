@@ -41,7 +41,7 @@ describe "Child record field view model" do
   it "should create options from text" do
     field = Field.new :display_name => "something", :option_strings_text => "tim\nrob"
     field['option_strings_text'].should == nil    
-    field['option_strings'].should == ["tim", "rob"]
+    field.option_strings.should == ["tim", "rob"]
   end
   
   it "should have display name with hidden text if not visible" do
@@ -158,6 +158,21 @@ describe "Child record field view model" do
       field.unhighlight
       field.is_highlighted?.should be_false
     end
+  end
+
+  describe "I18n" do
+
+    it "should get the value of system language for the given field" do
+      I18n.default_locale = "fr"
+      field = Field.new(:name => "first name", :display_name_fr => "first name in french", :display_name_en => "first name in english",
+                        :help_text_en => "help text in english", :help_text_fr => "help text in french",
+                        :option_strings_en => "option string in english", :option_strings_fr => "option string in french")
+      field.display_name.should == field.display_name_fr
+      field.help_text.should == field.help_text_fr
+      field.option_strings.should == field.option_strings_fr
+      I18n.default_locale = "en"
+    end
+
   end
 
 end

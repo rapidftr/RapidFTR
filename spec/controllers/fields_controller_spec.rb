@@ -68,7 +68,7 @@ describe FieldsController do
     end
 
     it "should use the display name to form the field name if no field name is supplied" do
-      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name" => "My brilliant new field"))
+      FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name_#{I18n.locale}" => "My brilliant new field"))
       post :create, :formsection_id => @form_section.unique_id, :field => {:display_name => "My brilliant new field"}
     end
 
