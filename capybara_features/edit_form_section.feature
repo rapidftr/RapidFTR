@@ -8,15 +8,16 @@ Feature: So that admin can customize form section details
     And the following fields exists on "basic_details":
     	| name | type | display_name | editable |
     	| name | text_field | Name | false |
-      | nick_name | text_field | Nick Name | true |
-      | second_name | text_field | Second Name | true |
+        | nick_name | text_field | Nick Name | true |
+        | second_name | text_field | Second Name | true |
     And the following fields exists on "family_details":
     	| name | type | display_name |
     	| another_field | text_field | another field |
 
+    And I am logged in as an admin
+
   Scenario: Admins should be able to edit name and description
-    Given I am logged in as an admin
-    And I am on the form section page
+    Given I am on the form section page
     And I follow "Family details"
     Then I should find the form with following attributes:
       | Name |
@@ -30,26 +31,22 @@ Feature: So that admin can customize form section details
     And I should see the description text "Edited Description" for form section "Edited Form"
 
   Scenario: Admins should be able to cancel edit and return to the formsections page
-    Given I am logged in as an admin
-    And I am on the edit form section page for "family_details"
-    Then the "Cancel" button presents a confirmation message
+    Given I am on the edit form section page for "family_details"
+    And the "Cancel" button presents a confirmation message
     When I follow "Cancel"
     Then I should be on the form section page
 
   Scenario: Admins should not see Visible checkbox for perm_enabled form so that he cannot disable the form
-    Given I am logged in as an admin
-    And I am on the edit form section page for "basic_details"
+    Given I am on the edit form section page for "basic_details"
     Then I should not see "Visible checkbox" with id "form_section_enabled"
 
   Scenario: Admins should see Visible checkbox for editable form so that he can enable/disable the form.
-    Given I am logged in as an admin
-    And I am on the edit form section page for "family_details"
+    Given I am on the edit form section page for "family_details"
     Then I should see "Visible checkbox" with id "form_section_enabled"
 
   @javascript
   Scenario: Admins should not be able to demote the name field by promoting following field
-    Given I am logged in as an admin
-    And I am on the form section page
+    Given I am on the form section page
     And I follow "Basic details"
     And I should be able to demote the field "nick_name"
     And I should not be able to promote the field "nick_name"
@@ -59,9 +56,35 @@ Feature: So that admin can customize form section details
 
   @javascript
   Scenario: name field form section should not be editable
-    Given I am logged in as an admin
-    And I am on the edit form section page for "basic_details"
+    Given I am on the edit form section page for "basic_details"
     Then I should not be able to edit "Name" field
     Then I should be able to edit "Nick Name" field
+
+
+  @javascript
+  Scenario: Admin should be able to change the order of the fields on edit form section page
+    Given I am on the edit form section page for "basic_details"
+    And I move field "Second Name" up
+    And I click the "Save Order" button
+    Then I should find the form section with following attributes:
+      | Name          |
+      | Name          |
+      | Second Name   |
+      | Nick Name     |
+
+
+  @javascript
+  Scenario: Admin should be able to change the order of the fields on edit form section page
+    Given I am on the edit form section page for "basic_details"
+    And I move field "Nick Name" down
+    And I click the "Save Order" button
+    Then I should find the form section with following attributes:
+      | Name          |
+      | Name          |
+      | Second Name   |
+      | Nick Name     |
+
+
+
 
 
