@@ -31,3 +31,6 @@ public/assets/*
 public/assets/common.js.gz
 
 
+lib/tasks/windows
+vendor/bundle
+
