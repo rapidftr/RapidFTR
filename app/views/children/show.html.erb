@@ -1,12 +1,17 @@
 <% content_for :javascript do %>
 <script type="text/javascript" language="javascript">
 $(function() {
-  $('.profile-image .image a').lightBox({fixedNavigation:true,
+  $('.profile-image .thumbnails .thumbnail a').lightBox({fixedNavigation:true,
                                         imageLoading:			'/images/lightbox-ico-loading.gif',
                                         imageBtnPrev:			'/images/lightbox-btn-prev.gif',
                                         imageBtnNext:			'/images/lightbox-btn-next.gif',
                                         imageBtnClose:			'/images/lightbox-btn-close.gif',
                                         imageBlank:				'/images/lightbox-blank.gif'
+  });
+
+  $(".profile-image .image a").click( function(event){
+      $('.profile-image .thumbnails .thumbnail a')[0].click();
+      return false;
   });
 
 $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
@@ -84,11 +89,15 @@ $(".profile-tools .investigated a").click( function(){
     <% end %>
     </div>
 <div class="page-content-new">
+
   <div class="side-tab">
     <%= render :partial => "tabs", :object => @form_sections %>
   </div>
+
   <div class="side-tab-content">
+    <div class="clearfix"></div>
+    <%= render :partial => 'shared/sidebar' %>
     <%= render :partial => "show_form_section" %>
-    </div>
+  </div>
 
 </div>

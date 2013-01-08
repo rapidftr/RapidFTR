@@ -40,7 +40,6 @@ class ChildrenController < ApplicationController
     authorize! :read, @child
     @form_sections = get_form_sections
     @page_name = t("child.view")+": #{@child}"
-    @aside = 'picture'
     @body_class = 'profile-page'
     @duplicates = Child.duplicates_of(params[:id])
 

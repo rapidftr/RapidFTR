@@ -17,7 +17,7 @@ Then /^I should see the thumbnail of "([^\"]*)" with timestamp "([^"]*)"$/ do |n
 end
 
 Then /^I should see "([^\"]*)" thumbnails$/ do |number|
-  thumbnails = all("//*[@class='thumbnail']/img")
+  thumbnails = all(:css, '.thumbnail img')
   thumbnails.collect{|element| element['src']}.uniq.size.should eql number.to_i
 end
 
