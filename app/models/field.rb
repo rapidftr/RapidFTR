@@ -2,19 +2,15 @@ class Field < Hash
   include CouchRest::CastedModel
   include CouchRest::Validation
   include RapidFTR::Model
+  include PropertiesLocalization
 
 
-  ['en','fr','ar','zh','es','ru'].each do |locale|
-    property "display_name_#{locale}"
-    property "help_text_#{locale}"
-    property "option_strings_#{locale}"
-  end
   property :name
   property :visible, :cast_as => 'boolean', :default => true
   property :type
   property :highlight_information , :cast_as=> 'HighlightInformation'
   property :editable, :cast_as => 'boolean', :default => true
-
+  PropertiesLocalization.localize_properties [:display_name, :help_text, :option_strings]
   attr_reader :options
 
   TEXT_FIELD = "text_field"
@@ -63,18 +59,6 @@ class Field < Hash
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
 
-
-  [:display_name, :help_text, :option_strings].each do |method|
-    define_method method do |*args|
-      locale = args.first || I18n.default_locale
-      self.send("#{method}_#{locale}")
-    end
-
-    define_method "#{method}=" do |value, *args|
-      locale = args.first || I18n.default_locale
-      self.send("#{method}_#{locale}=",value)
-    end
-  end
 
   def form
     base_doc

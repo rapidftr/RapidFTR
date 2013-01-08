@@ -284,16 +284,16 @@ describe FormSection do
     end
     it "should populate the name" do
       form_section_name = "basic details"
-      create_should_be_called_with :name, "basic details"
+      create_should_be_called_with "name_#{I18n.locale}", "basic details"
       FormSection.create_new_custom form_section_name
     end
     it "should populate the description" do
       form_section_description = "info about basic details"
-      create_should_be_called_with :description, "info about basic details"
+      create_should_be_called_with "description_#{I18n.locale}", "info about basic details"
       FormSection.create_new_custom "basic", form_section_description
     end
     it "should populate the help text" do
-      create_should_be_called_with :help_text, "help text about basic details"
+      create_should_be_called_with "help_text_#{I18n.locale}", "help text about basic details"
       FormSection.create_new_custom "basic", "description", "help text about basic details"
     end
     it "should populate the enabled status" do

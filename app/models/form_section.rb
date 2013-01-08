@@ -1,12 +1,11 @@
 class FormSection < CouchRestRails::Document
   include CouchRest::Validation
   include RapidFTR::Model
+  include PropertiesLocalization
 
   use_database :form_section
+  PropertiesLocalization.localize_properties [:name, :help_text, :description]
   property :unique_id
-  property :name
-  property :description
-  property :help_text
   property :enabled, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
