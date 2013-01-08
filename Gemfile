@@ -29,6 +29,7 @@ gem "i18n-js"
 gem 'therubyracer' , :platforms => :ruby
 gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
+gem 'rubyzip'
 
 group :development, :assets do
   gem 'sass'
