@@ -11,12 +11,12 @@ module PropertiesLocalization
 
     properties.each do |method|
       define_method method do |*args|
-        locale = args.first || I18n.default_locale
-        self.send("#{method}_#{locale}")
+        locale = args.first || I18n.locale
+        self.send("#{method}_#{locale}") || self.send("#{method}_#{I18n.default_locale}")
       end
 
       define_method "#{method}=" do |value, *args|
-        locale = args.first || I18n.default_locale
+        locale = args.first || I18n.locale
         self.send("#{method}_#{locale}=",value)
       end
     end
