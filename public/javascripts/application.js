@@ -107,10 +107,19 @@ RapidFTR.childPhotoRotation = {
     },
 
     init: function() {
+        var WAITING_TIME = 250;
         self.photoOrientation = $("#child_photo_orientation");
         $("#image_rotation_links .rotate_clockwise").click(this.rotateClockwise);
         $("#image_rotation_links .rotate_anti_clockwise").click(this.rotateAntiClockwise);
-        $("#image_rotation_links .restore_image").click(this.restoreOrientation);
+
+        var restore_image_button = $("#image_rotation_links .restore_image")
+        restore_image_button.click(this.restoreOrientation);
+        if ($.browser.webkit){
+            restore_image_button.click();
+            setTimeout(function(){
+                restore_image_button.click()
+            }, WAITING_TIME);
+        }
     }
 };
 
