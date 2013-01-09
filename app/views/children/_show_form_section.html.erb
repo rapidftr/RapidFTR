@@ -1,7 +1,6 @@
 <% @form_sections.each do |section| %>
 
   <fieldset id='tab_<%= section.section_name.underscore %>' class='<%= section.section_name %> tab '>
-    <%= render :partial => 'shared/sidebar' %>
     <div class="clearfix"></div>
 
       <%= render :partial => "form_section_info", :locals => {:form_section => section} %>
