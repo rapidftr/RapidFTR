@@ -215,6 +215,7 @@ en:
   enabled: "Enabled"
   status: "Status"
   devices: "Devices"
+  provide_translation: "Provide translation for"
 
   role:
     create: "Create Role"
@@ -312,6 +313,7 @@ en:
     highlight_fields: "Highlight Fields"
   fields:
     field_name: "Field Name"
+    display_name: "Display Name"
     form_name: "Form Name"
     action: "Action"
     remove: "remove"
