@@ -162,15 +162,15 @@ describe "Child record field view model" do
 
   describe "I18n" do
 
-    it "should set the value of system language for the given field" do
-      I18n.locale = "fr"
+    it "should set the vazlue of system language for the given field" do
+      I18n.default_locale = "fr"
       field = Field.new(:name => "first name", :display_name => "first name in french",
                         :help_text => "help text in french",
                         :option_strings => "option string in french")
       field.display_name_fr.should == "first name in french"
       field.help_text_fr.should == "help text in french"
       field.option_strings_fr.should == "option string in french"
-      I18n.locale = "en"
+      I18n.default_locale = "en"
     end
 
 
