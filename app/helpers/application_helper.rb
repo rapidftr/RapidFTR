@@ -31,15 +31,6 @@ module ApplicationHelper
       link_to t('discard'), path, :confirm => t('messages.confirmation_message'), :class => 'link_discard'
   end
 
-  def show_sidebar_links
-    sidebar_links = {t("home.view_all_children") => children_path,
-                     t("navigation.search") => search_children_path,
-                     t("navigation.advanced_search") => new_advanced_search_path}
-    sidebar_links.select do |_, link|
-      !current_page?(link)
-    end
-  end
-
   def link_with_confirm(link_to, anchor, link_options = {})
     link_options.merge!(link_confirm_options(controller))
     link_to link_to, anchor, link_options
