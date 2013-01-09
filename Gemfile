@@ -32,6 +32,8 @@ group :development, :assets do
 end
 
 group :assets do
+  gem 'execjs'
+  gem 'therubyracer', '0.10.2'
   gem 'compass-rails'
   gem 'uglifier'
   gem 'jammit'
@@ -62,5 +64,6 @@ group :test, :cucumber do
   gem 'selenium-webdriver', '2.27.2'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
+  gem 'pry'
   gem 'rcov', :platforms => :ruby_18
 end
