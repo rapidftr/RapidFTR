@@ -71,7 +71,15 @@ describe SearchCriteria do
      ]
      SearchCriteria.lucene_query(criteria_list).should == "QUERY1 OR QUERY2"
   end
-  
+
+  it "should build query for downcase ORed criteria" do
+    criteria_list = [
+        mock(:join => "", :to_lucene_query => "QUERY1"),
+        mock(:join => "or", :to_lucene_query => "QUERY2")
+    ]
+    SearchCriteria.lucene_query(criteria_list).should == "QUERY1 OR QUERY2"
+  end
+
   it "should build query for multiple OR criteria" do
      criteria_list = [ 
        mock(:join => "", :to_lucene_query => "QUERY1"), 
