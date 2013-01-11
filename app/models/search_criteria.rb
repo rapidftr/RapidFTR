@@ -33,7 +33,7 @@ class SearchCriteria
 
   # for text based fields
   def to_lucene_query
-    phrases = value.split(/\s+OR\s+/)
+    phrases = value.split(/\s+OR\s+/i)
     phrases.map do |phrase|
       query = phrase.split(/[ ,]+/).map {|word| "(#{field}_text:#{word.downcase}~ OR #{field}_text:#{word.downcase}*)"}.join(" AND ")
       "(#{query})"
@@ -54,7 +54,7 @@ class SearchCriteria
       return build_joins(list, query)
     end
 
-    if criteria.join == "OR"
+    if criteria.join.casecmp("OR") == 0
       return "#{query} OR #{build_joins(list, criteria.to_lucene_query)}"
     end
   end

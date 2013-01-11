@@ -21,8 +21,8 @@ describe FormSection do
     password
   end
 
-  def create_should_be_called_with (name, value)
-    FormSection.should_receive(:create!) { |form_section_hash|
+  def new_should_be_called_with (name, value)
+    FormSection.should_receive(:new) { |form_section_hash|
       form_section_hash[name].should == value
     }
   end
@@ -47,8 +47,7 @@ describe FormSection do
       f.unique_id.should == 'test_form'
     end
 
-    it "should not allow duplic
-    ate unique ids" do
+    it "should not allow duplicate unique ids" do
       FormSection.new(:unique_id => "test", :name => "test").save!
 
       expect {
@@ -279,45 +278,14 @@ describe FormSection do
       FormSection.stub(:all).and_return([])
     end
     it "should create a new form section" do
-      FormSection.should_receive(:create!)
-      FormSection.create_new_custom "basic"
+      FormSection.should_receive(:new).any_number_of_times
+      FormSection.new_with_order({:name => "basic"})
     end
-    it "should populate the name" do
-      form_section_name = "basic details"
-      create_should_be_called_with :name, "basic details"
-      FormSection.create_new_custom form_section_name
-    end
-    it "should populate the description" do
-      form_section_description = "info about basic details"
-      create_should_be_called_with :description, "info about basic details"
-      FormSection.create_new_custom "basic", form_section_description
-    end
-    it "should populate the help text" do
-      create_should_be_called_with :help_text, "help text about basic details"
-      FormSection.create_new_custom "basic", "description", "help text about basic details"
-    end
-    it "should populate the enabled status" do
-      form_section_description = "form_section_description"
-      form_section_help_text = "help text about basic details"
-      create_should_be_called_with :enabled, true
-      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, true
-      create_should_be_called_with :enabled, false
-      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, false
-    end
+
     it "should set the order to one plus maximum order value" do
-      FormSection.stub(:all).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])
-      create_should_be_called_with :order, 41
-      FormSection.create_new_custom "basic"
-    end
-    it "should set editable to true" do
-      create_should_be_called_with :editable, true
-      FormSection.create_new_custom "basic"
-    end
-    it "should return the created form section" do
-      form_section = FormSection.new
-      FormSection.stub(:create!).and_return(form_section)
-      result = FormSection.create_new_custom "basic"
-      result.should == form_section
+      FormSection.stub(:by_order).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])
+      new_should_be_called_with :order, 41
+      FormSection.new_with_order({:name => "basic"})
     end
   end
 
@@ -437,6 +405,18 @@ describe FormSection do
         FormSection.stub(:all).and_return([form])
         form.remove_field_as_highlighted existing_highlighted_field.name
         existing_highlighted_field.is_highlighted?.should be_false
+      end
+    end
+
+    describe "formatted hash" do
+      it "should combine the translations into a hash" do
+        fs = FormSection.new(:name_en => "english name", :name_fr => "french name", :unique_id => "unique id",
+                             :fields => [Field.new(:display_name_en => "dn in english", :display_name_zh => "dn in chinese", :name => "name")])
+        form_section = fs.formatted_hash
+        form_section["name"].should == {"en" => "english name", "fr" => "french name"}
+        form_section["unique_id"].should == "unique id"
+        form_section["fields"].first["display_name"].should == {"en" => "dn in english", "zh" => "dn in chinese"}
+        form_section["fields"].first["name"].should == "name"
       end
     end
   end

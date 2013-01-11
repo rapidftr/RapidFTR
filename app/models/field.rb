@@ -2,16 +2,15 @@ class Field < Hash
   include CouchRest::CastedModel
   include CouchRest::Validation
   include RapidFTR::Model
+  include PropertiesLocalization
+
 
   property :name
-  property :display_name
   property :visible, :cast_as => 'boolean', :default => true
-  property :help_text
   property :type
-  property :option_strings
   property :highlight_information , :cast_as=> 'HighlightInformation'
   property :editable, :cast_as => 'boolean', :default => true
-
+  PropertiesLocalization.localize_properties [:display_name, :help_text, :option_strings]
   attr_reader :options
 
   TEXT_FIELD = "text_field"
@@ -60,6 +59,7 @@ class Field < Hash
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
 
+
   def form
     base_doc
   end
@@ -100,13 +100,13 @@ class Field < Hash
 
   def option_strings_text= value
     if value && value.class != Array
-      self[:option_strings] = value.split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
+      self.option_strings= value.split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
     end
   end
 
   def option_strings_text
-    return "" unless  self[:option_strings]
-    self[:option_strings].join("\n")
+    return "" unless  self.option_strings
+    self.option_strings.join("\n")
   end
 
   def default_value

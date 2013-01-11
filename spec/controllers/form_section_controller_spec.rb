@@ -8,6 +8,10 @@ class MockFormSection
   def valid?
     @is_valid
   end
+
+  def create!
+    FormSection.new
+  end
 end
 describe FormSectionController do
   before do
@@ -28,39 +32,32 @@ describe FormSectionController do
     end
   end
   describe "post create" do
-    it "calls create_new_custom with parameters from post" do
-      FormSection.should_receive(:create_new_custom).with("name", "desc", "help text", true).and_return(MockFormSection.new)
-      form_section = {:name=>"name", :description=>"desc", :help_text=>"help text", :enabled=>"true"}
-      post :create, :form_section =>form_section
+    it "should new form_section with order" do
+      existing_count = FormSection.count
+      form_section = {:name=>"name", :description=>"desc", :help_text=>"help text", :enabled=>true}
+      post :create, :form_section => form_section
+      FormSection.count.should == existing_count + 1
     end
-    it "sets flash notice if form section is valid" do
-      FormSection.stub(:create_new_custom).and_return(MockFormSection.new)
+
+    it "sets flash notice if form section is valid and redirect_to formsection_path" do
+      FormSection.stub(:new_with_order).and_return(MockFormSection.new)
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
       request.flash[:notice].should == "Form section successfully added"
+      response.should redirect_to(formsections_path)
     end
-    it "does not set flash notice if form section is valid" do
-      FormSection.stub(:create_new_custom).and_return(MockFormSection.new(false))
+
+    it "does not set flash notice if form section is valid and render new" do
+      FormSection.stub(:new_with_order).and_return(MockFormSection.new(false))
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
       request.flash[:notice].should be_nil
-    end
-    it "should redirect back to the form sections page if form section is valid" do
-      FormSection.stub(:create_new_custom).and_return(MockFormSection.new)
-      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
-      post :create, :form_section =>form_section
-      response.should redirect_to(formsections_path)
-    end
-    it "should show new view again if form section was not valid" do
-      FormSection.stub(:create_new_custom).and_return MockFormSection.new(false)
-      form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
-      post :create, :form_section =>form_section
-      response.should_not redirect_to(formsections_path)
       response.should render_template("new")
     end
+
     it "should assign view data if form section was not valid" do
       expected_form_section = MockFormSection.new(false)
-      FormSection.stub(:create_new_custom).and_return expected_form_section
+      FormSection.stub(:new_with_order).and_return expected_form_section
       form_section = {:name=>"name", :description=>"desc", :enabled=>"true"}
       post :create, :form_section =>form_section
       assigns[:form_section].should == expected_form_section

@@ -36,8 +36,8 @@ module RapidFTR
     # config.time_zone = 'Central Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    #config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    #config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
@@ -53,6 +53,8 @@ module RapidFTR
         I18n.backend = I18n::Backend::CustomChain.new(I18nBackendCouch.new, I18n.backend)
     end
 
+    LOCALES = ['en','fr','ar','zh','es','ru']
+    LOCALES_WITH_DESCRIPTION = [['-',nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
     config.gem "jammit"
   end
 end

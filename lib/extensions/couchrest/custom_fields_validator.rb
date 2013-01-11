@@ -39,7 +39,7 @@ module CouchRest
         !value.is_number?
       end
       def validation_message_for field
-        "#{field[:display_name]} must be a valid number"
+        "#{field.display_name} must be a valid number"
       end
     end
     
@@ -48,7 +48,7 @@ module CouchRest
         value.length > 200
       end
       def validation_message_for field
-        "#{field[:display_name]} cannot be more than 200 characters long"
+        "#{field.display_name} cannot be more than 200 characters long"
       end
     end
 
@@ -58,7 +58,7 @@ module CouchRest
         value.length > MAX_LENGTH
       end
       def validation_message_for field
-        "#{field[:display_name]} cannot be more than #{MAX_LENGTH} characters long"
+        "#{field.display_name} cannot be more than #{MAX_LENGTH} characters long"
       end
     end
 
@@ -73,7 +73,7 @@ module CouchRest
         end
       end
       def validation_message_for field
-        "#{field[:display_name]} must follow this format: 4 Feb 2010"
+        "#{field.display_name} must follow this format: 4 Feb 2010"
       end
     end
 
