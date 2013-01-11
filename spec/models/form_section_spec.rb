@@ -47,8 +47,7 @@ describe FormSection do
       f.unique_id.should == 'test_form'
     end
 
-    it "should not allow duplic
-    ate unique ids" do
+    it "should not allow duplicate unique ids" do
       FormSection.new(:unique_id => "test", :name => "test").save!
 
       expect {
@@ -437,6 +436,18 @@ describe FormSection do
         FormSection.stub(:all).and_return([form])
         form.remove_field_as_highlighted existing_highlighted_field.name
         existing_highlighted_field.is_highlighted?.should be_false
+      end
+    end
+
+    describe "formatted hash" do
+      it "should combine the translations into a hash" do
+        fs = FormSection.new(:name_en => "english name", :name_fr => "french name", :unique_id => "unique id",
+                             :fields => [Field.new(:display_name_en => "dn in english", :display_name_zh => "dn in chinese", :name => "name")])
+        form_section = fs.formatted_hash
+        form_section["name"].should == {"en" => "english name", "fr" => "french name"}
+        form_section["unique_id"].should == "unique id"
+        form_section["fields"].first["display_name"].should == {"en" => "dn in english", "zh" => "dn in chinese"}
+        form_section["fields"].first["name"].should == "name"
       end
     end
   end

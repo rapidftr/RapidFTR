@@ -197,5 +197,17 @@ describe "Child record field view model" do
     end
 
   end
+  describe "formatted hash" do
+
+    it "should combine the field_name_translation into hash" do
+      field = Field.new(:name => "first name", :display_name_en => "first name in english",
+                        :help_text_en => "help text in english", :help_text_fr => "help text in french")
+      field_hash = field.formatted_hash
+      field_hash["display_name"].should == {"en" => "first name in english"}
+      field_hash["help_text"].should == {"en" => "help text in english", "fr" => "help text in french"}
+    end
+
+  end
+
 
 end

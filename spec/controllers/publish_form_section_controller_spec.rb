@@ -18,7 +18,7 @@ describe PublishFormSectionController do
     get :form_sections
     
     returned_form_section = JSON.parse(response.body).first
-    returned_form_section["name_#{I18n.locale}"].should == 'Some Name'
-    returned_form_section["description_#{I18n.locale}"].should == 'Some description'
+    returned_form_section["name"][I18n.locale.to_s].should == 'Some Name'
+    returned_form_section["description"][I18n.locale.to_s].should == 'Some description'
   end
 end
