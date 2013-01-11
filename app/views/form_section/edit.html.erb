@@ -30,6 +30,7 @@
 			    <% end %>
       
 			</fieldset>
+        <%= render :partial => "shared/add_translations", :locals => {:properties => [:name, :description, :help_text], :f => f}%>
       <div class="btn_panel">
         <%= cancel_button(formsections_path) %>
         <%= submit_button t("forms.save_details") %>

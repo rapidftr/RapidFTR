@@ -21,8 +21,8 @@ describe FormSection do
     password
   end
 
-  def create_should_be_called_with (name, value)
-    FormSection.should_receive(:create!) { |form_section_hash|
+  def new_should_be_called_with (name, value)
+    FormSection.should_receive(:new) { |form_section_hash|
       form_section_hash[name].should == value
     }
   end
@@ -278,45 +278,14 @@ describe FormSection do
       FormSection.stub(:all).and_return([])
     end
     it "should create a new form section" do
-      FormSection.should_receive(:create!)
-      FormSection.create_new_custom "basic"
+      FormSection.should_receive(:new).any_number_of_times
+      FormSection.new_with_order({:name => "basic"})
     end
-    it "should populate the name" do
-      form_section_name = "basic details"
-      create_should_be_called_with "name_#{I18n.locale}", "basic details"
-      FormSection.create_new_custom form_section_name
-    end
-    it "should populate the description" do
-      form_section_description = "info about basic details"
-      create_should_be_called_with "description_#{I18n.locale}", "info about basic details"
-      FormSection.create_new_custom "basic", form_section_description
-    end
-    it "should populate the help text" do
-      create_should_be_called_with "help_text_#{I18n.locale}", "help text about basic details"
-      FormSection.create_new_custom "basic", "description", "help text about basic details"
-    end
-    it "should populate the enabled status" do
-      form_section_description = "form_section_description"
-      form_section_help_text = "help text about basic details"
-      create_should_be_called_with :enabled, true
-      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, true
-      create_should_be_called_with :enabled, false
-      FormSection.create_new_custom "basic", form_section_description, form_section_help_text, false
-    end
+
     it "should set the order to one plus maximum order value" do
-      FormSection.stub(:all).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])
-      create_should_be_called_with :order, 41
-      FormSection.create_new_custom "basic"
-    end
-    it "should set editable to true" do
-      create_should_be_called_with :editable, true
-      FormSection.create_new_custom "basic"
-    end
-    it "should return the created form section" do
-      form_section = FormSection.new
-      FormSection.stub(:create!).and_return(form_section)
-      result = FormSection.create_new_custom "basic"
-      result.should == form_section
+      FormSection.stub(:by_order).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])
+      new_should_be_called_with :order, 41
+      FormSection.new_with_order({:name => "basic"})
     end
   end
 

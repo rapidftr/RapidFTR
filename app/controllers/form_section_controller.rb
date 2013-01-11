@@ -8,17 +8,13 @@ class FormSectionController < ApplicationController
   end
 
   def create
-    form_section_vals = params[:form_section]
-    result = FormSection.create_new_custom form_section_vals[:name], 
-                                           form_section_vals[:description], 
-                                           form_section_vals[:help_text], 
-                                           form_section_vals[:enabled]=="true"
-
-    if (result.valid?) then
+    form_section = FormSection.new_with_order params[:form_section]
+    if (form_section.valid?)
+      form_section.create!
       flash[:notice] = t("form_section.messages.updated")
       redirect_to(formsections_path())
     else
-      @form_section = result
+      @form_section = form_section
       render :new
     end
   end

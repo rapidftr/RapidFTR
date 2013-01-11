@@ -4,9 +4,10 @@ describe "children/_form_section_info.html.erb" do
     before { FormSection.all.each &:destroy }
 
     it "should show form section description and help text" do
-      form_section = FormSection.create_new_custom "Basic Form",
-                                                    "This is a description for basic form",
-                                                    "Help text for basic form"
+      form_section = FormSection.new_with_order({:new => "Basic Form",
+                                                 :description => "This is a description for basic form",
+                                                 :help_text => "Help text for basic form"})
+      form_section.create!
       assigns[:form_sections] = [form_section]
 
       render :partial => 'children/form_section_info.html.erb', :locals => { :form_section => form_section }
