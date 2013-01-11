@@ -550,3 +550,26 @@ body {
   }
 
 }
+
+.replication-page {
+  table {
+    td {
+      vertical-align: middle;
+
+      &.status {
+        padding-right: 0;
+
+        .icon {
+          display: none;
+          width: 20px;
+          height: 20px;
+        }
+
+        .icon.triggered {
+          display: inline-block;
+          background: url('../images/new/icon_replicate_triggered.gif') no-repeat;
+        }
+      }
+    }
+  }
+}

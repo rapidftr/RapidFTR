@@ -1,0 +1,35 @@
+<h1 class="no_border"><%= t "replication.new" %></h1>
+
+<div class="page-content-new replication-page">
+  <div class="side-tab-content full_width">
+    <%= form_for @replication, :url => replications_path, :method => :post, :html => { :class => 'default-form' } do |f| %>
+      <%= f.error_messages :header_tag => :h3 %>
+      <div class="clearfix"></div>
+
+      <fieldset>
+        <p>
+          <%= f.label :description, t("replication.description"), :class => "key" %>
+          <%= f.text_field :description %>
+        </p>
+
+        <p>
+          <%= f.label :host, t("replication.host"), :class => "key" %>
+          <%= f.text_field :host %>
+        </p>
+        <p>
+          <%= f.label :host, t("replication.port"), :class => "key" %>
+          <%= f.text_field :port %>
+        </p>
+        <p>
+          <%= f.label :host, t("replication.database_name"), :class => "key" %>
+          <%= f.text_field :database_name %>
+        </p>
+      </fieldset>
+
+      <div class="btn_panel">
+        <%= cancel_button replications_path %>
+        <%= submit_button @replication.new_record? ? t("replication.create") : t('replication.update') %>
+      </div>
+    <% end %>
+  </div>
+</div>

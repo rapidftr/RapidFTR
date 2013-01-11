@@ -76,8 +76,17 @@ RapidFTR::Application.routes.draw do
     collection do
       post :remove
     end
+  end
 
-
+  resources :replications do
+    collection do
+      post :config
+    end
+    
+    member do
+      post :start
+      post :stop
+    end
   end
 
   match 'database/delete_children' => 'database#delete_children', :via => :delete

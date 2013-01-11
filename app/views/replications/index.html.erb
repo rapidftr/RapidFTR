@@ -1,0 +1,45 @@
+<h1 class="no_border float_left"><%= t "replication.list" %></h1>
+<% if can? :create, Replication %>
+  <%= link_to content_tag(:span, t("replication.create"), :class => 'create_user'), new_replication_path, :class=>'btn' %>
+<% end %>
+
+<div class="clearfix"></div>
+<div class="page-content-new replication-page">
+  <div class="side-tab-content full_width">
+    <table class="list_table">
+      <thead>
+        <tr>
+          <th><%= t "replication.description" %></th>
+          <th colspan="2"><%= t "replication.server" %></th>
+          <th><%= t "replication.status" %></th>
+          <th colspan="2"><%= t "replication.actions" %></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @replications.each do |replication| %>
+          <tr>
+            <td><%= replication.description %></td>
+            <td>
+              <%= replication.url %>
+            </td>
+            <td class="status">
+              <span class="icon <%= replication.status %>"></span>
+            </td>
+            <td>
+              <span><%= t "replication.#{replication.status}" %></span>
+            </td>
+            <td>
+              <%= link_to t("replication.stop"), stop_replication_path(replication), :method => :post if replication.triggered? %>
+              <%= link_to t("replication.start"), start_replication_path(replication), :method => :post unless replication.triggered? %>
+            </td>
+            <td>
+              <%= link_to t("replication.delete"), replication_path(replication), :confirm => t("replication.confirm_delete"), :method => :delete %>
+            </td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
