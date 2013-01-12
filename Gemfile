@@ -51,6 +51,7 @@ group :development, :test, :cucumber do
   gem 'rspec-instafail'
 
   gem 'capybara',         '1.0.1'
+  gem 'factory_girl', '~> 2.6'
   gem 'jasmine'
   gem 'pry'
   gem 'mocha'

@@ -15,38 +15,33 @@ describe Replication do
 
   describe 'validations' do
     it 'should have host' do
-      r = Replication.new :host => nil
+      r = build :replication, :host => nil
       r.should_not be_valid
       r.errors[:host].should_not be_empty
     end
 
     it 'should have port' do
-      r = Replication.new :port => nil
+      r = build :replication, :port => nil
       r.should_not be_valid
       r.errors[:port].should_not be_empty
     end
 
     it 'should have numeric post' do
-      r = Replication.new :port => 'abcd'
+      r = build :replication, :port => 'abcd'
       r.should_not be_valid
       r.errors[:port].should_not be_empty
     end
 
     it 'should have db' do
-      r = Replication.new :database_name => nil
+      r = build :replication, :database_name => nil
       r.should_not be_valid
       r.errors[:database_name].should_not be_empty
-    end
-
-    it 'should be valid' do
-      r = Replication.new :host => 'localhost', :port => '1234', :database_name => 'test'
-      r.should be_valid
     end
   end
 
   describe 'getters' do
     before :each do
-      @rep = Replication.new :host => 'localhost', :port => 1234, :database_name => 'test'
+      @rep = build :replication, :host => 'localhost', :port => 1234, :database_name => 'test'
     end
 
     it 'should generate url' do
@@ -72,10 +67,9 @@ describe Replication do
   describe 'configuration' do
     before :each do
       @local_db = "rapidftr_child_#{Rails.env}"
-      @remote_url = "http://localhost:5984/temp_replication_db"
+      @remote_url = "http://localhost:5984/replication_test"
 
-      @rep = Replication.new(:host => 'localhost', :port => '5984', :database_name => 'temp_replication_db')
-      @rep.save
+      @rep = create :replication, :host => 'localhost', :port => '5984', :database_name => 'replication_test'
     end
 
     it 'should configure push' do
@@ -134,8 +128,8 @@ describe Replication do
 
   describe 'replication' do
     before :each do
-      @dummy_db = COUCHDB_SERVER.database!('dummy_db')      
-      @rep = Replication.new(:host => 'localhost', :port => 5984, :database_name => 'dummy_db')
+      @dummy_db = COUCHDB_SERVER.database! 'replication_test'
+      @rep = build :replication, :host => 'localhost', :port => 5984, :database_name => 'replication_test'
       delete_all_docs Child.database
       delete_all_docs @dummy_db
     end
@@ -220,18 +214,6 @@ describe Replication do
       until found == all_docs(db).any? { |doc| doc[prop] == value }
         sleep 0.1
       end
-    end
-  end
-
-  def wait_for_push(rep, seconds=90)
-    Timeout::timeout(seconds) do
-      until rep.push_state == 'completed'; sleep 0.2 end
-    end
-  end
-
-  def wait_for_pull(rep, seconds=90)
-    Timeout::timeout(seconds) do
-      until rep.pull_state == 'completed'; sleep 0.2 end
     end
   end
 
