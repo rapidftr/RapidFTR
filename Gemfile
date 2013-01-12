@@ -26,7 +26,9 @@ gem 'capistrano'
 gem 'newrelic_rpm'
 gem 'will_paginate'
 gem "i18n-js"
-gem 'therubyracer'
+gem 'therubyracer' , :platforms => :ruby
+gem 'win32-open3' , :platforms => [:mswin, :mingw]
+gem 'os'
 
 group :development, :assets do
   gem 'sass'
