@@ -2,11 +2,11 @@ class ReplicationsController < ApplicationController
 
   before_filter :load_replication
 
-  skip_before_filter :verify_authenticity_token
-  skip_before_filter :check_authentication, :only => :config
+  skip_before_filter :verify_authenticity_token, :only => [ :configuration, :start, :stop ]
+  skip_before_filter :check_authentication, :only => :configuration
 
-  def config
-    render :json => COUCHDB_CONFIG
+  def configuration
+    render :json => Replication.configuration
   end
 
   def index

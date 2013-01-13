@@ -555,6 +555,7 @@ body {
   table {
     td {
       vertical-align: middle;
+      min-height: 20px;
 
       &.status {
         padding-right: 0;

@@ -326,7 +326,7 @@ en:
     label: Replication
     list: Replications
     new: New Replication
-    server: Server
+    remote_url: Remote URL
     actions: Actions
     status: Status
     database_name: Database Name

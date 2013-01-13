@@ -10,31 +10,31 @@
       <thead>
         <tr>
           <th><%= t "replication.description" %></th>
-          <th colspan="2"><%= t "replication.server" %></th>
+          <th colspan="2"><%= t "replication.remote_url" %></th>
           <th><%= t "replication.status" %></th>
           <th colspan="2"><%= t "replication.actions" %></th>
         </tr>
       </thead>
 
       <tbody>
-        <% @replications.each do |replication| %>
+        <% @replications.each do |rep| %>
           <tr>
-            <td><%= replication.description %></td>
+            <td><%= rep.description %></td>
             <td>
-              <%= replication.url %>
+              <%= link_to rep.remote_url, rep.remote_url, :target => '_blank' %>
             </td>
             <td class="status">
-              <span class="icon <%= replication.status %>"></span>
+              <span class="icon <%= rep.status %>"></span>
             </td>
             <td>
-              <span><%= t "replication.#{replication.status}" %></span>
+              <span><%= t "replication.#{rep.status}" %></span>
             </td>
             <td>
-              <%= link_to t("replication.stop"), stop_replication_path(replication), :method => :post if replication.triggered? %>
-              <%= link_to t("replication.start"), start_replication_path(replication), :method => :post unless replication.triggered? %>
+              <%= link_to t("replication.stop"), stop_replication_path(rep), :method => :post if rep.triggered? %>
+              <%= link_to t("replication.start"), start_replication_path(rep), :method => :post unless rep.triggered? %>
             </td>
             <td>
-              <%= link_to t("replication.delete"), replication_path(replication), :confirm => t("replication.confirm_delete"), :method => :delete %>
+              <%= link_to t("replication.delete"), replication_path(rep), :confirm => t("replication.confirm_delete"), :method => :delete %>
             </td>
             </td>
           </tr>

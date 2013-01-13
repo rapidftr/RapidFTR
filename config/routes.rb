@@ -80,7 +80,7 @@ RapidFTR::Application.routes.draw do
 
   resources :replications do
     collection do
-      post :config
+      post :configuration
     end
     
     member do

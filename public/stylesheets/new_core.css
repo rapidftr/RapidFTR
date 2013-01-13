@@ -632,7 +632,8 @@ body {
       background: #f1f1f1; }
 
 .replication-page table td {
-  vertical-align: middle; }
+  vertical-align: middle;
+  min-height: 20px; }
   .replication-page table td.status {
     padding-right: 0; }
     .replication-page table td.status .icon {

@@ -3,8 +3,10 @@ require 'factory_girl'
 FactoryGirl.define do
   factory :replication do
     description 'Sample Replication'
-    host 'localhost'
-    port 5984
-    database_name 'replication_test'
+    remote_url 'localhost:1234'
+
+    after_build do |replication|
+      replication.stub! :remote_config => { "target" => "localhost:5984/replication_test" }
+    end
   end
 end
