@@ -25,7 +25,7 @@ ar:
     this_user: "هذا المستخدم؟"
     keep_working: "نعم، واصل العمل"
     logoff: "لا، تسجيل الخروج"
-    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
+    confirmation_message: "الضغط على نعم سيلغي أي تغييرات لم يتم حفطها. إضغط على إلغاء ليتم الرجوع إلى سجل الطفل"
     cancel_confirmation: "هل أنت متأكد من أنك تريد الإلغاء؟"
     logoff_warning_prefix: "سوف يتم تسجيل الخروج في "
     logoff_warning_suffix: "ثواني."
@@ -92,7 +92,7 @@ ar:
       flagged: "عليه راية"
 
   child:
-    flagged_by: "Flagged By"
+    flagged_by: "تم رفع الراية بواسطة "
     last_updated: "آخر تحديث "
     registered_by: "تم التسجيل بواسطة "
     mark_as_duplicate: "حدد كمطابق"
@@ -110,7 +110,7 @@ ar:
     another_duplicate_after_link: " لرؤية التقارير المتطابقة. "
     messages:
       update_success: "تم تحديث سجل الطفل بنجاح."
-      investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
+      investigation_error_message: "الرجاء أكّد على أن السجل ذو الراية يجب أن يحدد على أنه قد تم التحقق، و أدخل أي تفاصيل "
       undo_investigation_error_message: "الرجاء أكّد على أن السجل ذو الراية يجب أن يحدد على أنه قد تم التحقق، و أدخل أي تفاصيل تمتلكها"
       undo_investigation_error_message: "إلغاء تفاصيل التحقيق:"
       reunite_error_message: "الرجاء أكّد على أن الطفل قد تم لم شمله بأسرته أو براعي، و أدخل أي معلومات تمتلكها"
@@ -268,7 +268,7 @@ ar:
 
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
-    date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
+    date_instruction: "إدخل تاريخ في الصندوق الأول لبحث سجلات كونت أو حدثت بعد ذلك التاريخ. إدخل تاريخ في الصندوق الثاني لبحث سجلات كونت أو حدثت قبل ذلك التاريخ. إدخل تواريخ في كلا الصندوقين لبحث سجلات كونت بين التاريخين"
     created_by_org: "المنظمه :"
     date_created: "تم تكوين التاريخ :"
     updated_by: "تم التحديث حسب المستخدم :"
@@ -299,7 +299,7 @@ ar:
     edit_info: "تعديل معلومات الإتصال"
     info_label: "معلومات الإتصال"
   device:
-    blacklist: "Blacklist Device"
+    blacklist: "أضف الجهاز للقائمة السوداء"
     messages:
       blacklist: "هل تريد إضافة هذا الجهاز إلى القائمة السوداء؟"
       remove_blacklist: "هل تريد حذف هذا الجهاز من القائمة السوداء؟"
@@ -313,11 +313,11 @@ ar:
   fields:
     field_name: "إسم الحقل"
     form_name: "إسم الإستمارة"
-    action: "Action"
+    action: "نشاط"
     remove: "حذف"
-  session_expire: "Your session is about to expire!"
+  session_expire: "هذا الفصل علي وشك الإنتهاء!"
   administration: "الإدارة"
   new: "جديد"
   saved: "تم الحفظ"
-  history_of: "History of"
+  history_of: "التاريخ"
   account: "حساب"
