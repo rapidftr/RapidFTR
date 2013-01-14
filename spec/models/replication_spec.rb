@@ -50,11 +50,11 @@ describe Replication do
     end
 
     it 'should generate push document id' do
-      @rep.push_id.should == 'rapidftr-child-test-to-http-localhost-1234'
+      @rep.push_id.should == 'push-test-replication-id'
     end
 
     it 'should generate pull document id' do
-      @rep.pull_id.should == 'http-localhost-1234-to-rapidftr-child-test'
+      @rep.pull_id.should == 'pull-test-replication-id'
     end
 
     it 'should normalize remote_url upon saving' do
@@ -77,6 +77,117 @@ describe Replication do
     it 'should return pull configuration' do
       @rep.pull_config.should include "source" => @rep.target, "target" => @rep.source, "rapidftr_ref_id" => @rep["_id"], "rapidftr_env" => Rails.env
     end
+
+    it 'should return push state' do
+      @rep.stub :push_doc => { '_replication_state' => 'abcd' }
+      @rep.push_state.should == 'abcd'
+    end
+
+    it 'should return pull state' do
+      @rep.stub :pull_doc => { '_replication_state' => 'abcd' }
+      @rep.pull_state.should == 'abcd'
+    end
+
+    describe 'timestamp' do
+      before :each do
+        @one_second_ago = 1.seconds.ago
+      end
+
+      it 'should be nil' do
+        @rep.stub! :push_doc => nil, :pull_doc => nil
+        @rep.timestamp.should be_nil
+      end
+
+      it 'should be push timestamp when pull timestamp is nil' do
+        @rep.stub! :push_doc => { "_replication_state_time" => @one_second_ago }, :pull_doc => nil
+        @rep.timestamp.should == @one_second_ago
+      end
+
+      it 'should be pull timestamp when push timestamp is nil' do
+        @rep.stub! :push_doc => nil, :pull_doc => { "_replication_state_time" => @one_second_ago }
+        @rep.timestamp.should == @one_second_ago
+      end
+
+      it 'should be push timestamp when pull timestamp is older' do
+        @rep.stub! :push_doc => { "_replication_state_time" => @one_second_ago }, :pull_doc => { "_replication_state_time" => 2.seconds.ago }
+        @rep.timestamp.should == @one_second_ago
+      end
+
+      it 'should be pull timestamp when push timestamp is older' do
+        @rep.stub! :push_doc => { "_replication_state_time" => 2.seconds.ago }, :pull_doc => { "_replication_state_time" => @one_second_ago }
+        @rep.timestamp.should == @one_second_ago
+      end
+    end
+
+    describe 'statuses' do
+      describe '#triggered' do
+        it 'should be true' do
+          @rep.stub! :push_state => 'abcd', :pull_state => 'triggered'
+          @rep.should be_triggered
+        end
+
+        it 'should be true' do
+          @rep.stub! :push_state => 'triggered', :pull_state => 'abcd'
+          @rep.should be_triggered
+        end
+
+        it 'should be false' do
+          @rep.stub! :push_state => 'abcd', :pull_state => 'abcd'
+          @rep.should_not be_triggered
+        end
+      end
+
+      describe '#completed' do
+        it 'should be true' do
+          @rep.stub! :push_state => 'completed', :pull_state => 'completed'
+          @rep.should be_completed
+        end
+
+        it 'should be true' do
+          @rep.stub! :push_state => 'abcd', :pull_state => 'completed'
+          @rep.should_not be_completed
+        end
+
+        it 'should be true' do
+          @rep.stub! :push_state => 'completed', :pull_state => 'abcd'
+          @rep.should_not be_completed
+        end
+      end
+
+      describe '#error' do
+        it 'should be true' do
+          @rep.stub! :push_state => 'abcd', :pull_state => 'error'
+          @rep.should be_error
+        end
+
+        it 'should be true' do
+          @rep.stub! :push_state => 'error', :pull_state => 'abcd'
+          @rep.should be_error
+        end
+
+        it 'should be false' do
+          @rep.stub! :push_state => 'abcd', :pull_state => 'abcd'
+          @rep.should_not be_error
+        end
+      end
+
+      describe '#status' do
+        it 'should be triggered' do
+          @rep.stub! :triggered? => true, :completed? => true
+          @rep.status.should == 'triggered'
+        end
+
+        it 'should be completed' do
+          @rep.stub! :triggered? => false, :completed? => true
+          @rep.status.should == 'completed'
+        end
+
+        it 'should be error' do
+          @rep.stub! :triggered? => false, :completed? => false
+          @rep.status.should == 'error'
+        end
+      end
+    end
   end
 
   ################# NOTE #################
@@ -89,11 +200,13 @@ describe Replication do
   describe 'configuration' do
     before :each do
       @source = "rapidftr_child_#{Rails.env}"
-      @target = "http://localhost:5984/replication_test"
+      @target = "http://localhost:5984/replication_test/"
 
       @rep = build :replication
       @rep.stub! :target => @target
-      @rep.save!
+      @rep["_id"] = 'test-replication-id'
+      @rep.start_replication
+      sleep 1
     end
 
     it 'should configure push' do
@@ -107,14 +220,12 @@ describe Replication do
     end
 
     it 'should unconfigure push' do
-      sleep 1
-      @rep.destroy
+      @rep.stop_replication
       all_docs(REPLICATION_DB).should_not be_any { |doc| doc['source'] == @source && doc['target'] == @target }
     end
 
     it 'should unconfigure pull' do
-      sleep 1
-      @rep.destroy
+      @rep.stop_replication
       all_docs(REPLICATION_DB).should_not be_any { |doc| doc['source'] == @target && doc['target'] == @source }
     end
 
@@ -124,16 +235,6 @@ describe Replication do
 
     it 'should return push doc' do
       REPLICATION_DB.get(@rep.pull_id).should == @rep.pull_doc
-    end
-
-    it 'should return push state' do
-      @rep.stub :push_doc => { '_replication_state' => 'abcd' }
-      @rep.push_state.should == 'abcd'
-    end
-
-    it 'should return pull state' do
-      @rep.stub :pull_doc => { '_replication_state' => 'abcd' }
-      @rep.pull_state.should == 'abcd'
     end
 
     it 'should restart replication' do

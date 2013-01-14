@@ -30,6 +30,22 @@ class ReplicationsController < ApplicationController
     end
   end
 
+  def edit
+    authorize! :edit, @replication
+  end
+
+  def update
+    authorize! :update, @replication
+    @replication.update_attributes params[:replication]
+
+    if @replication.save
+      @replication.restart_replication
+      redirect_to :action => :index
+    else
+      render :edit
+    end
+  end
+
   def destroy
     authorize! :destroy, @replication
     @replication.destroy

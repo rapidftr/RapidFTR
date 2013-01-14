@@ -19,7 +19,7 @@ class Replication < CouchRestRails::Document
 
   before_save   :normalize_remote_url
   after_save    :start_replication
-  after_destroy :stop_replication
+  before_destroy :stop_replication
 
   def start_replication
     replicator.save_doc push_config if target && !push_doc
@@ -39,11 +39,11 @@ class Replication < CouchRestRails::Document
   end
 
   def push_id
-    "#{source} to #{remote_uri.to_s}".downcase.parameterize.dasherize
+    "push-" + self["_id"].downcase.parameterize.dasherize
   end
 
   def pull_id
-    "#{remote_uri.to_s} to #{source}".downcase.parameterize.dasherize
+    "pull-" + self["_id"].downcase.parameterize.dasherize
   end
 
   def push_config
@@ -68,6 +68,12 @@ class Replication < CouchRestRails::Document
 
   def pull_state
     pull_doc['_replication_state'] rescue nil
+  end
+
+  def timestamp
+    push_timestamp = push_doc['_replication_state_time'].to_datetime rescue nil
+    pull_timestamp = pull_doc['_replication_state_time'].to_datetime rescue nil
+    (push_timestamp && pull_timestamp && push_timestamp > pull_timestamp) ? push_timestamp : (pull_timestamp || push_timestamp)
   end
 
   def status

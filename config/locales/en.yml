@@ -59,6 +59,7 @@ en:
      search: "Search"
 
   buttons:
+     delete: "Delete"
      save: "Save"
      login: "Log in"
      reunite: "Reunite"
@@ -324,19 +325,18 @@ en:
 
   replication:
     label: Replication
-    list: Replications
-    new: New Replication
-    remote_url: Remote URL
+    index: Manage Replications
+    create: Create Replication
+    edit: Edit Replication
+    remote_url: RapidFTR URL
     actions: Actions
     status: Status
-    database_name: Database Name
-    create: Create Replication
     description: Description
+    timestamp: Timestamp
     delete: Delete
-    completed: Replication Complete
+    completed: Successful
     triggered: In Progress
-    error: Replication Failed
-    delete: Delete
+    error: Failed
     confirm_delete: Are you sure you want to delete this replication?
     start: Start Replication
     stop: Stop Replication
