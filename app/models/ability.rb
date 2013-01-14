@@ -96,6 +96,13 @@ class Ability
     end
 
     #
+    # REPLICATIONS
+    #
+    if user.has_permission?(Permission::SYSTEM[:replications])
+      can [:manage], Replication
+    end
+
+    #
     # SYSTEM SETTINGS
     #
     if user.has_permission?(Permission::SYSTEM[:settings])

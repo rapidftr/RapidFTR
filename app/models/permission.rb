@@ -18,7 +18,8 @@ class Permission
   REPORTS  = Permission.to_ordered_hash({})
   ROLES    = Permission.to_ordered_hash({:create_and_edit => "Create and Edit Roles"},{:view => "View roles"})
   SYSTEM   = Permission.to_ordered_hash({ :settings => "System Settings",
-                                          :highlight_fields => "Highlight Fields" })
+                                          :highlight_fields => "Highlight Fields",
+                                          :replications => "Manage Replications" })
 
   def self.all
     { "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM }

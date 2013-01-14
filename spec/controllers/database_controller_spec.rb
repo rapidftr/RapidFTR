@@ -4,9 +4,17 @@ describe DatabaseController do
   before do
     fake_admin_login
   end
+  
+  before do
+    @original_rails_env = Rails.env
+    Rails.env = "android"
+  end
+
+  after do
+    Rails.env = @original_rails_env
+  end
 
   it "should delete all children in android environment" do
-    Rails.env = "android"
     Child.create('last_known_location' => "London")
     Child.create('last_known_location' => "India")
     delete :delete_children

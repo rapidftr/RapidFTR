@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe ExportGenerator do
 
@@ -124,6 +124,4 @@ describe ExportGenerator do
     user = User.new(:user_name => created_by)
     Child.new_with_user_name user, options
   end
-
-
 end

@@ -79,6 +79,8 @@ GEM
     escape (0.0.4)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (2.6.4)
+      activesupport (>= 2.3.9)
     fastercsv (1.5.3)
     ffi (1.2.0)
     fssm (0.2.9)
@@ -253,6 +255,7 @@ DEPENDENCIES
   cucumber-rails (= 0.3.2)
   dictionary (= 1.0.0)
   dynamic_form
+  factory_girl (~> 2.6)
   fastercsv (= 1.5.3)
   guard-rspec
   hoptoad_notifier (= 2.4.2)

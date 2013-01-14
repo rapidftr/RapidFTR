@@ -1,0 +1,51 @@
+<h1 class="no_border float_left"><%= t "replication.index" %></h1>
+
+<% if can? :create, Replication %>
+  <%= link_to content_tag(:span, t("replication.create"), :class => 'create_user'), new_replication_path, :class=>'btn' %>
+<% end %>
+
+<div class="clearfix"></div>
+<div class="page-content-new replication-page">
+  <div class="side-tab-content full_width">
+    <table class="list_table">
+      <thead>
+        <tr>
+          <th><%= t "replication.description" %></th>
+          <th colspan="2"><%= t "replication.remote_url" %></th>
+          <th><%= t "replication.status" %></th>
+          <th><%= t "replication.timestamp" %></th>
+          <th colspan="2"><%= t "replication.actions" %></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @replications.each do |rep| %>
+          <tr>
+            <td><%= rep.description %></td>
+            <td>
+              <%= link_to rep.remote_url, rep.remote_url, :target => '_blank' %>
+            </td>
+            <td class="status">
+              <span class="icon <%= rep.status %>"></span>
+            </td>
+            <td>
+              <span><%= t "replication.#{rep.status}" %></span>
+            </td>
+            <td>
+              <span><%= l rep.timestamp, :format => :long if rep.timestamp %></span>
+            </td>
+            <td>
+              <%= link_to t("replication.stop"), stop_replication_path(rep), :method => :post if rep.triggered? %>
+              <%= link_to t("replication.start"), start_replication_path(rep), :method => :post unless rep.triggered? %>
+              &nbsp;
+              <%= link_to t("buttons.edit"), edit_replication_path(rep) %>
+              &nbsp;
+              <%= link_to t("buttons.delete"), replication_path(rep), :confirm => t("replication.confirm_delete"), :method => :delete %>
+            </td>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
