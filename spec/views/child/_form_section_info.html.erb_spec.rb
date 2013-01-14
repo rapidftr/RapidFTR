@@ -7,7 +7,6 @@ describe "children/_form_section_info.html.erb" do
       form_section = FormSection.new_with_order({:new => "Basic Form",
                                                  :description => "This is a description for basic form",
                                                  :help_text => "Help text for basic form"})
-      form_section.create!
       assigns[:form_sections] = [form_section]
 
       render :partial => 'children/form_section_info.html.erb', :locals => { :form_section => form_section }
@@ -17,7 +16,7 @@ describe "children/_form_section_info.html.erb" do
     end
 
     it "should show form section description but no help text" do
-      form_section = FormSection.create_new_custom "Basic Form","This is a description for basic form", nil
+      form_section = FormSection.new_with_order :name => "Basic Form", :description => "This is a description for basic form", :help_text => nil
       assigns[:form_sections] = [form_section]
 
       render :partial => 'children/form_section_info.html.erb', :locals => { :form_section => form_section }
@@ -27,7 +26,7 @@ describe "children/_form_section_info.html.erb" do
     end
 
     it "should show help text but no form section description" do
-      form_section = FormSection.create_new_custom "Basic Form", nil, "This is some help text"
+      form_section = FormSection.new_with_order :name => "Basic Form", :description => nil, :help_text => "This is some help text"
       assigns[:form_sections] = [form_section]
 
       render :partial => 'children/form_section_info.html.erb', :locals => { :form_section => form_section }
@@ -37,7 +36,7 @@ describe "children/_form_section_info.html.erb" do
     end
 
     it "should show neither" do
-      form_section = FormSection.create_new_custom "Basic Form", nil, nil
+      form_section = FormSection.new_with_order :name => "Basic Form", :description => nil, :help_text => nil
       assigns[:form_sections] = [form_section]
 
       render :partial => 'children/form_section_info.html.erb', :locals => { :form_section => form_section }
