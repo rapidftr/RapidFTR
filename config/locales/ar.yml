@@ -248,7 +248,7 @@ ar:
     visibility: "الرؤية"
     ordering: "الترتيب"
     details: "تفاصيل الإستمارة"
-    label: "Form Section"
+    label: "قسم الإستمارة"
     back: "الرجوع إلى صفحة الإستمارات"
     actions:
       add_custom_field: "Add Custom Field"
