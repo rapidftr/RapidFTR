@@ -13,7 +13,7 @@ describe AdvancedSearchHelper do
 
 
   it "should generate the appropriate html for given select box criteria" do
-    field = Field.new(:name => "protection_status", :display_name => "Protection Status", :type => Field::SELECT_BOX, :option_strings => ["", "Unaccompanied", "Separated"])
+    field = Field.new(:name => "protection_status", :display_name => "Protection Status", :type => Field::SELECT_BOX, :option_strings_text => "\nUnaccompanied\nSeparated")
     criteria = SearchCriteria.new({:join => "AND", :display_name => "Protection Status", :index => "1", :field => "protection_status", :value => "Separated"})
     helper.generate_html(criteria, [field]).gsub("\n", '').should == %Q{<p>
 <input id="criteria_join_and" type="radio" value="AND" checked='' name="criteria_list[1][join]">
