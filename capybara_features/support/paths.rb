@@ -116,6 +116,9 @@ module NavigationHelpers
       when /the admin page/
         admin_path(options)
 
+      when /system settings page/
+        admin_path(options)
+
       when /the edit administrator contact information page/
         edit_contact_information_path(:administrator)
       when /(the )?administrator contact page/
@@ -139,6 +142,9 @@ module NavigationHelpers
 
       when /devices listing page/
         devices_path
+
+      when /replications page/
+        replications_path
 
 
       # Add more mappings here.
