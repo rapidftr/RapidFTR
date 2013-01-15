@@ -273,7 +273,7 @@ describe FormSection do
     end
   end
 
-  describe "create_new_custom" do
+  describe "new_with_order" do
     before :each do
       FormSection.stub(:all).and_return([])
     end

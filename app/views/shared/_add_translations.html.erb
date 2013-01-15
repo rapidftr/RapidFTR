@@ -6,9 +6,9 @@
       <% if I18n.default_locale.to_s != locale %>
           <div class="<%= "translation_forms #{locale}"%> hide">
             <fieldset>
-              <% properties.each do |hash| %>
-                  <label class="label"><%= t(hash.keys.first) %></label>
-                  <%= f.send(hash.values.first, "#{hash.keys.first}_#{locale}".to_sym) %><br>
+              <% properties.each do |property| %>
+                  <label class="label"><%= t(property) %></label>
+                  <%= f.text_field "#{property}_#{locale}".to_sym %><br>
             <% end %>
             </fieldset>
           </div>
