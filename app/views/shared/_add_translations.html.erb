@@ -1,0 +1,17 @@
+<div class="translation">
+  <label><%= t(:provide_translation) %></label>
+  <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
+  <br>
+  <% RapidFTR::Application::LOCALES.each do |locale| %>
+      <% if I18n.default_locale.to_s != locale %>
+          <div class="<%= "translation_forms #{locale}"%> hide">
+            <fieldset>
+              <% properties.each do |property| %>
+                  <label class="label"><%= t(property) %></label>
+                  <%= f.text_field "#{property}_#{locale}".to_sym %><br>
+            <% end %>
+            </fieldset>
+          </div>
+      <% end %>
+  <% end %>
+</div>

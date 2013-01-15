@@ -259,7 +259,7 @@ describe Child do
     end
 
     it "should validate numeric types" do
-      fields = [{:type => 'numeric_field', :name => 'height', :display_name => "height"}]
+      fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"})]
       child = Child.new
       child[:height] = "very tall"
       FormSection.stub!(:all_visible_child_fields).and_return(fields)
@@ -269,9 +269,8 @@ describe Child do
     end
 
     it "should validate multiple numeric types" do
-      fields = [
-        {:type => 'numeric_field', :name => 'height', :display_name => "height"},
-        {:type => 'numeric_field', :name => 'new_age', :display_name => "new age"}]
+      fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"}),
+                Field.new({:type => 'numeric_field', :name => 'new_age', :display_name => "new age"})]
         child = Child.new
         child[:height] = "very tall"
         child[:new_age] = "very old"

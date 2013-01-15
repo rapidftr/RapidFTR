@@ -1,12 +1,11 @@
 class FormSection < CouchRestRails::Document
   include CouchRest::Validation
   include RapidFTR::Model
+  include PropertiesLocalization
 
   use_database :form_section
+  PropertiesLocalization.localize_properties [:name, :help_text, :description]
   property :unique_id
-  property :name
-  property :description
-  property :help_text
   property :enabled, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
@@ -81,15 +80,9 @@ class FormSection < CouchRestRails::Document
     all.find { |form| form.fields.find { |field| field.name == field_name || field.display_name == field_name } }
   end
 
-  def self.create_new_custom name, description = "", help_text = "", enabled=true
-    max_order= (all.map{|form_section| form_section.order}).max || 0
-    form_section = FormSection.new :name=>name,
-                                   :description=>description,
-                                   :help_text=>help_text,
-                                   :enabled=>enabled,
-                                   :order=>max_order+1
-    form_section = create! form_section if form_section.valid?
-    form_section
+  def self.new_with_order form_section
+    form_section[:order] = by_order.last ? (by_order.last.order + 1) : 1
+    FormSection.new(form_section)
   end
 
   def self.change_form_section_state formsection, to_state

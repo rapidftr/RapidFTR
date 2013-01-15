@@ -158,3 +158,13 @@ function getUpdatedOrderings(inputSelector) {
     });
     return form_order;
 }
+
+
+$(function() {
+    $("#locale").change( function(event){
+        var language_field = $(event.target);
+        var locale = language_field.val();
+        $(".translation_forms").hide();
+        $("div ."+locale).show();
+    });
+});

@@ -26,7 +26,9 @@ gem 'capistrano'
 gem 'newrelic_rpm'
 gem 'will_paginate'
 gem "i18n-js"
-gem 'therubyracer'
+gem 'therubyracer' , :platforms => :ruby
+gem 'win32-open3' , :platforms => [:mswin, :mingw]
+gem 'os'
 
 group :development, :assets do
   gem 'sass'
@@ -51,6 +53,7 @@ group :development, :test, :cucumber do
   gem 'rspec-instafail'
 
   gem 'capybara',         '1.0.1'
+  gem 'factory_girl', '~> 2.6'
   gem 'jasmine'
   gem 'pry'
   gem 'mocha'

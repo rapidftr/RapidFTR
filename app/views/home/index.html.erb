@@ -7,7 +7,7 @@
       <%= label_tag "user_time_zone", t("home.current_time_zone") %>
       <%= f.time_zone_select "time_zone" %>
       <%= label_tag "user_locale", t("home.language") %>
-      <%= f.select "locale", [['-',nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']] %>
+      <%= f.select "locale", RapidFTR::Application::LOCALES_WITH_DESCRIPTION %>
       <p class='submitButton' >
         <%= f.submit t("buttons.save") %>
       </p>

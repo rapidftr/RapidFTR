@@ -53,6 +53,8 @@ module RapidFTR
         I18n.backend = I18n::Backend::CustomChain.new(I18nBackendCouch.new, I18n.backend)
     end
 
+    LOCALES = ['en','fr','ar','zh','es','ru']
+    LOCALES_WITH_DESCRIPTION = [['-',nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
     config.gem "jammit"
   end
 end
