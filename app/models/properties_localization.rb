@@ -26,7 +26,7 @@ module PropertiesLocalization
     self.properties.map(&:name).each do |property|
       locale = property[-2..-1]
       property_name = property[0..property.length-4]
-      property_value = self.send(property)
+      property_value = self.get_property_value(property)
       property_value.collect! { |value| value.formatted_hash } if property_value.class == CastedArray
       next if property_value.nil?
       if RapidFTR::Application::LOCALES.include? locale.to_s
@@ -37,4 +37,10 @@ module PropertiesLocalization
     end
     properties_hash
   end
+
+  def get_property_value(property)
+    value = self.send(property)
+    property.include?("option_strings_text") ? value.split("\n") : value if value
+  end
+
 end

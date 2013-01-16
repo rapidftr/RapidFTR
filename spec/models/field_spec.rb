@@ -207,6 +207,12 @@ describe "Child record field view model" do
       field_hash["help_text"].should == {"en" => "help text in english", "fr" => "help text in french"}
     end
 
+    it "should return array for option_strings_text " do
+      field = Field.new(:name => "f_name", :option_strings_text_en => "Yes\nNo")
+      field_hash = field.formatted_hash
+      field_hash["option_strings_text"] == {"en" => ["Yes", "No"]}
+    end
+
   end
 
 
