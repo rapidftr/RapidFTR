@@ -3,12 +3,11 @@ Given /^the following suggested fields exist in the system:$/ do |suggested_fiel
     suggested_field_hash.reverse_merge!(
             'unique_id'=> suggested_field_hash["name"].gsub(/\s/, "_").downcase)
 
-    field = Field.new :name=> suggested_field_hash["name"],
-                      :type=>suggested_field_hash["type"],
+    field = Field.new :name => suggested_field_hash["name"],
+                      :type => suggested_field_hash["type"],
                       :help_text => suggested_field_hash["help_text"],
                       :display_name => suggested_field_hash["display_name"],
-                      :option_strings=>(eval suggested_field_hash["option_strings"])
-
+                      :option_strings_text => (eval suggested_field_hash["option_strings"])
     suggested_field_hash[:field] = field
     suggested_field_hash[:is_used] = false
     temp1 = SuggestedField.create!(suggested_field_hash)
