@@ -33,4 +33,4 @@ public/assets/common.js.gz
 *.pem
 lib/tasks/windows
 vendor/bundle
-
+public/javascripts/translations.js

@@ -114,7 +114,7 @@ Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio
    radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(" ", "")}")
    radio.should_not be_nil
    table.raw.each { |row| radio.css("label").map(&:text).should include row.first }
-   
+
 end
 
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|

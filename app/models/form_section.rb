@@ -92,7 +92,7 @@ class FormSection < CouchRestRails::Document
 
   def properties= properties
     properties.each_pair do |name, value|
-      self[name] = value unless value == nil
+      self.send("#{name}=", value) unless value == nil
     end
   end
 

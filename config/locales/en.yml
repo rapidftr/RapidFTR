@@ -319,6 +319,7 @@ en:
   fields:
     field_name: "Field Name"
     display_name: "Display Name"
+    option_strings_text: "Options"
     form_name: "Form Name"
     action: "Action"
     remove: "remove"

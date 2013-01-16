@@ -166,7 +166,7 @@ describe FormSection do
   describe "add_select_drop_down_field_to_formsection" do
 
     it "adds the select drop down to the formsection" do
-      field = Field.new_select_box("name", "some")
+      field = Field.new_select_box("name", ["some", ""])
       formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
@@ -174,7 +174,7 @@ describe FormSection do
     end
 
     it "saves the formsection with select drop down field" do
-      field = Field.new_select_box("name", "some")
+      field = Field.new_select_box("name", ["some", ""])
       formsection = mock_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field

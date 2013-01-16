@@ -149,8 +149,6 @@ def item_valid(item, json_expectation, expectation_key)
 end
 
 def match_value (input, match_text)
-#  puts input
-#  puts match_text
   #check simple string match?
   checkval = (input == match_text || match_text == "%SOME_STRING%" )
 
@@ -176,7 +174,7 @@ def check_field_validity(input_field)
   return_val = return_val && (input_field.has_key? "editable") && match_value(input_field["editable"], "%SOME_BOOL%")
   return_val = return_val && (input_field.has_key? "type") && match_value(input_field["type"], "%SOME_FIELD_TYPE%")
   if (input_field["type"] == "select_box")
-    return_val = return_val && (input_field.has_key? "option_strings") && (input_field["option_strings"]["en"].class == Array)
+    return_val = return_val && (input_field.has_key? "option_strings_text") && (input_field["option_strings_text"]["en"].split("\n").length > 1)
   end
   return_val = return_val && (input_field.has_key? "display_name") && match_value(input_field["display_name"], "%SOME_STRING%")
   return return_val
