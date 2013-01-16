@@ -18,12 +18,12 @@ class FormSectionController < ApplicationController
       render :new
     end
   end
-  
+
   def edit
     @page_name = t("form_section.edit")
     @form_section = FormSection.get_by_unique_id(params[:id])
   end
-  
+
   def update
     @form_section = FormSection.get_by_unique_id(params[:id])
     @form_section.properties = params[:form_section]
@@ -70,11 +70,11 @@ class FormSectionController < ApplicationController
     form_section.save!
     redirect_to save_field_order_redirect_path
   end
-  
+
   def save_field_order_redirect_path
     request.env['HTTP_REFERER']
   end
-  
+
   def new
     @page_name = t("form_section.create")
     @form_section = FormSection.new(params[:form_section])
@@ -83,5 +83,5 @@ class FormSectionController < ApplicationController
   def save
     puts t("saved")
   end
-  
+
 end

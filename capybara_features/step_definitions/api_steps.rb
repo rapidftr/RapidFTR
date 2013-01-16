@@ -149,8 +149,6 @@ def item_valid(item, json_expectation, expectation_key)
 end
 
 def match_value (input, match_text)
-#  puts input
-#  puts match_text
   #check simple string match?
   checkval = (input == match_text || match_text == "%SOME_STRING%" )
 
@@ -173,14 +171,14 @@ def check_field_validity(input_field)
   return_val = true
   return_val = return_val && (input_field.has_key? "name") && match_value(input_field["name"], "%SOME_STRING%")
   return_val = return_val && (input_field.has_key? "visible") && match_value(input_field["visible"], "%SOME_BOOL%")
-  return_val = return_val && (input_field.has_key? "editable") && match_value(input_field["editable"], "%SOME_BOOL%")
   return_val = return_val && (input_field.has_key? "type") && match_value(input_field["type"], "%SOME_FIELD_TYPE%")
   if (input_field["type"] == "select_box")
-    return_val = return_val && (input_field.has_key? "option_strings") && (input_field["option_strings"]["en"].class == Array)
+    return_val = return_val && (input_field.has_key? "option_strings_text") && (input_field["option_strings_text"]["en"].class == Array)
   end
-  return_val = return_val && (input_field.has_key? "display_name") && match_value(input_field["display_name"], "%SOME_STRING%")
+  return_val = return_val && (input_field.has_key? "display_name") && match_value(input_field["display_name"]["en"], "%SOME_STRING%")
   return return_val
 end
+
 def check_field_array_validity (input_field_array)
   input_field_array.each{|field| if check_field_validity(field) == false then return false end}
   return true

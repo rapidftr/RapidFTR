@@ -29,5 +29,8 @@ features/resources/huge.jpg
 features/resources/huge.mp3
 public/assets/*
 public/assets/common.js.gz
+
 *.pem
+lib/tasks/windows
 vendor/bundle
+public/javascripts/translations.js

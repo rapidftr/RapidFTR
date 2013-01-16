@@ -5,7 +5,7 @@ FormSection.all.each do |form_section|
   form_section.fields.each do |field|
     field.display_name_en = field.display_name
     field.help_text_en = field.help_text
-    field.option_strings_en = field.option_strings
+    field.option_strings_text_en = field.option_strings_text
   end
   form_section.save!
 end
