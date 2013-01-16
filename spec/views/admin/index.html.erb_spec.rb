@@ -26,4 +26,9 @@ describe 'admin/index.html.erb' do
     it { should have_link 'Highlight Fields', highlight_fields_path }
   end
 
+  describe 'with manage replications permission' do
+    let(:permissions) { [Permission::SYSTEM[:replications]] }
+    it { should have_link 'Manage Replications', replications_path }
+  end
+
 end

@@ -63,3 +63,12 @@ var FormFields = {
 
 $.plugin('formFields', FormFields);
 
+$(function() {
+    $("#locale").change( function(event){
+        var language_field = $(event.target);
+        var locale = language_field.val();
+        $(".translation_fields").hide();
+        $("div ."+locale).show();
+    });
+});
+

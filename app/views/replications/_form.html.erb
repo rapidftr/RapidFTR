@@ -1,0 +1,25 @@
+<%= form_for @replication,
+      :url => @replication.new? ? replications_path : replication_path(@replication), 
+      :method => @replication.new? ? :post : :put,
+      :html => { :class => 'default-form' } do |f| %>
+
+  <%= f.error_messages :header_tag => :h3 %>
+  <div class="clearfix"></div>
+
+  <fieldset>
+    <p>
+      <%= f.label :description, t("replication.description"), :class => "key" %>
+      <%= f.text_field :description %>
+    </p>
+
+    <p>
+      <%= f.label :remote_url, t("replication.remote_url"), :class => "key" %>
+      <%= f.text_field :remote_url %>
+    </p>
+  </fieldset>
+
+  <div class="btn_panel">
+    <%= cancel_button replications_path %>
+    <%= submit_button t("buttons.save") %>
+  </div>
+<% end %>

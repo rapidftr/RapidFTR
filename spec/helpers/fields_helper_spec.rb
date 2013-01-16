@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FieldsHelper do
-   
+
   before :each do
     @fields_helper = Object.new.extend FieldsHelper
   end
@@ -11,7 +11,7 @@ describe FieldsHelper do
      second_form = FormSection.new(:name => "Third Form", :unique_id => "third_form")
      third_form = FormSection.new(:name => "Middle Form", :unique_id => "middle_form")
      FormSection.stub(:all).and_return [first_form, second_form, third_form]
-     
+
      @fields_helper.forms_for_display.should == [["First Form", "first_form"], ["Middle Form", "middle_form"], ["Third Form", "third_form"]]
    end
 
@@ -28,8 +28,8 @@ describe FieldsHelper do
 
     it "should return array of hidden fields for array of suggestions" do
       form = double("form helper")
-      form.should_receive(:hidden_field).with("option_strings", hash_including(:multiple => true, :id => "option_string_1", :value => "1")).once.and_return("X")
-      form.should_receive(:hidden_field).with("option_strings", hash_including(:multiple => true, :id => "option_string_2", :value => "2")).once.and_return("Y")
+      form.should_receive(:hidden_field).with("option_strings_text", hash_including(:multiple => true, :id => "option_string_1", :value => "1\n")).once.and_return("X")
+      form.should_receive(:hidden_field).with("option_strings_text", hash_including(:multiple => true, :id => "option_string_2", :value => "2\n")).once.and_return("Y")
 
       suggested_field = double(:field => double(:option_strings => ["1", "2"]))
       option_fields = @fields_helper.option_fields_for(form, suggested_field)

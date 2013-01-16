@@ -193,6 +193,12 @@ describe Ability do
     end
   end
 
+  describe "replications" do
+    let(:permissions) { [Permission::SYSTEM[:replications]] }
+    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field }
+    it { should authorize :manage, Replication }
+  end
+
   context 'other' do
     describe "system settings" do
       let(:permissions) { [Permission::SYSTEM[:settings]] }

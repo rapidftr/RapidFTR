@@ -130,8 +130,8 @@ describe User do
   end
 
   it "can't look up password in database" do
-    user = build_and_save_user(:disabled => "true", :password => "thepass")
-    user.authenticate("thepass").should be_false
+    user = build_and_save_user(:password => "thepass")
+    User.get(user.id).password.should be_nil
   end
 
   it "can authenticate if not disabled" do

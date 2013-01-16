@@ -11,11 +11,13 @@
           <%= render :partial => "common", :locals => {:f => f} %>
         </fieldset>
         <br>
+
+        <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}], :f => f}%>
         <div class="btn_panel">
           <%= cancel_button(choose_field_path(@form_section.unique_id)) %>
           <p class='submitButton'>
-          <%= f.submit 'Save' %>
-        </p>
+            <%= f.submit 'Save' %>
+          </p>
         </div>
     <% end %>
   </div>

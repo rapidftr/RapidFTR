@@ -2,16 +2,15 @@ class Field < Hash
   include CouchRest::CastedModel
   include CouchRest::Validation
   include RapidFTR::Model
+  include PropertiesLocalization
+
 
   property :name
-  property :display_name
   property :visible, :cast_as => 'boolean', :default => true
-  property :help_text
   property :type
-  property :option_strings
   property :highlight_information , :cast_as=> 'HighlightInformation'
   property :editable, :cast_as => 'boolean', :default => true
-
+  PropertiesLocalization.localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
 
   TEXT_FIELD = "text_field"
@@ -60,6 +59,7 @@ class Field < Hash
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
 
+
   def form
     base_doc
   end
@@ -90,23 +90,21 @@ class Field < Hash
   end
 
   def attributes= properties
-    option_strings_text = properties.delete('option_strings_text')
     super properties
-    self.option_strings_text = option_strings_text
     if (option_strings)
       @options = FieldOption.create_field_options(name, option_strings)
     end
   end
 
-  def option_strings_text= value
+  def option_strings= value
     if value && value.class != Array
-      self[:option_strings] = value.split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
+      self.option_strings_text = value.split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
     end
   end
 
-  def option_strings_text
-    return "" unless  self[:option_strings]
-    self[:option_strings].join("\n")
+  def option_strings
+    return "" unless  self.option_strings_text
+    self.option_strings_text.split("\n")
   end
 
   def default_value
@@ -144,11 +142,11 @@ class Field < Hash
 
   #TODO - remove this is just for testing
   def self.new_field(type, name, options=[])
-    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :visible => true, :option_strings => options
+    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :visible => true, :option_strings_text => options.join("\n")
   end
 
   def self.new_check_boxes_field field_name, display_name = nil, option_strings = []
-    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :visible => true, :option_strings => option_strings
+    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :visible => true, :option_strings_text => option_strings.join("\n")
   end
 
   def self.new_text_field field_name, display_name = nil
@@ -168,11 +166,11 @@ class Field < Hash
   end
 
   def self.new_radio_button field_name, option_strings, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => RADIO_BUTTON, :option_strings => option_strings
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => RADIO_BUTTON, :option_strings_text => option_strings.join("\n")
   end
 
   def self.new_select_box field_name, option_strings, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings => option_strings
+    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings_text => option_strings.join("\n")
   end
 
   private
