@@ -11,7 +11,7 @@ FactoryGirl.define do
   end
 
   factory :change_password_form, :class => Forms::ChangePasswordForm do
-    #association :user
+    association :user
     old_password "old_password"
     new_password "new_password"
     new_password_confirmation "confirm_new_password"
