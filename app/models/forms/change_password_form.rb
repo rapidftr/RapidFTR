@@ -8,6 +8,7 @@ module Forms
     attr_accessor :user, :old_password, :new_password, :new_password_confirmation
 
     validates :old_password, :presence => true
+    validates :user, :presence => true
 
     def initialize(attributes={})
       attributes.each do |name, value|
