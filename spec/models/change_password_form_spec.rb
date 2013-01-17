@@ -51,6 +51,12 @@ describe Forms::ChangePasswordForm do
       password_form.valid?
       password_form.errors[:old_password].should == ["does not match current password"]
     end
+
+    it "should be valid if old password match existing one" do
+      password_form = build :change_password_form, :old_password => "password"
+      password_form.valid?
+      password_form.errors[:old_password].should be_empty
+    end
   end
 
   describe "Reset" do
@@ -61,6 +67,46 @@ describe Forms::ChangePasswordForm do
       password_form.new_password.should == ''
       password_form.new_password_confirmation.should == ''
     end
+  end
 
+  describe "Execute" do
+    it "should set user password to new password if all valid" do
+      password_form = build :change_password_form, :old_password => "password",
+                            :new_password => "new_password",
+                            :new_password_confirmation => "new_password"
+      password_before_execution = password_form.user.crypted_password
+      password_form.execute
+      password_after_execution = password_form.user.crypted_password
+
+      password_after_execution.should_not == password_before_execution
+    end
+
+    it "should not set new password when not valid" do
+      password_form = build :change_password_form, :old_password => "password",
+                            :new_password => "new_password",
+                            :new_password_confirmation => "wrong_new_password"
+      password_before_execution = password_form.user.crypted_password
+      password_form.execute
+      password_after_execution = password_form.user.crypted_password
+      password_before_execution.should == password_after_execution
+    end
+
+    it "should reset all fields when not valid" do
+      password_form = build :change_password_form, :old_password => "password",
+                            :new_password => "new_password",
+                            :new_password_confirmation => "wrong_new_password"
+      password_form.execute
+      password_form.old_password.should == ''
+      password_form.new_password.should == ''
+      password_form.new_password_confirmation.should == ''
+    end
+
+    it "should return false when not valid" do
+      password_form = build :change_password_form, :old_password => "password",
+                            :new_password => "new_password",
+                            :new_password_confirmation => "wrong_new_password"
+
+      password_form.execute.should be_false
+    end
   end
 end

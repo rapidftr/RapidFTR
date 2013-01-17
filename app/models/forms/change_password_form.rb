@@ -34,6 +34,17 @@ module Forms
       self.new_password_confirmation = ''
     end
 
+    def execute
+        if valid?
+          user.password = new_password
+          user.password_confirmation = new_password_confirmation
+          user.save
+        else
+          reset
+          false
+        end
+    end
+
     def persisted?
       false
     end
