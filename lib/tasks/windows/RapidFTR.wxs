@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' 
+     xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
+  <Product Name='RapidFTR 1.0' Language='1033' Codepage='1252' Version='1.0' 
+           Id='5d25814c-66b4-4ae6-afb5-0334010ca6bd'
+           UpgradeCode='11bcc895-150a-47b6-b559-ada08ba7e6e3' Manufacturer='UNICEF'>
+
+    <Package Id='*' 
+             Keywords='Installer' Description='RapidFTR Installer' Comments='RapidFTR Installer' 
+             InstallerVersion='110' InstallScope='perUser' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+
+    <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' />
+
+    <Property Id="INSTALLDIR">
+      <RegistrySearch Id='RegistryInstallDir' Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Name='InstallDir' Type='raw' />
+    </Property>
+    <Property Id='JDK_VERSION'>
+      <RegistrySearch Id='JDK_VERSION_REGSEARCH' Root='HKLM' Key='SOFTWARE\JavaSoft\Java Development Kit' Name='CurrentVersion' Type='raw' />
+    </Property>
+    <Property Id='JDK_HOME'>
+      <RegistrySearch Id='JDK_HOME_REGSEARCH' Root='HKLM' Key='SOFTWARE\JavaSoft\Java Development Kit\[JDK_VERSION]' Name='JavaHome' Type='directory' />
+    </Property>
+    <Property Id='COUCH_HOME'>
+      <RegistrySearch Id='COUCH_HOME_SEARCH' Root='HKLM' Key='SOFTWARE\Ericsson\Erlang\ErlSrv\1.1\Apache CouchDB' Name='WorkDir' Type='directory' />
+    </Property>
+    <Property Id='RAILS_HOME'>
+      <RegistrySearch Id='RAILS_HOME_SEARCH' Root='HKCU' Key='SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{613C3EA5-1248-4E35-B61A-6D0B31BBC0DB}_is1' Name='InstallLocation' Type='directory' />
+    </Property>
+    <Property Id='RAILS_VERSION'>
+      <RegistrySearch Id='RAILS_VERSION_SEARCH' Root='HKCU' Key='SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{613C3EA5-1248-4E35-B61A-6D0B31BBC0DB}_is1' Name='DisplayVersion' Type='raw' />
+    </Property>
+
+    <Condition Message="Java Development Kit is not properly installed or outdated. Please install Oracle JDK 1.6 or later">
+      (JDK_VERSION >= "1.6") OR JDK_HOME
+    </Condition>
+    <Condition Message="CouchDB is not properly installed or outdated. Please install CouchDB 1.1">
+      COUCH_HOME
+    </Condition>
+    <Condition Message="RailsInstaller has not been installed. Please install RailsInstaller 1.3.0">
+      RAILS_VERSION = "1.3.0"
+    </Condition>
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='LocalAppDataFolder' Name='PFiles'>
+        <Directory Id='INSTALLDIR' Name='RapidFTR'>
+          <Directory Id='AppDir' Name='App'>
+            <Component Id='Codebase' Guid='c189d388-56e0-4e1c-84d7-e049529174b0'>
+              <Condition>NOT (ALLUSERS)</Condition>
+              <RegistryValue Id='CodebaseReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='Codebase' Value='1' Type='integer' KeyPath='yes' />
+              <File Id='CodebaseJar' Name='Codebase.jar' DiskId='1' Source='Codebase.jar' />
+              <util:RemoveFolderEx On='uninstall' Property='AppDir' />
+              <RemoveFolder Id='AppDir' On='uninstall' />
+            </Component>
+          </Directory>
+
+          <Component Id='License' Guid='a739732b-8986-4f5d-bf9f-e08ef0fc9ad4'>
+            <Condition>NOT (ALLUSERS)</Condition>
+            <RegistryValue Id='LicenseReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='License' Value='1' Type='integer' KeyPath='yes' />
+            <File Id='LicenseRtf' Name='License.rtf' DiskId='1' Source='License.rtf' />
+          </Component>
+
+          <Component Id='Launcher' Guid='2fdb6111-1a74-4bd6-a708-6789c3a17d54'>
+            <Condition>NOT (ALLUSERS)</Condition>
+            <RegistryValue Id='LauncherReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='Launcher' Value='1' Type='integer' KeyPath='yes' />
+            <File Id='LauncherBat' Name='Launch.bat' DiskId='1' Source='Launch.bat'>
+              <Shortcut Id='StartMenuLauncher' Directory='ProgramMenuDir' Name='RapidFTR Server' 
+                        WorkingDirectory='INSTALLDIR' Icon='Icon.ico' Advertise='no' />
+              <Shortcut Id='DesktopLauncher' Directory='DesktopFolder'  Name='RapidFTR Server' 
+                        WorkingDirectory='INSTALLDIR' Icon='Icon.ico' Advertise='no' />
+            </File>
+            <util:RemoveFolderEx On='uninstall' Property='INSTALLDIR' />
+            <RemoveFolder Id='INSTALLDIR' On='uninstall' />
+          </Component>
+
+          <Component Id='Reset' Guid='dbf4eee4-1035-4335-b304-9ec716cd88a7'>
+            <Condition>NOT (ALLUSERS)</Condition>
+            <RegistryValue Id='ResetReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='Reset' Value='1' Type='integer' KeyPath='yes' />
+            <File Id='ResetBat' Hidden='yes' DiskId='1' Source='Reset.bat' />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id='ProgramMenuFolder' Name='Programs'>
+        <Directory Id='ProgramMenuDir' Name='RapidFTR'>
+          <Component Id='ProgramMenuDir' Guid='9d600938-756e-4122-8a13-210e36a5adab'>
+            <Condition>NOT (ALLUSERS)</Condition>
+            <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]' Type='string' Value='' KeyPath='yes' />
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <Icon Id="Icon.ico" SourceFile="Icon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="Icon.ico" />
+
+    <Feature Id='Complete' Title='Complete' Display='expand' ConfigurableDirectory='INSTALLDIR' Level='1'>
+      <Feature Id='MainProgram' Title='RapidFTR' Level='1'>
+        <ComponentRef Id='License' />
+        <ComponentRef Id='Codebase' />
+        <ComponentRef Id='Launcher' />
+        <ComponentRef Id='Reset' />
+        <ComponentRef Id='ProgramMenuDir' />
+      </Feature>
+    </Feature>
+
+    <WixVariable Id='WixUILicenseRtf' Value='License.rtf' />
+    <Property Id='WIXUI_INSTALLDIR' Value='INSTALLDIR' />
+    <UIRef Id='WixUI_InstallDir' />
+    <UIRef Id='WixUI_ErrorProgressText' />
+
+    <UI>
+      <ProgressText Action='ExtractCodeBase'>Extracting RapidFTR Application... (this may take a few minutes)</ProgressText>
+    </UI>
+
+    <CustomAction Id='ExtractCodebase' Directory='AppDir' Return='check' Execute='deferred' Impersonate='yes'
+                  ExeCommand='&quot;[JDK_HOME]bin\\jar.exe&quot; -xf Codebase.jar' />
+    <CustomAction Id='ResetApp' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes' 
+                  ExeCommand='cmd.exe /C &quot;Reset.bat [RAILS_HOME]\Ruby1.8.7\bin&quot;' />
+
+    <InstallExecuteSequence>
+      <Custom Action='ExtractCodebase' Before='InstallFinalize'>NOT Installed</Custom>
+      <Custom Action='ResetApp' Before='InstallFinalize'>NOT Installed</Custom>
+    </InstallExecuteSequence>
+  </Product>
+</Wix>
