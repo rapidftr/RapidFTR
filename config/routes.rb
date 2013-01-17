@@ -30,7 +30,13 @@ RapidFTR::Application.routes.draw do
   match '/children' => 'children#index', :as => :child_filter
 
 
-  resources :users
+  resources :users do
+    collection do
+      get :change_password
+      post :update_password
+    end
+  end
+
   resources :user_preferences
   resources :devices
   match 'devices/update_blacklist' => 'devices#update_blacklist', :via => :post

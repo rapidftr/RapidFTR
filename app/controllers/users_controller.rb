@@ -50,7 +50,7 @@ class UsersController < ApplicationController
     authorize! :disable, @user if params[:user].include?(:disabled)
     authorize! :update, @user  if params[:user].except(:disabled).present?
 
-    if @user.update_attributes(params[:user])
+    if (@user.update_attributes(params[:user]))
       if request.xhr?
         render :text => "OK"
       else
@@ -90,6 +90,5 @@ class UsersController < ApplicationController
           :token => form_authenticity_token
       }
     end
-  end
-
+   end
 end
