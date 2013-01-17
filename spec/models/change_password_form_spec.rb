@@ -52,4 +52,15 @@ describe Forms::ChangePasswordForm do
       password_form.errors[:old_password].should == ["does not match current password"]
     end
   end
+
+  describe "Reset" do
+    it "should reset all fields" do
+      password_form = build :change_password_form
+      password_form.reset
+      password_form.old_password.should == ''
+      password_form.new_password.should == ''
+      password_form.new_password_confirmation.should == ''
+    end
+
+  end
 end

@@ -28,6 +28,11 @@ module Forms
         end
     end
 
+    def reset
+      self.old_password = ''
+      self.new_password = ''
+      self.new_password_confirmation = ''
+    end
 
     def persisted?
       false
