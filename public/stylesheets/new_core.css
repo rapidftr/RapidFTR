@@ -644,6 +644,61 @@ body {
       display: inline-block;
       background: url("../images/new/icon_replicate_triggered.gif") no-repeat; }
 
+.form_page .default_lang_panel {
+  float: left;
+  padding: 5px; }
+.form_page .translation_lang_panel {
+  float: left;
+  padding: 5px; }
+.form_page .lang_title {
+  color: #666;
+  display: inline-block;
+  min-height: 25px;
+  font-size: 1.1em; }
+  .form_page .lang_title span {
+    color: #000; }
+  .form_page .lang_title select {
+    width: auto !important;
+    padding: 0px !important;
+    font-size: 0.8em; }
+.form_page fieldset {
+  border: 1px solid #ddd; }
+  .form_page fieldset .key {
+    width: 175px; }
+.form_page .chkbox_visible {
+  padding: 10px; }
+.form_page h3 {
+  border-bottom: 1px solid #aaa;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 2px 0px 5px; }
+.form_page .add_field {
+  padding: 5px;
+  display: inline-block; }
+.form_page .fields_section {
+  background: #eee;
+  padding: 10px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px; }
+  .form_page .fields_section ul.field_types {
+    border-bottom: 1px solid #ddd; }
+    .form_page .fields_section ul.field_types li {
+      float: left;
+      padding: 5px 20px 15px; }
+      .form_page .fields_section ul.field_types li a {
+        padding: 5px 10px; }
+        .form_page .fields_section ul.field_types li a.sel {
+          background: #1d76fb;
+          color: #fff;
+          -moz-border-radius: 15px;
+          -webkit-border-radius: 15px;
+          -o-border-radius: 15px;
+          border-radius: 15px; }
+  .form_page .fields_section fieldset .key {
+    width: 170px; }
+
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
   border: 1px solid #d4d1d1;

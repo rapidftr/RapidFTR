@@ -5,8 +5,32 @@ $(document).ready(function() {
     $("a.moveUp").click(moveUp);
     $("input#save_order").click(saveOrder);
     $("input#save_field_order").click(saveFieldOrder);
+    $("a.add_field").click(toggleFieldSection);
+    $("ul.field_types a").click(showFieldDetails);
     $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
 });
+
+function toggleFieldSection(){
+    $(".fields_section").toggleClass("hide");
+}
+
+function showFieldDetails(){
+    $("ul.field_types a").removeClass("sel");
+    $(this).addClass("sel");
+    var fieldtype1 = ["text_field","text_area","numeric_field","date_field"];
+    var fieldtype2 = ["check_box","radio_btn","select_box"];
+
+    $("#field_details_options, #field_details").slideUp("fast");
+
+    if ($.inArray(this.id, fieldtype1) > -1)
+    {
+        $("#field_details").slideDown("fast");
+    }
+    else
+    {
+            $("#field_details_options").slideDown("fast");
+    }
+}
 
 function onFormSectionDetailsEditPage() {
     return $('#editFormDetails').length === 1;
