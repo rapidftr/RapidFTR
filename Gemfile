@@ -26,6 +26,7 @@ gem 'capistrano'
 gem 'newrelic_rpm'
 gem 'will_paginate'
 gem "i18n-js"
+gem 'libv8', '3.11.8.13', :platform => :ruby
 gem 'therubyracer' , :platforms => :ruby
 gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
