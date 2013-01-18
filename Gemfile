@@ -31,7 +31,7 @@ gem 'therubyracer' , :platforms => :ruby
 gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
 gem 'thin'
-
+gem 'rubyzip'
 
 group :development, :assets do
   gem 'sass'

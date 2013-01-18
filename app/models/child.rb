@@ -448,7 +448,8 @@ class Child < CouchRestRails::Document
 
   def update_history
     if field_name_changes.any?
-      add_to_history(changes_for(field_name_changes))
+      changes = changes_for(field_name_changes)
+      (add_to_history(changes) unless (!self['histories'].empty? && (self['histories'].last["changes"].to_s.include? changes.to_s)))
     end
   end
 
