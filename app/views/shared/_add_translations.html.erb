@@ -7,10 +7,10 @@
           <div class="<%= "translation_forms #{locale}"%> hide">
             <fieldset>
               <% properties.each do |property_hash| %>
-                  <p>
+                  <div>
                   <label class="key"><%= t(property_hash.keys.first.to_sym) %></label>
                   <%= f.send "#{property_hash.values.first}", "#{property_hash.keys.first}_#{locale}".to_sym %>
-                  </p>
+                  </div>
             <% end %>
             </fieldset>
           </div>

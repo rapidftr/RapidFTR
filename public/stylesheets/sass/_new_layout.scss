@@ -576,20 +576,36 @@ body {
 }
 
 .form_page{
+  .form_details_panel{
+    background: #eee;
+    border:1px solid #ddd;
+    border-radius: 5px;
+    padding:10px;
+
+
+
+    .chkbox_visible{
+      padding:10px;
+    }
+  }
+
   .default_lang_panel{
     float:left;
     padding:5px;
+    width:445px;
   }
   .translation_lang_panel{
     float:left;
     padding:5px;
-
+    width:445px;
   }
+
   .lang_title{
     color:#666;
-    display: inline-block;
     min-height: 25px;
-    font-size: 1.1em;
+    border-bottom:1px solid #ccc;
+    margin-bottom: 10px;
+
     span{
       color:#000;
 
@@ -601,21 +617,32 @@ body {
       font-size: 0.8em;
     }
   }
+
   fieldset{
-    border:1px solid #ddd;
-    .key{
-      width:175px;
+    background: #fff;
+    border-radius: 5px;
+    padding:10px 0px;
+
+    div{
+      @extend .clearfix;
+      padding:7px 10px;
+
+
+      .key{
+        width:165px;
+        float:left;
+      }
+      input, textarea{
+        float: left;
+      }
     }
-  }
-  .chkbox_visible{
-    padding:10px;
   }
 
   h3{
     border-bottom:1px solid #aaa;
     font-size:1.1em;
     font-weight: bold;
-    padding:2px 0px 5px;
+    padding:20px 0px 10px;
   }
 
   .add_field{
@@ -648,11 +675,6 @@ body {
 
     }
 
-    fieldset{
-      .key{
-        width:170px;
-      }
 
-    }
   }
 }

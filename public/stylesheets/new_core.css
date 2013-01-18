@@ -44,15 +44,15 @@ a:hover {
   color: #0096ff; }
 
 /* For modern browsers */
-.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .form_page fieldset div:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   content: "";
   display: table; }
 
-.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   clear: both; }
 
 /* For IE 6/7 (trigger hasLayout) */
-.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
+.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .form_page fieldset div, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
   zoom: 1; }
 
 .hide {
@@ -644,17 +644,26 @@ body {
       display: inline-block;
       background: url("../images/new/icon_replicate_triggered.gif") no-repeat; }
 
+.form_page .form_details_panel {
+  background: #eee;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px; }
+  .form_page .form_details_panel .chkbox_visible {
+    padding: 10px; }
 .form_page .default_lang_panel {
   float: left;
-  padding: 5px; }
+  padding: 5px;
+  width: 445px; }
 .form_page .translation_lang_panel {
   float: left;
-  padding: 5px; }
+  padding: 5px;
+  width: 445px; }
 .form_page .lang_title {
   color: #666;
-  display: inline-block;
   min-height: 25px;
-  font-size: 1.1em; }
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px; }
   .form_page .lang_title span {
     color: #000; }
   .form_page .lang_title select {
@@ -662,16 +671,21 @@ body {
     padding: 0px !important;
     font-size: 0.8em; }
 .form_page fieldset {
-  border: 1px solid #dddddd; }
-  .form_page fieldset .key {
-    width: 175px; }
-.form_page .chkbox_visible {
-  padding: 10px; }
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px 0px; }
+  .form_page fieldset div {
+    padding: 7px 10px; }
+    .form_page fieldset div .key {
+      width: 165px;
+      float: left; }
+    .form_page fieldset div input, .form_page fieldset div textarea {
+      float: left; }
 .form_page h3 {
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #aaa;
   font-size: 1.1em;
   font-weight: bold;
-  padding: 2px 0px 5px; }
+  padding: 20px 0px 10px; }
 .form_page .add_field {
   padding: 5px;
   display: inline-block; }
@@ -683,7 +697,7 @@ body {
   -o-border-radius: 5px;
   border-radius: 5px; }
   .form_page .fields_section ul.field_types {
-    border-bottom: 1px solid #dddddd; }
+    border-bottom: 1px solid #ddd; }
     .form_page .fields_section ul.field_types li {
       float: left;
       padding: 5px 20px 15px; }
@@ -696,8 +710,6 @@ body {
           -webkit-border-radius: 15px;
           -o-border-radius: 15px;
           border-radius: 15px; }
-  .form_page .fields_section fieldset .key {
-    width: 170px; }
 
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
