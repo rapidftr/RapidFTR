@@ -11,7 +11,7 @@ namespace :app do
   end
 
   desc "Start the thin server in development mode with Sunspot running"
-  task :run_with_thin => %w( db:migrate sunspot:stop sunspot:start app:assets_precompile) do
+  task :run_with_thin => %w( db:migrate sunspot:stop sunspot:clean_start app:assets_precompile) do
     sh 'bundle exec rails server thin -d'
   end
 

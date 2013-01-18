@@ -7,11 +7,13 @@ E_BADARGS=65
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
-  echo "Usage: `basename $0` {start|stop}"
+  echo "Usage: `basename $0` {start|stop|restart}"
   exit $E_BADARGS
 fi
 
 cd $RAPIDFTR_INSTALLDIR
+
+export RAILS_ENV=production
 
 case "$1" in
   start)
@@ -25,7 +27,7 @@ case "$1" in
     bundle exec rake app:run_with_thin
     ;;
   *)
-  echo "Usage: $0 {start|stop}"
+  echo "Usage: $0 {start|stop|restart}"
   exit 1
   ;;
 esac
