@@ -63,6 +63,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def change_password
+    @change_password_request = Forms::ChangePasswordForm.new(:user => current_user)
+  end
+
+  def update_password
+    @change_password_request = Forms::ChangePasswordForm.new params[:forms_change_password_form]
+    @change_password_request.user = current_user
+    if @change_password_request.execute
+      flash[:notice] = 'Password changed successfully'
+      redirect_to user_path(current_user.id)
+    else
+      render :change_password
+    end
+  end
+
   def destroy
     authorize! :destroy, @user
     @user.destroy
@@ -90,5 +105,5 @@ class UsersController < ApplicationController
           :token => form_authenticity_token
       }
     end
-   end
+  end
 end

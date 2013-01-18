@@ -247,4 +247,37 @@ describe UsersController do
     end
   end
 
+  describe "GET change_password" do
+    before :each do
+      @user = User.new(:user_name => 'fakeuser')
+      @mock_change_form = mock()
+      fake_login @user
+      @mock_params = mock()
+      Forms::ChangePasswordForm.stub(:new).with(@mock_params).and_return(@mock_change_form)
+    end
+
+    it "should show update password form" do
+      Forms::ChangePasswordForm.stub(:new).with(:user => @user).and_return(@mock_change_form)
+      get :change_password
+      assigns[:change_password_request].should == @mock_change_form
+      response.should render_template :change_password
+    end
+
+    it "should make password request from parameters" do
+      @mock_change_form.should_receive(:user=).with(@user).and_return(nil)
+      @mock_change_form.should_receive(:execute).and_return(true)
+
+      post :update_password, { :forms_change_password_form => @mock_params }
+      flash[:notice].should == "Password changed successfully"
+      response.should redirect_to :action => :show, :id => @user.id
+    end
+
+    it "should show error when any of the fields is wrong" do
+      @mock_change_form.should_receive(:user=).with(@user).and_return(nil)
+      @mock_change_form.should_receive(:execute).and_return(false)
+
+      post :update_password, { :forms_change_password_form => @mock_params }
+      response.should render_template :change_password
+    end
+  end
 end
