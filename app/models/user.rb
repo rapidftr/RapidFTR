@@ -6,6 +6,7 @@ class User < CouchRestRails::Document
 
   property :full_name
   property :user_name
+  property :verified
   property :crypted_password
   property :salt
 
