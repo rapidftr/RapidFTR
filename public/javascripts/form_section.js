@@ -5,13 +5,16 @@ $(document).ready(function() {
     $("a.moveUp").click(moveUp);
     $("input#save_order").click(saveOrder);
     $("input#save_field_order").click(saveFieldOrder);
-    $("a.add_field").click(toggleFieldSection);
+    $("a.add_field").click(toggleFieldPanel);
     $("ul.field_types a").click(showFieldDetails);
     $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
+    $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
 });
 
-function toggleFieldSection(){
-    $(".fields_section").toggleClass("hide");
+function toggleFieldPanel(){
+    $(".field_details_overlay").css("height",document.height);
+    $(".field_details_overlay").toggleClass("hide");
+    $(".field_details_panel").toggleClass("hide");
 }
 
 function showFieldDetails(){

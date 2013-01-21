@@ -88,6 +88,12 @@ a:hover {
   box-shadow: $attr;
 }
 
+@mixin opacity( $value: 0.5 ) {
+  opacity: $value;
+  filter: alpha(opacity= $value * 100 );
+  zoom: 1;
+}
+
 input[type=text], input[type=password], textarea, input[type=file], select {
   background: $bg-textbox;
   font-size: 1em;

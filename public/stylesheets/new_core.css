@@ -44,15 +44,15 @@ a:hover {
   color: #0096ff; }
 
 /* For modern browsers */
-.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .form_page fieldset div:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .form_page fieldset div:before, .form_page h3:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .form_page h3:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   content: "";
   display: table; }
 
-.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .form_page h3:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   clear: both; }
 
 /* For IE 6/7 (trigger hasLayout) */
-.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .form_page fieldset div, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
+.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .form_page fieldset div, .form_page h3, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
   zoom: 1; }
 
 .hide {
@@ -399,7 +399,7 @@ body {
           padding: 10px;
           background: #fff;
           min-height: 350px;
-          position: relative; }
+          /* position: relative;*/ }
           body .page_container .page-content .page-content-new .side-tab-content h2 {
             font-size: 1.2em;
             color: #000;
@@ -685,25 +685,43 @@ body {
   border-bottom: 1px solid #aaa;
   font-size: 1.1em;
   font-weight: bold;
-  padding: 20px 0px 10px; }
-.form_page .add_field {
-  padding: 5px;
-  display: inline-block; }
-.form_page .fields_section {
+  padding: 20px 0px 0px; }
+  .form_page h3 .add_field {
+    padding: 5px;
+    float: right;
+    font-weight: normal;
+    font-size: 0.9em; }
+.form_page .field_details_overlay {
+  background: #000;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+  zoom: 1;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0; }
+.form_page .field_details_panel {
   background: #eee;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   padding: 10px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px; }
-  .form_page .fields_section ul.field_types {
-    border-bottom: 1px solid #ddd; }
-    .form_page .fields_section ul.field_types li {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  zoom: 1;
+  width: 920px;
+  margin: 40px auto 0px;
+  position: absolute;
+  top: 0; }
+  .form_page .field_details_panel ul.field_types {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px; }
+    .form_page .field_details_panel ul.field_types li {
       float: left;
-      padding: 5px 20px 15px; }
-      .form_page .fields_section ul.field_types li a {
+      padding: 5px 15px 15px; }
+      .form_page .field_details_panel ul.field_types li a {
         padding: 5px 10px; }
-        .form_page .fields_section ul.field_types li a.sel {
+        .form_page .field_details_panel ul.field_types li a.sel {
           background: #1d76fb;
           color: #fff;
           -moz-border-radius: 15px;

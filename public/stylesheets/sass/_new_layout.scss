@@ -180,7 +180,7 @@ body {
           padding: 10px;
           background: #fff;
           min-height: 350px;
-          position: relative;
+          /* position: relative;*/
 
           h2 {
             font-size: 1.2em;
@@ -642,25 +642,44 @@ body {
     border-bottom:1px solid #aaa;
     font-size:1.1em;
     font-weight: bold;
-    padding:20px 0px 10px;
+    padding:20px 0px 0px;
+    @extend .clearfix;
+
+    .add_field{
+      padding:5px;
+      float:right;
+      font-weight: normal;
+      font-size: 0.9em;
+    }
   }
 
-  .add_field{
-    padding:5px;
-    display: inline-block;
+  .field_details_overlay{
+    background: #000;
+    @include opacity(0.7);
+    height:100%;
+    width:100%;
+    position: absolute;
+    top:0;
+    left:0;
   }
 
-  .fields_section{
-    background:#eee;
+  .field_details_panel{
+    background: #eee;
+    border:1px solid #ddd;
+    border-radius: 5px;
     padding:10px;
-    @include borderRadius(5px);
+    @include opacity(1);
+    width:920px;
+    margin:40px auto 0px;
+    position: absolute;
+    top:0;
 
     ul.field_types{
-      border-bottom: 1px solid #ddd;
-
+      border-bottom: 1px solid #ccc;
+      margin-bottom:10px;
       li{
         float:left;
-        padding:5px 20px 15px;
+        padding:5px 15px 15px;
 
         a{
           padding:5px 10px;
@@ -676,5 +695,10 @@ body {
     }
 
 
+
+
   }
+
+
 }
+

@@ -37,9 +37,11 @@
               <%= f.check_box :visible?, {}, true, false %>
             </p>
         <% end %>
+        </div>
+    <h3><%= t("fields.label") %><%= link_to t("fields.add"),"javascript:void(0)", :class=>"add_field" %></h3>
 
-    <h3><%= t("fields.label") %></h3>
-    <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/', :html=>{:id => 'changeDirection', :method => :post} do -%>
+
+      <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/', :html=>{:id => 'changeDirection', :method => :post} do -%>
       <input type='hidden' name='field_name' value='' id='changeDirectionFieldName'/>
       <input type='submit' id='changeDirectionSubmit' style='display:none;'/>
     <% end %>
@@ -133,118 +135,73 @@
         </tfoot>
       </table>
 
-      <% if @form_section.editable? %>
-        <div class="formSectionButtons">
-          <%= submit_tag I18n.t("form_section.hide") , {:name => "toggle_fields", :onclick => "return confirm(I18n.t('form_section.messages.hide_confirmation'))"} %>
-          <%= submit_tag I18n.t("form_section.show"), {:name => "toggle_fields", :onclick => "return confirm(I18n.t('form_section.messages.show_confirmation'))"} %>
-          <input type="button" name="SaveFieldOrder" value="<%= I18n.t("form_section.actions.save_order")%>" id="save_field_order" data-submit_url=<%= save_order_single_path %>/>
-        </div>
-      <% end %>
+
     <% end %>
 
-    <%= link_to t("fields.add"),"javascript:void(0)", :class=>"add_field" if @form_section.editable? %>
-    <div class="fields_section hide">
-      <ul class="field_types clearfix">
-        <li><%= link_to t("fields.text_field"),"javascript:void(0)", :id=> "text_field", :class=>"sel" %> </li>
-        <li><%= link_to t("fields.text_area"),"javascript:void(0)", :id=> "text_area" %></li>
-        <li><%= link_to t("fields.check_box"),"javascript:void(0)", :id=> "check_box" %></li>
-        <li><%= link_to t("fields.select_box"),"javascript:void(0)", :id=> "select_box" %></li>
-        <li><%= link_to t("fields.radio_button"),"javascript:void(0)", :id=> "radio_btn" %></li>
-        <li><%= link_to t("fields.numeric_field"),"javascript:void(0)", :id=> "numeric_field" %></li>
-        <li><%= link_to t("fields.date_field"),"javascript:void(0)", :id=> "date_field" %></li>
-      </ul>
-      <div id="field_details" class="field_details_panel">
-        <div class="default_lang_panel">
-          <div class="lang_title">
-            <%= t("forms.initial_language")  %> : <span>English</span>
-          </div>
-          <fieldset>
-            <div>
-              <label class="key">Display Name</label>
-              <input type="text">
-            </div>
-            <div>
-              <label class="key">Help Text</label>
-              <textarea></textarea>
-            </div>
-          </fieldset>
-
-        </div>
-        <div class="translation_lang_panel">
-          <div class="lang_title">
-            <%= t("forms.initial_language")  %> : <span>English</span>
-          </div>
-          <fieldset>
-            <div>
-              <label class="key">Display Name</label>
-              <input type="text">
-            </div>
-            <div>
-              <label class="key">Help Text</label>
-              <textarea></textarea>
-            </div>
-          </fieldset>
-        </div>
-        <p class="chkbox_visible">
-
-          <label><input type="checkbox" /> Visible</label>
-        </p>
-        <div class="clearfix"></div>
-      </div>
-      <div id="field_details_options" class="field_details_panel" style="display:none;">
-        <div class="default_lang_panel">
-          <div class="lang_title">
-            <%= t("forms.initial_language")  %> : <span>English</span>
-          </div>
-          <fieldset>
-            <div>
-              <label class="key">Display Name</label>
-              <input type="text">
-            </div>
-            <div>
-              <label class="key">Help Text</label>
-              <textarea></textarea>
-            </div>
-            <div>
-              <label>Options<span>(Enter each option on a new line)</span></label>
-              <textarea></textarea>
-            </div>
-          </fieldset>
-
-        </div>
-        <div class="translation_lang_panel">
-          <div class="lang_title">
-            <%= t("forms.initial_language")  %> : <span>English</span>
-          </div>
-          <fieldset>
-            <div>
-              <label class="key">Display Name</label>
-              <input type="text">
-            </div>
-            <div>
-              <label class="key">Help Text</label>
-              <textarea></textarea>
-            </div>
-            <div>
-              <label>Options<span>(Enter each option on a new line)</span></label>
-              <textarea id="option_strings_text"></textarea>
-            </div>
-          </fieldset>
-        </div>
-        <p class="chkbox_visible">
-
-          <label><input type="checkbox" /> Visible</label>
-        </p>
-        <div class="clearfix"></div>
-      </div>
-      <%= link_to t("form_section.buttons.add"),"javascript:void(0)", :id=> "add", :class=>"sel" %>
-      <%= link_to t("cancel"), formsections_path() %>
-    </div>
-      <div class="btn_panel">
+    <div class="btn_panel">
         <%= cancel_button(formsections_path) %>
         <%= submit_button t("forms.save_details") %>
       </div>
   <% end %>
 
+  <div class="field_details_overlay hide"> </div>
+  <div class="field_details_panel hide">
+    <ul class="field_types clearfix">
+      <li><%= link_to t("fields.text_field"),"javascript:void(0)", :id=> "text_field", :class=>"sel" %> </li>
+      <li><%= link_to t("fields.text_area"),"javascript:void(0)", :id=> "text_area" %></li>
+      <li><%= link_to t("fields.check_box"),"javascript:void(0)", :id=> "check_box" %></li>
+      <li><%= link_to t("fields.select_box"),"javascript:void(0)", :id=> "select_box" %></li>
+      <li><%= link_to t("fields.radio_button"),"javascript:void(0)", :id=> "radio_btn" %></li>
+      <li><%= link_to t("fields.numeric_field"),"javascript:void(0)", :id=> "numeric_field" %></li>
+      <li><%= link_to t("fields.date_field"),"javascript:void(0)", :id=> "date_field" %></li>
+    </ul>
+    <div id="field_details">
+      <div class="default_lang_panel">
+        <div class="lang_title">
+          <%= t("forms.initial_language")  %> : <span>English</span>
+        </div>
+        <%= render :partial => 'field_form' %>
+      </div>
+      <div class="translation_lang_panel">
+        <div class="lang_title"><%= t(:provide_translation) %>
+          <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
+        </div>
+        <%= render :partial => 'field_form' %>
+      </div>
+      <p class="chkbox_visible">
+
+        <label><input type="checkbox" /> Visible</label>
+      </p>
+      <div class="clearfix"></div>
+    </div>
+    <div id="field_details_options" style="display:none;">
+      <div class="default_lang_panel">
+        <div class="lang_title">
+          <%= t("forms.initial_language")  %> : <span>English</span>
+        </div>
+        <%= render :partial => 'field_form_multi_value' %>
+
+      </div>
+      <div class="translation_lang_panel">
+        <div class="lang_title"><%= t(:provide_translation) %>
+          <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
+        </div>
+        <%= render :partial => 'field_form_multi_value' %>
+      </div>
+      <p class="chkbox_visible">
+
+        <label><input type="checkbox" /> Visible</label>
+      </p>
+      <div class="clearfix"></div>
+    </div>
+    <div class="btn_panel">
+
+        <%= link_to t("cancel"),"javascript:void(0)", :class=>"link_cancel" %>
+      <input type="button" value="Add" id="add_field_btn">
+    </div>
   </div>
+
+
+  </div>
+
 </div>
