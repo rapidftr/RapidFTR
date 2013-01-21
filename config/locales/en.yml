@@ -243,7 +243,7 @@ en:
     save_details: "Save Details"
     messages:
       use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
-
+    initial_language: "Initial Language"
     cannot_be_edited: "Fields on this form cannot be edited."
 
   form_section:
@@ -260,12 +260,16 @@ en:
       order_saved: "Order is successfully saved."
       cannot_create: "Form section could not be created"
       correct_errors: "Please correct the following errors and resubmit:"
+      hide_confirmation: "Are you sure you want to hide fields?"
+      show_confirmation: "Are you sure you want to show fields?"
 
       updated: "Form section successfully added"
     hide: "Hide"
     show: "Show"
     manage: "Manage Form Sections"
     edit: "Edit Form Sections"
+    buttons:
+      add: "Add"
   message:
 
 
@@ -317,13 +321,22 @@ en:
     highlight_fields: "Highlight Fields"
 
   fields:
+    label: "Fields"
     field_name: "Field Name"
     display_name: "Display Name"
     option_strings_text: "Options"
     form_name: "Form Name"
     action: "Action"
     remove: "remove"
+    text_field: "Text Field"
+    check_box: "Check boxes"
+    select_box: "Select drop down"
+    radio_button: "Radio button"
+    text_area: "Text Area"
+    numeric_field: "Numeric Field"
+    date_field: "Date Field"
 
+    add: "Add Field"
   replication:
     label: Replication
     index: Manage Replications
