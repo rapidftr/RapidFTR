@@ -28,7 +28,7 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
   match '/children' => 'children#index', :as => :child_filter
-
+  match '/children/sync_unverified' => 'children#sync_unverified', :as => :sync_unverified_child, :via => :post
 
   resources :users do
     collection do
@@ -36,6 +36,7 @@ RapidFTR::Application.routes.draw do
       post :update_password
     end
   end
+  match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
 
   resources :user_preferences
   resources :devices
