@@ -11,7 +11,7 @@
       <% if can? :edit, User %>
           <%= link_to '('+I18n.t("buttons.edit")+')', edit_user_path(@user), :class => 'edit_crumb'%>
         <% else %>
-          <%=	link_to "(Change Password)", change_password_users_path %>
+          <%=	link_to "(" + I18n.t("buttons.change_password") +")", change_password_users_path %>
       <% end %>
     </h2>
 

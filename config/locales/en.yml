@@ -65,6 +65,7 @@ en:
      reunite: "Reunite"
      edit: "Edit"
      back: "Back"
+     change_password: "Change Password"
 
   children:
     label: "Children"

@@ -59,11 +59,13 @@ ar:
      search: "بحث"
 
   buttons:
+     delete: "حذف"
      save: "حفظ"
      login: "تسجيل الدخول"
      reunite: "لم الشمل"
      edit: "إدخال"
      back: "رجوع"
+     change_password: "تغيير كلمة السر"
 
   children:
     label: "الأطفال"
@@ -108,6 +110,7 @@ ar:
     reunite_details: "تفاصيل لم الشمل: "
     another_duplicate_before_link: "هنالك تقرير آخر تم تحديده كمطابق لهذا التقرير. إضغط"
     another_duplicate_after_link: " لرؤية التقارير المتطابقة. "
+
     messages:
       update_success: "تم تحديث سجل الطفل بنجاح."
       investigation_error_message: "الرجاء أكّد على أن السجل ذو الراية يجب أن يحدد على أنه قد تم التحقق، و أدخل أي تفاصيل "
@@ -116,6 +119,7 @@ ar:
       reunite_error_message: "الرجاء أكّد على أن الطفل قد تم لم شمله بأسرته أو براعي، و أدخل أي معلومات تمتلكها"
       undo_reunite_error_message: "الرجاء أكّد على أن الطفل يجب أن يحدد على أنه لم يتم لم شمله، و أدخل أي تفاصيل تمتلكها"
       see_full_size: "إضغط على الصوره لرؤيه الحجم الكامل."
+
     actions:
       mark_as_investigated: "حدد على أنه تم التحقق"
       mark_as_reunited: "حدد على أنه تم لم الشمل"
@@ -133,6 +137,7 @@ ar:
       investigation_details: "تفاصيل التحقيق"
       undo_investigation_details: "إلغاء تفاصيل التحقيق"
       undo_investigated: "إلغاء التحقيق"
+
     change_log: "تغيير السجل"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
     posted_from_mobile: "أرسل من هاتف جوال عند: "
@@ -142,6 +147,7 @@ ar:
     view: "عرض الأطفال"
     edit: "تعديل طفل"
     mark_as_duplicate_with_param: "حدد %{child_name} كمطابق"
+
   preposition:
     on_label: "on"
     because: "بسبب"
@@ -181,9 +187,9 @@ ar:
     full_name: "الإسم الكامل"
     disabled: "غير مفعل؟"
     actions:
-      delete: "مسح"
+      delete: "حذف"
     messages:
-      confirmation: "هل أنت متأكد من أنك تريد مسح هذا المستخدم؟ لا يمكن إلغاء المسح. إضعط نعم ليتم مسح المستخدم"
+      confirmation: "هل أنت متأكد من أنك تريد حذف هذا المستخدم؟ لا يمكن إلغاء الحذف. إضعط نعم ليتم حذف المستخدم"
       created: "تم تكوين المستخدم بنجاح"
       updated: "تم تحديث المستخدم بنجاح"
       not_found: "لا يوجد مستخدم بالهويه المعطاه"
@@ -215,6 +221,7 @@ ar:
   enabled: "مفعل"
   status: "الحالة"
   devices: "الأجهزة"
+  provide_translation: "توفير ترجمة ل"
 
   role:
     create: "تكوين دور"
@@ -227,13 +234,13 @@ ar:
   permissions:
     label: "الأذونات"
     group:
-      Reports: Reports
-      Devices: Devices
-      System: System
-      Roles: Roles
-      Children: Children
-      Forms: Forms
-      Users: Users
+      Reports: التقارير
+      Devices: الأجهزة
+      System: النظام
+      Roles: الأدوار
+      Children: الأطفال
+      Forms: الإستمارات
+      Users: المستخدمين
 
   forms:
     label: "الإستمارات"
@@ -241,8 +248,9 @@ ar:
     save_details: "حفظ التفاصيل"
     messages:
       use_existing: "من المحبذ إستخدام الإستمارات الموجوده مما يجعل مشاركة و دمج البيانات بين المؤسسات أسهل"
-
+    initial_language: "اللغة الأساسية"
     cannot_be_edited: "الحقول في هذه الإستمارة لا يمكن تعديلها."
+
   form_section:
     create: "تكوين قسم إستمارة جديد"
     visibility: "الرؤية"
@@ -257,12 +265,16 @@ ar:
       order_saved: "تم حفظ الطلب بنجاح."
       cannot_create: "لم يتم تكوين قسم الإستمارة"
       correct_errors: "الرجاء تصحيح الأخطاء الوارده و أعد التسليم:"
+      hide_confirmation: "هل أنت متأكد من أنك تود إخفاء الحقول؟"
+      show_confirmation: "هل أنت متأكد من أنك تريد إظهار الحقول؟"
 
       updated: "تم إضافة قسم الإستماره بنجاح"
     hide: "إخفاء"
     show: "عرض"
     manage: "معالجة أقسام الإستمارة"
     edit: "تعديل أقسام الإستملرة"
+    buttons:
+       add: "أضف"
   message:
 
 
@@ -298,6 +310,7 @@ ar:
     updated: "تم تحديث معلومات الإتصال بنجاح"
     edit_info: "تعديل معلومات الإتصال"
     info_label: "معلومات الإتصال"
+
   device:
     blacklist: "أضف الجهاز للقائمة السوداء"
     messages:
@@ -307,14 +320,45 @@ ar:
     information: "معلومات الجهاز"
     mobile_number: "رقم الهاتف الجوال"
     timestamp: "الختم الزمني"
+
   admin:
     contact_info: "معلومات الإتصال بالمشرف"
     highlight_fields: "تسليط الضوء على الحقول"
+
   fields:
+    label: "حقول"
     field_name: "إسم الحقل"
+    display_name: "عرض الإسم"
+    option_strings_text: "خيارات"
     form_name: "إسم الإستمارة"
-    action: "نشاط"
+    action: "فعل"
     remove: "حذف"
+    text_field: "حقل نصي"
+    check_box: "صناديق العلامات"
+    select_box: "إختر قائمة"
+    radio_button: "زر الراديو"
+    text_area: "منطقة نصية"
+    numeric_field: "حقل رقمي"
+    date_field: "حقل التاريخ"
+    add: "أضف حقل"
+  replication:
+    label: نسخ متماثل
+    index: معالجة النسخ المتماثلة
+    create: كون نسخ متماثلة
+    edit: تعديل نسخ متماثلة
+    remote_url: RapidFTR رابط
+    actions: الأفعال
+    status: الحالة
+    description: وصف
+    timestamp: ختم زمني
+    delete: حذف
+    completed: نجاح
+    triggered: جاري
+    error: فشل
+    confirm_delete: هل أنت متأكد من أنك تريد حذف النسخة المتماثلة
+    start: إبدأ النسخ المتماثل
+    stop: أوقف النسخ المتماثل
+
   session_expire: "هذا الفصل علي وشك الإنتهاء!"
   administration: "الإدارة"
   new: "جديد"
