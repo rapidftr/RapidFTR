@@ -10,6 +10,8 @@
     <h2><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %>
       <% if can? :edit, User %>
           <%= link_to '('+I18n.t("buttons.edit")+')', edit_user_path(@user), :class => 'edit_crumb'%>
+        <% else %>
+          <%=	link_to "(Change Password)", change_password_users_path %>
       <% end %>
     </h2>
 
