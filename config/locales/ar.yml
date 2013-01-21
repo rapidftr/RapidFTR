@@ -162,7 +162,7 @@ ar:
     label: "المستخدمين"
     create: "تكوين مستخدم"
     actions:
-      show_all: "عرض الكل"
+      show_all: "عرض كل"
       show: "عرض"
     messages:
       disable: 'هل أنت متأكد من أنك تريد تعطيل هذا المستخدم؟'
@@ -185,7 +185,7 @@ ar:
   user:
     label: "مستخدم"
     full_name: "الإسم الكامل"
-    disabled: "غير مفعل؟"
+    disabled: "غير مفعل"
     actions:
       delete: "حذف"
     messages:

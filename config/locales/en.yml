@@ -181,7 +181,7 @@ en:
   user:
     label: "user"
     full_name: "Full Name"
-    disabled: "Disabled?"
+    disabled: "Disabled"
     actions:
       delete: "Delete"
     messages:
