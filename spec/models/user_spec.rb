@@ -12,6 +12,7 @@ describe User do
                                :user_type => 'user_type',
                                :organisation => 'TW',
                                :disabled => 'false',
+                               :verified => true,
                                :role_ids => options[:role_ids] || ['random_role_id'],
                            })
     user = User.new(options)
@@ -235,10 +236,14 @@ describe User do
       User.find_by_user_name(user.user_name).roles.should == [admin_role, field_worker_role]
     end
 
-    it "should require atleast one role" do
+    it "should require atleast one role for a verified user" do
       user = build_user(:role_ids => [])
       user.should_not be_valid
       user.errors.on(:role_ids).should == ["Please select at least one role"]
+    end
+
+    it "allow an unverified user to have no role" do
+      build_user(:role_ids => [], :verified => false).should be_valid
     end
 
     describe 'permissions' do

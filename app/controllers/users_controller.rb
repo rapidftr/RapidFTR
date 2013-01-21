@@ -77,7 +77,7 @@ class UsersController < ApplicationController
   def register_unverified
     respond_to do |format|
       format.json do 
-        user = User.new(params[:user].merge(:verified => false, :role_ids => ["123"]))
+        user = User.new(params[:user].merge(:verified => false))
         user.save
         render :json => {:response => "ok"}.to_json
       end
