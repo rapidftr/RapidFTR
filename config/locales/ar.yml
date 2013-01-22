@@ -211,7 +211,7 @@ ar:
   location: "الموقع"
   false: "خطأ"
   true: "صحيح"
-  mandatory_field: "حدد الحقول على أنها إلزاميه"
+  mandatory_field: "حقول إلزامية"
   add: "أضف"
   belonging_to: "ينتمي إلى"
   hello: "مرحبا"

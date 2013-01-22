@@ -7,7 +7,7 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to t("roles.list"), roles_path %> &gt; Create a Role</h2>
+    <h2><%= link_to t("roles.list"), roles_path %> &gt; <%= t( "role.create" ) %> </h2>
     <div class="mandate_panel"><span>*</span> <%= t("mandatory_field") %></div>
     <div class="clearfix"></div>
     <%= form_for @role, :html => {:class => ''} do |f| %>
