@@ -3,6 +3,11 @@ class UsersController < ApplicationController
   before_filter :clean_role_ids, :only => [:update, :create]
   before_filter :load_user, :only => [:show, :edit, :update, :destroy]
 
+  skip_before_filter :check_authentication, :only => :register_unverified
+
+  protect_from_forgery :except => :register_unverified
+
+
   def index
     authorize! :read, User
     sort_option = params[:sort] || "full_name"
@@ -69,7 +74,23 @@ class UsersController < ApplicationController
     redirect_to(users_url)
   end
 
+  def register_unverified
+    respond_to do |format|
+      format.json do 
+        user = User.new(params[:user].merge(:verified => false))
+        user.save
+        render :json => {:response => "ok"}.to_json
+      end
+    end
+  end
+
   private
+  def write_to_log comment
+    File.open("/Users/ambhalla/Desktop/log.txt", "w+") do |f|
+      f.write comment
+    end
+  end
+
   def load_user
     @user = User.get(params[:id])
     if @user.nil?

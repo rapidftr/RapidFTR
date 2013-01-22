@@ -108,6 +108,23 @@ class ChildrenController < ApplicationController
     end
   end
 
+  def sync_unverified
+    respond_to do |format|
+      format.json do
+        user = User.by_user_name(:key => params[:user][:user_name])
+        return head(:unauthorized) if user.nil?
+        
+        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
+        params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
+        child = Child.new_with_user_name(user, params[:child].merge(:verified => false))
+        child['created_by_full_name'] = user.full_name
+        if child.save
+          render :json => child.compact.to_json
+        end
+      end
+    end
+  end
+
   def update
     respond_to do |format|
       format.json do
@@ -139,7 +156,6 @@ class ChildrenController < ApplicationController
       end
     end
   end
-
 
   def edit_photo
     authorize! :update, @child
@@ -344,5 +360,4 @@ class ChildrenController < ApplicationController
       child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
       child
     end
-
 end

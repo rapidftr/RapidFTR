@@ -247,4 +247,13 @@ describe UsersController do
     end
   end
 
+  describe "register_unverified" do
+    it "should set verified status to false" do
+      User.should_receive(:new).with("user_name" => "salvador", "verified" => false).and_return(user = "some_user")
+      user.should_receive :save
+
+      post :register_unverified, {:format => :json, :user => {:user_name => "salvador"}}
+    end
+  end
+
 end

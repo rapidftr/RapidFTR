@@ -574,3 +574,85 @@ body {
     }
   }
 }
+
+.form_page{
+  .default_lang_panel{
+    float:left;
+    padding:5px;
+  }
+  .translation_lang_panel{
+    float:left;
+    padding:5px;
+
+  }
+  .lang_title{
+    color:#666;
+    display: inline-block;
+    min-height: 25px;
+    font-size: 1.1em;
+    span{
+      color:#000;
+
+    }
+
+    select{
+      width:auto !important;
+      padding:0px !important;
+      font-size: 0.8em;
+    }
+  }
+  fieldset{
+    border:1px solid #ddd;
+    .key{
+      width:175px;
+    }
+  }
+  .chkbox_visible{
+    padding:10px;
+  }
+
+  h3{
+    border-bottom:1px solid #aaa;
+    font-size:1.1em;
+    font-weight: bold;
+    padding:2px 0px 5px;
+  }
+
+  .add_field{
+    padding:5px;
+    display: inline-block;
+  }
+
+  .fields_section{
+    background:#eee;
+    padding:10px;
+    @include borderRadius(5px);
+
+    ul.field_types{
+      border-bottom: 1px solid #ddd;
+
+      li{
+        float:left;
+        padding:5px 20px 15px;
+
+        a{
+          padding:5px 10px;
+
+          &.sel{
+            background:#1d76fb;
+            color:#fff;
+            @include borderRadius(15px);
+          }
+        }
+      }
+
+    }
+
+    fieldset{
+      .key{
+        width:170px;
+      }
+
+    }
+  }
+}

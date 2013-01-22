@@ -143,6 +143,25 @@ When /^I request for the picture of the child with ID (\d+) and square dimension
   get "/children/"+id+"/resized_photo/" + dimensions, nil
 end
 
+When /^I request the creation of the following unverified user:$/ do |table|
+  table.hashes.each do |hash|
+    post(register_unverified_user_path, 
+      {:imei => hash["imei"], :format => 'json', :user => 
+        {:user_name => hash["user_name"], 
+        :full_name => hash["full_name"],
+        :organisation => hash["organisation"], 
+        :password => hash["password"], 
+        :password_confirmation => hash["password_confirmation"]
+      }})
+  end
+end
+
+Then /^an unverified user "(.+)" should be created$/ do |user_name|
+  user = User.by_user_name(:key => user_name).first
+  user.should_not be_nil
+  user.verified.should be_false
+end
+
 def item_valid(item, json_expectation, expectation_key)
   lambda {item.has_key? expectation_key}.should be_true
   match_value(item[expectation_key], json_expectation[expectation_key])
