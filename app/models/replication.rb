@@ -141,7 +141,15 @@ class Replication < CouchRestRails::Document
     uri = remote_uri
     uri.path = Rails.application.routes.url_helpers.configuration_replications_path
 
-    response = Net::HTTP.post_form uri, {}
+    if uri.scheme == "http"
+      response = Net::HTTP.post_form uri, {}
+    else
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Post.new(uri.request_uri)
+      response = http.request(request)
+    end
     JSON.parse response.body
   end
 
