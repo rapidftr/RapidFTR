@@ -195,9 +195,9 @@ en:
     create: "Create"
     no_blank: "user name should not contain blanks"
     manage_password: "Change Password"
-    old_password: "Old password"
-    new_password: "New password"
-    new_password_confirmation: "Confirm password"
+    old_password: "Old Password"
+    new_password: "New Password"
+    new_password_confirmation: "Confirm New Password"
 
     new: "New User"
   phone: "Phone"
