@@ -55,7 +55,7 @@ class UsersController < ApplicationController
     authorize! :disable, @user if params[:user].include?(:disabled)
     authorize! :update, @user  if params[:user].except(:disabled).present?
 
-    if @user.update_attributes(params[:user])
+    if (@user.update_attributes(params[:user]))
       if request.xhr?
         render :text => "OK"
       else
@@ -65,6 +65,21 @@ class UsersController < ApplicationController
     else
       @roles = Role.all
       render :action => "edit"
+    end
+  end
+
+  def change_password
+    @change_password_request = Forms::ChangePasswordForm.new(:user => current_user)
+  end
+
+  def update_password
+    @change_password_request = Forms::ChangePasswordForm.new params[:forms_change_password_form]
+    @change_password_request.user = current_user
+    if @change_password_request.execute
+      flash[:notice] = I18n.t("user.messages.password_changed_successfully")
+      redirect_to user_path(current_user.id)
+    else
+      render :change_password
     end
   end
 
@@ -112,5 +127,4 @@ class UsersController < ApplicationController
       }
     end
   end
-
 end

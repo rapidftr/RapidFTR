@@ -49,6 +49,15 @@ module ApplicationHelper
     confirm_options
   end
 
-
+  def translated_permissions
+    Permission.hashed_values.map do |group, permissions|
+      [
+          I18n.t(group, :scope => "permissions.group"),
+          permissions.map do |permission|
+            [ I18n.t(permission, :scope => 'permissions.permission'), permission ]
+          end
+      ]
+    end
+  end
 
 end
