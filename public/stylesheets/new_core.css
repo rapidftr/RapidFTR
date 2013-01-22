@@ -272,6 +272,10 @@ a.mark_as_duplicate {
   .dropdown .mark-as-form {
     padding: 10px; }
 
+.err_msg {
+  color: red;
+  font-size: 0.9em; }
+
 body {
   background: url(../images/new/bg_body.png) repeat-x;
   font: 13px verdana, arial, helvetica, sans-serif;
@@ -659,6 +663,9 @@ body {
   float: left;
   padding: 5px;
   width: 445px; }
+  .form_page .translation_lang_panel .translation_lang_selected {
+    padding-left: 5px;
+    color: #000; }
 .form_page .lang_title {
   color: #666;
   min-height: 25px;

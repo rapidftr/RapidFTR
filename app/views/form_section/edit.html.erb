@@ -63,28 +63,31 @@
       <table id="form_sections" class="list_table">
         <thead>
           <tr>
-            <th></th>
-            <th><%= t("form_section.visibility") %></th>
             <th><%= t("name") %></th>
+            <th><%= t("help_text") %></th>
+            <th><%= t("form_section.options") %></th>
+            <th>Field type</th>
+            <th><%= t("form_section.hide") %></th>
             <th colspan=2><%= t("form_section.ordering") %></th>
-            <th><%= t("form_section.label") %></th>
-            <th></th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @form_section.fields.each do |field| %>
             <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
+              <td><%= field.display_name %></td>
+              <td><%= field.type.humanize %></td>
+              <td><%= field.option_strings.each do |option| option  end  %></td>
+              <td><%= field.type.humanize %></td>
+
               <% if @form_section.editable? %>
                 <td>
                   <% if field.editable? %>
                     <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}"} %>
                   <% end %>
                 </td>
-                <td>
-                  <span class="enabledStatus"><%= field.visible? ? I18n.t("visible") : I18n.t("hidden") %></span>
-                </td>
+
               <% end %>
-              <td class='breakword'><%= field.display_name %></td>
               <% if @form_section.editable? %>
                 <td>
                   <div>
@@ -103,13 +106,13 @@
                     <% end %>
                   </div>
                 </td>
-                <td>
+                <!--<td>
                   <div>
                     <% if field.editable? %>
                         <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation" %>
                     <% end %>
                   </div>
-                </td>
+                </td>-->
 
                 <td class='field-buttons'>
                   <% if field.editable? %>
@@ -155,7 +158,9 @@
       <li><%= link_to t("fields.numeric_field"),"javascript:void(0)", :id=> "numeric_field" %></li>
       <li><%= link_to t("fields.date_field"),"javascript:void(0)", :id=> "date_field" %></li>
     </ul>
+    <div id="err_msg_panel" class="err_msg" style="display:none"></div>
     <div id="field_details">
+
       <div class="default_lang_panel">
         <div class="lang_title">
           <%= t("forms.initial_language")  %> : <span>English</span>
@@ -163,8 +168,9 @@
         <%= render :partial => 'field_form' %>
       </div>
       <div class="translation_lang_panel">
-        <div class="lang_title"><%= t(:provide_translation) %>
-          <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
+        <div class="lang_title">
+          <%= t(:provide_translation) %>
+          <span class="translation_lang_selected"></span>
         </div>
         <%= render :partial => 'field_form' %>
       </div>
@@ -184,7 +190,7 @@
       </div>
       <div class="translation_lang_panel">
         <div class="lang_title"><%= t(:provide_translation) %>
-          <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
+          <span class="translation_lang_selected"></span>
         </div>
         <%= render :partial => 'field_form_multi_value' %>
       </div>

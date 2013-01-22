@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     initOrderingColumns();
     $("a.delete").click(deleteItem);
     $("a.moveDown").click(moveDown);
@@ -9,29 +10,100 @@ $(document).ready(function() {
     $("ul.field_types a").click(showFieldDetails);
     $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
+    $(".field_details_panel input#add_field_btn").click(addFieldToTable);
 });
 
 function toggleFieldPanel(){
     $(".field_details_overlay").css("height",document.height);
+    $(".field_details_panel").css("top", scrollY + 150);
+    $(".translation_lang_selected").text($("#locale option:selected").text());
+    $("#err_msg_panel").hide();
     $(".field_details_overlay").toggleClass("hide");
     $(".field_details_panel").toggleClass("hide");
+}
+
+function addFieldToTable(){
+    var fieldtype1 = ["text_field","text_area","numeric_field","date_field"];
+    var fieldtype2 = ["check_box","radio_btn","select_box"];
+    var selFieldType = $("ul.field_types a.sel")[0].id;
+    console.log(selFieldType);
+    var newField, errMsg = "";
+
+    if ($.inArray(selFieldType, fieldtype1) > -1){
+
+        if ($(".field_details_panel .default_lang_panel #txt_display_name").val() != ""){
+            newField += "<tr>";
+            newField += "<td class='cell_display_name'>" + $(".field_details_panel .default_lang_panel #txt_display_name").val() + "<input type='hidden' value=" +$(".field_details_panel .translation_lang_panel #txt_display_name").val() + " />" + "</td>";
+            newField += "<td class='cell_help_text'>" + $(".field_details_panel .default_lang_panel #txt_help_text").val() + "<input type='hidden' value=" +$(".field_details_panel .translation_lang_panel #txt_help_text").val() + " />"  + "</td>";
+            newField += "<td class='cell_options'>" + "</td>";
+            newField += "<td class='cell_fieldtype'>" + selFieldType +"</td>";
+            newField += "<td class='cell_hide'>" + "<input type='checkbox' /> " + "</td>";
+            newField += "<td class='cell_moveup'>" + "<a href='javascript:void(0)' class='up_arrow'></a>" + "</td>";
+            newField += "<td class='cell_movedown'>" + "<a href='javascript:void(0)' class='down_arrow'></a>" + "</td>";
+            newField += "<td class='cell_actions'>" + "<a href='javascript:void(0)' class='edit'>Edit</a> <a href='javascript:void(0)' class='delete'>Delete</a>" + "</td>";
+            newField += "</tr>";
+
+            $("table#form_sections").append(newField);
+            toggleFieldPanel();
+        }
+        else{
+            errMsg = "Display name cannot be empty. Please enter a valid display name";
+            $("#err_msg_panel").html(errMsg);
+            $("#err_msg_panel").show("fast");
+        }
+
+    }
+    else{
+        console.log($(".field_details_panel .default_lang_panel #txt_display_name_options").val());
+        if (($(".field_details_panel .default_lang_panel #txt_display_name_options").val() != "") && ($(".field_details_panel .default_lang_panel #txt_options").val() != "")){
+            console.log("in");
+            newField += "<tr>";
+            newField += "<td class='cell_display_name'>" + $(".field_details_panel .default_lang_panel #txt_display_name_options").val() + "<input type='hidden' value=" +$(".field_details_panel .translation_lang_panel #txt_display_name").val() + " />" + "</td>";
+            newField += "<td class='cell_help_text'>" + $(".field_details_panel .default_lang_panel #txt_help_text_options").val() + "<input type='hidden' value=" +$(".field_details_panel .translation_lang_panel #txt_help_text").val() + " />"  + "</td>";
+            newField += "<td class='cell_options'>" + $(".field_details_panel .default_lang_panel #txt_options").val() + "</td>";
+            newField += "<td class='cell_fieldtype'>" + selFieldType +"</td>";
+            newField += "<td class='cell_hide'>" + "<input type='checkbox' /> " + "</td>";
+            newField += "<td class='cell_moveup'>" + "<a href='javascript:void(0)' class='up_arrow'></a>" + "</td>";
+            newField += "<td class='cell_movedown'>" + "<a href='javascript:void(0)' class='down_arrow'></a>" + "</td>";
+            newField += "<td class='cell_actions'>" + "<a href='javascript:void(0)' class='edit'>Edit</a> <a href='javascript:void(0)' class='delete'>Delete</a>" + "</td>";
+            newField += "</tr>";
+
+            $("table#form_sections").append(newField);
+            toggleFieldPanel();
+        }
+        else{
+            errMsg = "Display name or options cannot be empty. Please enter a valid display name and options";
+            $("#err_msg_panel").html(errMsg);
+            $("#err_msg_panel").show("fast");
+            console.log(errMsg);
+        }
+
+    }
+
+
+
 }
 
 function showFieldDetails(){
     $("ul.field_types a").removeClass("sel");
     $(this).addClass("sel");
+    $("#err_msg_panel").hide();
+
     var fieldtype1 = ["text_field","text_area","numeric_field","date_field"];
     var fieldtype2 = ["check_box","radio_btn","select_box"];
 
-    $("#field_details_options, #field_details").slideUp("fast");
+    $("#field_details_options, #field_details").hide();
+
+    $("input[type='text'],textarea ").val("");
 
     if ($.inArray(this.id, fieldtype1) > -1)
     {
         $("#field_details").slideDown("fast");
+
     }
     else
     {
-            $("#field_details_options").slideDown("fast");
+        $("#field_details_options").slideDown("fast");
     }
 }
 
