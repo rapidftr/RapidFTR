@@ -28,7 +28,6 @@
                     <span class="section">
                     <span class="title"><%= t("permissions.#{group_name}") %></span>
                     <% Hash[*permissions.flatten].values.each do |permission| %>
-                        <%Hash[*permissions.flatten].values%>
                         <label><%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
                         <%= t("permissions.permission.#{permission}") %></label>
                     <% end %>
