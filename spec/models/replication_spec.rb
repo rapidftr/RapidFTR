@@ -191,6 +191,33 @@ describe Replication do
   end
 
   ################# NOTE #################
+  ## This will run on entire couch db   ##
+  ## rather than on a single test       ##
+  ## database. Do we want to run this   ##
+  ## every time?                        ##
+  ################# NOTE #################
+
+  describe 'authenticate' do
+    before :each do
+      @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
+      RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
+    end
+
+    after :each do
+      RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
+    end
+
+    it "should authenticate the user based on user credentials" do
+      response = Replication.authenticate_with_internal_couch_users("test_user", "test_password")
+      response.cookies.should_not be_nil
+    end
+
+    it "should raise exception for invalid credentials" do
+      lambda{Replication.authenticate_with_internal_couch_users("test_user", "wrong_password")}.should(raise_error(RestClient::Unauthorized))
+    end
+  end
+
+  ################# NOTE #################
   ##  sleep 1 is required before every  ##
   ##    destroy & restart_replication   ##
   ##  without that RestClient::Conflict ##

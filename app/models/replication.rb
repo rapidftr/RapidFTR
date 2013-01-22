@@ -122,6 +122,10 @@ class Replication < CouchRestRails::Document
     url
   end
 
+  def self.authenticate_with_internal_couch_users(username, password)
+    RestClient.post COUCHDB_SERVER.uri+'/_session', 'name='+username+'&password='+password,{:content_type => 'application/x-www-form-urlencoded'}
+  end
+
   private
 
   def validate_remote_url
