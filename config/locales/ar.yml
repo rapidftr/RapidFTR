@@ -194,6 +194,7 @@ ar:
       updated: "تم تحديث المستخدم بنجاح"
       not_found: "لا يوجد مستخدم بالهويه المعطاه"
       passwords_do_not_match: "لا تطابق كلمة السر الحالية"
+      password_changed_successfully: "تم تغيير كلمة السر بنجاح"
       time_zone_updated: "تم تحديث النطاق الزمني بنجاح."
     update: "تحديث"
     create: "تكوين"
