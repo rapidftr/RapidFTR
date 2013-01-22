@@ -30,10 +30,13 @@ RapidFTR::Application.routes.draw do
   match '/children' => 'children#index', :as => :child_filter
   match '/children/sync_unverified' => 'children#sync_unverified', :as => :sync_unverified_child, :via => :post
 
-
-
-  resources :users
-  match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post 
+  resources :users do
+    collection do
+      get :change_password
+      post :update_password
+    end
+  end
+  match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
 
   resources :user_preferences
   resources :devices

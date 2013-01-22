@@ -7,7 +7,7 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to t("roles.list"), roles_path %> &gt; Create a Role</h2>
+    <h2><%= link_to t("roles.list"), roles_path %> &gt; <%= t( "role.create" ) %> </h2>
     <div class="mandate_panel"><span>*</span> <%= t("mandatory_field") %></div>
     <div class="clearfix"></div>
     <%= form_for @role, :html => {:class => ''} do |f| %>
@@ -24,12 +24,12 @@
           <p>
             <%= f.label :permissions, '<span class="required">*</span>'.html_safe+t("permissions.label"), :class=>'key'  %>
             <span class="value">
-                <% Permission.all.each do |group_name, permissions| %>
+                <% translated_permissions.each do |group_name, permissions| %>
                     <span class="section">
-                    <span class="title"><%= group_name %></span>
-                    <% permissions.values.each do |permission| %>
+                    <span class="title"><%= t("permissions.#{group_name}") %></span>
+                    <% Hash[*permissions.flatten].values.each do |permission| %>
                         <label><%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]"}, permission, "" %>
-                        <%= t("permissions."+permission.dehumanize) %></label>
+                        <%= t("permissions.permission.#{permission}") %></label>
                     <% end %>
                     </span>
                 <% end %>

@@ -2,7 +2,7 @@
   <th><%= t("user.full_name") %></th>
   <th><%= t("login.username") %></th>
   <% if can?(:disable, User) %>
-    <th><%= t("disabled") %></th>
+    <th><%= t("user.disabled") %></th>
   <% end %>
   <% if can? :show, User %>
     <th></th>

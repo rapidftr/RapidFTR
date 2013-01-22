@@ -81,3 +81,22 @@ Feature: As an user, I should be able to log in.
 	Then I should see "Contact & Help"
 	When I follow "Contact & Help"
     Then I should be on the administrator contact page
+
+  Scenario: I should be able to change my password
+    Given a user "Harry" with a password "123"
+    And I am logged in as "Harry"
+    And I follow "My Account"
+    And I follow "Change Password"
+
+    And I fill in "123" for "Old Password"
+    And I fill in "456" for "New Password"
+    And I fill in "456" for "Confirm New Password"
+    And I click the "Save" button
+    And I should see "Password changed successfully"
+
+    And I follow "Logout"
+    And I am on the login page
+    And I fill in "Harry" for "User Name"
+    And I fill in "456" for "Password"
+    And I press "Log in"
+    And I should be on the home page

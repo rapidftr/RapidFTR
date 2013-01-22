@@ -252,7 +252,6 @@ describe Replication do
   ################ THANKS ################
 
   describe 'replication' do
-    pending 'couchdb replications are sporadically failing, do we need to test couchdb itself?'
 
     before :each do
       @dummy_db = COUCHDB_SERVER.database! 'replication_test'
@@ -271,19 +270,17 @@ describe Replication do
     end
 
     describe 'replicate child records from source to target' do
-      pending 'couchdb replications are sporadically failing, do we need to test couchdb itself?'
-
       before :each do
         @child = Child.new(:name => 'Subhas')
         @child.save!
         @rep.save!
       end
 
-      it 'on create' do
+      xit 'on create' do
         wait_for_doc @dummy_db, 'name', 'Subhas', true
       end
 
-      it 'on edit' do
+      xit 'on edit' do
         @child.name = 'Akash'
         @child.save
 
@@ -294,7 +291,7 @@ describe Replication do
         wait_for_doc @dummy_db, 'name', 'Akash', true
       end
 
-      it 'on delete' do
+      xit 'on delete' do
         @child.destroy
         sleep 1
         @rep.restart_replication
@@ -303,19 +300,17 @@ describe Replication do
     end
 
     describe 'replicate child records from target to source' do
-      pending 'couchdb replications are sporadically failing, do we need to test couchdb itself?'
-
       before :each do
         result = @dummy_db.save_doc :name => 'Akash'
         @child = @dummy_db.get result['id']
         @rep.save!
       end
 
-      it 'on create' do
+      xit 'on create' do
         wait_for_doc Child.database, 'name', 'Akash', true
       end
 
-      it 'on edit' do
+      xit 'on edit' do
         @child['name'] = 'Subhas'
         @dummy_db.save_doc @child
         sleep 1
@@ -324,7 +319,7 @@ describe Replication do
         wait_for_doc Child.database, 'name', 'Akash', false
       end
 
-      it 'on delete' do
+      xit 'on delete' do
         @dummy_db.delete_doc @child
         sleep 1
         @rep.restart_replication

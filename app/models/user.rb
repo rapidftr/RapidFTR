@@ -110,7 +110,7 @@ class User < CouchRestRails::Document
     if new?
       raise Exception.new, "Can't authenticate a un-saved user"
     end
-    !disabled? && crypted_password == encrypt(check)
+    !disabled? && crypted_password == self.class.encrypt(check, self.salt)
   end
 
   def roles
@@ -127,10 +127,6 @@ class User < CouchRestRails::Document
 
   def permissions
     roles.compact.collect(&:permissions).flatten
-  end
-
-  def encrypt(password)
-    self.class.encrypt(password, salt)
   end
 
   def add_mobile_login_event imei, mobile_number
@@ -173,7 +169,7 @@ class User < CouchRestRails::Document
   def encrypt_password
     return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Clock.now.to_s}--#{self.user_name}--") if new_record?
-    self.crypted_password = encrypt(password)
+    self.crypted_password = self.class.encrypt(password, salt)
   end
 
   def self.encrypt(password, salt)

@@ -65,6 +65,7 @@ en:
      reunite: "Reunite"
      edit: "Edit"
      back: "Back"
+     change_password: "Change Password"
 
   children:
     label: "Children"
@@ -180,7 +181,7 @@ en:
   user:
     label: "user"
     full_name: "Full Name"
-    disabled: "Disabled?"
+    disabled: "Disabled"
     actions:
       delete: "Delete"
     messages:
@@ -188,9 +189,16 @@ en:
       created: "User was successfully created."
       updated: "User was successfully updated."
       not_found: "User with the given id is not found"
+      passwords_do_not_match: "does not match current password"
+      password_changed_successfully: "Password changed successfully"
+      time_zone_updated: "Timezone was successfully updated."
     update: "Update"
     create: "Create"
     no_blank: "user name should not contain blanks"
+    manage_password: "Change Password"
+    old_password: "Old Password"
+    new_password: "New Password"
+    new_password_confirmation: "Confirm New Password"
 
     new: "New User"
   phone: "Phone"
@@ -236,6 +244,26 @@ en:
       Children: Children
       Forms: Forms
       Users: Users
+      ALL: All
+
+    permission:
+      "Register Child": "Register Child"
+      "Edit Child": "Edit Child"
+      "View And Search Child": "View And Search Child"
+      "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
+      "Manage Forms": "Manage Forms"
+      "Create and Edit Users": "Create and Edit Users"
+      "View Users": "View Users"
+      "Delete Users": "Delete Users"
+      "Disable Users": "Disable Users"
+      "BlackList Devices": "BlackList Devices"
+      "Create and Edit Roles": "Create and Edit Roles"
+      "View roles": "View roles"
+      "System Settings": "System Settings"
+      "Highlight Fields": "Highlight Fields"
+      "Manage Replications": "Manage Replications"
+      "View roles": "View roles"
+      "All": "All"
 
   forms:
     label: "Forms"
