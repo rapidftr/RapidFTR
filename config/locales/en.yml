@@ -190,6 +190,7 @@ en:
       updated: "User was successfully updated."
       not_found: "User with the given id is not found"
       passwords_do_not_match: "does not match current password"
+      time_zone_updated: "Timezone was successfully updated."
     update: "Update"
     create: "Create"
     no_blank: "user name should not contain blanks"
@@ -242,6 +243,26 @@ en:
       Children: Children
       Forms: Forms
       Users: Users
+      ALL: All
+
+    permission:
+      "Register Child": "Register Child"
+      "Edit Child": "Edit Child"
+      "View And Search Child": "View And Search Child"
+      "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
+      "Manage Forms": "Manage Forms"
+      "Create and Edit Users": "Create and Edit Users"
+      "View Users": "View Users"
+      "Delete Users": "Delete Users"
+      "Disable Users": "Disable Users"
+      "BlackList Devices": "BlackList Devices"
+      "Create and Edit Roles": "Create and Edit Roles"
+      "View roles": "View roles"
+      "System Settings": "System Settings"
+      "Highlight Fields": "Highlight Fields"
+      "Manage Replications": "Manage Replications"
+      "View roles": "View roles"
+      "All": "All"
 
   forms:
     label: "Forms"

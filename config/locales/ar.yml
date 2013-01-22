@@ -194,6 +194,7 @@ ar:
       updated: "تم تحديث المستخدم بنجاح"
       not_found: "لا يوجد مستخدم بالهويه المعطاه"
       passwords_do_not_match: "لا تطابق كلمة السر الحالية"
+      time_zone_updated: "تم تحديث النطاق الزمني بنجاح."
     update: "تحديث"
     create: "تكوين"
     no_blank: "إسم المستخدم يجب ألا يحتوي على فراغات"
@@ -246,6 +247,25 @@ ar:
       Children: الأطفال
       Forms: الإستمارات
       Users: المستخدمين
+      ALL: الكل
+
+    permission:
+      "Register Child": "تسجيل طفل"
+      "Edit Child": "تعديل طفل"
+      "View And Search Child": "عرض و بحث طفل"
+      "Export to Photowall/CSV/PDF": "إصدر لصورة حائط/CSV/PDF"
+      "Manage Forms": "معالجة إستمارة"
+      "Create and Edit Users": "تكوين و تعديل مستخدمين"
+      "View Users": "عرض مستخدمين"
+      "Delete Users": "حذف مستخدمين"
+      "Disable Users": "تعطيل مستخدمين"
+      "BlackList Devices": "أجهزة القائمة السوداء"
+      "Create and Edit Roles": "تكوين و تعديل أدوار"
+      "View roles": "عرض أدوار"
+      "System Settings": "ضبط النظام"
+      "Highlight Fields": "تسليط الضوء على حقول"
+      "Manage Replications": "معالجة نسخ متماثلة"
+      "All": "الكل"
 
   forms:
     label: "الإستمارات"
@@ -328,7 +348,7 @@ ar:
 
   admin:
     contact_info: "معلومات الإتصال بالمشرف"
-    highlight_fields: "تسليط الضوء على الحقول"
+    highlight_fields: "تسليط الضوء على حقول"
 
   fields:
     label: "حقول"
