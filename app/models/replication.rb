@@ -12,12 +12,18 @@ class Replication < CouchRestRails::Document
 
   property :remote_url
   property :description
+  property :user_name
+  property :crypted_password
+
+  attr_accessor :password
 
   validates_presence_of :remote_url
   validates_presence_of :description
+  validates_presence_of :user_name
+  validates_presence_of :password
   validates_with_method :remote_url, :method => :validate_remote_url
 
-  before_save   :normalize_remote_url
+  before_save   :normalize_remote_url, :encrypt_password
   after_save    :start_replication
   before_destroy :stop_replication
 
@@ -162,4 +168,7 @@ class Replication < CouchRestRails::Document
     COUCHDB_SERVER.database('_replicator')
   end
 
+  def encrypt_password
+    self.crypted_password = self.password
+  end
 end

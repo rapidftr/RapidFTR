@@ -31,6 +31,18 @@ describe Replication do
       r.errors[:remote_url].should_not be_empty
     end
 
+    it 'should have user name' do
+       r = build :replication, :password => nil
+       r.should_not be_valid
+       r.errors[:password].should_not be_empty
+     end
+
+    it 'should have user name' do
+      r = build :replication, :user_name => nil
+      r.should_not be_valid
+      r.errors[:user_name].should_not be_empty
+    end
+
     it 'should allow only http or https' do
       r = build :replication, :remote_url => 'abcd://localhost:3000'
       r.should_not be_valid
