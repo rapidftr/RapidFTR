@@ -1,10 +1,10 @@
 <fieldset>
   <div>
-    <label class="key">Display Name</label>
-    <input type="text" id="txt_display_name">
+    <label class="key"><%= t("fields.display_name") %></label>
+    <%= f.text_field :display_name %>
   </div>
   <div>
-    <label class="key">Help Text</label>
-    <textarea id="txt_help_text"></textarea>
+    <label class="key"><%= t("help_text") %></label>
+    <%= f.text_area :help_text %>
   </div>
 </fieldset>

@@ -1,98 +1,87 @@
-<h1 class="no_border"><%= link_to 'Form',formsections_path %> &gt; <span id='sectionId'><%= @form_section.unique_id%></span></h1>
+<h1 class="no_border"><%= link_to 'Form', formsections_path %> &gt;
+  <span id='sectionId'><%= @form_section.unique_id %></span></h1>
 <div class="page-content-new form_page">
-  <div class="side-tab-content full_width">
-
-    <%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => {:class => ""} do |f| %>
-  <div class="form_details_panel">
+<div class="side-tab-content full_width">
+<%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => {:class => ""} do |f| %>
+    <div class="form_details_panel">
       <div class="default_lang_panel">
         <div class="lang_title">
-          <%= t("forms.initial_language")  %> : <span>English</span>
+          <%= t("forms.initial_language") %> : <span>English</span>
         </div>
-			<fieldset>
+        <fieldset>
 
-			    <div>
-			      <%= f.label :name, t("name"), :class=>'key' %>
-			      <%= f.text_field :name %>
-			    </div>
+          <div>
+            <%= f.label :name, t("name"), :class => 'key' %>
+            <%= f.text_field :name %>
+          </div>
 
-			    <div>
-			      <%= f.label :description, t("description"), :class=>'key' %>
-			      <%= f.text_field :description %>
-			    </div>
+          <div>
+            <%= f.label :description, t("description"), :class => 'key' %>
+            <%= f.text_field :description %>
+          </div>
 
-			    <div>
-			      <%= f.label :help_text, t("help_text"), :class=>'key' %>
-			      <%= f.text_field :help_text %>
-			    </div>
+          <div>
+            <%= f.label :help_text, t("help_text"), :class => 'key' %>
+            <%= f.text_field :help_text %>
+          </div>
 
-			</fieldset>
+
+        </fieldset>
       </div>
-        <div class="translation_lang_panel">
-      <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f}%>
-        </div>
-        <div class="clearfix"></div>
-        <% unless (@form_section.perm_enabled? or @form_section.perm_visible?) %>
-            <p class="chkbox_visible">
-              <%= f.label :visible, t("visible"), :class=>'key' %>
-              <%= f.check_box :visible?, {}, true, false %>
-            </p>
-        <% end %>
-        </div>
-    <h3><%= t("fields.label") %><%= link_to t("fields.add"),"javascript:void(0)", :class=>"add_field" %></h3>
+      <div class="translation_lang_panel">
+        <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f} %>
+      </div>
+      <div class="clearfix"></div>
 
 
-      <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/', :html=>{:id => 'changeDirection', :method => :post} do -%>
-      <input type='hidden' name='field_name' value='' id='changeDirectionFieldName'/>
-      <input type='submit' id='changeDirectionSubmit' style='display:none;'/>
-    <% end %>
-
-    <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/delete', :html=>{:id => 'delete', :method => :post} do -%>
-      <input type='hidden' name='field_name' value='' id='deleteFieldName'/>
-      <input type='submit' id='deleteSubmit' style='display:none;'/>
-    <% end %>
-
-    <div class="clearfix"></div>
-
-    <div class="flash" id="successNotice" style="display:none;">
-      <p class="notice">Order is successfully saved. </p><br/>
+      <% if not @form_section.perm_enabled? %>
+          <p class="chkbox_visible">
+            <%= f.label :enabled, t("visible"), :class => 'key' %>
+            <%= f.check_box :enabled?, {}, true, false %>
+          </p>
+      <% end %>
+      <div class="btn_panel">
+        <%= cancel_button(formsections_path) %>
+        <%= submit_button t("forms.save_details") %>
+      </div>
     </div>
+    <h3><%= t("fields.label") %><%= link_to t("fields.add"), "javascript:void(0)", :class => "add_field" %></h3>
 
-    <div class="clearfix"></div>
+    <table id="form_sections" class="list_table">
+      <thead>
+      <tr>
+        <th><%= t("name") %></th>
+        <th><%= t("help_text") %></th>
+        <th><%= t("form_section.options") %></th>
+        <th>Field type</th>
+        <th><%= t("form_section.hide") %></th>
+        <th colspan=2><%= t("form_section.ordering") %></th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @form_section.fields.each do |field| %>
+          <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
+            <td><%= field.display_name %></td>
+            <td><%= field.type.humanize %></td>
+            <td><%= field.option_strings.each do |option|
+              option
+            end %></td>
+            <td><%= field.type.humanize %></td>
 
-    <%= form_tag toggle_fields_formsection_fields_path(@form_section.unique_id), :id => 'enable_disable_fields', :method => 'post' do %>
-      <table id="form_sections" class="list_table">
-        <thead>
-          <tr>
-            <th><%= t("name") %></th>
-            <th><%= t("help_text") %></th>
-            <th><%= t("form_section.options") %></th>
-            <th>Field type</th>
-            <th><%= t("form_section.hide") %></th>
-            <th colspan=2><%= t("form_section.ordering") %></th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @form_section.fields.each do |field| %>
-            <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
-              <td><%= field.display_name %></td>
-              <td><%= field.type.humanize %></td>
-              <td><%= field.option_strings.each do |option| option  end  %></td>
-              <td><%= field.type.humanize %></td>
-
-              <% if @form_section.editable? %>
+            <% if @form_section.editable? %>
                 <td>
                   <% if field.editable? %>
-                    <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}"} %>
+                      <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}"} %>
                   <% end %>
                 </td>
 
-              <% end %>
-              <% if @form_section.editable? %>
+            <% end %>
+            <% if @form_section.editable? %>
                 <td>
                   <div>
                     <% if field.editable? %>
-                      <a id="<%= "#{field.name}_up" %>" href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
+                        <a id="<%= "#{field.name}_up" %>" href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
                     <% end %>
                   </div>
                 </td>
@@ -102,7 +91,7 @@
                       <%= hidden_field_tag "form_order[#{field.name}]", @form_section.field_order(field.name) %>
                     </span>
                     <% if field.editable? %>
-                      <a id="<%= "#{field.name}_down" %>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
+                        <a id="<%= "#{field.name}_down" %>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
                     <% end %>
                   </div>
                 </td>
@@ -116,98 +105,119 @@
 
                 <td class='field-buttons'>
                   <% if field.editable? %>
-                    <%= link_to t("buttons.edit"), edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
-                    <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id),
-                       :warning=>I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}"%>
+                      <%= link_to t("buttons.edit"), edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
+                      <%= render :partial => "delete_button", :locals => {:field => field, :url => delete_formsection_fields_path(@form_section.unique_id),
+                                                                          :warning => I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}" %>
 
                   <% end %>
                 </td>
-              <% end %>
-            </tr>
-          <% end %>
-        </tbody>
-
-        <tfoot>
-          <tr>
-            <% if @form_section.editable? %>
-              <th colspan=6><%= link_to t("form_section.actions.add_custom_field"), choose_field_path(@form_section.unique_id) %></th>
-            <% else %>
-              <th colspan=6><i><%= I18n.t("forms.cannot_be_edited") %></i></th>
             <% end %>
           </tr>
-        </tfoot>
-      </table>
+      <% end %>
+      </tbody>
 
+      <tfoot>
+      <tr>
+        <% if @form_section.editable? %>
+            <th colspan=6><%= link_to t("form_section.actions.add_custom_field"), choose_field_path(@form_section.unique_id) %></th>
+        <% else %>
+            <th colspan=6><i><%= I18n.t("forms.cannot_be_edited") %></i></th>
+        <% end %>
+      </tr>
+      </tfoot>
+    </table>
 
+    <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/', :html => {:id => 'changeDirection', :method => :post} do -%>
+        <input type='hidden' name='field_name' value='' id='changeDirectionFieldName'/>
+        <input type='submit' id='changeDirectionSubmit' style='display:none;'/>
     <% end %>
 
-    <div class="btn_panel">
-        <%= cancel_button(formsections_path) %>
-        <%= submit_button t("forms.save_details") %>
-      </div>
-  <% end %>
+    <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/delete', :html => {:id => 'delete', :method => :post} do -%>
+        <input type='hidden' name='field_name' value='' id='deleteFieldName'/>
+        <input type='submit' id='deleteSubmit' style='display:none;'/>
+    <% end %>
 
-  <div class="field_details_overlay hide"> </div>
-  <div class="field_details_panel hide">
-    <ul class="field_types clearfix">
-      <li><%= link_to t("fields.text_field"),"javascript:void(0)", :id=> "text_field", :class=>"sel" %> </li>
-      <li><%= link_to t("fields.text_area"),"javascript:void(0)", :id=> "text_area" %></li>
-      <li><%= link_to t("fields.check_box"),"javascript:void(0)", :id=> "check_box" %></li>
-      <li><%= link_to t("fields.select_box"),"javascript:void(0)", :id=> "select_box" %></li>
-      <li><%= link_to t("fields.radio_button"),"javascript:void(0)", :id=> "radio_btn" %></li>
-      <li><%= link_to t("fields.numeric_field"),"javascript:void(0)", :id=> "numeric_field" %></li>
-      <li><%= link_to t("fields.date_field"),"javascript:void(0)", :id=> "date_field" %></li>
-    </ul>
-    <div id="err_msg_panel" class="err_msg" style="display:none"></div>
-    <div id="field_details">
+    <div class="clearfix"></div>
 
-      <div class="default_lang_panel">
-        <div class="lang_title">
-          <%= t("forms.initial_language")  %> : <span>English</span>
-        </div>
-        <%= render :partial => 'field_form' %>
-      </div>
-      <div class="translation_lang_panel">
-        <div class="lang_title">
-          <%= t(:provide_translation) %>
-          <span class="translation_lang_selected"></span>
-        </div>
-        <%= render :partial => 'field_form' %>
-      </div>
-      <p class="chkbox_visible">
-
-        <label><input type="checkbox" /> Visible</label>
-      </p>
-      <div class="clearfix"></div>
+    <div class="flash" id="successNotice" style="display:none;">
+      <p class="notice">Order is successfully saved. </p><br/>
     </div>
-    <div id="field_details_options" style="display:none;">
-      <div class="default_lang_panel">
-        <div class="lang_title">
-          <%= t("forms.initial_language")  %> : <span>English</span>
+
+    <div class="clearfix"></div>
+<% end %>
+
+<div class="field_details_overlay hide"></div>
+<div class="field_details_panel hide">
+  <ul class="field_types clearfix">
+    <li><%= link_to t("fields.text_field"), "javascript:void(0)", :id => "text_field", :class => "sel" %> </li>
+    <li><%= link_to t("fields.text_area"), "javascript:void(0)", :id => "text_area" %></li>
+    <li><%= link_to t("fields.check_box"), "javascript:void(0)", :id => "check_box" %></li>
+    <li><%= link_to t("fields.select_box"), "javascript:void(0)", :id => "select_box" %></li>
+    <li><%= link_to t("fields.radio_button"), "javascript:void(0)", :id => "radio_btn" %></li>
+    <li><%= link_to t("fields.numeric_field"), "javascript:void(0)", :id => "numeric_field" %></li>
+    <li><%= link_to t("fields.date_field"), "javascript:void(0)", :id => "date_field" %></li>
+  </ul>
+  <div id="err_msg_panel" class="err_msg" style="display:none"></div>
+  <div id="field_details" class="field_details">
+    <%= form_for @field || Field.new, :url => formsection_fields_path(:formsection_id => @form_section.unique_id), :html => {:method => "post"} do |f| %>
+        <div class="default_lang_panel">
+          <div class="lang_title">
+            <%= t("forms.initial_language") %> : <span>English</span>
+          </div>
+          <%= render :partial => 'field_form', :locals => {:f => f} %>
         </div>
-        <%= render :partial => 'field_form_multi_value' %>
-
-      </div>
-      <div class="translation_lang_panel">
-        <div class="lang_title"><%= t(:provide_translation) %>
-          <span class="translation_lang_selected"></span>
+        <div class="translation_lang_panel">
+          <div class="lang_title">
+            <%= t(:provide_translation) %>
+            <span class="translation_lang_selected"></span>
+          </div>
+          <%= render :partial => 'field_form', :locals => {:f => f} %>
         </div>
-        <%= render :partial => 'field_form_multi_value' %>
-      </div>
-      <p class="chkbox_visible">
+        <p class="chkbox_visible">
 
-        <label><input type="checkbox" /> Visible</label>
-      </p>
-      <div class="clearfix"></div>
-    </div>
-    <div class="btn_panel">
-
-        <%= link_to t("cancel"),"javascript:void(0)", :class=>"link_cancel" %>
-      <input type="button" value="Add" id="add_field_btn">
-    </div>
-  </div>
-
+          <%= f.label :enabled, t("visible"), :class => 'key' %>
+          <%= f.check_box :visible, {}, true, false %>
+        </p>
+          <%= f.hidden_field :type, :class => "field_type"%>
+        <div class="clearfix"></div>
+        <div class="btn_panel">
+          <%= link_to t("cancel"), "javascript:void(0)", :class => "link_cancel" %>
+          <%= submit_button t("forms.save_details") %>
+          <input type="button" value="Add" id="add_field_btn">
+        </div>
+    <% end %>
 
   </div>
+  <div id="field_details_options" class="field_details" style="display:none;">
+    <%= form_for @field || Field.new, :url => formsection_fields_path(:formsection_id => @form_section.unique_id), :html => {:method => "post"} do |f| %>
 
+        <div class="default_lang_panel">
+          <div class="lang_title">
+            <%= t("forms.initial_language") %> : <span>English</span>
+          </div>
+          <%= render :partial => 'field_form_multi_value', :locals => {:f => f} %>
+
+        </div>
+        <div class="translation_lang_panel">
+          <div class="lang_title"><%= t(:provide_translation) %>
+            <span class="translation_lang_selected"></span>
+          </div>
+          <%= render :partial => 'field_form_multi_value', :locals => {:f => f} %>
+        </div>
+        <p class="chkbox_visible">
+
+          <label><input type="checkbox"/> Visible</label>
+        </p>
+        <%= f.hidden_field :type, :class => "field_type"%>
+        <div class="clearfix"></div>
+        <div class="btn_panel">
+          <%= link_to t("cancel"), "javascript:void(0)", :class => "link_cancel" %>
+          <%= submit_button t("forms.save_details") %>
+          <input type="button" value="Add" id="add_field_btn">
+        </div>
+    <% end %>
+
+  </div>
+</div>
+</div>
 </div>

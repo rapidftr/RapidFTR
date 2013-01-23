@@ -12,6 +12,10 @@ class MockFormSection
   def create!
     FormSection.new
   end
+
+  def unique_id
+    "unique_id"
+  end
 end
 describe FormSectionController do
   before do
@@ -39,12 +43,12 @@ describe FormSectionController do
       FormSection.count.should == existing_count + 1
     end
 
-    it "sets flash notice if form section is valid and redirect_to formsection_path" do
+    it "sets flash notice if form section is valid and redirect_to edit page with a flash message" do
       FormSection.stub(:new_with_order).and_return(MockFormSection.new)
       form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
       post :create, :form_section =>form_section
       request.flash[:notice].should == "Form section successfully added"
-      response.should redirect_to(formsections_path)
+      response.should redirect_to(edit_form_section_path("unique_id"))
     end
 
     it "does not set flash notice if form section is valid and render new" do
@@ -109,7 +113,7 @@ describe FormSectionController do
       form_section.should_receive(:valid?).and_return(true)
       form_section.should_receive(:save!)
       post :update, :form_section => params, :id => "form_1"
-      response.should redirect_to(formsections_path)
+      response.should redirect_to(edit_form_section_path(form_section.unique_id))
     end
     
     it "should show errors if invalid" do

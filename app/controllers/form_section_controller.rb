@@ -12,7 +12,7 @@ class FormSectionController < ApplicationController
     if (form_section.valid?)
       form_section.create!
       flash[:notice] = t("form_section.messages.updated")
-      redirect_to(formsections_path())
+      redirect_to edit_form_section_path(form_section.unique_id)
     else
       @form_section = form_section
       render :new
@@ -29,7 +29,7 @@ class FormSectionController < ApplicationController
     @form_section.properties = params[:form_section]
     if (@form_section.valid?)
       @form_section.save!
-      redirect_to formsections_path
+      redirect_to edit_form_section_path(@form_section.unique_id)
     else
       render :action => :edit
     end

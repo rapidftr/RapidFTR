@@ -17,6 +17,13 @@ function toggleFieldPanel(){
     $(".field_details_overlay").css("height",document.height);
     $(".field_details_panel").css("top", scrollY + 150);
     $(".translation_lang_selected").text($("#locale option:selected").text());
+    $(".field_details .translation_lang_panel").each(function(){
+        $(this).find(":input").each(function(){
+            console.log(this);
+            var name_value = $(this).attr('name').split("]");
+            $(this).attr('name', name_value[0] + "_" + $("#locale option:selected").val() + name_value[1] + "]");
+        })
+    });
     $("#err_msg_panel").hide();
     $(".field_details_overlay").toggleClass("hide");
     $(".field_details_panel").toggleClass("hide");
@@ -79,9 +86,6 @@ function addFieldToTable(){
         }
 
     }
-
-
-
 }
 
 function showFieldDetails(){
@@ -95,6 +99,10 @@ function showFieldDetails(){
     $("#field_details_options, #field_details").hide();
 
     $("input[type='text'],textarea ").val("");
+    var _this = this;
+    $(".field_type").each(function(){
+        $(this).val(_this.id);
+    })
 
     if ($.inArray(this.id, fieldtype1) > -1)
     {
