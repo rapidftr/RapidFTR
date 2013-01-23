@@ -14,12 +14,11 @@ class Permission
   FORMS    = Permission.to_ordered_hash({:manage => "Manage Forms"})
   USERS    = Permission.to_ordered_hash({:create_and_edit => "Create and Edit Users"},{:view => "View Users"},
                                          {:destroy => "Delete Users"},{:disable => "Disable Users"})
-  DEVICES  = Permission.to_ordered_hash({:black_list => "BlackList Devices"})
+  DEVICES  = Permission.to_ordered_hash({:black_list => "BlackList Devices", :replications => "Manage Replications"})
   REPORTS  = Permission.to_ordered_hash({})
   ROLES    = Permission.to_ordered_hash({:create_and_edit => "Create and Edit Roles"},{:view => "View roles"})
   SYSTEM   = Permission.to_ordered_hash({ :settings => "System Settings",
-                                          :highlight_fields => "Highlight Fields",
-                                          :replications => "Manage Replications" })
+                                          :highlight_fields => "Highlight Fields"})
 
   def self.all
     { "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM }

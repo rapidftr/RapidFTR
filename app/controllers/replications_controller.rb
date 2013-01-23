@@ -25,7 +25,7 @@ class ReplicationsController < ApplicationController
     @replication = Replication.new params[:replication]
 
     if @replication.save
-      redirect_to :action => :index
+      redirect_to devices_path
     else
       render :new
     end
@@ -41,7 +41,7 @@ class ReplicationsController < ApplicationController
 
     if @replication.save
       @replication.restart_replication
-      redirect_to :action => :index
+      redirect_to devices_path
     else
       render :edit
     end
@@ -50,19 +50,19 @@ class ReplicationsController < ApplicationController
   def destroy
     authorize! :destroy, @replication
     @replication.destroy
-    redirect_to :action => :index
+    redirect_to devices_path
   end
 
   def start
     authorize! :start, @replication
     @replication.restart_replication
-    redirect_to :action => :index
+    redirect_to devices_path
   end
 
   def stop
     authorize! :stop, @replication
     @replication.stop_replication
-    redirect_to :action => :index
+    redirect_to devices_path
   end
 
   private

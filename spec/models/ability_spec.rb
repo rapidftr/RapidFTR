@@ -148,11 +148,21 @@ describe Ability do
     describe "blacklist" do
       let(:permissions) { [Permission::DEVICES[:black_list]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role }
+      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, Replication }
 
       it { should authorize :update, Device }
       it { should authorize :index, Device }
       it { should_not authorize :read, User.new }
+    end
+
+    describe "replication" do
+      let(:permissions) { [Permission::DEVICES[:replications]] }
+
+      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role }
+
+      it { should authorize :update, Replication }
+      it { should_not authorize :read, User.new }
+      it { should_not authorize :manage, Device }
     end
   end
 

@@ -82,11 +82,11 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-  resources :replications do
+  resources :replications, :path => "/devices/replications" do
     collection do
       post :configuration
     end
-    
+
     member do
       post :start
       post :stop

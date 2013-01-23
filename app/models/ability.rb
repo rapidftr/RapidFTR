@@ -69,6 +69,10 @@ class Ability
       can [:read, :update], Device
     end
 
+    if user.has_permission?(Permission::DEVICES[:replications])
+      can [:manage], Replication
+    end
+
     #
     # ROLES
     #
