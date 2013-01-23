@@ -100,6 +100,7 @@ class Replication < CouchRestRails::Document
     begin
       uri = URI.parse self.class.normalize_url remote_config["target"]
       uri.host = remote_uri.host if ['localhost', '127.0.0.1', '::1'].include? uri.host
+      uri.scheme = remote_uri.scheme
       uri.to_s
     rescue
       nil
@@ -112,8 +113,8 @@ class Replication < CouchRestRails::Document
     uri
   end
 
-  def self.configuration
-    { :target => Child.database.root }
+  def self.configuration(username, password)
+    { :target => "http://#{username}:#{password}@"+Child.database.root.split("@").last }
   end
 
   def self.normalize_url(url)

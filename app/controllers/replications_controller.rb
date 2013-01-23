@@ -4,10 +4,10 @@ class ReplicationsController < ApplicationController
   before_filter :authenticate_couch_internal_user, :only => [:configuration]
 
   skip_before_filter :verify_authenticity_token, :only => [ :configuration, :start, :stop ]
+  skip_before_filter :check_authentication, :only => :configuration
 
   def configuration
-    #send the target url with the credentials given by user.
-    render :json => Replication.configuration
+    render :json => Replication.configuration(params[:user_name], params[:password])
   end
 
   def index

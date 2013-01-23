@@ -269,6 +269,12 @@ describe Replication do
       @rep.should_receive(:start_replication).ordered.and_return(nil)
       @rep.restart_replication
     end
+
+    it 'should get the url without the source username and password' do
+      target_hash = Replication.configuration("rapidftr", "rapidftr")
+      target_hash[:target].should == "http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test"
+    end
+
   end
 
   ################# NOTE #################
