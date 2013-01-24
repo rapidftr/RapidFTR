@@ -93,13 +93,6 @@ class Ability
     end
 
     #
-    # HIGHLIGHT FIELDS
-    #
-    if user.has_permission?(Permission::SYSTEM[:highlight_fields])
-      can [:highlight], Field
-    end
-
-    #
     # REPLICATIONS
     #
     if user.has_permission?(Permission::SYSTEM[:replications])
@@ -109,9 +102,21 @@ class Ability
     #
     # SYSTEM SETTINGS
     #
-    if user.has_permission?(Permission::SYSTEM[:settings])
+    # CONTACT INFORMATION
+    if user.has_permission?(Permission::SYSTEM[:contact_information])
       can [:manage], ContactInformation
     end
+
+    # SYNCHRONISATION USERS
+    if user.has_permission?(Permission::SYSTEM[:replication_users])
+      can [:manage], SystemUsers
+    end
+
+    # HIGHLIGHT FIELDS
+    if user.has_permission?(Permission::SYSTEM[:highlight_fields])
+      can [:highlight], Field
+    end
+
   end
 
   def can(action = nil, subject = nil, conditions = nil, &block)

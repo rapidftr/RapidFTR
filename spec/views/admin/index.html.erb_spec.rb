@@ -17,7 +17,7 @@ describe 'admin/index.html.erb' do
   end
 
   describe 'with system settings permission' do
-    let(:permissions) { [Permission::SYSTEM[:settings]] }
+    let(:permissions) { [Permission::SYSTEM[:contact_information]] }
     it { should have_link 'Admin Contact Information', edit_contact_information_path(:administrator) }
   end
 

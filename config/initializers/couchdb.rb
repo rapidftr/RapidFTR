@@ -11,8 +11,8 @@ begin
   username  = couchdb_config["username"]  || 'rapidftr'
   password  = couchdb_config["password"]  || 'rapidftr'
   ssl       = couchdb_config["ssl"]       || false
-  db_prefix = couchdb_config["database_prefix"] || ""
-  db_suffix = couchdb_config["database_suffix"] || ""
+  db_prefix = database == "_users" ? "" : couchdb_config["database_prefix"]
+  db_suffix = database == "_users" ? "" : couchdb_config["database_suffix"]
   host     = "localhost"  if host == nil
   port     = "5984"       if port == nil
   ssl      = false        if ssl == nil

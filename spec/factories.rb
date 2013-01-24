@@ -10,4 +10,11 @@ FactoryGirl.define do
       replication.stub! :remote_config => { "target" => "localhost:5984/replication_test" }
     end
   end
+
+  factory :system_users do
+    name 'test_user'
+    password 'test_password'
+    type 'user'
+    roles ["admin"]
+  end
 end
