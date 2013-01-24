@@ -232,6 +232,7 @@ ar:
 
   role:
     create: "تكوين دور"
+    edit: "تعديل دور"
 
     name: "الإسم"
   record: "سجل"

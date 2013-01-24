@@ -228,6 +228,7 @@ en:
 
   role:
     create: "Create Role"
+    edit: "Edit Role"
 
     name: "Name"
   record: "record"
