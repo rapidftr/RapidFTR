@@ -1,7 +1,9 @@
 <div class="translation">
-  <div class="lang_title"><%= t(:provide_translation) %>
-  <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
-  </div>
+  <% if show_drop_down %>
+    <div class="lang_title"><%= t(:provide_translation) %>
+        <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s })) %>
+    </div>
+  <% end %>
   <% RapidFTR::Application::LOCALES.each do |locale| %>
       <% if I18n.default_locale.to_s != locale %>
           <div class="<%= "translation_forms #{locale}"%> hide">

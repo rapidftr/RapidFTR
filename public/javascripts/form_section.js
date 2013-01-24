@@ -1,6 +1,6 @@
 $(document).ready(function() {
-
     initOrderingColumns();
+    setTranslationFields($("#locale option:selected"));
     $("a.delete").click(deleteItem);
     $("a.moveDown").click(moveDown);
     $("a.moveUp").click(moveUp);
@@ -17,13 +17,6 @@ function toggleFieldPanel(){
     $(".field_details_overlay").css("height",document.height);
     $(".field_details_panel").css("top", scrollY + 150);
     $(".translation_lang_selected").text($("#locale option:selected").text());
-    $(".field_details .translation_lang_panel").each(function(){
-        $(this).find(":input").each(function(){
-            console.log(this);
-            var name_value = $(this).attr('name').split("]");
-            $(this).attr('name', name_value[0] + "_" + $("#locale option:selected").val() + name_value[1] + "]");
-        })
-    });
     $("#err_msg_panel").hide();
     $(".field_details_overlay").toggleClass("hide");
     $(".field_details_panel").toggleClass("hide");
@@ -267,11 +260,13 @@ function getUpdatedOrderings(inputSelector) {
 }
 
 
+function setTranslationFields(element) {
+    var locale = $(element).val();
+    $(".translation_forms").hide();
+    $("div ." + locale).show();
+}
 $(function() {
     $("#locale").change( function(event){
-        var language_field = $(event.target);
-        var locale = language_field.val();
-        $(".translation_forms").hide();
-        $("div ."+locale).show();
+        setTranslationFields(event.target);
     });
 });

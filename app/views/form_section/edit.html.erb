@@ -29,7 +29,7 @@
         </fieldset>
       </div>
       <div class="translation_lang_panel">
-        <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f} %>
+        <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f, :show_drop_down => true} %>
       </div>
       <div class="clearfix"></div>
 
@@ -171,7 +171,7 @@
             <%= t(:provide_translation) %>
             <span class="translation_lang_selected"></span>
           </div>
-          <%= render :partial => 'field_form', :locals => {:f => f} %>
+          <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}], :f => f, :show_drop_down => false} %>
         </div>
         <p class="chkbox_visible">
 
@@ -202,7 +202,7 @@
           <div class="lang_title"><%= t(:provide_translation) %>
             <span class="translation_lang_selected"></span>
           </div>
-          <%= render :partial => 'field_form_multi_value', :locals => {:f => f} %>
+          <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}, {:option_strings_text => :text_area}], :f => f, :show_drop_down => false} %>
         </div>
         <p class="chkbox_visible">
 
