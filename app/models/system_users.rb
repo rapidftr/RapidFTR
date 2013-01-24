@@ -1,8 +1,7 @@
 class SystemUsers < CouchRestRails::Document
   include CouchRest::Validation
   include RapidFTR::Model
-
-  use_database :_users
+  self.database = COUCHDB_SERVER.database("_users")
 
   property :name
   property :password
@@ -23,7 +22,7 @@ class SystemUsers < CouchRestRails::Document
   end
 
   def is_user_name_unique
-    user = SystemUsers.get("org.couchdb.user:#{self.name}")
+    user = SystemUsers.get(generate_id)
     return true if user.nil?
     [false, "User name has already been taken! Please select a new User name"]
   end
