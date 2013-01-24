@@ -1,6 +1,8 @@
 RapidFTR
 =============
-[![Build Status](https://secure.travis-ci.org/rapidftr/RapidFTR.png)](http://travis-ci.org/rapidftr/RapidFTR)   [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
+
+[![Build Status](https://travis-ci.org/rapidftr/RapidFTR.png?branch=master)](https://travis-ci.org/rapidftr/RapidFTR)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
 
 RapidFTR is a mobile application that lets aid workers collect, sort and share information about children in emergency situations. RapidFTR is
 specifically designed to streamline and speed up Family Tracing and Reunification efforts both in the immediate aftermath of a crisis and during ongoing recovery efforts.
