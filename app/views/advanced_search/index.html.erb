@@ -23,7 +23,7 @@
             <% @all_fields << field %>
       	    <% if field.visible? %>
               <li>
-                <a><%= field.display_name_for_field_selector %></a>
+                <a><%= t(field.name, :default => field.display_name) %></a>
                 <input type="hidden" class="field" value='<%= field.name %>' />
                 <input type="hidden" class="field_type" value='<%= field.type %>' />
                 <% if field.type == Field::SELECT_BOX%>
