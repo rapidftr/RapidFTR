@@ -2,6 +2,10 @@
   <span id='sectionId'><%= @form_section.unique_id %></span></h1>
 <div class="page-content-new form_page">
 <div class="side-tab-content full_width">
+<%= error_messages_for  :form_section,
+                        :header_tag => :h3,
+                        :header_message => t("form_section.messages.cannot_create"),
+                        :message => t('form_section.messages.correct_errors') %>
 <%= form_for @form_section, :url => form_section_path(@form_section.unique_id), :html => {:class => ""} do |f| %>
     <div class="form_details_panel">
       <div class="default_lang_panel">
@@ -106,7 +110,7 @@
                 <td class='field-buttons'>
                   <% if field.editable? %>
                       <%= link_to t("buttons.edit"), edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
-                      <%= render :partial => "delete_button", :locals => {:field => field, :url => delete_formsection_fields_path(@form_section.unique_id),
+                      <%= render :partial => "form_section/delete_button", :locals => {:field => field, :url => delete_formsection_fields_path(@form_section.unique_id),
                                                                           :warning => I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}" %>
 
                   <% end %>
@@ -149,22 +153,26 @@
 <div class="field_details_overlay hide"></div>
 <div class="field_details_panel hide">
   <ul class="field_types clearfix">
-    <li><%= link_to t("fields.text_field"), "javascript:void(0)", :id => "text_field", :class => "sel" %> </li>
-    <li><%= link_to t("fields.text_area"), "javascript:void(0)", :id => "text_area" %></li>
-    <li><%= link_to t("fields.check_box"), "javascript:void(0)", :id => "check_box" %></li>
-    <li><%= link_to t("fields.select_box"), "javascript:void(0)", :id => "select_box" %></li>
-    <li><%= link_to t("fields.radio_button"), "javascript:void(0)", :id => "radio_btn" %></li>
-    <li><%= link_to t("fields.numeric_field"), "javascript:void(0)", :id => "numeric_field" %></li>
-    <li><%= link_to t("fields.date_field"), "javascript:void(0)", :id => "date_field" %></li>
+    <li><%= link_to t("fields.text_field"), "javascript:void(0)", :id => "text_field", :class => "field_links sel" %> </li>
+    <li><%= link_to t("fields.text_area"), "javascript:void(0)", :id => "text_area", :class => "field_links" %></li>
+    <li><%= link_to t("fields.check_box"), "javascript:void(0)", :id => "check_box", :class => "field_links" %></li>
+    <li><%= link_to t("fields.select_box"), "javascript:void(0)", :id => "select_box", :class => "field_links" %></li>
+    <li><%= link_to t("fields.radio_button"), "javascript:void(0)", :id => "radio_btn", :class => "field_links" %></li>
+    <li><%= link_to t("fields.numeric_field"), "javascript:void(0)", :id => "numeric_field", :class => "field_links" %></li>
+    <li><%= link_to t("fields.date_field"), "javascript:void(0)", :id => "date_field", :class => "field_links" %></li>
   </ul>
-  <div id="err_msg_panel" class="err_msg" style="display:none"></div>
-  <div id="field_details" class="field_details">
-    <%= form_for @field || Field.new, :url => formsection_fields_path(:formsection_id => @form_section.unique_id), :html => {:method => "post"} do |f| %>
+  <% @field ||= Field.new %>
+  <%= error_messages_for  :field,
+                          :header_tag => :h3,
+                          :header_message => t("form_section.messages.cannot_create"),
+                          :message => t('form_section.messages.correct_errors') %>
+  <div id="field_details" class="field_details" style="display:none;">
+    <%= form_for @field, :url => formsection_fields_path(:formsection_id => @form_section.unique_id), :html => {:method => "post"} do |f| %>
         <div class="default_lang_panel">
           <div class="lang_title">
             <%= t("forms.initial_language") %> : <span>English</span>
           </div>
-          <%= render :partial => 'field_form', :locals => {:f => f} %>
+          <%= render :partial => 'form_section/field_form', :locals => {:f => f} %>
         </div>
         <div class="translation_lang_panel">
           <div class="lang_title">
@@ -195,7 +203,7 @@
           <div class="lang_title">
             <%= t("forms.initial_language") %> : <span>English</span>
           </div>
-          <%= render :partial => 'field_form_multi_value', :locals => {:f => f} %>
+          <%= render :partial => 'form_section/field_form_multi_value', :locals => {:f => f} %>
 
         </div>
         <div class="translation_lang_panel">
@@ -221,3 +229,7 @@
 </div>
 </div>
 </div>
+<script>
+    var show_add_field = <%= show_add_field ||= false %>;
+    var field_type = "<%= @field.type %>";
+</script>

@@ -20,6 +20,7 @@ class FieldsController < ApplicationController
   def edit
     @body_class = 'forms-page'
     @field = @form_section.fields.detect { |field| field.name == params[:id] }
+    render :template => "form_section/edit", :locals => {:show_add_field => true}
   end
 
   def choose
@@ -31,13 +32,12 @@ class FieldsController < ApplicationController
     @field = Field.new params[:field]
 
     FormSection.add_field_to_formsection @form_section, @field
-
     if (@field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = "Field successfully added"
       redirect_to(edit_form_section_path(params[:formsection_id]))
     else
-      render :action => "new"
+      render :template => "form_section/edit", :locals => {:show_add_field => true}
     end
   end
 

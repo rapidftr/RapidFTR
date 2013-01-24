@@ -29,7 +29,6 @@ describe FieldsController do
    end
    
   describe "post create" do
-
     before :each do
       @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
       SuggestedField.stub(:mark_as_used)
@@ -46,6 +45,15 @@ describe FieldsController do
       FormSection.stub(:add_field_to_formsection)
       post :create, :formsection_id => @form_section.unique_id, :field => @field
       response.should redirect_to(edit_form_section_path(@form_section.unique_id))
+    end
+
+    it "should render edit form section page if field has errors" do
+      FormSection.stub(:add_field_to_formsection)
+      Field.should_receive(:new).and_return(@field)
+      @field.should_receive(:errors).and_return(["errors"])
+      post :create, :formsection_id => @form_section.unique_id, :field => @field
+      response.should be_success
+      response.should render_template("form_section/edit")
     end
     
     it "should show a flash message" do

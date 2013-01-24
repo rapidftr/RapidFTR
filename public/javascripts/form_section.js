@@ -11,9 +11,22 @@ $(document).ready(function() {
     $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
     $(".field_details_panel input#add_field_btn").click(addFieldToTable);
+    triggerErrors();
 });
 
-function toggleFieldPanel(){
+function triggerErrors(){
+    if(show_add_field){
+        toggleFieldPanel(null, getFieldDetails(field_type));
+        $("ul.field_types a").removeClass("sel");
+        $("#"+field_type).addClass("sel");
+    }
+}
+
+function toggleFieldPanel(event, div_to_show){
+    if(div_to_show === undefined){
+        div_to_show = "#field_details";
+    }
+    $(div_to_show).slideDown("fast");
     $(".field_details_overlay").css("height",document.height);
     $(".field_details_panel").css("top", scrollY + 150);
     $(".translation_lang_selected").text($("#locale option:selected").text());
@@ -86,8 +99,6 @@ function showFieldDetails(){
     $(this).addClass("sel");
     $("#err_msg_panel").hide();
 
-    var fieldtype1 = ["text_field","text_area","numeric_field","date_field"];
-    var fieldtype2 = ["check_box","radio_btn","select_box"];
 
     $("#field_details_options, #field_details").hide();
 
@@ -96,16 +107,12 @@ function showFieldDetails(){
     $(".field_type").each(function(){
         $(this).val(_this.id);
     })
+    $(getFieldDetails(this.id)).slideDown("fast");
+}
 
-    if ($.inArray(this.id, fieldtype1) > -1)
-    {
-        $("#field_details").slideDown("fast");
-
-    }
-    else
-    {
-        $("#field_details_options").slideDown("fast");
-    }
+function getFieldDetails(field_type){
+    var fields_with_options = ["check_box","radio_btn","select_box"];
+    return $.inArray(field_type, fields_with_options) > -1 ? "#field_details_options" : "#field_details";
 }
 
 function onFormSectionDetailsEditPage() {
