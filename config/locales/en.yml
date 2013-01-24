@@ -105,6 +105,8 @@ en:
     unflag_reason: "Unflag Reason"
     unflag_label: "Unflag"
     unflag_error_message: "Please explain why you are unflagging this record."
+    id_of_record_this_duplicate_of: "Enter the ID of the record this is a duplicate of:"
+    duplicate_header: "Marking %{child_name} as Duplicate"
     flag_error_message: "Please explain why you are flagging this record."
     investigation_details: "Investigation Details:"
     reunite_details: "Reunite Details:"
