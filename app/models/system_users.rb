@@ -9,11 +9,11 @@ class SystemUsers < CouchRestRails::Document
   property :roles
   property :_id
 
-  validates_presence_of :name, :password, :roles
+  validates_presence_of :name, :password
 
   validates_with_method :name, :method => :is_user_name_unique
 
-  before_save :generate_id
+  before_save :generate_id, :assign_admin_role
 
   private
 
@@ -23,8 +23,13 @@ class SystemUsers < CouchRestRails::Document
 
   def is_user_name_unique
     user = SystemUsers.get(generate_id)
-    return true if user.nil?
+    return true if user.nil? or self._id == user._id
     [false, "User name has already been taken! Please select a new User name"]
+  end
+
+  def assign_admin_role
+    self.roles = ["admin"]
+    self.type = "user"
   end
 
 end

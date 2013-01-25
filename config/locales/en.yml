@@ -7,6 +7,7 @@ en:
     current_time_zone: "Current time zone"
     language: "Language"
     view_all_children: "View All Children"
+    manage_system_users: Manage System Users
     records_need_attention: "Records need Attention"
 
     label: "Home"
@@ -319,6 +320,8 @@ en:
   admin:
     contact_info: "Admin Contact Information"
     highlight_fields: "Highlight Fields"
+    manage_system_users: "Manage System Users"
+    create_system_user: Create a System User
 
   fields:
     label: "Fields"

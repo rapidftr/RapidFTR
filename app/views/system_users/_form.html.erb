@@ -1,0 +1,23 @@
+
+<%= form_for @user, :url => @user.new? ? system_users_path : system_user_path(@user.name),
+       :html => { :class => 'default-form' } do |f| %>
+
+  <%= f.error_messages :header_tag => :h3 %>
+  <div class="clearfix"></div>
+
+  <fieldset>
+    <p>
+      <%= f.label :user_name, t("login.username"), :class => "key" %>
+      <%= f.text_field :name , :readonly => !@user.new?%>*
+    </p>
+    <p>
+      <%= f.label :password, t("login.password.label"), :class=>'key'  %>
+      <%= f.password_field :password, :autocomplete => "off" %>*
+    </p>
+  </fieldset>
+
+  <div class="btn_panel">
+    <%= cancel_button system_users_path %>
+    <%= submit_button t("buttons.save") %>
+  </div>
+<% end %>

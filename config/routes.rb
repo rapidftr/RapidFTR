@@ -93,6 +93,8 @@ RapidFTR::Application.routes.draw do
     end
   end
 
+  resources :system_users, :path =>"/admin/system_users"
+
   match 'database/delete_children' => 'database#delete_children', :via => :delete
   match '/' => 'home#index', :as => :root
 end
