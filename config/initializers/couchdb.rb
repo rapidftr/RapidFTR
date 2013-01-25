@@ -1,4 +1,3 @@
-require 'restclient'
 begin
 
   env = ENV['RAILS_ENV'] || 'development'
@@ -24,10 +23,11 @@ rescue
   raise "There was a problem with your config/couchdb.yml file. Check and make sure it's present and the syntax is correct.
          If it is not present copy couchdb.yml.example and save it as couchdb.yml. Do not checkin couchdb.yml(any ways its gitignored"
 else
+
   COUCHDB_CONFIG = {
-    :host_path => "#{protocol}://#{authorized_host}:#{port}",
-    :db_prefix => "#{db_prefix}",
-    :db_suffix => "#{db_suffix}"
+      :host_path => "#{protocol}://#{authorized_host}:#{port}",
+      :db_prefix => "#{db_prefix}",
+      :db_suffix => "#{db_suffix}"
   }
 
   COUCHDB_SERVER = CouchRest.new COUCHDB_CONFIG[:host_path]

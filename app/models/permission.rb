@@ -4,7 +4,7 @@ class Permission
     ordered = ActiveSupport::OrderedHash.new
 
     hashes.each do |hash|
-      hash.each {|key, value| ordered[key] = value}
+      hash.each { |key, value| ordered[key] = value }
     end
     ordered
   end
@@ -20,9 +20,8 @@ class Permission
   SYSTEM   = Permission.to_ordered_hash({ :contact_information => "System Settings",
                                           :highlight_fields => "Highlight Fields",
                                           :replication_users => "Users for synchronisation"})
-
   def self.all
-    { "Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM }
+    {"Children" => CHILDREN, "Forms" => FORMS, "Users" => USERS, "Devices" => DEVICES, "Reports" => REPORTS, "Roles" => ROLES, "System" => SYSTEM}
   end
 
   def self.all_permissions
@@ -30,7 +29,7 @@ class Permission
   end
 
   def self.hashed_values
-    {"ALL" =>["All"], "Children" => CHILDREN.values, "Forms" => FORMS.values, "Users" => USERS.values, "Devices" => DEVICES.values, "Reports" => REPORTS.values, "Roles" => ROLES.values, "System" => SYSTEM.values }
+    {"ALL" => ["All"], "Children" => CHILDREN.values, "Forms" => FORMS.values, "Users" => USERS.values, "Devices" => DEVICES.values, "Reports" => REPORTS.values, "Roles" => ROLES.values, "System" => SYSTEM.values}
   end
 
 end
