@@ -7,8 +7,8 @@ begin
   host      = couchdb_config["host"]      || 'localhost'
   port      = couchdb_config["port"]      || '5984'
   database  = couchdb_config["database"]
-  username  = couchdb_config["username"]  || 'rapidftr'
-  password  = couchdb_config["password"]  || 'rapidftr'
+  username  = couchdb_config["username"]
+  password  = couchdb_config["password"]
   ssl       = couchdb_config["ssl"]       || false
   db_prefix = couchdb_config["database_prefix"] || ""
   db_suffix = couchdb_config["database_suffix"] || ""

@@ -18,10 +18,9 @@ namespace :db do
   end
 
   desc "Create system administrator for couchdb. This is needed only if you are interested to test out replications"
-  task :create_couch_sysadmin => :environment do
+  task :create_couch_sysadmin do
     host = "http://127.0.0.1"
     port = "5984"
-    env = ENV['RAILS_ENV'] || 'development'
     puts "
       **************************************************************
 
@@ -54,9 +53,16 @@ namespace :db do
       full_host = "#{host}:#{port}/_config/admins/#{user_name}"
       RestClient.put full_host, "\""+password+"\"", {:content_type => :json}
     end
+    Rake::Task["db:create_couchdb_yml"].invoke(user_name, password)
+  end
 
+  desc "Create/Copy couchdb.yml from cocuhdb.yml.example"
+  task :create_couchdb_yml, :user_name, :password  do |t, args|
+    env = ENV['RAILS_ENV']
+    user_name = ENV['couchdb_user_name'] || args[:user_name] || ""
+    password = ENV['couchdb_password'] || args[:password] || ""
     couchdb_config = YAML::load(ERB.new(Rails.root.join("config", "couchdb.yml.example").read).result)
-    couchdb_config[env].merge!({"username" => user_name, "password" => password})
+    couchdb_config[env].merge!({"username" => user_name, "password" => password}) if !user_name.blank? and !password.blank?
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
   end
 end
