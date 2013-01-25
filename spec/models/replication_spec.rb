@@ -243,6 +243,7 @@ describe Replication do
 
       @rep = build :replication
       @rep.stub! :target => @target
+      @rep.stub! :source => @source
       @rep["_id"] = 'test-replication-id'
       @rep.start_replication
       sleep 1
@@ -283,6 +284,7 @@ describe Replication do
     end
 
     it 'should get the url without the source username and password' do
+      Child.database.should_receive(:root).and_return("http://abcd:efgh@localhost:5984/rapidftr_child_test")
       target_hash = Replication.configuration("rapidftr", "rapidftr")
       target_hash[:target].should == "http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test"
     end

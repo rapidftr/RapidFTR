@@ -58,11 +58,16 @@ namespace :db do
 
   desc "Create/Copy couchdb.yml from cocuhdb.yml.example"
   task :create_couchdb_yml, :user_name, :password  do |t, args|
-    env = ENV['RAILS_ENV']
+    default_env = ENV['RAILS_ENV'] || "development"
+    environments = ["development", "test", "cucumber", default_env].uniq
     user_name = ENV['couchdb_user_name'] || args[:user_name] || ""
     password = ENV['couchdb_password'] || args[:password] || ""
     couchdb_config = YAML::load(ERB.new(Rails.root.join("config", "couchdb.yml.example").read).result)
-    couchdb_config[env].merge!({"username" => user_name, "password" => password}) if !user_name.blank? and !password.blank?
+    environments.each do |env|
+      if !user_name.blank? and !password.blank? and !couchdb_config[env].blank?
+        couchdb_config[env].merge!({"username" => user_name, "password" => password})
+      end
+    end
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
   end
 end

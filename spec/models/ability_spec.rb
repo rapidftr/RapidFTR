@@ -204,7 +204,7 @@ describe Ability do
   end
 
   describe "replications" do
-    let(:permissions) { [Permission::SYSTEM[:replications]] }
+    let(:permissions) { [Permission::DEVICES[:replications]] }
     it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers }
     it { should authorize :manage, Replication }
   end
@@ -217,7 +217,7 @@ describe Ability do
     end
 
     describe "system users for synchronisation" do
-      let(:permissions) { [Permission::SYSTEM[:replication_users]] }
+      let(:permissions) { [Permission::SYSTEM[:system_users]] }
       it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, ContactInformation }
       it { should authorize :manage, SystemUsers }
     end

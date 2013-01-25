@@ -95,7 +95,7 @@ class Ability
     #
     # REPLICATIONS
     #
-    if user.has_permission?(Permission::SYSTEM[:replications])
+    if user.has_permission?(Permission::DEVICES[:replications])
       can [:manage], Replication
     end
 
@@ -108,7 +108,7 @@ class Ability
     end
 
     # SYNCHRONISATION USERS
-    if user.has_permission?(Permission::SYSTEM[:replication_users])
+    if user.has_permission?(Permission::SYSTEM[:system_users])
       can [:manage], SystemUsers
     end
 
