@@ -64,7 +64,8 @@ class FormSection < CouchRestRails::Document
   end
 
   def enabled=(value)
-    self[:visible] = (value == "false" ? false : true)
+    self[:visible] = (value == "false" ? false : true) if value.class == String
+    self[:visible] = value
   end
 
   def enabled?
