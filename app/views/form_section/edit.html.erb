@@ -49,8 +49,14 @@
         <%= submit_button t("forms.save_details") %>
       </div>
     </div>
-    <h3><%= t("fields.label") %><%= link_to t("fields.add"), "javascript:void(0)", :class => "add_field" %></h3>
 
+      <% if @form_section.editable? %>
+        <h3><%= t("fields.label") %><%= link_to t("fields.add"), "javascript:void(0)", :class => "add_field" %></h3>
+      <% else %>
+          <h3><i><%= I18n.t("forms.cannot_be_edited") %></i></h3>
+      <% end %>
+
+  <% end %>
     <table id="form_sections" class="list_table">
       <thead>
       <tr>
@@ -121,13 +127,6 @@
       </tbody>
 
       <tfoot>
-      <tr>
-        <% if @form_section.editable? %>
-            <th colspan=6><%= link_to t("form_section.actions.add_custom_field"), choose_field_path(@form_section.unique_id) %></th>
-        <% else %>
-            <th colspan=6><i><%= I18n.t("forms.cannot_be_edited") %></i></th>
-        <% end %>
-      </tr>
       </tfoot>
     </table>
 
@@ -136,10 +135,6 @@
         <input type='submit' id='changeDirectionSubmit' style='display:none;'/>
     <% end %>
 
-    <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/delete', :html => {:id => 'delete', :method => :post} do -%>
-        <input type='hidden' name='field_name' value='' id='deleteFieldName'/>
-        <input type='submit' id='deleteSubmit' style='display:none;'/>
-    <% end %>
 
     <div class="clearfix"></div>
 
@@ -148,7 +143,7 @@
     </div>
 
     <div class="clearfix"></div>
-<% end %>
+
 
 <div class="field_details_overlay hide"></div>
 <div class="field_details_panel hide">

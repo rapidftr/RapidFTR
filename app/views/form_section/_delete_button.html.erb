@@ -1,3 +1,6 @@
-<%= hidden_field_tag "field_name", "#{field.name}"%>
+<%= form_for field, :url => form_section_field_path(@form_section.unique_id, field.name), :html => {:id => field.name,:method => :delete} do |f|%>
+    <input type='hidden' name='field_name' value='<%=field.name%>'/>
+    <input type='submit' id='<%=field.name%>deleteSubmit' style='display:none;'/>
+<% end %>
 <a href="#<%=field.name%>_Delete" class="submit-form delete" id="<%=field.name%>_Delete"><%= I18n.t("user.actions.delete")%>&nbsp;</a>
 

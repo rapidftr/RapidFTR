@@ -175,7 +175,7 @@ function deleteItem() {
     var fieldName = td.find("input[name=field_name]").val();
     $('#deleteFieldName').val(fieldName);
     if (confirm(I18n.t("messages.delete_item"))) {
-        $('#deleteSubmit').click();
+        $('#'+fieldName+'deleteSubmit').click();
     }
 }
 function moveDown() {
