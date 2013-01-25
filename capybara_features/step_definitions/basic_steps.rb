@@ -2,7 +2,6 @@ require 'spec/spec_helper'
 
 When /^I fill in the basic details of a child$/ do
   fill_in("Birthplace", :with => "Haiti")
-  attach_file("child[photo]0", "features/resources/jorge.jpg")
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
@@ -25,12 +24,14 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
-      'enabled' => true,
       'fields'=> Array.new
     )
 
+    form_section_hash["perm_enabled"] = (form_section_hash["perm_enabled"] == "false" ? false : true)
     form_section_hash["order"] = form_section_hash["order"].to_i
-    FormSection.create!(form_section_hash)
+    form_section = FormSection.new(form_section_hash)
+    form_section.visible = true
+    form_section.save!
   end
 end
 

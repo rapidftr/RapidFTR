@@ -23,6 +23,13 @@ module RapidFTR
       ]
       FormSection.create!("name" =>"Basic Identity", "enabled"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"basic_identity", "editable"=>true, :fields => basic_identity_fields, :perm_enabled => true)
 
+      photo_audio_fields = [
+          Field.new("name" => "current_photo_key", "display_name" => "Current Photo Key", "type" => "photo_upload_box", "editable" => false),
+          Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box", "editable" => false),
+      ]
+      FormSection.create!("name" =>"Photos and Audio", "enabled"=>true, :description =>"All Photo and Audio Files Associated with a Child Record", :order=> 10, :unique_id=>"photos_and_audio", :fields => photo_audio_fields, :perm_visible => true, "editable"=>false)
+
+
       unless Rails.env.test? or Rails.env.cucumber?
         family_details_fields = [
           Field.new("name" => "fathers_name", "display_name" => "Father's Name", "type" => "text_field"),
@@ -147,11 +154,6 @@ module RapidFTR
         ]
         FormSection.create!("name" =>"Interview Details", "enabled"=>true, :description =>"", :order=> 9, :unique_id=>"interview_details", :fields => interview_details_fields)
 
-        photo_audio_fields = [
-            Field.new("name" => "current_photo_key", "display_name" => "Current Photo Key", "type" => "photo_upload_box", "editable" => false),
-            Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box", "editable" => false),
-        ]
-        FormSection.create!("name" =>"Photos and Audio", "enabled"=>true, :description =>"All Photo and Audio Files Associated with a Child Record", :order=> 10, :unique_id=>"photos_and_audio", :fields => photo_audio_fields, :perm_visible => true, "editable"=>false)
       end
 
       if Rails.env.android?
