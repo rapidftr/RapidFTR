@@ -771,3 +771,13 @@ body {
     background: #e5efff;
     border: 1px solid #bdd7ff;
     border-right: 0px; }
+
+
+.photos,.audio{
+    margin-right: 220px;
+}
+.photos .thumbnail {
+    float: left;
+    margin: 2px;
+    height: 140px;
+}

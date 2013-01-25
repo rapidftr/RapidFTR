@@ -41,7 +41,7 @@
     <% @form_sections.each do |section| %>
       <tr id="<%= section.unique_id%>_row" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
           <td>
-            <% if not section.perm_enabled? %>
+            <% unless (section.perm_enabled? or section.perm_visible?) %>
                  <%= check_box_tag "sections[#{section.unique_id}]", 'form_section_check_box' %>
             <% end %>
           </td>
@@ -58,7 +58,7 @@
               <%= hidden_field_tag "form_order[#{section.unique_id}]", section.order %>
             </span>            
           </td>
-          <% if not section.perm_enabled? %>
+          <% unless (section.perm_enabled? or section.fixed_order?) %>
             <td class="orderingColumn">
               <a id="<%= "#{section.unique_id}_up"%>"  href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
             </td>

@@ -20,7 +20,7 @@ describe "children/show.html.erb" do
       assign(:duplicates, Array.new)
     end
 
-    it "displays the child's photo and thumbnails" do
+    it "displays the child's photo" do
       assign(:aside,'picture')
 
       render :template => 'children/show', :layout => 'layouts/application'
@@ -29,11 +29,6 @@ describe "children/show.html.erb" do
         with_tag("a[href=?]", child_resized_photo_path(@child, @child.primary_photo_id, 640))
         with_tag("img[src=?]", child_resized_photo_path(@child, @child.primary_photo_id, 328))
       end
-
-      rendered.should have_tag(".profile-image .thumbnails") do
-        with_tag("img[alt=?][src=?]", @child['name'], child_thumbnail_path(@child, @child.primary_photo_id))
-      end
-
     end
 
     it "renders all fields found on the FormSection" do

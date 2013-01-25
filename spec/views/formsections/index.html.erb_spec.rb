@@ -48,9 +48,9 @@ end
 describe "form_section/index.html.erb" do
 
   before :each do
-    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :perm_enabled => true
-    @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> "false", "order"=>"101", "unique_id"=> "caregiver_details"
-    @form_section_3 = FormSection.new "name" => "Family Details", "enabled" =>"true", "order"=>"20", "unique_id"=>"family_details"
+    @form_section_1  = FormSection.new "name" => "Basic Details", "enabled"=> true, "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :perm_enabled => true
+    @form_section_2  = FormSection.new "name" => "Caregiver Details", "enabled"=> false, "order"=>"101", "unique_id"=> "caregiver_details"
+    @form_section_3 = FormSection.new "name" => "Family Details", "enabled" => true, "order"=>"20", "unique_id"=>"family_details"
     assign(:form_sections, [@form_section_1, @form_section_2, @form_section_3])
     render
     @searchable_response = Hpricot(rendered)

@@ -32,7 +32,7 @@
       <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f}%>
         </div>
         <div class="clearfix"></div>
-        <% if not @form_section.perm_enabled? %>
+        <% unless (@form_section.perm_enabled? or @form_section.perm_visible?) %>
             <p class="chkbox_visible">
               <%= f.label :enabled, t("visible"), :class=>'key' %>
               <%= f.check_box :enabled?, {}, true, false %>
@@ -143,7 +143,7 @@
       <% end %>
     <% end %>
 
-    <%= link_to t("fields.add"),"javascript:void(0)", :class=>"add_field" %>
+    <%= link_to t("fields.add"),"javascript:void(0)", :class=>"add_field" if @form_section.editable? %>
     <div class="fields_section hide">
       <ul class="field_types clearfix">
         <li><%= link_to t("fields.text_field"),"javascript:void(0)", :id=> "text_field", :class=>"sel" %> </li>

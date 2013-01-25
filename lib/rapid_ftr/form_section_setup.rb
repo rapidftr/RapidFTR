@@ -20,8 +20,6 @@ module RapidFTR
         Field.new("name" => "languages", "display_name" => "Languages spoken", "type" => "text_field"),
         Field.new("name" => "characteristics", "display_name" => "Distinguishing Physical Characteristics", "type" => "textarea"),
         Field.new("name" => "documents", "display_name" => "Documents carried by the child", "type" => "text_field"),
-        Field.new("name" => "current_photo_key", "display_name" => "Current Photo Key", "type" => "photo_upload_box"),
-        Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box"),
       ]
       FormSection.create!("name" =>"Basic Identity", "enabled"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"basic_identity", "editable"=>true, :fields => basic_identity_fields, :perm_enabled => true)
 
@@ -148,6 +146,12 @@ module RapidFTR
           Field.new("name" => "governing_org", "display_name" => "Organization in charge of tracing child's family","type" => "text_field"),
         ]
         FormSection.create!("name" =>"Interview Details", "enabled"=>true, :description =>"", :order=> 9, :unique_id=>"interview_details", :fields => interview_details_fields)
+
+        photo_audio_fields = [
+            Field.new("name" => "current_photo_key", "display_name" => "Current Photo Key", "type" => "photo_upload_box", "editable" => false),
+            Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box", "editable" => false),
+        ]
+        FormSection.create!("name" =>"Photos and Audio", "enabled"=>true, :description =>"All Photo and Audio Files Associated with a Child Record", :order=> 10, :unique_id=>"photos_and_audio", :fields => photo_audio_fields, :perm_visible => true, "editable"=>false)
       end
 
       if Rails.env.android?
@@ -162,7 +166,7 @@ module RapidFTR
            Field.new("display_name" => "Hidden TextField" ,"type" => "text_field" ,"visible" =>false)
 
         ]
-        FormSection.create!("name" => "Automation Form", "enabled" => true, :description => "Automation Form" , :order => 10, :fields => automation_form_fields)
+        FormSection.create!("name" => "Automation Form", "enabled" => true, :description => "Automation Form" , :order => 11, :fields => automation_form_fields)
       end
 
       return true

@@ -6,11 +6,13 @@ class FormSection < CouchRestRails::Document
   use_database :form_section
   PropertiesLocalization.localize_properties [:name, :help_text, :description]
   property :unique_id
-  property :enabled, :cast_as => 'boolean', :default => true
+  property :visible, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
-  property :perm_enabled, :cast_as => 'boolean', :default => false
+  property :fixed_order, :cast_as => 'boolean', :default => false
+      property :perm_visible, :cast_as => 'boolean', :default => false
+  property :perm_enabled, :cast_as => 'boolean'
   property :validations, :type => [String]
 
   view_by :unique_id
@@ -20,6 +22,9 @@ class FormSection < CouchRestRails::Document
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
+  validates_with_method :visible, :method => :validate_visible_field, :message=>"visible can't be false if perm_visible is true"
+  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=>"fixed_order can't be false if perm_enabled is true"
+  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=>"perm_visible can't be false if perm_enabled is true"
 
   def initialize args={}
     self["fields"] = []
@@ -31,7 +36,7 @@ class FormSection < CouchRestRails::Document
 
   class << self
     def enabled_by_order
-      by_order.select(&:enabled?)
+      by_order.select(&:visible?)
     end
 
     def all_child_field_names
@@ -56,6 +61,24 @@ class FormSection < CouchRestRails::Document
         form_section['fields'].compact!
       end
     end
+  end
+
+  def enabled=(value)
+    self[:visible] = value
+  end
+
+  def enabled?
+    self[:visible]
+  end
+
+  def perm_enabled=(value)
+    self[:fixed_order] = value
+    self[:perm_visible] = value
+    self[:perm_enabled] = value
+  end
+
+  def perm_enabled?
+    self[:perm_enabled]
   end
 
   def all_text_fields
@@ -188,6 +211,21 @@ class FormSection < CouchRestRails::Document
   end
 
   protected
+
+  def validate_visible_field
+    return self.visible == true if self.perm_visible?
+    true
+  end
+
+  def validate_fixed_order
+    return self.fixed_order == true if self.perm_enabled?
+    true
+  end
+
+  def validate_perm_visible
+    return self.perm_visible == true if self.perm_enabled?
+    true
+  end
 
   def validate_unique_id
     form_section = FormSection.get_by_unique_id(self.unique_id)

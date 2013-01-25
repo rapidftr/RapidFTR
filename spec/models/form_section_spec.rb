@@ -75,6 +75,7 @@ describe FormSection do
         expected = FormSection.create! :name => 'Good', :order => 1, :unique_id => 'good'
         unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :enabled => false
         FormSection.enabled_by_order.map(&:name).should == %w(Good)
+        FormSection.enabled_by_order.map(&:name).should_not ==  %w(Bad)
       end
     end
 
@@ -191,8 +192,19 @@ describe FormSection do
 
   end
 
-  describe "perm_enabled" do
+  describe "perm_visible" do
+    it "should not be perm_enabled by default" do
+      formsection = FormSection.new
+      formsection.perm_visible?.should be_false
+    end
 
+    it "should be perm_visible when set" do
+      formsection = FormSection.new(:perm_visible => true)
+      formsection.visible?.should be_true
+    end
+  end
+
+  describe "perm_enabled" do
     it "should not be perm_enabled by default" do
       formsection = FormSection.new
       formsection.perm_enabled?.should be_false
@@ -201,6 +213,9 @@ describe FormSection do
     it "should be perm_enabled when set" do
       formsection = FormSection.new(:perm_enabled => true)
       formsection.perm_enabled?.should be_true
+      formsection.perm_visible?.should be_true
+      formsection.fixed_order?.should be_true
+      formsection.visible?.should be_true
     end
   end
 
