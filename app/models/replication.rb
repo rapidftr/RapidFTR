@@ -120,7 +120,7 @@ class Replication < CouchRestRails::Document
   end
 
   def self.configuration(username, password)
-    { :target => "http://#{username}:#{password}@"+Child.database.root.split("@").last }
+    { :target => "http://#{username}:#{password}@"+Child.database.root.split("://").last.split("@").last }
   end
 
   def self.normalize_url(url)
@@ -151,14 +151,16 @@ class Replication < CouchRestRails::Document
   def remote_config
     uri = remote_uri
     uri.path = Rails.application.routes.url_helpers.configuration_replications_path
+    post_params = {:user_name => self.user_name, :password => self.crypted_password}
 
     if uri.scheme == "http"
-      response = Net::HTTP.post_form uri, {}
+      response = Net::HTTP.post_form uri, post_params
     else
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(uri.request_uri)
+      request.body = post_params
       response = http.request(request)
     end
     JSON.parse response.body
