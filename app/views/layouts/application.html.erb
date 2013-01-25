@@ -30,7 +30,7 @@
       <ul>
         <li><%= link_to t("navigation.children"), children_path %></li>
         <% if current_user_name==nil or can? :manage, FormSection %>
-            <li><%= link_to t("navigation.forms"), formsections_path %></li>
+            <li><%= link_to t("navigation.forms"), form_sections_path %></li>
         <% end %>
         <li><%= link_to t("navigation.users"), users_path %></li>
         <li><%= link_to t("navigation.devices"), devices_path %></li>

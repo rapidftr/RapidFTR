@@ -44,7 +44,7 @@ class FormSectionController < ApplicationController
         form.save!
       end
     end
-    redirect_to formsections_url
+    redirect_to form_section_index_path
   end
 
 
@@ -54,7 +54,7 @@ class FormSectionController < ApplicationController
       form_section.order = value.to_i
       form_section.save!
     end
-    redirect_to formsections_url
+    redirect_to form_section_index_path
   end
 
   def save_field_order

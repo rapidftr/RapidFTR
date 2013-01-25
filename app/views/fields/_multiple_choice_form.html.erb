@@ -4,7 +4,7 @@
   <%= f.hidden_field 'type', :value => @field.type %>
 
   <fieldset>
-    <h1 class="no_border"><%= link_to 'Form', formsections_path %> &gt; <%= link_to @form_section.name, edit_form_section_path(@form_section) %></h1>
+    <h1 class="no_border"><%= link_to 'Form', form_sections_path %> &gt; <%= link_to @form_section.name, edit_form_section_path(@form_section) %></h1>
     <h3><%= @field.type.humanize %> details</h3>
  		<%= render :partial => "common", :locals => {:f => f} %>
     <div class="help-text-container">

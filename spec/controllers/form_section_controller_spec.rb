@@ -123,7 +123,7 @@ describe FormSectionController do
       form_section.should_receive(:properties=).with(params)
       form_section.should_receive(:valid?).and_return(false)
       post :update, :form_section => params, :id => "form_1"
-      response.should_not redirect_to(formsections_path)
+      response.should_not redirect_to(form_section_index_path)
       response.should render_template("edit")
     end
   end

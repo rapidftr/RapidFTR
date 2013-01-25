@@ -241,7 +241,7 @@ function saveFieldLocation(event) {
             type: "PUT",
             data: {
                 "destination_form_id" : to_form_section,
-                "formsection_id" : formId
+                "form_section_id" : formId
             },
             success:function(data, status, xmlHttpRequest) {
                 location.reload();

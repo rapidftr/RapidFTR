@@ -57,27 +57,21 @@ RapidFTR::Application.routes.draw do
   match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
   match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
   match '/active' => 'sessions#active', :as => :session_active
-  resources :formsections, :controller => 'form_section' do
-    additional_field_actions = FieldsController::FIELD_TYPES.inject({}) { |h, type| h["new_#{type}"] = :get; h }
-    additional_field_actions[:move_up] = :post
-    additional_field_actions[:move_down] = :post
-    additional_field_actions[:delete] = :post
-    additional_field_actions[:toggle_fields] = :post
-
+  resources :form_section, :controller => 'form_section' do
     resources :fields, :controller => 'fields' do
       collection do
-        additional_field_actions.each do |action, method|
-          send method, action
-        end
+        post "move_up"
+        post "move_down"
+        post "delete"
+        post "toggle_fields"
       end
     end
   end
-  match 'form_section/:formsection_id/choose_field' => 'fields#choose', :as => :choose_field
+  match 'form_section/:form_section_id/choose_field' => 'fields#choose', :as => :choose_field
   match '/published_form_sections' => 'publish_form_section#form_sections', :as => :published_form_sections
   resources :advanced_search, :only => [:index, :new]
   match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
-  resources :form_section
-  resources :fields
+  resources :form_sections, :controller => "form_section"
   resources :contact_information
   resources :highlight_fields do
     collection do

@@ -8,7 +8,7 @@
                         :header_message => t("form_section.messages.cannot_create"),
                         :message => t('form_section.messages.correct_errors') %>
 
-<%= form_for @form_section, :url => formsections_path, :html => {:method => :post, :class => ""}  do |f| %>
+<%= form_for @form_section, :url => form_sections_path, :html => {:method => :post, :class => ""}  do |f| %>
   <fieldset>
     <h3><%= t("form_section.details") %></h3>
     <p>
@@ -32,7 +32,7 @@
   <br />
   <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f, :show_drop_down => true}%>
     <div class="btn_panel">
-        <%= cancel_button formsections_path %>
+        <%= cancel_button form_sections_path %>
         <%= submit_button t("forms.save") %>
     </div>
 <% end %>
