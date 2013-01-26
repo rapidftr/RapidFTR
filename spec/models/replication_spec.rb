@@ -31,6 +31,18 @@ describe Replication do
       r.errors[:remote_url].should_not be_empty
     end
 
+    it 'should have user name' do
+       r = build :replication, :password => nil
+       r.should_not be_valid
+       r.errors[:password].should_not be_empty
+     end
+
+    it 'should have user name' do
+      r = build :replication, :user_name => nil
+      r.should_not be_valid
+      r.errors[:user_name].should_not be_empty
+    end
+
     it 'should allow only http or https' do
       r = build :replication, :remote_url => 'abcd://localhost:3000'
       r.should_not be_valid
@@ -191,6 +203,35 @@ describe Replication do
   end
 
   ################# NOTE #################
+  ## This will run on entire couch db   ##
+  ## rather than on a single test       ##
+  ## database. Do we want to run this   ##
+  ## every time?                        ##
+  ################# NOTE #################
+
+  describe 'authenticate' do
+
+    xit "should authenticate the user based on user credentials" do
+      @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
+      RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
+
+      response = Replication.authenticate_with_internal_couch_users("test_user", "test_password")
+      response.cookies.should_not be_nil
+
+      RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
+    end
+
+    xit "should raise exception for invalid credentials" do
+      @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
+      RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
+
+      lambda{Replication.authenticate_with_internal_couch_users("test_user", "wrong_password")}.should(raise_error(RestClient::Unauthorized))
+
+      RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
+    end
+  end
+
+  ################# NOTE #################
   ##  sleep 1 is required before every  ##
   ##    destroy & restart_replication   ##
   ##  without that RestClient::Conflict ##
@@ -242,6 +283,18 @@ describe Replication do
       @rep.should_receive(:start_replication).ordered.and_return(nil)
       @rep.restart_replication
     end
+
+    it 'should get the url without the source username and password' do
+      target_hash = Replication.configuration("rapidftr", "rapidftr")
+      target_hash[:target].should == "http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test"
+    end
+
+    it "should get the correct url even if the source database doesn't have have username and password" do
+      Child.database.should_receive(:root).and_return("http://localhost:5984/rapidftr_child_test")
+      target_hash = Replication.configuration("rapidftr", "rapidftr")
+      target_hash[:target].should == "http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test"
+    end
+
   end
 
   ################# NOTE #################

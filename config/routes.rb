@@ -85,16 +85,18 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-  resources :replications do
+  resources :replications, :path => "/devices/replications" do
     collection do
       post :configuration
     end
-    
+
     member do
       post :start
       post :stop
     end
   end
+
+  resources :system_users, :path =>"/admin/system_users"
 
   match 'database/delete_children' => 'database#delete_children', :via => :delete
   match '/' => 'home#index', :as => :root
