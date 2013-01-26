@@ -4,11 +4,11 @@
 <% end %>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
-    <% unless @replications.nil? %>
+    <% unless @replications.nil? || @replications.empty? %>
         <%= render :partial => "replications/index", :locals => {:replications => @replications} %>
     <% end %>
 
-    <% unless @devices.nil? %>
+    <% unless @devices.nil? || @devices.empty?%>
         <table id="devices" class="list_table">
           <thead>
           <tr>
