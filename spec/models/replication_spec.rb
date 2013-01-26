@@ -210,22 +210,24 @@ describe Replication do
   ################# NOTE #################
 
   describe 'authenticate' do
-    before :each do
+
+    xit "should authenticate the user based on user credentials" do
       @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
       RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
-    end
 
-    after :each do
+      response = Replication.authenticate_with_internal_couch_users("test_user", "test_password")
+      response.cookies.should_not be_nil
+
       RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
     end
 
-    it "should authenticate the user based on user credentials" do
-      response = Replication.authenticate_with_internal_couch_users("test_user", "test_password")
-      response.cookies.should_not be_nil
-    end
+    xit "should raise exception for invalid credentials" do
+      @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
+      RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
 
-    it "should raise exception for invalid credentials" do
       lambda{Replication.authenticate_with_internal_couch_users("test_user", "wrong_password")}.should(raise_error(RestClient::Unauthorized))
+
+      RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
     end
   end
 

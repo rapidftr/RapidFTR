@@ -16,7 +16,8 @@ Feature: So that admin can customize form section details
 
     And I am logged in as an admin
 
-  @wip #TODO Visit this once the form section UI changes are done.
+#  TODO Visit this once the form section UI changes are done.
+  @wip
   Scenario: Admins should be able to edit name and description
     Given I am on the form section page
     And I follow "Family details"
