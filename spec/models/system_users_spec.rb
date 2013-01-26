@@ -22,11 +22,11 @@ describe SystemUsers do
   it "should not save if the username already exists" do
     @sys_user.save
     another_sys_user = build :system_users
-    another_sys_user.should_not be_valid
+    lambda { another_sys_user.save }.should raise_error
   end
 
   it "should fetch all the _user documents" do
     @sys_user.save
-    SystemUsers.all.length.should == 1
+    SystemUsers.get(@sys_user._id).should_not be_nil
   end
 end

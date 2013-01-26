@@ -27,7 +27,7 @@ namespace :db do
         Welcome to RapidFTR couchdb system administrator setup!
 
       **************************************************************
-      RapidFTR uses couchdb _users table for couchdb master to master replication.
+      RapidFTR uses couchdb _users and _replication database for couchdb master to master replication.
       If you don't want to try the replication feature please hit CTRL + C.
 
       Else go on...
@@ -65,7 +65,7 @@ namespace :db do
     couchdb_config = YAML::load(ERB.new(Rails.root.join("config", "couchdb.yml.example").read).result)
     environments.each do |env|
       if !user_name.blank? and !password.blank? and !couchdb_config[env].blank?
-        couchdb_config[env].merge!({"username" => user_name, "password" => password})
+        couchdb_config[env].merge!({"username" => user_name, "password" => password, "database_suffix" => "_#{env}"})
       end
     end
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
