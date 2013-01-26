@@ -64,7 +64,7 @@ namespace :db do
     password = ENV['couchdb_password'] || args[:password] || ""
     couchdb_config = YAML::load(ERB.new(Rails.root.join("config", "couchdb.yml.example").read).result)
     environments.each do |env|
-      if !user_name.blank? and !password.blank? and !couchdb_config[env].blank?
+      if !couchdb_config[env].blank?
         couchdb_config[env].merge!({"username" => user_name, "password" => password, "database_suffix" => "_#{env}"})
       end
     end
