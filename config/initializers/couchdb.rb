@@ -18,12 +18,13 @@ begin
 
   protocol = ssl ? 'https' : 'http'
   authorized_host = (username.blank? && password.blank?) ? host :
-      "#{CGI.escape(username)}:#{CGI.escape(password)}@#{host}"
-
+    "#{CGI.escape(username)}:#{CGI.escape(password)}@#{host}"
 rescue
+  raise "There was a problem with your config/couchdb.yml file. Check and make sure it's present and the syntax is correct.
+         If it is not present copy couchdb.yml.example and save it as couchdb.yml. Do not checkin couchdb.yml(any ways its gitignored)
+         ***************************
 
-  raise "There was a problem with your config/couchdb.yml file. Check and make sure it's present and the syntax is correct."
-
+         Its recommended to run the rake task db:create_couch_sysadmin if you have fixed couchdb's admin party! "
 else
 
   COUCHDB_CONFIG = {

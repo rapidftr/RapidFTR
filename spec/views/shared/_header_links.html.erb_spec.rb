@@ -33,7 +33,7 @@ describe 'shared/_header_links.html.erb' do
   end
 
   describe 'with system settings permission' do
-    let(:permissions) { [Permission::SYSTEM[:settings]] }
+    let(:permissions) { [Permission::SYSTEM[:contact_information]] }
     it { should have_link('System settings', admin_path) }
   end
 

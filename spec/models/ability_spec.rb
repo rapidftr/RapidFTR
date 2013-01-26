@@ -57,7 +57,7 @@ describe Ability do
     describe '#view,search all data and edit' do
       let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
+      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers }
 
       it { should authorize :index, Child }
       it { should_not authorize :create, Child }
@@ -80,7 +80,7 @@ describe Ability do
     describe '#edit child' do
       let(:permissions) { [Permission::CHILDREN[:edit]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
+      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers }
 
       it { should authorize :index, Child }
       it { should_not authorize :read, Child.new }
@@ -92,7 +92,7 @@ describe Ability do
     describe "export children to photowall" do
       let(:permissions) { [Permission::CHILDREN[:export]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role }
+      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers }
 
       it { should authorize :export, Child }
       it { should_not authorize :index, Child }
@@ -148,11 +148,21 @@ describe Ability do
     describe "blacklist" do
       let(:permissions) { [Permission::DEVICES[:black_list]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role }
+      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, Replication, SystemUsers }
 
       it { should authorize :update, Device }
       it { should authorize :index, Device }
       it { should_not authorize :read, User.new }
+    end
+
+    describe "replication" do
+      let(:permissions) { [Permission::DEVICES[:replications]] }
+
+      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, SystemUsers }
+
+      it { should authorize :update, Replication }
+      it { should_not authorize :read, User.new }
+      it { should_not authorize :manage, Device }
     end
   end
 
@@ -179,7 +189,7 @@ describe Ability do
     describe "manage forms" do
       let(:permissions) { [Permission::FORMS[:manage]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role }
+      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, SystemUsers }
 
       it { should authorize :manage, FormSection.new }
       it { should authorize :manage, Field.new }
@@ -188,22 +198,28 @@ describe Ability do
 
     describe "highlight fields" do
       let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
-      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field }
+      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers }
       it { should authorize :highlight, Field }
     end
   end
 
   describe "replications" do
-    let(:permissions) { [Permission::SYSTEM[:replications]] }
-    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field }
+    let(:permissions) { [Permission::DEVICES[:replications]] }
+    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers }
     it { should authorize :manage, Replication }
   end
 
   context 'other' do
-    describe "system settings" do
-      let(:permissions) { [Permission::SYSTEM[:settings]] }
-      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field }
+    describe "contact information" do
+      let(:permissions) { [Permission::SYSTEM[:contact_information]] }
+      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers }
       it { should authorize :manage, ContactInformation }
+    end
+
+    describe "system users for synchronisation" do
+      let(:permissions) { [Permission::SYSTEM[:system_users]] }
+      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, ContactInformation }
+      it { should authorize :manage, SystemUsers }
     end
   end
 
