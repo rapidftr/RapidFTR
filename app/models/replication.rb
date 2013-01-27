@@ -160,8 +160,8 @@ class Replication < CouchRestRails::Document
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       request = Net::HTTP::Post.new(uri.request_uri)
-      request.body = post_params
-      response = http.request(request)
+      request.set_form_data(post_params)
+      response = http.start{|req| req.request(request)}
     end
     JSON.parse response.body
   end

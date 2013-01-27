@@ -6,12 +6,6 @@ Feature: Replications
   Scenario: Add, edit and delete replication
     When I am on devices listing page
     And I should see "Configure a Server"
-    And I should see "Description"
-    And I should see "RapidFTR URL"
-    And I should see "User Name"
-    And I should see "Status"
-    And I should see "Timestamp"
-    And I should see "Actions"
 
     When I follow "Configure a Server"
     Then I should see "Configure a Server"
