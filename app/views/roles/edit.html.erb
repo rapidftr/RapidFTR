@@ -7,7 +7,7 @@
     </ul>
   </div>
   <div class="side-tab-content">
-    <h2><%= link_to "List of Roles", roles_path %> &gt; Edit Role (<%= @role.name %>)</h2>
+    <h2><%= link_to t("roles.list"), roles_path %> &gt; <%=	t("role.edit")  %> (<%= @role.name %>)</h2>
     <%= render :partial => "editable_role", :object => @role %>
   </div>
 </div>

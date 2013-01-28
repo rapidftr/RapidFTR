@@ -48,6 +48,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     Then I should see "Order by"
     And I should see "Most recently created"
 
+  @javascript
   Scenario: Checking filter by All and then ordering by most recently added returns all the children in order of most recently added
 
     Given the following children exist in the system:
@@ -58,7 +59,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | 2001-02-03 04:05:06UTC |
 
     When I am on the children listing page
-    Then I follow "Most recently created"
+    Then I select "Most recently created" from "order_by"
     Then I should see the order andreas,zak,jaco,meredith
 
   Scenario: Checking filter by All sand then ordering by Name should return all the children in alphabetical order
@@ -71,8 +72,8 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     |
 
     When I am on the children listing page
-    Then I follow "Most recently created"
-    And I follow "Name"
+    Then I select "Most recently created" from "order_by"
+    And I select "Name" from "order_by"
     Then I should see the order andreas,jaco,meredith,zak
 
     @javascript
@@ -127,7 +128,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Reunited" from "filter"
-    And I follow "Most recently reunited"
+    And I select "Most recently reunited" from "order_by"
     Then I should see the order zak,meredith,jaco,andreas
 
   @javascript
@@ -141,8 +142,8 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | true     | false | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Reunited" from "filter"
-    And I follow "Most recently reunited"
-    And I follow "Name"
+    And I select "Most recently reunited" from "order_by"
+    And I select "Name" from "order_by"
     Then I should see the order andreas,jaco,meredith,zak
 
   @javascript
@@ -184,6 +185,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Flagged" from "filter"
+    And I select "Most recently flagged" from "order_by"
     Then I should see the order zak,meredith,jaco,andreas
 
   @javascript
@@ -197,7 +199,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Flagged" from "filter"
-    And I follow "Name"
+    And I select "Name" from "order_by"
     Then I should see the order andreas,jaco,meredith,zak
 
   @javascript
@@ -211,8 +213,8 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Flagged" from "filter"
-    And I follow "Name"
-    And I follow "Most recently flagged"
+    And I select "Name" from "order_by"
+    And I select "Most recently flagged" from "order_by"
     Then I should see the order zak,meredith,jaco,andreas
 
   @javascript
@@ -267,7 +269,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | 2001-02-03 04:05:06UTC |
 
     When I go to the children listing page
-    And I follow "Most recently created"
+    And I select "Most recently created" from "order_by"
     Then I should see the order zak,jaco,meredith
 
   @javascript
@@ -281,6 +283,6 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | false |
 
     When I go to the children listing page
-    And I follow "Most recently created"
-    And I follow "Name"
+    And I select "Most recently created" from "order_by"
+    And I select "Name" from "order_by"
     Then I should see the order jaco,meredith,zak

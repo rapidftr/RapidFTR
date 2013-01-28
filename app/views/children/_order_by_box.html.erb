@@ -1,9 +1,10 @@
-<div class="orderby_panel">
+<form  class="orderby_panel">
+
+  <input type="hidden" name="filter" value="<%= @filter %>">
 	<%= t("children.order_by.label") %>:
 	<ul>
 	  <% filter_name = @filter %>
 	  <% filter_name = 'created' if @filter == 'all' or @filter == 'active' or @filter.nil? %>
-		<li class="first"><%= link_for_order_by(@filter, "most recently"+" #{filter_name}", t("children.order_by.most_recently")+" "+ t("children.filter_by.#{filter_name}"),  @order) %></li>
-		<li><%= link_for_order_by(@filter, "name", t('children.order_by.name'), @order) %></li>
+    <span><li class="first"><%= select_tag :order_by, options_for_select([[t("children.order_by.most_recently")+" "+ t("children.filter_by.#{filter_name}").downcase, "most recently"+" #{filter_name}"], [t('children.order_by.name'), "name"]], @order), { :onchange => "this.form.submit();"} %></li></span>
 	</ul>
-</div>
+</form>

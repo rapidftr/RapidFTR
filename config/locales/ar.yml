@@ -105,6 +105,8 @@ ar:
     unflag_reason: "السبب لتنزيل الراية"
     unflag_label: "تنزيل الراية"
     unflag_error_message: "الرجاء توضيح السبب لتنزيلك الراية من هذا السجل"
+    id_of_record_this_duplicate_of: "أدخل هوية السجل الذي يطابق هذا السجل: "
+    duplicate_header: "حدد %{child_name} على أنه مطابق"
     flag_error_message: "الرجاء توضيح السبب لرفعك الراية علي هذا السجل"
     investigation_details: "تفاصيل التحقيق:"
     reunite_details: "تفاصيل لم الشمل: "
@@ -232,6 +234,7 @@ ar:
 
   role:
     create: "تكوين دور"
+    edit: "تعديل دور"
 
     name: "الإسم"
   record: "سجل"
