@@ -66,7 +66,7 @@ class FieldsController < ApplicationController
   #  end
   #end
   def update
-    @field = @form_section.fields.detect { |field| field.name == params[:id] }
+    @field = fetch_field params[:id]
     @field.attributes = params[:field] unless params[:field].nil?
     @form_section.save
     if (@field.errors.length == 0)
@@ -102,17 +102,14 @@ class FieldsController < ApplicationController
   end
 
   def toggle_fields
-    if params[:fields].nil?
-      flash[:error] = "Please select atleast one field to #{params[:toggle_fields]}"
-      redirect_to(edit_form_section_path(params[:form_section_id])) and return
-    end
+    field =  fetch_field params[:id]
+    field.visible = !field.visible
+    @form_section.save
+    render :text => "OK"
+  end
 
-    if (params[:toggle_fields] == 'Hide')
-      @form_section.hide_fields(params[:fields])
-    else
-      @form_section.show_fields(params[:fields])
-    end
-    @form_section.save()
-    redirect_to(edit_form_section_path(params[:form_section_id]))
+  private
+  def fetch_field field_name
+    @form_section.fields.detect { |field| field.name == field_name }
   end
 end

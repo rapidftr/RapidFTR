@@ -11,9 +11,14 @@ $(document).ready(function() {
     $(document).delegate("select.fieldLocation", "change", saveFieldLocation);
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
     $(".field_details_panel input#add_field_btn").click(addFieldToTable);
+    $(".field_hide_show").bind('change',fieldHideShow);
     triggerErrors();
     $("table#form_sections tbody").sortable();
 });
+
+function fieldHideShow(){
+  $.post($($.find("#toggle_url")).val(), {'id' : $(this).val()}); 
+}
 
 function triggerErrors(){
     if(show_add_field){

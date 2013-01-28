@@ -71,6 +71,7 @@
       </tr>
       </thead>
       <tbody>
+      <input type="hidden" id="toggle_url" value="<%= toggle_fields_form_section_fields_path(@form_section) %>">
       <% @form_section.fields.each do |field| %>
           <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
             <td width="300"><%= field.display_name %></td>
@@ -83,7 +84,7 @@
             <% if @form_section.editable? %>
                 <td width="75">
                   <% if field.editable? %>
-                      <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}"} %>
+                    <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
                   <% end %>
                 </td>
 
@@ -93,7 +94,7 @@
                 <!--<td>
                   <div>
                     <% if field.editable? %>
-                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation" %>
+                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation"%>
                     <% end %>
                   </div>
                 </td>-->
