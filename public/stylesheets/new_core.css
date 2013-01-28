@@ -688,6 +688,8 @@ body {
       float: left; }
     .form_page fieldset div input, .form_page fieldset div textarea {
       float: left; }
+    .form_page fieldset div textarea {
+      height: 50px; }
 .form_page h3 {
   border-bottom: 1px solid #aaa;
   font-size: 1.1em;

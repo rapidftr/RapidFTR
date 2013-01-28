@@ -35,6 +35,7 @@
       <div class="translation_lang_panel">
         <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f, :show_drop_down => true} %>
       </div>
+
       <div class="clearfix"></div>
 
 
@@ -160,6 +161,7 @@
           </div>
           <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}], :f => f, :show_drop_down => false} %>
         </div>
+        <div class="clearfix"></div>
         <p class="chkbox_visible">
 
           <%= f.label :enabled, t("visible"), :class => 'key' %>
@@ -191,6 +193,7 @@
           </div>
           <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}, {:option_strings_text => :text_area}], :f => f, :show_drop_down => false} %>
         </div>
+        <div class="clearfix"></div>
         <p class="chkbox_visible">
 
           <label><input type="checkbox"/> Visible</label>

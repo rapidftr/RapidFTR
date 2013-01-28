@@ -27,8 +27,8 @@ function toggleFieldPanel(event, div_to_show){
     if(div_to_show === undefined){
         div_to_show = "#field_details";
     }
-    $(div_to_show).slideDown("fast");
-    $(".field_details_overlay").css("height",document.height);
+    $(div_to_show).slideDown();
+    $(".field_details_overlay").css("height",$(document).height());
     $(".field_details_panel").css("top", scrollY + 150);
     $(".translation_lang_selected").text($("#locale option:selected").text());
     $("#err_msg_panel").hide();
