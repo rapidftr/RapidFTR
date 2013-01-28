@@ -62,7 +62,7 @@ input[type=text], input[type=password], textarea, input[type=file], select {
   background: white;
   font-size: 1em;
   padding: 2px;
-  border: 1px solid #AAA;
+  border: 1px solid #aaaaaa;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   -o-border-radius: 3px;
@@ -157,7 +157,7 @@ fieldset p {
       padding: 10px; }
       fieldset p .value .section .title {
         display: block;
-        border-bottom: 1px dashed #ddd;
+        border-bottom: 1px dashed #dddddd;
         padding-bottom: 8px;
         margin-bottom: 5px;
         font-style: italic;
@@ -202,7 +202,7 @@ fieldset p:nth-child(even) {
       display: inline-block; }
       .filter_bar .filter_panel ul li {
         display: inline-block;
-        border-left: 1px solid #666;
+        border-left: 1px solid #666666;
         padding: 0px 10px; }
       .filter_bar .filter_panel ul li:first-child {
         border: 0px;
@@ -214,7 +214,7 @@ fieldset p:nth-child(even) {
       display: inline-block; }
       .filter_bar .orderby_panel ul li {
         display: inline-block;
-        border-left: 1px solid #666;
+        border-left: 1px solid #666666;
         padding: 0px 10px; }
       .filter_bar .orderby_panel ul li:first-child {
         border: 0px;
@@ -255,7 +255,7 @@ a.mark_as_duplicate {
   background: #eee;
   position: absolute;
   margin-top: 2px;
-  border: 1px solid #9F9F9F;
+  border: 1px solid #9f9f9f;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   -o-border-radius: 3px;
@@ -264,7 +264,7 @@ a.mark_as_duplicate {
   .dropdown a {
     display: block;
     padding: 7px 10px;
-    border-bottom: 1px dashed #ddd;
+    border-bottom: 1px dashed #dddddd;
     color: #666; }
     .dropdown a:hover {
       background: #ddd;
@@ -311,7 +311,7 @@ body {
           body .page_container .main_bar nav ul li {
             display: inline-block;
             height: 30px;
-            border-right: 1px solid #111; }
+            border-right: 1px solid #111111; }
             body .page_container .main_bar nav ul li a {
               padding: 7px 17px;
               color: #cccccc;
@@ -383,7 +383,7 @@ body {
             body .page_container .page-content .page-content-new .side-tab ul li.current a {
               color: #000;
               background: #fff;
-              border: 1px solid #ccc;
+              border: 1px solid #cccccc;
               -moz-border-radius: 5px 0px 0px 5px;
               -webkit-border-radius: 5px 0px 0px 5px;
               -o-border-radius: 5px 0px 0px 5px;
@@ -415,7 +415,7 @@ body {
           body .page_container .page-content .page-content-new .side-tab-content .filter_bar {
             background: blanchedalmond; }
           body .page_container .page-content .page-content-new .side-tab-content .form_info {
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #cccccc;
             padding: 10px 0px;
             font-style: italic;
             color: #b66f00; }
@@ -438,13 +438,13 @@ body {
               padding: 2px 10px;
               margin: 1px;
               background: #eee;
-              border: 1px dashed #bbb;
+              border: 1px dashed #bbbbbb;
               -moz-border-radius: 2px;
               -webkit-border-radius: 2px;
               -o-border-radius: 2px;
               border-radius: 2px; }
               body .page_container .page-content .page-content-new .side-tab-content .profile-image .edit_photo:hover, body .page_container .page-content .page-content-new .side-tab-content .profile-image .manage_photo:hover {
-                border: 1px solid #bbb; }
+                border: 1px solid #bbbbbb; }
           body .page_container .page-content .page-content-new .side-tab-content .choose_field {
             padding: 10px; }
             body .page_container .page-content .page-content-new .side-tab-content .choose_field p {
@@ -454,12 +454,12 @@ body {
               padding: 5px; }
           body .page_container .page-content .page-content-new .side-tab-content .btn_panel {
             padding: 5px;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #cccccc;
             text-align: right; }
             body .page_container .page-content .page-content-new .side-tab-content .btn_panel a {
               margin: 0px 20px;
               padding: 0px 20px;
-              border-right: 1px dashed #999;
+              border-right: 1px dashed #999999;
               text-decoration: underline; }
 
 .login_page {
@@ -470,7 +470,7 @@ body {
     margin: 30px auto;
     padding: 10px;
     background: url(../images/new/bg_login.png) repeat-x #eeeeee;
-    border: 3px solid #fff;
+    border: 3px solid white;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     -o-border-radius: 3px;
@@ -483,7 +483,7 @@ body {
       font-size: 1.2em;
       font-weight: bold;
       padding-bottom: 7px;
-      border-bottom: 1px solid #aaa;
+      border-bottom: 1px solid #aaaaaa;
       margin-bottom: 10px; }
     .login_page .login_panel p {
       padding: 10px 15px; }
@@ -491,7 +491,7 @@ body {
         width: 70px;
         display: inline-block; }
     .login_page .login_panel .btn_panel {
-      border-top: 1px solid #aaa;
+      border-top: 1px solid #aaaaaa;
       margin-top: 10px;
       text-align: right; }
   .login_page a {
@@ -507,7 +507,7 @@ body {
   background: #eee;
   padding: 10px;
   text-align: center;
-  border: 1px dashed #ddd;
+  border: 1px dashed #dddddd;
   margin-left: 220px; }
   .edit_photo_page .profile-image img, .edit_photo_page .profile-image canvas {
     max-width: 500px;
@@ -519,7 +519,7 @@ body {
   .edit_photo_page .profile-tools a {
     background: url(../images/new/photo_rotate.png) no-repeat #eeeeee;
     padding: 6px 0 6px 30px;
-    border: 1px dashed #bbb;
+    border: 1px dashed #bbbbbb;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     -o-border-radius: 2px;
@@ -528,7 +528,7 @@ body {
     text-align: left;
     color: #666; }
     .edit_photo_page .profile-tools a:hover {
-      border: 1px solid #bbb;
+      border: 1px solid #bbbbbb;
       color: #333; }
   .edit_photo_page .profile-tools a.rotate_anti_clockwise {
     background-position: 5px 2px; }
@@ -544,12 +544,12 @@ body {
       background-position: 5px -145px; }
 .edit_photo_page .btn_panel {
   padding: 5px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #cccccc;
   text-align: right; }
 
 .advanced-search {
   padding-bottom: 10px;
-  border-bottom: 1px solid #D4D4D4; }
+  border-bottom: 1px solid #d4d4d4; }
   .advanced-search .filter_bar div {
     float: left;
     padding: 5px 15px; }
@@ -570,7 +570,7 @@ body {
     padding: 10px; }
     .advanced-search .criteria-list p {
       padding: 7px;
-      border-bottom: 1px solid #fff; }
+      border-bottom: 1px solid white; }
       .advanced-search .criteria-list p:nth-child(odd) {
         background: #f6f6f6; }
       .advanced-search .criteria-list p:nth-child(even) {
@@ -595,7 +595,7 @@ body {
       padding: 0px 5px; }
   .advanced-search .add-criteria {
     padding: 5px;
-    border-bottom: 1px dashed #76BCFD;
+    border-bottom: 1px dashed #76bcfd;
     cursor: pointer;
     margin-right: 765px; }
     .advanced-search .add-criteria:hover {
@@ -662,13 +662,13 @@ body {
     padding: 0px !important;
     font-size: 0.8em; }
 .form_page fieldset {
-  border: 1px solid #ddd; }
+  border: 1px solid #dddddd; }
   .form_page fieldset .key {
     width: 175px; }
 .form_page .chkbox_visible {
   padding: 10px; }
 .form_page h3 {
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #aaaaaa;
   font-size: 1.1em;
   font-weight: bold;
   padding: 2px 0px 5px; }
@@ -683,7 +683,7 @@ body {
   -o-border-radius: 5px;
   border-radius: 5px; }
   .form_page .fields_section ul.field_types {
-    border-bottom: 1px solid #ddd; }
+    border-bottom: 1px solid #dddddd; }
     .form_page .fields_section ul.field_types li {
       float: left;
       padding: 5px 20px 15px; }
@@ -710,7 +710,7 @@ body {
   float: left; }
   .child_list .child_summary_panel p.checkbox {
     background: #EEE;
-    border: 1px solid #D4D1D1;
+    border: 1px solid #d4d1d1;
     border-right: 0px;
     left: -231px;
     padding: 5px;
@@ -722,7 +722,7 @@ body {
     height: 160px;
     margin: 10px;
     background: #fff;
-    border: 10px solid #fff; }
+    border: 10px solid white; }
   .child_list .child_summary_panel .summary_panel {
     float: left;
     padding: 10px 10px 10px 0px;
@@ -743,7 +743,7 @@ body {
       right: 40px;
       background: url(../images/new/icon_flagged.png) no-repeat; }
     .child_list .child_summary_panel .summary_panel .summary_item {
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #dddddd;
       font-size: 0.95em; }
       .child_list .child_summary_panel .summary_panel .summary_item .key {
         color: #666;
@@ -764,6 +764,8 @@ body {
     .child_list .child_summary_panel .action_panel a {
       margin: 0px 10px;
       font-size: 0.8em; }
+    .child_list .child_summary_panel .action_panel li {
+      display: inline; }
 .child_list .child_summary_panel.sel {
   background: #e5efff;
   border: 1px solid #bdd7ff; }
