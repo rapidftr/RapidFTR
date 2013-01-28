@@ -11,7 +11,7 @@ class FormSection < CouchRestRails::Document
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
   property :fixed_order, :cast_as => 'boolean', :default => false
-      property :perm_visible, :cast_as => 'boolean', :default => false
+  property :perm_visible, :cast_as => 'boolean', :default => false
   property :perm_enabled, :cast_as => 'boolean'
   property :validations, :type => [String]
 
@@ -61,25 +61,6 @@ class FormSection < CouchRestRails::Document
         form_section['fields'].compact!
       end
     end
-  end
-
-  def enabled=(value)
-    self[:visible] = (value == "false" ? false : true) if value.class == String
-    self[:visible] = value
-  end
-
-  def enabled?
-    self[:visible]
-  end
-
-  def perm_enabled=(value)
-    self[:fixed_order] = value
-    self[:perm_visible] = value
-    self[:perm_enabled] = value
-  end
-
-  def perm_enabled?
-    self[:perm_enabled]
   end
 
   def all_text_fields
@@ -214,17 +195,17 @@ class FormSection < CouchRestRails::Document
   protected
 
   def validate_visible_field
-    return self.visible == true if self.perm_visible?
+    self.visible = true if self.perm_visible?
     true
   end
 
   def validate_fixed_order
-    return self.fixed_order == true if self.perm_enabled?
+    self.fixed_order = true if self.perm_enabled?
     true
   end
 
   def validate_perm_visible
-    return self.perm_visible == true if self.perm_enabled?
+    self.perm_visible = true if self.perm_enabled?
     true
   end
 

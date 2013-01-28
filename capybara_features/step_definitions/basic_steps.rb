@@ -27,10 +27,8 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
       'fields'=> Array.new
     )
 
-    form_section_hash["perm_enabled"] = (form_section_hash["perm_enabled"] == "false" ? false : true)
     form_section_hash["order"] = form_section_hash["order"].to_i
     form_section = FormSection.new(form_section_hash)
-    form_section.visible = true
     form_section.save!
   end
 end

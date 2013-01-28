@@ -73,7 +73,7 @@ describe FormSection do
 
       it "should exclude disabled sections" do
         expected = FormSection.create! :name => 'Good', :order => 1, :unique_id => 'good'
-        unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :enabled => false
+        unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :visible => false
         FormSection.enabled_by_order.map(&:name).should == %w(Good)
         FormSection.enabled_by_order.map(&:name).should_not ==  %w(Bad)
       end
@@ -200,7 +200,19 @@ describe FormSection do
 
     it "should be perm_visible when set" do
       formsection = FormSection.new(:perm_visible => true)
-      formsection.visible?.should be_true
+      formsection.perm_visible?.should be_true
+    end
+  end
+
+  describe "fixed_order" do
+    it "should not be fixed)order by default" do
+      formsection = FormSection.new
+      formsection.fixed_order?.should be_false
+    end
+
+    it "should be fixed_order when set" do
+      formsection = FormSection.new(:fixed_order => true)
+      formsection.fixed_order?.should be_true
     end
   end
 
@@ -211,7 +223,7 @@ describe FormSection do
     end
 
     it "should be perm_enabled when set" do
-      formsection = FormSection.new(:perm_enabled => true)
+      formsection = FormSection.create!(:name => "test", :uniq_id => "test_id", :perm_enabled => true)
       formsection.perm_enabled?.should be_true
       formsection.perm_visible?.should be_true
       formsection.fixed_order?.should be_true
@@ -319,7 +331,7 @@ describe FormSection do
 
     it "should validate name is unique" do
       same_name = 'Same Name'
-      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true, :order => 0}
+      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :visible => true, :order => 0}
       FormSection.create! valid_attributes.dup
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid

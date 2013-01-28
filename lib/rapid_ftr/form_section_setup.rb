@@ -21,13 +21,13 @@ module RapidFTR
         Field.new("name" => "characteristics", "display_name" => "Distinguishing Physical Characteristics", "type" => "textarea"),
         Field.new("name" => "documents", "display_name" => "Documents carried by the child", "type" => "text_field"),
       ]
-      FormSection.create!("name" =>"Basic Identity", "enabled"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"basic_identity", "editable"=>true, :fields => basic_identity_fields, :perm_enabled => true)
+      FormSection.create!("name" =>"Basic Identity", "visible"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"basic_identity", "editable"=>true, :fields => basic_identity_fields, :perm_enabled => true)
 
       photo_audio_fields = [
           Field.new("name" => "current_photo_key", "display_name" => "Current Photo Key", "type" => "photo_upload_box", "editable" => false),
           Field.new("name" => "recorded_audio", "display_name" => "Recorded Audio", "type" => "audio_upload_box", "editable" => false),
       ]
-      FormSection.create!("name" =>"Photos and Audio", "enabled"=>true, :description =>"All Photo and Audio Files Associated with a Child Record", :order=> 10, :unique_id=>"photos_and_audio", :fields => photo_audio_fields, :perm_visible => true, "editable"=>false)
+      FormSection.create!("name" =>"Photos and Audio", "visible"=>true, :description =>"All Photo and Audio Files Associated with a Child Record", :order=> 10, :unique_id=>"photos_and_audio", :fields => photo_audio_fields, :perm_visible => true, "editable"=>false)
 
 
       unless Rails.env.test? or Rails.env.cucumber?
@@ -62,7 +62,7 @@ module RapidFTR
           Field.new("name" => "other_child_3_address", "display_name" => "Current Address", "type" => "text_field"),
           Field.new("name" => "other_child_3_telephone", "display_name" => "Telephone", "type" => "text_field"),
         ]
-        FormSection.create!("name" =>"Family details", "enabled"=>true, :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
+        FormSection.create!("name" =>"Family details", "visible"=>true, :description =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
 
         current_arrangements_fields = [
           Field.new("name" => "care__textarrangements", "display_name" => "Current Care Arrangements", "type" => "select_box", "option_strings_text" => "Children's Center\nOther Family Member(s)\nFoster Family\nAlone\nOther"),
@@ -75,7 +75,7 @@ module RapidFTR
           Field.new("name" => "care_arrangements_came_from", "display_name" => "Child Arriving From", "type" => "text_field"),
           Field.new("name" => "care_arrangements_arrival_date", "display_name" => "Arrival Date", "type" => "text_field"),
         ]
-        FormSection.create!("name" =>"Care Arrangements", "enabled"=>true, :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"care_arrangements", :fields => current_arrangements_fields)
+        FormSection.create!("name" =>"Care Arrangements", "visible"=>true, :description =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"care_arrangements", :fields => current_arrangements_fields)
 
         separation_history_fields = [
           Field.new("name" => "separation_date", "display_name" => "Date of Separation", "type" => "text_field"),
@@ -88,7 +88,7 @@ module RapidFTR
           Field.new("name" => "evacuation_date", "display_name" => "Evacuation Date", "type" => "text_field"),
           Field.new("name" => "care_arrangements_arrival_date", "display_name" => "Arrival Date", "type" => "text_field"),
         ]
-        FormSection.create!("name" =>"Separation History", "enabled"=>true, :description =>"The child's separation and evacuation history.", :order=> 4, :unique_id=>"separation_history", :fields => separation_history_fields)
+        FormSection.create!("name" =>"Separation History", "visible"=>true, :description =>"The child's separation and evacuation history.", :order=> 4, :unique_id=>"separation_history", :fields => separation_history_fields)
 
         protection_concerns_fields = [
           Field.new("name" => "concerns_chh", "display_name" => "Child Headed Household","type" => "select_box", "option_strings_text" => "Yes\nNo"),
@@ -103,7 +103,7 @@ module RapidFTR
       	  Field.new("name" => "concerns_needs_followup", "display_name" => "Specific Follow-up Required?", "type" => "select_box", "option_strings_text" => "Yes\nNo"),
       	  Field.new("name" => "concerns_followup_details", "display_name" => "Please specify follow-up needs.", "type" => "textarea"),
         ]
-        FormSection.create!("name" =>"Protection Concerns", "enabled"=>true, :description =>"", :order=> 5, :unique_id=>"protection_concerns", :fields => protection_concerns_fields)
+        FormSection.create!("name" =>"Protection Concerns", "visible"=>true, :description =>"", :order=> 5, :unique_id=>"protection_concerns", :fields => protection_concerns_fields)
 
         child_wishes_fields = [
           Field.new("name" => "wishes_name_1", "display_name" => "Person child wishes to locate - Preferred", "type" => "text_field"),
@@ -120,7 +120,7 @@ module RapidFTR
           Field.new("name" => "wishes_wants_contact", "display_name" => "Does child want to be reunited with family?", "type" => "select_box", "option_strings_text" => "Yes, as soon as possible\nYes, later\nNo"),
           Field.new("name" => "wishes_contacted_details", "display_name" => "Please explain why", "type" => "textarea"),
         ]
-        FormSection.create!("name" =>"Childs Wishes", "enabled"=>true, :description =>"", :order=> 6, :unique_id=>"childs_wishes", :fields => child_wishes_fields)
+        FormSection.create!("name" =>"Childs Wishes", "visible"=>true, :description =>"", :order=> 6, :unique_id=>"childs_wishes", :fields => child_wishes_fields)
 
         other_org_fields = [
           Field.new("name" => "other_org_interview_status", "display_name" => "Has the child been interviewed by another organization?", "type" => "select_box", "option_strings_text" => "Yes\nNo"),
@@ -130,12 +130,12 @@ module RapidFTR
           Field.new("name" => "other_org_date", "display_name" => "Date", "type" => "text_field"),
           Field.new("name" => "orther_org_reference_no", "display_name" => "Reference No. given to child by other organization","type" => "text_field"),
         ]
-  	    FormSection.create!("name" =>"Other Interviews", "enabled"=>true, :description =>"", :order=> 7, :unique_id=>"other_interviews", :fields => other_org_fields)
+  	    FormSection.create!("name" =>"Other Interviews", "visible"=>true, :description =>"", :order=> 7, :unique_id=>"other_interviews", :fields => other_org_fields)
 
         other_tracing_info_fields = [
           Field.new("name" => "additional_tracing_info", "display_name" => "Additional Info That Could Help In Tracing?", "help_text" => "Such as key persons/location in the life of the child who/which might provide information about the location of the sought family -- e.g. names of religious leader, market place, etc. Please ask the child where he/she thinks relatives and siblings might be, and if the child is in contact with any family friends. Include any useful information the caregiver provides.", "type" => "textarea"),
         ]
-        FormSection.create!("name" =>"Other Tracing Info", "enabled"=>true, :description =>"", :order=> 8, :unique_id=>"other_tracing_info", :fields => other_tracing_info_fields)
+        FormSection.create!("name" =>"Other Tracing Info", "visible"=>true, :description =>"", :order=> 8, :unique_id=>"other_tracing_info", :fields => other_tracing_info_fields)
 
         interview_details_fields = [
           Field.new("name" => "disclosure_public_name", "display_name" => "Does Child/Caregiver agree to share name on posters/radio/Internet?", "type" => "select_box", "option_strings_text" => "Yes\nNo"),
@@ -152,7 +152,7 @@ module RapidFTR
           Field.new("name" => "interviewers_org", "display_name" => "Interviewer's Organization","type" => "text_field"),
           Field.new("name" => "governing_org", "display_name" => "Organization in charge of tracing child's family","type" => "text_field"),
         ]
-        FormSection.create!("name" =>"Interview Details", "enabled"=>true, :description =>"", :order=> 9, :unique_id=>"interview_details", :fields => interview_details_fields)
+        FormSection.create!("name" =>"Interview Details", "visible"=>true, :description =>"", :order=> 9, :unique_id=>"interview_details", :fields => interview_details_fields)
 
       end
 
@@ -168,7 +168,7 @@ module RapidFTR
            Field.new("display_name" => "Hidden TextField" ,"type" => "text_field" ,"visible" =>false)
 
         ]
-        FormSection.create!("name" => "Automation Form", "enabled" => true, :description => "Automation Form" , :order => 11, :fields => automation_form_fields)
+        FormSection.create!("name" => "Automation Form", "visible" => true, :description => "Automation Form" , :order => 11, :fields => automation_form_fields)
       end
 
       return true

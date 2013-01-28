@@ -39,15 +39,15 @@
 </thead>
 <tbody>
     <% @form_sections.each do |section| %>
-      <tr id="<%= section.unique_id%>_row" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
+      <tr id="<%= section.unique_id%>_row" class="<%= section.visible? ? "rowEnabled": "rowDisabled" %>">
           <td>
             <% unless (section.perm_enabled? or section.perm_visible?) %>
                  <%= check_box_tag "sections[#{section.unique_id}]", 'form_section_check_box' %>
             <% end %>
           </td>
           <td>
-	    <span class="enabledStatus <%= section.enabled? ? "tick" : "cross" %>">
-              <%= section.enabled? ? t("visible") : t("hidden") %>
+	    <span class="enabledStatus <%= section.visible? ? "tick" : "cross" %>">
+              <%= section.visible? ? t("visible") : t("hidden") %>
             </span>
           </td>
           <td><%= link_to section.name, edit_form_section_path(section), :class => "formSectionLink" %></td>
