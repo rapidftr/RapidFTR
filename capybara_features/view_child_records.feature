@@ -185,6 +185,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Flagged" from "filter"
+    And I select "Most recently flagged" from "order_by"
     Then I should see the order zak,meredith,jaco,andreas
 
   @javascript
