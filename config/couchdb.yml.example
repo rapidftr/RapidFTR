@@ -5,6 +5,7 @@ base: &base
   database_suffix: _<%= Rails.env %>
   username: ""
   password: ""
+  ssl: false
 
 development:
   <<: *base

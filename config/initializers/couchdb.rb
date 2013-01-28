@@ -9,12 +9,11 @@ begin
   database  = couchdb_config["database"]
   username  = couchdb_config["username"]
   password  = couchdb_config["password"]
-  ssl       = couchdb_config["ssl"]       || false
+  ssl       = (couchdb_config["ssl"].blank? or couchdb_config["ssl"] == false) ? false : true
   db_prefix = couchdb_config["database_prefix"] || ""
   db_suffix = couchdb_config["database_suffix"] || ""
   host     = "localhost"  if host == nil
   port     = "5984"       if port == nil
-  ssl      = false        if ssl == nil
 
   protocol = ssl ? 'https' : 'http'
   authorized_host = (username.blank? && password.blank?) ? host :
