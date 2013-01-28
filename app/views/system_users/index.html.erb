@@ -15,7 +15,7 @@
 
       <tbody>
           <% @users.each do |user| %>
-              <tr>
+              <tr id="system-row-<%= user.name%>">
                 <td><%= user.name %></td>
                 <td>
                   <%= link_to t("buttons.edit"), edit_system_user_path(user.name) %>

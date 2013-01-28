@@ -119,6 +119,9 @@ module NavigationHelpers
       when /system settings page/
         admin_path(options)
 
+      when /system users page/
+        system_users_path
+
       when /the edit administrator contact information page/
         edit_contact_information_path(:administrator)
       when /(the )?administrator contact page/
