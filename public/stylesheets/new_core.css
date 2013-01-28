@@ -736,6 +736,13 @@ body {
           -o-border-radius: 15px;
           border-radius: 15px; }
 
+table#form_sections {
+  cursor: move; }
+  table#form_sections tr:hover td {
+    background: #c3e9fe; }
+  table#form_sections tr.ui-sortable-helper {
+    border: 1px dashed #2179c4; }
+
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
   border: 1px solid #d4d1d1;

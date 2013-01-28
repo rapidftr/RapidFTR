@@ -706,4 +706,18 @@ body {
 
 
 }
+table#form_sections{
+  cursor:move;
+
+  tr:hover{
+    td{
+      background:#c3e9fe;
+    }
+  }
+
+  tr.ui-sortable-helper{
+      border:1px dashed #2179c4;
+
+  }
+}
 

@@ -12,6 +12,7 @@ $(document).ready(function() {
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
     $(".field_details_panel input#add_field_btn").click(addFieldToTable);
     triggerErrors();
+    $("table#form_sections tbody").sortable();
 });
 
 function triggerErrors(){

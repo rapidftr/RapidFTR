@@ -57,30 +57,30 @@
       <% end %>
 
   <% end %>
-    <table id="form_sections" class="list_table">
+    <table id="form_sections" class="list_table" width="940">
       <thead>
       <tr>
-        <th><%= t("name") %></th>
-        <th><%= t("help_text") %></th>
-        <th><%= t("form_section.options") %></th>
-        <th><%= t("fields.type") %></th>
-        <th><%= t("form_section.hide") %></th>
-        <th colspan=2><%= t("form_section.ordering") %></th>
-        <th>Actions</th>
+        <th width="300"><%= t("name") %></th>
+        <th width="240"><%= t("help_text") %></th>
+        <th width="100"><%= t("form_section.options") %></th>
+        <th width="75"><%= t("fields.type") %></th>
+        <th width="75"><%= t("form_section.hide") %></th>
+
+        <th width="150">Actions</th>
       </tr>
       </thead>
       <tbody>
       <% @form_section.fields.each do |field| %>
           <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
-            <td><%= field.display_name %></td>
-            <td><%= field.type.try(:humanize) %></td>
-            <td><%= field.option_strings.each do |option|
+            <td width="300"><%= field.display_name %></td>
+            <td width="240"><%= field.type.try(:humanize) %></td>
+            <td width="100"><%= field.option_strings.each do |option|
               option
             end %></td>
-            <td><%= field.type.try(:humanize) %></td>
+            <td width="75"><%= field.type.try(:humanize) %></td>
 
             <% if @form_section.editable? %>
-                <td>
+                <td width="75">
                   <% if field.editable? %>
                       <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}"} %>
                   <% end %>
@@ -88,23 +88,7 @@
 
             <% end %>
             <% if @form_section.editable? %>
-                <td>
-                  <div>
-                    <% if field.editable? %>
-                        <a id="<%= "#{field.name}_up" %>" href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
-                    <% end %>
-                  </div>
-                </td>
-                <td>
-                  <div>
-                    <span class="updatedFormSectionOrder">
-                      <%= hidden_field_tag "form_order[#{field.name}]", @form_section.field_order(field.name) %>
-                    </span>
-                    <% if field.editable? %>
-                        <a id="<%= "#{field.name}_down" %>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
-                    <% end %>
-                  </div>
-                </td>
+
                 <!--<td>
                   <div>
                     <% if field.editable? %>
@@ -113,7 +97,7 @@
                   </div>
                 </td>-->
 
-                <td class='field-buttons'>
+                <td class='field-buttons' width="150">
                   <% if field.editable? %>
                       <%= link_to t("buttons.edit"), edit_form_section_field_path(:form_section_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
                       <%= render :partial => "form_section/delete_button", :locals => {:field => field, :url => delete_form_section_fields_path(@form_section.unique_id),
