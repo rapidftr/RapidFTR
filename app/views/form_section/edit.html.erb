@@ -63,7 +63,7 @@
         <th><%= t("name") %></th>
         <th><%= t("help_text") %></th>
         <th><%= t("form_section.options") %></th>
-        <th>Field type</th>
+        <th><%= t("fields.type") %></th>
         <th><%= t("form_section.hide") %></th>
         <th colspan=2><%= t("form_section.ordering") %></th>
         <th>Actions</th>
@@ -139,7 +139,7 @@
     <div class="clearfix"></div>
 
     <div class="flash" id="successNotice" style="display:none;">
-      <p class="notice">Order is successfully saved. </p><br/>
+      <p class="notice"><%= t("form_section.messages.order_saved") %> </p><br/>
     </div>
 
     <div class="clearfix"></div>
