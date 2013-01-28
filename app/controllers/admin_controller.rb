@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
 
   before_filter {
-    authorize!(false, false) if cannot?(:manage, ContactInformation) and cannot?(:highlight, Field) and cannot?(:manage, Replication)
+    authorize!(false, false) if cannot?(:manage, ContactInformation) and cannot?(:highlight, Field) and cannot?(:manage, SystemUsers)
   }
 
   def index
