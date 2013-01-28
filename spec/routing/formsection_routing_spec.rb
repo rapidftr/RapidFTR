@@ -12,17 +12,11 @@ describe 'Form Section routing' do
     form_section_fields_path('some_formsection').should == '/form_section/some_formsection/fields'
   end
 
-  it 'has route to move a field up' do
-    {:post => '/form_section/foo/fields/move_up'}.should route_to(:controller => 'fields', :action=>'move_up', :form_section_id=>'foo')
-    move_up_form_section_fields_path('some_formsection').should == '/form_section/some_formsection/fields/move_up'
+  it 'has route to save order of fields' do
+    {:post => '/form_section/foo/fields/save_order'}.should route_to(:controller => 'fields', :action=>'save_order', :form_section_id=>'foo')
+    save_order_form_section_fields_path('some_formsection').should == '/form_section/some_formsection/fields/save_order'
   end
 
-
-  it 'has route to move a field down' do
-    {:post => '/form_section/foo/fields/move_down'}.should route_to(:controller => 'fields', :action=>'move_down', :form_section_id=>'foo')
-    move_down_form_section_fields_path('some_formsection').should == '/form_section/some_formsection/fields/move_down'
-  end
-  
   it 'has route for form sections index page' do
     {:get => '/form_sections'}.should route_to(:controller => 'form_section', :action=>'index')
     form_sections_path.should == '/form_sections'

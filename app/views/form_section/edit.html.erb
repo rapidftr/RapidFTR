@@ -72,8 +72,9 @@
       </thead>
       <tbody>
       <input type="hidden" id="toggle_url" value="<%= toggle_fields_form_section_fields_path(@form_section) %>">
+      <input type="hidden" id="save_order_url" value="<%= save_order_form_section_fields_path(@form_section) %>">
       <% @form_section.fields.each do |field| %>
-          <tr id="<%= "#{field.name}Row" %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
+          <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
             <td width="300"><%= field.display_name %></td>
             <td width="240"><%= field.type.try(:humanize) %></td>
             <td width="100"><%= field.option_strings.each do |option|

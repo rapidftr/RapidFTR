@@ -83,6 +83,11 @@ class FieldsController < ApplicationController
     end
   end
 
+  def save_order
+    @form_section.order_fields(params[:field_names])
+    redirect_to(edit_form_section_path(params[:form_section_id]))
+  end
+
   def move_up
     @form_section.move_up_field(params[:field_name])
     redirect_to(edit_form_section_path(params[:form_section_id]))

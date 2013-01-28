@@ -13,8 +13,18 @@ $(document).ready(function() {
     $(".field_details_panel input#add_field_btn").click(addFieldToTable);
     $(".field_hide_show").bind('change',fieldHideShow);
     triggerErrors();
-    $("table#form_sections tbody").sortable();
+    var rows = $("table#form_sections tbody");
+    rows.sortable({
+      update: function(){
+        var fieldNames = [];
+        $(this).find("tr").each(function(index, ele){
+          fieldNames.push($(ele).attr("data"));
+        });
+        $.post($($.find("#save_order_url")).val(), {'field_names' : fieldNames});
+      }
+    });
 });
+
 
 function fieldHideShow(){
   $.post($($.find("#toggle_url")).val(), {'id' : $(this).val()}); 

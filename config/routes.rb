@@ -60,8 +60,7 @@ RapidFTR::Application.routes.draw do
   resources :form_section, :controller => 'form_section' do
     resources :fields, :controller => 'fields' do
       collection do
-        post "move_up"
-        post "move_down"
+        post "save_order"
         post "delete"
         post "toggle_fields"
       end

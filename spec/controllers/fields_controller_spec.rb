@@ -90,27 +90,12 @@ describe FieldsController do
       FormSection.stub!(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
     end
 
-    it "should swap position of selected field with the one above it" do
-      @form_section.should_receive(:move_up_field).with(@field_name)
-      post :move_up, :form_section_id => @form_section_id, :field_name=> @field_name
-    end
-
-    it "should redirect back to the fields page on move_up" do
-      @form_section.stub(:move_up_field)
-      post :move_up, :form_section_id => @form_section_id, :field_name=> @field_name
+    it "should save the given field in the same order as given" do
+      @form_section.should_receive(:order_fields).with(["field_one", "field_two"])
+      post :save_order, :form_section_id => @form_section_id, :field_names => ["field_one", "field_two"]
       response.should redirect_to(edit_form_section_path(@form_section_id))
     end
 
-    it "should swap position of selected field with the one below it" do
-      @form_section.should_receive(:move_down_field).with(@field_name)
-      post :move_down, :form_section_id => @form_section_id, :field_name=> @field_name
-    end
-
-    it "should redirect back to the fields page on move_down" do
-      @form_section.stub(:move_down_field)
-      post :move_down, :form_section_id => @form_section_id, :field_name=> @field_name
-      response.should redirect_to(edit_form_section_path(@form_section_id))
-    end
   end
 
   describe "post toggle_fields" do
