@@ -33,7 +33,7 @@
         </fieldset>
       </div>
       <div class="translation_lang_panel">
-        <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f, :show_drop_down => true} %>
+        <%= render :partial => "shared/add_translations", :locals => {:fields => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f, :show_drop_down => true} %>
       </div>
 
       <div class="clearfix"></div>
@@ -76,10 +76,8 @@
       <% @form_section.fields.each do |field| %>
           <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
             <td width="300"><%= field.display_name %></td>
-            <td width="240"><%= field.type.try(:humanize) %></td>
-            <td width="100"><%= field.option_strings.each do |option|
-              option
-            end %></td>
+            <td width="240"><%= field.help_text %></td>
+            <td width="100"><%= field.option_strings %></td>
             <td width="75"><%= field.type.try(:humanize) %></td>
 
             <% if @form_section.editable? %>
@@ -148,69 +146,8 @@
                           :header_tag => :h3,
                           :header_message => t("form_section.messages.cannot_create"),
                           :message => t('form_section.messages.correct_errors') %>
-  <div id="field_details" class="field_details" style="display:none;">
-    <%= form_for @field, :url => url_for_form_section(@form_section.unique_id, @field)  do |f| %>
-        <div class="default_lang_panel">
-          <div class="lang_title">
-            <%= t("forms.initial_language") %> : <span>English</span>
-          </div>
-          <%= render :partial => 'form_section/field_form', :locals => {:f => f} %>
-        </div>
-        <div class="translation_lang_panel">
-          <div class="lang_title">
-            <%= t(:provide_translation) %>
-            <span class="translation_lang_selected"></span>
-          </div>
-          <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}], :f => f, :show_drop_down => false} %>
-        </div>
-        <div class="clearfix"></div>
-        <p class="chkbox_visible">
-
-          <%= f.label :enabled, t("visible"), :class => 'key' %>
-          <%= f.check_box :visible, {}, true, false %>
-        </p>
-          <%= f.hidden_field :type, :class => "field_type"%>
-        <div class="clearfix"></div>
-        <div class="btn_panel">
-          <%= link_to t("cancel"), "javascript:void(0)", :class => "link_cancel" %>
-          <%= submit_button t("forms.save_details") %>
-          <input type="button" value="Add" id="add_field_btn">
-        </div>
-    <% end %>
-
-  </div>
-  <div id="field_details_options" class="field_details" style="display:none;">
-        <%= form_for @field, :url => url_for_form_section(@form_section.unique_id, @field) do |f| %>
-
-        <div class="default_lang_panel">
-          <div class="lang_title">
-            <%= t("forms.initial_language") %> : <span>English</span>
-          </div>
-          <%= render :partial => 'form_section/field_form_multi_value', :locals => {:f => f} %>
-
-        </div>
-        <div class="translation_lang_panel">
-          <div class="lang_title"><%= t(:provide_translation) %>
-            <span class="translation_lang_selected"></span>
-          </div>
-          <%= render :partial => "shared/add_translations", :locals => {:properties => [{:display_name => :text_field}, {:help_text => :text_area}, {:option_strings_text => :text_area}], :f => f, :show_drop_down => false} %>
-        </div>
-        <div class="clearfix"></div>
-        <p class="chkbox_visible">
-
-          <label><input type="checkbox"/> Visible</label>
-        </p>
-        <%= f.hidden_field :type, :class => "field_type"%>
-        <div class="clearfix"></div>
-        <div class="btn_panel">
-          <%= link_to t("cancel"), "javascript:void(0)", :class => "link_cancel" %>
-          <%= submit_button t("forms.save_details") %>
-          <input type="button" value="Add" id="add_field_btn">
-        </div>
-    <% end %>
-
-  </div>
-</div>
+  <%= render :partial => 'form_section/add_field', :locals => {:div_id => "field_details", :fields => [{:display_name => :text_field}, {:help_text => :text_area}] } %>
+  <%= render :partial => 'form_section/add_field', :locals => {:div_id => "field_details_options", :fields => [{:display_name => :text_field}, {:help_text => :text_area}, {:option_strings_text => :text_area}] } %>
 </div>
 </div>
 <script>
