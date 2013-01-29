@@ -12,7 +12,7 @@
 
           <ul class='forms'>
           <% @forms.each do |form| %>
-            <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.enabled? ? "" : "(Disabled)" %></li>
+            <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.visible? ? "" : "(Disabled)" %></li>
           <% end %>
           </ul>
           <% @all_fields = []%>

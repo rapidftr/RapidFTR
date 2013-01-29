@@ -4,7 +4,7 @@ Feature: As an user I should not see disabled forms when adding new child
 
     Given I am logged in as a user with "Register Child" permission
     And the following form sections exist in the system:
-      | name   | description | unique_id | order | enabled |
+      | name   | description | unique_id | order | visible |
       | Basic Details | Basic details about a child | basic_details | 1 | true |
       | Family Details   | Details of the child's family | family_details | 2 | true |
       | Caregiver Details   |  | caregiver_details | 3 | true |

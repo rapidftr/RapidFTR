@@ -11,6 +11,7 @@ Feature:
 
     Given I am on the new child page
     When I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
@@ -22,6 +23,7 @@ Feature:
     Given I am on the new child page
     
     And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
     And I attach the following photos:
     |features/resources/jorge.jpg|
     |features/resources/jeff.png |
@@ -29,15 +31,18 @@ Feature:
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
+    And I click the "Photos and Audio" link
     Then I should see "2" thumbnails    
         
     When I follow "Edit"
+    And I click the "Photos and Audio" link
     Then I should see "2" thumbnails
 
   Scenario: Uploading an invalid file in the image field
 
     Given I am on the new child page
     And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
 
@@ -46,6 +51,7 @@ Feature:
   Scenario: Changing the photo field on an existing child record
 
     Given I am editing an existing child record
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
 
@@ -56,6 +62,7 @@ Feature:
     Given I am on the new child page
 
     And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
     And I attach the following photos:
     |features/resources/jorge.jpg|
     |features/resources/jeff.png |
@@ -63,14 +70,17 @@ Feature:
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
+    And I click the "Photos and Audio" link
     Then I should see "2" thumbnails
 
     When I follow "Edit"
+    And I click the "Photos and Audio" link
     Then I should see "2" thumbnails
     And I check "Delete photo?"
 
     And I press "Save"
     Then I should see "Child was successfully updated"
     And I should see the photo of "John"
+    And I click the "Photos and Audio" link
     Then I should see "1" thumbnails
 

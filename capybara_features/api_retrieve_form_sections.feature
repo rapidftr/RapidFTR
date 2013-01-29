@@ -21,10 +21,12 @@ Feature:
 	      "_id": "%SOME_STRING%",
 	      "_rev": "%SOME_STRING%",
 	      "order": "%SOME_INTEGER%",
-	      "enabled": "%SOME_BOOL%",
+	      "visible": "%SOME_BOOL%",
+	      "fixed_order": "%SOME_BOOL%",
 	      "fields": "%SOME_FIELD_ARRAY%",
 	      "couchrest_type": "%SOME_STRING%",
 	      "description": "%SOME_STRING%",
-	      "perm_enabled": "%SOME_BOOL%"
+	      "perm_enabled": "%SOME_BOOL%",
+	      "perm_visible": "%SOME_BOOL%"
 	    }
 	    """
