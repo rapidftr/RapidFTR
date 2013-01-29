@@ -12,6 +12,7 @@ $(document).ready(function() {
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
     $(".field_details_panel input#add_field_btn").click(addFieldToTable);
     $(".field_hide_show").bind('change',fieldHideShow);
+    $(".link_moveto").click(showMovePanel);
     triggerErrors();
     var rows = $("table#form_sections tbody");
     rows.sortable({
@@ -29,8 +30,8 @@ $(document).ready(function() {
 function fieldHideShow(){
   $.post($($.find("#toggle_url")).val(), {'id' : $(this).val()}); 
     $("table#form_sections tbody").sortable();
-    $(".link_moveto").click(showMovePanel);
-});
+
+}
 
 function showMovePanel(){
     $(this).toggleClass("sel");

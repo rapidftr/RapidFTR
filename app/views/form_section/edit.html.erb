@@ -54,10 +54,11 @@
       <% if @form_section.editable? %>
         <h3><%= t("fields.label") %><%= link_to t("fields.add"), "javascript:void(0)", :class => "add_field" %></h3>
       <% else %>
-          <h3><i><%= I18n.t("forms.cannot_be_edited") %></i></h3>
+          <h3><i><%= t("forms.cannot_be_edited") %></i></h3>
       <% end %>
 
   <% end %>
+  <div class="text_info"><%= t("form_section.messages.drag_drop_help_text") %></div>
     <table id="form_sections" class="list_table" width="940">
       <thead>
       <tr>
@@ -65,9 +66,9 @@
         <th width="190"><%= t("help_text") %></th>
         <th width="100"><%= t("form_section.options") %></th>
         <th width="75"><%= t("fields.type") %></th>
-        <th width="75"><%= t("form_section.hide") %></th>
+        <th width="75" align="center"><%= t("form_section.hide") %></th>
 
-        <th width="200">Actions</th>
+        <th width="200" align="center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -76,12 +77,12 @@
       <% @form_section.fields.each do |field| %>
           <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
             <td width="300"><%= field.display_name %></td>
-            <td width="240"><%= field.help_text %></td>
+            <td width="190"><%= field.help_text %></td>
             <td width="100"><%= field.option_strings %></td>
             <td width="75"><%= field.type.try(:humanize) %></td>
 
             <% if @form_section.editable? %>
-                <td width="75">
+                <td width="75" align="center">
                   <% if field.editable? %>
                     <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
                   <% end %>

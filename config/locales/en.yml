@@ -295,6 +295,7 @@ en:
       correct_errors: "Please correct the following errors and resubmit:"
       hide_confirmation: "Are you sure you want to hide fields?"
       show_confirmation: "Are you sure you want to show fields?"
+      drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
 
       updated: "Form section successfully added"
     hide: "Hide"
