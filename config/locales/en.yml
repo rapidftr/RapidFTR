@@ -6,7 +6,7 @@ en:
     welcome: "Welcome to RapidFTR"
     current_time_zone: "Current time zone"
     language: "Language"
-    view_all_children: "View All Children"
+    view_records: "View Records"
     manage_system_users: Manage System Users
     records_need_attention: "Records need Attention"
 
