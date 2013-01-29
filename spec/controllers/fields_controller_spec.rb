@@ -8,26 +8,6 @@ describe FieldsController do
     fake_login user
   end
 
-   describe "get new" do
-     before :each do
-       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
-       FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
-     end
-
-     it "populates the view with the selected form section"do
-      get :new, {:form_section_id => @form_section.unique_id, :type => "text_field"}
-      assigns[:form_section].should == @form_section
-     end
-
-     it "populates suggested fields with all unused suggested fields" do
-       suggested_fields = [SuggestedField.new, SuggestedField.new, SuggestedField.new]
-       SuggestedField.stub!(:all_unused).and_return(suggested_fields)
-       get :new, :form_section_id=>@form_section.unique_id, :type => "text_field"
-       assigns[:suggested_fields].should == suggested_fields
-     end
-
-   end
-
   describe "post create" do
     before :each do
       @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"

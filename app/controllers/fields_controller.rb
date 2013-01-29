@@ -9,25 +9,6 @@ class FieldsController < ApplicationController
     @form_section = FormSection.get_by_unique_id(params[:form_section_id])
   end
 
-  def new
-    @body_class = 'forms-page'
-    @suggested_fields = SuggestedField.all_unused
-    @field = Field.new(:type => params[:type])
-    @page_name = t("new")+" #{@field.type.humanize}"
-    render params[:fieldtype]
-  end
-
-  def edit
-    @body_class = 'forms-page'
-    @field = @form_section.fields.detect { |field| field.name == params[:id] }
-    render :template => "form_section/edit", :locals => {:show_add_field => true}
-  end
-
-  def choose
-    @body_class = 'forms-page'
-    @suggested_fields = SuggestedField.all_unused
-  end
-
   def create
     @field = Field.new params[:field]
 
@@ -85,17 +66,6 @@ class FieldsController < ApplicationController
 
   def save_order
     @form_section.order_fields(params[:field_names])
-    redirect_to(edit_form_section_path(params[:form_section_id]))
-  end
-
-  def move_up
-    @form_section.move_up_field(params[:field_name])
-    redirect_to(edit_form_section_path(params[:form_section_id]))
-  end
-
-
-  def move_down
-    @form_section.move_down_field(params[:field_name])
     redirect_to(edit_form_section_path(params[:form_section_id]))
   end
 
