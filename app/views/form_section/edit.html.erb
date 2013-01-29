@@ -62,12 +62,12 @@
       <thead>
       <tr>
         <th width="300"><%= t("name") %></th>
-        <th width="240"><%= t("help_text") %></th>
+        <th width="190"><%= t("help_text") %></th>
         <th width="100"><%= t("form_section.options") %></th>
         <th width="75"><%= t("fields.type") %></th>
         <th width="75"><%= t("form_section.hide") %></th>
 
-        <th width="150">Actions</th>
+        <th width="200">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -98,13 +98,21 @@
                   </div>
                 </td>-->
 
-                <td class='field-buttons' width="150">
+                <td class='field-buttons' width="200">
                   <% if field.editable? %>
+                      <a href="javascript:void(0)" class="link_moveto">Move to</a>
                       <%= link_to t("buttons.edit"), edit_form_section_field_path(:form_section_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
                       <%= render :partial => "form_section/delete_button", :locals => {:field => field, :url => delete_form_section_fields_path(@form_section.unique_id),
                                                                           :warning => I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}" %>
-
+                      <div class="move_to_panel hide">
+                        <select>
+                          <option>Form1</option>
+                          <option>Form2</option>
+                          <option>Form3</option>
+                        </select>
+                      </div>
                   <% end %>
+
                 </td>
             <% end %>
           </tr>

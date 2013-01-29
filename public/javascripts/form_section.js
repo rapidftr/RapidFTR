@@ -28,6 +28,13 @@ $(document).ready(function() {
 
 function fieldHideShow(){
   $.post($($.find("#toggle_url")).val(), {'id' : $(this).val()}); 
+    $("table#form_sections tbody").sortable();
+    $(".link_moveto").click(showMovePanel);
+});
+
+function showMovePanel(){
+    $(this).toggleClass("sel");
+    $(this).siblings("div.move_to_panel").toggleClass("hide");
 }
 
 function triggerErrors(){

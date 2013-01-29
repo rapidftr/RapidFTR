@@ -744,6 +744,34 @@ table#form_sections {
     background: #c3e9fe; }
   table#form_sections tr.ui-sortable-helper {
     border: 1px dashed #2179c4; }
+  table#form_sections .field-buttons a {
+    border-left: 1px dashed #666;
+    padding: 5px 8px; }
+    table#form_sections .field-buttons a:first-child {
+      border: 0px; }
+    table#form_sections .field-buttons a:hover {
+      color: #333; }
+    table#form_sections .field-buttons a.sel {
+      background: #ffcd8c;
+      -moz-border-radius: 5px 5px 0px 0px;
+      -webkit-border-radius: 5px 5px 0px 0px;
+      -o-border-radius: 5px 5px 0px 0px;
+      border-radius: 5px 5px 0px 0px;
+      color: #000; }
+  table#form_sections .field-buttons .move_to_panel {
+    position: absolute;
+    padding: 10px;
+    background: #ffcd8c;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 2px 5px 4px #666666;
+    -webkit-box-shadow: 2px 5px 4px #666666;
+    -o-box-shadow: 2px 5px 4px #666666;
+    box-shadow: 2px 5px 4px #666666; }
+    table#form_sections .field-buttons .move_to_panel select {
+      width: 200px; }
 
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;

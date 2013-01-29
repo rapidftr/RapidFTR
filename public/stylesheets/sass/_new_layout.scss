@@ -702,10 +702,6 @@ body {
       }
 
     }
-
-
-
-
   }
 
 
@@ -722,6 +718,40 @@ table#form_sections{
   tr.ui-sortable-helper{
       border:1px dashed #2179c4;
 
+  }
+
+  .field-buttons{
+
+    a{
+      border-left:1px dashed #666;
+      padding:5px 8px;
+
+      &:first-child{
+        border:0px;
+      }
+
+      &:hover{
+        color:#333;
+      }
+
+      &.sel{
+        background:#ffcd8c;
+        @include borderRadius(5px 5px 0px 0px);
+        color:#000;
+      }
+    }
+
+    .move_to_panel{
+      position: absolute;
+      padding:10px;
+      background:#ffcd8c;
+      @include borderRadius(5px);
+      @include boxShadow(2px 5px 4px #666);
+
+      select{
+        width:200px;
+      }
+    }
   }
 }
 
