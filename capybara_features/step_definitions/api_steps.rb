@@ -121,6 +121,8 @@ And /^that JSON response should be composed of items with body$/ do |json_expect
   json_response.each do |item|
     json_expectation.keys.each do |expectation_key|
       lambda {item.has_key? expectation_key}.should be_true
+      p expectation_key
+      p "#{item[expectation_key]}, #{json_expectation[expectation_key]}}"
       match_value(item[expectation_key], json_expectation[expectation_key])
     end
   end

@@ -40,7 +40,7 @@ class FormSectionController < ApplicationController
     if forms
       forms.each_key do |key|
         form = FormSection.get_by_unique_id(key)
-        form.enabled = params[:value]
+        form.visible = params[:value]
         form.save!
       end
     end

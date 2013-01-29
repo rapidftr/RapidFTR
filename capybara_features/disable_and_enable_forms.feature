@@ -6,7 +6,7 @@ Feature: Disable and enable forms
 
   Scenario: Should show selected forms
     Given the following form sections exist in the system:
-      | name                  | unique_id         | editable | order | enabled |
+      | name                  | unique_id         | editable | order | visible |
       | Basic details         | basic_details     | false    | 1     | true    |
       | Caregiver details     | caregiver_details | true     | 2     | false   |
       | Other hidden section  | hidden_section    | true     | 3     | false   |
@@ -24,7 +24,7 @@ Feature: Disable and enable forms
 
   Scenario: Should hide selected forms
     Given the following form sections exist in the system:
-      | name                  | unique_id         | editable | order | enabled |
+      | name                  | unique_id         | editable | order | visible |
       | Basic details         | basic_details     | false    | 1     | true    |
       | Caregiver details     | caregiver_details | true     | 2     | true    |
       | Other hidden section  | hidden_section    | true     | 3     | false   |

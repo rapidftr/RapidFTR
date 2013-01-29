@@ -1,19 +1,20 @@
 <% if child && child.has_valid_audio? %>
     <% if child.audio %>
-        <li>
-          <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
-          <%= link_to "download", child_audio_url(child), {:id => "audio_link"} %></li>
-        <% if is_playable_in_browser(child.audio) %>
+        <div class="audio">
             <li>
-              <audio controls="controls" id="audio_player">
-                <source src="<%= child_audio_url(child) %>"/>
-                Your browser is unable to play this audio file. You can download the file using the link above.
-              </audio>
+              <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
+              <%= link_to "download", child_audio_url(child), {:id => "audio_link"} %></li>
+            <% if is_playable_in_browser(child.audio) %>
+                <li>
+                  <audio controls="controls" id="audio_player">
+                    <source src="<%= child_audio_url(child) %>"/>
+                    Your browser is unable to play this audio file. You can download the file using the link above.
+                  </audio>
 
-              <%= render :partial => "audio_player" %>
+                  <%= render :partial => "audio_player" %>
 
-            </li>
-
-        <% end %>
+                </li>
+            <% end %>
+        </div>
     <% end %>
 <% end %>

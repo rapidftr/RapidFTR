@@ -11,6 +11,10 @@ When /^I click the "(.*)" button$/ do |button_value|
   click_button button_value
 end
 
+When /^I click the "(.*)" link$/ do |link|
+  click_link link
+end
+
 And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
   click_link("Mark as Investigated")
 
