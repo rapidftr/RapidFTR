@@ -18,9 +18,16 @@ class FieldsController < ApplicationController
       flash[:notice] = "Field successfully added"
       redirect_to(edit_form_section_path(params[:form_section_id]))
     else
-      @show_add_field = true
-      render :template => "form_section/edit"
+      @show_add_field = {:show_add_field => true}
+      render :template => "form_section/edit", :locals => @show_add_field
     end
+  end
+
+  def edit
+    @body_class = 'forms-page'
+    @field = @form_section.fields.detect { |field| field.name == params[:id] }
+    @show_add_field = {:show_add_field => true}
+    render :template => "form_section/edit", :locals => @show_add_field
   end
 
   def change_form
@@ -46,8 +53,8 @@ class FieldsController < ApplicationController
         render :template => "form_section/edit"
       end
     else
-      @show_add_fields = true
-      render :template => "form_section/edit"
+      @show_add_field = {:show_add_field => true}
+      render :template => "form_section/edit",  :locals => @show_add_field
     end
   end
 

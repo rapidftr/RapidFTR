@@ -32,6 +32,7 @@ describe FieldsController do
       Field.should_receive(:new).and_return(@field)
       @field.should_receive(:errors).and_return(["errors"])
       post :create, :form_section_id => @form_section.unique_id, :field => @field
+      assigns[:show_add_field].should == {"show_add_field" => true}
       response.should be_success
       response.should render_template("form_section/edit")
     end
@@ -60,6 +61,20 @@ describe FieldsController do
       post :create, :form_section_id => @form_section.unique_id, :field => {:display_name => "My brilliant new field"}
     end
 
+  end
+
+  describe "edit" do
+    it "should render form_section/edit template" do
+      @form_section = FormSection.new
+      field = mock('field', :name => 'field1')
+      @form_section.stub!(:fields).and_return([field])
+      FormSection.stub!(:get_by_unique_id).with('unique_id').and_return(@form_section)
+      get :edit, :form_section_id => "unique_id", :id => 'field1'
+      assigns[:body_class].should == "forms-page"
+      assigns[:field].should == field
+      assigns[:show_add_field].should == {"show_add_field" => true}
+      response.should render_template('form_section/edit')
+    end
   end
 
   describe "post move_up and move_down" do
@@ -124,7 +139,7 @@ describe FieldsController do
       put :update, :id => "field", :form_section_id => "unique_id",
           :field => {:display_name => "What Country Are You From", :visible => false, :help_text => "new help text"}
 
-      assigns[:show_add_fields].should == true
+      assigns[:show_add_field].should == {"show_add_field" => true}
       response.should render_template("form_section/edit")
     end
 
