@@ -1,40 +1,7 @@
 <h1 class="no_border">Forms</h1>
-<div class="page-content-new">
+<div class="page-content-new form_page">
   <div class="side-tab-content full_width">
-<div><%= t("forms.messages.use_existing") %></div>
-
-<%= error_messages_for  :form_section,
-                        :header_tag => :h3,
-                        :header_message => t("form_section.messages.cannot_create"),
-                        :message => t('form_section.messages.correct_errors') %>
-
-<%= form_for @form_section, :url => form_sections_path, :html => {:method => :post, :class => ""}  do |f| %>
-  <fieldset>
-    <h3><%= t("form_section.details") %></h3>
-    <p>
-      <%= f.label :name, t("name"), :class=>'key' %>
-      <%= f.text_field :name %>
-    </p>
-    <p>
-      <%= f.label :description, t("description"), :class=>'key' %>
-      <%= f.text_field :description %>
-    </p>
-    <p>
-      <%= f.label :help_text, t("help_text"), :class=>'key' %>
-      <%= f.text_field :help_text %>
-    </p>
-    <p class="checkbox">
-      <%= f.label :visible, t("visible"), :class=>'key' %>
-      <%= f.check_box :visible, {:checked => true}, :true, :false %>
-
-    </p>
-  </fieldset>
-  <br />
-  <%= render :partial => "shared/add_translations", :locals => {:properties => [{:name => :text_field}, {:description => :text_field}, {:help_text => :text_field}], :f => f, :show_drop_down => true}%>
-    <div class="btn_panel">
-        <%= cancel_button form_sections_path %>
-        <%= submit_button t("forms.save") %>
-    </div>
-<% end %>
-      </div>
-    </div>
+  <div><%= t("forms.messages.use_existing") %></div>
+    <%= render :partial => 'form_section' %>
+  </div>
+</div>

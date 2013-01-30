@@ -1,3 +1,4 @@
+
 require 'spec_helper'
 
 class MockFormSection
@@ -29,7 +30,7 @@ describe FormSectionController do
       row1 = FormSection.new(:visible => false, :order => 1)
       row2 = FormSection.new(:visible => true, :order => 2)
       FormSection.stub!(:all).and_return([row1, row2])
-      
+
       get :index
 
       assigns[:form_sections].should == [row1, row2]
@@ -75,35 +76,14 @@ describe FormSectionController do
       form_one = FormSection.create(:unique_id => "first_form", :name => "first form", :order => 1)
       form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)
       form_three = FormSection.create(:unique_id => "third_form", :name => "third form", :order => 3)
-      post :save_form_order, :form_order => {form_one.unique_id.to_s => "3", form_two.unique_id.to_s => "1", form_three.unique_id.to_s => "2"}
-      FormSection.get_by_unique_id(form_one.unique_id).order.should == 3
-      FormSection.get_by_unique_id(form_two.unique_id).order.should == 1
-      FormSection.get_by_unique_id(form_three.unique_id).order.should == 2
+      post :save_form_order, :ids => [form_three.unique_id, form_one.unique_id, form_two.unique_id]
+      FormSection.get_by_unique_id(form_one.unique_id).order.should == 2
+      FormSection.get_by_unique_id(form_two.unique_id).order.should == 3
+      FormSection.get_by_unique_id(form_three.unique_id).order.should == 1
+      response.should render_template(:text => "OK")
     end
   end
-  
-  describe "post save_field_order" do
-    after { FormSection.all.each &:destroy }
-    
-    it "should save the order of the fields" do
-      form = FormSection.create(:unique_id => "children_information", :name => "children information")
-      form.fields << Field.new(:name => "name", :display_name => "Name")
-      form.fields << Field.new(:name => "protection_status", :display_name => "Prevention Status")
-      form.save!
-      
-      form.field_order("name").should == 0
-      form.field_order("protection_status").should == 1
-      controller.stub(:save_field_order_redirect_path).and_return(edit_form_section_path(form.id))
-      
-      post :save_field_order, :form_order => {"name" => "2", "protection_status" => "1"}, :formId => "children_information"
-      response.should redirect_to(edit_form_section_path(form.id))
-      
-      form = FormSection.get_by_unique_id("children_information")
-      form.field_order("name").should == 1
-      form.field_order("protection_status").should == 0
-    end
-  end
-  
+
   describe "post update" do
     it "should save update if valid" do
       form_section = FormSection.new
@@ -115,7 +95,7 @@ describe FormSectionController do
       post :update, :form_section => params, :id => "form_1"
       response.should redirect_to(edit_form_section_path(form_section.unique_id))
     end
-    
+
     it "should show errors if invalid" do
       form_section = FormSection.new
       params = {"some" => :params}
@@ -127,7 +107,7 @@ describe FormSectionController do
       response.should render_template("edit")
     end
   end
-  
+
   describe "post enable" do
     it "when called with value false disables only the selected form sections" do
       form_section1 = {:name=>"name1", :description=>"desc", :visible=>"true", :unique_id=>"form_1"}

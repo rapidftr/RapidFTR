@@ -72,7 +72,7 @@ describe FieldsController do
 
     it "should save the given field in the same order as given" do
       @form_section.should_receive(:order_fields).with(["field_one", "field_two"])
-      post :save_order, :form_section_id => @form_section_id, :field_names => ["field_one", "field_two"]
+      post :save_order, :form_section_id => @form_section_id, :ids => ["field_one", "field_two"]
       response.should redirect_to(edit_form_section_path(@form_section_id))
     end
 
@@ -124,7 +124,7 @@ describe FieldsController do
       put :update, :id => "field", :form_section_id => "unique_id",
           :field => {:display_name => "What Country Are You From", :visible => false, :help_text => "new help text"}
 
-      assigns[:show_add_fields].should == {"show_add_field"=>true}
+      assigns[:show_add_fields].should == true
       response.should render_template("form_section/edit")
     end
 

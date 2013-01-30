@@ -1,5 +1,5 @@
 <div id="<%= div_id %>" class="field_details" style="display:none;">
-  <%= form_for @field, :url => url_for_form_section(@form_section.unique_id, @field)  do |f| %>
+  <%= form_for @field, :url => url_for_form_section_field(@form_section.unique_id, @field)  do |f| %>
       <div class="default_lang_panel">
         <div class="lang_title">
           <%= t("forms.initial_language") %> : <%= t("home.#{I18n.locale}") %>

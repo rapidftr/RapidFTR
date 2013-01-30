@@ -1,27 +1,15 @@
 <script type="text/javascript">
-    $(document).ready(function(){
-        $("#all").click(function()
-        {
-            var checked_status = this.checked;
-            checkToggle(checked_status);
-            $("#form_sections tbody input[type=checkbox]").attr("checked", checked_status);
-        });
-
-    });
-    function checkToggle(checkStatus){
-        $("#form_sections tbody input[type=checkbox]").each(function()
-        {
-            this.checked = checkStatus;
-        });
-    }
+  var show_add_field = true;
+  var field_type = null;
 </script>
+<div class="form_page">
 <h1 class="no_border float_left"><%= t("forms.label") %></h1>
 <%= link_to content_tag(:span,t("form_section.create"),:class=>'create_user') , new_form_section_path, :class=>'btn' %>
 <div class="clearfix"></div>
 <div class="page-content-new">
   <div class="side-tab-content full_width">
     <div class="flash" id="successNotice" style="display:none;">
-             <p class="notice"><%= t("form_section.messages.order_saved") %> </p>
+      <p class="notice"><%= t("form_section.messages.order_saved") %> </p>
     </div>
 <p></p>
 
@@ -38,10 +26,9 @@
   </tr>
 </thead>
 <tbody>
+<input type='hidden' id="save_order_url" value="<%= save_order_path %>">
     <% @form_sections.each do |section| %>
-      <tr id="<%= section.unique_id%>_row" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
-
-
+      <tr id="<%= section.unique_id%>_row" data="<%= section.unique_id %>" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
           <td><%= link_to section.name, edit_form_section_path(section), :class => "formSectionLink" %></td>
           <td><%= section.description %></td>
         <td align="center">
@@ -57,4 +44,5 @@
 
 <% end %>
 </div>
-    </div>
+</div>
+</div>

@@ -44,31 +44,17 @@ class FormSectionController < ApplicationController
         form.save!
       end
     end
-    redirect_to form_section_index_path
+    render :text => "OK"
   end
 
 
   def save_form_order
-    params[:form_order].each do |key, value|
-      form_section = FormSection.get_by_unique_id(key)
-      form_section.order = value.to_i
+    params[:ids].each_with_index do |unique_id, index|
+      form_section = FormSection.get_by_unique_id(unique_id)
+      form_section.order = index + 1
       form_section.save!
     end
     redirect_to form_section_index_path
-  end
-
-  def save_field_order
-    form_section = FormSection.get_by_unique_id(params[:formId])
-    oldFields = Array.new()
-    form_section.fields.each do |field|
-      oldFields.push field
-    end
-
-    params[:form_order].each do |key, value|
-      form_section.fields[value.to_i - 1] = oldFields.find{|field| field.name == key}
-    end
-    form_section.save!
-    redirect_to save_field_order_redirect_path
   end
 
   def save_field_order_redirect_path

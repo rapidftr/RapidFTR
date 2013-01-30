@@ -18,7 +18,8 @@ class FieldsController < ApplicationController
       flash[:notice] = "Field successfully added"
       redirect_to(edit_form_section_path(params[:form_section_id]))
     else
-      render :template => "form_section/edit", :locals => {:show_add_field => true}
+      @show_add_field = true
+      render :template => "form_section/edit"
     end
   end
 
@@ -45,13 +46,13 @@ class FieldsController < ApplicationController
         render :template => "form_section/edit"
       end
     else
-      @show_add_fields = {:show_add_field => true}
-      render :template => "form_section/edit", :locals => @show_add_fields
+      @show_add_fields = true
+      render :template => "form_section/edit"
     end
   end
 
   def save_order
-    @form_section.order_fields(params[:field_names])
+    @form_section.order_fields(params[:ids])
     redirect_to(edit_form_section_path(params[:form_section_id]))
   end
 
