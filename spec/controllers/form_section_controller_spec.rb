@@ -109,32 +109,13 @@ describe FormSectionController do
   end
 
   describe "post enable" do
-    it "when called with value false disables only the selected form sections" do
-      form_section1 = {:name=>"name1", :description=>"desc", :visible=>"true", :unique_id=>"form_1"}
-      form_section2 = {:name=>"name2", :description=>"desc", :visible=>"true", :unique_id=>"form_2"}
-      form_section3 = {:name=>"name3", :description=>"desc", :visible=>"true", :unique_id=>"form_3"}
-      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section1)
-      FormSection.should_receive(:get_by_unique_id).with("form_2").and_return(form_section2)
-      form_section1.stub(:save!)
-      form_section2.stub(:save!)
-      form_section1.should_receive(:visible=).with(false)
-      form_section2.should_receive(:visible=).with(false)
-      form_section3.should_not_receive(:visible=).with(false)
-      post :enable, :value => false, :sections => {"form_1" => 1, "form_2" => 1}, :controller => "form_section"
-    end
-
-    it "when called with value true enables only the selected form sections" do
-      form_section1 = {:name=>"name1", :description=>"desc", :visible=>"false", :unique_id=>"form_1"}
-      form_section2 = {:name=>"name2", :description=>"desc", :visible=>"true", :unique_id=>"form_2"}
-      form_section3 = {:name=>"name3", :description=>"desc", :visible=>"true", :unique_id=>"form_3"}
-      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section1)
-      FormSection.should_receive(:get_by_unique_id).with("form_2").and_return(form_section2)
-      form_section1.should_receive(:visible=).with(true)
-      form_section2.should_receive(:visible=).with(true)
-      form_section3.should_not_receive(:visible=).with(true)
-      form_section1.stub(:save!)
-      form_section2.stub(:save!)
-      post :enable, :value => true, :sections => {"form_1" => 1, "form_2" => 1}, :controller => "form_section"
+    it "should toggle the given form_section to hide/show" do
+      form_section1 = FormSection.create!({:name=>"name1", :description=>"desc", :enabled=>"true", :unique_id=>"form_1"})
+      form_section2 = FormSection.create!({:name=>"name2", :description=>"desc", :enabled=>"false", :unique_id=>"form_2"})
+      post :toggle, :id => "form_1"
+      FormSection.get_by_unique_id(form_section1.unique_id).enabled.should be_false
+      post :toggle, :id => "form_2"
+      FormSection.get_by_unique_id(form_section2.unique_id).enabled.should be_true
     end
   end
 end

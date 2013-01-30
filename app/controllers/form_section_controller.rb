@@ -35,15 +35,10 @@ class FormSectionController < ApplicationController
     end
   end
 
-  def enable
-    forms = params[:sections]
-    if forms
-      forms.each_key do |key|
-        form = FormSection.get_by_unique_id(key)
-        form.visible = params[:value]
-        form.save!
-      end
-    end
+  def toggle
+    form = FormSection.get_by_unique_id(params[:id])
+    form.enabled = !form.enabled?
+    form.save!
     render :text => "OK"
   end
 

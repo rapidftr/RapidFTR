@@ -52,10 +52,8 @@ RapidFTR::Application.routes.draw do
   match 'password_recovery_request/:password_recovery_request_id/hide' => 'password_recovery_requests#hide', :as => :hide_password_recovery_request, :via => :delete
   match 'login' => 'sessions#new', :as => :login
   match 'logout' => 'sessions#destroy', :as => :logout
-  match 'form_section/enable' => 'form_section#enable', :as => :enable_form, :via => :post, :value => true
-  match 'form_section/disable' => 'form_section#enable', :as => :disable_form, :value => false
   match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
-  match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
+  match '/form_section/toggle' => 'form_section#toggle', :as => :toggle
   match '/active' => 'sessions#active', :as => :session_active
   resources :form_section, :controller => 'form_section' do
     resources :fields, :controller => 'fields' do
