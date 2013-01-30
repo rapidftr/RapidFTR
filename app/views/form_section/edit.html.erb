@@ -10,7 +10,7 @@
     <div class="form_details_panel">
       <div class="default_lang_panel">
         <div class="lang_title">
-          <%= t("forms.initial_language") %> : <span>English</span>
+          <%= t("forms.initial_language") %> : <span><%= t("home.#{I18n.locale}") %></span>
         </div>
         <fieldset>
 
@@ -73,6 +73,7 @@
       </thead>
       <tbody>
       <input type="hidden" id="toggle_url" value="<%= toggle_fields_form_section_fields_path(@form_section) %>">
+      <input type="hidden" id="move_url" value="<%= change_form_form_section_fields_path(@form_section) %>">
       <input type="hidden" id="save_order_url" value="<%= save_order_form_section_fields_path(@form_section) %>">
       <% @form_section.fields.each do |field| %>
           <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
@@ -90,15 +91,6 @@
 
             <% end %>
             <% if @form_section.editable? %>
-
-                <!--<td>
-                  <div>
-                    <% if field.editable? %>
-                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "fieldLocation"%>
-                    <% end %>
-                  </div>
-                </td>-->
-
                 <td class='field-buttons' width="200">
                   <% if field.editable? %>
                       <a href="javascript:void(0)" class="link_moveto">Move to</a>
@@ -106,14 +98,13 @@
                       <%= render :partial => "form_section/delete_button", :locals => {:field => field, :url => delete_form_section_fields_path(@form_section.unique_id),
                                                                           :warning => I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}" %>
                       <div class="move_to_panel hide">
-                        <select>
-                          <option>Form1</option>
-                          <option>Form2</option>
-                          <option>Form3</option>
-                        </select>
+                        <%= form_tag change_form_form_section_fields_path(@form_section), :html => {:method => :post} do -%>
+                          <input type='hidden' name='id' value='<%= field.name %>' style="display:none;"/>
+                          <input type='hidden' class="destination_form_id" name='destination_form_id' style="display:none;"/>
+                        <% end %>
+                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "field_location"%>
                       </div>
                   <% end %>
-
                 </td>
             <% end %>
           </tr>
@@ -123,20 +114,6 @@
       <tfoot>
       </tfoot>
     </table>
-
-    <%= form_for @form_section, :url => '/formsections/' + @form_section.unique_id + '/fields/', :html => {:id => 'changeDirection', :method => :post} do -%>
-        <input type='hidden' name='field_name' value='' id='changeDirectionFieldName'/>
-        <input type='submit' id='changeDirectionSubmit' style='display:none;'/>
-    <% end %>
-
-
-    <div class="clearfix"></div>
-
-    <div class="flash" id="successNotice" style="display:none;">
-      <p class="notice"><%= t("form_section.messages.order_saved") %> </p><br/>
-    </div>
-
-    <div class="clearfix"></div>
 
 
 <div class="field_details_overlay hide"></div>

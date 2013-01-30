@@ -128,22 +128,19 @@ describe FieldsController do
       response.should render_template("form_section/edit")
     end
 
-    #it "should move field to specified form section with update to display name" do
-    #  mothers_name_field = Field.new(:name => "mothers_name", :visible => true, :display_name => "Mother's Name")
-    #  another_field = Field.new(:name => "childs_name", :visible => true, :display_name => "Child's Name")
-    #  family_details_form = FormSection.create!(:name => "Family Details", :unique_id => "family_details", :fields => [mothers_name_field])
-    #  mother_details_form = FormSection.create!(:name => "Mother Details", :unique_id => "mother_details", :fields => [another_field])
-    #
-    #  put :update,
-    #    :id => "mothers_name",
-    #    :form_section_id => "family_details",
-    #    :destination_form_id => "mother_details",
-    #    :field => {:display_name => "Name", :visible => true}
-    #
-    #  FormSection.get(family_details_form.id).fields.find {|field| field.name == "mothers_name"}.should be_nil
-    #  updated_field = FormSection.get(mother_details_form.id).fields.find {|field| field.name == "mothers_name"}
-    #  updated_field.display_name.should == "Name"
-    #end
-  end
+    it "should move the field to the given form_section" do
+      mothers_name_field = Field.new(:name => "mothers_name", :visible => true, :display_name => "Mother's Name")
+      another_field = Field.new(:name => "childs_name", :visible => true, :display_name => "Child's Name")
+      family_details_form = FormSection.create!(:name => "Family Details", :unique_id => "family_details", :fields => [mothers_name_field])
+      mother_details_form = FormSection.create!(:name => "Mother Details", :unique_id => "mother_details", :fields => [another_field])
 
+      put :change_form, :id => mothers_name_field.name, :form_section_id => family_details_form.unique_id, :destination_form_id => mother_details_form.unique_id
+
+      FormSection.get(family_details_form.id).fields.find {|field| field.name == "mothers_name"}.should be_nil
+      updated_field = FormSection.get(mother_details_form.id).fields.find {|field| field.name == "mothers_name"}
+      request.flash[:notice].should == "Mother's Name moved from Family Details to Mother Details"
+      response.should redirect_to(edit_form_section_path(family_details_form.unique_id))
+    end
+
+  end
 end

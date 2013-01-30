@@ -466,6 +466,13 @@ body {
               border-right: 1px dashed #999999;
               text-decoration: underline; }
 
+.notice {
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  color: green;
+  border: 3px solid #fff; }
+
 .login_page {
   text-align: center; }
   .login_page .login_panel {

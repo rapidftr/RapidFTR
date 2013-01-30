@@ -63,6 +63,7 @@ RapidFTR::Application.routes.draw do
         post "save_order"
         post "delete"
         post "toggle_fields"
+        post "change_form"
       end
     end
   end
