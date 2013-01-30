@@ -30,57 +30,31 @@
 <table id="form_sections" class="list_table">
 <thead>
   <tr>
-    <th><input type="checkbox" id="all" /></th>
-    <th><%= t("form_section.visibility") %></th>
+
+
     <th><%= t("name") %></th>
     <th><%= t("description") %></th>
-    <th colspan="3"><%= t("form_section.ordering") %></th>
+    <th align="center">Hide</th>
   </tr>
 </thead>
 <tbody>
     <% @form_sections.each do |section| %>
-      <tr id="<%= section.unique_id%>_row" class="<%= section.visible? ? "rowEnabled": "rowDisabled" %>">
-          <td>
-            <% unless (section.perm_enabled? or section.perm_visible?) %>
-                 <%= check_box_tag "sections[#{section.unique_id}]", 'form_section_check_box' %>
-            <% end %>
-          </td>
-          <td>
-	    <span class="enabledStatus <%= section.visible? ? "tick" : "cross" %>">
-              <%= section.visible? ? t("visible") : t("hidden") %>
-            </span>
-          </td>
+      <tr id="<%= section.unique_id%>_row" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
+
+
           <td><%= link_to section.name, edit_form_section_path(section), :class => "formSectionLink" %></td>
           <td><%= section.description %></td>
-          <td>
-            <span class="formSectionOrder"><%= section.order %></span>
-            <span class="updatedFormSectionOrder">
-              <%= hidden_field_tag "form_order[#{section.unique_id}]", section.order %>
-            </span>            
-          </td>
-          <% unless (section.perm_enabled? or section.fixed_order?) %>
-            <td class="orderingColumn">
-              <a id="<%= "#{section.unique_id}_up"%>"  href="#" class="hidden moveUp"><img src="/images/icon-up-arrow.gif"></a>
-            </td>
-            <td class="orderingColumn">
-              <a id="<%= "#{section.unique_id}_down"%>" href="#" class="hidden moveDown"><img src="/images/icon-down-arrow.gif"></a>
-            </td>
-          <% else %>
-            <td></td>
-            <td></td>
+        <td align="center">
+          <% if not section.perm_enabled? %>
+              <%= check_box_tag "sections[#{section.unique_id}]", 'form_section_check_box' %>
           <% end %>
+        </td>
+
         </tr>
     <% end %>
 </tbody>
 </table>
-<div class="formSectionButtons">
-  <input type="submit" name="Enable" value="<%= t("form_section.show") %>" id="enable_form" class="btn"/>
-  <input type="submit" name="Disable" value="<%= t("form_section.hide") %>" id="disable_form" class="btn"/>
-  <input type="button" name="SaveOrder" value="<%= t("form_section.actions.save_order") %>" id="save_order" class="btn" />
-</div>
-<div class="backLink">
-  <%= link_with_confirm t("buttons.back"), admin_path() %>
-</div>
+
 <% end %>
 </div>
     </div>
