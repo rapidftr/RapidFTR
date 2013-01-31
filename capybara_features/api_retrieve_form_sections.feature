@@ -14,17 +14,16 @@ Feature:
     Then I receive a JSON array
     And that JSON response should be composed of items with body 
     	"""
-    	{ 
+    	{
     	  "id": "%SOME_STRING%",
 	      "_rev": "%SOME_STRING%",
-	      "unique_id": "%SOME_STRING%",
 	      "_id": "%SOME_STRING%",
-	      "_rev": "%SOME_STRING%",
+	      "unique_id": "%SOME_STRING%",
 	      "order": "%SOME_INTEGER%",
-	      "enabled": "%SOME_BOOL%",
+	      "visible": "%SOME_BOOL%",
 	      "fields": "%SOME_FIELD_ARRAY%",
 	      "couchrest_type": "%SOME_STRING%",
 	      "description": "%SOME_STRING%",
-	      "perm_enabled": "%SOME_BOOL%"
+	      "perm_visible": "%SOME_BOOL%"
 	    }
 	    """

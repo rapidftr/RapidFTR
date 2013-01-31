@@ -91,7 +91,7 @@ module NavigationHelpers
         edit_formsection_field_path(:formsection_id => $2, :id => $1)
 
       when /form section page/
-        formsections_path(options)
+        form_sections_path(options)
 
       when /choose field type page/
         arbitrary_form_section = FormSection.new

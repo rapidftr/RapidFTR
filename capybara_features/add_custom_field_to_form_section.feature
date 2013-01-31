@@ -1,8 +1,9 @@
+@wip
 Feature: So that admin can customize fields in a form section
 
   Background:
     Given the following form sections exist in the system:
-      | name           | unique_id      | editable | order | enabled | perm_enabled |
+      | name           | unique_id      | editable | order | visible | perm_enabled |
       | Basic details  | basic_details  | false    | 1     | true    | true         |
       | Family details | family_details | true     | 2     | true    | false        |
     Given I am logged in as an admin
@@ -130,7 +131,7 @@ Feature: So that admin can customize fields in a form section
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
 
-    And I follow "Back To Forms Page"
+    And I follow "Cancel"
     Then I am on the form section page
 
 

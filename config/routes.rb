@@ -30,10 +30,13 @@ RapidFTR::Application.routes.draw do
   match '/children' => 'children#index', :as => :child_filter
   match '/children/sync_unverified' => 'children#sync_unverified', :as => :sync_unverified_child, :via => :post
 
-
-
-  resources :users
-  match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post 
+  resources :users do
+    collection do
+      get :change_password
+      post :update_password
+    end
+  end
+  match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
 
   resources :user_preferences
   resources :devices
@@ -49,32 +52,24 @@ RapidFTR::Application.routes.draw do
   match 'password_recovery_request/:password_recovery_request_id/hide' => 'password_recovery_requests#hide', :as => :hide_password_recovery_request, :via => :delete
   match 'login' => 'sessions#new', :as => :login
   match 'logout' => 'sessions#destroy', :as => :logout
-  match 'form_section/enable' => 'form_section#enable', :as => :enable_form, :via => :post, :value => true
-  match 'form_section/disable' => 'form_section#enable', :as => :disable_form, :value => false
   match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
-  match '/form_section/save_field_order' => 'form_section#save_field_order', :as => :save_order_single
+  match '/form_section/toggle' => 'form_section#toggle', :as => :toggle
   match '/active' => 'sessions#active', :as => :session_active
-  resources :formsections, :controller => 'form_section' do
-    additional_field_actions = FieldsController::FIELD_TYPES.inject({}) { |h, type| h["new_#{type}"] = :get; h }
-    additional_field_actions[:move_up] = :post
-    additional_field_actions[:move_down] = :post
-    additional_field_actions[:delete] = :post
-    additional_field_actions[:toggle_fields] = :post
-
+  resources :form_section, :controller => 'form_section' do
     resources :fields, :controller => 'fields' do
       collection do
-        additional_field_actions.each do |action, method|
-          send method, action
-        end
+        post "save_order"
+        post "delete"
+        post "toggle_fields"
+        post "change_form"
       end
     end
   end
-  match 'form_section/:formsection_id/choose_field' => 'fields#choose', :as => :choose_field
+  match 'form_section/:form_section_id/choose_field' => 'fields#choose', :as => :choose_field
   match '/published_form_sections' => 'publish_form_section#form_sections', :as => :published_form_sections
   resources :advanced_search, :only => [:index, :new]
   match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
-  resources :form_section
-  resources :fields
+  resources :form_sections, :controller => "form_section"
   resources :contact_information
   resources :highlight_fields do
     collection do
@@ -82,16 +77,18 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-  resources :replications do
+  resources :replications, :path => "/devices/replications" do
     collection do
       post :configuration
     end
-    
+
     member do
       post :start
       post :stop
     end
   end
+
+  resources :system_users, :path =>"/admin/system_users"
 
   match 'database/delete_children' => 'database#delete_children', :via => :delete
   match '/' => 'home#index', :as => :root

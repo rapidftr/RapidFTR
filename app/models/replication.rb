@@ -12,12 +12,18 @@ class Replication < CouchRestRails::Document
 
   property :remote_url
   property :description
+  property :user_name
+  property :crypted_password
+
+  attr_accessor :password
 
   validates_presence_of :remote_url
   validates_presence_of :description
+  validates_presence_of :user_name
+  validates_presence_of :password
   validates_with_method :remote_url, :method => :validate_remote_url
 
-  before_save   :normalize_remote_url
+  before_save   :normalize_remote_url, :encrypt_password
   after_save    :start_replication
   before_destroy :stop_replication
 
@@ -100,6 +106,7 @@ class Replication < CouchRestRails::Document
     begin
       uri = URI.parse self.class.normalize_url remote_config["target"]
       uri.host = remote_uri.host if ['localhost', '127.0.0.1', '::1'].include? uri.host
+      uri.scheme = remote_uri.scheme
       uri.to_s
     rescue
       nil
@@ -112,14 +119,18 @@ class Replication < CouchRestRails::Document
     uri
   end
 
-  def self.configuration
-    { :target => Child.database.root }
+  def self.configuration(username, password)
+    { :target => "http://#{username}:#{password}@"+Child.database.root.split("://").last.split("@").last }
   end
 
   def self.normalize_url(url)
     url = "http://#{url}" unless url.include? '://'
     url = "#{url}/"       unless url.ends_with? '/'
     url
+  end
+
+  def self.authenticate_with_internal_couch_users(username, password)
+    RestClient.post COUCHDB_SERVER.uri+'/_session', 'name='+username+'&password='+password,{:content_type => 'application/x-www-form-urlencoded'}
   end
 
   private
@@ -140,8 +151,18 @@ class Replication < CouchRestRails::Document
   def remote_config
     uri = remote_uri
     uri.path = Rails.application.routes.url_helpers.configuration_replications_path
+    post_params = {:user_name => self.user_name, :password => self.crypted_password}
 
-    response = Net::HTTP.post_form uri, {}
+    if uri.scheme == "http"
+      response = Net::HTTP.post_form uri, post_params
+    else
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data(post_params)
+      response = http.start{|req| req.request(request)}
+    end
     JSON.parse response.body
   end
 
@@ -149,4 +170,7 @@ class Replication < CouchRestRails::Document
     COUCHDB_SERVER.database('_replicator')
   end
 
+  def encrypt_password
+    self.crypted_password = self.password
+  end
 end

@@ -1,0 +1,33 @@
+<h1 class="no_border float_left"><%= @page_name %> </h1>
+<% if can? :create, SystemUsers %>
+    <%= link_to content_tag(:span, t("admin.create_system_user"), :class => 'create_user'), new_system_user_path, :class => 'btn' %>
+<% end %>
+
+<div class="page-content-new">
+  <div class="side-tab-content full_width">
+    <table class="list_table">
+      <thead>
+      <tr>
+        <th><%= t "login.username" %></th>
+        <th colspan="2"><%= t "replication.actions" %></th>
+      </tr>
+      </thead>
+
+      <tbody>
+          <% @users.each do |user| %>
+              <tr id="system-row-<%= user.name%>">
+                <td><%= user.name %></td>
+                <td>
+                  <%= link_to t("buttons.edit"), edit_system_user_path(user.name) %>
+                  &nbsp;
+                  <%= link_to t("buttons.delete"), system_user_path(user.name), :confirm => t("user.messages.confirmation"), :method => :delete %>
+                </td>
+                </td>
+              </tr>
+          <% end %>
+      </tbody>
+    </table>
+
+
+  </div>
+</div>

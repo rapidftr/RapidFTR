@@ -4,21 +4,28 @@ describe DevicesController do
 
 
   describe "GET index" do
-    it "fetches all the devices" do
+    it "fetches all the blacklisted devices but not the replication details if user have only black listed permission" do
       fake_login_as(Permission::DEVICES[:black_list])
       device = mock({:user_name => "someone"})
       Device.should_receive(:view).with("by_imei").and_return([device])
+      Replication.should_not_receive(:all)
       get :index
       assigns[:devices].should == [device]
     end
 
-    it "should not view the devices for user without blacklist permission" do
-      fake_login_as(Permission::USERS[:create_and_edit])
+    it "should not show black listed devices, if the user have only manage replication permission" do
+      fake_login_as(Permission::DEVICES[:replications])
       Device.should_not_receive(:view).with("by_imei")
+      Replication.should_receive(:all)
       get :index
-      response.should render_template("#{Rails.root}/public/403.html")
     end
 
+    it "should show black listed devices and the replications if the user have both the permissions" do
+      fake_login_as([Permission::DEVICES[:replications], Permission::DEVICES[:black_list]].flatten)
+      Replication.should_receive(:all)
+      Device.should_receive(:view)
+      get :index
+    end
   end
   describe "POST update_blacklist" do
     it "should update the blacklist flag" do

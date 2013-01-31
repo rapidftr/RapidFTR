@@ -1,7 +1,7 @@
 <p>
   Photos should be no larger than 10mb. Audio files should be no larger than 10mb. The smaller the better.
 </p>
-<% 5.times do |i|%>
+<% ChildrenHelper::EditView::ONETIME_PHOTOS_UPLOAD_LIMIT.times do |i|%>
 <p class="file">
   <span class="tool-tip-label">
       <%= label_tag "child[photo]#{i}", "Add Photo", :class=>'key' %>

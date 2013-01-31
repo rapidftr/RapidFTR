@@ -6,11 +6,13 @@ class FormSection < CouchRestRails::Document
   use_database :form_section
   PropertiesLocalization.localize_properties [:name, :help_text, :description]
   property :unique_id
-  property :enabled, :cast_as => 'boolean', :default => true
+  property :visible, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
-  property :perm_enabled, :cast_as => 'boolean', :default => false
+  property :fixed_order, :cast_as => 'boolean', :default => false
+  property :perm_visible, :cast_as => 'boolean', :default => false
+  property :perm_enabled, :cast_as => 'boolean'
   property :validations, :type => [String]
 
   view_by :unique_id
@@ -20,6 +22,9 @@ class FormSection < CouchRestRails::Document
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
+  validates_with_method :visible, :method => :validate_visible_field, :message=>"visible can't be false if perm_visible is true"
+  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=>"fixed_order can't be false if perm_enabled is true"
+  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=>"perm_visible can't be false if perm_enabled is true"
 
   def initialize args={}
     self["fields"] = []
@@ -31,7 +36,7 @@ class FormSection < CouchRestRails::Document
 
   class << self
     def enabled_by_order
-      by_order.select(&:enabled?)
+      by_order.select(&:visible?)
     end
 
     def all_child_field_names
@@ -158,36 +163,29 @@ class FormSection < CouchRestRails::Document
     return fields.index(field_item)
   end
 
-  def move_field field_to_move, offset
-    raise "Uneditable field cannot be moved" if !field_to_move.editable?
-    field_index_1 = fields.index(field_to_move)
-    field_index_2 = field_index_1 + offset
-    raise "Out of range!" if field_index_2 < 0 || field_index_2 >= fields.length
-    fields[field_index_1], fields[field_index_2] = fields[field_index_2], fields[field_index_1]
-    save()
-  end
-
-  def move_up_field field_name
-    field_to_move_up = fields.find {|field| field.name == field_name}
-    move_field(field_to_move_up, - 1)
-  end
-
-  def move_down_field field_name
-    field_to_move_down = fields.find {|field| field.name == field_name}
-    move_field(field_to_move_down, 1)
-  end
-
-  def hide_fields fields_to_hide
-    matching_fields = fields.select { |field| fields_to_hide.include? field.name }
-    matching_fields.each{ |field| field.visible = false }
-  end
-
-  def show_fields fields_to_show
-    matching_fields = fields.select { |field| fields_to_show.include? field.name }
-    matching_fields.each{ |field| field.visible = true}
+  def order_fields new_field_names
+    new_fields = []
+    new_field_names.each{ |name| new_fields << fields.find{|field| field.name == name} }
+    self.fields = new_fields
+    self.save
   end
 
   protected
+
+  def validate_visible_field
+    self.visible = true if self.perm_visible?
+    true
+  end
+
+  def validate_fixed_order
+    self.fixed_order = true if self.perm_enabled?
+    true
+  end
+
+  def validate_perm_visible
+    self.perm_visible = true if self.perm_enabled?
+    true
+  end
 
   def validate_unique_id
     form_section = FormSection.get_by_unique_id(self.unique_id)

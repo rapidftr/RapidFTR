@@ -1,7 +1,4 @@
-<%= form_for @replication,
-      :url => @replication.new? ? replications_path : replication_path(@replication), 
-      :method => @replication.new? ? :post : :put,
-      :html => { :class => 'default-form' } do |f| %>
+<%= form_for @replication, :html => { :class => 'default-form' } do |f| %>
 
   <%= f.error_messages :header_tag => :h3 %>
   <div class="clearfix"></div>
@@ -14,7 +11,15 @@
 
     <p>
       <%= f.label :remote_url, t("replication.remote_url"), :class => "key" %>
-      <%= f.text_field :remote_url %>
+      <%= f.text_field :remote_url %>*
+    </p>
+    <p>
+      <%= f.label :user_name, t("login.username"), :class => "key" %>
+      <%= f.text_field :user_name %>*
+    </p>
+    <p>
+      <%= f.label :password, t("login.password.label"), :class=>'key'  %>
+      <%= f.password_field :password, :autocomplete => "off" %>*
     </p>
   </fieldset>
 

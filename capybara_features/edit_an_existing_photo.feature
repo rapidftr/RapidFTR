@@ -9,8 +9,9 @@ Feature:
   Scenario: Editing the primary photo
 
     Given I am on the new child page
-
+    
     And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 

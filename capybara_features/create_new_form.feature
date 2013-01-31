@@ -1,3 +1,4 @@
+@wip
 Feature: Create new forms
 
   In order to capture custom information
@@ -68,7 +69,7 @@ Feature: Create new forms
 
     Given I am on form section page
     And I follow "Create New Form Section"
-    Then I should see "Visible checkbox" with id "form_section_enabled"
+    Then I should see "Visible checkbox" with id "form_section_visible"
     And I fill in "form_section_name" with "New Form 1"
     And I uncheck "Visible"
 

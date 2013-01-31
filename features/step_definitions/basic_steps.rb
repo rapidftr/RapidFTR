@@ -227,7 +227,6 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
-      'enabled' => true,
       'fields'=> Array.new
     )
 

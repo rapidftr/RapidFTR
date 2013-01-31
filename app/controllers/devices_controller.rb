@@ -1,7 +1,12 @@
 class DevicesController < ApplicationController
   def index
-    authorize! :read, Device
-    @devices = Device.view("by_imei")
+    @page_name = t("devices")
+    if can? :read, Replication
+      @replications = Replication.all
+    end
+    if can? :read, Device
+      @devices = Device.view("by_imei")
+    end
   end
 
   def update_blacklist

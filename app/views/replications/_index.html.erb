@@ -1,29 +1,24 @@
-<h1 class="no_border float_left"><%= t "replication.index" %></h1>
+<table class="list_table">
+  <thead>
+  <tr>
+    <th><%= t "replication.description" %></th>
+    <th ><%= t "replication.remote_url" %></th>
+    <th colspan="2"><%= t "login.username" %></th>
+    <th><%= t "replication.status" %></th>
+    <th><%= t "replication.timestamp" %></th>
+    <th colspan="2"><%= t "replication.actions" %></th>
+  </tr>
+  </thead>
 
-<% if can? :create, Replication %>
-  <%= link_to content_tag(:span, t("replication.create"), :class => 'create_user'), new_replication_path, :class=>'btn' %>
-<% end %>
-
-<div class="clearfix"></div>
-<div class="page-content-new replication-page">
-  <div class="side-tab-content full_width">
-    <table class="list_table">
-      <thead>
-        <tr>
-          <th><%= t "replication.description" %></th>
-          <th colspan="2"><%= t "replication.remote_url" %></th>
-          <th><%= t "replication.status" %></th>
-          <th><%= t "replication.timestamp" %></th>
-          <th colspan="2"><%= t "replication.actions" %></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @replications.each do |rep| %>
+  <tbody>
+      <% replications.each do |rep| %>
           <tr>
             <td><%= rep.description %></td>
             <td>
               <%= link_to rep.remote_url, rep.remote_url, :target => '_blank' %>
+            </td>
+            <td>
+              <span><%= rep.user_name %></span>
             </td>
             <td class="status">
               <span class="icon <%= rep.status %>"></span>
@@ -44,8 +39,7 @@
             </td>
             </td>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
+      <% end %>
+  </tbody>
+</table>
+

@@ -1,8 +1,9 @@
+@wip
 Feature: So that admin can customize form section details
 
   Background:
     Given the following form sections exist in the system:
-      | name | unique_id | editable | order | enabled | perm_enabled |
+      | name | unique_id | editable | order | visible | perm_enabled |
       | Basic details | basic_details | true | 1 | true | true |
       | Family details | family_details | true | 2 | true | false |
     And the following fields exists on "basic_details":
@@ -16,6 +17,7 @@ Feature: So that admin can customize form section details
 
     And I am logged in as an admin
 
+  @javascript
   Scenario: Admins should be able to edit name and description
     Given I am on the form section page
     And I follow "Family details"
@@ -25,7 +27,7 @@ Feature: So that admin can customize form section details
       | Visible |
     When I fill in "Edited Form" for "Name"
     When I fill in "Edited Description" for "Description"
-    And I press "Save"
+    And I click the "Save Details" button
 
     Then I should be on the form section page
     And I should see the description text "Edited Description" for form section "Edited Form"
@@ -38,11 +40,11 @@ Feature: So that admin can customize form section details
 
   Scenario: Admins should not see Visible checkbox for perm_enabled form so that he cannot disable the form
     Given I am on the edit form section page for "basic_details"
-    Then I should not see "Visible checkbox" with id "form_section_enabled"
+    Then I should not see "Visible checkbox" with id "form_section_visible"
 
   Scenario: Admins should see Visible checkbox for editable form so that he can enable/disable the form.
     Given I am on the edit form section page for "family_details"
-    Then I should see "Visible checkbox" with id "form_section_enabled"
+    Then I should see "Visible checkbox" with id "form_section_visible"
 
   @javascript
   Scenario: Admins should not be able to demote the name field by promoting following field
