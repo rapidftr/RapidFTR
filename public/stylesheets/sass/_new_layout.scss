@@ -285,12 +285,25 @@ body {
 }
 
 .notice{
-  text-align: center;
+  text-align: left;
   font-weight: bold;
   font-size: 15px;
   color: green;
-  border:3px solid #fff;
+  border:1px solid green;
+  padding: 5px;
 }
+
+.errorExplanation{
+  text-align: left;
+  font-size: 15px;
+  border:1px solid red;
+  padding: 5px;
+  ul li{
+    color: red;
+  }
+}
+
+
 
 .login_page{
   text-align:center;

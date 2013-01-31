@@ -467,11 +467,20 @@ body {
               text-decoration: underline; }
 
 .notice {
-  text-align: center;
+  text-align: left;
   font-weight: bold;
   font-size: 15px;
   color: green;
-  border: 3px solid #fff; }
+  border: 1px solid green;
+  padding: 5px; }
+
+.errorExplanation {
+  text-align: left;
+  font-size: 15px;
+  border: 1px solid red;
+  padding: 5px; }
+  .errorExplanation ul li {
+    color: red; }
 
 .login_page {
   text-align: center; }
@@ -657,7 +666,7 @@ body {
 
 .form_page .form_details_panel {
   background: #eee;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 5px;
   padding: 10px; }
   .form_page .form_details_panel .chkbox_visible {
@@ -676,7 +685,7 @@ body {
 .form_page .lang_title {
   color: #666;
   min-height: 25px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #cccccc;
   margin-bottom: 10px; }
   .form_page .lang_title span {
     color: #000; }
@@ -698,7 +707,7 @@ body {
     .form_page fieldset div textarea {
       height: 50px; }
 .form_page h3 {
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #aaaaaa;
   font-size: 1.1em;
   font-weight: bold;
   padding: 20px 0px 0px; }
@@ -719,7 +728,7 @@ body {
   left: 0; }
 .form_page .field_details_panel {
   background: #eee;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 5px;
   padding: 10px;
   opacity: 1;
@@ -730,7 +739,7 @@ body {
   position: absolute;
   top: 0; }
   .form_page .field_details_panel ul.field_types {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #cccccc;
     margin-bottom: 10px; }
     .form_page .field_details_panel ul.field_types li {
       float: left;
@@ -758,7 +767,7 @@ table#form_sections {
   table#form_sections tr.ui-sortable-helper {
     border: 1px dashed #2179c4; }
   table#form_sections .field-buttons a {
-    border-left: 1px dashed #666;
+    border-left: 1px dashed #666666;
     padding: 5px 8px; }
     table#form_sections .field-buttons a:first-child {
       border: 0px; }
@@ -860,13 +869,3 @@ table#form_sections {
     background: #e5efff;
     border: 1px solid #bdd7ff;
     border-right: 0px; }
-
-
-.photos,.audio{
-    margin-right: 220px;
-}
-.photos .thumbnail {
-    float: left;
-    margin: 2px;
-    height: 140px;
-}
