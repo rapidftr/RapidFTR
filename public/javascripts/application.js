@@ -124,6 +124,15 @@ RapidFTR.childPhotoRotation = {
 };
 
 RapidFTR.showDropdown = function(){
+    $('.dropdown_btn .encryption_form').click(function(event){
+        event.stopPropagation();
+    });
+    $(".dropdown a").click( function(event){
+        var dropdownDOM = $(this).parent().siblings('.encryption_form');
+        $(".dropdown").hide();
+        dropdownDOM.toggleClass('hide').show();
+        event.stopPropagation();
+    });
 
     $(".dropdown_form").click(function(event) {
         var dropdownDOM = $(".dropdown",this);
@@ -141,13 +150,13 @@ RapidFTR.showDropdown = function(){
     });
 
     $('html').click(function(event){
-
-        $(".dropdown").children().each(function() {
+        $(".mark_as").children().each(function() {
             if ($(this).is('form')) {
                 $(this).remove();
             }
         });
         $(".dropdown").hide();
+        $(".encryption_form").hide();
     });
 };
 

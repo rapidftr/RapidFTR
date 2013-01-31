@@ -13,6 +13,18 @@
         <%end%>
         <%= link_to t("children.export_some_records_to_csv"), new_advanced_search_path %>
       </div>
+      <div class="encryption_form hide">
+        <form accept-charset="UTF-8" action="<%= children_path(:format => :csv) %>" method="post">
+          <p>
+            <label> <%= t('encryption.label_for_password') %> </label>
+            <input type="password" id="password" autocomplete ="off">
+          </p>
+          <p>
+            <input type="submit" value="Save">
+          </p>
+        </form>
+      </div>
     </div>
+
 
 <%end%>
