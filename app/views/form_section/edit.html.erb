@@ -8,17 +8,17 @@
   <% else %>
       <h3><i><%= t("forms.cannot_be_edited") %></i></h3>
   <% end %>
-  <div class="text_info"><%= t("form_section.messages.drag_drop_help_text") %></div>
+  <div class="text_info"><%= t("form_section.messages.drag_drop_help_text").html_safe %></div>
     <table id="form_sections" class="list_table" width="940">
       <thead>
       <tr>
-        <th width="300"><%= t("name") %></th>
+        <th width="280"><%= t("name") %></th>
         <th width="190"><%= t("help_text") %></th>
         <th width="100"><%= t("form_section.options") %></th>
         <th width="75"><%= t("fields.type") %></th>
         <th width="75" align="center"><%= t("form_section.hide") %></th>
 
-        <th width="200" align="center">Actions</th>
+        <th width="220" align="center">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -28,7 +28,7 @@
       <input type="hidden" id="save_order_url" value="<%= save_order_form_section_fields_path(@form_section) %>">
       <% @form_section.fields.each do |field| %>
           <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
-            <td width="300"><%= field.display_name %></td>
+            <td width="280"><%= field.display_name %></td>
             <td width="190"><%= field.help_text %></td>
             <td width="100"><%= field.option_strings %></td>
             <td width="75"><%= field.type.try(:humanize) %></td>
@@ -42,7 +42,7 @@
 
             <% end %>
             <% if @form_section.editable? %>
-                <td class='field-buttons' width="200">
+            <td class='field-buttons' width="220">
                   <% if field.editable? %>
                       <a href="javascript:void(0)" class="link_moveto">Move to</a>
                       <%= link_to t("buttons.edit"), edit_form_section_field_path(:form_section_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
