@@ -111,8 +111,10 @@ class ChildrenController < ApplicationController
   def sync_unverified
     respond_to do |format|
       format.json do
-        user = User.by_user_name(:key => params[:user][:user_name])
-        return head(:unauthorized) if user.nil?
+        params[:user] = JSON.parse(params[:user]) if params[:child].is_a?(String)
+        
+        return head(:unauthorized) if User.by_user_name(:key => params[:user][:user_name]).nil?
+        user = User.by_user_name(:key => params[:user]["user_name"]).first
         
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
