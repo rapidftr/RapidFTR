@@ -79,23 +79,23 @@ module NavigationHelpers
         advanced_search_index_path(options)
 
       when /create form section page/
-        new_formsection_path(options)
+        new_form_section_path(options)
 
       when /edit form section page for "(.+)"$/
         edit_form_section_path(:id => $1)
 
       when /edit field page for "(.+)" on "(.+)" form$/
-        edit_formsection_field_path(:formsection_id => $2, :id => $1)
+        edit_form_section_field_path(:form_section_id => $2, :id => $1)
 
       when /form section page/
-        formsections_path(options)
+        form_sections_path(options)
 
       when /published form sections/
         published_form_sections_path(options)
 
       when /choose field type page/
         arbitrary_form_section = FormSection.new
-        new_formsection_field_path(arbitrary_form_section, options)
+        new_form_section_field_path(arbitrary_form_section, options)
 
       when /the edit user page for "(.+)"$/
         user = User.by_user_name(:key => $1)
@@ -104,11 +104,11 @@ module NavigationHelpers
 
       when /new field page for "(.+)"/
         field_type = $1
-        new_formsection_field_path(:type => field_type)
+        new_form_section_field_path(:type => field_type)
 
       when /the edit form section page for "(.+)"/
         form_section = $1
-        formsection_fields_path(form_section)
+        form_section_fields_path(form_section)
 
       when /the admin page/
         admin_path(options)

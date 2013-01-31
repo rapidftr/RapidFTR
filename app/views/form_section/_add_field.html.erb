@@ -1,0 +1,28 @@
+<div id="<%= div_id %>" class="field_details" style="display:none;">
+  <%= form_for @field, :url => url_for_form_section_field(@form_section.unique_id, @field)  do |f| %>
+      <div class="default_lang_panel">
+        <div class="lang_title">
+          <%= t("forms.initial_language") %> : <%= t("home.#{I18n.locale}") %>
+        </div>
+        <%= render :partial => 'shared/fields', :locals => {:f => f, :fields => fields} %>
+      </div>
+      <div class="translation_lang_panel">
+        <div class="lang_title">
+          <%= t(:provide_translation) %>
+          <span class="translation_lang_selected"></span>
+        </div>
+        <%= render :partial => "shared/add_translations", :locals => {:fields => fields, :f => f, :show_drop_down => false }%>
+      </div>
+      <div class="clearfix"></div>
+      <p class="chkbox_visible">
+        <%= f.label :enabled, t("visible"), :class => 'key' %>
+        <%= f.check_box :visible, {}, true, false %>
+      </p>
+        <%= f.hidden_field :type, :class => "field_type"%>
+      <div class="clearfix"></div>
+      <div class="btn_panel">
+        <%= link_to t("cancel"), "javascript:void(0)", :class => "link_cancel" %>
+        <%= submit_button t("forms.save_details") %>
+      </div>
+  <% end %>
+</div>

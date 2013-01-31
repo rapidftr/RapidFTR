@@ -44,7 +44,7 @@ module HpricotSearch
   end
 
   def enabled_icon
-    at(".enabledStatus")
+    at(".field_hide_show")
   end
 
   def form_section_order
