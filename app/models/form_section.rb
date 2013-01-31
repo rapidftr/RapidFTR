@@ -163,33 +163,11 @@ class FormSection < CouchRestRails::Document
     return fields.index(field_item)
   end
 
-  def move_field field_to_move, offset
-    raise "Uneditable field cannot be moved" if !field_to_move.editable?
-    field_index_1 = fields.index(field_to_move)
-    field_index_2 = field_index_1 + offset
-    raise "Out of range!" if field_index_2 < 0 || field_index_2 >= fields.length
-    fields[field_index_1], fields[field_index_2] = fields[field_index_2], fields[field_index_1]
-    save()
-  end
-
-  def move_up_field field_name
-    field_to_move_up = fields.find {|field| field.name == field_name}
-    move_field(field_to_move_up, - 1)
-  end
-
-  def move_down_field field_name
-    field_to_move_down = fields.find {|field| field.name == field_name}
-    move_field(field_to_move_down, 1)
-  end
-
-  def hide_fields fields_to_hide
-    matching_fields = fields.select { |field| fields_to_hide.include? field.name }
-    matching_fields.each{ |field| field.visible = false }
-  end
-
-  def show_fields fields_to_show
-    matching_fields = fields.select { |field| fields_to_show.include? field.name }
-    matching_fields.each{ |field| field.visible = true}
+  def order_fields new_field_names
+    new_fields = []
+    new_field_names.each{ |name| new_fields << fields.find{|field| field.name == name} }
+    self.fields = new_fields
+    self.save
   end
 
   protected
