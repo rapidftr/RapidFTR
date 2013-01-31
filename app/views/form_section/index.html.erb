@@ -26,12 +26,12 @@
 <input type='hidden' id="save_order_url" value="<%= save_order_path %>">
 <input type='hidden' id="toggle_url" value="<%= toggle_path %>">
     <% @form_sections.each do |section| %>
-      <tr id="<%= section.unique_id%>_row" data="<%= section.unique_id %>" class="<%= section.enabled? ? "rowEnabled": "rowDisabled" %>">
+      <tr id="<%= section.unique_id%>_row" data="<%= section.unique_id %>" class="<%= section.visible? ? "rowEnabled": "rowDisabled" %>">
           <td><%= link_to section.name, edit_form_section_path(section), :class => "formSectionLink" %></td>
           <td><%= section.description %></td>
         <td align="center">
           <% if not section.perm_enabled? %>
-            <%= check_box_tag "sections[]", section.unique_id, !section.enabled?, {:class => 'field_hide_show'} %>
+            <%= check_box_tag "sections[]", section.unique_id, !section.visible?, {:class => 'field_hide_show', :id => "sections_#{section.unique_id}"} %>
           <% end %>
         </td>
 

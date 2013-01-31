@@ -37,8 +37,8 @@
 
       <% if not @form_section.perm_enabled? %>
           <p class="chkbox_visible">
-            <%= f.label :enabled, t("visible"), :class => 'key' %>
-            <%= f.check_box :enabled?, {}, true, false %>
+            <%= f.label :visible, t("visible"), :class => 'key' %>
+            <%= f.check_box :visible?, {}, true, false %>
           </p>
       <% end %>
       <div class="btn_panel">

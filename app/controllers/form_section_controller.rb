@@ -37,7 +37,7 @@ class FormSectionController < ApplicationController
 
   def toggle
     form = FormSection.get_by_unique_id(params[:id])
-    form.enabled = !form.enabled?
+    form.visible = !form.visible?
     form.save!
     render :text => "OK"
   end
