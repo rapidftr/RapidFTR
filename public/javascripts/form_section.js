@@ -22,8 +22,8 @@ $(document).ready(function() {
     });
     $(".field_location").bind('change', changeForm);
 
-    function changeForm(){
-      var parent_div = $($(this).parent());
+    function changeForm(event){
+      var parent_div = $($(event.target).parent());
       parent_div.find(".destination_form_id").val($(this).val());
       parent_div.find("form").submit();
     }
@@ -49,6 +49,11 @@ $(document).ready(function() {
     function toggleFieldPanel(event, div_to_show){
         if(div_to_show === undefined){
             div_to_show = "#field_details";
+        }
+        var edit_url = $($("#edit_url")).val();
+        if(event != null && $(event.target).hasClass("add_field") && edit_url.indexOf(window.location.pathname) < 0){
+          window.location = edit_url + "?show_add_field=true";
+          return;
         }
         $(div_to_show).slideDown();
         $(".field_details_overlay").css("height",$(document).height());

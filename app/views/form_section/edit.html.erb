@@ -23,6 +23,7 @@
       </thead>
       <tbody>
       <input type="hidden" id="toggle_url" value="<%= toggle_fields_form_section_fields_path(@form_section) %>">
+      <input type="hidden" id="edit_url" value="<%= edit_form_section_path(@form_section) %>">
       <input type="hidden" id="move_url" value="<%= change_form_form_section_fields_path(@form_section) %>">
       <input type="hidden" id="save_order_url" value="<%= save_order_form_section_fields_path(@form_section) %>">
       <% @form_section.fields.each do |field| %>
@@ -70,14 +71,14 @@
 <div class="field_details_panel hide">
   <ul class="field_types clearfix">
     <li><%= link_to t("fields.text_field"), "javascript:void(0)", :id => "text_field", :class => "field_links sel" %> </li>
-    <li><%= link_to t("fields.text_area"), "javascript:void(0)", :id => "text_area", :class => "field_links" %></li>
-    <li><%= link_to t("fields.check_box"), "javascript:void(0)", :id => "check_box", :class => "field_links" %></li>
+    <li><%= link_to t("fields.text_area"), "javascript:void(0)", :id => "textarea", :class => "field_links" %></li>
+    <li><%= link_to t("fields.check_box"), "javascript:void(0)", :id => "check_boxes", :class => "field_links" %></li>
     <li><%= link_to t("fields.select_box"), "javascript:void(0)", :id => "select_box", :class => "field_links" %></li>
-    <li><%= link_to t("fields.radio_button"), "javascript:void(0)", :id => "radio_btn", :class => "field_links" %></li>
+    <li><%= link_to t("fields.radio_button"), "javascript:void(0)", :id => "radio_button", :class => "field_links" %></li>
     <li><%= link_to t("fields.numeric_field"), "javascript:void(0)", :id => "numeric_field", :class => "field_links" %></li>
     <li><%= link_to t("fields.date_field"), "javascript:void(0)", :id => "date_field", :class => "field_links" %></li>
   </ul>
-  <% @field ||= Field.new %>
+  <% @field ||= Field.new(:type => 'text_field') %>
   <%= error_messages_for  :field,
                           :header_tag => :h3,
                           :header_message => t("form_section.messages.cannot_create"),
@@ -87,6 +88,6 @@
 </div>
 </div>
 <script>
-    var show_add_field = <%= show_add_field ||= false %>;
-    var field_type = "<%= @field.type %>";
+    var show_add_field = <%= show_add_field ||= (params[:show_add_field] || false) %>;
+    var field_type = "<%= @field.type || 'text_field' %>";
 </script>
