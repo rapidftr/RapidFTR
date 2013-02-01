@@ -602,7 +602,7 @@ describe ChildrenController do
 
   describe "sync_unverified" do
     it "should reject request if no user record found for user" do
-      User.should_receive(:by_user_name).with(:key => "billybob").and_return(nil)
+      User.should_receive(:find_by_user_name).with("billybob").and_return(nil)
       
       post :sync_unverified, {:child => {:name => "timmy"}, :user => {"user_name" => "billybob"}, :format => :json}
 
@@ -610,7 +610,7 @@ describe ChildrenController do
     end
 
     it "should mark all children created as unverified" do
-      User.should_receive(:by_user_name).twice.with(:key => "billybob").and_return([user = mock(:imei => "123", :full_name => "billybobjohnny")])
+      User.should_receive(:find_by_user_name).with("billybob").and_return(user = mock(:imei => "123", :full_name => "billybobjohnny"))
       Child.should_receive(:new_with_user_name).with(user, {"name" => "timmy", "verified" => false}).and_return(child = Child.new)
       child.should_receive(:save).and_return true
       
@@ -620,7 +620,7 @@ describe ChildrenController do
     end
 
     it "should set the created_by name to that of the user matching the params" do
-      User.should_receive(:by_user_name).twice.with(:key => "billybob").and_return([user = mock(:imei => "123", :full_name => "billybobjohnny")])
+      User.should_receive(:find_by_user_name).with("billybob").and_return(user = mock(:imei => "123", :full_name => "billybobjohnny"))
       Child.should_receive(:new_with_user_name).and_return(child = Child.new)
       child.should_receive(:save).and_return true
       
