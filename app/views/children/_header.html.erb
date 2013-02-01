@@ -8,16 +8,16 @@
       <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
         <% if can?(:view_all, Child) %>
-            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv) %>
-            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf) %>
+            <%= link_to t('children.export_all_child_records_to_csv'), "#", :class => 'export_form', "data-formaction" => children_data_downloads_path(:format => :csv) %>
+            <%= link_to t('children.export_all_child_records_to_pdf'), "#", :class => 'export_form', "data-formaction" => children_data_downloads_path(:format => :pdf) %>
         <%end%>
         <%= link_to t("children.export_some_records_to_csv"), new_advanced_search_path %>
       </div>
       <div class="encryption_form hide">
-        <form accept-charset="UTF-8" action="<%= children_path(:format => :csv) %>" method="post">
+        <form accept-charset="UTF-8" action="#" method="post">
           <p>
             <label> <%= t('encryption.label_for_password') %> </label>
-            <input type="password" id="password" autocomplete ="off">
+            <input type="password" id="password" name="password" autocomplete ="off">
           </p>
           <p>
             <input type="submit" value="Save">

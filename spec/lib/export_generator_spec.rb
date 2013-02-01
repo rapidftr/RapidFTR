@@ -22,7 +22,7 @@ describe ExportGenerator do
       child2.create_unique_id
         
       subject do
-        ExportGenerator.new( [child1, child2]).to_csv
+        ExportGenerator.new( {}, [child1, child2]).to_csv
       end
       
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
@@ -85,7 +85,7 @@ describe ExportGenerator do
     describe "with a multi checkbox field" do
       subject do
         FormSection.stub!(:all_visible_child_fields).and_return [Field.new_check_boxes_field("multi")]
-        ExportGenerator.new( [
+        ExportGenerator.new( {}, [
                               Child.new( 'multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy" ),
                               Child.new( 'multi' => nil, 'unique_identifier' => "xxxy" ),
                               Child.new( 'multi' => ["Cats", "Fish"], 'unique_identifier' => "yyyx" )
@@ -102,7 +102,7 @@ describe ExportGenerator do
     
     describe "for just one record" do
       subject do
-        ExportGenerator.new( [
+        ExportGenerator.new( {}, [
                             Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
         ]).to_csv
       end

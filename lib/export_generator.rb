@@ -13,11 +13,12 @@ class ExportGenerator
       @options = options
     end
   end
-  def initialize *child_data
+
+  def initialize (options={}, *child_data)
     @child_data = child_data.flatten
     @pdf = Prawn::Document.new
-    @pdf.encrypt_document :user_password => 'foo', :owner_password => 'bar'
-    @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
+    @pdf.encrypt_document options[:encryption_options] if options[:encryption_options]
+    @image_bounds = [@pdf.bounds.width, @pdf.bounds.width]
   end
 
   def to_photowall_pdf
@@ -44,7 +45,7 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
+    Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
   end
 
   def map_field_with_value(child, fields)

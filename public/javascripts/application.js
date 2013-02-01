@@ -127,11 +127,16 @@ RapidFTR.showDropdown = function(){
     $('.dropdown_btn .encryption_form').click(function(event){
         event.stopPropagation();
     });
-    $(".dropdown a").click( function(event){
-        var dropdownDOM = $(this).parent().siblings('.encryption_form');
+
+    $(".dropdown .export_form").click( function(event){
+        var encryptionForm = $(this).parent().siblings('.encryption_form');
+        var action = $(this).data('formaction');
+        var form = $("form", encryptionForm);
+        form.attr('action', action);
+
         $(".dropdown").hide();
-        dropdownDOM.toggleClass('hide').show();
-        event.stopPropagation();
+        encryptionForm.toggleClass('hide').show();
+        event.preventDefault();
     });
 
     $(".dropdown_form").click(function(event) {
@@ -142,6 +147,7 @@ RapidFTR.showDropdown = function(){
     $(".dropdown_btn").click( function(event){
         $(".dropdown").not(this).hide();
         $(".dropdown",this).show();
+        $(".encryption_form").hide();
         event.stopPropagation();
     });
 

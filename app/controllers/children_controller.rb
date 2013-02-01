@@ -17,17 +17,8 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv @children, "all_records_#{file_name_date_string}.csv"
-      end
       format.json do
         render :json => @children
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@children).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
   end
@@ -54,7 +45,7 @@ class ChildrenController < ApplicationController
       end
       format.pdf do
         authorize! :export, Child
-        pdf_data = ExportGenerator.new(@child).to_full_pdf
+        pdf_data = ExportGenerator.new({}, @child).to_full_pdf
         send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
       end
     end
@@ -233,7 +224,7 @@ class ChildrenController < ApplicationController
     if params[:commit] == "Export to Photo Wall"
       export_photos_to_pdf(children, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to PDF"
-      pdf_data = ExportGenerator.new(children).to_full_pdf
+      pdf_data = ExportGenerator.new({}, children).to_full_pdf
       send_pdf(pdf_data, "#{file_basename}.pdf")
     elsif params[:commit] == "Export to CSV"
       render_as_csv(children, "#{file_basename}.csv")
@@ -243,13 +234,13 @@ class ChildrenController < ApplicationController
   def export_photos_to_pdf children, filename
     authorize! :export, Child
 
-    pdf_data = ExportGenerator.new(children).to_photowall_pdf
+    pdf_data = ExportGenerator.new({}, children).to_photowall_pdf
     send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf
     authorize! :export, Child
-    pdf_data = ExportGenerator.new(@child).to_photowall_pdf
+    pdf_data = ExportGenerator.new({}, @child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
@@ -297,7 +288,7 @@ class ChildrenController < ApplicationController
         child['audio_url'] = child_audio_url(child)
       end
 
-      export_generator = ExportGenerator.new results
+      export_generator = ExportGenerator.new({}, results)
       csv_data = export_generator.to_csv
       send_data(csv_data.data, csv_data.options)
     end

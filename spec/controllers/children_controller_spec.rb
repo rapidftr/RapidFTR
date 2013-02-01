@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 def inject_export_generator( fake_export_generator, child_data )
-	ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
+	ExportGenerator.stub!(:new).with({}, child_data).and_return( fake_export_generator )
 end
 
 def stub_out_export_generator child_data = []
@@ -201,7 +201,9 @@ describe ChildrenController do
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
-      get(:show, :format => 'csv', :id => "37")
+      get :show, :format => 'csv', :id => "37"
+
+      assigns[:child].should equal(child)
     end
 
     it "should set current photo key as blank instead of nil" do
@@ -461,7 +463,7 @@ describe ChildrenController do
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
-        get(:search,  :query => 'blah'  )
+        get(:search,  :query => 'blah')
       end
 
       it 'asks view to not show csv export link if there are no results' do
