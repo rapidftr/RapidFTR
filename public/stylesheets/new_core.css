@@ -426,7 +426,7 @@ body {
           body .page_container .page-content .page-content-new .side-tab-content input[type=text], body .page_container .page-content .page-content-new .side-tab-content input[type=password], body .page_container .page-content .page-content-new .side-tab-content input[type=file], body .page_container .page-content .page-content-new .side-tab-content textarea, body .page_container .page-content .page-content-new .side-tab-content select {
             width: 250px; }
           body .page_container .page-content .page-content-new .side-tab-content .profile-image {
-            position: absolute;
+            float: right;
             padding: 10px;
             background: #fff;
             right: 0px;
@@ -819,6 +819,12 @@ table#form_sections {
     margin: 10px;
     background: #fff;
     border: 10px solid white; }
+  .child_list .child_summary_panel .photos, .child_list .child_summary_panel .audio {
+    margin-right: 220px; }
+  .child_list .child_summary_panel .photos .thumbnail {
+    float: left;
+    margin: 2px;
+    height: 140px; }
   .child_list .child_summary_panel .summary_panel {
     float: left;
     padding: 10px 10px 10px 0px;
