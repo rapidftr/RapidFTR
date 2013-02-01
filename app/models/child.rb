@@ -355,9 +355,7 @@ class Child < CouchRestRails::Document
 
   def update_photo_keys
     return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
-
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
-
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
       self['_attachments'].keys.each do |key|
