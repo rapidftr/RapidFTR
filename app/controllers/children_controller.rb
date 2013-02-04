@@ -264,7 +264,6 @@ class ChildrenController < ApplicationController
 
   def sanitize_params
     child_params = params['child']
-    child_params['photo_keys'] = JSON.parse(child_params['photo_keys']) if child_params['photo_keys'].is_a?(String) #photo_keys might come as string from the mobile client.
     child_params['histories'] = JSON.parse(child_params['histories']) if child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
   end
 

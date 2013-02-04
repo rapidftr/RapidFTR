@@ -425,6 +425,10 @@ class Child < CouchRestRails::Document
     setup_mime_specific_audio(attachment)
   end
 
+  def recorded_audio=(audio_file_name = "")
+    self["recorded_audio"] ||= audio_file_name
+  end
+
   def add_audio_file(audio_file, content_type)
     attachment = FileAttachment.from_file(audio_file, content_type, "audio", key_for_content_type(content_type))
     attach(attachment)
@@ -532,6 +536,7 @@ class Child < CouchRestRails::Document
   private
 
   def update_properties(properties, user_name)
+    properties['histories'] = remove_newly_created_media_history(properties['histories'])
     should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
     if should_update
       properties.each_pair do |name, value|
@@ -553,6 +558,14 @@ class Child < CouchRestRails::Document
       to_be_merged.push(history) unless matched
     end
     self["histories"] = current_histories.push(to_be_merged).flatten!
+  end
+
+  def remove_newly_created_media_history(given_histories)
+    (given_histories || []).delete_if do |history|
+      (!history["changes"]["current_photo_key"].nil? and !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
+          (!history["changes"]["recorded_audio"].nil? and !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
+    end
+    given_histories
   end
 
   def attachment(key)
