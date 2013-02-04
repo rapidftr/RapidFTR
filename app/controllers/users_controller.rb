@@ -23,6 +23,7 @@ class UsersController < ApplicationController
 
   def unverified
     authorize! :manage, User
+    flash[:verify] = t('users.select_role')
     @users = User.all_unverified
   end
 
@@ -59,8 +60,10 @@ class UsersController < ApplicationController
   def update
     authorize! :disable, @user if params[:user].include?(:disabled)
     authorize! :update, @user  if params[:user].except(:disabled).present?
+    params[:verify] = !@user.verified?
 
     if (@user.update_attributes(params[:user]))
+      verify_children if params[:verify]
       if request.xhr?
         render :text => "OK"
       else
@@ -118,6 +121,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def verify_children
+    children = Child.all_by_creator @user.user_name
+    children.each do |child|
+      child.verified = true
+      child.save
+    end
+  end
   def load_user
     @user = User.get(params[:id])
     if @user.nil?

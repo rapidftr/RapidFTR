@@ -17,7 +17,7 @@
         <td><%= user.full_name %></td>
         <td><%= user.user_name %></td>
         <td><%= user.organisation %></td>
-        <td><%= link_to "Verify", edit_user_path(user) %></td>
+        <td><%= link_to "Verify", edit_user_path(user, {:verify => true}) %></td>
       </tr>
     <% end %>
     </tbody>

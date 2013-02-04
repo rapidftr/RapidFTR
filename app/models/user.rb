@@ -6,7 +6,7 @@ class User < CouchRestRails::Document
 
   property :full_name
   property :user_name
-  property :verified
+  property :verified, :cast_as => :boolean, :default => true
   property :crypted_password
   property :salt
 
@@ -64,7 +64,7 @@ class User < CouchRestRails::Document
 
   view_by :unverified,
           :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && !doc['verified'])
+              if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
              {
                 emit(doc);
              }

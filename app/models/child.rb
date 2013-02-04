@@ -21,7 +21,7 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
-  property :verified
+  property :verified, :cast_as => :boolean
 
   view_by :name,
           :map => "function(doc) {
