@@ -7,18 +7,18 @@
         <%= render :partial => 'shared/fields', :locals => {:f => f, :fields => fields} %>
       </div>
       <div class="translation_lang_panel">
-        <div class="lang_title">
+        <div class="lang_title <%= 'hide' if !@show_add_field.blank? %>" >
           <%= t(:provide_translation) %>
           <span class="translation_lang_selected"></span>
         </div>
-        <%= render :partial => "shared/add_translations", :locals => {:fields => fields, :f => f, :show_drop_down => false }%>
+        <%= render :partial => "shared/add_translations", :locals => {:fields => fields, :f => f, :show_drop_down => !@show_add_field.blank? }%>
       </div>
       <div class="clearfix"></div>
       <p class="chkbox_visible">
-        <%= f.label :enabled, t("visible"), :class => 'key' %>
-        <%= f.check_box :visible, {}, true, false %>
+      <%= f.label :visible, t("visible"), :class => 'key' %>
+      <%= f.check_box :visible %>
+      <%= f.hidden_field :type, :class => "field_type"%>
       </p>
-        <%= f.hidden_field :type, :class => "field_type"%>
       <div class="clearfix"></div>
       <div class="btn_panel">
         <%= link_to t("cancel"), "javascript:void(0)", :class => "link_cancel" %>
