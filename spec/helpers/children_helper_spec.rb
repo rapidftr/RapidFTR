@@ -8,6 +8,12 @@ describe ChildrenHelper do
     end
   end
 
+  context "EditView module" do
+    it "should have ONETIME_PHOTOS_UPLOAD_LIMIT constant" do
+      ChildrenHelper::EditView::ONETIME_PHOTOS_UPLOAD_LIMIT.should == 5
+    end
+  end
+
   describe '#thumbnail_tag' do
     it 'should use current photo key if photo ID is not specified' do
       child = stub_model Child, :id => 1001, :current_photo_key => 'current'

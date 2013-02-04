@@ -3,6 +3,7 @@ class ChildrenController < ApplicationController
 
   before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
   before_filter :current_user
+  before_filter :sanitize_params, :only => [:update]
 
   # GET /children
   # GET /children.xml
@@ -86,13 +87,11 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     authorize! :create, Child
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
     @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
       if @child.save
-        flash[:notice] = 'Child record successfully created.'
+        flash[:notice] = t('child.messages.creation_success')
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
         format.json {
@@ -111,7 +110,8 @@ class ChildrenController < ApplicationController
   def sync_unverified
     respond_to do |format|
       format.json do
-        user = User.by_user_name(:key => params[:user][:user_name])
+        params[:user] = JSON.parse(params[:user]) if params[:child].is_a?(String)
+        user = User.find_by_user_name(params[:user][:user_name])
         return head(:unauthorized) if user.nil?
         
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
@@ -128,7 +128,6 @@ class ChildrenController < ApplicationController
   def update
     respond_to do |format|
       format.json do
-        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
         render :json => child.compact.to_json
@@ -262,7 +261,13 @@ class ChildrenController < ApplicationController
       "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
     end
 
-    def file_name_datetime_string
+  def sanitize_params
+    child_params = params['child']
+    child_params['photo_keys'] = JSON.parse(child_params['photo_keys']) if child_params['photo_keys'].is_a?(String) #photo_keys might come as string from the mobile client.
+    child_params['histories'] = JSON.parse(child_params['histories']) if child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
+  end
+
+  def file_name_datetime_string
       user = User.find_by_user_name(current_user_name)
       Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
     end
@@ -355,7 +360,7 @@ class ChildrenController < ApplicationController
 
       child['last_updated_by_full_name'] = current_user_full_name
       new_photo = params[:child].delete("photo")
-      new_photo = (params[:current_photo_key] || "") if new_photo.nil?
+      new_photo = (params[:child][:photo] || "") if new_photo.nil?
       new_audio = params[:child].delete("audio")
       child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
       child

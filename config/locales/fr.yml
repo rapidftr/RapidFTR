@@ -3,6 +3,7 @@
 
 fr:
   home:
+    fr: "Français"
     welcome: "Bienvenu RapidFTR"
     current_time_zone: "Current time zone"
     language: "Language"

@@ -121,6 +121,8 @@ And /^that JSON response should be composed of items with body$/ do |json_expect
   json_response.each do |item|
     json_expectation.keys.each do |expectation_key|
       lambda {item.has_key? expectation_key}.should be_true
+      p expectation_key
+      p "#{item[expectation_key]}, #{json_expectation[expectation_key]}}"
       match_value(item[expectation_key], json_expectation[expectation_key])
     end
   end
@@ -146,12 +148,11 @@ end
 When /^I request the creation of the following unverified user:$/ do |table|
   table.hashes.each do |hash|
     post(register_unverified_user_path, 
-      {:imei => hash["imei"], :format => 'json', :user => 
+      {:format => 'json', :user => 
         {:user_name => hash["user_name"], 
         :full_name => hash["full_name"],
         :organisation => hash["organisation"], 
-        :password => hash["password"], 
-        :password_confirmation => hash["password_confirmation"]
+        :unauthenticated_password => hash["password"]
       }})
   end
 end

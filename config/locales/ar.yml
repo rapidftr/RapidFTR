@@ -3,6 +3,7 @@
 
 ar:
   home:
+    ar: "العربية"
     welcome: "مرحبا RapidFTR"
     current_time_zone: "النطاق الزمني الحالي"
     language: "اللغة"

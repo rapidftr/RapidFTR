@@ -9,17 +9,17 @@ var FormFields = {
 
   _build : function() {
     var self = this;
-    self.$elem.find(".form").live("click", function() { 
+    self.$elem.find(".form").live("click", function() {
       self.selectForm($(this));
     });
     self.$elem.find(".field:not(.prev-selected)").live("click", function(){
-      self.selectItem($(this)); 
+      self.selectItem($(this));
     });
-    self.$elem.find(".close-link").live("click", function() { 
+    self.$elem.find(".close-link").live("click", function() {
       self.hide();
     });
   },
-  
+
   selectForm : function(form){
     var self = this;
     var selectedForm = self.$elem.find(".form.selected");
@@ -30,15 +30,15 @@ var FormFields = {
     $(form).addClass("selected");
     self.$elem.find("#fields-for-"+$(form).attr("id")).addClass("selected");
   },
-  
+
   selectItem: function(selectElement){
     var self = this;
     self.hide();
-    var selectedField = { field_name: $(selectElement).data("name"), 
+    var selectedField = { field_name: $(selectElement).data("name"),
                           form_id: $(selectElement).parents("ul").data("id") };
     self.options.onItemSelect(selectedField);
   },
-  
+
   show : function(args) {
     var self = this;
     self.reset(args.prevSelectedFields);

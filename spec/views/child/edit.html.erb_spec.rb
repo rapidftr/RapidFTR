@@ -3,7 +3,7 @@
 describe "children/edit.html.erb" do
 
   before :each do
-    @form_section = FormSection.new :unique_id => "section_name", :enabled=>"true"
+    @form_section = FormSection.new :unique_id => "section_name", :visible=>"true"
     assign(:form_sections, [@form_section])
     @child = Child.create(:name => "name", :unique_identifier => '12341234123')
     assign(:child, @child)

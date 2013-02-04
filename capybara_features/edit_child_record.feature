@@ -16,6 +16,7 @@ Feature:
     And I select "Male" from "Sex"
     And I fill in "London" for "Nationality"
     And I fill in "Haiti" for "Birthplace"
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
@@ -26,6 +27,7 @@ Feature:
     And I select "Female" from "Sex"
     And I fill in "Bombay" for "Nationality"
     And I fill in "Zambia" for "Birthplace"
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/jeff.png"
     And I press "Save"
 
@@ -35,11 +37,13 @@ Feature:
     And I should see "Female"
     And I should see "Bombay"
     And I should see "Zambia"
+    And I click the "Photos and Audio" link
     And I should see the photo of "George Harrison"
     And I should see "Child was successfully updated."
 
    # checking if validations are still working fine
     Then I follow "Edit"
+    And I click the "Photos and Audio" link
     And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"

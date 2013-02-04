@@ -91,9 +91,16 @@ class UsersController < ApplicationController
 
   def register_unverified
     respond_to do |format|
-      format.json do 
-        user = User.new(params[:user].merge(:verified => false))
-        user.save
+      format.json do
+        params[:user] = JSON.parse(params[:user]) if params[:user].is_a?(String)
+        return render(:json => {:response => "ok"}.to_json) unless User.find_by_user_name(params[:user][:user_name]).nil?
+        
+        password = params[:user]["unauthenticated_password"]
+        updated_params = params[:user].merge(:verified => false, :password => password, :password_confirmation => password)
+        updated_params.delete("unauthenticated_password")
+        user = User.new(updated_params)
+        
+        user.save!
         render :json => {:response => "ok"}.to_json
       end
     end

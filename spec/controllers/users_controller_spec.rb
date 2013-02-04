@@ -283,10 +283,21 @@ describe UsersController do
 
   describe "register_unverified" do
     it "should set verified status to false" do
-      User.should_receive(:new).with("user_name" => "salvador", "verified" => false).and_return(user = "some_user")
-      user.should_receive :save
+      User.should_receive(:find_by_user_name).and_return(nil)
+      User.should_receive(:new).with("user_name" => "salvador", "verified" => false, "password" => "password", "password_confirmation" => "password").and_return(user = "some_user")
+      user.should_receive :save!
 
-      post :register_unverified, {:format => :json, :user => {:user_name => "salvador"}}
+      post :register_unverified, {:format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}}
+
+      response.should be_ok
+    end
+
+    it "should not attempt to create a user if already exists" do
+      User.should_receive(:find_by_user_name).and_return("something that is not nil")
+      User.should_not_receive(:new)
+
+      post :register_unverified, {:format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}}
+      response.should be_ok
     end
   end
 

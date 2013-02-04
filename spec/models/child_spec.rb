@@ -1066,6 +1066,12 @@ describe Child do
       child.has_one_interviewer?.should be_false
     end
 
+    it "should be false if histories is empty" do
+      child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
+      child['histories'] = []
+      child.has_one_interviewer?.should be_true
+    end
+
   end
 
   describe "when fetching children" do

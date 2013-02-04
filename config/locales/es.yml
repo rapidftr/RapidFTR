@@ -3,6 +3,7 @@
 
 es:
   home:
+    es: "Español"
     welcome: "Bienvenido RapidFTR"
     current_time_zone: "Current time zone"
     language: "Language"

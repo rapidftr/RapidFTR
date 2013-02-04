@@ -73,8 +73,9 @@ describe FormSection do
 
       it "should exclude disabled sections" do
         expected = FormSection.create! :name => 'Good', :order => 1, :unique_id => 'good'
-        unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :enabled => false
+        unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :visible => false
         FormSection.enabled_by_order.map(&:name).should == %w(Good)
+        FormSection.enabled_by_order.map(&:name).should_not ==  %w(Bad)
       end
     end
 
@@ -191,16 +192,42 @@ describe FormSection do
 
   end
 
-  describe "perm_enabled" do
+  describe "perm_visible" do
+    it "should not be perm_enabled by default" do
+      formsection = FormSection.new
+      formsection.perm_visible?.should be_false
+    end
 
+    it "should be perm_visible when set" do
+      formsection = FormSection.new(:perm_visible => true)
+      formsection.perm_visible?.should be_true
+    end
+  end
+
+  describe "fixed_order" do
+    it "should not be fixed)order by default" do
+      formsection = FormSection.new
+      formsection.fixed_order?.should be_false
+    end
+
+    it "should be fixed_order when set" do
+      formsection = FormSection.new(:fixed_order => true)
+      formsection.fixed_order?.should be_true
+    end
+  end
+
+  describe "perm_enabled" do
     it "should not be perm_enabled by default" do
       formsection = FormSection.new
       formsection.perm_enabled?.should be_false
     end
 
     it "should be perm_enabled when set" do
-      formsection = FormSection.new(:perm_enabled => true)
+      formsection = FormSection.create!(:name => "test", :uniq_id => "test_id", :perm_enabled => true)
       formsection.perm_enabled?.should be_true
+      formsection.perm_visible?.should be_true
+      formsection.fixed_order?.should be_true
+      formsection.visible?.should be_true
     end
   end
 
@@ -219,57 +246,16 @@ describe FormSection do
     end
   end
 
-  describe "move_field" do
-    it "should not allow uneditable field to be moved" do
-      @field = new_field(:name=>"field3", :editable => false)
-      form_section = FormSection.new :fields=>[@field]
-      lambda {form_section.move_field(@field, 1)}.should raise_error("Uneditable field cannot be moved")
-    end
-  end
-
-  describe "move_up_field" do
-    before :each do
-      @field2 = new_field(:name=>"field2")
-      @field1 = new_field(:name=>"field1")
-      @formsection = FormSection.new :fields=>[@field1, @field2]
-    end
-
-    it "should move the field up" do
-      @formsection.move_up_field("field2")
-      @formsection.fields[0].should == @field2
-      @formsection.fields[1].should == @field1
-    end
-
-    it "saves the formsection" do
-      @formsection.should_receive(:save)
-      @formsection.move_up_field "field2"
-    end
-
-    it "throws exception if you try to move something up that is already first" do
-      lambda { @formsection.move_up_field "field1" }.should raise_error
-    end
-  end
-
-  describe "move_down_field" do
-    before :each do
-      @field2 = new_field(:name=>"field2")
-      @field1 = new_field(:name=>"field1")
-      @formsection = FormSection.new :fields=>[@field1, @field2]
-    end
-
-    it "should move the field down" do
-      @formsection.move_down_field("field1")
-
-      @formsection.fields[0].should == @field2
-      @formsection.fields[1].should == @field1
-    end
-
-    it "saves the formsection" do
-      @formsection.should_receive(:save)
-      @formsection.move_down_field "field1"
-    end
-    it "throws exception if you try to move something down that is already last" do
-      lambda { @formsection.move_down_field "field2" }.should raise_error
+  describe "save fields in given order" do
+    it "should save the fields in the given field name order" do
+      @field_1 = new_field(:name => "orderfield1", :display_name => "orderfield1")
+      @field_2 = new_field(:name => "orderfield2", :display_name => "orderfield2")
+      @field_3 = new_field(:name => "orderfield3", :display_name => "orderfield3")
+      form_section = FormSection.create! :name => "some_name", :fields => [@field_1, @field_2, @field_3]
+      form_section.order_fields([@field_2.name, @field_3.name, @field_1.name])
+      form_section.fields.should == [@field_2, @field_3, @field_1]
+      form_section.fields.first.should == @field_2
+      form_section.fields.last.should == @field_1
     end
   end
 
@@ -304,7 +290,7 @@ describe FormSection do
 
     it "should validate name is unique" do
       same_name = 'Same Name'
-      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :enabled => true, :order => 0}
+      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :visible => true, :order => 0}
       FormSection.create! valid_attributes.dup
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid
@@ -315,30 +301,6 @@ describe FormSection do
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!
-    end
-  end
-
-  describe "hide_fields" do
-    it "should set all given fields to disabled" do
-      field_blub = Field.new :name => 'blub', :visible => true
-      field_bla = Field.new :name => 'bla', :visible => true
-      form_section = FormSection.new :fields => [field_blub, field_bla]
-
-      form_section.hide_fields([field_bla.name])
-      field_blub.should be_visible
-      field_bla.should_not be_visible
-    end
-  end
-
-  describe "show_fields" do
-    it "should set all given fields to visible" do
-      field_one = Field.new :name => 'one', :visible => false
-      field_two = Field.new :name => 'two', :visible => false
-      form_section = FormSection.new :fields => [field_one, field_two]
-
-      form_section.show_fields([field_two.name])
-      field_one.should_not be_visible
-      field_two.should be_visible
     end
   end
 
