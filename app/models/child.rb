@@ -21,6 +21,7 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
+  property :exported, :cast_as => :boolean
   property :verified
 
   view_by :name,
