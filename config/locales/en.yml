@@ -122,6 +122,7 @@ en:
       reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
+      creation_success: "Child record successfully created."
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"

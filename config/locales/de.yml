@@ -5,3 +5,6 @@ de:
   name: "DEName"
   basic_identity: "DEBasic"
 
+  child:
+    messages:
+      create_success: "Child record successfully created."
