@@ -62,6 +62,13 @@ class User < CouchRestRails::Document
              }
           }"
 
+  view_by :unverified,
+          :map => "function(doc) {
+              if ((doc['couchrest-type'] == 'User') && !doc['verified'])
+             {
+                emit(doc);
+             }
+             }"
 
 
   before_save :make_user_name_lowercase, :encrypt_password
@@ -86,6 +93,9 @@ class User < CouchRestRails::Document
   validates_with_method :user_name, :method => :is_user_name_unique
 
 
+  def self.all_unverified
+    User.by_unverified
+  end
 
   def self.find_by_user_name(user_name)
     User.by_user_name(:key => user_name.downcase).first

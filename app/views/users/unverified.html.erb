@@ -1,0 +1,26 @@
+<div class="page-content-new">
+  <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => 'unverified'} %>
+  <div class="side-tab-content">
+  <table id="users" class="list_table">
+    <thead>
+    <thead>
+    <tr>
+      <th><%= t("user.full_name") %></th>
+      <th><%= t("login.username") %></th>
+      <th><%= t("login.organisation") %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user|%>
+      <tr>
+        <td><%= user.full_name %></td>
+        <td><%= user.user_name %></td>
+        <td><%= user.organisation %></td>
+        <td><%= link_to "Verify", edit_user_path(user) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  </div>
+</div>

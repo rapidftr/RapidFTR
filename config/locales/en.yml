@@ -159,6 +159,7 @@ en:
     page_gap: "&hellip;"
 
   users:
+    unverified: "Unverified"
     manage: "Manage Users"
     label: "Users"
     create: "Create User"

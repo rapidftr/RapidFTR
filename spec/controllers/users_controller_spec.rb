@@ -301,4 +301,13 @@ describe UsersController do
     end
   end
 
+  describe "index unverified users" do
+    it "should list all unverfied users" do
+      unverified_users = [mock("user")]
+      User.should_receive(:all_unverified).and_return(unverified_users)
+      get :unverified
+      assigns[:users].should == unverified_users
+    end
+  end
+
 end
