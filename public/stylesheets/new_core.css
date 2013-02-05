@@ -699,6 +699,8 @@ body {
     .child_list .child_summary_panel .action_panel a {
       margin: 0px 10px;
       font-size: 0.8em; }
+    .child_list .child_summary_panel .action_panel ul li {
+      display: inline; }
 .child_list .child_summary_panel.sel {
   background: #e5efff;
   border: 1px solid #bdd7ff; }
