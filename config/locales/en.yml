@@ -159,6 +159,8 @@ en:
     page_gap: "&hellip;"
 
   users:
+    unverified: "Unverified Users"
+    select_role: "Please select a role before verifying the user"
     manage: "Manage Users"
     label: "Users"
     create: "Create User"
@@ -198,6 +200,7 @@ en:
       password_changed_successfully: "Password changed successfully"
       time_zone_updated: "Timezone was successfully updated."
     update: "Update"
+    verify: "Verify"
     create: "Create"
     no_blank: "user name should not contain blanks"
     manage_password: "Change Password"
