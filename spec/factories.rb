@@ -33,6 +33,7 @@ FactoryGirl.define do
     email 'email@ddress.net'
     organisation 'TW'
     disabled false
+    verified true
     role_ids ['random_role_id']
   end
 end

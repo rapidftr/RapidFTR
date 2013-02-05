@@ -27,6 +27,7 @@
       <input type="hidden" id="move_url" value="<%= change_form_form_section_fields_path(@form_section) %>">
       <input type="hidden" id="save_order_url" value="<%= save_order_form_section_fields_path(@form_section) %>">
       <% @form_section.fields.each do |field| %>
+          <% unless field.new? %>
           <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
             <td width="280"><%= field.display_name %></td>
             <td width="190"><%= field.help_text %></td>
@@ -36,7 +37,7 @@
             <% if @form_section.editable? %>
                 <td width="75" align="center">
                   <% if field.editable? %>
-                    <%= check_box_tag "fields[]", field.name, false, {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
+                    <%= check_box_tag "fields[]", field.name, !field.visible , {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
                   <% end %>
                 </td>
 
@@ -59,6 +60,7 @@
                 </td>
             <% end %>
           </tr>
+         <% end %>
       <% end %>
       </tbody>
 

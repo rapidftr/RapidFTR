@@ -81,7 +81,7 @@ $(document).ready(function() {
     }
 
     function getFieldDetails(field_type){
-        var fields_with_options = ["check_box","radio_btn","select_box"];
+        var fields_with_options = ["check_boxes","radio_button","select_box"];
         return $.inArray(field_type, fields_with_options) > -1 ? "#field_details_options" : "#field_details";
     }
 
@@ -101,7 +101,7 @@ function setTranslationFields(element) {
     $("div ." + locale).show();
 }
 $(function() {
-    $("#locale").change( function(event){
+    $(".locale").change( function(event){
         setTranslationFields(event.target);
     });
 });
