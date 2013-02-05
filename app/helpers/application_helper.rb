@@ -47,7 +47,7 @@ module ApplicationHelper
 
   def link_confirm_options(controller)
     confirm_options = { }
-    confirm_message = t('confirmation_message')
+    confirm_message = t('messages.confirmation_message')
     if /children/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
       confirm_options[:confirm] = confirm_message % 'Child Record'
     elsif /user/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
