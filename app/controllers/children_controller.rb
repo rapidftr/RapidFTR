@@ -10,7 +10,7 @@ class ChildrenController < ApplicationController
   def index
     authorize! :index, Child
 
-    @page_name = t("home.view_all_children")
+    @page_name = t('home.view_records')
     status = params[:filter] || params[:status] || "all"
 
     filter_children_by status, params[:order_by]
