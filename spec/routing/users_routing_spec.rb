@@ -19,15 +19,19 @@ describe UsersController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/users" }.should route_to(:controller => "users", :action => "create") 
+      { :post => "/users" }.should route_to(:controller => "users", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/users/1" }.should route_to(:controller => "users", :action => "update", :id => "1") 
+      { :put => "/users/1" }.should route_to(:controller => "users", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/users/1" }.should route_to(:controller => "users", :action => "destroy", :id => "1") 
+      { :delete => "/users/1" }.should route_to(:controller => "users", :action => "destroy", :id => "1")
+    end
+
+    it "recognizes and generates #index_unverified" do
+      { :get => "/users/unverified" }.should route_to(:controller => "users", :action => "unverified")
     end
   end
 end

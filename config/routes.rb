@@ -35,6 +35,7 @@ RapidFTR::Application.routes.draw do
   resources :users do
     collection do
       get :change_password
+      get :unverified
       post :update_password
     end
   end

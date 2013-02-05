@@ -23,6 +23,11 @@
     });
 </script>
 
+<% if flash[:verify] %>
+<div class='flash'>
+  <p class='notice'><%= flash[:verify] %></p>
+</div>
+<% end %>
 <%= form_for editable_user, :html => {:class => ''} do |f| %>
     <%= f.error_messages :header_tag => :h3 %>
     <% trying_to_edit_ourself = editing_ourself?(editable_user) %>
@@ -93,11 +98,13 @@
         </p>
     <% end %>
 
+    <%= f.hidden_field :verified, :value => true %>
+
     </fieldset>
 
     <div class="btn_panel">
     <!--TODO: After we got the user object in the session replace the DB query with User object-->
       <%= cancel_button(users_path) %>
-      <%= submit_button(editable_user.new_record? ? t("user.create") : t('user.update')) %>
+      <%= submit_button(editable_user.new_record? ? t("user.create") : (params[:verify] ? t('user.verify') : t('user.update'))) %>
     </div>
 <% end %>
