@@ -105,7 +105,6 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
-  validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
   validates_with_method :created_at, :method => :validate_created_at
   validates_with_method :last_updated_at, :method => :validate_last_updated_at

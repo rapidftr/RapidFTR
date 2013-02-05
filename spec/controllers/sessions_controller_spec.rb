@@ -18,6 +18,7 @@ describe SessionsController do
 
     JSON.parse(response.body)["db_key"].should == "unique_key"
     JSON.parse(response.body)["organisation"].should == "TW"
+    JSON.parse(response.body)["language"].should == "en"
   end
 
 end
