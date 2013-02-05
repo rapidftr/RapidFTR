@@ -7,10 +7,12 @@ RapidFTR::Application.routes.draw do
       get :search
       post :export_photos_to_pdf
     end
+
     member do
       get :export_photo_to_pdf
       post :export_photo_wall
     end
+    
     resource :history, :only => :show
     resources :attachments, :only => :show
     resource :duplicate, :only => [:new, :create]
@@ -29,7 +31,7 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
   match '/children' => 'children#index', :as => :child_filter
-  match '/children/sync_unverified' => 'children#sync_unverified', :as => :sync_unverified_child, :via => :post
+  match '/children/sync_unverified' => 'children#sync_unverified', :via => [ :put, :post ]
 
   resources :users do
     collection do

@@ -87,6 +87,7 @@ class ChildrenController < ApplicationController
   # POST /children.xml
   def create
     authorize! :create, Child
+    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
@@ -110,14 +111,10 @@ class ChildrenController < ApplicationController
   def sync_unverified
     respond_to do |format|
       format.json do
-        params[:user] = JSON.parse(params[:user]) if params[:child].is_a?(String)
-        user = User.find_by_user_name(params[:user][:user_name])
-        return head(:unauthorized) if user.nil?
-        
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-        child = Child.new_with_user_name(user, params[:child].merge(:verified => false))
-        child['created_by_full_name'] = user.full_name
+        child = Child.new_with_user_name(current_user, params[:child].merge(:verified => false))
+        child['created_by_full_name'] = current_user.full_name
         if child.save
           render :json => child.compact.to_json
         end
@@ -128,6 +125,7 @@ class ChildrenController < ApplicationController
   def update
     respond_to do |format|
       format.json do
+        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
         render :json => child.compact.to_json
