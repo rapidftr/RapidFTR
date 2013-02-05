@@ -5,7 +5,7 @@
 
 			<fieldset>
 			  <h3 id='editFormDetails'><%= t("details") %></h3>
-			  <div id='sectionId' class='hidden'></div>
+        <div id='sectionId' class='hidden'><%= @form_section.unique_id %></div>
 			    <p>
 			      <%= f.label :name, t("name"), :class=>'key' %>
 			      <%= f.text_field :name %>
@@ -20,14 +20,14 @@
 			      <%= f.label :help_text, t("help_text"), :class=>'key' %>
 			      <%= f.text_field :help_text %>
 			    </p>
-    
+
 				<% if not @form_section.perm_enabled? %>
 			      <p>
 			        <%= f.label :enabled, t("visible"), :class=>'key' %>
 			        <%= f.check_box :enabled?, {}, true, false %>
 			      </p>
 			    <% end %>
-      
+
 			</fieldset>
       <div class="btn_panel">
         <%= cancel_button(formsections_path) %>
@@ -104,7 +104,7 @@
                     <%= link_to t("buttons.edit"), edit_formsection_field_path(:formsection_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
                     <%= render :partial => "delete_button", :locals =>{:field=>field, :url=>delete_formsection_fields_path(@form_section.unique_id),
                        :warning=>I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}"%>
-                                                                       
+
                   <% end %>
                 </td>
               <% end %>
