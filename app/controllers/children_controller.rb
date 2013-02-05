@@ -125,6 +125,7 @@ class ChildrenController < ApplicationController
   def update
     respond_to do |format|
       format.json do
+        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
         render :json => child.compact.to_json
