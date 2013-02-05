@@ -124,6 +124,17 @@ RapidFTR.childPhotoRotation = {
 };
 
 RapidFTR.showDropdown = function(){
+
+    $('.profiles-button-wrapper .submit').click(function(event){
+        var context = $(this).parent();
+        var dropdown = $(".dropdown", context);
+        dropdown.toggleClass('hide').show();
+        $(".commit", dropdown).val($(this).val());
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
     $('.dropdown_btn .encryption_form').click(function(event){
         event.stopPropagation();
     });

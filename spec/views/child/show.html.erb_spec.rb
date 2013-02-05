@@ -123,13 +123,13 @@ describe "children/show.html.erb" do
     it "should not show links to export when user doesn't have appropriate permissions" do
       @user.stub!(:has_permission?).with(:export, Child).and_return(false)
       render
-      rendered.should have_tag("a[href='#{child_path(@child,:format => :csv)}']")
+      rendered.should have_tag("a[data-formaction='#{child_data_downloads_path(:format => :csv)}']")
     end
     
     it "should show links to export when user has appropriate permissions" do
       @user.stub!(:has_permission?).with(:export, Child).and_return(true)
       render
-      rendered.should have_tag("a[href='#{child_path(@child,:format => :csv)}']")
+      rendered.should have_tag("a[data-formaction='#{child_data_downloads_path(:format => :csv)}']")
     end
     
   end

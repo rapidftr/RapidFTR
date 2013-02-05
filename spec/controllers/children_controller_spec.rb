@@ -1,18 +1,11 @@
 require 'spec_helper'
 
 def inject_export_generator( fake_export_generator, child_data )
-	ExportGenerator.stub!(:new).with({}, child_data).and_return( fake_export_generator )
+	ExportGenerator.stub!(:new).with(encryption_options, child_data).and_return( fake_export_generator )
 end
 
-def stub_out_export_generator child_data = []
-	inject_export_generator( stub_export_generator = stub(ExportGenerator) , child_data)
-	stub_export_generator.stub!(:child_photos).and_return('')
-	stub_export_generator
-end
-
-def stub_out_child_get(mock_child = mock(Child))
-	Child.stub(:get).and_return( mock_child )
-	mock_child
+def encryption_options
+  {:encryption_options => {:user_password=>"password", :owner_password=>"password"}}
 end
 
 describe ChildrenController do
@@ -36,12 +29,6 @@ describe ChildrenController do
       it "GET search" do
         @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :search
-        response.should render_template("#{Rails.root}/public/403.html")
-      end
-
-      it "GET export_data" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
-        get :export_data
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
@@ -91,12 +78,6 @@ describe ChildrenController do
       it "PUT select_primary_photo" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :select_primary_photo, :child_id => @child.id, :photo_id => 0
-        response.should render_template("#{Rails.root}/public/403.html")
-      end
-
-      it "GET export_photo_to_pdf" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
-        get :export_photo_to_pdf, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
@@ -210,8 +191,10 @@ describe ChildrenController do
       child = Child.create('last_known_location' => "London")
       child.create_unique_id
       Child.stub!(:get).with("37").and_return(child)
-      assigns[child[:current_photo_key]] == ""
+
       get(:show, :format => 'json', :id => "37")
+
+      assigns[child[:current_photo_key]] == ""
     end
 
     it "orders and assigns the forms" do
@@ -438,28 +421,6 @@ describe ChildrenController do
       assigns[:results].should == fake_results
     end
 
-    it "asks the pdf generator to render each child as a PDF" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-			children = [:fake_child_one, :fake_child_two]
-      Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
-
-			inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
-      mock_export_generator.should_receive(:to_full_pdf).and_return('')
-
-      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to PDF"}
-    end
-
-    it "asks the pdf generator to render each child as a Photo Wall" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-      children = [:fake_one, :fake_two]
-      inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
-      Child.stub(:get).and_return(*children )
-
-      mock_export_generator.should_receive(:to_photowall_pdf).and_return('')
-
-      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to Photo Wall"}
-    end
-
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
@@ -487,9 +448,10 @@ describe ChildrenController do
         with( :csv_data, {:foo=>:bar} ).
         and_return{controller.render :nothing => true}
 
-			get(:search, :format => 'csv', :query => 'blah')
+			get :search, {:format => 'csv', :query => 'blah', :password => "password"}
     end
   end
+
   describe "searching as field worker" do
     before :each do
       @session = fake_field_worker_login
@@ -503,58 +465,6 @@ describe ChildrenController do
 
       get(:search, :query => 'some_name')
       assigns[:results].should == fake_results
-    end
-  end
-  describe "GET photo_pdf" do
-
-    it 'extracts multiple selected ids from post params in correct order' do
-      stub_out_export_generator
-      Child.should_receive(:get).with('child_zero').ordered
-      Child.should_receive(:get).with('child_one').ordered
-      Child.should_receive(:get).with('child_two').ordered
-      controller.stub!(:render) #to avoid looking for a template
-
-      post :export_data, :selections =>{'2' => 'child_two','0' => 'child_zero','1' => 'child_one'}
-    end
-
-    it "sends a response containing the pdf data, the correct content_type and file name, etc" do
-      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-
-			stubbed_child = stub_out_child_get
-      stub_export_generator = stub_out_export_generator [stubbed_child] #this is getting a bit farcical now
-      stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
-
-      @controller.
-        should_receive(:send_data).
-        with( :fake_pdf_data, :filename => "fakeadmin-20000101-2015.pdf", :type => "application/pdf" ).
-        and_return{controller.render :nothing => true}
-
-      post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )
-    end
-  end
-
-  describe "GET export_photo_to_pdf" do
-
-    before do
-      user = User.new(:user_name => "some-name")
-      user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export]])])
-      fake_login user
-      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-    end
-
-    it "should return the photo wall pdf for selected child" do
-      Child.should_receive(:get).with('1').and_return(stub_child = stub('child', :short_id => '1', :class => Child))
-
-      ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
-      export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
-
-      @controller.
-        should_receive(:send_data).
-        with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf').
-        and_return{controller.render :nothing => true}
-
-      get :export_photo_to_pdf, :id => '1'
     end
   end
 
@@ -630,8 +540,5 @@ describe ChildrenController do
 
       child['created_by_full_name'].should eq "billybobjohnny"
     end
-
-
   end
-
 end

@@ -3,12 +3,7 @@ RapidFTR::Application.routes.draw do
     collection do
       get :advanced_search
       post :export_csv
-      post :export_data
       get :search
-      post :export_photos_to_pdf
-    end
-    member do
-      get :export_photo_to_pdf
     end
     resource :history, :only => :show
     resources :attachments, :only => :show
@@ -19,6 +14,8 @@ RapidFTR::Application.routes.draw do
     collection do
       post :children_data
       post :child_data
+      post :children_record
+      post :child_photo
     end
   end
 
