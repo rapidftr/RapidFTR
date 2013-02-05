@@ -7,7 +7,7 @@ fr:
     welcome: "Bienvenu RapidFTR"
     current_time_zone: "Current time zone"
     language: "Language"
-    view_all_children: "View All Children"
+    view_records: "View All Children"
     records_need_attention: "Records need Attention"
 
     label: "Home"
