@@ -42,36 +42,6 @@
       <% end %>
     </div>
 
-
-  <div class="btn dropdown_btn btn_do_not_export_photo dropdown_form">
-    <% unless @child.exported? %>
-      <%= render :partial => "mark_as",
-                 :locals=> {:child => @child,
-                            :mark_as_label => t("child.actions.do_not_export_photo"),
-                            :mark_as_message_id => "do_not_export_photo_message",
-                            :mark_as_message => t("child.actions.do_not_export_photo_details"),
-                            :mark_as_property => "exported",
-                            :mark_as_property_value => "false",
-                            :mark_as_submit_label => t("child.actions.do_not_export_photo"),
-                            :error_message => t("child.messages.do_not_export_photo_error_message"),
-                            :style => "flag"
-                 } %>
-    <% else %>
-      <%= render :partial => "mark_as",
-                 :locals=> { :child => @child,
-                             :mark_as_label => t("child.actions._export_photo"),
-                             :mark_as_message_id => "export_photo_message",
-                             :mark_as_message => t("child.actions.export_photo_details"),
-                             :mark_as_property => "exported",
-                             :mark_as_property_value => "true",
-                             :mark_as_submit_label => t("child.actions.export_photo"),
-                             :error_message => t("child.messages.export_photo_error_message"),
-                             :style => "flag"
-                 } %>
-    <% end %>
-  </div>
-
-
     <div class="btn dropdown_btn btn_investigate dropdown_form">
       <% if @child.flag? %>
           <% unless @child.investigated? %>

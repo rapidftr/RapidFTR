@@ -9,6 +9,7 @@ RapidFTR::Application.routes.draw do
     end
     member do
       get :export_photo_to_pdf
+      post :export_photo_wall
     end
     resource :history, :only => :show
     resources :attachments, :only => :show

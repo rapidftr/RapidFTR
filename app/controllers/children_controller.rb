@@ -252,6 +252,12 @@ class ChildrenController < ApplicationController
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
+  # POST
+  def export_photo_wall
+    @child = Child.get(params[:id])
+    authorize! :export, @child
+    render :text => "ok"
+  end
 
   private
 

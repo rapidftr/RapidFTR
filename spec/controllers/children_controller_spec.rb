@@ -101,11 +101,26 @@ describe ChildrenController do
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
+      it "POST export_photo_wall" do
+        @controller.current_ability.should_receive(:can?).with(:export, @child).and_return(false);
+        post :export_photo_wall, :id => @child.id
+        response.should render_template("#{Rails.root}/public/403.html")
+      end
+
       it "DELETE destroy" do
         @controller.current_ability.should_receive(:can?).with(:destroy, @child_arg).and_return(false);
         delete :destroy, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
+    end
+  end
+
+  describe "POST export_photo_wall" do
+    it "assigns current child as @child" do
+      Child.stub!(:get).with("37").and_return(mock_child)
+      post :export_photo_wall, :id => "37"
+
+      assigns[:child].should == mock_child
     end
   end
 
