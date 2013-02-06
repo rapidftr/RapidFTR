@@ -102,8 +102,8 @@ describe ChildrenController do
       end
 
       it "POST export_photo_wall" do
-        @controller.current_ability.should_receive(:can?).with(:export, @child).and_return(false);
-        post :export_photo_wall, :id => @child.id
+        @controller.current_ability.should_receive(:can?).with(:update, @child).and_return(false);
+        post :set_exportable, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
@@ -116,11 +116,26 @@ describe ChildrenController do
   end
 
   describe "POST export_photo_wall" do
-    it "assigns current child as @child" do
-      Child.stub!(:get).with("37").and_return(mock_child)
-      post :export_photo_wall, :id => "37"
+    before :each do
+      @child = Child.new
+      Child.stub!(:get).with("37").and_return(@child)
+    end
 
-      assigns[:child].should == mock_child
+    it "should set exported to true" do
+      @child.should_receive(:save!)
+      post :set_exportable, :id => "37", :exported => true
+      @child.exported.should == true
+    end
+
+    it "should set exported to false" do
+      @child.should_receive(:save!)
+      post :set_exportable, :id => "37", :exported => false
+      @child.exported.should == false
+    end
+
+    it "should redirect back to child view page" do
+      post :set_exportable, :id => "37", :exported => false
+      response.should redirect_to child_path(@child.id)
     end
   end
 
