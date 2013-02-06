@@ -56,11 +56,12 @@ describe ChildrenController do
         post :create
         response.should render_template("#{Rails.root}/public/403.html")
       end
+
     end
 
     describe 'member' do
       before :each do
-        @child = Child.create('last_known_location' => "London")
+        @child = Child.create('last_known_location' => "London", :short_id => 'short_id')
         @child_arg = hash_including("_id" => @child.id)
       end
 
@@ -75,6 +76,7 @@ describe ChildrenController do
         put :update, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
+
 
       it "PUT edit_photo" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
@@ -597,6 +599,19 @@ describe ChildrenController do
       controller.should_receive('current_user_full_name').and_return('Bill Clinton')
       put :create, :child => {:name => 'Test Child' }
       child['created_by_full_name'].should=='Bill Clinton'
+    end
+  end
+
+  describe "POST create" do
+    it "should update the child record instead of creating if record already exists" do
+      child = Child.new_with_user_name(mock('user', :user_name => 'uname', :organisation => 'org'), {:name => 'old name'})
+      child.save
+      fake_admin_login
+      controller.stub(:authorize!)
+      post :create, :child => {:short_id => child.short_id, :name => 'new name'}
+      updated_child = Child.by_short_id(:key => child.short_id)
+      updated_child.size.should == 1
+      updated_child.first.name.should == 'new name'
     end
   end
 
