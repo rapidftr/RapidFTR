@@ -1,6 +1,8 @@
 <% if can? :export, Child %>
     <div class="btn dropdown_btn btn_export">
-      <span class="export"><%= t("children.export") %></span>
+      <span class="export">
+        <a href="#"> <%= t("children.export") %> </a>
+      </span>
       <div class="dropdown hide">
         <% if @child.exportable %>
           <%= link_to t("child.actions.export_to_photo_wall"), export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
