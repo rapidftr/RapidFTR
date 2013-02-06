@@ -391,7 +391,7 @@ class Child < CouchRestRails::Document
 
   def primary_photo
     key = self['current_photo_key']
-    key ? attachment(key) : nil
+    (key == "" || key.nil?) ? nil : attachment(key)
   end
 
   def primary_photo_id
