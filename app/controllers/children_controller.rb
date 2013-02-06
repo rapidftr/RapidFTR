@@ -254,7 +254,7 @@ class ChildrenController < ApplicationController
   def set_exportable
     authorize! :update, @child
 
-    @child.exported = params[:exported] ? true : false
+    @child.exportable = params[:exportable] ? true : false
     @child.save!
 
     redirect_to child_path(@child.id)

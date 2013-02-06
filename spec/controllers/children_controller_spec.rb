@@ -122,18 +122,18 @@ describe ChildrenController do
 
     it "should set exported to true" do
       @child.should_receive(:save!)
-      post :set_exportable, :id => "37", :exported => true
-      @child.exported.should == true
+      post :set_exportable, :id => "37", :exportable => true
+      @child.exportable.should == true
     end
 
     it "should set exported to false" do
       @child.should_receive(:save!)
-      post :set_exportable, :id => "37", :exported => false
-      @child.exported.should == false
+      post :set_exportable, :id => "37", :exportable => false
+      @child.exportable.should == false
     end
 
     it "should redirect back to child view page" do
-      post :set_exportable, :id => "37", :exported => false
+      post :set_exportable, :id => "37", :exportable => false
       response.should redirect_to child_path(@child.id)
     end
   end

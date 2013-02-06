@@ -2,7 +2,9 @@
     <div class="btn dropdown_btn btn_export">
       <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
-        <%= link_to t("child.actions.export_to_photo_wall"), export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
+        <% if @child.exportable %>
+          <%= link_to t("child.actions.export_to_photo_wall"), export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
+        <% end %>
         <%= link_to t("child.actions.export_to_pdf"), child_path(@child, :format => 'pdf') %>
         <%= link_to t("child.actions.export_to_csv"), child_path(@child, :format => 'csv') %>
       </div>
@@ -10,6 +12,15 @@
 <% end %>
 
 <% if can? :update, child %>
+
+  <% if @child.exportable %>
+    <%= link_to content_tag(:span, t("buttons.disable_photo_wall"),
+                            :class => 'flag'), set_exportable_child_path(@child.id, :exportable => false), :class=>'btn', :method => :post %>
+  <% else %>
+    <%= link_to content_tag(:span, t("buttons.enable_photo_wall"),
+                            :class => 'flag'), set_exportable_child_path(@child.id, :exportable => true), :class=>'btn', :method => :post %>
+  <% end %>
+
     <div class="btn dropdown_btn btn_flag dropdown_form">
       <%= render :partial =>"suspect_flag", :locals => { :child => @child } %>
     </div>
@@ -69,8 +80,8 @@
                                      :style => "flag"
                          } %>
           <% end %>
-      <% end %>
+        <% end %>
     </div>
-<% end %>
+  <% end %>
 
 <%= link_to content_tag(:span, t("child.change_log") , :class => 'log'), child_history_path(@child), :class=>'btn' %>
