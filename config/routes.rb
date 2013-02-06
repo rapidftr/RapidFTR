@@ -3,19 +3,23 @@ RapidFTR::Application.routes.draw do
     collection do
       get :advanced_search
       post :export_csv
-      post :export_data
       get :search
-      post :export_photos_to_pdf
-    end
-
-    member do
-      get :export_photo_to_pdf
     end
     
     resource :history, :only => :show
     resources :attachments, :only => :show
     resource :duplicate, :only => [:new, :create]
   end
+
+  resources :downloads do
+    collection do
+      post :children_data
+      post :child_data
+      post :children_record
+      post :child_photo
+    end
+  end
+
 
   match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get

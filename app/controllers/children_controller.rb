@@ -1,9 +1,11 @@
 class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
   before_filter :current_user
   before_filter :sanitize_params, :only => [:update]
+
+  include ChildrenHelper::Validations
 
   # GET /children
   # GET /children.xml
@@ -18,17 +20,8 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv @children, "all_records_#{file_name_date_string}.csv"
-      end
       format.json do
         render :json => @children
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@children).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
   end
@@ -49,15 +42,6 @@ class ChildrenController < ApplicationController
       format.json {
         render :json => @child.compact.to_json
       }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@child).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
-      end
     end
   end
 
@@ -217,40 +201,6 @@ class ChildrenController < ApplicationController
     default_search_respond_to
   end
 
-  def export_data
-    authorize! :export, Child
-
-    selected_records = params["selections"] || {}
-    if selected_records.empty?
-      raise ErrorResponse.bad_request('You must select at least one record to be exported')
-    end
-
-    children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
-
-    if params[:commit] == "Export to Photo Wall"
-      export_photos_to_pdf(children, "#{file_basename}.pdf")
-    elsif params[:commit] == "Export to PDF"
-      pdf_data = ExportGenerator.new(children).to_full_pdf
-      send_pdf(pdf_data, "#{file_basename}.pdf")
-    elsif params[:commit] == "Export to CSV"
-      render_as_csv(children, "#{file_basename}.csv")
-    end
-  end
-
-  def export_photos_to_pdf children, filename
-    authorize! :export, Child
-
-    pdf_data = ExportGenerator.new(children).to_photowall_pdf
-    send_pdf(pdf_data, filename)
-  end
-
-  def export_photo_to_pdf
-    authorize! :export, Child
-    pdf_data = ExportGenerator.new(@child).to_photowall_pdf
-    send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
-  end
-
-
   private
 
     def file_basename(child = nil)
@@ -286,12 +236,18 @@ class ChildrenController < ApplicationController
           end
         end
         format.csv do
-          render_as_csv(@results, 'rapidftr_search_results.csv') if @results
+          render_as_csv(@results) if @results
         end
       end
     end
 
-    def render_as_csv results, filename
+    def render_as_csv results
+      authorize! :export, Child
+
+      password = params[:password]
+      raise ErrorResponse.bad_request('You must enter password to encrypt the exported file') unless password
+      @options = {:encryption_options => {:user_password => password, :owner_password => password}}
+
       results = results || [] # previous version handled nils - needed?
 
       results.each do |child|
@@ -299,27 +255,14 @@ class ChildrenController < ApplicationController
         child['audio_url'] = child_audio_url(child)
       end
 
-      export_generator = ExportGenerator.new results
+      export_generator = ExportGenerator.new(encryption_options, results)
       csv_data = export_generator.to_csv
       send_data(csv_data.data, csv_data.options)
     end
 
-    def load_child_or_redirect
-      @child = Child.get(params[:id])
-
-      if @child.nil?
-        respond_to do |format|
-          format.json { render :json => @child.to_json }
-          format.html do
-            flash[:error] = "Child with the given id is not found"
-            redirect_to :action => :index and return
-          end
-        end
-      end
-    end
 
     def filter_children_by filter_option, order
-      children = children_by_user_access filter_option
+      children = find_children_by_user_access filter_option
       total_rows = children.count
       paginated_records = children.paginate(:page => params[:page], :per_page => ChildrenHelper::View::PER_PAGE)
       presenter = ChildrenPresenter.new(paginated_records, filter_option, order)
@@ -328,13 +271,6 @@ class ChildrenController < ApplicationController
       @order = presenter.order
     end
 
-    def children_by_user_access filter_option
-      if can? :view_all, Child
-        return Child.view(:by_all_view, :startkey => [filter_option], :endkey => [filter_option, {}])
-      else
-        return Child.view(:by_all_view, :startkey => [filter_option, app_session.user_name], :endkey => [filter_option, app_session.user_name])
-      end
-    end
 
     def paginated_collection instances, total_rows
       page = params[:page] || 1

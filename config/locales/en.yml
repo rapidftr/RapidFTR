@@ -32,8 +32,9 @@ en:
     logoff_warning_suffix: "seconds."
     logoff_confirmation: "Do you want to continue your session?"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
-
     enter_each_in_one_line: "Enter each option on a new line"
+  encryption:
+    label_for_password: "Enter password to encrypt the file"
   login:
     details: "Login details"
     username: "User Name"

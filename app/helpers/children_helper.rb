@@ -8,6 +8,47 @@ module ChildrenHelper
     ONETIME_PHOTOS_UPLOAD_LIMIT = 5
   end
 
+  module Utils
+    def render_as_csv results, options
+      results = results || [] # previous version handled nils - needed?
+
+      results.each do |child|
+        child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless child.primary_photo_id.nil?
+        child['audio_url'] = child_audio_url(child)
+      end
+
+      export_generator = ExportGenerator.new(options, results)
+      csv_data = export_generator.to_csv
+      send_data(csv_data.data, csv_data.options)
+    end
+
+    def file_basename(child = nil)
+      prefix = child.nil? ? current_user_name : child.short_id
+      user = User.find_by_user_name(current_user_name)
+      "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+    end
+  end
+
+  module Validations
+    def load_child_or_redirect
+      @child = Child.get(params[:id])
+
+      if @child.nil?
+        flash[:error] = "Child with the given id is not found"
+        redirect_to(:controller => :children, :action => :index) and return
+      end
+    end
+
+    def find_children_by_user_access filter="all"
+      if can? :view_all, Child
+        return Child.view(:by_all_view, :startkey => [filter], :endkey => [filter, {}])
+      else
+        return Child.view(:by_all_view, :startkey => [filter, app_session.user_name], :endkey => [filter, app_session.user_name])
+      end
+    end
+  end
+
+
   def thumbnail_tag(child, key = nil)
     image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt=> child['name'])
   end
