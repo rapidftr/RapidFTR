@@ -28,7 +28,7 @@ class Ability
     end
 
     if user.has_permission?(Permission::CHILDREN[:view_and_search])
-      can [:read, :view_all], Child
+      can [:read, :view_all, :view_and_search], Child
     end
 
     if user.has_permission?(Permission::CHILDREN[:view_and_search]) and user.has_permission?(Permission::CHILDREN[:edit])
