@@ -25,6 +25,10 @@ describe 'shared/_header_links.html.erb' do
     it { should have_link('My Account', user_path(user.id)) }
     it { should_not have_link('System settings') }
     it { should have_link('Contact & Help', :href => contact_information_path("administrator")) }
+    it { should_not have_link('CHILDREN', children_path)}
+    it { should_not have_link('FORMS', form_sections_path)}
+    it { should_not have_link('USERS', users_path)}
+    it { should_not have_link('DEVICES', devices_path)}
   end
 
   describe 'with all permission' do

@@ -44,15 +44,15 @@ a:hover {
   color: #0096ff; }
 
 /* For modern browsers */
-.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:before, fieldset p:before, .filter_bar:before, body .page_container header:before, body .page_container .main_bar:before, body .page_container .page-content .page-content-new:before, .edit_photo_page .profile-header:before, .manage_photos .thumbnails div.flash:before, .form_page fieldset div:before, .form_page h3:before, .child_list:before, .child_list .child_summary_panel:before, .child_list .child_summary_panel .summary_panel .summary_item:before, .clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .form_page h3:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   content: "";
   display: table; }
 
-.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
+.clearfix:after, fieldset p:after, .filter_bar:after, body .page_container header:after, body .page_container .main_bar:after, body .page_container .page-content .page-content-new:after, .edit_photo_page .profile-header:after, .manage_photos .thumbnails div.flash:after, .form_page fieldset div:after, .form_page h3:after, .child_list:after, .child_list .child_summary_panel:after, .child_list .child_summary_panel .summary_panel .summary_item:after {
   clear: both; }
 
 /* For IE 6/7 (trigger hasLayout) */
-.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
+.clearfix, fieldset p, .filter_bar, body .page_container header, body .page_container .main_bar, body .page_container .page-content .page-content-new, .edit_photo_page .profile-header, .manage_photos .thumbnails div.flash, .form_page fieldset div, .form_page h3, .child_list, .child_list .child_summary_panel, .child_list .child_summary_panel .summary_panel .summary_item {
   zoom: 1; }
 
 .hide {
@@ -272,6 +272,10 @@ a.mark_as_duplicate {
   .dropdown .mark-as-form {
     padding: 10px; }
 
+.err_msg {
+  color: red;
+  font-size: 0.9em; }
+
 body {
   background: url(../images/new/bg_body.png) repeat-x;
   font: 13px verdana, arial, helvetica, sans-serif;
@@ -399,7 +403,7 @@ body {
           padding: 10px;
           background: #fff;
           min-height: 350px;
-          position: relative; }
+          /* position: relative;*/ }
           body .page_container .page-content .page-content-new .side-tab-content h2 {
             font-size: 1.2em;
             color: #000;
@@ -422,7 +426,7 @@ body {
           body .page_container .page-content .page-content-new .side-tab-content input[type=text], body .page_container .page-content .page-content-new .side-tab-content input[type=password], body .page_container .page-content .page-content-new .side-tab-content input[type=file], body .page_container .page-content .page-content-new .side-tab-content textarea, body .page_container .page-content .page-content-new .side-tab-content select {
             width: 250px; }
           body .page_container .page-content .page-content-new .side-tab-content .profile-image {
-            position: absolute;
+            float: right;
             padding: 10px;
             background: #fff;
             right: 0px;
@@ -461,6 +465,22 @@ body {
               padding: 0px 20px;
               border-right: 1px dashed #999999;
               text-decoration: underline; }
+
+.notice {
+  text-align: left;
+  font-weight: bold;
+  font-size: 15px;
+  color: green;
+  border: 1px solid green;
+  padding: 5px; }
+
+.errorExplanation {
+  text-align: left;
+  font-size: 15px;
+  border: 1px solid red;
+  padding: 5px; }
+  .errorExplanation ul li {
+    color: red; }
 
 .login_page {
   text-align: center; }
@@ -644,17 +664,29 @@ body {
       display: inline-block;
       background: url("../images/new/icon_replicate_triggered.gif") no-repeat; }
 
+.form_page .form_details_panel {
+  background: #eee;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  padding: 10px; }
+  .form_page .form_details_panel .chkbox_visible {
+    padding: 10px; }
 .form_page .default_lang_panel {
   float: left;
-  padding: 5px; }
+  padding: 5px;
+  width: 445px; }
 .form_page .translation_lang_panel {
   float: left;
-  padding: 5px; }
+  padding: 5px;
+  width: 445px; }
+  .form_page .translation_lang_panel .translation_lang_selected {
+    padding-left: 5px;
+    color: #000; }
 .form_page .lang_title {
   color: #666;
-  display: inline-block;
   min-height: 25px;
-  font-size: 1.1em; }
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 10px; }
   .form_page .lang_title span {
     color: #000; }
   .form_page .lang_title select {
@@ -662,42 +694,106 @@ body {
     padding: 0px !important;
     font-size: 0.8em; }
 .form_page fieldset {
-  border: 1px solid #dddddd; }
-  .form_page fieldset .key {
-    width: 175px; }
-.form_page .chkbox_visible {
-  padding: 10px; }
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px 0px; }
+  .form_page fieldset div {
+    padding: 7px 10px; }
+    .form_page fieldset div .key {
+      width: 165px;
+      float: left; }
+    .form_page fieldset div input, .form_page fieldset div textarea {
+      float: left; }
+    .form_page fieldset div textarea {
+      height: 50px; }
 .form_page h3 {
   border-bottom: 1px solid #aaaaaa;
   font-size: 1.1em;
   font-weight: bold;
-  padding: 2px 0px 5px; }
-.form_page .add_field {
-  padding: 5px;
-  display: inline-block; }
-.form_page .fields_section {
+  padding: 20px 0px 0px; }
+  .form_page h3 .add_field {
+    padding: 5px;
+    float: right;
+    font-weight: normal;
+    font-size: 0.9em; }
+.form_page .field_details_overlay {
+  background: #000;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+  zoom: 1;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0; }
+.form_page .field_details_panel {
   background: #eee;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
   padding: 10px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px; }
-  .form_page .fields_section ul.field_types {
-    border-bottom: 1px solid #dddddd; }
-    .form_page .fields_section ul.field_types li {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  zoom: 1;
+  width: 920px;
+  margin: 40px auto 0px;
+  position: absolute;
+  top: 0; }
+  .form_page .field_details_panel ul.field_types {
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 10px; }
+    .form_page .field_details_panel ul.field_types li {
       float: left;
-      padding: 5px 20px 15px; }
-      .form_page .fields_section ul.field_types li a {
+      padding: 5px 15px 15px; }
+      .form_page .field_details_panel ul.field_types li a {
         padding: 5px 10px; }
-        .form_page .fields_section ul.field_types li a.sel {
+        .form_page .field_details_panel ul.field_types li a.sel {
           background: #1d76fb;
           color: #fff;
           -moz-border-radius: 15px;
           -webkit-border-radius: 15px;
           -o-border-radius: 15px;
           border-radius: 15px; }
-  .form_page .fields_section fieldset .key {
-    width: 170px; }
+
+.text_info {
+  padding: 10px 10px 0px;
+  color: #179b05;
+  font-size: 1.1em;
+  font-style: italic; }
+
+table#form_sections {
+  cursor: move; }
+  table#form_sections tr:hover td {
+    background: #c3e9fe; }
+  table#form_sections tr.ui-sortable-helper {
+    border: 1px dashed #2179c4; }
+  table#form_sections .field-buttons a {
+    border-left: 1px dashed #666666;
+    padding: 5px 8px; }
+    table#form_sections .field-buttons a:first-child {
+      border: 0px; }
+    table#form_sections .field-buttons a:hover {
+      color: #333; }
+    table#form_sections .field-buttons a.sel {
+      background: #ffcd8c;
+      -moz-border-radius: 5px 5px 0px 0px;
+      -webkit-border-radius: 5px 5px 0px 0px;
+      -o-border-radius: 5px 5px 0px 0px;
+      border-radius: 5px 5px 0px 0px;
+      color: #000; }
+  table#form_sections .field-buttons .move_to_panel {
+    position: absolute;
+    padding: 10px;
+    background: #ffcd8c;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 2px 5px 4px #666666;
+    -webkit-box-shadow: 2px 5px 4px #666666;
+    -o-box-shadow: 2px 5px 4px #666666;
+    box-shadow: 2px 5px 4px #666666; }
+    table#form_sections .field-buttons .move_to_panel select {
+      width: 200px; }
 
 .child_list .child_summary_panel {
   background: url(../images/new/bg_child_record.png) repeat-x #fdfdfd;
@@ -723,6 +819,12 @@ body {
     margin: 10px;
     background: #fff;
     border: 10px solid white; }
+  .child_list .child_summary_panel .photos, .child_list .child_summary_panel .audio {
+    margin-right: 220px; }
+  .child_list .child_summary_panel .photos .thumbnail {
+    float: left;
+    margin: 2px;
+    height: 140px; }
   .child_list .child_summary_panel .summary_panel {
     float: left;
     padding: 10px 10px 10px 0px;
@@ -773,13 +875,3 @@ body {
     background: #e5efff;
     border: 1px solid #bdd7ff;
     border-right: 0px; }
-
-
-.photos,.audio{
-    margin-right: 220px;
-}
-.photos .thumbnail {
-    float: left;
-    margin: 2px;
-    height: 140px;
-}

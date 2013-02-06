@@ -59,6 +59,7 @@ describe ChildrenController do
 
       it "PUT update" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
+        controller.class.skip_before_filter :sanitize_params
         put :update, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -266,6 +267,20 @@ describe ChildrenController do
   end
 
   describe "PUT update" do
+    it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
+      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
+      photo_keys = "[\"photo-671592136-2013-02-01T101929\", \"photo-671592136-2013-02-01T101929\"]"
+      put :update, :id => child.id,
+           :child => {
+               :histories => histories,
+               :photo_keys => photo_keys
+           }
+     assigns[:child]['histories'].should == JSON.parse(histories)
+     assigns[:child]['photo_keys'].should == JSON.parse(photo_keys)
+    end
+
     it "should update child on a field and photo update" do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
 
@@ -292,20 +307,6 @@ describe ChildrenController do
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['age'].should == "7"
       assigns[:child]['_attachments'].size.should == 1
-    end
-
-    it "should fetch photo from current_photo_key param if exists as mobile clients send this extra parameter" do
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
-
-      put :update, :id => child.id, :current_photo_key => uploadable_photo_jeff,
-        :child => {
-          :last_known_location => "Manchester",
-          :age => '7'}
-
-      assigns[:child]['last_known_location'].should == "Manchester"
-      assigns[:child]['age'].should == "7"
-      assigns[:child]['_attachments'].size.should == 2
-
     end
 
     it "should not update history on photo rotation" do
@@ -361,7 +362,7 @@ describe ChildrenController do
       child['last_updated_by_full_name'].should=='Bill Clinton'
     end
 
-    it "should not set current_photo_key if photo is not passed" do
+    it "should not set photo if photo is not passed" do
       child = Child.new('name' => 'some name')
       params_child = {"name" => 'update'}
       controller.stub(:current_user_name).and_return("user_name")
@@ -513,32 +514,27 @@ describe ChildrenController do
   end
 
   describe "sync_unverified" do
-    it "should reject request if no user record found for user" do
-      User.should_receive(:by_user_name).with(:key => "billybob").and_return(nil)
-      
-      post :sync_unverified, {:child => {:name => "timmy"}, :user => {:user_name => "billybob"}, :format => :json}
-
-      response.code.should eq "401"
+    before :each do
+      @user = build :user, :verified => false, :role_ids => []
+      fake_login @user
     end
 
     it "should mark all children created as unverified" do
-      User.should_receive(:by_user_name).with(:key => "billybob").and_return(user = mock(:imei => "123", :full_name => "billybobjohnny"))
-      Child.should_receive(:new_with_user_name).with(user, {"name" => "timmy", "verified" => false}).and_return(child = Child.new)
+      Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => false}).and_return(child = Child.new)
       child.should_receive(:save).and_return true
       
-      post :sync_unverified, {:child => {:name => "timmy"}, :user => {:user_name => "billybob"}, :format => :json}
+      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
 
       child.should_not be_verified
     end
 
     it "should set the created_by name to that of the user matching the params" do
-      User.should_receive(:by_user_name).with(:key => "billybob").and_return(user = mock(:imei => "123", :full_name => "billybobjohnny"))
       Child.should_receive(:new_with_user_name).and_return(child = Child.new)
       child.should_receive(:save).and_return true
       
-      post :sync_unverified, {:child => {:name => "timmy"}, :user => {:user_name => "billybob"}, :format => :json}
+      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
 
-      child['created_by_full_name'].should eq "billybobjohnny"
+      child['created_by_full_name'].should eq @user.full_name
     end
   end
 end

@@ -111,7 +111,8 @@ class SessionsController < ApplicationController
         }
       },
       :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key,
-      :user_org => User.find_by_user_name(session.user_name).organisation
+      :organisation => User.find_by_user_name(session.user_name).organisation,
+      :language => I18n.default_locale
     }
     render( options.merge( :json => json ) )
   end

@@ -1,15 +1,15 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
-  home:
+en: 
+  home:   
+    en: "English" 
     welcome: "Welcome to RapidFTR"
     current_time_zone: "Current time zone"
     language: "Language"
-    view_all_children: "View All Children"
+    view_records: "View Records"
     manage_system_users: Manage System Users
     records_need_attention: "Records need Attention"
-
     label: "Home"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
@@ -32,7 +32,7 @@ en:
     logoff_warning_suffix: "seconds."
     logoff_confirmation: "Do you want to continue your session?"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
-
+    enter_each_in_one_line: "Enter each option on a new line"
   encryption:
     label_for_password: "Enter password to encrypt the file"
   login:
@@ -123,6 +123,7 @@ en:
       reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
+      creation_success: "Child record successfully created."
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"
@@ -159,6 +160,8 @@ en:
     page_gap: "&hellip;"
 
   users:
+    unverified: "Unverified Users"
+    select_role: "Please select a role before verifying the user"
     manage: "Manage Users"
     label: "Users"
     create: "Create User"
@@ -198,6 +201,7 @@ en:
       password_changed_successfully: "Password changed successfully"
       time_zone_updated: "Timezone was successfully updated."
     update: "Update"
+    verify: "Verify"
     create: "Create"
     no_blank: "user name should not contain blanks"
     manage_password: "Change Password"
@@ -296,6 +300,7 @@ en:
       correct_errors: "Please correct the following errors and resubmit:"
       hide_confirmation: "Are you sure you want to hide fields?"
       show_confirmation: "Are you sure you want to show fields?"
+      drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
 
       updated: "Form section successfully added"
     hide: "Hide"
@@ -304,6 +309,7 @@ en:
     edit: "Edit Form Sections"
     buttons:
       add: "Add"
+    options: "Options"
   message:
 
 
@@ -373,6 +379,7 @@ en:
     date_field: "Date Field"
 
     add: "Add Field"
+    type: "Field type"
   replication:
     label: Replication
     index: Manage Replications
@@ -398,3 +405,4 @@ en:
   saved: "Saved"
   history_of: "History of"
   account: "Account"
+  moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"

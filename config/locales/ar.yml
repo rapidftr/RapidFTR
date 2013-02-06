@@ -3,10 +3,11 @@
 
 ar:
   home:
+    ar: "العربية"
     welcome: "مرحبا RapidFTR"
     current_time_zone: "النطاق الزمني الحالي"
     language: "اللغة"
-    view_all_children: "عرض كل الأطفال"
+    view_records: "عرض السجلات"
     records_need_attention: "سجلات تحتاج المشاهدة"
 
     label: "Home"

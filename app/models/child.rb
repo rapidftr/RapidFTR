@@ -21,7 +21,9 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
+  property :exported, :cast_as => :boolean
   property :verified
+  property :verified, :cast_as => :boolean
 
   view_by :name,
           :map => "function(doc) {
@@ -103,7 +105,6 @@ class Child < CouchRestRails::Document
   validates_fields_of_type Field::NUMERIC_FIELD
   validates_fields_of_type Field::TEXT_FIELD
   validates_fields_of_type Field::TEXT_AREA
-  validates_fields_of_type Field::DATE_FIELD
   validates_with_method :validate_has_at_least_one_field_value
   validates_with_method :created_at, :method => :validate_created_at
   validates_with_method :last_updated_at, :method => :validate_last_updated_at
@@ -355,9 +356,7 @@ class Child < CouchRestRails::Document
 
   def update_photo_keys
     return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
-
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
-
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
       self['_attachments'].keys.each do |key|

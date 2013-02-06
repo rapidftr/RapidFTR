@@ -148,12 +148,11 @@ end
 When /^I request the creation of the following unverified user:$/ do |table|
   table.hashes.each do |hash|
     post(register_unverified_user_path, 
-      {:imei => hash["imei"], :format => 'json', :user => 
+      {:format => 'json', :user => 
         {:user_name => hash["user_name"], 
         :full_name => hash["full_name"],
         :organisation => hash["organisation"], 
-        :password => hash["password"], 
-        :password_confirmation => hash["password_confirmation"]
+        :unauthenticated_password => hash["password"]
       }})
   end
 end

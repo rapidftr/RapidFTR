@@ -319,14 +319,6 @@ describe Child do
                         child.should be_valid
     end
 
-    it "should disallow date fields not formatted as dd M yy" do
-      FormSection.stub!(:all_visible_child_fields =>
-                        [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
-                        child = Child.new :a_datefield => ('2/27/2010')
-                        child.should_not be_valid
-                        child.errors[:a_datefield].should == ["A datefield must follow this format: 4 Feb 2010"]
-    end
-
     it "should allow date fields formatted as dd M yy" do
       FormSection.stub!(:all_visible_child_fields =>
                         [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
@@ -1064,6 +1056,12 @@ describe Child do
                                            "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'jane'
       child.has_one_interviewer?.should be_false
+    end
+
+    it "should be false if histories is empty" do
+      child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
+      child['histories'] = []
+      child.has_one_interviewer?.should be_true
     end
 
   end

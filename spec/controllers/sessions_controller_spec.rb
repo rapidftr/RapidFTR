@@ -17,7 +17,8 @@ describe SessionsController do
     post :create, :user_name => "dummy", :password => "dummy", :imei => "IMEI_NUMBER", :format => "json"
 
     JSON.parse(response.body)["db_key"].should == "unique_key"
-    JSON.parse(response.body)["user_org"].should == "TW"
+    JSON.parse(response.body)["organisation"].should == "TW"
+    JSON.parse(response.body)["language"].should == "en"
   end
 
 end

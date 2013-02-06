@@ -1,11 +1,6 @@
 <h1 class="no_border">Roles</h1>
 <div class="page-content-new">
-  <div class="side-tab">
-    <ul>
-      <li><%= link_to "Users", users_path %></li>
-      <li class="current"><%= link_to "Roles", roles_path %></li>
-    </ul>
-  </div>
+  <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => 'roles'} %>
   <div class="side-tab-content">
     <h2><%= link_to t("roles.list"), roles_path %> &gt; <%=	t("role.edit")  %> (<%= @role.name %>)</h2>
     <%= render :partial => "editable_role", :object => @role %>

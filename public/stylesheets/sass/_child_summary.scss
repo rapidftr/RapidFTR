@@ -30,6 +30,16 @@
       border: 10px solid #fff;
     }
 
+    .photos, .audio{
+      margin-right: 220px;
+    }
+
+    .photos .thumbnail{
+      float: left;
+      margin: 2px;
+      height: 140px;
+    }
+
     .summary_panel {
       float: left;
       padding: 10px 10px 10px 0px;
