@@ -72,7 +72,6 @@ describe ChildrenController do
 
       it "PUT update" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
-        controller.class.skip_before_filter :sanitize_params
         put :update, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
@@ -316,14 +315,12 @@ describe ChildrenController do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
-      photo_keys = "[\"photo-671592136-2013-02-01T101929\", \"photo-671592136-2013-02-01T101929\"]"
       put :update, :id => child.id,
            :child => {
-               :histories => histories,
-               :photo_keys => photo_keys
+               :last_known_location => "Manchester",
+               :histories => histories
            }
      assigns[:child]['histories'].should == JSON.parse(histories)
-     assigns[:child]['photo_keys'].should == JSON.parse(photo_keys)
     end
 
     it "should update child on a field and photo update" do
