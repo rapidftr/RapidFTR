@@ -21,7 +21,7 @@ class ExportGenerator
 
   def to_photowall_pdf
     @child_data.each do |child|
-      add_child_photo(child)
+      add_child_photo(child, true)
       @pdf.start_new_page unless @child_data.last == child
     end
     @pdf.render
@@ -94,6 +94,8 @@ class ExportGenerator
       @attachment = FileAttachment.new("no_photo", "image/jpg", data)
       render_image(@attachment.data)
     end
+    @pdf.move_down 2
+    @pdf.text child.short_id, :align => :center, :style => :bold if with_full_id
 
     @pdf.y -= 3.mm
   end
@@ -133,7 +135,7 @@ class ExportGenerator
   end
 
   def add_child_page(child)
-    add_child_photo(child, true)
+    add_child_photo(child)
     add_child_details(child)
   end
 
