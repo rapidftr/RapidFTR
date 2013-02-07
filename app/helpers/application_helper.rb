@@ -1,22 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  include LoadsSession
 
   def current_url_with_format_of( format )
     url_for( params.merge( 'format' => format, 'escape' => false ) )
   end
 
-  # TODO Remove duplication in ApplicationController
-  def current_user_name
-    return current_user.try(:user_name)
-  end
-
   def session
-    get_session
-  end
-
-  def current_user
-    session.try(:user)
+    current_session
   end
 
   def submit_button(name = t("buttons.save"))

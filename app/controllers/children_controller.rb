@@ -327,7 +327,7 @@ class ChildrenController < ApplicationController
       if can? :view_all, Child
         return Child.view(:by_all_view, :startkey => [filter_option], :endkey => [filter_option, {}])
       else
-        return Child.view(:by_all_view, :startkey => [filter_option, app_session.user_name], :endkey => [filter_option, app_session.user_name])
+        return Child.view(:by_all_view, :startkey => [filter_option, current_user_name], :endkey => [filter_option, current_user_name])
       end
     end
 
@@ -342,7 +342,7 @@ class ChildrenController < ApplicationController
       if can? :view_all, Child
         @results = Child.search(@search)
       else
-        @results = Child.search_by_created_user(@search, app_session.user_name)
+        @results = Child.search_by_created_user(@search, current_user_name)
       end
     end
 

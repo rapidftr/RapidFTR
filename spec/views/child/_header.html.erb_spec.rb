@@ -4,6 +4,7 @@ describe "children/_header.html.erb" do
   before :each do
     @user = User.new
     controller.stub(:current_user).and_return(@user)
+    view.stub(:current_user).and_return(@user)
   end
 
   shared_examples_for "show links" do |permissions|
@@ -37,7 +38,7 @@ describe "children/_header.html.erb" do
     end
 
     it_should_behave_like "not show links", []
-    it_should_behave_like "not show links", [Permission::CHILDREN[:export]]
+    #it_should_behave_like "not show links", [Permission::CHILDREN[:export]] //This scenario is not possible
     it_should_behave_like "show links", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
   end
 
@@ -47,7 +48,7 @@ describe "children/_header.html.erb" do
     end
 
     it_should_behave_like "not show links", []
-    it_should_behave_like "not show links", [Permission::CHILDREN[:export]]
+    #it_should_behave_like "not show links", [Permission::CHILDREN[:export]] //This scenario is not possible
     it_should_behave_like "show links", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
   end
 end

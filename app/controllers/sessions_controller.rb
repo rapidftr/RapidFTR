@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
-    unless (@session = get_session).nil?
+    unless (@session = current_session).nil?
       return redirect_to(:action => "show", :id => @session)
     end
 
@@ -78,7 +78,7 @@ class SessionsController < ApplicationController
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
   def destroy
-    @session = get_session
+    @session = current_session
     @session.destroy if @session
     Session.remove_from_cookies(cookies)
 
