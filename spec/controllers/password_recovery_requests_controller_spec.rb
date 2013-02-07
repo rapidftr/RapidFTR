@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe PasswordRecoveryRequestsController do
 
+  before :each do
+    controller.stub(:current_session).and_return(nil)
+  end
+
   it "should create password recovery request" do
     valid_params = {"user_name" => "ygor"}
     PasswordRecoveryRequest.should_receive(:new).with(valid_params).and_return(recovery_request = mock)

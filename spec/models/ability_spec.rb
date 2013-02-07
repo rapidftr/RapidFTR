@@ -60,6 +60,7 @@ describe Ability do
       it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers }
 
       it { should authorize :index, Child }
+      it { should authorize :view_and_search, Child }
       it { should_not authorize :create, Child }
       it { should authorize :read, Child.new }
       it { should authorize :update, Child.new }

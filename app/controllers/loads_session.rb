@@ -1,9 +1,5 @@
 module LoadsSession
 
-  def logged_in?
-    !get_session.nil? unless request.nil?
-  end
-
   private
 
   def get_session
