@@ -97,7 +97,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Peter  | field_admin  |
      And I am logged out
      When I am logged in as "field_admin"
-      And I follow "View All Children"
+      And I follow "View Records"
      Then I should see "Andrew"
       And I should see "Peter"
 
