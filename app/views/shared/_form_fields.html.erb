@@ -10,7 +10,7 @@
           <li id="form-<%= form.id%>" class="form">
             <%= form.name %>
           </li>
-        <%end%> 
+        <%end%>
     </ul>
       <% @forms.each do|form|%>
         <ul id="fields-for-form-<%= form.id%>" class="fields" data-id="<%= form.unique_id %>">
@@ -46,9 +46,11 @@
         });
 
         $("ul.fields li").click(function() {
+          var form_id = $(this).parents("ul").attr("data-id");
+          var name = $(this).data("name");
           updateWithSelectedItem({
-            field_name: $(this).data("name"),
-            form_id : $(this).parents("ul").data("id")
+            field_name: name,
+            form_id : form_id
           });
         });
 </script>
