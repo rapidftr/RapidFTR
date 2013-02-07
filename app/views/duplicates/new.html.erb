@@ -4,7 +4,7 @@
   <div class="side-tab-content full_width">
 
     <%= error_messages_for @child %>
-    <%= render :partial => "children/summary_row", :object => @child, :as => :child, :locals => { :checkbox => false, :show_links => false } %>
+    <%= render :partial => "children/summary_row", :object => @child, :as => :child, :locals => { :checkbox => false, :show_links => false, :highlighted_fields => FormSection.sorted_highlighted_fields } %>
 
     <%= form_tag child_duplicate_path(@child), :method => :post do %>
       <%= label_tag(:parent_id,t("child.id_of_record_this_duplicate_of")) %>
