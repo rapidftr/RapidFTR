@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_filter :clean_role_ids, :only => [:update, :create]
   before_filter :load_user, :only => [:show, :edit, :update, :destroy]
 
-  skip_before_filter :check_authentication, :only => :register_unverified
+  skip_before_filter :check_authentication, :set_locale, :only => :register_unverified
 
   protect_from_forgery :except => :register_unverified
 

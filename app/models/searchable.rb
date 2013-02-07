@@ -37,6 +37,7 @@ module Searchable
       response = Sunspot.search(self) do
         fulltext(query)
         without(:duplicate, true)
+        paginate :page => 1, :per_page => 50
         adjust_solr_params do |params|
           params[:defType] = "lucene"
           params[:qf] = nil

@@ -5,6 +5,7 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  helper_method :current_user_name, :current_user, :current_user_full_name, :current_session, :logged_in?
 
   include ChecksAuthentication
   before_filter :check_authentication
@@ -46,16 +47,23 @@ class ApplicationController < ActionController::Base
   end
 
   def current_ability
-    @current_ability ||= Ability.new(app_session.user)
+    @current_ability ||= Ability.new(current_user)
   end
 
   def current_user_full_name
-    session = Session.get_from_cookies(cookies)
-    session.user.full_name unless session.nil? or session.user.nil?
+    current_user.try(:full_name)
   end
 
   def current_user
-    @current_user ||= app_session.user
+    @current_user ||= current_session.try(:user)
+  end
+
+  def current_session
+    @current_session ||= get_session
+  end
+
+  def logged_in?
+    !current_session.nil? unless request.nil?
   end
 
   def send_pdf(pdf_data,filename)
@@ -67,7 +75,7 @@ class ApplicationController < ActionController::Base
   end
 
   def session_expiry
-    session = get_session
+    session = current_session
     unless session.nil?
       if session.expired?
         flash[:error] = 'Your session has expired. Please re-login.'
@@ -77,7 +85,7 @@ class ApplicationController < ActionController::Base
   end
 
   def update_activity_time
-    session = get_session
+    session = current_session
     unless session.nil?
       session.update_expiration_time(20.minutes.from_now)
       session.save

@@ -7,8 +7,11 @@ describe "children/show.html.erb" do
 
   describe "displaying a child's details"  do
     before :each do
-      @user = mock('user', :has_permission? => true)
+      @user = mock('user', :has_permission? => true, :user_name => 'name')
       controller.stub(:current_user).and_return(@user)
+      view.stub(:current_user).and_return(@user)
+      view.stub(:logged_in?).and_return(true)
+      view.stub(:current_user_name).and_return('name')
       @form_section = FormSection.new :unique_id => "section_name", :visible => "true"
       @child = Child.create(:name => "fakechild", :age => "27", :gender => "male", :date_of_separation => "1-2 weeks ago", :unique_identifier => "georgelon12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :photo => uploadable_photo_jeff)
       @child.stub!(:has_one_interviewer?).and_return(true)
@@ -119,19 +122,19 @@ describe "children/show.html.erb" do
         end
       end
     end
-    
+
     it "should not show links to export when user doesn't have appropriate permissions" do
       @user.stub!(:has_permission?).with(:export, Child).and_return(false)
       render
       rendered.should have_tag("a[href='#{child_path(@child,:format => :csv)}']")
     end
-    
+
     it "should show links to export when user has appropriate permissions" do
       @user.stub!(:has_permission?).with(:export, Child).and_return(true)
       render
       rendered.should have_tag("a[href='#{child_path(@child,:format => :csv)}']")
     end
-    
+
   end
-  
+
 end
