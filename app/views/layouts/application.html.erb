@@ -43,13 +43,15 @@
         <li><a href="#"><%= t("navigation.reports") %></a></li>
       </ul>
     </nav>
-    <%= form_tag search_children_path, :method => :get, :id => "search_form" do %>
+        <% if can? :view_and_search, Child %>
+  <%= form_tag search_children_path, :method => :get, :id => "search_form" do %>
         <div class="search">
           <%= link_to t("navigation.advanced_search"), new_advanced_search_path %>
           <%= text_field_tag 'query', params[:query] %>
           <%= submit_tag t("navigation.go"), :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();" %>
         </div>
     <%- end %>
+    <% end %>
     <% end %>
   </div>
 
