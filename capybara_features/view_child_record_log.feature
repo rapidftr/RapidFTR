@@ -54,7 +54,6 @@ Feature:
     And "Bobby" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
 
-    And I wait for 3 seconds
     When I follow "Edit"
 
     Then I fill in "George Harrison" for "Name"
@@ -96,7 +95,6 @@ Feature:
     And "Bobby" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
 
-    And I wait for 3 seconds
     When I follow "Edit"
 
     Then I fill in "George Harrison" for "Name"
