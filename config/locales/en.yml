@@ -68,6 +68,8 @@ en:
      edit: "Edit"
      back: "Back"
      change_password: "Change Password"
+     enable_photo_wall: "Enable photo wall"
+     disable_photo_wall: "Disable photo wall"
 
   children:
     label: "Children"

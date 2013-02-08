@@ -3,7 +3,7 @@ Feature: So that hard copy printout of missing child photos are available
   I want to be able to export selected children to a PDF file
 
   Background:
-    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
+    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF,Edit Child" permissions
     And the following children exist in the system:
       | name      | unique_id  | created_by |
       | Will      | will_uid   | user1      |
@@ -50,6 +50,8 @@ Feature: So that hard copy printout of missing child photos are available
 
   Scenario: Exporting photo wall PDF from the child page
     Given I am on the saved record page for child with name "Will"
+    And I follow "Enable photo wall"
+    And I follow "Export"
     And I follow "Export to Photo Wall"
 
     Then I should receive a PDF file

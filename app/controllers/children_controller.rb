@@ -1,7 +1,7 @@
 class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf, :set_exportable]
   before_filter :current_user
   before_filter :sanitize_params, :only => [:update]
 
@@ -251,6 +251,15 @@ class ChildrenController < ApplicationController
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end
 
+  # POST
+  def set_exportable
+    authorize! :update, @child
+
+    @child.exportable = params[:exportable] ? true : false
+    @child.save!
+
+    redirect_to child_path(@child.id)
+  end
 
   private
 
