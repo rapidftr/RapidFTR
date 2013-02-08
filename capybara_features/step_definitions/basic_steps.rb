@@ -110,7 +110,7 @@ When /^I wait for (\d+) seconds$/ do |seconds|
 end
 
 When 'I wait for the page to load' do
-  wait_until { page.evaluate_script('$.active') == 0 } if Capybara.current_driver == :selenium
+  wait_until { page.evaluate_script('$ && $.active == 0') } if Capybara.current_driver == :selenium
   page.has_content? ''
 end
 
