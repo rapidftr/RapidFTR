@@ -24,7 +24,7 @@
         </div>
     <% end %>
 
-      <% highlighted_fields.each do |relevant_field| %>
+      <% sorted_highlighted_fields.each do |relevant_field| %>
         <% if relevant_field.visible? %>
         <div class="summary_item">
           <div class="key"><%= relevant_field.display_name %>:</div>

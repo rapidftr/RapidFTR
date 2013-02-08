@@ -67,6 +67,8 @@ ar:
      edit: "تعديل"
      back: "رجوع"
      change_password: "تغيير كلمة السر"
+     enable_photo_wall: "تمكين صورة الحائط"
+     disable_photo_wall: "تعطيل صورة الحائط"
 
   children:
     label: "الأطفال"
