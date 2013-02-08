@@ -37,7 +37,7 @@
         <% if can? :read, User or can? :show, Role %>
           <li><%= link_to t("navigation.users"), users_path %></li>
         <% end %>
-        <% if can? :read, Device %>
+        <% if can?(:read, Device) or can?(:read, Replication) %>
           <li><%= link_to t("navigation.devices"), devices_path %></li>
         <% end %>
         <li><a href="#"><%= t("navigation.reports") %></a></li>
