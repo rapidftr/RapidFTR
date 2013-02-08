@@ -76,7 +76,7 @@ en:
       all: "All"
       active: "Active"
       reunited: "Reunited"
-      flagged: "Flagged"
+      flag: "Flagged"
       created: "Created"
     order_by:
       most_recently: "Most recently"

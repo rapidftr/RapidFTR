@@ -251,6 +251,21 @@ describe Child do
       child.photos.should be_empty
     end
 
+    it "should set flagged_at if the record has been flagged" do
+      Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
+      child = create_child("timothy cochran")
+      child.update_properties_with_user_name 'some user name', nil, nil, nil, {:flag => true}
+      child.flag_at.should == "2010-01-17 19:05:00UTC"
+    end
+
+    it "should set reunited_at if the record has been reunited" do
+      Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
+      child = create_child("timothy cochran")
+      child.update_properties_with_user_name 'some user name', nil, nil, nil, {:reunited => true}
+      child.reunited_at.should == "2010-01-17 19:05:00UTC"
+    end
+
+
   end
 
   describe "validation" do

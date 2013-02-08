@@ -32,26 +32,29 @@ class Child < CouchRestRails::Document
              }
           }"
 
-  view_by :all_view,
+  ['created_at', 'name', 'flag_at', 'reunited_at'].each do |field|
+    view_by "all_view_#{field}",
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')
              {
-                emit(['all', doc['created_by']], doc);
+                emit(['all', doc['created_by'], doc['#{field}']], doc);
                 if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
-                  emit(['flagged', doc['created_by']], doc);
+                  emit(['flag', doc['created_by'], doc['#{field}']], doc);
                 }
 
                 if (doc.hasOwnProperty('reunited')) {
                   if (doc['reunited'] == 'true') {
-                    emit(['reunited', doc['created_by']], doc);
+                    emit(['reunited', doc['created_by'], doc['#{field}']], doc);
                   } else {
-                    emit(['active', doc['created_by']], doc);
+                    emit(['active', doc['created_by'], doc['#{field}']], doc);
                   }
                 } else {
-                  emit(['active', doc['created_by']], doc);
+                  emit(['active', doc['created_by'], doc['#{field}']], doc);
                 }
              }
           }"
+  end
+
 
   view_by :flag,
           :map => "function(doc) {
@@ -120,6 +123,10 @@ class Child < CouchRestRails::Document
 
   def field_definitions
     @field_definitions ||= FormSection.all_enabled_child_fields
+  end
+
+  def self.fetch_paginated(options, page, per_page)
+    [self.paginate(options.merge({:design_doc => 'Child'})).size, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
 
   def self.build_solar_schema
@@ -536,6 +543,7 @@ class Child < CouchRestRails::Document
     if should_update
       properties.each_pair do |name, value|
         self[name] = value unless value == nil
+        self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
       end
       self.set_updated_fields_for user_name
     else

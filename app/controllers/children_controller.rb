@@ -12,9 +12,10 @@ class ChildrenController < ApplicationController
     @page_name = t("home.view_all_children")
     @aside = 'shared/sidebar_links'
 
-    status = params[:filter] || params[:status] || "all"
+    @filter = params[:filter] || params[:status] || 'all'
+    @order = params[:order_by] || 'name'
 
-    filter_children_by status, params[:order_by]
+    filter_children
 
     respond_to do |format|
       format.html
@@ -313,22 +314,20 @@ class ChildrenController < ApplicationController
       end
     end
 
-    def filter_children_by filter_option, order
-      children = children_by_user_access filter_option
-      total_rows = children.count
-      paginated_records = children.paginate(:page => params[:page], :per_page => ChildrenHelper::View::PER_PAGE)
-      presenter = ChildrenPresenter.new(paginated_records, filter_option, order)
-      @children =  paginated_collection presenter.children, total_rows
-      @filter = presenter.filter
-      @order = presenter.order
+    def filter_children
+      total_rows, children = children_by_user_access(@filter)
+      @children =  paginated_collection children, total_rows
     end
 
-    def children_by_user_access filter_option
-      if can? :view_all, Child
-        return Child.view(:by_all_view, :startkey => [filter_option], :endkey => [filter_option, {}])
+    def children_by_user_access(filter_option)
+      keys = can?(:view_all, Child) ? [filter_option] : [filter_option, current_user_name]
+      options = {:view_name => "by_all_view_#{params[:order_by] || 'created_at'}".to_sym}
+      if ['created_at', 'reunited_at', 'flag_at'].include? params[:order_by]
+        options.merge!({:descending => true, :startkey => [keys, {}].flatten, :endkey => keys})
       else
-        return Child.view(:by_all_view, :startkey => [filter_option, current_user_name], :endkey => [filter_option, current_user_name])
+        options.merge!({:startkey => keys, :endkey => [keys, {}].flatten})
       end
+      Child.fetch_paginated(options, params[:page] || 1, ChildrenHelper::View::PER_PAGE)
     end
 
     def paginated_collection instances, total_rows
