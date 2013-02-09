@@ -14,10 +14,10 @@
 	<% if can? :create, Child %>
 		<%= link_to t("children.register_new_child"), new_child_path %> <br/><br/>
 	<% end %>
-	
+
 <%= link_to t("home.view_all_children"), children_path %> <br/><br/>
 <% if can? :read, Child %>
-  <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flagged") %>
+  <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flag") %>
 <% end %>
 
 <br/>
