@@ -425,20 +425,6 @@ describe Child do
     end
   end
 
-  describe 'update_photo_keys' do
-    it "should update the latest photo from mobile as primary photo" do
-      mock_user = mock({:organisation => "Organisation"})
-      User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-      child = Child.new
-      child.photo = uploadable_photo_jorge
-      child.save
-      latest_photo_key = "photo--344062003-2012-11-009900990"
-      child.instance_variable_set(:@new_photo_keys, [latest_photo_key])
-      child.update_photo_keys
-      child.current_photo_key.should == latest_photo_key
-    end
-  end
-
 
   describe 'save' do
 

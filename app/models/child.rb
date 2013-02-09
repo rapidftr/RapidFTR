@@ -364,9 +364,10 @@ class Child < CouchRestRails::Document
       end
     } if @deleted_photo_keys
 
-    self['current_photo_key'] = self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
+    self['current_photo_key'] ||= self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
 
-    self['current_photo_key'] = @new_photo_keys.first if @new_photo_keys
+    self['current_photo_key'] ||= @new_photo_keys.first if @new_photo_keys
+
     add_to_history(photo_changes_for(@new_photo_keys, @deleted_photo_keys)) unless id.nil?
 
     @new_photo_keys, @deleted_photo_keys = nil, nil
