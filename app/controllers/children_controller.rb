@@ -321,7 +321,7 @@ class ChildrenController < ApplicationController
 
     def children_by_user_access(filter_option)
       keys = [filter_option]
-      options = {:view_name => "by_all_view_#{params[:order_by] || 'created_at'}".to_sym}
+      options = {:view_name => "by_all_view_#{params[:order_by] || 'name'}".to_sym}
       unless  can?(:view_all, Child)
         keys = [filter_option, current_user_name]
         options = {:view_name => "by_all_view_with_created_by_#{params[:order_by] || 'created_at'}".to_sym}

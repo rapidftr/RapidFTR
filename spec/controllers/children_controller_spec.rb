@@ -161,7 +161,7 @@ describe ChildrenController do
       before { @stubs = { :reunited? => false } }
       context "when status is passed for admin" do
         before { @status = "all"}
-        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
         it_should_behave_like "viewing children by user with access to all data"
       end
 
@@ -173,7 +173,7 @@ describe ChildrenController do
       end
 
       context "when status is not passed admin" do
-        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
         it_should_behave_like "viewing children by user with access to all data"
       end
 
@@ -201,7 +201,7 @@ describe ChildrenController do
         @stubs = {:reunited? => true}
       end
       context "admin" do
-        before { @options = {:startkey=>["reunited"], :endkey=>["reunited", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at} }
+        before { @options = {:startkey=>["reunited"], :endkey=>["reunited", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name} }
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
@@ -213,7 +213,7 @@ describe ChildrenController do
     context "viewing flagged children" do
       before { @status = "flagged" }
       context "admin" do
-        before {@options = {:startkey=>["flagged"], :endkey=>["flagged", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["flagged"], :endkey=>["flagged", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field_worker" do
@@ -228,7 +228,7 @@ describe ChildrenController do
         @stubs = {:reunited? => false}
       end
       context "admin" do
-        before {@options = {:startkey=>["active"], :endkey=>["active", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["active"], :endkey=>["active", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
