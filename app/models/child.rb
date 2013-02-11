@@ -111,7 +111,12 @@ class Child < CouchRestRails::Document
 
   def initialize *args
     self['photo_keys'] ||= []
-    self['current_photo_key'] = nil
+    arguments = *args
+
+    if !arguments.nil? and !arguments.empty? and arguments["current_photo_key"]
+      self['current_photo_key'] = arguments["current_photo_key"]
+      arguments.delete("current_photo_key")
+    end
     self['histories'] = []
     super *args
   end
@@ -350,6 +355,7 @@ class Child < CouchRestRails::Document
       @photos << photo
       attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
       attach(attachment)
+      self["current_photo_key"] = attachment.name if photo.original_filename.include?(self["current_photo_key"].to_s)
       attachment.name
     end
   end
@@ -359,6 +365,7 @@ class Child < CouchRestRails::Document
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
+      self['current_photo_key'] = self['photo_keys'].first if p == self['current_photo_key']
       self['_attachments'].keys.each do |key|
         self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
       end
