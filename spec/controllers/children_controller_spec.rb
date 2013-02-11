@@ -636,13 +636,14 @@ describe ChildrenController do
       fake_login @user
     end
 
-    it "should mark all children created as unverified" do
-      Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => false}).and_return(child = Child.new)
+    it "should mark all children created as verified/unverifid based on the user" do
+      @user.verified = true
+      Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
       child.should_receive(:save).and_return true
 
       post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
 
-      child.should_not be_verified
+      @user.verified = true
     end
 
     it "should set the created_by name to that of the user matching the params" do
@@ -654,6 +655,7 @@ describe ChildrenController do
       child['created_by_full_name'].should eq @user.full_name
     end
   end
+
   describe "POST create" do
     it "should update the child record instead of creating if record already exists" do
       child = Child.new_with_user_name(mock('user', :user_name => 'uname', :organisation => 'org'), {:name => 'old name'})

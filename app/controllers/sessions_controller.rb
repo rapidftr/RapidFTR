@@ -102,6 +102,7 @@ class SessionsController < ApplicationController
   end
 
   def render_session_as_json(session,options = {})
+    user = User.find_by_user_name(session.user_name)
     json = {
       :session => {
         :token => session.token,
@@ -111,8 +112,9 @@ class SessionsController < ApplicationController
         }
       },
       :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key,
-      :organisation => User.find_by_user_name(session.user_name).organisation,
-      :language => I18n.default_locale
+      :organisation => user.organisation,
+      :language => I18n.default_locale,
+      :user_status => user.verified?
     }
     render( options.merge( :json => json ) )
   end

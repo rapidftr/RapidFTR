@@ -114,7 +114,7 @@ class ChildrenController < ApplicationController
       format.json do
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-        child = Child.new_with_user_name(current_user, params[:child].merge(:verified => false))
+        child = Child.new_with_user_name(current_user, params[:child].merge(:verified => current_user.verified?))
         child['created_by_full_name'] = current_user.full_name
         if child.save
           render :json => child.compact.to_json
