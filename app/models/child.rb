@@ -39,9 +39,6 @@ class Child < CouchRestRails::Document
       view_by "all_view_with_created_by_#{field}",
             :map => "function(doc) {
                 var fDate = doc['#{field}'];
-                if('#{field}'.indexOf('at') > 0){
-                  fDate = Date.parse(doc['#{field}'].replace(' ', 'T').replace('UTC',''));
-                }
                 if (doc['couchrest-type'] == 'Child')
                 {
                   emit(['all', doc['created_by'], fDate], doc);
@@ -63,9 +60,6 @@ class Child < CouchRestRails::Document
       view_by "all_view_#{field}",
             :map => "function(doc) {
                 var fDate = doc['#{field}'];
-                if('#{field}'.indexOf('at') > 0){
-                  fDate = Date.parse(doc['#{field}'].replace(' ', 'T').replace('UTC',''));
-                }
                 if (doc['couchrest-type'] == 'Child')
                 {
                   emit(['all', fDate], doc);
