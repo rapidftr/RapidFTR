@@ -120,7 +120,8 @@ class Replication < CouchRestRails::Document
   end
 
   def self.configuration(username, password)
-    { :target => "http://#{username}:#{password}@"+Child.database.root.split("://").last.split("@").last }
+    uri = URI.parse(Child.database.root)
+    { :target => "http://#{username}:#{password}@"+uri.host+":"+COUCHDB_CONFIG[:https_port].to_s+uri.path}
   end
 
   def self.normalize_url(url)

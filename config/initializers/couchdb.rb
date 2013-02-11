@@ -12,8 +12,7 @@ begin
   ssl       = (couchdb_config["ssl"].blank? or couchdb_config["ssl"] == false) ? false : true
   db_prefix = couchdb_config["database_prefix"] || ""
   db_suffix = couchdb_config["database_suffix"] || ""
-  host     = "localhost"  if host == nil
-  port     = "5984"       if port == nil
+  https_port = couchdb_config["https_port"]      || '6984'
 
   protocol = ssl ? 'https' : 'http'
   authorized_host = (username.blank? && password.blank?) ? host :
@@ -29,7 +28,8 @@ else
   COUCHDB_CONFIG = {
       :host_path => "#{protocol}://#{authorized_host}:#{port}",
       :db_prefix => "#{db_prefix}",
-      :db_suffix => "#{db_suffix}"
+      :db_suffix => "#{db_suffix}",
+      :https_port => https_port
   }
 
   COUCHDB_SERVER = CouchRest.new COUCHDB_CONFIG[:host_path]

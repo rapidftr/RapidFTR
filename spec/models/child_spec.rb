@@ -425,20 +425,6 @@ describe Child do
     end
   end
 
-  describe 'update_photo_keys' do
-    it "should update the latest photo from mobile as primary photo" do
-      mock_user = mock({:organisation => "Organisation"})
-      User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-      child = Child.new
-      child.photo = uploadable_photo_jorge
-      child.save
-      latest_photo_key = "photo--344062003-2012-11-009900990"
-      child.instance_variable_set(:@new_photo_keys, [latest_photo_key])
-      child.update_photo_keys
-      child.current_photo_key.should == latest_photo_key
-    end
-  end
-
 
   describe 'save' do
 
@@ -937,11 +923,19 @@ describe Child do
         @child.save
         original_primary_photo_key = @child.photos[0].name
         jeff_photo_key = @child.photos[1].name
-        @child.primary_photo.name.should == jeff_photo_key
+        @child.primary_photo.name.should == original_primary_photo_key
         @child.delete_photo(original_primary_photo_key)
         @child.save
         @child.primary_photo.name.should == jeff_photo_key
       end
+
+      it "should take the current photo key during child creation and update it appropriately with the correct format" do
+        @child = Child.create('photo' => {"0" => uploadable_photo, "1" => uploadable_photo_jeff}, 'last_known_location' => 'London', 'current_photo_key' => uploadable_photo_jeff.original_filename )
+        @child.save
+        @child.primary_photo.name.should == @child.photos[1].name
+        @child.primary_photo.name.should start_with ("photo-")
+      end
+
 
       it "should not log anything if no photo changes have been made" do
         @child["last_known_location"] = "Moscow"
@@ -1017,7 +1011,7 @@ describe Child do
         @child.save
         original_primary_photo_key = @child.photos[0].name
         jeff_photo_key = @child.photos[1].name
-        @child.primary_photo.name.should == jeff_photo_key
+        @child.primary_photo.name.should == original_primary_photo_key
         @child.delete_photo(original_primary_photo_key)
         @child.save
         @child.primary_photo.name.should == jeff_photo_key
