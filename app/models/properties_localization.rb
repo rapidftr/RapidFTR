@@ -14,6 +14,7 @@ module PropertiesLocalization
         locale = args.first || I18n.locale
         if self.send("#{method}_#{locale}").nil?  || self.send("#{method}_#{locale}").empty?
           self.send("#{method}_#{I18n.default_locale}")
+          end
       end
 
       define_method "#{method}=" do |value|
