@@ -3,9 +3,11 @@ Before('@gc') do
 end
 
 After do
-  GC.enable
-  GC.start
-  GC.disable
+  unless ENV["CI"] == true
+    GC.enable
+    GC.start
+    GC.disable
+  end
 end
 
 Before do

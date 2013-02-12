@@ -594,10 +594,17 @@ describe Child do
 
     context "with multiple new photos" do
 
-      let(:child) { Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London') }
+      let(:child) {
+        Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London')
+      }
 
       it "should have corrent number of photos after creation" do
         child.photos.size.should eql 2
+      end
+
+      it "should order by primary photo" do
+        child.primary_photo_id = child["photo_keys"].last
+        child.photos.first.name.should == child.current_photo_key
       end
 
       it "should return the first photo as a primary photo" do
@@ -932,7 +939,7 @@ describe Child do
       it "should take the current photo key during child creation and update it appropriately with the correct format" do
         @child = Child.create('photo' => {"0" => uploadable_photo, "1" => uploadable_photo_jeff}, 'last_known_location' => 'London', 'current_photo_key' => uploadable_photo_jeff.original_filename )
         @child.save
-        @child.primary_photo.name.should == @child.photos[1].name
+        @child.primary_photo.name.should == @child.photos.first.name
         @child.primary_photo.name.should start_with ("photo-")
       end
 
