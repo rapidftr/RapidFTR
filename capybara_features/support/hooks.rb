@@ -3,7 +3,7 @@ Before('@gc') do
 end
 
 After do
-  unless ENV["CI"] == true
+  unless ENV["CI"] == "true"
     GC.enable
     GC.start
     GC.disable
