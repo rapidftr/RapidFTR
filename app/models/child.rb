@@ -382,7 +382,9 @@ class Child < CouchRestRails::Document
 
   def photos
     return [] if self['photo_keys'].blank?
-    self['photo_keys'].collect do |key|
+    self["photo_keys"].sort_by do |key|
+      key == self["current_photo_key"] ? "" : key
+    end.collect do |key|
       attachment(key)
     end
   end
