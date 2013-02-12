@@ -12,9 +12,12 @@ module PropertiesLocalization
     properties.each do |method|
       define_method method do |*args|
         locale = args.first || I18n.locale
-        if self.send("#{method}_#{locale}").nil?  || self.send("#{method}_#{locale}").empty?
+        locale_field_value = self.send("#{method}_#{locale}")
+        if locale_field_value.nil? || locale_field_value.empty?
           self.send("#{method}_#{I18n.default_locale}")
-          end
+        else
+          locale_field_value
+        end
       end
 
       define_method "#{method}=" do |value|
