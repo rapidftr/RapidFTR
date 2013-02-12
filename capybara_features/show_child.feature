@@ -12,8 +12,6 @@ Feature:
   @javascript
   Scenario: Child record must not display the edit and manage photos links
 
-    And I wait for 10 seconds
     Given I am on the child record page for "John"
-    And I wait for 10 seconds
     Then I should not see "Edit Photo"
     And I should not see "Manage Photo"
