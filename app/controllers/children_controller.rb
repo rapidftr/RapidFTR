@@ -228,12 +228,12 @@ class ChildrenController < ApplicationController
 
     children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
 
-    if params[:commit] == "Export to Photo Wall"
+    if params[:commit] == t("child.actions.export_to_photo_wall")
       export_photos_to_pdf(children, "#{file_basename}.pdf")
-    elsif params[:commit] == "Export to PDF"
+    elsif params[:commit] == t("child.actions.export_to_pdf")
       pdf_data = ExportGenerator.new(children).to_full_pdf
       send_pdf(pdf_data, "#{file_basename}.pdf")
-    elsif params[:commit] == "Export to CSV"
+    elsif params[:commit] == t("child.actions.export_to_csv")
       render_as_csv(children, "#{file_basename}.csv")
     end
   end
