@@ -285,14 +285,14 @@ describe Replication do
     end
 
     it 'should get the url without the source username and password' do
-      target_hash = Replication.configuration("rapidftr", "rapidftr")
-      target_hash[:target].should == "http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test"
+      target_hash = Replication.configuration("abcd", "abcd")
+      target_hash[:target].should == "http://abcd:abcd@localhost:6984/rapidftr_child_test"
     end
 
-    it "should get the correct url even if the source database doesn't have have username and password" do
-      Child.database.should_receive(:root).and_return("http://localhost:5984/rapidftr_child_test")
-      target_hash = Replication.configuration("rapidftr", "rapidftr")
-      target_hash[:target].should == "http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test"
+    it "should get the correct url even if the source database doesn't have username and password" do
+      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test")
+      target_hash = Replication.configuration("abcd", "abcd")
+      target_hash[:target].should == "http://abcd:abcd@localhost:6984/rapidftr_child_test"
     end
 
   end
