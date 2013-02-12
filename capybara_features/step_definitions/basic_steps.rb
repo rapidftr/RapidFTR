@@ -109,6 +109,11 @@ When /^I wait for (\d+) seconds$/ do |seconds|
   sleep seconds.to_i
 end
 
+When 'I wait for the page to load' do
+  wait_until { page.evaluate_script('$ && $.active == 0') } if Capybara.current_driver == :selenium
+  page.has_content? ''
+end
+
 Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|
   divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
   divs.size.should == quantity.to_i

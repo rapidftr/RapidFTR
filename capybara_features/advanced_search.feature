@@ -7,6 +7,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
    Given I am logged in
      And I am on child advanced search page
     When I search
+    And I wait for the page to load
     Then I should see "Please enter at least one search criteria"
 
   @javascript
@@ -16,6 +17,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     When I click text "Select A Criteria"
     And  I click text "Name"
     And  I search
+    And I wait for the page to load
     Then I should see "Please enter a valid field value."
 
   @javascript
@@ -30,6 +32,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I click text "Name"
     And I fill in "Will" for "criteria_list[0][value]"
     And I search
+    And I wait for the page to load
     Then I should see "Will" in the search results
     And I should see "Willis" in the search results
 
@@ -45,6 +48,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I click text "Sex"
     And I select "Male" from "criteria_list[0][value]"
     And I search
+    And I wait for the page to load
     Then I should see "Andrew" in the search results
     And I should not see "mary" in the search results
 
@@ -60,10 +64,12 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I click text "Sex"
       And I select "Male" from "criteria_list[0][value]"
       And I search
+      And I wait for the page to load
       Then I click text "Sex"
       And I click text "Name"
       Then I fill in "mary" for "criteria_list[0][value]"
       Then I search
+      And I wait for the page to load
       And I should see "mary" in the search results
 
   @javascript
@@ -77,6 +83,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James  | john       | john                 |
     Then I fill in "rob" for "created_by_value"
     And I search
+    And I wait for the page to load
    Then I should see "Andrew" in the search results
     And I should see "Peter" in the search results
     And I should not see "James" in the search results
@@ -96,6 +103,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I fill in "Andrew" for "criteria_list[0][value]"
      And I fill in "bob" for "created_by_value"
      And I search
+     And I wait for the page to load
     Then I should see "Andrew1" in the search results
      And I should see "Andrew2" in the search results
      And I should not see "James" in the search results
@@ -106,6 +114,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I am on child advanced search page
      And I fill in "11/12/2012" for "created_at_after_value"
      And I search
+    And I wait for the page to load
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
 
   @javascript
@@ -114,6 +123,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I am on child advanced search page
      And I fill in "11/12/2012" for "created_at_before_value"
      And I search
+     And I wait for the page to load
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
   
   @javascript
@@ -128,6 +138,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James  | 2012-04-24 14:10:03UTC |
     And I fill in "2012-04-23" for "created_at_after_value"
     And I search
+    And I wait for the page to load
    Then I should not see "Emma" in the search results
     And I should not see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -145,6 +156,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James  | 2012-04-24 14:10:03UTC |
     And I fill in "2012-04-23" for "updated_at_after_value"
     And I search
+    And I wait for the page to load
    Then I should not see "Emma" in the search results
     And I should not see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -163,6 +175,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I fill in "2012-04-22" for "updated_at_after_value"
     And I fill in "2012-04-23" for "updated_at_before_value"
     And I search
+    And I wait for the page to load
    Then I should not see "Emma" in the search results
     And I should see "Andrew" in the search results
     And I should see "Peter" in the search results
@@ -189,6 +202,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I fill in "2012-05-21" for "updated_at_after_value"
     And I fill in "2012-05-23" for "updated_at_before_value"
     And I search
+    And I wait for the page to load
    Then I should not see "Willis" in the search results
     And I should not see "Wilbert" in the search results
     And I should not see "James" in the search results
