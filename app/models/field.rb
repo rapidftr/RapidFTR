@@ -53,7 +53,7 @@ class Field < Hash
                         DATE_FIELD       => "",
                         NUMERIC_FIELD    => ""}
 
-  validates_presence_of :display_name
+  validates_presence_of "display_name_#{I18n.default_locale}"
   validates_with_method :name, :method => :validate_unique_name
   validates_with_method :display_name, :method => :validate_unique_display_name
   validates_with_method :option_strings, :method => :validate_has_2_options

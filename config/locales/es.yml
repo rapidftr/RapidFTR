@@ -3,7 +3,12 @@
 
 es:
   home:
+    fr: "Français"
+    en: "English"
+    ar: "العربية"
+    zh: "中文"
     es: "Español"
+    ru: "Русский"
     welcome: "Bienvenido RapidFTR"
     current_time_zone: "Current time zone"
     language: "Language"

@@ -2,7 +2,7 @@ $(document).ready(function() {
     if($('div.form_page').length == 0){
       return;
     }
-    setTranslationFields($("#locale option:selected"));
+
     $("a.delete").click(deleteItem);
     $("a.add_field").click(toggleFieldPanel);
     $("ul.field_types a").click(showFieldDetails);
