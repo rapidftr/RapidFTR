@@ -57,6 +57,7 @@ class Field < Hash
   validates_with_method :name, :method => :validate_unique_name
   validates_with_method :display_name, :method => :validate_unique_display_name
   validates_with_method :option_strings, :method => :validate_has_2_options
+  validates_with_method :option_strings, :method => :validate_has_a_option
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
 
 
@@ -182,6 +183,12 @@ class Field < Hash
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
     return [false, "Field must have at least 2 options"] if option_strings == nil || option_strings.length < 2
+    true
+  end
+
+  def validate_has_a_option
+    return true unless (type == CHECK_BOXES)
+    return [false, "Checkbox must have at least 1 option"] if option_strings == nil || option_strings.length < 1
     true
   end
 

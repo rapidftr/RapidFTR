@@ -37,7 +37,7 @@
             <% if @form_section.editable? %>
                 <td width="75" align="center">
                   <% if field.editable? %>
-                    <%= check_box_tag "fields[]", field.name, !field.visible , {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
+                    <%= check_box_tag "fields[]", field.name, !field.visible? , {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
                   <% end %>
                 </td>
 

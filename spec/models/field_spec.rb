@@ -83,6 +83,13 @@ describe "Child record field view model" do
       field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"]
     end
 
+    it "should validate checkbox has at least 1 option to be checked" do
+      field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::CHECK_BOXES)
+
+      field.valid?
+      field.errors.on(:option_strings).should ==  ["Checkbox must have at least 1 option"]
+    end
+
     it "should validate select box has at least 2 options" do
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::SELECT_BOX)
 
