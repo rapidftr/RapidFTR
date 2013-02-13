@@ -4,10 +4,10 @@
       <%= select_tag("locale", options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION.select { |option| option[1] != I18n.default_locale.to_s }), :class => 'locale') %>
     </div>
   <% end %>
-  <% RapidFTR::Application::LOCALES.each do |locale| %>
-      <% if I18n.default_locale.to_s != locale %>
-        <div class="<%= "translation_forms #{locale}"%> hide">
-          <%= render :partial => 'shared/fields', :locals => {:fields => fields, :f => f, :locale => locale}%>
+  <% RapidFTR::Application::LOCALES.each do |given_locale| %>
+      <% if I18n.default_locale.to_s != given_locale %>
+        <div class="<%= "translation_forms #{given_locale}"%> hide">
+          <%= render :partial => 'shared/fields', :locals => {:fields => fields, :f => f, :given_locale => given_locale}%>
         </div>
       <% end %>
   <% end %>

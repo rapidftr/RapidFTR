@@ -3,7 +3,12 @@
 
 ar:
   home:
+    fr: "Français"
+    en: "English"
     ar: "العربية"
+    zh: "中文"
+    es: "Español"
+    ru: "Русский"
     welcome: "مرحبا RapidFTR"
     current_time_zone: "النطاق الزمني الحالي"
     language: "اللغة"
