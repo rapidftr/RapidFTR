@@ -21,8 +21,12 @@ class ExportGenerator
 
   def to_photowall_pdf
     @child_data.each do |child|
-      add_child_photo(child, true)
-      @pdf.start_new_page unless @child_data.last == child
+      begin
+        add_child_photo(child, true)
+        @pdf.start_new_page unless @child_data.last == child
+      rescue => e
+        Rails.logger.error e
+      end
     end
     @pdf.render
   end
@@ -33,13 +37,17 @@ class ExportGenerator
     csv_data = FasterCSV.generate do |rows|
       rows << field_names + CHILD_STATUS + metadata_fields([],CHILD_METADATA).map {|field| field.display_name}
       @child_data.each do |child|
-        child_data = map_field_with_value(child, fields)
-        child_data << (child.flag? ? "Suspect" : "")
-        child_data << (child.reunited? ? "Reunited" : "")
-        metadata = metadata_fields([],CHILD_METADATA)
-        metadata_value = map_field_with_value(child, metadata)
-        child_data = child_data + metadata_value
-        rows << child_data
+        begin
+          child_data = map_field_with_value(child, fields)
+          child_data << (child.flag? ? "Suspect" : "")
+          child_data << (child.reunited? ? "Reunited" : "")
+          metadata = metadata_fields([],CHILD_METADATA)
+          metadata_value = map_field_with_value(child, metadata)
+          child_data = child_data + metadata_value
+          rows << child_data
+        rescue => e
+          Rails.logger.error e
+        end
       end
     end
 
