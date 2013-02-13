@@ -32,5 +32,4 @@ config/couchdb.yml
 *.pem
 lib/tasks/windows
 vendor/bundle
-public/*/translations.js
 Gemfile.lock
