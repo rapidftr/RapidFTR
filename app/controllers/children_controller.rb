@@ -10,11 +10,9 @@ class ChildrenController < ApplicationController
   def index
     authorize! :index, Child
 
-    @page_name = t("home.view_all_children")
-    status = params[:filter] || params[:status] || "all"
+    @page_name = t("home.view_records")
     @aside = 'shared/sidebar_links'
-
-    @filter = status
+    @filter = params[:filter] || params[:status] || "all"
     @order = params[:order_by] || 'name'
 
     filter_children
