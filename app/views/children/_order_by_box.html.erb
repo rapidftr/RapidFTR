@@ -3,7 +3,7 @@
   <input type="hidden" name="filter" value="<%= @filter %>">
 	<%= t("children.order_by.label") %>:
 	<ul>
-		<li class="first"><%= link_for_order_by(@filter, ChildrenHelper::ORDER_BY[@filter], t("children.order_by.most_recently")+" "+ t("children.filter_by.#{@filter}"),  @order) %></li>
+		<li class="first"><%= link_for_order_by(@filter, ChildrenHelper::ORDER_BY[@filter], t("children.order_by.most_recently")+" "+ t("children.filter_by.#{@filter == 'all'? 'created' : @filter}"),  @order) %></li>
 		<li><%= link_for_order_by(@filter, "name", t('children.order_by.name'), @order) %></li>
 	</ul>
 </form>

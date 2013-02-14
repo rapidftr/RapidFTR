@@ -197,7 +197,7 @@ describe ChildrenController do
 
       context "when status is passed for field worker" do
         before { @status = "all"}
-        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
 
         it_should_behave_like "viewing children as a field worker"
       end
@@ -208,18 +208,18 @@ describe ChildrenController do
       end
 
       context "when status is not passed field_worker" do
-        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
         it_should_behave_like "viewing children as a field worker"
       end
 
       context "when status is not passed field_worker and order is name" do
-        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
+        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_name}}
         before {@params = {:order_by => 'name'}}
         it_should_behave_like "viewing children as a field worker"
       end
 
       context "when status is not passed field_worker, order is created_at and page is 2" do
-        before {@options = {:view_name=>:by_all_view_created_at, :startkey=>["all", "fakefieldworker", {}], :endkey=>["all", "fakefieldworker"], :descending=>true, :page=>2, :per_page=>20}}
+        before {@options = {:view_name=>:by_all_view_with_created_by_created_at, :startkey=>["all", "fakefieldworker", {}], :endkey=>["all", "fakefieldworker"], :descending=>true, :page=>2, :per_page=>20}}
         before {@params = {:order_by => 'created_at', :page => 2}}
         it_should_behave_like "viewing children as a field worker"
       end
@@ -235,7 +235,7 @@ describe ChildrenController do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before { @options = {:startkey=>["reunited", "fakefieldworker"], :endkey=>["reunited", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before { @options = {:startkey=>["reunited", "fakefieldworker"], :endkey=>["reunited", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -247,7 +247,7 @@ describe ChildrenController do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field_worker" do
-        before {@options = {:startkey=>["flagged", "fakefieldworker"], :endkey=>["flagged", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["flagged", "fakefieldworker"], :endkey=>["flagged", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -262,7 +262,7 @@ describe ChildrenController do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before {@options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        before {@options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
         it_should_behave_like "viewing children as a field worker"
       end
     end

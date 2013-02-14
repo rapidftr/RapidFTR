@@ -36,26 +36,93 @@ class Child < CouchRestRails::Document
           }"
 
   ['created_at', 'name', 'flag_at', 'reunited_at'].each do |field|
-    view_by "all_view_#{field}",
-          :map => "function(doc) {
-              if (doc['couchrest-type'] == 'Child')
-             {
-                emit(['all', doc['created_by'], doc['#{field}']], doc);
-                if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
-                  emit(['flag', doc['created_by'], doc['#{field}']], doc);
+      view_by "all_view_with_created_by_#{field}",
+            :map => "function(doc) {
+                var fDate = doc['#{field}'];
+                if('#{field}'.indexOf('at') > 0){
+                  fDate = Date.parse(doc['#{field}'].replace(' ', 'T').replace('UTC',''));
                 }
-
-                if (doc.hasOwnProperty('reunited')) {
-                  if (doc['reunited'] == 'true') {
-                    emit(['reunited', doc['created_by'], doc['#{field}']], doc);
-                  } else {
-                    emit(['active', doc['created_by'], doc['#{field}']], doc);
+                if (doc['couchrest-type'] == 'Child')
+                {
+                  emit(['all', doc['created_by'], fDate], doc);
+                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                    emit(['flag', doc['created_by'], fDate], doc);
                   }
-                } else {
-                  emit(['active', doc['created_by'], doc['#{field}']], doc);
+                  if (doc.hasOwnProperty('reunited')) {
+                    if (doc['reunited'] == 'true') {
+                      emit(['reunited', doc['created_by'], fDate], doc);
+                    } else {
+                      emit(['active', doc['created_by'], fDate], doc);
+                    }
+                  } else {
+                    emit(['active', doc['created_by'], fDate], doc);
+                  }
+               }
+            }"
+
+      view_by "all_view_#{field}",
+            :map => "function(doc) {
+                var fDate = doc['#{field}'];
+                if('#{field}'.indexOf('at') > 0){
+                  fDate = Date.parse(doc['#{field}'].replace(' ', 'T').replace('UTC',''));
                 }
-             }
-          }"
+                if (doc['couchrest-type'] == 'Child')
+                {
+                  emit(['all', fDate], doc);
+                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                    emit(['flag', fDate], doc);
+                  }
+
+                  if (doc.hasOwnProperty('reunited')) {
+                    if (doc['reunited'] == 'true') {
+                      emit(['reunited', fDate], doc);
+                    } else {
+                      emit(['active', fDate], doc);
+                    }
+                  } else {
+                    emit(['active', fDate], doc);
+                  }
+               }
+            }"
+
+      view_by "all_view_#{field}_count",
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'Child')
+               {
+                  emit(['all', doc['created_by']], 1);
+                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                    emit(['flag', doc['created_by']], 1);
+                  }
+                  if (doc.hasOwnProperty('reunited')) {
+                    if (doc['reunited'] == 'true') {
+                      emit(['reunited', doc['created_by']], 1);
+                    } else {
+                      emit(['active', doc['created_by']], 1);
+                    }
+                  } else {
+                    emit(['active', doc['created_by']], 1);
+                  }
+               }
+            }"
+      view_by "all_view_with_created_by_#{field}_count",
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'Child')
+               {
+                  emit(['all', doc['created_by']], 1);
+                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                    emit(['flag', doc['created_by']], 1);
+                  }
+                  if (doc.hasOwnProperty('reunited')) {
+                    if (doc['reunited'] == 'true') {
+                      emit(['reunited', doc['created_by']], 1);
+                    } else {
+                      emit(['active', doc['created_by']], 1);
+                    }
+                  } else {
+                    emit(['active', doc['created_by']], 1);
+                  }
+               }
+            }"
   end
 
 
@@ -134,7 +201,7 @@ class Child < CouchRestRails::Document
   end
 
   def self.fetch_paginated(options, page, per_page)
-    [self.paginate(options.merge({:design_doc => 'Child'})).size, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
+    [self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
 
   def self.build_solar_schema

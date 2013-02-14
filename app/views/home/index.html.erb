@@ -19,7 +19,7 @@
 
 <% if can? :read, Child %>
   <%= link_to t('home.view_records'), children_path %> <br/><br/>
-  <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flagged") %>
+  <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flag") %>
 <% end %>
 
 <br/>
