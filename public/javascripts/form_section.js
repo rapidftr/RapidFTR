@@ -47,6 +47,7 @@ $(document).ready(function() {
     }
 
     function toggleFieldPanel(event, div_to_show){
+        resetAddField();
         if(div_to_show === undefined){
             div_to_show = "#field_details";
         }
@@ -62,6 +63,13 @@ $(document).ready(function() {
         $("#err_msg_panel").hide();
         $(".field_details_overlay").toggleClass("hide");
         $(".field_details_panel").toggleClass("hide");
+    }
+
+    function resetAddField(){
+        $('#field_details_options').hide();
+        $('#field_details').hide();
+        $("ul.field_types a").removeClass("sel");
+        $("ul.field_types a#text_field").addClass("sel");
     }
 
     function showFieldDetails(){
