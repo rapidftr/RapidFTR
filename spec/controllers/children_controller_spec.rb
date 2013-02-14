@@ -146,15 +146,17 @@ describe ChildrenController do
       describe "when the signed in user has access all data" do
         before do
           fake_field_admin_login
-
+          @options ||= {}
           @stubs ||= {}
         end
 
         it "should assign all childrens as @childrens" do
+          page = @options.delete(:page)
+          per_page = @options.delete(:per_page)
           children = [mock_child(@stubs)]
           @status ||= "all"
           children.expects(:paginate).returns(children)
-          Child.should_receive(:view).with(:by_all_view, :startkey => [@status], :endkey => [@status , {}]).and_return(children)
+          Child.should_receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
 
           get :index, :status => @status
           assigns[:children].should == children
@@ -167,15 +169,19 @@ describe ChildrenController do
         before do
           @session = fake_field_worker_login
           @stubs ||= {}
+          @options ||= {}
+          @params ||= {}
         end
 
         it "should assign the children created by the user as @childrens" do
           children = [mock_child(@stubs)]
+          page = @options.delete(:page)
+          per_page = @options.delete(:per_page)
           @status ||= "all"
           children.expects(:paginate).returns(children)
-          Child.should_receive(:view).with(:by_all_view, :startkey => [@status, @session.user_name], :endkey => [@status , @session.user_name]).and_return(children)
-
-          get :index, :status => @status
+          Child.should_receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
+          @params.merge!(:status => @status)
+          get :index, @params
           assigns[:children].should == children
         end
       end
@@ -183,14 +189,38 @@ describe ChildrenController do
 
     context "viewing all children" do
       before { @stubs = { :reunited? => false } }
-      context "when status is passed" do
-        before { @status = "all" }
+      context "when status is passed for admin" do
+        before { @status = "all"}
+        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
         it_should_behave_like "viewing children by user with access to all data"
+      end
+
+      context "when status is passed for field worker" do
+        before { @status = "all"}
+        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+
         it_should_behave_like "viewing children as a field worker"
       end
 
-      context "when status is not passed" do
+      context "when status is not passed admin" do
+        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
         it_should_behave_like "viewing children by user with access to all data"
+      end
+
+      context "when status is not passed field_worker" do
+        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        it_should_behave_like "viewing children as a field worker"
+      end
+
+      context "when status is not passed field_worker and order is name" do
+        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
+        before {@params = {:order_by => 'name'}}
+        it_should_behave_like "viewing children as a field worker"
+      end
+
+      context "when status is not passed field_worker, order is created_at and page is 2" do
+        before {@options = {:view_name=>:by_all_view_created_at, :startkey=>["all", "fakefieldworker", {}], :endkey=>["all", "fakefieldworker"], :descending=>true, :page=>2, :per_page=>20}}
+        before {@params = {:order_by => 'created_at', :page => 2}}
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -200,14 +230,26 @@ describe ChildrenController do
         @status = "reunited"
         @stubs = {:reunited? => true}
       end
-      it_should_behave_like "viewing children by user with access to all data"
-      it_should_behave_like "viewing children as a field worker"
+      context "admin" do
+        before { @options = {:startkey=>["reunited"], :endkey=>["reunited", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at} }
+        it_should_behave_like "viewing children by user with access to all data"
+      end
+      context "field worker" do
+        before { @options = {:startkey=>["reunited", "fakefieldworker"], :endkey=>["reunited", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        it_should_behave_like "viewing children as a field worker"
+      end
     end
 
     context "viewing flagged children" do
       before { @status = "flagged" }
-      it_should_behave_like "viewing children by user with access to all data"
-      it_should_behave_like "viewing children as a field worker"
+      context "admin" do
+        before {@options = {:startkey=>["flagged"], :endkey=>["flagged", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        it_should_behave_like "viewing children by user with access to all data"
+      end
+      context "field_worker" do
+        before {@options = {:startkey=>["flagged", "fakefieldworker"], :endkey=>["flagged", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        it_should_behave_like "viewing children as a field worker"
+      end
     end
 
     context "viewing active children" do
@@ -215,8 +257,14 @@ describe ChildrenController do
         @status = "active"
         @stubs = {:reunited? => false}
       end
-      it_should_behave_like "viewing children by user with access to all data"
-      it_should_behave_like "viewing children as a field worker"
+      context "admin" do
+        before {@options = {:startkey=>["active"], :endkey=>["active", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        it_should_behave_like "viewing children by user with access to all data"
+      end
+      context "field worker" do
+        before {@options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_created_at}}
+        it_should_behave_like "viewing children as a field worker"
+      end
     end
   end
 

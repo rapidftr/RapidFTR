@@ -7,6 +7,7 @@ module ChildrenHelper
   module EditView
     ONETIME_PHOTOS_UPLOAD_LIMIT = 5
   end
+  ORDER_BY = {'active' => 'created_at', 'all' => 'created_at', 'reunited' => 'reunited_at', 'flag' => 'flag_at'}
 
   def thumbnail_tag(child, key = nil)
     image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt=> child['name'])
