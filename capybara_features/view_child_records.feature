@@ -72,8 +72,8 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     |
 
     When I am on the children listing page
-    Then I select "Most recently created" from "order_by"
-    And I select "Name" from "order_by"
+    And I click text "Most recently created"
+    Then I click text "Name"
     Then I should see the order andreas,jaco,meredith,zak
 
     @javascript
