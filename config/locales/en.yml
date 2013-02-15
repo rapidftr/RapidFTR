@@ -322,12 +322,12 @@ en:
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
-    created_by_org: "Created By Organisation :"
+    created_by_org: "Created By (Organisation) :"
     date_created: "Date Created :"
-    updated_by: "Updated by(User) :"
+    updated_by: "Updated by (User) :"
     after: "After :"
     before: "Before :"
-    created_by: "Created by(User) :"
+    created_by: "Created by (User) :"
     date_updated: "Date Updated :"
     select_a_criteria: "Select A Criteria"
 
