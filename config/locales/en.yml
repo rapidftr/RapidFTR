@@ -205,7 +205,7 @@ en:
       not_found: "User with the given id is not found"
       passwords_do_not_match: "does not match current password"
       password_changed_successfully: "Password changed successfully"
-      time_zone_updated: "Timezone was successfully updated."
+      time_zone_updated: "The change was successfully updated."
     update: "Update"
     verify: "Verify"
     create: "Create"
@@ -322,7 +322,7 @@ en:
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
-    created_by_org: "Created Organisation :"
+    created_by_org: "Created By Organisation :"
     date_created: "Date Created :"
     updated_by: "Updated by(User) :"
     after: "After :"
