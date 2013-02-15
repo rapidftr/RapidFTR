@@ -627,9 +627,13 @@ class Child < CouchRestRails::Document
   end
 
   def attachment(key)
-    data = read_attachment key
-    content_type = self['_attachments'][key]['content_type']
-    FileAttachment.new key, content_type, data
+    begin
+      data = read_attachment key
+      content_type = self['_attachments'][key]['content_type']
+    rescue
+      return nil
+    end
+      FileAttachment.new key, content_type, data
   end
 
   def deprecated_fields
