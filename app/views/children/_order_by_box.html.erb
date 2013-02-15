@@ -3,7 +3,6 @@
   <input type="hidden" name="filter" value="<%= @filter %>">
 	<%= t("children.order_by.label") %>:
 	<ul>
-		<li class="first"><%= link_for_order_by(@filter, ChildrenHelper::ORDER_BY[@filter], t("children.order_by.most_recently")+" "+ t("children.filter_by.#{@filter == 'all'? 'created' : @filter}"),  @order) %></li>
-		<li><%= link_for_order_by(@filter, "name", t('children.order_by.name'), @order) %></li>
+<span><li class="first"><%= select_tag :order_by, options_for_select([[t("children.order_by.most_recently")+" "+ t("children.filter_by.#{@filter == 'all'? 'created' : @filter}").downcase, ChildrenHelper::ORDER_BY[@filter]], [t('children.order_by.name'), "name"]], @order), { :onchange => "this.form.submit();"} %></li></span>
 	</ul>
 </form>
