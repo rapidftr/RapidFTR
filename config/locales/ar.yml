@@ -207,7 +207,7 @@ ar:
       not_found: "لا يوجد مستخدم بالهويه المعطاه"
       passwords_do_not_match: "لا تطابق كلمة السر الحالية"
       password_changed_successfully: "تم تغيير كلمة السر بنجاح"
-      time_zone_updated: "تم تحديث النطاق الزمني بنجاح."
+      time_zone_updated: "تم تحديث التغيير بنجاح"
     update: "تحديث"
     create: "تكوين"
     no_blank: "إسم المستخدم يجب ألا يحتوي على فراغات"
@@ -320,12 +320,12 @@ ar:
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     date_instruction: "إدخل تاريخ في الصندوق الأول لبحث سجلات كونت أو حدثت بعد ذلك التاريخ. إدخل تاريخ في الصندوق الثاني لبحث سجلات كونت أو حدثت قبل ذلك التاريخ. إدخل تواريخ في كلا الصندوقين لبحث سجلات كونت بين التاريخين"
-    created_by_org: "المنظمه :"
+    created_by_org: "تم التكوين بواسطة (منظمة) :"
     date_created: "تم تكوين التاريخ :"
     updated_by: "تم التحديث حسب المستخدم :"
     after: "بعد :"
     before: "قبل :"
-    created_by: "تم التكوين حسب المستخدم :"
+    created_by: "تم التكوين بواسطة (مستخدم) :"
     date_updated: "تم تحديث التاريخ :"
     select_a_criteria: "إختر معيار"
 
