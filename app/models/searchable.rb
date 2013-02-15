@@ -34,6 +34,23 @@ module Searchable
     def sunspot_search(query = "")
       Child.build_solar_schema
 
+      begin
+        return get_search(query).results
+      rescue
+        self.reindex!
+        Sunspot.commit
+        return get_search(query).results
+      end
+
+    end
+
+    def reindex!
+      Child.build_solar_schema
+      Sunspot.remove_all(self)
+      self.all.each { |record| Sunspot.index!(record) }
+    end
+
+    def get_search(query)
       response = Sunspot.search(self) do
         fulltext(query)
         without(:duplicate, true)
@@ -43,14 +60,7 @@ module Searchable
           params[:qf] = nil
         end
       end
-      response.results
-
-    end
-
-    def reindex!
-      Child.build_solar_schema
-      Sunspot.remove_all(self)
-      self.all.each { |record| Sunspot.index!(record) }
+      response
     end
   end
 
