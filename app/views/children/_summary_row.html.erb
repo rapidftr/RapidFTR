@@ -13,16 +13,10 @@
 
     <h2><%= link_to text_to_identify_child(child), child_path(child) %></h2>
     <div class="clearfix"></div>
-    <% if child.flag? %>
-        <div class="flag suspect">
 
-        </div>
-    <% end %>
-    <% if child.reunited? %>
-        <div class="flag reunited">
-
-        </div>
-    <% end %>
+    <%= content_tag(:div, nil, :class => 'flag suspect') if child.flag? %>
+    <%= content_tag(:div, nil, :class => 'flag reunited') if child.reunited? %>
+    <%= content_tag(:div, nil, :class => 'flag photowall') unless child.exportable %>
 
       <% sorted_highlighted_fields.each do |relevant_field| %>
         <% if relevant_field.visible? %>

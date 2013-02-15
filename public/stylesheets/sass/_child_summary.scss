@@ -69,6 +69,11 @@
         background:url(../images/new/icon_flagged.png) no-repeat;
       }
 
+      .photowall {
+        right: 70px;
+        background: url(../images/new/icon_photowall.png) no-repeat;
+      }
+
       .summary_item{
         @extend .clearfix;
         border-top: 1px solid #ddd;

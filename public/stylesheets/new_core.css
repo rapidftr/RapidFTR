@@ -844,6 +844,9 @@ table#form_sections {
     .child_list .child_summary_panel .summary_panel .suspect {
       right: 40px;
       background: url(../images/new/icon_flagged.png) no-repeat; }
+    .child_list .child_summary_panel .summary_panel .photowall {
+      right: 70px;
+      background: url(../images/new/icon_photowall.png) no-repeat; }
     .child_list .child_summary_panel .summary_panel .summary_item {
       border-top: 1px solid #dddddd;
       font-size: 0.95em; }
