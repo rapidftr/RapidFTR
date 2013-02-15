@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def unverified
-    authorize! :manage, User
+    authorize! :show, User
     flash[:verify] = t('users.select_role')
     @users = User.all_unverified
   end
