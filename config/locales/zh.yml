@@ -38,6 +38,7 @@ zh:
     logoff_confirmation: "Do you want to continue your session?"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
 
+    enter_each_in_one_line: "Enter each option on a new line"
   login:
     details: "Login details"
     username: "User Name"
@@ -65,11 +66,15 @@ zh:
      search: "Search"
 
   buttons:
+     delete: "Delete"
      save: "Save"
      login: "Log in"
      reunite: "Reunite"
      edit: "Edit"
      back: "Back"
+     change_password: "Change Password"
+     enable_photo_wall: "Enable photo wall"
+     disable_photo_wall: "Disable photo wall"
 
   children:
     label: "Children"
@@ -83,7 +88,7 @@ zh:
       all: "All"
       active: "Active"
       reunited: "Reunited"
-      flagged: "Flagged"
+      flag: "Flagged"
       created: "Created"
     order_by:
       most_recently: "Most recently"
@@ -109,6 +114,8 @@ zh:
     unflag_reason: "Unflag Reason"
     unflag_label: "Unflag"
     unflag_error_message: "Please explain why you are unflagging this record."
+    id_of_record_this_duplicate_of: "Enter the ID of the record this is a duplicate of:"
+    duplicate_header: "Marking %{child_name} as Duplicate"
     flag_error_message: "Please explain why you are flagging this record."
     investigation_details: "Investigation Details:"
     reunite_details: "Reunite Details:"
@@ -122,6 +129,7 @@ zh:
       reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
+      creation_success: "Child record successfully created."
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"
@@ -158,6 +166,8 @@ zh:
     page_gap: "&hellip;"
 
   users:
+    unverified: "Unverified Users"
+    select_role: "Please select a role before verifying the user"
     manage: "Manage Users"
     label: "Users"
     create: "Create User"
@@ -185,7 +195,7 @@ zh:
   user:
     label: "user"
     full_name: "Full Name"
-    disabled: "Disabled?"
+    disabled: "Disabled"
     actions:
       delete: "Delete"
     messages:
@@ -193,9 +203,17 @@ zh:
       created: "User was successfully created."
       updated: "User was successfully updated."
       not_found: "User with the given id is not found"
+      passwords_do_not_match: "does not match current password"
+      password_changed_successfully: "Password changed successfully"
+      time_zone_updated: "The change was successfully updated."
     update: "Update"
+    verify: "Verify"
     create: "Create"
     no_blank: "user name should not contain blanks"
+    manage_password: "Change Password"
+    old_password: "Old Password"
+    new_password: "New Password"
+    new_password_confirmation: "Confirm New Password"
 
     new: "New User"
   phone: "Phone"
@@ -221,9 +239,11 @@ zh:
   enabled: "Enabled"
   status: "Status"
   devices: "Devices"
+  provide_translation: "Provide translation for"
 
   role:
     create: "Create Role"
+    edit: "Edit Role"
 
     name: "Name"
   record: "record"
@@ -240,6 +260,26 @@ zh:
       Children: Children
       Forms: Forms
       Users: Users
+      ALL: All
+
+    permission:
+      "Register Child": "Register Child"
+      "Edit Child": "Edit Child"
+      "View And Search Child": "View And Search Child"
+      "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
+      "Manage Forms": "Manage Forms"
+      "Create and Edit Users": "Create and Edit Users"
+      "View Users": "View Users"
+      "Delete Users": "Delete Users"
+      "Disable Users": "Disable Users"
+      "BlackList Devices": "BlackList Devices"
+      "Create and Edit Roles": "Create and Edit Roles"
+      "View roles": "View roles"
+      "System Settings": "System Settings"
+      "Highlight Fields": "Highlight Fields"
+      "Manage Replications": "Manage Replications"
+      "View roles": "View roles"
+      "All": "All"
 
   forms:
     label: "Forms"
@@ -247,8 +287,9 @@ zh:
     save_details: "Save Details"
     messages:
       use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
-
+    initial_language: "Initial Language"
     cannot_be_edited: "Fields on this form cannot be edited."
+
   form_section:
     create: "Create New Form Section"
     visibility: "Visibility"
@@ -263,19 +304,25 @@ zh:
       order_saved: "Order is successfully saved."
       cannot_create: "Form section could not be created"
       correct_errors: "Please correct the following errors and resubmit:"
+      hide_confirmation: "Are you sure you want to hide fields?"
+      show_confirmation: "Are you sure you want to show fields?"
+      drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
 
       updated: "Form section successfully added"
     hide: "Hide"
     show: "Show"
     manage: "Manage Form Sections"
     edit: "Edit Form Sections"
+    buttons:
+      add: "Add"
+    options: "Options"
   message:
 
 
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
-    created_by_org: "Created Organisation :"
+    created_by_org: "Created By Organisation :"
     date_created: "Date Created :"
     updated_by: "Updated by(User) :"
     after: "After :"
@@ -304,6 +351,7 @@ zh:
     updated: "Contact information was successfully updated."
     edit_info: "Edit Contact Information"
     info_label: "Contact Information"
+
   device:
     blacklist: "Blacklist Device"
     messages:
@@ -313,17 +361,54 @@ zh:
     information: "Device Information"
     mobile_number: "Mobile Number"
     timestamp: "Timestamp"
+
   admin:
     contact_info: "Admin Contact Information"
     highlight_fields: "Highlight Fields"
+    manage_system_users: "Manage System Users"
+    create_system_user: Create a System User
+
   fields:
+    label: "Fields"
     field_name: "Field Name"
+    display_name: "Display Name"
+    option_strings_text: "Options"
     form_name: "Form Name"
     action: "Action"
     remove: "remove"
+    text_field: "Text Field"
+    check_box: "Check boxes"
+    select_box: "Select drop down"
+    radio_button: "Radio button"
+    text_area: "Text Area"
+    numeric_field: "Numeric Field"
+    date_field: "Date Field"
+
+    add: "Add Field"
+    type: "Field type"
+  replication:
+    label: Replication
+    index: Manage Replications
+    create: Configure a Server
+    edit: Edit Configuration
+    remote_url: RapidFTR URL
+    actions: Actions
+    status: Status
+    description: Description
+    timestamp: Timestamp
+    delete: Delete
+    completed: Successful
+    triggered: In Progress
+    error: Failed
+    confirm_delete: Are you sure you want to delete this replication?
+    start: Start Synchronization
+    stop: Stop Synchronization
+    configure_a_server: Configure a Server
+
   session_expire: "Your session is about to expire!"
   administration: "Administration"
   new: "New"
   saved: "Saved"
   history_of: "History of"
   account: "Account"
+  moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"

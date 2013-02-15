@@ -18,7 +18,7 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   view_by :order
 
-  validates_presence_of "name_#{I18n.default_locale}"
+  validates_presence_of "name_#{I18n.default_locale}", :message=>"Name must not be blank"
   validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
