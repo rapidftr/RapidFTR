@@ -21,12 +21,12 @@ class ExportGenerator
 
   def to_photowall_pdf
     @child_data.each do |child|
-      begin
-        add_child_photo(child, true)
-        @pdf.start_new_page unless @child_data.last == child
-      rescue => e
-        Rails.logger.error e
-      end
+        begin
+          add_child_photo(child, true)
+          @pdf.start_new_page unless @child_data.last == child
+        rescue => e
+          Rails.logger.error e
+        end
     end
     @pdf.render
   end
@@ -95,7 +95,7 @@ class ExportGenerator
   end
 
   def add_child_photo(child, with_full_id = false)
-    if child.primary_photo
+    if child.exportable && child.primary_photo
       render_image(child.primary_photo.data)
     else
       data = File.read("public/images/no_photo_clip.jpg")
