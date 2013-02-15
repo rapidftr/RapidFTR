@@ -39,9 +39,11 @@
     <%= check_box_tag 'allbottom', 'Select all records' %>
     <%= label_tag 'allbottom', t("select_all") %>
     <% end %>
+    <% if can? :export, Children %>
     <%= submit_tag t("child.actions.export_to_photo_wall") if has_results %>
     <%= submit_tag t("child.actions.export_to_pdf") if has_results %>
     <%= submit_tag t("child.actions.export_to_csv") if has_results %>
+    <% end %>
   </div>
 <%end%>
 
