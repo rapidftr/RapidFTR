@@ -90,7 +90,7 @@ class ChildrenController < ApplicationController
   def create
     authorize! :create, Child
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    create_or_update_child
+    create_or_update_child(params[:child])
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
     @child['created_by_full_name'] = current_user_full_name
     respond_to do |format|
@@ -118,7 +118,7 @@ class ChildrenController < ApplicationController
       respond_to do |format|
         format.json do
 
-          child = Child.new_with_user_name(current_user, params[:child].merge(:verified => current_user.verified?))
+          child = create_or_update_child(params[:child].merge(:verified => current_user.verified?))
 
           child['created_by_full_name'] = current_user.full_name
           if child.save
@@ -274,10 +274,10 @@ end
 
 private
 
-def create_or_update_child
-  @child = Child.by_short_id(:key => params[:child][:short_id]).first
+def create_or_update_child(child_params)
+  @child = Child.by_short_id(:key => child_params[:short_id]).first
   if @child.nil?
-    @child = Child.new_with_user_name(current_user, params[:child])
+    @child = Child.new_with_user_name(current_user, child_params)
   else
     @child = update_child_from(params)
   end
