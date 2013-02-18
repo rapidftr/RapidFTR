@@ -37,6 +37,11 @@ ar:
     logoff_warning_suffix: "ثواني."
     logoff_confirmation: "هل ترغب في مواصلة هذا الفصل؟"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+    enter_each_in_one_line: "إدخل كل خيار في سطر جديد"
+
+  data_base:
+    delete_all_documents: "تم حذف كل وثائق الأطفال"
+    operation_not_allowed: "العملية غير مصرح بها في بيئة %{rails_env}"
 
   login:
     details: "تفاصيل تسجيل الدخول"
