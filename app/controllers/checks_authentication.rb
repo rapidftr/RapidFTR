@@ -6,7 +6,7 @@ module ChecksAuthentication
 
   def app_session
     token = token_from_request
-    raise AuthenticationFailure.no_token(t("session.no_token_in_header")) if token.blank?
+    raise AuthenticationFailure.no_token(I18n.t("session.no_token_in_header")) if token.blank?
     get_session
   end
 
@@ -14,17 +14,17 @@ module ChecksAuthentication
   def check_authentication
     session = app_session
     handle_device_blacklisted(session) if session && session.device_blacklisted?
-    raise AuthenticationFailure.bad_token(t("session.invalid_token")) if session.nil?
+    raise AuthenticationFailure.bad_token(I18n.t("session.invalid_token")) if session.nil?
   end
 
   def handle_authentication_failure(auth_failure)
     if auth_failure.token_provided?
       Session.remove_from_cookies cookies
-      render_error_response ErrorResponse.unauthorized(t("session.invalid_token"))
+      render_error_response ErrorResponse.unauthorized(I18n.t("session.invalid_token"))
     else
       respond_to do |format|
         format.html { redirect_to(:login) }
-        format.any(:xml,:json) { render_error_response ErrorResponse.unauthorized(t("session.no_token_provided")) }
+        format.any(:xml,:json) { render_error_response ErrorResponse.unauthorized(I18n.t("session.no_token_provided")) }
       end
     end
   end
