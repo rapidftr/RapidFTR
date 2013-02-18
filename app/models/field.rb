@@ -104,7 +104,7 @@ class Field < Hash
   end
 
   def option_strings
-    return "" unless  self.option_strings_text
+    return [] unless  self.option_strings_text
     self.option_strings_text.split("\n")
   end
 
