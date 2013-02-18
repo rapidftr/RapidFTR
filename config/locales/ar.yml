@@ -308,7 +308,7 @@ ar:
     label: "قسم الإستمارة"
     back: "الرجوع إلى صفحة الإستمارات"
     actions:
-      add_custom_field: "Add Custom Field"
+      add_custom_field: "أضف حقل عرفي"
       save_order: "حفظ الطلب"
     messages:
       order_saved: "تم حفظ الطلب بنجاح."
@@ -347,7 +347,7 @@ ar:
   cancel: "إلغاء"
 
   contact:
-    message: "If you experience any problems with RapidFTR, or believe your password has been exposed, please contact the system administrator immediately."
+    message: "إذا واجهتك أي مشاكل مع النظام، أو تعتقد أن كلمة السر قد تم كشفها، الرجاء الإتصال بمشرف النظام حالاً"
     field:
       name: "الإسم"
       position: "المنصب"
