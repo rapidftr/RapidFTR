@@ -6,6 +6,8 @@ RapidFTR::Application.routes.draw do
       post :export_data
       get :search
       post :export_photos_to_pdf
+      post :sync_unverified
+      put :sync_unverified
     end
 
     member do
@@ -31,7 +33,6 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
   match '/children' => 'children#index', :as => :child_filter
-  match '/children/sync_unverified' => 'children#sync_unverified', :via => [ :put, :post ]
 
   resources :users do
     collection do
