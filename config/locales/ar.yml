@@ -45,6 +45,9 @@ ar:
       label: "كلمة السر"
       reset: "طلب إعاده ضبط كلمة السر"
       re_enter: "إعادة إدخال كلمة السر"
+      success_notice: "شكراَ. أحد المشرفين سيتصل بك قريباً. الرجاء الإتصال بالمشرف مباشرة إذا كان بالإمكان."
+      successfully_hidden: "تم إخفاء إشعار كلمة السر بنجاح"
+
 
     label: "تسجيل الدخول"
   header:
@@ -129,6 +132,7 @@ ar:
       reunite_error_message: "الرجاء أكّد على أن الطفل قد تم لم شمله بأسرته أو براعي، و أدخل أي معلومات تمتلكها"
       undo_reunite_error_message: "الرجاء أكّد على أن الطفل يجب أن يحدد على أنه لم يتم لم شمله، و أدخل أي تفاصيل تمتلكها"
       see_full_size: "إضغط على الصوره لرؤيه الحجم الكامل."
+      not_found: "لا يوجد سجل للطفل بالهوية المعطاة"
 
     actions:
       mark_as_investigated: "حدد على أنه تم التحقق"
@@ -245,8 +249,10 @@ ar:
   role:
     create: "تكوين دور"
     edit: "تعديل دور"
-
     name: "الإسم"
+    successfully_updated: "تم تحديث تفاصيل الدور بنجاح"
+    error_in_updating: "خطأ في تحديث تفاصيل الدور"
+
   record: "سجل"
   description: "الوصف"
   name: "الإسم"
@@ -380,6 +386,12 @@ ar:
     numeric_field: "حقل رقمي"
     date_field: "حقل التاريخ"
     add: "أضف حقل"
+    successfully_added: "تم إضافة الحقل بنجاح"
+    updated: "تم تحديث الحقل"
+    deleted: "الحقل %{display_name} تم حذفه"
+
+    add: "أضف حقل"
+    type: "نوع الحقل"
   replication:
     label: نسخ متماثل
     index: معالجة النسخ المتماثلة
@@ -399,6 +411,7 @@ ar:
     stop: أوقف النسخ المتماثل
 
   session_expire: "هذا الفصل علي وشك الإنتهاء!"
+  session_has_expired: "هذا الفصل قد إنتهى. الرجاء إعاده تسجيل الدخول"
   administration: "الإدارة"
   new: "جديد"
   saved: "تم الحفظ"

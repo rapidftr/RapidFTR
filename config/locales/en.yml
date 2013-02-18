@@ -46,6 +46,8 @@ en:
       label: "Password"
       reset: "Request Password Reset"
       re_enter: "Re-enter password"
+      success_notice: "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
+      successfully_hidden: "Password request notification was successfully hidden."
 
     label: "Login"
   header:
@@ -130,6 +132,7 @@ en:
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
       creation_success: "Child record successfully created."
+      not_found: "Child with the given id is not found"
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"
@@ -244,8 +247,9 @@ en:
   role:
     create: "Create Role"
     edit: "Edit Role"
-
     name: "Name"
+    successfully_updated: "Role details are successfully updated."
+    error_in_updating: "Error in updating the Role details."
   record: "record"
   description: "Description"
   name: "Name"
@@ -383,6 +387,9 @@ en:
     text_area: "Text Area"
     numeric_field: "Numeric Field"
     date_field: "Date Field"
+    successfully_added: "Field successfully added"
+    updated: "Field updated"
+    deleted: "Field %{display_name} has been deleted."
 
     add: "Add Field"
     type: "Field type"
@@ -406,6 +413,7 @@ en:
     configure_a_server: Configure a Server
 
   session_expire: "Your session is about to expire!"
+  session_has_expired: "Your session has expired. Please re-login."
   administration: "Administration"
   new: "New"
   saved: "Saved"

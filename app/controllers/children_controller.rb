@@ -332,7 +332,7 @@ class ChildrenController < ApplicationController
         respond_to do |format|
           format.json { render :json => @child.to_json }
           format.html do
-            flash[:error] = "Child with the given id is not found"
+            flash[:error] = t("child.messages.not_found")
             redirect_to :action => :index and return
           end
         end
