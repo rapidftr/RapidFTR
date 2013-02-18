@@ -14,9 +14,10 @@ Feature: Merge Child Records
      | Dave   | dave_uid   | true    |DateTime.new(2002,2,3,4,5,6) | ave_uid  |
      | Fred   | fred_uid   | false   |DateTime.new(2003,2,3,4,5,6) | red_uid  |
 
-    @javascript
+  @javascript
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
     When I am on the child listing filtered by flagged
+    And I select dropdown option "Flagged"
     Then I should see "Mark as Duplicate"
 
   @javascript
