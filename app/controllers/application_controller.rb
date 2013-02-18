@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
     session = current_session
     unless session.nil?
       if session.expired?
-        flash[:error] = t('session_has_expired')
+        flash[:error] = t('session.has_expired')
         redirect_to logout_path
       end
     end
