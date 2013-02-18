@@ -431,3 +431,18 @@ en:
   history_of: "History of"
   account: "Account"
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
+
+# validation error messages
+
+  models:
+    user:
+      validation:
+        error_message:
+          full_name: "Please enter full name of the user"
+          password_confirmation: "Please enter password confirmation"
+          role_ids: "Please select at least one role"
+          organisation: "Please enter the user's organisation name"
+          user_name: "Please enter a valid user name"
+          email: "Please enter a valid email address"
+          user_name_uniqueness: "User name has already been taken! Please select a new User name"
+          authenticate: "Can't authenticate a un-saved user"

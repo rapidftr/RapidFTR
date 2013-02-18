@@ -429,3 +429,17 @@ ar:
   saved: "تم الحفظ"
   history_of: "التاريخ"
   account: "حساب"
+
+
+  models:
+    user:
+      validation:
+        error_message:
+          full_name: "الرجاء إدخال إسم المستخدم بالكامل"
+          password_confirmation: "الرجاء تأكيد كلمة السر"
+          role_ids: "الرجاء إختيار دور واحد على الأقل"
+          organisation: "الرجاء إدخال إسم المنظمة التي ينتمي لها المستخدم"
+          user_name: "إسم المستخدم غير صالح"
+          email: "البريد الإلكتروني غير صالح"
+          user_name_uniqueness: "إسم المستخدم قد تم إختياره من قبل! الرجاء إختيار إسم آخر"
+          authenticate: "لا يمكن تصريح مستخدم لم يتم حفظه"
