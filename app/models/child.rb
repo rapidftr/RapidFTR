@@ -478,7 +478,7 @@ class Child < CouchRestRails::Document
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise I18n.t("models.child.validation.error_messages.primary_photo_id", @photo_key => photo_key)
+      raise I18n.t("models.child.validation.error_messages.primary_photo_id", :photo_id => photo_key)
     end
     self['current_photo_key'] = photo_key
   end
