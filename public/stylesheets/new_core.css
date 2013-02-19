@@ -871,6 +871,11 @@ table#form_sections {
       font-size: 0.8em; }
     .child_list .child_summary_panel .action_panel li {
       display: inline; }
+.child_list .results-count {
+  font-weight: bold;
+  text-align: right;
+  margin: 0px 26px;
+  color: green; }
 .child_list .child_summary_panel.sel {
   background: #e5efff;
   border: 1px solid #bdd7ff; }

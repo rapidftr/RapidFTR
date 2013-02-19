@@ -35,8 +35,10 @@ describe AdvancedSearchController do
       search = mock("search_criteria")
       SearchCriteria.stub!(:build_from_params).and_return([search])
       fake_results = [:fake_child, :fake_child]
-      SearchService.should_receive(:search).with([search]).and_return(fake_results)
-      get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
+      SearchService.should_receive(:search).with(2, [search]).and_return(fake_results)
+      
+      get :index, :page => 2, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
+      
       assigns[:results].should == fake_results
     end
 
@@ -46,8 +48,10 @@ describe AdvancedSearchController do
       stub_results = [:created_by, :created_by_value, :disable_create]
       created_by = mock("created_by")
       SearchFilter.should_receive(:new).with({:value=>"fakeuser", :join=>"AND", :field=>"created_by", :index=>1, :field2=>"created_by_full_name"}).and_return(created_by)
-      SearchService.should_receive(:search).with([search,created_by]).and_return(stub_results)
+      SearchService.should_receive(:search).with(1, [search,created_by]).and_return(stub_results)
+
       get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
+      
       assigns[:results].should == stub_results
     end
 
