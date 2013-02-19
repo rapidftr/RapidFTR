@@ -342,6 +342,9 @@ ar:
     created_by: "تم التكوين بواسطة (مستخدم) :"
     date_updated: "تم تحديث التاريخ :"
     select_a_criteria: "إختر معيار"
+    records_found:
+      one: "وجد سجل واحد"
+      other: "وجد %{count} سجل"
 
   search: "بحث"
   select_all: "إختر كل السجلات"
