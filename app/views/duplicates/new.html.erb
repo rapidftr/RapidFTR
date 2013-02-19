@@ -12,8 +12,8 @@
 
       <br /><br />
       <div class="btn_panel">
-        <%= link_to "Cancel", :back %>
-        <%= submit_tag("Mark as duplicate", :confirm => 'Are you sure you want to continue? If so, click OK. If not, click Cancel.') %>
+        <%= link_to t("child.actions.cancel"), :back %>
+        <%= submit_tag(t("child.mark_as_duplicate"), :confirm => t("child.messages.confirm_duplicate")) %>
       </div>
     <% end %>
   </div>

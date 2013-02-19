@@ -37,8 +37,12 @@ en:
     logoff_warning_suffix: "seconds."
     logoff_confirmation: "Do you want to continue your session?"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
-
     enter_each_in_one_line: "Enter each option on a new line"
+
+  data_base:
+    delete_all_documents: "Deleted all child documents"
+    operation_not_allowed: "Operation not allowed in %{rails_env} environment"
+
   login:
     details: "Login details"
     username: "User Name"
@@ -46,6 +50,8 @@ en:
       label: "Password"
       reset: "Request Password Reset"
       re_enter: "Re-enter password"
+      success_notice: "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
+      successfully_hidden: "Password request notification was successfully hidden."
 
     label: "Login"
   header:
@@ -121,6 +127,7 @@ en:
     reunite_details: "Reunite Details:"
     another_duplicate_before_link: "Another record has been marked as a duplicate of this one. Click"
     another_duplicate_after_link: " to see the duplicate record."
+
     messages:
       update_success: "Child was successfully updated."
       investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
@@ -130,6 +137,9 @@ en:
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
       creation_success: "Child record successfully created."
+      not_found: "Child with the given id is not found"
+      confirm_duplicate: "Are you sure you want to continue? If so, click OK. If not, click Cancel."
+
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"
@@ -147,6 +157,7 @@ en:
       investigation_details: "Investigation Details"
       undo_investigation_details: "Undo Investigation Details"
       undo_investigated: "Undo Investigated"
+      cancel: "Cancel"
     change_log: "Change Log"
     flagged_as_suspected: "Flagged as suspect record by"
     posted_from_mobile: "Posted from the mobile client at:"
@@ -244,8 +255,9 @@ en:
   role:
     create: "Create Role"
     edit: "Edit Role"
-
     name: "Name"
+    successfully_updated: "Role details are successfully updated."
+    error_in_updating: "Error in updating the Role details."
   record: "record"
   description: "Description"
   name: "Name"
@@ -383,6 +395,9 @@ en:
     text_area: "Text Area"
     numeric_field: "Numeric Field"
     date_field: "Date Field"
+    successfully_added: "Field successfully added"
+    updated: "Field updated"
+    deleted: "Field %{display_name} has been deleted."
 
     add: "Add Field"
     type: "Field type"
@@ -405,10 +420,43 @@ en:
     stop: Stop Synchronization
     configure_a_server: Configure a Server
 
-  session_expire: "Your session is about to expire!"
+  session:
+    about_to_expire: "Your session is about to expire!"
+    has_expired: "Your session has expired. Please re-login."
+    invalid_credentials: "Invalid credentials. Please try again!"
+    login_error: "There was a problem logging in.  Please try again."
+    invalid_token: "invalid session token"
+    no_token_provided: "no session token provided"
+    no_token_in_header: "no session token in headers or cookies"
+
   administration: "Administration"
   new: "New"
   saved: "Saved"
   history_of: "History of"
   account: "Account"
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
+
+# validation error messages
+
+  models:
+    user:
+      validation:
+        error_message:
+          full_name: "Please enter full name of the user"
+          password_confirmation: "Please enter password confirmation"
+          role_ids: "Please select at least one role"
+          organisation: "Please enter the user's organisation name"
+          user_name: "Please enter a valid user name"
+          email: "Please enter a valid email address"
+          user_name_uniqueness: "User name has already been taken! Please select a new User name"
+          authenticate: "Can't authenticate a un-saved user"
+
+    child:
+      validation:
+        error_messages:
+          at_least_one_field: "Please fill in at least one field or upload a file"
+          age: "Age must be between 1 and 99"
+          photo_format: "Please upload a valid photo file (jpg or png) for this child record"
+          photo_size: "File is too large"
+          primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
+          validate_duplicate: "A valid duplicate ID must be provided"

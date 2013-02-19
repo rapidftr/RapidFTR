@@ -1,6 +1,6 @@
 <form  class="orderby_panel">
 
-  <input type="hidden" name="filter" value="<%= @filter %>">
+  <input type="hidden" name="filter" value="<%= @filter %>"/>
 	<%= t("children.order_by.label") %>:
 	<ul>
 <span><li class="first"><%= select_tag :order_by, options_for_select([[t("children.order_by.most_recently")+" "+ t("children.filter_by.#{@filter == 'all'? 'created' : @filter}").downcase, ChildrenHelper::ORDER_BY[@filter]], [t('children.order_by.name'), "name"]], @order), { :onchange => "this.form.submit();"} %></li></span>

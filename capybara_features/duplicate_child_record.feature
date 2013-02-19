@@ -14,18 +14,23 @@ Feature: Merge Child Records
      | Dave   | dave_uid   | true    |DateTime.new(2002,2,3,4,5,6) | ave_uid  |
      | Fred   | fred_uid   | false   |DateTime.new(2003,2,3,4,5,6) | red_uid  |
 
-    @javascript
+  @javascript
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
     When I am on the child listing filtered by flagged
+    And I select dropdown option "Flagged"
     Then I should see "Mark as Duplicate"
-    
+
+  @javascript
   Scenario: Should see duplicate page when I click on "Mark as Duplicate"
     When I am on the child listing filtered by flagged
+    And I select dropdown option "Flagged"
     And I click mark as duplicate for "Steve"
     Then I am on duplicate child page for "Steve"
 
+  @javascript
   Scenario: Should see view child page when I click OK on confirmation
     When I am on the child listing filtered by flagged
+    And I select dropdown option "Flagged"
     And I click mark as duplicate for "Steve"
     And I fill in "red_uid" for "parent_id"
     And I press "Mark as duplicate"
@@ -39,10 +44,11 @@ Feature: Merge Child Records
     And I follow "here"
     Then I am on the child record page for "Bob"
 
-
+   @javascript
    Scenario: Should see error message when wrong Duplicate id/name is given
 
      When I am on the child listing filtered by flagged
+     And I select dropdown option "Flagged"
      And I click mark as duplicate for "Steve"
      And I fill in "fred_uid" for "parent_id"
      And I press "Mark as duplicate"
