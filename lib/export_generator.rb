@@ -79,6 +79,7 @@ class ExportGenerator
     return "" if value.blank?
     return value.join(", ") if field.type ==  Field::CHECK_BOXES
     if child
+      child['photo_url']= "" if child['exportable'] == false
       return child['photo_url'] if field.name.include?('photo')
       return child['audio_url'] if field.name.include?('audio')
     end

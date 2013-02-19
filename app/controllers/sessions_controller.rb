@@ -114,7 +114,7 @@ class SessionsController < ApplicationController
       :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key,
       :organisation => user.organisation,
       :language => I18n.default_locale,
-      :user_status => user.verified?
+      :verified => user.verified?
     }
     render( options.merge( :json => json ) )
   end

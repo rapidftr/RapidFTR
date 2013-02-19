@@ -20,9 +20,15 @@ describe ExportGenerator do
         'audio_url' => 'http://testmachine:3000/some-audio-path/2',
         'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
       child2.create_unique_id
+      child3 = Child.new_with_user_name(user,
+                                        '_id' => '5-188888', 'name' => 'Jane', 'unique_identifier' => "yxyy",
+                                        'photo_url' => 'http://testmachine:3000/some-photo-path/3',
+                                        'audio_url' => 'http://testmachine:3000/some-audio-path/3', 'exportable' => false,
+                                        'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
+      child3.create_unique_id
         
       subject do
-        ExportGenerator.new( [child1, child2]).to_csv
+        ExportGenerator.new( [child1, child2, child3]).to_csv
       end
       
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
@@ -37,10 +43,11 @@ describe ExportGenerator do
       it 'should render a row for each result, plus a header row' do
         FormSection.stub!(:all_visible_child_fields).and_return [Field.new_text_field("name")]
         csv_data = FasterCSV.parse subject.data
-        csv_data.length.should == 3
+        csv_data.length.should == 4
         csv_data[1][0].should == "xxxy"
         csv_data[1][2].should == "Dave"
         csv_data[2][0].should == "yyyx"
+        csv_data[3][0].should == "yxyy"
       end
       
       it "should add the correct mime type" do
@@ -57,7 +64,8 @@ describe ExportGenerator do
         csv_data = FasterCSV.parse subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-photo-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-photo-path/2"
-        csv_data.length.should == 3
+        csv_data[3][4].should == ""
+        csv_data.length.should == 4
       end
       
       it 'should have an audio column with appropriate links' do
@@ -65,7 +73,7 @@ describe ExportGenerator do
         csv_data = FasterCSV.parse subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-audio-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-audio-path/2"
-        csv_data.length.should == 3
+        csv_data.length.should == 4
       end
 
       it "should add metadata of children at the end" do
