@@ -115,6 +115,14 @@
     }
   }
 
+  .results-count{    
+    font-weight:bold;
+    text-align:right;
+    margin: 0px 26px;
+    color: green;
+
+  }
+
   .child_summary_panel.sel{
     background:#e5efff;
     border:1px solid #bdd7ff;
@@ -126,3 +134,4 @@
     }
   }
 }
+

@@ -26,6 +26,11 @@
 <%= form_tag export_data_children_path, :method => :post do %>
   <br />
   <div class="profiles-list child_list">
+    <% if @results %>
+        <div class="results-count">
+            <p><%= t("advanced_search.records_found", :count => @results.total_count) %></p>
+        </div>
+    <% end %>
     <% if !@results.nil? && @results.size > 0 %>
     <%= check_box_tag 'all', 'Select all records' %>
     <%= label_tag 'all',t("select_all") %>

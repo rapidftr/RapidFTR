@@ -108,6 +108,7 @@ en:
       reunited: "Reunited"
       flagged: "Flagged"
 
+
   child:
     flagged_by: "Flagged By"
     last_updated: "Last updated"
@@ -342,6 +343,9 @@ en:
     created_by: "Created by (User) :"
     date_updated: "Date Updated :"
     select_a_criteria: "Select A Criteria"
+    records_found:
+      one: "1 record found"
+      other: "%{count} records found"
 
   search: "Search"
   select_all: "Select all records"
