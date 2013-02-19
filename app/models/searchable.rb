@@ -31,15 +31,15 @@ module Searchable
   end
 
   module ClassMethods
-    def sunspot_search(query = "")
+    def sunspot_search(page_number, query = "")
       Child.build_solar_schema
 
       begin
-        return get_search(query).results
+        return get_search(page_number, query).results
       rescue
         self.reindex!
         Sunspot.commit
-        return get_search(query).results
+        return get_search(page_number, query).results
       end
 
     end
@@ -50,11 +50,11 @@ module Searchable
       self.all.each { |record| Sunspot.index!(record) }
     end
 
-    def get_search(query)
+    def get_search(page_number, query)
       response = Sunspot.search(self) do
         fulltext(query)
         without(:duplicate, true)
-        paginate :page => 1, :per_page => 50
+        paginate :page => page_number, :per_page => ::ChildrenHelper::View::PER_PAGE
         adjust_solr_params do |params|
           params[:defType] = "lucene"
           params[:qf] = nil

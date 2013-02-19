@@ -320,7 +320,7 @@ class Child < CouchRestRails::Document
     query = search.query
     search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
     search_criteria.concat([SearchCriteria.new(:field => "name", :value => search.query, :join => "OR")]).concat(criteria)
-    SearchService.search search_criteria
+    SearchService.search page_number=1, search_criteria
   end
 
   def self.flagged

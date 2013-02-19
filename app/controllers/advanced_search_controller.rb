@@ -19,7 +19,7 @@ class AdvancedSearchController < ApplicationController
     @criteria_list = []
     @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]) : []) unless !params[:criteria_list]
     @criteria_list = add_search_filters(params)
-    @results = SearchService.search(@criteria_list)
+    @results = SearchService.search(params[:page] || 1, @criteria_list)
     @criteria_list = add_search_criteria_if_none(params)
   end
 
