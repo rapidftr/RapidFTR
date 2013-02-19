@@ -50,7 +50,6 @@ Feature: So that hard copy printout of missing child photos are available
 
   Scenario: Exporting photo wall PDF from the child page
     Given I am on the saved record page for child with name "Will"
-    And I follow "Enable photo wall"
     And I follow "Export"
     And I follow "Export to Photo Wall"
 
