@@ -171,7 +171,7 @@ ar:
     mark_as_duplicate_with_param: "حدد %{child_name} كمطابق"
 
   preposition:
-    on_label: "on"
+    on_label: "على"
     because: "بسبب"
 
   will_paginate:
@@ -206,6 +206,10 @@ ar:
       show_all: "عرض الكل"
       show: "عرض"
       edit: "تعديل"
+      update: "تحديث"
+      create: "تكوين"
+    view: "عرض دور "
+
   user:
     label: "مستخدم"
     full_name: "الإسم الكامل"
@@ -221,6 +225,7 @@ ar:
       password_changed_successfully: "تم تغيير كلمة السر بنجاح"
       time_zone_updated: "تم تحديث التغيير بنجاح"
     update: "تحديث"
+    verify: "تحقق"
     create: "تكوين"
     no_blank: "إسم المستخدم يجب ألا يحتوي على فراغات"
     manage_password: "تغيير كلمة السر"
@@ -320,6 +325,8 @@ ar:
       correct_errors: "الرجاء تصحيح الأخطاء الوارده و أعد التسليم:"
       hide_confirmation: "هل أنت متأكد من أنك تود إخفاء الحقول؟"
       show_confirmation: "هل أنت متأكد من أنك تريد إظهار الحقول؟"
+      drag_drop_help_text: "يمكن الضغط على الحقل للسحب و الرمي من أجل الترتيب"
+
 
       updated: "تم إضافة قسم الإستماره بنجاح"
     hide: "إخفاء"
@@ -384,7 +391,7 @@ ar:
   fields:
     label: "حقول"
     field_name: "إسم الحقل"
-    display_name: "عرض الإسم"
+    display_name: "إسم العرض"
     option_strings_text: "خيارات"
     form_name: "إسم الإستمارة"
     action: "فعل"

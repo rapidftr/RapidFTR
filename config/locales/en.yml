@@ -171,6 +171,7 @@ en:
   preposition:
     on_label: "on"
     because: "Because"
+    at_label: "at"
 
   will_paginate:
     previous_label: "&#8592; Previous"
@@ -204,6 +205,10 @@ en:
       show_all: "Showing all"
       show: "Show"
       edit: "Edit"
+      update: "Update"
+      create: "Create"
+    view: "View Role"
+
   user:
     label: "user"
     full_name: "Full Name"
@@ -329,7 +334,6 @@ en:
     buttons:
       add: "Add"
     options: "Options"
-  message:
 
 
   advanced_search:
