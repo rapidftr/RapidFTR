@@ -15,6 +15,9 @@ describe "children/search.html.erb" do
       view.stub(:current_user).and_return(@user)
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
+      @results.should_receive(:total_pages).at_least(1).and_return 10
+      @results.should_receive(:current_page).at_least(1).and_return 1
+
       @highlighted_fields = [
         Field.new(:name => "field_2", :display_name => "field display 2", :enabled => true ),
         Field.new(:name => "field_4", :display_name => "field display 4", :enabled => true ) ]
@@ -38,8 +41,8 @@ describe "children/search.html.erb" do
       "current_photo_key" => "some-photo-id")
       child.stub!(:has_one_interviewer?).and_return(true)
       child.create_unique_id
-      @results = [child]
-
+      @results.clear
+      @results << child
       assign(:results, @results)
 
       render

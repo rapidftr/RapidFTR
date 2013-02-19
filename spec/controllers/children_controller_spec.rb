@@ -511,7 +511,7 @@ describe ChildrenController do
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
-        get(:search,  :query => 'blah'  )
+        get(:search, :query => 'blah')
       end
 
       it 'asks view to not show csv export link if there are no results' do

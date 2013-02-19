@@ -79,7 +79,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     Then I should be on the children listing page
 
-
   Scenario: Creating a search with non standard queries
     Given I am on the child search page
     Then I should not see any errors
