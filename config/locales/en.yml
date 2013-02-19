@@ -298,6 +298,7 @@ en:
       "Manage Replications": "Manage Replications"
       "View roles": "View roles"
       "All": "All"
+      "Users for synchronisation": "Users For Synchronisation"
 
   forms:
     label: "Forms"

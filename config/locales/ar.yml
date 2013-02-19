@@ -13,6 +13,7 @@ ar:
     current_time_zone: "النطاق الزمني الحالي"
     language: "اللغة"
     view_records: "عرض السجلات"
+    manage_system_users: "معالجة مستخدمي النظام"
     records_need_attention: "سجلات تحتاج المشاهدة"
     label: "الرئيسية"
   messages:
@@ -258,6 +259,7 @@ ar:
   status: "الحالة"
   devices: "الأجهزة"
   provide_translation: "توفير ترجمة ل"
+  display_name: "إسم العرض"
 
   role:
     create: "تكوين دور"
@@ -299,6 +301,8 @@ ar:
       "Highlight Fields": "تسليط الضوء على حقول"
       "Manage Replications": "معالجة نسخ متماثلة"
       "All": "الكل"
+      "Users for synchronisation": "مستخدمين للتزامن"
+
 
   forms:
     label: "الإستمارات"
@@ -387,6 +391,8 @@ ar:
   admin:
     contact_info: "معلومات الإتصال بالمشرف"
     highlight_fields: "تسليط الضوء على حقول"
+    manage_system_users: "معالجة مستخدمي النظام"
+    create_system_user: تكوين مستخدم للنظام
 
   fields:
     label: "حقول"
@@ -427,6 +433,8 @@ ar:
     confirm_delete: هل أنت متأكد من أنك تريد حذف النسخة المتماثلة
     start: إبدأ النسخ المتماثل
     stop: أوقف النسخ المتماثل
+    configure_a_server: إضبط المخدم
+
 
   session:
     about_to_expire: "هذا الفصل علي وشك الإنتهاء!"
