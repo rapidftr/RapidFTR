@@ -138,6 +138,8 @@ ar:
       see_full_size: "إضغط على الصوره لرؤيه الحجم الكامل."
       creation_success: "تم تكوين سجل للطفل بنجاح"
       not_found: "لا يوجد سجل للطفل بالهوية المعطاة"
+      confirm_duplicate: "هل أنت متأكد من أنك تريد المواصلة؟ إذا أردت ذلك إضغط موافق للمواصله أو لا للإلغاء"
+
 
     actions:
       mark_as_investigated: "حدد على أنه تم التحقق"
@@ -156,6 +158,7 @@ ar:
       investigation_details: "تفاصيل التحقيق"
       undo_investigation_details: "إلغاء تفاصيل التحقيق"
       undo_investigated: "إلغاء التحقيق"
+      cancel: "إلغاء"
 
     change_log: "تغيير السجل"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
@@ -452,5 +455,7 @@ ar:
           age: "العمر يجب أن يكون بين ١ و ٩٩"
           photo_format: "الرجاء تحميل صورة صالحة (jpg أو png) لهذا السجل"
           photo_size: "هذا الملف كبير"
+          primary_photo_id: "فشل المحاولة في ضبط %{photo_key} كصورة أساسية. الصورة لا توجد"
+          validate_duplicate: "يجب تزويد هوية مطابق صالحة"
 
 

@@ -478,7 +478,7 @@ class Child < CouchRestRails::Document
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise "Failed trying to set '#{photo_key}' to primary photo: no such photo key"
+      raise I18n.t("models.child.validation.error_messages.primary_photo_id", @photo_key => photo_key)
     end
     self['current_photo_key'] = photo_key
   end
@@ -698,7 +698,7 @@ class Child < CouchRestRails::Document
   end
 
   def validate_duplicate_of
-    return [false, "A valid duplicate ID must be provided"] if self["duplicate"] && self["duplicate_of"].blank?
+    return [false, I18n.t("models.child.validation.error_messages.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
     true
   end
 
