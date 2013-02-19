@@ -14,8 +14,7 @@ ar:
     language: "اللغة"
     view_records: "عرض السجلات"
     records_need_attention: "سجلات تحتاج المشاهدة"
-
-    label: "Home"
+    label: "الرئيسية"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item: "أنت على وشك نقل هذا الحقل إلى قسم إستمارة آخر ({{selection_key}}). هل أنت متأكد؟"
@@ -37,6 +36,11 @@ ar:
     logoff_warning_suffix: "ثواني."
     logoff_confirmation: "هل ترغب في مواصلة هذا الفصل؟"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+    enter_each_in_one_line: "إدخل كل خيار في سطر جديد"
+
+  data_base:
+    delete_all_documents: "تم حذف كل وثائق الأطفال"
+    operation_not_allowed: "العملية غير مصرح بها في بيئة %{rails_env}"
 
   login:
     details: "تفاصيل تسجيل الدخول"
@@ -45,6 +49,9 @@ ar:
       label: "كلمة السر"
       reset: "طلب إعاده ضبط كلمة السر"
       re_enter: "إعادة إدخال كلمة السر"
+      success_notice: "شكراَ. أحد المشرفين سيتصل بك قريباً. الرجاء الإتصال بالمشرف مباشرة إذا كان بالإمكان."
+      successfully_hidden: "تم إخفاء إشعار كلمة السر بنجاح"
+
 
     label: "تسجيل الدخول"
   header:
@@ -129,6 +136,10 @@ ar:
       reunite_error_message: "الرجاء أكّد على أن الطفل قد تم لم شمله بأسرته أو براعي، و أدخل أي معلومات تمتلكها"
       undo_reunite_error_message: "الرجاء أكّد على أن الطفل يجب أن يحدد على أنه لم يتم لم شمله، و أدخل أي تفاصيل تمتلكها"
       see_full_size: "إضغط على الصوره لرؤيه الحجم الكامل."
+      creation_success: "تم تكوين سجل للطفل بنجاح"
+      not_found: "لا يوجد سجل للطفل بالهوية المعطاة"
+      confirm_duplicate: "هل أنت متأكد من أنك تريد المواصلة؟ إذا أردت ذلك إضغط موافق للمواصله أو لا للإلغاء"
+
 
     actions:
       mark_as_investigated: "حدد على أنه تم التحقق"
@@ -147,6 +158,7 @@ ar:
       investigation_details: "تفاصيل التحقيق"
       undo_investigation_details: "إلغاء تفاصيل التحقيق"
       undo_investigated: "إلغاء التحقيق"
+      cancel: "إلغاء"
 
     change_log: "تغيير السجل"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
@@ -245,8 +257,10 @@ ar:
   role:
     create: "تكوين دور"
     edit: "تعديل دور"
-
     name: "الإسم"
+    successfully_updated: "تم تحديث تفاصيل الدور بنجاح"
+    error_in_updating: "خطأ في تحديث تفاصيل الدور"
+
   record: "سجل"
   description: "الوصف"
   name: "الإسم"
@@ -298,7 +312,7 @@ ar:
     label: "قسم الإستمارة"
     back: "الرجوع إلى صفحة الإستمارات"
     actions:
-      add_custom_field: "Add Custom Field"
+      add_custom_field: "أضف حقل عرفي"
       save_order: "حفظ الطلب"
     messages:
       order_saved: "تم حفظ الطلب بنجاح."
@@ -337,7 +351,7 @@ ar:
   cancel: "إلغاء"
 
   contact:
-    message: "If you experience any problems with RapidFTR, or believe your password has been exposed, please contact the system administrator immediately."
+    message: "إذا واجهتك أي مشاكل مع النظام، أو تعتقد أن كلمة السر قد تم كشفها، الرجاء الإتصال بمشرف النظام حالاً"
     field:
       name: "الإسم"
       position: "المنصب"
@@ -380,6 +394,12 @@ ar:
     numeric_field: "حقل رقمي"
     date_field: "حقل التاريخ"
     add: "أضف حقل"
+    successfully_added: "تم إضافة الحقل بنجاح"
+    updated: "تم تحديث الحقل"
+    deleted: "الحقل %{display_name} تم حذفه"
+
+    add: "أضف حقل"
+    type: "نوع الحقل"
   replication:
     label: نسخ متماثل
     index: معالجة النسخ المتماثلة
@@ -398,9 +418,44 @@ ar:
     start: إبدأ النسخ المتماثل
     stop: أوقف النسخ المتماثل
 
-  session_expire: "هذا الفصل علي وشك الإنتهاء!"
+  session:
+    about_to_expire: "هذا الفصل علي وشك الإنتهاء!"
+    has_expired: "هذا الفصل قد إنتهى. الرجاء إعاده تسجيل الدخول"
+    invalid_credentials: "تفاصيل الإعتماد غير صالحة. الرجاء إعادة المحاولة!"
+    login_error: "هنالك مشكلة في تسجيل الدخول. الرجاء إعادة المحاولة!"
+    invalid_token: "علامة الفصل غير صالحة"
+    no_token_provided: "علامة الفصل لم تزود"
+    no_token_in_header: "لا توجد أي علامة فصل في المقدمات"
+
+
   administration: "الإدارة"
   new: "جديد"
   saved: "تم الحفظ"
   history_of: "التاريخ"
   account: "حساب"
+
+
+  models:
+    user:
+      validation:
+        error_message:
+          full_name: "الرجاء إدخال إسم المستخدم بالكامل"
+          password_confirmation: "الرجاء تأكيد كلمة السر"
+          role_ids: "الرجاء إختيار دور واحد على الأقل"
+          organisation: "الرجاء إدخال إسم المنظمة التي ينتمي لها المستخدم"
+          user_name: "إسم المستخدم غير صالح"
+          email: "البريد الإلكتروني غير صالح"
+          user_name_uniqueness: "إسم المستخدم قد تم إختياره من قبل! الرجاء إختيار إسم آخر"
+          authenticate: "لا يمكن تصريح مستخدم لم يتم حفظه"
+
+    child:
+      validation:
+        error_messages:
+          at_least_one_field: "الرجاء ملء حقل واحد على الأقل أو تحميل ملف"
+          age: "العمر يجب أن يكون بين ١ و ٩٩"
+          photo_format: "الرجاء تحميل صورة صالحة (jpg أو png) لهذا السجل"
+          photo_size: "هذا الملف كبير"
+          primary_photo_id: "فشل المحاولة في ضبط %{photo_id} كصورة أساسية. الصورة لا توجد"
+          validate_duplicate: "يجب تزويد هوية مطابق صالحة"
+
+

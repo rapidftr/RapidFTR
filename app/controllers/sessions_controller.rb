@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
 
     if not @session
       respond_to do |format|
-        handle_login_error("Invalid credentials. Please try again!", format)
+        handle_login_error(t("session.invalid_credentials"), format)
       end
 
       return
@@ -66,7 +66,7 @@ class SessionsController < ApplicationController
         format.xml  { render :action => "show", :status => :created, :location => @session }
         format.json { render_session_as_json(@session,:status => :created, :location => @session) }
       else
-        handle_login_error("There was a problem logging in.  Please try again.", format)
+        handle_login_error(t("session.login_error"), format)
       end
     end
   end

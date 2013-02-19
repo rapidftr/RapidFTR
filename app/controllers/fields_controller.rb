@@ -15,7 +15,7 @@ class FieldsController < ApplicationController
     FormSection.add_field_to_formsection @form_section, @field
     if (@field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
-      flash[:notice] = "Field successfully added"
+      flash[:notice] = t("fields.successfully_added")
       redirect_to(edit_form_section_path(params[:form_section_id]))
     else
       @show_add_field = {:show_add_field => true}
@@ -45,7 +45,7 @@ class FieldsController < ApplicationController
     @field.attributes = params[:field] unless params[:field].nil?
     @form_section.save
     if (@field.errors.length == 0)
-      flash[:notice] = "Field updated"
+      flash[:notice] = t("fields.updated")
       message = {"status" => "ok"}
       if (request.xhr?)
         render :json => message
@@ -66,7 +66,7 @@ class FieldsController < ApplicationController
   def destroy
     field = @form_section.fields.find { |field| field.name == params[:field_name] }
     @form_section.delete_field(field.name)
-    flash[:notice] = "Field '#{field.display_name}' has been deleted."
+    flash[:notice] = t("fields.deleted", :display_name => @field.display_name)
     redirect_to(edit_form_section_path(params[:form_section_id]))
   end
 

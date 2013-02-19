@@ -22,10 +22,10 @@ class RolesController < ApplicationController
     authorize! :update, @role
 
     if @role.update_attributes(params[:role])
-      flash[:notice] = "Role details are successfully updated."
+      flash[:notice] = t("role.successfully_updated")
       redirect_to(roles_path)
     else
-      flash[:error] = "Error in updating the Role details."
+      flash[:error] = t("role.error_in_updating")
       render :action => "edit"
     end
   end

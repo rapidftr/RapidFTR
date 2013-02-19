@@ -4,6 +4,7 @@ end
 
 And /^I select dropdown option "(.+)"$/ do |option|
   page.find('//select', :text => option).click
+  page.find('//option', :text => option).click
 end
 
 And /^I remove highlight "(.+)"$/ do |highlight_field|
