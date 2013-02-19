@@ -10,7 +10,7 @@ class PasswordRecoveryRequestsController < ApplicationController
     @password_recovery_request = PasswordRecoveryRequest.new params[:password_recovery_request]
     respond_to do |format|
       if @password_recovery_request.save
-        success_notice = "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
+        success_notice = t("login.password.success_notice")
         format.html do
           flash[:notice] = success_notice
           redirect_to login_path
@@ -25,7 +25,7 @@ class PasswordRecoveryRequestsController < ApplicationController
 
   def hide
     PasswordRecoveryRequest.get(params[:password_recovery_request_id]).hide!
-    flash[:notice] = 'Password request notification was successfully hidden.'
+    flash[:notice] = t('login.password.successfully_hidden')
     redirect_to root_path
   end
 

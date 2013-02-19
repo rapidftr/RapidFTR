@@ -698,6 +698,16 @@ describe ChildrenController do
 
       child['created_by_full_name'].should eq @user.full_name
     end
+
+    it "should update the child instead of creating new child everytime" do
+      Child.should_receive(:by_short_id).with(:key => 'short_id').and_return(child = Child.new)
+      controller.should_receive(:update_child_from).and_return(child)
+      child.should_receive(:save).and_return true
+
+      post :sync_unverified, {:child => {:name => "timmy", :short_id => 'short_id'}, :format => :json}
+
+      child['created_by_full_name'].should eq @user.full_name
+    end
   end
 
   describe "POST create" do

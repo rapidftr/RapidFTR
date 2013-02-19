@@ -19,7 +19,7 @@ describe SessionsController do
     JSON.parse(response.body)["db_key"].should == "unique_key"
     JSON.parse(response.body)["organisation"].should == "TW"
     JSON.parse(response.body)["language"].should == "en"
-    JSON.parse(response.body)["user_status"].should == mock_user.verified?
+    JSON.parse(response.body)["verified"].should == mock_user.verified?
   end
 
 end
