@@ -446,3 +446,11 @@ en:
           email: "Please enter a valid email address"
           user_name_uniqueness: "User name has already been taken! Please select a new User name"
           authenticate: "Can't authenticate a un-saved user"
+
+    child:
+      validation:
+        error_messages:
+          at_least_one_field: "Please fill in at least one field or upload a file"
+          age: "Age must be between 1 and 99"
+          photo_format: "Please upload a valid photo file (jpg or png) for this child record"
+          photo_size: "File is too large"

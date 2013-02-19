@@ -221,22 +221,22 @@ class Child < CouchRestRails::Document
     return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
     return true if deprecated_fields && deprecated_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
-    [false, "Please fill in at least one field or upload a file"]
+    [false, I18n.t("models.child.validation.error_messages.at_least_one_field")]
   end
 
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-    [false, "Age must be between 1 and 99"]
+    [false, I18n.t("models.child.validation.error_messages.age")]
   end
 
   def validate_photos
     return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    [false, "Please upload a valid photo file (jpg or png) for this child record"]
+    [false, I18n.t("models.child.validation.error_messages.photo_format")]
   end
 
   def validate_photos_size
     return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-    [false, "File is too large"]
+    [false, I18n.t("models.child.validation.error_messages.photo_size")]
   end
 
   def validate_audio_size
