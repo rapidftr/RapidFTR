@@ -132,10 +132,6 @@ describe ChildrenController do
       @child.should_receive(:save!)
       post :set_exportable, :id => "37", :exportable => false
       @child.exportable.should == false
-    end
-
-    it "should redirect back to child view page" do
-      post :set_exportable, :id => "37", :exportable => false
       response.should redirect_to child_path(@child.id)
     end
   end
