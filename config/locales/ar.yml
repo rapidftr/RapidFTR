@@ -343,7 +343,7 @@ ar:
 
 
   advanced_search:
-    instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
+    instruction: "إفصل الكلمات بإستخدام OR للبحث عن اكثر من خيار."
     date_instruction: "إدخل تاريخ في الصندوق الأول لبحث سجلات كونت أو حدثت بعد ذلك التاريخ. إدخل تاريخ في الصندوق الثاني لبحث سجلات كونت أو حدثت قبل ذلك التاريخ. إدخل تواريخ في كلا الصندوقين لبحث سجلات كونت بين التاريخين"
     created_by_org: "تم التكوين بواسطة (منظمة) :"
     date_created: "تم تكوين التاريخ :"
