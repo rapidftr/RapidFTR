@@ -481,3 +481,13 @@ en:
           has_1_option: "Checkbox must have at least 1 option"
           unique_name_other: "Field already exists on form '%{form_name}'"
           unique_name_this: "Field already exists on this form"
+
+    form_section:
+      validation:
+        error_message:
+          presence_of_name: "Name must not be blank"
+          format_of_name: "Name must contain only alphanumeric characters and spaces"
+          visible_method: "visible can't be false if perm_visible is true"
+          fixed_order_method: "fixed_order can't be false if perm_enabled is true"
+          perm_visible_method: "perm_visible can't be false if perm_enabled is true"
+          add_field_to_form_section: "Form section not editable"

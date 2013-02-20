@@ -489,3 +489,13 @@ ar:
           has_1_option: "صندوق الإختيار يجب أن يحتوي على خيار واحد على الأقل"
           unique_name_other: "الحقل موجود في الإستمارة '%{form_name}'"
           unique_name_this: "الحقل موجود في هذه الإستمارة"
+
+    form_section:
+      validation:
+        error_message:
+          presence_of_name: "الإسم يجب أن لا يكون خالي"
+          format_of_name: "الإسم يجب أن يحتوي على حروف هجاء، أرقام و مساحات خالية فقط"
+          visible_method: "مريء لايمكن أن تكون خطأ إذا كان perm_visible صواب"
+          fixed_order_method: "لا يمكن fixed_order أن تكون خطأ إذا كان perm_enabled صواب"
+          perm_visible_method: "لا يمكن perm_visible أن تكون خطأ إذا كان perm_enabled صواب"
+          add_field_to_form_section: "الإستمارة غير مفعلة"

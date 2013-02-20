@@ -18,13 +18,13 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   view_by :order
 
-  validates_presence_of "name_#{I18n.default_locale}", :message=>"Name must not be blank"
-  validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=>"Name must contain only alphanumeric characters and spaces"
+  validates_presence_of "name_#{I18n.default_locale}", :message=> I18n.t("models.form_section.validation.error_message.presence_of_name")
+  validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=> I18n.t("models.form_section.validation.error_message.format_of_name")
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :visible, :method => :validate_visible_field, :message=>"visible can't be false if perm_visible is true"
-  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=>"fixed_order can't be false if perm_enabled is true"
-  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=>"perm_visible can't be false if perm_enabled is true"
+  validates_with_method :visible, :method => :validate_visible_field, :message=> I18n.t("models.form_section.validation.error_message.visible_method")
+  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=> I18n.t("models.form_section.validation.error_message.fixed_order_method")
+  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=> I18n.t("models.form_section.validation.error_message.perm_visible_method")
 
   def initialize args={}
     self["fields"] = []
@@ -76,7 +76,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.add_field_to_formsection formsection, field
-    raise "Form section not editable" unless formsection.editable
+    raise I18n.t("models.form_section.validation.error_message.add_field_to_form_section") unless formsection.editable
     formsection.fields.push(field)
     formsection.save
   end
