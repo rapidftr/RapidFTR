@@ -16,7 +16,7 @@ class ContactInformation < CouchRestRails::Document
 
   def self.get_by_id id
     result = self.all.select{|x|x.id==id}.first
-    raise ErrorResponse.not_found("Cannot find ContactInformation with id #{id}") if result.nil?
+    raise ErrorResponse.not_found(I18n.t("contact.not_found", :id => id)) if result.nil?
     return result
   end
   def self.get_or_create id

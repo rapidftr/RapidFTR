@@ -372,6 +372,7 @@ en:
     updated: "Contact information was successfully updated."
     edit_info: "Edit Contact Information"
     info_label: "Contact Information"
+    not_found: "Cannot find ContactInformation with id %{id}"
 
   device:
     blacklist: "Blacklist Device"
@@ -469,3 +470,14 @@ en:
           photo_size: "File is too large"
           primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
           validate_duplicate: "A valid duplicate ID must be provided"
+
+    filed:
+      validation:
+        error_message:
+          display_name_presence: "Display name must not be blank"
+          display_name_format: "Display name must contain at least one alphabetic characters"
+          default_value: "Cannot find default value for type "
+          has_2_options: "Field must have at least 2 options"
+          has_1_option: "Checkbox must have at least 1 option"
+          unique_name_other: "Field already exists on form '%{form_name}'"
+          unique_name_this: "Field already exists on this form"
