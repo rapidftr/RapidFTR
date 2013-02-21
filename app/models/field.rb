@@ -60,7 +60,6 @@ class Field < Hash
   validates_with_method :option_strings, :method => :validate_has_a_option
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => I18n.t("activerecord.errors.models.field.display_name_format")
 
-
   def form
     base_doc
   end
@@ -173,6 +172,11 @@ class Field < Hash
   def self.new_select_box field_name, option_strings, display_name = nil
     Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings_text => option_strings.join("\n")
   end
+
+  def self.find_by_name(name)
+    Field.by_name(:key => name.downcase).first
+  end
+
 
   private
 
