@@ -491,3 +491,12 @@ en:
           fixed_order_method: "fixed_order can't be false if perm_enabled is true"
           perm_visible_method: "perm_visible can't be false if perm_enabled is true"
           add_field_to_form_section: "Form section not editable"
+          delete_field: "Uneditable field cannot be deleted"
+          unique_name: "The name '%{name}' is already taken."
+          unique_id: "The unique id '%{unique_id}' is already taken."
+
+    role:
+      validation:
+        error_message:
+          permission_presence: "Please select at least one permission"
+          unique_name: "A role with that name already exists, please enter a different name"

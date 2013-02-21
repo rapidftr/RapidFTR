@@ -150,7 +150,7 @@ class FormSection < CouchRestRails::Document
 
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
-    raise "Uneditable field cannot be deleted" if !field.editable?
+    raise I18n.t("models.form_section.validation.error_message.delete_field") if !field.editable?
     if (field)
       field_index = fields.index(field)
       fields.delete_at(field_index)
@@ -190,12 +190,12 @@ class FormSection < CouchRestRails::Document
   def validate_unique_id
     form_section = FormSection.get_by_unique_id(self.unique_id)
     unique = form_section.nil? || form_section.id == self.id
-    unique || [false, "The unique id '#{unique_id}' is already taken."]
+    unique || [false, I18n.t("models.form_section.validation.error_message.unique_id", :unique_id => unique_id)]
   end
 
   def validate_unique_name
     unique = FormSection.all.all? {|f| id == f.id || name != nil && name != f.name }
-    unique || [false, "The name '#{name}' is already taken."]
+    unique || [false, I18n.t("models.form_section.validation.error_message.unique_name", :name => name)]
   end
 
   def create_unique_id

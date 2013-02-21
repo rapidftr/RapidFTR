@@ -499,3 +499,12 @@ ar:
           fixed_order_method: "لا يمكن fixed_order أن تكون خطأ إذا كان perm_enabled صواب"
           perm_visible_method: "لا يمكن perm_visible أن تكون خطأ إذا كان perm_enabled صواب"
           add_field_to_form_section: "الإستمارة غير مفعلة"
+          delete_field: "الحقل غير قابل للتعديل لا يمكن حذفه"
+          unique_name: "الإسم '%{name}' موجود"
+          unique_id: "الهوية المتفردة '%{unique_id}' موجوده"
+
+    role:
+      validation:
+        error_message:
+          permission_presence: "الرجاء إختيار دور واحد على الأقل"
+          unique_name: "هنالك دور بهذا الإسم. الرجاء إختيار إسم مختلف"
