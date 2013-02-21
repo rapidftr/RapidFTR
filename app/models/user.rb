@@ -24,7 +24,6 @@ class User < CouchRestRails::Document
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]
 
-
   timestamps!
 
   view_by :user_name,
