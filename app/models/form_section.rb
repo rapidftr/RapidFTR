@@ -18,13 +18,13 @@ class FormSection < CouchRestRails::Document
   view_by :unique_id
   view_by :order
 
-  validates_presence_of "name_#{I18n.default_locale}", :message=> I18n.t("models.form_section.validation.error_message.presence_of_name")
-  validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=> I18n.t("models.form_section.validation.error_message.format_of_name")
+  validates_presence_of "name_#{I18n.default_locale}", :message=> I18n.t("activerecord.errors.models.form_section.presence_of_name")
+  validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=> I18n.t("activerecord.errors.models.form_section.format_of_name")
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :visible, :method => :validate_visible_field, :message=> I18n.t("models.form_section.validation.error_message.visible_method")
-  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=> I18n.t("models.form_section.validation.error_message.fixed_order_method")
-  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=> I18n.t("models.form_section.validation.error_message.perm_visible_method")
+  validates_with_method :visible, :method => :validate_visible_field, :message=> I18n.t("activerecord.errors.models.form_section.visible_method")
+  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=> I18n.t("activerecord.errors.models.form_section.fixed_order_method")
+  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=> I18n.t("activerecord.errors.models.form_section.perm_visible_method")
 
   def initialize args={}
     self["fields"] = []
@@ -76,7 +76,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def self.add_field_to_formsection formsection, field
-    raise I18n.t("models.form_section.validation.error_message.add_field_to_form_section") unless formsection.editable
+    raise I18n.t("activerecord.errors.models.form_section.add_field_to_form_section") unless formsection.editable
     formsection.fields.push(field)
     formsection.save
   end
@@ -150,7 +150,7 @@ class FormSection < CouchRestRails::Document
 
   def delete_field field_to_delete
     field = fields.find {|field| field.name == field_to_delete}
-    raise I18n.t("models.form_section.validation.error_message.delete_field") if !field.editable?
+    raise I18n.t("activerecord.errors.models.form_section.delete_field") if !field.editable?
     if (field)
       field_index = fields.index(field)
       fields.delete_at(field_index)
@@ -190,12 +190,12 @@ class FormSection < CouchRestRails::Document
   def validate_unique_id
     form_section = FormSection.get_by_unique_id(self.unique_id)
     unique = form_section.nil? || form_section.id == self.id
-    unique || [false, I18n.t("models.form_section.validation.error_message.unique_id", :unique_id => unique_id)]
+    unique || [false, I18n.t("activerecord.errors.models.form_section.unique_id", :unique_id => unique_id)]
   end
 
   def validate_unique_name
     unique = FormSection.all.all? {|f| id == f.id || name != nil && name != f.name }
-    unique || [false, I18n.t("models.form_section.validation.error_message.unique_name", :name => name)]
+    unique || [false, I18n.t("activerecord.errors.models.form_section.unique_name", :name => name)]
   end
 
   def create_unique_id

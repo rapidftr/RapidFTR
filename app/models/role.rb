@@ -16,7 +16,7 @@ class Role < CouchRestRails::Document
           }"
 
   validates_presence_of :name
-  validates_presence_of :permissions, :message => I18n.t("models.role.validation.error_message.permission_presence")
+  validates_presence_of :permissions, :message => I18n.t("activerecord.errors.models.role.permission_presence")
   validates_with_method :name, :method => :is_name_unique, :if => :name
 
   def self.find_by_name(name)
@@ -34,7 +34,7 @@ class Role < CouchRestRails::Document
   def is_name_unique
     role = Role.find_by_name(name)
     return true if role.nil? or self.id == role.id
-    [false, I18n.t("models.role.validation.error_message.unique_name")]
+    [false, I18n.t("activerecord.errors.models.role.unique_name")]
   end
 
   def valid?(context = :default)

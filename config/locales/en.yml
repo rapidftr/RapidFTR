@@ -446,12 +446,18 @@ en:
   account: "Account"
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
 
-# validation error messages
+  # validation error messages
+  activerecord:
+    errors:
 
-  models:
-    user:
-      validation:
-        error_message:
+      template:
+        header:
+          one: "1 error prohibited this %{model} from being saved"
+          other: "%{count} errors prohibited this %{model} from being saved"
+        body: "There were problems with the following fields:"
+
+      models:
+        user:
           full_name: "Please enter full name of the user"
           password_confirmation: "Please enter password confirmation"
           role_ids: "Please select at least one role"
@@ -461,9 +467,7 @@ en:
           user_name_uniqueness: "User name has already been taken! Please select a new User name"
           authenticate: "Can't authenticate a un-saved user"
 
-    child:
-      validation:
-        error_messages:
+        child:
           at_least_one_field: "Please fill in at least one field or upload a file"
           age: "Age must be between 1 and 99"
           photo_format: "Please upload a valid photo file (jpg or png) for this child record"
@@ -471,9 +475,7 @@ en:
           primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
           validate_duplicate: "A valid duplicate ID must be provided"
 
-    filed:
-      validation:
-        error_message:
+        field:
           display_name_presence: "Display name must not be blank"
           display_name_format: "Display name must contain at least one alphabetic characters"
           default_value: "Cannot find default value for type "
@@ -482,9 +484,7 @@ en:
           unique_name_other: "Field already exists on form '%{form_name}'"
           unique_name_this: "Field already exists on this form"
 
-    form_section:
-      validation:
-        error_message:
+        form_section:
           presence_of_name: "Name must not be blank"
           format_of_name: "Name must contain only alphanumeric characters and spaces"
           visible_method: "visible can't be false if perm_visible is true"
@@ -495,8 +495,9 @@ en:
           unique_name: "The name '%{name}' is already taken."
           unique_id: "The unique id '%{unique_id}' is already taken."
 
-    role:
-      validation:
-        error_message:
+        role:
           permission_presence: "Please select at least one permission"
           unique_name: "A role with that name already exists, please enter a different name"
+
+        system_users:
+          username_unique: "User name has already been taken! Please select a new User name"
