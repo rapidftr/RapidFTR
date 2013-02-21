@@ -79,15 +79,15 @@ class User < CouchRestRails::Document
     Session.delete_for user
   end
 
-  validates_presence_of :full_name, :message => I18n.t("models.user.validation.error_message.full_name")
-  validates_presence_of :password_confirmation, :message => I18n.t("models.user.validation.error_message.password_confirmation"), :if => :password_required?
-  validates_presence_of :role_ids, :message => I18n.t("models.user.validation.error_message.role_ids"), :if => Proc.new {|user| user.verified}
-  validates_presence_of :organisation, :message => I18n.t("models.user.validation.error_message.organisation")
+  validates_presence_of :full_name, :message => I18n.t("activerecord.errors.models.user.full_name")
+  validates_presence_of :password_confirmation, :message => I18n.t("activerecord.errors.models.user.password_confirmation"), :if => :password_required?
+  validates_presence_of :role_ids, :message => I18n.t("activerecord.errors.models.user.role_ids"), :if => Proc.new {|user| user.verified}
+  validates_presence_of :organisation, :message => I18n.t("activerecord.errors.models.user.organisation")
 
-  validates_format_of :user_name, :with => /^[^ ]+$/, :message => I18n.t("models.user.validation.error_message.user_name")
+  validates_format_of :user_name, :with => /^[^ ]+$/, :message => I18n.t("activerecord.errors.models.user.user_name")
 
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
-                      :message => I18n.t("models.user.validation.error_message.email")
+                      :message => I18n.t("activerecord.errors.models.user.email")
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method :user_name, :method => :is_user_name_unique
@@ -113,12 +113,12 @@ class User < CouchRestRails::Document
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
     return true if user.nil? or self.id == user.id
-    [false, I18n.t("models.user.validation.error_message.user_name_uniqueness")]
+    [false, I18n.t("activerecord.errors.models.user.user_name_uniqueness")]
   end
 
   def authenticate(check)
     if new?
-      raise Exception.new, I18n.t("models.user.validation.error_message.authenticate")
+      raise Exception.new, I18n.t("activerecord.errors.models.user.authenticate")
     end
     !disabled? && crypted_password == self.class.encrypt(check, self.salt)
   end

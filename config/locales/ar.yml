@@ -13,6 +13,7 @@ ar:
     current_time_zone: "النطاق الزمني الحالي"
     language: "اللغة"
     view_records: "عرض السجلات"
+    manage_system_users: "معالجة مستخدمي النظام"
     records_need_attention: "سجلات تحتاج المشاهدة"
     label: "الرئيسية"
   messages:
@@ -171,7 +172,7 @@ ar:
     mark_as_duplicate_with_param: "حدد %{child_name} كمطابق"
 
   preposition:
-    on_label: "on"
+    on_label: "على"
     because: "بسبب"
 
   will_paginate:
@@ -206,6 +207,10 @@ ar:
       show_all: "عرض الكل"
       show: "عرض"
       edit: "تعديل"
+      update: "تحديث"
+      create: "تكوين"
+    view: "عرض دور "
+
   user:
     label: "مستخدم"
     full_name: "الإسم الكامل"
@@ -221,6 +226,7 @@ ar:
       password_changed_successfully: "تم تغيير كلمة السر بنجاح"
       time_zone_updated: "تم تحديث التغيير بنجاح"
     update: "تحديث"
+    verify: "تحقق"
     create: "تكوين"
     no_blank: "إسم المستخدم يجب ألا يحتوي على فراغات"
     manage_password: "تغيير كلمة السر"
@@ -253,6 +259,7 @@ ar:
   status: "الحالة"
   devices: "الأجهزة"
   provide_translation: "توفير ترجمة ل"
+  display_name: "إسم العرض"
 
   role:
     create: "تكوين دور"
@@ -294,6 +301,8 @@ ar:
       "Highlight Fields": "تسليط الضوء على حقول"
       "Manage Replications": "معالجة نسخ متماثلة"
       "All": "الكل"
+      "Users for synchronisation": "مستخدمين للتزامن"
+
 
   forms:
     label: "الإستمارات"
@@ -320,6 +329,8 @@ ar:
       correct_errors: "الرجاء تصحيح الأخطاء الوارده و أعد التسليم:"
       hide_confirmation: "هل أنت متأكد من أنك تود إخفاء الحقول؟"
       show_confirmation: "هل أنت متأكد من أنك تريد إظهار الحقول؟"
+      drag_drop_help_text: "يمكن الضغط على الحقل للسحب و الرمي من أجل الترتيب"
+
 
       updated: "تم إضافة قسم الإستماره بنجاح"
     hide: "إخفاء"
@@ -332,7 +343,7 @@ ar:
 
 
   advanced_search:
-    instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
+    instruction: "إفصل الكلمات بإستخدام OR للبحث عن اكثر من خيار."
     date_instruction: "إدخل تاريخ في الصندوق الأول لبحث سجلات كونت أو حدثت بعد ذلك التاريخ. إدخل تاريخ في الصندوق الثاني لبحث سجلات كونت أو حدثت قبل ذلك التاريخ. إدخل تواريخ في كلا الصندوقين لبحث سجلات كونت بين التاريخين"
     created_by_org: "تم التكوين بواسطة (منظمة) :"
     date_created: "تم تكوين التاريخ :"
@@ -342,6 +353,9 @@ ar:
     created_by: "تم التكوين بواسطة (مستخدم) :"
     date_updated: "تم تحديث التاريخ :"
     select_a_criteria: "إختر معيار"
+    records_found:
+      one: "وجد سجل واحد"
+      other: "وجد %{count} سجل"
 
   search: "بحث"
   select_all: "إختر كل السجلات"
@@ -363,6 +377,8 @@ ar:
     updated: "تم تحديث معلومات الإتصال بنجاح"
     edit_info: "تعديل معلومات الإتصال"
     info_label: "معلومات الإتصال"
+    not_found: "لا توجد معلومات إتصال بالهويه %{id}"
+
 
   device:
     blacklist: "أضف الجهاز للقائمة السوداء"
@@ -377,11 +393,13 @@ ar:
   admin:
     contact_info: "معلومات الإتصال بالمشرف"
     highlight_fields: "تسليط الضوء على حقول"
+    manage_system_users: "معالجة مستخدمي النظام"
+    create_system_user: تكوين مستخدم للنظام
 
   fields:
     label: "حقول"
     field_name: "إسم الحقل"
-    display_name: "عرض الإسم"
+    display_name: "إسم العرض"
     option_strings_text: "خيارات"
     form_name: "إسم الإستمارة"
     action: "فعل"
@@ -417,6 +435,8 @@ ar:
     confirm_delete: هل أنت متأكد من أنك تريد حذف النسخة المتماثلة
     start: إبدأ النسخ المتماثل
     stop: أوقف النسخ المتماثل
+    configure_a_server: إضبط المخدم
+
 
   session:
     about_to_expire: "هذا الفصل علي وشك الإنتهاء!"
@@ -434,11 +454,18 @@ ar:
   history_of: "التاريخ"
   account: "حساب"
 
+  #validation error messages
+  activerecord:
+    errors:
 
-  models:
-    user:
-      validation:
-        error_message:
+      template:
+        header:
+          one: "خطأ واحد منع هذا %{model} من أن يتم حفظه"
+          other: "%{count} أخطاء منعت عملية الحفظ"
+        body: "هنالك مشاكل في الحقول التالية:"
+
+      models:
+        user:
           full_name: "الرجاء إدخال إسم المستخدم بالكامل"
           password_confirmation: "الرجاء تأكيد كلمة السر"
           role_ids: "الرجاء إختيار دور واحد على الأقل"
@@ -448,9 +475,7 @@ ar:
           user_name_uniqueness: "إسم المستخدم قد تم إختياره من قبل! الرجاء إختيار إسم آخر"
           authenticate: "لا يمكن تصريح مستخدم لم يتم حفظه"
 
-    child:
-      validation:
-        error_messages:
+        child:
           at_least_one_field: "الرجاء ملء حقل واحد على الأقل أو تحميل ملف"
           age: "العمر يجب أن يكون بين ١ و ٩٩"
           photo_format: "الرجاء تحميل صورة صالحة (jpg أو png) لهذا السجل"
@@ -459,3 +484,29 @@ ar:
           validate_duplicate: "يجب تزويد هوية مطابق صالحة"
 
 
+        field:
+          display_name_presence: "إسم العرض يجب أن لا يكون خالياً"
+          display_name_format: "إسم العرض يجب أن يحتوي على حرف هجائي واحد على الأقل"
+          default_value: " لا توجد قيمة أساسية للنوع "
+          has_2_options: "الحقل يجب أن يحتوي على خيارين على الأقل"
+          has_1_option: "صندوق الإختيار يجب أن يحتوي على خيار واحد على الأقل"
+          unique_name_other: "الحقل موجود في الإستمارة '%{form_name}'"
+          unique_name_this: "الحقل موجود في هذه الإستمارة"
+
+        form_section:
+          presence_of_name: "الإسم يجب أن لا يكون خالي"
+          format_of_name: "الإسم يجب أن يحتوي على حروف هجاء، أرقام و مساحات خالية فقط"
+          visible_method: "مريء لايمكن أن تكون خطأ إذا كان perm_visible صواب"
+          fixed_order_method: "لا يمكن fixed_order أن تكون خطأ إذا كان perm_enabled صواب"
+          perm_visible_method: "لا يمكن perm_visible أن تكون خطأ إذا كان perm_enabled صواب"
+          add_field_to_form_section: "الإستمارة غير مفعلة"
+          delete_field: "الحقل غير قابل للتعديل لا يمكن حذفه"
+          unique_name: "الإسم '%{name}' موجود"
+          unique_id: "الهوية المتفردة '%{unique_id}' موجوده"
+
+        role:
+          permission_presence: "الرجاء إختيار دور واحد على الأقل"
+          unique_name: "هنالك دور بهذا الإسم. الرجاء إختيار إسم مختلف"
+
+        system_users:
+          username_unique: "إسم المستخدم موجود! الرجاء إختيار إسم مستخدم آخر"
