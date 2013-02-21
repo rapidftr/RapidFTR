@@ -279,7 +279,7 @@ def child_short_id child_params
 end
 
 def create_or_update_child(child_params)
-  @child = Child.by_short_id(:key => child_short_id(child_params)).first
+  @child = Child.by_short_id(:key => child_short_id(child_params)).first if child_params[:unique_identifier]
   if @child.nil?
     @child = Child.new_with_user_name(current_user, child_params)
   else
