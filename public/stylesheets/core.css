@@ -124,3 +124,13 @@
     cursor: default;
     text-decoration: none;
 }
+
+.advanced-search .error{
+    color: red;
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid red;
+    font-size: 15px;
+    font-weight: bold;
+}
+
