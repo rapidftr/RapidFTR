@@ -13,9 +13,4 @@ Feature:
   Scenario: Export photo wall must be shown or hidden according to the status of exportable
     Given I am on the child record page for "John"
     And I follow "Export"
-    Then I should not see "Export to Photo Wall"
-
-    # Enable photo wall
-    And I follow "Enable photo wall"
-    And I follow "Export"
     Then I should see "Export to Photo Wall"
