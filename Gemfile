@@ -31,6 +31,7 @@ gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
 gem 'thin', :platform => :ruby
+gem 'rufus-scheduler'
 
 group :development, :assets do
   gem 'rubyzip'

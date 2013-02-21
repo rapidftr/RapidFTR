@@ -25,6 +25,9 @@ class Child < CouchRestRails::Document
   property :verified
   property :verified, :cast_as => :boolean
 
+
+view_by :protection_status, :gender, :ftr_status
+
   view_by :name,
           :map => "function(doc) {
               if (doc['couchrest-type'] == 'Child')

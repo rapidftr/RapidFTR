@@ -221,6 +221,4 @@ describe "Child record field view model" do
     end
 
   end
-
-
 end
