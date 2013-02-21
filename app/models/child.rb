@@ -21,7 +21,6 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
-  property :exportable, :cast_as => :boolean, :default => true
   property :verified
   property :verified, :cast_as => :boolean
 
@@ -675,8 +674,7 @@ class Child < CouchRestRails::Document
                      "unique_identifier",
                      "current_photo_key",
                      "created_organisation",
-                     "photo_keys",
-                     "exportable"]
+                     "photo_keys"]
     existing_fields = system_fields + field_definitions.map { |x| x.name }
     self.reject { |k, v| existing_fields.include? k }
   end
