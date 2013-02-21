@@ -8,8 +8,3 @@ scheduler.cron '0 1 0 ? * MON' do # every monday at 00:01
   puts "generating report"
   ReportsGenerator.generate
 end
-
-# scheduler.every '10s' do # every monday at 00:01
-#   puts "generating report"
-#   ReportsGenerator.generate
-# end
