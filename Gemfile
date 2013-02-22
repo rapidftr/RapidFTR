@@ -1,4 +1,4 @@
-source :gemcutter
+source "https://rubygems.org"
 
 gem 'couchrest',      '0.34'
 gem 'dictionary',     '1.0.0'
