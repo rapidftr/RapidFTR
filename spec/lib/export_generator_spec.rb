@@ -23,7 +23,7 @@ describe ExportGenerator do
       child3 = Child.new_with_user_name(user,
                                         '_id' => '5-188888', 'name' => 'Jane', 'unique_identifier' => "yxyy",
                                         'photo_url' => 'http://testmachine:3000/some-photo-path/3',
-                                        'audio_url' => 'http://testmachine:3000/some-audio-path/3', 'exportable' => false,
+                                        'audio_url' => 'http://testmachine:3000/some-audio-path/3',
                                         'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
       child3.create_unique_id
         
@@ -64,7 +64,7 @@ describe ExportGenerator do
         csv_data = FasterCSV.parse subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-photo-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-photo-path/2"
-        csv_data[3][4].should == ""
+        csv_data[3][4].should == "http://testmachine:3000/some-photo-path/3"
         csv_data.length.should == 4
       end
       
