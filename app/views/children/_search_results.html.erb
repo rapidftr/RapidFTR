@@ -28,9 +28,14 @@
   <div class="profiles-list child_list">
     <% if @results %>
         <div class="results-count">
-            <p><%= t("advanced_search.records_found", :count => @results.total_count) %></p>
+          <p><%= t("advanced_search.records_found", :count => @results.total_count) %></p>
+          <% full_results = [] %>
+          <% @full_results.each do |r|
+            full_results.push r.id
+          end %>
         </div>
     <% end %>
+    <%= hidden_field_tag "full_results", full_results.join(",") %>
     <% if !@results.nil? && @results.size > 0 %>
     <%= check_box_tag 'all', 'Select all records' %>
     <%= label_tag 'all',t("select_all") %>

@@ -4,7 +4,6 @@ RapidFTR::Application.routes.draw do
       get :reindex
       get :advanced_search
       post :export_csv
-      post :export_data
       get :search
       post :export_photos_to_pdf
       post :sync_unverified
@@ -73,6 +72,7 @@ RapidFTR::Application.routes.draw do
   match 'form_section/:form_section_id/choose_field' => 'fields#choose', :as => :choose_field
   match '/published_form_sections' => 'publish_form_section#form_sections', :as => :published_form_sections
   match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
+  match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
   resources :advanced_search, :only => [:index, :new]
   resources :form_sections, :controller => "form_section"
   resources :contact_information
