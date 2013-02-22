@@ -235,26 +235,6 @@ def search
   default_search_respond_to
 end
 
-def export_data
-  authorize! :export, Child
-
-  selected_records = params["selections"] || {}
-  if selected_records.empty?
-    raise ErrorResponse.bad_request('You must select at least one record to be exported')
-  end
-
-  children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
-
-  if params[:commit] == t("child.actions.export_to_photo_wall")
-    export_photos_to_pdf(children, "#{file_basename}.pdf")
-  elsif params[:commit] == t("child.actions.export_to_pdf")
-    pdf_data = ExportGenerator.new(children).to_full_pdf
-    send_pdf(pdf_data, "#{file_basename}.pdf")
-  elsif params[:commit] == t("child.actions.export_to_csv")
-    render_as_csv(children, "#{file_basename}.csv")
-  end
-end
-
 def export_photos_to_pdf children, filename
   authorize! :export, Child
 
@@ -378,9 +358,9 @@ end
 
 def search_by_user_access
   if can? :view_all, Child
-    @results = Child.search(@search)
+    @results, @full_results = Child.search(@search)
   else
-    @results = Child.search_by_created_user(@search, current_user_name)
+    @results, @full_results = Child.search_by_created_user(@search, current_user_name)
   end
 end
 
