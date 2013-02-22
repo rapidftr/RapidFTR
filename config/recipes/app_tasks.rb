@@ -1,14 +1,13 @@
-namespace :deploy do
+namespace :app do
 
   desc "Create nginx/passenger configuration for deployment"
   task :setup_nginx do
-    template "nginx_site.erb", "/opt/local/nginx/conf/sites.d/#{deploy_env}_#{deploy_port}.conf"
+    template "nginx_site.erb", File.join(fetch(:nginx_site_conf), "#{rails_env}_#{http_port}.conf")
   end
 
   desc "Restart passenger"
   task :restart do
-    run "touch #{File.join(current_path, 'tmp', 'restart.txt')}"
-    # sudo "/opt/local/nginx/sbin/nginx -s reload"
+    run_with_path_env "touch #{File.join('tmp', 'restart.txt')}"
   end
 
   desc "Create releases and log folder"
@@ -19,7 +18,7 @@ namespace :deploy do
 
   desc "Create application configuration files"
   task :setup_application do
-    template "rails_env.erb", File.join(current_path, "config", "environments", "#{deploy_env}.rb")
+    template "rails_env.erb", File.join(current_path, "config", "environments", "#{rails_env}.rb")
     template "couch_config.erb", File.join(current_path, "config", "couchdb.yml")
   end
 
@@ -33,4 +32,20 @@ namespace :deploy do
     end
     template "version.erb", File.join(current_path, "public", "version.txt")
   end
+
+  desc "Migrate database"
+  task :migrate_db do
+    run_with_path_env "bundle exec rake couchdb:create db:seed db:migrate"
+  end
+
+  desc "Clean Start Solr"
+  task :start_solr do
+    run_with_path_env "bundle exec rake sunspot:clean_start"
+  end
+
+  desc "Start Scheduler Task"
+  task :start_scheduler do
+    run_with_path_env "bundle exec ruby script/scheduler-daemon.rb restart"
+  end
+
 end
