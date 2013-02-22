@@ -1,9 +1,15 @@
 class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
+  skip_before_filter :check_authentication, :only => :reindex
 
   before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf, :set_exportable]
   before_filter :current_user
   before_filter :sanitize_params, :only => [:update, :sync_unverified]
+
+  def reindex
+    Child.reindex!
+    render :nothing => true
+  end
 
   # GET /children
   # GET /children.xml
