@@ -1,4 +1,3 @@
-@wip
 Feature: Ensure translations
 
   Background:
@@ -9,12 +8,11 @@ Feature: Ensure translations
       | en     | name       | EN Translated Name |
 
   Scenario: Field label translations
-    When I set the default language to de
-    And I am on new child page
-    Then I should see "DE Translated Name" within "#tab_basic_identity"
-    And I should not see "EN Translated Name" within "#tab_basic_identity"
+    When I set the default language to "de"
+    Then I should see "DE Translated Name" translated
+    And I should not see "EN Translated Name" translated
 
-    And I set the default language to en
+    And I set the default language to "en"
     And I am on new child page
-    Then I should see "EN Translated Name" within "#tab_basic_identity"
-    And I should not see "DE Translated Name" within "#tab_basic_identity"
+    Then I should see "EN Translated Name" translated
+    And I should not see "DE Translated Name" translated

@@ -6,6 +6,18 @@ Given /^the following translations exist:$/ do |translations|
   end
 end
 
-And /^I set the default language to (.+)$/ do |locale|
+Then /^I should see "(.*?)" translated$/ do |text|
+  text.should == I18n.t("name")
+end
+
+Then /^I should not see "(.*?)" translated$/ do |arg1|
+  text.should_not == I18n.t("name")
+end
+
+And /^I set the default language to "(.+)"$/ do |locale|
+  set_default_language_to locale
+end
+
+def set_default_language_to(locale)
   I18n.locale = I18n.default_locale = locale.to_sym
 end
