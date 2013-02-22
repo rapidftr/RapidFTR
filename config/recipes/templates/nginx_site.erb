@@ -1,14 +1,16 @@
 server {
-  listen <%= deploy_port %>;
-  rewrite ^(.*)$ https://$host:<%= deploy_port_https %>$1 redirect;
+  listen <%= http_port %>;
+  <%= "server_name #{server_name};" if server_name %>
+  rewrite ^(.*)$ https://$host:<%= https_port %>$1 redirect;
 }
 
 server {
-  listen <%= deploy_port_https %>;
+  listen <%= https_port %>;
+  <%= "server_name #{server_name};" if server_name %>
   ssl on;
 
   passenger_enabled on;
-  rails_env <%= deploy_env %>;
+  rails_env <%= rails_env %>;
   gzip on;
   gzip_disable "MSIE [1-6]\.";
   root <%= fetch :current_path %>/public;
