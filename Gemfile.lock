@@ -275,6 +275,7 @@ DEPENDENCIES
   couchrest (= 0.34)
   cucumber (= 1.2.1)
   cucumber-rails (= 0.3.2)
+  daemons
   dictionary (= 1.0.0)
   dynamic_form
   factory_girl (~> 2.6)

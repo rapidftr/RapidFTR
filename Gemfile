@@ -30,8 +30,10 @@ gem 'therubyracer' , :platforms => :ruby
 gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
-gem 'thin', :platform => :ruby
-gem 'rufus-scheduler'
+gem 'thin', :platform => :ruby, :require => false
+
+gem 'rufus-scheduler', :require => false
+gem 'daemons', :require => false
 
 group :development, :assets do
   gem 'rubyzip'
