@@ -244,7 +244,7 @@ describe Replication do
       @target = "http://localhost:5984/replication_test/"
 
       @rep = build :replication
-      @rep.stub! :target => @target
+      @rep.stub! :target => @target, :save_without_callbacks => nil
       @rep["_id"] = 'test-replication-id'
       @rep.start_replication
       sleep 1
@@ -381,7 +381,63 @@ describe Replication do
     end
   end
 
-  def all_docs(db = REPLICATION_DB)
+  describe 'reindex' do
+    before :each do
+      @rep = build :replication
+      @rep["_id"] = "some-random-id"
+    end
+
+    it 'should set reindexed to false when starting replication' do
+      @rep.should_receive(:needs_reindexing=).with(true).ordered.and_return(true)
+      @rep.should_receive(:save_without_callbacks).ordered.and_return(nil)
+      @rep.start_replication
+    end
+
+    it 'should trigger reindex after success' do
+      @rep.stub! :completed? => true, :needs_reindexing? => true
+      @rep.should_receive(:trigger_local_reindex).and_return(nil)
+      @rep.should_receive(:trigger_remote_reindex).and_return(nil)
+      @rep.check_status_and_reindex
+    end
+
+    it 'should trigger reindex after error' do
+      @rep.stub! :error? => true, :needs_reindexing? => true
+      @rep.should_receive(:trigger_local_reindex).and_return(nil)
+      @rep.should_receive(:trigger_remote_reindex).and_return(nil)
+      @rep.check_status_and_reindex
+    end
+
+    it 'should not trigger reindex twice' do
+      @rep.stub! :completed? => true, :needs_reindexing? => false
+      @rep.should_not_receive(:trigger_local_reindex)
+      @rep.should_not_receive(:trigger_remote_reindex)
+      @rep.check_status_and_reindex
+    end
+
+    it 'should trigger local reindexing' do
+      Child.should_receive(:reindex!).ordered.and_return(nil)
+      @rep.should_receive(:needs_reindexing=).with(false).ordered.and_return(nil)
+      @rep.should_receive(:save_without_callbacks).ordered.and_return(nil)
+      @rep.send :trigger_local_reindex
+    end
+
+    it 'should trigger remote reindexing' do
+      uri = double()
+      uri.should_receive(:path=).with('/children/reindex').and_return(nil)
+      @rep.stub! :remote_uri => uri
+
+      Net::HTTP.should_receive(:get).with(uri).and_return(nil)
+      @rep.send :trigger_remote_reindex
+    end
+
+    it 'should schedule reindexing every 5m' do
+      scheduler = double()
+      scheduler.should_receive(:every).with('5m').and_return(nil)
+      Replication.schedule scheduler
+    end
+  end
+
+  def all_docs(db)
     db.documents["rows"].map { |doc| db.get doc["id"] unless doc["id"].include? "_design" }.compact
   end
 
