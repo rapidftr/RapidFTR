@@ -14,6 +14,7 @@ class Replication < CouchRestRails::Document
   property :description
   property :user_name
   property :crypted_password
+  property :needs_reindexing, :cast_as => :boolean, :default => false
 
   attr_accessor :password
 
@@ -30,7 +31,9 @@ class Replication < CouchRestRails::Document
   def start_replication
     replicator.save_doc push_config if target && !push_doc
     replicator.save_doc pull_config if target && !pull_doc
-    true
+
+    self.needs_reindexing = true
+    save_without_callbacks
   end
 
   def stop_replication
@@ -42,6 +45,14 @@ class Replication < CouchRestRails::Document
   def restart_replication
     stop_replication
     start_replication
+  end
+
+  def check_status_and_reindex
+    if needs_reindexing? and (completed? or error?)
+      Rails.logger.info "Replication complete, triggering reindex"
+      trigger_local_reindex
+      trigger_remote_reindex
+    end
   end
 
   def push_id
@@ -134,7 +145,31 @@ class Replication < CouchRestRails::Document
     RestClient.post COUCHDB_SERVER.uri+'/_session', 'name='+username+'&password='+password,{:content_type => 'application/x-www-form-urlencoded'}
   end
 
+  def self.schedule(scheduler)
+    scheduler.every("5m") do
+      begin
+        Rails.logger.info "Checking Replication Status..."
+        Replication.all.each(&:check_status_and_reindex)
+      rescue => e
+        Rails.logger.error "Error checking replication status"
+        e.backtrace.each { |line| Rails.logger.error line }
+      end
+    end
+  end
+
   private
+
+  def trigger_local_reindex
+    Child.reindex!
+    self.needs_reindexing = false
+    save_without_callbacks
+  end
+
+  def trigger_remote_reindex
+    uri = remote_uri
+    uri.path = Rails.application.routes.url_helpers.reindex_children_path
+    Net::HTTP.get uri
+  end
 
   def validate_remote_url
     begin
@@ -174,4 +209,5 @@ class Replication < CouchRestRails::Document
   def encrypt_password
     self.crypted_password = self.password
   end
+
 end
