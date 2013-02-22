@@ -1,6 +1,6 @@
 module ReportsGenerator
 
-  def generate
+  def self.generate
     reports_dir = File.join(Rails.root, "reports")
     FileUtils.mkdir_p reports_dir
 
@@ -21,7 +21,7 @@ module ReportsGenerator
     end
   end
 
-  def schedule(scheduler)
+  def self.schedule(scheduler)
     scheduler.cron '0 1 0 ? * MON' do # every monday at 00:01
       begin
         Rails.logger.info "Generating report..."
