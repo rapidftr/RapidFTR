@@ -39,7 +39,7 @@ describe ChildrenController do
     end
 
     it 'handles a multi-child export request' do
-      { :post => 'children/export_data' }.should route_to( :controller => 'children', :action => 'export_data' )
+      { :post => 'advanced_search/export_data' }.should route_to( :controller => 'advanced_search', :action => 'export_data' )
     end
 
     it 'recognizes and generates export_photo_to_pdf for child' do
