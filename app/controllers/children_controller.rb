@@ -20,8 +20,9 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     @filter = params[:filter] || params[:status] || "all"
     @order = params[:order_by] || 'name'
+    per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
 
-    filter_children
+    filter_children per_page
 
     respond_to do |format|
       format.html
@@ -329,12 +330,12 @@ def load_child_or_redirect
   end
 end
 
-def filter_children
-  total_rows, children = children_by_user_access(@filter)
+def filter_children(per_page)
+  total_rows, children = children_by_user_access(@filter, per_page)
   @children = paginated_collection children, total_rows
 end
 
-def children_by_user_access(filter_option)
+def children_by_user_access(filter_option, per_page )
   keys = [filter_option]
   options = {:view_name => "by_all_view_#{params[:order_by] || 'name'}".to_sym}
   unless  can?(:view_all, Child)
@@ -346,7 +347,7 @@ def children_by_user_access(filter_option)
   else
     options.merge!({:startkey => keys, :endkey => [keys, {}].flatten})
   end
-  Child.fetch_paginated(options, params[:page] || 1, ChildrenHelper::View::PER_PAGE)
+  Child.fetch_paginated(options, params[:page] || 1, per_page )
 end
 
 def paginated_collection instances, total_rows
