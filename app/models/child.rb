@@ -198,7 +198,9 @@ view_by :protection_status, :gender, :ftr_status
   end
 
   def self.fetch_paginated(options, page, per_page)
-    [self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
+    row_count = self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
+    per_page = row_count if per_page == "all"
+    [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
 
   def self.build_solar_schema
