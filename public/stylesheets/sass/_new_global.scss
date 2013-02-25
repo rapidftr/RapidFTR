@@ -179,7 +179,8 @@ input[type=button], input[type=submit] {
 .list_table {
 
   @extend clearfix;
-  margin-top: 10px;
+  margin: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
 
   th, td {
     padding: 8px;
@@ -401,7 +402,27 @@ a.mark_as_duplicate {
     padding:10px;
   }
 }
+
 .err_msg{
   color:red;
   font-size: 0.9em;
+}
+
+.pagination-box {
+  margin: 5px 30px;
+
+  .page_info {
+    float: right;
+  }
+
+  .pagination {
+    float: left;
+    a, em, span {
+      padding: 0 5px;
+      border-right: 1px solid #999;
+    }
+    .next_page {
+      border-right: none;
+    }
+  }
 }
