@@ -32,7 +32,7 @@ class AdvancedSearchController < ApplicationController
     end
 
     children = []
-    children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
+    children = selected_records.sort.map { |index, child_id| Child.get(child_id) } if params["all"].nil?
     selected_records.each do |child_id| children.push(Child.get(child_id)) end if params["all"] == "Select all records"
     if params[:commit] == t("child.actions.export_to_photo_wall")
       export_photos_to_pdf(children, "#{file_basename}.pdf")
