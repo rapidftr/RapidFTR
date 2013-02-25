@@ -5,11 +5,12 @@
       </span>
       <div class="dropdown hide">
         <% if @child.exportable %>
-          <%= link_to t("child.actions.export_to_photo_wall"), export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
+            <%= link_to t("child.actions.export_to_photo_wall"), child_photo_downloads_path(:format => 'pdf') %>
         <% end %>
-        <%= link_to t("child.actions.export_to_pdf"), child_path(@child, :format => 'pdf') %>
-        <%= link_to t("child.actions.export_to_csv"), child_path(@child, :format => 'csv') %>
+        <%= link_to t("child.actions.export_to_pdf"), "#", :class => 'export_form', "data-formaction" => child_data_downloads_path(:format => :pdf) %>
+        <%= link_to t("child.actions.export_to_csv"), "#", :class => 'export_form', "data-formaction" => child_data_downloads_path(:format => :csv) %>
       </div>
+      <%= render :partial=> "encryption_form", :locals => { :child_id => @child.id } %>
     </div>
 <% end %>
 

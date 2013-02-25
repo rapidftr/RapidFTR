@@ -23,7 +23,7 @@
 </script>
 
 <% has_results = (@results && @results.size > 0) %>
-<%= form_tag export_data_children_path, :method => :post do %>
+<%= form_tag children_record_downloads_path(:format => :pdf), :method => :post do %>
   <br />
   <div class="profiles-list child_list">
     <% if @results %>
@@ -56,10 +56,21 @@
     <%= label_tag 'allbottom', t("select_all") %>
     <% end %>
     <% if can? :export, Child %>
-    <%= submit_tag t("child.actions.export_to_photo_wall") if has_results %>
-    <%= submit_tag t("child.actions.export_to_pdf") if has_results %>
-    <%= submit_tag t("child.actions.export_to_csv") if has_results %>
+        <%= submit_tag t("child.actions.export_to_photo_wall"), :class => "submit" if has_results %>
+        <%= submit_tag t("child.actions.export_to_pdf"), :class => "submit" if has_results %>
+        <%= submit_tag t("child.actions.export_to_csv"), :class => "submit" if has_results %>
     <% end %>
+
+
+    <div class="clearfix"></div>
+    <span class="dropdown hide">
+        <%= label_tag 'password', t('encryption.label_for_password') %>
+        <input type="password" id="password" name="password" autocomplete ="off">
+        <input type="hidden" id="commit" name="commit" class="commit" autocomplete ="off">
+        <p>
+        <input type="submit" value="Save">
+        </p>
+    </span>
   </div>
 <%end%>
 

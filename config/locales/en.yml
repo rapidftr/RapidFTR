@@ -43,6 +43,9 @@ en:
     delete_all_documents: "Deleted all child documents"
     operation_not_allowed: "Operation not allowed in %{rails_env} environment"
 
+  encryption:
+    label_for_password: "Enter password to encrypt the file"
+
   login:
     details: "Login details"
     username: "User Name"

@@ -13,10 +13,12 @@ class ExportGenerator
       @options = options
     end
   end
-  def initialize *child_data
+
+  def initialize (options={}, *child_data)
     @child_data = child_data.flatten
     @pdf = Prawn::Document.new
-    @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
+    @pdf.encrypt_document options[:encryption_options] if options[:encryption_options]
+    @image_bounds = [@pdf.bounds.width, @pdf.bounds.width]
   end
 
   def to_photowall_pdf
@@ -51,7 +53,7 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
+    Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
   end
 
   def map_field_with_value(child, fields)
@@ -136,9 +138,9 @@ class ExportGenerator
   def render_pdf(field_pair)
     if !field_pair.empty?
       @pdf.table field_pair,
-                 :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
+                 :row_colors => %w[  cccccc ffffff  ],
                  :width => 500, :column_widths => {0 => 200, 1 => 300},
-                 :position => :left
+                 :cell_style => { :borders => [] }
     end
     @pdf.move_down 10
   end

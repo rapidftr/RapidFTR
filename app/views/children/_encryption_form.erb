@@ -1,0 +1,14 @@
+<div class="encryption_form hide">
+  <form accept-charset="UTF-8" action="#" method="post">
+    <p>
+      <label> <%= t('encryption.label_for_password') %> </label>
+      <input type="password" id="password" name="password" autocomplete ="off">
+      <% if child_id %>
+        <input type="hidden" id="id" name="id" autocomplete ="off" value="<%= child_id %>"
+      <% end %>
+    </p>
+    <p>
+      <input type="submit" value="Save">
+    </p>
+  </form>
+</div>

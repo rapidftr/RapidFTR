@@ -1,18 +1,11 @@
 require 'spec_helper'
 
 def inject_export_generator( fake_export_generator, child_data )
-	ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
+	ExportGenerator.stub!(:new).with(encryption_options, child_data).and_return( fake_export_generator )
 end
 
-def stub_out_export_generator child_data = []
-	inject_export_generator( stub_export_generator = stub(ExportGenerator) , child_data)
-	stub_export_generator.stub!(:child_photos).and_return('')
-	stub_export_generator
-end
-
-def stub_out_child_get(mock_child = mock(Child))
-	Child.stub(:get).and_return( mock_child )
-	mock_child
+def encryption_options
+  {:encryption_options => {:user_password=>"password", :owner_password=>"password"}}
 end
 
 describe ChildrenController do
@@ -93,12 +86,6 @@ describe ChildrenController do
       it "PUT select_primary_photo" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :select_primary_photo, :child_id => @child.id, :photo_id => 0
-        response.should render_template("#{Rails.root}/public/403.html")
-      end
-
-      it "GET export_photo_to_pdf" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
-        get :export_photo_to_pdf, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
@@ -277,15 +264,19 @@ describe ChildrenController do
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
-      get(:show, :format => 'csv', :id => "37")
+      get :show, :format => 'csv', :id => "37"
+
+      assigns[:child].should equal(child)
     end
 
     it "should set current photo key as blank instead of nil" do
       child = Child.create('last_known_location' => "London")
       child.create_unique_id
       Child.stub!(:get).with("37").and_return(child)
-      assigns[child[:current_photo_key]] == ""
+
       get(:show, :format => 'json', :id => "37")
+
+      assigns[child[:current_photo_key]] == ""
     end
 
     it "orders and assigns the forms" do
@@ -511,7 +502,6 @@ describe ChildrenController do
       assigns[:results].should == fake_results
     end
 
-
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
@@ -541,9 +531,10 @@ describe ChildrenController do
         with( :csv_data, {:foo=>:bar} ).
         and_return{controller.render :nothing => true}
 
-			get(:search, :format => 'csv', :query => 'blah')
+			get :search, {:format => 'csv', :query => 'blah', :password => "password"}
     end
   end
+
   describe "searching as field worker" do
     before :each do
       @session = fake_field_worker_login

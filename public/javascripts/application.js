@@ -125,6 +125,31 @@ RapidFTR.childPhotoRotation = {
 
 RapidFTR.showDropdown = function(){
 
+    $('.profiles-button-wrapper .submit').click(function(event){
+        var context = $(this).parent();
+        var dropdown = $(".dropdown", context);
+        dropdown.toggleClass('hide').show();
+        $(".commit", dropdown).val($(this).val());
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
+    $('.dropdown_btn .encryption_form').click(function(event){
+        event.stopPropagation();
+    });
+
+    $(".dropdown .export_form").click( function(event){
+        var encryptionForm = $(this).parent().siblings('.encryption_form');
+        var action = $(this).data('formaction');
+        var form = $("form", encryptionForm);
+        form.attr('action', action);
+
+        $(".dropdown").hide();
+        encryptionForm.toggleClass('hide').show();
+        event.preventDefault();
+    });
+
     $(".dropdown_form").click(function(event) {
         var dropdownDOM = $(".dropdown",this);
         RapidFTR.Utils.toggle(dropdownDOM);
@@ -133,6 +158,7 @@ RapidFTR.showDropdown = function(){
     $(".dropdown_btn").click( function(event){
         $(".dropdown").not(this).hide();
         $(".dropdown",this).show();
+        $(".encryption_form").hide();
         event.stopPropagation();
     });
 
@@ -141,13 +167,13 @@ RapidFTR.showDropdown = function(){
     });
 
     $('html').click(function(event){
-
-        $(".dropdown").children().each(function() {
+        $(".mark_as").children().each(function() {
             if ($(this).is('form')) {
                 $(this).remove();
             }
         });
         $(".dropdown").hide();
+        $(".encryption_form").hide();
     });
 };
 

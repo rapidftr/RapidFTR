@@ -20,6 +20,16 @@ RapidFTR::Application.routes.draw do
     resource :duplicate, :only => [:new, :create]
   end
 
+  resources :downloads do
+    collection do
+      post :children_data
+      post :child_data
+      post :children_record
+      post :child_photo
+    end
+  end
+
+
   match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
