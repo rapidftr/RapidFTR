@@ -14,7 +14,7 @@ Feature: Creating a child using the API
       | created_at  | 2011-03-28 13:23:12UTC |
       | posted_from | Mobile                 |
     Then I receive a JSON hash
-    And that hash should be composed of 16 elements
+    And that hash should be composed of 15 elements
     And that JSON hash of elements strictly has these properties:
       | JSONPropertyName     |
       | name                 |
@@ -31,7 +31,6 @@ Feature: Creating a child using the API
       | posted_at            |
       | photo_keys           |
       | current_photo_key    |
-      | exportable           |
 			| short_id						 |
     And that JSON response should be an item like
     """

@@ -3,7 +3,7 @@ Feature: Merge Child Records
   As a Field Worker
   I want to Merge duplicate records together
   So that I don't waste time working on two identical records
-  
+
   Background:
 
    Given I am logged in as an admin
