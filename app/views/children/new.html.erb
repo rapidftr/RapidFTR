@@ -10,11 +10,12 @@
     <div class="side-tab-content">
       <div class="clearfix"></div>
         <%= render :partial => "form_section", :collection => @form_sections %>
-    </div>
-    </div>
-    <%= submit_button %>
-
-    <%= discard_button :back %>
+        <div class="btn_panel">  
+            <%= discard_button :back %>
+            <%= submit_button %>    
+        </div> 
+    </div> 
+    </div>    
     <div class="clearfix"></div>
 <% end %>
 

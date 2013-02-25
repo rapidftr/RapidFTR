@@ -54,26 +54,26 @@ describe Child do
 
     it "should return empty array for no match" do
       search = mock("search", :query => "Nothing", :valid? => true)
-      Child.search(search).should == []
+      Child.search(search).should == [[],[]]
     end
 
     it "should return an exact match" do
       create_child("Exact")
       search = mock("search", :query => "Exact", :valid? => true)
-      Child.search(search).map(&:name).should == ["Exact"]
+      Child.search(search).first.map(&:name).should == ["Exact"]
     end
 
     it "should return a match that starts with the query" do
       create_child("Starts With")
       search = mock("search", :query => "Star", :valid? => true)
-      Child.search(search).map(&:name).should == ["Starts With"]
+      Child.search(search).first.map(&:name).should == ["Starts With"]
     end
 
     it "should return a fuzzy match" do
       create_child("timithy")
       create_child("timothy")
       search = mock("search", :query => "timothy", :valid? => true)
-      Child.search(search).map(&:name).should =~ ["timithy", "timothy"]
+      Child.search(search).first.map(&:name).should =~ ["timithy", "timothy"]
     end
 
     it "should return children that have duplicate as nil" do
@@ -83,7 +83,7 @@ describe Child do
       search = mock("search", :query => "aquiles", :valid? => true)
       result = Child.search(search)
 
-      result.map(&:name).should == ["eduardo aquiles"]
+      result.first.map(&:name).should == ["eduardo aquiles"]
     end
 
     it "should return children that have duplicate as false" do
@@ -93,7 +93,7 @@ describe Child do
       search = mock("search", :query => "aquiles", :valid? => true)
       result = Child.search(search)
 
-      result.map(&:name).should == ["eduardo aquiles"]
+      result.first.map(&:name).should == ["eduardo aquiles"]
     end
 
     it "should search by exact match for short id" do
@@ -101,7 +101,7 @@ describe Child do
       Child.create("name" => "kev", :unique_identifier => "1234567890", "last_known_location" => "new york")
       Child.create("name" => "kev", :unique_identifier => "0987654321", "last_known_location" => "new york")
       search = mock("search", :query => "7654321", :valid? => true)
-      results = Child.search(search)
+      results, full_results = Child.search(search)
       results.length.should == 1
       results.first[:unique_identifier].should == "0987654321"
     end
@@ -110,33 +110,33 @@ describe Child do
     it "should match more than one word" do
       create_child("timothy cochran")
       search = mock("search", :query => "timothy cochran", :valid? => true)
-      Child.search(search).map(&:name).should =~ ["timothy cochran"]
+      Child.search(search).first.map(&:name).should =~ ["timothy cochran"]
     end
 
     it "should match more than one word with fuzzy search" do
       create_child("timothy cochran")
       search = mock("search", :query => "timithy cichran", :valid? => true)
-      Child.search(search).map(&:name).should =~ ["timothy cochran"]
+      Child.search(search).first.map(&:name).should =~ ["timothy cochran"]
     end
 
     it "should match more than one word with starts with" do
       create_child("timothy cochran")
       search = mock("search", :query => "timo coch", :valid? => true)
-      Child.search(search).map(&:name).should =~ ["timothy cochran"]
+      Child.search(search).first.map(&:name).should =~ ["timothy cochran"]
     end
 
     it "should return the children registered by the user if the user has limited permission" do
       create_child("suganthi", {"created_by" => "thirumani"})
       create_child("kavitha", {"created_by" => "rajagopalan"})
       search = mock("search", :query => "kavitha", :valid? => true)
-      Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ ["kavitha"]
+      Child.search_by_created_user(search, "rajagopalan").first.map(&:name).should =~ ["kavitha"]
     end
 
     it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
       create_child("suganthi", {"created_by" => "thirumani", "unique_identifier" => "thirumanixxx12345"})
       create_child("kavitha", {"created_by" => "rajagopalan", "unique_identifier" => "rajagopalanxxx12345"})
       search = mock("search", :query => "thirumanixxx12345", :valid? => true)
-      Child.search_by_created_user(search, "rajagopalan").map(&:name).should =~ []
+      Child.search_by_created_user(search, "rajagopalan").first.map(&:name).should =~ []
     end
 
 

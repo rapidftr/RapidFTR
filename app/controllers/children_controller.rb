@@ -20,8 +20,9 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     @filter = params[:filter] || params[:status] || "all"
     @order = params[:order_by] || 'name'
+    per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
 
-    filter_children
+    filter_children per_page
 
     respond_to do |format|
       format.html
@@ -235,26 +236,6 @@ def search
   default_search_respond_to
 end
 
-def export_data
-  authorize! :export, Child
-
-  selected_records = params["selections"] || {}
-  if selected_records.empty?
-    raise ErrorResponse.bad_request('You must select at least one record to be exported')
-  end
-
-  children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
-
-  if params[:commit] == t("child.actions.export_to_photo_wall")
-    export_photos_to_pdf(children, "#{file_basename}.pdf")
-  elsif params[:commit] == t("child.actions.export_to_pdf")
-    pdf_data = ExportGenerator.new(children).to_full_pdf
-    send_pdf(pdf_data, "#{file_basename}.pdf")
-  elsif params[:commit] == t("child.actions.export_to_csv")
-    render_as_csv(children, "#{file_basename}.csv")
-  end
-end
-
 def export_photos_to_pdf children, filename
   authorize! :export, Child
 
@@ -349,12 +330,12 @@ def load_child_or_redirect
   end
 end
 
-def filter_children
-  total_rows, children = children_by_user_access(@filter)
+def filter_children(per_page)
+  total_rows, children = children_by_user_access(@filter, per_page)
   @children = paginated_collection children, total_rows
 end
 
-def children_by_user_access(filter_option)
+def children_by_user_access(filter_option, per_page )
   keys = [filter_option]
   options = {:view_name => "by_all_view_#{params[:order_by] || 'name'}".to_sym}
   unless  can?(:view_all, Child)
@@ -366,7 +347,7 @@ def children_by_user_access(filter_option)
   else
     options.merge!({:startkey => keys, :endkey => [keys, {}].flatten})
   end
-  Child.fetch_paginated(options, params[:page] || 1, ChildrenHelper::View::PER_PAGE)
+  Child.fetch_paginated(options, params[:page] || 1, per_page )
 end
 
 def paginated_collection instances, total_rows
@@ -378,9 +359,9 @@ end
 
 def search_by_user_access
   if can? :view_all, Child
-    @results = Child.search(@search)
+    @results, @full_results = Child.search(@search)
   else
-    @results = Child.search_by_created_user(@search, current_user_name)
+    @results, @full_results = Child.search_by_created_user(@search, current_user_name)
   end
 end
 

@@ -197,7 +197,9 @@ view_by :protection_status, :gender, :ftr_status
   end
 
   def self.fetch_paginated(options, page, per_page)
-    [self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
+    row_count = self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
+    per_page = row_count if per_page == "all"
+    [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
 
   def self.build_solar_schema
@@ -436,9 +438,6 @@ view_by :protection_status, :gender, :ftr_status
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
       self['current_photo_key'] = self['photo_keys'].first if p == self['current_photo_key']
-      self['_attachments'].keys.each do |key|
-        self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
-      end
     } if @deleted_photo_keys
 
     self['current_photo_key'] ||= self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
