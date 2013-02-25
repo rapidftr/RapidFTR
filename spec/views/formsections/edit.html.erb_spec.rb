@@ -48,7 +48,7 @@ describe "form_section/edit.html.erb" do
     controller.stub(:current_user).and_return(user)
     # view.stub(:current_user).and_return(@user)
 
-    form_section = FormSection.new "name" => "Basic Details", "name_fr" => "Basic Details French", "name_en" => "Basic Details English", 
+    form_section = FormSection.new "name_fr" => "Basic Details French", "name_en" => "Basic Details English", 
         "enabled"=> "true", "description_fr"=>"Blah blah French", "description_en"=>"Blah blah", "help_text_fr" => "help me French", 
         "help_text_en" => "help me English", "order"=>"10", "unique_id"=> "basic_details", :editable => "false"
     assign(:form_section, form_section)
