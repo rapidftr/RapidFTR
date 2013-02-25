@@ -42,4 +42,25 @@ describe "form_section/edit.html.erb" do
     document.css("#fields_field").should be_empty
   end
 
+  it "should display forms in system language when user language is different" do
+    I18n.default_locale = :fr
+    user = mock('user', :has_permission? => true, :user_name => 'name', :locale => :en)
+    controller.stub(:current_user).and_return(user)
+    # view.stub(:current_user).and_return(@user)
+
+    form_section = FormSection.new "name" => "Basic Details", "name_fr" => "Basic Details French", "name_en" => "Basic Details English", 
+        "enabled"=> "true", "description_fr"=>"Blah blah French", "description_en"=>"Blah blah", "help_text_fr" => "help me French", 
+        "help_text_en" => "help me English", "order"=>"10", "unique_id"=> "basic_details", :editable => "false"
+    assign(:form_section, form_section)
+    render
+
+    page = Nokogiri::HTML(rendered)
+
+    page.css("#form_section_name").first["value"].should == "Basic Details French"
+    page.css("#form_section_description").first["value"].should == "Blah blah French"
+    page.css("#form_section_help_text").first["value"].should == "help me French"
+
+    # Hpricot(rendered).at(".results-count").at("p").inner_html.should == "1 record found"
+  end
+
 end
