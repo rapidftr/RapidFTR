@@ -119,4 +119,5 @@ describe ExportGenerator do
         subject.options[:filename].should include "yyyx"
       end
     end
+  end
 end

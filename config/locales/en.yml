@@ -92,6 +92,7 @@ en:
     export_all_child_records_to_csv: "Export All Child Records to CSV"
     export_all_child_records_to_pdf: "Export All Child Records to PDF"
     export_some_records_to_csv: "Export Some Records to CSV"
+    export_error: Please enter the password to encrypt the file
     filter_by:
       label: "Filter by"
       all: "All"

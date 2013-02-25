@@ -117,7 +117,7 @@ describe ExportGenerator do
   #    pdf_generator = ExportGenerator.new({}, child)
   #    subject.to_full_pdf
   #   end
-  #end
+  end
 
   private
 

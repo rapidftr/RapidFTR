@@ -26,7 +26,28 @@ class Child < CouchRestRails::Document
   property :verified, :cast_as => :boolean
 
 
-view_by :protection_status, :gender, :ftr_status
+  view_by :protection_status, :gender, :ftr_status
+
+  view_by :all_view,
+          :map => "function(doc) {
+              if (doc['couchrest-type'] == 'Child')
+             {
+                emit(['all', doc['created_by']], doc);
+                if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                  emit(['flagged', doc['created_by']], doc);
+                }
+
+                if (doc.hasOwnProperty('reunited')) {
+                  if (doc['reunited'] == 'true') {
+                    emit(['reunited', doc['created_by']], doc);
+                  } else {
+                    emit(['active', doc['created_by']], doc);
+                  }
+                } else {
+                  emit(['active', doc['created_by']], doc);
+                }
+             }
+          }"
 
   view_by :name,
           :map => "function(doc) {

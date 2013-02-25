@@ -144,7 +144,7 @@ RapidFTR.showDropdown = function(){
         var action = $(this).data('formaction');
         var form = $("form", encryptionForm);
         form.attr('action', action);
-
+        $("#password").val("");
         $(".dropdown").hide();
         encryptionForm.toggleClass('hide').show();
         event.preventDefault();
@@ -184,10 +184,11 @@ RapidFTR.Utils = {
 
     enableFormErrorChecking: function() {
         $('.dropdown').delegate(".mark-as-submit", 'click', function(){
-            if(!$(this).siblings('input[type=text]').val()){
-                alert($(this).attr('data-error-message'));
-                return false;
-            }
+                if(($(this).siblings('input[type=text]').val() != undefined && $(this).siblings('input[type=text]').val() == "") ||
+                    ($(this).siblings('input[type=password]').val() != undefined && $(this).siblings('input[type=password]').val() == "")){
+                    alert($(this).attr('data-error-message'));
+                    return false;
+                }
         });
     },
 
