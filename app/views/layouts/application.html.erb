@@ -40,7 +40,7 @@
         <% if can?(:read, Device) or can?(:read, Replication) %>
           <li><%= link_to t("navigation.devices"), devices_path %></li>
         <% end %>
-        <li><a href="#"><%= t("navigation.reports") %></a></li>
+        <li><%= link_to t("navigation.reports"), reports_path %></li>
       </ul>
     </nav>
         <% if can? :view_and_search, Child %>
