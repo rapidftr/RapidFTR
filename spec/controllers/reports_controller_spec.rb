@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ReportsController do
   before :each do
-    fake_login
+    fake_login_as [ Permission::REPORTS[:view] ]
   end
 
   it "should fetch reports" do
@@ -33,5 +33,23 @@ describe ReportsController do
     response.content_type.should == report.content_type
     response.headers['Content-Disposition'].should be_include 'filename="test_report.csv"'
     response.body.should == 'test data'
+  end
+
+  describe '#permissions' do
+    before :each do
+      fake_field_worker_login
+    end
+
+    it "should not list reports" do
+      get :index
+      response.should be_forbidden
+    end
+
+    it "should not download report" do
+      report = create :report
+      sleep 1
+      get :show, :id => report.id
+      response.should be_forbidden
+    end
   end
 end
