@@ -123,7 +123,8 @@ input[type=button], input[type=submit] {
   margin-top: 10px; }
 
 .list_table {
-  margin-top: 10px; }
+  margin: 10px 0;
+  border-bottom: 1px solid #f0f0f0; }
   .list_table th, .list_table td {
     padding: 8px; }
   .list_table thead th {
@@ -275,6 +276,18 @@ a.mark_as_duplicate {
 .err_msg {
   color: red;
   font-size: 0.9em; }
+
+.pagination-box {
+  margin: 5px 30px; }
+  .pagination-box .page_info {
+    float: right; }
+  .pagination-box .pagination {
+    float: left; }
+    .pagination-box .pagination a, .pagination-box .pagination em, .pagination-box .pagination span {
+      padding: 0 5px;
+      border-right: 1px solid #999999; }
+    .pagination-box .pagination .next_page {
+      border-right: none; }
 
 body {
   background: url(../images/new/bg_body.png) repeat-x;
@@ -872,10 +885,9 @@ table#form_sections {
     .child_list .child_summary_panel .action_panel li {
       display: inline; }
 .child_list .results-count {
-  font-weight: bold;
-  text-align: right;
-  margin: 0px 26px;
-  color: green; }
+  float: right;
+  margin: 0 26px 0 0;
+  color: #4b515f; }
 .child_list .child_summary_panel.sel {
   background: #e5efff;
   border: 1px solid #bdd7ff; }

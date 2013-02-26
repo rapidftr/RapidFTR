@@ -208,12 +208,13 @@ describe Child do
                             [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
                              Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
       child = Child.new("name" => "old", "last_updated_at" => "2012-12-12 00:00:00UTC")
-      child.save
+      child.save!
       changed_properties = {"name" => "new", "last_updated_at" => "2013-01-01 00:00:01UTC", "histories" => [JSON.parse("{\"user_name\":\"rapidftr\",\"changes\":{\"name\":{\"to\":\"new\",\"from\":\"old\"}}}")]}
       child.update_properties_with_user_name "rapidftr", nil, nil, nil, changed_properties
-      child.save
+      child.save!
+      sleep 1
       child.update_properties_with_user_name "rapidftr", nil, nil, nil, changed_properties
-      child.save
+      child.save!
       child["histories"].size.should == 1
     end
 
