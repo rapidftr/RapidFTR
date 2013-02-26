@@ -116,11 +116,9 @@
   }
 
   .results-count{    
-    font-weight:bold;
-    text-align:right;
-    margin: 0px 26px;
-    color: green;
-
+    float: right;
+    margin: 0 26px 0 0;
+    color: #4b515f;
   }
 
   .child_summary_panel.sel{

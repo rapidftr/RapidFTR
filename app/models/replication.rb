@@ -203,7 +203,7 @@ class Replication < CouchRestRails::Document
   end
 
   def replicator
-    COUCHDB_SERVER.database('_replicator')
+    @replicator ||= COUCHDB_SERVER.database('_replicator')
   end
 
   def encrypt_password
