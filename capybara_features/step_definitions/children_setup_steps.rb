@@ -26,7 +26,11 @@ Given /^the following children exist in the system:$/ do |children_table|
     if User.find_by_user_name(user_name).nil?
       create_user(user_name)
     end
-
+    if child_hash['duplicate'] == "true"
+      child_hash.reverse_merge!('duplicate_of' => '123')
+    else
+      child_hash.delete('duplicate')
+    end
     User.find_by_user_name(user_name).
         update_attributes({:organisation => child_hash['created_organisation']}) if child_hash['created_organisation']
 
@@ -45,7 +49,6 @@ Given /^the following children exist in the system:$/ do |children_table|
     child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything'}}
     child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => "true"}, 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
     child.create!
-
     # Need this because of how children_helper grabs flag_message from child history - cg
     if flag
       child['flag'] = flag
