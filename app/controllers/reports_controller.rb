@@ -2,12 +2,14 @@ class ReportsController < ApplicationController
   PER_PAGE = 30
 
   def index
+    authorize! :index, Report
     @reports = paginated_reports
     @page_name = t("report.heading")
   end
 
   def show
     @report = Report.get(params[:id])
+    authorize! :show, @report
     send_data @report.data, :type => @report.content_type, :filename => @report.file_name
   end
 
