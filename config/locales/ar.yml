@@ -160,6 +160,12 @@ ar:
       undo_investigation_details: "إلغاء تفاصيل التحقيق"
       undo_investigated: "إلغاء التحقيق"
       cancel: "إلغاء"
+      delete_photo: "حذف الصورة؟"
+      choose_as_primary_photo: "إختر كصورة أساسية"
+      rotate_anti_clockwise: "تدوير عكس عقارب الساعة"
+      restore_image: "الرجوع إلى الصورة الأصلية"
+      rotate_clockwise: "تدوير في إتجاه عقارب الساعة"
+
 
     change_log: "تغيير السجل"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
@@ -415,9 +421,9 @@ ar:
     successfully_added: "تم إضافة الحقل بنجاح"
     updated: "تم تحديث الحقل"
     deleted: "الحقل %{display_name} تم حذفه"
-
     add: "أضف حقل"
     type: "نوع الحقل"
+    move_to: "إنقل إلى"
   replication:
     label: نسخ متماثل
     index: معالجة النسخ المتماثلة

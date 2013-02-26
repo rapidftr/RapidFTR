@@ -1,5 +1,5 @@
 
-<h1><%= link_to 'Children', children_path %> &gt; <%= link_to @child.name, child_path(@child) %> (<%= @child.short_id %>) &gt; Manage photo</h1>
+<h1><%= link_to t("children.label"), children_path %> &gt; <%= link_to @child.name, child_path(@child) %> (<%= @child.short_id %>) &gt; <%= t("child.manage_photos") %></h1>
 <script type="text/javascript">
     $(function() {
       window.Photos.refresh(<%= @photos_details.to_json.html_safe %>);
@@ -13,7 +13,7 @@
   <div class="flash" style="display:none"><div id="notice" class="error"></div></div><br class="clearfix" />
 </div>
   <div class="clearfix"></div>
-  <a href="#" id="selectPrimaryPhotoButton" class="btn"><span class="photo">Choose as primary photo</span></a>
+  <a href="#" id="selectPrimaryPhotoButton" class="btn"><span class="photo"><%= t("child.actions.choose_as_primary_photo") %></span></a>
   <div class="clearfix"></div>
 </div>
 

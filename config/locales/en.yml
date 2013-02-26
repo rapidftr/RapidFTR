@@ -159,6 +159,12 @@ en:
       undo_investigation_details: "Undo Investigation Details"
       undo_investigated: "Undo Investigated"
       cancel: "Cancel"
+      delete_photo: "Delete photo?"
+      choose_as_primary_photo: "Choose as primary photo"
+      rotate_anti_clockwise: "Rotate Anti-Clockwise"
+      restore_image: "Restore Original Image"
+      rotate_clockwise: "Rotate Clockwise"
+
     change_log: "Change Log"
     flagged_as_suspected: "Flagged as suspect record by"
     posted_from_mobile: "Posted from the mobile client at:"
@@ -408,9 +414,9 @@ en:
     successfully_added: "Field successfully added"
     updated: "Field updated"
     deleted: "Field %{display_name} has been deleted."
-
     add: "Add Field"
     type: "Field type"
+    move_to: "Move to"
   replication:
     label: Replication
     index: Manage Replications
