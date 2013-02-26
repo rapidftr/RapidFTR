@@ -60,7 +60,7 @@ view_by :protection_status, :gender, :ftr_status
             }"
 
       view_by "all_view_#{field}",
-            :map => "function(doc) {
+              :map => "function(doc) {
                 var fDate = doc['#{field}'];
                 if (doc['couchrest-type'] == 'Child')
                 {
@@ -73,10 +73,14 @@ view_by :protection_status, :gender, :ftr_status
                     if (doc['reunited'] == 'true') {
                       emit(['reunited', fDate], doc);
                     } else {
+                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
                       emit(['active', fDate], doc);
                     }
+                    }
                   } else {
-                    emit(['active', fDate], doc);
+                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
+                                    emit(['active', fDate], doc);
+                  }
                   }
                }
             }"

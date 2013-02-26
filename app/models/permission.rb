@@ -15,7 +15,7 @@ class Permission
   USERS    = Permission.to_ordered_hash({:create_and_edit => "Create and Edit Users"},{:view => "View Users"},
                                          {:destroy => "Delete Users"},{:disable => "Disable Users"})
   DEVICES  = Permission.to_ordered_hash({:black_list => "BlackList Devices", :replications => "Manage Replications"})
-  REPORTS  = Permission.to_ordered_hash({})
+  REPORTS  = Permission.to_ordered_hash({:view => 'View and Download Reports'})
   ROLES    = Permission.to_ordered_hash({:create_and_edit => "Create and Edit Roles"},{:view => "View roles"})
   SYSTEM   = Permission.to_ordered_hash({ :contact_information => "System Settings",
                                           :highlight_fields => "Highlight Fields",

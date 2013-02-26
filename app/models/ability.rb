@@ -117,6 +117,11 @@ class Ability
       can [:highlight], Field
     end
 
+    # REPORTS
+    if user.has_permission?(Permission::REPORTS[:view])
+      can [:manage], Report
+    end
+
   end
 
   def can(action = nil, subject = nil, conditions = nil, &block)
