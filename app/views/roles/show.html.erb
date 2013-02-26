@@ -28,12 +28,12 @@
           <p>
             <%= f.label :permissions, t("permissions.label"), :class=>'key'  %>
             <span class="value">
-                <% Permission.all.each do |group_name, permissions| %>
+                <% translated_permissions.each do |group_name, permissions| %>
                     <span class="section">
-                      <span class="title"><%= group_name %></span>
-                        <% permissions.values.each do |permission| %>
+                      <span class="title"><%= t("permissions.#{group_name}") %></span>
+                      <% Hash[*permissions.flatten].values.each do |permission| %>
                         <label><%= f.check_box :permissions, {:id => permission.dehumanize, :name => "role[permissions][]", :disabled => "disabled"}, permission, "" %>
-                            <%= permission %></label>
+                          <%= t("permissions.permission.#{permission}") %></label>
                         <% end %>
                     </span>
                 <% end %>
