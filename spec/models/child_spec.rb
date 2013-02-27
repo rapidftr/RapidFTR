@@ -1262,6 +1262,19 @@ describe Child do
 
       Child.all_modified_by("peterparker").should == [child]
     end
+
+    it "should return the child created by a user" do
+      child = Child.create!("created_by" => "a_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
+
+      Child.all_modified_by("a_user").should == [child]
+    end
+
+    it "should not return duplicate records when same user had created and updated same child multiple times" do
+      child = Child.create!("created_by" => "peterparker", "name" => "ghi", "histories" => [{"user_name" => "peterparker", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "peterparker", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
+
+      Child.all_modified_by("a_user").should == [child]
+    end
+
   end
 
   private

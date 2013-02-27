@@ -345,7 +345,7 @@ view_by :protection_status, :gender, :ftr_status
   end
 
   def self.all_modified_by(user_name)
-    by_user_name(:key => user_name).uniq
+    (by_user_name(:key => user_name) + all_by_creator(user_name)).uniq
   end
 
   def self.new_with_user_name(user, fields = {})
