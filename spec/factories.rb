@@ -36,4 +36,19 @@ FactoryGirl.define do
     verified true
     role_ids ['random_role_id']
   end
+
+  factory :report do
+    ignore do
+      filename "test_report.csv"
+      content_type "text/csv"
+      data "test report"
+    end
+
+    report_type { "weekly_report" }
+    as_of_date { Date.today }
+
+    after_build do |report, builder|
+      report.create_attachment :name => builder.filename, :file => StringIO.new(builder.data), :content_type => builder.content_type if builder.data
+    end
+  end
 end
