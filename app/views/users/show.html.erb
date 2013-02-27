@@ -2,14 +2,14 @@
 <div class="page-content-new">
   <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => 'users'} %>
   <div class="side-tab-content">
-    <h2><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %>
+    <h2 class="float_left no_border"><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %>
       <% if can? :edit, User %>
           <%= link_to '('+I18n.t("buttons.edit")+')', edit_user_path(@user), :class => 'edit_crumb'%>
         <% else %>
           <%=	link_to "(" + I18n.t("buttons.change_password") +")", change_password_users_path %>
       <% end %>
     </h2>
-
+    <%= link_to content_tag(:span, t("child.change_log") , :class => 'log'), user_history_path(@user), :class=>'btn' %>
     <div class="clearfix"></div>
 
     <fieldset>

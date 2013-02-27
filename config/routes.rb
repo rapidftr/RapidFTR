@@ -41,7 +41,9 @@ RapidFTR::Application.routes.draw do
       post :update_password
     end
   end
+
   match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
+  match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
 
   resources :user_preferences
   resources :devices
