@@ -82,7 +82,7 @@ class Child < CouchRestRails::Document
             }"
 
       view_by "all_view_#{field}",
-            :map => "function(doc) {
+              :map => "function(doc) {
                 var fDate = doc['#{field}'];
                 if (doc['couchrest-type'] == 'Child')
                 {
@@ -95,10 +95,14 @@ class Child < CouchRestRails::Document
                     if (doc['reunited'] == 'true') {
                       emit(['reunited', fDate], doc);
                     } else {
+                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
                       emit(['active', fDate], doc);
                     }
+                    }
                   } else {
-                    emit(['active', fDate], doc);
+                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
+                                    emit(['active', fDate], doc);
+                  }
                   }
                }
             }"
@@ -460,9 +464,6 @@ class Child < CouchRestRails::Document
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
       self['current_photo_key'] = self['photo_keys'].first if p == self['current_photo_key']
-      self['_attachments'].keys.each do |key|
-        self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
-      end
     } if @deleted_photo_keys
 
     self['current_photo_key'] ||= self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])

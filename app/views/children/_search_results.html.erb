@@ -20,31 +20,24 @@
 </script>
 
 <% has_results = (@results && @results.size > 0) %>
+<% full_results = (@full_results || []).map(&:id) %>
 <%= form_tag children_record_downloads_path(:format => :pdf), :method => :post do %>
     <br/>
     <div class="profiles-list child_list">
-      <% if @results %>
-          <div class="results-count">
-            <p><%= t("advanced_search.records_found", :count => @results.total_count) %></p>
-            <% full_results = [] %>
-            <% if @full_results %>
-                <% @full_results.each do |r|
-                  full_results.push r.id
-                end %>
-            <% end %>
+      <% if @results && @results.size > 0 %>
+          <div class="pagination-box">
+            <div class="page_info"><%= page_entries_info @results %></div>
           </div>
-      <% end %>
-      <%= hidden_field_tag "full_results", full_results.join(",") if full_results %>
-      <% if !@results.nil? && @results.size > 0 %>
-          <%= check_box_tag 'all', 'Select all records' %>
-          <%= label_tag 'all', t("select_all") %>
-      <% end %>
-      <%= render :partial => "children/summary_row", :collection => @results, :as => :child, :locals => {:checkbox => true, :highlighted_fields => sorted_highlighted_fields} %>
-      <%= t("no_results_found") if @results.try(:size) == 0 %>
 
-      <% if @results %>
-          <%= will_paginate(@results) %>
+        <%= check_box_tag 'all', 'Select all records' %>
+        <%= label_tag 'all',t("select_all") %>
       <% end %>
+      <%= hidden_field_tag "full_results", full_results.join(",") if full_results%>
+
+      <%= render :partial => "children/summary_row", :collection => @results, :as => :child, :locals => { :checkbox => true, :highlighted_fields => sorted_highlighted_fields } %>
+
+      <%= render :partial => 'shared/pagination', :locals => { :results => @results } %>
+
 
     </div>
     <div class="profiles-button-wrapper">

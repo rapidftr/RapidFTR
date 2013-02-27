@@ -23,6 +23,27 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I should see "jaco"
     And I should see "meredith"
 
+    @javascript
+  Scenario: Checking filter by Active returns all the children who are not reunited in the system and who are not marked as duplicate of another child record
+
+    Given the following children exist in the system:
+      | name     | last_known_location | reporter | unique_id    | reunited | flag  | duplicate |
+      | andreas  | London              | zubair   | zubairlon123 | true     | false | true      |
+      | zak      | London              | zubair   | zubairlon456 | false    | true  | false     |
+      | jaco     | NYC                 | james    | james456     | true     | true  | false     |
+      | meredith | Austin              | james    | james123     | false    | false | false     |
+      | jane     | Eyre                | james    | james153     | false    | false | true      |
+
+    When I go to the children listing page
+    And I select "Reunited" from "filter"
+    Then I should see "zak"
+    And I should see "meredith"
+    And I should see "andreas"
+    And I should see "jaco"
+    And I should see "jane"
+    Then show me the page
+
+
   Scenario: Checking filter by All should by default show all children in alphabetical order
 
     Given the following children exist in the system:
@@ -216,20 +237,6 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I select "Name" from "order_by"
     And I select "Most recently flagged" from "order_by"
     Then I should see the order zak,meredith,jaco,andreas
-
-  @javascript
-  Scenario: Checking filter by Active returns all the children who are not reunited in the system
-
-    Given the following children exist in the system:
-      | name     | last_known_location | reporter | unique_id    | reunited | flag  |
-      | andreas  | London              | zubair   | zubairlon123 | true     | false |
-      | zak      | London              | zubair   | zubairlon456 | false    | true  |
-      | jaco     | NYC                 | james    | james456     | true     | true  |
-      | meredith | Austin              | james    | james123     | false    | false |
-
-    When I go to the children listing page
-    Then I should see "zak"
-    And I should see "meredith"
 
   @javascript
   Scenario: Checking filter by Active should by default show the records ordered alphabetically
