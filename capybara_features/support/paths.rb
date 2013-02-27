@@ -149,6 +149,9 @@ module NavigationHelpers
       when /replications page/
         replications_path
 
+      when /create form page/
+        new_form_section_path
+
       when /reports page/
         reports_path
 

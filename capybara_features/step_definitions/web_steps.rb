@@ -269,3 +269,7 @@ Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
 
+When /^I click on dialogue box$/ do
+  #page.driver.browser.switch_to.alert.accept
+  #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
+end
