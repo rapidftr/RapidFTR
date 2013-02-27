@@ -33,4 +33,3 @@ config/couchdb.yml
 lib/tasks/windows
 vendor/bundle
 Gemfile.lock
-reports

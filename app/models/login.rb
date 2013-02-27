@@ -14,7 +14,7 @@ class Login
 
   def authenticate_user
     user = User.find_by_user_name(@user_name)
-    if (user and user.authenticate(@password))  
+    if (user and user.authenticate(@password) and user.verified)
       session = Session.for_user( user, @imei ) 
     end
 

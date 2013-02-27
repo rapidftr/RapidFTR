@@ -46,6 +46,20 @@ describe Login do
       params = {}
       login = Login.new(params)
       login.authenticate_user
+      end
+
+    it "should not allow unverified users to login" do
+      user = mock(User).as_null_object
+      User.stub(:find_by_user_name).and_return(user)
+      user.stub(:authenticate).and_return true
+      user.stub(:devices).and_return([])
+      user.stub(:verified).and_return(false)
+
+      user.should_not_receive(:add_mobile_login_event)
+
+      params = {}
+      login = Login.new(params)
+      login.authenticate_user
     end
       
   end

@@ -11,7 +11,7 @@ namespace :scheduler do
     scheduler = Rufus::Scheduler.start_new
 
     Replication.schedule scheduler
-    ReportsGenerator.schedule scheduler
+    WeeklyReport.schedule scheduler
 
     logger.info 'Rufus scheduler initialized'
     scheduler.join
