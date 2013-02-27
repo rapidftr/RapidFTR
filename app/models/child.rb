@@ -557,6 +557,12 @@ view_by :protection_status, :gender, :ftr_status
                       :file => attachment.data
   end
 
+  def self.schedule(scheduler)
+    scheduler.every("24h") do
+     Child.reindex!
+   end
+  end
+
   protected
 
   def add_to_history(changes)

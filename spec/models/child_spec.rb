@@ -1244,6 +1244,15 @@ describe Child do
     end
   end
 
+  describe 'reindex' do
+    it 'should reindex every 24 hours' do
+      scheduler = double()
+      scheduler.should_receive(:every).with('24h').and_yield()
+      Child.should_receive(:reindex!).once.and_return(nil)
+      Child.schedule scheduler
+    end
+  end
+
   private
 
   def create_child(name, options={})
