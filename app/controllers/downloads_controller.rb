@@ -19,7 +19,7 @@ class DownloadsController < ApplicationController
         render_as_csv @children, @options
       end
       format.pdf do
-        pdf_data = ExportGenerator.new(@options ,@children).to_full_pdf
+        pdf_data = ExportGenerator.new(@options, @children).to_full_pdf
         send_pdf(pdf_data, "#{file_basename}.pdf")
       end
     end
@@ -33,7 +33,7 @@ class DownloadsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        render_as_csv([@child],@options)
+        render_as_csv([@child], @options)
       end
 
       format.pdf do
@@ -43,23 +43,35 @@ class DownloadsController < ApplicationController
     end
   end
 
-  #POST /children_photos.csv
-  #POST /children_photos.pdf
+  #POST /children_record.csv
+  #POST /children_record.pdf
   def children_record
-    selected_records = params["selections"] || {}
+    authorize! :export, Child
+    selected_records = params["selections"] || {} if params["all"] != "Select all records"
+    selected_records = params["full_results"].split(/,/) if params["all"] == "Select all records"
     if selected_records.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
 
-    children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
+    children = []
+    children = selected_records.sort.map { |index, child_id| Child.get(child_id) } if params["all"].nil?
+    selected_records.each do |child_id|
+      children.push(Child.get(child_id))
+    end if params["all"] == "Select all records"
 
-    if params[:commit] == "Export to Photo Wall"
-      children_photos_to_pdf(children, "#{file_basename}.pdf")
-    elsif params[:commit] == "Export to PDF"
-      pdf_data = ExportGenerator.new(@options, children).to_full_pdf
-      send_pdf(pdf_data, "#{file_basename}.pdf")
-    elsif params[:commit] == "Export to CSV"
-      render_as_csv(children,@options)
+    respond_to do |format|
+      format.csv do
+        if params[:commit] == t("child.actions.export_to_csv")
+          render_as_csv(children, @options)
+        end
+      end
+      format.pdf do
+        if params[:commit] == t("child.actions.export_to_photo_wall")
+          export_to_photo_wall(children, "#{file_basename}.pdf")
+        elsif params[:commit] == t("child.actions.export_to_pdf")
+          export_all(children)
+        end
+      end
     end
   end
 
@@ -75,13 +87,14 @@ class DownloadsController < ApplicationController
 
   private
 
-  def children_photos_to_pdf children, filename
-    respond_to do |format|
-      format.pdf do
-        pdf_data = ExportGenerator.new(@options, children).to_photowall_pdf
-        send_pdf(pdf_data, filename)
-      end
-    end
+  def export_to_photo_wall children, filename
+    pdf_data = ExportGenerator.new(@options, children).to_photowall_pdf
+    send_pdf(pdf_data, filename)
+  end
+
+  def export_all(children)
+    pdf_data = ExportGenerator.new(@options, children).to_full_pdf
+    send_pdf(pdf_data, "#{file_basename}.pdf")
   end
 
   def validate_request

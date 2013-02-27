@@ -278,7 +278,7 @@ class ChildrenController < ApplicationController
         end
       end
       format.csv do
-        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
+        render_as_csv(@results) if @results
       end
     end
   end

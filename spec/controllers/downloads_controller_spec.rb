@@ -1,4 +1,4 @@
-require 'spec_helper'
+  require 'spec_helper'
 
 def inject_export_generator( fake_export_generator, child_data )
   ExportGenerator.stub!(:new).with(encryption_options, child_data).and_return( fake_export_generator )

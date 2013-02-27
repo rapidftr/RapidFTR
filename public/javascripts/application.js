@@ -130,7 +130,7 @@ RapidFTR.showDropdown = function(){
         var dropdown = $(".dropdown", context);
         dropdown.toggleClass('hide').show();
         $(".commit", dropdown).val($(this).val());
-
+        $("#password", dropdown).val("");
         event.preventDefault();
         event.stopPropagation();
     });
