@@ -196,5 +196,4 @@ class User < CouchRestRails::Document
   def make_user_name_lowercase
     user_name.downcase!
   end
-
 end

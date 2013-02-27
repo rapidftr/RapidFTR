@@ -165,6 +165,15 @@ view_by :protection_status, :gender, :ftr_status
             }
           }"
 
+  view_by :user_name,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('histories')){
+                  for(var index=0; index<doc['histories'].length; index++){
+                      emit(doc['histories'][index]['user_name'], doc)
+                  }
+               }
+            }"
+
   view_by :created_by
 
   validates_with_method :validate_photos
@@ -333,6 +342,10 @@ view_by :protection_status, :gender, :ftr_status
 
   def self.flagged
     by_flag(:key => 'true')
+  end
+
+  def self.all_modified_by(user_name)
+    by_user_name(:key => user_name).uniq
   end
 
   def self.new_with_user_name(user, fields = {})
