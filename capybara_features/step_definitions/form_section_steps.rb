@@ -19,7 +19,8 @@ Then /^I should see the following form sections in this order:$/ do |table|
 end
 
 Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|
-  row_for(form_section).should have_css("td", :text => expected_description)
+  #row_for(form_section).should have_css("td:nth-child(2)", :text => expected_description)
+  row_for(form_section).should have_xpath("//td[text()='#{expected_description}']")
 end
 
 Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expected_name, form_section|
@@ -28,8 +29,9 @@ end
 
 Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |form_section, visibility|
   within row_xpath_for(form_section) do
-    page.should have_css("td", :text => visibility.capitalize)
+    page.should have_css("td[3] input", :checked  => (visibility == 'hidden'))
   end
+  #page.find("//a[@class='formSectionLink' and contains(., '#{form_section}')]/ancestor::tr/td[3]/input[@class='field_hide_show']").should be_checked
 end
 
 When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|
@@ -115,6 +117,15 @@ end
 
 def form_section_visibility_checkbox_id(section_name)
   "sections_#{section_name}"
+end
+
+Then /^I land in edit page of form (.+)$/ do  |section_name|
+  id = FormSection.all.find { |f| f.name == section_name }.unique_id
+  URI.parse(current_url).path.should eq "/form_section/#{id}/edit"
+end
+
+When /^I click Cancel$/ do
+  click_link('Cancel')
 end
 
 
