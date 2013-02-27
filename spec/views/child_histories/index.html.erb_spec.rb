@@ -54,7 +54,7 @@ class FakeRecordWithHistory
   end
 end
 
-describe "histories/show.html.erb" do
+describe "child_histories/index.html.erb" do
 
   describe "child history" do
     before do

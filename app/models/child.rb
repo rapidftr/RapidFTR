@@ -344,7 +344,7 @@ view_by :protection_status, :gender, :ftr_status
     by_flag(:key => 'true')
   end
 
-  def self.all_modified_by(user_name)
+  def self.all_connected_with(user_name)
     (by_user_name(:key => user_name) + all_by_creator(user_name)).uniq
   end
 
