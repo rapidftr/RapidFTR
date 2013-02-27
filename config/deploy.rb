@@ -11,6 +11,7 @@
 #   -S couchdb_username=<couch-username> # Can be left blank if no authentication required
 #   -S couchdb_password=<couch-password> # Can be left blank if no authentication required
 #   -S nginx_site_conf=/opt/local/nginx/conf/sites.d # Path to nginx per-site configuration folder
+#   -S branch=<commit-id (or) release1 (or) master>
 # deploy
 
 # To deploy a specific revision to any environment use

@@ -54,7 +54,7 @@ module Searchable
       response = Sunspot.search(self) do
         fulltext(query)
         without(:duplicate, true)
-        paginate :page => page_number, :per_page => ::ChildrenHelper::View::PER_PAGE if page_number
+        paginate :page => page_number, :per_page => page_number.nil? ? 100 : ::ChildrenHelper::View::PER_PAGE
         adjust_solr_params do |params|
           params[:defType] = "lucene"
           params[:qf] = nil

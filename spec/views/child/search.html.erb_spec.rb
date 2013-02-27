@@ -15,8 +15,7 @@ describe "children/search.html.erb" do
       view.stub(:current_user).and_return(@user)
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
-      @results.should_receive(:total_pages).at_least(1).and_return 10
-      @results.should_receive(:current_page).at_least(1).and_return 1
+      @results.stub! :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [
         Field.new(:name => "field_2", :display_name => "field display 2", :visible => true ),
@@ -27,24 +26,8 @@ describe "children/search.html.erb" do
     end
 
     it "should render items for each record in the results" do
-      @results.should_receive(:total_count).and_return 1
       render
-
       Hpricot(rendered).profiles_list_items.size.should == @results.length
-    end
-
-    it "should show approriate message when 1 matching record found" do
-      @results.should_receive(:total_count).and_return 1
-      render
-
-      Hpricot(rendered).at(".results-count").at("p").inner_html.should == "1 record found"
-    end
-
-    it "should show approriate message when many matching record found" do
-      @results.should_receive(:total_count).and_return 10
-      render
-
-      Hpricot(rendered).at(".results-count").at("p").inner_html.should == "10 records found"
     end
 
     it "should show only the highlighted fields for a child" do
@@ -59,7 +42,6 @@ describe "children/search.html.erb" do
       @results.clear
       @results << child
       assign(:results, @results)
-      @results.should_receive(:total_count).and_return 1
 
       render
 
@@ -72,7 +54,6 @@ describe "children/search.html.erb" do
 
     it "should include a column displaying thumbnails for each child if asked" do
       assign(:show_thumbnails, true)
-      @results.should_receive(:total_count).and_return 1
 
       render
 
@@ -85,7 +66,6 @@ describe "children/search.html.erb" do
     end
 
     it "should show thumbnails with urls for child details page for each child if asked" do
-      @results.should_receive(:total_count).and_return 1
       render
 
       first_content_row = Hpricot(rendered).photos
@@ -96,7 +76,6 @@ describe "children/search.html.erb" do
     end
 
     it "should include checkboxes to select individual records" do
-      @results.should_receive(:total_count).and_return 1
       render
 
       select_check_boxes = Hpricot(rendered).checkboxes
@@ -108,7 +87,6 @@ describe "children/search.html.erb" do
     end
 
     it "should have a button to export to pdf" do
-      @results.should_receive(:total_count).and_return 1
       render
 
       export_to_photo_wall = Hpricot(rendered).submit_for("Export to PDF")
@@ -116,7 +94,6 @@ describe "children/search.html.erb" do
     end
 
     it "should have a button to export to photo wall" do
-      @results.should_receive(:total_count).and_return 1
       render
 
       export_to_photo_wall = Hpricot(rendered).submit_for("Export to Photo Wall")

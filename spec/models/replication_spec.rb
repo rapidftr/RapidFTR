@@ -432,7 +432,12 @@ describe Replication do
 
     it 'should schedule reindexing every 5m' do
       scheduler = double()
-      scheduler.should_receive(:every).with('5m').and_return(nil)
+      scheduler.should_receive(:every).with('5m').and_yield
+
+      replication = build :replication
+      replication.should_receive(:check_status_and_reindex).and_return(nil)
+      Replication.stub! :all => [ replication ]
+
       Replication.schedule scheduler
     end
   end
