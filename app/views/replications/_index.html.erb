@@ -30,8 +30,8 @@
               <span><%= l rep.timestamp, :format => :long if rep.timestamp %></span>
             </td>
             <td>
-              <%= link_to t("replication.stop"), stop_replication_path(rep), :method => :post if rep.triggered? %>
-              <%= link_to t("replication.start"), start_replication_path(rep), :method => :post unless rep.triggered? %>
+              <%= link_to t("replication.stop"), stop_replication_path(rep), :method => :post if rep.active? %>
+              <%= link_to t("replication.start"), start_replication_path(rep), :method => :post unless rep.active? %>
               &nbsp;
               <%= link_to t("buttons.edit"), edit_replication_path(rep) %>
               &nbsp;

@@ -13,6 +13,21 @@ describe Replication do
     all_docs(REPLICATION_DB).each { |rep| REPLICATION_DB.delete_doc rep if rep["rapidftr_env"] == Rails.env rescue nil }
   end
 
+  before :each do
+    @rep = build :replication, :remote_url => 'localhost:1234'
+    @rep.stub! :remote_config => {
+      "target" => "http://localhost:1234",
+      "databases" => {
+        "User"  => "remote_user_db_name",
+        "Child" => "remote_child_db_name",
+        "Role"  => "remote_child_role_name"
+      }
+    }
+
+    @rep["_id"] = 'test_replication_id'
+    @default_config = { "rapidftr_ref_id" => @rep.id }
+  end
+
   describe 'validations' do
     it 'should be valid' do
       r = build :replication
@@ -51,22 +66,33 @@ describe Replication do
   end
 
   describe 'getters' do
-    before :each do
-      @rep = build :replication, :remote_url => 'localhost:1234'
-      @rep.stub! :remote_config => { "target" => "localhost:1234" }
-      @rep["_id"] = 'test_replication_id'
+    it 'should return what models to sync' do
+      Replication.models_to_sync.should == [ Role, Child, User ]
+    end
+
+    it 'should sync roles first, otherwise users will sync first and start throwing role errors' do
+      Replication.models_to_sync.first.should == Role
+    end
+
+    it 'should get the url without the source username and password' do
+      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@localhost:5984/")
+      target_hash = Replication.couch_config
+      target_hash[:target].should == "https://localhost:6984/"
+    end
+
+    it "should include database names of models to sync" do
+      Replication.stub! :models_to_sync => [ User ]
+      Replication.couch_config[:databases].should include "User" => User.database.name
     end
 
     it 'should generate uri' do
       @rep.remote_uri.to_s.should == 'http://localhost:1234/'
     end
 
-    it 'should generate push document id' do
-      @rep.push_id.should == 'push-test-replication-id'
-    end
-
-    it 'should generate pull document id' do
-      @rep.pull_id.should == 'pull-test-replication-id'
+    it 'should generate uri with username and password' do
+      @rep.user_name = 'test_user'
+      @rep.password = 'test_password'
+      @rep.remote_uri.to_s.should == 'http://test_user:test_password@localhost:1234/'
     end
 
     it 'should normalize remote_url upon saving' do
@@ -74,131 +100,131 @@ describe Replication do
       @rep.remote_url.should == @rep.remote_uri.to_s
     end
 
-    it 'should return source' do
-      @rep.source.should == Child.database.name
+    it 'should create push configuration for some database' do
+      @rep.push_config(User).should include "source" => User.database.name, "target" => "http://localhost:1234/remote_user_db_name", "rapidftr_ref_id" => @rep.id, "rapidftr_env" => Rails.env
     end
 
-    it 'should return target' do
-      @rep.target.should == "http://localhost:1234/"
+    it 'should create pull configuration for some database' do
+      @rep.pull_config(User).should include "target" => User.database.name, "source" => "http://localhost:1234/remote_user_db_name", "rapidftr_ref_id" => @rep.id, "rapidftr_env" => Rails.env
     end
 
-    it 'should return push configuration' do
-      @rep.push_config.should include "source" => @rep.source, "target" => @rep.target, "rapidftr_ref_id" => @rep["_id"], "rapidftr_env" => Rails.env
+    it 'should return configurations for push/pull of user/children/role' do
+      Replication.stub! :models_to_sync => [ User, User, User ]
+      @rep.should_receive(:push_config).exactly(3).times.with(User).and_return("a")
+      @rep.should_receive(:pull_config).exactly(3).times.with(User).and_return("b")
+      @rep.build_configs.should == ["a", "b", "a", "b", "a", "b"]
     end
 
-    it 'should return pull configuration' do
-      @rep.pull_config.should include "source" => @rep.target, "target" => @rep.source, "rapidftr_ref_id" => @rep["_id"], "rapidftr_env" => Rails.env
+    it 'should return all replication documents' do
+      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
+      @rep.fetch_configs.should == [ @default_config, @default_config ]
     end
 
-    it 'should return push state' do
-      @rep.stub :push_doc => { '_replication_state' => 'abcd' }
-      @rep.push_state.should == 'abcd'
+    it 'should cache all replication documents' do
+      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
+      @rep.fetch_configs.should == [ @default_config, @default_config ]
+      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, @default_config, @default_config ]
+      @rep.fetch_configs.should == [ @default_config, @default_config ]
     end
 
-    it 'should return pull state' do
-      @rep.stub :pull_doc => { '_replication_state' => 'abcd' }
-      @rep.pull_state.should == 'abcd'
+    it 'should invalidate replication document cache' do
+      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
+      @rep.fetch_configs.should == [ @default_config, @default_config ]
+      @rep.send :invalidate_fetch_configs
+      @rep.stub! :replicator_docs => [ { "test" => "1" }, @default_config, @default_config, @default_config ]
+      @rep.fetch_configs.should == [ @default_config, @default_config, @default_config ]
     end
 
-    describe 'timestamp' do
-      before :each do
-        @one_second_ago = 1.seconds.ago
-      end
-
-      it 'should be nil' do
-        @rep.stub! :push_doc => nil, :pull_doc => nil
-        @rep.timestamp.should be_nil
-      end
-
-      it 'should be push timestamp when pull timestamp is nil' do
-        @rep.stub! :push_doc => { "_replication_state_time" => @one_second_ago }, :pull_doc => nil
-        @rep.timestamp.should == @one_second_ago
-      end
-
-      it 'should be pull timestamp when push timestamp is nil' do
-        @rep.stub! :push_doc => nil, :pull_doc => { "_replication_state_time" => @one_second_ago }
-        @rep.timestamp.should == @one_second_ago
-      end
-
-      it 'should be push timestamp when pull timestamp is older' do
-        @rep.stub! :push_doc => { "_replication_state_time" => @one_second_ago }, :pull_doc => { "_replication_state_time" => 2.seconds.ago }
-        @rep.timestamp.should == @one_second_ago
-      end
-
-      it 'should be pull timestamp when push timestamp is older' do
-        @rep.stub! :push_doc => { "_replication_state_time" => 2.seconds.ago }, :pull_doc => { "_replication_state_time" => @one_second_ago }
-        @rep.timestamp.should == @one_second_ago
-      end
+    it 'should invalidate replication document cache upon saving' do
+      @rep.should_receive(:invalidate_fetch_configs).and_return(true)
+      @rep.stub! :start_replication => true
+      @rep["_id"] = nil
+      @rep.save!
     end
 
-    describe 'statuses' do
-      describe '#triggered' do
-        it 'should be true' do
-          @rep.stub! :push_state => 'abcd', :pull_state => 'triggered'
-          @rep.should be_triggered
-        end
+    it 'should start replication' do
+      configuration = double()
+      @rep.stub! :build_configs => [ configuration, configuration, configuration ]
+      @rep.stub! :save_without_callbacks => nil
 
-        it 'should be true' do
-          @rep.stub! :push_state => 'triggered', :pull_state => 'abcd'
-          @rep.should be_triggered
-        end
+      @rep.send(:replicator).should_receive(:save_doc).exactly(3).times.with(configuration).and_return(nil)
+      @rep.start_replication
+    end
 
-        it 'should be false' do
-          @rep.stub! :push_state => 'abcd', :pull_state => 'abcd'
-          @rep.should_not be_triggered
-        end
-      end
+    it 'should stop replication and invalidate fetch config' do
+      configuration = double()
+      @rep.stub! :fetch_configs => [ configuration, configuration, configuration ]
+      @rep.stub! :save_without_callbacks => nil
 
-      describe '#completed' do
-        it 'should be true' do
-          @rep.stub! :push_state => 'completed', :pull_state => 'completed'
-          @rep.should be_completed
-        end
+      @rep.send(:replicator).should_receive(:delete_doc).exactly(3).times.with(configuration).and_return(nil)
+      @rep.should_receive(:invalidate_fetch_configs).and_return(nil)
+      @rep.stop_replication
+    end
 
-        it 'should be true' do
-          @rep.stub! :push_state => 'abcd', :pull_state => 'completed'
-          @rep.should_not be_completed
-        end
+    it 'should restart replication' do
+      @rep.should_receive(:stop_replication).ordered.and_return(nil)
+      @rep.should_receive(:start_replication).ordered.and_return(nil)
+      @rep.restart_replication
+    end
+  end
 
-        it 'should be true' do
-          @rep.stub! :push_state => 'completed', :pull_state => 'abcd'
-          @rep.should_not be_completed
-        end
-      end
+  describe 'timestamp' do
+    it 'timestamp should be nil' do
+      @rep.stub! :fetch_configs => []
+      @rep.timestamp.should be_nil
+    end
 
-      describe '#error' do
-        it 'should be true' do
-          @rep.stub! :push_state => 'abcd', :pull_state => 'error'
-          @rep.should be_error
-        end
+    it 'timestamp should be latest timestamp' do
+      @one_minute_ago = 1.minute.ago
+      @rep.stub! :fetch_configs => [
+        @default_config.merge("_replication_state_time" => 1.day.ago),
+        @default_config.merge("_replication_state_time" => @one_minute_ago),
+        @default_config.merge("_replication_state_time" => 2.days.ago)
+      ]
 
-        it 'should be true' do
-          @rep.stub! :push_state => 'error', :pull_state => 'abcd'
-          @rep.should be_error
-        end
+      @rep.timestamp.should == @one_minute_ago
+    end
+  end
 
-        it 'should be false' do
-          @rep.stub! :push_state => 'abcd', :pull_state => 'abcd'
-          @rep.should_not be_error
-        end
-      end
+  describe 'status' do
+    it 'statuses should return array of statuses' do
+      @rep.stub! :fetch_configs => [
+        @default_config.merge("_replication_state" => 'a'), @default_config.merge("_replication_state" => 'b'),
+        @default_config.merge("_replication_state" => 'c'), @default_config.merge("_replication_state" => 'd')
+      ]
+      @rep.statuses.should == [ 'a', 'b', 'c', 'd' ]
+    end
 
-      describe '#status' do
-        it 'should be triggered' do
-          @rep.stub! :triggered? => true, :completed? => true
-          @rep.status.should == 'triggered'
-        end
+    it 'statuses should substitute triggered if status is empty' do
+      @rep.stub! :fetch_configs => [
+        @default_config.merge("_replication_state" => nil), @default_config.merge("_replication_state" => 'd')
+      ]
+      @rep.statuses.should == [ 'triggered', 'd' ]
+    end
 
-        it 'should be completed' do
-          @rep.stub! :triggered? => false, :completed? => true
-          @rep.status.should == 'completed'
-        end
+    it 'active should be false if no replication was configured' do
+      @rep.stub! :statuses => [ ]
+      @rep.should_not be_active
+    end
 
-        it 'should be error' do
-          @rep.stub! :triggered? => false, :completed? => false
-          @rep.status.should == 'error'
-        end
-      end
+    it 'active should be false if no operations have status as "triggered"' do
+      @rep.stub! :statuses => [ "abcd", "abcd" ]
+      @rep.should_not be_active
+    end
+
+    it 'active should be true if any operation has status as "triggered"' do
+      @rep.stub! :statuses => [ "triggered", "abcd" ]
+      @rep.should be_active
+    end
+
+    it 'success should be true if all operations have status as "completed"' do
+      @rep.stub! :statuses => [ "completed", "completed" ]
+      @rep.should be_success
+    end
+
+    it 'success should be false if any operation doesnt have status as "completed"' do
+      @rep.stub! :statuses => [ "completed", "abcd" ]
+      @rep.should_not be_success
     end
   end
 
@@ -231,184 +257,22 @@ describe Replication do
     end
   end
 
-  ################# NOTE #################
-  ##  sleep 1 is required before every  ##
-  ##    destroy & restart_replication   ##
-  ##  without that RestClient::Conflict ##
-  ##      errors are being thrown       ##
-  ################ THANKS ################
-
-  describe 'configuration' do
-    before :each do
-      @source = "rapidftr_child_#{Rails.env}"
-      @target = "http://localhost:5984/replication_test/"
-
-      @rep = build :replication
-      @rep.stub! :target => @target, :save_without_callbacks => nil
-      @rep["_id"] = 'test-replication-id'
-      @rep.start_replication
-      sleep 1
-    end
-
-    it 'should configure push' do
-      doc = REPLICATION_DB.get @rep.push_id
-      {}.merge(doc).should include "source" => @source, "target" => @target, "rapidftr_ref_id" => @rep["_id"]
-    end
-
-    it 'should configure pull' do
-      doc = REPLICATION_DB.get @rep.pull_id
-      {}.merge(doc).should include "source" => @target, "target" => @source, "rapidftr_ref_id" => @rep["_id"]
-    end
-
-    it 'should unconfigure push' do
-      @rep.stop_replication
-      all_docs(REPLICATION_DB).should_not be_any { |doc| doc['source'] == @source && doc['target'] == @target }
-    end
-
-    it 'should unconfigure pull' do
-      @rep.stop_replication
-      all_docs(REPLICATION_DB).should_not be_any { |doc| doc['source'] == @target && doc['target'] == @source }
-    end
-
-    it 'should return push doc' do
-      REPLICATION_DB.get(@rep.push_id).should == @rep.push_doc
-    end
-
-    it 'should return push doc' do
-      REPLICATION_DB.get(@rep.pull_id).should == @rep.pull_doc
-    end
-
-    it 'should restart replication' do
-      @rep.should_receive(:stop_replication).ordered.and_return(nil)
-      @rep.should_receive(:start_replication).ordered.and_return(nil)
-      @rep.restart_replication
-    end
-
-    it 'should get the url without the source username and password' do
-      target_hash = Replication.configuration("abcd", "abcd")
-      target_hash[:target].should == "http://abcd:abcd@localhost:6984/rapidftr_child_test"
-    end
-
-    it "should get the correct url even if the source database doesn't have username and password" do
-      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@localhost:5984/rapidftr_child_test")
-      target_hash = Replication.configuration("abcd", "abcd")
-      target_hash[:target].should == "http://abcd:abcd@localhost:6984/rapidftr_child_test"
-    end
-
-  end
-
-  ################# NOTE #################
-  ##  sleep 1 is required before every  ##
-  ##    destroy & restart_replication   ##
-  ##  without that RestClient::Conflict ##
-  ##      errors are being thrown       ##
-  ################ THANKS ################
-
-  describe 'replication' do
-
-    before :each do
-      @dummy_db = COUCHDB_SERVER.database! 'replication_test'
-      @rep = build :replication
-      @rep.stub! :target => "http://localhost:5984/replication_test"
-      delete_all_docs Child.database
-      delete_all_docs @dummy_db
-    end
-
-    after :each do      
-      delete_all_docs Child.database
-      delete_all_docs @dummy_db
-      sleep 1
-      @rep.destroy
-      @dummy_db.delete!
-    end
-
-    describe 'replicate child records from source to target' do
-      before :each do
-        @child = Child.new(:name => 'Subhas')
-        @child.save!
-        @rep.save!
-      end
-
-      xit 'on create' do
-        wait_for_doc @dummy_db, 'name', 'Subhas', true
-      end
-
-      xit 'on edit' do
-        @child.name = 'Akash'
-        @child.save
-
-        sleep 1
-        @rep.restart_replication
-
-        wait_for_doc @dummy_db, 'name', 'Subhas', false
-        wait_for_doc @dummy_db, 'name', 'Akash', true
-      end
-
-      xit 'on delete' do
-        @child.destroy
-        sleep 1
-        @rep.restart_replication
-        wait_for_doc @dummy_db, 'name', 'Subhas', false
-      end
-    end
-
-    describe 'replicate child records from target to source' do
-      before :each do
-        result = @dummy_db.save_doc :name => 'Akash'
-        @child = @dummy_db.get result['id']
-        @rep.save!
-      end
-
-      xit 'on create' do
-        wait_for_doc Child.database, 'name', 'Akash', true
-      end
-
-      xit 'on edit' do
-        @child['name'] = 'Subhas'
-        @dummy_db.save_doc @child
-        sleep 1
-        @rep.restart_replication
-        wait_for_doc Child.database, 'name', 'Subhas', true
-        wait_for_doc Child.database, 'name', 'Akash', false
-      end
-
-      xit 'on delete' do
-        @dummy_db.delete_doc @child
-        sleep 1
-        @rep.restart_replication
-        wait_for_doc Child.database, 'name', 'Akash', false
-      end
-    end
-  end
-
   describe 'reindex' do
-    before :each do
-      @rep = build :replication
-      @rep["_id"] = "some-random-id"
-    end
-
     it 'should set reindexed to false when starting replication' do
       @rep.should_receive(:needs_reindexing=).with(true).ordered.and_return(true)
       @rep.should_receive(:save_without_callbacks).ordered.and_return(nil)
       @rep.start_replication
     end
 
-    it 'should trigger reindex after success' do
-      @rep.stub! :completed? => true, :needs_reindexing? => true
-      @rep.should_receive(:trigger_local_reindex).and_return(nil)
-      @rep.should_receive(:trigger_remote_reindex).and_return(nil)
-      @rep.check_status_and_reindex
-    end
-
-    it 'should trigger reindex after error' do
-      @rep.stub! :error? => true, :needs_reindexing? => true
+    it 'should trigger reindex after completing' do
+      @rep.stub! :active? => false, :needs_reindexing? => true
       @rep.should_receive(:trigger_local_reindex).and_return(nil)
       @rep.should_receive(:trigger_remote_reindex).and_return(nil)
       @rep.check_status_and_reindex
     end
 
     it 'should not trigger reindex twice' do
-      @rep.stub! :completed? => true, :needs_reindexing? => false
+      @rep.stub! :active? => false, :needs_reindexing? => false
       @rep.should_not_receive(:trigger_local_reindex)
       @rep.should_not_receive(:trigger_remote_reindex)
       @rep.check_status_and_reindex

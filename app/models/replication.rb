@@ -1,9 +1,5 @@
 class Replication < CouchRestRails::Document
-  module Status
-    TRIGGERED = 'triggered'
-    COMPLETED = 'completed'
-    ERROR     = 'error'
-  end
+  MODELS_TO_SYNC = [ Role, Child, User ]
 
   include CouchRest::Validation
   include RapidFTR::Model
@@ -13,10 +9,8 @@ class Replication < CouchRestRails::Document
   property :remote_url
   property :description
   property :user_name
-  property :crypted_password
+  property :password
   property :needs_reindexing, :cast_as => :boolean, :default => false
-
-  attr_accessor :password
 
   validates_presence_of :remote_url
   validates_presence_of :description
@@ -24,21 +18,25 @@ class Replication < CouchRestRails::Document
   validates_presence_of :password
   validates_with_method :remote_url, :method => :validate_remote_url
 
-  before_save   :normalize_remote_url, :encrypt_password
+  before_save   :normalize_remote_url
   after_save    :start_replication
+  after_save    :invalidate_fetch_configs
   before_destroy :stop_replication
 
   def start_replication
-    replicator.save_doc push_config if target && !push_doc
-    replicator.save_doc pull_config if target && !pull_doc
+    build_configs.each do |config|
+      replicator.save_doc config
+    end
 
     self.needs_reindexing = true
     save_without_callbacks
   end
 
   def stop_replication
-    replicator.delete_doc push_doc if push_doc
-    replicator.delete_doc pull_doc if pull_doc
+    fetch_configs.each do |config|
+      replicator.delete_doc config
+    end
+    invalidate_fetch_configs
     true
   end
 
@@ -48,69 +46,31 @@ class Replication < CouchRestRails::Document
   end
 
   def check_status_and_reindex
-    if needs_reindexing? and (completed? or error?)
+    if needs_reindexing? and !active?
       Rails.logger.info "Replication complete, triggering reindex"
       trigger_local_reindex
       trigger_remote_reindex
     end
   end
 
-  def push_id
-    "push-" + self["_id"].downcase.parameterize.dasherize
-  end
-
-  def pull_id
-    "pull-" + self["_id"].downcase.parameterize.dasherize
-  end
-
-  def push_config
-    { "source" => source, "target" => target, "_id" => push_id, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
-  end
-
-  def pull_config
-    { "source" => target, "target" => source, "_id" => pull_id, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
-  end
-
-  def push_doc
-    replicator.get push_id rescue nil
-  end
-
-  def pull_doc
-    replicator.get pull_id rescue nil
-  end
-
-  def push_state
-    push_doc['_replication_state'] rescue nil
-  end
-
-  def pull_state
-    pull_doc['_replication_state'] rescue nil
-  end
-
   def timestamp
-    push_timestamp = push_doc['_replication_state_time'].to_datetime rescue nil
-    pull_timestamp = pull_doc['_replication_state_time'].to_datetime rescue nil
-    (push_timestamp && pull_timestamp && push_timestamp > pull_timestamp) ? push_timestamp : (pull_timestamp || push_timestamp)
+    fetch_configs.collect { |config| config["_replication_state_time"].to_datetime rescue nil }.compact.max
+  end
+
+  def statuses
+    fetch_configs.collect { |config| config["_replication_state"] || 'triggered' }
+  end
+
+  def active?
+    statuses.include? "triggered"
+  end
+
+  def success?
+    statuses.uniq == [ "completed" ]
   end
 
   def status
-    triggered? ? Status::TRIGGERED : completed? ? Status::COMPLETED : Status::ERROR
-  end
-
-  def triggered?
-    push_state == Status::TRIGGERED || pull_state == Status::TRIGGERED
-  end
-
-  def completed?
-    push_state == Status::COMPLETED && pull_state == Status::COMPLETED
-  end
-
-  def error?
-    push_state == Status::ERROR || pull_state == Status::ERROR
-  end
-
-  def source
-    Child.database.name
+    active? ? "triggered" : success? ? "completed" : "error"
   end
 
   def target
@@ -126,13 +86,55 @@ class Replication < CouchRestRails::Document
 
   def remote_uri
     uri = URI.parse self.class.normalize_url remote_url
-    uri.path = '/'
+    uri.path = "/"
     uri
   end
 
-  def self.configuration(username, password)
+  def remote_couch_uri(path = "")
+    uri = URI.parse remote_config["target"]
+    uri.path = "/#{path}"
+    uri
+  end
+
+  def push_config(model)
+    target = remote_couch_uri remote_config["databases"][model.to_s]
+    { "source" => model.database.name, "target" => target.to_s, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
+  end
+
+  def pull_config(model)
+    target = remote_couch_uri remote_config["databases"][model.to_s]
+    { "source" => target.to_s, "target" => model.database.name, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
+  end
+
+  def build_configs
+    self.class.models_to_sync.map do |model|
+      [ push_config(model), pull_config(model) ]
+    end.flatten
+  end
+
+  def fetch_configs
+    @fetch_configs ||= replicator_docs.select { |rep| rep["rapidftr_ref_id"] == self.id }
+  end
+
+  def self.models_to_sync
+    MODELS_TO_SYNC
+  end
+
+  def self.couch_config
     uri = URI.parse(Child.database.root)
-    { :target => "http://#{username}:#{password}@"+uri.host+":"+COUCHDB_CONFIG[:https_port].to_s+uri.path}
+    uri.scheme = 'https'
+    uri.port = COUCHDB_CONFIG[:https_port]
+    uri.user = nil
+    uri.password = nil
+    uri.path = '/'
+
+    {
+      :target => uri.to_s,
+      :databases => models_to_sync.inject({}) { |result, model|
+        result[model.to_s] = model.database.name
+        result
+      }
+    }
   end
 
   def self.normalize_url(url)
@@ -167,8 +169,15 @@ class Replication < CouchRestRails::Document
 
   def trigger_remote_reindex
     uri = remote_uri
+    uri.user = user_name if user_name
+    uri.password = password if password
     uri.path = Rails.application.routes.url_helpers.reindex_children_path
     Net::HTTP.get uri
+  end
+
+  def invalidate_fetch_configs
+    @fetch_configs = nil
+    true
   end
 
   def validate_remote_url
@@ -187,7 +196,6 @@ class Replication < CouchRestRails::Document
   def remote_config
     uri = remote_uri
     uri.path = Rails.application.routes.url_helpers.configuration_replications_path
-    post_params = {:user_name => self.user_name, :password => self.crypted_password}
 
     if uri.scheme == "http"
       response = Net::HTTP.post_form uri, post_params
@@ -206,8 +214,8 @@ class Replication < CouchRestRails::Document
     @replicator ||= COUCHDB_SERVER.database('_replicator')
   end
 
-  def encrypt_password
-    self.crypted_password = self.password
+  def replicator_docs
+    replicator.documents["rows"].map { |doc| replicator.get doc["id"] unless doc["id"].include? "_design" }.compact
   end
 
 end
