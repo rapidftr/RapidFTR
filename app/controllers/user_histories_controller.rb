@@ -2,6 +2,7 @@ class UserHistoriesController < ApplicationController
 
   def index
     @user = User.get(params[:id])
+    @page_name = t("history_of")+" #{@user.user_name}"
 
     children = Child.all_connected_with(@user.user_name)
     unsorted = children.map{|child| child.histories}.flatten
