@@ -45,7 +45,7 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    authorize! :read, @child
+    authorize! :read, @child if @child["created_by"] != current_user_name
     @form_sections = get_form_sections
     @page_name = t("child.view")+": #{@child}"
     @body_class = 'profile-page'
