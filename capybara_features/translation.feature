@@ -6,23 +6,14 @@ Feature: Ensure translations
       | locale | key        | value                   |
       | ar     | name       | Arabic Translated Name  |
       | en     | name       | English Translated Name |
+      | ru     | xxxx       | Whatever                |
 
-  Scenario: Field label translations
-    When I set the default language to "ar"
+      #  Scenario: Field label translations
+      #When I set the system language to "ar"
+      #And I set the user language to "en"
+      #Then I should see "English Translated Name" translated
+
+  Scenario: Field label translations when incomplete translation
+    When I set the system language to "ar"
+    And I set the user language to "ru"
     Then I should see "Arabic Translated Name" translated
-    And I should not see "English Translated Name" translated
-
-    And I set the default language to "en"
-    And I am on new child page
-    Then I should see "English Translated Name" translated
-    And I should not see "Arabic Translated Name" translated
-
-  Scenario: Field label translations when hasn't translation
-    When I set the default language to "ar"
-    Then I should see "Arabic Translated Name" translated
-    And I should not see "Russian Translated Name" translated
-
-    And I set the default language to "ru"
-    And I am on new child page
-    Then I should see "Arabic Translated Name" translated
-    And I should not see "Russian Translated Name" translated
