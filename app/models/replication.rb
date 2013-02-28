@@ -1,24 +1,29 @@
 class Replication < CouchRestRails::Document
   MODELS_TO_SYNC = [ Role, Child, User ]
+  STABLE_WAIT_TIME = 2.minutes
 
   include CouchRest::Validation
   include RapidFTR::Model
 
   use_database :replication_config
 
-  property :remote_url
+  property :remote_app_url
+  property :remote_couch_config, :cast_as => 'Hash', :default => {}
+
   property :description
-  property :user_name
+  property :username
   property :password
   property :needs_reindexing, :cast_as => :boolean, :default => false
 
-  validates_presence_of :remote_url
+  validates_presence_of :remote_app_url
   validates_presence_of :description
-  validates_presence_of :user_name
+  validates_presence_of :username
   validates_presence_of :password
-  validates_with_method :remote_url, :method => :validate_remote_url
+  validates_with_method :remote_app_url, :method => :validate_remote_app_url
+  validates_with_method :save_remote_couch_config
 
-  before_save   :normalize_remote_url
+  before_save   :normalize_remote_app_url
+
   after_save    :start_replication
   after_save    :invalidate_fetch_configs
   before_destroy :stop_replication
@@ -62,7 +67,7 @@ class Replication < CouchRestRails::Document
   end
 
   def active?
-    statuses.include? "triggered"
+    statuses.include?("triggered") || (timestamp && timestamp > STABLE_WAIT_TIME.ago)
   end
 
   def success?
@@ -73,36 +78,27 @@ class Replication < CouchRestRails::Document
     active? ? "triggered" : success? ? "completed" : "error"
   end
 
-  def target
-    begin
-      uri = URI.parse self.class.normalize_url remote_config["target"]
-      uri.host = remote_uri.host if ['localhost', '127.0.0.1', '::1'].include? uri.host
-      uri.scheme = remote_uri.scheme
-      uri.to_s
-    rescue
-      nil
-    end
-  end
-
-  def remote_uri
-    uri = URI.parse self.class.normalize_url remote_url
+  def remote_app_uri
+    uri = URI.parse self.class.normalize_url remote_app_url
     uri.path = "/"
     uri
   end
 
   def remote_couch_uri(path = "")
-    uri = URI.parse remote_config["target"]
+    uri = URI.parse remote_couch_config["target"]
     uri.path = "/#{path}"
+    uri.user = username if username
+    uri.password = password if password
     uri
   end
 
   def push_config(model)
-    target = remote_couch_uri remote_config["databases"][model.to_s]
+    target = remote_couch_uri remote_couch_config["databases"][model.to_s]
     { "source" => model.database.name, "target" => target.to_s, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
   end
 
   def pull_config(model)
-    target = remote_couch_uri remote_config["databases"][model.to_s]
+    target = remote_couch_uri remote_couch_config["databases"][model.to_s]
     { "source" => target.to_s, "target" => model.database.name, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
   end
 
@@ -168,9 +164,7 @@ class Replication < CouchRestRails::Document
   end
 
   def trigger_remote_reindex
-    uri = remote_uri
-    uri.user = user_name if user_name
-    uri.password = password if password
+    uri = remote_app_uri
     uri.path = Rails.application.routes.url_helpers.reindex_children_path
     Net::HTTP.get uri
   end
@@ -180,34 +174,39 @@ class Replication < CouchRestRails::Document
     true
   end
 
-  def validate_remote_url
+  def validate_remote_app_url
     begin
-      raise unless remote_uri.is_a?(URI::HTTP) or remote_uri.is_a?(URI::HTTPS)
+      raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
       true
     rescue
       [false, "Please enter a proper URL, e.g. http://<server>:<port>"]
     end
   end
 
-  def normalize_remote_url
-    self.remote_url = remote_uri.to_s
+  def normalize_remote_app_url
+    self.remote_app_url = remote_app_uri.to_s
   end
 
-  def remote_config
-    uri = remote_uri
-    uri.path = Rails.application.routes.url_helpers.configuration_replications_path
+  def save_remote_couch_config
+    begin
+      uri = remote_app_uri
+      uri.path = Rails.application.routes.url_helpers.configuration_replications_path
 
-    if uri.scheme == "http"
-      response = Net::HTTP.post_form uri, post_params
-    else
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      request = Net::HTTP::Post.new(uri.request_uri)
-      request.set_form_data(post_params)
-      response = http.start{|req| req.request(request)}
+      if uri.scheme == "http"
+        response = Net::HTTP.post_form uri, {}
+      else
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        request = Net::HTTP::Post.new(uri.request_uri)
+        response = http.start{|req| req.request(request)}
+      end
+
+      self.remote_couch_config = JSON.parse response.body
+      true
+    rescue => e
+      [false, "The URL/Username/Password that you entered is incorrect"]
     end
-    JSON.parse response.body
   end
 
   def replicator

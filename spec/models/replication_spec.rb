@@ -14,9 +14,8 @@ describe Replication do
   end
 
   before :each do
-    @rep = build :replication, :remote_url => 'localhost:1234'
-    @rep.stub! :remote_config => {
-      "target" => "http://localhost:1234",
+    @rep = build :replication, :remote_couch_config => {
+      "target" => "http://couch:1234",
       "databases" => {
         "User"  => "remote_user_db_name",
         "Child" => "remote_child_db_name",
@@ -41,9 +40,9 @@ describe Replication do
     end
 
     it 'should have remote url' do
-      r = build :replication, :remote_url => nil
+      r = build :replication, :remote_app_url => nil
       r.should_not be_valid
-      r.errors[:remote_url].should_not be_empty
+      r.errors[:remote_app_url].should_not be_empty
     end
 
     it 'should have user name' do
@@ -53,15 +52,22 @@ describe Replication do
      end
 
     it 'should have user name' do
-      r = build :replication, :user_name => nil
+      r = build :replication, :username => nil
       r.should_not be_valid
-      r.errors[:user_name].should_not be_empty
+      r.errors[:username].should_not be_empty
     end
 
     it 'should allow only http or https' do
-      r = build :replication, :remote_url => 'abcd://localhost:3000'
+      r = build :replication, :remote_app_url => 'abcd://app:3000'
       r.should_not be_valid
-      r.errors[:remote_url].should_not be_empty
+      r.errors[:remote_app_url].should_not be_empty
+    end
+
+    it 'should validate remote couch config' do
+      r = build :replication, :remote_app_url => 'abcd://app:3000'
+      r.should_receive(:save_remote_couch_config).and_return(false)
+      r.should_not be_valid
+      r.errors[:save_remote_couch_config].should_not be_empty
     end
   end
 
@@ -74,10 +80,10 @@ describe Replication do
       Replication.models_to_sync.first.should == Role
     end
 
-    it 'should get the url without the source username and password' do
-      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@localhost:5984/")
+    it 'should return the couchdb url without the source username and password' do
+      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@couchdb:5984/")
       target_hash = Replication.couch_config
-      target_hash[:target].should == "https://localhost:6984/"
+      target_hash[:target].should == "https://couchdb:6984/"
     end
 
     it "should include database names of models to sync" do
@@ -85,27 +91,32 @@ describe Replication do
       Replication.couch_config[:databases].should include "User" => User.database.name
     end
 
-    it 'should generate uri' do
-      @rep.remote_uri.to_s.should == 'http://localhost:1234/'
+    it 'should generate app uri' do
+      @rep.remote_app_uri.to_s.should == 'http://app:1234/'
     end
 
-    it 'should generate uri with username and password' do
-      @rep.user_name = 'test_user'
+    it 'should generate couch uri' do
+      @rep.username = @rep.password = nil
+      @rep.remote_couch_uri.to_s.should == 'http://couch:1234/'
+    end
+
+    it 'should generate couch uri with username and password' do
+      @rep.username = 'test_user'
       @rep.password = 'test_password'
-      @rep.remote_uri.to_s.should == 'http://test_user:test_password@localhost:1234/'
+      @rep.remote_couch_uri.to_s.should == 'http://test_user:test_password@couch:1234/'
     end
 
-    it 'should normalize remote_url upon saving' do
+    it 'should normalize remote_app_url upon saving' do
       @rep.save
-      @rep.remote_url.should == @rep.remote_uri.to_s
+      @rep.remote_app_url.should == @rep.remote_app_uri.to_s
     end
 
     it 'should create push configuration for some database' do
-      @rep.push_config(User).should include "source" => User.database.name, "target" => "http://localhost:1234/remote_user_db_name", "rapidftr_ref_id" => @rep.id, "rapidftr_env" => Rails.env
+      @rep.push_config(User).should include "source" => User.database.name, "target" => "http://test_user:test_password@couch:1234/remote_user_db_name", "rapidftr_ref_id" => @rep.id, "rapidftr_env" => Rails.env
     end
 
     it 'should create pull configuration for some database' do
-      @rep.pull_config(User).should include "target" => User.database.name, "source" => "http://localhost:1234/remote_user_db_name", "rapidftr_ref_id" => @rep.id, "rapidftr_env" => Rails.env
+      @rep.pull_config(User).should include "target" => User.database.name, "source" => "http://test_user:test_password@couch:1234/remote_user_db_name", "rapidftr_ref_id" => @rep.id, "rapidftr_env" => Rails.env
     end
 
     it 'should return configurations for push/pull of user/children/role' do
@@ -187,6 +198,10 @@ describe Replication do
   end
 
   describe 'status' do
+    before :each do
+      @rep.stub! :timestamp => nil
+    end
+
     it 'statuses should return array of statuses' do
       @rep.stub! :fetch_configs => [
         @default_config.merge("_replication_state" => 'a'), @default_config.merge("_replication_state" => 'b'),
@@ -217,6 +232,16 @@ describe Replication do
       @rep.should be_active
     end
 
+    it 'active should be true if the replications completed less than 2 mins ago' do
+      @rep.stub! :statuses => [ "completed", "error" ], :timestamp => 1.minute.ago
+      @rep.should be_active
+    end
+
+    it 'active should be false if the replications completed more than 2 mins ago' do
+      @rep.stub! :statuses => [ "completed", "error" ], :timestamp => 3.minutes.ago
+      @rep.should_not be_active
+    end
+
     it 'success should be true if all operations have status as "completed"' do
       @rep.stub! :statuses => [ "completed", "completed" ]
       @rep.should be_success
@@ -225,35 +250,6 @@ describe Replication do
     it 'success should be false if any operation doesnt have status as "completed"' do
       @rep.stub! :statuses => [ "completed", "abcd" ]
       @rep.should_not be_success
-    end
-  end
-
-  ################# NOTE #################
-  ## This will run on entire couch db   ##
-  ## rather than on a single test       ##
-  ## database. Do we want to run this   ##
-  ## every time?                        ##
-  ################# NOTE #################
-
-  describe 'authenticate' do
-
-    xit "should authenticate the user based on user credentials" do
-      @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
-      RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
-
-      response = Replication.authenticate_with_internal_couch_users("test_user", "test_password")
-      response.cookies.should_not be_nil
-
-      RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
-    end
-
-    xit "should raise exception for invalid credentials" do
-      @auth_response = RestClient.post 'http://127.0.0.1:5984/_session', 'name=rapidftr&password=rapidftr',{:content_type => 'application/x-www-form-urlencoded'}
-      RestClient.put 'http://127.0.0.1:5984/_config/admins/test_user', '"test_password"',{:cookies => @auth_response.cookies}
-
-      lambda{Replication.authenticate_with_internal_couch_users("test_user", "wrong_password")}.should(raise_error(RestClient::Unauthorized))
-
-      RestClient.delete 'http://127.0.0.1:5984/_config/admins/test_user',{:cookies => @auth_response.cookies}
     end
   end
 
@@ -288,7 +284,7 @@ describe Replication do
     it 'should trigger remote reindexing' do
       uri = double()
       uri.should_receive(:path=).with('/children/reindex').and_return(nil)
-      @rep.stub! :remote_uri => uri
+      @rep.stub! :remote_app_uri => uri
 
       Net::HTTP.should_receive(:get).with(uri).and_return(nil)
       @rep.send :trigger_remote_reindex

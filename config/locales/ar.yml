@@ -423,7 +423,7 @@ ar:
     index: معالجة النسخ المتماثلة
     create: كون نسخ متماثلة
     edit: تعديل نسخ متماثلة
-    remote_url: RapidFTR رابط
+    remote_app_url: RapidFTR رابط
     actions: الأفعال
     status: الحالة
     description: وصف
