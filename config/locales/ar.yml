@@ -239,8 +239,9 @@ ar:
     old_password: "كلمة السر الحالية"
     new_password: "كلمة السر الجديدة"
     new_password_confirmation: "أكد كلمة السر"
+    new: "مستخدم جديد"
+    actions: "أحداث"
 
-    new: "إسم المستخدم"
   phone: "الهاتف"
   email: "البريد الإلكتروني"
   organisation: "المنظمة"

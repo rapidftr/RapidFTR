@@ -1,0 +1,15 @@
+<div class="profile-header">
+  <ul class="history-details">
+    <% if Child.all_connected_with(@user.user_name).empty? %>
+      <%= render :partial => "no_activities" %>
+    <% end %>
+
+  </ul>
+</div>
+
+
+<div class="profile-tools">
+  <ul>
+    <li class="back"><%= link_to "Back", user_path(@user) %></li>
+  </ul>
+</div>

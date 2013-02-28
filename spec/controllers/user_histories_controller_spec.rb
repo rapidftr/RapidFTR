@@ -24,8 +24,9 @@ describe UserHistoriesController do
 
   it "should set the page name to the user" do
     User.stub(:get).and_return(mock(:user_name => "some_user"))
+
     get :index, :id => "some_id"
 
-    assigns(:page_name).should == "History of some_user"
+    assigns(:page_name).should == "History of some_user actions"
   end
 end
