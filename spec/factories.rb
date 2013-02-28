@@ -3,11 +3,13 @@ require 'factory_girl'
 FactoryGirl.define do
   factory :replication do
     description 'Sample Replication'
-    remote_url 'localhost:1234'
-    user_name 'username'
-    password 'password'
+    remote_app_url 'app:1234'
+    username 'test_user'
+    password 'test_password'
+    remote_couch_config "target" => "http://couch:1234/replication_test"
+
     after_build do |replication|
-      replication.stub! :remote_config => { "target" => "localhost:5984/replication_test" }
+      replication.stub! :save_remote_couch_config => true
     end
   end
 
