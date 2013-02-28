@@ -67,7 +67,7 @@ describe "user_histories/index.html.erb" do
         render
 
         rendered.should have_tag(".history-details") do
-          with_tag("li", /Bob has no activities./)
+          with_tag("li", /Bob has no activity./)
         end
       end
     end

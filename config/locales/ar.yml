@@ -240,8 +240,9 @@ ar:
     new_password: "كلمة السر الجديدة"
     new_password_confirmation: "أكد كلمة السر"
     new: "مستخدم جديد"
-    actions: "أحداث"
+    no_activity: "لا نشاط له"
 
+  actions: "نشاط"
   phone: "الهاتف"
   email: "البريد الإلكتروني"
   organisation: "المنظمة"
