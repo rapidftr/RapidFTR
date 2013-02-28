@@ -248,7 +248,7 @@ fr:
     name: "Name"
   record: "record"
   description: "Description"
-  name: "Name"
+  name: "Nom"
 
   permissions:
     label: "Permissions"

@@ -1,7 +1,7 @@
 <fieldset>
   <% fields.each do |field_hash| %>
       <div>
-      <label class="key"><%= t(field_hash.keys.first.to_sym) %></label>
+      <label class="key"><%= t(field_hash.keys.first.to_sym, :locale => given_locale) %></label>
       <%= f.send "#{field_hash.values.first}", "#{field_hash.keys.first}_#{given_locale}".to_sym %>
       </div>
 <% end %>

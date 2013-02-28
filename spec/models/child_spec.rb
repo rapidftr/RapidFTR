@@ -1274,7 +1274,16 @@ describe Child do
 
       Child.all_connected_with("tonystark").should == [child]
     end
+  end
 
+
+  describe 'reindex' do
+    it 'should reindex every 24 hours' do
+      scheduler = double()
+      scheduler.should_receive(:every).with('24h').and_yield()
+      Child.should_receive(:reindex!).once.and_return(nil)
+      Child.schedule scheduler
+    end
   end
 
   private
@@ -1295,5 +1304,4 @@ describe Child do
     user = User.new({:user_name => created_by, :organisation=> "UNICEF"})
     Child.new_with_user_name user, options
   end
-
 end
