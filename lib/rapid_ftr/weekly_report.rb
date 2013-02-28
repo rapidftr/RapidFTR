@@ -29,7 +29,7 @@ module WeeklyReport
   end
 
   def self.schedule(scheduler)
-    scheduler.every '5m' do # every monday at 00:01
+    scheduler.cron '0 1 0 ? * MON' do # every monday at 00:01
       begin
         Rails.logger.info "Generating report..."
         generate!
