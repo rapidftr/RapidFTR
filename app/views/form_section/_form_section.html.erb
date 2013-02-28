@@ -11,17 +11,17 @@
         <fieldset>
 
           <div>
-            <%= f.label :name, t("name"), :class => 'key' %>
+            <%= f.label :name, t("name", :locale => I18n.default_locale), :class => 'key' %>
             <%= f.text_field "name_#{I18n.default_locale}", :id => "form_section_name" %>
           </div>
 
           <div>
-            <%= f.label :description, t("description"), :class => 'key' %>
+            <%= f.label :description, t("description", :locale => I18n.default_locale), :class => 'key' %>
             <%= f.text_field "description_#{I18n.default_locale}", :id => "form_section_description" %>
           </div>
 
           <div>
-            <%= f.label :help_text, t("help_text"), :class => 'key' %>
+            <%= f.label :help_text, t("help_text", :locale => I18n.default_locale), :class => 'key' %>
             <%= f.text_field "help_text_#{I18n.default_locale}", :id => "form_section_help_text" %>
           </div>
 
