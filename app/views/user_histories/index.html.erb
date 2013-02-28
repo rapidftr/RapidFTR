@@ -1,11 +1,23 @@
 <div class="profile-header">
   <ul class="history-details">
-    <% if Child.all_connected_with(@user.user_name).empty? %>
+
+    <% if @histories.empty? %>
       <%= render :partial => "no_activities" %>
+    <% else %>
+      <% @histories.each do |history| %>
+        <% history['changes'].each_pair do |field, change| %>
+          <% history_entry = history_entry_for(history, field, change) %>
+          <% unless history_entry.empty? %>
+            <li>
+              <div>
+                <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals] %>
+                Child id:<span class="child_id"><%= history[:child_id] %></span> Child name:<span class="child_name"><%= history[:child_name] %></span>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
     <% end %>
-
-
-
   </ul>
 </div>
 
