@@ -41,4 +41,11 @@ describe WeeklyReport do
 
     WeeklyReport.generate!.should == report
   end
+
+  it "should schedule every monday" do
+    scheduler = double()
+    scheduler.should_receive(:cron).with("0 1 0 ? * MON").and_return(true)
+
+    WeeklyReport.schedule scheduler
+  end
 end
