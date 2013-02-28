@@ -1,5 +1,5 @@
 class ChildHistoriesController < ApplicationController
-  helper :children
+  helper :histories
   def index
     @child = Child.get(params[:id])
     @page_name = t("history_of")+" #{@child}"

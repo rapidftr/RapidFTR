@@ -18,6 +18,5 @@ describe "user_histories/index.html.erb" do
         end
       end
     end
-
   end
 end
