@@ -4,17 +4,18 @@
     <div class="page-content-new">
   	<%= hidden_field_tag "child[posted_from]", "Browser" %>
     <%= error_messages_for :child %>
-    <div class="side-tab">
+      <div class="side-tab">
         <%= render :partial => "tabs", :object => @form_sections %>
-    </div>
-    <div class="side-tab-content">
-      <div class="clearfix"></div>
+      </div>
+      <div class="side-tab-content">
+        <div class="clearfix"></div>
         <%= render :partial => "form_section", :collection => @form_sections %>
-    </div>
-    </div>
-    <%= submit_button %>
-
-    <%= discard_button :back %>
+        <div class="btn_panel">  
+            <%= discard_button :back %>
+            <%= submit_button %>    
+        </div> 
+    </div> 
+    </div>    
     <div class="clearfix"></div>
 <% end %>
 

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   include ChecksAuthentication
   before_filter :check_authentication
   before_filter :set_locale
+  before_filter :update_activity_time
 
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
@@ -89,6 +90,7 @@ class ApplicationController < ActionController::Base
     unless session.nil?
       session.update_expiration_time(20.minutes.from_now)
       session.save
+      session.put_in_cookie cookies
     end
   end
 

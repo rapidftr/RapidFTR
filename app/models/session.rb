@@ -36,7 +36,10 @@ class Session < CouchRestRails::Document
   end
 
   def put_in_cookie(cookies)
-    cookies[COOKIE_KEY] = id
+    cookies[COOKIE_KEY] = {
+        :value => id,
+        :expires => expires_at
+    }
   end
 
   def token

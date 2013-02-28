@@ -16,6 +16,7 @@ en:
     manage_system_users: Manage System Users
     records_need_attention: "Records need Attention"
     label: "Home"
+
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
@@ -38,6 +39,7 @@ en:
     logoff_confirmation: "Do you want to continue your session?"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     enter_each_in_one_line: "Enter each option on a new line"
+    record_count: "Showing %{start} to %{end} of %{total} records"
 
   data_base:
     delete_all_documents: "Deleted all child documents"
@@ -171,11 +173,25 @@ en:
   preposition:
     on_label: "on"
     because: "Because"
+    at_label: "at"
 
   will_paginate:
     previous_label: "&#8592; Previous"
     next_label: "Next &#8594;"
     page_gap: "&hellip;"
+    page_entries_info:
+      single_page_html:
+        zero: "No %{model} found"
+        one: "Displaying <b>1</b> %{model}"
+        other: "Displaying <b>all %{count}</b> %{model}"
+      multi_page_html: "Displaying %{model} <b>%{from} - %{to}</b> of <b>%{count}</b> in total"
+    models:
+      report:
+        one: "report"
+        other: "reports"
+      child:
+        one: "child"
+        other: "children"
 
   users:
     unverified: "Unverified Users"
@@ -204,6 +220,10 @@ en:
       show_all: "Showing all"
       show: "Show"
       edit: "Edit"
+      update: "Update"
+      create: "Create"
+    view: "View Role"
+
   user:
     label: "user"
     full_name: "Full Name"
@@ -293,6 +313,7 @@ en:
       "Manage Replications": "Manage Replications"
       "View roles": "View roles"
       "All": "All"
+      "Users for synchronisation": "Users For Synchronisation"
 
   forms:
     label: "Forms"
@@ -329,7 +350,6 @@ en:
     buttons:
       add: "Add"
     options: "Options"
-  message:
 
 
   advanced_search:
@@ -367,6 +387,7 @@ en:
     updated: "Contact information was successfully updated."
     edit_info: "Edit Contact Information"
     info_label: "Contact Information"
+    not_found: "Cannot find ContactInformation with id %{id}"
 
   device:
     blacklist: "Blacklist Device"
@@ -410,7 +431,7 @@ en:
     index: Manage Replications
     create: Configure a Server
     edit: Edit Configuration
-    remote_url: RapidFTR URL
+    remote_app_url: RapidFTR URL
     actions: Actions
     status: Status
     description: Description
@@ -433,6 +454,14 @@ en:
     no_token_provided: "no session token provided"
     no_token_in_header: "no session token in headers or cookies"
 
+  report:
+    heading: "RapidFTR Reports"
+    type: "Type"
+    as_of_date: "As of Date"
+    download: "Download"
+    types:
+      weekly_report: "Weekly Report"
+
   administration: "Administration"
   new: "New"
   saved: "Saved"
@@ -440,12 +469,18 @@ en:
   account: "Account"
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
 
-# validation error messages
+  # validation error messages
+  activerecord:
+    errors:
 
-  models:
-    user:
-      validation:
-        error_message:
+      template:
+        header:
+          one: "1 error prohibited this %{model} from being saved"
+          other: "%{count} errors prohibited this %{model} from being saved"
+        body: "There were problems with the following fields:"
+
+      models:
+        user:
           full_name: "Please enter full name of the user"
           password_confirmation: "Please enter password confirmation"
           role_ids: "Please select at least one role"
@@ -455,12 +490,39 @@ en:
           user_name_uniqueness: "User name has already been taken! Please select a new User name"
           authenticate: "Can't authenticate a un-saved user"
 
-    child:
-      validation:
-        error_messages:
+        child:
           at_least_one_field: "Please fill in at least one field or upload a file"
           age: "Age must be between 1 and 99"
           photo_format: "Please upload a valid photo file (jpg or png) for this child record"
           photo_size: "File is too large"
           primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
           validate_duplicate: "A valid duplicate ID must be provided"
+
+        field:
+          display_name_presence: "Display name must not be blank"
+          display_name_format: "Display name must contain at least one alphabetic characters"
+          default_value: "Cannot find default value for type "
+          has_2_options: "Field must have at least 2 options"
+          has_1_option: "Checkbox must have at least 1 option"
+          unique_name_other: "Field already exists on form '%{form_name}'"
+          unique_name_this: "Field already exists on this form"
+
+        form_section:
+          presence_of_name: "Name must not be blank"
+          format_of_name: "Name must contain only alphanumeric characters and spaces"
+          visible_method: "visible can't be false if perm_visible is true"
+          fixed_order_method: "fixed_order can't be false if perm_enabled is true"
+          perm_visible_method: "perm_visible can't be false if perm_enabled is true"
+          add_field_to_form_section: "Form section not editable"
+          delete_field: "Uneditable field cannot be deleted"
+          unique_name: "The name '%{name}' is already taken."
+          unique_id: "The unique id '%{unique_id}' is already taken."
+
+        role:
+          permission_presence: "Please select at least one permission"
+          unique_name: "A role with that name already exists, please enter a different name"
+
+        system_users:
+          username_unique: "User name has already been taken! Please select a new User name"
+
+  select_all_results: "Select all results"

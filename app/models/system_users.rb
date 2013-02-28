@@ -24,7 +24,7 @@ class SystemUsers < CouchRestRails::Document
   def is_user_name_unique
     user = SystemUsers.get(generate_id)
     return true if user.nil? or self._id == user._id
-    [false, "User name has already been taken! Please select a new User name"]
+    [false, I18n.t("activerecord.errors.models.system_users.username_unique")]
   end
 
   def assign_admin_role

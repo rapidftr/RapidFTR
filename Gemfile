@@ -1,4 +1,4 @@
-source :gemcutter
+source "https://rubygems.org"
 
 gem 'couchrest',      '0.34'
 gem 'dictionary',     '1.0.0'
@@ -30,7 +30,10 @@ gem 'therubyracer' , :platforms => :ruby
 gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
-gem 'thin', :platform => :ruby
+gem 'thin', :platform => :ruby, :require => false
+
+gem 'rufus-scheduler', :require => false
+gem 'daemons', :require => false
 
 group :development, :assets do
   gem 'rubyzip'
@@ -66,7 +69,7 @@ end
 group :test, :cucumber do
   gem 'cucumber',         '1.2.1'
   gem 'cucumber-rails',   '0.3.2'
-  gem 'selenium-webdriver', '2.27.2'
+  gem 'selenium-webdriver', '~> 2.30'
   gem 'hpricot',          '0.8.2'
   gem 'launchy',          '0.4.0'
   gem 'rcov', :platforms => :ruby_18

@@ -3,11 +3,13 @@ require 'factory_girl'
 FactoryGirl.define do
   factory :replication do
     description 'Sample Replication'
-    remote_url 'localhost:1234'
-    user_name 'username'
-    password 'password'
+    remote_app_url 'app:1234'
+    username 'test_user'
+    password 'test_password'
+    remote_couch_config "target" => "http://couch:1234/replication_test"
+
     after_build do |replication|
-      replication.stub! :remote_config => { "target" => "localhost:5984/replication_test" }
+      replication.stub! :save_remote_couch_config => true
     end
   end
 
@@ -35,5 +37,20 @@ FactoryGirl.define do
     disabled false
     verified true
     role_ids ['random_role_id']
+  end
+
+  factory :report do
+    ignore do
+      filename "test_report.csv"
+      content_type "text/csv"
+      data "test report"
+    end
+
+    report_type { "weekly_report" }
+    as_of_date { Date.today }
+
+    after_build do |report, builder|
+      report.create_attachment :name => builder.filename, :file => StringIO.new(builder.data), :content_type => builder.content_type if builder.data
+    end
   end
 end

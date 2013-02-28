@@ -1,8 +1,28 @@
+# SAMPLE USAGE:
+# cap 
+#   -S deploy_server=test.rapidftr.com 
+#   -S deploy_user=admin                 # Password will be prompted by SSH, or you should be using SSH keys
+#   -S server_name=test.rapidftr.com     # Can be left blank if we're using only port-based deployment without using virtual hosts
+#   -S rails_env=android 
+#   -S http_port=80 
+#   -S https_port=443 
+#   -S solr_port=8983 
+#   -S couchdb_host=<couch-host>         # Can be left blank for localhost
+#   -S couchdb_username=<couch-username> # Can be left blank if no authentication required
+#   -S couchdb_password=<couch-password> # Can be left blank if no authentication required
+#   -S nginx_site_conf=/opt/local/nginx/conf/sites.d # Path to nginx per-site configuration folder
+#   -S branch=<commit-id (or) release1 (or) master>
+# deploy
+
+# To deploy a specific revision to any environment use
+#   -S branch=<commit-sha>
+
+# Use cap deploy:pending and cap deploy:pending:diff to find out the diff between the master and the current deployed revision in the server
+
 require "bundler/capistrano"
 
-def config(variable, description)
+def prompt_config(variable, description)
   value = exists?(variable) ? fetch(variable) : nil
-  value = ENV[variable.to_s] unless ENV[variable.to_s].to_s.empty?
 
   if value.to_s.empty? and $stdout.isatty
     value = Capistrano::CLI.ui.ask(description).strip
@@ -12,20 +32,16 @@ def config(variable, description)
   set variable, value
 end
 
-config :deploy_server, "Deploy to Server"
-config :deploy_user, "User Name"
-config :deploy_env, "RAILS_ENV"
-config :deploy_port, "HTTP Port"
-
-set :deploy_port_https, deploy_port.to_i + 1  unless exists?(:deploy_port_https)
-set :deploy_port_solr,  deploy_port.to_i + 2  unless exists?(:deploy_port_solr)
-set :ssh_options, {:keys => ENV["SSH_PATH"] } if ENV["SSH_PATH"]
-
-#Use the below script to deploy the app with environment variables.
-#Ex: cap deploy_server=xxx.xxx.xxx.xxx deploy_user=admin deploy_env=android deploy_port=5000  deploy
+prompt_config :deploy_server, "Deploy to Server"
+prompt_config :deploy_user, "User Name"
+prompt_config :rails_env, "RAILS_ENV"
+prompt_config :http_port, "HTTP Port"
+prompt_config :https_port, "HTTPS Port"
+prompt_config :solr_port, "Solr Port"
+prompt_config :nginx_site_conf, "Nginx Per-Site Configuration Folder"
 
 set :application, "RapidFTR"
-set :deploy_dir, "/srv/rapid_ftr_#{deploy_env}"
+set :deploy_dir, "/srv/rapid_ftr_#{rails_env}"
 
 server deploy_server, :web, :app, :db
 default_run_options[:pty] = $stdout.isatty
@@ -36,18 +52,9 @@ set :scm, :git
 set :repository,  "git://github.com/rapidftr/RapidFTR.git"
 set :deploy_via, :remote_cache
 set :branch, fetch(:branch, "master")
-#to deploy a specific revision to any environment use
-#RAILS_ENV=<env_name> cap -S branch=<commit-sha> deploy
-#If you want to deploy the latest master use the command
-#RAILS_ENV=<env_name> cap deploy
 
-load 'config/recipes/base'
-load 'config/recipes/deploy'
-load 'config/recipes/db'
-load 'config/recipes/sunspot'
+load 'config/recipes/base_tasks'
+load 'config/recipes/app_tasks'
 
-before 'deploy:update_code', 'deploy:create_release_dir'
-after  'deploy:update', 'deploy:setup_application', 'deploy:setup_revision', 'db:migrate', 'sunspot:clean_start', 'deploy:restart'
-
-#use RAILS_ENV=<env> cap deploy:pending and cap deploy:pending:diff to find out the diff between the master and the
-#current deployed revision in the server.
+before 'deploy:update_code', 'app:create_release_dir'
+after  'deploy:update', 'app:setup_nginx', 'app:setup_application', 'app:setup_revision', 'app:migrate_db', 'app:start_solr', 'app:start_scheduler', 'app:restart'

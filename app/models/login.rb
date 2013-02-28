@@ -14,11 +14,11 @@ class Login
 
   def authenticate_user
     user = User.find_by_user_name(@user_name)
-    if (user and user.authenticate(@password))  
-      session = Session.for_user( user, @imei ) 
+    if (user and user.authenticate(@password))
+      session = user.verified ? Session.for_user( user, @imei ) : (@imei.nil? ? nil : Session.for_user( user, @imei ))
     end
 
-    if session and @imei 
+    if session and @imei
       user.add_mobile_login_event(@imei, @mobile_number)
       user.save
     end

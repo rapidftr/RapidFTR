@@ -36,7 +36,7 @@
     </fieldset>
     <div class="btn_panel">
       <%= cancel_button(roles_path) %>
-    <%= submit_button(editable_role.new_record? ? 'Create' : 'Update') %>
+    <%= submit_button(editable_role.new_record? ? t("roles.actions.create") : t("roles.actions.update")) %>
     <!--TODO: After we got the user object in the session replace the DB query with User object-->
 
         </div>

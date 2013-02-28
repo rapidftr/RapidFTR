@@ -1,9 +1,15 @@
 class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
+  skip_before_filter :check_authentication, :only => :reindex
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf, :set_exportable]
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
   before_filter :current_user
   before_filter :sanitize_params, :only => [:update, :sync_unverified]
+
+  def reindex
+    Child.reindex!
+    render :nothing => true
+  end
 
   # GET /children
   # GET /children.xml
@@ -14,8 +20,9 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     @filter = params[:filter] || params[:status] || "all"
     @order = params[:order_by] || 'name'
+    per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
 
-    filter_children
+    filter_children per_page
 
     respond_to do |format|
       format.html
@@ -38,7 +45,7 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    authorize! :read, @child
+    authorize! :read, @child if @child["created_by"] != current_user_name
     @form_sections = get_form_sections
     @page_name = t("child.view")+": #{@child}"
     @body_class = 'profile-page'
@@ -229,26 +236,6 @@ def search
   default_search_respond_to
 end
 
-def export_data
-  authorize! :export, Child
-
-  selected_records = params["selections"] || {}
-  if selected_records.empty?
-    raise ErrorResponse.bad_request('You must select at least one record to be exported')
-  end
-
-  children = selected_records.sort.map { |index, child_id| Child.get(child_id) }
-
-  if params[:commit] == t("child.actions.export_to_photo_wall")
-    export_photos_to_pdf(children, "#{file_basename}.pdf")
-  elsif params[:commit] == t("child.actions.export_to_pdf")
-    pdf_data = ExportGenerator.new(children).to_full_pdf
-    send_pdf(pdf_data, "#{file_basename}.pdf")
-  elsif params[:commit] == t("child.actions.export_to_csv")
-    render_as_csv(children, "#{file_basename}.csv")
-  end
-end
-
 def export_photos_to_pdf children, filename
   authorize! :export, Child
 
@@ -262,20 +249,15 @@ def export_photo_to_pdf
   send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
 end
 
-# POST
-def set_exportable
-  authorize! :update, @child
-
-  @child.exportable = params[:exportable] ? true : false
-  @child.save!
-
-  redirect_to child_path(@child.id)
-end
 
 private
 
+def child_short_id child_params
+  child_params[:short_id] || child_params[:unique_identifier].last(7)
+end
+
 def create_or_update_child(child_params)
-  @child = Child.by_short_id(:key => child_params[:short_id]).first
+  @child = Child.by_short_id(:key => child_short_id(child_params)).first if child_params[:unique_identifier]
   if @child.nil?
     @child = Child.new_with_user_name(current_user, child_params)
   else
@@ -348,12 +330,12 @@ def load_child_or_redirect
   end
 end
 
-def filter_children
-  total_rows, children = children_by_user_access(@filter)
+def filter_children(per_page)
+  total_rows, children = children_by_user_access(@filter, per_page)
   @children = paginated_collection children, total_rows
 end
 
-def children_by_user_access(filter_option)
+def children_by_user_access(filter_option, per_page )
   keys = [filter_option]
   options = {:view_name => "by_all_view_#{params[:order_by] || 'name'}".to_sym}
   unless  can?(:view_all, Child)
@@ -365,7 +347,7 @@ def children_by_user_access(filter_option)
   else
     options.merge!({:startkey => keys, :endkey => [keys, {}].flatten})
   end
-  Child.fetch_paginated(options, params[:page] || 1, ChildrenHelper::View::PER_PAGE)
+  Child.fetch_paginated(options, params[:page] || 1, per_page )
 end
 
 def paginated_collection instances, total_rows
@@ -377,9 +359,9 @@ end
 
 def search_by_user_access
   if can? :view_all, Child
-    @results = Child.search(@search)
+    @results, @full_results = Child.search(@search)
   else
-    @results = Child.search_by_created_user(@search, current_user_name)
+    @results, @full_results = Child.search_by_created_user(@search, current_user_name)
   end
 end
 

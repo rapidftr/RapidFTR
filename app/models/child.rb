@@ -21,9 +21,11 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
-  property :exportable, :cast_as => :boolean, :default => true
   property :verified
   property :verified, :cast_as => :boolean
+
+
+view_by :protection_status, :gender, :ftr_status
 
   view_by :name,
           :map => "function(doc) {
@@ -58,7 +60,7 @@ class Child < CouchRestRails::Document
             }"
 
       view_by "all_view_#{field}",
-            :map => "function(doc) {
+              :map => "function(doc) {
                 var fDate = doc['#{field}'];
                 if (doc['couchrest-type'] == 'Child')
                 {
@@ -71,10 +73,14 @@ class Child < CouchRestRails::Document
                     if (doc['reunited'] == 'true') {
                       emit(['reunited', fDate], doc);
                     } else {
+                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
                       emit(['active', fDate], doc);
                     }
+                    }
                   } else {
-                    emit(['active', fDate], doc);
+                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
+                                    emit(['active', fDate], doc);
+                  }
                   }
                }
             }"
@@ -195,7 +201,9 @@ class Child < CouchRestRails::Document
   end
 
   def self.fetch_paginated(options, page, per_page)
-    [self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
+    row_count = self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
+    per_page = row_count if per_page == "all"
+    [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
 
   def self.build_solar_schema
@@ -221,22 +229,22 @@ class Child < CouchRestRails::Document
     return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
     return true if deprecated_fields && deprecated_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
-    [false, I18n.t("models.child.validation.error_messages.at_least_one_field")]
+    [false, I18n.t("activerecord.errors.models.child.at_least_one_field")]
   end
 
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-    [false, I18n.t("models.child.validation.error_messages.age")]
+    [false, I18n.t("activerecord.errors.models.child.age")]
   end
 
   def validate_photos
     return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    [false, I18n.t("models.child.validation.error_messages.photo_format")]
+    [false, I18n.t("activerecord.errors.models.child.photo_format")]
   end
 
   def validate_photos_size
     return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-    [false, I18n.t("models.child.validation.error_messages.photo_size")]
+    [false, I18n.t("activerecord.errors.models.child.photo_size")]
   end
 
   def validate_audio_size
@@ -434,9 +442,6 @@ class Child < CouchRestRails::Document
     @deleted_photo_keys.each { |p|
       self['photo_keys'].delete p
       self['current_photo_key'] = self['photo_keys'].first if p == self['current_photo_key']
-      self['_attachments'].keys.each do |key|
-        self['_attachments'].delete key if key == p || key.starts_with?(p + "_")
-      end
     } if @deleted_photo_keys
 
     self['current_photo_key'] ||= self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
@@ -478,7 +483,7 @@ class Child < CouchRestRails::Document
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise I18n.t("models.child.validation.error_messages.primary_photo_id", :photo_id => photo_key)
+      raise I18n.t("activerecord.errors.models.child.primary_photo_id", :photo_id => photo_key)
     end
     self['current_photo_key'] = photo_key
   end
@@ -675,8 +680,7 @@ class Child < CouchRestRails::Document
                      "unique_identifier",
                      "current_photo_key",
                      "created_organisation",
-                     "photo_keys",
-                     "exportable"]
+                     "photo_keys"]
     existing_fields = system_fields + field_definitions.map { |x| x.name }
     self.reject { |k, v| existing_fields.include? k }
   end
@@ -698,7 +702,7 @@ class Child < CouchRestRails::Document
   end
 
   def validate_duplicate_of
-    return [false, I18n.t("models.child.validation.error_messages.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
+    return [false, I18n.t("activerecord.errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
     true
   end
 

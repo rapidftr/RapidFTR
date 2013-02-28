@@ -21,6 +21,7 @@ module RapidFTR
         Field.new("name" => "characteristics", "display_name" => "Distinguishing Physical Characteristics", "type" => "textarea"),
         Field.new("name" => "documents", "display_name" => "Documents carried by the child", "type" => "text_field"),
       ]
+
       FormSection.create!("name" =>"Basic Identity", "visible"=>true, :description => "Basic identity information about a separated or unaccompanied child.", :order=> 1, :unique_id=>"basic_identity", "editable"=>true, :fields => basic_identity_fields, :perm_enabled => true)
 
       photo_audio_fields = [
@@ -173,6 +174,7 @@ module RapidFTR
 
       return true
     end
+
   end
 end
 

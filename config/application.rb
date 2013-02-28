@@ -6,7 +6,6 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
-require "lib/i18n_backend_chain"
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -17,9 +16,10 @@ module RapidFTR
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Custom directories with classes and modules you want to be autoloadable.
+    # Custom directories with classes and modules you want to be autoloadable.    
     config.autoload_paths += %W(
       #{config.root}/lib
+      #{config.root}/lib/rapid_ftr
       #{config.root}/lib/extensions
       #{config.root}/app/presenters
     )
@@ -47,11 +47,6 @@ module RapidFTR
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-
-    # Add our custom CouchDB I18n backend
-    config.after_initialize do
-        I18n.backend = I18n::Backend::CustomChain.new(I18nBackendCouch.new, I18n.backend)
-    end
 
     LOCALES = ['en','fr','ar','zh','es','ru']
     LOCALES_WITH_DESCRIPTION = [['-', nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
