@@ -47,3 +47,12 @@ end
 Given /^there is a admin$/ do
 	step "a admin \"admin\" with a password \"123\""
 end
+Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
+  step "I am on the login page"
+  step "I fill in \"#{user_name}\" for \"user_name\""
+  step "I fill in \"#{password}\" for \"password\""
+  step "I press \"Log in\""
+end
+When /^I logout$/ do
+  click_link("Logout")
+end
