@@ -288,12 +288,12 @@ describe Replication do
     end
 
     it 'should trigger remote reindexing' do
-      uri = double()
-      uri.should_receive(:path=).with('/children/reindex').and_return(nil)
+      uri = @rep.remote_app_uri
       @rep.stub! :remote_app_uri => uri
 
-      Net::HTTP.should_receive(:get).with(uri).and_return(nil)
+      Net::HTTP.should_receive(:post_form).with(uri, {}).and_return(nil)
       @rep.send :trigger_remote_reindex
+      uri.path.should == '/children/reindex'
     end
 
     it 'should schedule reindexing every 5m' do

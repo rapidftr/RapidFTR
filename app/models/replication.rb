@@ -170,7 +170,7 @@ class Replication < CouchRestRails::Document
   def trigger_remote_reindex
     uri = remote_app_uri
     uri.path = Rails.application.routes.url_helpers.reindex_children_path
-    Net::HTTP.get uri
+    post_uri uri
   end
 
   def invalidate_fetch_configs
@@ -197,17 +197,7 @@ class Replication < CouchRestRails::Document
       uri.path = Rails.application.routes.url_helpers.configuration_replications_path
       post_params = {:user_name => self.username, :password => self.password}
 
-      if uri.scheme == "http"
-        response = Net::HTTP.post_form uri, post_params
-      else
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        request = Net::HTTP::Post.new(uri.request_uri)
-        request.set_form_data(post_params)
-        response = http.start{|req| req.request(request)}
-      end
-
+      response = post_uri uri, post_params
       self.remote_couch_config = JSON.parse response.body
       true
     rescue => e
@@ -221,6 +211,19 @@ class Replication < CouchRestRails::Document
 
   def replicator_docs
     replicator.documents["rows"].map { |doc| replicator.get doc["id"] unless doc["id"].include? "_design" }.compact
+  end
+
+  def post_uri(uri, post_params = {})
+    if uri.scheme == "http"
+      Net::HTTP.post_form uri, post_params
+    else
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data(post_params)
+      http.start { |req| req.request(request) }
+    end
   end
 
 end

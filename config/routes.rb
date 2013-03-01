@@ -1,7 +1,7 @@
 RapidFTR::Application.routes.draw do
   resources :children do
     collection do
-      get :reindex
+      post :reindex
       get :advanced_search
       post :export_csv
       get :search
