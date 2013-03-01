@@ -426,6 +426,7 @@ en:
 
     add: "Add Field"
     type: "Field type"
+  
   replication:
     label: Replication
     index: Manage Replications

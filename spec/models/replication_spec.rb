@@ -148,7 +148,6 @@ describe Replication do
 
     it 'should invalidate replication document cache upon saving' do
       @rep.should_receive(:invalidate_fetch_configs).and_return(true)
-      @rep.stub! :start_replication => true
       @rep["_id"] = nil
       @rep.save!
     end
@@ -172,10 +171,9 @@ describe Replication do
       @rep.stop_replication
     end
 
-    it 'should restart replication' do
-      @rep.should_receive(:stop_replication).ordered.and_return(nil)
-      @rep.should_receive(:start_replication).ordered.and_return(nil)
-      @rep.restart_replication
+    it 'should stop replication before starting' do
+      @rep.should_receive(:stop_replication).and_return(nil)
+      @rep.start_replication
     end
   end
 
@@ -254,9 +252,17 @@ describe Replication do
   end
 
   describe 'reindex' do
-    it 'should set reindexed to false when starting replication' do
-      @rep.should_receive(:needs_reindexing=).with(true).ordered.and_return(true)
-      @rep.should_receive(:save_without_callbacks).ordered.and_return(nil)
+    it 'should mark for reindexing whenever a record is being saved' do
+      @rep["_id"] = nil
+      @rep.needs_reindexing = false
+      @rep.save
+      @rep.needs_reindexing.should be_true
+    end
+
+    it 'should set needs reindexing to true when starting replication' do
+      @rep.needs_reindexing = false
+      @rep.should_receive(:needs_reindexing=).with(true).and_return(true)
+      @rep.should_receive(:save_without_callbacks).and_return(true)
       @rep.start_replication
     end
 
