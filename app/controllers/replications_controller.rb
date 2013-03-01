@@ -64,6 +64,10 @@ class ReplicationsController < ApplicationController
     redirect_to devices_path
   end
 
+  def show
+    authorize! :show, @replication
+  end
+
   private
 
   def load_replication
