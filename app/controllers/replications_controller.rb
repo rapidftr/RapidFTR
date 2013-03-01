@@ -1,13 +1,13 @@
 class ReplicationsController < ApplicationController
 
   before_filter :load_replication
-  before_filter :authenticate_couch_internal_user, :only => [:configuration]
 
   skip_before_filter :verify_authenticity_token, :only => [ :configuration, :start, :stop ]
   skip_before_filter :check_authentication, :only => :configuration
 
   def configuration
-    render :json => Replication.configuration(params[:user_name], params[:password])
+    Replication.authenticate_with_internal_couch_users params[:user_name], params[:password]
+    render :json => Replication.couch_config
   end
 
   def index
@@ -40,7 +40,6 @@ class ReplicationsController < ApplicationController
     @replication.update_attributes params[:replication]
 
     if @replication.save
-      @replication.restart_replication
       redirect_to devices_path
     else
       render :edit
@@ -55,7 +54,7 @@ class ReplicationsController < ApplicationController
 
   def start
     authorize! :start, @replication
-    @replication.restart_replication
+    @replication.start_replication
     redirect_to devices_path
   end
 
@@ -65,13 +64,14 @@ class ReplicationsController < ApplicationController
     redirect_to devices_path
   end
 
+  def show
+    authorize! :show, @replication
+  end
+
   private
 
   def load_replication
     @replication = Replication.get params[:id] if params[:id]
   end
 
-  def authenticate_couch_internal_user
-    Replication.authenticate_with_internal_couch_users(params[:user_name], params[:password])
-  end
 end

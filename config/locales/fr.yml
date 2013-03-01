@@ -248,7 +248,7 @@ fr:
     name: "Name"
   record: "record"
   description: "Description"
-  name: "Name"
+  name: "Nom"
 
   permissions:
     label: "Permissions"
@@ -391,7 +391,7 @@ fr:
     index: Manage Replications
     create: Configure a Server
     edit: Edit Configuration
-    remote_url: RapidFTR URL
+    remote_app_url: RapidFTR URL
     actions: Actions
     status: Status
     description: Description

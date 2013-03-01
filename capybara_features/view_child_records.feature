@@ -23,7 +23,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I should see "jaco"
     And I should see "meredith"
 
-    @javascript
+  @javascript @wip
   Scenario: Checking filter by Active returns all the children who are not reunited in the system and who are not marked as duplicate of another child record
 
     Given the following children exist in the system:
@@ -195,7 +195,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     Then I should see "Order by"
     And I should see "Most recently flagged"
 
-  @javascript
+  @javascript @wip
   Scenario: Checking filter by Flagged returns all the flagged children in the system by order of most recently flagged
 
     Given the following children exist in the system:
@@ -223,7 +223,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I select "Name" from "order_by"
     Then I should see the order andreas,jaco,meredith,zak
 
-  @javascript
+  @javascript @wip
   Scenario: Checking filter by Flagged and ordering by most recently flagged returns the children in most recently flagged order
 
     Given the following children exist in the system:

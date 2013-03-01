@@ -128,15 +128,15 @@ describe Child do
     it "should return the children registered by the user if the user has limited permission" do
       create_child("suganthi", {"created_by" => "thirumani"})
       create_child("kavitha", {"created_by" => "rajagopalan"})
-      search = mock("search", :query => "kavitha", :valid? => true)
-      Child.search_by_created_user(search, "rajagopalan").first.map(&:name).should =~ ["kavitha"]
+      search = mock("search", :query => "kavitha", :valid? => true, :page => 1)
+      Child.search_by_created_user(search, "rajagopalan", 1).first.map(&:name).should =~ ["kavitha"]
     end
 
     it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
       create_child("suganthi", {"created_by" => "thirumani", "unique_identifier" => "thirumanixxx12345"})
       create_child("kavitha", {"created_by" => "rajagopalan", "unique_identifier" => "rajagopalanxxx12345"})
       search = mock("search", :query => "thirumanixxx12345", :valid? => true)
-      Child.search_by_created_user(search, "rajagopalan").first.map(&:name).should =~ []
+      Child.search_by_created_user(search, "rajagopalan", 1).first.map(&:name).should =~ []
     end
 
 
@@ -1241,6 +1241,15 @@ describe Child do
       child.save
 
       child.created_organisation.should == 'UNICEF'
+    end
+  end
+
+  describe 'reindex' do
+    it 'should reindex every 24 hours' do
+      scheduler = double()
+      scheduler.should_receive(:every).with('24h').and_yield()
+      Child.should_receive(:reindex!).once.and_return(nil)
+      Child.schedule scheduler
     end
   end
 

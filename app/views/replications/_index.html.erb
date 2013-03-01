@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th><%= t "replication.description" %></th>
-    <th ><%= t "replication.remote_url" %></th>
+    <th ><%= t "replication.remote_app_url" %></th>
     <th colspan="2"><%= t "login.username" %></th>
     <th><%= t "replication.status" %></th>
     <th><%= t "replication.timestamp" %></th>
@@ -15,10 +15,10 @@
           <tr>
             <td><%= rep.description %></td>
             <td>
-              <%= link_to rep.remote_url, rep.remote_url, :target => '_blank' %>
+              <%= link_to rep.remote_app_url, rep.remote_app_url, :target => '_blank' %>
             </td>
             <td>
-              <span><%= rep.user_name %></span>
+              <span><%= rep.username %></span>
             </td>
             <td class="status">
               <span class="icon <%= rep.status %>"></span>
@@ -30,8 +30,8 @@
               <span><%= l rep.timestamp, :format => :long if rep.timestamp %></span>
             </td>
             <td>
-              <%= link_to t("replication.stop"), stop_replication_path(rep), :method => :post if rep.triggered? %>
-              <%= link_to t("replication.start"), start_replication_path(rep), :method => :post unless rep.triggered? %>
+              <%= link_to t("replication.stop"), stop_replication_path(rep), :method => :post if rep.active? %>
+              <%= link_to t("replication.start"), start_replication_path(rep), :method => :post unless rep.active? %>
               &nbsp;
               <%= link_to t("buttons.edit"), edit_replication_path(rep) %>
               &nbsp;

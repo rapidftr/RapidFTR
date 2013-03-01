@@ -426,12 +426,13 @@ en:
 
     add: "Add Field"
     type: "Field type"
+  
   replication:
     label: Replication
     index: Manage Replications
     create: Configure a Server
     edit: Edit Configuration
-    remote_url: RapidFTR URL
+    remote_app_url: RapidFTR URL
     actions: Actions
     status: Status
     description: Description

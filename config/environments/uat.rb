@@ -9,7 +9,7 @@ config.cache_classes = true
 config.whiny_nils = true
 
 # Full error reports are disabled and caching is turned on
-config.action_controller.consider_all_requests_local = true
+config.consider_all_requests_local = true
 config.action_controller.perform_caching             = true
 
 # See everything in the log (default is :info)
