@@ -40,7 +40,6 @@ class ReplicationsController < ApplicationController
     @replication.update_attributes params[:replication]
 
     if @replication.save
-      @replication.restart_replication
       redirect_to devices_path
     else
       render :edit
@@ -55,7 +54,7 @@ class ReplicationsController < ApplicationController
 
   def start
     authorize! :start, @replication
-    @replication.restart_replication
+    @replication.start_replication
     redirect_to devices_path
   end
 
