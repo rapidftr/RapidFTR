@@ -13,7 +13,7 @@ class Replication < CouchRestRails::Document
   property :description
   property :username
   property :password
-  property :needs_reindexing, :cast_as => :boolean, :default => false
+  property :needs_reindexing, :cast_as => :boolean, :default => true
 
   validates_presence_of :remote_app_url
   validates_presence_of :description
@@ -23,18 +23,24 @@ class Replication < CouchRestRails::Document
   validates_with_method :save_remote_couch_config
 
   before_save   :normalize_remote_app_url
+  before_save   :mark_for_reindexing
 
   after_save    :start_replication
-  after_save    :invalidate_fetch_configs
   before_destroy :stop_replication
 
   def start_replication
+    stop_replication
+
     build_configs.each do |config|
       replicator.save_doc config
     end
 
-    self.needs_reindexing = true
-    save_without_callbacks
+    unless needs_reindexing?
+      self.needs_reindexing = true
+      save_without_callbacks
+    end
+
+    true
   end
 
   def stop_replication
@@ -42,12 +48,6 @@ class Replication < CouchRestRails::Document
       replicator.delete_doc config
     end
     invalidate_fetch_configs
-    true
-  end
-
-  def restart_replication
-    stop_replication
-    start_replication
   end
 
   def check_status_and_reindex
@@ -56,6 +56,10 @@ class Replication < CouchRestRails::Document
       trigger_local_reindex
       trigger_remote_reindex
     end
+  end
+
+  def mark_for_reindexing
+    self.needs_reindexing = true
   end
 
   def timestamp

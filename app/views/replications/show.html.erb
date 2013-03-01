@@ -1,0 +1,37 @@
+<h1 class="no_border">
+  <%= t "replication.label" %> :  <%= @replication.description %>
+</h1>
+
+<div class="page-content-new replication-page">
+  <div class="side-tab-content full_width">
+
+    <table class="list_table">
+      <thead>
+      <tr>
+        <th width="10%">Source</th>
+        <th width="10%">Target</th>
+        <th width="30%">Timestamp</th>
+        <th width="10%">Status</th>
+        <th width="40%">Statistics</th>
+      </tr>
+      </thead>
+
+      <tbody>
+        <% @replication.fetch_configs.each do |config| %>
+          <tr>
+            <td><%= config["source"].gsub(/(.+)(:)(.+)(@)/, '').gsub('/', '/ ') %></td>
+            <td><%= config["target"].gsub(/(.+)(:)(.+)(@)/, '').gsub('/', '/ ') %></td>
+            <td><%= l config["_replication_state_time"].to_datetime if config["_replication_state_time"] %></td>
+            <td><%= t config["_replication_state"], :scope => "replication" if config["_replication_state"] %></td>
+            <td>
+              <% config["_replication_stats"].each do |key, value| %>
+                <%= key %> : <%= value %> <br />
+              <% end if config["_replication_stats"] %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+  </div>
+</div>
