@@ -15,7 +15,9 @@ class Login
   def authenticate_user
     user = User.find_by_user_name(@user_name)
     if (user and user.authenticate(@password))
-      session = user.verified ? Session.for_user( user, @imei ) : (@imei.nil? ? nil : Session.for_user( user, @imei ))
+      mobile_login_history = user.mobile_login_history.first
+      imei = mobile_login_history.nil? ? "" : mobile_login_history['imei']
+      session = user.verified ? Session.for_user( user, @imei ) : ((imei == @imei) || (imei == "") ? Session.for_user( user, @imei ) : nil)
     end
 
     if session and @imei
