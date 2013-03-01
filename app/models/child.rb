@@ -318,17 +318,17 @@ view_by :protection_status, :gender, :ftr_status
     duplicates
   end
 
-  def self.search_by_created_user(search, created_by)
+  def self.search_by_created_user(search, created_by, page_number = 1)
     created_by_criteria = [SearchCriteria.new(:field => "created_by", :value => created_by, :join => "AND")]
-    search(search, created_by_criteria, created_by)
+    search(search, page_number, created_by_criteria, created_by)
   end
 
-  def self.search(search, criteria = [], created_by = "")
+  def self.search(search, page_number = 1, criteria = [], created_by = "" )
     return [] unless search.valid?
     query = search.query
     search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
     search_criteria.concat([SearchCriteria.new(:field => "name", :value => search.query, :join => "OR")]).concat(criteria)
-    SearchService.search page_number=1, search_criteria
+    SearchService.search page_number, search_criteria
   end
 
   def self.flagged

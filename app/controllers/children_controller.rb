@@ -228,7 +228,7 @@ def search
   if (params[:query])
     @search = Search.new(params[:query])
     if @search.valid?
-      search_by_user_access
+      search_by_user_access(params[:page] || 1)
     else
       render :search
     end
@@ -357,11 +357,11 @@ def paginated_collection instances, total_rows
   end
 end
 
-def search_by_user_access
+def search_by_user_access(page_number = 1)
   if can? :view_all, Child
-    @results, @full_results = Child.search(@search)
+    @results, @full_results = Child.search(@search,page_number)
   else
-    @results, @full_results = Child.search_by_created_user(@search, current_user_name)
+    @results, @full_results = Child.search_by_created_user(@search, current_user_name,page_number)
   end
 end
 

@@ -486,12 +486,12 @@ describe ChildrenController do
     end
 
     it "performs a search using the parameters passed to it" do
-      search = mock("search", :query => 'the child name', :valid? => true)
+      search = mock("search", :query => 'the child name', :valid? => true, :page => 1)
       Search.stub!(:new).and_return(search)
 
       fake_results = ["fake_child","fake_child"]
       fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
-      Child.should_receive(:search).with(search).and_return([fake_results, fake_full_results])
+      Child.should_receive(:search).with(search, 1).and_return([fake_results, fake_full_results])
       get(:search, :format => 'html', :query => 'the child name')
       assigns[:results].should == fake_results
     end
@@ -534,12 +534,12 @@ describe ChildrenController do
       @session = fake_field_worker_login
     end
     it "should only list the children which the user has registered" do
-      search = mock("search", :query => 'some_name', :valid? => true)
+      search = mock("search", :query => 'some_name', :valid? => true, :page => 1)
       Search.stub!(:new).and_return(search)
 
       fake_results = [:fake_child,:fake_child]
       fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
-      Child.should_receive(:search_by_created_user).with(search, @session.user_name).and_return([fake_results, fake_full_results])
+      Child.should_receive(:search_by_created_user).with(search, @session.user_name, 1).and_return([fake_results, fake_full_results])
 
       get(:search, :query => 'some_name')
       assigns[:results].should == fake_results
