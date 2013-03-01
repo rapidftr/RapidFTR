@@ -10,11 +10,12 @@ Feature: Ensure translations
 
   @javascript
   Scenario: Field label translations
-    When I set the system language to "ar"
-    And I set the user language to "en"
-    Then I should see "English Translated Name" translated
+    When I set the system language to "English"-"en"
+    And I set the user language to "العربية"-"ar"
+    Then I should see "Arabic Translated Name" translated
 
-  Scenario: Field label translations when incomplete translation
-    When I set the system language to "ar"
-    And I set the user language to "ru"
+  @javascript
+  Scenario: Field label translation missing
+    When I set the system language to "العربية"-"ar"
+    And I set the user language to "Русский"-"ru"
     Then I should see "Arabic Translated Name" translated
