@@ -12,10 +12,12 @@ end
 
 And /^I set the user language to "(.+)"$/ do |locale|
   I18n.locale = locale
+  I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
+  I18n.fallbacks.map(I18n.locale => I18n.default_locale)
 end
 
 Then /^I should see "(.*?)" translated$/ do |text|
-  text.should == I18n.t("name")
+  text.should == I18n.t("xxxx")
 end
 
 def store(translation)
