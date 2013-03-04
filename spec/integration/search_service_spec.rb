@@ -54,20 +54,7 @@ describe "SearchService" do
     result.should =~ [child1,child3]
   end
 
-  it "Should be able to fuzzy search by fields ORed" do
-    child1 = Child.create( :name => "tim", :company => "fireman")
-    child2 = Child.create( :name => "tom", :company => "student")
-    child3 = Child.create( :name => "kevin", :company => "headmaster")
-    child4 = Child.create( :name => "chris", :company => "george")
-
-    criteria1 = SearchCriteria.new(:field => "name", :value => "tim")
-    criteria2 = SearchCriteria.new(:field => "company", :value => "heodmaster", :join => "OR")
-
-    result = SearchService.search [criteria1,criteria2]
-    result.should =~ [child1, child2, child3]
-  end
-
-  it "Should be able to fuzzy search by fields ANDed" do
+  it "Should be able to search by fields ANDed" do
     child1 = Child.create( :name => "tim", :company => "fireman")
     child2 = Child.create( :name => "tom", :company => "student")
 
@@ -75,7 +62,7 @@ describe "SearchService" do
     criteria2 = SearchCriteria.new(:field => "company", :value => "firoman", :join => "AND")
 
     result = SearchService.search [criteria1,criteria2]
-    result.should == [child1]
+    result.should == []
   end
 
   it "Should be able to starts with search by fields ANDed" do
@@ -100,14 +87,14 @@ describe "SearchService" do
     result.should =~ [child1, child2]
   end
 
-  it "Should be able to starts with search by fields Ored" do
+  it "Should be able to search by field values Ored" do
     child1 = Child.create( :name => "tim", :company => "fireman")
     child2 = Child.create( :name => "kevin", :company => "student")
 
     criteria1 = SearchCriteria.new(:field => "name", :value => "tim OR kevon")
 
     result = SearchService.search [criteria1]
-    result.should =~ [child1, child2]
+    result.should =~ [child1]
   end
 
   it "Should find children by created_by" do
