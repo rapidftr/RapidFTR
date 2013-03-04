@@ -534,3 +534,31 @@ en:
           username_unique: "User name has already been taken! Please select a new User name"
 
   select_all_results: "Select all results"
+
+  histories:
+    to: "to"
+    by: "by"
+    added_by: "added by"
+    belong_to: "belonging to"
+    because: "because:"
+    deleted_by: "deleted by"
+
+    audio:
+      audio: "Audio"
+      audio_change: "Audio changed from"
+
+    duplicate:
+      mark_as_duplicate: "marked this record as a duplicate of"
+      no_longer_active: "Current record is no longer active or editable"
+
+    flag:
+      record_flagged_by: "Record was flagged by"
+      record_unflagged_by: "Record was unflagged by"
+
+    investigated:
+      mark_as_investigated_by: "Record was marked as Investigated by"
+      mark_as_not_investigated_by: "Record was marked as Not Investigated by"
+
+    reunited:
+      child_status_changed: "Child status changed to active by"
+      with_details: "with these details:"

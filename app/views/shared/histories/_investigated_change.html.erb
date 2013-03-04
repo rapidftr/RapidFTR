@@ -1,5 +1,5 @@
 <% if to_value == 'true' %>
-  <%= datetime %> Record was marked as Investigated by <%= user_name %> belonging to <%= organisation %> because: <%= message %>
+  <%= datetime %> <%=	t("histories.investigated.mark_as_investigated_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %> <%= t("histories.because") %> <%= message %>
 <% else %>
-  <%= datetime %> Record was marked as Not Investigated by <%= user_name %> belonging to <%= organisation %> because: <%= message %>
+  <%= datetime %> <%=	t("histories.investigated.mark_as_not_investigated_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %> <%=	 t("histories.because") %> <%= message %>
 <% end %>

@@ -1,5 +1,5 @@
 <% if to_value == 'true' %>
-  <%= datetime %> Record was flagged by <%= user_name %> belonging to <%= organisation %> because: <%= message %>
+  <%= datetime %> <%=	t("histories.flag.record_flagged_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %> <%=	t("histories.because") %> <%= message %>
 <% else %>
-  <%= datetime %> Record was unflagged by <%= user_name %> belonging to <%= organisation %> because: <%= message %>
+  <%= datetime %> <%=	t("histories.flag.record_unflagged_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %> <%=	t("histories.because") %> <%= message %>
 <% end %>
