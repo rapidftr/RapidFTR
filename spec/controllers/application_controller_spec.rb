@@ -14,6 +14,9 @@ describe ApplicationController do
   end
 
   describe 'locale' do
+    before :each do
+      I18n.locale = I18n.default_locale = :en
+    end
     after :each do
       I18n.locale = I18n.default_locale
     end
@@ -22,6 +25,27 @@ describe ApplicationController do
       controller.stub!(:current_session).and_return(session)
       @controller.set_locale
       I18n.locale.should == I18n.default_locale
+    end
+
+    it "should be change the locale" do
+      user = mock('user', :locale => :ar)
+      session = mock('session', :user => user)
+      controller.stub!(:current_session).and_return(session)
+
+      @controller.set_locale
+      user.locale.should == I18n.locale
+    end
+
+    context "when hasn't translations to locale" do
+      before :each do
+        user = mock('user', :locale => :ar)
+        session = mock('session', :user => user)
+        controller.stub!(:current_session).and_return(session)
+      end
+
+      xit "should set be set to default" do
+
+      end
     end
   end
 
