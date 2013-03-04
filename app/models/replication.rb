@@ -13,7 +13,7 @@ class Replication < CouchRestRails::Document
   property :description
   property :username
   property :password
-  property :needs_reindexing, :cast_as => :boolean, :default => false
+  property :needs_reindexing, :cast_as => :boolean, :default => true
 
   validates_presence_of :remote_app_url
   validates_presence_of :description
@@ -23,18 +23,24 @@ class Replication < CouchRestRails::Document
   validates_with_method :save_remote_couch_config
 
   before_save   :normalize_remote_app_url
+  before_save   :mark_for_reindexing
 
   after_save    :start_replication
-  after_save    :invalidate_fetch_configs
   before_destroy :stop_replication
 
   def start_replication
+    stop_replication
+
     build_configs.each do |config|
       replicator.save_doc config
     end
 
-    self.needs_reindexing = true
-    save_without_callbacks
+    unless needs_reindexing?
+      self.needs_reindexing = true
+      save_without_callbacks
+    end
+
+    true
   end
 
   def stop_replication
@@ -42,12 +48,6 @@ class Replication < CouchRestRails::Document
       replicator.delete_doc config
     end
     invalidate_fetch_configs
-    true
-  end
-
-  def restart_replication
-    stop_replication
-    start_replication
   end
 
   def check_status_and_reindex
@@ -56,6 +56,10 @@ class Replication < CouchRestRails::Document
       trigger_local_reindex
       trigger_remote_reindex
     end
+  end
+
+  def mark_for_reindexing
+    self.needs_reindexing = true
   end
 
   def timestamp
@@ -166,7 +170,7 @@ class Replication < CouchRestRails::Document
   def trigger_remote_reindex
     uri = remote_app_uri
     uri.path = Rails.application.routes.url_helpers.reindex_children_path
-    Net::HTTP.get uri
+    post_uri uri
   end
 
   def invalidate_fetch_configs
@@ -193,17 +197,7 @@ class Replication < CouchRestRails::Document
       uri.path = Rails.application.routes.url_helpers.configuration_replications_path
       post_params = {:user_name => self.username, :password => self.password}
 
-      if uri.scheme == "http"
-        response = Net::HTTP.post_form uri, post_params
-      else
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        request = Net::HTTP::Post.new(uri.request_uri)
-        request.set_form_data(post_params)
-        response = http.start{|req| req.request(request)}
-      end
-
+      response = post_uri uri, post_params
       self.remote_couch_config = JSON.parse response.body
       true
     rescue => e
@@ -217,6 +211,19 @@ class Replication < CouchRestRails::Document
 
   def replicator_docs
     replicator.documents["rows"].map { |doc| replicator.get doc["id"] unless doc["id"].include? "_design" }.compact
+  end
+
+  def post_uri(uri, post_params = {})
+    if uri.scheme == "http"
+      Net::HTTP.post_form uri, post_params
+    else
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data(post_params)
+      http.start { |req| req.request(request) }
+    end
   end
 
 end

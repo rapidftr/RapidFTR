@@ -434,6 +434,7 @@ en:
     add: "Add Field"
     type: "Field type"
     move_to: "Move to"
+
   replication:
     label: Replication
     index: Manage Replications

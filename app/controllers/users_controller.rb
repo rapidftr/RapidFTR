@@ -84,10 +84,18 @@ class UsersController < ApplicationController
     @change_password_request = Forms::ChangePasswordForm.new params[:forms_change_password_form]
     @change_password_request.user = current_user
     if @change_password_request.execute
-      flash[:notice] = t("user.messages.password_changed_successfully")
-      redirect_to user_path(current_user.id)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = t("user.messages.password_changed_successfully")
+          redirect_to user_path(current_user.id)
+        end
+        format.json { render :nothing => true }
+      end
     else
-      render :change_password
+      respond_to do |format|
+        format.html { render :change_password }
+        format.json { render :nothing => true, :status => :bad_request }
+      end
     end
   end
 

@@ -25,6 +25,7 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
+    I18n.locale = I18n.default_locale
     unless (@session = current_session).nil?
       return redirect_to(:action => "show", :id => @session)
     end
