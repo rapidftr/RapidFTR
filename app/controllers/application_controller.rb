@@ -95,7 +95,13 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = (current_user.locale || I18n.default_locale) if logged_in?
+    if logged_in?
+      I18n.locale = (current_user.locale || I18n.default_locale)
+      if I18n.locale != I18n.default_locale
+        I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
+        I18n.fallbacks.map(I18n.locale => I18n.default_locale)
+      end
+    end
   end
 
   def clean_params(param)
