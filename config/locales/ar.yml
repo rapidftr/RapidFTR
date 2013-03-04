@@ -518,3 +518,31 @@ ar:
 
         system_users:
           username_unique: "إسم المستخدم موجود! الرجاء إختيار إسم مستخدم آخر"
+
+  histories:
+    to: "إلى"
+    by: "بواسطة"
+    added_by: "أضيف بواسطة"
+    belong_to: "ينتمي إلى"
+    because: "بسبب:"
+    deleted_by: "حذف بواسطة"
+
+    audio:
+      audio: "الصوت"
+      audio_change: "الملف الصوتي تغير من"
+
+    duplicate:
+      mark_as_duplicate: "حدد هذا السجل على أنه مطابق ل"
+      no_longer_active: "السجل الحالى غير مفعل ولا يمكن تعديله"
+
+    flag:
+      record_flagged_by: "هذا السجل تم تعليمه بواسطة"
+      record_unflagged_by: "تم إلغاء تعليم هذا السجل بواسطة"
+
+    investigated:
+      mark_as_investigated_by: "تم تحديد هذا السجل على أنه قد تم التحقق منه بواسطة"
+      mark_as_not_investigated_by: "تم تحديد هذا السجل على أنه لم يتم التحقق منه بواسطة"
+
+    reunited:
+      child_status_changed: "حالة الطفل تم تغييرها إلى مفعل بواسطة"
+      with_details: "بهذه التفاصيل:"
