@@ -19,7 +19,7 @@ Feature: Suspect Records
 
     @javascript
   Scenario: Admin user should only see flagged children which have not been investigated
-  When I am on the child listing filtered by flagged
+  When I am on the child listing filtered by flag
   Then I should see "Steve"
   And I should see "Bob"
   And I should see "Dave"
@@ -27,13 +27,13 @@ Feature: Suspect Records
 
   @javascript
   Scenario: Admin should be able to mark suspect record as investigated
-  When I am on the child listing filtered by flagged
+  When I am on the child listing filtered by flag
   And I follow "Steve"
   Then I should see "Mark as Investigated"
 
   @javascript
   Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
-  When I am on the child listing filtered by flagged
+  When I am on the child listing filtered by flag
   And I follow "Steve"
   And I mark "Steve" as investigated with the following details:
     """
@@ -56,7 +56,7 @@ Feature: Suspect Records
 
   @javascript
   Scenario: When I mark a record as investigated the change log should display a single entry for the change
-  When I am on the child listing filtered by flagged
+  When I am on the child listing filtered by flag
   And I follow "Steve"
   And I mark "Steve" as investigated with the following details:
     """

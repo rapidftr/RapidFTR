@@ -44,7 +44,7 @@ Feature: Creating a child using the API
 			    "unique_identifier":"%SOME_STRING%",
 			    "_id":"%SOME_STRING%",
 			    "created_by":"mary",
-			    "created_by_full_name":null,
+			    "created_by_full_name":"mary",
 			    "couchrest-type":"Child",
 			    "histories":[],
 			    "posted_at":"%SOME_STRING%",

@@ -69,13 +69,6 @@ describe Child do
       Child.search(search).map(&:name).should == ["Starts With"]
     end
 
-    it "should return a fuzzy match" do
-      create_child("timithy")
-      create_child("timothy")
-      search = mock("search", :query => "timothy", :valid? => true)
-      Child.search(search).map(&:name).should =~ ["timithy", "timothy"]
-    end
-
     it "should return children that have duplicate as nil" do
       child_active = Child.create(:name => "eduardo aquiles")
       child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
@@ -110,12 +103,6 @@ describe Child do
     it "should match more than one word" do
       create_child("timothy cochran")
       search = mock("search", :query => "timothy cochran", :valid? => true)
-      Child.search(search).map(&:name).should =~ ["timothy cochran"]
-    end
-
-    it "should match more than one word with fuzzy search" do
-      create_child("timothy cochran")
-      search = mock("search", :query => "timithy cichran", :valid? => true)
       Child.search(search).map(&:name).should =~ ["timothy cochran"]
     end
 
