@@ -31,7 +31,8 @@ Feature: Creating a child using the API
       | posted_at            |
       | photo_keys           |
       | current_photo_key    |
-			| short_id						 |
+	  | short_id						 |
+
     And that JSON response should be an item like
     """
 		    { 

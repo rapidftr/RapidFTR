@@ -18,6 +18,7 @@ Feature:
     And the record history should log "Record created by bob"
 
   @gc
+  @wip
   Scenario: Uploading a standard mp3 file to existing child record
     Given I am on the new child page
     And I fill in "Harry" for "Name"

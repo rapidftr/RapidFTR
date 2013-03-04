@@ -23,6 +23,22 @@ describe "children/_header.html.erb" do
     end
   end
 
+  shared_examples_for "show links with per_page" do |permissions|
+    it do
+      @user.stub(:permissions => permissions)
+      render :partial => "children/header"
+      rendered.should have_tag("a[href='#{@url}?per_page=all']")
+    end
+  end
+
+  shared_examples_for "not show links with per_page" do |permissions|
+    it do
+      @user.stub(:permissions => permissions)
+      render :partial => "children/header"
+      rendered.should_not have_tag("a[href='#{@url}?per_page=all']")
+    end
+  end
+
   describe "export some records to CSV" do
     before :each do
       @url = new_advanced_search_path
@@ -37,9 +53,9 @@ describe "children/_header.html.erb" do
       @url = children_path(:format => :csv)
     end
 
-    it_should_behave_like "not show links", []
-    #it_should_behave_like "not show links", [Permission::CHILDREN[:export]] //This scenario is not possible
-    it_should_behave_like "show links", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
+    it_should_behave_like "not show links with per_page", []
+    #it_should_behave_like "not show links with per_page", [Permission::CHILDREN[:export]] //This scenario is not possible
+    it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
   end
 
   describe "export all records to PDF" do
@@ -47,8 +63,8 @@ describe "children/_header.html.erb" do
       @url = children_path(:format => :pdf)
     end
 
-    it_should_behave_like "not show links", []
+    it_should_behave_like "not show links with per_page", []
     #it_should_behave_like "not show links", [Permission::CHILDREN[:export]] //This scenario is not possible
-    it_should_behave_like "show links", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
+    it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
   end
 end
