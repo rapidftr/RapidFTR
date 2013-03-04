@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
 
   def update_activity_time
     session = current_session
-    unless session.nil?
+    unless session.nil? || ((session.expires_at || Time.now) > 19.minutes.from_now)
       session.update_expiration_time(20.minutes.from_now)
       session.save
       session.put_in_cookie cookies
