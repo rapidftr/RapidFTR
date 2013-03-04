@@ -11,13 +11,12 @@ After do
 end
 
 Before do
-  Session.all.each { |o| o.destroy }
-  Child.all.each { |o| o.destroy }
-  Child.duplicates.each { |o| o.destroy }
-  User.all.each { |o| o.destroy }
-  Role.all.each { |o| o.destroy }
-  SuggestedField.all.each { |o| o.destroy }
-  ContactInformation.all.each { |o| o.destroy }
+  I18n.locale = I18n.default_locale = "en"
+
+  CouchRestRails::Document.descendants.each do |model|
+    model.all.each(&:destroy)
+    model.duplicates.each(&:destroy) if model.respond_to?(:duplicates)
+  end
 
   RapidFTR::FormSectionSetup.reset_definitions
   Sunspot.remove_all!(Child)
