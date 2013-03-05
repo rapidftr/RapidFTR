@@ -161,6 +161,12 @@ en:
       undo_investigation_details: "Undo Investigation Details"
       undo_investigated: "Undo Investigated"
       cancel: "Cancel"
+      delete_photo: "Delete photo?"
+      choose_as_primary_photo: "Choose as primary photo"
+      rotate_anti_clockwise: "Rotate Anti-Clockwise"
+      restore_image: "Restore Original Image"
+      rotate_clockwise: "Rotate Clockwise"
+
     change_log: "Change Log"
     flagged_as_suspected: "Flagged as suspect record by"
     posted_from_mobile: "Posted from the mobile client at:"
@@ -246,8 +252,11 @@ en:
     old_password: "Old Password"
     new_password: "New Password"
     new_password_confirmation: "Confirm New Password"
-
     new: "New User"
+    user_action_history: "User action history"
+    no_activity: "has no activity"
+
+  actions: "actions"
   phone: "Phone"
   email: "Email"
   organisation: "Organisation"
@@ -423,10 +432,10 @@ en:
     successfully_added: "Field successfully added"
     updated: "Field updated"
     deleted: "Field %{display_name} has been deleted."
-
     add: "Add Field"
     type: "Field type"
-  
+    move_to: "Move to"
+
   replication:
     label: Replication
     index: Manage Replications
@@ -527,3 +536,31 @@ en:
           username_unique: "User name has already been taken! Please select a new User name"
 
   select_all_results: "Select all results"
+
+  histories:
+    to: "to"
+    by: "by"
+    added_by: "added by"
+    belong_to: "belonging to"
+    because: "because:"
+    deleted_by: "deleted by"
+
+    audio:
+      audio: "Audio"
+      audio_change: "Audio changed from"
+
+    duplicate:
+      mark_as_duplicate: "marked this record as a duplicate of"
+      no_longer_active: "Current record is no longer active or editable"
+
+    flag:
+      record_flagged_by: "Record was flagged by"
+      record_unflagged_by: "Record was unflagged by"
+
+    investigated:
+      mark_as_investigated_by: "Record was marked as Investigated by"
+      mark_as_not_investigated_by: "Record was marked as Not Investigated by"
+
+    reunited:
+      child_status_changed: "Child status changed to active by"
+      with_details: "with these details:"

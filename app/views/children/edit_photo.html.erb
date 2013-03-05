@@ -1,4 +1,4 @@
-<h1 class="float_left no_border"><%= link_to 'Children', children_path %> &gt; <%= link_to @child.name, child_path(@child)%>(<%=@child.short_id%>)&gt; Edit photo  </h1>
+<h1 class="float_left no_border"><%= link_to t("children.label"), children_path %> &gt; <%= link_to @child.name, child_path(@child)%>(<%=@child.short_id%>)&gt; <%= t("child.edit_photo") %>  </h1>
 <div class="clearfix"></div>
 
 <div class="page-content-new">
@@ -10,14 +10,14 @@
         <%= hidden_field_tag "child[photo_orientation]", "0" %>
         <div class="profile-tools" id="image_rotation_links">
           <ul>
-            <li><a href="#" class="rotate_anti_clockwise">Rotate Anti-Clockwise</a></li>
-            <li><a href="#" class="restore_image">Restore Original Image</a></li>
-            <li><a href="#" class="rotate_clockwise">Rotate Clockwise</a></li>
+            <li><a href="#" class="rotate_anti_clockwise"><%= t("child.actions.rotate_anti_clockwise") %></a></li>
+            <li><a href="#" class="restore_image"><%= t("child.actions.restore_image") %></a></li>
+            <li><a href="#" class="rotate_clockwise"><%= t("child.actions.rotate_clockwise") %></a></li>
           </ul>
         </div>
         <div class="clearfix"></div>
         <div class="btn_panel">
-        <%= f.submit "Save" %>
+        <%= f.submit t("buttons.save") %>
         </div>
     <% end %>
   </div>
