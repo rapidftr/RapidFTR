@@ -15,8 +15,7 @@ describe "children/search.html.erb" do
       view.stub(:current_user).and_return(@user)
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
-      @results.should_receive(:total_pages).at_least(1).and_return 10
-      @results.should_receive(:current_page).at_least(1).and_return 1
+      @results.stub! :total_count => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [
         Field.new(:name => "field_2", :display_name => "field display 2", :enabled => true ),

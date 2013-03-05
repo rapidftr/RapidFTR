@@ -1,13 +1,20 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
-  home:
+en: 
+  home:   
+    fr: "Français"
+    en: "English"
+    ar: "العربية"
+    zh: "中文"
+    es: "Español"
+    ru: "Русский"
     welcome: "Welcome to RapidFTR"
     current_time_zone: "Current time zone"
-    view_all_children: "View All Children"
+    language: "Language"
+    view_records: "View Records"
+    manage_system_users: Manage System Users
     records_need_attention: "Records need Attention"
-
     label: "Home"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
@@ -24,12 +31,17 @@ en:
     this_user: " this user?"
     keep_working: "Yes, Keep Working"
     logoff: "No, Logoff"
-    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Page Instead."
+    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
     cancel_confirmation: "Are you sure you want to cancel?"
     logoff_warning_prefix: "You will be logged off in"
     logoff_warning_suffix: "seconds."
     logoff_confirmation: "Do you want to continue your session?"
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+    enter_each_in_one_line: "Enter each option on a new line"
+
+  data_base:
+    delete_all_documents: "Deleted all child documents"
+    operation_not_allowed: "Operation not allowed in %{rails_env} environment"
 
   login:
     details: "Login details"
@@ -38,6 +50,8 @@ en:
       label: "Password"
       reset: "Request Password Reset"
       re_enter: "Re-enter password"
+      success_notice: "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
+      successfully_hidden: "Password request notification was successfully hidden."
 
     label: "Login"
   header:
@@ -58,11 +72,15 @@ en:
      search: "Search"
 
   buttons:
+     delete: "Delete"
      save: "Save"
      login: "Log in"
      reunite: "Reunite"
      edit: "Edit"
      back: "Back"
+     change_password: "Change Password"
+     enable_photo_wall: "Enable photo wall"
+     disable_photo_wall: "Disable photo wall"
 
   children:
     label: "Children"
@@ -90,6 +108,7 @@ en:
       reunited: "Reunited"
       flagged: "Flagged"
 
+
   child:
     flagged_by: "Flagged By"
     last_updated: "Last updated"
@@ -102,11 +121,14 @@ en:
     unflag_reason: "Unflag Reason"
     unflag_label: "Unflag"
     unflag_error_message: "Please explain why you are unflagging this record."
+    id_of_record_this_duplicate_of: "Enter the ID of the record this is a duplicate of:"
+    duplicate_header: "Marking %{child_name} as Duplicate"
     flag_error_message: "Please explain why you are flagging this record."
     investigation_details: "Investigation Details:"
     reunite_details: "Reunite Details:"
     another_duplicate_before_link: "Another record has been marked as a duplicate of this one. Click"
     another_duplicate_after_link: " to see the duplicate record."
+
     messages:
       update_success: "Child was successfully updated."
       investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
@@ -115,6 +137,10 @@ en:
       reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
       undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
       see_full_size: "Click on the Image to see full size"
+      creation_success: "Child record successfully created."
+      not_found: "Child with the given id is not found"
+      confirm_duplicate: "Are you sure you want to continue? If so, click OK. If not, click Cancel."
+
     actions:
       mark_as_investigated: "Mark as Investigated"
       mark_as_reunited: "Mark as Reunited"
@@ -132,6 +158,7 @@ en:
       investigation_details: "Investigation Details"
       undo_investigation_details: "Undo Investigation Details"
       undo_investigated: "Undo Investigated"
+      cancel: "Cancel"
     change_log: "Change Log"
     flagged_as_suspected: "Flagged as suspect record by"
     posted_from_mobile: "Posted from the mobile client at:"
@@ -144,6 +171,7 @@ en:
   preposition:
     on_label: "on"
     because: "Because"
+    at_label: "at"
 
   will_paginate:
     previous_label: "&#8592; Previous"
@@ -151,6 +179,8 @@ en:
     page_gap: "&hellip;"
 
   users:
+    unverified: "Unverified Users"
+    select_role: "Please select a role before verifying the user"
     manage: "Manage Users"
     label: "Users"
     create: "Create User"
@@ -175,10 +205,14 @@ en:
       show_all: "Showing all"
       show: "Show"
       edit: "Edit"
+      update: "Update"
+      create: "Create"
+    view: "View Role"
+
   user:
     label: "user"
     full_name: "Full Name"
-    disabled: "Disabled?"
+    disabled: "Disabled"
     actions:
       delete: "Delete"
     messages:
@@ -186,9 +220,17 @@ en:
       created: "User was successfully created."
       updated: "User was successfully updated."
       not_found: "User with the given id is not found"
+      passwords_do_not_match: "does not match current password"
+      password_changed_successfully: "Password changed successfully"
+      time_zone_updated: "The change was successfully updated."
     update: "Update"
+    verify: "Verify"
     create: "Create"
     no_blank: "user name should not contain blanks"
+    manage_password: "Change Password"
+    old_password: "Old Password"
+    new_password: "New Password"
+    new_password_confirmation: "Confirm New Password"
 
     new: "New User"
   phone: "Phone"
@@ -214,11 +256,14 @@ en:
   enabled: "Enabled"
   status: "Status"
   devices: "Devices"
+  provide_translation: "Provide translation for"
 
   role:
     create: "Create Role"
-
+    edit: "Edit Role"
     name: "Name"
+    successfully_updated: "Role details are successfully updated."
+    error_in_updating: "Error in updating the Role details."
   record: "record"
   description: "Description"
   name: "Name"
@@ -233,6 +278,27 @@ en:
       Children: Children
       Forms: Forms
       Users: Users
+      ALL: All
+
+    permission:
+      "Register Child": "Register Child"
+      "Edit Child": "Edit Child"
+      "View And Search Child": "View And Search Child"
+      "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
+      "Manage Forms": "Manage Forms"
+      "Create and Edit Users": "Create and Edit Users"
+      "View Users": "View Users"
+      "Delete Users": "Delete Users"
+      "Disable Users": "Disable Users"
+      "BlackList Devices": "BlackList Devices"
+      "Create and Edit Roles": "Create and Edit Roles"
+      "View roles": "View roles"
+      "System Settings": "System Settings"
+      "Highlight Fields": "Highlight Fields"
+      "Manage Replications": "Manage Replications"
+      "View roles": "View roles"
+      "All": "All"
+      "Users for synchronisation": "Users For Synchronisation"
 
   forms:
     label: "Forms"
@@ -240,8 +306,9 @@ en:
     save_details: "Save Details"
     messages:
       use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
-
+    initial_language: "Initial Language"
     cannot_be_edited: "Fields on this form cannot be edited."
+
   form_section:
     create: "Create New Form Section"
     visibility: "Visibility"
@@ -256,26 +323,34 @@ en:
       order_saved: "Order is successfully saved."
       cannot_create: "Form section could not be created"
       correct_errors: "Please correct the following errors and resubmit:"
+      hide_confirmation: "Are you sure you want to hide fields?"
+      show_confirmation: "Are you sure you want to show fields?"
+      drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
 
       updated: "Form section successfully added"
     hide: "Hide"
     show: "Show"
     manage: "Manage Form Sections"
     edit: "Edit Form Sections"
-  message:
+    buttons:
+      add: "Add"
+    options: "Options"
 
 
   advanced_search:
     instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
     date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
-    created_by_org: "Created Organisation :"
+    created_by_org: "Created By (Organisation) :"
     date_created: "Date Created :"
-    updated_by: "Updated by(User) :"
+    updated_by: "Updated by (User) :"
     after: "After :"
     before: "Before :"
-    created_by: "Created by(User) :"
+    created_by: "Created by (User) :"
     date_updated: "Date Updated :"
     select_a_criteria: "Select A Criteria"
+    records_found:
+      one: "1 record found"
+      other: "%{count} records found"
 
   search: "Search"
   select_all: "Select all records"
@@ -297,6 +372,8 @@ en:
     updated: "Contact information was successfully updated."
     edit_info: "Edit Contact Information"
     info_label: "Contact Information"
+    not_found: "Cannot find ContactInformation with id %{id}"
+
   device:
     blacklist: "Blacklist Device"
     messages:
@@ -306,17 +383,122 @@ en:
     information: "Device Information"
     mobile_number: "Mobile Number"
     timestamp: "Timestamp"
+
   admin:
     contact_info: "Admin Contact Information"
     highlight_fields: "Highlight Fields"
+    manage_system_users: "Manage System Users"
+    create_system_user: Create a System User
+
   fields:
+    label: "Fields"
     field_name: "Field Name"
+    display_name: "Display Name"
+    option_strings_text: "Options"
     form_name: "Form Name"
     action: "Action"
     remove: "remove"
-  session_expire: "Your session is about to expire!"
+    text_field: "Text Field"
+    check_box: "Check boxes"
+    select_box: "Select drop down"
+    radio_button: "Radio button"
+    text_area: "Text Area"
+    numeric_field: "Numeric Field"
+    date_field: "Date Field"
+    successfully_added: "Field successfully added"
+    updated: "Field updated"
+    deleted: "Field %{display_name} has been deleted."
+
+    add: "Add Field"
+    type: "Field type"
+  replication:
+    label: Replication
+    index: Manage Replications
+    create: Configure a Server
+    edit: Edit Configuration
+    remote_url: RapidFTR URL
+    actions: Actions
+    status: Status
+    description: Description
+    timestamp: Timestamp
+    delete: Delete
+    completed: Successful
+    triggered: In Progress
+    error: Failed
+    confirm_delete: Are you sure you want to delete this replication?
+    start: Start Synchronization
+    stop: Stop Synchronization
+    configure_a_server: Configure a Server
+
+  session:
+    about_to_expire: "Your session is about to expire!"
+    has_expired: "Your session has expired. Please re-login."
+    invalid_credentials: "Invalid credentials. Please try again!"
+    login_error: "There was a problem logging in.  Please try again."
+    invalid_token: "invalid session token"
+    no_token_provided: "no session token provided"
+    no_token_in_header: "no session token in headers or cookies"
+
   administration: "Administration"
   new: "New"
   saved: "Saved"
   history_of: "History of"
   account: "Account"
+  moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
+
+  # validation error messages
+  activerecord:
+    errors:
+
+      template:
+        header:
+          one: "1 error prohibited this %{model} from being saved"
+          other: "%{count} errors prohibited this %{model} from being saved"
+        body: "There were problems with the following fields:"
+
+      models:
+        user:
+          full_name: "Please enter full name of the user"
+          password_confirmation: "Please enter password confirmation"
+          role_ids: "Please select at least one role"
+          organisation: "Please enter the user's organisation name"
+          user_name: "Please enter a valid user name"
+          email: "Please enter a valid email address"
+          user_name_uniqueness: "User name has already been taken! Please select a new User name"
+          authenticate: "Can't authenticate a un-saved user"
+
+        child:
+          at_least_one_field: "Please fill in at least one field or upload a file"
+          age: "Age must be between 1 and 99"
+          photo_format: "Please upload a valid photo file (jpg or png) for this child record"
+          photo_size: "File is too large"
+          primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
+          validate_duplicate: "A valid duplicate ID must be provided"
+
+        field:
+          display_name_presence: "Display name must not be blank"
+          display_name_format: "Display name must contain at least one alphabetic characters"
+          default_value: "Cannot find default value for type "
+          has_2_options: "Field must have at least 2 options"
+          has_1_option: "Checkbox must have at least 1 option"
+          unique_name_other: "Field already exists on form '%{form_name}'"
+          unique_name_this: "Field already exists on this form"
+
+        form_section:
+          presence_of_name: "Name must not be blank"
+          format_of_name: "Name must contain only alphanumeric characters and spaces"
+          visible_method: "visible can't be false if perm_visible is true"
+          fixed_order_method: "fixed_order can't be false if perm_enabled is true"
+          perm_visible_method: "perm_visible can't be false if perm_enabled is true"
+          add_field_to_form_section: "Form section not editable"
+          delete_field: "Uneditable field cannot be deleted"
+          unique_name: "The name '%{name}' is already taken."
+          unique_id: "The unique id '%{unique_id}' is already taken."
+
+        role:
+          permission_presence: "Please select at least one permission"
+          unique_name: "A role with that name already exists, please enter a different name"
+
+        system_users:
+          username_unique: "User name has already been taken! Please select a new User name"
+  select_all_results: "Select all results"

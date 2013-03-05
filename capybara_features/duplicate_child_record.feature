@@ -16,20 +16,20 @@ Feature: Merge Child Records
 
     @javascript
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
-    When I am on the child listing filtered by flagged
+    When I am on the child listing filtered by flag
     Then I should see "Mark as Duplicate"
 
   Scenario: Should see duplicate page when I click on "Mark as Duplicate"
-    When I am on the child listing filtered by flagged
+    When I am on the child listing filtered by flag
     And I click mark as duplicate for "Steve"
     Then show me the page
     Then I am on duplicate child page for "Steve"
 
   Scenario: Should see view child page when I click OK on confirmation
-    When I am on the child listing filtered by flagged
+    When I am on the child listing filtered by flag
     And I click mark as duplicate for "Steve"
     And I fill in "red_uid" for "parent_id"
-    And I press "Mark as duplicate"
+    And I press "Mark as Duplicate"
     Then I am on the child record page for "Steve"
     And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
 
@@ -43,8 +43,8 @@ Feature: Merge Child Records
 
    Scenario: Should see error message when wrong Duplicate id/name is given
 
-     When I am on the child listing filtered by flagged
+     When I am on the child listing filtered by flag
      And I click mark as duplicate for "Steve"
      And I fill in "fred_uid" for "parent_id"
-     And I press "Mark as duplicate"
+     And I press "Mark as Duplicate"
 #     And I should see "This is not a valid rapidftr id."

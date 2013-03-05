@@ -20,8 +20,55 @@ class AdvancedSearchController < ApplicationController
     @criteria_list = []
     @criteria_list = (child_fields_selected?(params[:criteria_list]) ? SearchCriteria.build_from_params(params[:criteria_list]) : []) unless !params[:criteria_list]
     @criteria_list = add_search_filters(params)
-    @results = SearchService.search(params[:page] || 1, @criteria_list)
+    @results, @full_results = SearchService.search(params[:page] || 1, @criteria_list)
     @criteria_list = add_search_criteria_if_none(params)
+  end
+
+  def export_data
+    authorize! :export, Child
+    selected_records = params["selections"] || {} if params["all"] != "Select all records"
+    selected_records = params["full_results"].split(/,/) if params["all"] == "Select all records"
+    if selected_records.empty?
+      raise ErrorResponse.bad_request('You must select at least one record to be exported')
+    end
+
+    children = []
+    children = selected_records.sort.map { |index, child_id| Child.get(child_id) } if params["all"].nil?
+    selected_records.each do |child_id| children.push(Child.get(child_id)) end if params["all"] == "Select all records"
+    if params[:commit] == t("child.actions.export_to_photo_wall")
+      export_photos_to_pdf(children, "#{file_basename}.pdf")
+    elsif params[:commit] == t("child.actions.export_to_pdf")
+      pdf_data = ExportGenerator.new(children).to_full_pdf
+      send_pdf(pdf_data, "#{file_basename}.pdf")
+    elsif params[:commit] == t("child.actions.export_to_csv")
+      render_as_csv(children, "#{file_basename}.csv")
+    end
+  end
+
+  def export_photos_to_pdf children, filename
+    authorize! :export, Child
+
+    pdf_data = ExportGenerator.new(children).to_photowall_pdf
+    send_pdf(pdf_data, filename)
+  end
+
+  def file_basename(child = nil)
+    prefix = child.nil? ? current_user_name : child.short_id
+    user = User.find_by_user_name(current_user_name)
+    "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
+  end
+
+  def render_as_csv results, filename
+    results = results || [] # previous version handled nils - needed?
+
+    results.each do |child|
+      child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless (child.primary_photo_id.nil? || child.primary_photo_id == "")
+      child['audio_url'] = child_audio_url(child)
+    end
+
+    export_generator = ExportGenerator.new results
+    csv_data = export_generator.to_csv
+    send_data(csv_data.data, csv_data.options)
   end
 
   def child_fields_selected? criteria_list

@@ -7,27 +7,6 @@ describe 'Form Section routing' do
       :controller => 'fields', :action => 'index', :formsection_id => 'foo' )
   end
 
-  it 'has route to show form to create a new text_field field' do 
-    {:get => '/formsections/foo/fields/new_text_field'}.should route_to(
-      :controller => 'fields', :action => 'new_text_field', :formsection_id => 'foo' )
-    new_text_field_formsection_fields_path('form_section_name').should ==
-      '/formsections/form_section_name/fields/new_text_field'
-  end
-
-  it 'has route to show form to create a new textarea field' do 
-    {:get => '/formsections/foo/fields/new_textarea'}.should route_to(
-      :controller => 'fields', :action => 'new_textarea', :formsection_id => 'foo' )
-    new_textarea_formsection_fields_path('form_section_name').should ==
-      '/formsections/form_section_name/fields/new_textarea'
-  end
-
-  it 'has route to show form to create a new select_drop_down field' do 
-    {:get => '/formsections/foo/fields/new_select_box'}.should route_to(
-      :controller => 'fields', :action => 'new_select_box', :formsection_id => 'foo' )
-    new_select_box_formsection_fields_path('form_section_name').should ==
-      '/formsections/form_section_name/fields/new_select_box'
-  end
-
   it 'has route to post a new field' do
     {:post => '/formsections/foo/fields' }.should route_to(:controller => 'fields', :action => 'create', :formsection_id => 'foo' )
     formsection_fields_path('some_formsection').should == '/formsections/some_formsection/fields'
@@ -37,7 +16,6 @@ describe 'Form Section routing' do
     {:post => '/formsections/foo/fields/move_up'}.should route_to(:controller => 'fields', :action=>'move_up', :formsection_id=>'foo')
     move_up_formsection_fields_path('some_formsection').should == '/formsections/some_formsection/fields/move_up'
   end
-
 
   it 'has route to move a field down' do
     {:post => '/formsections/foo/fields/move_down'}.should route_to(:controller => 'fields', :action=>'move_down', :formsection_id=>'foo')
