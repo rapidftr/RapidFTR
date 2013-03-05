@@ -14,11 +14,12 @@ RapidFTR::Application.routes.draw do
       get :export_photo_to_pdf
     end
     
-    resource :history, :only => :show
     resources :attachments, :only => :show
     resource :duplicate, :only => [:new, :create]
   end
 
+  match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
+  match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
@@ -40,7 +41,9 @@ RapidFTR::Application.routes.draw do
       post :update_password
     end
   end
+
   match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
+  match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
 
   resources :user_preferences
   resources :devices

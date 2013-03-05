@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe HistoriesHelper do
+describe ChildHistoriesHelper do
   before do
     @view = Object.new
-    @view.extend(HistoriesHelper)
+    @view.extend(ChildHistoriesHelper)
     @view.extend(ChildrenHelper)
   end
 
