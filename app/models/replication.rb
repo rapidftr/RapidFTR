@@ -90,6 +90,7 @@ class Replication < CouchRestRails::Document
 
   def remote_couch_uri(path = "")
     uri = URI.parse remote_couch_config["target"]
+    uri.host = remote_app_uri.host if uri.host == 'localhost'
     uri.path = "/#{path}"
     uri.user = username if username
     uri.password = password if password
