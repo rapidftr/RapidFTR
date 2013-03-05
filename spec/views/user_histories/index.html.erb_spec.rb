@@ -11,7 +11,8 @@ describe "user_histories/index.html.erb" do
       it "should render user has no activities" do
         assign(:histories, {})
         assign(:user,  @user)
-        render
+
+        render :template => "user_histories/index.html.erb"
 
         rendered.should have_tag(".history-details") do
           with_tag("li", /Bob has no activity./)
