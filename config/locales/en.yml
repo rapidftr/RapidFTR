@@ -253,6 +253,7 @@ en:
     new_password: "New Password"
     new_password_confirmation: "Confirm New Password"
     new: "New User"
+    user_action_history: "User action history"
     no_activity: "has no activity"
 
   actions: "actions"

@@ -9,7 +9,7 @@
           <%=	link_to "(" + I18n.t("buttons.change_password") +")", change_password_users_path %>
       <% end %>
     </h2>
-    <%= link_to content_tag(:span, t("child.change_log") , :class => 'log'), user_history_path(@user), :class=>'btn' %>
+    <%= link_to content_tag(:span, t("user.user_action_history") , :class => 'log'), user_history_path(@user), :class=>'btn' %>
     <div class="clearfix"></div>
 
     <fieldset>

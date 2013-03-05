@@ -240,6 +240,7 @@ ar:
     new_password: "كلمة السر الجديدة"
     new_password_confirmation: "أكد كلمة السر"
     new: "مستخدم جديد"
+    user_action_history: "تاريخ نشاط المستخدم"
     no_activity: "لا نشاط له"
 
   actions: "نشاط"
