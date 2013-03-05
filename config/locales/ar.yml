@@ -165,7 +165,7 @@ ar:
       rotate_anti_clockwise: "تدوير عكس عقارب الساعة"
       restore_image: "الرجوع إلى الصورة الأصلية"
       rotate_clockwise: "تدوير في إتجاه عقارب الساعة"
-
+      view_full_size_photo: "عرض الصورة بالحجم الكلي"
 
     change_log: "تغيير السجل"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
