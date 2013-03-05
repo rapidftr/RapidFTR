@@ -1244,6 +1244,39 @@ describe Child do
     end
   end
 
+  describe "views" do
+    it "should return all children updated by a user" do
+      child = Child.create!("created_by" => "some_other_user", "last_updated_by" => "a_third_user", "name" => "abc", "histories" => [{"user_name" => "brucewayne", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
+
+      Child.all_connected_with("brucewayne").should == [child]
+    end
+
+    it "should not return children updated by other users" do
+      Child.create!("created_by" => "some_other_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
+
+      Child.all_connected_with("peterparker").should be_empty
+    end
+
+    it "should return the child once when modified twice by the same user" do
+      child = Child.create!("created_by" => "some_other_user", "name" => "ghi", "histories" => [{"user_name" => "peterparker", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "peterparker", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
+
+      Child.all_connected_with("peterparker").should == [child]
+    end
+
+    it "should return the child created by a user" do
+      child = Child.create!("created_by" => "a_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
+
+      Child.all_connected_with("a_user").should == [child]
+    end
+
+    it "should not return duplicate records when same user had created and updated same child multiple times" do
+      child = Child.create!("created_by" => "tonystark", "name" => "ghi", "histories" => [{"user_name" => "tonystark", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "tonystark", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
+
+      Child.all_connected_with("tonystark").should == [child]
+    end
+  end
+
+
   describe 'reindex' do
     it 'should reindex every 24 hours' do
       scheduler = double()
@@ -1271,5 +1304,4 @@ describe Child do
     user = User.new({:user_name => created_by, :organisation=> "UNICEF"})
     Child.new_with_user_name user, options
   end
-
 end

@@ -1,67 +1,14 @@
 require 'spec_helper'
+require 'helpers/fake_record_with_history'
 
-class FakeRecordWithHistory
-  attr_reader :id
-
-  def initialize user = "Bob", created = "2010/12/31 22:06:00 +0000"
-    @id = "ChildId"
-    @fields = {
-      "histories"=> [],
-      "created_at" => created,
-      "created_by" => user
-    }
-  end
-
-  def add_history history
-    @fields["histories"].unshift(history)
-  end
-
-  def ordered_histories
-    @fields["histories"]
-  end
-
-  def add_photo_change username, date, *new_photos
-    self.add_history({
-             "changes" => {
-                 "photo_keys" => {
-                     "added" => new_photos
-                 }
-             },
-             "user_name" => username,
-             "datetime" => date
-          })
-  end
-
-  def add_single_change username, date, field, from, to
-    self.add_history({
-             "changes" => {
-                 field => {
-                     "from" => from,
-                     "to" => to
-                 }
-             },
-             "user_name" => username,
-             "datetime" => date
-          })
-  end
-
-  def [](field)
-    @fields[field]
-  end
-
-  def last_updated_at
-    Date.today
-  end
-end
-
-describe "histories/show.html.erb" do
+describe "child_histories/index.html.erb" do
 
   describe "child history" do
     before do
       FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
+      @user = mock(:user)
+      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+      @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
     end
 
     describe "rendering history for a newly created record" do
@@ -71,9 +18,9 @@ describe "histories/show.html.erb" do
         assign(:user,  @user)
         render
         rendered.should have_selector(".history-details li", :count => 1)
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /Record created by Bob/)
-      	end
+        end
       end
 
       it "should display the date/time of creation using the user's timezone setting" do
@@ -83,12 +30,12 @@ describe "histories/show.html.erb" do
 
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 09:55:00 SST Record created/)
         end
       end
 
-      it "should correctly format the creation's' date/time" do
+      it "should correctl§y format the creation's' date/time" do
         child = FakeRecordWithHistory.new "bob", "2010/12/31 20:55:00UTC"
         assign(:child,  child)
         assign(:user,  @user)
@@ -115,7 +62,7 @@ describe "histories/show.html.erb" do
 
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", "2010-12-31 09:55:00 SST Record was flagged by rapidftr because:")
         end
       end
@@ -147,9 +94,9 @@ describe "histories/show.html.erb" do
         assign(:user, @user)
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /Photo\s+added/)
-      	end
+        end
       end
 
       it "should render photo change record with links when adding photos to an existing record" do
@@ -160,9 +107,9 @@ describe "histories/show.html.erb" do
         assign(:user, @user)
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /Photos\s+added/)
-      	end
+        end
       end
 
       it "should display the date/time of the change using the user's timezone setting" do
@@ -173,7 +120,7 @@ describe "histories/show.html.erb" do
 
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 20:55:00 UTC\s+Photo\s+added by rapidftr/)
         end
       end
@@ -205,9 +152,9 @@ describe "histories/show.html.erb" do
         assign(:user, @user)
         render
 
-      	rendered.should have_tag(".history-details") do
-      		with_tag("li", /2010-12-31 20:55:00 UTC Audio changed from First to Second by rapidftr/)
-      	end
+        rendered.should have_tag(".history-details") do
+          with_tag("li", /2010-12-31 20:55:00 UTC Audio changed from First to Second by rapidftr/)
+        end
       end
 
       it "should render audio change record with links when adding a sound file to an existing record for first time" do
@@ -218,9 +165,9 @@ describe "histories/show.html.erb" do
         assign(:user, @user)
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /.* UTC Audio Audio added by rapidftr/)
-      	end
+        end
       end
 
       it "should display the date/time of the change using the user's timezone setting" do
@@ -231,7 +178,7 @@ describe "histories/show.html.erb" do
 
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 20:55:00 UTC Audio Audio added by rapidftr/)
         end
       end
@@ -289,7 +236,7 @@ describe "histories/show.html.erb" do
 
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", "2010-12-31 09:55:00 SST Nick name initially set to Carrot by rapidftr")
         end
       end
@@ -322,7 +269,7 @@ describe "histories/show.html.erb" do
 
         render
 
-      	rendered.should have_tag(".history-details") do
+        rendered.should have_tag(".history-details") do
           with_tag("li", /2010-12-31 09:55:00 SST Child status changed to reunited.*/)
         end
       end
