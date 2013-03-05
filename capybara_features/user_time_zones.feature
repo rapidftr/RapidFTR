@@ -11,5 +11,5 @@ Feature: As a user, I should be able to choose a time zone to display date-times
     When I select "(GMT-11:00) Samoa" from "Current time zone"
     And I press "Save"
     Then I should be on the home page
-    And I should see "The change was successfully updated."
+    And I should see "Timezone was successfully updated."
     And the "Current time zone" dropdown should have "Samoa" selected

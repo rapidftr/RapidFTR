@@ -35,13 +35,19 @@ module Searchable
       Child.build_solar_schema
 
       begin
-        return get_search(page_number, query).results, get_search(nil, query).results
+        return paginated_and_full_results(page_number, query)
       rescue
         self.reindex!
         Sunspot.commit
-        return get_search(page_number, query).results, get_search(nil, query).results
+        return paginated_and_full_results(page_number, query)
       end
 
+    end
+
+    def paginated_and_full_results(page_number, query)
+      full_result = []
+      get_search(nil, query).hits.each do | hit | full_result.push hit.to_param end
+      return get_search(page_number, query).results, full_result
     end
 
     def reindex!
