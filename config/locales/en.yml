@@ -166,6 +166,7 @@ en:
       rotate_anti_clockwise: "Rotate Anti-Clockwise"
       restore_image: "Restore Original Image"
       rotate_clockwise: "Rotate Clockwise"
+      view_full_size_photo: "View full size photo"
 
     change_log: "Change Log"
     flagged_as_suspected: "Flagged as suspect record by"
