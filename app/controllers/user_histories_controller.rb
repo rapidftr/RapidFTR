@@ -1,5 +1,6 @@
 class UserHistoriesController < ApplicationController
   helper :histories
+  helper :children
 
   def index
     @user = User.get(params[:id])

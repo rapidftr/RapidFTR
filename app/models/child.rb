@@ -9,6 +9,7 @@ class Child < CouchRestRails::Document
 
   before_save :update_organisation
   before_save :update_history, :unless => :new?
+  before_save :add_creation_history, :if => :new?
   before_save :update_photo_keys
 
   property :age
@@ -551,6 +552,15 @@ view_by :protection_status, :gender, :ftr_status
       changes = changes_for(field_name_changes)
       (add_to_history(changes) unless (!self['histories'].empty? && (self['histories'].last["changes"].to_s.include? changes.to_s)))
     end
+  end
+
+  def add_creation_history
+    self['histories'].unshift({
+      'user_name' => created_by,
+      'user_organisation' => organisation_of(created_by),
+      'datetime' => created_at,
+      'changes' => {'child' => {:created => created_at}} 
+    })
   end
 
   def has_one_interviewer?
