@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
 
   def update_activity_time
     session = current_session
-    unless session.nil?
+    unless session.nil? || ((session.expires_at || Time.now) > 19.minutes.from_now)
       session.update_expiration_time(20.minutes.from_now)
       session.save
       session.put_in_cookie cookies
@@ -95,7 +95,13 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = (current_user.locale || I18n.default_locale) if logged_in?
+    if logged_in?
+      I18n.locale = (current_user.locale || I18n.default_locale)
+      if I18n.locale != I18n.default_locale
+        I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
+        I18n.fallbacks.map(I18n.locale => I18n.default_locale)
+      end
+    end
   end
 
   def clean_params(param)

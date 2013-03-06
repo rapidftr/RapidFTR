@@ -16,7 +16,7 @@
 
 <% @child.photos.each do |photo| %>
     <p class="thumbnail">
-      <%= label_tag "delete_child_photo[#{photo.name}]", "Delete photo?" %>
+      <%= label_tag "delete_child_photo[#{photo.name}]", t("child.actions.delete_photo") %>
       <%= check_box_tag("delete_child_photo[#{photo.name}]") %>
       <%= thumbnail_tag(@child, photo.name) %>
     </p>

@@ -1,9 +1,0 @@
-<li>
-  <div>
-	<% if (from_value) %>
-		<%= datetime %> Audio changed from <%= link_to_download_audio_with_key(from_value) %> to <%= link_to_download_audio_with_key(to_value) %> by <%= user_name %> belonging to <%= organisation %>
-	<% else %>
-		<%= datetime %> Audio <%= link_to_download_audio_with_key(to_value) %> added by <%= user_name %> belonging to <%= organisation %>
-	<%end%>
-  </div>
-</li>

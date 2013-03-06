@@ -56,3 +56,20 @@ private
     list.each { |item| actual_order << item if expected_order.include?(item) }
     actual_order
   end
+When /^I edit the role (.+)$/ do  |role_name|
+  find(:xpath,"//table[@class='list_table']//tr/td[text()='"+role_name+"']/following-sibling::td/a[text()='Edit']").click()
+  sleep 10
+end
+When /^I update the form$/ do
+  click_button('Update')
+end
+When /^I enter the following permission details$/ do |role_table|
+  role_table.hashes.each do |role_row|
+    role_row['permissions'].each do |permission|
+      check(permission)
+    end
+  end
+end
+Then /^I should be able to view the tab (.+)$/ do|tab_name|
+  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+end

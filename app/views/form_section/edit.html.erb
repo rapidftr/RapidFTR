@@ -45,7 +45,7 @@
             <% if @form_section.editable? %>
             <td class='field-buttons' width="220">
                   <% if field.editable? %>
-                      <a href="javascript:void(0)" class="link_moveto">Move to</a>
+                      <a href="javascript:void(0)" class="link_moveto"><%= t("fields.move_to") %></a>
                       <%= link_to t("buttons.edit"), edit_form_section_field_path(:form_section_id => @form_section.unique_id, :id => field.name), :id => "#{field.name}_edit" %>
                       <%= render :partial => "form_section/delete_button", :locals => {:field => field, :url => delete_form_section_fields_path(@form_section.unique_id),
                                                                           :warning => I18n.t("messages.warning")} %> <%= hidden_field_tag "field_name" "#{field.name}" %>

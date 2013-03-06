@@ -1,0 +1,5 @@
+<% if to_value == 'true' %>
+  <%= datetime %> <%=	t("histories.investigated.mark_as_investigated_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %> <%= t("histories.because") %> <%= message %>
+<% else %>
+  <%= datetime %> <%=	t("histories.investigated.mark_as_not_investigated_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %> <%=	 t("histories.because") %> <%= message %>
+<% end %>
