@@ -3,8 +3,47 @@
 # But the correct way to start this in production environments is script/scheduler-daemon.rb
 
 namespace :scheduler do
-  desc "Start Rufus Scheduler"
-  task :start => :environment do
+  def daemon(argv="status")
+    require 'daemons'
+
+    daemon_options = {
+      :multiple => false,
+      :backtrace => true,
+      :dir => File.join(RAILS_ROOT, 'log'),
+      :dir_mode => :normal,
+      :log_dir => File.join(RAILS_ROOT, 'log'),
+      :log_output => true,
+      :ARGV => [ argv ].flatten
+    }
+
+    Daemons.run_proc('rapidftr-scheduler', daemon_options) do
+      load File.join(RAILS_ROOT, 'Rakefile')
+      Rake::Task["scheduler:run"].invoke
+    end
+  end
+
+  desc "Start scheduler in background"
+  task :start do
+    daemon "start"
+  end
+
+  desc "Stop scheduler"
+  task :stop do
+    daemon "stop"
+  end
+
+  desc "Restart scheduler"
+  task :restart do
+    daemon "restart"
+  end
+
+  desc "Scheduler status"
+  task :status do
+    daemon "status"
+  end
+
+  desc "Run scheduler in foreground"
+  task :run => :environment do
     require 'rufus/scheduler'
     logger = Rails.logger = Logger.new(STDOUT, Rails.logger.level)
 
