@@ -35,8 +35,9 @@ gem 'thin', :platform => :ruby, :require => false
 gem 'rufus-scheduler', :require => false
 gem 'daemons', :require => false
 
+gem 'zipruby'
+
 group :development, :assets do
-  gem 'rubyzip'
   gem 'sass'
 end
 

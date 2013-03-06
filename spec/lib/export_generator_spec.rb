@@ -1,5 +1,16 @@
 require 'spec_helper'
 
+def csv_from_zip(data, password = nil)
+  raw_csv_data = ''
+  Zip::Archive.open_buffer(data) do |z|
+    z.decrypt password if password
+    z.each do |f|
+      raw_csv_data = f.read
+    end
+  end
+  FasterCSV.parse raw_csv_data
+end
+
 describe ExportGenerator do
   describe "when generating a CSV download" do
     describe "with just a name field" do
@@ -33,16 +44,15 @@ describe ExportGenerator do
       
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
         fields = Field.new_text_field("field_one"), Field.new_text_field("field_two")
-        FormSection.stub!(:all_visible_child_fields).and_return fields 
-        csv_data =  FasterCSV.parse subject.data
-        
-        headers = csv_data[0]
+        FormSection.stub!(:all_visible_child_fields).and_return fields
+
+        headers = csv_from_zip(subject.data)[0]
         headers.should == ["Unique identifier", "Short", "Field one", "Field two", "Suspect status", "Reunited status", "Created by", "Created organisation", "Posted at", "Last updated by full name", "Last updated at"]
       end
       
       it 'should render a row for each result, plus a header row' do
         FormSection.stub!(:all_visible_child_fields).and_return [Field.new_text_field("name")]
-        csv_data = FasterCSV.parse subject.data
+        csv_data = csv_from_zip subject.data
         csv_data.length.should == 4
         csv_data[1][0].should == "xxxy"
         csv_data[1][2].should == "Dave"
@@ -51,17 +61,17 @@ describe ExportGenerator do
       end
       
       it "should add the correct mime type" do
-        subject.options[:type].should == "text/csv"
+        subject.options[:type].should == "application/zip"
       end
       
       it "should add the correct filename" do
         Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-        subject.options[:filename].should == "rapidftr-full-details-20000101.csv"      
+        subject.options[:filename].should == "rapidftr-full-details-20000101.zip"
       end
       
       it 'should have a photo column with appropriate links' do        
         FormSection.stub!(:all_visible_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("current_photo_key")]
-        csv_data = FasterCSV.parse subject.data
+        csv_data = csv_from_zip subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-photo-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-photo-path/2"
         csv_data[3][4].should == "http://testmachine:3000/some-photo-path/3"
@@ -70,24 +80,33 @@ describe ExportGenerator do
       
       it 'should have an audio column with appropriate links' do
         FormSection.stub!(:all_visible_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("some_audio")]
-        csv_data = FasterCSV.parse subject.data
+        csv_data = csv_from_zip subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-audio-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-audio-path/2"
         csv_data.length.should == 4
       end
 
       it "should add metadata of children at the end" do
-        csv_data = FasterCSV.parse subject.data
+        csv_data = csv_from_zip subject.data
         csv_data[1][4].should == 'user'
         csv_data[1][5].should == 'UNICEF'
         csv_data[1][4].should_not == ''
       end
 
       it "should not have updated_by info for child that was not edited" do
-        csv_data = FasterCSV.parse subject.data
+        csv_data = csv_from_zip subject.data
         csv_data[1][7].should == ''
       end
 
+      describe "encryption" do
+        subject do
+          ExportGenerator.new( {:password => "abcd"}, [child1, child2, child3]).to_csv
+        end
+        it "should encrypt the zipfile" do
+          csv_data = csv_from_zip subject.data, 'abcd'
+          csv_data.length.should == 4
+        end
+      end
     end
     
     describe "with a multi checkbox field" do
@@ -101,7 +120,7 @@ describe ExportGenerator do
       end
       
       it "should render multi checkbox fields as a comma separated list" do
-        csv_data = FasterCSV.parse subject.data
+        csv_data = csv_from_zip subject.data
         csv_data[1][2].should == "Dogs, Cats"
         csv_data[2][2].should == ""
         csv_data[3][2].should == "Cats, Fish"

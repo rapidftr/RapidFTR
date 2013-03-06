@@ -1,5 +1,6 @@
 require "prawn/measurement_extensions"
 require 'prawn/layout'
+require 'zipruby'
 
 CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
 CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
@@ -17,8 +18,9 @@ class ExportGenerator
   def initialize (options={}, *child_data)
     @child_data = child_data.flatten
     @pdf = Prawn::Document.new
-    @pdf.encrypt_document options[:encryption_options] if options[:encryption_options]
+    @pdf.encrypt_document :user_password => options[:password], :owner_password => options[:password] if options[:password]
     @image_bounds = [@pdf.bounds.width, @pdf.bounds.width]
+    @password = options[:password]
   end
 
   def to_photowall_pdf
@@ -53,7 +55,22 @@ class ExportGenerator
       end
     end
 
-    Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
+    $stdout.binmode
+
+    zip_buffer = Zip::Archive.open_buffer(Zip::CREATE) { |z|
+      z.add_buffer "full-details.csv", csv_data
+    }
+
+    tmpfile = Tempfile.new("tempfile-#{Time.now}.zip")
+    tmpfile.write(zip_buffer)
+    tmpfile.close
+
+    Zip::Archive.encrypt(tmpfile.path, @password) if @password
+
+    encrypted_file = File.open(tmpfile.path, "r")
+    export  = Export.new encrypted_file.read, {:type=>'application/zip', :filename=>filename("full-details", "zip")}
+    tmpfile.unlink
+    export
   end
 
   def map_field_with_value(child, fields)

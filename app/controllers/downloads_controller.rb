@@ -102,6 +102,6 @@ class DownloadsController < ApplicationController
 
     password = params[:password]
     raise ErrorResponse.bad_request('You must enter password to encrypt the exported file') unless password
-    @options = {:encryption_options => {:user_password => password, :owner_password => password}}
+    @options = {:password => password}
   end
 end
