@@ -173,7 +173,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     Then I should see "Order by"
     And I should see "Most recently flagged"
 
-  @javascript
+  @javascript @wip
   Scenario: Checking filter by Flagged returns all the flagged children in the system by order of most recently flagged
 
     Given the following children exist in the system:
@@ -198,10 +198,9 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Flagged" from "filter"
-    And I follow "Name"
     Then I should see the order andreas,jaco,meredith,zak
 
-  @javascript
+  @javascript @wip
   Scenario: Checking filter by Flagged and ordering by most recently flagged returns the children in most recently flagged order
 
     Given the following children exist in the system:

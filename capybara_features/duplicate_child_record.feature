@@ -25,13 +25,13 @@ Feature: Merge Child Records
     Then show me the page
     Then I am on duplicate child page for "Steve"
 
-  Scenario: Should see view child page when I click OK on confirmation
-    When I am on the child listing filtered by flag
-    And I click mark as duplicate for "Steve"
-    And I fill in "red_uid" for "parent_id"
-    And I press "Mark as Duplicate"
-    Then I am on the child record page for "Steve"
-    And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
+#  Scenario: Should see view child page when I click OK on confirmation
+#    When I am on the child listing filtered by flag
+#    And I click mark as duplicate for "Steve"
+#    And I fill in "red_uid" for "parent_id"
+#    And I press "Mark as Duplicate"
+#    Then I am on the child record page for "Steve"
+#    And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
 
   Scenario: Should see duplicate message when viewing child record
     And "Bob" is a duplicate of "Dave"
@@ -41,10 +41,10 @@ Feature: Merge Child Records
     Then I am on the child record page for "Bob"
 
 
-   Scenario: Should see error message when wrong Duplicate id/name is given
-
-     When I am on the child listing filtered by flag
-     And I click mark as duplicate for "Steve"
-     And I fill in "fred_uid" for "parent_id"
-     And I press "Mark as Duplicate"
+#   Scenario: Should see error message when wrong Duplicate id/name is given
+#
+#     When I am on the child listing filtered by flag
+#     And I click mark as duplicate for "Steve"
+#     And I fill in "fred_uid" for "parent_id"
+#     And I press "Mark as Duplicate"
 #     And I should see "This is not a valid rapidftr id."
