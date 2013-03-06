@@ -13,18 +13,18 @@ fi
 
 cd $RAPIDFTR_INSTALLDIR
 
-export RAILS_ENV=production
+export RAILS_ENV=standalone
 
 case "$1" in
   start)
-    bundle exec rake app:run_with_thin
+    bundle exec rake app:run_standalone
     ;;
   stop)
-    bundle exec rake app:stop_thin
+    bundle exec rake app:stop_standalone
     ;;
   restart)
-    bundle exec rake app:stop_thin
-    bundle exec rake app:run_with_thin
+    bundle exec rake app:stop_standalone
+    bundle exec rake app:run_standalone
     ;;
   *)
   echo "Usage: $0 {start|stop|restart}"
