@@ -21,7 +21,7 @@ chown -R root:root .
 # ln -s $BASEDIR/tmp/bundler vendor/bundle
 
 # rm Gemfile.lock
-bundle install --path=/usr/lib/rapidftr/vendor/bundle/
+bundle install --deployment
 gem install bundler -v 1.3.1 --install-dir=vendor/bundle/ruby/1.8/
 fpm -s dir -t deb -n "rapidftr" -v 1.1 --after-install /usr/lib/rapidftr/lib/tasks/ubuntu/postinstall.sh --before-remove /usr/lib/rapidftr/lib/tasks/ubuntu/before_remove.sh /usr/lib/rapidftr
 
