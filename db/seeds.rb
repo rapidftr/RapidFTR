@@ -14,29 +14,30 @@ if should_seed? User
   field_worker = Role.create!(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
   field_admin = Role.create!(:name => "field admin", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create],
                                                                      Permission::CHILDREN[:edit]])
+
   User.create!("user_name" => "rapidftr",
               "password" => "rapidftr",
               "password_confirmation" => "rapidftr",
-              "full_name" => "RapidFTR",
+              "full_name" => "System Administrator",
               "email" => "rapidftr@rapidftr.com",
               "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [admin.id])
 
   User.create!("user_name" => "field_worker",
-              "password" => "limited",
-              "password_confirmation" => "limited",
-              "full_name" => "RapidFTR",
-              "email" => "limited@rapidftr.com",
+              "password" => "field_worker",
+              "password_confirmation" => "field_worker",
+              "full_name" => "Field Worker",
+              "email" => "field_worker@rapidftr.com",
               "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [field_worker.id])
 
   User.create!("user_name" => "field_admin",
-              "password" => "unlimited",
-              "password_confirmation" => "unlimited",
-              "full_name" => "RapidFTR",
-              "email" => "unlimited@rapidftr.com",
+              "password" => "field_admin",
+              "password_confirmation" => "field_admin",
+              "full_name" => "Field Administrator",
+              "email" => "field_admin@rapidftr.com",
               "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [field_admin.id])
