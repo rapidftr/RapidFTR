@@ -607,7 +607,7 @@ describe ChildrenController do
       child.save
       fake_admin_login
       controller.stub(:authorize!)
-      post :create, :child => {:short_id => child.short_id, :name => 'new name'}
+      post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
       updated_child = Child.by_short_id(:key => child.short_id)
       updated_child.size.should == 1
       updated_child.first.name.should == 'new name'
