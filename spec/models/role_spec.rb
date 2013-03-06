@@ -42,4 +42,9 @@ describe Role do
     role.has_permission(Permission::CHILDREN[:register]).should == true
     role.has_permission(Permission::CHILDREN[:edit]).should == false
   end
+
+  it "should generate id" do
+    role = create :role, :name => 'test role 123'
+    role.id.should == "role-test-role-123"
+  end
 end

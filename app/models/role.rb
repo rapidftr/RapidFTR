@@ -19,6 +19,8 @@ class Role < CouchRestRails::Document
   validates_presence_of :permissions, :message => I18n.t("activerecord.errors.models.role.permission_presence")
   validates_with_method :name, :method => :is_name_unique, :if => :name
 
+  before_save :generate_id
+
   def self.find_by_name(name)
     Role.by_name(:key => name).first
   end
@@ -41,6 +43,10 @@ class Role < CouchRestRails::Document
     self.name = self.name.try(:titleize)
     sanitize_permissions
     super(context)
+  end
+
+  def generate_id
+    self["_id"] ||= "role-#{self.name}".parameterize.dasherize
   end
 
 end
