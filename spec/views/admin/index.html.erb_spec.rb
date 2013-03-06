@@ -28,7 +28,7 @@ describe 'admin/index.html.erb' do
 
   describe 'with manage replications permission' do
     let(:permissions) { [Permission::SYSTEM[:system_users]] }
-    it { should have_link 'Manage System Users', system_users_path }
+    it { should have_link 'Manage Server Synchronisation Users', system_users_path }
   end
 
 end
