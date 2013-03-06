@@ -1,15 +1,16 @@
 #!/bin/bash
 
-INSTALL_DIR=/usr/lib/rapidftr/
+export INSTALL_DIR=/usr/lib/rapidftr/
+export RAILS_ENV=standalone
+
+ufw allow 5984
+ufw allow 6984
+ufw allow 8983
 
 cd $INSTALL_DIR
-cp ./lib/tasks/ubuntu/debian/rapidftr.sh /usr/bin/rapidftrserver
+gem install vendor/bundle/ruby/1.8/cache/bundler-1.3.1.gem --no-ri --no-rdoc
 
-gem install ./vendor/bundle/ruby/1.8/cache/bundler-1.2.3.gem
+bundle exec rake db:create_couch_sysadmin
 
-echo "---" > .bundle/config
-echo "BUNDLE_DISABLE_SHARED_GEMS: \"1\"" >> .bundle/config
-echo "BUNDLE_PATH: vendor/bundle/" >> .bundle/config
-
-export RAILS_ENV=production
-bundle exec rake couchdb:create db:seed app:run_with_thin
+cp lib/tasks/ubuntu/rapidftr-server.sh /usr/bin/rapidftr-server
+rapidftr-server start
