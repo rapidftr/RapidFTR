@@ -1,7 +1,6 @@
 var ManagePhotos = ManagePhotos || {};
 
 ManagePhotos.init = function() {
-
   _.templateSettings = {
     interpolate : /\{\{(.+?)\}\}/g
   };
@@ -89,7 +88,6 @@ ManagePhotos.init = function() {
   });
 
   window.AppView = Backbone.View.extend({
-
     // Instead of generating a new element, bind to the existing skeleton of
     // the App already present in the HTML.
     el: '.thumbnails',
@@ -101,19 +99,6 @@ ManagePhotos.init = function() {
       Photos.bind('refresh', this.addAll);
 
       $("#selectPrimaryPhotoButton").click(function(e) {
-
-        var showMessage = function(msg, msgType) {
-          var noticeElement = $('#notice');
-          noticeElement.text(msg);
-          noticeElement.addClass(msgType);
-          setTimeout(function() {
-            $('.flash').fadeOut(function() {
-              noticeElement.removeClass(msgType);
-            });
-          }, 5000);
-          $('.flash').fadeIn();
-        }
-
         e.preventDefault();
         var selectedPhoto = Photos.getSelectedPhoto();
         if (selectedPhoto) {
@@ -121,6 +106,16 @@ ManagePhotos.init = function() {
           showMessage(I18n.t('messages.primary_photo_changed'), 'notice');
         }
         else {
+          showMessage(I18n.t('messages.select_photo'), 'error');
+        }
+      });
+
+      $("#viewFullSizePhotoButton").click(function(e) {
+        e.preventDefault();
+        var selectedPhoto = Photos.getSelectedPhoto();
+        if (selectedPhoto) {
+          window.open(selectedPhoto.attributes.photo_url);
+        } else {
           showMessage(I18n.t('messages.select_photo'), 'error');
         }
       });
@@ -134,10 +129,21 @@ ManagePhotos.init = function() {
     addAll: function() {
       Photos.each(this.addOne);
     },
-
   });
 
   window.App = new AppView;
+
+  window.showMessage = function(msg, msgType) {
+    var noticeElement = $('#notice');
+    noticeElement.text(msg);
+    noticeElement.addClass(msgType);
+    setTimeout(function() {
+      $('.flash').fadeOut(function() {
+        noticeElement.removeClass(msgType);
+      });
+    }, 5000);
+    $('.flash').fadeIn();
+  };
 }
 
 $(function() {
