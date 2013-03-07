@@ -1,0 +1,12 @@
+<div class="dropdown encryption_form hide">
+  <form accept-charset="UTF-8" action="#" method="post">
+
+     <label> <%= t('encryption.label_for_password') %> </label></p>
+      <input type="password" id="password" name="password" autocomplete ="off">
+      <% if child_id %>
+        <input type="hidden" id="id" name="id" autocomplete ="off" value="<%= child_id %>" >
+      <% end %>
+    <input type="submit" class="mark-as-submit" data-error-message= "<%= t('children.export_error')%>" value= <%= t('children.export')%>>
+
+  </form>
+</div>
