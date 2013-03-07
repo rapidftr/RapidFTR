@@ -426,3 +426,16 @@ a.mark_as_duplicate {
     }
   }
 }
+
+#password-prompt-dialog {
+  display: none;
+
+  label {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    font-size: 125%;
+  }
+}

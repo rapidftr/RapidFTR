@@ -473,6 +473,10 @@ en:
     types:
       weekly_report: "Weekly Report"
 
+  encrypt:
+    password_title: "Password"
+    password_label: "Enter password to encrypt file"
+
   administration: "Administration"
   new: "New"
   saved: "Saved"
