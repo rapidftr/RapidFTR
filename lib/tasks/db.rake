@@ -38,8 +38,8 @@ namespace :db do
       user_name = get "Enter username of your couchdb "
       password = get "Enter password of your couchdb "
     else
-      user_name = "rapidftr"
-      password = "rapidftr"
+      user_name = ENV["COUCHDB_USERNAME"] || "rapidftr"
+      password  = ENV["COUCHDB_PASSWORD"] || "rapidftr"
     end
 
     puts "
