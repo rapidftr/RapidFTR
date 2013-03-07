@@ -86,6 +86,7 @@ end
 
 Given /^I am editing an existing child record$/ do
   child = Child.new
+  child[:created_by] = "mary"
   child["birthplace"] = "haiti"
   child.photo = uploadable_photo
   child["unique_identifier"] = "UNIQUE_IDENTIFIER"
