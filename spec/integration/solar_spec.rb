@@ -35,6 +35,10 @@ describe "Solar" do
     end
   end
 
+  before :each do
+    User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+  end
+
   it "should match on the first part of a child's first name" do
     Sunspot.remove_all(Child)
     child1 = Child.create('last_known_location' => "New York", "name" => "Mohammed Smith")
@@ -105,7 +109,7 @@ describe "Solar" do
     child = Child.create('last_known_location' => "New York")
     
     accessor = ChildDataAccessor.new Child
-    accessor.load(child.id).should == child
+    accessor.load(child.id).should == Child.get(child.id)
   end
   
 end
