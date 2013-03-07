@@ -39,6 +39,12 @@ FactoryGirl.define do
     role_ids ['random_role_id']
   end
 
+  factory :role do
+    name { "test_role_#{rand(10000)}" }
+    description "test description"
+    permissions { Permission.all_permissions }
+  end
+
   factory :report do
     ignore do
       filename "test_report.csv"

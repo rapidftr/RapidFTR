@@ -45,7 +45,7 @@ namespace :app do
 
   desc "Start Scheduler Task"
   task :start_scheduler do
-    run_with_path_env "bundle exec ruby script/scheduler-daemon.rb restart"
+    run_with_path_env "bundle exec rake scheduler:restart" unless fetch(:branch) == "release1"
   end
 
 end

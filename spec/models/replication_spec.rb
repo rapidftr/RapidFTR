@@ -106,6 +106,13 @@ describe Replication do
       @rep.remote_couch_uri.to_s.should == 'http://test_user:test_password@couch:1234/'
     end
 
+    it 'should replace localhost in Couch URL with the actual host name from App URL' do
+      @rep.remote_app_url = "https://app:3000"
+      @rep.username = @rep.password = nil
+      @rep.stub! :remote_couch_config => { "target" => "http://localhost:1234" }
+      @rep.remote_couch_uri.to_s.should == 'http://app:1234/'
+    end
+
     it 'should normalize remote_app_url upon saving' do
       @rep.save
       @rep.remote_app_url.should == @rep.remote_app_uri.to_s
