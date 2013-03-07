@@ -103,6 +103,20 @@ describe ApplicationController do
       filename = controller.send :generate_encrypted_filename
       filename.should start_with 'test_dir_name'
     end
+
+    it '#send_csv should use #send_encrypted_file' do
+      data = double()
+      args = double()
+      controller.should_receive(:send_encrypted_file).with(data, args).and_return(true)
+      controller.send :send_csv, data, args
+    end
+
+    it '#send_pdf should use #send_encrypted_file' do
+      data = double()
+      filename = "test_file"
+      controller.should_receive(:send_encrypted_file).with(data, hash_including({:filename => filename})).and_return(true)
+      controller.send :send_pdf, data, filename
+    end
   end
 
 end

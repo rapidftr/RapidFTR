@@ -525,7 +525,7 @@ describe ChildrenController do
 			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
       @controller.stub!(:render) #to avoid looking for a template
       @controller.
-        should_receive(:send_data).
+        should_receive(:send_csv).
         with( :csv_data, {:foo=>:bar} ).
         and_return{controller.render :nothing => true}
 
@@ -567,8 +567,8 @@ describe ChildrenController do
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
 
       @controller.
-        should_receive(:send_data).
-        with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf').
+        should_receive(:send_pdf).
+        with(:fake_pdf_data, '1-20000101-0915.pdf').
         and_return{controller.render :nothing => true}
 
       get :export_photo_to_pdf, :id => '1'
