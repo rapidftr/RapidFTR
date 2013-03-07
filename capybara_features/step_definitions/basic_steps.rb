@@ -86,6 +86,7 @@ end
 
 Given /^I am editing an existing child record$/ do
   child = Child.new
+  child[:created_by] = "mary"
   child["birthplace"] = "haiti"
   child.photo = uploadable_photo
   child["unique_identifier"] = "UNIQUE_IDENTIFIER"
@@ -95,7 +96,7 @@ Given /^I am editing an existing child record$/ do
 end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
-  child = Child.new( :name => name, :birthplace => 'unknown' )
+  child = Child.new( :name => name, :birthplace => 'unknown', :created_by => "mary")
   child.photo = uploadable_photo(photo_file_path)
   child.create
 end

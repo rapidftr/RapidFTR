@@ -16,4 +16,6 @@ RapidFTR::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.middleware.use "Rack::Bug", :secret_key => "somesecretkeythatisverylong", :password => "welcometothejungle"
 end
