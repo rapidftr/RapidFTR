@@ -29,7 +29,7 @@ module WeeklyReport
   end
 
   def self.schedule(scheduler)
-    scheduler.cron '1 0 * * TUE' do # every monday at 00:01, just change TUE to MON once the defect is verified
+    scheduler.cron '1 0 * * MON' do # every monday at 00:01
       begin
         Rails.logger.info "Generating report..."
         generate!
