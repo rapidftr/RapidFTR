@@ -1,6 +1,6 @@
 <% if can? :update, child %>
     <span id="<%= mark_as_property %>" class="<%= style %>"><a href="#"><%= mark_as_label %></a></span>
-    <div class="dropdown hide"
+    <div class="dropdown mark_as hide"
          data-form_action="<%= child_path(child) %>"
          data-form_id="<%= "child_#{child.id}" %>"
          data-message_id="<%= mark_as_message_id %>"

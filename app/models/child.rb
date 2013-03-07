@@ -22,11 +22,33 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
+  property :exportable, :cast_as => :boolean, :default => true
   property :verified
   property :verified, :cast_as => :boolean
 
 
-view_by :protection_status, :gender, :ftr_status
+  view_by :protection_status, :gender, :ftr_status
+
+  view_by :all_view,
+          :map => "function(doc) {
+              if (doc['couchrest-type'] == 'Child')
+             {
+                emit(['all', doc['created_by']], doc);
+                if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                  emit(['flagged', doc['created_by']], doc);
+                }
+
+                if (doc.hasOwnProperty('reunited')) {
+                  if (doc['reunited'] == 'true') {
+                    emit(['reunited', doc['created_by']], doc);
+                  } else {
+                    emit(['active', doc['created_by']], doc);
+                  }
+                } else {
+                  emit(['active', doc['created_by']], doc);
+                }
+             }
+          }"
 
   view_by :name,
           :map => "function(doc) {
@@ -709,7 +731,8 @@ view_by :protection_status, :gender, :ftr_status
                      "unique_identifier",
                      "current_photo_key",
                      "created_organisation",
-                     "photo_keys"]
+                     "photo_keys",
+                     "exportable"]
     existing_fields = system_fields + field_definitions.map { |x| x.name }
     self.reject { |k, v| existing_fields.include? k }
   end

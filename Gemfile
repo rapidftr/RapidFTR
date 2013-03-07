@@ -8,8 +8,8 @@ gem 'json',           '1.4.6'
 gem 'json_pure',      '1.4.6'
 gem 'mime-types',     '1.16'
 gem 'mini_magick',    '1.3.2'
-gem 'pdf-reader',     '0.8.6'
-gem 'prawn',          '0.8.4'
+gem 'pdf-reader',     '0.9.0'
+gem 'prawn',          '0.12.0'
 gem 'rails',          '3.0.19'
 gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
@@ -35,8 +35,9 @@ gem 'thin', :platform => :ruby, :require => false
 gem 'rufus-scheduler', :require => false
 gem 'daemons', :require => false
 
+gem 'zipruby'
+
 group :development, :assets do
-  gem 'rubyzip'
   gem 'sass'
 end
 

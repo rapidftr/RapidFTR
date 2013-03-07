@@ -45,6 +45,9 @@ en:
     delete_all_documents: "Deleted all child documents"
     operation_not_allowed: "Operation not allowed in %{rails_env} environment"
 
+  encryption:
+    label_for_password: "Enter password to encrypt the file"
+
   login:
     details: "Login details"
     username: "User Name"
@@ -91,6 +94,7 @@ en:
     export_all_child_records_to_csv: "Export All Child Records to CSV"
     export_all_child_records_to_pdf: "Export All Child Records to PDF"
     export_some_records_to_csv: "Export Some Records to CSV"
+    export_error: Please enter the password to encrypt the file
     filter_by:
       label: "Filter by"
       all: "All"
