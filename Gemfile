@@ -31,6 +31,7 @@ gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
 gem 'thin', :platform => :ruby, :require => false
+gem 'zipruby', :platforms => [:mswin, :ruby]
 
 gem 'rack-bug', :require => 'rack/bug', :git => 'git://github.com/brynary/rack-bug.git', :branch => 'rails3'
 

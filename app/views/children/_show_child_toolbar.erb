@@ -4,9 +4,9 @@
         <a href="#"> <%= t("children.export") %> </a>
       </span>
       <div class="dropdown hide">
-        <%= link_to t("child.actions.export_to_photo_wall"), export_photo_to_pdf_child_path(@child, :format => 'pdf') %>
-        <%= link_to t("child.actions.export_to_pdf"), child_path(@child, :format => 'pdf') %>
-        <%= link_to t("child.actions.export_to_csv"), child_path(@child, :format => 'csv') %>
+        <%= link_to t("child.actions.export_to_photo_wall"), export_photo_to_pdf_child_path(@child, :format => 'pdf'), :class => "password-prompt" %>
+        <%= link_to t("child.actions.export_to_pdf"), child_path(@child, :format => 'pdf'), :class => "password-prompt" %>
+        <%= link_to t("child.actions.export_to_csv"), child_path(@child, :format => 'csv'), :class => "password-prompt" %>
       </div>
     </div>
 <% end %>
