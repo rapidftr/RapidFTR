@@ -48,6 +48,7 @@ Feature: Creating a child using the API
 			    "histories":[],
 			    "posted_at":"%SOME_STRING%",
 			    "photo_keys":[],
-			    "current_photo_key":""
+			    "current_photo_key":"",
+          "histories":[{"changes":{"child":{"created":"2011-03-28 13:23:12UTC"}},"datetime":"2011-03-28 13:23:12UTC","user_name":"mary","user_organisation":"UNICEF"}]
 			  }
 			  """

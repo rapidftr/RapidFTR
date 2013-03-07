@@ -10,10 +10,12 @@ def should_seed? model
 end
 
 if should_seed? User
-  admin = Role.create!(:name => "admin", :permissions => Permission.all_permissions)
-  field_worker = Role.create!(:name => "field worker", :permissions => [Permission::CHILDREN[:register]])
-  field_admin = Role.create!(:name => "field admin", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create],
-                                                                     Permission::CHILDREN[:edit]])
+  registration_worker = Role.create!(:name => "registration worker", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit]])
+  registration_officer = Role.create!(:name => "registration officer", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view]])
+  child_protection_specialist = Role.create!(:name => "child protection specialist", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::USERS[:view]])
+  senior_official = Role.create!(:name => "senior official", :permissions => [Permission::REPORTS[:view]])
+  field_level_admin = Role.create!(:name => "field level admin", :permissions => [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:view], Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export], Permission::REPORTS[:view]])
+  system_admin = Role.create!(:name => "system admin", :permissions => [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:create_and_edit], Permission::ROLES[:view], Permission::REPORTS[:view], Permission::FORMS[:manage], Permission::SYSTEM[:highlight_fields], Permission::SYSTEM[:contact_information], Permission::SYSTEM[:system_users], Permission::DEVICES[:blacklist], Permission::DEVICES[:replications]])
 
   User.create!("user_name" => "rapidftr",
               "password" => "rapidftr",
@@ -22,7 +24,7 @@ if should_seed? User
               "email" => "rapidftr@rapidftr.com",
               "disabled" => "false",
               "organisation" => "N/A",
-              "role_ids" => [admin.id])
+              "role_ids" => [system_admin.id])
 
   User.create!("user_name" => "field_worker",
               "password" => "field_worker",
@@ -31,7 +33,7 @@ if should_seed? User
               "email" => "field_worker@rapidftr.com",
               "disabled" => "false",
               "organisation" => "N/A",
-              "role_ids" => [field_worker.id])
+              "role_ids" => [registration_worker.id])
 
   User.create!("user_name" => "field_admin",
               "password" => "field_admin",
@@ -40,7 +42,7 @@ if should_seed? User
               "email" => "field_admin@rapidftr.com",
               "disabled" => "false",
               "organisation" => "N/A",
-              "role_ids" => [field_admin.id])
+              "role_ids" => [field_level_admin.id])
 end
 
 if should_seed? FormSection
