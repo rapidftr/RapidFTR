@@ -77,8 +77,8 @@ describe Child do
     end
 
     it "should return children that have duplicate as nil" do
-      child_active = Child.create(:name => "eduardo aquiles")
-      child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
+      child_active = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
+      child_duplicate = Child.create(:name => "aquiles", :duplicate => true, 'created_by' => "me", 'created_organisation' => "stc")
 
       search = mock("search", :query => "aquiles", :valid? => true)
       result = Child.search(search)
@@ -87,8 +87,8 @@ describe Child do
     end
 
     it "should return children that have duplicate as false" do
-      child_active = Child.create(:name => "eduardo aquiles", :duplicate => false)
-      child_duplicate = Child.create(:name => "aquiles", :duplicate => true)
+      child_active = Child.create(:name => "eduardo aquiles", :duplicate => false, 'created_by' => "me", 'created_organisation' => "stc")
+      child_duplicate = Child.create(:name => "aquiles", :duplicate => true, 'created_by' => "me", 'created_organisation' => "stc")
 
       search = mock("search", :query => "aquiles", :valid? => true)
       result = Child.search(search)
@@ -98,8 +98,8 @@ describe Child do
 
     it "should search by exact match for short id" do
       uuid = UUIDTools::UUID.random_create.to_s
-      Child.create("name" => "kev", :unique_identifier => "1234567890", "last_known_location" => "new york")
-      Child.create("name" => "kev", :unique_identifier => "0987654321", "last_known_location" => "new york")
+      Child.create("name" => "kev", :unique_identifier => "1234567890", "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
+      Child.create("name" => "kev", :unique_identifier => "0987654321", "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
       search = mock("search", :query => "7654321", :valid? => true)
       results, full_results = Child.search(search)
       results.length.should == 1
@@ -126,10 +126,10 @@ describe Child do
     end
 
     it "should return the children registered by the user if the user has limited permission" do
-      create_child("suganthi", {"created_by" => "thirumani"})
-      create_child("kavitha", {"created_by" => "rajagopalan"})
+      Child.create(:name => "suganthi", 'created_by' => "me", 'created_organisation' => "stc")
+      Child.create(:name => "kavitha", 'created_by' => "you", 'created_organisation' => "stc")
       search = mock("search", :query => "kavitha", :valid? => true, :page => 1)
-      Child.search_by_created_user(search, "rajagopalan", 1).first.map(&:name).should =~ ["kavitha"]
+      Child.search_by_created_user(search, "you", 1).first.map(&:name).should =~ ["kavitha"]
     end
 
     it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
@@ -455,14 +455,14 @@ describe Child do
     end
 
     it "should save file based on content type" do
-      child = Child.new
+      child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       photo = uploadable_jpg_photo_without_file_extension
       child.photo = photo
       child.save.should == true
     end
 
     it "should not save with file formats that are not supported audio formats" do
-      child = Child.new
+      child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.audio = uploadable_photo_gif
       child.save.should == false
       child.audio = uploadable_audio_amr
@@ -476,7 +476,8 @@ describe Child do
     end
 
     it "should save blank age" do
-      child = Child.new({:age => "", :another_field => "blah"})
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+      child = Child.new(:age => "", :another_field => "blah", 'created_by' => "me", 'created_organisation' => "stc")
       child.save.should == true
       child = Child.new :foo => "bar"
       child.save.should == true
@@ -484,7 +485,7 @@ describe Child do
 
     it "should not save with image file formats that are not png or jpg" do
       photo = uploadable_photo
-      child = Child.new
+      child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.photo = photo
       child.save.should == true
       loaded_child = Child.get(child.id)
@@ -495,13 +496,13 @@ describe Child do
 
     it "should not save with a photo larger than 10 megabytes" do
       photo = uploadable_large_photo
-      child = Child.new
+      child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.photo = photo
       child.save.should == false
     end
 
     it "should not save with an audio file larger than 10 megabytes" do
-      child = Child.new
+      child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.audio = uploadable_large_audio
       child.save.should == false
     end
@@ -597,63 +598,64 @@ describe Child do
     end
 
     context "with a single new photo" do
-
-      let(:child) { Child.create('photo' => uploadable_photo, 'last_known_location' => 'London') }
+      before :each do
+        User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
+      end
 
       it "should only have one photo on creation" do
-        child.photos.size.should eql 1
+        @child.photos.size.should eql 1
       end
 
       it "should be the primary photo" do
-        child.primary_photo.should match_photo uploadable_photo
+        @child.primary_photo.should match_photo uploadable_photo
       end
 
     end
 
     context "with multiple new photos" do
-
-      let(:child) {
-        Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London')
-      }
-
+      before :each do
+        User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+        @child = Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London', 'created_by' => "me")
+      end
+      
       it "should have corrent number of photos after creation" do
-        child.photos.size.should eql 2
+        @child.photos.size.should eql 2
       end
 
       it "should order by primary photo" do
-        child.primary_photo_id = child["photo_keys"].last
-        child.photos.first.name.should == child.current_photo_key
+        @child.primary_photo_id = @child["photo_keys"].last
+        @child.photos.first.name.should == @child.current_photo_key
       end
 
       it "should return the first photo as a primary photo" do
-        child.primary_photo.should match_photo uploadable_photo_jeff
+        @child.primary_photo.should match_photo uploadable_photo_jeff
       end
 
     end
 
     context "when rotating an existing photo" do
-
-      let(:child) { Child.create('photo' => uploadable_photo, 'last_known_location' => 'London') }
-
-      before(:each) do
+      before :each do
+        User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
         Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       end
 
       it "should become the primary photo" do
-        existing_photo = child.primary_photo
-        child.rotate_photo(180)
-        child.save
+        existing_photo = @child.primary_photo
+        @child.rotate_photo(180)
+        @child.save
         #TODO: should be a better way to check rotation other than stubbing Minimagic ?
-        child.primary_photo.should_not match_photo existing_photo
+        @child.primary_photo.should_not match_photo existing_photo
       end
 
       it "should delete the original orientation" do
-        existing_photo = child.primary_photo
-        child.rotate_photo(180)
-        child.save
-        child.primary_photo.name.should eql existing_photo.name
-        existing_photo.should_not match_photo child.primary_photo
-        child.photos.size.should eql 1
+        existing_photo = @child.primary_photo
+        @child.rotate_photo(180)
+        @child.save
+        @child.primary_photo.name.should eql existing_photo.name
+        existing_photo.should_not match_photo @child.primary_photo
+        @child.photos.size.should eql 1
       end
 
     end
@@ -725,27 +727,31 @@ describe Child do
 
   describe ".audio" do
 
+    before :each do
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+    end
+
     it "should return nil if no audio file has been set" do
       child = Child.new
       child.audio.should be_nil
     end
 
     it "should check if 'original' audio attachment is present" do
-      child = Child.create('audio' => uploadable_audio)
+      child = Child.create('audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
       child['audio_attachments']['original'] = "ThisIsNotAnAttachmentName"
       child.should_receive(:has_attachment?).with('ThisIsNotAnAttachmentName').and_return(false)
       child.audio
     end
 
     it "should return nil if the recorded audio key is not an attachment" do
-      child = Child.create('audio' => uploadable_audio)
+      child = Child.create('audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
       child['audio_attachments']['original'] = "ThisIsNotAnAttachmentName"
       child.audio.should be_nil
     end
 
     it "should retrieve attachment data for attachment key" do
       Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
-      child = Child.create('audio' => uploadable_audio)
+      child = Child.create('audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
       child.should_receive(:read_attachment).with('audio-2010-02-20T120432').and_return("Some audio")
       child.audio
     end
@@ -753,7 +759,7 @@ describe Child do
     it 'should create a FileAttachment with the read attachment and the attachments content type' do
       Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       uploaded_amr = uploadable_audio_amr
-      child = Child.create('audio' => uploaded_amr)
+      child = Child.create('audio' => uploaded_amr, 'created_by' => "me", 'created_organisation' => "stc")
       expected_data = 'LA! LA! LA! Audio Data'
       child.stub!(:read_attachment).and_return(expected_data)
       FileAttachment.should_receive(:new).with('audio-2010-02-20T120432', uploaded_amr.content_type, expected_data)
@@ -762,7 +768,7 @@ describe Child do
     end
 
     it 'should return nil if child has not been saved' do
-      child = Child.new('audio' => uploadable_audio)
+      child = Child.new('audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
       child.audio.should be_nil
     end
 
@@ -770,15 +776,19 @@ describe Child do
 
 
   describe "audio attachment" do
+    before :each do
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+    end
 
     it "should create a field with recorded_audio on creation" do
       Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 17:10:32"))
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
+
       child['audio_attachments']['original'].should == 'audio-2010-01-20T171032'
     end
 
     it "should change audio file if a new audio file is set" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio)
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
       Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       child.update_attributes :audio => uploadable_audio
       child['audio_attachments']['original'].should == 'audio-2010-02-20T120432'
@@ -801,13 +811,14 @@ describe Child do
       User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
     end
 
-    it "should not update history on initial creation of child document without a photo" do
-      child = Child.create('last_known_location' => 'New York')
-      child['histories'].should be_empty
+    it "should add a history entry when a record is created" do
+      child = Child.create('last_known_location' => 'New York', 'created_by' => "me")
+      child['histories'].size.should be 1
+      child["histories"][0].should == {"changes"=>{"child"=>{:created=>nil}}, "datetime"=>nil, "user_name"=>"me", "user_organisation"=>"UNICEF"}
     end
 
     it "should update history with 'from' value on last_known_location update" do
-      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
       child['last_known_location'] = 'Philadelphia'
       child.save!
       changes = child['histories'].first['changes']
@@ -815,7 +826,7 @@ describe Child do
     end
 
     it "should update history with 'to' value on last_known_location update" do
-      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
       child['last_known_location'] = 'Philadelphia'
       child.save!
       changes = child['histories'].first['changes']
@@ -823,7 +834,7 @@ describe Child do
     end
 
     it "should update history with 'from' value on age update" do
-      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo)
+      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
       child['age'] = '6'
       child.save!
       changes = child['histories'].first['changes']
@@ -831,7 +842,7 @@ describe Child do
     end
 
     it "should update history with 'to' value on age update" do
-      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo)
+      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
       child['age'] = '6'
       child.save!
       changes = child['histories'].first['changes']
@@ -839,11 +850,11 @@ describe Child do
     end
 
     it "should update history with a combined history record when multiple fields are updated" do
-      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo)
+      child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
       child['age'] = '6'
       child['last_known_location'] = 'Philadelphia'
       child.save!
-      child['histories'].size.should == 1
+      child['histories'].size.should == 2
       changes = child['histories'].first['changes']
       changes['age']['from'].should == '8'
       changes['age']['to'].should == '6'
@@ -852,29 +863,29 @@ describe Child do
     end
 
     it "should not record anything in the history if a save occured with no changes" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'New York')
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'New York', 'created_by' => "me", 'created_organisation' => "stc")
       loaded_child = Child.get(child.id)
       loaded_child.save!
-      loaded_child['histories'].should be_empty
+      child['histories'].size.should be 1
     end
 
     it "should not record empty string in the history if only change was spaces" do
-      child = Child.create('origin' => '', 'photo' => uploadable_photo, 'last_known_location' => 'New York')
+      child = Child.create('origin' => '', 'photo' => uploadable_photo, 'last_known_location' => 'New York', 'created_by' => "me", 'created_organisation' => "stc")
       child['origin'] = '    '
       child.save!
-      child['histories'].should be_empty
+      child['histories'].size.should be 1
     end
 
     it "should not record history on populated field if only change was spaces" do
-      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo)
+      child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
       child['last_known_location'] = ' New York   '
       child.save!
-      child['histories'].should be_empty
+      child['histories'].size.should be 1
     end
 
     it "should record history for newly populated field that previously was null" do
       # gender is the only field right now that is allowed to be nil when creating child document
-      child = Child.create('gender' => nil, 'last_known_location' => 'London', 'photo' => uploadable_photo)
+      child = Child.create('gender' => nil, 'last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
       child['gender'] = 'Male'
       child.save!
       child['histories'].first['changes']['gender']['from'].should be_nil
@@ -882,18 +893,18 @@ describe Child do
     end
 
     it "should apend latest history to the front of histories" do
-      child = Child.create('last_known_location' => 'London', 'photo' => uploadable_photo)
+      child = Child.create('last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
       child['last_known_location'] = 'New York'
       child.save!
       child['last_known_location'] = 'Philadelphia'
       child.save!
-      child['histories'].size.should == 2
+      child['histories'].size.should == 3
       child['histories'][0]['changes']['last_known_location']['to'].should == 'Philadelphia'
       child['histories'][1]['changes']['last_known_location']['to'].should == 'New York'
     end
 
     it "should update history with username from last_updated_by" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
       child['last_known_location'] = 'Philadelphia'
       child['last_updated_by'] = 'some_user'
       child.save!
@@ -902,7 +913,7 @@ describe Child do
     end
 
     it "should update history with the datetime from last_updated_at" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
       child['last_known_location'] = 'Philadelphia'
       child['last_updated_at'] = '2010-01-14 14:05:00UTC'
       child.save!
@@ -913,7 +924,8 @@ describe Child do
 
       before :each do
         Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 12:04:24"))
-        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+        User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
         Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:24"))
       end
 
@@ -955,10 +967,10 @@ describe Child do
       end
 
       it "should take the current photo key during child creation and update it appropriately with the correct format" do
-        @child = Child.create('photo' => {"0" => uploadable_photo, "1" => uploadable_photo_jeff}, 'last_known_location' => 'London', 'current_photo_key' => uploadable_photo_jeff.original_filename )
+        @child = Child.create('photo' => {"0" => uploadable_photo, "1" => uploadable_photo_jeff}, 'last_known_location' => 'London', 'current_photo_key' => uploadable_photo_jeff.original_filename, 'created_by' => "me", 'created_organisation' => "stc")
         @child.save
         @child.primary_photo.name.should == @child.photos.first.name
-        @child.primary_photo.name.should start_with ("photo-")
+        @child.primary_photo.name.should start_with("photo-")
       end
 
 
@@ -972,7 +984,7 @@ describe Child do
     end
 
     it "should maintain history when child is flagged and message is added" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
       child['flag'] = 'true'
       child['flag_message'] = 'Duplicate record!'
       child.save!
@@ -985,7 +997,7 @@ describe Child do
     end
 
     it "should maintain history when child is reunited and message is added" do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
       child['reunited'] = 'true'
       child['reunited_message'] = 'Finally home!'
       child.save!
@@ -1001,7 +1013,8 @@ describe Child do
 
       before :each do
         Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 12:04:24"))
-        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London')
+        User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
         Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:24"))
       end
 
@@ -1054,6 +1067,10 @@ describe Child do
   end
 
   describe ".has_one_interviewer?" do
+    before :each do
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+    end
+
     it "should be true if was created and not updated" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child.has_one_interviewer?.should be_true
@@ -1102,21 +1119,22 @@ describe Child do
   describe "when fetching children" do
 
     before do
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
       Child.all.each { |child| child.destroy }
     end
 
     it "should return list of children ordered by name" do
-      UUIDTools::UUID.stub("random_create").and_return(12345)
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
+      UUIDTools::UUID.stub("random_create").and_return(12345)      
+      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
+      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       childrens = Child.all
       childrens.first['name'].should == 'Abu'
     end
 
     it "should order children with blank names first" do
       UUIDTools::UUID.stub("random_create").and_return(12345)
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA')
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA')
+      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
+      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
       childrens = Child.all
       childrens.first['name'].should == ''
@@ -1149,7 +1167,8 @@ describe Child do
     before :each do
       @photo1 = uploadable_photo("features/resources/jorge.jpg")
       @photo2 = uploadable_photo("features/resources/jeff.png")
-      @child = Child.new("name" => "Tom")
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
+      @child = Child.new("name" => "Tom", 'created_by' => "me")
       @child.photo= {0 => @photo1, 1 => @photo2}
       @child.save
     end
@@ -1178,12 +1197,13 @@ describe Child do
     before do
       Child.all.each { |child| child.destroy }
       Child.duplicates.each { |child| child.destroy }
+      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
     end
 
     describe "mark_as_duplicate" do
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12")
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id'=> 'nique12')
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id'=> 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
         child_duplicate.mark_as_duplicate child_active['short_id']
         child_duplicate.duplicate?.should be_true
         child_duplicate.duplicate_of.should == child_active.id
@@ -1196,8 +1216,8 @@ describe Child do
       end
 
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12")
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique','short_id'=> 'nique12')
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique','short_id'=> 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
         child_duplicate.mark_as_duplicate child_active['short_id']
         child_duplicate.duplicate?.should be_true
         child_duplicate.duplicate_of.should == child_active.id
@@ -1205,20 +1225,26 @@ describe Child do
     end
 
       it "should return all duplicate records" do
-        mock_user = mock({:organisation => 'UNICEF'})
-        User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids')
+        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
-        Child.duplicates.should == [record_duplicate]
-        Child.all.should == [record_active]
+        
+        duplicates = Child.duplicates_of(record_active.id)
+        all = Child.all
+        
+        duplicates.size.should be 1
+        all.size.should be 1
+        duplicates.first.id.should == record_duplicate.id
+        all.first.id.should == record_active.id
       end
 
       it "should return duplicate from a record" do
-        mock_user = mock({:organisation => 'UNICEF'})
-        User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids')
+        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
-        Child.duplicates_of(record_active.id).should == [record_duplicate]
+
+        duplicates = Child.duplicates_of(record_active.id)
+        
+        duplicates.size.should be 1
+        duplicates.first.id.should == record_duplicate.id
       end
 
   end
@@ -1233,12 +1259,8 @@ describe Child do
     end
 
     it 'should be set from user' do
-      child = Child.create 'name' => 'Jaco'
-      child.created_organisation.should == nil
-
-      user = stub_model User, :organisation => 'UNICEF', :user_name => 'test'
-      child.stub :created_by_user => user
-      child.save
+      User.stub!(:find_by_user_name).with('mj').and_return(mock(:organisation => 'UNICEF'))
+      child = Child.create 'name' => 'Jaco', :created_by => "mj"
 
       child.created_organisation.should == 'UNICEF'
     end
@@ -1248,7 +1270,7 @@ describe Child do
     it "should return all children updated by a user" do
       child = Child.create!("created_by" => "some_other_user", "last_updated_by" => "a_third_user", "name" => "abc", "histories" => [{"user_name" => "brucewayne", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
 
-      Child.all_connected_with("brucewayne").should == [child]
+      Child.all_connected_with("brucewayne").should == [Child.get(child.id)]
     end
 
     it "should not return children updated by other users" do
@@ -1260,19 +1282,19 @@ describe Child do
     it "should return the child once when modified twice by the same user" do
       child = Child.create!("created_by" => "some_other_user", "name" => "ghi", "histories" => [{"user_name" => "peterparker", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "peterparker", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
 
-      Child.all_connected_with("peterparker").should == [child]
+      Child.all_connected_with("peterparker").should == [Child.get(child.id)]
     end
 
     it "should return the child created by a user" do
       child = Child.create!("created_by" => "a_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
 
-      Child.all_connected_with("a_user").should == [child]
+      Child.all_connected_with("a_user").should == [Child.get(child.id)]
     end
 
     it "should not return duplicate records when same user had created and updated same child multiple times" do
       child = Child.create!("created_by" => "tonystark", "name" => "ghi", "histories" => [{"user_name" => "tonystark", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "tonystark", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
 
-      Child.all_connected_with("tonystark").should == [child]
+      Child.all_connected_with("tonystark").should == [Child.get(child.id)]
     end
   end
 
@@ -1289,7 +1311,7 @@ describe Child do
   private
 
   def create_child(name, options={})
-    options.merge!("name" => name, "last_known_location" => "new york")
+    options.merge!("name" => name, "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
     Child.create(options)
   end
 
