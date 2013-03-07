@@ -32,6 +32,8 @@ gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
 gem 'thin', :platform => :ruby, :require => false
 
+gem 'rack-bug', :require => 'rack/bug', :git => 'git://github.com/brynary/rack-bug.git', :branch => 'rails3'
+
 gem 'rufus-scheduler', :require => false
 gem 'daemons', :require => false
 
