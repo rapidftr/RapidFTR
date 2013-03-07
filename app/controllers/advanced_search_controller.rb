@@ -66,7 +66,7 @@ class AdvancedSearchController < ApplicationController
 
     export_generator = ExportGenerator.new results
     csv_data = export_generator.to_csv
-    send_data(csv_data.data, csv_data.options)
+    send_csv(csv_data.data, csv_data.options)
   end
 
   def child_fields_selected? criteria_list
