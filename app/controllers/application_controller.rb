@@ -118,7 +118,7 @@ class ApplicationController < ActionController::Base
       enc_filename = "#{generate_encrypted_filename}.zip"
 
       Zip::Archive.open(enc_filename, Zip::CREATE) do |ar|
-        ar.add_buffer opts[:filename], data
+        ar.add_or_replace_buffer opts[:filename], data
         ar.encrypt params[:password]
       end
 
@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
   end
 
   def generate_encrypted_filename
-    dir = File.join Rails.root, 'tmp', 'encrypted_data'
+    dir = CleanupEncryptedFiles.dir_name
     FileUtils.mkdir_p dir
     File.join dir, UUIDTools::UUID.random_create.to_s
   end
