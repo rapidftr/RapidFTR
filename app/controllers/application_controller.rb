@@ -67,8 +67,12 @@ class ApplicationController < ActionController::Base
     !current_session.nil? unless request.nil?
   end
 
-  def send_pdf(pdf_data,filename)
-    send_data pdf_data, :filename => filename, :type => "application/pdf"
+  def send_pdf(data, filename)
+    send_encrypted_file data, :filename => filename, :type => "application/pdf"
+  end
+
+  def send_csv(csv, opts = {})
+    send_encrypted_file csv, opts
   end
 
   def name
@@ -106,6 +110,28 @@ class ApplicationController < ActionController::Base
 
   def clean_params(param)
     param.reject{|value| value.blank?}
+  end
+
+  def send_encrypted_file(data, opts = {})
+    if params[:password].present?
+      zip_filename = File.basename(opts[:filename], ".*") + ".zip"
+      enc_filename = "#{generate_encrypted_filename}.zip"
+
+      Zip::Archive.open(enc_filename, Zip::CREATE) do |ar|
+        ar.add_or_replace_buffer opts[:filename], data
+        ar.encrypt params[:password]
+      end
+
+      send_file enc_filename, :filename => zip_filename, :disposition => "inline", :type => 'application/zip'
+    else
+      send_data data, opts
+    end
+  end
+
+  def generate_encrypted_filename
+    dir = CleanupEncryptedFiles.dir_name
+    FileUtils.mkdir_p dir
+    File.join dir, UUIDTools::UUID.random_create.to_s
   end
 
   ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|

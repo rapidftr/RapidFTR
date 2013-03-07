@@ -336,6 +336,9 @@ describe ChildrenController do
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
+      child['histories'] = []
+      child.save!
+
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
       put :update, :id => child.id,
@@ -343,6 +346,7 @@ describe ChildrenController do
                :last_known_location => "Manchester",
                :histories => histories
            }
+      
      assigns[:child]['histories'].should == JSON.parse(histories)
     end
 
@@ -525,7 +529,7 @@ describe ChildrenController do
 			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
       @controller.stub!(:render) #to avoid looking for a template
       @controller.
-        should_receive(:send_data).
+        should_receive(:send_csv).
         with( :csv_data, {:foo=>:bar} ).
         and_return{controller.render :nothing => true}
 
@@ -567,8 +571,8 @@ describe ChildrenController do
       export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
 
       @controller.
-        should_receive(:send_data).
-        with(:fake_pdf_data, :filename => '1-20000101-0915.pdf', :type => 'application/pdf').
+        should_receive(:send_pdf).
+        with(:fake_pdf_data, '1-20000101-0915.pdf').
         and_return{controller.render :nothing => true}
 
       get :export_photo_to_pdf, :id => '1'
