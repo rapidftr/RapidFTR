@@ -25,15 +25,14 @@ class AdvancedSearchController < ApplicationController
 
   def export_data
     authorize! :export, Child
-    selected_records = params["selections"] || {} if params["all"] != "Select all records"
+    selected_records = Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {} if params["all"] != "Select all records"
     selected_records = params["full_results"].split(/,/) if params["all"] == "Select all records"
     if selected_records.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
     end
 
     children = []
-    children = selected_records.sort.map { |index, child_id| Child.get(child_id) } if params["all"].nil?
-    selected_records.each do |child_id| children.push(Child.get(child_id)) end if params["all"] == "Select all records"
+    selected_records.each do |child_id| children.push(Child.get(child_id)) end
     if params[:commit] == t("child.actions.export_to_photo_wall")
       export_photos_to_pdf(children, "#{file_basename}.pdf")
     elsif params[:commit] == t("child.actions.export_to_pdf")

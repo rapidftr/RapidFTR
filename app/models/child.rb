@@ -653,7 +653,11 @@ view_by :protection_status, :gender, :ftr_status
     should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
     if should_update
       properties.each_pair do |name, value|
-        self[name] = value unless value == nil
+        if name == "histories"
+          merge_histories(properties['histories'])
+        else
+          self[name] = value unless value.blank?
+        end
         self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
       end
       self.set_updated_fields_for user_name

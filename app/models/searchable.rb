@@ -35,13 +35,19 @@ module Searchable
       Child.build_solar_schema
 
       begin
-        return get_search(page_number, query).results, get_search(nil, query).results
+        return paginated_and_full_results(page_number, query)
       rescue
         self.reindex!
         Sunspot.commit
-        return get_search(page_number, query).results, get_search(nil, query).results
+        return paginated_and_full_results(page_number, query)
       end
 
+    end
+
+    def paginated_and_full_results(page_number, query)
+      full_result = []
+      get_search(nil, query).hits.each do | hit | full_result.push hit.to_param end
+      return get_search(page_number, query).results, full_result
     end
 
     def reindex!
@@ -54,7 +60,7 @@ module Searchable
       response = Sunspot.search(self) do
         fulltext(query)
         without(:duplicate, true)
-        paginate :page => page_number, :per_page => page_number.nil? ? 100 : ::ChildrenHelper::View::PER_PAGE
+        paginate :page => page_number, :per_page => page_number.nil? ? :total_entries : ::ChildrenHelper::View::PER_PAGE
         adjust_solr_params do |params|
           params[:defType] = "lucene"
           params[:qf] = nil
