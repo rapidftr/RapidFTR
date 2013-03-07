@@ -10,7 +10,9 @@
 
     <form class="filter_bar">
       <div class="show_count"> <%= t("roles.actions.show_all") %> <%= pluralize(@roles.length, t("record")) %> </div>
-      <div class="float_left"> <%= t("roles.actions.show") %>: <%= select_tag :show, grouped_options_for_select(translated_permissions, params[:show]), :onchange => "this.form.submit()"  %> </div>
+      <% permissions_for_filter = translated_permissions %>
+      <% permissions_for_filter << [I18n.t("All", :scope => 'permissions.permission'), ["All"]] %>
+      <div class="float_left"> <%= t("roles.actions.show") %>: <%= select_tag :show, grouped_options_for_select(permissions_for_filter, params[:show]), :onchange => "this.form.submit()"  %> </div>
       <div class="float_left"> <%= t("roles.sort_by.label") %>:  <%= select_tag :sort_by_descending_order, options_for_select([[t("roles.sort_by.ascending"),"false"],[ t("roles.sort_by.descending"), "true"]], params[:sort_by_descending_order]), { :onchange => "this.form.submit();"} %> </div>
     </form>
     <table class="list_table">
