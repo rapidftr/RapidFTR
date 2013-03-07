@@ -336,6 +336,9 @@ describe ChildrenController do
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
+      child['histories'] = []
+      child.save!
+
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
       put :update, :id => child.id,
@@ -343,6 +346,7 @@ describe ChildrenController do
                :last_known_location => "Manchester",
                :histories => histories
            }
+      
      assigns[:child]['histories'].should == JSON.parse(histories)
     end
 
