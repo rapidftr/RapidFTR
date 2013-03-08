@@ -39,75 +39,44 @@ describe "Solar" do
     User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
   end
 
-  it "should match on the first part of a child's first name" do
+  before :each do
     Sunspot.remove_all(Child)
-    child1 = Child.create('last_known_location' => "New York", "name" => "Mohammed Smith")
-    child2 = Child.create('last_known_location' => "New York", "name" => "Muhammed Jones")
-    child3 = Child.create('last_known_location' => "New York", "name" => "Muhammad Brown")
-    child4 = Child.create('last_known_location' => "New York", "name" => "Ammad Brown")
-    Sunspot.index([child1, child2, child3, child4])
+    @child1 = Child.create('last_known_location' => "New York", "name" => "Mohammed Smith")
+    @child2 = Child.create('last_known_location' => "New York", "name" => "Muhammed Jones")
+    @child3 = Child.create('last_known_location' => "New York", "name" => "Muhammad Brown")
+    @child4 = Child.create('last_known_location' => "New York", "name" => "Ammad Brown")
+    Sunspot.index([@child1, @child2, @child3, @child4])
     Sunspot.commit    
-    
+  end
+
+  it "should match on the first part of a child's first name" do
     search = search_with_string("Muha")
-    
-    search.results.map(&:name).sort.should == ["Muhammad Brown", "Muhammed Jones"]
+    search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones",]
   end
 
   it "should match on the first part of a child's last name" do
-    Sunspot.remove_all(Child)
-    child1 = Child.create('last_known_location' => "New York", "name" => "Mohammed Smith")
-    child2 = Child.create('last_known_location' => "New York", "name" => "Muhammed Jones")
-    child3 = Child.create('last_known_location' => "New York", "name" => "Muhammad Brown")
-    child4 = Child.create('last_known_location' => "New York", "name" => "Ammad Brown")
-    Sunspot.index([child1, child2, child3, child4])
-    Sunspot.commit    
-    
     search = search_with_string("Bro")
-    
     search.results.map(&:name).sort.should == ["Ammad Brown", "Muhammad Brown"]
   end
 
   it "should match on approximate spelling of a child's entire first name" do
-    Sunspot.remove_all(Child)
-    child1 = Child.create('last_known_location' => "New York", "name" => "Mohammed Smith")
-    child2 = Child.create('last_known_location' => "New York", "name" => "Muhammed Jones")
-    child3 = Child.create('last_known_location' => "New York", "name" => "Muhammad Brown")
-    child4 = Child.create('last_known_location' => "New York", "name" => "Ammad Brown")
-    Sunspot.index([child1, child2, child3, child4])
-    Sunspot.commit    
-    
     search = search_with_string("Mohamed")
-    
     search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"]
   end
 
   it "should support partial reindexing" do
-    Sunspot.remove_all(Child)
-    child1 = Child.create('last_known_location' => "New York", "name" => "Mohammed Smith")
-    child2 = Child.create('last_known_location' => "New York", "name" => "Muhammed Jones")
-    child3 = Child.create('last_known_location' => "New York", "name" => "Muhammad Brown")
-    child4 = Child.create('last_known_location' => "New York", "name" => "Ammad Brown")
-    Sunspot.index([child1, child2])
-    Sunspot.commit    
-    
-    Sunspot.index([child3, child4])
-    Sunspot.commit    
-
     search = search_with_string("Mohamed")
-    
     search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"]
   end
   
   it "should load child instance" do
     child = Child.create('last_known_location' => "New York")
-    
     accessor = ChildInstanceAccessor.new child
     accessor.id.should == child.id
   end
   
   it "should load_all child instances" do
     child = Child.create('last_known_location' => "New York")
-    
     accessor = ChildDataAccessor.new Child
     accessor.load(child.id).should == Child.get(child.id)
   end
