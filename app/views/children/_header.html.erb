@@ -8,11 +8,27 @@
       <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
         <% if can?(:export, Child) %>
-            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv, :per_page => :all) %>
-            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf, :per_page => :all) %>
+            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv, :per_page => :all), :class => "password-prompt" %>
+            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf, :per_page => :all), :class => "password-prompt" %>
             <%= link_to t("children.export_some_records_to_csv"), new_advanced_search_path %>
       <%end%>
       </div>
     </div>
+
+    <script type="text/javascript">
+      $(".export-password-prompt").each(function() {
+        var el = $(this);
+        el.data("original-href", el.attr("href"));
+        el.data("password", null);
+      });
+
+      $(".export-password-prompt").click(function() {
+        var el=$(this), password=el.data("password"), href=el.attr("original-href");
+        if (password == null || password == undefined || password == "") {
+          password = prompt("Enter password");
+          el.attr("href", href + (href.indexOf("?") == -1 ? "?" : "") + "&password=" + escape(password);
+        }
+      });
+    </script>
 
 <%end%>

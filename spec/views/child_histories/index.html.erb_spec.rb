@@ -7,15 +7,14 @@ describe "child_histories/index.html.erb" do
     before do
       FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
       @user = mock(:user)
-      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
     end
 
     describe "rendering history for a newly created record" do
       it "should render only the creation record" do
-        child = FakeRecordWithHistory.new "Bob", "fake"
+        User.stub!(:find_by_user_name).with("me").and_return(user = mock(:organisation => "stc", :localize_date => "2010-12-31 09:55:00 SST"))
+        child = Child.create!(:name => "billybob", "created_by" => "me")
         assign(:child,  child)
-        assign(:user,  @user)
+        assign(:user,  user)
         render
         rendered.should have_selector(".history-details li", :count => 1)
         rendered.should have_tag(".history-details") do
@@ -35,15 +34,6 @@ describe "child_histories/index.html.erb" do
         end
       end
 
-      it "should correctl§y format the creation's' date/time" do
-        child = FakeRecordWithHistory.new "bob", "2010/12/31 20:55:00UTC"
-        assign(:child,  child)
-        assign(:user,  @user)
-
-        @user.should_receive(:localize_date).with("2010/12/31 20:55:00UTC", "%Y-%m-%d %H:%M:%S %Z")
-
-        render
-      end
     end
 
     describe "rendering the history of a flagged child record" do

@@ -1,5 +1,5 @@
 SET PATH=%PATH%;"%*"
-SET RAILS_ENV=production
+SET RAILS_ENV=standalone
 cd App
-bundle install --deployment
 bundle exec rake windows:reset
+

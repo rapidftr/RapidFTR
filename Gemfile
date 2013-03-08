@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source "http://rubygems.org"
 
 gem 'couchrest',      '0.34'
 gem 'dictionary',     '1.0.0'
@@ -15,8 +15,8 @@ gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
-gem 'sunspot',				'1.3.1'
-gem 'sunspot_solr',   '1.3.1'
+gem 'sunspot',				'2.0.0'
+gem 'sunspot_solr',   '2.0.0'
 gem 'tzinfo'
 gem 'rake',           '0.8.7'
 gem 'dynamic_form'
@@ -31,6 +31,14 @@ gem 'win32-open3' , :platforms => [:mswin, :mingw]
 gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
 gem 'thin', :platform => :ruby, :require => false
+
+if RUBY_PLATFORM =~ /(win32|w32|i386)/
+  gem 'zipruby', '0.3.6', :path => "vendor/windows/gems/zipruby-0.3.6-x86-mswin32"
+else
+  gem 'zipruby', '~> 0.3.6'
+end
+
+# gem 'rack-bug', :require => 'rack/bug', :git => 'git://github.com/brynary/rack-bug.git', :branch => 'rails3'
 
 gem 'rufus-scheduler', :require => false
 gem 'daemons', :require => false

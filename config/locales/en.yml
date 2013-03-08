@@ -13,7 +13,7 @@ en:
     current_time_zone: "Current time zone"
     language: "Language"
     view_records: "View Records"
-    manage_system_users: Manage System Users
+    manage_system_users: "Manage Server Synchronisation Users"
     records_need_attention: "Records need Attention"
     label: "Home"
 
@@ -323,7 +323,7 @@ en:
       "Manage Replications": "Manage Replications"
       "View roles": "View roles"
       "All": "All"
-      "Users for synchronisation": "Users For Synchronisation"
+      "Users for synchronisation": "Manage Server Synchronisation Users"
 
   forms:
     label: "Forms"
@@ -412,7 +412,7 @@ en:
   admin:
     contact_info: "Admin Contact Information"
     highlight_fields: "Highlight Fields"
-    manage_system_users: "Manage System Users"
+    manage_system_users: "Manage Server Synchronisation Users"
     create_system_user: Create a System User
 
   fields:
@@ -472,6 +472,10 @@ en:
     download: "Download"
     types:
       weekly_report: "Weekly Report"
+
+  encrypt:
+    password_title: "Password"
+    password_label: "Enter password to encrypt file"
 
   administration: "Administration"
   new: "New"

@@ -9,6 +9,7 @@ class Child < CouchRestRails::Document
 
   before_save :update_organisation
   before_save :update_history, :unless => :new?
+  before_save :add_creation_history, :if => :new?
   before_save :update_photo_keys
 
   property :age
@@ -554,6 +555,15 @@ view_by :protection_status, :gender, :ftr_status
     end
   end
 
+  def add_creation_history
+    self['histories'].unshift({
+      'user_name' => created_by,
+      'user_organisation' => organisation_of(created_by),
+      'datetime' => created_at,
+      'changes' => {'child' => {:created => created_at}} 
+    })
+  end
+
   def has_one_interviewer?
     user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
     user_names_after_deletion.delete(self['created_by'])
@@ -644,7 +654,11 @@ view_by :protection_status, :gender, :ftr_status
     should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
     if should_update
       properties.each_pair do |name, value|
-        self[name] = value unless value == nil
+        if name == "histories"
+          merge_histories(properties['histories'])
+        else
+          self[name] = value unless value == nil
+        end
         self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
       end
       self.set_updated_fields_for user_name

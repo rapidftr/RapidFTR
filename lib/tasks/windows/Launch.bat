@@ -1,3 +1,5 @@
-SET RAILS_ENV=production
+SET RAILS_ENV=standalone
 cd App
-rails server
+start bundle exec rake scheduler:run
+start bundle exec rake sunspot:solr:run
+bundle exec rails server

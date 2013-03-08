@@ -117,7 +117,7 @@ module RapidFTR
           Field.new("name" => "wishes_address_3", "display_name_en" => "Last Known Address", "type" => "textarea"),
           Field.new("name" => "wishes_contacted", "display_name_en" => "Has the child heard from / been in contact with any relatives?", "type" => "select_box", "option_strings_text_en" => "Yes\nNo"),
           Field.new("name" => "wishes_contacted_details", "display_name_en" => "Please give details", "type" => "textarea"),
-          Field.new("name" => "wishes_wants_contact", "display_name_en" => "Does child want to be reunited with family?", "type" => "select_box", "option_strings_text_en" => "Yes, as soon as possible\nYes, later\nNo"),
+          Field.new("name" => "wishes_wants_contact", "display_name_en" => "Does child want to be reunited with family?", "type" => "select_box", "option_strings_text_en" => "Yes as soon as possible\nYes later\nNo"),
           Field.new("name" => "wishes_contacted_details", "display_name_en" => "Please explain why", "type" => "textarea"),
         ]
         FormSection.create!("name_en" =>"Childs Wishes", "visible"=>true, "description_en" =>"", :order=> 6, :unique_id=>"childs_wishes", :fields => child_wishes_fields)
