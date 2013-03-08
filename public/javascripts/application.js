@@ -219,6 +219,7 @@ RapidFTR.PasswordPrompt = (function() {
         initialize: function() {
             passwordDialog = $("#password-prompt-dialog").dialog({
                 autoOpen: false,
+                modal: true,
                 buttons: {
                     "OK" : function() {
                         var password = passwordEl.val();
