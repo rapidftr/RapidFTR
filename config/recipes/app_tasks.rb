@@ -35,7 +35,8 @@ namespace :app do
 
   desc "Migrate database"
   task :migrate_db do
-    run_with_path_env "bundle exec rake couchdb:create db:seed db:migrate"
+    # removing the db:migrate temporarily during performance testing for UAT.
+    run_with_path_env "bundle exec rake couchdb:create db:seed"
   end
 
   desc "Clean Start Solr"
