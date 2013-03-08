@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' 
      xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
-  <Product Name='RapidFTR 1.0' Language='1033' Codepage='1252' Version='1.0' 
+  <Product Name='RapidFTR 1.1' Language='1033' Codepage='1252' Version='1.1' 
            Id='5d25814c-66b4-4ae6-afb5-0334010ca6bd'
            UpgradeCode='11bcc895-150a-47b6-b559-ada08ba7e6e3' Manufacturer='UNICEF'>
 
@@ -108,7 +108,6 @@
 
     <WixVariable Id='WixUILicenseRtf' Value='License.rtf' />
     <Property Id='WIXUI_INSTALLDIR' Value='INSTALLDIR' />
-    <UIRef Id='WixUI_InstallDir' />
     <UIRef Id='WixUI_ErrorProgressText' />
 
     <UI>

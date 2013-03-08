@@ -6,8 +6,8 @@ namespace :windows do
     root_path     = File.expand_path '../..', File.dirname(__FILE__)
     target_path   = File.join File.dirname(__FILE__), 'windows'
     zip_file      = File.join target_path, 'Codebase.jar'
-    includes      = %w(app/**/* config/**/* db/**/* lib/**/* public/**/* script/**/* vendor/**/* config.ru Gemfile Gemfile.lock LICENSE Rakefile README README.md)
-    excludes      = %w(*.exe **/.* **/.git*)
+    includes      = %w(app/**/* config/**/* db/**/* lib/**/* public/**/* script/**/* vendor/**/* .bundle/**/* config.ru Gemfile Gemfile.lock LICENSE Rakefile README README.md)
+    excludes      = %w(*.exe */**/.* **/.git*)
 
     Dir.chdir root_path do
       FileUtils.rm zip_file, :force => true
@@ -19,5 +19,5 @@ namespace :windows do
     end
   end
 
-  task :reset => %w( couchdb:delete couchdb:create db:seed db:migrate )
+  task :reset => %w( db:create_couch_sysadmin couchdb:create db:seed db:migrate )
 end
