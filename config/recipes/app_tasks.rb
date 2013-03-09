@@ -41,7 +41,7 @@ namespace :app do
 
   desc "Clean Start Solr"
   task :start_solr do
-    run_with_path_env "bundle exec rake sunspot:clean_start"
+    run_with_path_env "bundle exec rake sunspot:restart"
   end
 
   desc "Start Scheduler Task"
