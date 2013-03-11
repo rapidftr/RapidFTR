@@ -30,6 +30,10 @@ branches:
 services:
   - couchdb
 
+before_install:
+  - rvm install rubygems 1.8.25
+  - gem install bundler -v 1.3.1
+
 before_script:
   - bundle exec rake db:create_couchdb_yml couchdb:create sunspot:clean_start app:assets_precompile --trace
   - export DISPLAY=:99.0
