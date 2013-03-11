@@ -1267,34 +1267,50 @@ describe Child do
   end
 
   describe "views" do
-    it "should return all children updated by a user" do
-      child = Child.create!("created_by" => "some_other_user", "last_updated_by" => "a_third_user", "name" => "abc", "histories" => [{"user_name" => "brucewayne", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
+    describe "user action log" do
+      it "should return all children updated by a user" do
+        child = Child.create!("created_by" => "some_other_user", "last_updated_by" => "a_third_user", "name" => "abc", "histories" => [{"user_name" => "brucewayne", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}])
 
-      Child.all_connected_with("brucewayne").should == [Child.get(child.id)]
+        Child.all_connected_with("brucewayne").should == [Child.get(child.id)]
+      end
+
+      it "should not return children updated by other users" do
+        Child.create!("created_by" => "some_other_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}])
+
+        Child.all_connected_with("peterparker").should be_empty
+      end
+
+      it "should return the child once when modified twice by the same user" do
+        child = Child.create!("created_by" => "some_other_user", "name" => "ghi", "histories" => [{"user_name" => "peterparker", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "peterparker", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}])
+
+        Child.all_connected_with("peterparker").should == [Child.get(child.id)]
+      end
+
+      it "should return the child created by a user" do
+        child = Child.create!("created_by" => "a_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}])
+
+        Child.all_connected_with("a_user").should == [Child.get(child.id)]
+      end
+
+      it "should not return duplicate records when same user had created and updated same child multiple times" do
+        child = Child.create!("created_by" => "tonystark", "name" => "ghi", "histories" => [{"user_name" => "tonystark", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "tonystark", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}])
+
+        Child.all_connected_with("tonystark").should == [Child.get(child.id)]
+      end
     end
+    describe "all ids and revs" do
+      it "should return all _ids and revs in the system" do
+        child1 = create_child_with_created_by("user1", :name => "child1")
+        child2 = create_child_with_created_by("user2", :name => "child2")
+        child3 = create_child_with_created_by("user3", :name => "child3")
+        child1.create!
+        child2.create!
+        child3.create!
 
-    it "should not return children updated by other users" do
-      Child.create!("created_by" => "some_other_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
-
-      Child.all_connected_with("peterparker").should be_empty
-    end
-
-    it "should return the child once when modified twice by the same user" do
-      child = Child.create!("created_by" => "some_other_user", "name" => "ghi", "histories" => [{"user_name" => "peterparker", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "peterparker", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
-
-      Child.all_connected_with("peterparker").should == [Child.get(child.id)]
-    end
-
-    it "should return the child created by a user" do
-      child = Child.create!("created_by" => "a_user", "name" => "def", "histories" => [{"user_name" => "clarkkent", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}] )
-
-      Child.all_connected_with("a_user").should == [Child.get(child.id)]
-    end
-
-    it "should not return duplicate records when same user had created and updated same child multiple times" do
-      child = Child.create!("created_by" => "tonystark", "name" => "ghi", "histories" => [{"user_name" => "tonystark", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}, {"user_name" => "tonystark", "changes" => {"sex" => {"to" => "female", "from" => "male"}}}] )
-
-      Child.all_connected_with("tonystark").should == [Child.get(child.id)]
+        ids_and_revs = Child.fetch_all_ids_and_revs
+        ids_and_revs.count.should == 3
+        ids_and_revs.should =~ [{"_id" => child1.id, "_rev" => child1.rev}, {"_id" => child2.id, "_rev" => child2.rev}, {"_id" => child3.id, "_rev" => child3.rev}]
+      end
     end
   end
 

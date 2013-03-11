@@ -176,6 +176,14 @@ view_by :protection_status, :gender, :ftr_status
                }
             }"
 
+  view_by :ids_and_revs,
+          :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Child'){
+            emit(doc._id, {_id: doc._id, _rev: doc._rev});
+          }
+          }"
+
+
   view_by :created_by
 
   validates_with_method :validate_photos
@@ -205,6 +213,15 @@ view_by :protection_status, :gender, :ftr_status
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
     self
+  end
+
+  def self.fetch_all_ids_and_revs
+    ids_and_revs = []
+    all_rows = self.view("by_ids_and_revs", :include_docs => false)["rows"]
+    all_rows.each do |row|
+      ids_and_revs << row["value"]
+    end
+    ids_and_revs
   end
 
   def field_definitions
