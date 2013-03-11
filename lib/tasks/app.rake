@@ -12,7 +12,7 @@ namespace :app do
 
   desc "Start the thin server in development mode with Sunspot running"
   task :run_standalone => %w( sunspot:clean_start scheduler:restart app:assets_precompile) do
-    sh 'bundle exec rails server thin -d'
+    sh "bundle exec thin start --daemonize --chdir #{Rails.root}"
   end
 
   desc "Stop the thin server"
