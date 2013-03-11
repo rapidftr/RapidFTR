@@ -177,7 +177,6 @@ describe "Child record field view model" do
       field.display_name_fr.should == "first name in french"
       field.help_text_fr.should == "help text in french"
       field.option_strings_text_fr.should == "option string in french"
-      I18n.default_locale = "en"
     end
 
 
@@ -189,7 +188,6 @@ describe "Child record field view model" do
       field.display_name.should == field.display_name_fr
       field.help_text.should == field.help_text_fr
       field.option_strings_text.should == field.option_strings_text_fr
-      I18n.locale = "en"
     end
 
     it "should fetch the default locale's value if translation is not available for given locale" do
@@ -200,7 +198,6 @@ describe "Child record field view model" do
       field.display_name.should == field.display_name_en
       field.help_text.should == field.help_text_fr
       field.option_strings_text.should == field.option_strings_text_fr
-      I18n.locale = "en"
     end
 
   end
