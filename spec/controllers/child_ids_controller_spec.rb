@@ -18,6 +18,7 @@ describe ChildIdsController do
   describe "response" do
     it "should return Id and Rev for each child record" do
       given_a_child.with_id("child-id").with_rev("child-revision-id")
+      Child.should_receive(:fetch_all_ids_and_revs).and_return([{"_id" => "child-id", "_rev" => "child-revision-id"}])
 
       get :all
 

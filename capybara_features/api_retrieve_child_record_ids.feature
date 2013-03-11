@@ -21,7 +21,7 @@ Feature:
     And that JSON response should be composed of items with body 
     	"""
     	{ 
-    	  "id": "%SOME_STRING%",
-	      "rev": "%SOME_STRING%" 
+    	  "_id": "%SOME_STRING%",
+	      "_rev": "%SOME_STRING%"
 	    }
 	    """

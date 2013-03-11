@@ -13,7 +13,13 @@
 
 <% if can? :update, child %>
 
-
+  <% if @child.exportable %>
+    <%= link_to content_tag(:span, t("buttons.disable_photo_wall"),
+                            :class => 'flag'), set_exportable_child_path(@child.id, :exportable => false), :class=>'btn', :method => :post %>
+  <% else %>
+    <%= link_to content_tag(:span, t("buttons.enable_photo_wall"),
+                            :class => 'flag'), set_exportable_child_path(@child.id, :exportable => true), :class=>'btn', :method => :post %>
+  <% end %>
 
     <div class="btn dropdown_btn btn_flag dropdown_form">
       <%= render :partial =>"suspect_flag", :locals => { :child => @child } %>

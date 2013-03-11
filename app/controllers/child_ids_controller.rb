@@ -1,6 +1,6 @@
 class ChildIdsController < ApplicationController
   def all
-    children = Child.all
-    render :json => children.collect { |c| { "_id" => c.id, "_rev" => c.rev } }
+    child_json = Child.fetch_all_ids_and_revs
+    render :json => child_json
   end
 end

@@ -12,6 +12,7 @@ RapidFTR::Application.routes.draw do
 
     member do
       get :export_photo_to_pdf
+      post :set_exportable
     end
     
     resources :attachments, :only => :show

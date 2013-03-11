@@ -22,6 +22,7 @@ class Child < CouchRestRails::Document
   property :reunited, :cast_as => :boolean
   property :investigated, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
+  property :exportable, :cast_as => :boolean, :default => true
   property :verified
   property :verified, :cast_as => :boolean
 
@@ -175,6 +176,14 @@ view_by :protection_status, :gender, :ftr_status
                }
             }"
 
+  view_by :ids_and_revs,
+          :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Child'){
+            emit(doc._id, {_id: doc._id, _rev: doc._rev});
+          }
+          }"
+
+
   view_by :created_by
 
   validates_with_method :validate_photos
@@ -204,6 +213,15 @@ view_by :protection_status, :gender, :ftr_status
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
     self
+  end
+
+  def self.fetch_all_ids_and_revs
+    ids_and_revs = []
+    all_rows = self.view("by_ids_and_revs", :include_docs => false)["rows"]
+    all_rows.each do |row|
+      ids_and_revs << row["value"]
+    end
+    ids_and_revs
   end
 
   def field_definitions
@@ -713,7 +731,8 @@ view_by :protection_status, :gender, :ftr_status
                      "unique_identifier",
                      "current_photo_key",
                      "created_organisation",
-                     "photo_keys"]
+                     "photo_keys",
+                     "exportable"]
     existing_fields = system_fields + field_definitions.map { |x| x.name }
     self.reject { |k, v| existing_fields.include? k }
   end
