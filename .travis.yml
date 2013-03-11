@@ -30,6 +30,14 @@ branches:
 services:
   - couchdb
 
+# RubyGems and Bundler versions were upgraded in Travis, downgrading them...
+before_install:
+  - rvm rubygems 1.8.25
+  - rvm @default,@global do gem uninstall bundler -x -a
+  - gem install bundler -v 1.2.5
+  - gem --version
+  - bundle --version
+
 before_script:
   - bundle exec rake db:create_couchdb_yml couchdb:create sunspot:clean_start app:assets_precompile --trace
   - export DISPLAY=:99.0
@@ -38,6 +46,7 @@ before_script:
 script:
   - bundle exec rake $TASKS --trace
 
+# Don't send spam email, send IRC notification instead
 notifications:
   email: false
   irc:
