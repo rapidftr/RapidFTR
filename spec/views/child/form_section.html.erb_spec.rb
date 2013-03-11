@@ -14,7 +14,6 @@ describe "children/_form_section.html.erb" do
       render :partial => 'children/tabs.html.erb' , :object => [@form_section]
       rendered.should be_include(translated_name)
       rendered.should_not be_include(@form_section.name)
-      I18n.locale = :en
     end
     it "should not be shown with translated name" do
       I18n.backend.store_translations("fr", @form_section.unique_id => nil)
@@ -34,7 +33,6 @@ describe "children/_form_section.html.erb" do
 
       rendered.should be_include(translated_name)
       rendered.should_not be_include(@form_section.name)
-      I18n.locale = :en
     end
 
       it "should not be shown with translated heading" do

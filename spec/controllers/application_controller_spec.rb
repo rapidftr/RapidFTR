@@ -14,13 +14,6 @@ describe ApplicationController do
   end
 
   describe 'locale' do
-    before :each do
-      I18n.locale = I18n.default_locale = :en
-    end
-    after :each do
-      I18n.locale = I18n.default_locale
-    end
-
     it "should be set to default" do
       controller.stub!(:current_session).and_return(session)
       @controller.set_locale

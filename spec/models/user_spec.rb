@@ -247,7 +247,7 @@ describe User do
     end
 
     it "allow an unverified user to have no role" do
-      build_user(:role_ids => [], :verified => false).should be_valid
+      build(:user, :role_ids => [], :verified => false).should be_valid
     end
 
     describe 'permissions' do
