@@ -7,9 +7,12 @@ module RapidFTR
 
       basic_identity_fields = [
         Field.new("name" => "name", "display_name_en" => "Name", "type" => "text_field", "editable" => false,"highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>1)),
-        Field.new("name" => "rc_id_no", "display_name_en" => "RC ID No.", "type" => "text_field","highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>2)),
         Field.new("name" => "protection_status", "display_name_en" => "Protection Status", "help_text_en" => "A separated child is any person under the age of 18, separated from both parents or from his/her previous legal or customary primary care giver, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives.", "type" => "select_box", "option_strings_text_en" => "Unaccompanied\nSeparated","highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>3)),
-        Field.new("name" => "id_document", "display_name_en" => "Personal ID Document No.", "type" => "text_field"),
+        Field.new("name" => "ftr_status", "display_name_en" => "FTR Status", "type" => "select_box", "option_strings_text" => "Identified\nVerified\nTracing On-Going\nFamily Located Cross-Border FR Pending\nFamily Located Inter-Camp FR Pending\nReunited\nExported to CPIMS\nRecord Invalid","highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>4)),
+        Field.new("name" => "why_record_invalid", "display_name_en" => "If 'Record Invalid', explain why?", "type" => "text_field"),
+        Field.new("name" => "id_document", "display_name_en" => "UNHCR No.", "type" => "text_field"),
+        Field.new("name" => "rc_id_no", "display_name_en" => "RC ID No.", "type" => "text_field","highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>2)),
+        Field.new("name" => "icrc_ref_no", "display_name_en" => "ICRC Ref No.", "type" => "text_field"),
         Field.new("name" => "gender", "display_name_en" => "Sex", "type" => "select_box", "option_strings_text_en" => "Male\nFemale"),
         Field.new("name" => "nick_name", "display_name_en" => "Also Known As (nickname)", "type" => "text_field"),
         Field.new("name" => "names_origin", "display_name_en" => "Name(s) given to child after separation?", "type" => "select_box", "option_strings_text_en" => "Yes\nNo"),
@@ -65,7 +68,7 @@ module RapidFTR
         FormSection.create!("name_en" =>"Family details", "visible"=>true, "description_en" =>"Information about a child's known family", :order=> 2, :unique_id=>"family_details", :fields => family_details_fields)
 
         current_arrangements_fields = [
-          Field.new("name" => "care__textarrangements", "display_name_en" => "Current Care Arrangements", "type" => "select_box", "option_strings_text_en" => "Children's Center\nOther Family Member(s)\nFoster Family\nAlone\nOther"),
+          Field.new("name" => "care_arrangements", "display_name_en" => "Current Care Arrangements", "type" => "select_box", "option_strings_text_en" => "Children's Center\nOther Family Member(s)\nFoster Family\nAlone\nOther"),
           Field.new("name" => "care_arrangements_other", "display_name_en" => "If other, please provide details.", "type" => "text_field"),
           Field.new("name" => "care_arrangments_name", "display_name_en" => "Full Name", "type" => "text_field"),
           Field.new("name" => "care_arrangements_relationship", "display_name_en" => "Relationship To Child", "type" => "text_field"),
@@ -74,6 +77,7 @@ module RapidFTR
           Field.new("name" => "care_arrangements_address", "display_name_en" => "Child's current address (of caretaker or centre)", "type" => "text_field"),
           Field.new("name" => "care_arrangements_came_from", "display_name_en" => "Child Arriving From", "type" => "text_field"),
           Field.new("name" => "care_arrangements_arrival_date", "display_name_en" => "Arrival Date", "type" => "text_field"),
+          Field.new("name" => "care_arrangements_convoy_no", "display_name_en" => "Convoy #", "type" => "text_field")
         ]
         FormSection.create!("name_en" =>"Care Arrangements", "visible"=>true, "description_en" =>"Information about the child's current caregiver", :order=> 3, :unique_id=>"care_arrangements", :fields => current_arrangements_fields)
 
@@ -116,7 +120,6 @@ module RapidFTR
           Field.new("name" => "wishes_telephone_3", "display_name_en" => "Telephone", "type" => "text_field"),
           Field.new("name" => "wishes_address_3", "display_name_en" => "Last Known Address", "type" => "textarea"),
           Field.new("name" => "wishes_contacted", "display_name_en" => "Has the child heard from / been in contact with any relatives?", "type" => "select_box", "option_strings_text_en" => "Yes\nNo"),
-          Field.new("name" => "wishes_contacted_details", "display_name_en" => "Please give details", "type" => "textarea"),
           Field.new("name" => "wishes_wants_contact", "display_name_en" => "Does child want to be reunited with family?", "type" => "select_box", "option_strings_text_en" => "Yes as soon as possible\nYes later\nNo"),
           Field.new("name" => "wishes_contacted_details", "display_name_en" => "Please explain why", "type" => "textarea"),
         ]
