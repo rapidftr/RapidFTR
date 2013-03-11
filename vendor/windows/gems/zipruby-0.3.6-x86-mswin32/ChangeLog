@@ -1,0 +1,18 @@
+2010-01-23 winebarrel
+
+   * fixes bug: [ruby-dev:40120] SEGV on zipruby with irb
+
+2009-06-11 winebarrel
+
+   * fixes bug: C macro mistake (reported by SHITAMORI Akira)
+
+2009-05-16 winebarrel
+
+	* improve Zip::Archive#add_io, replace_io, add, replace
+
+	* fixes bug: Zip::Archive#add_io, <<
+
+	* add method: Zip::Archive#add_dir
+
+	* zipruby/README.txt: fixes example code.
+
