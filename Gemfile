@@ -3,7 +3,6 @@ source "http://rubygems.org"
 gem 'couchrest',      '0.34'
 gem 'dictionary',     '1.0.0'
 gem 'fastercsv',      '1.5.3'
-gem 'hoptoad_notifier', '2.4.2'
 gem 'json',           '1.4.6'
 gem 'json_pure',      '1.4.6'
 gem 'mime-types',     '1.16'
@@ -23,7 +22,6 @@ gem 'dynamic_form'
 gem 'jquery-rails'
 gem 'cancan'
 gem 'capistrano'
-gem 'newrelic_rpm'
 gem 'will_paginate'
 gem "i18n-js"
 gem 'therubyracer' , :platforms => :ruby
