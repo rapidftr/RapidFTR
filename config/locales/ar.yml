@@ -311,7 +311,7 @@ ar:
       "Manage Replications": "معالجة نسخ متماثلة"
       "All": "الكل"
       "Users for synchronisation": "مستخدمين للتزامن"
-
+      "View and Download Reports": "View and Download Reports"
 
   forms:
     label: "الإستمارات"
