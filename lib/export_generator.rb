@@ -3,45 +3,47 @@ require 'prawn/layout'
 
 CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
 CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
-CHILD_STATUS = ["Suspect status","Reunited status"]
+CHILD_STATUS = ["Suspect status", "Reunited status"]
 
 class ExportGenerator
   class Export
     attr_accessor :data, :options
+
     def initialize data, options
       @data = data
       @options = options
     end
   end
+
   def initialize *child_data
     @child_data = child_data.flatten
     @pdf = Prawn::Document.new
-    @image_bounds = [@pdf.bounds.width,@pdf.bounds.width]
+    @image_bounds = [@pdf.bounds.width, @pdf.bounds.width]
   end
 
   def to_photowall_pdf
     @child_data.each do |child|
-        begin
-          add_child_photo(child, true)
-          @pdf.start_new_page unless @child_data.last == child
-        rescue => e
-          Rails.logger.error e
-        end
+      begin
+        add_child_photo(child, true)
+        @pdf.start_new_page unless @child_data.last == child
+      rescue => e
+        Rails.logger.error e
+      end
     end
     @pdf.render
   end
 
   def to_csv
-    fields = metadata_fields([],CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields
-    field_names = fields.map {|field| field.display_name}
+    fields = metadata_fields([], CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields
+    field_names = fields.map { |field| field.display_name }
     csv_data = FasterCSV.generate do |rows|
-      rows << field_names + CHILD_STATUS + metadata_fields([],CHILD_METADATA).map {|field| field.display_name}
+      rows << field_names + CHILD_STATUS + metadata_fields([], CHILD_METADATA).map { |field| field.display_name }
       @child_data.each do |child|
         begin
           child_data = map_field_with_value(child, fields)
           child_data << (child.flag? ? "Suspect" : "")
           child_data << (child.reunited? ? "Reunited" : "")
-          metadata = metadata_fields([],CHILD_METADATA)
+          metadata = metadata_fields([], CHILD_METADATA)
           metadata_value = map_field_with_value(child, metadata)
           child_data = child_data + metadata_value
           rows << child_data
@@ -51,14 +53,14 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type=>'text/csv', :filename=>filename("full-details", "csv")}
+    return Export.new csv_data, {:type => 'text/csv', :filename => filename("full-details", "csv")}
   end
 
   def map_field_with_value(child, fields)
     fields.map { |field| format_field_for_export(field, child[field.name] || child.send(field.name), child) }
   end
 
-  def metadata_fields(fields,extras)
+  def metadata_fields(fields, extras)
     extras.each do |extra|
       fields.push Field.new_text_field(extra)
     end
@@ -67,6 +69,7 @@ class ExportGenerator
 
   def to_full_pdf
     @child_data.each do |child|
+      puts Time.now
       add_child_page(child)
       @pdf.start_new_page unless @child_data.last == child
     end
@@ -77,9 +80,8 @@ class ExportGenerator
 
   def format_field_for_export field, value, child=nil
     return "" if value.blank?
-    return value.join(", ") if field.type ==  Field::CHECK_BOXES
+    return value.join(", ") if field.type == Field::CHECK_BOXES
     if child
-      child['photo_url']= "" if child['exportable'] == false
       return child['photo_url'] if field.name.include?('photo')
       return child['audio_url'] if field.name.include?('audio')
     end
@@ -96,7 +98,7 @@ class ExportGenerator
   end
 
   def add_child_photo(child, with_full_id = false)
-    if child.exportable && child.primary_photo
+    if   child.primary_photo
       render_image(child.primary_photo.data)
     else
       data = File.read("public/images/no_photo_clip.jpg")
@@ -127,8 +129,8 @@ class ExportGenerator
     FormSection.enabled_by_order.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
-        select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.visible? }.
-        map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
+          select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.visible? }.
+          map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
       render_pdf(field_pair)
     end
   end

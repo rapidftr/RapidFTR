@@ -107,14 +107,7 @@ describe ChildrenController do
         delete :destroy, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
-
-      it "should POST to set exportable" do
-        @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
-        post :set_exportable , :id => @child.id
-        response.should render_template("#{Rails.root}/public/403.html")
-      end
     end
-  end
 
   describe "GET index" do
 
@@ -480,18 +473,6 @@ describe ChildrenController do
 
   end
 
-  describe "POST set_exportable" do
-   it "should enable or disable for photo wall" do
-     User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
-     child = Child.new_with_user_name(user, {:name => 'some name'})
-     controller.stub(:current_user_name).and_return("user_name")
-     Child.stub(:get).and_return(child)
-     child.exportable.should == true
-     child.should_receive(:save!)
-     post :set_exportable, :id => '1', "exportable" => true
-   end
-  end
-
   describe "GET search" do
 
     it "should not render error by default" do
@@ -691,4 +672,5 @@ describe ChildrenController do
     end
   end
 
-end
+  end
+  end
