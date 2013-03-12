@@ -464,6 +464,13 @@ ar:
   account: "حساب"
 
   #validation error messages
+  couchrest:
+    fields:
+      Name: "الإسم"
+
+    validations:
+      blank: "%s لا يمكن أن يكون خالي"
+
   activerecord:
     errors:
 
