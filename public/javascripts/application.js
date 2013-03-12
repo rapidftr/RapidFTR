@@ -258,6 +258,9 @@ RapidFTR.PasswordPrompt = (function() {
             var password = passwordEl.val();
             var targetType = targetEl.prop("tagName").toLowerCase();
 
+            passwordEl.val("");
+            passwordDialog.dialog("close");
+
             if (targetType == "a") {
                 var href = targetEl.data("original-href");
                 href += (href.indexOf("?") == -1 ? "?" : "") + "&password=" + password;
@@ -266,9 +269,6 @@ RapidFTR.PasswordPrompt = (function() {
                 targetEl.closest("form").find("#hidden-password-field").val(password);
                 targetEl.trigger("click");
             }
-
-            passwordEl.val("");
-            passwordDialog.dialog("close");
         }
     }
 }) ();
