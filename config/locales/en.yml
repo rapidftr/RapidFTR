@@ -488,6 +488,10 @@ en:
   couchrest:
     fields:
       Name: "Name"
+      Username: "Username"
+      Password: "Password"
+      Description: "Description"
+      "Remote app url": "Remote app url"
 
     validations:
       blank: "%s must not be blank"
