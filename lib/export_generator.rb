@@ -69,7 +69,6 @@ class ExportGenerator
 
   def to_full_pdf
     @child_data.each do |child|
-      puts Time.now
       add_child_page(child)
       @pdf.start_new_page unless @child_data.last == child
     end
