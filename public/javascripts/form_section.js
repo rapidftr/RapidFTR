@@ -39,7 +39,7 @@ $(document).ready(function() {
     }
 
     function triggerErrors(){
-        if(show_add_field){
+        if((typeof(show_add_field) != 'undefined') && (show_add_field)){
             toggleFieldPanel(null, getFieldDetails(field_type));
             $("ul.field_types a").removeClass("sel");
             $("#"+field_type).addClass("sel");

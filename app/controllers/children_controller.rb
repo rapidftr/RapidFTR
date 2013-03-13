@@ -22,9 +22,7 @@ class ChildrenController < ApplicationController
     @order = params[:order_by] || 'name'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
 
-    puts Time.now
     filter_children per_page
-    puts Time.now
 
     respond_to do |format|
       format.html
