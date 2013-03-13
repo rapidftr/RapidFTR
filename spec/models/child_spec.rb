@@ -1298,7 +1298,12 @@ describe Child do
         Child.all_connected_with("tonystark").should == [Child.get(child.id)]
       end
     end
+
     describe "all ids and revs" do
+      before do
+        Child.all.each { |child| child.destroy }
+      end
+
       it "should return all _ids and revs in the system" do
         child1 = create_child_with_created_by("user1", :name => "child1")
         child2 = create_child_with_created_by("user2", :name => "child2")

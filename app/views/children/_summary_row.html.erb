@@ -16,7 +16,6 @@
 
     <%= content_tag(:div, nil, :class => 'flag suspect') if child.flag? %>
     <%= content_tag(:div, nil, :class => 'flag reunited') if child.reunited? %>
-    <%= content_tag(:div, nil, :class => 'flag photowall') unless child.exportable %>
 
       <% sorted_highlighted_fields.each do |relevant_field| %>
         <% if relevant_field.visible? %>

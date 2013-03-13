@@ -2,7 +2,7 @@ class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
   skip_before_filter :check_authentication, :only => [:reindex]
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf, :set_exportable]
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
   before_filter :current_user, :except => [:reindex]
   before_filter :sanitize_params, :only => [:update, :sync_unverified]
 
@@ -22,7 +22,9 @@ class ChildrenController < ApplicationController
     @order = params[:order_by] || 'name'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
 
+    puts Time.now
     filter_children per_page
+    puts Time.now
 
     respond_to do |format|
       format.html
@@ -247,16 +249,6 @@ class ChildrenController < ApplicationController
     authorize! :export, Child
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
-  end
-
-# POST
-  def set_exportable
-    authorize! :update, @child
-
-    @child.exportable = params[:exportable] ? true : false
-    @child.save!
-
-    redirect_to child_path(@child.id)
   end
 
   private
