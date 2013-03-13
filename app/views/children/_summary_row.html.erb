@@ -20,7 +20,7 @@
       <% sorted_highlighted_fields.each do |relevant_field| %>
         <% if relevant_field.visible? %>
         <div class="summary_item">
-          <div class="key"><%= t(relevant_field.display_name.downcase) %>:</div>
+          <div class="key"><%= t(relevant_field.display_name) %>:</div>
           <div class="value"><%= child[relevant_field[:name]] %></div>
         </div>
          <% end %>
