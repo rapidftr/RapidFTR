@@ -48,7 +48,7 @@ describe "children/search.html.erb" do
       fields = Hpricot(rendered).search(".summary_panel")
       fields.search(".summary_item").size.should == @highlighted_fields.size + 2 #including the registered by and last_updated_by keys
 
-      fields.search(".key").first.inner_text.should == "field display 2:"
+      fields.search(".key").first.inner_text.should == "Field Display 2:"
       fields.search(".value").first.inner_text.should == "field 2"
     end
 
