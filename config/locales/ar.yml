@@ -467,6 +467,10 @@ ar:
   couchrest:
     fields:
       Name: "الإسم"
+      Username: "إسم المستخدم"
+      Password: "كلمة السر"
+      Description: "الوصف"
+      "Remote app url": "رابط التطبيق"
 
     validations:
       blank: "%s لا يمكن أن يكون خالي"
@@ -526,6 +530,11 @@ ar:
 
         system_users:
           username_unique: "إسم المستخدم موجود! الرجاء إختيار إسم مستخدم آخر"
+
+        replication:
+          remote_app_url: "الرجاء إدخال رابط صحيح. مثال: http://<server>:<port>"
+          save_remote_couch_config: "الرابط أو إسم المستخدم أو كلمة السر التي تم إدخالها غير صحيح"
+
 
   histories:
     to: "إلى"
