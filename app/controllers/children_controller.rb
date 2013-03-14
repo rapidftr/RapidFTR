@@ -21,6 +21,7 @@ class ChildrenController < ApplicationController
     @filter = params[:filter] || params[:status] || "all"
     @order = params[:order_by] || 'name'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
+
     filter_children per_page
 
     respond_to do |format|
