@@ -26,6 +26,7 @@ rescue
 else
 
   COUCHDB_CONFIG = {
+      :protocol => protocol,
       :host_path => "#{protocol}://#{authorized_host}:#{port}",
       :db_prefix => "#{db_prefix}",
       :db_suffix => "#{db_suffix}",
