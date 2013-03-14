@@ -44,14 +44,24 @@
       <Directory Id='LocalAppDataFolder' Name='PFiles'>
         <Directory Id='INSTALLDIR' Name='RapidFTR'>
           <Directory Id='AppDir' Name='App'>
-            <Component Id='Codebase' Guid='c189d388-56e0-4e1c-84d7-e049529174b0'>
+            <Component Id='AppDirectory' Guid='c189d388-56e0-4e1c-84d7-e049529174b0'>
               <Condition>NOT (ALLUSERS)</Condition>
-              <RegistryValue Id='CodebaseReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='Codebase' Value='1' Type='integer' KeyPath='yes' />
-              <File Id='CodebaseJar' Name='Codebase.jar' DiskId='1' Source='Codebase.jar' />
+              <RegistryValue Id='AppDirReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='AppDir' Value='1' Type='integer' KeyPath='yes' />
               <util:RemoveFolderEx On='uninstall' Property='AppDir' />
-              <RemoveFolder Id='AppDir' On='uninstall' />
             </Component>
           </Directory>
+
+          <Component Id='CodebaseZip' Guid='4a8cfc37-56b7-4202-ab64-c3a164d54b80'>
+            <Condition>NOT (ALLUSERS)</Condition>
+            <RegistryValue Id='CodebaseZipReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='CodebaseZip' Value='1' Type='integer' KeyPath='yes' />
+            <File Id='CodebaseZip' Name='Codebase.zip' DiskId='1' Source='Codebase.zip' />
+          </Component>
+
+          <Component Id='ZipExe' Guid='10eb9c03-1ab3-4595-93e2-eaeeb666da94'>
+            <Condition>NOT (ALLUSERS)</Condition>
+            <RegistryValue Id='ZipExeReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='ZipExe' Value='1' Type='integer' KeyPath='yes' />
+            <File Id='ZipExe' Name='7za.exe' DiskId='1' Source='7za.exe' />
+          </Component>
 
           <Component Id='License' Guid='a739732b-8986-4f5d-bf9f-e08ef0fc9ad4'>
             <Condition>NOT (ALLUSERS)</Condition>
@@ -99,7 +109,9 @@
     <Feature Id='Complete' Title='Complete' Display='expand' ConfigurableDirectory='INSTALLDIR' Level='1'>
       <Feature Id='MainProgram' Title='RapidFTR' Level='1'>
         <ComponentRef Id='License' />
-        <ComponentRef Id='Codebase' />
+        <ComponentRef Id='AppDirectory' />
+        <ComponentRef Id='CodebaseZip' />
+        <ComponentRef Id='ZipExe' />
         <ComponentRef Id='Launcher' />
         <ComponentRef Id='Reset' />
         <ComponentRef Id='ProgramMenuDir' />
@@ -114,8 +126,9 @@
       <ProgressText Action='ExtractCodeBase'>Extracting RapidFTR Application... (this may take a few minutes)</ProgressText>
     </UI>
 
-    <CustomAction Id='ExtractCodebase' Directory='AppDir' Return='check' Execute='deferred' Impersonate='yes'
-                  ExeCommand='&quot;[JDK_HOME]bin\\jar.exe&quot; -xf Codebase.jar' />
+    <CustomAction Id='ExtractCodebase' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes'
+                  ExeCommand='cmd.exe /C &quot;7za.exe x Codebase.zip -oApp -y&quot;' />
+
     <CustomAction Id='ResetApp' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes' 
                   ExeCommand='cmd.exe /C &quot;Reset.bat [RAILS_HOME]\Ruby1.8.7\bin&quot;' />
 
