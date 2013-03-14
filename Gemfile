@@ -30,13 +30,21 @@ gem 'os'
 gem 'libv8', '~> 3.11.8', :platform => :ruby
 gem 'thin', :platform => :ruby, :require => false
 
-if RUBY_PLATFORM =~ /(win32|w32|i386)/
+# NOTE: zipruby gem needs to be installed in Windows using a special gem install directive, which is unsupported by bundler
+# So we have vendorized the gem for Windows alone
+if RUBY_PLATFORM =~ /(win32|w32)/
   gem 'zipruby', '0.3.6', :path => "vendor/windows/gems/zipruby-0.3.6-x86-mswin32"
 else
   gem 'zipruby', '~> 0.3.6'
 end
-
-# gem 'rack-bug', :require => 'rack/bug', :git => 'git://github.com/brynary/rack-bug.git', :branch => 'rails3'
+# NOTE: Having If conditions in the Gemfile is not generally recommended
+# Because using the above code, if you run bundle install in Linux, it will generate a different Gemfile.lock
+# And then if you run bundle install in Windows, it will cause problems, since the Gemfile.lock is a mismatch
+# There are two ways to do this:
+#   1) Different Gemfiles for Linux and Windows, which will end up generating different lock files
+#   2) Delete Gemfile.lock before doing bundle install in Windows
+# Both are equally troublesome, and both will end up with different versions of gems installed by bundler for Windows and Linux
+# Right now we're choosing to delete Gemfile.lock in Windows before doing bundle install
 
 gem 'rufus-scheduler', :require => false
 gem 'daemons', :require => false
