@@ -123,7 +123,7 @@ class Replication < CouchRestRails::Document
 
   def self.couch_config
     uri = URI.parse(Child.database.root)
-    uri.scheme = 'https'
+    uri.scheme = COUCHDB_CONFIG[:protocol]
     uri.port = COUCHDB_CONFIG[:https_port]
     uri.user = nil
     uri.password = nil

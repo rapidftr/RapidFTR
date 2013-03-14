@@ -80,8 +80,15 @@ describe Replication do
       Replication.models_to_sync.first.should == Role
     end
 
-    it 'should return the couchdb url without the source username and password' do
+    it 'should return the couchdb url without the source username and password' do      
       Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@couchdb:5984/")
+      target_hash = Replication.couch_config
+      target_hash[:target].should == "http://couchdb:6984/"
+    end
+
+    it 'should return correct scheme' do
+      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@couchdb:5984/")
+      COUCHDB_CONFIG[:protocol] = "https"
       target_hash = Replication.couch_config
       target_hash[:target].should == "https://couchdb:6984/"
     end
