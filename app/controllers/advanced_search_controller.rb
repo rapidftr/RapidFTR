@@ -25,7 +25,7 @@ class AdvancedSearchController < ApplicationController
 
   def export_data
     authorize! :export, Child
-    selected_records = Hash[params["selections"].to_a.sort_by { |k,v| k}].values || {} if params["all"] != "Select all records"
+    selected_records = Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {} if params["all"] != "Select all records"
     selected_records = params["full_results"].split(/,/) if params["all"] == "Select all records"
     if selected_records.empty?
       raise ErrorResponse.bad_request('You must select at least one record to be exported')
