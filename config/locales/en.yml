@@ -324,7 +324,7 @@ en:
       "View roles": "View roles"
       "All": "All"
       "Users for synchronisation": "Manage Server Synchronisation Users"
-
+      "View and Download Reports": "View and Download Reports"
   forms:
     label: "Forms"
     save: "Save Form"
@@ -485,6 +485,17 @@ en:
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
 
   # validation error messages
+  couchrest:
+    fields:
+      Name: "Name"
+      Username: "Username"
+      Password: "Password"
+      Description: "Description"
+      "Remote app url": "Remote app url"
+
+    validations:
+      blank: "%s must not be blank"
+
   activerecord:
     errors:
 

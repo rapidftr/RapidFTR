@@ -108,7 +108,6 @@ describe ChildrenController do
         response.should render_template("#{Rails.root}/public/403.html")
       end
     end
-  end
 
   describe "GET index" do
 
@@ -673,4 +672,5 @@ describe ChildrenController do
     end
   end
 
-end
+  end
+  end

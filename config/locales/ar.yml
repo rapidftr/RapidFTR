@@ -167,7 +167,7 @@ ar:
       rotate_clockwise: "تدوير في إتجاه عقارب الساعة"
       view_full_size_photo: "عرض الصورة بالحجم الكلي"
 
-    change_log: "تغيير السجل"
+    change_log: "سجل التغيير"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
     posted_from_mobile: "أرسل من هاتف جوال عند: "
     edit_photo: "تعديل الصورة"
@@ -311,7 +311,7 @@ ar:
       "Manage Replications": "معالجة نسخ متماثلة"
       "All": "الكل"
       "Users for synchronisation": "مستخدمين للتزامن"
-
+      "View and Download Reports": "View and Download Reports"
 
   forms:
     label: "الإستمارات"
@@ -464,6 +464,13 @@ ar:
   account: "حساب"
 
   #validation error messages
+  couchrest:
+    fields:
+      Name: "الإسم"
+
+    validations:
+      blank: "%s لا يمكن أن يكون خالي"
+
   activerecord:
     errors:
 

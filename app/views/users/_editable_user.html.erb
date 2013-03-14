@@ -11,7 +11,7 @@
     function confirmDisable() {
         var checkbox = $("#user_disabled")[0];
         if (checkbox.checked && !checkbox.defaultChecked) {
-            return confirm(I18n.t("users.message.disable"));
+            return confirm(I18n.t("users.messages.disable"));
         }
         return true;
     }

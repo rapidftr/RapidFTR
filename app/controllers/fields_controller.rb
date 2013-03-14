@@ -63,10 +63,14 @@ class FieldsController < ApplicationController
     redirect_to(edit_form_section_path(params[:form_section_id]))
   end
 
+  def show
+    redirect_to(edit_form_section_path(params[:form_section_id]))
+  end
+
   def destroy
     field = @form_section.fields.find { |field| field.name == params[:field_name] }
     @form_section.delete_field(field.name)
-    flash[:notice] = t("fields.deleted", :display_name => @field.display_name)
+    flash[:notice] = t("fields.deleted", :display_name => field.display_name)
     redirect_to(edit_form_section_path(params[:form_section_id]))
   end
 
