@@ -9,8 +9,8 @@ rvm:
   # - jruby-19mode
 
 env:
-  - RAILS_ENV=cucumber TASKS="cucumber:browser"
-  - RAILS_ENV=cucumber TASKS="cucumber:headless"
+  # - RAILS_ENV=cucumber TASKS="cucumber:browser"
+  # - RAILS_ENV=cucumber TASKS="cucumber:headless"
   - RAILS_ENV=test     TASKS="spec jasmine:ci"
 
 # matrix:
@@ -33,6 +33,7 @@ services:
 # RubyGems and Bundler versions were upgraded in Travis, downgrading them...
 before_install:
   - rvm rubygems 1.8.25
+  - rvm gemset pristine
   - rvm @default,@global do gem uninstall bundler -x -a
   - gem install bundler -v 1.2.5
   - gem --version
