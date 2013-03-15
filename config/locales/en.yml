@@ -476,6 +476,7 @@ en:
   encrypt:
     password_title: "Password"
     password_label: "Enter password to encrypt file"
+    password_mandatory: "Enter a valid password"
 
   administration: "Administration"
   new: "New"
