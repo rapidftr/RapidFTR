@@ -2,6 +2,8 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 es:
+  translation_missing: "Traducción que falte"
+
   home:
     fr: "Français"
     en: "English"
@@ -16,6 +18,7 @@ es:
     records_need_attention: "Records need Attention"
 
     label: "Home"
+  clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
