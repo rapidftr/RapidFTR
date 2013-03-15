@@ -25,7 +25,7 @@ module AdvancedSearchHelper
     html += FIELD_INDEX.gsub("#FIELD", criteria.field)
     html += send("#{field.type}_criteria", criteria, field)
     html += REMOVE_LINK
-    "<p>#{html.gsub("#INDEX", criteria.index)}</p>"
+    "<p class='criterion-selected'>#{html.gsub("#INDEX", criteria.index)}</p>"
   end
 
   private

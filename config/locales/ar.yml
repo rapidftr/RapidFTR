@@ -19,6 +19,7 @@ ar:
     manage_system_users: "معالجة مستخدمي النظام"
     records_need_attention: "سجلات تحتاج المشاهدة"
     label: "الرئيسية"
+  clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item: "أنت على وشك نقل هذا الحقل إلى قسم إستمارة آخر ({{selection_key}}). هل أنت متأكد؟"
