@@ -10,10 +10,13 @@ Feature:
       | John | Male   |
 
   @javascript
-  Scenario: Export photo wall must be shown or hidden according to the status of exportable
+  Scenario: Export Photo Wall should ask for password
     Given I am on the child record page for "John"
-    And I follow "Disable photo wall"
     And I follow "Export"
-    Then I should see "Export to Photo Wall"
-    And I should not see "Enable photo wall"
-    And I should not see "Disable photo wall"
+    And I follow "Export to Photo Wall"
+    Then I should see "Enter password to encrypt file"
+    When I fill in "  " for "password-prompt-field"
+    And I click the "OK" button
+    Then I should see "Enter a valid password"
+
+

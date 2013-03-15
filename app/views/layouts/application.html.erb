@@ -83,6 +83,9 @@
 </div>
 
 <div id="password-prompt-dialog" title="<%= t("encrypt.password_title") %>">
+  <div class='flash hide'>
+    <p class='error'></p>
+  </div>
   <p>
     <label for="password-prompt-field"><%= t("encrypt.password_label") %></label>
     <input type="password" id="password-prompt-field" />

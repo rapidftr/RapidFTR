@@ -223,13 +223,21 @@ RapidFTR.PasswordPrompt = (function() {
                 buttons: {
                     "OK" : function() {
                         var password = passwordEl.val();
-                        if (password == null || password == undefined || password == "") {
+                        var errorDiv = $("div#password-prompt-dialog .flash");
+                        if (password == null || password == undefined || password.trim() == "") {
+                            errorDiv.children(".error").text(I18n.t("encrypt.password_mandatory")).css('color', 'red');
+                            errorDiv.show();
                             return false;
                         } else {
+                            errorDiv.hide();
                             RapidFTR.PasswordPrompt.updateTarget();
                         }
                     }
-                }
+                },
+               close: function(){
+                   $("div#password-prompt-dialog .flash .error").text("");
+               }
+
             });
             passwordEl = $("#password-prompt-field");
             $(".password-prompt").each(RapidFTR.PasswordPrompt.initializeTarget);
@@ -237,6 +245,7 @@ RapidFTR.PasswordPrompt = (function() {
 
         initializeTarget: function() {
             var self = $(this), targetType = self.prop("tagName").toLowerCase();
+            $("div#password-prompt-dialog .flash .error").text("");
 
             if (targetType == "a") {
                 self.data("original-href", self.attr("href"));

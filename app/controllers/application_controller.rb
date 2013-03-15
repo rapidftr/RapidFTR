@@ -123,8 +123,6 @@ class ApplicationController < ActionController::Base
       end
 
       send_file enc_filename, :filename => zip_filename, :disposition => "inline", :type => 'application/zip'
-    else
-      send_data data, opts
     end
   end
 
