@@ -46,6 +46,6 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  config.before(:each) { ::I18n.locale = ::I18n.default_locale = :en }
+  config.before(:each) { I18n.locale = I18n.default_locale = :en }
   
 end
