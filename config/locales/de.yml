@@ -2,6 +2,8 @@
 # Contains the mappings for translation pertaining to the locale "de"
 
 de:
+  translation_missing: "Übersetzung fehlt"
+
   name: "DEName"
   basic_identity: "DEBasic"
 

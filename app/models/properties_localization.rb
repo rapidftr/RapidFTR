@@ -14,7 +14,7 @@ module PropertiesLocalization
         locale = args.first || I18n.locale
         locale_field_value = self.send("#{method}_#{locale}")
         if locale_field_value.nil? || locale_field_value.empty?
-          self.send("#{method}_#{I18n.default_locale}")
+          self.send("#{method}_#{I18n.default_locale}") || I18n.t("translation_missing", :default => "Translation Missing")
         else
           locale_field_value
         end
