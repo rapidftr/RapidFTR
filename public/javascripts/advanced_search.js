@@ -18,6 +18,13 @@
 
         self.selectedField = "";
 
+        $('#reset').click(function(){
+            $('[class^="profiles-list"]').remove();
+            $('[class^="profiles-button-wrapper"]').remove();
+            $('[class^="criterion-selected"]').remove();
+            $('div.criteria-list > p > input').val("");
+        });
+
         var showCriteriaMenu = function () {
             disableSelectedFields();
             var position = $(this).position();

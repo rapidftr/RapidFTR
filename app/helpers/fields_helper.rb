@@ -12,6 +12,6 @@ module FieldsHelper
 	end
 
 	def forms_for_display
-	  FormSection.all.sort_by(&:name).map { |form| [form.name, form.unique_id] }
+	  FormSection.all.sort_by{ |form| form.name || "" }.map{ |form| [form.name, form.unique_id] }
 	end
 end
