@@ -208,3 +208,28 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should not see "James" in the search results
     And I should see "William" in the search results
     And I should not see "Wilfred" in the search results
+
+  @javascript
+  Scenario: Searching by 'Protection Status', bug 1664
+    Given I am logged in
+    And I am on the child advanced search page
+    And the following children exist in the system:
+      | name    | protection_status | created_by  |
+      | Willis  | Unaccompanied     | john        |
+      | Wilbert | Separated         | jane        |
+      | James   | Unaccompanied     | john        |
+      | William | Separated         | tim         |
+    When I click text "Select A Criteria"
+    And I click text "Protection Status"
+    And I select "Separated" from "criteria_list[0][value]"
+    And I search
+    Then I should see "Wilbert" in the search results
+    Then I should see "William" in the search results
+    Then I should not see "Willis" in the search results
+    Then I should not see "James" in the search results
+    And I select "Unaccompanied" from "criteria_list[0][value]"
+    And I search
+    Then I should not see "Wilbert" in the search results
+    Then I should not see "William" in the search results
+    Then I should see "Willis" in the search results
+    Then I should see "James" in the search results

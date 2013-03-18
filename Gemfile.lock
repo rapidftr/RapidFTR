@@ -212,10 +212,10 @@ GEM
       websocket (~> 1.0.4)
     slop (3.4.4)
     subexec (0.0.4)
-    sunspot (2.0.0)
+    sunspot (1.3.3)
       pr_geohash (~> 1.0)
       rsolr (~> 1.0.7)
-    sunspot_solr (2.0.0)
+    sunspot_solr (1.3.3)
     terminal-notifier-guard (1.5.3)
     terminal-table (1.4.5)
     test_declarative (0.0.5)
@@ -291,8 +291,8 @@ DEPENDENCIES
   sass
   selenium-webdriver (~> 2.30)
   subexec (= 0.0.4)
-  sunspot (= 2.0.0)
-  sunspot_solr (= 2.0.0)
+  sunspot (= 1.3.3)
+  sunspot_solr (= 1.3.3)
   terminal-notifier-guard
   test_declarative
   therubyracer
