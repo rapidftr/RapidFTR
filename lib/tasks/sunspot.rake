@@ -7,12 +7,18 @@ namespace :sunspot do
   ##   start rake sunspot:solr:run
   ## This will start Solr in the foreground in a new terminal
 
+  def tmpdir
+    dir = File.join Dir.tmpdir, (ENV['SOLR_PORT'] || '8983')
+    FileUtils.mkdir_p dir
+    dir
+  end
+
   def solr_server
     server = Sunspot::Solr::Server.new
     server.port = ENV['SOLR_PORT'] || '8983'
     server.pid_file = "sunspot_#{server.port}.pid"
-    server.pid_dir = ENV['SOLR_PID_LOCATION'] || Dir.tmpdir
-    server.solr_data_dir = ENV['SOLR_DATA_DIR'] || Dir.tmpdir
+    server.pid_dir = ENV['SOLR_PID_LOCATION'] || tmpdir
+    server.solr_data_dir = ENV['SOLR_DATA_DIR'] || tmpdir
     server
   end
 
