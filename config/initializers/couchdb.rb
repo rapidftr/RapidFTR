@@ -30,7 +30,7 @@ else
       :host_path => "#{protocol}://#{authorized_host}:#{port}",
       :db_prefix => "#{db_prefix}",
       :db_suffix => "#{db_suffix}",
-      :https_port => https_port,
+      :https_port => ssl ? https_port : port,
   }
 
   COUCHDB_SERVER = CouchRest.new COUCHDB_CONFIG[:host_path]

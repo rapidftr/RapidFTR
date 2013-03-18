@@ -9,8 +9,8 @@ rvm:
   # - jruby-19mode
 
 env:
-  # - RAILS_ENV=cucumber TASKS="cucumber:browser"
-  # - RAILS_ENV=cucumber TASKS="cucumber:headless"
+  - RAILS_ENV=cucumber TASKS="cucumber:browser"
+  - RAILS_ENV=cucumber TASKS="cucumber:headless"
   - RAILS_ENV=test     TASKS="spec jasmine:ci"
 
 # matrix:
