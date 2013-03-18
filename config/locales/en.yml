@@ -2,8 +2,6 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en: 
-  translation_missing: "Translation Missing"
-
   home:   
     fr: "Français"
     en: "English"
@@ -478,6 +476,7 @@ en:
   encrypt:
     password_title: "Password"
     password_label: "Enter password to encrypt file"
+    password_mandatory: "Enter a valid password"
 
   administration: "Administration"
   new: "New"

@@ -4,7 +4,7 @@ module FormSectionHelper
   end
 
   def forms_for_display
-    FormSection.all.sort_by(&:name).map { |form| [form.name, form.unique_id] }
+    FormSection.all.sort_by{ |form| form.name || "" }.map{ |form| [form.name, form.unique_id] }
   end
 
   def url_for_form_section_field(form_section_id, field)
