@@ -51,7 +51,7 @@ describe "Solar" do
 
   it "should match on the first part of a child's first name" do
     search = search_with_string("Muha")
-    search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones",]
+    search.results.map(&:name).sort.should == [ "Muhammad Brown", "Muhammed Jones" ]
   end
 
   it "should match on the first part of a child's last name" do
