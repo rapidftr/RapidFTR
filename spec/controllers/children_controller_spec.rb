@@ -251,6 +251,7 @@ describe ChildrenController do
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
+      controller.stub! :render
       get(:show, :format => 'csv', :id => "37")
     end
 
