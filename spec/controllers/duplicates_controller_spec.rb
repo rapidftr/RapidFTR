@@ -8,12 +8,10 @@ describe DuplicatesController do
       before :each do
         fake_admin_login
 
-        @child = stub_model(Child, :name => "John")
-        Child.stub!(:get).with("1234").and_return(@child)
-
+        @child = build :child, :name => "John", :unique_identifier => "1234"
         @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
 
-        get :new, :child_id => "1234"
+        get :new, :child_id => @child.id
       end
 
       it "should be successful" do
@@ -25,7 +23,7 @@ describe DuplicatesController do
       end
 
       it "should assign the page name" do
-        assigns[:page_name].should == "Mark #{@child.name} as Duplicate"
+        assigns[:page_name].should == "Mark 1234 as Duplicate"
       end
     end
 

@@ -238,6 +238,13 @@ describe ChildrenController do
   end
 
   describe "GET show" do
+    it 'does not assign child name in page name' do
+      child = build :child, :unique_identifier => "1234"
+      controller.stub! :render
+      get :show, :id => child.id
+      assigns[:page_name].should == "View Child 1234"
+    end
+
     it "assigns the requested child" do
       Child.stub!(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
@@ -251,6 +258,7 @@ describe ChildrenController do
       Child.stub!(:get).with("37").and_return(child)
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
+      controller.stub! :render
       get(:show, :format => 'csv', :id => "37")
     end
 
