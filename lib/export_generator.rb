@@ -122,10 +122,11 @@ class ExportGenerator
   def add_child_details(child)
     flag_if_suspected(child)
     flag_if_reunited(child)
-    fields = metadata_fields([], CHILD_IDENTIFIERS + CHILD_METADATA)
-    field_pair = fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
+    @fields ||= metadata_fields([], CHILD_IDENTIFIERS + CHILD_METADATA)
+    field_pair = @fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
     render_pdf(field_pair)
-    FormSection.enabled_by_order.each do |section|
+    @form_sections ||= FormSection.enabled_by_order
+    @form_sections.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
           select { |field| field.type != Field::PHOTO_UPLOAD_BOX && field.type != Field::AUDIO_UPLOAD_BOX && field.visible? }.
