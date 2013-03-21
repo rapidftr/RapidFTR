@@ -47,7 +47,7 @@ class ChildrenController < ApplicationController
   def show
     authorize! :read, @child if @child["created_by"] != current_user_name
     @form_sections = get_form_sections
-    @page_name = t("child.view")+": #{@child}"
+    @page_name = t "child.view", :short_id => @child.short_id
     @body_class = 'profile-page'
     @duplicates = Child.duplicates_of(params[:id])
 

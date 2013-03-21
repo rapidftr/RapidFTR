@@ -238,6 +238,13 @@ describe ChildrenController do
   end
 
   describe "GET show" do
+    it 'does not assign child name in page name' do
+      child = build :child, :unique_identifier => "1234"
+      controller.stub! :render
+      get :show, :id => child.id
+      assigns[:page_name].should == "View Child 1234"
+    end
+
     it "assigns the requested child" do
       Child.stub!(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
