@@ -122,9 +122,8 @@ class Replication < CouchRestRails::Document
   end
 
   def self.couch_config
-    uri = URI.parse(Child.database.root)
-    uri.scheme = COUCHDB_CONFIG[:protocol]
-    uri.port = COUCHDB_CONFIG[:https_port]
+    settings = CouchSettings.instance
+    uri = settings.ssl_enabled_for_couch? ? settings.with_ssl{ settings.uri } : settings.uri
     uri.user = nil
     uri.password = nil
     uri.path = '/'
@@ -142,10 +141,6 @@ class Replication < CouchRestRails::Document
     url = "http://#{url}" unless url.include? '://'
     url = "#{url}/"       unless url.ends_with? '/'
     url
-  end
-
-  def self.authenticate_with_internal_couch_users(username, password)
-    RestClient.post COUCHDB_SERVER.uri+'/_session', 'name='+username+'&password='+password,{:content_type => 'application/x-www-form-urlencoded'}
   end
 
   def self.schedule(scheduler)

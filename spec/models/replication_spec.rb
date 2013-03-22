@@ -81,14 +81,13 @@ describe Replication do
     end
 
     it 'should return the couchdb url without the source username and password' do      
-      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@couchdb:5984/")
+      CouchSettings.instance.stub! :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
       target_hash = Replication.couch_config
-      target_hash[:target].should == "http://couchdb:6984/"
+      target_hash[:target].should == "http://couchdb:5984/"
     end
 
-    it 'should return correct scheme' do
-      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@couchdb:5984/")
-      COUCHDB_CONFIG[:protocol] = "https"
+    it 'should return HTTPS url when enabled in Couch' do
+      CouchSettings.instance.stub! :ssl_enabled_for_couch? => true, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
       target_hash = Replication.couch_config
       target_hash[:target].should == "https://couchdb:6984/"
     end

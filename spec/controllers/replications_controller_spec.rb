@@ -4,7 +4,7 @@ describe ReplicationsController do
 
   it "should authenticate configuration request through internal _users database of couchdb" do
     config = { "a" => "a", "b" => "b", "c" => "c" }
-    Replication.should_receive(:authenticate_with_internal_couch_users).with("rapidftr", "rapidftr").and_return(true)
+    CouchSettings.instance.should_receive(:authenticate).with("rapidftr", "rapidftr").and_return(true)
     Replication.should_receive(:couch_config).and_return(config)
     post :configuration, { :user_name => "rapidftr", :password => "rapidftr" }
     target_json = JSON.parse(response.body)
