@@ -4,7 +4,7 @@ class DuplicatesController < ApplicationController
     authorize! :update, @child
 
     redirect_to child_filter_path("flagged") and return if @child.nil?
-    @page_name = t("child.mark_as_duplicate_with_param", :child_name => @child.name)
+    @page_name = t("child.mark_child_as_duplicate", :short_id => @child.short_id)
   end
 
   def create

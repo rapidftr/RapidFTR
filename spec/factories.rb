@@ -1,6 +1,20 @@
 require 'factory_girl'
 
 FactoryGirl.define do
+  factory :child do
+    ignore do
+      sequence(:counter, 1000000)
+    end
+
+    unique_identifier { counter.to_s }
+    name { "Test Child #{counter}" }
+
+    after_build do |child, factory|
+      child["_id"] ||= UUIDTools::UUID.random_create.to_s
+      Child.stub(:get).with(child.id).and_return(child)
+    end
+  end
+
   factory :replication do
     description 'Sample Replication'
     remote_app_url 'app:1234'

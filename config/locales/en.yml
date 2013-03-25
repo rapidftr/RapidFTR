@@ -174,9 +174,10 @@ en:
     edit_photo: "Edit photo"
     manage_photos: "Manage photos"
 
-    view: "View Children"
+    view: "View Child %{short_id}"
     edit: "Edit Child"
-    mark_as_duplicate_with_param: "Mark %{child_name} as Duplicate"
+    mark_child_as_duplicate: "Mark %{short_id} as Duplicate"
+    history_of: "History of %{short_id}"
   preposition:
     on_label: "on"
     because: "Because"
@@ -234,6 +235,7 @@ en:
   user:
     label: "user"
     full_name: "Full Name"
+    history_of: "History of %{user_name}"
     disabled: "Disabled"
     actions:
       delete: "Delete"
@@ -481,7 +483,6 @@ en:
   administration: "Administration"
   new: "New"
   saved: "Saved"
-  history_of: "History of"
   account: "Account"
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
 
