@@ -25,7 +25,7 @@ When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name,
   And 'I follow "Text Field"'
   And "I fill in \"#{display_name}\" for \"Display name\""
   And "I fill in \"#{help_text}\" for \"Help text\""
-  And 'I press "Save"'
+  And 'I press "Save Details" within "#new_field"'
 end
 
 Then /^I should not see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
