@@ -95,11 +95,12 @@ end
 
 
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
-  step 'I follow "Add Custom Field"'
+  step 'I follow "Add Field"'
+  step 'I wait for 5 seconds'
   step 'I follow "Text Field"'
-  step "I fill in \"#{display_name}\" for \"Display name\""
+  step "I fill in \"#{display_name}\" for \"field_display_name_en\""
   step "I fill in \"#{help_text}\" for \"Help text\""
-  step 'I press "Save"'
+  step 'I press "Save Details" within "#new_field"'
 end
 
 Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|
