@@ -27,9 +27,9 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
     find("//input[@class='btn_submit']").click
     #click_button(button)
   end
-  end
+end
 
-  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
@@ -313,9 +313,8 @@ end
 Then /^I should see link to "(.*?)"$/ do |text|
   page.should have_xpath("//span[@class='"+text+"']")
 end
-
-Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
-  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should == !not_visible
+Then /^I should not be able to view the tab (.+)$/ do|tab_name|
+  page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
 end
 
 When /^I view User Action History$/ do
