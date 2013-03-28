@@ -24,7 +24,8 @@ end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
-    click_button(button)
+    find("//input[@class='btn_submit']").click
+    #click_button(button)
   end
   end
 
