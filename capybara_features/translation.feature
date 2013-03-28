@@ -18,7 +18,7 @@ Feature: Ensure translations
   Scenario: Field label translation missing
     When I set the system language to "العربية"-"ar"
     And I set the user language to "Русский"-"ru"
-    Then I should see "English Translated Name" translated
+    Then I should see "Arabic Translated Name" translated
     And I logout
 
 
@@ -33,6 +33,11 @@ Feature: Ensure translations
     Given an user "jerry" with password "123"
     When I fill in "jerry" for "user_name"
     And I fill in "123" for "password"
-    And I select "Log In" for language change
+    And I press "Log in"
 
     Then I should see my system language as "العربية"-"ar"
+
+
+
+
+
