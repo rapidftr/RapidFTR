@@ -140,8 +140,7 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-  # modal dialogue
-  Scenario: Should provide navigation links
+  Scenario: Should provide navigation links as a modal dialogue
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
 
@@ -150,12 +149,13 @@ Feature: So that admin can customize fields in a form section
 
 
   @javascript
-  Scenario: creating a numeric field
+  Scenario: Creating a numeric field
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
 
     When I follow "Numeric Field"
     And I fill in "Help for a numeric field" for "Help text"
+    And I wait for 5 seconds
     And I fill in "My new number field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
@@ -172,13 +172,14 @@ Feature: So that admin can customize fields in a form section
     Then I should see "My new number field: 2345"
 
   @javascript
-  Scenario: creating a field without giving a name should dehumanize the display name
+  Scenario: Creating a field without giving a name should dehumanize the display name
 
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
 
     When I follow "Text Field"
     And I fill in "Help for a text field" for "Help text"
+    And I wait for 5 seconds
     And I fill in "My Text field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
@@ -186,7 +187,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "My Text field" in the list of fields
 
   @javascript
-  Scenario: creating a radio_button field
+  Scenario: Creating a radio_button field
 
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
@@ -212,11 +213,12 @@ Feature: So that admin can customize fields in a form section
       | two |
 
   @javascript
-  Scenario: creating a dropdown field
+  Scenario: Creating a dropdown field
 
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Select drop down"
+    And I wait for 5 seconds
     And I fill in "Favourite Toy" for "field_display_name_en"
     And I fill the following options into "field_option_strings_text_en":
     """
@@ -243,8 +245,7 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-  #checkbox
-  Scenario: creating a multiple-checkbox field
+  Scenario: Creating a multiple-checkbox field
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Check boxes"
@@ -261,7 +262,6 @@ Feature: So that admin can customize fields in a form section
     And I should see "Toys" in the list of fields
     When I go to the add child page
     And I visit the "Family details" tab
-    And I wait for 5 seconds
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | no       |
@@ -280,16 +280,8 @@ Feature: So that admin can customize fields in a form section
       | Lego       | yes      |
 
   @javascript
-  Scenario: can not create a custom field for forms that aren't editable
+  Scenario: Can not create a custom field for forms that aren't editable
 
     Given I am on the edit form section page for "basic_details"
     Then I should not see "Add Field"
     And I should see "Fields on this form cannot be edited"
-
-  @wip
-  #Scenario doesnt exist any more
-  Scenario: should be able to go back to edit form section from add custom field page
-    Given I am on the edit form section page for "family_details"
-    And I follow "Add Field"
-    And I follow "Go Back To Edit Forms Page"
-    Then I am on edit form section page
