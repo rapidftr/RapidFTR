@@ -14,14 +14,14 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Add Field"
 
-#    Then I should find the following links:
-#      | Text Field       | new field page for "text_field" for form "family_details"    |
-#      | Text Area        | new field page for "textarea" for form "family_details"      |
-#      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
-#      | Select drop down | new field page for "select_box" for form "family_details"    |
-#      | Radio button     | new field page for "radio_button" for form "family_details"  |
-#      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
-#
+  #    Then I should find the following links:
+  #      | Text Field       | new field page for "text_field" for form "family_details"    |
+  #      | Text Area        | new field page for "textarea" for form "family_details"      |
+  #      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
+  #      | Select drop down | new field page for "select_box" for form "family_details"    |
+  #      | Radio button     | new field page for "radio_button" for form "family_details"  |
+  #      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
+  #
     When I follow "Text Field"
     And I wait for 5 seconds
 
@@ -39,7 +39,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Anything"
     When I am on children listing page
     And I follow "Register New Child"
-    
+
     Then I should see "Anything"
 
   @javascript
@@ -50,8 +50,8 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Field"
     And I wait for 5 seconds
 
-#    Then I should find the following links:
-#      | Date Field | new field page for "date_field" for form "family_details"|
+  #    Then I should find the following links:
+  #      | Date Field | new field page for "date_field" for form "family_details"|
 
     When I follow "Date Field"
 
@@ -82,8 +82,8 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Add Field"
 
-#    Then I should find the following links:
-#      | Radio button | new field page for "radio_button" for form "family_details" |
+  #    Then I should find the following links:
+  #      | Radio button | new field page for "radio_button" for form "family_details" |
 
     When I follow "Radio button"
 
@@ -140,7 +140,7 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-  # modal dialogue
+# modal dialogue
   Scenario: Should provide navigation links
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
@@ -243,7 +243,7 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-  #checkbox
+#checkbox
   Scenario: creating a multiple-checkbox field
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
