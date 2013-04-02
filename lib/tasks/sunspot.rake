@@ -72,7 +72,12 @@ namespace :sunspot do
   desc "restart solr"
   task :restart => %w( sunspot:stop sunspot:start )
 
+  desc "clean solr data directory"
+  task :clean do
+    FileUtils.rm_rf solr_server.solr_data_dir
+  end
+
   desc "ensure solr is cleanly started"
-  task :clean_start => %w( sunspot:restart sunspot:reindex )
+  task :clean_start => %w( sunspot:stop sunspot:clean sunspot:start sunspot:reindex )
 
 end
