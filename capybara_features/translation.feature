@@ -33,6 +33,6 @@ Feature: Ensure translations
     Given an user "jerry" with password "123"
     When I fill in "jerry" for "user_name"
     And I fill in "123" for "password"
-    And I press "Log in"
+    And I select "Log in"
 
     Then I should see my system language as "العربية"-"ar"
