@@ -23,7 +23,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I should see "jaco"
     And I should see "meredith"
 
-  @javascript @wip
+  @javascript
   Scenario: Checking filter by Active returns all the children who are not reunited in the system and who are not marked as duplicate of another child record
 
     Given the following children exist in the system:
@@ -35,12 +35,12 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jane     | Eyre                | james    | james153     | false    | false | true      |
 
     When I go to the children listing page
-    And I select "Reunited" from "filter"
+    And I select "Active" from "filter"
     Then I should see "zak"
     And I should see "meredith"
-    And I should see "andreas"
-    And I should see "jaco"
-    And I should see "jane"
+    And I should not see "andreas"
+    And I should not see "jaco"
+    And I should not see "jane"
     Then show me the page
 
 
@@ -138,6 +138,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I select "Reunited" from "filter"
     Then I should see the order andreas,jaco,meredith,zak
 
+
   @javascript
   Scenario: Checking filter by Reunited and then selecting order by most recently reunited children returns the children in the order of most recently reunited
 
@@ -195,18 +196,20 @@ Feature: So that I can filter the types of records being show when viewing searc
     Then I should see "Order by"
     And I should see "Most recently flagged"
 
-  @javascript @wip
+  #this test doesn't changes the history time so UI would not show the exact time.. need to find out the behavior
+  @javascript
   Scenario: Checking filter by Flagged returns all the flagged children in the system by order of most recently flagged
 
     Given the following children exist in the system:
-      | name     | last_known_location | reporter | unique_id    | reunited | flag | flagged_at                   |
-      | andreas  | London              | zubair   | zubairlon123 | true     | true | DateTime.new(2001,2,3,4,5,6) |
-      | zak      | London              | zubair   | zubairlon456 | false    | true | DateTime.new(2004,2,3,4,5,6) |
-      | jaco     | NYC                 | james    | james456     | true     | true | DateTime.new(2002,2,3,4,5,6) |
-      | meredith | Austin              | james    | james123     | false    | true | DateTime.new(2003,2,3,4,5,6) |
+      | name     | last_known_location | reporter | unique_id    | reunited | flag | |created_at                  | flagged_at             |
+      | andreas  | London              | zubair   | zubairlon123 | true     | true | |DateTime.new(2001,2,3,4,5,6)| DateTime.new(2001,2,3,4,5,6)|
+      | zak      | London              | zubair   | zubairlon456 | false    | true | |DateTime.new(2004,2,3,4,5,6)| DateTime.new(2004,2,3,4,5,6 |
+      | jaco     | NYC                 | james    | james456     | true     | true | |DateTime.new(2002,2,3,4,5,6)| DateTime.new(2002,2,3,4,5,6) |
+      | meredith | Austin              | james    | james123     | false    | true | |DateTime.new(2003,2,3,4,5,6)| DateTime.new(2003,2,3,4,5,6) |
 
     And I select "Flagged" from "filter"
     And I select "Most recently flagged" from "order_by"
+    Then show me the page
     Then I should see the order zak,meredith,jaco,andreas
 
   @javascript
@@ -223,7 +226,7 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I select "Name" from "order_by"
     Then I should see the order andreas,jaco,meredith,zak
 
-  @javascript @wip
+  @javascript
   Scenario: Checking filter by Flagged and ordering by most recently flagged returns the children in most recently flagged order
 
     Given the following children exist in the system:
