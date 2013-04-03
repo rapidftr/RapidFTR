@@ -2,7 +2,7 @@ require 'spec/spec_helper'
 
 When /^I fill in the basic details of a child$/ do
   fill_in("Birthplace", :with => "Haiti")
-  attach_file("child[photo]0", "features/resources/jorge.jpg", "image/jpg")
+  attach_file("child[photo]0", "capybara_features/resources/jorge.jpg", "image/jpg")
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
@@ -56,7 +56,7 @@ Given /^the following children exist in the system:$/ do |children_table|
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(
             'birthplace' => 'Cairo',
-            'photo_path' => 'features/resources/jorge.jpg',
+            'photo_path' => 'capybara_features/resources/jorge.jpg',
             'reporter' => 'zubair',
             'age_is' => 'Approximate',
             'reunited' => false,
@@ -81,11 +81,11 @@ end
 
 Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
   child = Child.new_with_user_name("Bob Creator",{:name=>name})
-  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.audio = uploadable_audio("capybara_features/resources/#{filename}")
   child.create!
   # visit path_to('new child page')
   #   fill_in('Name', :with => name)
-  #   attach_file("child[audio]", "features/resources/#{filename}", "audio/mpeg")
+  #   attach_file("child[audio]", "capybara_features/resources/#{filename}", "audio/mpeg")
   #   click_button('Save')
 end
 
@@ -115,7 +115,7 @@ Given /^a user "([^\"]*)" has entered a child found in "([^\"]*)" whose name is 
   new_child_record['last_known_location'] = location
   new_child_record.create_unique_id
   new_child_record['name'] = name
-  new_child_record.photo = uploadable_photo("features/resources/jorge.jpg")
+  new_child_record.photo = uploadable_photo("capybara_features/resources/jorge.jpg")
   raise "couldn't save a child record!" unless new_child_record.save
 end
 

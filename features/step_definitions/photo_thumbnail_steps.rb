@@ -36,5 +36,5 @@ def check_no_link(response, child_name)
 end
 
 When /^I fill in the basic photo details of a child$/ do
-  attach_file("photo", "features/resources/jorge.jpg", "image/jpg")
+  attach_file("photo", "capybara_features/resources/jorge.jpg", "image/jpg")
 end
