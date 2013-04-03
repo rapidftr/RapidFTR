@@ -8,7 +8,8 @@ namespace :sunspot do
   ## This will start Solr in the foreground in a new terminal
 
   def tmpdir
-    dir = File.join Dir.tmpdir, (ENV['SOLR_PORT'] || '8983')
+    temp_dir = ENV['SOLR_TMPDIR'] || Dir.tmpdir
+    dir = File.join temp_dir, (ENV['SOLR_PORT'] || '8983')
     FileUtils.mkdir_p dir
     dir
   end
@@ -71,7 +72,12 @@ namespace :sunspot do
   desc "restart solr"
   task :restart => %w( sunspot:stop sunspot:start )
 
+  desc "clean solr data directory"
+  task :clean do
+    FileUtils.rm_rf solr_server.solr_data_dir
+  end
+
   desc "ensure solr is cleanly started"
-  task :clean_start => %w( sunspot:restart sunspot:reindex )
+  task :clean_start => %w( sunspot:stop sunspot:clean sunspot:start sunspot:reindex )
 
 end
