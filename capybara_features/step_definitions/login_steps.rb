@@ -18,8 +18,10 @@ Given /^I am logged in as "(.+)"/ do |user_name|
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
-  step "I press \"Log in\""
+  #step "I press \"Log in\""
+  find("//input[@class='btn_submit']").click
 end
+
 
 
 Given /there is a User/ do
@@ -37,22 +39,31 @@ Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permiss
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
-  step "I press \"Log in\""
+  #step "I press \"Log in\""
+  find("//input[@class='btn_submit']").click
 end
 
 Given /^I am logged in as a user with "(.+)" permissions?$/ do |permissions|
   step "\"mary\" logs in with \"#{permissions}\" permissions"
 end
 
+Given /^I am logged in as a "(.+)" with "(.+)" permissions?$/ do |username,permissions|
+  step "\"#{username}\" logs in with \"#{permissions}\" permissions"
+end
+
 Given /^there is a admin$/ do
-	step "a admin \"admin\" with a password \"123\""
+  step "a admin \"admin\" with a password \"123\""
 end
 Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"#{password}\" for \"password\""
   step "I press \"Log in\""
+
 end
 When /^I logout$/ do
-  click_link("Logout")
+  find("//div[@class='links']/a[@href='/logout']").click
 end
+
+
+#

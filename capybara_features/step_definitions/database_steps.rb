@@ -8,19 +8,23 @@ Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\
   permissions.flatten!
 
   role_name = permissions.join("-")
-  role = Role.find_by_name(role_name) || Role.create!(:name => role_name, :permissions => permissions)
+  role = Role.find_by_name(role_name) || Role.create(:name => role_name, :permissions => permissions)
 
-  @user = User.new(
-    :user_name=>username,
-    :password=>password,
-    :password_confirmation=>password,
-    :full_name=>username,
-    :organisation=>"UNICEF",
-    :disabled => "false",
-    :email=>"#{username}@test.com",
-    :role_ids => [role.id]
-  )
-  @user.save!
+  @user = User.find_by_user_name(username)
+
+  if @user.nil?
+    @user = User.new(
+        :user_name=>username,
+        :password=>password,
+        :password_confirmation=>password,
+        :full_name=>username,
+        :organisation=>"UNICEF",
+        :disabled => "false",
+        :email=>"#{username}@test.com",
+        :role_ids => [role.id]
+    )
+    @user.save!
+  end
 end
 
 Given /^an? (user|admin) "([^"]+)"$/ do |user_type, user_name|
@@ -33,7 +37,7 @@ end
 
 Given /^I have an expired session/ do
   Session.all.each do |session|
-     session.destroy
+    session.destroy
   end
 end
 
@@ -87,7 +91,7 @@ Given /^I have the following devices:$/ do |table|
 end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|
-	step %Q|I am on the home page|
+  step %Q|I am on the home page|
   step %Q|I select "#{timezone}" from "Current time zone"|
   step %Q|I press "Save"|
 end
