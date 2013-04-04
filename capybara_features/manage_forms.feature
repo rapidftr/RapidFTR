@@ -1,4 +1,6 @@
 @wip
+
+# this test is no more valid as this the entire UI is changed
 Feature: So that admin can see Manage Form Sections Page
 
   Background:
@@ -10,6 +12,7 @@ Feature: So that admin can see Manage Form Sections Page
       | Care Arrangements |                               | care_arrangements | 3     | false        |
     And I follow "FORMS"
 
+  @javascript
   Scenario: Admins should see correct re-ordering links for each section
     Then I should see the "Basic Identity" section without any ordering links
     And I should see the "Basic Identity" section without an enabled checkbox
