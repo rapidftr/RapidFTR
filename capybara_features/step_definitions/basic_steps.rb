@@ -80,7 +80,7 @@ Given /^a child record named "([^"]*)" exists with a audio file with the name "(
                "disabled" => "false",
                "role_ids" => "ADMIN")
   child = Child.new_with_user_name(user,{:name=>name})
-  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.audio = uploadable_audio("capybara_features/resources/#{filename}")
   child.create!
 end
 
@@ -218,7 +218,7 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
 end
 
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_name|
-  page.should have_xpath("//table[@id='form_sections']//td[@class='breakword' and contains(., '#{field_name}')]")
+  page.should have_xpath("//table[@id='form_sections']//tr[@class='rowEnabled' and contains(., '#{field_name}')]")
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|

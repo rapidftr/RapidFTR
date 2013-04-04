@@ -43,6 +43,17 @@ if should_seed? User
               "disabled" => "false",
               "organisation" => "N/A",
               "role_ids" => [field_level_admin.id])
+
+  if Rails.env.android?
+    User.create!("user_name" => "admin",
+                 "password" => "admin" ,
+                 "password_confirmation" => "admin",
+                 "full_name" => "admin user",
+                 "email" => "admin@rapidftr.com",
+                 "disabled" => "false",
+                 "organisation" => "Unicef",
+                "role_ids"=>[registration_worker.id,system_admin.id,field_level_admin.id])
+  end
 end
 
 if should_seed? FormSection

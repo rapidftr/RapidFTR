@@ -1,7 +1,7 @@
 RapidFTR
 =============
 
-[![Build Status](https://travis-ci.org/rapidftr/RapidFTR.png?branch=master)](https://travis-ci.org/rapidftr/RapidFTR)
+[![Build Status](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/app/rest/builds/buildType:bt2/statusIcon)](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/viewType.html?buildTypeId=bt2)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
 
 RapidFTR is a mobile application that lets aid workers collect, sort and share information about children in emergency situations. RapidFTR is
