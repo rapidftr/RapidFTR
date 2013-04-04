@@ -221,6 +221,10 @@ And /^I should see "([^\"]*)" in the list of fields$/ do |field_name|
   page.should have_xpath("//table[@id='form_sections']//tr[@class='rowEnabled' and contains(., '#{field_name}')]")
 end
 
+And /^I should see "([^\"]*)" in the list of fields and disabled$/ do |field_name|
+  page.should have_xpath("//table[@id='form_sections']//tr[@class='rowDisabled' and contains(., '#{field_name}')]")
+end
+
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :help_text => field_help_text)
