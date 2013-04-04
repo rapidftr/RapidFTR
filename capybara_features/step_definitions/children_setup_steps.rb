@@ -15,7 +15,7 @@ Given /^the following children exist in the system:$/ do |children_table|
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(
         'birthplace' => 'Cairo',
-        'photo_path' => 'features/resources/jorge.jpg',
+        'photo_path' => 'capybara_features/resources/jorge.jpg',
         'reporter' => 'zubair',
         'created_by' => 'Billy',
         'created_organisation' => 'UNICEF',

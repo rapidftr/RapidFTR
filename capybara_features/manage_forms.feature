@@ -1,6 +1,4 @@
 @wip
-
-# this test is no more valid as this the entire UI is changed
 Feature: So that admin can see Manage Form Sections Page
 
   Background:

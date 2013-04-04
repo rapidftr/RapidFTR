@@ -17,7 +17,7 @@ Feature:
     And I fill in "London" for "Nationality"
     And I fill in "Haiti" for "Birthplace"
     And I click the "Photos and Audio" link
-    And I attach a photo "features/resources/jorge.jpg"
+    And I attach a photo "capybara_features/resources/jorge.jpg"
     And I press "Save"
 
     # editing the created record
@@ -28,7 +28,7 @@ Feature:
     And I fill in "Bombay" for "Nationality"
     And I fill in "Zambia" for "Birthplace"
     And I click the "Photos and Audio" link
-    And I attach a photo "features/resources/jeff.png"
+    And I attach a photo "capybara_features/resources/jeff.png"
     And I press "Save"
 
     # verifying whether the edited record has been saved successfully
@@ -44,7 +44,7 @@ Feature:
    # checking if validations are still working fine
     Then I follow "Edit"
     And I click the "Photos and Audio" link
-    And I attach a photo "features/resources/textfile.txt"
+    And I attach a photo "capybara_features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
 
