@@ -5,6 +5,7 @@
 # files.
 
 ENV["RAILS_ENV"] ||= "cucumber"
+
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
@@ -22,6 +23,14 @@ require 'spec/support/uploadable_files'
 require 'spec/support/child_finder'
 
 require 'rack/test'
+
+#require 'webrat'
+#require 'webrat/core/matchers'
+#
+#Webrat.configure do |config|
+#  config.mode = :rails
+#  config.open_error_files = false # Set to true if you want error pages to pop up in the browser
+#end
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
@@ -53,14 +62,22 @@ ActionController::Base.allow_rescue = false
 #
 # If you set this to false, transactions will be off for all scenarios,
 # regardless of whether you use @no-txn or not.
-#
+
 # Beware that turning transactions off will leave data in your database
 # after each scenario, which can lead to hard-to-debug failures in
 # subsequent scenarios. If you do this, we recommend you create a Before
 # block that will explicitly put your database in a known state.
-# Cucumber::Rails::World.use_transactional_fixtures = false
-
+#Cucumber::Rails::World.use_transactional_fixtures = true
 # How to clean your database when transactions are turned off. See
 # http://github.com/bmabey/database_cleaner for more info.
+
+if defined?(ActiveRecord::Base)
+  begin
+    require 'database_cleaner'
+    DatabaseCleaner.strategy = :truncation
+  rescue LoadError => ignore_if_database_cleaner_not_present
+  end
+end
+
 
 World(UploadableFiles, ChildFinder)

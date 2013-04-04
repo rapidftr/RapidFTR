@@ -15,7 +15,6 @@ gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
 gem 'sunspot',				'1.3.3'
-gem 'sunspot_solr',   '1.3.3'
 gem 'tzinfo'
 gem 'rake',           '0.8.7'
 gem 'dynamic_form'
@@ -31,11 +30,13 @@ gem 'libv8', '~> 3.11.8', :platform => :ruby
 gem 'thin', :platform => :ruby, :require => false
 
 # NOTE: zipruby gem needs to be installed in Windows using a special gem install directive, which is unsupported by bundler
-# So we have vendorized the gem for Windows alone
+# NOTE: Sunspot 1.3.3 has bug in Linux, But 1.3.1 has problem in Windows
 if RUBY_PLATFORM =~ /(win32|w32)/
   gem 'zipruby', '0.3.6', :path => "vendor/windows/gems/zipruby-0.3.6-x86-mswin32"
+  gem 'sunspot_solr',   '1.3.3'
 else
   gem 'zipruby', '~> 0.3.6'
+  gem 'sunspot_solr', '1.3.1'
 end
 # NOTE: Having If conditions in the Gemfile is not generally recommended
 # Because using the above code, if you run bundle install in Linux, it will generate a different Gemfile.lock

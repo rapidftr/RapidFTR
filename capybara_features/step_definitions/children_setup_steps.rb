@@ -15,7 +15,7 @@ Given /^the following children exist in the system:$/ do |children_table|
   children_table.hashes.each do |child_hash|
     child_hash.reverse_merge!(
         'birthplace' => 'Cairo',
-        'photo_path' => 'features/resources/jorge.jpg',
+        'photo_path' => 'capybara_features/resources/jorge.jpg',
         'reporter' => 'zubair',
         'created_by' => 'Billy',
         'created_organisation' => 'UNICEF',
@@ -34,7 +34,8 @@ Given /^the following children exist in the system:$/ do |children_table|
     User.find_by_user_name(user_name).
         update_attributes({:organisation => child_hash['created_organisation']}) if child_hash['created_organisation']
 
-    child_hash['flagged_at'] = child_hash['flagged_at'] || DateTime.new(2001, 2, 3, 4, 5, 6)
+
+    child_hash['flag_at'] = child_hash['flagged_at'] || DateTime.new(2001, 2, 3, 4, 5, 6)
     child_hash['reunited_at'] = child_hash['reunited_at'] || DateTime.new(2012, 2, 3, 4, 5, 6)
     flag, flag_message = child_hash.delete('flag'), child_hash.delete('flag_message')
 
@@ -48,6 +49,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     child['histories'] ||= []
     child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything'}}
     child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => "true"}, 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
+
     child.create!
     # Need this because of how children_helper grabs flag_message from child history - cg
     if flag
