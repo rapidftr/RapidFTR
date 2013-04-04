@@ -80,7 +80,7 @@ $(document).ready(function() {
 
         $("#field_details_options, #field_details").hide();
 
-        $("input[type='text'],textarea ").val("");
+        $(".field_details_panel input[type='text'], .field_details_panel textarea").val("");
         var _this = this;
         $(".field_type").each(function(){
             $(this).val(_this.id);

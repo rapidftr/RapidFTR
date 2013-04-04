@@ -1,4 +1,4 @@
-@wip
+
 Feature: So that admin can customize fields in a form section
 
   Background:
@@ -8,31 +8,33 @@ Feature: So that admin can customize fields in a form section
       | Family details | family_details | true     | 2     | true    | false        |
     Given I am logged in as an admin
 
-
+  @javascript
   Scenario: Admins should be able to add new text fields
     Given I am on the edit form section page for "family_details"
 
-    When I follow "Add Custom Field"
+    When I follow "Add Field"
 
-    Then I should find the following links:
-      | Text Field       | new field page for "text_field" for form "family_details"    |
-      | Text Area        | new field page for "textarea" for form "family_details"      |
-      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
-      | Select drop down | new field page for "select_box" for form "family_details"    |
-      | Radio button     | new field page for "radio_button" for form "family_details"  |
-      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
-
+#    Then I should find the following links:
+#      | Text Field       | new field page for "text_field" for form "family_details"    |
+#      | Text Area        | new field page for "textarea" for form "family_details"      |
+#      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
+#      | Select drop down | new field page for "select_box" for form "family_details"    |
+#      | Radio button     | new field page for "radio_button" for form "family_details"  |
+#      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
+#
     When I follow "Text Field"
+    And I wait for 5 seconds
 
     Then I should find the form with following attributes:
-      | Display name |
+      | field_display_name_en |
       | Help text    |
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Anything" for "Display name"
+    When I fill in "Anything" for "field_display_name_en"
     And I fill in "Really anything" for "Help text"
-    And I press "Save"
+    And I press "Save Details" within "#new_field"
+    And I wait for 5 seconds
 
     Then I should see "Anything"
     When I am on children listing page
@@ -40,61 +42,67 @@ Feature: So that admin can customize fields in a form section
     
     Then I should see "Anything"
 
+  @javascript
   Scenario: Admins should be able to add new date fields
     Given I am on the edit form section page for "family_details"
+    And I wait for 5 seconds
 
-    When I follow "Add Custom Field"
+    When I follow "Add Field"
+    And I wait for 5 seconds
 
-    Then I should find the following links:
-      | Date Field | new field page for "date_field" for form "family_details"|
+#    Then I should find the following links:
+#      | Date Field | new field page for "date_field" for form "family_details"|
 
     When I follow "Date Field"
 
     Then I should find the form with following attributes:
-      | Display name |
+      | field_display_name_en |
       | Help text    |
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Anything" for "Display name"
+    When I fill in "Anything" for "field_display_name_en"
     And I fill in "Really anything" for "Help text"
-    And I press "Save"
+    And I press "Save Details" within "#new_field"
 
     Then I should see "Anything"
 
     When I am on children listing page
     And I follow "Register New Child"
+    And I follow "Family details"
 
     Then I should see "Anything"
     When I fill in "17 Nov 2010" for "Anything"
     And I press "Save"
     Then I should see "17 Nov 2010"
 
+  @javascript
   Scenario: Admins should be able to add new radio button
     Given I am on the edit form section page for "family_details"
 
-    When I follow "Add Custom Field"
+    When I follow "Add Field"
 
-    Then I should find the following links:
-      | Radio button | new field page for "radio_button" for form "family_details" |
+#    Then I should find the following links:
+#      | Radio button | new field page for "radio_button" for form "family_details" |
 
     When I follow "Radio button"
 
     Then I should find the form with following attributes:
-      | Display name |
+      | field_display_name_en |
       | Help text    |
       | Visible      |
-      | Options      |
+      | field_option_strings_text_en  |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Radio button name" for "Display name"
+    When I fill in "Radio button name" for "field_display_name_en"
     And I fill in "Something" for "Help text"
-    And I fill the following options into "Options":
+    And I fill the following options into "field_option_strings_text_en":
     """
     one
     two
     """
-    And I press "Save"
+    And I wait for 5 seconds
+    And I press "Save Details" within "#new_field"
 
     Then I should see "Radio button name"
     When I am on children listing page
@@ -102,13 +110,14 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Radio button name"
 
-
+  @wip
   Scenario: Basic Details should have no option to edit it's fields
 
     Given I am on the form section page
 
     Then I should not see the "Manage Fields" link for the "basic_details" section
 
+  @javascript
   Scenario: Should not be able to add two fields with the same name in a form section
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
@@ -118,6 +127,7 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Field already exists on this form"
 
+  @wip
   Scenario: Should not be able to add two fields with the same name
     Given the "basic_details" form section has the field "My field" with help text "Some description"
     And I am on the form section page
@@ -127,7 +137,10 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Field already exists on form 'Basic details'"
 
-  Scenario: Should provide navigation links
+
+  @javascript
+  @wip
+  Scenario: Should provide navigation links as a modal dialogue
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
 
@@ -135,50 +148,58 @@ Feature: So that admin can customize fields in a form section
     Then I am on the form section page
 
 
-  Scenario: creating a numeric field
+  @javascript
+  Scenario: Creating a numeric field
     Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
+    And I follow "Add Field"
 
     When I follow "Numeric Field"
     And I fill in "Help for a numeric field" for "Help text"
-    And I fill in "My new number field" for "Display name"
-    And I press "Save"
+    And I wait for 5 seconds
+    And I fill in "My new number field" for "field_display_name_en"
+    And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
+    And I wait for 5 seconds
     And I should see "My new number field" in the list of fields
 
     When I am on children listing page
     And I follow "Register New Child"
+    And I follow "Family details"
     And I fill in "2345" for "My new number field"
     And I press "Save"
 
     Then I should see "My new number field: 2345"
 
-  Scenario: creating a field without giving a name should dehumanize the display name
+  @javascript
+  Scenario: Creating a field without giving a name should dehumanize the display name
 
     Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
+    And I follow "Add Field"
 
     When I follow "Text Field"
     And I fill in "Help for a text field" for "Help text"
-    And I fill in "My Text field" for "Display name"
-    And I press "Save"
+    And I wait for 5 seconds
+    And I fill in "My Text field" for "field_display_name_en"
+    And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
     And I should see "My Text field" in the list of fields
 
-  Scenario: creating a radio_button field
+  @javascript
+  Scenario: Creating a radio_button field
 
     Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
+    And I follow "Add Field"
     And I follow "Radio button"
-    And I fill in "Radio button name" for "Display name"
-    And I fill the following options into "Options":
+    And I wait for 5 seconds
+    And I fill in "Radio button name" for "field_display_name_en"
+    And I fill the following options into "field_option_strings_text_en":
     """
     one
     two
     """
-    When I press "Save"
+    And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
 
@@ -188,22 +209,24 @@ Feature: So that admin can customize fields in a form section
     And I visit the "Family details" tab
 
     Then the "Radio button name" radio_button should have the following options:
-      | one |
+      | one\n |
       | two |
 
-  Scenario: creating a dropdown field
+  @javascript
+  Scenario: Creating a dropdown field
 
     Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
+    And I follow "Add Field"
     And I follow "Select drop down"
-    And I fill in "Favourite Toy" for "Display name"
-    And I fill the following options into "Options":
+    And I wait for 5 seconds
+    And I fill in "Favourite Toy" for "field_display_name_en"
+    And I fill the following options into "field_option_strings_text_en":
     """
     Doll
     Teddy bear
     Younger sibling
     """
-    When I press "Save"
+    And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
 
@@ -219,18 +242,22 @@ Feature: So that admin can customize fields in a form section
       | Teddy bear      | no        |
       | Younger sibling | no        |
 
-  Scenario: creating a multiple-checkbox field
+
+  @javascript
+  @wip
+  Scenario: Creating a multiple-checkbox field
     Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
+    And I follow "Add Field"
     And I follow "Check boxes"
-    And I fill in "Toys" for "Display name"
-    And I fill the following options into "Options":
+    And I fill in "Toys" for "field_display_name_en"
+    And I fill the following options into "field_option_strings_text_en":
     """
-			Action Man
-			Barbie
-			Lego
-			"""
-    When I press "Save"
+	Action Man
+	Barbie
+	Lego
+	"""
+
+    And I press "Save Details" within "#new_field"
     Then I should see "Field successfully added"
     And I should see "Toys" in the list of fields
     When I go to the add child page
@@ -242,7 +269,7 @@ Feature: So that admin can customize fields in a form section
       | Lego       | no       |
     When I check "Lego" for "Toys"
     And I check "Action Man" for "Toys"
-    And I press "Save"
+    And I press "Save Details" within "#new_field"
     Then I should see "Action Man, Lego"
     When I follow "Edit"
     And I visit the "Family details" tab
@@ -252,14 +279,9 @@ Feature: So that admin can customize fields in a form section
       | Barbie     | no       |
       | Lego       | yes      |
 
-  Scenario: can not create a custom field for forms that aren't editable
+  @javascript
+  Scenario: Can not create a custom field for forms that aren't editable
 
     Given I am on the edit form section page for "basic_details"
-    Then I should not see "Add Custom Field"
+    Then I should not see "Add Field"
     And I should see "Fields on this form cannot be edited"
-
-  Scenario: should be able to go back to edit form section from add custom field page
-    Given I am on the edit form section page for "family_details"
-    And I follow "Add Custom Field"
-    And I follow "Go Back To Edit Forms Page"
-    Then I am on edit form section page

@@ -1,3 +1,4 @@
+#not exists anymore
 @wip
 Feature: Adding a suggested field to a form section
 
@@ -12,29 +13,33 @@ Feature: Adding a suggested field to a form section
         | name          | unique_id     | order |
         | Basic details | basic_details | 1     |
 
-   Scenario: Viewing the suggested fields for a form section when adding a field to a form section
+  @wip
+  Scenario: Viewing the suggested fields for a form section when adding a field to a form section
      Given I am logged in as an admin
      And I am on the edit form section page for "basic_details"
 
-     When I follow "Add Custom Field"
+     When I follow "Add Field"
+    And I wait for 5 seconds
 
      Then I should see the following suggested fields:
         | name                    | unique_id | help_text                        |
         | A Suggested Field       | field_one | This is a good field to use      |
         | Another suggested field | field_two | This also is a good field to use |
 
-   Scenario: Adding a suggested field to a form section
+  @run
+  @javascript
+  Scenario: Adding a suggested field to a form section
      Given I am logged in as an admin
      And I am on the edit form section page for "basic_details"
 
-     When I follow "Add Custom Field"
+     When I follow "Add Field"
      And I choose to add suggested field "field_one"
 
      Then I should see "Field successfully added"
      And I should be on the edit form section page for "basic_details"
      And I should see "A_suggested_field" in the list of visible fields
 
-     When I follow "Add Custom Field"
+     When I follow "Add Field"
 
      Then I should not see the following suggested fields:
         | unique_id |
@@ -44,7 +49,7 @@ Feature: Adding a suggested field to a form section
      Given I am logged in as an admin
      And I am on the edit form section page for "basic_details"
 
-     When I follow "Add Custom Field"
+     When I follow "Add Field"
      And I choose to add suggested field "field_three"
      Then I should see "Field successfully added"
 

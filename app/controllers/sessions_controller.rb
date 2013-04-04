@@ -105,13 +105,7 @@ class SessionsController < ApplicationController
   def render_session_as_json(session,options = {})
     user = User.find_by_user_name(session.user_name)
     json = {
-      :session => {
-        :token => session.token,
-        :link => {
-          :rel => 'session',
-          :uri => session_path(session)
-        }
-      },
+      :rftr_session_id => session.token,
       :db_key => MobileDbKey.find_or_create_by_imei(session.imei).db_key,
       :organisation => user.organisation,
       :language => I18n.default_locale,

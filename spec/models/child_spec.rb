@@ -1165,8 +1165,8 @@ describe Child do
   describe "primary_photo =" do
 
     before :each do
-      @photo1 = uploadable_photo("features/resources/jorge.jpg")
-      @photo2 = uploadable_photo("features/resources/jeff.png")
+      @photo1 = uploadable_photo("capybara_features/resources/jorge.jpg")
+      @photo2 = uploadable_photo("capybara_features/resources/jeff.png")
       User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
       @child = Child.new("name" => "Tom", 'created_by' => "me")
       @child.photo= {0 => @photo1, 1 => @photo2}
