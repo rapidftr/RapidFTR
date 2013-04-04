@@ -47,7 +47,7 @@ Given /^the following children exist in the system:$/ do |children_table|
     child['unique_identifier'] = unique_id if unique_id
     child['short_id'] = short_id if short_id
     child['histories'] ||= []
-    child['histories'] << {'datetime' => child_hash['flagged_at'], 'changes' => {'flag' => 'anything'}}
+    child['histories'] << {'datetime' => child_hash['flag_at'], 'changes' => {'flag' => 'anything'}}
     child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => "true"}, 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
 
     child.create!
