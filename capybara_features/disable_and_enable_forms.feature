@@ -1,4 +1,4 @@
-
+@wip
 Feature: Disable and enable forms
   In order to customise the view
   As an admin user
@@ -15,7 +15,7 @@ Feature: Disable and enable forms
     And I am logged in as an admin
     When I am on the form section page
 
-    Then the form section "Caregiver details" should be listed as hidden
+    Then the form section "caregiver_details" should be listed as hidden
     And I wait for 5 seconds
     When I select the form section "caregiver_details" to toggle visibility
     And I wait for 5 seconds
