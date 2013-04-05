@@ -290,9 +290,6 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
   end
 end
 
-And /^I submit the form$/ do
-  click_button('Save')
-end
 
 When /^I clear the search results$/ do
 click_button("reset")
