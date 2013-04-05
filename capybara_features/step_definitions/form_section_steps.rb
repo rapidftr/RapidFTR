@@ -74,11 +74,11 @@ When /^I demote field "([^"]*)"$/ do |field|
   #drag.drag_to(drop)
 
   #http://your.bucket.s3.amazonaws.com/jquery.simulate.drag-sortable.js
-  page.execute_script '
-    $.getScript("https://github.com/mattheworiordan/jquery.simulate.drag-sortable.js/blob/master/jquery.simulate.drag-sortable.js", function() {
-      $("tr[date=\'name\']").simulateDragSortable({ move: 2});
+  page.execute_script %{
+    $.getScript("http://your.bucket.s3.amazonaws.com/jquery.simulate.drag-sortable.js", function() {
+      $("tr[@data='name']").simulateDragSortable({ move: 1});
     });
-  '
+  }
 end
 
 Then /^I should be able to promote the field "([^"]*)"$/ do |field|
