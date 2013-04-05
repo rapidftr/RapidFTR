@@ -20,6 +20,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I wait for the page to load
     Then I should see "Please enter a valid field value."
 
+
   @javascript
   Scenario: Searching by 'Name'
     Given I am logged in
@@ -35,6 +36,9 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I wait for the page to load
     Then I should see "Will" in the search results
     And I should see "Willis" in the search results
+    When I clear the search results
+    Then I should not see "Will" in the search results
+    And I should not see "Willis" in the search results
 
   @javascript
   Scenario: Searching by a dropdown field
@@ -125,7 +129,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I search
      And I wait for the page to load
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
-  
+
   @javascript
   Scenario: Searching by 'Date Created' specifying only the 'After' date
    Given I am logged in
