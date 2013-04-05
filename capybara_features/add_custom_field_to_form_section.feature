@@ -14,14 +14,14 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Add Field"
 
-#    Then I should find the following links:
-#      | Text Field       | new field page for "text_field" for form "family_details"    |
-#      | Text Area        | new field page for "textarea" for form "family_details"      |
-#      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
-#      | Select drop down | new field page for "select_box" for form "family_details"    |
-#      | Radio button     | new field page for "radio_button" for form "family_details"  |
-#      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
-#
+  #    Then I should find the following links:
+  #      | Text Field       | new field page for "text_field" for form "family_details"    |
+  #      | Text Area        | new field page for "textarea" for form "family_details"      |
+  #      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
+  #      | Select drop down | new field page for "select_box" for form "family_details"    |
+  #      | Radio button     | new field page for "radio_button" for form "family_details"  |
+  #      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
+  #
     When I follow "Text Field"
     And I wait for 5 seconds
 
@@ -39,7 +39,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Anything"
     When I am on children listing page
     And I follow "Register New Child"
-    
+
     Then I should see "Anything"
 
   @javascript
@@ -50,8 +50,8 @@ Feature: So that admin can customize fields in a form section
     When I follow "Add Field"
     And I wait for 5 seconds
 
-#    Then I should find the following links:
-#      | Date Field | new field page for "date_field" for form "family_details"|
+  #    Then I should find the following links:
+  #      | Date Field | new field page for "date_field" for form "family_details"|
 
     When I follow "Date Field"
 
@@ -82,8 +82,8 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Add Field"
 
-#    Then I should find the following links:
-#      | Radio button | new field page for "radio_button" for form "family_details" |
+  #    Then I should find the following links:
+  #      | Radio button | new field page for "radio_button" for form "family_details" |
 
     When I follow "Radio button"
 
@@ -140,7 +140,8 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-  Scenario: Should provide navigation links as a modal dialogue
+# modal dialogue
+  Scenario: Should provide navigation links
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
 
@@ -149,13 +150,12 @@ Feature: So that admin can customize fields in a form section
 
 
   @javascript
-  Scenario: Creating a numeric field
+  Scenario: creating a numeric field
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
 
     When I follow "Numeric Field"
     And I fill in "Help for a numeric field" for "Help text"
-    And I wait for 5 seconds
     And I fill in "My new number field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
@@ -172,14 +172,13 @@ Feature: So that admin can customize fields in a form section
     Then I should see "My new number field: 2345"
 
   @javascript
-  Scenario: Creating a field without giving a name should dehumanize the display name
+  Scenario: creating a field without giving a name should dehumanize the display name
 
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
 
     When I follow "Text Field"
     And I fill in "Help for a text field" for "Help text"
-    And I wait for 5 seconds
     And I fill in "My Text field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
@@ -187,7 +186,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "My Text field" in the list of fields
 
   @javascript
-  Scenario: Creating a radio_button field
+  Scenario: creating a radio_button field
 
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
@@ -213,12 +212,11 @@ Feature: So that admin can customize fields in a form section
       | two |
 
   @javascript
-  Scenario: Creating a dropdown field
+  Scenario: creating a dropdown field
 
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Select drop down"
-    And I wait for 5 seconds
     And I fill in "Favourite Toy" for "field_display_name_en"
     And I fill the following options into "field_option_strings_text_en":
     """
@@ -245,7 +243,8 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-  Scenario: Creating a multiple-checkbox field
+#checkbox
+  Scenario: creating a multiple-checkbox field
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Check boxes"
@@ -262,6 +261,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "Toys" in the list of fields
     When I go to the add child page
     And I visit the "Family details" tab
+    And I wait for 5 seconds
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | no       |
@@ -280,8 +280,16 @@ Feature: So that admin can customize fields in a form section
       | Lego       | yes      |
 
   @javascript
-  Scenario: Can not create a custom field for forms that aren't editable
+  Scenario: can not create a custom field for forms that aren't editable
 
     Given I am on the edit form section page for "basic_details"
     Then I should not see "Add Field"
     And I should see "Fields on this form cannot be edited"
+
+  @wip
+  #Scenario doesnt exist any more
+  Scenario: should be able to go back to edit form section from add custom field page
+    Given I am on the edit form section page for "family_details"
+    And I follow "Add Field"
+    And I follow "Go Back To Edit Forms Page"
+    Then I am on edit form section page

@@ -1,4 +1,4 @@
-@wip
+
 Feature: Hide Child Record Form Fields
 
   As an admin user
@@ -17,8 +17,9 @@ Feature: Hide Child Record Form Fields
       | visible_field | text_field | Visible Field |
       | hidden_field  | text_field | Hidden Field  |
      And I am on the edit field page for "hidden_field" on "family_details" form
-    When I uncheck "Visible"
-     And I press "Save"
+    And I wait for 5 seconds
+    When I uncheck "field_visible"
+    And I press "Save Details" within ".field_details_panel"
 
 
   Scenario: Hidden field does not appear of form
@@ -30,9 +31,13 @@ Feature: Hide Child Record Form Fields
     When I press "Save"
     Then I should see "Child record successfully created."
      And I should see "Will"
+     And I follow "Family details"
      And I should see "Visible Field"
      And I should not see "Hidden Field"
 
+  @javascript
+  @wip
+  #export to pdf not working using webdriver
   Scenario: Hidden field does not appear on PDF
    Given I follow "CHILDREN"
      And I am on children listing page
@@ -40,8 +45,10 @@ Feature: Hide Child Record Form Fields
      And I follow "Family details"
      And I fill in "Name" with "Will"
     When I press "Save"
-    Then I follow "Export" span
-    Then I follow "Export to PDF"
+    Then I follow "Export"
+    And I wait for 15 seconds
+#    Then I follow "Export to PDF"
+    Then I click "//a[text()='Export to PDF']"
      And I should receive a PDF file
      And the PDF file should contain the string "Visible Field"
      And the PDF file should not contain the string "Hidden Field"

@@ -1,8 +1,10 @@
 @wip
+#scenario repeated and not available currently
 Feature: hide/show form fields
 
   Background:
     Given I am logged in as an admin
+
 
   Scenario: Hide a field
     Given I am on the edit form section page for "basic_identity"
