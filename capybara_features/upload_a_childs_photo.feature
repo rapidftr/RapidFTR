@@ -12,7 +12,7 @@ Feature:
     Given I am on the new child page
     When I fill in "John" for "Name"
     And I click the "Photos and Audio" link
-    And I attach a photo "features/resources/jorge.jpg"
+    And I attach a photo "capybara_features/resources/jorge.jpg"
     And I press "Save"
 
     Then I should see "Child record successfully created"
@@ -25,8 +25,8 @@ Feature:
     And I fill in "John" for "Name"
     And I click the "Photos and Audio" link
     And I attach the following photos:
-    |features/resources/jorge.jpg|
-    |features/resources/jeff.png |
+    |capybara_features/resources/jorge.jpg|
+    |capybara_features/resources/jeff.png |
       
     And I press "Save"
     Then I should see "Child record successfully created"
@@ -43,7 +43,7 @@ Feature:
     Given I am on the new child page
     And I fill in "John" for "Name"
     And I click the "Photos and Audio" link
-    And I attach a photo "features/resources/textfile.txt"
+    And I attach a photo "capybara_features/resources/textfile.txt"
     And I press "Save"
 
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
@@ -52,7 +52,7 @@ Feature:
 
     Given I am editing an existing child record
     And I click the "Photos and Audio" link
-    And I attach a photo "features/resources/textfile.txt"
+    And I attach a photo "capybara_features/resources/textfile.txt"
     And I press "Save"
 
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
@@ -64,8 +64,8 @@ Feature:
     And I fill in "John" for "Name"
     And I click the "Photos and Audio" link
     And I attach the following photos:
-    |features/resources/jorge.jpg|
-    |features/resources/jeff.png |
+    |capybara_features/resources/jorge.jpg|
+    |capybara_features/resources/jeff.png |
 
     And I press "Save"
     Then I should see "Child record successfully created"

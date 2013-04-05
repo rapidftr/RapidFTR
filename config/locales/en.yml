@@ -553,6 +553,10 @@ en:
         system_users:
           username_unique: "User name has already been taken! Please select a new User name"
 
+        replication:
+          remote_app_url: "Please enter a proper URL, e.g. http://<server>:<port>"
+          save_remote_couch_config: "The URL/Username/Password that you entered is incorrect"
+
   select_all_results: "Select all results"
 
   histories:

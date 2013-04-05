@@ -25,7 +25,7 @@ namespace :app do
   desc "Create release version files"
   task :setup_revision do
     branch  = fetch(:branch)
-    version = branch =~ /^release-.+$/ ? branch.gsub("release-", "") : "1.1-development"
+    version = branch =~ /^release-.+$/ ? branch.gsub("release-", "") : "1.1.0-development"
     set :app_version, version
     template "version.erb", File.join(current_path, "public", "version.txt")
   end
