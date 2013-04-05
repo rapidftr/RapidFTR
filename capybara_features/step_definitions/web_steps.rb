@@ -27,13 +27,7 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
     find("//input[@class='btn_submit']").click
     #click_button(button)
   end
-  end
-
-#  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-#  with_scope(selector) do
-#    find("//input[@class='btn_submit']").click
-#  end
-#end
+end
 
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
