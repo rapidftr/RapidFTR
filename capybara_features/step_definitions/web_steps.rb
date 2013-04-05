@@ -29,7 +29,7 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
 end
 
 When /^I search$/ do
-   page.execute_script("$('input[value=\"#{Search}\"]').click();")
+  page.execute_script("$('input[value=\"#{Search}\"]').click();")
 end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
@@ -77,7 +77,7 @@ When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"
   page.execute_script "$('a.ui-datepicker-next').trigger('click')"
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
-    # fill_in(field, :with => value)
+  # fill_in(field, :with => value)
 end
 
 # Use this to fill in an entire form with data from a table. Example:
@@ -136,7 +136,7 @@ Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
   else
     page.text.should match(regexp)
   end
-  end
+end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
