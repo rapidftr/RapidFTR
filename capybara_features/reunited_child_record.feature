@@ -14,7 +14,7 @@ Feature: Reunited Child
      | Fred   | fred_uid   | true     |
      | Fred 2 | fred_uid_2 | true     |
 
-    @javascript
+  @javascript
   Scenario: Mark a child as Reunited and check flag on the View Child Record Page
     When I am on the child record page for "Will"
     And I follow "Mark as Reunited"

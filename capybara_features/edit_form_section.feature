@@ -48,9 +48,9 @@ Feature: So that admin can customize form section details
     And I wait for 5 seconds
     Then I should see "Visible checkbox" with id "form_section_visible"
 
-  @javascript
-  @wip
   #currently not able to drag objects using webdriver
+  @javascript
+  @run
   Scenario: Admins should not be able to demote the name field by promoting following field
     Given I am on the form section page
     And I follow "Basic details"
@@ -58,7 +58,7 @@ Feature: So that admin can customize form section details
 #    And I should be able to demote the field "nick_name"
 #    And I should not be able to promote the field "nick_name"
     When I demote field "nick_name"
-    And I wait for 5 seconds
+    And I wait for 25 seconds
     Then I should not be able to promote the field "second_name"
     And I should be able to promote the field "nick_name"
 
@@ -69,9 +69,9 @@ Feature: So that admin can customize form section details
     Then I should be able to edit "Nick Name" field
 
 
+  #currently not able to drag objects using webdriver
   @javascript
   @wip
-  #currently not able to drag objects using webdriver
   Scenario: Admin should be able to change the order of the fields on edit form section page
     Given I am on the edit form section page for "basic_details"
     And I move field "Second Name" up
