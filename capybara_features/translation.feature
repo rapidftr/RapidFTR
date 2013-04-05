@@ -18,4 +18,4 @@ Feature: Ensure translations
   Scenario: Field label translation missing
     When I set the system language to "العربية"-"ar"
     And I set the user language to "Русский"-"ru"
-    Then I should see "Arabic Translated Name" translated
+    Then I should see "English Translated Name" translated

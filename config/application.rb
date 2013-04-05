@@ -29,6 +29,8 @@ module RapidFTR
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    config.i18n.fallbacks = true
+    config.i18n.fallbacks = [:en]
 
     LOCALES = ['en','fr','ar','zh','es','ru']
     LOCALES_WITH_DESCRIPTION = [['-', nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
