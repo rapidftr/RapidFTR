@@ -140,7 +140,6 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-# modal dialogue
   Scenario: Should provide navigation links
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
