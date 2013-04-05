@@ -39,6 +39,7 @@ end
 Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, element, id|
   puts "Warning: element argument '#{element}' is ignored."
   should = do_not_want ? :should_not : :should
+  puts should
   page.send(should, have_css("##{id}"))
 end
 
