@@ -26,7 +26,7 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     click_button(button)
   end
-end
+  end
 
 #  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
 #  with_scope(selector) do
@@ -195,6 +195,8 @@ Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"
   end
 end
 
+
+
 Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
     field_checked = find_field(label)['checked']
@@ -268,11 +270,11 @@ end
 
 Then /^I should see the order (.+)$/ do |input|
   current = 0
-  input.split(',').each do |match|
+  input.split(',').each{ |match|
     index = page.body.index(match)
     assert index > current, "The index of #{match} was not greater than #{current}"
     current = index
-  end
+  }
 end
 
 Then /^(.+) button is disabled$/ do |text|
