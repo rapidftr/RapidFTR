@@ -279,3 +279,7 @@ When /^I click on dialogue box$/ do
   #page.driver.browser.switch_to.alert.accept
   #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
 end
+
+When /^I clear the search results$/ do
+click_button("reset")
+end
