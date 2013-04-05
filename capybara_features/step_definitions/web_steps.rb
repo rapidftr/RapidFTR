@@ -28,11 +28,11 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
   end
 
-  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-  with_scope(selector) do
-    find("//input[@class='btn_submit']").click
-  end
-end
+#  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+#  with_scope(selector) do
+#    find("//input[@class='btn_submit']").click
+#  end
+#end
 
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
@@ -284,4 +284,10 @@ end
 When /^I click on dialogue box$/ do
   #page.driver.browser.switch_to.alert.accept
   #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
+end
+
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
+  with_scope(selector) do
+    find("//input[@class='btn_submit']").click
+  end
 end
