@@ -140,7 +140,6 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-# modal dialogue
   Scenario: Should provide navigation links
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
@@ -243,7 +242,6 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   @wip
-#checkbox
   Scenario: creating a multiple-checkbox field
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
@@ -287,7 +285,6 @@ Feature: So that admin can customize fields in a form section
     And I should see "Fields on this form cannot be edited"
 
   @wip
-  #Scenario doesnt exist any more
   Scenario: should be able to go back to edit form section from add custom field page
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"

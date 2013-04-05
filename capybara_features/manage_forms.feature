@@ -17,8 +17,8 @@ Feature: So that admin can see Manage Form Sections Page
     And I should see "Family Details" with order of "2"
     And I should see "Care Arrangements" with order of "3"
 
+  #scenario doesnt exist
   @javascript
   @wip
-  #scenario doesnt exist
   Scenario: Admins should see a back button
     Then I should see "Back"

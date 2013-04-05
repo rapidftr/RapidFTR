@@ -35,9 +35,9 @@ Feature: Hide Child Record Form Fields
      And I should see "Visible Field"
      And I should not see "Hidden Field"
 
+  #export to pdf not working using webdriver
   @javascript
   @wip
-  #export to pdf not working using webdriver
   Scenario: Hidden field does not appear on PDF
    Given I follow "CHILDREN"
      And I am on children listing page
