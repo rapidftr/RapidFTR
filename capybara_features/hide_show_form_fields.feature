@@ -1,5 +1,5 @@
-@wip
 #scenario repeated and not available currently
+@wip
 Feature: hide/show form fields
 
   Background:
