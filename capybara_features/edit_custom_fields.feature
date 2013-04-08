@@ -32,6 +32,7 @@ Feature: Editing Custom Form Fields
   Scenario: editing text with invalid display name
     Given I am logged in as an admin
     And I am on the edit field page for "another_field" on "family_details" form
+    And I wait for 5 seconds
     When I fill in "!@#$%$" for "field_display_name_en"
     And I press "Save Details" within ".field_details_panel"
     Then I should see errors
