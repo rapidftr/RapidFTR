@@ -49,6 +49,7 @@ Feature: So that admin can customize form section details
     Then I should see "Visible checkbox" with id "form_section_visible"
 
   #currently not able to drag objects using webdriver
+  #currently not able to drag objects using webdriver
   @javascript
   @wip
   Scenario: Admins should not be able to demote the name field by promoting following field
@@ -67,7 +68,6 @@ Feature: So that admin can customize form section details
     Given I am on the edit form section page for "basic_details"
     Then I should not be able to edit "Name" field
     Then I should be able to edit "Nick Name" field
-
 
   #currently not able to drag objects using webdriver
   @javascript

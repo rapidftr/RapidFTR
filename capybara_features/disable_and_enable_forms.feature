@@ -5,6 +5,7 @@ Feature: Disable and enable forms
   I want to be able to enable and disable particular forms
 
   @javascript
+  @wip
   Scenario: Should show selected forms
     Given the following form sections exist in the system:
       | name                  | unique_id         | editable | order | visible |
@@ -24,6 +25,7 @@ Feature: Disable and enable forms
     Then the form section "caregiver_details" should be listed as visible
     And the form section "caregiver_details" should not be selected to toggle visibility
 
+  @wip
   Scenario: Should hide selected forms
     Given the following form sections exist in the system:
       | name                  | unique_id         | editable | order | visible |

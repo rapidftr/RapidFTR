@@ -279,3 +279,11 @@ When /^I click on dialogue box$/ do
   #page.driver.browser.switch_to.alert.accept
   #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
 end
+
+When /^I clear the search results$/ do
+click_button("reset")
+end
+
+Then /^I should not be able to view the tab (.+)$/ do|tab_name|
+  page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+end

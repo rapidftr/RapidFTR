@@ -138,8 +138,10 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Field already exists on form 'Basic details'"
 
 
+  # modal dialogue
   @javascript
   @wip
+
   Scenario: Should provide navigation links
     Given I am on the form section page
     And I am on the edit form section page for "family_details"
@@ -240,6 +242,7 @@ Feature: So that admin can customize fields in a form section
       | Younger sibling | no        |
 
 
+  #checkbox
   @javascript
   @wip
   Scenario: creating a multiple-checkbox field
@@ -284,6 +287,7 @@ Feature: So that admin can customize fields in a form section
     Then I should not see "Add Field"
     And I should see "Fields on this form cannot be edited"
 
+ #Scenario doesnt exist any more
   @wip
   Scenario: should be able to go back to edit form section from add custom field page
     Given I am on the edit form section page for "family_details"
