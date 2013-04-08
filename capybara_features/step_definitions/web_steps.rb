@@ -26,9 +26,9 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     click_button(button)
   end
-  end
+end
 
-  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
@@ -279,6 +279,8 @@ end
 Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
+
+
 
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
   with_scope(selector) do
