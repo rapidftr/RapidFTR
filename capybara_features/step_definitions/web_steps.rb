@@ -27,7 +27,7 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
     find("//input[@class='btn_submit']").click
     #click_button(button)
   end
-end
+  end
 
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
@@ -78,7 +78,6 @@ When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"
   page.execute_script "$('a.ui-datepicker-next').trigger('click')"
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
-  # fill_in(field, :with => value)
 end
 
 # Use this to fill in an entire form with data from a table. Example:
