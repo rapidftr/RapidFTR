@@ -41,7 +41,13 @@ Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |for
 end
 
 When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|
-  check form_section_visibility_checkbox_id(form_section)
+  checkbox = form_section_visibility_checkbox_id(form_section)
+  yes_no = find("//input[@id='#{checkbox}']").checked?
+  if yes_no == false
+    check form_section_visibility_checkbox_id(form_section)
+  else
+    uncheck form_section_visibility_checkbox_id(form_section)
+  end
 end
 
 When /^I (show|hide) selected form sections$/ do |show_or_hide|
