@@ -18,6 +18,10 @@ RapidFTR::Application.routes.draw do
     resource :duplicate, :only => [:new, :create]
   end
 
+  namespace :api do
+    resources :children
+  end
+
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
   match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children-ids' => 'child_ids#all', :as => :child_ids

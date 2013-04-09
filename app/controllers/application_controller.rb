@@ -16,8 +16,13 @@ class ApplicationController < ActionController::Base
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
   rescue_from( ErrorResponse ) { |e| render_error_response(e) }
   rescue_from CanCan::AccessDenied do |exception|
-    render :file => "#{Rails.root}/public/403.html", :status => 403, :layout => false
+    if request.format == "application/json"
+      render :json => "unauthorized", :status => 403
+    else
+      render :file => "#{Rails.root}/public/403.html", :status => 403, :layout => false
+    end
   end
+  
   def render_error_response(ex)
     @exception = ex
 
