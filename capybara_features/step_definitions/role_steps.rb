@@ -70,6 +70,11 @@ When /^I enter the following permission details$/ do |role_table|
     end
   end
 end
-Then /^I should be able to view the tab (.+)$/ do|tab_name|
-  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+Then /^I should (not )?be able to view the tab (.+)$/ do|do_not_want,tab_name|
+  if do_not_want
+   page.has_no_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
+  else
+    page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
+  end
+
 end
