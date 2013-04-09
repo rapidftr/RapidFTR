@@ -31,9 +31,6 @@ class ChildrenController < ApplicationController
         authorize! :export, Child
         render_as_csv @children, "all_records_#{file_name_date_string}.csv"
       end
-      format.json do
-        render :json => @children
-      end
       format.pdf do
         authorize! :export, Child
         pdf_data = ExportGenerator.new(@children).to_full_pdf
