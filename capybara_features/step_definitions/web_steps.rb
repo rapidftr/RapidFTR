@@ -291,3 +291,10 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
     find("//input[@class='btn_submit']").click
   end
 end
+When /^I view User Action History$/ do
+  find("//span[@class='log']").click
+end
+
+Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
+  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
+end
