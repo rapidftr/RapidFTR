@@ -1,0 +1,23 @@
+<div class="profile-header">
+  <ul class="history-details">
+    <% @child.ordered_histories.each do |history| %>
+      <% history['changes'].each_pair do |field, change| %>
+        <% history_entry = history_entry_for(history, field, change) %>
+        <% unless history_entry.empty? %>
+          <li>
+            <div>
+              <%= render :partial => history_entry[:partial], :locals => history_entry[:locals] %>
+            </div>
+          </li>
+        <% end %>
+      <% end %>
+    <% end %>
+    
+  </ul>
+</div>
+
+<div class="profile-tools">
+  <ul>
+    <li class="back"><%= link_to t("buttons.back"), child_path(@child) %></li>
+  </ul>
+</div>

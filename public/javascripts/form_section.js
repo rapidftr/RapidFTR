@@ -39,7 +39,7 @@ $(document).ready(function() {
     }
 
     function triggerErrors(){
-        if(show_add_field){
+        if((typeof(show_add_field) != 'undefined') && (show_add_field)){
             toggleFieldPanel(null, getFieldDetails(field_type));
             $("ul.field_types a").removeClass("sel");
             $("#"+field_type).addClass("sel");
@@ -80,7 +80,7 @@ $(document).ready(function() {
 
         $("#field_details_options, #field_details").hide();
 
-        $("input[type='text'],textarea ").val("");
+        $(".field_details_panel input[type='text'], .field_details_panel textarea").val("");
         var _this = this;
         $(".field_type").each(function(){
             $(this).val(_this.id);

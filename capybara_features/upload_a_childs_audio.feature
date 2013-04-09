@@ -12,7 +12,7 @@ Feature:
     Given I am on the new child page 
     And I fill in "John" for "Name"
     And I click the "Photos and Audio" link
-    And I attach an audio file "features/resources/sample.mp3"
+    And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child record successfully created"
     And I click the "Photos and Audio" link
@@ -28,7 +28,7 @@ Feature:
 
     When I am editing the child with name "Harry"
     And I click the "Photos and Audio" link
-    And I attach an audio file "features/resources/sample.mp3"
+    And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child was successfully updated"
     And I click the "Photos and Audio" link
@@ -38,7 +38,7 @@ Feature:
 
     When I am editing the child with name "Harry"
     And I click the "Photos and Audio" link
-    And I attach an audio file "features/resources/sample.mp3"
+    And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child was successfully updated"
     And I click the "Photos and Audio" link
@@ -51,7 +51,7 @@ Feature:
     Given I am on the new child page
     And I fill in "John" for "Name"
     And I click the "Photos and Audio" link
-    And I attach an audio file "features/resources/textfile.txt"
+    And I attach an audio file "capybara_features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid audio file (amr or mp3) for this child record"
 

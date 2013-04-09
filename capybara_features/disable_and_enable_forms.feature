@@ -4,6 +4,7 @@ Feature: Disable and enable forms
   As an admin user
   I want to be able to enable and disable particular forms
 
+  @javascript
   Scenario: Should show selected forms
     Given the following form sections exist in the system:
       | name                  | unique_id         | editable | order | visible |
@@ -15,8 +16,9 @@ Feature: Disable and enable forms
     When I am on the form section page
 
     Then the form section "caregiver_details" should be listed as hidden
-
+    And I wait for 5 seconds
     When I select the form section "caregiver_details" to toggle visibility
+    And I wait for 5 seconds
     And I show selected form sections
 
     Then the form section "caregiver_details" should be listed as visible

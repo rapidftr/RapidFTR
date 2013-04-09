@@ -3,30 +3,23 @@ require 'os'
 
 namespace :sunspot do
 
-  def solr_server
-    Sunspot::Solr::Server.class_eval do
-      def run
-        bootstrap
-        command = ['java']
-        command << "-Xms#{min_memory}" if min_memory
-        command << "-Xmx#{max_memory}" if max_memory
-        command << "-Djetty.port=#{port}" if port
-        command << "-Djetty.host=#{bind_address}" if bind_address
-        command << "-Dsolr.data.dir=#{Escape.shell_command(solr_data_dir)}" if solr_data_dir
-        command << "-Dsolr.solr.home=#{Escape.shell_command(solr_home)}" if solr_home
-        command << "-Djava.util.logging.config.file=#{Escape.shell_command(logging_config_path)}" if logging_config_path
-        command << '-jar' << File.basename(Escape.shell_command(solr_jar))
-        FileUtils.cd(File.dirname(solr_jar)) do
-          exec(command.join(" "))
-        end
-      end
-    end
-    server = Sunspot::Solr::Server.new
+  ## Whenever we are using Windows, the recommended way to use Solr is:
+  ##   start rake sunspot:solr:run
+  ## This will start Solr in the foreground in a new terminal
 
+  def tmpdir
+    temp_dir = ENV['SOLR_TMPDIR'] || Dir.tmpdir
+    dir = File.join temp_dir, (ENV['SOLR_PORT'] || '8983')
+    FileUtils.mkdir_p dir
+    dir
+  end
+
+  def solr_server
+    server = Sunspot::Solr::Server.new
     server.port = ENV['SOLR_PORT'] || '8983'
     server.pid_file = "sunspot_#{server.port}.pid"
-    server.pid_dir = ENV['SOLR_PID_LOCATION'] || Dir.tmpdir
-    server.solr_data_dir = ENV['SOLR_DATA_DIR'] || Dir.tmpdir
+    server.pid_dir = ENV['SOLR_PID_LOCATION'] || tmpdir
+    server.solr_data_dir = ENV['SOLR_DATA_DIR'] || tmpdir
     server
   end
 
@@ -41,7 +34,7 @@ namespace :sunspot do
   task :start => :environment do
     puts 'Starting Solr...'
     copy_solr_config
-    OS.windows? ? solr_server.run : solr_server.start
+    solr_server.start
   end
 
   desc "stop solr"
@@ -79,7 +72,12 @@ namespace :sunspot do
   desc "restart solr"
   task :restart => %w( sunspot:stop sunspot:start )
 
+  desc "clean solr data directory"
+  task :clean do
+    FileUtils.rm_rf solr_server.solr_data_dir
+  end
+
   desc "ensure solr is cleanly started"
-  task :clean_start => %w( sunspot:restart sunspot:reindex )
+  task :clean_start => %w( sunspot:stop sunspot:clean sunspot:start sunspot:reindex )
 
 end

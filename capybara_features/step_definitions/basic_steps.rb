@@ -80,12 +80,13 @@ Given /^a child record named "([^"]*)" exists with a audio file with the name "(
                "disabled" => "false",
                "role_ids" => "ADMIN")
   child = Child.new_with_user_name(user,{:name=>name})
-  child.audio = uploadable_audio("features/resources/#{filename}")
+  child.audio = uploadable_audio("capybara_features/resources/#{filename}")
   child.create!
 end
 
 Given /^I am editing an existing child record$/ do
   child = Child.new
+  child[:created_by] = "mary"
   child["birthplace"] = "haiti"
   child.photo = uploadable_photo
   child["unique_identifier"] = "UNIQUE_IDENTIFIER"
@@ -95,7 +96,7 @@ Given /^I am editing an existing child record$/ do
 end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
-  child = Child.new( :name => name, :birthplace => 'unknown' )
+  child = Child.new( :name => name, :birthplace => 'unknown', :created_by => "mary")
   child.photo = uploadable_photo(photo_file_path)
   child.create
 end
@@ -217,7 +218,11 @@ Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_labe
 end
 
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_name|
-  page.should have_xpath("//table[@id='form_sections']//td[@class='breakword' and contains(., '#{field_name}')]")
+  page.should have_xpath("//table[@id='form_sections']//tr[@class='rowEnabled' and contains(., '#{field_name}')]")
+end
+
+And /^I should see "([^\"]*)" in the list of fields and disabled$/ do |field_name|
+  page.should have_xpath("//table[@id='form_sections']//tr[@class='rowDisabled' and contains(., '#{field_name}')]")
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|

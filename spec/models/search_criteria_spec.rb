@@ -2,15 +2,17 @@ require "spec_helper"
 
 describe SearchCriteria do
   
-  before(:all) do 
+  before(:each) do
+    FormSection.all.each{ |form| form.destroy }
+
     form = FormSection.new(:name => "test_form")
     form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "display_name1")
     form.fields << Field.new(:name => "origin", :type => Field::TEXT_FIELD, :display_name => "display_name2")
     form.fields << Field.new(:name => "last_known_location", :type => Field::TEXT_FIELD, :display_name => "display_name3")
     form.save!
-  end 
+  end
   
-  after(:all) do
+  after(:each) do
     FormSection.all.each{ |form| form.destroy }
   end
 

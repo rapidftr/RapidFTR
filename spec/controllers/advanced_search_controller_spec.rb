@@ -24,7 +24,7 @@ describe AdvancedSearchController do
 
   describe 'collection' do
     it "GET export_data" do
-      @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
+      controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
       get :export_data
       response.should render_template("#{Rails.root}/public/403.html")
     end
@@ -157,7 +157,8 @@ describe AdvancedSearchController do
   describe "export data" do
     it "asks the pdf generator to render each child as a PDF" do
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-      controller.stub(:authorize!)
+      controller.stub :authorize!
+      controller.stub! :render
       children = [:fake_child_one, :fake_child_two]
       Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
 
@@ -169,7 +170,8 @@ describe AdvancedSearchController do
 
     it "asks the pdf generator to render each child as a Photo Wall" do
       Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-      controller.stub(:authorize!)
+      controller.stub :authorize!
+      controller.stub! :render
       children = [:fake_one, :fake_two]
       inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
       Child.stub(:get).and_return(*children )
@@ -203,10 +205,8 @@ describe AdvancedSearchController do
       stub_export_generator = stub_out_export_generator [stubbed_child] #this is getting a bit farcical now
       stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
 
-      @controller.
-          should_receive(:send_data).
-          with( :fake_pdf_data, :filename => "fakeadmin-20000101-2015.pdf", :type => "application/pdf" ).
-          and_return{controller.render :nothing => true}
+      controller.stub! :render
+      controller.should_receive(:send_pdf).with( :fake_pdf_data, "fakeadmin-20000101-2015.pdf").and_return(true)
 
       post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )
     end

@@ -91,6 +91,8 @@ class User < CouchRestRails::Document
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
   validates_with_method :user_name, :method => :is_user_name_unique
 
+  before_save :generate_id
+
 
   def self.all_unverified
     User.by_unverified
@@ -197,4 +199,7 @@ class User < CouchRestRails::Document
     user_name.downcase!
   end
 
+  def generate_id
+    self["_id"] ||= "user-#{self.user_name}".parameterize.dasherize
+  end
 end

@@ -212,8 +212,75 @@ RapidFTR.validateSearch = function() {
   return true;
 }
 
-$(document).ready(function() {
-});
+RapidFTR.PasswordPrompt = (function() {
+    var passwordDialog = null, targetEl = null, passwordEl = null;
+
+    return {
+        initialize: function() {
+            passwordDialog = $("#password-prompt-dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    "OK" : function() {
+                        var password = passwordEl.val();
+                        var errorDiv = $("div#password-prompt-dialog .flash");
+                        if (password == null || password == undefined || password.trim() == "") {
+                            errorDiv.children(".error").text(I18n.t("encrypt.password_mandatory")).css('color', 'red');
+                            errorDiv.show();
+                            return false;
+                        } else {
+                            errorDiv.hide();
+                            RapidFTR.PasswordPrompt.updateTarget();
+                        }
+                    }
+                },
+               close: function(){
+                   $("div#password-prompt-dialog .flash .error").text("");
+               }
+
+            });
+            passwordEl = $("#password-prompt-field");
+            $(".password-prompt").each(RapidFTR.PasswordPrompt.initializeTarget);
+        },
+
+        initializeTarget: function() {
+            var self = $(this), targetType = self.prop("tagName").toLowerCase();
+            $("div#password-prompt-dialog .flash .error").text("");
+
+            if (targetType == "a") {
+                self.data("original-href", self.attr("href"));
+            }
+
+            self.click(function(e) {
+                if (e["isTrigger"] && e["isTrigger"] == true) {
+                    return true;
+                } else {
+                    targetEl = $(this);
+                    passwordEl.val("");
+                    passwordDialog.dialog("open");
+                    return false;
+                }
+            });
+        },
+
+        updateTarget: function() {
+            var password = passwordEl.val();
+            var targetType = targetEl.prop("tagName").toLowerCase();
+
+            passwordEl.val("");
+            passwordDialog.dialog("close");
+
+            if (targetType == "a") {
+                var href = targetEl.data("original-href");
+                href += (href.indexOf("?") == -1 ? "?" : "") + "&password=" + password;
+                window.location = href;
+            } else if (targetType == "input") {
+                targetEl.closest("form").find("#hidden-password-field").val(password);
+                targetEl.trigger("click");
+            }
+        }
+    }
+}) ();
 
 $(document).ready(function() {
   RapidFTR.maintabControl();
@@ -227,6 +294,8 @@ $(document).ready(function() {
     if (window.location.href.indexOf('login') === -1) {
     IdleSessionTimeout.start();
   }
+
+  RapidFTR.PasswordPrompt.initialize();
 
     RapidFTR.Utils.enableFormErrorChecking();
     RapidFTR.showDropdown();

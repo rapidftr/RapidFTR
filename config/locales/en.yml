@@ -13,10 +13,10 @@ en:
     current_time_zone: "Current time zone"
     language: "Language"
     view_records: "View Records"
-    manage_system_users: Manage System Users
+    manage_system_users: "Manage Server Synchronisation Users"
     records_need_attention: "Records need Attention"
     label: "Home"
-
+  clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
@@ -161,15 +161,23 @@ en:
       undo_investigation_details: "Undo Investigation Details"
       undo_investigated: "Undo Investigated"
       cancel: "Cancel"
+      delete_photo: "Delete photo?"
+      choose_as_primary_photo: "Choose as primary photo"
+      rotate_anti_clockwise: "Rotate Anti-Clockwise"
+      restore_image: "Restore Original Image"
+      rotate_clockwise: "Rotate Clockwise"
+      view_full_size_photo: "View full size photo"
+
     change_log: "Change Log"
     flagged_as_suspected: "Flagged as suspect record by"
     posted_from_mobile: "Posted from the mobile client at:"
     edit_photo: "Edit photo"
     manage_photos: "Manage photos"
 
-    view: "View Children"
+    view: "View Child %{short_id}"
     edit: "Edit Child"
-    mark_as_duplicate_with_param: "Mark %{child_name} as Duplicate"
+    mark_child_as_duplicate: "Mark %{short_id} as Duplicate"
+    history_of: "History of %{short_id}"
   preposition:
     on_label: "on"
     because: "Because"
@@ -227,6 +235,7 @@ en:
   user:
     label: "user"
     full_name: "Full Name"
+    history_of: "History of %{user_name}"
     disabled: "Disabled"
     actions:
       delete: "Delete"
@@ -246,8 +255,11 @@ en:
     old_password: "Old Password"
     new_password: "New Password"
     new_password_confirmation: "Confirm New Password"
-
     new: "New User"
+    user_action_history: "User action history"
+    no_activity: "has no activity"
+
+  actions: "actions"
   phone: "Phone"
   email: "Email"
   organisation: "Organisation"
@@ -313,8 +325,8 @@ en:
       "Manage Replications": "Manage Replications"
       "View roles": "View roles"
       "All": "All"
-      "Users for synchronisation": "Users For Synchronisation"
-
+      "Users for synchronisation": "Manage Server Synchronisation Users"
+      "View and Download Reports": "View and Download Reports"
   forms:
     label: "Forms"
     save: "Save Form"
@@ -402,7 +414,7 @@ en:
   admin:
     contact_info: "Admin Contact Information"
     highlight_fields: "Highlight Fields"
-    manage_system_users: "Manage System Users"
+    manage_system_users: "Manage Server Synchronisation Users"
     create_system_user: Create a System User
 
   fields:
@@ -423,10 +435,10 @@ en:
     successfully_added: "Field successfully added"
     updated: "Field updated"
     deleted: "Field %{display_name} has been deleted."
-
     add: "Add Field"
     type: "Field type"
-  
+    move_to: "Move to"
+
   replication:
     label: Replication
     index: Manage Replications
@@ -463,14 +475,29 @@ en:
     types:
       weekly_report: "Weekly Report"
 
+  encrypt:
+    password_title: "Password"
+    password_label: "Enter password to encrypt file"
+    password_mandatory: "Enter a valid password"
+
   administration: "Administration"
   new: "New"
   saved: "Saved"
-  history_of: "History of"
   account: "Account"
   moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
 
   # validation error messages
+  couchrest:
+    fields:
+      Name: "Name"
+      Username: "Username"
+      Password: "Password"
+      Description: "Description"
+      "Remote app url": "Remote app url"
+
+    validations:
+      blank: "%s must not be blank"
+
   activerecord:
     errors:
 
@@ -526,4 +553,36 @@ en:
         system_users:
           username_unique: "User name has already been taken! Please select a new User name"
 
+        replication:
+          remote_app_url: "Please enter a proper URL, e.g. http://<server>:<port>"
+          save_remote_couch_config: "The URL/Username/Password that you entered is incorrect"
+
   select_all_results: "Select all results"
+
+  histories:
+    to: "to"
+    by: "by"
+    added_by: "added by"
+    belong_to: "belonging to"
+    because: "because:"
+    deleted_by: "deleted by"
+
+    audio:
+      audio: "Audio"
+      audio_change: "Audio changed from"
+
+    duplicate:
+      mark_as_duplicate: "marked this record as a duplicate of"
+      no_longer_active: "Current record is no longer active or editable"
+
+    flag:
+      record_flagged_by: "Record was flagged by"
+      record_unflagged_by: "Record was unflagged by"
+
+    investigated:
+      mark_as_investigated_by: "Record was marked as Investigated by"
+      mark_as_not_investigated_by: "Record was marked as Not Investigated by"
+
+    reunited:
+      child_status_changed: "Child status changed to active by"
+      with_details: "with these details:"

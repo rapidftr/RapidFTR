@@ -80,8 +80,14 @@ describe Replication do
       Replication.models_to_sync.first.should == Role
     end
 
-    it 'should return the couchdb url without the source username and password' do
-      Child.database.should_receive(:root).and_return("http://rapidftr:rapidftr@couchdb:5984/")
+    it 'should return the couchdb url without the source username and password' do      
+      CouchSettings.instance.stub! :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
+      target_hash = Replication.couch_config
+      target_hash[:target].should == "http://couchdb:5984/"
+    end
+
+    it 'should return HTTPS url when enabled in Couch' do
+      CouchSettings.instance.stub! :ssl_enabled_for_couch? => true, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
       target_hash = Replication.couch_config
       target_hash[:target].should == "https://couchdb:6984/"
     end
@@ -104,6 +110,13 @@ describe Replication do
       @rep.username = 'test_user'
       @rep.password = 'test_password'
       @rep.remote_couch_uri.to_s.should == 'http://test_user:test_password@couch:1234/'
+    end
+
+    it 'should replace localhost in Couch URL with the actual host name from App URL' do
+      @rep.remote_app_url = "https://app:3000"
+      @rep.username = @rep.password = nil
+      @rep.stub! :remote_couch_config => { "target" => "http://localhost:1234" }
+      @rep.remote_couch_uri.to_s.should == 'http://app:1234/'
     end
 
     it 'should normalize remote_app_url upon saving' do

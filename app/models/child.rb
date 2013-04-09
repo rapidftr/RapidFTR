@@ -9,6 +9,7 @@ class Child < CouchRestRails::Document
 
   before_save :update_organisation
   before_save :update_history, :unless => :new?
+  before_save :add_creation_history, :if => :new?
   before_save :update_photo_keys
 
   property :age
@@ -165,6 +166,23 @@ view_by :protection_status, :gender, :ftr_status
             }
           }"
 
+  view_by :user_name,
+          :map => "function(doc) {
+                if (doc.hasOwnProperty('histories')){
+                  for(var index=0; index<doc['histories'].length; index++){
+                      emit(doc['histories'][index]['user_name'], doc)
+                  }
+               }
+            }"
+
+  view_by :ids_and_revs,
+          :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Child'){
+            emit(doc._id, {_id: doc._id, _rev: doc._rev});
+          }
+          }"
+
+
   view_by :created_by
 
   validates_with_method :validate_photos
@@ -194,6 +212,15 @@ view_by :protection_status, :gender, :ftr_status
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
     self
+  end
+
+  def self.fetch_all_ids_and_revs
+    ids_and_revs = []
+    all_rows = self.view("by_ids_and_revs", :include_docs => false)["rows"]
+    all_rows.each do |row|
+      ids_and_revs << row["value"]
+    end
+    ids_and_revs
   end
 
   def field_definitions
@@ -333,6 +360,10 @@ view_by :protection_status, :gender, :ftr_status
 
   def self.flagged
     by_flag(:key => 'true')
+  end
+
+  def self.all_connected_with(user_name)
+    (by_user_name(:key => user_name) + all_by_creator(user_name)).uniq
   end
 
   def self.new_with_user_name(user, fields = {})
@@ -540,6 +571,15 @@ view_by :protection_status, :gender, :ftr_status
     end
   end
 
+  def add_creation_history
+    self['histories'].unshift({
+      'user_name' => created_by,
+      'user_organisation' => organisation_of(created_by),
+      'datetime' => created_at,
+      'changes' => {'child' => {:created => created_at}} 
+    })
+  end
+
   def has_one_interviewer?
     user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
     user_names_after_deletion.delete(self['created_by'])
@@ -630,7 +670,11 @@ view_by :protection_status, :gender, :ftr_status
     should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
     if should_update
       properties.each_pair do |name, value|
-        self[name] = value unless value == nil
+        if name == "histories"
+          merge_histories(properties['histories'])
+        else
+          self[name] = value unless value == nil
+        end
         self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
       end
       self.set_updated_fields_for user_name

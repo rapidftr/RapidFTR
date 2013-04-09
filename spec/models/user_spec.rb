@@ -26,7 +26,6 @@ describe User do
   end
 
   describe "validations" do
-
     it "should not be valid when username contains whitespace" do
       user = build_user :user_name => "in val id"
       user.should_not be_valid
@@ -60,6 +59,11 @@ describe User do
     it "should default disabled to false" do
       user = User.new :disabled => nil
       user.disabled.should be_false
+    end
+
+    it "should generate id" do
+      user = create :user, :user_name => 'test_user_123'
+      user.id.should == "user-test-user-123"
     end
   end
 
@@ -243,7 +247,7 @@ describe User do
     end
 
     it "allow an unverified user to have no role" do
-      build_user(:role_ids => [], :verified => false).should be_valid
+      build(:user, :role_ids => [], :verified => false).should be_valid
     end
 
     describe 'permissions' do

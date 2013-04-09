@@ -9,406 +9,407 @@ zh:
     zh: "中文"
     es: "Español"
     ru: "Русский"
-    welcome: "欢迎 RapidFTR"
-    current_time_zone: "Current time zone"
-    language: "Language"
-    view_records: "View All Children"
-    records_need_attention: "Records need Attention"
+  #   welcome: "欢迎 RapidFTR"
+  #   current_time_zone: "Current time zone"
+  #   language: "Language"
+  #   view_records: "View All Children"
+  #   records_need_attention: "Records need Attention"
 
-    label: "Home"
-  messages:
-    delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
-    move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
-    enter_valid_date: "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
-    enter_valid_field_value: "Please enter a valid field value."
-    valid_search_criteria: "Please enter at least one search criteria"
-    show_hide_forms: "Please select form(s) you want to show/hide."
-    show_forms: "Are you sure you want to make these form(s) visible?"
-    hide_forms: "Are you sure you want to hide these form(s)?"
-    primary_photo_changed: "Primary photo changed."
-    select_photo: "Please select a photo."
-    are_you_sure: "Are you sure you want to "
-    this_user: " this user?"
-    keep_working: "Yes, Keep Working"
-    logoff: "No, Logoff"
-    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
-    cancel_confirmation: "Are you sure you want to cancel?"
-    logoff_warning_prefix: "You will be logged off in"
-    logoff_warning_suffix: "seconds."
-    logoff_confirmation: "Do you want to continue your session?"
-    warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+  #   label: "Home"
+  # messages:
+  #   delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+  #   move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
+  #   enter_valid_date: "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
+  #   enter_valid_field_value: "Please enter a valid field value."
+  #   valid_search_criteria: "Please enter at least one search criteria"
+  #   show_hide_forms: "Please select form(s) you want to show/hide."
+  #   show_forms: "Are you sure you want to make these form(s) visible?"
+  #   hide_forms: "Are you sure you want to hide these form(s)?"
+  #   primary_photo_changed: "Primary photo changed."
+  #   select_photo: "Please select a photo."
+  #   are_you_sure: "Are you sure you want to "
+  #   this_user: " this user?"
+  #   keep_working: "Yes, Keep Working"
+  #   logoff: "No, Logoff"
+  #   confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
+  #   cancel_confirmation: "Are you sure you want to cancel?"
+  #   logoff_warning_prefix: "You will be logged off in"
+  #   logoff_warning_suffix: "seconds."
+  #   logoff_confirmation: "Do you want to continue your session?"
+  #   warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
 
-    enter_each_in_one_line: "Enter each option on a new line"
-  login:
-    details: "Login details"
-    username: "User Name"
-    password:
-      label: "Password"
-      reset: "Request Password Reset"
-      re_enter: "Re-enter password"
+  #   enter_each_in_one_line: "Enter each option on a new line"
+  # login:
+  #   details: "Login details"
+  #   username: "User Name"
+  #   password:
+  #     label: "Password"
+  #     reset: "Request Password Reset"
+  #     re_enter: "Re-enter password"
 
-    label: "Login"
-  header:
-    contact: "Contact & Help"
-    welcome: "Welcome"
-    logout: "Logout"
-    my_account: "My Account"
-    system_settings: "System settings"
+  #   label: "Login"
+  # header:
+  #   contact: "Contact & Help"
+  #   welcome: "Welcome"
+  #   logout: "Logout"
+  #   my_account: "My Account"
+  #   system_settings: "System settings"
 
-  navigation:
-     children: "CHILDREN"
-     forms: "FORMS"
-     users: "USERS"
-     devices: "DEVICES"
-     reports: "REPORTS"
-     advanced_search: "Advanced Search"
-     go: "Go"
-     search: "Search"
+  # navigation:
+  #    children: "CHILDREN"
+  #    forms: "FORMS"
+  #    users: "USERS"
+  #    devices: "DEVICES"
+  #    reports: "REPORTS"
+  #    advanced_search: "Advanced Search"
+  #    go: "Go"
+  #    search: "Search"
 
-  buttons:
-     delete: "Delete"
-     save: "Save"
-     login: "Log in"
-     reunite: "Reunite"
-     edit: "Edit"
-     back: "Back"
-     change_password: "Change Password"
-     enable_photo_wall: "Enable photo wall"
-     disable_photo_wall: "Disable photo wall"
+  # buttons:
+  #    delete: "Delete"
+  #    save: "Save"
+  #    login: "Log in"
+  #    reunite: "Reunite"
+  #    edit: "Edit"
+  #    back: "Back"
+  #    change_password: "Change Password"
+  #    enable_photo_wall: "Enable photo wall"
+  #    disable_photo_wall: "Disable photo wall"
 
-  children:
-    label: "Children"
-    register_new_child: "Register New Child"
-    export: "Export"
-    export_all_child_records_to_csv: "Export All Child Records to CSV"
-    export_all_child_records_to_pdf: "Export All Child Records to PDF"
-    export_some_records_to_csv: "Export Some Records to CSV"
-    filter_by:
-      label: "Filter by"
-      all: "All"
-      active: "Active"
-      reunited: "Reunited"
-      flag: "Flagged"
-      created: "Created"
-    order_by:
-      most_recently: "Most recently"
-      label: "Order by"
-      name: "Name"
-    flag_summary: "Flag summary"
+  # children:
+  #   label: "Children"
+  #   register_new_child: "Register New Child"
+  #   export: "Export"
+  #   export_all_child_records_to_csv: "Export All Child Records to CSV"
+  #   export_all_child_records_to_pdf: "Export All Child Records to PDF"
+  #   export_some_records_to_csv: "Export Some Records to CSV"
+  #   filter_by:
+  #     label: "Filter by"
+  #     all: "All"
+  #     active: "Active"
+  #     reunited: "Reunited"
+  #     flag: "Flagged"
+  #     created: "Created"
+  #   order_by:
+  #     most_recently: "Most recently"
+  #     label: "Order by"
+  #     name: "Name"
+  #   flag_summary: "Flag summary"
 
-    filer_by:
-      all: "All"
-      active: "Active"
-      reunited: "Reunited"
-      flagged: "Flagged"
+  #   filer_by:
+  #     all: "All"
+  #     active: "Active"
+  #     reunited: "Reunited"
+  #     flagged: "Flagged"
 
-  child:
-    flagged_by: "Flagged By"
-    last_updated: "Last updated"
-    registered_by: "Registered by"
-    mark_as_duplicate: "Mark as Duplicate"
-    flag_record: "Flag record"
-    flag_label: "Flag"
-    flag_reason: "Flag Reason"
-    unflag_record: "Unflag record"
-    unflag_reason: "Unflag Reason"
-    unflag_label: "Unflag"
-    unflag_error_message: "Please explain why you are unflagging this record."
-    id_of_record_this_duplicate_of: "Enter the ID of the record this is a duplicate of:"
-    duplicate_header: "Marking %{child_name} as Duplicate"
-    flag_error_message: "Please explain why you are flagging this record."
-    investigation_details: "Investigation Details:"
-    reunite_details: "Reunite Details:"
-    another_duplicate_before_link: "Another record has been marked as a duplicate of this one. Click"
-    another_duplicate_after_link: " to see the duplicate record."
-    messages:
-      update_success: "Child was successfully updated."
-      investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
-      undo_investigation_error_message: "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have."
-      undo_investigation_error_message: "Undo Investigation Details:"
-      reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
-      undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
-      see_full_size: "Click on the Image to see full size"
-      creation_success: "Child record successfully created."
-    actions:
-      mark_as_investigated: "Mark as Investigated"
-      mark_as_reunited: "Mark as Reunited"
-      export_to_photo_wall: "Export to Photo Wall"
-      export_to_pdf: "Export to PDF"
-      export_to_csv: "Export to CSV"
-      change_log: "Change Log"
-      mark_as_not_investigated: "Mark as Not Investigated"
-      reunited: "Mark as Reunited"
-      reunited_details: "Reunite Details:"
-      reunite: "Reunite"
-      not_reunited: "Mark as Not Reunited"
-      undo_reunited_details: "Undo reunite Reason:"
-      undo_reunite: "Undo Reunite"
-      investigation_details: "Investigation Details"
-      undo_investigation_details: "Undo Investigation Details"
-      undo_investigated: "Undo Investigated"
-    change_log: "Change Log"
-    flagged_as_suspected: "Flagged as suspect record by"
-    posted_from_mobile: "Posted from the mobile client at:"
-    edit_photo: "Edit photo"
-    manage_photos: "Manage photos"
+  # child:
+  #   flagged_by: "Flagged By"
+  #   last_updated: "Last updated"
+  #   registered_by: "Registered by"
+  #   mark_as_duplicate: "Mark as Duplicate"
+  #   flag_record: "Flag record"
+  #   flag_label: "Flag"
+  #   flag_reason: "Flag Reason"
+  #   unflag_record: "Unflag record"
+  #   unflag_reason: "Unflag Reason"
+  #   unflag_label: "Unflag"
+  #   unflag_error_message: "Please explain why you are unflagging this record."
+  #   id_of_record_this_duplicate_of: "Enter the ID of the record this is a duplicate of:"
+  #   duplicate_header: "Marking %{child_name} as Duplicate"
+  #   flag_error_message: "Please explain why you are flagging this record."
+  #   investigation_details: "Investigation Details:"
+  #   reunite_details: "Reunite Details:"
+  #   another_duplicate_before_link: "Another record has been marked as a duplicate of this one. Click"
+  #   another_duplicate_after_link: " to see the duplicate record."
+  #   messages:
+  #     update_success: "Child was successfully updated."
+  #     investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
+  #     undo_investigation_error_message: "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have."
+  #     undo_investigation_error_message: "Undo Investigation Details:"
+  #     reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
+  #     undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
+  #     see_full_size: "Click on the Image to see full size"
+  #     creation_success: "Child record successfully created."
+  #   actions:
+  #     mark_as_investigated: "Mark as Investigated"
+  #     mark_as_reunited: "Mark as Reunited"
+  #     export_to_photo_wall: "Export to Photo Wall"
+  #     export_to_pdf: "Export to PDF"
+  #     export_to_csv: "Export to CSV"
+  #     change_log: "Change Log"
+  #     mark_as_not_investigated: "Mark as Not Investigated"
+  #     reunited: "Mark as Reunited"
+  #     reunited_details: "Reunite Details:"
+  #     reunite: "Reunite"
+  #     not_reunited: "Mark as Not Reunited"
+  #     undo_reunited_details: "Undo reunite Reason:"
+  #     undo_reunite: "Undo Reunite"
+  #     investigation_details: "Investigation Details"
+  #     undo_investigation_details: "Undo Investigation Details"
+  #     undo_investigated: "Undo Investigated"
+  #   change_log: "Change Log"
+  #   flagged_as_suspected: "Flagged as suspect record by"
+  #   posted_from_mobile: "Posted from the mobile client at:"
+  #   edit_photo: "Edit photo"
+  #   manage_photos: "Manage photos"
 
-    view: "View Children"
-    edit: "Edit Child"
-    mark_as_duplicate_with_param: "Mark %{child_name} as Duplicate"
-  preposition:
-    on_label: "on"
-    because: "Because"
+  #   view: "View Children"
+  #   edit: "Edit Child"
+  #   mark_as_duplicate_with_param: "Mark %{child_name} as Duplicate"
+  # preposition:
+  #   on_label: "on"
+  #   because: "Because"
 
-  will_paginate:
-    previous_label: "&#8592; Previous"
-    next_label: "Next &#8594;"
-    page_gap: "&hellip;"
+  # will_paginate:
+  #   previous_label: "&#8592; Previous"
+  #   next_label: "Next &#8594;"
+  #   page_gap: "&hellip;"
 
-  users:
-    unverified: "Unverified Users"
-    select_role: "Please select a role before verifying the user"
-    manage: "Manage Users"
-    label: "Users"
-    create: "Create User"
-    actions:
-      show_all: "Showing all"
-      show: "Show"
-    messages:
-      disable: 'Are you sure you want to disable this user?'
-    sort_by:
-      label: "Sort by"
-      full_name: "Full Name"
+  # users:
+  #   unverified: "Unverified Users"
+  #   select_role: "Please select a role before verifying the user"
+  #   manage: "Manage Users"
+  #   label: "Users"
+  #   create: "Create User"
+  #   actions:
+  #     show_all: "Showing all"
+  #     show: "Show"
+  #   messages:
+  #     disable: 'Are you sure you want to disable this user?'
+  #   sort_by:
+  #     label: "Sort by"
+  #     full_name: "Full Name"
 
-  roles:
-    label: "Roles"
-    list: "List of Roles"
-    sort_by:
-      label: "Sort by"
-      ascending: "Ascending"
-      descending: "Descending"
-    name: "Role Name"
-    actions:
-      show_all: "Showing all"
-      show: "Show"
-      edit: "Edit"
-  user:
-    label: "user"
-    full_name: "Full Name"
-    disabled: "Disabled"
-    actions:
-      delete: "Delete"
-    messages:
-      confirmation: "Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User."
-      created: "User was successfully created."
-      updated: "User was successfully updated."
-      not_found: "User with the given id is not found"
-      passwords_do_not_match: "does not match current password"
-      password_changed_successfully: "Password changed successfully"
-      time_zone_updated: "The change was successfully updated."
-    update: "Update"
-    verify: "Verify"
-    create: "Create"
-    no_blank: "user name should not contain blanks"
-    manage_password: "Change Password"
-    old_password: "Old Password"
-    new_password: "New Password"
-    new_password_confirmation: "Confirm New Password"
+  # roles:
+  #   label: "Roles"
+  #   list: "List of Roles"
+  #   sort_by:
+  #     label: "Sort by"
+  #     ascending: "Ascending"
+  #     descending: "Descending"
+  #   name: "Role Name"
+  #   actions:
+  #     show_all: "Showing all"
+  #     show: "Show"
+  #     edit: "Edit"
+  # user:
+  #   label: "user"
+  #   full_name: "Full Name"
+  #   disabled: "Disabled"
+  #   actions:
+  #     delete: "Delete"
+  #   messages:
+  #     confirmation: "Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User."
+  #     created: "User was successfully created."
+  #     updated: "User was successfully updated."
+  #     not_found: "User with the given id is not found"
+  #     passwords_do_not_match: "does not match current password"
+  #     password_changed_successfully: "Password changed successfully"
+  #     time_zone_updated: "The change was successfully updated."
+  #   update: "Update"
+  #   verify: "Verify"
+  #   create: "Create"
+  #   no_blank: "user name should not contain blanks"
+  #   manage_password: "Change Password"
+  #   old_password: "Old Password"
+  #   new_password: "New Password"
+  #   new_password_confirmation: "Confirm New Password"
 
-    new: "New User"
-  phone: "Phone"
-  email: "Email"
-  organisation: "Organisation"
-  position: "Position"
-  location: "Location"
-  false: "false"
-  true: "true"
-  mandatory_field: "marked fields are mandatory"
-  add: "add"
-  belonging_to: "belonging to"
-  hello: "Hello"
-  imei: "IMEI"
-  blacklisted: "Blacklisted?"
-  visible: "Visible"
-  hidden: "Hidden"
-  help_text: "Help text"
-  cancel: "Cancel"
-  discard: "Discard"
-  form: "Form"
-  details: "Details"
-  enabled: "Enabled"
-  status: "Status"
-  devices: "Devices"
-  provide_translation: "Provide translation for"
+  #   new: "New User"
+  # phone: "Phone"
+  # email: "Email"
+  # organisation: "Organisation"
+  # position: "Position"
+  # location: "Location"
+  # false: "false"
+  # true: "true"
+  # mandatory_field: "marked fields are mandatory"
+  # add: "add"
+  # belonging_to: "belonging to"
+  # hello: "Hello"
+  # imei: "IMEI"
+  # blacklisted: "Blacklisted?"
+  # visible: "Visible"
+  # hidden: "Hidden"
+  # help_text: "Help text"
+  # cancel: "Cancel"
+  # discard: "Discard"
+  # form: "Form"
+  # details: "Details"
+  # enabled: "Enabled"
+  # status: "Status"
+  # devices: "Devices"
+  # provide_translation: "Provide translation for"
 
-  role:
-    create: "Create Role"
-    edit: "Edit Role"
+  # role:
+  #   create: "Create Role"
+  #   edit: "Edit Role"
 
-    name: "Name"
-  record: "record"
-  description: "Description"
-  name: "Name"
+  #   name: "Name"
+  # record: "record"
+  # description: "Description"
+  # name: "Name"
 
-  permissions:
-    label: "Permissions"
-    group:
-      Reports: Reports
-      Devices: Devices
-      System: System
-      Roles: Roles
-      Children: Children
-      Forms: Forms
-      Users: Users
-      ALL: All
+  # permissions:
+  #   label: "Permissions"
+  #   group:
+  #     Reports: Reports
+  #     Devices: Devices
+  #     System: System
+  #     Roles: Roles
+  #     Children: Children
+  #     Forms: Forms
+  #     Users: Users
+  #     ALL: All
 
-    permission:
-      "Register Child": "Register Child"
-      "Edit Child": "Edit Child"
-      "View And Search Child": "View And Search Child"
-      "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
-      "Manage Forms": "Manage Forms"
-      "Create and Edit Users": "Create and Edit Users"
-      "View Users": "View Users"
-      "Delete Users": "Delete Users"
-      "Disable Users": "Disable Users"
-      "BlackList Devices": "BlackList Devices"
-      "Create and Edit Roles": "Create and Edit Roles"
-      "View roles": "View roles"
-      "System Settings": "System Settings"
-      "Highlight Fields": "Highlight Fields"
-      "Manage Replications": "Manage Replications"
-      "View roles": "View roles"
-      "All": "All"
+  #   permission:
+  #     "Register Child": "Register Child"
+  #     "Edit Child": "Edit Child"
+  #     "View And Search Child": "View And Search Child"
+  #     "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
+  #     "Manage Forms": "Manage Forms"
+  #     "Create and Edit Users": "Create and Edit Users"
+  #     "View Users": "View Users"
+  #     "Delete Users": "Delete Users"
+  #     "Disable Users": "Disable Users"
+  #     "BlackList Devices": "BlackList Devices"
+  #     "Create and Edit Roles": "Create and Edit Roles"
+  #     "View roles": "View roles"
+  #     "System Settings": "System Settings"
+  #     "Highlight Fields": "Highlight Fields"
+  #     "Manage Replications": "Manage Replications"
+  #     "View roles": "View roles"
+  #     "All": "All"
+  #     "View and Download Reports": "View and Download Reports"
 
-  forms:
-    label: "Forms"
-    save: "Save Form"
-    save_details: "Save Details"
-    messages:
-      use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
-    initial_language: "Initial Language"
-    cannot_be_edited: "Fields on this form cannot be edited."
+  # forms:
+  #   label: "Forms"
+  #   save: "Save Form"
+  #   save_details: "Save Details"
+  #   messages:
+  #     use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
+  #   initial_language: "Initial Language"
+  #   cannot_be_edited: "Fields on this form cannot be edited."
 
-  form_section:
-    create: "Create New Form Section"
-    visibility: "Visibility"
-    ordering: "Ordering"
-    details: "Form details"
-    label: "Form Section"
-    back: "Back To Forms Page"
-    actions:
-      add_custom_field: "Add Custom Field"
-      save_order: "Save Order"
-    messages:
-      order_saved: "Order is successfully saved."
-      cannot_create: "Form section could not be created"
-      correct_errors: "Please correct the following errors and resubmit:"
-      hide_confirmation: "Are you sure you want to hide fields?"
-      show_confirmation: "Are you sure you want to show fields?"
-      drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
+  # form_section:
+  #   create: "Create New Form Section"
+  #   visibility: "Visibility"
+  #   ordering: "Ordering"
+  #   details: "Form details"
+  #   label: "Form Section"
+  #   back: "Back To Forms Page"
+  #   actions:
+  #     add_custom_field: "Add Custom Field"
+  #     save_order: "Save Order"
+  #   messages:
+  #     order_saved: "Order is successfully saved."
+  #     cannot_create: "Form section could not be created"
+  #     correct_errors: "Please correct the following errors and resubmit:"
+  #     hide_confirmation: "Are you sure you want to hide fields?"
+  #     show_confirmation: "Are you sure you want to show fields?"
+  #     drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
 
-      updated: "Form section successfully added"
-    hide: "Hide"
-    show: "Show"
-    manage: "Manage Form Sections"
-    edit: "Edit Form Sections"
-    buttons:
-      add: "Add"
-    options: "Options"
-  message:
+  #     updated: "Form section successfully added"
+  #   hide: "Hide"
+  #   show: "Show"
+  #   manage: "Manage Form Sections"
+  #   edit: "Edit Form Sections"
+  #   buttons:
+  #     add: "Add"
+  #   options: "Options"
+  # message:
 
 
-  advanced_search:
-    instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
-    date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
-    created_by_org: "Created By Organisation :"
-    date_created: "Date Created :"
-    updated_by: "Updated by(User) :"
-    after: "After :"
-    before: "Before :"
-    created_by: "Created by(User) :"
-    date_updated: "Date Updated :"
-    select_a_criteria: "Select A Criteria"
+  # advanced_search:
+  #   instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
+  #   date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
+  #   created_by_org: "Created By Organisation :"
+  #   date_created: "Date Created :"
+  #   updated_by: "Updated by(User) :"
+  #   after: "After :"
+  #   before: "Before :"
+  #   created_by: "Created by(User) :"
+  #   date_updated: "Date Updated :"
+  #   select_a_criteria: "Select A Criteria"
 
-  search: "Search"
-  select_all: "Select all records"
-  no_results_found: "No results found"
-  date_format: "yy-mm-dd"
-  yes_label: "Yes"
-  cancel: "Cancel"
+  # search: "Search"
+  # select_all: "Select all records"
+  # no_results_found: "No results found"
+  # date_format: "yy-mm-dd"
+  # yes_label: "Yes"
+  # cancel: "Cancel"
 
-  contact:
-    message: "If you experience any problems with RapidFTR, or believe your password has been exposed, please contact the system administrator immediately."
-    field:
-      name: "Name"
-      position: "Position"
-      organization: "Organization"
-      email: "Email"
-      phone: "Phone"
-      location: "Location"
-      other_information: "Other information"
-    updated: "Contact information was successfully updated."
-    edit_info: "Edit Contact Information"
-    info_label: "Contact Information"
+  # contact:
+  #   message: "If you experience any problems with RapidFTR, or believe your password has been exposed, please contact the system administrator immediately."
+  #   field:
+  #     name: "Name"
+  #     position: "Position"
+  #     organization: "Organization"
+  #     email: "Email"
+  #     phone: "Phone"
+  #     location: "Location"
+  #     other_information: "Other information"
+  #   updated: "Contact information was successfully updated."
+  #   edit_info: "Edit Contact Information"
+  #   info_label: "Contact Information"
 
-  device:
-    blacklist: "Blacklist Device"
-    messages:
-      blacklist: "Do you want to add this device to blacklist?"
-      remove_blacklist: "Do you want to remove this device from blacklist?"
-      disable: 'Are you sure you want to disable this device?'
-    information: "Device Information"
-    mobile_number: "Mobile Number"
-    timestamp: "Timestamp"
+  # device:
+  #   blacklist: "Blacklist Device"
+  #   messages:
+  #     blacklist: "Do you want to add this device to blacklist?"
+  #     remove_blacklist: "Do you want to remove this device from blacklist?"
+  #     disable: 'Are you sure you want to disable this device?'
+  #   information: "Device Information"
+  #   mobile_number: "Mobile Number"
+  #   timestamp: "Timestamp"
 
-  admin:
-    contact_info: "Admin Contact Information"
-    highlight_fields: "Highlight Fields"
-    manage_system_users: "Manage System Users"
-    create_system_user: Create a System User
+  # admin:
+  #   contact_info: "Admin Contact Information"
+  #   highlight_fields: "Highlight Fields"
+  #   manage_system_users: "Manage System Users"
+  #   create_system_user: Create a System User
 
-  fields:
-    label: "Fields"
-    field_name: "Field Name"
-    display_name: "Display Name"
-    option_strings_text: "Options"
-    form_name: "Form Name"
-    action: "Action"
-    remove: "remove"
-    text_field: "Text Field"
-    check_box: "Check boxes"
-    select_box: "Select drop down"
-    radio_button: "Radio button"
-    text_area: "Text Area"
-    numeric_field: "Numeric Field"
-    date_field: "Date Field"
+  # fields:
+  #   label: "Fields"
+  #   field_name: "Field Name"
+  #   display_name: "Display Name"
+  #   option_strings_text: "Options"
+  #   form_name: "Form Name"
+  #   action: "Action"
+  #   remove: "remove"
+  #   text_field: "Text Field"
+  #   check_box: "Check boxes"
+  #   select_box: "Select drop down"
+  #   radio_button: "Radio button"
+  #   text_area: "Text Area"
+  #   numeric_field: "Numeric Field"
+  #   date_field: "Date Field"
 
-    add: "Add Field"
-    type: "Field type"
-  replication:
-    label: Replication
-    index: Manage Replications
-    create: Configure a Server
-    edit: Edit Configuration
-    remote_app_url: RapidFTR URL
-    actions: Actions
-    status: Status
-    description: Description
-    timestamp: Timestamp
-    delete: Delete
-    completed: Successful
-    triggered: In Progress
-    error: Failed
-    confirm_delete: Are you sure you want to delete this replication?
-    start: Start Synchronization
-    stop: Stop Synchronization
-    configure_a_server: Configure a Server
+  #   add: "Add Field"
+  #   type: "Field type"
+  # replication:
+  #   label: Replication
+  #   index: Manage Replications
+  #   create: Configure a Server
+  #   edit: Edit Configuration
+  #   remote_app_url: RapidFTR URL
+  #   actions: Actions
+  #   status: Status
+  #   description: Description
+  #   timestamp: Timestamp
+  #   delete: Delete
+  #   completed: Successful
+  #   triggered: In Progress
+  #   error: Failed
+  #   confirm_delete: Are you sure you want to delete this replication?
+  #   start: Start Synchronization
+  #   stop: Stop Synchronization
+  #   configure_a_server: Configure a Server
 
-  session_expire: "Your session is about to expire!"
-  administration: "Administration"
-  new: "New"
-  saved: "Saved"
-  history_of: "History of"
-  account: "Account"
-  moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
+  # session_expire: "Your session is about to expire!"
+  # administration: "Administration"
+  # new: "New"
+  # saved: "Saved"
+  # history_of: "History of"
+  # account: "Account"
+  # moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"

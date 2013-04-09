@@ -59,10 +59,8 @@ Feature: User should be able to list children
     And I visit children listing page "2"
     And I should see children listing page "2"
 
-    @wip
-  Scenario: A hidden highlighted field must not be visible in Child Summary
+  Scenario: A hidden field must not be visible in Child Summary
     Given I am on the edit form section page for "basic_identity"
     When I check "fields_birthplace"
-    When I hide selected form sections
     When I am on the children listing page
     Then I should not see "birthplace"

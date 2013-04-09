@@ -289,6 +289,14 @@ a.mark_as_duplicate {
     .pagination-box .pagination .next_page {
       border-right: none; }
 
+#password-prompt-dialog {
+  display: none; }
+  #password-prompt-dialog label {
+    width: 100%; }
+  #password-prompt-dialog input {
+    width: 100%;
+    font-size: 125%; }
+
 body {
   background: url(../images/new/bg_body.png) repeat-x;
   font: 13px verdana, arial, helvetica, sans-serif;

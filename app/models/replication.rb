@@ -90,6 +90,7 @@ class Replication < CouchRestRails::Document
 
   def remote_couch_uri(path = "")
     uri = URI.parse remote_couch_config["target"]
+    uri.host = remote_app_uri.host if uri.host == 'localhost'
     uri.path = "/#{path}"
     uri.user = username if username
     uri.password = password if password
@@ -121,9 +122,8 @@ class Replication < CouchRestRails::Document
   end
 
   def self.couch_config
-    uri = URI.parse(Child.database.root)
-    uri.scheme = 'https'
-    uri.port = COUCHDB_CONFIG[:https_port]
+    settings = CouchSettings.instance
+    uri = settings.ssl_enabled_for_couch? ? settings.with_ssl{ settings.uri } : settings.uri
     uri.user = nil
     uri.password = nil
     uri.path = '/'
@@ -141,10 +141,6 @@ class Replication < CouchRestRails::Document
     url = "http://#{url}" unless url.include? '://'
     url = "#{url}/"       unless url.ends_with? '/'
     url
-  end
-
-  def self.authenticate_with_internal_couch_users(username, password)
-    RestClient.post COUCHDB_SERVER.uri+'/_session', 'name='+username+'&password='+password,{:content_type => 'application/x-www-form-urlencoded'}
   end
 
   def self.schedule(scheduler)
@@ -183,7 +179,7 @@ class Replication < CouchRestRails::Document
       raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
       true
     rescue
-      [false, "Please enter a proper URL, e.g. http://<server>:<port>"]
+      [false, I18n.t("activerecord.errors.models.replication.remote_app_url")]
     end
   end
 
@@ -201,7 +197,7 @@ class Replication < CouchRestRails::Document
       self.remote_couch_config = JSON.parse response.body
       true
     rescue => e
-      [false, "The URL/Username/Password that you entered is incorrect"]
+      [false, I18n.t("activerecord.errors.models.replication.save_remote_couch_config")]
     end
   end
 

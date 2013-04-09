@@ -1,0 +1,5 @@
+<% if to_value == 'true' %>
+  <%= datetime %> Child status changed to reunited by <%= user_name %> <%= t("histories.belong_to") %> <%= organisation %> <%=	t("histories.reunited.with_details") %> <%= message %>
+<% else %>
+  <%= datetime %> <%=	t("histories.reunited.child_status_changed") %> <%= user_name %> <%= t("histories.belong_to") %> <%= organisation %> <%= t("histories.reunited.with_details") %> <%= message %>
+<% end %>

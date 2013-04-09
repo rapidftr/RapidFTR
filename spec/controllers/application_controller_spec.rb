@@ -14,13 +14,6 @@ describe ApplicationController do
   end
 
   describe 'locale' do
-    before :each do
-      I18n.locale = I18n.default_locale = :en
-    end
-    after :each do
-      I18n.locale = I18n.default_locale
-    end
-
     it "should be set to default" do
       controller.stub!(:current_session).and_return(session)
       @controller.set_locale
@@ -74,6 +67,48 @@ describe ApplicationController do
       controller.stub(:get_session).and_return(session)
       session.should_receive(:save)
       controller.send(:update_activity_time)
+    end
+  end
+
+  describe '#send_encrypted_file' do
+    it 'should send encrypted zip with password' do
+      filename = "test_file.pdf"
+      content  = "TEST CONTENT"
+      password = "test_password"
+
+      controller.should_receive(:send_file) do |file, opts|
+        Zip::Archive.open(file) do |ar|
+          ar.decrypt password
+          ar.fopen(filename) do |f|
+            f.read.should == content
+          end
+        end
+      end
+
+      UUIDTools::UUID.stub! :random_create => "encrypt_spec"
+      controller.params[:password] = password
+      controller.send(:send_encrypted_file, content, :filename => filename)
+    end
+
+    it 'should save data to tmp folder' do
+      CleanupEncryptedFiles.stub! :dir_name => 'test_dir_name'
+      FileUtils.should_receive(:mkdir_p).with('test_dir_name').and_return(true)
+      filename = controller.send :generate_encrypted_filename
+      filename.should start_with 'test_dir_name'
+    end
+
+    it '#send_csv should use #send_encrypted_file' do
+      data = double()
+      args = double()
+      controller.should_receive(:send_encrypted_file).with(data, args).and_return(true)
+      controller.send :send_csv, data, args
+    end
+
+    it '#send_pdf should use #send_encrypted_file' do
+      data = double()
+      filename = "test_file"
+      controller.should_receive(:send_encrypted_file).with(data, hash_including({:filename => filename})).and_return(true)
+      controller.send :send_pdf, data, filename
     end
   end
 

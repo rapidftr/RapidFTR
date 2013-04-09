@@ -1,0 +1,30 @@
+<div class="profile-header">
+  <ul class="history-details">
+
+    <% if @histories.empty? %>
+      <%= render :partial => "no_activities" %>
+    <% else %>
+      <% @histories.each do |history| %>
+        <% @child = Child.get(history[:child_id]) %>
+        <% history['changes'].each_pair do |field, change| %>          
+          <% history_entry = history_entry_for(history, field, change) %>
+          <% unless history_entry.empty? %>
+            <li>
+              <div>
+                <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals] %>
+                Child id:<span class="child_id"><%= history[:child_id] %></span> Child name:<span class="child_name"><%= history[:child_name] %></span>
+              </div>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+
+
+<div class="profile-tools">
+  <ul>
+    <li class="back"><%= link_to t("buttons.back") , user_path(@user) %></li>
+  </ul>
+</div>

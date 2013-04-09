@@ -11,7 +11,8 @@ Then /^I should see the "([^\"]*)" section with(out)? an enabled checkbox$/ do |
 end
 
 Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form_order|
-  row_for(section_name).find(".//span[@class='formSectionOrder']").text.should == form_order
+  #row_for(section_name).find("//span[@class='formSectionOrder']").text.should == form_order
+  page.should have_xpath("//table[@id='form_sections']/tbody/tr[#{form_order}]/td/a[text()='#{section_name}']")
 end
 
 Then /^I should see the following form sections in this order:$/ do |table|
@@ -28,10 +29,15 @@ Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expect
 end
 
 Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |form_section, visibility|
-  within row_xpath_for(form_section) do
-    page.should have_css("td[3] input", :checked  => (visibility == 'hidden'))
+  #within row_xpath_for(form_section) do
+  #  page.should have_css("td[3] input", :checked  => (visibility == 'hidden'))
+  #end
+  checkbox = page.find("//a[@class='formSectionLink' and contains(., '#{form_section}')]/ancestor::tr/td[3]/input[@class='field_hide_show']")
+  if visibility == 'hidden'
+    checkbox.should be_checked
+  else
+    checkbox.should_not be_checked
   end
-  #page.find("//a[@class='formSectionLink' and contains(., '#{form_section}')]/ancestor::tr/td[3]/input[@class='field_hide_show']").should be_checked
 end
 
 When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|
@@ -39,6 +45,7 @@ When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_secti
 end
 
 When /^I (show|hide) selected form sections$/ do |show_or_hide|
+  sleep(10)
   click_button show_or_hide.capitalize
   page.driver.browser.switch_to.alert.accept
 end
@@ -60,7 +67,18 @@ Then /^I should be able to demote the field "([^"]*)"$/ do |field|
 end
 
 When /^I demote field "([^"]*)"$/ do |field|
-  find(:css, "a##{field}_down").click
+  ##find(:css, "a##{field}_down").click
+  ##drag = page.find("//tr[@data='#{field}']")
+  #drag = page.find("//tr[@data='name']")
+  #drop = page.find("//tr[@data='second_name']")
+  #drag.drag_to(drop)
+
+  #http://your.bucket.s3.amazonaws.com/jquery.simulate.drag-sortable.js
+  page.execute_script '
+    $.getScript("https://github.com/mattheworiordan/jquery.simulate.drag-sortable.js/blob/master/jquery.simulate.drag-sortable.js", function() {
+      $("tr[date=\'name\']").simulateDragSortable({ move: 2});
+    });
+  '
 end
 
 Then /^I should be able to promote the field "([^"]*)"$/ do |field|
@@ -95,11 +113,12 @@ end
 
 
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
-  step 'I follow "Add Custom Field"'
+  step 'I follow "Add Field"'
+  step 'I wait for 5 seconds'
   step 'I follow "Text Field"'
-  step "I fill in \"#{display_name}\" for \"Display name\""
+  step "I fill in \"#{display_name}\" for \"field_display_name_en\""
   step "I fill in \"#{help_text}\" for \"Help text\""
-  step 'I press "Save"'
+  step 'I press "Save Details" within "#new_field"'
 end
 
 Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|

@@ -39,7 +39,7 @@ When /^I try to filter user roles sorted by "(.*?)"$/ do |order|
   select(order, :from => 'sort_by_descending_order')
 end
 
-Then /^I should see the following roles sorted:$/ do |table|
+Then /^I should see the following roles sorted:$/ do |table|  
   expected_order = table.hashes.collect { |role| role['name'] }
   actual_order_against(expected_order).should == expected_order
 end

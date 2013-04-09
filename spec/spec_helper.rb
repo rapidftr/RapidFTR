@@ -45,4 +45,7 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.before(:each) { I18n.locale = I18n.default_locale = :en }
+  
 end

@@ -23,23 +23,19 @@
 </script>
 
 <% has_results = (@results && @results.size > 0) %>
-<% full_results = (@full_results || []).map(&:id) %>
-
 <%= form_tag export_data_children_path, :method => :post do %>
   <br />
   <div class="profiles-list child_list">
-
-    <% if @results && @results.size > 0 %>
-        <div class="pagination-box">
-          <div class="page_info"><%= page_entries_info @results %></div>
+    <% if @results %>
+        <div class="results-count">
+          <p><%= t("advanced_search.records_found", :count => @results.total_entries) %></p>
         </div>
-
-      <%= check_box_tag 'all', 'Select all records' %>
-      <%= label_tag 'all',t("select_all") %>
     <% end %>
-
-    <%= hidden_field_tag "full_results", full_results.join(",") if full_results%>
-
+    <%= hidden_field_tag "full_results", @full_results.join(",") if @full_results%>
+    <% if !@results.nil? && @results.size > 0 %>
+    <%= check_box_tag 'all', 'Select all records' %>
+    <%= label_tag 'all',t("select_all") %>
+    <% end %>
     <%= render :partial => "children/summary_row", :collection => @results, :as => :child, :locals => { :checkbox => true, :highlighted_fields => sorted_highlighted_fields } %>
 
     <%= render :partial => 'shared/pagination', :locals => { :results => @results } %>
@@ -47,13 +43,14 @@
   </div>
   <div class="profiles-button-wrapper">
     <% if !@results.nil? && @results.size > 0 %>
+    <%= hidden_field_tag 'password', nil, :id => 'hidden-password-field' %>
     <%= check_box_tag 'allbottom', 'Select all records' %>
     <%= label_tag 'allbottom', t("select_all") %>
     <% end %>
     <% if can? :export, Child %>
-    <%= submit_tag t("child.actions.export_to_photo_wall") if has_results %>
-    <%= submit_tag t("child.actions.export_to_pdf") if has_results %>
-    <%= submit_tag t("child.actions.export_to_csv") if has_results %>
+    <%= submit_tag t("child.actions.export_to_photo_wall"), :class => "password-prompt" if has_results %>
+    <%= submit_tag t("child.actions.export_to_pdf"), :class => "password-prompt"  if has_results %>
+    <%= submit_tag t("child.actions.export_to_csv"), :class => "password-prompt"  if has_results %>
     <% end %>
   </div>
 <%end%>

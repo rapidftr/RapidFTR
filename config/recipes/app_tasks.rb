@@ -24,28 +24,26 @@ namespace :app do
 
   desc "Create release version files"
   task :setup_revision do
-    #TODO Refactor this part!
-    if fetch(:branch) == "release1"
-      set(:app_version, "1.0")
-    else
-      set(:app_version, "1.1-development")
-    end
+    branch  = fetch(:branch)
+    version = branch =~ /^release-.+$/ ? branch.gsub("release-", "") : "1.1.0-development"
+    set :app_version, version
     template "version.erb", File.join(current_path, "public", "version.txt")
   end
 
   desc "Migrate database"
   task :migrate_db do
-    run_with_path_env "bundle exec rake couchdb:create db:seed db:migrate"
+    # removing the db:migrate temporarily during performance testing for UAT.
+    run_with_path_env "bundle exec rake couchdb:create db:seed"
   end
 
   desc "Clean Start Solr"
   task :start_solr do
-    run_with_path_env "bundle exec rake sunspot:clean_start"
+    run_with_path_env "bundle exec rake sunspot:restart"
   end
 
   desc "Start Scheduler Task"
   task :start_scheduler do
-    run_with_path_env "bundle exec ruby script/scheduler-daemon.rb restart"
+    run_with_path_env "bundle exec rake scheduler:restart" unless fetch(:branch) == "release1"
   end
 
 end

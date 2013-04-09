@@ -6,7 +6,7 @@ class ReplicationsController < ApplicationController
   skip_before_filter :check_authentication, :only => :configuration
 
   def configuration
-    Replication.authenticate_with_internal_couch_users params[:user_name], params[:password]
+    CouchSettings.instance.authenticate params[:user_name], params[:password]
     render :json => Replication.couch_config
   end
 

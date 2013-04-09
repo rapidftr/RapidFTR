@@ -10,10 +10,20 @@ namespace :db do
   end
 
   task :migrate => :environment do
+    migration_db_name = [COUCHDB_CONFIG[:db_prefix], "migration", COUCHDB_CONFIG[:db_suffix]].join
+    db = COUCHDB_SERVER.database!(migration_db_name)
+    migration_ids = db.documents["rows"].select{|row| !row["id"].include?("_design")}.map{|row| row["id"]}
+    migration_names = migration_ids.map{|id| db.get(id)[:name]}
+
     migrations_dir = "db/migration"
     Dir.new(Rails.root.join(migrations_dir)).entries.select { |file| file.ends_with? ".rb" }.sort.each do |file|
-      puts "Applying migration: #{file}"
-      load(Rails.root.join(migrations_dir, file))
+      if migration_names.include?(file) 
+        puts "skipping migration: #{file} - already applied"
+      else
+        puts "Applying migration: #{file}"
+        load(Rails.root.join(migrations_dir, file))
+        db.save_doc({:name => file})
+      end
     end
   end
 
@@ -38,8 +48,8 @@ namespace :db do
       user_name = get "Enter username of your couchdb "
       password = get "Enter password of your couchdb "
     else
-      user_name = "rapidftr"
-      password = "rapidftr"
+      user_name = ENV["COUCHDB_USERNAME"] || "rapidftr"
+      password  = ENV["COUCHDB_PASSWORD"] || "rapidftr"
     end
 
     puts "
@@ -59,15 +69,25 @@ namespace :db do
   desc "Create/Copy couchdb.yml from cocuhdb.yml.example"
   task :create_couchdb_yml, :user_name, :password  do |t, args|
     default_env = ENV['RAILS_ENV'] || "development"
-    environments = ["development", "test", "cucumber", default_env].uniq
+    environments = ["development", "test", "cucumber", "production", "uat", "standalone", default_env].uniq
     user_name = ENV['couchdb_user_name'] || args[:user_name] || ""
     password = ENV['couchdb_password'] || args[:password] || ""
-    couchdb_config = YAML::load(ERB.new(Rails.root.join("config", "couchdb.yml.example").read).result)
+
+    default_config = {
+      "host" => "localhost",
+      "port" => 5984,
+      "https_port" => 6984,
+      "database_prefix" => "rapidftr_",
+      "username" => user_name,
+      "password" => password,
+      "ssl" => false
+    }
+
+    couchdb_config = {}
     environments.each do |env|
-      if !couchdb_config[env].blank?
-        couchdb_config[env].merge!({"username" => user_name, "password" => password, "database_suffix" => "_#{env}"})
-      end
+      couchdb_config[env] = default_config.merge("database_suffix" => "_#{env}")
     end
+
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
   end
 end

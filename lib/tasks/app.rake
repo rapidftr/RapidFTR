@@ -6,17 +6,17 @@ namespace :app do
   end
 
   desc "Start the server in development mode with Sunspot running"
-  task :run => %w( db:migrate sunspot:stop sunspot:start app:assets_precompile) do
+  task :run => %w( sunspot:clean_start scheduler:restart app:assets_precompile) do
     sh 'bundle exec rails server'
   end
 
   desc "Start the thin server in development mode with Sunspot running"
-  task :run_with_thin => %w( db:migrate sunspot:stop sunspot:clean_start app:assets_precompile) do
-    sh 'bundle exec rails server thin -d'
+  task :run_standalone => %w( sunspot:clean_start scheduler:restart app:assets_precompile) do
+    sh "bundle exec thin start --daemonize --chdir #{Rails.root}"
   end
 
   desc "Stop the thin server"
-  task :stop_thin => %w( sunspot:stop ) do
+  task :stop_standalone => %w( scheduler:stop sunspot:stop ) do
     pid_file = 'tmp/pids/server.pid'
     pid = File.read(pid_file).to_i
     Process.kill 9, pid

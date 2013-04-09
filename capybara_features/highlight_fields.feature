@@ -15,3 +15,8 @@ Feature: So that I can select fields to be highlighted in view children page
     And I remove highlight "Nationality"
     Then I should not see "Nationality" within "#highlighted-fields"
 
+
+
+  @wip
+  Scenario: A hidden highlighted field must not be visible in Child Summary
+

@@ -16,6 +16,7 @@ ar:
     manage_system_users: "معالجة مستخدمي النظام"
     records_need_attention: "سجلات تحتاج المشاهدة"
     label: "الرئيسية"
+  clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     move_item: "أنت على وشك نقل هذا الحقل إلى قسم إستمارة آخر ({{selection_key}}). هل أنت متأكد؟"
@@ -160,8 +161,14 @@ ar:
       undo_investigation_details: "إلغاء تفاصيل التحقيق"
       undo_investigated: "إلغاء التحقيق"
       cancel: "إلغاء"
+      delete_photo: "حذف الصورة؟"
+      choose_as_primary_photo: "إختر كصورة أساسية"
+      rotate_anti_clockwise: "تدوير عكس عقارب الساعة"
+      restore_image: "الرجوع إلى الصورة الأصلية"
+      rotate_clockwise: "تدوير في إتجاه عقارب الساعة"
+      view_full_size_photo: "عرض الصورة بالحجم الكلي"
 
-    change_log: "تغيير السجل"
+    change_log: "سجل التغيير"
     flagged_as_suspected: "تم رفع الراية على أنه سجل مشكوك فيه بواسطة "
     posted_from_mobile: "أرسل من هاتف جوال عند: "
     edit_photo: "تعديل الصورة"
@@ -233,8 +240,11 @@ ar:
     old_password: "كلمة السر الحالية"
     new_password: "كلمة السر الجديدة"
     new_password_confirmation: "أكد كلمة السر"
+    new: "مستخدم جديد"
+    user_action_history: "تاريخ نشاط المستخدم"
+    no_activity: "لا نشاط له"
 
-    new: "إسم المستخدم"
+  actions: "نشاط"
   phone: "الهاتف"
   email: "البريد الإلكتروني"
   organisation: "المنظمة"
@@ -302,7 +312,7 @@ ar:
       "Manage Replications": "معالجة نسخ متماثلة"
       "All": "الكل"
       "Users for synchronisation": "مستخدمين للتزامن"
-
+      "View and Download Reports": "View and Download Reports"
 
   forms:
     label: "الإستمارات"
@@ -415,9 +425,9 @@ ar:
     successfully_added: "تم إضافة الحقل بنجاح"
     updated: "تم تحديث الحقل"
     deleted: "الحقل %{display_name} تم حذفه"
-
     add: "أضف حقل"
     type: "نوع الحقل"
+    move_to: "إنقل إلى"
   replication:
     label: نسخ متماثل
     index: معالجة النسخ المتماثلة
@@ -455,6 +465,17 @@ ar:
   account: "حساب"
 
   #validation error messages
+  couchrest:
+    fields:
+      Name: "الإسم"
+      Username: "إسم المستخدم"
+      Password: "كلمة السر"
+      Description: "الوصف"
+      "Remote app url": "رابط التطبيق"
+
+    validations:
+      blank: "%s لا يمكن أن يكون خالي"
+
   activerecord:
     errors:
 
@@ -510,3 +531,36 @@ ar:
 
         system_users:
           username_unique: "إسم المستخدم موجود! الرجاء إختيار إسم مستخدم آخر"
+
+        replication:
+          remote_app_url: "الرجاء إدخال رابط صحيح. مثال: http://<server>:<port>"
+          save_remote_couch_config: "الرابط أو إسم المستخدم أو كلمة السر التي تم إدخالها غير صحيح"
+
+
+  histories:
+    to: "إلى"
+    by: "بواسطة"
+    added_by: "أضيف بواسطة"
+    belong_to: "ينتمي إلى"
+    because: "بسبب:"
+    deleted_by: "حذف بواسطة"
+
+    audio:
+      audio: "الصوت"
+      audio_change: "الملف الصوتي تغير من"
+
+    duplicate:
+      mark_as_duplicate: "حدد هذا السجل على أنه مطابق ل"
+      no_longer_active: "السجل الحالى غير مفعل ولا يمكن تعديله"
+
+    flag:
+      record_flagged_by: "هذا السجل تم تعليمه بواسطة"
+      record_unflagged_by: "تم إلغاء تعليم هذا السجل بواسطة"
+
+    investigated:
+      mark_as_investigated_by: "تم تحديد هذا السجل على أنه قد تم التحقق منه بواسطة"
+      mark_as_not_investigated_by: "تم تحديد هذا السجل على أنه لم يتم التحقق منه بواسطة"
+
+    reunited:
+      child_status_changed: "حالة الطفل تم تغييرها إلى مفعل بواسطة"
+      with_details: "بهذه التفاصيل:"

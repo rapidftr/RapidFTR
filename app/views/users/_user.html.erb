@@ -16,7 +16,7 @@
   <% if can? :destroy, User %>
       <td>
         <% if current_user_name != user.user_name %>
-            <%= link_to t('user.actions.delete'), user, :confirm => t("user.messages.confirmation"), :method => :delete %></td>
+            <%= link_to t("user.actions.delete"), user, :confirm => t("user.messages.confirmation"), :method => :delete %></td>
         <% end %>
   <% end %>
   </td>
