@@ -16,7 +16,7 @@ And /^I set the system language to "(.+)"-"(.+)"$/ do |language, locale|
   I18n.locale = I18n.default_locale = locale
 end
 
-And /^I set the user language to "(.+)"-"(.+)"$/ do |language, locale|
+And /^I set the user language to "(.*)"-"(.*)"$/ do |language, locale|
   click_link 'RapidFTR logo'
   select(language, :from => 'user_locale')
   click_button(I18n.t('buttons.save'))
@@ -31,4 +31,7 @@ end
 
 def store(translation)
   I18n.backend.store_translations translation["locale"], { translation["key"] => translation["value"] }
+end
+Then /^I should see my system language as "([^"]*)"-"([^"]*)"$/ do |language, locale|
+  assert page.has_xpath?("//div[@class='page-content']/h2")
 end
