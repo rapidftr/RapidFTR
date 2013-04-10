@@ -417,12 +417,15 @@ describe ChildrenController do
     it "should not set photo if photo is not passed" do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
-      params_child = {"name" => 'update'}
       controller.stub(:current_user_name).and_return("user_name")
-      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+
+      params_child = {"name" => 'update'}
+
       Child.stub(:get).and_return(child)
       put :update, :id => '1', :child => params_child
-      end
+
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+    end
 
 
     it "should redirect to redirect_url if it is present in params" do
