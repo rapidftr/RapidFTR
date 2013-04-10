@@ -26,12 +26,6 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     click_button(button)
   end
-  end
-
-  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-  with_scope(selector) do
-    find("//input[@class='btn_submit']").click
-  end
 end
 
 #  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
@@ -201,8 +195,6 @@ Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"
   end
 end
 
-
-
 Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
     field_checked = find_field(label)['checked']
@@ -276,11 +268,11 @@ end
 
 Then /^I should see the order (.+)$/ do |input|
   current = 0
-  input.split(',').each{ |match|
+  input.split(',').each do |match|
     index = page.body.index(match)
     assert index > current, "The index of #{match} was not greater than #{current}"
     current = index
-  }
+  end
 end
 
 Then /^(.+) button is disabled$/ do |text|
@@ -306,7 +298,6 @@ When /^I clear the search results$/ do
 click_button("reset")
 end
 
-
 Then /^I should see first (\d+) records in the search results$/ do |arg1|
   assert page.has_content?("Displaying children 1 - 20 ")
 end
@@ -314,7 +305,6 @@ end
 When /^I goto the "(.*?)"$/ do |text|
   find(:xpath,"//a[@class='"+text+"']").click
 end
-
 
 Then /^I should see next records in the search results$/ do
   assert page.has_content?("Displaying children 21 - 25 ")
@@ -324,12 +314,10 @@ Then /^I should see link to "(.*?)"$/ do |text|
   page.should have_xpath("//span[@class='"+text+"']")
 end
 
-Then /^I should (not )?be able to view the tab (.+)$/ do|do_not_want,tab_name|
-  if do_not_want
-    page.has_no_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
-  else
-    page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
+Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
+  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should == !not_visible
 end
+
 When /^I view User Action History$/ do
   find("//span[@class='log']").click
 end
@@ -340,6 +328,7 @@ end
 When /^I select "([^"]*)"$/ do |arg|
   find("//input[@class='btn_submit']").click
 end
+
 Then /^export option should be unavailable to me$/ do
   page.should have_no_xpath("//span[@class='export']")
 end
