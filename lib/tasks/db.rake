@@ -17,7 +17,7 @@ namespace :db do
 
     migrations_dir = "db/migration"
     Dir.new(Rails.root.join(migrations_dir)).entries.select { |file| file.ends_with? ".rb" }.sort.each do |file|
-      if migration_names.include?(file) 
+      if migration_names.include?(file)
         puts "skipping migration: #{file} - already applied"
       else
         puts "Applying migration: #{file}"
@@ -28,41 +28,26 @@ namespace :db do
   end
 
   desc "Create system administrator for couchdb. This is needed only if you are interested to test out replications"
-  task :create_couch_sysadmin do
-    host = "http://127.0.0.1"
-    port = "5984"
+  task :create_couch_sysadmin, :user_name, :password do |t, args|
     puts "
       **************************************************************
-
-        Welcome to RapidFTR couchdb system administrator setup!
-
+          Welcome to RapidFTR couchdb system administrator setup
       **************************************************************
-      RapidFTR uses couchdb _users and _replication database for couchdb master to master replication.
-      If you don't want to try the replication feature please hit CTRL + C.
-
-      Else go on...
     "
-    is_admin_available = get "Does your couchdb have admin credentials(yes/no) "
-    raise "Invalid value #{is_admin_available}. Needed one of yes/no" unless %w[yes no].include?(is_admin_available)
-    if is_admin_available == "yes"
-      user_name = get "Enter username of your couchdb "
-      password = get "Enter password of your couchdb "
-    else
-      user_name = ENV["COUCHDB_USERNAME"] || "rapidftr"
-      password  = ENV["COUCHDB_PASSWORD"] || "rapidftr"
-    end
 
-    puts "
-        Assuming you are running your couchdb server at http://127.0.0.1:5984/.
-        If you are not, please change this @ #{__FILE__ }
-         "
+    url       = "http://localhost:5984"
+    user_name = args[:user_name] || get("Enter username for CouchDB: ")
+    password  = args[:password]  || get("Enter password for CouchDB: ")
 
     begin
-      RestClient.post "#{host}:#{port}/_session", "name=#{user_name}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
+      RestClient.post "#{url}/_session", "name=#{user_name}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
+      puts "Administrator account #{user_name} is already existing and verified"
     rescue RestClient::Request::Unauthorized
-      full_host = "#{host}:#{port}/_config/admins/#{user_name}"
+      full_host = "#{url}/_config/admins/#{user_name}"
       RestClient.put full_host, "\""+password+"\"", {:content_type => :json}
+      puts "Administrator account #{user_name} has been created"
     end
+
     Rake::Task["db:create_couchdb_yml"].invoke(user_name, password)
   end
 
