@@ -132,8 +132,8 @@ class ChildrenController < ApplicationController
   def update
     @child = Child.get(params[:id])
     authorize! :update, @child
-    
-    @child.update_with_attachments(params[:child], current_user_full_name)
+
+    @child.update_with_attachments(params[:child])
     if @child.save
       flash[:notice] = I18n.t("child.messages.update_success")
       redirect_to(params[:redirect_url] || @child)

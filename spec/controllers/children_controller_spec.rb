@@ -404,34 +404,50 @@ describe ChildrenController do
     end
 
     it "should update the last_updated_by_full_name field with the logged in user full name" do
-      controller.stub!(:authorize!)
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
-      controller.stub!(:current_user).and_return(user = mock('user', :user_name => 'uname', :full_name => "Bill Clinton", :organisation => 'org', :locale => "en"))
       child = Child.new_with_user_name(user, {:name => 'existing child'})
       Child.stub(:get).with(123).and_return(child)
-
+      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      
       put :update, :id => 123, :child => {:flag => true, :flag_message => "Test"}
-
+      
       child['last_updated_by_full_name'].should=='Bill Clinton'
     end
 
-    it "should redirect to redirect_url if it is present in params" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :full_name => "user_name", :organisation => 'org'))
+    it "should not set photo if photo is not passed" do
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
-      child.stub!(:update_with_attachments)
-      Child.stub(:get).and_return(child)
+      controller.stub(:current_user_name).and_return("user_name")
 
-      put :update, :id => '1', :child => {"name" => 'update'}, :redirect_url => '/children'
+      params_child = {"name" => 'update'}
+
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child
+
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+    end
+
+
+    it "should redirect to redirect_url if it is present in params" do
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      child = Child.new_with_user_name(user, {:name => 'some name'})
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child, :redirect_url => '/children'
       response.should redirect_to '/children'
     end
 
     it "should redirect to child page if redirect_url is not present in params" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :full_name => "user_name", :organisation => 'org'))
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
-      child.stub!(:update_with_attachments)
-      Child.stub(:get).and_return(child)
 
-      put :update, :id => '1', :child => {"name" => 'update'}
+      params_child = {"name" => 'update'}
+      controller.stub(:current_user_name).and_return("user_name")
+      child.should_receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
+      Child.stub(:get).and_return(child)
+      put :update, :id => '1', :child => params_child
       response.should redirect_to "/children/#{child.id}"
     end
 
@@ -483,108 +499,158 @@ describe ChildrenController do
 
     end
 
-      it 'sends csv data with the correct attributes' do
-        Child.stub!(:search).and_return([[]])
-        controller.stub(:authorize!)
-        export_generator = stub(ExportGenerator)
-        inject_export_generator(export_generator, [])
+    it 'sends csv data with the correct attributes' do
+			Child.stub!(:search).and_return([[]])
+      controller.stub(:authorize!)
+      export_generator = stub(ExportGenerator)
+			inject_export_generator(export_generator, [])
 
-        export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
-        @controller.stub!(:render) #to avoid looking for a template
-        @controller.
-          should_receive(:send_csv).
-          with( :csv_data, {:foo=>:bar} ).
-          and_return{controller.render :nothing => true}
+			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
+      @controller.stub!(:render) #to avoid looking for a template
+      @controller.
+        should_receive(:send_csv).
+        with( :csv_data, {:foo=>:bar} ).
+        and_return{controller.render :nothing => true}
 
-        get(:search, :format => 'csv', :query => 'blah')
-      end
+			get(:search, :format => 'csv', :query => 'blah')
     end
-    describe "searching as field worker" do
+  end
+  describe "searching as field worker" do
+    before :each do
+      @session = fake_field_worker_login
+    end
+    it "should only list the children which the user has registered" do
+      search = mock("search", :query => 'some_name', :valid? => true, :page => 1)
+      Search.stub!(:new).and_return(search)
+
+      fake_results = [:fake_child,:fake_child]
+      fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
+      Child.should_receive(:search_by_created_user).with(search, @session.user_name, 1).and_return([fake_results, fake_full_results])
+
+      get(:search, :query => 'some_name')
+      assigns[:results].should == fake_results
+    end
+  end
+
+
+  describe "GET export_photo_to_pdf" do
+
+    before do
+      user = User.new(:user_name => "some-name")
+      user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export]])])
+      fake_login user
+      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+    end
+
+    it "should return the photo wall pdf for selected child" do
+      Child.should_receive(:get).with('1').and_return(stub_child = stub('child', :short_id => '1', :class => Child))
+
+      ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
+      export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
+
+      @controller.
+        should_receive(:send_pdf).
+        with(:fake_pdf_data, '1-20000101-0915.pdf').
+        and_return{controller.render :nothing => true}
+
+      get :export_photo_to_pdf, :id => '1'
+    end
+  end
+
+  describe "PUT select_primary_photo" do
+    before :each do
+      @child = stub_model(Child, :id => :id)
+      @photo_key = "key"
+      @child.stub(:primary_photo_id=)
+      @child.stub(:save)
+      Child.stub(:get).with(:id).and_return @child
+    end
+
+    it "set the primary photo on the child and save" do
+      @child.should_receive(:primary_photo_id=).with(@photo_key)
+      @child.should_receive(:save)
+
+      put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
+    end
+
+    it "should return success" do
+      put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
+
+      response.should be_success
+    end
+
+    context "when setting new primary photo id errors" do
       before :each do
-        @session = fake_field_worker_login
-      end
-      it "should only list the children which the user has registered" do
-        search = mock("search", :query => 'some_name', :valid? => true, :page => 1)
-        Search.stub!(:new).and_return(search)
-
-        fake_results = [:fake_child,:fake_child]
-        fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
-        Child.should_receive(:search_by_created_user).with(search, @session.user_name, 1).and_return([fake_results, fake_full_results])
-
-        get(:search, :query => 'some_name')
-        assigns[:results].should == fake_results
-      end
-    end
-
-
-    describe "GET export_photo_to_pdf" do
-
-      before do
-        user = User.new(:user_name => "some-name")
-        user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-        user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export]])])
-        fake_login user
-        Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+        @child.stub(:primary_photo_id=).and_raise("error")
       end
 
-      it "should return the photo wall pdf for selected child" do
-        Child.should_receive(:get).with('1').and_return(stub_child = stub('child', :short_id => '1', :class => Child))
-
-        ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
-        export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
-
-        @controller.
-          should_receive(:send_pdf).
-          with(:fake_pdf_data, '1-20000101-0915.pdf').
-          and_return{controller.render :nothing => true}
-
-        get :export_photo_to_pdf, :id => '1'
-      end
-    end
-
-    describe "PUT select_primary_photo" do
-      before :each do
-        @child = stub_model(Child, :id => :id)
-        @photo_key = "key"
-        @child.stub(:primary_photo_id=)
-        @child.stub(:save)
-        Child.stub(:get).with(:id).and_return @child
-      end
-
-      it "set the primary photo on the child and save" do
-        @child.should_receive(:primary_photo_id=).with(@photo_key)
-        @child.should_receive(:save)
-
-        put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
-      end
-
-      it "should return success" do
+      it "should return error" do
         put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
 
-        response.should be_success
-      end
-
-      context "when setting new primary photo id errors" do
-        before :each do
-          @child.stub(:primary_photo_id=).and_raise("error")
-        end
-
-        it "should return error" do
-          put :select_primary_photo, :child_id => @child.id, :photo_id => @photo_key
-
-          response.should be_error
-        end
+        response.should be_error
       end
     end
+  end
 
-    describe "PUT create" do
-      it "should add the full user_name of the user who created the Child record" do
-        Child.should_receive('new_with_user_name').and_return(child = Child.new)
-        controller.should_receive('current_user_full_name').and_return('Bill Clinton')
-        put :create, :child => {:name => 'Test Child' }
-        child['created_by_full_name'].should=='Bill Clinton'
-      end
+  describe "PUT create" do
+    it "should add the full user_name of the user who created the Child record" do
+      Child.should_receive('new_with_user_name').and_return(child = Child.new)
+      controller.should_receive('current_user_full_name').and_return('Bill Clinton')
+      put :create, :child => {:name => 'Test Child' }
+      child['created_by_full_name'].should=='Bill Clinton'
     end
+  end
+
+  describe "sync_unverified" do
+    before :each do
+      @user = build :user, :verified => false, :role_ids => []
+      fake_login @user
+    end
+
+    it "should mark all children created as verified/unverifid based on the user" do
+      @user.verified = true
+      Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
+      child.should_receive(:save).and_return true
+
+      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
+
+      @user.verified = true
+    end
+
+    it "should set the created_by name to that of the user matching the params" do
+      Child.should_receive(:new_with_user_name).and_return(child = Child.new)
+      child.should_receive(:save).and_return true
+
+      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
+
+      child['created_by_full_name'].should eq @user.full_name
+    end
+
+    it "should update the child instead of creating new child everytime" do
+      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(child = Child.new)
+      controller.should_receive(:update_child_from).and_return(child)
+      child.should_receive(:save).and_return true
+
+      post :sync_unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'}, :format => :json}
+
+      child['created_by_full_name'].should eq @user.full_name
+    end
+  end
+
+  describe "POST create" do
+    it "should update the child record instead of creating if record already exists" do
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      child = Child.new_with_user_name(user, {:name => 'old name'})
+      child.save
+      fake_admin_login
+      controller.stub(:authorize!)
+      post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
+      updated_child = Child.by_short_id(:key => child.short_id)
+      updated_child.size.should == 1
+      updated_child.first.name.should == 'new name'
+    end
+  end
 
   end
-end
+  end
