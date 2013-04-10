@@ -307,9 +307,26 @@ Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
   assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
 end
 When /^I clear the search results$/ do
-click_button("reset")
+  click_button("reset")
 end
 
+
+Then /^I should see first (\d+) records in the search results$/ do |arg1|
+  assert page.has_content?("Displaying children 1 - 20 ")
+end
+
+When /^I goto the "(.*?)"$/ do |text|
+  find(:xpath,"//a[@class='"+text+"']").click
+end
+
+
+Then /^I should see next records in the search results$/ do
+  assert page.has_content?("Displaying children 21 - 25 ")
+end
+
+Then /^I should see link to "(.*?)"$/ do |text|
+  page.should have_xpath("//span[@class='"+text+"']")
+end
 Then /^I should not be able to view the tab (.+)$/ do|tab_name|
   page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
 end
