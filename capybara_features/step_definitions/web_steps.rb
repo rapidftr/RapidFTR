@@ -35,7 +35,7 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
 end
 
 When /^I search$/ do
-  page.execute_script("$('input[value=\"#{Search}\"]').click();")
+   page.execute_script("$('input[value=\"#{Search}\"]').click();")
 end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
@@ -141,7 +141,7 @@ Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
   else
     page.text.should match(regexp)
   end
-end
+  end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
