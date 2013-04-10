@@ -63,7 +63,7 @@ class Api::ChildrenController < ApplicationController
 
   def update_child_from child_params
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, child_params)
-    child.update_with_attachements(child_params, current_user_full_name)
+    child.update_with_attachments(child_params)
     child
   end
 
