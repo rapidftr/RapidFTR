@@ -556,14 +556,6 @@ view_by :protection_status, :gender, :ftr_status
     FileAttachment.new media_key, content_type, data, self
   end
 
-  def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
-    update_properties(properties, user_name)
-    self.delete_photos(delete_photos)
-    self.update_photo_keys
-    self.photo = new_photo
-    self.audio = new_audio
-  end
-
   def update_history
     if field_name_changes.any?
       changes = changes_for(field_name_changes)
@@ -600,160 +592,176 @@ view_by :protection_status, :gender, :ftr_status
   def self.schedule(scheduler)
     scheduler.every("24h") do
      Child.reindex!
-   end
+    end
+  end
+
+  def update_with_attachments(params, current_user_full_name)
+    last_updated_by_full_name = current_user_full_name
+    new_photo = params.delete("photo")
+    new_photo = (params[:photo] || "") if new_photo.nil?
+    new_audio = params.delete("audio")
+    update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params)
   end
 
   protected
 
-  def add_to_history(changes)
-    last_updated_user_name = last_updated_by
-    self['histories'].unshift({
-                                  'user_name' => last_updated_user_name,
-                                  'user_organisation' => organisation_of(last_updated_user_name),
-                                  'datetime' => last_updated_at,
-                                  'changes' => changes})
-  end
-
-  def organisation_of(user_name)
-    User.find_by_user_name(user_name).try(:organisation)
-  end
-
-  def current_formatted_time
-    Clock.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
-  end
-
-  def changes_for(field_names)
-    field_names.inject({}) do |changes, field_name|
-      changes.merge(field_name => {
-          'from' => @from_child[field_name],
-          'to' => self[field_name]
-      })
+    def add_to_history(changes)
+      last_updated_user_name = last_updated_by
+      self['histories'].unshift({
+                                    'user_name' => last_updated_user_name,
+                                    'user_organisation' => organisation_of(last_updated_user_name),
+                                    'datetime' => last_updated_at,
+                                    'changes' => changes})
     end
-  end
 
-  def photo_changes_for(new_photo_keys, deleted_photo_keys)
-    return if new_photo_keys.blank? && deleted_photo_keys.blank?
-    {'photo_keys' => {'added' => new_photo_keys, 'deleted' => deleted_photo_keys}}
-  end
-
-  def field_name_changes
-    @from_child ||= Child.get(self.id)
-    field_names = field_definitions.map { |f| f.name }
-    other_fields = [
-        "flag", "flag_message",
-        "reunited", "reunited_message",
-        "investigated", "investigated_message",
-        "duplicate", "duplicate_of"
-    ]
-    all_fields = field_names + other_fields
-    all_fields.select { |field_name| changed?(field_name) }
-  end
-
-  def changed?(field_name)
-    return false if self[field_name].blank? && @from_child[field_name].blank?
-    return true if @from_child[field_name].blank?
-    if self[field_name].respond_to? :strip
-      self[field_name].strip != @from_child[field_name].strip
-    else
-      self[field_name] != @from_child[field_name]
+    def organisation_of(user_name)
+      User.find_by_user_name(user_name).try(:organisation)
     end
-  end
 
-  def is_filled_in? field
-    !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
-  end
+    def current_formatted_time
+      Clock.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
+    end
+
+    def changes_for(field_names)
+      field_names.inject({}) do |changes, field_name|
+        changes.merge(field_name => {
+            'from' => @from_child[field_name],
+            'to' => self[field_name]
+        })
+      end
+    end
+
+    def photo_changes_for(new_photo_keys, deleted_photo_keys)
+      return if new_photo_keys.blank? && deleted_photo_keys.blank?
+      {'photo_keys' => {'added' => new_photo_keys, 'deleted' => deleted_photo_keys}}
+    end
+
+    def field_name_changes
+      @from_child ||= Child.get(self.id)
+      field_names = field_definitions.map { |f| f.name }
+      other_fields = [
+          "flag", "flag_message",
+          "reunited", "reunited_message",
+          "investigated", "investigated_message",
+          "duplicate", "duplicate_of"
+      ]
+      all_fields = field_names + other_fields
+      all_fields.select { |field_name| changed?(field_name) }
+    end
+
+    def changed?(field_name)
+      return false if self[field_name].blank? && @from_child[field_name].blank?
+      return true if @from_child[field_name].blank?
+      if self[field_name].respond_to? :strip
+        self[field_name].strip != @from_child[field_name].strip
+      else
+        self[field_name] != @from_child[field_name]
+      end
+    end
+
+    def is_filled_in? field
+      !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
+    end
 
   private
 
-  def update_properties(properties, user_name)
-    properties['histories'] = remove_newly_created_media_history(properties['histories'])
-    should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
-    if should_update
-      properties.each_pair do |name, value|
-        if name == "histories"
-          merge_histories(properties['histories'])
-        else
-          self[name] = value unless value == nil
+    def update_properties(properties, user_name)
+      properties['histories'] = remove_newly_created_media_history(properties['histories'])
+      should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
+      if should_update
+        properties.each_pair do |name, value|
+          if name == "histories"
+            merge_histories(properties['histories'])
+          else
+            self[name] = value unless value == nil
+          end
+          self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
         end
-        self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
+        self.set_updated_fields_for user_name
+      else
+        merge_histories(properties['histories'])
       end
-      self.set_updated_fields_for user_name
-    else
-      merge_histories(properties['histories'])
     end
-  end
 
-  def merge_histories(given_histories)
-    current_histories = self['histories']
-    to_be_merged = []
-    (given_histories || []).each do |history|
-      matched = current_histories.find do |c_history|
-        c_history["user_name"] == history["user_name"] && c_history["datetime"] == history["datetime"] && c_history["changes"].keys == history["changes"].keys
+    def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
+      update_properties(properties, user_name)
+      self.delete_photos(delete_photos)
+      self.update_photo_keys
+      self.photo = new_photo
+      self.audio = new_audio
+    end
+
+    def merge_histories(given_histories)
+      current_histories = self['histories']
+      to_be_merged = []
+      (given_histories || []).each do |history|
+        matched = current_histories.find do |c_history|
+          c_history["user_name"] == history["user_name"] && c_history["datetime"] == history["datetime"] && c_history["changes"].keys == history["changes"].keys
+        end
+        to_be_merged.push(history) unless matched
       end
-      to_be_merged.push(history) unless matched
+      self["histories"] = current_histories.push(to_be_merged).flatten!
     end
-    self["histories"] = current_histories.push(to_be_merged).flatten!
-  end
 
-  def remove_newly_created_media_history(given_histories)
-    (given_histories || []).delete_if do |history|
-      (!history["changes"]["current_photo_key"].nil? and !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
-          (!history["changes"]["recorded_audio"].nil? and !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
+    def remove_newly_created_media_history(given_histories)
+      (given_histories || []).delete_if do |history|
+        (!history["changes"]["current_photo_key"].nil? and !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
+            (!history["changes"]["recorded_audio"].nil? and !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
+      end
+      given_histories
     end
-    given_histories
-  end
 
-  def attachment(key)
-    begin
-      data = read_attachment key
-      content_type = self['_attachments'][key]['content_type']
-    rescue
-      return nil
+    def attachment(key)
+      begin
+        data = read_attachment key
+        content_type = self['_attachments'][key]['content_type']
+      rescue
+        return nil
+      end
+        FileAttachment.new key, content_type, data
     end
-      FileAttachment.new key, content_type, data
-  end
 
-  def deprecated_fields
-    system_fields = ["created_at",
-                     "last_updated_at",
-                     "last_updated_by",
-                     "last_updated_by_full_name",
-                     "posted_at",
-                     "posted_from",
-                     "_rev",
-                     "_id",
-                     "short_id",
-                     "created_by",
-                     "created_by_full_name",
-                     "couchrest-type",
-                     "histories",
-                     "unique_identifier",
-                     "current_photo_key",
-                     "created_organisation",
-                     "photo_keys"]
-    existing_fields = system_fields + field_definitions.map { |x| x.name }
-    self.reject { |k, v| existing_fields.include? k }
-  end
+    def deprecated_fields
+      system_fields = ["created_at",
+                       "last_updated_at",
+                       "last_updated_by",
+                       "last_updated_by_full_name",
+                       "posted_at",
+                       "posted_from",
+                       "_rev",
+                       "_id",
+                       "short_id",
+                       "created_by",
+                       "created_by_full_name",
+                       "couchrest-type",
+                       "histories",
+                       "unique_identifier",
+                       "current_photo_key",
+                       "created_organisation",
+                       "photo_keys"]
+      existing_fields = system_fields + field_definitions.map { |x| x.name }
+      self.reject { |k, v| existing_fields.include? k }
+    end
 
-  def setup_original_audio(attachment)
-    audio_attachments = (self['audio_attachments'] ||= {})
-    audio_attachments.clear
-    audio_attachments['original'] = attachment.name
-  end
+    def setup_original_audio(attachment)
+      audio_attachments = (self['audio_attachments'] ||= {})
+      audio_attachments.clear
+      audio_attachments['original'] = attachment.name
+    end
 
-  def setup_mime_specific_audio(file_attachment)
-    audio_attachments = (self['audio_attachments'] ||= {})
-    content_type_for_key = file_attachment.mime_type.to_sym.to_s
-    audio_attachments[content_type_for_key] = file_attachment.name
-  end
+    def setup_mime_specific_audio(file_attachment)
+      audio_attachments = (self['audio_attachments'] ||= {})
+      content_type_for_key = file_attachment.mime_type.to_sym.to_s
+      audio_attachments[content_type_for_key] = file_attachment.name
+    end
 
-  def key_for_content_type(content_type)
-    Mime::Type.lookup(content_type).to_sym.to_s
-  end
+    def key_for_content_type(content_type)
+      Mime::Type.lookup(content_type).to_sym.to_s
+    end
 
-  def validate_duplicate_of
-    return [false, I18n.t("activerecord.errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
-    true
-  end
+    def validate_duplicate_of
+      return [false, I18n.t("activerecord.errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
+      true
+    end
 
 end

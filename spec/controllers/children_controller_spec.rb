@@ -340,32 +340,13 @@ describe ChildrenController do
   end
 
   describe "PUT update" do
-    it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
-      child['histories'] = []
-      child.save!
-
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
-      histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
-      put :update, :id => child.id,
-           :child => {
-               :last_known_location => "Manchester",
-               :histories => histories
-           }
-      
-     assigns[:child]['histories'].should == JSON.parse(histories)
-    end
-
+   
     it "should update child on a field and photo update" do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
-
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
-      put :update, :id => child.id,
-        :child => {
-          :last_known_location => "Manchester",
-          :photo => uploadable_photo_jeff }
+      
+      put :update, :id => child.id, :child => {:last_known_location => "Manchester", :photo => uploadable_photo_jeff }
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
@@ -393,18 +374,6 @@ describe ChildrenController do
       Child.get(child.id)["histories"].size.should be 1
       
       expect{put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"})}.to_not change{Child.get(child.id)["histories"].size}
-    end
-
-    it "should allow a records ID to be specified to create a new record with a known id" do
-      new_uuid = UUIDTools::UUID.random_create()
-      put :update, :id => new_uuid.to_s,
-        :child => {
-            :id => new_uuid.to_s,
-            :_id => new_uuid.to_s,
-            :last_known_location => "London",
-            :age => "7"
-        }
-      Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
     end
 
     it "should update flag (cast as boolean) and flag message" do
