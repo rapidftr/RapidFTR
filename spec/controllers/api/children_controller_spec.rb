@@ -91,42 +91,6 @@ describe Api::ChildrenController do
       
       Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
     end
-  end
-
-  describe "sync_unverified" do
-    before :each do
-      @user = build :user, :verified => false, :role_ids => []
-      fake_login @user
-    end
-
-    it "should mark all children created as verified/unverifid based on the user" do
-      @user.verified = true
-      Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
-      child.should_receive(:save).and_return true
-
-      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
-
-      @user.verified = true
-    end
-
-    it "should set the created_by name to that of the user matching the params" do
-      Child.should_receive(:new_with_user_name).and_return(child = Child.new)
-      child.should_receive(:save).and_return true
-
-      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
-
-      child['created_by_full_name'].should eq @user.full_name
-    end
-
-    it "should update the child instead of creating new child everytime" do
-      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(child = Child.new)
-      controller.should_receive(:update_child_from).and_return(child)
-      child.should_receive(:save).and_return true
-
-      post :sync_unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'}, :format => :json}
-
-      child['created_by_full_name'].should eq @user.full_name
-    end
-  end
+	end
 
 end	
