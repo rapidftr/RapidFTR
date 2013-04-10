@@ -603,6 +603,14 @@ view_by :protection_status, :gender, :ftr_status
     update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params)
   end
 
+  def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
+    update_properties(properties, user_name)
+    self.delete_photos(delete_photos)
+    self.update_photo_keys
+    self.photo = new_photo
+    self.audio = new_audio
+  end
+
   protected
 
     def add_to_history(changes)
@@ -681,14 +689,6 @@ view_by :protection_status, :gender, :ftr_status
       else
         merge_histories(properties['histories'])
       end
-    end
-
-    def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
-      update_properties(properties, user_name)
-      self.delete_photos(delete_photos)
-      self.update_photo_keys
-      self.photo = new_photo
-      self.audio = new_audio
     end
 
     def merge_histories(given_histories)
