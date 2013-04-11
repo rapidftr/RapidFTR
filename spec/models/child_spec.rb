@@ -245,7 +245,7 @@ describe Child do
 
     it "should not update attachments when the photo value is nil" do
       child = Child.new
-      child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
+      child.update_with_attachements({}, "mr jones")
       child.photos.should be_empty
     end
 
