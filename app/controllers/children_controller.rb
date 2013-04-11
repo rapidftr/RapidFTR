@@ -4,6 +4,7 @@ class ChildrenController < ApplicationController
 
   before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
   before_filter :current_user, :except => [:reindex]
+  before_filter :sanitize_params, :only => [:update, :sync_unverified]
 
   def reindex
     Child.reindex!
@@ -11,6 +12,7 @@ class ChildrenController < ApplicationController
   end
 
   # GET /children
+  # GET /children.xml
   def index
     authorize! :index, Child
 
@@ -24,9 +26,13 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.xml { render :xml => @children }
       format.csv do
         authorize! :export, Child
-        render_as_csv @children
+        render_as_csv @children, "all_records_#{file_name_date_string}.csv"
+      end
+      format.json do
+        render :json => @children
       end
       format.pdf do
         authorize! :export, Child
@@ -37,6 +43,7 @@ class ChildrenController < ApplicationController
   end
 
   # GET /children/1
+  # GET /children/1.xml
   def show
     authorize! :read, @child if @child["created_by"] != current_user_name
     @form_sections = get_form_sections
@@ -46,9 +53,11 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.xml { render :xml => @child }
+
       format.csv do
         authorize! :export, Child
-        render_as_csv([@child])
+        render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
         authorize! :export, Child
@@ -59,6 +68,7 @@ class ChildrenController < ApplicationController
   end
 
   # GET /children/new
+  # GET /children/new.xml
   def new
     authorize! :create, Child
 
@@ -67,6 +77,7 @@ class ChildrenController < ApplicationController
     @form_sections = get_form_sections
     respond_to do |format|
       format.html
+      format.xml { render :xml => @child }
     end
   end
 
@@ -144,10 +155,16 @@ class ChildrenController < ApplicationController
   end
 
 # DELETE /children/1
+# DELETE /children/1.xml
   def destroy
     authorize! :destroy, @child
     @child.destroy
-    redirect_to(children_url)
+
+    respond_to do |format|
+      format.html { redirect_to(children_url) }
+      format.xml { head :ok }
+      format.json { render :json => {:response => "ok"}.to_json }
+    end
   end
 
   def search
@@ -186,6 +203,11 @@ class ChildrenController < ApplicationController
     "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
   end
 
+  def sanitize_params
+    child_params = params['child']
+    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
+  end
+
   def file_name_datetime_string
     user = User.find_by_user_name(current_user_name)
     Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
@@ -208,12 +230,12 @@ class ChildrenController < ApplicationController
         end
       end
       format.csv do
-        render_as_csv(@results) if @results
+        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
       end
     end
   end
 
-  def render_as_csv results
+  def render_as_csv results, filename
     results = results || [] # previous version handled nils - needed?
 
     results.each do |child|
@@ -228,9 +250,15 @@ class ChildrenController < ApplicationController
 
   def load_child_or_redirect
     @child = Child.get(params[:id])
+
     if @child.nil?
-      flash[:error] = "Child with the given id is not found"
-      redirect_to :action => :index and return
+      respond_to do |format|
+        format.json { render :json => @child.to_json }
+        format.html do
+          flash[:error] = "Child with the given id is not found"
+          redirect_to :action => :index and return
+        end
+      end
     end
   end
 
@@ -268,4 +296,5 @@ class ChildrenController < ApplicationController
       @results, @full_results = Child.search_by_created_user(@search, current_user_name, page_number)
     end
   end
-end
+
+end 
