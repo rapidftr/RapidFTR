@@ -595,8 +595,8 @@ view_by :protection_status, :gender, :ftr_status
     end
   end
 
-  def update_with_attachments(params, current_user_full_name)
-    last_updated_by_full_name = current_user_full_name
+  def update_with_attachments(params, user_full_name)
+    self['last_updated_by_full_name'] = user_full_name
     new_photo = params.delete("photo")
     new_photo = (params[:photo] || "") if new_photo.nil?
     new_audio = params.delete("audio")

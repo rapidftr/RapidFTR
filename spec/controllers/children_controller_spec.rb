@@ -404,11 +404,11 @@ describe ChildrenController do
     end
 
     it "should update the last_updated_by_full_name field with the logged in user full name" do
-      controller.stub!(:authorize!)
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
-      controller.stub!(:current_user).and_return(user = mock('user', :user_name => 'uname', :full_name => "Bill Clinton", :organisation => 'org', :locale => "en"))
       child = Child.new_with_user_name(user, {:name => 'existing child'})
       Child.stub(:get).with(123).and_return(child)
+
+      controller.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
 
       put :update, :id => 123, :child => {:flag => true, :flag_message => "Test"}
 
@@ -416,9 +416,10 @@ describe ChildrenController do
     end
 
     it "should redirect to redirect_url if it is present in params" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :full_name => "user_name", :organisation => 'org'))
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
-      child.stub!(:update_with_attachments)
+      controller.stub(:current_user_full_name).and_return("user_name")
+      child.should_receive(:update_with_attachments).with({"name" => 'update'}, "user_name")
       Child.stub(:get).and_return(child)
 
       put :update, :id => '1', :child => {"name" => 'update'}, :redirect_url => '/children'
@@ -426,9 +427,10 @@ describe ChildrenController do
     end
 
     it "should redirect to child page if redirect_url is not present in params" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :full_name => "user_name", :organisation => 'org'))
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
-      child.stub!(:update_with_attachments)
+      controller.stub(:current_user_full_name).and_return("user_name")
+      child.should_receive(:update_with_attachments).with({"name" => 'update'}, "user_name")
       Child.stub(:get).and_return(child)
 
       put :update, :id => '1', :child => {"name" => 'update'}

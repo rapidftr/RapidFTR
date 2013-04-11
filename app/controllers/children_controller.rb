@@ -106,33 +106,10 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def sync_unverified
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
-      respond_to do |format|
-        format.json do
-
-          child = create_or_update_child(params[:child].merge(:verified => current_user.verified?))
-
-          child['created_by_full_name'] = current_user.full_name
-          if child.save
-            render :json => child.compact.to_json
-          end
-        end
-      end
-    else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact.to_json
-    end
-  end
-
   def update
     @child = Child.get(params[:id])
     authorize! :update, @child
-    
+
     @child.update_with_attachments(params[:child], current_user_full_name)
     if @child.save
       flash[:notice] = I18n.t("child.messages.update_success")
