@@ -24,7 +24,7 @@ class Api::ChildrenController < ApplicationController
     	format.json do
    	 		authorize! :create, Child
     		params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    		create_or_update_child(params[:child])
+    		create_or_update_child(params)
     		@child['created_by_full_name'] = current_user_full_name
     
       	if @child.save
@@ -39,7 +39,7 @@ class Api::ChildrenController < ApplicationController
     	format.json do
     		authorize! :update, Child
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-        child = update_child_from params[:child]
+        child = update_child_from params
         child.save
         render :json => child.compact.to_json
     	end
@@ -52,8 +52,8 @@ class Api::ChildrenController < ApplicationController
     unless params[:child][:_id]
       respond_to do |format|
         format.json do
-
-          child = create_or_update_child(params[:child].merge(:verified => current_user.verified?))
+          params[:child].merge!(:verified => current_user.verified?)
+          child = create_or_update_child(params)
 
           child['created_by_full_name'] = current_user.full_name
           if child.save
@@ -71,22 +71,22 @@ class Api::ChildrenController < ApplicationController
 
   private
 
-    def create_or_update_child(child_params)
-      @child = Child.by_short_id(:key => child_short_id(child_params)).first if child_params[:unique_identifier]
+    def create_or_update_child(params)
+      @child = Child.by_short_id(:key => child_short_id(params)).first if params[:child][:unique_identifier]
       if @child.nil?
-        @child = Child.new_with_user_name(current_user, child_params)
+        @child = Child.new_with_user_name(current_user, params[:child])
       else
-        @child = update_child_from(child_params)
+        @child = update_child_from(params)
       end
     end
 
-    def child_short_id child_params
-      child_params[:short_id] || child_params[:unique_identifier].last(7)
+    def child_short_id params
+      params[:child][:short_id] || params[:child][:unique_identifier].last(7)
     end
 
-    def update_child_from child_params
-      child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, child_params)
-      child.update_with_attachments(child_params, current_user_full_name)
+    def update_child_from params
+      child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
+      child.update_with_attachments(params, current_user)
       child
     end
 

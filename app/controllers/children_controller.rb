@@ -92,11 +92,10 @@ class ChildrenController < ApplicationController
   # POST /children
   def create
     authorize! :create, Child
-    # params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    # create_or_update_child(params[:child])
-    @child = Child.new_with_user_name(current_user, params)
-    # params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
+
+    @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
+
     if @child.save
       flash[:notice] = t('child.messages.creation_success')
       redirect_to @child
@@ -110,7 +109,7 @@ class ChildrenController < ApplicationController
     @child = Child.get(params[:id])
     authorize! :update, @child
 
-    @child.update_with_attachments(params[:child], current_user_full_name)
+    @child.update_with_attachments(params, current_user)
     if @child.save
       flash[:notice] = I18n.t("child.messages.update_success")
       redirect_to(params[:redirect_url] || @child)
@@ -297,19 +296,5 @@ class ChildrenController < ApplicationController
       @results, @full_results = Child.search_by_created_user(@search, current_user_name, page_number)
     end
   end
-
-  # def create_or_update_child(child_params)
-  #   @child = Child.by_short_id(:key => child_short_id(child_params)).first if child_params[:unique_identifier]
-  #   if @child.nil?
-  #     @child = Child.new_with_user_name(current_user, child_params)
-  #   else
-  #     @child = update_child_from(params)
-  #   end
-  # end
-
-  # def child_short_id child_params
-  #   child_params[:short_id] || child_params[:unique_identifier].last(7)
-  # end
-
 
 end 
