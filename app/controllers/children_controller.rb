@@ -4,7 +4,6 @@ class ChildrenController < ApplicationController
 
   before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
   before_filter :current_user, :except => [:reindex]
-  before_filter :sanitize_params, :only => [:update, :sync_unverified]
 
   def reindex
     Child.reindex!
@@ -201,11 +200,6 @@ class ChildrenController < ApplicationController
     prefix = child.nil? ? current_user_name : child.short_id
     user = User.find_by_user_name(current_user_name)
     "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
-  end
-
-  def sanitize_params
-    child_params = params['child']
-    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
   end
 
   def file_name_datetime_string
