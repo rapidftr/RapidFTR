@@ -18,7 +18,6 @@ Given /^I am logged in as "(.+)"/ do |user_name|
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
-  #step "I press \"Log in\""
   find("//input[@class='btn_submit']").click
 end
 
@@ -69,6 +68,10 @@ end
 Given /^I logout as "([^"]*)"$/ do |arg|
   find("//div[@class='links']/a[@href='/logout']").click
 end
+
 When /^I logout$/ do
-  click_link(I18n.t("header.logout"))
+  find("//div[@class='links']/a[@href='/logout']").click
 end
+
+
+#

@@ -29,7 +29,10 @@ class ChildrenController < ApplicationController
       format.xml { render :xml => @children }
       format.csv do
         authorize! :export, Child
-        render_as_csv @children
+        render_as_csv @children, "all_records_#{file_name_date_string}.csv"
+      end
+      format.json do
+        render :json => @children
       end
       format.pdf do
         authorize! :export, Child
@@ -52,12 +55,9 @@ class ChildrenController < ApplicationController
       format.html
       format.xml { render :xml => @child }
 
-      format.json {
-        render :json => @child.compact.to_json
-      }
       format.csv do
         authorize! :export, Child
-        render_as_csv([@child])
+        render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
       end
       format.pdf do
         authorize! :export, Child
@@ -90,83 +90,32 @@ class ChildrenController < ApplicationController
   end
 
   # POST /children
-  # POST /children.xml
   def create
     authorize! :create, Child
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    create_or_update_child(params[:child])
-    params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
+
+    @child = Child.new_with_user_name(current_user, params[:child])
     @child['created_by_full_name'] = current_user_full_name
-    respond_to do |format|
-      if @child.save
-        flash[:notice] = t('child.messages.creation_success')
-        format.html { redirect_to(@child) }
-        format.xml { render :xml => @child, :status => :created, :location => @child }
-        format.json {
-          render :json => @child.compact.to_json
-        }
-      else
-        format.html {
-          @form_sections = get_form_sections
-          render :action => "new"
-        }
-        format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
 
-  def sync_unverified
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
-      respond_to do |format|
-        format.json do
-
-          child = create_or_update_child(params[:child].merge(:verified => current_user.verified?))
-
-          child['created_by_full_name'] = current_user.full_name
-          if child.save
-            render :json => child.compact.to_json
-          end
-        end
-      end
+    if @child.save
+      flash[:notice] = t('child.messages.creation_success')
+      redirect_to @child
     else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact.to_json
+      @form_sections = get_form_sections
+      render :action => "new"
     end
   end
 
   def update
-    respond_to do |format|
-      format.json do
-        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-        child = update_child_from params
-        child.save
-        render :json => child.compact.to_json
-      end
+    @child = Child.get(params[:id])
+    authorize! :update, @child
 
-      format.html do
-        @child = update_child_from params
-        if @child.save
-          flash[:notice] = I18n.t("child.messages.update_success")
-          return redirect_to params[:redirect_url] if params[:redirect_url]
-          redirect_to @child
-        else
-          @form_sections = get_form_sections
-          render :action => "edit"
-        end
-      end
-
-      format.xml do
-        @child = update_child_from params
-        if @child.save
-          head :ok
-        else
-          render :xml => @child.errors, :status => :unprocessable_entity
-        end
-      end
+    @child.update_with_attachments(params, current_user)
+    if @child.save
+      flash[:notice] = I18n.t("child.messages.update_success")
+      redirect_to(params[:redirect_url] || @child)
+    else
+      @form_sections = get_form_sections
+      render :action => "edit"
     end
   end
 
@@ -248,19 +197,6 @@ class ChildrenController < ApplicationController
 
   private
 
-  def child_short_id child_params
-    child_params[:short_id] || child_params[:unique_identifier].last(7)
-  end
-
-  def create_or_update_child(child_params)
-    @child = Child.by_short_id(:key => child_short_id(child_params)).first if child_params[:unique_identifier]
-    if @child.nil?
-      @child = Child.new_with_user_name(current_user, child_params)
-    else
-      @child = update_child_from(params)
-    end
-  end
-
   def file_basename(child = nil)
     prefix = child.nil? ? current_user_name : child.short_id
     user = User.find_by_user_name(current_user_name)
@@ -294,12 +230,12 @@ class ChildrenController < ApplicationController
         end
       end
       format.csv do
-        render_as_csv(@results) if @results
+        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
       end
     end
   end
 
-  def render_as_csv results
+  def render_as_csv results, filename
     results = results || [] # previous version handled nils - needed?
 
     results.each do |child|
@@ -361,19 +297,4 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def update_child_from params
-    child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
-    authorize! :update, child
-    update_child_with_attachments(child, params)
-  end
-
-  def update_child_with_attachments(child, params)
-    child['last_updated_by_full_name'] = current_user_full_name
-    new_photo = params[:child].delete("photo")
-    new_photo = (params[:child][:photo] || "") if new_photo.nil?
-    new_audio = params[:child].delete("audio")
-    child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
-    child
-  end
-
-end
+end 
