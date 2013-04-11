@@ -11,7 +11,6 @@ class ChildrenController < ApplicationController
   end
 
   # GET /children
-  # GET /children.xml
   def index
     authorize! :index, Child
 
@@ -25,13 +24,9 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml { render :xml => @children }
       format.csv do
         authorize! :export, Child
         render_as_csv @children, "all_records_#{file_name_date_string}.csv"
-      end
-      format.json do
-        render :json => @children
       end
       format.pdf do
         authorize! :export, Child
@@ -42,7 +37,6 @@ class ChildrenController < ApplicationController
   end
 
   # GET /children/1
-  # GET /children/1.xml
   def show
     authorize! :read, @child if @child["created_by"] != current_user_name
     @form_sections = get_form_sections
@@ -52,8 +46,6 @@ class ChildrenController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml { render :xml => @child }
-
       format.csv do
         authorize! :export, Child
         render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
@@ -67,7 +59,6 @@ class ChildrenController < ApplicationController
   end
 
   # GET /children/new
-  # GET /children/new.xml
   def new
     authorize! :create, Child
 
@@ -76,7 +67,6 @@ class ChildrenController < ApplicationController
     @form_sections = get_form_sections
     respond_to do |format|
       format.html
-      format.xml { render :xml => @child }
     end
   end
 
@@ -154,16 +144,10 @@ class ChildrenController < ApplicationController
   end
 
 # DELETE /children/1
-# DELETE /children/1.xml
   def destroy
     authorize! :destroy, @child
     @child.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(children_url) }
-      format.xml { head :ok }
-      format.json { render :json => {:response => "ok"}.to_json }
-    end
+    redirect_to(children_url)
   end
 
   def search
@@ -244,15 +228,9 @@ class ChildrenController < ApplicationController
 
   def load_child_or_redirect
     @child = Child.get(params[:id])
-
     if @child.nil?
-      respond_to do |format|
-        format.json { render :json => @child.to_json }
-        format.html do
-          flash[:error] = "Child with the given id is not found"
-          redirect_to :action => :index and return
-        end
-      end
+      flash[:error] = "Child with the given id is not found"
+      redirect_to :action => :index and return
     end
   end
 
@@ -290,5 +268,4 @@ class ChildrenController < ApplicationController
       @results, @full_results = Child.search_by_created_user(@search, current_user_name, page_number)
     end
   end
-
-end 
+end
