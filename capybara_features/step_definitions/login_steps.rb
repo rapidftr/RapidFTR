@@ -39,7 +39,6 @@ Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permiss
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
-  #step "I press \"Log in\""
   find("//input[@class='btn_submit']").click
 end
 

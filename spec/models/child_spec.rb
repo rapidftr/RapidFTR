@@ -948,7 +948,7 @@ describe Child do
       it "should log a photo being deleted" do
         @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
         @child.save
-        @child.delete_photo(@child.photos.first.name)
+        @child.delete_photos([@child.photos.first.name])
         @child.save
         changes = @child['histories'].first['changes']
         changes['photo_keys']['deleted'].should have(1).photo_key
@@ -961,7 +961,7 @@ describe Child do
         original_primary_photo_key = @child.photos[0].name
         jeff_photo_key = @child.photos[1].name
         @child.primary_photo.name.should == original_primary_photo_key
-        @child.delete_photo(original_primary_photo_key)
+        @child.delete_photos([original_primary_photo_key])
         @child.save
         @child.primary_photo.name.should == jeff_photo_key
       end
@@ -1037,7 +1037,7 @@ describe Child do
       it "should log a photo being deleted" do
         @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
         @child.save
-        @child.delete_photo(@child.photos.first.name)
+        @child.delete_photos([@child.photos.first.name])
         @child.save
         changes = @child['histories'].first['changes']
         changes['photo_keys']['deleted'].should have(1).photo_key
@@ -1050,7 +1050,7 @@ describe Child do
         original_primary_photo_key = @child.photos[0].name
         jeff_photo_key = @child.photos[1].name
         @child.primary_photo.name.should == original_primary_photo_key
-        @child.delete_photo(original_primary_photo_key)
+        @child.delete_photos([original_primary_photo_key])
         @child.save
         @child.primary_photo.name.should == jeff_photo_key
       end

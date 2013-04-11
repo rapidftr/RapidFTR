@@ -77,7 +77,6 @@ When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"
   page.execute_script "$('a.ui-datepicker-next').trigger('click')"
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
-  # fill_in(field, :with => value)
 end
 
 # Use this to fill in an entire form with data from a table. Example:
@@ -275,39 +274,8 @@ Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
 
-When /^I click on dialogue box$/ do
-  #page.driver.browser.switch_to.alert.accept
-  #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
-end
-
-
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
-end
-
-When /^I clear the search results$/ do
-  click_button("reset")
-end
-
-
-Then /^I should see first (\d+) records in the search results$/ do |arg1|
-  assert page.has_content?("Displaying children 1 - 20 ")
-end
-
-When /^I goto the "(.*?)"$/ do |text|
-  find(:xpath,"//a[@class='"+text+"']").click
-end
-
-
-Then /^I should see next records in the search results$/ do
-  assert page.has_content?("Displaying children 21 - 25 ")
-end
-
-Then /^I should see link to "(.*?)"$/ do |text|
-  page.should have_xpath("//span[@class='"+text+"']")
-end
-Then /^I should not be able to view the tab (.+)$/ do|tab_name|
-  page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
 end
