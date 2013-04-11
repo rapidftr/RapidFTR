@@ -432,17 +432,11 @@ view_by :protection_status, :gender, :ftr_status
     attach(attachment)
   end
 
-  def delete_photo(delete_photo)
-    delete_photos([delete_photo])
-  end
-
-  def delete_photos(delete_photos)
-    return unless delete_photos
-    if delete_photos.is_a? Hash
-      delete_photos = delete_photos.keys
-    end
+  def delete_photos(photo_names)
+    return unless photo_names
+    photo_names = photo_names.keys if photo_names.is_a? Hash
     @deleted_photo_keys ||= []
-    @deleted_photo_keys.concat(delete_photos)
+    @deleted_photo_keys.concat(photo_names)
   end
 
   def photo=(new_photos)
@@ -595,17 +589,17 @@ view_by :protection_status, :gender, :ftr_status
     end
   end
 
-  def update_with_attachments(params, user_full_name)
-    self['last_updated_by_full_name'] = user_full_name
-    new_photo = params.delete("photo")
-    new_photo = (params[:photo] || "") if new_photo.nil?
-    new_audio = params.delete("audio")
-    update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params)
+  def update_with_attachments(params, user)
+    self['last_updated_by_full_name'] = user.full_name
+    new_photo = params[:child].delete("photo")
+    new_photo = (params[:child][:photo] || "") if new_photo.nil?
+    new_audio = params[:child].delete("audio")
+    update_properties_with_user_name(user.user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
   end
 
-  def update_properties_with_user_name(user_name, new_photo, delete_photos, new_audio, properties)
+  def update_properties_with_user_name(user_name, new_photo, photo_names, new_audio, properties)
     update_properties(properties, user_name)
-    self.delete_photos(delete_photos)
+    self.delete_photos(photo_names)
     self.update_photo_keys
     self.photo = new_photo
     self.audio = new_audio
