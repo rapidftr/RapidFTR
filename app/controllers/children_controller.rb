@@ -29,7 +29,7 @@ class ChildrenController < ApplicationController
       format.xml { render :xml => @children }
       format.csv do
         authorize! :export, Child
-        render_as_csv @children, "all_records_#{file_name_date_string}.csv"
+        render_as_csv @children
       end
       format.json do
         render :json => @children
@@ -57,7 +57,7 @@ class ChildrenController < ApplicationController
 
       format.csv do
         authorize! :export, Child
-        render_as_csv([@child], current_user_name+"_#{file_name_datetime_string}.csv")
+        render_as_csv([@child])
       end
       format.pdf do
         authorize! :export, Child
@@ -230,12 +230,12 @@ class ChildrenController < ApplicationController
         end
       end
       format.csv do
-        render_as_csv(@results, 'rapidftr_search_results.csv') if @results
+        render_as_csv(@results) if @results
       end
     end
   end
 
-  def render_as_csv results, filename
+  def render_as_csv results
     results = results || [] # previous version handled nils - needed?
 
     results.each do |child|
