@@ -7,39 +7,36 @@ Feature:
   # Scenario: Disabled user can't log in
   #   see user_login.feature
 
-  @wip
+  @javascript
   Scenario: Admin disables a user from the edit page
 
-    Given a user "george"
+    Given a user "pooja"
     And I am logged in as a user with "Admin,Disable Users" permissions
-    And I am on edit user page for "george"
+    And I am on the manage users page
 
-    When I check "Disabled?"
-    And I press "Update"
-    Then user "george" should be disabled
-    When I am on the manage users page
-    And the user "george" should be marked as disabled
-	  When I follow "Show" within "#user-row-george"
-	  Then I should see "Disabled"
+    When I disable user
+    Then user "pooja" should be disabled
+    And the user "pooja" should be marked as disabled
+	When I follow "Show" within "#user-row-pooja"
+	Then I should see "Disabled"
 
-  @wip
+  @javascript
   Scenario: Admin re-enables a user from the edit page
 
-    Given a user "george"
-    And user "george" is disabled
+    Given a user "pooja"
+    And user "pooja" is disabled
     And I am logged in as a user with "Admin,Disable Users" permissions
-    And I am on edit user page for "george"
+    And I am on the manage users page
 
-    When I uncheck "Disabled?"
-    And I press "Update"
+    When I re-enable user
+    Then user "pooja" should not be disabled
+    And the user "pooja" should be marked as enabled
+    When I follow "Show" within "#user-row-pooja"
+    Then I should see "Enabled"
 
-    Then user "george" should not be disabled
-    When I go to the manage users page
-    And the user "george" should be marked as enabled
-	  When I follow "Show" within "#user-row-george"
-	  Then I should see "Enabled"
   
-  @allow-rescue
+ # @allow-rescue
+  @javascript
   Scenario: A user who is disabled mid-session can't continue using that session
 
     Given a user "george"

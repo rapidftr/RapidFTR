@@ -89,5 +89,4 @@ class Api::ChildrenController < ApplicationController
       child.update_with_attachments(params, current_user)
       child
     end
-
 end

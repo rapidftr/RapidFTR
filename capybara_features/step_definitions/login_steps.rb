@@ -18,7 +18,8 @@ Given /^I am logged in as "(.+)"/ do |user_name|
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
-  step "I press \"Log in\""
+  #step "I press \"Log in\""
+  find("//input[@class='btn_submit']").click
 end
 
 
@@ -38,7 +39,8 @@ Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permiss
   step "I am on the login page"
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"123\" for \"password\""
-  step "I press \"Log in\""
+  #step "I press \"Log in\""
+  find("//input[@class='btn_submit']").click
 end
 
 Given /^I am logged in as a user with "(.+)" permissions?$/ do |permissions|
@@ -57,6 +59,7 @@ Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
   step "I fill in \"#{user_name}\" for \"user_name\""
   step "I fill in \"#{password}\" for \"password\""
   step "I press \"Log in\""
+
 end
 
 When /^I logout$/ do
