@@ -288,7 +288,6 @@ When /^I clear the search results$/ do
   click_button("reset")
 end
 
-
 Then /^I should see first (\d+) records in the search results$/ do |arg1|
   assert page.has_content?("Displaying children 1 - 20 ")
 end
@@ -307,4 +306,12 @@ Then /^I should see link to "(.*?)"$/ do |text|
 end
 Then /^I should not be able to view the tab (.+)$/ do|tab_name|
   page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+end
+
+When /^I view User Action History$/ do
+  find("//span[@class='log']").click
+end
+
+Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
+  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
 end

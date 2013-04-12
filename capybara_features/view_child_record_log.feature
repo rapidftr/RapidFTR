@@ -112,3 +112,39 @@ Feature:
     And I should see "2010-10-29 03:12:15 SST Name changed"
     And I should see "2010-07-19 02:05:15 SST Record created"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
+
+
+  @javascript
+  Scenario: As an admin view history of changes made by a user
+
+  As a System admin
+  I want to view history of USER ACTION
+  So that I can view all the changes particular users are making
+
+    Given "Harry" logs in with "Register Child" permission
+    And I am on the children listing page
+    And I follow "Register New Child"
+
+    When I fill in "Jorge Just" for "Name"
+    And the local date/time is "April 9 2013 13:05" and UTC time is "April 9 2013 13:05UTC"
+    And I press "Save"
+    And  I logout
+
+    When I am logged in as a user with "Admin" permission
+    And  I am on manage users page
+    And I follow "Show" within "#user-row-harry"
+    When I view User Action History
+    Then I should see history of changes made by "Harry"
+
+  @javascript
+  Scenario: As an admin when I view history of user who has no activity, the same should be displayed to me
+
+    Given "Jerry" logs in with "Register Child" permission
+    And I am on the children listing page
+    And  I logout
+
+    When I am logged in as a user with "Admin" permission
+    And  I am on manage users page
+    And I follow "Show" within "#user-row-jerry"
+    When I view User Action History
+    Then I should see "jerry has no activity"
