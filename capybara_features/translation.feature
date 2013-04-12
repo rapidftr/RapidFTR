@@ -36,3 +36,4 @@ Feature: Ensure translations
     And I select "Log In" for language change
 
     Then I should see my system language as "العربية"-"ar"
+
