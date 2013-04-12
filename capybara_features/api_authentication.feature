@@ -26,31 +26,6 @@ Feature: Only authorized API clients should be allowed to access the system
     When I make a request for the children listing page
 
     Then I should have received a "200" status code
-    
-  Scenario: Authenticated API blackberry is sent kill signal on login if imei is blacklisted
-    Given a user "tim" with a password "123" 
-    And devices exist
-      | imei | blacklisted | user_name |
-      | 12345 | true | tim |
-      | 11111 | false | tim |
-    When I login with user tim:123 for device with imei 12345
-    Then should be kill response for imei "12345"
-    
-    When I login with user tim:123 for device with imei 11111
-    Then should be successful login
-    And I should have received a "201" status code
-    
-  Scenario: Authenticated API blackberry is sent kill signal on request if imei is blacklisted
-    Given I am sending a valid session token in my request headers for device with imei "12345"
-    And a user "tim" with a password "123" 
-    And devices exist
-      | imei | blacklisted | user_name |
-      | 12345 | true | tim |
-      | 11111 | false | tim |
-
-    When I make a request for the children listing page
-
-    Then should be kill response for imei "12345"
 
   Scenario: Unauthenticated API user sending bad login request should not be logged in
     Given a user "tim" with a password "123"
