@@ -278,6 +278,10 @@ Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
 
+When /^I click on dialogue box$/ do
+  #page.driver.browser.switch_to.alert.accept
+  #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
+end
 
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
   with_scope(selector) do
@@ -308,4 +312,13 @@ Then /^I should see link to "(.*?)"$/ do |text|
 end
 Then /^I should not be able to view the tab (.+)$/ do|tab_name|
   page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+end
+Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
+  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
+end
+When /^I select "([^"]*)"$/ do |arg|
+  find("//input[@class='btn_submit']").click
+end
+Then /^export option should be unavailable to me$/ do
+  page.should have_no_xpath("//span[@class='export']")
 end
