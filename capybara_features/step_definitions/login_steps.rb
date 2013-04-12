@@ -64,5 +64,7 @@ When /^I logout$/ do
   find("//div[@class='links']/a[@href='/logout']").click
 end
 
-
 #
+Given /^I logout as "([^"]*)"$/ do |arg|
+  find("//div[@class='links']/a[@href='/logout']").click
+end

@@ -51,7 +51,6 @@ When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_secti
 end
 
 When /^I (show|hide) selected form sections$/ do |show_or_hide|
-  sleep(10)
   click_button show_or_hide.capitalize
   page.driver.browser.switch_to.alert.accept
 end
