@@ -1,8 +1,9 @@
-Given /^an? (user|admin) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
+Given /^an? (user|admin|registration worker) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
 
   permissions = []
   permissions.push(Permission.all_permissions) if user_type.downcase == "admin" and permission.nil?
   permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
+  permissions.push(Permission::CHILDREN[:view_and_search]) if user_type.downcase == "registration worker" and permission.nil?
   permissions.push(Permission.all_permissions) if permission.to_s.downcase.split(',').include?('admin')
   permissions.push(permission.split(",")) if permission
   permissions.flatten!

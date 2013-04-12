@@ -61,9 +61,12 @@ Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
   step "I press \"Log in\""
 
 end
-When /^I logout$/ do
-  find("//div[@class='links']/a[@href='/logout']").click
-end
+#When /^I logout$/ do
+#  find("//div[@class='links']/a[@href='/logout']").click
+#end
 
 
 #
+Given /^I logout as "([^"]*)"$/ do |arg|
+  find("//div[@class='links']/a[@href='/logout']").click
+end
