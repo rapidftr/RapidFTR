@@ -26,7 +26,7 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     click_button(button)
   end
-  end
+end
 
 #  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
 #  with_scope(selector) do
@@ -290,4 +290,8 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
+end
+
+And /^I submit the form$/ do
+  click_button('Save')
 end
