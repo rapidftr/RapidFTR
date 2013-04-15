@@ -29,6 +29,12 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
   end
 
+  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  with_scope(selector) do
+    find("//input[@class='btn_submit']").click
+  end
+end
+
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
 end
@@ -287,8 +293,9 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
 end
 
 When /^I clear the search results$/ do
-click_button("reset")
+  click_button("reset")
 end
+
 
 Then /^I should see first (\d+) records in the search results$/ do |arg1|
   assert page.has_content?("Displaying children 1 - 20 ")
@@ -297,6 +304,7 @@ end
 When /^I goto the "(.*?)"$/ do |text|
   find(:xpath,"//a[@class='"+text+"']").click
 end
+
 
 Then /^I should see next records in the search results$/ do
   assert page.has_content?("Displaying children 21 - 25 ")
