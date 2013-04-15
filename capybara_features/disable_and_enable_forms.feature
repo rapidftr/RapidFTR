@@ -17,7 +17,7 @@ Feature: Disable and enable forms
     When I am on the form section page
 
     Then the form section "caregiver_details" should be listed as hidden
-    And I wait for 5 seconds
+    And I wait until "caregiver_details" is visible
     When I select the form section "caregiver_details" to toggle visibility
     And I wait for 5 seconds
     And I show selected form sections
