@@ -318,8 +318,12 @@ end
 Then /^I should see link to "(.*?)"$/ do |text|
   page.should have_xpath("//span[@class='"+text+"']")
 end
-Then /^I should not be able to view the tab (.+)$/ do|tab_name|
-  page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+
+Then /^I should (not )?be able to view the tab (.+)$/ do|do_not_want,tab_name|
+  if do_not_want
+    page.has_no_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
+  else
+    page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
 end
 When /^I view User Action History$/ do
   find("//span[@class='log']").click

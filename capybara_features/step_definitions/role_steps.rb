@@ -54,6 +54,7 @@ private
   end
 When /^I edit the role (.+)$/ do  |role_name|
   find(:xpath,"//table[@class='list_table']//tr/td[text()='"+role_name+"']/following-sibling::td/a[text()='Edit']").click()
+  sleep 5
 end
 When /^I update the form$/ do
   click_button('Update')
@@ -65,11 +66,5 @@ When /^I enter the following permission details$/ do |role_table|
     end
   end
 end
-Then /^I should (not )?be able to view the tab (.+)$/ do|do_not_want,tab_name|
-  if do_not_want
-   page.has_no_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
-  else
-    page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should be_true
-  end
 
 end
