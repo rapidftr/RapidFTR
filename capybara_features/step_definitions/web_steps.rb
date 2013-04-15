@@ -84,6 +84,7 @@ When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"
   page.execute_script "$('a.ui-datepicker-next').trigger('click')"
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
+    # fill_in(field, :with => value)
 end
 
 # Use this to fill in an entire form with data from a table. Example:
@@ -281,7 +282,10 @@ Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
 
-
+When /^I click on dialogue box$/ do
+  #page.driver.browser.switch_to.alert.accept
+  #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
+end
 
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
   with_scope(selector) do
