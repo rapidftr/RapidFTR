@@ -28,7 +28,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I select search result #1
     And I select search result #3
     And I press "Export to Photo Wall"
-    Then I wait for 10 seconds
+    And I wait until "password-prompt-field" is visible
     When I fill in "abcd" for "password-prompt-field"
     And I click the "OK" button
 # TODO
