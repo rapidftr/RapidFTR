@@ -17,9 +17,9 @@ Feature: Hide Child Record Form Fields
       | visible_field | text_field | Visible Field |
       | hidden_field  | text_field | Hidden Field  |
      And I am on the edit field page for "hidden_field" on "family_details" form
-    And I wait for 5 seconds
-    When I uncheck "field_visible"
-    And I press "Save Details" within ".field_details_panel"
+     And I wait until "family_details" is visible
+     When I uncheck "field_visible"
+     And I press "Save Details" within ".field_details_panel"
 
 
   Scenario: Hidden field does not appear of form
@@ -46,8 +46,7 @@ Feature: Hide Child Record Form Fields
      And I fill in "Name" with "Will"
     When I press "Save"
     Then I follow "Export"
-    And I wait for 15 seconds
-#    Then I follow "Export to PDF"
+    And I wait until "Export to PDF" is visible
     Then I click "//a[text()='Export to PDF']"
      And I should receive a PDF file
      And the PDF file should contain the string "Visible Field"
