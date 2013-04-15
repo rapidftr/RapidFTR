@@ -48,20 +48,25 @@ Feature: So that hard copy printout of missing child photos are available
 
     Then I should see "You must select at least one record to be exported"
 
-  @wip
+
   @javascript
   Scenario: Exporting full PDF from the child page
     Given I am on the saved record page for child with name "Will"
+    And I follow "Export"
     And I follow "Export to PDF"
-    Then I should receive a PDF file
-     And the PDF file should have 2 pages
-    And the PDF file should contain the string "Will"
+    When I fill in "abcd" for "password-prompt-field"
+    And I click the "OK" button
+
+#TODO
+#    Then I should receive a PDF file
+#    And the PDF file should have 2 pages
+#    And the PDF file should contain the string "Will"
 
   @javascript
   Scenario: Exporting photo wall PDF from the child page
     Given I am on the saved record page for child with name "Will"
     And I follow "Export"
-    And I follow "Export to Photo Wall"
+    And I follow "Export to PDF"
     When I fill in "abcd" for "password-prompt-field"
     And I click the "OK" button
 
@@ -80,4 +85,15 @@ Feature: So that hard copy printout of missing child photos are available
     And I follow "Export to PDF"
     When I fill in "abcd" for "password-prompt-field"
     And I click the "OK" button
-#   Then I should receive a PDF file
+
+  @javascript
+  Scenario: A user without file export permissions should not be able to export pdf/csv files
+    Given I logout
+    And an registration worker "john" with password "123"
+    When I fill in "john" for "user_name"
+    And I fill in "123" for "password"
+    And I select "Login"
+    When I fill in "Wil" for "query"
+    And I press "Go"
+    And I am on the saved record page for child with name "Will"
+    Then export option should be unavailable to me

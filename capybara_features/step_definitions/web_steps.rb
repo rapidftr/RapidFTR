@@ -28,12 +28,6 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
 end
 
-When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-  with_scope(selector) do
-    find("//input[@class='btn_submit']").click
-  end
-end
-
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
 end
@@ -186,8 +180,6 @@ Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"
   end
 end
 
-
-
 Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
     field_checked = find_field(label)['checked']
@@ -308,4 +300,15 @@ end
 
 Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
   assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
+end
+
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  with_scope(selector) do
+    find("//input[@class='btn_submit']").click
+  end
+end
+
+
+Then /^export option should be unavailable to me$/ do
+  page.should have_no_xpath("//span[@class='export']")
 end
