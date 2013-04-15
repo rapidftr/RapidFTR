@@ -903,3 +903,58 @@ table#form_sections {
     background: #e5efff;
     border: 1px solid #bdd7ff;
     border-right: 0px; }
+
+.criteria-value {
+  margin: 0 10px;
+  width: 240px; }
+
+.criteria_menu {
+  position: absolute;
+  z-index: 1000; }
+  .criteria_menu .content {
+    background-color: #EEEEEE;
+    border: 1px solid #cccccc;
+    overflow: scroll;
+    padding: 8px 6px;
+    position: relative;
+    z-index: 200; }
+  .criteria_menu p {
+    margin: 0; }
+  .criteria_menu a {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline; }
+  .criteria_menu ul {
+    float: left;
+    margin: 0; }
+    .criteria_menu ul li {
+      padding: 3px 20px; }
+  .criteria_menu ul.fields {
+    max-height: 298px;
+    overflow: auto;
+    background-color: white;
+    border: 1px solid #aaaaaa;
+    display: none;
+    width: 220px; }
+    .criteria_menu ul.fields li.disabled a {
+      color: black;
+      cursor: default;
+      text-decoration: none; }
+  .criteria_menu ul.fields.selected {
+    display: block; }
+  .criteria_menu ul.forms {
+    height: 300px;
+    position: relative;
+    right: -1px; }
+    .criteria_menu ul.forms li.selected {
+      background-color: white;
+      border-bottom: 1px solid #aaaaaa;
+      border-left: 1px solid #aaaaaa;
+      border-top: 1px solid #aaaaaa; }
+  .criteria_menu li {
+    background: none repeat scroll 0 0 transparent;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0; }
+  .criteria_menu li:hover {
+    cursor: pointer; }
