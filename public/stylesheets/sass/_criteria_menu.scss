@@ -1,0 +1,80 @@
+.criteria-value {
+  margin: 0 10px;
+  width: 240px;
+}
+
+.criteria_menu {
+  position: absolute;
+  z-index: 1000;
+
+  .content {
+    background-color: #EEEEEE;
+    border: 1px solid #CCCCCC;
+    overflow: scroll;
+    padding: 8px 6px;
+    position: relative;
+    z-index: 200;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  ul {
+    float: left;
+    margin: 0;
+
+    li {
+      padding: 3px 20px;
+    }
+  }
+
+  ul.fields {
+    max-height: 298px;
+    overflow: auto;
+    background-color: white;
+    border: 1px solid #AAAAAA;
+    display: none;
+    width: 220px;
+
+    li.disabled a {
+      color: black;
+      cursor: default;
+      text-decoration: none;
+    }
+  }
+
+  ul.fields.selected {
+    display: block;
+  }
+
+  ul.forms {
+    height: 300px;
+    position: relative;
+    right: -1px;
+
+    li.selected {
+      background-color: white;
+      border-bottom: 1px solid #AAAAAA;
+      border-left: 1px solid #AAAAAA;
+      border-top: 1px solid #AAAAAA;
+    }
+  }
+
+  li {
+    background: none repeat scroll 0 0 transparent;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li:hover {
+    cursor: pointer;
+  }
+}
