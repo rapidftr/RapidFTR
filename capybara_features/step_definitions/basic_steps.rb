@@ -115,6 +115,10 @@ When 'I wait for the page to load' do
   page.has_content? ''
 end
 
+When /^I wait until "([^"]*)" is visible$/ do |selector|
+  page.has_css?("#{selector}", :visible => true)
+end
+
 Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|
   divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
   divs.size.should == quantity.to_i
