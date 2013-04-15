@@ -1,3 +1,4 @@
+
 #not exists anymore
 @wip
 Feature: Adding a suggested field to a form section
@@ -19,7 +20,7 @@ Feature: Adding a suggested field to a form section
      And I am on the edit form section page for "basic_details"
 
      When I follow "Add Field"
-    And I wait for 5 seconds
+     And I wait until "help_text" is visible
 
      Then I should see the following suggested fields:
         | name                    | unique_id | help_text                        |

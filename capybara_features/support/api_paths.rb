@@ -30,7 +30,7 @@ module NavigationHelpers
         new_child_path(options)
 
       when /children listing page/
-        children_path(options)
+        api_children_path(options)
 
       when /saved record page for child with name "(.+)"/
         child_name = $1

@@ -40,11 +40,6 @@ Then /^should be successful login$/ do
   last_response.body.should_not =~ /sessions\/new/
 end
 
-#Given /I am logged out/ do
-#  Given "I am sending a valid session token in my request headers"
-#  Given "I go to the logout page"
-#end
-
 Given /^I am sending a valid session token in my request headers$/ do
   raise "don't know which user I should create a session for" if @user.nil?
   session = Session.for_user(@user, nil)
@@ -62,7 +57,7 @@ end
 When /^I create the following child:$/ do |table|
   params={}
   params[:format] ||= 'json'
-  post(children_path(params), {:child => table.rows_hash})
+  post(api_children_path(params), {:child => table.rows_hash})
 end
 
 When /^I create the following device:$/ do |table|
@@ -105,7 +100,7 @@ end
 
 When /^I edit the following child:$/ do |input_json|
   input_child_hash = JSON.parse(input_json)
-  put("/children/" + input_child_hash["_id"], {:child => input_json, :format => 'json'})
+  put("/api/children/" + input_child_hash["_id"], {:child => input_json, :format => 'json'})
 end
 
 And /^that JSON hash of elements has these properties:$/ do |properties_table|
@@ -132,7 +127,7 @@ Then /^I receive a JSON array$/ do
 end
 
 When /^I request for child with ID (\d+)$/ do |id|
-  get "/children/" + id, {:format => 'json'}
+  get "/api/children/" + id, {:format => 'json'}
 end
 
 Then /^I should get back a response saying null$/ do

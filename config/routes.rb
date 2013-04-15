@@ -6,8 +6,6 @@ RapidFTR::Application.routes.draw do
       post :export_csv
       get :search
       post :export_photos_to_pdf
-      post :sync_unverified
-      put :sync_unverified
     end
 
     member do
@@ -19,7 +17,11 @@ RapidFTR::Application.routes.draw do
   end
 
   namespace :api do
-    resources :children
+    resources :children do
+      collection do
+        post :sync_unverified
+      end
+    end
   end
 
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
