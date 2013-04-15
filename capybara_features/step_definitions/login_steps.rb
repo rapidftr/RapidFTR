@@ -63,5 +63,5 @@ Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
 end
 
 When /^I logout$/ do
-  click_link("Logout")
+  click_link(I18n.t("header.logout"))
 end
