@@ -33,7 +33,6 @@ describe Api::ChildrenController do
       response.status.should == 403
       response.body.should == "unauthorized"
     end
-
   end
 
   describe "GET index" do

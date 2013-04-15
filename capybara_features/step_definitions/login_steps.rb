@@ -69,3 +69,7 @@ end
 Given /^I logout as "([^"]*)"$/ do |arg|
   find("//div[@class='links']/a[@href='/logout']").click
 end
+
+When /^I logout$/ do
+  click_link("Logout")
+end
