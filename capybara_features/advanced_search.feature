@@ -236,3 +236,5 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should not see "William" in the search results
     Then I should see "Willis" in the search results
     Then I should see "James" in the search results
+
+
