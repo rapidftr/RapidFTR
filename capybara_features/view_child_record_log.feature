@@ -28,7 +28,6 @@ Feature:
     | name       | dob_or_age | gender | birthplace |
     | Jorge Just | 27  | Male   | Haiti               |
     And the date/time is "March 01 2010 17:59:33 UTC"
-    And I am logged out
     And "Mary" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
 

@@ -4,7 +4,7 @@ describe Api::ChildrenController do
 
   before :each do
     fake_admin_login    
-	end
+  end
 
   describe '#authorizations' do
     it "should fail GET index when unauthorized" do
@@ -17,13 +17,13 @@ describe Api::ChildrenController do
     end
 
     it "should fail GET show when unauthorized" do 
-  		@controller.current_ability.should_receive(:can?).with(:show, Child).and_return(false)
+      @controller.current_ability.should_receive(:can?).with(:show, Child).and_return(false)
 
       get :show, :id => "123", :format => "json"
 
       response.status.should == 403
       response.body.should == "unauthorized"
-  	end
+    end
 
     it "should fail to POST create when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false)
@@ -33,27 +33,26 @@ describe Api::ChildrenController do
       response.status.should == 403
       response.body.should == "unauthorized"
     end
-
   end
 
   describe "GET index" do
-  	it "should render all children as json" do
-  		Child.should_receive(:all).and_return(mock(:to_json => "all the children"))
+    it "should render all children as json" do
+      Child.should_receive(:all).and_return(mock(:to_json => "all the children"))
 
-			get :index, :format => "json"  		
+      get :index, :format => "json"     
 
-			response.body.should == "all the children"
-  	end
+      response.body.should == "all the children"
+    end
   end
 
   describe "GET show" do 
-  	it "should render a child record as json" do 
-  		Child.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "a child record")))
+    it "should render a child record as json" do 
+      Child.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "a child record")))
 
-  		get :show, :id => "123", :format => "json"
+      get :show, :id => "123", :format => "json"
 
-  		response.body.should == "a child record"
-  	end 
+      response.body.should == "a child record"
+    end 
   end
 
   describe "POST create" do
@@ -69,10 +68,10 @@ describe Api::ChildrenController do
       updated_child.size.should == 1
       updated_child.first.name.should == 'new name'
     end
-	end
+  end
 
-	describe "PUT update" do 
-		it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
+  describe "PUT update" do 
+    it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
       child['histories'] = []
@@ -81,7 +80,7 @@ describe Api::ChildrenController do
       histories = JSON.parse "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
       
      put :update, :id => child.id, :format => "json", :child => {:last_known_location => "Manchester", :histories => histories}.to_json
-     	
+      
      JSON.parse(response.body)['histories'].should == histories
     end
 
@@ -129,4 +128,4 @@ describe Api::ChildrenController do
     end
   end
 
-end	
+end
