@@ -6,6 +6,8 @@ RapidFTR::Application.routes.draw do
       post :export_csv
       get :search
       post :export_photos_to_pdf
+      post :sync_unverified
+      put :sync_unverified
     end
 
     member do
@@ -16,7 +18,7 @@ RapidFTR::Application.routes.draw do
     resource :duplicate, :only => [:new, :create]
   end
 
-  namespace :api do
+namespace :api do
     resources :children do
       collection do
         post :sync_unverified
