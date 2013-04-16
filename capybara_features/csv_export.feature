@@ -15,7 +15,7 @@ Feature:
   Scenario: Users can export to CSV as the result of a search
     Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "D"
-    Then I wait for 6 seconds
+    And I wait until "full_results" is visible
     And I select search result #1
     And I press "Export to CSV"
     When I fill in "abcd" for "password-prompt-field"
