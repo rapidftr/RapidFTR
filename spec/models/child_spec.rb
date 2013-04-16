@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe Child do
 
   describe 'build solar schema' do
