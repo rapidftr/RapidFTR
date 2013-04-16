@@ -52,7 +52,8 @@ set :scm, :git
 set :repository,  "git://github.com/rapidftr/RapidFTR.git"
 set :deploy_via, :remote_cache
 set :branch, fetch(:branch, "master")
-set :keep_releases, 1
+set :keep_releases, 5
+set :use_sudo, false
 
 load 'config/recipes/base_tasks'
 load 'config/recipes/app_tasks'
