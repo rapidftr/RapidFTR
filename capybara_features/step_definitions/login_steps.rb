@@ -71,5 +71,5 @@ Given /^I logout as "([^"]*)"$/ do |arg|
 end
 
 When /^I logout$/ do
-  click_link("Logout")
+  click_link(I18n.t("header.logout"))
 end

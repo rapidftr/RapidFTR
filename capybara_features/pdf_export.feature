@@ -85,11 +85,10 @@ Feature: So that hard copy printout of missing child photos are available
     And I follow "Export to PDF"
     When I fill in "abcd" for "password-prompt-field"
     And I click the "OK" button
-#   Then I should receive a PDF file
 
   @javascript
   Scenario: A user without file export permissions should not be able to export pdf/csv files
-    Given I logout as "Admin"
+    Given I logout
     And an registration worker "john" with password "123"
     When I fill in "john" for "user_name"
     And I fill in "123" for "password"

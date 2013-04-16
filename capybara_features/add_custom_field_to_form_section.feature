@@ -13,17 +13,8 @@ Feature: So that admin can customize fields in a form section
     Given I am on the edit form section page for "family_details"
 
     When I follow "Add Field"
-
-  #    Then I should find the following links:
-  #      | Text Field       | new field page for "text_field" for form "family_details"    |
-  #      | Text Area        | new field page for "textarea" for form "family_details"      |
-  #      | Check boxes      | new field page for "check_boxes" for form "family_details"   |
-  #      | Select drop down | new field page for "select_box" for form "family_details"    |
-  #      | Radio button     | new field page for "radio_button" for form "family_details"  |
-  #      | Numeric Field    | new field page for "numeric_field" for form "family_details" |
-  #
     When I follow "Text Field"
-    And I wait for 5 seconds
+    And I wait until "Text Field" is visible
 
     Then I should find the form with following attributes:
       | field_display_name_en |
@@ -34,7 +25,7 @@ Feature: So that admin can customize fields in a form section
     When I fill in "Anything" for "field_display_name_en"
     And I fill in "Really anything" for "Help text"
     And I press "Save Details" within "#new_field"
-    And I wait for 5 seconds
+    And I wait until "Fields" is visible
 
     Then I should see "Anything"
     When I am on children listing page
@@ -45,13 +36,10 @@ Feature: So that admin can customize fields in a form section
   @javascript
   Scenario: Admins should be able to add new date fields
     Given I am on the edit form section page for "family_details"
-    And I wait for 5 seconds
+    And I wait until "family_details" is visible
 
     When I follow "Add Field"
-    And I wait for 5 seconds
-
-  #    Then I should find the following links:
-  #      | Date Field | new field page for "date_field" for form "family_details"|
+    And I wait until "Add Field" is visible
 
     When I follow "Date Field"
 
@@ -82,9 +70,6 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Add Field"
 
-  #    Then I should find the following links:
-  #      | Radio button | new field page for "radio_button" for form "family_details" |
-
     When I follow "Radio button"
 
     Then I should find the form with following attributes:
@@ -101,7 +86,7 @@ Feature: So that admin can customize fields in a form section
     one
     two
     """
-    And I wait for 5 seconds
+    And I wait until "Save Details" is visible
     And I press "Save Details" within "#new_field"
 
     Then I should see "Radio button name"
@@ -157,11 +142,12 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Numeric Field"
     And I fill in "Help for a numeric field" for "Help text"
+    And I wait until "field_display_name_en" is visible
     And I fill in "My new number field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
-    And I wait for 5 seconds
+    And I wait until "My new number field" is visible
     And I should see "My new number field" in the list of fields
 
     When I am on children listing page
@@ -180,6 +166,7 @@ Feature: So that admin can customize fields in a form section
 
     When I follow "Text Field"
     And I fill in "Help for a text field" for "Help text"
+    And I wait until "field_display_name_en" is visible
     And I fill in "My Text field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
@@ -192,7 +179,7 @@ Feature: So that admin can customize fields in a form section
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Radio button"
-    And I wait for 5 seconds
+    And I wait until "field_display_name_en" is visible
     And I fill in "Radio button name" for "field_display_name_en"
     And I fill the following options into "field_option_strings_text_en":
     """
@@ -262,7 +249,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "Toys" in the list of fields
     When I go to the add child page
     And I visit the "Family details" tab
-    And I wait for 5 seconds
+    And I wait until "Toys" is visible
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | no       |

@@ -28,12 +28,6 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
 end
 
-When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-  with_scope(selector) do
-    find("//input[@class='btn_submit']").click
-  end
-end
-
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
 end
@@ -85,14 +79,6 @@ When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
 end
 
-# Use this to fill in an entire form with data from a table. Example:
-#
-#   When I fill in the following:
-#     | Account Number | 5002       |
-#     | Expiry date    | 2009-11-01 |
-#     | Note           | Nice guy   |
-#     | Wants Email?   |            |
-#
 # TODO: Add support for checkbox, select og option
 # based on naming conventions.
 #
@@ -281,6 +267,19 @@ Then /^(.+) button is disabled$/ do |text|
 end
 
 
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
+  with_scope(selector) do
+    find("//input[@class='btn_submit']").click
+  end
+end
+
+When /^I view User Action History$/ do
+  find("//span[@class='log']").click
+end
+
+Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
+  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
+end
 
 When /^I clear the search results$/ do
   click_button("reset")
@@ -306,9 +305,13 @@ end
 Then /^I should not be able to view the tab (.+)$/ do|tab_name|
   page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
 end
-Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
-  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
+
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  with_scope(selector) do
+    find("//input[@class='btn_submit']").click
+  end
 end
+
 When /^I select "([^"]*)"$/ do |arg|
   find("//input[@class='btn_submit']").click
 end
