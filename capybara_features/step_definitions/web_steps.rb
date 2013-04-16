@@ -253,11 +253,11 @@ end
 
 Then /^I should see the order (.+)$/ do |input|
   current = 0
-  input.split(',').each{ |match|
+  input.split(',').each do |match|
     index = page.body.index(match)
     assert index > current, "The index of #{match} was not greater than #{current}"
     current = index
-  }
+  end
 end
 
 Then /^(.+) button is disabled$/ do |text|
@@ -268,6 +268,10 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
+end
+
+And /^I submit the form$/ do
+  click_button('Save')
 end
 
 When /^I clear the search results$/ do
@@ -282,7 +286,6 @@ When /^I goto the "(.*?)"$/ do |text|
   find(:xpath,"//a[@class='"+text+"']").click
 end
 
-
 Then /^I should see next records in the search results$/ do
   assert page.has_content?("Displaying children 21 - 25 ")
 end
@@ -290,8 +293,9 @@ end
 Then /^I should see link to "(.*?)"$/ do |text|
   page.should have_xpath("//span[@class='"+text+"']")
 end
-Then /^I should not be able to view the tab (.+)$/ do|tab_name|
-  page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+
+Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
+  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should == !not_visible
 end
 
 When /^I view User Action History$/ do
@@ -307,7 +311,6 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
     find("//input[@class='btn_submit']").click
   end
 end
-
 
 Then /^export option should be unavailable to me$/ do
   page.should have_no_xpath("//span[@class='export']")
