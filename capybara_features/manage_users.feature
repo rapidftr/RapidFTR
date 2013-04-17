@@ -9,15 +9,17 @@ Feature: Manage Users
     And I follow "USERS"
 
   @javascript
-  @wip
   Scenario: Admins should be able to change user disabled status from index page
-    Given a user "homersimpson"
-      And user "homersimpson" is disabled
-      And I am logged in as an admin
-      And I follow "USERS"
 
-     When I uncheck the disabled checkbox for user "homersimpson"
-     Then user "homersimpson" should not be disabled
+    And user "jerry" is disabled
+    And the user "jerry" is marked as disabled
+    When I follow "Logout"
+    And I am logged in as an admin
+    And I follow "USERS"
+    When I re-enable user "jerry"
+    And the user "jerry" is marked as enabled
+    Then user "jerry" should not be disabled
+    And the user "jerry" should be marked as enabled
 
   Scenario: Admins should be able view himself
      Then I should see "Show"
