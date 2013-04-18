@@ -80,7 +80,9 @@ match '/' => 'home#index', :as => :root
 ####################### 
 
 namespace :api do
-    match '/api/children/:child_id/photo/:photo_id' => 'child_media#show_photo'
+    match '/children/:child_id/photo' => 'child_media#show_photo'
+    match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo'
+    match '/children/:child_id/audio(/:id)' => 'child_media#download_audio'
     resources :children do
       collection do
         post :sync_unverified
