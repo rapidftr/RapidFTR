@@ -6,7 +6,9 @@ Feature: Ensure translations
       | locale | key        | value                   |
       | ar     | xxxx       | Arabic Translated Name  |
       | en     | xxxx       | English Translated Name |
-      | ru     | yyyy       | Whatever                |
+      | ru     | yyyy       | Whatever in Russian     |
+      | fr     | ffff       | Whatever in French      |
+      | zh     | cccc       | Whatever in Chinese     |
 
   @javascript
   Scenario: Field label translations
@@ -18,9 +20,15 @@ Feature: Ensure translations
   Scenario: Field label translation missing
     When I set the system language to "العربية"-"ar"
     And I set the user language to "Русский"-"ru"
-    Then I should see "English Translated Name" translated
+    Then I should see "Arabic Translated Name" translated
     And I logout
 
+  @javascript
+  Scenario: Field label translation missing in system and user locale
+    When I set the system language to "中文"-"zh"
+    And I set the user language to "Français"-"fr"
+    Then I should see "English Translated Name" translated
+    And I logout
 
   @javascript
   Scenario: View system language changed by Admin
