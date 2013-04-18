@@ -8,10 +8,6 @@ When /^I enter the following role details$/ do |role_table|
   end
 end
 
-And /^I submit the form$/ do
-  click_button('Save')
-end
-
 And /^I should see the following roles$/ do |role_table|
   role_table.hashes.each do |role_row|
     page.should have_content(role_row['name'].titleize)
@@ -44,24 +40,14 @@ Then /^I should see the following roles sorted:$/ do |table|
   actual_order_against(expected_order).should == expected_order
 end
 
-private
-  def go_to_roles_page
-    click_link('USERS')
-    click_link('Roles')
-  end
-
-  def actual_order_against(expected_order)
-    list = page.all(:xpath, "//td[@class='role_name']").collect(&:text)
-    actual_order = []
-    list.each { |item| actual_order << item if expected_order.include?(item) }
-    actual_order
-  end
 When /^I edit the role (.+)$/ do  |role_name|
   find(:xpath,"//table[@class='list_table']//tr/td[text()='"+role_name+"']/following-sibling::td/a[text()='Edit']").click()
 end
+
 When /^I update the form$/ do
   click_button('Update')
 end
+
 When /^I enter the following permission details$/ do |role_table|
   role_table.hashes.each do |role_row|
     role_row['permissions'].each do |permission|
@@ -69,6 +55,15 @@ When /^I enter the following permission details$/ do |role_table|
     end
   end
 end
-Then /^I should be able to view the tab (.+)$/ do|tab_name|
-  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+
+def go_to_roles_page
+  click_link('USERS')
+  click_link('Roles')
+end
+
+def actual_order_against(expected_order)
+  list = page.all(:xpath, "//td[@class='role_name']").collect(&:text)
+  actual_order = []
+  list.each { |item| actual_order << item if expected_order.include?(item) }
+  actual_order
 end

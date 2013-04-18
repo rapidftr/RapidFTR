@@ -74,3 +74,12 @@ Given /^"([^\"]*)" is a duplicate of "([^\"]*)"$/ do |duplicate_name, parent_nam
   duplicate.save
 end
 
+Then /^the form section "([^"]*)" should be (present|hidden)$/ do |form_section, visibility|
+  if visibility == 'hidden'
+    page.has_no_link?(form_section).should be_true
+  else
+    page.has_link?(form_section).should be_true
+  end
+end
+
+

@@ -28,6 +28,12 @@ When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
 end
 
+#  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+#  with_scope(selector) do
+#    find("//input[@class='btn_submit']").click
+#  end
+#end
+
 When /^I search$/ do
   page.execute_script("$('input[value=\"#{Search}\"]').click();")
 end
@@ -180,8 +186,6 @@ Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"
   end
 end
 
-
-
 Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
     field_checked = find_field(label)['checked']
@@ -255,17 +259,16 @@ end
 
 Then /^I should see the order (.+)$/ do |input|
   current = 0
-  input.split(',').each{ |match|
+  input.split(',').each do |match|
     index = page.body.index(match)
     assert index > current, "The index of #{match} was not greater than #{current}"
     current = index
-  }
+  end
 end
 
 Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
-
 
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
   with_scope(selector) do
@@ -273,18 +276,14 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
   end
 end
 
-When /^I view User Action History$/ do
-  find("//span[@class='log']").click
-end
 
-Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
-  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
+And /^I submit the form$/ do
+  click_button('Save')
 end
 
 When /^I clear the search results$/ do
   click_button("reset")
 end
-
 
 Then /^I should see first (\d+) records in the search results$/ do |arg1|
   assert page.has_content?("Displaying children 1 - 20 ")
@@ -302,8 +301,9 @@ end
 Then /^I should see link to "(.*?)"$/ do |text|
   page.should have_xpath("//span[@class='"+text+"']")
 end
-Then /^I should not be able to view the tab (.+)$/ do|tab_name|
-  page.should_not have_xpath("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+
+Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
+  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should == !not_visible
 end
 
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
