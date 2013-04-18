@@ -72,12 +72,12 @@ group :development, :test, :cucumber do
   gem 'rspec',            '2.11.0'
   gem 'rspec-rails',      '2.11.0'
   gem 'rspec-instafail'
-
+  gem 'minitest'
   gem 'capybara',         '1.0.1'
   gem 'factory_girl', '~> 2.6'
   gem 'jasmine'
   gem 'pry'
-  gem 'mocha'
+  gem 'mocha', :require => 'mocha/api'
   gem 'test_declarative'
 end
 
