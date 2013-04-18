@@ -5,6 +5,7 @@ describe ChildMediaController do
   include ChildBuilder
   include CustomMatchers
   include MiniMagickConversions
+  
   before do
     fake_login
   end
