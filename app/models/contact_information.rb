@@ -3,7 +3,6 @@ class ContactInformation < CouchRestRails::Document
 
   include CouchRest::Validation
   include RapidFTR::Model
-
   property :id
   property :name
   property :organization
@@ -19,11 +18,15 @@ class ContactInformation < CouchRestRails::Document
     raise ErrorResponse.not_found(I18n.t("contact.not_found", :id => id)) if result.nil?
     return result
   end
+  
   def self.get_or_create id
     result = self.all.select{|x|x.id==id}.first
     return result if !result.nil?
-    new_contact_info = ContactInformation.new :id=>id
-    new_contact_info.save!
-    new_contact_info
+    self.save_new_contact(id)
+  end
+
+  protected
+  def self.save_new_contact(id)
+    self.new(:id=>id).save!
   end
 end
