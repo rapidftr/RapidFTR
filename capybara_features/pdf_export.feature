@@ -44,8 +44,8 @@ Feature: So that hard copy printout of missing child photos are available
   @javascript
   Scenario: Exporting full PDF from the child page
     Given I am on the children listing page
-    And I follow "Export"
-    And I follow "Export to PDF"
+    And I follow "Export" for child records
+    And I follow "Export to PDF" for child records
     Then password prompt should be enabled
 
   @javascript

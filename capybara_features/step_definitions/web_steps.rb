@@ -40,11 +40,11 @@ When /^I search$/ do
 end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
-  #with_scope(selector) do
-  #  click_link(link)
-  find(:xpath, "//span[@class='export']").click
+  with_scope(selector) do
+    click_link(link)
+  #find(:xpath, "//span[@class='export']").click
   end
-#end
+end
 
 When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, selector|
   with_scope(selector) do
@@ -332,4 +332,7 @@ Then /^I should be redirected to Advanced Search Page$/ do
 end
 Then /^Error message should be displayed$/ do
   assert page.has_content?("Enter a valid password")
+end
+When /^I follow "([^"]*)" for child records$/ do |arg|
+  find(:xpath, "//span[@class='export']").click
 end

@@ -30,8 +30,8 @@ Feature:
     Given I am logged in as an admin
     And the date/time is "Oct 23 2010"
     When I am on the children listing page
-    And I follow "Export"
-    And I follow "Export Some Records to CSV"
+    And I follow "Export" for child records
+    And I follow "Export Some Records to CSV" for child records
     And I search using a name of "D"
     And I select search result #1
     And I press "Export to CSV"
@@ -49,6 +49,6 @@ Feature:
   Scenario: User is redirected to Advanced Search Page when he exports some records to CSV
     Given I am logged in as an admin
     And  I am on the children listing page
-    When I follow "Export"
-    And I follow "Export Some Records to CSV"
+    When I follow "Export" for child records
+    And I follow "Export Some Records to CSV" for child records
     Then I should be redirected to Advanced Search Page
