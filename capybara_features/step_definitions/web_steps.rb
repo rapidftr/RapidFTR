@@ -16,6 +16,7 @@ World(WithinHelpers)
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
+#binding.pry
 end
 
 When /^(?:|I )go to (.+)$/ do |page_name|
@@ -39,10 +40,11 @@ When /^I search$/ do
 end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
-  with_scope(selector) do
-    click_link(link)
+  #with_scope(selector) do
+  #  click_link(link)
+  find(:xpath, "//span[@class='export']").click
   end
-end
+#end
 
 When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, selector|
   with_scope(selector) do
@@ -312,9 +314,22 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   end
 end
 
-When /^I select "([^"]*)"$/ do |arg|
+When /^I go and press "([^"]*)"$/ do |arg|
   find("//input[@class='btn_submit']").click
 end
 Then /^export option should be unavailable to me$/ do
   page.should have_no_xpath("//span[@class='export']")
+end
+Then /^password prompt should be enabled$/ do
+  assert page.has_content?("Password")
+end
+
+When /^I fill in "([^"]*)" in the password prompt$/ do |arg|
+  fill_in 'password-prompt-dialog', :with => 'abcd'
+end
+Then /^I should be redirected to Advanced Search Page$/ do
+  assert page.has_content?("Advanced Search")
+end
+Then /^Error message should be displayed$/ do
+  assert page.has_content?("Enter a valid password")
 end
