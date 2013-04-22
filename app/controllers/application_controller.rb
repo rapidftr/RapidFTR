@@ -3,12 +3,12 @@
 #
 
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  helper :all
   helper_method :current_user_name, :current_user, :current_user_full_name, :current_session, :logged_in?
 
   include Security::Authentication
 
+  before_filter :extend_session_lifetime
   before_filter :check_authentication
   before_filter :set_locale
 
@@ -21,6 +21,10 @@ class ApplicationController < ActionController::Base
     else
       render :file => "#{Rails.root}/public/403.html", :status => 403, :layout => false
     end
+  end
+
+  def extend_session_lifetime
+    request.env[ActionDispatch::Session::AbstractStore::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week if request.format.json?
   end
 
   def handle_authentication_failure(auth_failure)

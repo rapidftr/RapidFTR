@@ -79,9 +79,9 @@ match '/' => 'home#index', :as => :root
 
   namespace :api do
     controller :sessions do
-      post   :login
-      post   :register
-      delete :logout
+      post :login
+      post :register
+      post :logout
     end
 
     resources :children do

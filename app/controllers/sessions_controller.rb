@@ -2,8 +2,6 @@ class SessionsController < ApplicationController
 
   skip_before_filter :check_authentication, :only => %w{new create active}
 
-  protect_from_forgery :except => %w{create}
-
   # GET /sessions/1
   # GET /sessions/1.xml
   def show
