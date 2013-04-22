@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' 
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'
      xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
-  <Product Name='RapidFTR 1.1' Language='1033' Codepage='1252' Version='1.1' 
+  <Product Name='RapidFTR 1.0' Language='1033' Codepage='1252' Version='1.0'
            Id='5d25814c-66b4-4ae6-afb5-0334010ca6bd'
            UpgradeCode='11bcc895-150a-47b6-b559-ada08ba7e6e3' Manufacturer='UNICEF'>
 
-    <Package Id='*' 
-             Keywords='Installer' Description='RapidFTR Installer' Comments='RapidFTR Installer' 
+    <Package Id='*'
+             Keywords='Installer' Description='RapidFTR Installer' Comments='RapidFTR Installer'
              InstallerVersion='110' InstallScope='perUser' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
 
     <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' />
@@ -48,6 +48,7 @@
               <Condition>NOT (ALLUSERS)</Condition>
               <RegistryValue Id='AppDirReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='AppDir' Value='1' Type='integer' KeyPath='yes' />
               <util:RemoveFolderEx On='uninstall' Property='AppDir' />
+              <RemoveFolder On='uninstall' Id='AppDir' />
             </Component>
           </Directory>
 
@@ -73,9 +74,9 @@
             <Condition>NOT (ALLUSERS)</Condition>
             <RegistryValue Id='LauncherReg' Root='HKCU' Key='SOFTWARE\[Manufacturer]\[ProductName]' Name='Launcher' Value='1' Type='integer' KeyPath='yes' />
             <File Id='LauncherBat' Name='Launch.bat' DiskId='1' Source='Launch.bat'>
-              <Shortcut Id='StartMenuLauncher' Directory='ProgramMenuDir' Name='RapidFTR Server' 
+              <Shortcut Id='StartMenuLauncher' Directory='ProgramMenuDir' Name='RapidFTR Server'
                         WorkingDirectory='INSTALLDIR' Icon='Icon.ico' Advertise='no' />
-              <Shortcut Id='DesktopLauncher' Directory='DesktopFolder'  Name='RapidFTR Server' 
+              <Shortcut Id='DesktopLauncher' Directory='DesktopFolder'  Name='RapidFTR Server'
                         WorkingDirectory='INSTALLDIR' Icon='Icon.ico' Advertise='no' />
             </File>
             <util:RemoveFolderEx On='uninstall' Property='INSTALLDIR' />
@@ -129,7 +130,7 @@
     <CustomAction Id='ExtractCodebase' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes'
                   ExeCommand='cmd.exe /C &quot;7za.exe x Codebase.zip -oApp -y&quot;' />
 
-    <CustomAction Id='ResetApp' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes' 
+    <CustomAction Id='ResetApp' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes'
                   ExeCommand='cmd.exe /C &quot;Reset.bat [RAILS_HOME]\Ruby1.8.7\bin&quot;' />
 
     <InstallExecuteSequence>
