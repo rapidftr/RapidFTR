@@ -63,7 +63,7 @@ class Replication < CouchRestRails::Document
   end
 
   def timestamp
-    fetch_configs.collect { |config| config["_replication_state_time"].to_datetime rescue nil }.compact.max
+    fetch_configs.collect { |config| Time.zone.parse config["_replication_state_time"] rescue nil }.compact.max
   end
 
   def statuses

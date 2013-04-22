@@ -47,26 +47,8 @@ describe ApplicationController do
       user = User.new(:user_name => 'user_name', :role_names => ["default"])
       User.should_receive(:find_by_user_name).with('user_name').and_return(user)
       session = Session.new :user_name => user.user_name
-      controller.stub(:get_session).and_return(session)
+      controller.stub(:current_session).and_return(session)
       controller.current_user.user_name.should == 'user_name'
-    end
-  end
-
-  describe "update activity" do
-    it "should not update session if the session expiry is not less 19 minutes from now" do
-      expires_at = Time.now + 20.minutes
-      session = Session.new(:user_name => user.user_name, :expires_at => expires_at)
-      controller.stub(:get_session).and_return(session)
-      session.should_not_receive(:save)
-      controller.send(:update_activity_time)
-    end
-
-    it "should update session if the session expiry is less 19 minutes from now" do
-      expires_at = Time.now + 18.minutes
-      session = Session.new(:user_name => user.user_name, :expires_at => expires_at)
-      controller.stub(:get_session).and_return(session)
-      session.should_receive(:save)
-      controller.send(:update_activity_time)
     end
   end
 
