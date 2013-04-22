@@ -2,7 +2,7 @@ RapidFTR::Application.routes.draw do
 
 match '/' => 'home#index', :as => :root
 
-####################### 
+#######################
 # USER URLS
 #######################
 
@@ -34,32 +34,30 @@ match '/' => 'home#index', :as => :root
   match 'admin' => 'admin#index', :as => :admin
   match 'admin/update' => 'admin#update', :as => :admin_update
 
-  
-####################### 
+
+#######################
 # CHILD URLS
-####################### 
+#######################
 
   resources :children do
     collection do
+      post :sync_unverified
       post :reindex
       get :advanced_search
       post :export_csv
       get :search
       post :export_photos_to_pdf
-      post :sync_unverified
-      put :sync_unverified
     end
 
     member do
       get :export_photo_to_pdf
     end
-    
+
     resources :attachments, :only => :show
     resource :duplicate, :only => [:new, :create]
   end
 
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
-  match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
@@ -75,28 +73,28 @@ match '/' => 'home#index', :as => :root
   match '/children' => 'children#index', :as => :child_filter
 
 
-####################### 
+#######################
 # API URLS
-####################### 
+#######################
 
-namespace :api do
-    match '/children/:child_id/photo' => 'child_media#show_photo'
-    match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo'
-    match '/children/:child_id/audio(/:id)' => 'child_media#download_audio'
+  namespace :api do
+    controller :sessions do
+      post :login
+      post :register
+      post :logout
+    end
+
     resources :children do
       collection do
-        post :sync_unverified
+        get  :ids
+        post :unverified
       end
-    end
-  end
 
-  resources :form_section, :controller => 'form_section' do
-    resources :fields, :controller => 'fields' do
-      collection do
-        post "save_order"
-        post "delete"
-        post "toggle_fields"
-        post "change_form"
+      member do
+        controller :child_media do
+          get 'photo(/:photo_id)', :action => 'show_photo'
+          get 'audio(/:audio_id)', :action => 'download_audio'
+        end
       end
     end
   end
@@ -105,29 +103,43 @@ namespace :api do
 # FORM SECTION URLS
 #######################
 
-  resources :form_sections, :controller => "form_section"
+  resources :form_sections, :path => 'form_section', :controller => 'form_section' do
+    collection do
+      match 'save_order'
+      match 'toggle'
+      match 'published'
+    end
+
+    resources :fields, :controller => 'fields' do
+      collection do
+        post 'save_order'
+        post 'delete'
+        post 'toggle_fields'
+        post 'change_form'
+      end
+    end
+  end
+
   resources :highlight_fields do
     collection do
       post :remove
     end
   end
-  match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
-  match '/form_section/toggle' => 'form_section#toggle', :as => :toggle
-  match 'form_section/:form_section_id/choose_field' => 'fields#choose', :as => :choose_field
-  match '/published_form_sections' => 'publish_form_section#form_sections', :as => :published_form_sections
+
+  match '/published_form_sections' => 'form_section#published', :as => :published_form_sections
 
 
 #######################
 # ADVANCED SEARCH URLS
 #######################
-  
+
   resources :advanced_search, :only => [:index, :new]
   match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
 
 #######################
 # REPLICATION URLS
-#######################  
+#######################
 
   resources :replications, :path => "/devices/replications" do
     collection do
@@ -144,12 +156,12 @@ namespace :api do
 
 #######################
 # REPORTING URLS
-#######################  
+#######################
   resources :reports, :only => [ :index, :show ]
 
 #######################
 # TESTING URLS
-#######################  
-  match 'database/delete_children' => 'database#delete_children', :via => :delete  
+#######################
+  match 'database/delete_children' => 'database#delete_children', :via => :delete
 
 end

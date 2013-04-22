@@ -5,45 +5,33 @@ Feature:
   So that an API client can pull down child records one per request
 
   Background:
-    Given there is a User
+    Given devices exist
+      | imei  | blacklisted | user_name|
+      | 10001 | false       | tim  |
 
-  Scenario: Should give good json return value for a requested child in system
-    Given I am sending a valid session token in my request headers
-    And the following children exist in the system:
-      | name | _id | created_at  	    	| posted_at		|
-      | Tom  | 1   | 2011-06-22 02:07:51UTC	| 2011-06-22 02:07:51UTC|
-    When I request for child with ID 1
-    Then that JSON hash of elements has these properties:
-      | _id     | name  | created_by | created_at | posted_at |
-      | 1       | Tom   | zubair	    | 2011-06-22 02:07:51UTC|2011-06-22 02:07:51UTC|
+    Given the following children exist in the system:
+      | name | _id | created_at             |
+      | Tom  | 1   | 2011-06-22 02:07:51UTC |
+      | Ben  | 2   | 2011-06-23 02:07:51UTC |
 
-  @wip
-  Scenario: Should give empty json return value for a requested child not in system
-    Given I am sending a valid session token in my request headers
-    And the following children exist in the system:
-      | name | _id | created_at  	    	| posted_at		|
-      | Tom  | 1   | 2011-06-22 02:07:51UTC	| 2011-06-22 02:07:51UTC|
-    When I request for child with ID 2
-    Then I should get back a response saying null
+    Given a registration worker "tim" with a password "123"
+    And I login as tim with password 123 and imei 10001
+
+  Scenario: Should return JSON for requested child
+    When I send a GET request to "/api/children/1"
+    Then the JSON should have the following:
+      | _id        | "1"                      |
+      | name       | "Tom"                    |
+      | created_at | "2011-06-22 02:07:51UTC" |
+
+  Scenario: Should return 404 not found if child does not exist
+    When I send a GET request to "/api/children/3"
+    Then I should receive HTTP 404
 
   Scenario: Only Id and Revision properties are returned for each child record
-
-    Given I am sending a valid session token in my request headers
-    Given the following children exist in the system:
-      | name |
-      | Tom  |
-      | Kate |
-      | Jess |
-
-    When I make a request for all child Ids
-    Then I receive a JSON array
-    And that list should be composed of 3 elements
-    And that JSON response should be composed of items with body
-    """
-    	{
-    	  "_id": "%SOME_STRING%",
-	      "_rev": "%SOME_STRING%"
-	    }
-	    """
-
-
+    When I send a GET request to "/api/children/ids"
+    Then the JSON should be an array
+    And the JSON should have 2 entries
+    And the JSON at "0" should have 2 keys
+    And the JSON at "0/_id" should be "1"
+    And the JSON at "0/_rev" should be a string

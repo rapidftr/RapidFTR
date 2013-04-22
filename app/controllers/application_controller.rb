@@ -3,14 +3,14 @@
 #
 
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  helper :all
   helper_method :current_user_name, :current_user, :current_user_full_name, :current_session, :logged_in?
 
-  include ChecksAuthentication
+  include Security::Authentication
+
+  before_filter :extend_session_lifetime
   before_filter :check_authentication
   before_filter :set_locale
-  before_filter :update_activity_time
 
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
   rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
@@ -22,54 +22,37 @@ class ApplicationController < ActionController::Base
       render :file => "#{Rails.root}/public/403.html", :status => 403, :layout => false
     end
   end
-  
-  def render_error_response(ex)
-    @exception = ex
 
-    # Only add the error page to the status code if the request-format was HTML
+  def extend_session_lifetime
+    request.env[ActionDispatch::Session::AbstractStore::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week if request.format.json?
+  end
+
+  def handle_authentication_failure(auth_failure)
     respond_to do |format|
-      format.html do
-        render(
-          :template => "shared/status_#{ex.status_code.to_s}",
-          :status => ex.status_code
-        )
-      end
-      format.any(:xml,:json) do
-        begin
-        render(
-          :template => "shared/status_#{ex.status_code.to_s}",
-          :status => ex.status_code
-        )
-        rescue ActionView::MissingTemplate
-          head ex.status_code # only return the status code
-        end
-      end
+      format.html { redirect_to(:login) }
+      format.any(:xml,:json) { render_error_response ErrorResponse.unauthorized(I18n.t("session.invalid_token")) }
     end
   end
 
-  # TODO Remove duplication in ApplicationHelper
-  def current_user_name
-    current_user.try(:user_name)
+  def handle_authorization_failure(authorization_failure)
+    respond_to do |format|
+      format.any { render_error_response ErrorResponse.new(403, authorization_failure.message) }
+    end
   end
 
-  def current_ability
-    @current_ability ||= Ability.new(current_user)
+  def handle_device_blacklisted(session)
+    render(:status => 403, :json => session.imei)
   end
 
-  def current_user_full_name
-    current_user.try(:full_name)
-  end
-
-  def current_user
-    @current_user ||= current_session.try(:user)
-  end
-
-  def current_session
-    @current_session ||= get_session
-  end
-
-  def logged_in?
-    !current_session.nil? unless request.nil?
+  def render_error_response(ex)
+    respond_to do |format|
+      format.html do
+        render :template => "shared/error_response",:status => ex.status_code, :locals => { :exception => ex }
+      end
+      format.any(:xml,:json) do
+        render :text => nil, :status => ex.status_code
+      end
+    end
   end
 
   def send_pdf(data, filename)
@@ -82,25 +65,6 @@ class ApplicationController < ActionController::Base
 
   def name
     self.class.to_s.gsub("Controller", "")
-  end
-
-  def session_expiry
-    session = current_session
-    unless session.nil?
-      if session.expired?
-        flash[:error] = t('session.has_expired')
-        redirect_to logout_path
-      end
-    end
-  end
-
-  def update_activity_time
-    session = current_session
-    unless session.nil? || ((session.expires_at || Time.now) > 19.minutes.from_now)
-      session.update_expiration_time(20.minutes.from_now)
-      session.save
-      session.put_in_cookie cookies
-    end
   end
 
   def set_locale
