@@ -17,26 +17,26 @@ gem 'validatable',    '1.6.7'
 gem 'sunspot',				'1.3.3'
 gem 'tzinfo'
 gem 'rake',           '0.8.7'
-gem 'dynamic_form'
-gem 'jquery-rails'
-gem 'cancan'
-gem 'capistrano'
-gem 'will_paginate'
-gem "i18n-js"
-gem 'therubyracer' , :platforms => :ruby
-gem 'win32-open3' , :platforms => [:mswin, :mingw]
-gem 'os'
-gem 'libv8', '~> 3.11.8', :platform => :ruby
-gem 'thin', :platform => :ruby, :require => false
+gem 'dynamic_form',   '~> 1.1.4'
+gem 'jquery-rails',   '~> 2.2.1'
+gem 'cancan',         '~> 1.6.9'
+gem 'capistrano',     '~> 2.14.2'
+gem 'will_paginate',  '~> 3.0.4'
+gem "i18n-js",        '~> 2.1.2'
+gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby
+gem 'win32-open3',    '~> 0.3.2', :platforms => [:mswin, :mingw]
+gem 'os',             '~> 0.9.6'
+gem 'libv8',          '~> 3.11.8', :platform => :ruby
+gem 'thin',           '~> 1.5.1', :platform => :ruby, :require => false
 
 # NOTE: zipruby gem needs to be installed in Windows using a special gem install directive, which is unsupported by bundler
 # NOTE: Sunspot 1.3.3 has bug in Linux, But 1.3.1 has problem in Windows
 if RUBY_PLATFORM =~ /(win32|w32)/
-  gem 'zipruby', '0.3.6', :path => "vendor/windows/gems/zipruby-0.3.6-x86-mswin32"
+  gem 'zipruby',        '0.3.6', :path => "vendor/windows/gems/zipruby-0.3.6-x86-mswin32"
   gem 'sunspot_solr',   '1.3.3'
 else
-  gem 'zipruby', '~> 0.3.6'
-  gem 'sunspot_solr', '1.3.1'
+  gem 'zipruby',        '~> 0.3.6'
+  gem 'sunspot_solr',   '1.3.1'
 end
 # NOTE: Having If conditions in the Gemfile is not generally recommended
 # Because using the above code, if you run bundle install in Linux, it will generate a different Gemfile.lock
@@ -47,45 +47,38 @@ end
 # Both are equally troublesome, and both will end up with different versions of gems installed by bundler for Windows and Linux
 # Right now we're choosing to delete Gemfile.lock in Windows before doing bundle install
 
-gem 'rufus-scheduler', :require => false
-gem 'daemons', :require => false
+gem 'rufus-scheduler', '~> 2.0.18', :require => false
+gem 'daemons',         '~> 1.1.9',  :require => false
 
 group :development, :assets do
-  gem 'rubyzip'
-  gem 'sass'
+  gem 'rubyzip',       '~> 0.9.9'
+  gem 'sass',          '~> 3.2.7'
 end
 
 group :assets do
-  gem 'compass-rails'
-  gem 'uglifier'
-  gem 'jammit'
-end
-
-group :development do
-  gem 'guard-rspec'
-  gem 'rb-readline'
-  gem 'rb-fsevent', :require => false
-  gem 'terminal-notifier-guard'
+  gem 'compass-rails', '~> 1.0.3'
+  gem 'uglifier',      '~> 2.0.1'
+  gem 'jammit',        '~> 0.6.6'
 end
 
 group :development, :test, :cucumber do
-  gem 'rspec',            '2.11.0'
-  gem 'rspec-rails',      '2.11.0'
-  gem 'rspec-instafail'
+  gem 'rspec',            '~> 2.11.0'
+  gem 'rspec-rails',      '~> 2.11.0'
+  gem 'rspec-instafail',  '~> 0.2.4'
 
-  gem 'capybara',         '1.0.1'
-  gem 'factory_girl', '~> 2.6'
-  gem 'jasmine'
+  gem 'capybara',         '~> 1.0.1'
+  gem 'factory_girl',     '~> 2.6'
+  gem 'jasmine',          '~> 1.3.2'
   gem 'pry'
   gem 'mocha'
   gem 'test_declarative'
 end
 
 group :test, :cucumber do
-  gem 'cucumber',         '1.2.1'
-  gem 'cucumber-rails',   '0.3.2'
+  gem 'cucumber',           '~> 1.2.1'
+  gem 'cucumber-rails',     '~> 0.3.2'
   gem 'selenium-webdriver', '~> 2.30'
-  gem 'hpricot',          '0.8.2'
-  gem 'launchy',          '0.4.0'
+  gem 'hpricot',            '~> 0.8.2'
+  gem 'launchy',            '0.4.0'
   gem 'rcov', :platforms => :ruby_18
 end

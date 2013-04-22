@@ -2,10 +2,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     Ascii85 (1.0.2)
-    POpen4 (0.1.4)
-      Platform (>= 0.4.0)
-      open4
-    Platform (0.4.0)
     abstract (1.0.0)
     actionmailer (3.0.19)
       actionpack (= 3.0.19)
@@ -63,6 +59,7 @@ GEM
     couchrest (0.34)
       mime-types (>= 1.15)
       rest-client (>= 0.5)
+    cssmin (1.0.3)
     cucumber (1.2.1)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
@@ -87,22 +84,14 @@ GEM
     fssm (0.2.10)
     gherkin (2.11.5)
       json (>= 1.4.6)
-    guard (1.6.2)
-      listen (>= 0.6.0)
-      lumberjack (>= 1.0.2)
-      pry (>= 0.9.10)
-      terminal-table (>= 1.4.3)
-      thor (>= 0.14.6)
-    guard-rspec (2.5.0)
-      guard (>= 1.1)
-      rspec (~> 2.11)
     highline (1.6.15)
     hpricot (0.8.2)
     i18n (0.5.0)
     i18n-js (2.1.2)
       i18n
-    jammit (0.6.5)
-      yui-compressor (>= 0.9.3)
+    jammit (0.6.6)
+      cssmin (>= 1.0.3)
+      jsmin (>= 1.0.1)
     jasmine (1.3.2)
       jasmine-core (~> 1.3.1)
       rack (~> 1.0)
@@ -112,14 +101,13 @@ GEM
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jsmin (1.0.1)
     json (1.4.6)
     json_pure (1.4.6)
     launchy (0.4.0)
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     libv8 (3.11.8.13)
-    listen (0.7.3)
-    lumberjack (1.0.2)
     mail (2.2.19)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -141,7 +129,6 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     nokogiri (1.5.6)
-    open4 (1.3.0)
     os (0.9.6)
     pdf-reader (0.8.6)
       Ascii85 (>= 0.9)
@@ -178,8 +165,6 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.4)
     rake (0.8.7)
-    rb-fsevent (0.9.3)
-    rb-readline (0.4.2)
     rcov (1.0.0)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -218,13 +203,11 @@ GEM
       rsolr (~> 1.0.7)
     sunspot_solr (1.3.1)
       escape (~> 0.0.4)
-    terminal-notifier-guard (1.5.3)
-    terminal-table (1.4.5)
     test_declarative (0.0.5)
     therubyracer (0.11.4)
       libv8 (~> 3.11.8.12)
       ref
-    thin (1.5.0)
+    thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
@@ -233,7 +216,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
-    uglifier (1.3.0)
+    uglifier (2.0.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
     uuidtools (2.1.1)
@@ -242,32 +225,29 @@ GEM
     will_paginate (3.0.4)
     xpath (0.1.4)
       nokogiri (~> 1.3)
-    yui-compressor (0.9.6)
-      POpen4 (>= 0.1.4)
     zipruby (0.3.6)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  cancan
-  capistrano
-  capybara (= 1.0.1)
-  compass-rails
+  cancan (~> 1.6.9)
+  capistrano (~> 2.14.2)
+  capybara (~> 1.0.1)
+  compass-rails (~> 1.0.3)
   couchrest (= 0.34)
-  cucumber (= 1.2.1)
-  cucumber-rails (= 0.3.2)
-  daemons
+  cucumber (~> 1.2.1)
+  cucumber-rails (~> 0.3.2)
+  daemons (~> 1.1.9)
   dictionary (= 1.0.0)
-  dynamic_form
+  dynamic_form (~> 1.1.4)
   factory_girl (~> 2.6)
   fastercsv (= 1.5.3)
-  guard-rspec
-  hpricot (= 0.8.2)
-  i18n-js
-  jammit
-  jasmine
-  jquery-rails
+  hpricot (~> 0.8.2)
+  i18n-js (~> 2.1.2)
+  jammit (~> 0.6.6)
+  jasmine (~> 1.3.2)
+  jquery-rails (~> 2.2.1)
   json (= 1.4.6)
   json_pure (= 1.4.6)
   launchy (= 0.4.0)
@@ -275,34 +255,31 @@ DEPENDENCIES
   mime-types (= 1.16)
   mini_magick (= 1.3.2)
   mocha
-  os
+  os (~> 0.9.6)
   pdf-reader (= 0.8.6)
   prawn (= 0.8.4)
   pry
   rails (= 3.0.19)
   rake (= 0.8.7)
-  rb-fsevent
-  rb-readline
   rcov
   rest-client (= 1.3.0)
-  rspec (= 2.11.0)
-  rspec-instafail
-  rspec-rails (= 2.11.0)
-  rubyzip
-  rufus-scheduler
-  sass
+  rspec (~> 2.11.0)
+  rspec-instafail (~> 0.2.4)
+  rspec-rails (~> 2.11.0)
+  rubyzip (~> 0.9.9)
+  rufus-scheduler (~> 2.0.18)
+  sass (~> 3.2.7)
   selenium-webdriver (~> 2.30)
   subexec (= 0.0.4)
   sunspot (= 1.3.3)
   sunspot_solr (= 1.3.1)
-  terminal-notifier-guard
   test_declarative
-  therubyracer
-  thin
+  therubyracer (~> 0.11.4)
+  thin (~> 1.5.1)
   tzinfo
-  uglifier
+  uglifier (~> 2.0.1)
   uuidtools (= 2.1.1)
   validatable (= 1.6.7)
-  will_paginate
-  win32-open3
+  will_paginate (~> 3.0.4)
+  win32-open3 (~> 0.3.2)
   zipruby (~> 0.3.6)
