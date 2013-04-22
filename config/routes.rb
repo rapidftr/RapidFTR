@@ -59,7 +59,6 @@ match '/' => 'home#index', :as => :root
 
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
   match '/children-ids' => 'child_ids#all', :as => :child_ids
-  match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
   match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index
@@ -104,7 +103,13 @@ match '/' => 'home#index', :as => :root
 # FORM SECTION URLS
 #######################
 
-  resources :form_section, :controller => 'form_section' do
+  resources :form_sections, :path => 'form_section', :controller => 'form_section' do
+    collection do
+      match 'save_order'
+      match 'toggle'
+      match 'published'
+    end
+
     resources :fields, :controller => 'fields' do
       collection do
         post 'save_order'
@@ -115,16 +120,13 @@ match '/' => 'home#index', :as => :root
     end
   end
 
-  resources :form_sections, :controller => "form_section"
   resources :highlight_fields do
     collection do
       post :remove
     end
   end
-  match '/form_section/save_form_order' => 'form_section#save_form_order', :as => :save_order
-  match '/form_section/toggle' => 'form_section#toggle', :as => :toggle
-  match 'form_section/:form_section_id/choose_field' => 'fields#choose', :as => :choose_field
-  match '/published_form_sections' => 'publish_form_section#form_sections', :as => :published_form_sections
+
+  match '/published_form_sections' => 'form_section#published', :as => :published_form_sections
 
 
 #######################

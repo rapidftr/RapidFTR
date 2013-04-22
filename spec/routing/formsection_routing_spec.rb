@@ -18,8 +18,8 @@ describe 'Form Section routing' do
   end
 
   it 'has route for form sections index page' do
-    {:get => '/form_sections'}.should route_to(:controller => 'form_section', :action=>'index')
-    form_sections_path.should == '/form_sections'
+    {:get => '/form_section'}.should route_to(:controller => 'form_section', :action=>'index')
+    form_sections_path.should == '/form_section'
   end
 
   it 'has route for form sections new page' do

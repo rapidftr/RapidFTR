@@ -2,58 +2,22 @@ class Api::SessionsController < Api::ApiController
 
   skip_before_filter :check_authentication, :check_device_blacklisted, :only => [ :login, :register ]
 
-  # @api_cleanup
-  # TODO:
-  # Once Old API is cleaned up
-  # Remove "login when json?" in Web sessions_controller
-  # Remove this SessionModule
-  # Have all methods inside this SessionModule directly in this controller itself
+  def login
+    @login = Login.new(params)
+    @current_session = @login.authenticate_user
 
-  module SessionModule
-    def login
-      @login = Login.new(params)
-      @current_session = @login.authenticate_user
+    raise ErrorResponse.unauthorized(t("session.invalid_credentials")) unless @current_session
+    check_device_blacklisted
 
-      raise ErrorResponse.unauthorized(t("session.invalid_credentials")) unless @current_session
-      check_device_blacklisted
-
-      @current_session.save!
-      session[:rftr_session_id] = @current_session.id
-      render_session_as_json @current_session
-    end
-
-    def logout
-      current_session.try :destroy
-      render :json => true
-    end
-
-    private
-
-    # This method is already there in ApiController
-    # It has been duplicated here since it is being re-used in the Old API
-    # This is no longer required here when we remove the old API
-    def check_device_blacklisted
-      raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
-    end
-
-    def render_session_as_json(session)
-      user = User.find_by_user_name(session.user_name)
-      json = {
-        :db_key => mobile_db_key(session.imei),
-        :organisation => user.organisation,
-        :language => I18n.default_locale,
-        :verified => user.verified?
-      }
-
-      render :json => json, :status => 201
-    end
-
-    def mobile_db_key(imei)
-      MobileDbKey.find_or_create_by_imei(imei).db_key
-    end
+    @current_session.save!
+    session[:rftr_session_id] = @current_session.id
+    render_session_as_json @current_session
   end
 
-  include SessionModule
+  def logout
+    current_session.try :destroy
+    render :json => true
+  end
 
   def register
     user = params[:user]
@@ -68,6 +32,24 @@ class Api::SessionsController < Api::ApiController
     end
 
     render :json => {:response => "ok"}.to_json
+  end
+
+  private
+
+  def render_session_as_json(session)
+    user = User.find_by_user_name(session.user_name)
+    json = {
+      :db_key => mobile_db_key(session.imei),
+      :organisation => user.organisation,
+      :language => I18n.default_locale,
+      :verified => user.verified?
+    }
+
+    render :json => json, :status => 201
+  end
+
+  def mobile_db_key(imei)
+    MobileDbKey.find_or_create_by_imei(imei).db_key
   end
 
 end
