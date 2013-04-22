@@ -18,7 +18,7 @@ end
 describe ChildrenController do
 
   before :each do
-    fake_admin_login    
+    fake_admin_login
   end
 
   def mock_child(stubs={})
@@ -124,7 +124,7 @@ describe ChildrenController do
           per_page = @options.delete(:per_page)
           children = [mock_child(@stubs)]
           @status ||= "all"
-          children.expects(:paginate).returns(children)
+          children.stub!(:paginate).and_return(children)
           Child.should_receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
 
           get :index, :status => @status
@@ -147,7 +147,7 @@ describe ChildrenController do
           page = @options.delete(:page)
           per_page = @options.delete(:per_page)
           @status ||= "all"
-          children.expects(:paginate).returns(children)
+          children.stub!(:paginate).and_return(children)
           Child.should_receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
           @params.merge!(:status => @status)
           get :index, @params
@@ -353,7 +353,7 @@ describe ChildrenController do
                :last_known_location => "Manchester",
                :histories => histories
            }
-      
+
      assigns[:child]['histories'].should == JSON.parse(histories)
     end
 
@@ -391,7 +391,7 @@ describe ChildrenController do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
       Child.get(child.id)["histories"].size.should be 1
-      
+
       expect{put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"})}.to_not change{Child.get(child.id)["histories"].size}
     end
 
@@ -439,9 +439,9 @@ describe ChildrenController do
       child = Child.new_with_user_name(user, {:name => 'existing child'})
       Child.stub(:get).with(123).and_return(child)
       subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
-      
+
       put :update, :id => 123, :child => {:flag => true, :flag_message => "Test"}
-      
+
       child['last_updated_by_full_name'].should=='Bill Clinton'
     end
 

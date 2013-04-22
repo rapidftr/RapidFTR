@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 class MockFormSection
@@ -18,6 +17,7 @@ class MockFormSection
     "unique_id"
   end
 end
+
 describe FormSectionController do
   before do
     user = User.new(:user_name => 'manager_of_forms')
@@ -76,7 +76,7 @@ describe FormSectionController do
       form_one = FormSection.create(:unique_id => "first_form", :name => "first form", :order => 1)
       form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)
       form_three = FormSection.create(:unique_id => "third_form", :name => "third form", :order => 3)
-      post :save_form_order, :ids => [form_three.unique_id, form_one.unique_id, form_two.unique_id]
+      post :save_order, :ids => [form_three.unique_id, form_one.unique_id, form_two.unique_id]
       FormSection.get_by_unique_id(form_one.unique_id).order.should == 2
       FormSection.get_by_unique_id(form_two.unique_id).order.should == 3
       FormSection.get_by_unique_id(form_three.unique_id).order.should == 1
@@ -103,7 +103,7 @@ describe FormSectionController do
       form_section.should_receive(:properties=).with(params)
       form_section.should_receive(:valid?).and_return(false)
       post :update, :form_section => params, :id => "form_1"
-      response.should_not redirect_to(form_section_index_path)
+      response.should_not redirect_to(form_sections_path)
       response.should render_template("edit")
     end
   end
@@ -118,4 +118,21 @@ describe FormSectionController do
       FormSection.get_by_unique_id(form_section2.unique_id).visible.should be_true
     end
   end
+
+  it "should only retrieve fields on a form that are visible" do
+    FormSection.should_receive(:enabled_by_order_without_hidden_fields).and_return({})
+    get :published
+  end
+
+  it "should publish form section documents as json" do
+    form_sections = [FormSection.new(:name => 'Some Name', :description => 'Some description')]
+    FormSection.stub(:enabled_by_order_without_hidden_fields).and_return(form_sections)
+
+    get :published
+
+    returned_form_section = JSON.parse(response.body).first
+    returned_form_section["name"][I18n.locale.to_s].should == 'Some Name'
+    returned_form_section["description"][I18n.locale.to_s].should == 'Some description'
+  end
+
 end

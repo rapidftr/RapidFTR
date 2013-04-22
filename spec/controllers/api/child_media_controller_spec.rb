@@ -11,15 +11,19 @@ describe Api::ChildMediaController do
 
   describe "routing" do
     it "should have a route for a child current photo" do
-      { :get => "/api/children/1/photo" }.should route_to(:controller => "api/child_media", :action => "show_photo", :child_id => "1")
+      { :get => "/api/children/1/photo" }.should route_to(:controller => "api/child_media", :action => "show_photo", :id => "1")
     end
 
     it "should have a route for a child current recorded audio" do
-      { :get => "api/children/1/audio" }.should route_to(:controller => "api/child_media", :action => "download_audio", :child_id => "1")
+      { :get => "api/children/1/audio" }.should route_to(:controller => "api/child_media", :action => "download_audio", :id => "1")
+    end
+
+    it "should have a route for a child current recorded audio" do
+      { :get => "api/children/1/audio/a1" }.should route_to(:controller => "api/child_media", :action => "download_audio", :id => "1", :audio_id => "a1")
     end
 
     it "should have a route for a child specific photo" do
-      { :get => "api/children/c1/photo/p1" }.should route_to(:controller => "api/child_media", :action => "show_photo", :child_id => "c1", :photo_id => "p1")
+      { :get => "api/children/c1/photo/p1" }.should route_to(:controller => "api/child_media", :action => "show_photo", :id => "c1", :photo_id => "p1")
     end
   end
 
@@ -45,7 +49,7 @@ describe Api::ChildMediaController do
               with_id("1").
               with_photo(uploadable_photo, 'current')
 
-      get :show_photo, :child_id => "1"
+      get :show_photo, :id => "1"
       response.should represent_inline_attachment(uploadable_photo)
     end
 
@@ -55,7 +59,7 @@ describe Api::ChildMediaController do
               with_photo(uploadable_photo, "current").
               with_photo(uploadable_photo_jeff, "other", false)
 
-      get :show_photo, :child_id => "1", :photo_id => "other"
+      get :show_photo, :id => "1", :photo_id => "other"
       response.should represent_inline_attachment(uploadable_photo_jeff)
     end
 
@@ -64,7 +68,7 @@ describe Api::ChildMediaController do
               with_id("1").
               with_no_photos
 
-      get :show_photo, :child_id => "1", :photo_id => '_missing_'
+      get :show_photo, :id => "1", :photo_id => '_missing_'
       response.should represent_inline_attachment(no_photo_clip)
     end
   end
@@ -76,16 +80,16 @@ describe Api::ChildMediaController do
                 with_unique_identifier('child123').
                 with_audio(uploadable_audio_amr)
 
-       get :download_audio, :child_id => '1'
+       get :download_audio, :id => '1'
        response.should represent_attachment(uploadable_audio_amr, "audio_child123.amr")
     end
     it "should return an mp3 audio file associated with a child" do
        given_a_child.
                with_id('1').
                with_unique_identifier('child123').
-               with_audio(uploadable_audio_mp3)
+               with_audio(uploadable_audio_mp3, "other")
 
-      get :download_audio, :child_id => '1'
+      get :download_audio, :id => '1', :audio_id => "other"
       response.should represent_attachment(uploadable_audio_mp3, "audio_child123.mp3")
     end
   end

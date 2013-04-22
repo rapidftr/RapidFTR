@@ -1,12 +1,12 @@
 # SAMPLE USAGE:
-# cap 
-#   -S deploy_server=test.rapidftr.com 
+# cap
+#   -S deploy_server=test.rapidftr.com
 #   -S deploy_user=admin                 # Password will be prompted by SSH, or you should be using SSH keys
 #   -S server_name=test.rapidftr.com     # Can be left blank if we're using only port-based deployment without using virtual hosts
-#   -S rails_env=android 
-#   -S http_port=80 
-#   -S https_port=443 
-#   -S solr_port=8983 
+#   -S rails_env=android
+#   -S http_port=80
+#   -S https_port=443
+#   -S solr_port=8983
 #   -S couchdb_host=<couch-host>         # Can be left blank for localhost
 #   -S couchdb_username=<couch-username> # Can be left blank if no authentication required
 #   -S couchdb_password=<couch-password> # Can be left blank if no authentication required
