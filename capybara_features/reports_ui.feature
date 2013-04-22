@@ -1,5 +1,5 @@
 Feature: Reports UI
-    
+
   Scenario: Browse and download a report
   Given the following reports exist in the system:
       | report_type   | as_of_date | file_name        | content_type | data        |
@@ -27,7 +27,6 @@ Feature: Reports UI
       TEST DATA 4
       """
 
-@javascript
   Scenario: Pagination of reports
     Given 40 reports exist in the system starting from February 20 2013
     And I am logged in as a user with "View and Download Reports" permission

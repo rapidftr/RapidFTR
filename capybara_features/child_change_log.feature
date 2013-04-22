@@ -6,7 +6,7 @@ Feature:
 
     Given "bob" logs in with "Register Child,Edit Child" permissions
     And someone has entered a child with the name "automation"
-    
+
     When I follow "Change Log" span
     Then I should see change log of creation by user "bob"
     And I follow "Back"
