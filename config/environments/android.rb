@@ -21,4 +21,3 @@ RapidFTR::Application.configure do
 
   ENV['SOLR_PORT'] = "8902"
 end
-

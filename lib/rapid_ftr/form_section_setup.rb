@@ -463,9 +463,9 @@ module RapidFTR
                      ).merge!(append_locales("option_strings_text", "Select 1\nSelect 2\nSelect 3"))),
            Field.new({"type" => "radio_button",
                      }.merge!(append_locales("display_name", "Automation Radio")
-                     ).merge!("option_strings_text", "Radio 1\nRadio 2\nRadio 3")),
+                     ).merge!(append_locales("option_strings_text", "Radio 1\nRadio 2\nRadio 3"))),
            Field.new({"type" => "numeric_field"
-                     }.merge!("display_name", "Automation Number")),
+                     }.merge!(append_locales("display_name", "Automation Number"))),
            Field.new({"type" => "date_field"
                      }.merge!(append_locales("display_name", "Automation Date"))),
            Field.new({"type" => "text_field" ,"visible" =>false
