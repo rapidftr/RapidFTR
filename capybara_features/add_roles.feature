@@ -69,6 +69,7 @@ Feature: Add new role
        | view_roles             |
        | edit_child             |
        | create_and_edit_users  |
+       | view_and_download_reports |
     And I update the form
    And I am on manage users page
    And I follow "Create User"
