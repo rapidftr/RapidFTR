@@ -1,92 +1,79 @@
-class Api::ChildrenController < ApplicationController
-  before_filter :current_user
+class Api::ChildrenController < Api::ApiController
+	def index
+		authorize! :index, Child
+		render :json => Child.all
+	end
 
-  def index
-    respond_to do |format|
-      format.json do 
-        authorize! :index, Child
-        render :json => Child.all
-      end
-    end
-  end
+	def show
+    authorize! :show, Child
+    child = Child.get params[:id]
 
-  def show
-    respond_to do |format|
-      format.json do 
-        authorize! :show, Child
-        render :json => Child.get(params[:id]).compact
-      end
+    if child
+      render :json => child.compact
+    else
+      render :json => nil, :status => 404
     end
-  end
+	end
 
   def create
-    respond_to do |format|
-      format.json do
-        authorize! :create, Child
-        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-        create_or_update_child(params)
-        @child['created_by_full_name'] = current_user_full_name
-    
-        if @child.save
-          render :json => @child.compact.to_json
-        end
-      end
-    end
-  end
+	 	authorize! :create, Child
+		params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
+		create_or_update_child(params)
+		@child['created_by_full_name'] = current_user_full_name
+
+  	@child.save!
+    render :json => @child.compact
+	end
 
   def update
-    respond_to do |format|
-      format.json do
-        authorize! :update, Child
-        params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-        child = update_child_from params
-        child.save
-        render :json => child.compact.to_json
-      end
-    end
+		authorize! :update, Child
+    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
+    child = update_child_from params
+    child.save!
+    render :json => child.compact
   end
 
-  def sync_unverified
+  def unverified
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
     unless params[:child][:_id]
-      respond_to do |format|
-        format.json do
-          params[:child].merge!(:verified => current_user.verified?)
-          child = create_or_update_child(params)
+      params[:child].merge!(:verified => current_user.verified?)
+      child = create_or_update_child(params)
 
-          child['created_by_full_name'] = current_user.full_name
-          if child.save
-            render :json => child.compact.to_json
-          end
-        end
+      child['created_by_full_name'] = current_user.full_name
+      if child.save
+        render :json => child.compact
       end
     else
       child = Child.get(params[:child][:_id])
       child = update_child_with_attachments child, params
       child.save
-      render :json => child.compact.to_json
+      render :json => child.compact
     end
+  end
+
+  def ids
+    render :json => Child.fetch_all_ids_and_revs
   end
 
   private
 
-    def create_or_update_child(params)
-      @child = Child.by_short_id(:key => child_short_id(params)).first if params[:child][:unique_identifier]
-      if @child.nil?
-        @child = Child.new_with_user_name(current_user, params[:child])
-      else
-        @child = update_child_from(params)
-      end
+  def create_or_update_child(params)
+    @child = Child.by_short_id(:key => child_short_id(params)).first if params[:child][:unique_identifier]
+    if @child.nil?
+      @child = Child.new_with_user_name(current_user, params[:child])
+    else
+      @child = update_child_from(params)
     end
+  end
 
-    def child_short_id params
-      params[:child][:short_id] || params[:child][:unique_identifier].last(7)
-    end
+  def child_short_id params
+    params[:child][:short_id] || params[:child][:unique_identifier].last(7)
+  end
 
-    def update_child_from params
-      child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
-      child.update_with_attachments(params, current_user)
-      child
-    end
+  def update_child_from params
+    child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
+    child.update_with_attachments(params, current_user)
+    child
+  end
 end

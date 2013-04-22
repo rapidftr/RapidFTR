@@ -1,8 +1,8 @@
 class Api::ChildMediaController < ApplicationController
   before_filter :find_child
 
-  def show_photo        
-    params[:photo_id] = @child.current_photo_key || "_missing_" if params[:photo_id].blank? 
+  def show_photo
+    params[:photo_id] = @child.current_photo_key || "_missing_" if params[:photo_id].blank?
     find_photo_attachment
     send_photo_data(@attachment.data.read, :type => @attachment.content_type, :disposition => 'inline')
   end
@@ -16,12 +16,12 @@ class Api::ChildMediaController < ApplicationController
   private
 
     def find_child
-      @child = Child.get(params[:child_id])
+      @child = Child.get params[:id]
     end
 
     def find_audio_attachment
       begin
-        @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.audio
+        @attachment = params[:audio_id] ? @child.media_for_key(params[:audio_id]) : @child.audio
       rescue => e
         p e.inspect
       end

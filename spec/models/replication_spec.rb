@@ -80,7 +80,7 @@ describe Replication do
       Replication.models_to_sync.first.should == Role
     end
 
-    it 'should return the couchdb url without the source username and password' do      
+    it 'should return the couchdb url without the source username and password' do
       CouchSettings.instance.stub! :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
       target_hash = Replication.couch_config
       target_hash[:target].should == "http://couchdb:5984/"
@@ -197,14 +197,14 @@ describe Replication do
     end
 
     it 'timestamp should be latest timestamp' do
-      @one_minute_ago = 1.minute.ago
+      latest = 5.minutes.ago
       @rep.stub! :fetch_configs => [
-        @default_config.merge("_replication_state_time" => 1.day.ago),
-        @default_config.merge("_replication_state_time" => @one_minute_ago),
-        @default_config.merge("_replication_state_time" => 2.days.ago)
+        @default_config.merge("_replication_state_time" => 1.day.ago.to_s),
+        @default_config.merge("_replication_state_time" => latest.to_s),
+        @default_config.merge("_replication_state_time" => 2.days.ago.to_s)
       ]
 
-      @rep.timestamp.should == @one_minute_ago
+      @rep.timestamp.should == Time.zone.parse(latest.to_s)
     end
   end
 

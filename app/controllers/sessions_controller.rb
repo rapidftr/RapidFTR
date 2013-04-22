@@ -1,7 +1,5 @@
 class SessionsController < ApplicationController
 
-  include LoadsSession
-
   skip_before_filter :check_authentication, :only => %w{new create active}
 
   protect_from_forgery :except => %w{create}
@@ -61,7 +59,8 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       if @session.save
-        @session.put_in_cookie(cookies)
+        reset_session
+        session[:rftr_session_id] = @session.id
         flash[:notice] = t("hello") + " " + @session.user_name
         format.html { redirect_to(root_path) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
@@ -81,7 +80,7 @@ class SessionsController < ApplicationController
   def destroy
     @session = current_session
     @session.destroy if @session
-    Session.remove_from_cookies(cookies)
+    reset_session
 
     respond_to do |format|
       format.html { redirect_to(:login) }

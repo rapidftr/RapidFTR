@@ -213,7 +213,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "William" in the search results
     And I should not see "Wilfred" in the search results
 
-  @javascript
+  @javascript @wip @passinglocally
   Scenario: Searching by 'Protection Status', bug 1664
     Given I am logged in
     And I am on the child advanced search page
