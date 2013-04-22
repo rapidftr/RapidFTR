@@ -91,11 +91,33 @@ describe Ability do
     end
 
     describe "export children to photowall" do
-      let(:permissions) { [Permission::CHILDREN[:export]] }
+      let(:permissions) { [Permission::CHILDREN[:export_photowall]] }
 
       it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report }
 
-      it { should authorize :export, Child }
+      it { should authorize :export_photowall, Child }
+      it { should_not authorize :index, Child }
+      it { should_not authorize :read, Child.new }
+      it { should_not authorize :update, Child.new }
+    end
+
+    describe "export children to csv" do
+      let(:permissions) { [Permission::CHILDREN[:export_csv]] }
+
+      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report }
+
+      it { should authorize :export_csv, Child }
+      it { should_not authorize :index, Child }
+      it { should_not authorize :read, Child.new }
+      it { should_not authorize :update, Child.new }
+    end
+
+    describe "export children to pdf" do
+      let(:permissions) { [Permission::CHILDREN[:export_pdf]] }
+
+      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report }
+
+      it { should authorize :export_pdf, Child }
       it { should_not authorize :index, Child }
       it { should_not authorize :read, Child.new }
       it { should_not authorize :update, Child.new }

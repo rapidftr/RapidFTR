@@ -1,7 +1,7 @@
-Feature: 
+Feature:
 
   As a user
-  I want to be able to export data as CSV 
+  I want to be able to export data as CSV
   So that an user has flexibility in how the use the data in the system
 
   Background:
@@ -13,7 +13,7 @@ Feature:
 
   @javascript
   Scenario: Users can export to CSV as the result of a search
-    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
+    Given I am logged in as a user with "View And Search Child,Export to CSV" permissions
     When I search using a name of "D"
     And I wait until "full_results" is visible
     And I select search result #1
@@ -21,8 +21,8 @@ Feature:
     Then password prompt should be enabled
 
   Scenario: When there are no search results, there is no csv export link
-    Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
-    When I search using a name of "Z" 
+    Given I am logged in as a user with "View And Search Child,Export to CSV" permissions
+    When I search using a name of "Z"
     Then I should not see "Export to CSV"
 
   @javascript

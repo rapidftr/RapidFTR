@@ -35,8 +35,14 @@ class Ability
       can [:read, :update, :destroy], Child
     end
 
-    if user.has_permission?(Permission::CHILDREN[:export])
-      can [:export], Child
+    if user.has_permission?(Permission::CHILDREN[:export_csv])
+      can [:export_csv], Child
+    end
+    if user.has_permission?(Permission::CHILDREN[:export_photowall])
+      can [:export_photowall], Child
+    end
+    if  user.has_permission?(Permission::CHILDREN[:export_pdf])
+      can [:export_pdf], Child
     end
 
     #

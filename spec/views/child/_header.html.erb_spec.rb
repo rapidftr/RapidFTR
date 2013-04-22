@@ -45,7 +45,9 @@ describe "children/_header.html.erb" do
     end
 
     it_should_behave_like "not show links", []
-    it_should_behave_like "show links", [Permission::CHILDREN[:export]]
+    it_should_behave_like "show links", [Permission::CHILDREN[:export_csv],
+                                         Permission::CHILDREN[:export_photowall],
+                                         Permission::CHILDREN[:export_pdf]]
   end
 
   describe "export all records to CSV" do
@@ -54,8 +56,8 @@ describe "children/_header.html.erb" do
     end
 
     it_should_behave_like "not show links with per_page", []
-    #it_should_behave_like "not show links with per_page", [Permission::CHILDREN[:export]] //This scenario is not possible
-    it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
+    it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export_csv],
+                                                       Permission::CHILDREN[:view_and_search]]
   end
 
   describe "export all records to PDF" do
@@ -64,7 +66,7 @@ describe "children/_header.html.erb" do
     end
 
     it_should_behave_like "not show links with per_page", []
-    #it_should_behave_like "not show links", [Permission::CHILDREN[:export]] //This scenario is not possible
-    it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export], Permission::CHILDREN[:view_and_search]]
+    it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export_pdf],
+                                                       Permission::CHILDREN[:view_and_search]]
   end
 end

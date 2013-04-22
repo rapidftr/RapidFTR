@@ -47,10 +47,10 @@
     <%= check_box_tag 'allbottom', 'Select all records' %>
     <%= label_tag 'allbottom', t("select_all") %>
     <% end %>
-    <% if can? :export, Child %>
-    <%= submit_tag t("child.actions.export_to_photo_wall"), :class => "password-prompt" if has_results %>
-    <%= submit_tag t("child.actions.export_to_pdf"), :class => "password-prompt"  if has_results %>
-    <%= submit_tag t("child.actions.export_to_csv"), :class => "password-prompt"  if has_results %>
+    <% if can_export? %>
+      <%= submit_tag t("child.actions.export_to_photo_wall"), :class => "password-prompt" if has_results %>
+      <%= submit_tag t("child.actions.export_to_pdf"), :class => "password-prompt"  if has_results %>
+      <%= submit_tag t("child.actions.export_to_csv"), :class => "password-prompt"  if has_results %>
     <% end %>
   </div>
 <%end%>

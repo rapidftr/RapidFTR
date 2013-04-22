@@ -39,6 +39,10 @@ module ApplicationHelper
     confirm_options
   end
 
+  def can_export?
+    can?(:export_photowall, Child) or can?(:export_csv, Child) or can?(:export_pdf, Child)
+  end
+
   def translated_permissions
     permissions = Permission.hashed_values.map do |group, permissions|
       [

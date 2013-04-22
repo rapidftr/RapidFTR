@@ -28,11 +28,11 @@ class ChildrenController < ApplicationController
       format.html
       format.xml { render :xml => @children }
       format.csv do
-        authorize! :export, Child
+        authorize! :export_csv, Child
         render_as_csv @children
       end
       format.pdf do
-        authorize! :export, Child
+        authorize! :export_pdf, Child
         pdf_data = ExportGenerator.new(@children).to_full_pdf
         send_pdf(pdf_data, "#{file_basename}.pdf")
       end
@@ -234,14 +234,14 @@ class ChildrenController < ApplicationController
   end
 
   def export_photos_to_pdf children, filename
-    authorize! :export, Child
+    authorize! :export_photowall, Child
 
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf
-    authorize! :export, Child
+    authorize! :export_photowall, Child
     pdf_data = ExportGenerator.new(@child).to_photowall_pdf
     send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
   end

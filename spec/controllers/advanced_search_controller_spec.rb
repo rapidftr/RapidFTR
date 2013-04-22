@@ -24,9 +24,8 @@ describe AdvancedSearchController do
 
   describe 'collection' do
     it "GET export_data" do
-      controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
       get :export_data
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.should render_template("#{Rails.root}/public/400.html")
     end
   end
 
@@ -61,9 +60,9 @@ describe AdvancedSearchController do
       fake_results = [:fake_child, :fake_child]
       fake_full_results = [:fake_child, :fake_child, :fake_child, :fake_child]
       SearchService.should_receive(:search).with(2, [search]).and_return([fake_results, fake_full_results])
-      
+
       get :index, :page => 2, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
-      
+
       assigns[:results].should == fake_results
     end
 
@@ -77,7 +76,7 @@ describe AdvancedSearchController do
       SearchService.should_receive(:search).with(1, [search,created_by]).and_return([stub_results, fake_full_results])
 
       get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
-      
+
       assigns[:results].should == stub_results
     end
 

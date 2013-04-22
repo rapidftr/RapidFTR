@@ -24,27 +24,22 @@ class AdvancedSearchController < ApplicationController
   end
 
   def export_data
-    authorize! :export, Child
-    selected_records = Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {} if params["all"] != "Select all records"
-    selected_records = params["full_results"].split(/,/) if params["all"] == "Select all records"
-    if selected_records.empty?
-      raise ErrorResponse.bad_request('You must select at least one record to be exported')
-    end
-
-    children = []
-    selected_records.each do |child_id| children.push(Child.get(child_id)) end
     if params[:commit] == t("child.actions.export_to_photo_wall")
-      export_photos_to_pdf(children, "#{file_basename}.pdf")
+      authorize! :export_photowall, Child
+      export_photos_to_pdf(selected_children, "#{file_basename}.pdf") and return
     elsif params[:commit] == t("child.actions.export_to_pdf")
-      pdf_data = ExportGenerator.new(children).to_full_pdf
-      send_pdf(pdf_data, "#{file_basename}.pdf")
+      authorize! :export_pdf, Child
+      pdf_data = ExportGenerator.new(selected_children).to_full_pdf
+      send_pdf(pdf_data, "#{file_basename}.pdf") and return
     elsif params[:commit] == t("child.actions.export_to_csv")
-      render_as_csv(children, "#{file_basename}.csv")
+      authorize! :export_csv, Child
+      render_as_csv(selected_children, "#{file_basename}.csv") and return
     end
+    render :file => "#{Rails.root}/public/400.html", :status => :bad_request, :layout => false
   end
 
   def export_photos_to_pdf children, filename
-    authorize! :export, Child
+    authorize! :export_photowall, Child
 
     pdf_data = ExportGenerator.new(children).to_photowall_pdf
     send_pdf(pdf_data, filename)
@@ -140,4 +135,20 @@ class AdvancedSearchController < ApplicationController
     params[:disable_create] = "true"
   end
 
+  def selected_records
+    records = Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {} if params["all"] != "Select all records"
+    records = params["full_results"].split(/,/) if params["all"] == "Select all records"
+    if records.empty?
+      raise ErrorResponse.bad_request('You must select at least one record to be exported')
+    end
+    records
+  end
+
+  def selected_children
+    children = []
+    selected_records.each do |child_id|
+      children.push(Child.get(child_id))
+    end
+    children
+  end
 end

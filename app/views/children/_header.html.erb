@@ -3,15 +3,15 @@
     <%= link_to content_tag(:span, t("children.register_new_child"), :class => 'create_user'), new_child_path, :class=>'btn' %>
 <% end %>
 
-<% if can?(:export, Child) %>
+<% if can_export? %>
     <div class="btn dropdown_btn">
       <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
-        <% if can?(:export, Child) %>
-            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv, :per_page => :all), :class => "password-prompt" %>
-            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf, :per_page => :all), :class => "password-prompt" %>
+        <% if can_export? %>
+            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv, :per_page => :all), :class => "password-prompt" if can?(:export_csv, Child)  %>
+            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf, :per_page => :all), :class => "password-prompt" if can?(:export_pdf, Child)  %>
             <%= link_to t("children.export_some_records_to_csv"), new_advanced_search_path %>
-      <%end%>
+        <% end %>
       </div>
     </div>
 
