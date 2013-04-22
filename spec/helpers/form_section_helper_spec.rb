@@ -14,7 +14,7 @@ describe FormSectionHelper do
   end
 
   it "should return create url if form_section is new" do
-    helper.url_for_form_section(FormSection.new).should == form_section_index_path
+    helper.url_for_form_section(FormSection.new).should == form_sections_path
     end
 
   it "should return edit url if form_section exists" do

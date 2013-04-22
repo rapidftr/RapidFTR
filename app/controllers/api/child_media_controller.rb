@@ -1,4 +1,4 @@
-class Api::ChildMediaController < ApplicationController
+class Api::ChildMediaController < Api::ApiController
   before_filter :find_child
 
   def show_photo
