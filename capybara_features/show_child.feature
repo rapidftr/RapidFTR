@@ -9,7 +9,6 @@ Feature:
       | name    | gender           |  photo                           |
       | John    | Male             |  "capybara_features/resources/jorge.jpg"  |
 
-  @javascript
   Scenario: Child record must not display the edit and manage photos links
 
     Given I am on the child record page for "John"

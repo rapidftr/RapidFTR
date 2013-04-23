@@ -21,7 +21,6 @@
 
     Then I should see "Child record successfully created."
 
-  @javascript
   Scenario: create child with numeric custom field
     Given the following form sections exist in the system:
         | name | unique_id | editable | order | visible |
