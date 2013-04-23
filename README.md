@@ -14,7 +14,7 @@ Initial development is focused on building an API and web interface, with subseq
 Find more information at the [project website](http://rapidftr.com)
 , join the [google group](http://groups.google.com/group/rapidftr/) and join us in irc on freenode in #rapidftr channel
 
-Latest Artifacts
+Latest Downloads
 ---------------
 
 * [Android apk](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/repository/download/bt4/.lastSuccessful/rapidftr-android.apk )
