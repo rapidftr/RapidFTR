@@ -22,7 +22,6 @@ Feature: Ensure translations
     And I set the user language to "Русский"-"ru"
     Then I should see "Arabic Translated Name" translated
     And I logout
-    And I logout as "Admin"
 
   @javascript
   Scenario: Field label translation missing in system and user locale
