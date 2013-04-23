@@ -1,5 +1,5 @@
-RapidFTR v1.1
-=============
+RapidFTR
+========
 
 [![Build Status](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/app/rest/builds/buildType:bt2/statusIcon)](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/viewType.html?buildTypeId=bt2)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
@@ -19,7 +19,7 @@ Latest Artifacts
 
 * [Android apk](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/repository/download/bt4/.lastSuccessful/rapidftr-android.apk )
 * [Windows installer](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/repository/download/bt17/.lastSuccessful/RapidFTR.msi) 
-
+* [All releases](https://github.com/rapidftr/RapidFTR/wiki/Releases)
 
 Developer Info
 --------------
