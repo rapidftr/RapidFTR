@@ -32,6 +32,9 @@ module NavigationHelpers
       when /children listing page/
         children_path(options)
 
+      when /children display page/
+
+
       when /saved record page for child with name "(.+)"/
         child_name = $1
         child = Summary.by_name(:key => child_name)

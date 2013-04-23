@@ -133,7 +133,7 @@ Feature:
     And  I am on manage users page
     And I follow "Show" within "#user-row-harry"
     When I view User Action History
-    Then I should see history of changes made by "Harry"
+    Then I should see "2013-04-09 13:05:00 UTC Record created by harry"
 
   @javascript
   Scenario: As an admin when I view history of user who has no activity, the same should be displayed to me
