@@ -9,7 +9,6 @@ Feature: User should be able to list children
       | meredith | Austin              | james    | james123     |  cairo         |
     And I am logged in as an admin
 
-
   Scenario: View link is not available on children listing page
     When I am on the children listing page
     Then I should not see "view"
@@ -17,7 +16,6 @@ Feature: User should be able to list children
     When I click text "andreas"
     Then I should see "Basic Identity"
     And I should see "andreas"
-
 
   Scenario: Pagination links are not available for less than 20 records
     When I am on the children listing page
@@ -59,7 +57,7 @@ Feature: User should be able to list children
     And I visit children listing page "2"
     And I should see children listing page "2"
 
-  @wip
+  @javascript
   Scenario: A hidden highlighted field must not be visible in Child Summary
     Given I am on the edit form section page for "basic_identity"
     When I check "fields_protection_status"
