@@ -5,7 +5,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Background:
     Given I am logged in
 
-  @javascript
   Scenario: Searching for a child given his name
     Given the following children exist in the system:
       | name   |
@@ -15,7 +14,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     And I should see "Willis" in the search results
 
-  @javascript
   Scenario: Searching for a child given his short id
     Given the following children exist in the system:
       | name   	| last_known_location 	| reporter | unique_id     |
@@ -87,7 +85,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     Then I should be on the child search results page
 
-@javascript
   Scenario: User with unlimited access can see all children
     Given a user "field_admin" with "View And Search Child" permission
       And a user "field_worker" with "Register Child" permission
