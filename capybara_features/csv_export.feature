@@ -18,47 +18,24 @@ Feature:
     And I wait until "full_results" is visible
     And I select search result #1
     And I press "Export to CSV"
-    When I fill in "abcd" for "password-prompt-field"
-#    And I click the "OK" button
-#TODO   Should think how to assert the data in the encrypted files
-#    Then I should receive a CSV file with 2 lines
-#    And the CSV data should be:
-#      | name    |unique_identifier| created_by       | created_organisation       |
-#			| Dan     |dan_123  | user               | UNICEF                     |
+    Then password prompt should be enabled
 
   Scenario: When there are no search results, there is no csv export link
     Given I am logged in as a user with "View And Search Child,Export to Photowall/CSV/PDF" permissions
     When I search using a name of "Z" 
     Then I should not see "Export to CSV"
-  @wip
+
   @javascript
   Scenario: Admins can export some or all child records to CSV
     Given I am logged in as an admin
     And the date/time is "Oct 23 2010"
     When I am on the children listing page
-    And I follow "Export"
-    And I follow "Export All Child Records to CSV"
-    When I fill in "abcd" for "password-prompt-field"
-    And I click the "OK" button
-#TODO   Should think how to assert the data in the encrypted files
-#    Then I should receive a CSV file with 4 lines
-#    And the CSV data should be:
-#      | name    |unique_identifier| created_by | created_organisation |
-#      | Dan     |dan_123          | user1      | UNICEF               |
-#      | Dave    |dave_456         | user1      | UNICEF               |
-#      | Mike    |mike_789         | user1      | UNICEF               |
-    When I am on the children listing page
-    And I follow "Export Some Records to CSV"
+    And I follow "Export" for child records
+    And I follow "Export Some Records to CSV" for child records
     And I search using a name of "D"
     And I select search result #1
     And I press "Export to CSV"
-    When I fill in "abcd" for "password-prompt-field"
-    And I click the "OK" button
-#TODO   Should think how to assert the data in the encrypted files
-#    Then I should receive a CSV file with 2 lines
-#    And the CSV data should be:
-#      | name    |unique_id| created_by | created_organisation |
-#      | Dan     |dan_123  | user1      | UNICEF               |
+    Then password prompt should be enabled
 
   @javascript
   Scenario: User can export details of a single child to CSV
@@ -66,10 +43,12 @@ Feature:
 	And I am on the child record page for "Dan"
     And I follow "Export"
     When I follow "Export to CSV"
-    When I fill in "abcd" for "password-prompt-field"
-    And I click the "OK" button
-#TODO   Should think how to assert the data in the encrypted files
-#    Then I should receive a CSV file with 2 lines
-#    And the CSV data should be:
-#      | name    |unique_id| created_by |   created_organisation |
-#	  | Dan     |dan_123  | user1      | UNICEF                 |
+    Then password prompt should be enabled
+
+  @javascript
+  Scenario: User is redirected to Advanced Search Page when he exports some records to CSV
+    Given I am logged in as an admin
+    And  I am on the children listing page
+    When I follow "Export" for child records
+    And I follow "Export Some Records to CSV" for child records
+    Then I should be redirected to Advanced Search Page
