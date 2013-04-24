@@ -10,7 +10,7 @@ class Field < Hash
   property :type
   property :highlight_information , :cast_as=> 'HighlightInformation'
   property :editable, :cast_as => 'boolean', :default => true
-  PropertiesLocalization.localize_properties [:display_name, :help_text, :option_strings_text]
+  localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
 
   TEXT_FIELD = "text_field"
