@@ -29,6 +29,15 @@ describe ApplicationController do
       user.locale.should == I18n.locale
     end
 
+    it "should set fallbacks to [locale, default_locale, :en]" do
+      I18n.stub(:default_locale).and_return(:es)
+
+      @controller.set_fallbacks
+
+      I18n.fallbacks.should include(:ar => [:ar, :es, :en])
+
+    end
+
     context "when hasn't translations to locale" do
       before :each do
         user = mock('user', :locale => :ar)

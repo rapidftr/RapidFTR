@@ -1,5 +1,6 @@
 class Api::ChildrenController < Api::ApiController
-	def index
+
+  def index
 		authorize! :index, Child
 		render :json => Child.all
 	end

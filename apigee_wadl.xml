@@ -1,0 +1,249 @@
+
+
+
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:apigee="http://api.apigee.com/wadl/2010/07/" xmlns="http://wadl.dev.java.net/2009/02"
+             xsi:schemaLocation="http://wadl.dev.java.net/2009/02 http://apigee.com/schemas/wadl-schema.xsd http://api.apigee.com/wadl/2010/07/ http://apigee.com/schemas/apigee-wadl-extensions.xsd">
+
+  <resources base="https://test.rapidftr.com:443">
+
+    <resource path="/api/login.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+
+      <!--  Methods should each have a unique id.  -->
+      <!-- The attribute displayName can be used to control the name that appears in the list in the Console. -->
+      <method id="login" name="POST" apigee:displayName="Log in">
+        <!-- Tags are used to organize the list of methods. Primary tag will list the default placement. -->
+        <apigee:tags>
+          <apigee:tag primary="true">Login</apigee:tag>
+        </apigee:tags>
+        <apigee:authentication required="false"/>
+
+        <request>
+          <!-- This section contains the body representation, e.g. form-encoded parameters, an XML/JSON payload, an attachment etc. -->
+          <representation mediaType="application/json">
+            <apigee:payload required="true">
+              <apigee:content>
+                <![CDATA[{
+                        "user_name": "rapidftr",
+                        "password": "rapidftr",
+                        "imei": "00000000",
+                        "mobile_number": "1234567890"
+                    }]]>
+              </apigee:content>
+            </apigee:payload>
+          </representation>
+        </request>
+      </method>
+    </resource>
+
+    <resource path="/api/children.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+
+      <method id="all_children" name="GET" apigee:displayName="Show All Child Records">
+
+        <apigee:tags>
+          <apigee:tag primary="true">Children</apigee:tag>
+        </apigee:tags>
+
+        <apigee:authentication required="false"/>
+      </method>
+    </resource>
+
+    <resource path="/api/children/{child_id}.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+      <param name="child_id" required="true" type="xsd:string" style="template">
+        <doc>The id of the child you want to get data for (can be found by logging in manually at test.rapidftr.com)</doc>
+      </param>
+
+      <method id="get_child" name="GET" apigee:displayName="Get Child Data">
+        <apigee:tags>
+          <apigee:tag primary="true">Children</apigee:tag>
+        </apigee:tags>
+        <apigee:authentication required="false"/>
+      </method>
+    </resource>
+
+    <resource path="/api/children/ids.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+
+      <method id="all_child_ids" name="GET" apigee:displayName="Get All Child ids">
+
+        <apigee:tags>
+          <apigee:tag primary="true">Children</apigee:tag>
+        </apigee:tags>
+
+        <apigee:authentication required="false"/>
+      </method>
+    </resource>
+
+    <resource path="/api/children/unverified.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+
+      <method id="sync_unverified_child" name="POST" apigee:displayName="Sync Unverified Record">
+        <apigee:tags>
+          <apigee:tag primary="true">Children</apigee:tag>
+        </apigee:tags>
+        <apigee:authentication required="false"/>
+
+        <request>
+          <representation mediaType="application/json">
+            <apigee:payload required="true">
+              <apigee:content>
+                <![CDATA[
+                  {
+                      "child":
+                      {
+                          "name": "I will sync you from API",
+                          "created_organisation":"TWUG"
+                      }
+                  }
+                ]]>
+              </apigee:content>
+            </apigee:payload>
+          </representation>
+        </request>
+      </method>
+    </resource>
+
+    <resource path="/api/children/{child_id}.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+      <param name="child_id" required="true" type="xsd:string" style="template">
+        <doc>The id of the child you want to get data for (can be found by logging in manually at test.rapidftr.com)</doc>
+      </param>
+
+      <method id="update_child" name="PUT" apigee:displayName="Update Child Record">
+        <apigee:tags>
+          <apigee:tag primary="true">Children</apigee:tag>
+        </apigee:tags>
+        <apigee:authentication required="false"/>
+
+        <request>
+          <representation mediaType="application/json">
+            <apigee:payload required="true">
+              <apigee:content>
+                <![CDATA[
+                  {
+                      "child":
+                      {
+                          "name": "I will sync you from API",
+                          "created_organisation":"TWUG"
+                      }
+                  }
+                ]]>
+              </apigee:content>
+            </apigee:payload>
+          </representation>
+        </request>
+      </method>
+    </resource>
+
+    <resource path="/api/children/{child_id}/photo/{photo_id}.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+
+      <param name="child_id" required="true" type="xsd:string" style="template">
+        <doc>The id of the child you want to get data for (can be found by logging in manually at test.rapidftr.com)</doc>
+      </param>
+
+      <param name="photo_id" required="true" type="xsd:string" style="template">
+        <doc>
+          The id of the photo can be found by getting the child record on apigee.
+        </doc>
+      </param>
+
+      <method id="child_photo" name="GET" apigee:displayName="Get Child Photo">
+
+        <apigee:tags>
+          <apigee:tag primary="true">Child Media</apigee:tag>
+        </apigee:tags>
+
+        <apigee:authentication required="false"/>
+      </method>
+    </resource>
+
+    <resource path="/api/children/{child_id}/audio/{audio_id}.{format}">
+      <param name="format" required="true" type="xsd:string" style="template" default="json">
+        <option value="json" mediaType="application/json"/>
+      </param>
+      <param name="Content-Type" required="true" type="xsd:string" style="header" default="application/json">
+        <doc>Content-Type of the request (should be application/json)</doc>
+      </param>
+      <param name="Cookie" required="true" type="xsd:string" style="header" default="ENTER COOKIE FROM LOGIN RESPONSE HERE">
+        <doc>acquired in the response from the login request -> copy it from there and paste it into here</doc>
+      </param>
+
+      <param name="child_id" required="true" type="xsd:string" style="template">
+        <doc>The id of the child you want to get data for (can be found by logging in manually at test.rapidftr.com)</doc>
+      </param>
+
+      <param name="audio_id" required="true" type="xsd:string" style="template">
+        <doc>
+          The id of the audio can be found by getting the child record on apigee.
+        </doc>
+      </param>
+
+      <method id="child_audio" name="GET" apigee:displayName="Get Child Audio">
+
+        <apigee:tags>
+          <apigee:tag primary="true">Child Media</apigee:tag>
+        </apigee:tags>
+
+        <apigee:authentication required="false"/>
+      </method>
+    </resource>
+
+  </resources>
+</application>
