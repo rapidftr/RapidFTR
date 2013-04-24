@@ -22,7 +22,7 @@ Feature: So that I can select fields to be highlighted in view children page
 
     And I am on the form section page
     And I follow "Basic Identity"
-    And I hide "Nationality" within "Basic Identity"
+    And I hide "fields_nationality" from "Basic Identity"
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"
