@@ -10,3 +10,9 @@ end
 And /^I remove highlight "(.+)"$/ do |highlight_field|
   page.find('//td', :text => highlight_field).find('..').click_link('remove')
 end
+When /^I hide "([^"]*)" within "([^"]*)"$/ do |arg1, arg2|
+ check "fields_nationality"
+end
+Then /^I should not see "([^"]*)" in Child Summary$/ do |text|
+  page.should have_no_content(text)
+end
