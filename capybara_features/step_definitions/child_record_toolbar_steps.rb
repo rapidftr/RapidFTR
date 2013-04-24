@@ -41,3 +41,7 @@ end
 def click_span(locator)
   find(:xpath, "//span[text()='#{locator}']").click
 end
+
+When /^I view User Action History$/ do
+  find(:xpath, "//a[@class='btn']").click
+end
