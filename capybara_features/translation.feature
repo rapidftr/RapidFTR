@@ -32,7 +32,7 @@ Feature: Ensure translations
   So that when I login as a system user I can view the app in the changed language
 
     When I set the system language to "العربية"-"ar"
-    And  I logout
+    And  I logout as "Admin"
 
     Given an user "jerry" with password "123"
     When I fill in "jerry" for "user_name"

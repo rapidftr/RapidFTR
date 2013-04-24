@@ -16,6 +16,7 @@ World(WithinHelpers)
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
+#binding.pry
 end
 
 When /^(?:|I )go to (.+)$/ do |page_name|
@@ -41,6 +42,7 @@ end
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
     click_link(link)
+  #find(:xpath, "//span[@class='export']").click
   end
 end
 
@@ -83,17 +85,8 @@ When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"
   page.execute_script "$('a.ui-datepicker-next').trigger('click')"
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
-  # fill_in(field, :with => value)
 end
 
-# Use this to fill in an entire form with data from a table. Example:
-#
-#   When I fill in the following:
-#     | Account Number | 5002       |
-#     | Expiry date    | 2009-11-01 |
-#     | Note           | Nice guy   |
-#     | Wants Email?   |            |
-#
 # TODO: Add support for checkbox, select og option
 # based on naming conventions.
 #
@@ -279,16 +272,12 @@ Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
 
-When /^I click on dialogue box$/ do
-  #page.driver.browser.switch_to.alert.accept
-  #page.driver.wait_until(page.driver.browser.switch_to.alert.accept)
-end
-
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
 end
+
 
 And /^I submit the form$/ do
   click_button('Save')
@@ -306,6 +295,7 @@ When /^I goto the "(.*?)"$/ do |text|
   find(:xpath,"//a[@class='"+text+"']").click
 end
 
+
 Then /^I should see next records in the search results$/ do
   assert page.has_content?("Displaying children 21 - 25 ")
 end
@@ -318,20 +308,31 @@ Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
   page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should == !not_visible
 end
 
-When /^I view User Action History$/ do
-  find("//span[@class='log']").click
-end
-
-Then /^I should see history of changes made by "([^"]*)"$/ do |arg|
-  assert page.has_content?("2013-04-09 13:05:00 UTC Record created by harry belonging to UNICEF Child")
-end
-
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
 end
 
+When /^I go and press "([^"]*)"$/ do |arg|
+  find("//input[@class='btn_submit']").click
+end
 Then /^export option should be unavailable to me$/ do
   page.should have_no_xpath("//span[@class='export']")
+end
+Then /^password prompt should be enabled$/ do
+  assert page.has_content?("Password")
+end
+
+When /^I fill in "([^"]*)" in the password prompt$/ do |arg|
+  fill_in 'password-prompt-dialog', :with => 'abcd'
+end
+Then /^I should be redirected to Advanced Search Page$/ do
+  assert page.has_content?("Advanced Search")
+end
+Then /^Error message should be displayed$/ do
+  assert page.has_content?("Enter a valid password")
+end
+When /^I follow "([^"]*)" for child records$/ do |arg|
+  find(:xpath, "//span[@class='export']").click
 end

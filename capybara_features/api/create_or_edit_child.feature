@@ -49,3 +49,14 @@ Feature: Creating or Editing a child using the API
 
     And I send a GET request to "/api/children/1"
     Then the JSON at "name" should be "Jorge"
+
+  Scenario: Edit Child using API
+
+    Given a senior official "richi" with a password "123"
+    And I login as richi with password 123 and imei 10001
+    And the following children exist in the system:
+      | name | _id | created_at  	    	| posted_at		|
+      | Raju  | 1   | 2011-06-22 02:07:51UTC	| 2011-06-22 02:07:51UTC|
+
+    When I send a GET request to "/api/children"
+    Then I should receive HTTP 403
