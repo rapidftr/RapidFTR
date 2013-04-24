@@ -55,11 +55,9 @@ Feature: So that admin can customize form section details
   Scenario: Admins should not be able to demote the name field by promoting following field
     Given I am on the form section page
     And I follow "Basic details"
-    And I wait for 5 seconds
 #    And I should be able to demote the field "nick_name"
 #    And I should not be able to promote the field "nick_name"
     When I demote field "nick_name"
-    And I wait for 5 seconds
     Then I should not be able to promote the field "second_name"
     And I should be able to promote the field "nick_name"
 
