@@ -267,7 +267,6 @@ Feature: So that admin can customize fields in a form section
       | Barbie     | no       |
       | Lego       | yes      |
 
-  @javascript
   Scenario: can not create a custom field for forms that aren't editable
 
     Given I am on the edit form section page for "basic_details"

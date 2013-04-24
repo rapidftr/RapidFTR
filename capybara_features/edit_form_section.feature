@@ -37,12 +37,10 @@ Feature: So that admin can customize form section details
     When I follow "Cancel"
     Then I should be on the form section page
 
-  @javascript
   Scenario: Admins should not see Visible checkbox for perm_enabled form so that he cannot disable the form
     Given I am on the edit form section page for "basic_details"
     Then I should not see "Visible checkbox" with id "form_section_visible"
 
-  @javascript
   Scenario: Admins should see Visible checkbox for editable form so that he can enable/disable the form.
     Given I am on the edit form section page for "family_details"
     And I wait until "family_details" is visible
@@ -55,15 +53,12 @@ Feature: So that admin can customize form section details
   Scenario: Admins should not be able to demote the name field by promoting following field
     Given I am on the form section page
     And I follow "Basic details"
-    And I wait for 5 seconds
 #    And I should be able to demote the field "nick_name"
 #    And I should not be able to promote the field "nick_name"
     When I demote field "nick_name"
-    And I wait for 5 seconds
     Then I should not be able to promote the field "second_name"
     And I should be able to promote the field "nick_name"
 
-  @javascript
   Scenario: name field form section should not be editable
     Given I am on the edit form section page for "basic_details"
     Then I should not be able to edit "Name" field
