@@ -70,14 +70,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     if logged_in?
       I18n.locale = (current_user.locale || I18n.default_locale)
-      if I18n.locale != I18n.default_locale
-        I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
-        begin
-          I18n.fallbacks.map(I18n.locale => I18n.default_locale)
-        rescue I18n::MissingTranslationData
-          I18n.fallbacks.map(I18n.locale => :en)
-        end
-      end
+      RapidFTR::Translations.set_fallbacks
     end
   end
 
