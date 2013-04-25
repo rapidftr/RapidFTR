@@ -16,7 +16,6 @@ World(WithinHelpers)
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
-#binding.pry
 end
 
 When /^(?:|I )go to (.+)$/ do |page_name|
@@ -335,4 +334,7 @@ Then /^Error message should be displayed$/ do
 end
 When /^I follow "([^"]*)" for child records$/ do |arg|
   find(:xpath, "//span[@class='export']").click
+end
+Then /^the message "([^"]*)" should be displayed to me$/ do |text|
+  assert page.has_content?("#{text}")
 end
