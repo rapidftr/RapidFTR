@@ -12,7 +12,6 @@ Feature: Create new forms
       | Family Details    | Details of the child's family | family_details    | 2     |
       | Caregiver Details |                               | caregiver_details | 3     |
 
-  @javascript
   @run
   Scenario: User creates a new form and it is added to the bottom of the list of forms
 
@@ -33,7 +32,6 @@ Feature: Create new forms
       | New Form 1        |
     And I should see the description text "I am a new custom form.  Say hello!" for form section "New Form 1"
 
-  @javascript
   Scenario: Disallowing non alphanumeric characters in the name field
 
     Given I am on form section page
@@ -45,7 +43,6 @@ Feature: Create new forms
 
     Then I should see "Name must contain only alphanumeric characters and spaces"
 
-  @javascript
   Scenario: Name field cannot be empty
 
     Given I am on form section page
@@ -71,7 +68,6 @@ Feature: Create new forms
       | Family Details    |
       | Caregiver Details |
 
-  @javascript
   Scenario: Can create a form section disabled
 
     Given I am on form section page

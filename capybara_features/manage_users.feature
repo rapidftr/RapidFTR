@@ -109,7 +109,6 @@ Feature: Manage Users
       |homer|
       |jerry|
 
-  @javascript
   Scenario: Admin should be able to see the timestamp under device information
     Given a user "jerry" has logged in from a device
     And I am on manage users page
