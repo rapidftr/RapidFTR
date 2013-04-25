@@ -64,6 +64,7 @@ group :development, :test, :cucumber do
   gem 'rspec',            '~> 2.11.0'
   gem 'rspec-rails',      '~> 2.11.0'
   gem 'rspec-instafail',  '~> 0.2.4'
+  gem 'pry'
 
   gem 'capybara',         '~> 1.0.1'
   gem 'factory_girl',     '~> 2.6'
