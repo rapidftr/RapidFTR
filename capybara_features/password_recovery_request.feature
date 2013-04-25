@@ -1,4 +1,3 @@
-@wip
 Feature: As an user, I should be able to request my password to be recovered.
 
   Scenario: To check that an user is able to request password recovery

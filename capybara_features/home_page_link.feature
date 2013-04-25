@@ -15,7 +15,6 @@ Feature: So that a user can get back to their initial start page from anywhere w
     When I follow "RapidFTR logo"
     Then I should be on the home page
 
-  @javascript
   Scenario: The homepage should contain useful links and welcome text
     Given I am logged in as an admin
     And I am on the home page
@@ -24,7 +23,6 @@ Feature: So that a user can get back to their initial start page from anywhere w
     And I should see "View Records"
     And I should see "0 Records need Attention"
 
-  @javascript
   Scenario: Admin users should see records need Attention
     Given I am logged in
     And I am on the home page
