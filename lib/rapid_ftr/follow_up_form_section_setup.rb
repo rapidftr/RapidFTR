@@ -18,7 +18,7 @@ module RapidFTR
                       })
       ]
 
-      FormSection.create!({"visible"=>true,
+      FormSection.create!({"visible"=>false,
                            :order => 11, :unique_id=>"outcome_of_follow_up_visit", "editable"=>true,
                            :fields => outcome_of_follow_up_visit_fields, :perm_enabled => true,
                            "name_all" => "Outcome of Follow Up Visit",
@@ -76,7 +76,7 @@ module RapidFTR
                     }),
       ]
 
-      FormSection.create!({"visible"=>true,
+      FormSection.create!({"visible"=>false,
                            :order=> 12, :unique_id=>"current_care_arrangement", "editable"=>true,
                            :fields => current_care_arrangements_fields, :perm_enabled => true,
                            "name_all" => "Current Care Arrangements",
@@ -123,7 +123,7 @@ module RapidFTR
                     }),
       ]
 
-      FormSection.create!({"visible"=>true,
+      FormSection.create!({"visible"=>false,
                            :order=> 13, :unique_id=>"activities", "editable"=>true,
                            :fields => activities_fields, :perm_enabled => true,
                            "name_all" => "Activities",
@@ -163,7 +163,7 @@ module RapidFTR
                     }),
       ]
 
-      FormSection.create!({"visible"=>true,
+      FormSection.create!({"visible"=>false,
                            :order=> 14, :unique_id=>"care_assessment", "editable"=>true,
                            :fields => care_assessment_fields, :perm_enabled => true,
                            "name_all" => "Care Assessment",
@@ -191,7 +191,7 @@ module RapidFTR
                     })
       ]
 
-      FormSection.create!({"visible"=>true,
+      FormSection.create!({"visible"=>false,
                            :order=> 15, :unique_id=>"further_action", "editable"=>true,
                            :fields => further_action_fields, :perm_enabled => true,
                            "name_all" => "Further Action",
@@ -210,7 +210,7 @@ module RapidFTR
                     })
       ]
 
-      FormSection.create!({"visible"=>true,
+      FormSection.create!({"visible"=>false,
                            :order=> 1, :unique_id=>"additional_family_details", "editable"=>true,
                            :fields => additional_family_details, :perm_enabled => true,
                            "name_all" => "Additional Family Details",
