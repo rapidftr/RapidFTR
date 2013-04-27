@@ -1,7 +1,7 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'couchrest',      '0.34'
-gem 'fastercsv',      '1.5.3'
+# gem 'fastercsv',      '1.5.3'
 gem 'json',           '1.4.6'
 gem 'json_pure',      '1.4.6'
 gem 'mime-types',     '1.16'
@@ -75,6 +75,6 @@ group :test, :cucumber do
   gem 'cucumber',           '~> 1.2.1'
   gem 'cucumber-rails',     '~> 0.3.2'
   gem 'selenium-webdriver', '~> 2.30'
-  gem 'hpricot',            '~> 0.8.2'
+  gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
 end

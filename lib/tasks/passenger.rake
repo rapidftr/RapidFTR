@@ -1,6 +1,6 @@
 namespace :passenger do
   task :restart do
-    mkdir_p "tmp"
-    touch "tmp/restart.txt"
+    FileUtils.mkdir_p "tmp"
+    FileUtils.touch "tmp/restart.txt"
   end
 end
