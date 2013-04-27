@@ -7,9 +7,6 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
-
-
-
 unless ARGV.any? {|a| a =~ /^gems/} # Don't load anything when running the gems:* tasks
 
 if ENV['CUCUMBER_OPTS'] =~ /Teamcity/
@@ -32,34 +29,34 @@ begin
     # cucumber:webrat won't work now that we've upgraded to Rails 3.
     Cucumber::Rake::Task.new({:webrat => 'db:test:prepare'}, 'Run all webrat features') do |t|
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
-      t.fork = true # You may get faster startup if you set this to false
+      t.fork = false # You may get faster startup if you set this to false
       t.profile = 'default'
       t.cucumber_opts = cucumber_opts if cucumber_opts
     end
 
     Cucumber::Rake::Task.new({:headless => 'db:test:prepare'}, 'Run all features that should pass in headless mode') do |t|
       t.binary = vendored_cucumber_bin # If nil, the gem's binary is used.
-      # t.fork = true # You may get faster startup if you set this to false
+      t.fork = false # You may get faster startup if you set this to false
       t.profile = 'headless'
       t.cucumber_opts = cucumber_opts if cucumber_opts
     end
 
     Cucumber::Rake::Task.new({:browser => 'db:test:prepare'}, 'Run all features that should pass in a browser') do |t|
       t.binary = vendored_cucumber_bin
-      # t.fork = true # You may get faster startup if you set this to false
+      t.fork = false # You may get faster startup if you set this to false
       t.profile = 'browser'
       t.cucumber_opts = cucumber_opts if cucumber_opts
     end
 
     Cucumber::Rake::Task.new({:headless_wip => 'db:test:prepare'}, 'Run features that are being worked on in headless mode') do |t|
       t.binary = vendored_cucumber_bin
-      t.fork = true # You may get faster startup if you set this to false
+      t.fork = false # You may get faster startup if you set this to false
       t.profile = 'headless_wip'
     end
 
     Cucumber::Rake::Task.new({:browser_wip => 'db:test:prepare'}, 'Run features that are being worked on in browser mode') do |t|
       t.binary = vendored_cucumber_bin
-      t.fork = true # You may get faster startup if you set this to false
+      t.fork = false # You may get faster startup if you set this to false
       t.profile = 'browser_wip'
     end
 

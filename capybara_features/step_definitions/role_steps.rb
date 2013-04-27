@@ -2,7 +2,7 @@ When /^I enter the following role details$/ do |role_table|
   role_table.hashes.each do |role_row|
     fill_in("role_name",:with => role_row['name'])
     fill_in("role_description",:with => role_row['description'])
-    role_row['permissions'].each do |permission|
+    [ role_row['permissions'] ].flatten.each do |permission|
       check(permission)
     end
   end
@@ -35,7 +35,7 @@ When /^I try to filter user roles sorted by "(.*?)"$/ do |order|
   select(order, :from => 'sort_by_descending_order')
 end
 
-Then /^I should see the following roles sorted:$/ do |table|  
+Then /^I should see the following roles sorted:$/ do |table|
   expected_order = table.hashes.collect { |role| role['name'] }
   actual_order_against(expected_order).should == expected_order
 end
@@ -50,7 +50,7 @@ end
 
 When /^I enter the following permission details$/ do |role_table|
   role_table.hashes.each do |role_row|
-    role_row['permissions'].each do |permission|
+    [ role_row['permissions'] ].flatten.each do |permission|
       check(permission)
     end
   end
