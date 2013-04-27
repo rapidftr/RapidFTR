@@ -111,8 +111,11 @@ When /^I wait for (\d+) seconds$/ do |seconds|
 end
 
 When 'I wait for the page to load' do
-  wait_until { page.evaluate_script('$ && $.active == 0') } if Capybara.current_driver == :selenium
-  page.has_content? ''
+  if Capybara.current_driver == :selenium
+    wait_until { page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0') }
+  else
+    page.has_content? ''
+  end
 end
 
 When /^I wait until "([^"]*)" is visible$/ do |selector|

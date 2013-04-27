@@ -25,6 +25,7 @@ require 'json_spec/cucumber'
 
 require 'rack/test'
 require 'hpricot'
+require 'selenium-webdriver'
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
