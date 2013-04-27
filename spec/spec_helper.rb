@@ -2,6 +2,7 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
+require 'csv'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -19,7 +20,7 @@ RSpec.configure do |config|
   config.include UploadableFiles
   config.include ChildFinder
   config.include FakeLogin, :type => :controller
-  
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -48,5 +49,5 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before(:each) { I18n.locale = I18n.default_locale = :en }
-  
+
 end

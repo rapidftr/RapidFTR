@@ -16,9 +16,9 @@ describe WeeklyReport do
       @child3 = Child.new_with_user_name(@user, {:name => "childThree", :protection_status => "Separated", :gender => "Female", :ftr_status => "Family Located- Inter-Camp FR Pending"}).save!
     end
 
-  	it "should provide data for weekly report" do 
+  	it "should provide data for weekly report" do
       data = WeeklyReport.data
-      report = FasterCSV.parse data
+      report = CSV.parse data
 
       report[0].should == ["protection status", "gender", "ftr status", "total"]
       report.size.should == 33

@@ -3,7 +3,7 @@ require 'nokogiri'
 
 describe "form_section/edit.html.erb" do
   it "should not allow to show/hide fields for non editable formsections" do
-    fields = [Field.new :name => 'my_field', :display_name => 'My Field', :type=>"text_field", :visible => true]
+    fields = [Field.new(:name => 'my_field', :display_name => 'My Field', :type=>"text_field", :visible => true)]
     form_section = FormSection.new "name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => fields
 
     assign(:form_section, form_section)
@@ -48,8 +48,8 @@ describe "form_section/edit.html.erb" do
     controller.stub(:current_user).and_return(user)
     # view.stub(:current_user).and_return(@user)
 
-    form_section = FormSection.new "name_fr" => "Basic Details French", "name_en" => "Basic Details English", 
-        "enabled"=> "true", "description_fr"=>"Blah blah French", "description_en"=>"Blah blah", "help_text_fr" => "help me French", 
+    form_section = FormSection.new "name_fr" => "Basic Details French", "name_en" => "Basic Details English",
+        "enabled"=> "true", "description_fr"=>"Blah blah French", "description_en"=>"Blah blah", "help_text_fr" => "help me French",
         "help_text_en" => "help me English", "order"=>"10", "unique_id"=> "basic_details", :editable => "false"
     assign(:form_section, form_section)
     render
