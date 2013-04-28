@@ -7,7 +7,7 @@ describe "children/show.html.erb" do
 
   describe "displaying a child's details"  do
     before :each do
-      @user = mock('user', :has_permission? => true, :user_name => 'name')
+      @user = mock('user', :has_permission? => true, :user_name => 'name', :id => 'test-user-id')
       controller.stub(:current_user).and_return(@user)
       view.stub(:current_user).and_return(@user)
       view.stub(:logged_in?).and_return(true)

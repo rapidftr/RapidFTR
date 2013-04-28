@@ -21,7 +21,7 @@ describe "FileAttachment" do
   describe ".from_file" do
     before(:each) do
       @file = stub!("File")
-      @file.stub!(:read).and_return("Data")
+      File.stub!(:binread).with(@file).and_return("Data")
     end
 
     it "should create an instance with a name from current date and default prefix" do
@@ -42,7 +42,7 @@ describe "FileAttachment" do
     end
 
     it "should create an instance with data from given file" do
-      @file.should_receive(:read).and_return('file_contents')
+      File.stub!(:binread).with(@file).and_return("file_contents")
       attachment = FileAttachment.from_file(@file, '')
       attachment.data.read.should == 'file_contents'
     end

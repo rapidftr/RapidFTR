@@ -21,7 +21,7 @@ describe AttachmentsController do
     get :show, :child_id => child.id, :id => child.primary_photo.name
 
     response.content_type.should == uploadable_photo_jeff.content_type
-    response.body.should == uploadable_photo_jeff.read
+    response.body.should == uploadable_photo_jeff.data
   end
 
   it "should return correct photo content type that is older than the current one" do
@@ -34,7 +34,7 @@ describe AttachmentsController do
     get :show, :child_id => child.id, :id => child.primary_photo.name
 
     response.content_type.should == uploadable_photo_jeff.content_type
-    response.body.should == uploadable_photo_jeff.read
+    response.body.should == uploadable_photo_jeff.data
   end
 
   it "should return correct photo size that is older than the current one" do
@@ -46,6 +46,6 @@ describe AttachmentsController do
 
     get :show, :child_id => child.id, :id => child.primary_photo.name
 
-    response.body.size.should == uploadable_photo_jeff.read.size
+    response.body.size.should == uploadable_photo_jeff.data.size
   end
 end

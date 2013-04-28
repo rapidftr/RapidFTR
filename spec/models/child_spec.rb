@@ -631,7 +631,7 @@ describe Child do
         User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
         @child = Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London', 'created_by' => "me")
       end
-      
+
       it "should have corrent number of photos after creation" do
         @child.photos.size.should eql 2
       end
@@ -712,7 +712,7 @@ describe Child do
 
     before :each do
       @file = stub!("File")
-      @file.stub!(:read).and_return("ABC")
+      File.stub!(:binread).with(@file).and_return("ABC")
       @file_attachment = FileAttachment.new("attachment_file_name", "audio/mpeg", "data")
     end
 
@@ -1154,7 +1154,7 @@ describe Child do
     end
 
     it "should return list of children ordered by name" do
-      UUIDTools::UUID.stub("random_create").and_return(12345)      
+      UUIDTools::UUID.stub("random_create").and_return(12345)
       Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       childrens = Child.all
@@ -1257,10 +1257,10 @@ describe Child do
       it "should return all duplicate records" do
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
-        
+
         duplicates = Child.duplicates_of(record_active.id)
         all = Child.all
-        
+
         duplicates.size.should be 1
         all.size.should be 1
         duplicates.first.id.should == record_duplicate.id
@@ -1272,7 +1272,7 @@ describe Child do
         record_duplicate = create_duplicate(record_active)
 
         duplicates = Child.duplicates_of(record_active.id)
-        
+
         duplicates.size.should be 1
         duplicates.first.id.should == record_duplicate.id
       end
