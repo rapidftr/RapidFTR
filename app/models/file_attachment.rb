@@ -18,6 +18,7 @@ class FileAttachment
   end
 
   def self.from_file(file, content_type, name_prefix="file", name_suffix ="", child=nil)
+    file = file.tempfile if file.respond_to?(:tempfile)
     new generate_name(name_prefix, name_suffix), content_type, File.binread(file), child
   end
 

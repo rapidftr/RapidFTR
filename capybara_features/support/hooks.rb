@@ -11,7 +11,7 @@ After do
 end
 
 Before do
-  I18n.locale = I18n.default_locale = "en"
+  I18n.locale = I18n.default_locale = :en
 
   CouchRestRails::Document.descendants.each do |model|
     docs = model.database.documents["rows"].map { |doc|
