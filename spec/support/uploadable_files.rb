@@ -16,7 +16,7 @@ module UploadableFiles
     end
 
     def photo.data
-      File.read self.path
+      File.binread self.path
     end
 
     photo
@@ -24,10 +24,7 @@ module UploadableFiles
 
   def uploadable_large_photo
     large_photo = "capybara_features/resources/huge.jpg"
-    f = File.new(large_photo, "w+")
-    f.seek(50000 * 1024)
-    f.write("hello")
-    f.close()
+    File.binwrite large_photo, "hello", 50000 * 1024 unless File.exist? large_photo
     uploadable_photo large_photo
   end
 
@@ -103,7 +100,7 @@ module UploadableFiles
     end
 
     def audio.data
-      File.read self.path
+      File.binread self.path
     end
 
     audio
@@ -111,10 +108,7 @@ module UploadableFiles
 
   def uploadable_large_audio
     large_audio = "capybara_features/resources/huge.mp3"
-    f = File.new(large_audio, "w+")
-    f.seek(50000 * 1024)
-    f.write("hello")
-    f.close()
+    File.binwrite large_audio, "hello", 50000 * 1024 unless File.exist? large_audio
     uploadable_audio large_audio
   end
 

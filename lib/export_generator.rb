@@ -97,10 +97,10 @@ class ExportGenerator
   end
 
   def add_child_photo(child, with_full_id = false)
-    if   child.primary_photo
+    if child.primary_photo
       render_image(child.primary_photo.data)
     else
-      data = File.read("public/images/no_photo_clip.jpg")
+      data = File.binread("public/images/no_photo_clip.jpg")
       @attachment = FileAttachment.new("no_photo", "image/jpg", data)
       render_image(@attachment.data)
     end
