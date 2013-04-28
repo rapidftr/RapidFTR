@@ -2,24 +2,16 @@ require 'spec_helper'
 
 describe CouchSettings do
 
-  describe '#instance' do
-    before :each do
-      CouchSettings.instance = nil
-    end
-
-    after :each do
-      CouchSettings.instance = nil
-    end
-
+  describe '#new_with_defaults' do
     it "should use correct config file" do
       Rails.should_receive(:root).and_return(Pathname.new("/test/root"))
       File.should_receive(:read).with(Pathname.new("/test/root/config/couchdb.yml")).and_return("---")
-      CouchSettings.instance.path.should == Pathname.new("/test/root/config/couchdb.yml")
+      CouchSettings.new_with_defaults.path.should == Pathname.new("/test/root/config/couchdb.yml")
     end
 
     it "should use correct Rails env" do
       ::Rails.stub! :env => "test_env"
-      CouchSettings.instance.env.should == "test_env"
+      CouchSettings.new_with_defaults.env.should == "test_env"
     end
   end
 
