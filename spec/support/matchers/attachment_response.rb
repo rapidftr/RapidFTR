@@ -1,7 +1,7 @@
 module CustomMatchers
   class AttachmentResponse
     def initialize(file, disposition = 'attachment', filename = nil )
-      @data = file.read
+      @data = file.data
       @content_type = file.content_type
       @disposition = disposition
       @failure_reasons = []
@@ -33,7 +33,7 @@ module CustomMatchers
     def response_has_specified_disposition?(response)
       response.headers.has_key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
     end
-    
+
     def has_filename?(filename)
       response.headers['Content-Disposition'].include? ";filename=#{filename}"
     end

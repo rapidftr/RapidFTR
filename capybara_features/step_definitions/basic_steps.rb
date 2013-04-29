@@ -14,7 +14,7 @@ end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    step %Q{I attach the file "#{photo}" to "child[photo]#{i}"}
+    step %Q{I attach the file "#{photo.first}" to "child[photo]#{i}"}
   end
 end
 
@@ -111,8 +111,11 @@ When /^I wait for (\d+) seconds$/ do |seconds|
 end
 
 When 'I wait for the page to load' do
-  wait_until { page.evaluate_script('$ && $.active == 0') } if Capybara.current_driver == :selenium
-  page.has_content? ''
+  if Capybara.current_driver == :selenium
+    wait_until { page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0') }
+  else
+    page.has_content? ''
+  end
 end
 
 When /^I wait until "([^"]*)" is visible$/ do |selector|
@@ -169,8 +172,10 @@ end
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
   visit child_filter_path(:filter => "flag")
-  child_records = Hpricot(page.body).search("h2 a").map {|a| a.inner_text }
-  child_records.should have_content(expected_child_names)
+  child_records = Hpricot(page.body).search("h2 a")
+  expected_child_names.each do |name|
+    child_records.should have_content name
+  end
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|

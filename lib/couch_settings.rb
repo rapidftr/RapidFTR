@@ -5,13 +5,15 @@ class CouchSettings
   attr_accessor :config
 
   class << self
-    attr_accessor :instance
-
     def instance
+      @instance ||= new_with_defaults
+    end
+
+    def new_with_defaults
       path   = ::Rails.root.join "config", "couchdb.yml"
       env    = ::Rails.env.to_s
-      config = YAML::load(ERB.new(File.read(path)).result)[env]
-      @instance ||= CouchSettings.new(path, env, config)
+      config = YAML::load(ERB.new(File.read(path)).result)[env] rescue {}
+      CouchSettings.new(path, env, config)
     end
   end
 

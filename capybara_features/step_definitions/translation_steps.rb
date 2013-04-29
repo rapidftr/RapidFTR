@@ -4,9 +4,6 @@ Given /^the following translations exist:$/ do |translations|
   translations.hashes.each do |translation|
     store translation
   end
-  I18n.locale = :en
-  select('-', :from => 'user_locale')
-  click_button 'user_submit'
 end
 
 And /^I set the system language to "(.+)"-"(.+)"$/ do |language, locale|

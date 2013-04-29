@@ -6,12 +6,12 @@
 
 ENV["RAILS_ENV"] ||= "cucumber"
 
-require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../..'))
+require 'config/environment'
 
 require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 require 'cucumber/rails/rspec'
 require 'cucumber/rails/world'
-require 'cucumber/rails/active_record'
 require 'cucumber/web/tableish'
 
 require 'capybara/rails'
@@ -23,6 +23,8 @@ require 'spec/support/child_finder'
 require 'json_spec/cucumber'
 
 require 'rack/test'
+require 'hpricot'
+require 'selenium-webdriver'
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new

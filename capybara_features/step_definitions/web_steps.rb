@@ -45,8 +45,8 @@ When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, sele
   end
 end
 
-When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, selector|
-  with_scope(selector) do
+When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, within|
+  with_scope(within) do
     Page.find(selector).click
   end
 end

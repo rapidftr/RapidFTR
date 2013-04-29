@@ -199,12 +199,13 @@ view_by :protection_status, :gender, :ftr_status
 
   def initialize *args
     self['photo_keys'] ||= []
-    arguments = *args
+    arguments = args.first
 
-    if !arguments.nil? and !arguments.empty? and arguments["current_photo_key"]
+    if arguments.is_a?(Hash) && arguments["current_photo_key"]
       self['current_photo_key'] = arguments["current_photo_key"]
       arguments.delete("current_photo_key")
     end
+
     self['histories'] = []
     super *args
   end

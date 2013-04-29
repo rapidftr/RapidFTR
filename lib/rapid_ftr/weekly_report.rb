@@ -7,7 +7,7 @@ module WeeklyReport
     genders = fields.find{|field| field[:name] == "gender"}.option_strings
     ftr_statuses = fields.find{|field| field[:name] == "ftr_status"}.option_strings
 
-    csv_str = FasterCSV.generate do |csv|
+    csv_str = CSV.generate do |csv|
       csv << ["protection status", "gender", "ftr status", "total"]
       protection_statuses.each do |protection_status|
         genders.each do |gender|

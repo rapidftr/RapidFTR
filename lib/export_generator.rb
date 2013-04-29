@@ -36,7 +36,7 @@ class ExportGenerator
   def to_csv
     fields = metadata_fields([], CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields
     field_names = fields.map { |field| field.display_name }
-    csv_data = FasterCSV.generate do |rows|
+    csv_data = CSV.generate do |rows|
       rows << field_names + CHILD_STATUS + metadata_fields([], CHILD_METADATA).map { |field| field.display_name }
       @child_data.each do |child|
         begin
@@ -97,10 +97,10 @@ class ExportGenerator
   end
 
   def add_child_photo(child, with_full_id = false)
-    if   child.primary_photo
+    if child.primary_photo
       render_image(child.primary_photo.data)
     else
-      data = File.read("public/images/no_photo_clip.jpg")
+      data = File.binread("public/images/no_photo_clip.jpg")
       @attachment = FileAttachment.new("no_photo", "image/jpg", data)
       render_image(@attachment.data)
     end
