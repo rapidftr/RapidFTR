@@ -14,7 +14,7 @@ end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    step %Q{I attach the file "#{photo}" to "child[photo]#{i}"}
+    step %Q{I attach the file "#{photo.first}" to "child[photo]#{i}"}
   end
 end
 
