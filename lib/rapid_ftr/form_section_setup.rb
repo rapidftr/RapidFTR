@@ -355,11 +355,6 @@ module RapidFTR
                     "display_name_all" => "Living with Vulnerable Person",
                     "option_strings_text_all" => "Yes\nNo",
                     }),
-      	  Field.new({"name" => "concerns_abuse_situation",
-                    "type" => "select_box",
-                    "display_name_all" => "Girl Mother",
-                    "option_strings_text_all" => "Yes\nNo",
-                    }),
       	  Field.new({"name" => "concerns_other",
                     "type" => "text_field",
                     "display_name_all" => "Other (please specify)"
@@ -428,7 +423,7 @@ module RapidFTR
                     }),
           Field.new({"name" => "wishes_contacted_details",
                     "type" => "textarea",
-                    "display_name_all" => "Please explain why"
+                    "display_name_all" => "Please give details"
                     }),
           Field.new({"name" => "wishes_wants_contact",
                     "type" => "select_box",
