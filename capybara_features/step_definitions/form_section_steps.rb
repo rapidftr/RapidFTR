@@ -152,3 +152,6 @@ When /^I click Cancel$/ do
 end
 
 
+Then /^the "([^"]*)" checkbox should be assignable$/ do |field|
+  find(:xpath,"//input[@id='#{field}']").should be_checked
+end
