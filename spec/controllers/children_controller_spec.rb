@@ -97,7 +97,7 @@ describe ChildrenController do
       end
 
       it "GET export_photo_to_pdf" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
+        @controller.current_ability.should_receive(:can?).with(:export_photowall, Child).and_return(false);
         get :export_photo_to_pdf, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
