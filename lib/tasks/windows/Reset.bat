@@ -5,4 +5,4 @@ call gem install --local vendor/bundle/ruby/1.8/cache/rubygems-update-1.8.25.gem
 call gem install --local vendor/bundle/ruby/1.8/cache/bundler-1.2.5.gem --no-ri --no-rdoc
 call update_rubygems
 call bundle install
-bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr] couchdb:create db:seed db:migrate
+bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr] couchdb:create db:migrate db:seed
