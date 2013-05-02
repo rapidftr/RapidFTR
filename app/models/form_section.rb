@@ -194,7 +194,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != nil && name != f.name }
+    unique = FormSection.all.all? {|f| id == f.id || name.empty? || name!= f.name }
     unique || [false, I18n.t("activerecord.errors.models.form_section.unique_name", :name => name)]
   end
 
