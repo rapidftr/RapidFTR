@@ -40,3 +40,14 @@ Feature: Ensure translations
     And I select "Log In" for language change
 
     Then I should see my system language as "العربية"-"ar"
+
+  Scenario:Show form fields on the edit form page in the System language
+
+    When I set the system language to "العربية"-"ar"
+    And I set the user language to "English"-"en"
+    And I am on the form section page
+    And I follow "Basic Identity"
+
+    Then I should see "الإسم "
+    And I should see "الوصف "
+    And I should see "نص للمساعدة "
