@@ -35,7 +35,3 @@ end
 Then /^I should see my system language as "([^"]*)"-"([^"]*)"$/ do |language, locale|
   assert page.has_xpath?("//div[@class='page-content']/h2")
 end
-
-Then /^I should see form fields in system language as "([^"]*)"$/ do |text|
-  page.should have_content(text)
-end

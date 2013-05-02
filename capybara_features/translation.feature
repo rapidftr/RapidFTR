@@ -41,9 +41,6 @@ Feature: Ensure translations
 
     Then I should see my system language as "العربية"-"ar"
 
-
-
-  @javascript
   Scenario:Show form fields on the edit form page in the System language
 
     When I set the system language to "العربية"-"ar"
@@ -51,6 +48,6 @@ Feature: Ensure translations
     And I am on the form section page
     And I follow "Basic Identity"
 
-    Then I should see form fields in system language as "الإسم "
-    And I should see form fields in system language as "الوصف "
-    And I should see form fields in system language as "نص للمساعدة "
+    Then I should see "الإسم "
+    And I should see "الوصف "
+    And I should see "نص للمساعدة "
