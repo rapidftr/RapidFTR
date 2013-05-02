@@ -17,6 +17,19 @@ Feature: So that I can select fields to be highlighted in view children page
 
 
 
-  @wip
+  @javascript
   Scenario: A hidden highlighted field must not be visible in Child Summary
+
+    And I am on the form section page
+    And I follow "Basic Identity"
+    And I hide "fields_nationality" from "Basic Identity"
+    And I press "Save"
+    And I am on the admin page
+    And I follow "Highlight Fields"
+    And I click text "add"
+
+    When I select menu "Basic Identity"
+
+    Then I should not see "Nationality" in Child Summary
+
 
