@@ -24,7 +24,7 @@ namespace :app do
   end
 
   desc "Drop and recreate all databases, the solr index, and restart the app if you're running with passenger."
-  task :reset do 
+  task :reset do
     Rake::Task['app:confirm_data_loss'].invoke
     Rake::Task['couchdb:delete'].invoke
     Rake::Task['couchdb:delete'].invoke("migration")
