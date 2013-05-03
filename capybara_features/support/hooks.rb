@@ -1,15 +1,3 @@
-Before('@gc') do
-  GC.enable
-end
-
-After do
-  unless ENV["CI"] == "true"
-    GC.enable
-    GC.start
-    GC.disable
-  end
-end
-
 Before do
   I18n.locale = I18n.default_locale = :en
 
