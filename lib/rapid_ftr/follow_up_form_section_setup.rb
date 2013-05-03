@@ -3,8 +3,6 @@ module RapidFTR
   module FollowUpFormSectionSetup
 
     def self.reset_definitions
-      FormSection.all.each { |f| f.destroy }
-
       outcome_of_follow_up_visit_fields = [
         Field.new({"name" => "was_child_seen",
                    "type" => "select_box",
@@ -20,7 +18,7 @@ module RapidFTR
 
       FormSection.create!({"visible"=>false,
                            :order => 11, :unique_id=>"outcome_of_follow_up_visit", "editable"=>true,
-                           :fields => outcome_of_follow_up_visit_fields, :perm_enabled => true,
+                           :fields => outcome_of_follow_up_visit_fields,
                            "name_all" => "Outcome of Follow Up Visit",
                            "description_all" => "Information to be added"
                           })
@@ -78,7 +76,7 @@ module RapidFTR
 
       FormSection.create!({"visible"=>false,
                            :order=> 12, :unique_id=>"current_care_arrangement", "editable"=>true,
-                           :fields => current_care_arrangements_fields, :perm_enabled => true,
+                           :fields => current_care_arrangements_fields,
                            "name_all" => "Current Care Arrangements",
                            "description_all" => "Information to be added"
                           })
@@ -125,7 +123,7 @@ module RapidFTR
 
       FormSection.create!({"visible"=>false,
                            :order=> 13, :unique_id=>"activities", "editable"=>true,
-                           :fields => activities_fields, :perm_enabled => true,
+                           :fields => activities_fields,
                            "name_all" => "Activities",
                            "description_all" => "Information to be added"
                           })
@@ -165,7 +163,7 @@ module RapidFTR
 
       FormSection.create!({"visible"=>false,
                            :order=> 14, :unique_id=>"care_assessment", "editable"=>true,
-                           :fields => care_assessment_fields, :perm_enabled => true,
+                           :fields => care_assessment_fields,
                            "name_all" => "Care Assessment",
                            "description_all" => "Information to be added"
                           })
@@ -193,7 +191,7 @@ module RapidFTR
 
       FormSection.create!({"visible"=>false,
                            :order=> 15, :unique_id=>"further_action", "editable"=>true,
-                           :fields => further_action_fields, :perm_enabled => true,
+                           :fields => further_action_fields,
                            "name_all" => "Further Action",
                            "description_all" => "Information to be added"
                           })
@@ -212,7 +210,7 @@ module RapidFTR
 
       FormSection.create!({"visible"=>false,
                            :order=> 1, :unique_id=>"additional_family_details", "editable"=>true,
-                           :fields => additional_family_details, :perm_enabled => true,
+                           :fields => additional_family_details,
                            "name_all" => "Additional Family Details",
                            "description_all" => "Information to be added"
                           })
