@@ -10,7 +10,7 @@ module RapidFTR
                    "display_name_all" => "Was the child seen during the visit?"
                   }),
             Field.new({"name" => "reason_why",
-                       "type" => "check_box",
+                       "type" => "check_boxes",
                        "option_strings_text_all" => "Abducted\nAt School\nChild in Detention\nMoved onto street/Market\nMoved to live with another caregiver\nVisiting Friends/Relatives\nWorking /At work ",
                        "display_name_all" => "If not, why?"
                       })
@@ -92,7 +92,7 @@ module RapidFTR
                      "display_name_all" => "Name of School"
                     }),
           Field.new({"name" => "why_not_in_school",
-                     "type" => "check_box",
+                     "type" => "check_boxes",
                      "option_strings_text_all" => "Child Labour\nEarly Marriage\nFinancial Constraints\nIgnorance\nLack of Infrastructure\nLack of Access\nLack of Infrastructure\nLack of interest\npregnancy /children\npregnancy /child\nSent abroad for job\nOther",
                      "display_name_all" => "If not, why not?"
                     }),
@@ -107,7 +107,7 @@ module RapidFTR
                      "display_name_all" => "If relevant, what level have they achieved?"
                     }),
           Field.new({"name" => "other_activities_child_involved_in",
-                     "type" => "check_box",
+                     "type" => "check_boxes",
                      "option_strings_text_all" => "Community activities\nLivelihood activities\nRecreational Activities",
                      "display_name_all" => "What other activities is the child involved in?"
                     }),
@@ -209,7 +209,7 @@ module RapidFTR
       ]
 
       FormSection.create!({"visible"=>false,
-                           :order=> 1, :unique_id=>"additional_family_details", "editable"=>true,
+                           :order=> 15, :unique_id=>"additional_family_details", "editable"=>true,
                            :fields => additional_family_details,
                            "name_all" => "Additional Family Details",
                            "description_all" => "Information to be added"
