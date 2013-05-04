@@ -298,6 +298,12 @@ describe FormSection do
       form_section.errors.on(:unique_id).should be_present
     end
 
+    it "should not occur error  about the name is not unique  when the name is not filled in" do
+      form_section = FormSection.new(:name=>"")
+      form_section.should_not be_valid
+      form_section.errors.on(:unique_id).should_not be_present
+    end
+
     it "should not trip the unique name validation on self" do
       form_section = FormSection.new(:name => 'Unique Name', :unique_id => 'unique_name')
       form_section.create!
