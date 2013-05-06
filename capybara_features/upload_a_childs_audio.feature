@@ -19,7 +19,7 @@ Feature:
     And I should see an audio element that can play the audio file named "sample.mp3"
     And the record history should log "Record created by bob"
 
-  @gc @wip
+  @gc
   Scenario: Uploading a standard mp3 file to existing child record
     Given I am on the new child page
     And I fill in "Harry" for "Name"
