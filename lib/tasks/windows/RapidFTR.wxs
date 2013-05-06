@@ -120,6 +120,7 @@
     </Feature>
 
     <WixVariable Id='WixUILicenseRtf' Value='License.rtf' />
+    <WixVariable Id='WixUIDialogBmp' Value='rapidftr.bmp' />
     <Property Id='WIXUI_INSTALLDIR' Value='INSTALLDIR' />
     <UIRef Id='WixUI_Minimal' />
 
@@ -141,16 +142,6 @@
           </Control>
           <Control Id="ReadmeCheckBox" Type="CheckBox" X="130" Y="207" Width="226" Height="18" CheckBoxValue="1" Property="ReadmeRead" Text="I have read the instructions." />
       </Dialog>
-
-      <!-- Dialog Id='ReadMeDlg' Width='370' Height='270' Title='[ProductName] Setup' NoMinimize='yes'>
-        <Control Id='ReadMeText' Type='ScrollableText' X='15' Y='6' Width='340' Height='230' Sunken='yes' TabSkip='no'>
-          <Text SourceFile='Readme.rtf' />
-        </Control>
-
-        <Control Id='ReadMeDone' Type='PushButton' X='304' Y='243' Width='56' Height='17' Default='yes' Text='Continue'>
-          <Publish Event='EndDialog' Value='Return' />
-        </Control>
-      </Dialog -->
 
       <Publish Dialog="ReadmeDlg" Control="Next" Event="EndDialog" Value="Return" />
 
