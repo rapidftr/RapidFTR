@@ -121,10 +121,42 @@
 
     <WixVariable Id='WixUILicenseRtf' Value='License.rtf' />
     <Property Id='WIXUI_INSTALLDIR' Value='INSTALLDIR' />
-    <UIRef Id='WixUI_ErrorProgressText' />
+    <UIRef Id='WixUI_Minimal' />
 
     <UI>
-      <ProgressText Action='ExtractCodeBase'>Extracting RapidFTR Application... (this may take a few minutes)</ProgressText>
+      <Dialog Id="ReadmeDlg" Width="370" Height="270" Title="!(loc.WelcomeDlg_Title)">
+          <Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="!(loc.WelcomeEulaDlgBitmap)" />
+          <Control Id="Title" Type="Text" X="130" Y="6" Width="225" Height="30" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgTitle)" />
+          <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+          <Control Id="Back" Type="PushButton" X="156" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUIBack)" />
+          <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+            <Condition Action="disable"><![CDATA[ReadmeRead <> "1"]]></Condition>
+            <Condition Action="enable">ReadmeRead = "1"</Condition>
+          </Control>
+          <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+              <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+          </Control>
+          <Control Id="ReadmeText" Type="ScrollableText" X="130" Y="36" Width="226" Height="162" Sunken="yes" TabSkip="no">
+              <Text SourceFile="Readme.rtf" />
+          </Control>
+          <Control Id="ReadmeCheckBox" Type="CheckBox" X="130" Y="207" Width="226" Height="18" CheckBoxValue="1" Property="ReadmeRead" Text="I have read the instructions." />
+      </Dialog>
+
+      <!-- Dialog Id='ReadMeDlg' Width='370' Height='270' Title='[ProductName] Setup' NoMinimize='yes'>
+        <Control Id='ReadMeText' Type='ScrollableText' X='15' Y='6' Width='340' Height='230' Sunken='yes' TabSkip='no'>
+          <Text SourceFile='Readme.rtf' />
+        </Control>
+
+        <Control Id='ReadMeDone' Type='PushButton' X='304' Y='243' Width='56' Height='17' Default='yes' Text='Continue'>
+          <Publish Event='EndDialog' Value='Return' />
+        </Control>
+      </Dialog -->
+
+      <Publish Dialog="ReadmeDlg" Control="Next" Event="EndDialog" Value="Return" />
+
+      <InstallUISequence>
+        <Show Dialog='ReadmeDlg' Before='WelcomeEulaDlg'>NOT Installed</Show>
+      </InstallUISequence>
     </UI>
 
     <CustomAction Id='ExtractCodebase' Directory='INSTALLDIR' Return='check' Execute='deferred' Impersonate='yes'
