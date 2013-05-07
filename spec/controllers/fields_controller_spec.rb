@@ -17,7 +17,6 @@ describe FieldsController do
     end
 
     it "should add the new field to the formsection" do
-      p "o====================my============================god=="
       FormSection.should_receive(:add_field_to_formsection).with(@form_section, @field)
       post :create, :form_section_id =>@form_section.unique_id, :field => @field
     end
