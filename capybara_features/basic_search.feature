@@ -14,7 +14,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     And I should see "Willis" in the search results
 
-  @javascript
   Scenario: Searching for a child given his short id
     Given the following children exist in the system:
       | name   	| last_known_location 	| reporter | unique_id     |
@@ -26,7 +25,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
   Scenario: Searches that yield a single record should redirect directly to that record
     Given the following children exist in the system:
-      | name   	| 
+      | name   	|
       | Lisa	|
     When I fill in "Lisa" for "query"
     And I press "Go"
@@ -40,16 +39,16 @@ Feature: So that I can find a child that has been entered in to RapidFTR
 
   Scenario: Each search result has a link to the full child record
     Given the following children exist in the system:
-      | name   	| 
+      | name   	|
       | Willis	|
       | Will	|
     When I search using a name of "W"
     Then I should see a link to the saved record page for child with name "Willis"
     And I should see a link to the saved record page for child with name "Will"
- 
+
   Scenario: Thumbnails are displayed for each search result, if requested
     Given the following children exist in the system:
-      | name   	| 
+      | name   	|
       | Willis	|
       | Will	|
     When I fill in "W" for "query"
@@ -70,7 +69,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Searching for a child given his name returns no results
     Given I am on the child search page
     Then I should not see "No results found"
-  
+
   @wip
   Scenario: Creating an invalid search
     Given I am on the children listing page
@@ -86,7 +85,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     Then I should be on the child search results page
 
-@javascript
   Scenario: User with unlimited access can see all children
     Given a user "field_admin" with "View And Search Child" permission
       And a user "field_worker" with "Register Child" permission

@@ -1,5 +1,5 @@
 Feature: Reports UI
-    
+
   Scenario: Browse and download a report
   Given the following reports exist in the system:
       | report_type   | as_of_date | file_name        | content_type | data        |
@@ -27,7 +27,6 @@ Feature: Reports UI
       TEST DATA 4
       """
 
-@javascript
   Scenario: Pagination of reports
     Given 40 reports exist in the system starting from February 20 2013
     And I am logged in as a user with "View and Download Reports" permission
@@ -47,3 +46,28 @@ Feature: Reports UI
 
     Then I follow "1"
     Then I should see "Displaying reports 1 - 30 of 40 in total"
+
+  Scenario: Reports permission should be assignable in view/edit page
+    As an admin I visit the role option on the user page
+    So that when I try to edit a particular role, the reports permission should be available as an assignable checkbox
+
+    Given I am logged in as a user with "Admin" permission
+    When I follow "USERS"
+    And I follow "Roles"
+    And I click the "Edit" link
+    Then the "view_and_download_reports" checkbox should be assignable
+
+  Scenario: User will be shown "No entries found" when there is no entries available
+    As a user I try to view the records
+    So that when there is no records available, the message "No Entries Found" will be displayed to me
+
+
+    Given an senior official "Harry" with password "123"
+    And I am on the login page
+    When I fill in "Harry" for "User Name"
+    And I fill in "123" for "password"
+    And I press "Log in"
+    When I follow "REPORTS"
+    Then the message "No entries found" should be displayed to me
+
+

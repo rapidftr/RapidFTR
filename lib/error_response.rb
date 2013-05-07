@@ -3,15 +3,19 @@ class ErrorResponse < StandardError
   attr_reader :status_text
 
   def self.bad_request(message)
-    new( 400, message )
+    new(400, message)
   end
 
   def self.unauthorized(message)
-    new( 401, message )
+    new(401, message)
+  end
+
+  def self.forbidden(message)
+    new(403, message)
   end
 
   def self.not_found(message)
-    new( 404, message )
+    new(404, message)
   end
 
   def initialize( status_code, message )

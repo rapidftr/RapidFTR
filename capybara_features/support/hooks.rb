@@ -14,13 +14,14 @@ Before do
   I18n.locale = I18n.default_locale = "en"
 
   CouchRestRails::Document.descendants.each do |model|
-    model.all.each(&:destroy)
-    model.duplicates.each(&:destroy) if model.respond_to?(:duplicates)
+    docs = model.database.documents["rows"].map { |doc|
+      { "_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true } unless doc["id"].include? "_design"
+    }.compact
+    RestClient.post "#{model.database.root}/_bulk_docs", { :docs => docs }.to_json, { "Content-type" => "application/json" } unless docs.empty?
   end
 
   RapidFTR::FormSectionSetup.reset_definitions
   Sunspot.remove_all!(Child)
-  Sunspot.commit
 end
 
 Before('@roles') do |scenario|

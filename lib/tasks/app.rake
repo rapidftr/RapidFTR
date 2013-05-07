@@ -24,7 +24,16 @@ namespace :app do
   end
 
   desc "Drop and recreate all databases, the solr index, and restart the app if you're running with passenger."
-  task :reset => %w( app:confirm_data_loss couchdb:delete couchdb:create db:seed db:migrate sunspot:clean_start passenger:restart )
+  task :reset do
+    Rake::Task['app:confirm_data_loss'].invoke
+    Rake::Task['couchdb:delete'].invoke
+    Rake::Task['couchdb:delete'].invoke("migration")
+    Rake::Task['couchdb:create'].invoke
+    Rake::Task['db:seed'].invoke
+    Rake::Task['db:migrate'].invoke
+    Rake::Task['sunspot:clean_start'].invoke
+    Rake::Task['passenger:restart'].invoke
+  end
 
   task :confirm_data_loss => :environment do
     require 'readline'

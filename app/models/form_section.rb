@@ -4,7 +4,7 @@ class FormSection < CouchRestRails::Document
   include PropertiesLocalization
 
   use_database :form_section
-  PropertiesLocalization.localize_properties [:name, :help_text, :description]
+  localize_properties [:name, :help_text, :description]
   property :unique_id
   property :visible, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer

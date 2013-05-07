@@ -10,21 +10,7 @@ namespace :db do
   end
 
   task :migrate => :environment do
-    migration_db_name = [COUCHDB_CONFIG[:db_prefix], "migration", COUCHDB_CONFIG[:db_suffix]].join
-    db = COUCHDB_SERVER.database!(migration_db_name)
-    migration_ids = db.documents["rows"].select{|row| !row["id"].include?("_design")}.map{|row| row["id"]}
-    migration_names = migration_ids.map{|id| db.get(id)[:name]}
-
-    migrations_dir = "db/migration"
-    Dir.new(Rails.root.join(migrations_dir)).entries.select { |file| file.ends_with? ".rb" }.sort.each do |file|
-      if migration_names.include?(file)
-        puts "skipping migration: #{file} - already applied"
-      else
-        puts "Applying migration: #{file}"
-        load(Rails.root.join(migrations_dir, file))
-        db.save_doc({:name => file})
-      end
-    end
+    Migration.migrate
   end
 
   desc "Create system administrator for couchdb. This is needed only if you are interested to test out replications"
@@ -54,7 +40,7 @@ namespace :db do
   desc "Create/Copy couchdb.yml from cocuhdb.yml.example"
   task :create_couchdb_yml, :user_name, :password  do |t, args|
     default_env = ENV['RAILS_ENV'] || "development"
-    environments = ["development", "test", "cucumber", "production", "uat", "standalone", default_env].uniq
+    environments = ["development", "test", "cucumber", "production", "uat", "standalone", "android", default_env].uniq
     user_name = ENV['couchdb_user_name'] || args[:user_name] || ""
     password = ENV['couchdb_password'] || args[:password] || ""
 

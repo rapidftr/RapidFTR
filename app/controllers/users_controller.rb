@@ -5,9 +5,6 @@ class UsersController < ApplicationController
 
   skip_before_filter :check_authentication, :set_locale, :only => :register_unverified
 
-  protect_from_forgery :except => :register_unverified
-
-
   def index
     authorize! :read, User
     sort_option = params[:sort] || "full_name"

@@ -1,6 +1,6 @@
 Feature:
 
-  As an Admin 
+  As an Admin
   I want to disable and later re-enable user accounts via the web interface
   So that only those who should have access are able to access the system,
 
@@ -34,7 +34,7 @@ Feature:
     When I follow "Show" within "#user-row-pooja"
     Then I should see "Enabled"
 
-  
+
  # @allow-rescue
   @javascript
   Scenario: A user who is disabled mid-session can't continue using that session
@@ -46,4 +46,4 @@ Feature:
     When user "george" is disabled
     And I follow "Register New Child"
 
-    Then I should see "Unauthorized"
+    Then I am on the login page

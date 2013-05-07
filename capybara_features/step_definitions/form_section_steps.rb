@@ -126,8 +126,7 @@ When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name,
 end
 
 Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|
-  row = Hpricot(page.body).search("tr[@id=basic_details_row]").first
-  row.inner_html.should_not include(link)
+  page.should_not have_xpath "//tr[@id=basic_details_row and contains(., '#{link}')]"
 end
 
 def row_for(section_name)
@@ -152,3 +151,6 @@ When /^I click Cancel$/ do
 end
 
 
+Then /^the "([^"]*)" checkbox should be assignable$/ do |field|
+  find(:xpath,"//input[@id='#{field}']").should be_checked
+end

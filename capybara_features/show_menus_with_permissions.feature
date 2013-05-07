@@ -1,4 +1,3 @@
-@javascript
 Feature: show menus based on user permissions
 
   As A User without proper permissions

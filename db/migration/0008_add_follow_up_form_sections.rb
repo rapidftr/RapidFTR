@@ -1,0 +1,1 @@
+RapidFTR::FollowUpFormSectionSetup.reset_definitions

@@ -3,7 +3,7 @@ Feature: Add new role
   Scenario: Adding new role
     Given I am logged in as a user with "Admin" permission
 
-    And I am on create role page 
+    And I am on create role page
     When I enter the following role details
       | name        | description              | permissions       |
       | super admin | like an admin, but super | system_settings   |
@@ -14,10 +14,9 @@ Feature: Add new role
       | name        | description              | permissions       |
       | super admin | like an admin, but super | system_settings   |
 
-  @javascript
   Scenario: Filtering by role
     Given I am logged in as a user with "Admin" permission
-    And I am on create role page    
+    And I am on create role page
 		And I enter the following role details
       | name           | description              | permissions       |
       | Can Edit Child | can edit child           | edit_child        |
@@ -29,7 +28,6 @@ Feature: Add new role
     | name           | description    | permissions |
     | Can Edit Child | can edit child | edit_child  |
 
-  @javascript
   @roles
   Scenario: Sorting by Ascending Order
     Given I am logged in as a user with "Admin" permission
@@ -51,7 +49,6 @@ Feature: Add new role
       |Field Admin  |
       |Admin        |
 
-  @javascript
   @roles
   Scenario:Editing a newly created role
    Given I am logged in as a user with "Admin" permission
@@ -68,6 +65,7 @@ Feature: Add new role
        | view_roles             |
        | edit_child             |
        | create_and_edit_users  |
+       | view_and_download_reports |
     And I update the form
    And I am on manage users page
    And I follow "Create User"
@@ -92,7 +90,6 @@ Feature: Add new role
    Then I should see "Edit" for "automation"
    Then I should see "Delete" for "automation"
 
-  @javascript
   @roles
   Scenario:Creating user with sysadmin role
     Given I am logged in as a user with "Admin" permission
@@ -125,4 +122,3 @@ Feature: Add new role
     And I should not be able to view the tab CHILDREN
     And I should not be able to view the tab FORMS
     And I should not be able to view the tab DEVICES
-

@@ -1,7 +1,5 @@
 require 'spec/spec_helper'
 
-include HpricotSearch
-
 When /^I search using a name of "([^\"]*)"$/ do |name|
   step "I fill in \"#{name}\" for \"query\""
   step %q{I press "Go"}
@@ -24,9 +22,13 @@ Then /^I should not see "([^\"]*)" in the search results$/ do |value|
 end
 
 Then /^I should see "(.*)" as reunited in the search results$/ do |child_id|
-  Hpricot(page.body).search("#child_#{child_id}]").search(".reunited")
+  # This step is wrong
+  # The search is returning nothing
+  # But there is no assertion like "should" or "should_not" on the result
+  # Hpricot(page.body).search("#child_#{child_id}]").search(".reunited") # .should == true
+  page.has_xpath?("//div[@id='#{child_id}']/div/img[@class='reunited']") # .should == true
 end
 
 Then /^I should not see "(.*)" as reunited in the search results$/ do |child_id|
-  lambda { page.find(:xpath, "//div[@id=\"#{child_id}\"]/div/img[@class=\"reunited\"]") }.should raise_error(Capybara::ElementNotFound)
+  page.should_not have_xpath "//div[@id='#{child_id}']/div/img[@class='reunited']"
 end

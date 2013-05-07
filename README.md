@@ -1,5 +1,5 @@
 RapidFTR
-=============
+========
 
 [![Build Status](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/app/rest/builds/buildType:bt2/statusIcon)](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/viewType.html?buildTypeId=bt2)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
@@ -13,6 +13,11 @@ Initial development is focused on building an API and web interface, with subseq
 
 Find more information at the [project website](http://rapidftr.com)
 , join the [google group](http://groups.google.com/group/rapidftr/) and join us in irc on freenode in #rapidftr channel
+
+Releases
+--------
+
+For all latest downloads and artifacts, see [Releases](https://github.com/rapidftr/RapidFTR/wiki/Releases) wiki page.
 
 Developer Info
 --------------

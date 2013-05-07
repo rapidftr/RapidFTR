@@ -562,7 +562,7 @@ view_by :protection_status, :gender, :ftr_status
       'user_name' => created_by,
       'user_organisation' => organisation_of(created_by),
       'datetime' => created_at,
-      'changes' => {'child' => {:created => created_at}} 
+      'changes' => {'child' => {:created => created_at}}
     })
   end
 
@@ -627,7 +627,7 @@ view_by :protection_status, :gender, :ftr_status
     def changes_for(field_names)
       field_names.inject({}) do |changes, field_name|
         changes.merge(field_name => {
-            'from' => @from_child[field_name],
+            'from' => original_data[field_name],
             'to' => self[field_name]
         })
       end
@@ -639,7 +639,6 @@ view_by :protection_status, :gender, :ftr_status
     end
 
     def field_name_changes
-      @from_child ||= Child.get(self.id)
       field_names = field_definitions.map { |f| f.name }
       other_fields = [
           "flag", "flag_message",
@@ -652,13 +651,17 @@ view_by :protection_status, :gender, :ftr_status
     end
 
     def changed?(field_name)
-      return false if self[field_name].blank? && @from_child[field_name].blank?
-      return true if @from_child[field_name].blank?
+      return false if self[field_name].blank? && original_data[field_name].blank?
+      return true if original_data[field_name].blank?
       if self[field_name].respond_to? :strip
-        self[field_name].strip != @from_child[field_name].strip
+        self[field_name].strip != original_data[field_name].strip
       else
-        self[field_name] != @from_child[field_name]
+        self[field_name] != original_data[field_name]
       end
+    end
+
+    def original_data
+      (@original_data ||= Child.get(self.id) rescue nil) || self
     end
 
     def is_filled_in? field
