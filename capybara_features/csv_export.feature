@@ -51,4 +51,4 @@ Feature:
     And  I am on the children listing page
     When I follow "Export" for child records
     And I follow "Export Some Records to CSV" for child records
-    Then I should be redirected to Advanced Search Page
+    Then I should be redirected to "Advanced Search" Page
