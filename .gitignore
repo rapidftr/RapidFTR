@@ -30,7 +30,7 @@ public/assets/*
 public/assets/common.js.gz
 config/couchdb.yml
 *.pem
-lib/tasks/windows
+lib/tasks/windows/*.msi
 vendor/bundle
 Gemfile.lock
 *.deb

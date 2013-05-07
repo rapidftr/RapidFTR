@@ -169,8 +169,9 @@ end
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
   visit child_filter_path(:filter => "flag")
-  child_records = Hpricot(page.body).search("h2 a").map {|a| a.inner_text }
-  child_records.should have_content(expected_child_names)
+  expected_child_names.each do |name|
+    page.should have_xpath "//h2//a[contains(., '#{name}')]"
+  end
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|
@@ -200,17 +201,16 @@ Given /"([^\"]*)" is the user/ do |user_name|
 end
 
 Then /^I should not see any errors$/ do
-  Hpricot(page.body).search("div[@class=errorExplanation]").size.should == 0
+  page.should_not have_xpath '//div[class="errorExplanation"]'
 end
 
 Then /^I should see the error "([^\"]*)"$/ do |error_message|
-  Hpricot(page.body).search("div[@class=errorExplanation]").inner_text.should include error_message
+  page.should have_xpath "//div[@class=errorExplanation and contains(., '#{error_message}')]"
 end
 
 Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, flag|
   child_name = find_child_by_name name
-  child_images = Hpricot(page.body).search("#child_#{child_name.id}]").search(".#{flag}")
-  child_images.should_not be_nil
+  page.should have_css "#child_#{child_name.id} .#{flag}"
 end
 
 Given /I am logged out/ do
@@ -236,7 +236,8 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^
 end
 
 Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
-  field = Hpricot(page.body).form_field_for(field_name)
+  # This selector is no longer working, need to find some other selector for searching field
+  field = page.find "//div[@id='#{field_name}Row']"
   field.should_not be_nil
 
   enabled_icon = field.enabled_icon
@@ -250,7 +251,7 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" hidden$/ do |form_s
 end
 
 Then /^I should see errors$/ do
-  Hpricot(page.body).search("div[@class=errorExplanation]").size.should == 1
+  page.should have_xpath '//div[@class="errorExplanation"]'
 end
 
 private
