@@ -75,6 +75,13 @@ Feature:
     And I follow "Register New Child"
     Then I should see "Photos and Audio"
 
-
-
+  Scenario: Should not be able to delete audio
+    Given I am on the new child page
+    And I fill in "Harry" for "Name"
+    And I click the "Photos and Audio" link
+    And I attach an audio file "capybara_features/resources/sample.mp3"
+    And I press "Save"
+    When I am editing the child with name "Harry"
+    And I click the "Photos and Audio" link
+    Then I should not see "Delete"
 

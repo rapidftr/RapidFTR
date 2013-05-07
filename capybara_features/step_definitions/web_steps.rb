@@ -317,8 +317,8 @@ When /^I go and press "([^"]*)"$/ do |arg|
   find("//input[@class='btn_submit']").click
 end
 
-Then /^export option should be unavailable to me$/ do
-  page.should have_no_xpath("//span[@class='export']")
+Then /^"([^"]*)" option should be unavailable to me$/ do |element|
+  page.should have_no_xpath("//span[@class='"+element+"']")
 end
 
 Then /^password prompt should be enabled$/ do
