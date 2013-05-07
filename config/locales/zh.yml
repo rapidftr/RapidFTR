@@ -537,6 +537,7 @@ zh:
 
         form_section:
           presence_of_name: "名字不能为空"
+          presence_of_base_language_name: "基始语言'%{base_language}'对应的名字不能为空"
           format_of_name: "名字只能包含字母数字和空格"
           visible_method: "如果允许查看可见性字段不能为假"
           fixed_order_method: "fixed_order不能为假如果perm_enabled是真"
