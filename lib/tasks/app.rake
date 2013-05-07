@@ -30,6 +30,7 @@ namespace :app do
     Rake::Task['couchdb:delete'].invoke("migration")
     Rake::Task['couchdb:create'].invoke
     Rake::Task['db:seed'].invoke
+    Rake::Task['db:migrate'].invoke
     Rake::Task['sunspot:clean_start'].invoke
     Rake::Task['passenger:restart'].invoke
   end
