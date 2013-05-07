@@ -19,7 +19,7 @@ Feature:
     And I should see an audio element that can play the audio file named "sample.mp3"
     And the record history should log "Record created by bob"
 
-  @gc @wip
+  @gc
   Scenario: Uploading a standard mp3 file to existing child record
     Given I am on the new child page
     And I fill in "Harry" for "Name"
@@ -55,9 +55,25 @@ Feature:
     And I press "Save"
     Then I should see "Please upload a valid audio file (amr or mp3) for this child record"
 
+  Scenario: Uploaded child audio file can be downloaded
+    Given I am on the new child page
+    And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
+    And I attach an audio file "capybara_features/resources/sample.mp3"
+    And I press "Save"
+    When I click the "Photos and Audio" link
+    Then I should see an audio element that can play the audio file named "sample.mp3"
+    And I can download the "audio_link"
 
-
-
+  Scenario: Photos and Audio field should always be visible
+    Given I logout as "bob"
+    And I am logged in as an admin
+    When I am on the form section page
+    Then the form section "Photos and Audio" should be listed as visible
+    When I select the form section "photos_and_audio" to toggle visibility
+    And I am on children listing page
+    And I follow "Register New Child"
+    Then I should see "Photos and Audio"
 
 
 

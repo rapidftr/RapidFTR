@@ -26,3 +26,7 @@ def check_link(response, child_name)
   image_link = yield(child)
   page.body.should have_css("img[src^='#{image_link}']")
 end
+
+Then /^I should see the "([^"]*)" of image$/ do |selector|
+  page.has_css?("#{selector}", :visible => true)
+end
