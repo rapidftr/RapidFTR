@@ -23,6 +23,7 @@ require 'spec/support/child_finder'
 require 'json_spec/cucumber'
 
 require 'rack/test'
+require 'selenium-webdriver'
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
