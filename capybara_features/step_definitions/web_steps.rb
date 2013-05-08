@@ -316,9 +316,11 @@ end
 When /^I go and press "([^"]*)"$/ do |arg|
   find("//input[@class='btn_submit']").click
 end
-Then /^export option should be unavailable to me$/ do
-  page.should have_no_xpath("//span[@class='export']")
+
+Then /^"([^"]*)" option should be unavailable to me$/ do |element|
+  page.should have_no_xpath("//span[@class='"+element+"']")
 end
+
 Then /^password prompt should be enabled$/ do
   assert page.has_content?("Password")
 end
@@ -326,15 +328,27 @@ end
 When /^I fill in "([^"]*)" in the password prompt$/ do |arg|
   fill_in 'password-prompt-dialog', :with => 'abcd'
 end
-Then /^I should be redirected to Advanced Search Page$/ do
-  assert page.has_content?("Advanced Search")
-end
+
 Then /^Error message should be displayed$/ do
   assert page.has_content?("Enter a valid password")
 end
+
 When /^I follow "([^"]*)" for child records$/ do |arg|
   find(:xpath, "//span[@class='export']").click
 end
+
 Then /^the message "([^"]*)" should be displayed to me$/ do |text|
   assert page.has_content?("#{text}")
+end
+
+Then /^I should be redirected to "([^"]*)" Page$/ do |page_name|
+  assert page.has_content?("#{page_name}")
+end
+
+When /^I select the "([^"]*)"$/ do |element|
+  find("//div[@class='"+element+"']").click
+end
+
+When /^I can download the "([^"]*)"$/ do |item|
+  find("//a[@id='"+item+"']").click
 end

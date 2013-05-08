@@ -84,3 +84,32 @@ Feature:
     And I click the "Photos and Audio" link
     Then I should see "1" thumbnails
 
+  Scenario: Manage & Edit Photo
+
+    Given I am on the new child page
+    And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
+    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I press "Save"
+    When I goto the "edit_photo"
+    Then I should be redirected to "Edit photo" Page
+    And I should see "Rotate Anti-Clockwise"
+    And I should see "Restore Original Image"
+    And I should see "Rotate Clockwise"
+    And I press "Save"
+    When I goto the "manage_photo"
+    Then I should be redirected to "Manage photos" Page
+    And I should see "Choose as primary photo"
+    And I should see "View full size photo"
+
+
+  Scenario: Lightbox image is visible
+
+    Given I am on the new child page
+    And I fill in "John" for "Name"
+    And I click the "Photos and Audio" link
+    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I press "Save"
+    When I click the "Photos and Audio" link
+    And I select the "image"
+    Then I should see the "lightbox-nav" of image
