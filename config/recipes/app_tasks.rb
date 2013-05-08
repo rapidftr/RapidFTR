@@ -36,6 +36,11 @@ namespace :app do
     run_with_path_env "bundle exec rake couchdb:create db:seed"
   end
 
+  desc "Precompile assets"
+  task :assets_precompile do
+    run_with_path_env "bundle exec rake app:assets_precompile"
+  end
+
   desc "Clean Start Solr"
   task :start_solr do
     run_with_path_env "bundle exec rake sunspot:restart"
