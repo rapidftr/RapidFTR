@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Migration do
-    it 'should return migration dir' do
-      Migration.migration_dir.to_s.should == Rails.root.join(Migration::MIGRATIONS_DIR).to_s
-    end
+  it 'should return migration dir' do
+    Migration.migration_dir.to_s.should == Rails.root.join(Migration::MIGRATIONS_DIR).to_s
+  end
 
   it 'should list all migrations' do
     Dir.should_receive(:[]).with(Migration.migration_dir.join "*.rb").and_return([ "04_migration.rb", "02_migration.rb" ])
