@@ -24,16 +24,12 @@ namespace :app do
 
   desc "Create release version files"
   task :setup_revision do
-    branch  = fetch(:branch)
-    version = branch =~ /^release-.+$/ ? branch.gsub("release-", "") : "1.1.0-development"
-    set :app_version, version
     template "version.erb", File.join(current_path, "public", "version.txt")
   end
 
   desc "Migrate database"
   task :migrate_db do
-    # removing the db:migrate temporarily during performance testing for UAT.
-    run_with_path_env "bundle exec rake couchdb:create db:seed"
+    run_with_path_env "bundle exec rake couchdb:create db:seed db:migrate"
   end
 
   desc "Precompile assets"
@@ -48,7 +44,7 @@ namespace :app do
 
   desc "Start Scheduler Task"
   task :start_scheduler do
-    run_with_path_env "bundle exec rake scheduler:restart" unless fetch(:branch) == "release1"
+    run_with_path_env "bundle exec rake scheduler:restart" unless fetch(:app_version) =~ /0\.9\.0/
   end
 
 end
