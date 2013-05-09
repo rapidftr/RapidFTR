@@ -60,6 +60,15 @@ describe "Child record field view model" do
       field.errors.on(:display_name).first.include? "Display name must not be blank"
     end
 
+    it "should not allows empty field display_name of field base language " do
+      field = Field.new(:display_name_en => 'English', :display_name_zh=>'Chinese')
+      I18n.default_locale='zh'
+      expect {
+        field[:display_name_en]=''
+        field.save!
+      }.to raise_error
+    end
+
     it "should not allow display name without alphabetic characters" do
       field = Field.new(:display_name => "!@£$@")
       field.valid?.should == false

@@ -2,29 +2,36 @@ class FormSection < CouchRestRails::Document
   include CouchRest::Validation
   include RapidFTR::Model
   include PropertiesLocalization
-
   use_database :form_section
   localize_properties [:name, :help_text, :description]
   property :unique_id
   property :visible, :cast_as => 'boolean', :default => true
-  property :order, :type      => Integer
+  property :order, :type => Integer
   property :fields, :cast_as => ['Field']
   property :editable, :cast_as => 'boolean', :default => true
   property :fixed_order, :cast_as => 'boolean', :default => false
   property :perm_visible, :cast_as => 'boolean', :default => false
   property :perm_enabled, :cast_as => 'boolean'
   property :validations, :type => [String]
-
+  property :base_language, :default=>'en'
   view_by :unique_id
   view_by :order
-
-  validates_presence_of "name_#{I18n.default_locale}", :message=> I18n.t("activerecord.errors.models.form_section.presence_of_name")
-  validates_format_of :name, :with =>/^([a-zA-Z0-9_\s]*)$/, :message=> I18n.t("activerecord.errors.models.form_section.format_of_name")
+  validates_presence_of "name_#{I18n.default_locale}", :message => I18n.t("activerecord.errors.models.form_section.presence_of_name")
+  validates_with_method :name, :method => :valid_presence_of_base_language_name
+  validates_format_of :name, :with => /^([a-zA-Z0-9_\s]*)$/, :message => I18n.t("activerecord.errors.models.form_section.format_of_name")
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :visible, :method => :validate_visible_field, :message=> I18n.t("activerecord.errors.models.form_section.visible_method")
-  validates_with_method :fixed_order, :method => :validate_fixed_order, :message=> I18n.t("activerecord.errors.models.form_section.fixed_order_method")
-  validates_with_method :perm_visible, :method => :validate_perm_visible, :message=> I18n.t("activerecord.errors.models.form_section.perm_visible_method")
+  validates_with_method :visible, :method => :validate_visible_field, :message => I18n.t("activerecord.errors.models.form_section.visible_method")
+  validates_with_method :fixed_order, :method => :validate_fixed_order, :message => I18n.t("activerecord.errors.models.form_section.fixed_order_method")
+  validates_with_method :perm_visible, :method => :validate_perm_visible, :message => I18n.t("activerecord.errors.models.form_section.perm_visible_method")
+
+  def valid_presence_of_base_language_name
+    if base_language==nil
+      self.base_language='en'
+    end
+    base_lang_name = self.send("name_#{base_language}")
+    [!(base_lang_name.nil?||base_lang_name.empty?), I18n.t("activerecord.errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+  end
 
   def initialize args={}
     self["fields"] = []
@@ -34,13 +41,14 @@ class FormSection < CouchRestRails::Document
 
   alias to_param unique_id
 
+
   class << self
     def enabled_by_order
       by_order.select(&:visible?)
     end
 
     def all_child_field_names
-      all_child_fields.map{ |field| field["name"] }
+      all_child_fields.map { |field| field["name"] }
     end
 
     def all_visible_child_fields
@@ -64,11 +72,11 @@ class FormSection < CouchRestRails::Document
   end
 
   def all_text_fields
-    self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA}
+    self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
   end
 
   def all_searchable_fields
-    self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
+    self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
   end
 
   def self.get_by_unique_id unique_id
@@ -110,30 +118,30 @@ class FormSection < CouchRestRails::Document
   end
 
   def update_field_as_highlighted field_name
-    field = fields.find {|field| field.name == field_name }
+    field = fields.find { |field| field.name == field_name }
     existing_max_order = FormSection.highlighted_fields.
-                                     map(&:highlight_information).
-                                     map(&:order).
-                                     max
+        map(&:highlight_information).
+        map(&:order).
+        max
     order = existing_max_order.nil? ? 1 : existing_max_order + 1
     field.highlight_with_order order
     save
   end
 
   def remove_field_as_highlighted field_name
-    field = fields.find {|field| field.name == field_name }
+    field = fields.find { |field| field.name == field_name }
     field.unhighlight
     save
   end
 
   def self.highlighted_fields
     all.map do |form|
-      form.fields.select{ |field| field.is_highlighted? }
+      form.fields.select { |field| field.is_highlighted? }
     end.flatten
   end
 
   def self.sorted_highlighted_fields
-    highlighted_fields.sort{ |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
+    highlighted_fields.sort { |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
   end
 
   def section_name
@@ -149,7 +157,7 @@ class FormSection < CouchRestRails::Document
   end
 
   def delete_field field_to_delete
-    field = fields.find {|field| field.name == field_to_delete}
+    field = fields.find { |field| field.name == field_to_delete }
     raise I18n.t("activerecord.errors.models.form_section.delete_field") if !field.editable?
     if (field)
       field_index = fields.index(field)
@@ -159,13 +167,13 @@ class FormSection < CouchRestRails::Document
   end
 
   def field_order field_name
-    field_item = fields.find {|field| field.name == field_name}
+    field_item = fields.find { |field| field.name == field_name }
     return fields.index(field_item)
   end
 
   def order_fields new_field_names
     new_fields = []
-    new_field_names.each{ |name| new_fields << fields.find{|field| field.name == name} }
+    new_field_names.each { |name| new_fields << fields.find { |field| field.name == name } }
     self.fields = new_fields
     self.save
   end
@@ -194,8 +202,8 @@ class FormSection < CouchRestRails::Document
   end
 
   def validate_unique_name
-    unique = FormSection.all.all? {|f| id == f.id || name != nil && name != f.name }
-    unique || [false, I18n.t("activerecord.errors.models.form_section.unique_name", :name => name)]
+  unique = FormSection.all.all? { |f| id == f.id || name == nil || name.empty? || name!= f.name }
+  unique || [false, I18n.t("activerecord.errors.models.form_section.unique_name", :name => name)]
   end
 
   def create_unique_id
