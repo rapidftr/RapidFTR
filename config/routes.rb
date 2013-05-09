@@ -46,7 +46,6 @@ match '/' => 'home#index', :as => :root
       get :advanced_search
       post :export_csv
       get :search
-      post :export_photos_to_pdf
     end
 
     member do

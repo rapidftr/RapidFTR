@@ -8,9 +8,9 @@
       <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
         <% if can?(:export, Child) %>
-            <%= link_to t('children.export_all_child_records_to_csv'), children_path(:format => :csv, :per_page => :all), :class => "password-prompt" %>
-            <%= link_to t('children.export_all_child_records_to_pdf'), children_path(:format => :pdf, :per_page => :all), :class => "password-prompt" %>
-            <%= link_to t("children.export_some_records_to_csv"), new_advanced_search_path %>
+          <% RapidftrAddon::ExportTask.implementations.each do |addon| %>
+            <%= link_to t("addons.export_task.#{addon.addon_id}.all"), children_path(:format => addon.addon_id, :per_page => :all), :class => "password-prompt" %>
+          <% end %>
       <%end%>
       </div>
     </div>

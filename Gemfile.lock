@@ -1,9 +1,10 @@
 GIT
   remote: git://github.com/farismosman/rapidftr-addon-cpims.git
-  revision: 2cc2f241606714e3f35b04b8b80fc664c2bc40f2
+  revision: da71b186feac2e96dc5d86ac094d052ae665cf90
   specs:
     rapidftr_addon_cpims (0.0.2)
       activesupport
+      i18n
       writeexcel
 
 GIT

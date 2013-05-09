@@ -27,14 +27,13 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv @children
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@children).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename}.pdf")
+
+      RapidftrAddon::ExportTask.implementations.each do |export_task|
+        format.any(export_task.addon_id) do
+          authorize! :export, Child
+          result = export_task.new.export(@children).first
+          send_encrypted_file result.data, { :filename => result.filename }
+        end
       end
     end
   end
@@ -51,18 +50,14 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
+      format.json { render :json => @child.compact.to_json }
 
-      format.json {
-        render :json => @child.compact.to_json
-      }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv([@child])
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@child).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
+      RapidftrAddon::ExportTask.implementations.each do |export_task|
+        format.any(export_task.addon_id) do
+          authorize! :export, Child
+          result = export_task.new.export([ @child ]).first
+          send_encrypted_file result.data, { :filename => result.filename }
+        end
       end
     end
   end
@@ -231,13 +226,6 @@ class ChildrenController < ApplicationController
       end
     end
     default_search_respond_to
-  end
-
-  def export_photos_to_pdf children, filename
-    authorize! :export, Child
-
-    pdf_data = ExportGenerator.new(children).to_photowall_pdf
-    send_pdf(pdf_data, filename)
   end
 
   def export_photo_to_pdf

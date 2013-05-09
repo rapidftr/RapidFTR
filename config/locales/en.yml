@@ -88,9 +88,6 @@ en:
     label: "Children"
     register_new_child: "Register New Child"
     export: "Export"
-    export_all_child_records_to_csv: "Export All Child Records to CSV"
-    export_all_child_records_to_pdf: "Export All Child Records to PDF"
-    export_some_records_to_csv: "Export Some Records to CSV"
     filter_by:
       label: "Filter by"
       all: "All"
@@ -587,3 +584,18 @@ en:
     reunited:
       child_status_changed: "Child status changed to active by"
       with_details: "with these details:"
+
+  addons:
+    export_task:
+      pdf:
+        all: Export All to PDF
+        one: Export to PDF
+        selected: Export Selected to PDF
+      photowall:
+        all: Export All to Photowall
+        one: Export to Photowall
+        selected: Export Selected to Photowall
+      csv:
+        all: Export All to CSV
+        one: Export to CSV
+        selected: Export Selected to CSV
