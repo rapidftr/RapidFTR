@@ -10,6 +10,8 @@ class AdminController < ApplicationController
 
   def update
     I18n.default_locale = params[:locale]
+    I18n.locale=I18n.default_locale
+    flash[:notice] = I18n.translate("user.messages.time_zone_updated")
     redirect_to admin_path
   end
 

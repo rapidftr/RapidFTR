@@ -11,8 +11,8 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new params[:field]
-
     FormSection.add_field_to_formsection @form_section, @field
+    @field.base_language = I18n.default_locale
     if (@field.errors.length == 0)
       SuggestedField.mark_as_used(params[:from_suggested_field]) if params.has_key? :from_suggested_field
       flash[:notice] = t("fields.successfully_added")
