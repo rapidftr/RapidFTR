@@ -11,13 +11,13 @@ Feature: Manage Users
   @javascript
   Scenario: Admins should be able to change user disabled status from index page
 
-    And user "jerry" is disabled
-    And the user "jerry" is marked as disabled
+    And the user "jerry" checkbox is marked as "disabled"
+
     When I follow "Logout"
     And I am logged in as an admin
     And I follow "USERS"
-    When I re-enable user "jerry"
-    And the user "jerry" is marked as enabled
+    And the user "jerry" checkbox is marked as "enabled"
+
     Then user "jerry" should not be disabled
     And the user "jerry" should be marked as enabled
 

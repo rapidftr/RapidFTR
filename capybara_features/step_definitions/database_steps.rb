@@ -45,7 +45,7 @@ end
 
 Given /^user "(.+)" is disabled$/ do |username|
   user = User.find_by_user_name(username)
-  user.disabled = "true"
+  user.disabled = true
   user.save!
 end
 
@@ -108,4 +108,11 @@ end
 
 Given /^a password recovery request for (.+)$/ do |username|
   PasswordRecoveryRequest.new(:user_name => username).save
+end
+
+When /^I re-enable the user "([^"]*)"$/ do |username|
+  user = User.find_by_user_name(username)
+  user.disabled = false
+  user.save
+
 end
