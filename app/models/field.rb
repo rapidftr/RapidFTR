@@ -12,7 +12,7 @@ class Field < Hash
   property :editable, :cast_as => 'boolean', :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
-
+  property :base_language, :default=>'en'
   TEXT_FIELD = "text_field"
   TEXT_AREA = "textarea"
   RADIO_BUTTON = "radio_button"
@@ -59,6 +59,15 @@ class Field < Hash
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_with_method :option_strings, :method => :validate_has_a_option
   validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => I18n.t("activerecord.errors.models.field.display_name_format")
+  validates_with_method :display_name, :method => :valid_presence_of_base_language_name
+
+  def valid_presence_of_base_language_name
+    if base_language==nil
+      self.base_language='en'
+    end
+    base_lang_display_name = self.send("display_name_#{base_language}")
+    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("activerecord.errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+  end
 
   def form
     base_doc

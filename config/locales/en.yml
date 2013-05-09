@@ -537,6 +537,7 @@ en:
 
         form_section:
           presence_of_name: "Name must not be blank"
+          presence_of_base_language_name: "The name of the base language '%{base_language}' can not be blank"
           format_of_name: "Name must contain only alphanumeric characters and spaces"
           visible_method: "visible can't be false if perm_visible is true"
           fixed_order_method: "fixed_order can't be false if perm_enabled is true"
