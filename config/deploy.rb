@@ -59,4 +59,4 @@ load 'config/recipes/base_tasks'
 load 'config/recipes/app_tasks'
 
 before 'deploy:update_code', 'app:create_release_dir'
-after  'deploy:update', 'deploy:cleanup', 'app:setup_nginx', 'app:setup_application', 'app:setup_revision', 'app:migrate_db', 'app:start_solr', 'app:start_scheduler', 'app:restart'
+after  'deploy:update', 'deploy:cleanup', 'app:setup_nginx', 'app:setup_application', 'app:setup_revision', 'app:migrate_db', 'app:assets_precompile', 'app:start_solr', 'app:start_scheduler', 'app:restart'

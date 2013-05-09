@@ -74,7 +74,7 @@ Feature: So that hard copy printout of missing child photos are available
     When I fill in "Wil" for "query"
     And I press "Go"
     And I am on the saved record page for child with name "Will"
-    Then export option should be unavailable to me
+    Then "export" option should be unavailable to me
 
   @javascript
   Scenario: Password prompt throws an error message when left blank or filled with spaces
