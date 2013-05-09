@@ -2,414 +2,588 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 zh:
-  home:
+  home:   
     fr: "Français"
     en: "English"
     ar: "العربية"
     zh: "中文"
     es: "Español"
     ru: "Русский"
-  #   welcome: "欢迎 RapidFTR"
-  #   current_time_zone: "Current time zone"
-  #   language: "Language"
-  #   view_records: "View All Children"
-  #   records_need_attention: "Records need Attention"
+    welcome: "欢迎RapidFTR"
+    current_time_zone: "时区"
+    language: "语言"
+    view_records: "查看记录"
+    manage_system_users: "管理服务器同步用户"
+    records_need_attention: "个需要注意的记录"
+    label: "首页"
+  clear: "清除"
+  messages:
+    delete_item:  "警告:如果继续,相关的数据将会丢失。\n如果不确定,禁用这个字段。\n点击取消返回，点击OK删除这个字段。"
+    move_item: "你要把这个字段移动到另一个表单区段({{selection_key}})。是这样的吗?"
+    enter_valid_date: "请输入一个有效的创建日期'之后' 和/或者 '之前'日期(格式 yyyy-mm-dd)."
+    enter_valid_field_value: "请输入一个有效的字段值."
+    valid_search_criteria: "请输入至少一个搜索标准"
+    show_hide_forms: "请选择你想显示/隐藏的表单。"
+    show_forms: "你确定要让这些表单可见?"
+    hide_forms: "你确定要隐藏这些表单?"
+    primary_photo_changed: "主照片改变了."
+    select_photo: "请选择一张照片。"
+    are_you_sure: "你确定要 "
+    this_user: " 这个用户?"
+    keep_working: "是的，继续工作"
+    logoff: "不, 退出"
+    confirmation_message: "点击ok将会丢失所有未保存的信息。点击Cancel返回到儿童纪录"
+    cancel_confirmation: "你确定要取消?"
+    logoff_warning_prefix: "登出"
+    logoff_warning_suffix: "秒"
+    logoff_confirmation: "是否要继续会话?"
+    warning: "警告:如果继续,和字段相关的数据将会丢失。\n如果不确定,禁用这个字段.\n点击取消返回，点击OK删除这个字段."
+    enter_each_in_one_line: "在新的一行输入选项"
+    record_count: "显示 %{start} 到 %{end}  %{total}记录"
 
-  #   label: "Home"
-  # messages:
-  #   delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
-  #   move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
-  #   enter_valid_date: "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
-  #   enter_valid_field_value: "Please enter a valid field value."
-  #   valid_search_criteria: "Please enter at least one search criteria"
-  #   show_hide_forms: "Please select form(s) you want to show/hide."
-  #   show_forms: "Are you sure you want to make these form(s) visible?"
-  #   hide_forms: "Are you sure you want to hide these form(s)?"
-  #   primary_photo_changed: "Primary photo changed."
-  #   select_photo: "Please select a photo."
-  #   are_you_sure: "Are you sure you want to "
-  #   this_user: " this user?"
-  #   keep_working: "Yes, Keep Working"
-  #   logoff: "No, Logoff"
-  #   confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
-  #   cancel_confirmation: "Are you sure you want to cancel?"
-  #   logoff_warning_prefix: "You will be logged off in"
-  #   logoff_warning_suffix: "seconds."
-  #   logoff_confirmation: "Do you want to continue your session?"
-  #   warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+  data_base:
+    delete_all_documents: "删除所有的儿童文档"
+    operation_not_allowed: "在 %{rails_env} 环境下 操作不允许"
 
-  #   enter_each_in_one_line: "Enter each option on a new line"
-  # login:
-  #   details: "Login details"
-  #   username: "User Name"
-  #   password:
-  #     label: "Password"
-  #     reset: "Request Password Reset"
-  #     re_enter: "Re-enter password"
+  login:
+    details: "登陆"
+    username: "用户名"
+    password:
+      label: "密码"
+      reset: "密码重置"
+      re_enter: "重新输入密码"
+      success_notice: "谢谢。RapidFTR管理员将在稍后联系你。如果可以的话，请直接联系管理员。"
+      successfully_hidden: "密码变更通知已成功隐藏"
 
-  #   label: "Login"
-  # header:
-  #   contact: "Contact & Help"
-  #   welcome: "Welcome"
-  #   logout: "Logout"
-  #   my_account: "My Account"
-  #   system_settings: "System settings"
+    label: "登陆"
+  header:
+    contact: "帮助"
+    welcome: "欢迎"
+    logout: "退出"
+    my_account: "我的帐户"
+    system_settings: "系统设置"
 
-  # navigation:
-  #    children: "CHILDREN"
-  #    forms: "FORMS"
-  #    users: "USERS"
-  #    devices: "DEVICES"
-  #    reports: "REPORTS"
-  #    advanced_search: "Advanced Search"
-  #    go: "Go"
-  #    search: "Search"
+  navigation:
+     children: "儿童"
+     forms: "表单"
+     users: "用户"
+     devices: "设备"
+     reports: "报告"
+     advanced_search: "高级搜索"
+     go: "搜索"
+     search: "搜索"
 
-  # buttons:
-  #    delete: "Delete"
-  #    save: "Save"
-  #    login: "Log in"
-  #    reunite: "Reunite"
-  #    edit: "Edit"
-  #    back: "Back"
-  #    change_password: "Change Password"
-  #    enable_photo_wall: "Enable photo wall"
-  #    disable_photo_wall: "Disable photo wall"
+  buttons:
+     delete: "删除"
+     save: "保存"
+     login: "登陆"
+     reunite: "重聚"
+     edit: "编辑"
+     back: "后退"
+     change_password: "修改密码"
+     enable_photo_wall: "使用照片墙"
+     disable_photo_wall: "禁用照片墙"
 
-  # children:
-  #   label: "Children"
-  #   register_new_child: "Register New Child"
-  #   export: "Export"
-  #   export_all_child_records_to_csv: "Export All Child Records to CSV"
-  #   export_all_child_records_to_pdf: "Export All Child Records to PDF"
-  #   export_some_records_to_csv: "Export Some Records to CSV"
-  #   filter_by:
-  #     label: "Filter by"
-  #     all: "All"
-  #     active: "Active"
-  #     reunited: "Reunited"
-  #     flag: "Flagged"
-  #     created: "Created"
-  #   order_by:
-  #     most_recently: "Most recently"
-  #     label: "Order by"
-  #     name: "Name"
-  #   flag_summary: "Flag summary"
+  children:
+    label: "儿童"
+    register_new_child: "登记新的儿童"
+    export: "导出"
+    export_all_child_records_to_csv: "所有儿童信息以 Records  CSV格式导出"
+    export_all_child_records_to_pdf: "所有儿童信息以 Records PDF格式导出"
+    export_some_records_to_csv: "某些纪录以CSV格式导出"
+    filter_by:
+      label: "过滤"
+      all: "所有"
+      active: "活动的"
+      reunited: "重聚"
+      flag: "标记的"
+      created: "创建"
+    order_by:
+      most_recently: "最近"
+      label: "排序"
+      name: "姓名"
+    flag_summary: "标记总结"
 
-  #   filer_by:
-  #     all: "All"
-  #     active: "Active"
-  #     reunited: "Reunited"
-  #     flagged: "Flagged"
-
-  # child:
-  #   flagged_by: "Flagged By"
-  #   last_updated: "Last updated"
-  #   registered_by: "Registered by"
-  #   mark_as_duplicate: "Mark as Duplicate"
-  #   flag_record: "Flag record"
-  #   flag_label: "Flag"
-  #   flag_reason: "Flag Reason"
-  #   unflag_record: "Unflag record"
-  #   unflag_reason: "Unflag Reason"
-  #   unflag_label: "Unflag"
-  #   unflag_error_message: "Please explain why you are unflagging this record."
-  #   id_of_record_this_duplicate_of: "Enter the ID of the record this is a duplicate of:"
-  #   duplicate_header: "Marking %{child_name} as Duplicate"
-  #   flag_error_message: "Please explain why you are flagging this record."
-  #   investigation_details: "Investigation Details:"
-  #   reunite_details: "Reunite Details:"
-  #   another_duplicate_before_link: "Another record has been marked as a duplicate of this one. Click"
-  #   another_duplicate_after_link: " to see the duplicate record."
-  #   messages:
-  #     update_success: "Child was successfully updated."
-  #     investigation_error_message: "Please confirm the flagged record should be marked as investigated, and enter any details you have."
-  #     undo_investigation_error_message: "Please confirm the flagged record should be marked as Not Investigated, and enter any details you have."
-  #     undo_investigation_error_message: "Undo Investigation Details:"
-  #     reunite_error_message: "Please confirm this child has been reunited with family or caregivers, and enter any details you have."
-  #     undo_reunite_error_message: "Please confirm child should be marked as Not Reunited, and enter any details you have."
-  #     see_full_size: "Click on the Image to see full size"
-  #     creation_success: "Child record successfully created."
-  #   actions:
-  #     mark_as_investigated: "Mark as Investigated"
-  #     mark_as_reunited: "Mark as Reunited"
-  #     export_to_photo_wall: "Export to Photo Wall"
-  #     export_to_pdf: "Export to PDF"
-  #     export_to_csv: "Export to CSV"
-  #     change_log: "Change Log"
-  #     mark_as_not_investigated: "Mark as Not Investigated"
-  #     reunited: "Mark as Reunited"
-  #     reunited_details: "Reunite Details:"
-  #     reunite: "Reunite"
-  #     not_reunited: "Mark as Not Reunited"
-  #     undo_reunited_details: "Undo reunite Reason:"
-  #     undo_reunite: "Undo Reunite"
-  #     investigation_details: "Investigation Details"
-  #     undo_investigation_details: "Undo Investigation Details"
-  #     undo_investigated: "Undo Investigated"
-  #   change_log: "Change Log"
-  #   flagged_as_suspected: "Flagged as suspect record by"
-  #   posted_from_mobile: "Posted from the mobile client at:"
-  #   edit_photo: "Edit photo"
-  #   manage_photos: "Manage photos"
-
-  #   view: "View Children"
-  #   edit: "Edit Child"
-  #   mark_as_duplicate_with_param: "Mark %{child_name} as Duplicate"
-  # preposition:
-  #   on_label: "on"
-  #   because: "Because"
-
-  # will_paginate:
-  #   previous_label: "&#8592; Previous"
-  #   next_label: "Next &#8594;"
-  #   page_gap: "&hellip;"
-
-  # users:
-  #   unverified: "Unverified Users"
-  #   select_role: "Please select a role before verifying the user"
-  #   manage: "Manage Users"
-  #   label: "Users"
-  #   create: "Create User"
-  #   actions:
-  #     show_all: "Showing all"
-  #     show: "Show"
-  #   messages:
-  #     disable: 'Are you sure you want to disable this user?'
-  #   sort_by:
-  #     label: "Sort by"
-  #     full_name: "Full Name"
-
-  # roles:
-  #   label: "Roles"
-  #   list: "List of Roles"
-  #   sort_by:
-  #     label: "Sort by"
-  #     ascending: "Ascending"
-  #     descending: "Descending"
-  #   name: "Role Name"
-  #   actions:
-  #     show_all: "Showing all"
-  #     show: "Show"
-  #     edit: "Edit"
-  # user:
-  #   label: "user"
-  #   full_name: "Full Name"
-  #   disabled: "Disabled"
-  #   actions:
-  #     delete: "Delete"
-  #   messages:
-  #     confirmation: "Are you sure you want to delete this user? Deletion can not be undone. Click OK To Delete User."
-  #     created: "User was successfully created."
-  #     updated: "User was successfully updated."
-  #     not_found: "User with the given id is not found"
-  #     passwords_do_not_match: "does not match current password"
-  #     password_changed_successfully: "Password changed successfully"
-  #     time_zone_updated: "The change was successfully updated."
-  #   update: "Update"
-  #   verify: "Verify"
-  #   create: "Create"
-  #   no_blank: "user name should not contain blanks"
-  #   manage_password: "Change Password"
-  #   old_password: "Old Password"
-  #   new_password: "New Password"
-  #   new_password_confirmation: "Confirm New Password"
-
-  #   new: "New User"
-  # phone: "Phone"
-  # email: "Email"
-  # organisation: "Organisation"
-  # position: "Position"
-  # location: "Location"
-  # false: "false"
-  # true: "true"
-  # mandatory_field: "marked fields are mandatory"
-  # add: "add"
-  # belonging_to: "belonging to"
-  # hello: "Hello"
-  # imei: "IMEI"
-  # blacklisted: "Blacklisted?"
-  # visible: "Visible"
-  # hidden: "Hidden"
-  # help_text: "Help text"
-  # cancel: "Cancel"
-  # discard: "Discard"
-  # form: "Form"
-  # details: "Details"
-  # enabled: "Enabled"
-  # status: "Status"
-  # devices: "Devices"
-  # provide_translation: "Provide translation for"
-
-  # role:
-  #   create: "Create Role"
-  #   edit: "Edit Role"
-
-  #   name: "Name"
-  # record: "record"
-  # description: "Description"
-  # name: "Name"
-
-  # permissions:
-  #   label: "Permissions"
-  #   group:
-  #     Reports: Reports
-  #     Devices: Devices
-  #     System: System
-  #     Roles: Roles
-  #     Children: Children
-  #     Forms: Forms
-  #     Users: Users
-  #     ALL: All
-
-  #   permission:
-  #     "Register Child": "Register Child"
-  #     "Edit Child": "Edit Child"
-  #     "View And Search Child": "View And Search Child"
-  #     "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
-  #     "Manage Forms": "Manage Forms"
-  #     "Create and Edit Users": "Create and Edit Users"
-  #     "View Users": "View Users"
-  #     "Delete Users": "Delete Users"
-  #     "Disable Users": "Disable Users"
-  #     "BlackList Devices": "BlackList Devices"
-  #     "Create and Edit Roles": "Create and Edit Roles"
-  #     "View roles": "View roles"
-  #     "System Settings": "System Settings"
-  #     "Highlight Fields": "Highlight Fields"
-  #     "Manage Replications": "Manage Replications"
-  #     "View roles": "View roles"
-  #     "All": "All"
-  #     "View and Download Reports": "View and Download Reports"
-
-  # forms:
-  #   label: "Forms"
-  #   save: "Save Form"
-  #   save_details: "Save Details"
-  #   messages:
-  #     use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
-  #   initial_language: "Initial Language"
-  #   cannot_be_edited: "Fields on this form cannot be edited."
-
-  # form_section:
-  #   create: "Create New Form Section"
-  #   visibility: "Visibility"
-  #   ordering: "Ordering"
-  #   details: "Form details"
-  #   label: "Form Section"
-  #   back: "Back To Forms Page"
-  #   actions:
-  #     add_custom_field: "Add Custom Field"
-  #     save_order: "Save Order"
-  #   messages:
-  #     order_saved: "Order is successfully saved."
-  #     cannot_create: "Form section could not be created"
-  #     correct_errors: "Please correct the following errors and resubmit:"
-  #     hide_confirmation: "Are you sure you want to hide fields?"
-  #     show_confirmation: "Are you sure you want to show fields?"
-  #     drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
-
-  #     updated: "Form section successfully added"
-  #   hide: "Hide"
-  #   show: "Show"
-  #   manage: "Manage Form Sections"
-  #   edit: "Edit Form Sections"
-  #   buttons:
-  #     add: "Add"
-  #   options: "Options"
-  # message:
+    filer_by:
+      all: "所有的"
+      active: "活动的"
+      reunited: "重聚"
+      flagged: "标记的"
 
 
-  # advanced_search:
-  #   instruction: "Separate words by OR to search for more than one option eg. Tim OR Rahul"
-  #   date_instruction: "Enter a date (yyyy-mm-dd) in the first box to search records created or updated after that date.       Enter a date (yyyy-mm-dd) in the second box to see records created or updated before that date.       Enter dates in both boxes to see records created between the dates."
-  #   created_by_org: "Created By Organisation :"
-  #   date_created: "Date Created :"
-  #   updated_by: "Updated by(User) :"
-  #   after: "After :"
-  #   before: "Before :"
-  #   created_by: "Created by(User) :"
-  #   date_updated: "Date Updated :"
-  #   select_a_criteria: "Select A Criteria"
+  child:
+    flagged_by: "标记为"
+    last_updated: "最近更新"
+    registered_by: "注册"
+    mark_as_duplicate: "标记为副本"
+    flag_record: "标记记录"
+    flag_label: "标记"
+    flag_reason: "标记原因"
+    unflag_record: "取消标记"
+    unflag_reason: "取消标记原因"
+    unflag_label: "取消标记"
+    unflag_error_message: "请解释为什么取消了这个记录的标记."
+    id_of_record_this_duplicate_of: "输入这个记录的副本ID"
+    duplicate_header: "标记 %{child_name}作为副本"
+    flag_error_message: "请解释为什么标记这个记录."
+    investigation_details: "调查详情:"
+    reunite_details: "重聚详情:"
+    another_duplicate_before_link: "另一个记录被标记为这个记录的副本，点击"
+    another_duplicate_after_link: " 查看副本记录"
 
-  # search: "Search"
-  # select_all: "Select all records"
-  # no_results_found: "No results found"
-  # date_format: "yy-mm-dd"
-  # yes_label: "Yes"
-  # cancel: "Cancel"
+    messages:
+      update_success: "儿童信息成功更新"
+      investigation_error_message: "请确认标记的记录应标为已调查，并且输入你有的信息."
+      undo_investigation_error_message: "请确认标记的记录应标为未调查，并且输入你有的信息."
+      undo_investigation_error_message: "重写调查详细信息:"
+      reunite_error_message: "请确认这个孩子已经跟他的家人团聚, 并且输入你有的信息."
+      undo_reunite_error_message: "请确认这个孩子应该被标记为未团聚, 并且输入你有的信息."
+      see_full_size: "点击图片查看大图"
+      creation_success: "儿童纪录成功创建"
+      not_found: "未找到id对应的儿童"
+      confirm_duplicate: "你确定要继续? 如果是, 点击OK。如果不是, 点击取消。"
 
-  # contact:
-  #   message: "If you experience any problems with RapidFTR, or believe your password has been exposed, please contact the system administrator immediately."
-  #   field:
-  #     name: "Name"
-  #     position: "Position"
-  #     organization: "Organization"
-  #     email: "Email"
-  #     phone: "Phone"
-  #     location: "Location"
-  #     other_information: "Other information"
-  #   updated: "Contact information was successfully updated."
-  #   edit_info: "Edit Contact Information"
-  #   info_label: "Contact Information"
+    actions:
+      mark_as_investigated: "标记为已调查"
+      mark_as_reunited: "标记为团聚"
+      export_to_photo_wall: "导出成照片墙"
+      export_to_pdf: "导出成PDF"
+      export_to_csv: "导出成CSV"
+      change_log: "变更日志"
+      mark_as_not_investigated: "标记为未调查"
+      reunited: "标记为团聚"
+      reunited_details: "团聚详细信息:"
+      reunite: "团聚"
+      not_reunited: "标记为未团聚"
+      undo_reunited_details: "重写团聚原因:"
+      undo_reunite: "撤销团聚"
+      investigation_details: "调查详情"
+      undo_investigation_details: "撤销调查详情"
+      undo_investigated: "撤销调查"
+      cancel: "取消"
+      delete_photo: "删除照片?"
+      choose_as_primary_photo: "选择一个主照片"
+      rotate_anti_clockwise: "逆时针旋转"
+      restore_image: "还原原始图片"
+      rotate_clockwise: "顺时针旋转"
+      view_full_size_photo: "查看大图"
 
-  # device:
-  #   blacklist: "Blacklist Device"
-  #   messages:
-  #     blacklist: "Do you want to add this device to blacklist?"
-  #     remove_blacklist: "Do you want to remove this device from blacklist?"
-  #     disable: 'Are you sure you want to disable this device?'
-  #   information: "Device Information"
-  #   mobile_number: "Mobile Number"
-  #   timestamp: "Timestamp"
+    change_log: "变更日志"
+    flagged_as_suspected: "标记为可疑记录"
+    posted_from_mobile: "从移动客户端发布:"
+    edit_photo: "编辑照片"
+    manage_photos: "管理照片"
 
-  # admin:
-  #   contact_info: "Admin Contact Information"
-  #   highlight_fields: "Highlight Fields"
-  #   manage_system_users: "Manage System Users"
-  #   create_system_user: Create a System User
+    view: "查看儿童 %{short_id}"
+    edit: "编辑儿童"
+    mark_child_as_duplicate: "标记%{short_id}为副本"
+    history_of: "%{short_id}的历史"
+  preposition:
+    on_label: ""
+    because: "因为"
+    at_label: "at在"
 
-  # fields:
-  #   label: "Fields"
-  #   field_name: "Field Name"
-  #   display_name: "Display Name"
-  #   option_strings_text: "Options"
-  #   form_name: "Form Name"
-  #   action: "Action"
-  #   remove: "remove"
-  #   text_field: "Text Field"
-  #   check_box: "Check boxes"
-  #   select_box: "Select drop down"
-  #   radio_button: "Radio button"
-  #   text_area: "Text Area"
-  #   numeric_field: "Numeric Field"
-  #   date_field: "Date Field"
+  will_paginate:
+    previous_label: "&#8592; Previous"
+    next_label: "Next &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page_html:
+        zero: "没找到%{model}"
+        one: "显示 <b>1</b> %{model}"
+        other: "显示 <b>所有 %{count}</b> %{model}"
+      multi_page_html: "显示 %{model} <b>%{from} - %{to}</b> 总共 <b>%{count}</b> "
+    models:
+      report:
+        one: "报告"
+        other: "报告"
+      child:
+        one: "儿童"
+        other: "儿童"
 
-  #   add: "Add Field"
-  #   type: "Field type"
-  # replication:
-  #   label: Replication
-  #   index: Manage Replications
-  #   create: Configure a Server
-  #   edit: Edit Configuration
-  #   remote_app_url: RapidFTR URL
-  #   actions: Actions
-  #   status: Status
-  #   description: Description
-  #   timestamp: Timestamp
-  #   delete: Delete
-  #   completed: Successful
-  #   triggered: In Progress
-  #   error: Failed
-  #   confirm_delete: Are you sure you want to delete this replication?
-  #   start: Start Synchronization
-  #   stop: Stop Synchronization
-  #   configure_a_server: Configure a Server
+  users:
+    unverified: "未认证的用户"
+    select_role: "请在验证用户之前选择一个角色"
+    manage: "管理用户"
+    label: "用户"
+    create: "创建用户"
+    actions:
+      show_all: "显示所有"
+      show: "显示"
+    messages:
+      disable: '你确定要禁止这个用户?'
+    sort_by:
+      label: "排序"
+      full_name: "全名"
 
-  # session_expire: "Your session is about to expire!"
-  # administration: "Administration"
-  # new: "New"
-  # saved: "Saved"
-  # history_of: "History of"
-  # account: "Account"
-  # moved_from: "%{field_name} moved from %{from_fs} to %{to_fs}"
+  roles:
+    label: "角色"
+    list: "角色列表"
+    sort_by:
+      label: "排序"
+      ascending: "升序"
+      descending: "降序"
+    name: "角色名"
+    actions:
+      show_all: "显示所有"
+      show: "显示"
+      edit: "编辑"
+      update: "更新"
+      create: "创建"
+    view: "查看角色"
+
+  user:
+    label: "用户"
+    full_name: "全名"
+    history_of: "%{user_name}历史"
+    disabled: "禁用"
+    actions:
+      delete: "删除"
+    messages:
+      confirmation: "你确定要删除这个用户? 删除的用户不可以恢复。点击OK来删除用户"
+      created: "用户成功被创建"
+      updated: "用户成功被更新"
+      not_found: "没有与id匹配的用户"
+      passwords_do_not_match: "密码不匹配"
+      password_changed_successfully: "密码重置成功"
+      time_zone_updated: "设置成功"
+    update: "更新"
+    verify: "验证"
+    create: "添加"
+    no_blank: "用户名不能包含空格"
+    manage_password: "更改秘密"
+    old_password: "旧密码"
+    new_password: "新密码"
+    new_password_confirmation: "重新输入新密码"
+    new: "新用户"
+    user_action_history: "用户活动历史"
+    no_activity: "没有活动"
+
+  actions: "活动"
+  phone: "电话"
+  email: "邮箱"
+  organisation: "组织"
+  position: "职位"
+  location: "位置"
+  false: "false假"
+  true: "true真"
+  mandatory_field: "标记字段为必须"
+  add: "添加"
+  belonging_to: "属于"
+  hello: "你好"
+  imei: "IMEI"
+  blacklisted: "黑名单?"
+  visible: "可见"
+  hidden: "隐藏"
+  help_text: "帮助"
+  cancel: "取消"
+  discard: "丢弃"
+  form: "表单"
+  details: "详细信息"
+  enabled: "禁用"
+  status: "状态"
+  devices: "设备"
+  provide_translation: "提供翻译"
+
+  role:
+    create: "创建角色"
+    edit: "编辑角色"
+    name: "姓名"
+    successfully_updated: "角色的详细信息成功更新."
+    error_in_updating: "角色详细信息更新失败."
+  record: "纪录"
+  description: "描述"
+  name: "名字"
+
+  permissions:
+    label: "允许"
+    group:
+      Reports: 报告
+      Devices: 设备
+      System: 系统
+      Roles: 角色
+      Children: 儿童
+      Forms: 表单
+      Users: 用户
+      ALL: 所有
+
+    permission:
+      "Register Child": "登记儿童"
+      "Edit Child": "编辑儿童"
+      "View And Search Child": "查看和搜索儿童"
+      "Export to Photowall/CSV/PDF": "导出成照片墙/CSV/PDF"
+      "Manage Forms": "管理表单"
+      "Create and Edit Users": "创建和编辑用户"
+      "View Users": "查看用户"
+      "Delete Users": "删除用户"
+      "Disable Users": "禁用用户"
+      "BlackList Devices": "黑名单设备"
+      "Create and Edit Roles": "创建和编辑角色"
+      "View roles": "查看角色"
+      "System Settings": "系统设置"
+      "Highlight Fields": "高亮字段"
+      "Manage Replications": "管理副本"
+      "View roles": "查看角色"
+      "All": "所有"
+      "Users for synchronisation": "管理服务器同步用户"
+      "View and Download Reports": "查看和下载报告"
+  forms:
+    label: "表单"
+    save: "保存表单"
+    save_details: "保存详细信息"
+    messages:
+      use_existing: "我们建议你使用已存在的表单，方便组织间信息的分享和融合。"
+    initial_language: "初始语言"
+    cannot_be_edited: "表单上不能被编辑的字段."
+
+  form_section:
+    create: "创建新的表单"
+    visibility: "可见Visibility"
+    ordering: "排序Ordering"
+    details: "表单详细信息"
+    label: "表单项"
+    back: "返回到表单页"
+    actions:
+      add_custom_field: "添加顾客字段"
+      save_order: "保存顺序"
+    messages:
+      order_saved: "顺序被成功保存."
+      cannot_create: "表单项不能被创建"
+      correct_errors: "请改正下面的错误并重新提交:"
+      hide_confirmation: "你确定隐藏字段?"
+      show_confirmation: "你确定显示字段?"
+      drag_drop_help_text: 您可以点击字段拖放，放大，按顺序下移。
+
+      updated: "表单项被成功添加"
+    hide: "隐藏"
+    show: "展示"
+    manage: "管理表单"
+    edit: "编辑表单"
+    buttons:
+      add: "添加"
+    options: "选项"
+
+
+  advanced_search:
+    instruction: "通过OR来分隔多个搜索选项。如：Tim OR Rahul"
+    date_instruction: "在第一栏里输入日期(yyyy-mm-dd)来搜索之后创建或者更新的记录。在第二栏里输入日期(yyyy-mm-dd)来搜索之前创建或者更新的记录。在两栏都输入日期来查看期间创建或更新的记录。"
+    created_by_org: "创建 (组织) :"
+    date_created: "创建日期 :"
+    updated_by: "更新 (用户) :"
+    after: "之后 :"
+    before: "之前 :"
+    created_by: "创建 (用户) :"
+    date_updated: "更新日期 :"
+    select_a_criteria: "选择一个标准"
+    records_found:
+      one: "找到一个纪录"
+      other: "找到%{count}纪录"
+
+  search: "搜索"
+  select_all: "选择所有的纪录"
+  no_results_found: "纪录未找到"
+  date_format: "yy-mm-dd"
+  yes_label: "是"
+  cancel: "取消"
+
+  contact:
+    message: "如果你发现RapidFTR存在问题, 或者觉得你的密码被盗, 请立即和管理员联系"
+    field:
+      name: "姓名"
+      position: "职位"
+      organization: "组织"
+      email: "邮件"
+      phone: "电话号码"
+      location: "位置"
+      other_information: "其它信息"
+    updated: "联系信息成功更新"
+    edit_info: "更改联系信息"
+    info_label: "联系信息"
+    not_found: "找不到%{id}的联系信息"
+
+  device:
+    blacklist: "黑名单设备"
+    messages:
+      blacklist: "你要把这个设备加入黑名单?"
+      remove_blacklist: "你要把这个设备从黑名单移除?"
+      disable: '你确定要禁用这个设备?'
+    information: "设备信息"
+    mobile_number: "手机号"
+    timestamp: "时间戳"
+
+  admin:
+    contact_info: "管理员联系信息"
+    highlight_fields: "高亮字段"
+    manage_system_users: "管理服务器同步用户"
+    create_system_user: 创建系统用户
+
+  fields:
+    label: "字段"
+    field_name: "字段名"
+    display_name: "显示字段名"
+    option_strings_text: "选项"
+    form_name: "表单名"
+    action: "动作"
+    remove: "移除"
+    text_field: "文本字段"
+    check_box: "检查框"
+    select_box: "选择下拉"
+    radio_button: "单选按钮"
+    text_area: "文本区域"
+    numeric_field: "数字字段"
+    date_field: "日期字段"
+    successfully_added: "字段被成功添加"
+    updated: "字段被成功更新"
+    deleted: "%{display_name}字段被删除."
+    add: "添加字段"
+    type: "字段类型"
+    move_to: "移动到"
+
+  replication:
+    label: 副本
+    index: 管理副本
+    create: 配置服务器
+    edit: 编辑配置
+    remote_app_url: RapidFTR URL
+    actions: 动作
+    status: 状态
+    description: 描述
+    timestamp: 时间戳
+    delete: 删除
+    completed: 成功
+    triggered: 处理中
+    error: 失败
+    confirm_delete: 你确定要删除这个副本?
+    start: 开始同步
+    stop: 停止同步
+    configure_a_server: 配置服务器
+
+  session:
+    about_to_expire: "你的会话即将到期!"
+    has_expired: "你的对话已到期。请重新登陆"
+    invalid_credentials: "无效的验证，请重试!"
+    login_error: "登陆时出现错误，请重试"
+    invalid_token: "不正确的会话令牌"
+    no_token_provided: "没有会话令牌"
+    no_token_in_header: "缓存里面没有会话令牌"
+
+  report:
+    heading: "RapidFTR报告"
+    type: "类型"
+    as_of_date: "日期"
+    download: "下载"
+    types:
+      weekly_report: "周报告"
+
+  encrypt:
+    password_title: "密码"
+    password_label: "输入密码来加密文件"
+    password_mandatory: "输入密码"
+
+  administration: "管理员"
+  new: "创建"
+  saved: "保存"
+  account: "帐号"
+  moved_from: "%{field_name}从%{from_fs}移到%{to_fs}"
+
+  # validation error messages
+  couchrest:
+    fields:
+      Name: "姓名"
+      Username: "用户名"
+      Password: "密码"
+      Description: "描述"
+      "Remote app url": "远程应用url"
+
+    validations:
+      blank: "%s 不能为空"
+
+  activerecord:
+    errors:
+
+      template:
+        header:
+          one: "1个错误导致%{model}不能被保存"
+          other: "%{count}个错误导致%{model}不能被保存"
+        body: "以下字段有错误:"
+
+      models:
+        user:
+          full_name: "请输入用户的全名"
+          password_confirmation: "请输入密码确认"
+          role_ids: "请选择至少一个角色"
+          organisation: "请输入用户的组织名"
+          user_name: "请输入一个有效的用户名"
+          email: "请输入一个有效的邮箱地址"
+          user_name_uniqueness: "用户名已存在! 请选择一个新的用户名"
+          authenticate: "不能认证一个没有保存的用户"
+
+        child:
+          at_least_one_field: "请至少填一个字段或者上传文件"
+          age: "年龄必须在1在99岁之间"
+          photo_format: "请给这个儿童记录上传合适的(jpg or png)图片"
+          photo_size: "文件太大"
+          primary_photo_id: "把'%{photo_id}'做为主图片失败:没有这个图片"
+          validate_duplicate: "必须提供一个有效的副本ID"
+
+        field:
+          display_name_presence: "名字不能为空"
+          display_name_format: "名字应至少包含一个字母数字"
+          default_value: "找不到类型的默认值 "
+          has_2_options: "字段至少需要两个选择项"
+          has_1_option: "检查框至少需要一个选择项"
+          unique_name_other: "表单已经存在'%{form_name}'字段"
+          unique_name_this: "表单已经存在该字段"
+
+        form_section:
+          presence_of_name: "名字不能为空"
+          presence_of_base_language_name: "基始语言'%{base_language}'对应的名字不能为空"
+          format_of_name: "名字只能包含字母数字和空格"
+          visible_method: "如果允许查看可见性字段不能为假"
+          fixed_order_method: "fixed_order不能为假如果perm_enabled是真"
+          perm_visible_method: "perm_visible不能为假if perm_enabled为真"
+          add_field_to_form_section: "表单项不能编辑"
+          delete_field: "不能编辑的字段不能被删除"
+          unique_name: "'%{name}'这个名字已存在."
+          unique_id: "'%{unique_id}'已存在."
+
+        role:
+          permission_presence: "请至少选择一项权限"
+          unique_name: "角色名已存在, 请输入一个不同的名字"
+
+        system_users:
+          username_unique: "用户名已存在!请选择一个新的用户名"
+
+        replication:
+          remote_app_url: "请输入合适的 URL, e.g. http://<server>:<port>"
+          save_remote_couch_config: "The URL/Username/Password输入不正确"
+
+  select_all_results: "选择所有的结果"
+
+  histories:
+    to: "到"
+    by: "通过"
+    added_by: "添加"
+    belong_to: "属于"
+    because: "因为:"
+    deleted_by: "删除"
+
+    audio:
+      audio: "音频"
+      audio_change: "音频改变"
+
+    duplicate:
+      mark_as_duplicate: "把这个记录标记为副本"
+      no_longer_active: "当前记录不可修改或者无效"
+
+    flag:
+      record_flagged_by: "记录被标记"
+      record_unflagged_by: "记录被取消标记"
+
+    investigated:
+      mark_as_investigated_by: "纪录被标记为已调查"
+      mark_as_not_investigated_by: "记录被标记为未调查"
+
+    reunited:
+      child_status_changed: "儿童状态被改为活动"
+      with_details: "细节:"
