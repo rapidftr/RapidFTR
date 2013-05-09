@@ -435,8 +435,17 @@ view_by :protection_status, :gender, :ftr_status
   def delete_photos(photo_names)
     return unless photo_names
     photo_names = photo_names.keys if photo_names.is_a? Hash
+    photo_names.map{|x| related_keys(x)}.flatten.each do |key|
+      photo_key_index = self['photo_keys'].find_index(key)
+      self['photo_keys'].delete_at(photo_key_index) unless photo_key_index.nil?
+      delete_attachment(key)
+    end
     @deleted_photo_keys ||= []
     @deleted_photo_keys.concat(photo_names)
+  end
+
+  def related_keys key
+    [key, "#{key}_328", "#{key}_160x160"]
   end
 
   def photo=(new_photos)

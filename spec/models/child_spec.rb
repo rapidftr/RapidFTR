@@ -285,6 +285,15 @@ describe Child do
   end
 
   describe "validation" do
+    context "child with only a photo registered" do
+        it 'should not be able to delete photo of child  with only one photo' do
+          @child = Child.new
+          @child.photo=uploadable_photo
+          @child.delete_photos [@child.primary_photo]
+        expect { @child.save
+        }.to raise_error
+      end
+     end
 
     it "should fail to validate if all fields are nil" do
       child = Child.new
