@@ -282,6 +282,15 @@ describe FormSection do
       form_section.errors.on(:name).should be_present
     end
 
+    it "should not allows empty form names in form base_language " do
+     form_section = FormSection.new(:name_en => 'English', :name_zh=>'Chinese')
+     I18n.default_locale='zh'
+     expect {
+       form_section[:name_en]=''
+       form_section.save!
+     }.to raise_error
+    end
+
     it "should validate name is alpha_num" do
       form_section = FormSection.new(:name=>"££ss")
       form_section.should_not be_valid
@@ -296,6 +305,12 @@ describe FormSection do
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
       form_section.errors.on(:unique_id).should be_present
+    end
+
+    it "should not occur error  about the name is not unique  when the name is not filled in" do
+      form_section = FormSection.new(:name=>"")
+      form_section.should_not be_valid
+      form_section.errors.on(:unique_id).should_not be_present
     end
 
     it "should not trip the unique name validation on self" do

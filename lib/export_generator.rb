@@ -104,8 +104,8 @@ class ExportGenerator
       @attachment = FileAttachment.new("no_photo", "image/jpg", data)
       render_image(@attachment.data)
     end
-    @pdf.move_down 2
-    @pdf.text child.short_id, :align => :center, :style => :bold if with_full_id
+    @pdf.move_down 25
+    @pdf.text child.short_id,:size => 40,:align => :center, :style => :bold if with_full_id
 
     @pdf.y -= 3.mm
   end

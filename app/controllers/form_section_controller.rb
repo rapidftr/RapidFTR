@@ -9,8 +9,9 @@ class FormSectionController < ApplicationController
   def create
     authorize! :create, FormSection
     form_section = FormSection.new_with_order params[:form_section]
+    form_section.base_language = I18n.default_locale
     if (form_section.valid?)
-      form_section.create!
+      form_section.create
       flash[:notice] = t("form_section.messages.updated")
       redirect_to edit_form_section_path(form_section.unique_id)
     else
