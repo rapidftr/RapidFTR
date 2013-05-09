@@ -53,8 +53,7 @@ Feature: Manage Users
      And I press "Update"
      Then I should see "9876543210"
 
-  @javascript
-   Scenario: User should be able to see active users sorted by Full Name by default on User Listing page
+  Scenario: User should be able to see active users sorted by Full Name by default on User Listing page
      Given a user "henry"
      And a user "homer"
      And user "homer" is disabled
@@ -66,7 +65,6 @@ Feature: Manage Users
      |jerry|
      And I should not see "homer"
 
-  @javascript
   Scenario: User should be able to see active users sorted by User Name on User Listing page
     Given a user "henry"
     And a user "homer"
