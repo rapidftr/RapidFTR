@@ -8,29 +8,24 @@ Feature:
   #   see user_login.feature
 
   @javascript
-  Scenario: Admin disables a user from the edit page
+  Scenario: Admin disables a user and re-enables a user from the edit page
 
     Given a user "pooja"
     And I am logged in as a user with "Admin,Disable Users" permissions
     And I am on the manage users page
 
-    When I disable user
+    When the user "pooja" checkbox is marked as "disabled"
     Then user "pooja" should be disabled
     And the user "pooja" should be marked as disabled
+
 	When I follow "Show" within "#user-row-pooja"
 	Then I should see "Disabled"
 
-  @javascript
-  Scenario: Admin re-enables a user from the edit page
-
-    Given a user "pooja"
-    And user "pooja" is disabled
-    And I am logged in as a user with "Admin,Disable Users" permissions
     And I am on the manage users page
-
-    When I re-enable user
+    When the user "pooja" checkbox is marked as "enabled"
     Then user "pooja" should not be disabled
     And the user "pooja" should be marked as enabled
+
     When I follow "Show" within "#user-row-pooja"
     Then I should see "Enabled"
 
