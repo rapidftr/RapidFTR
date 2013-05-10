@@ -241,7 +241,6 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I select "Most recently flagged" from "order_by"
     Then I should see the order zak,meredith,jaco,andreas
 
-  @javascript
   Scenario: Checking filter by Active should by default show the records ordered alphabetically
 
     Given the following children exist in the system:
@@ -254,7 +253,6 @@ Feature: So that I can filter the types of records being show when viewing searc
     When I go to the children listing page
     Then I should see the order meredith,zak
 
-  @javascript
   Scenario: Checking filter by Active shows the Order by options
 
     Given the following children exist in the system:
@@ -282,7 +280,6 @@ Feature: So that I can filter the types of records being show when viewing searc
     And I select "Most recently created" from "order_by"
     Then I should see the order zak,jaco,meredith
 
-  @javascript
   Scenario: Checking filter by Active and order by name should return the children in alphabetical order
 
     Given the following children exist in the system:

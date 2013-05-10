@@ -35,7 +35,8 @@ end
 #end
 
 When /^I search$/ do
-  page.execute_script("$('input[value=\"#{Search}\"]').click();")
+  #page.execute_script("$('input[value=\"#{Search}\"]').click();")
+  find("//input[@value='Search']").click
 end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|

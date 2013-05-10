@@ -9,15 +9,17 @@ Feature: Manage Users
     And I follow "USERS"
 
   @javascript
-  @wip
   Scenario: Admins should be able to change user disabled status from index page
-    Given a user "homersimpson"
-      And user "homersimpson" is disabled
-      And I am logged in as an admin
-      And I follow "USERS"
 
-     When I uncheck the disabled checkbox for user "homersimpson"
-     Then user "homersimpson" should not be disabled
+    And the user "jerry" checkbox is marked as "disabled"
+
+    When I follow "Logout"
+    And I am logged in as an admin
+    And I follow "USERS"
+    And the user "jerry" checkbox is marked as "enabled"
+
+    Then user "jerry" should not be disabled
+    And the user "jerry" should be marked as enabled
 
   Scenario: Admins should be able view himself
      Then I should see "Show"
@@ -53,8 +55,7 @@ Feature: Manage Users
      And I press "Update"
      Then I should see "9876543210"
 
-  @javascript
-   Scenario: User should be able to see active users sorted by Full Name by default on User Listing page
+  Scenario: User should be able to see active users sorted by Full Name by default on User Listing page
      Given a user "henry"
      And a user "homer"
      And user "homer" is disabled
@@ -66,7 +67,6 @@ Feature: Manage Users
      |jerry|
      And I should not see "homer"
 
-  @javascript
   Scenario: User should be able to see active users sorted by User Name on User Listing page
     Given a user "henry"
     And a user "homer"

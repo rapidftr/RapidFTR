@@ -1,10 +1,10 @@
-When /^I disable user$/ do
-  find(:xpath,"//input[@class='user-disabled-status']").click
+
+
+When /^the user "([^"]*)" checkbox is marked as "([^"]*)"$/ do |username, status|
+  select("All",:from => "filter")
+  disabled_checkbox = find(:css, "#user-row-#{username} td.user-status input")
+  disabled_checkbox.click
   click_button("Yes")
 end
 
-When /^I re\-enable user$/ do
-  select("All",:from => "filter")
-  find(:xpath,"//input[@class='user-disabled-status']").click
-  click_button("Yes")
-end
+

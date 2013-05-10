@@ -25,17 +25,6 @@ class FormSection < CouchRestRails::Document
   validates_with_method :fixed_order, :method => :validate_fixed_order, :message => I18n.t("activerecord.errors.models.form_section.fixed_order_method")
   validates_with_method :perm_visible, :method => :validate_perm_visible, :message => I18n.t("activerecord.errors.models.form_section.perm_visible_method")
 
-  def validate_name_format
-    special_characters = /[*!@#%$\^]/
-    white_spaces = /^(\s+)$/
-    if (name =~ special_characters) || (name =~ white_spaces)
-      errors.add(:name, I18n.t("activerecord.errors.models.form_section.format_of_name"))
-      return false
-    else
-      return true
-    end
-  end
-
   def valid_presence_of_base_language_name
     if base_language==nil
       self.base_language='en'
@@ -190,6 +179,17 @@ class FormSection < CouchRestRails::Document
   end
 
   protected
+
+  def validate_name_format
+    special_characters = /[*!@#%$\^]/
+    white_spaces = /^(\s+)$/
+    if (name =~ special_characters) || (name =~ white_spaces)
+      errors.add(:name, I18n.t("activerecord.errors.models.form_section.format_of_name"))
+      return false
+    else
+      return true
+    end
+  end
 
   def validate_visible_field
     self.visible = true if self.perm_visible?

@@ -113,7 +113,6 @@ Feature:
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
 
 
-  @javascript
   Scenario: As an admin view history of changes made by a user
 
   As a System admin
@@ -135,7 +134,6 @@ Feature:
     When I view User Action History
     Then I should see "2013-04-09 13:05:00 UTC Record created by harry"
 
-  @javascript
   Scenario: As an admin when I view history of user who has no activity, the same should be displayed to me
 
     Given "Jerry" logs in with "Register Child" permission
