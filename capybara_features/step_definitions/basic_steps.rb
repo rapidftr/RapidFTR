@@ -112,7 +112,10 @@ end
 
 When 'I wait for the page to load' do
   if Capybara.current_driver == :selenium
-    wait_until { page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0') }
+    Timeout.timeout(Capybara.default_wait_time) do
+      sleep(0.1) until value = page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0')
+      value
+    end
   else
     page.has_content? ''
   end

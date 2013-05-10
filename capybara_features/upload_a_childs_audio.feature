@@ -34,6 +34,7 @@ Feature:
     And I should see an audio element that can play the audio file named "sample.mp3"
     And the record history should log "Audio"
     And the record history should log "added by bob"
+    And I wait for 1 seconds
 
     When I am editing the child with name "Harry"
     And I click the "Photos and Audio" link

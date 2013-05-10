@@ -23,8 +23,8 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "field_display_name_en" with "Anything"
-    And I fill in "Help text" with "Really anything"
+    When I fill in "Anything" for "field_display_name_en"
+    And I fill in "Really anything" for "Help text"
     And I press "Save Details" within "#new_field"
     And I wait until "Fields" is visible
 
@@ -33,7 +33,7 @@ Feature: So that admin can customize fields in a form section
     And I follow "Register New Child"
 
     Then I should see "Anything"
-  
+
   @javascript
   Scenario: Admins should be able to add new date fields
     Given I am on the edit form section page for "family_details"
@@ -50,8 +50,8 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "field_display_name_en" with "Anything"
-    And I fill in "Help text" with "Really anything"
+    When I fill in "Anything" for "field_display_name_en"
+    And I fill in "Really anything" for "Help text"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Anything"
@@ -88,7 +88,7 @@ Feature: So that admin can customize fields in a form section
     two
     """
     And I wait until "Save Details" is visible
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
 
     Then I should see "Radio button name"
     When I am on children listing page
@@ -144,7 +144,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Numeric Field"
     And I fill in "Help text" with "Help for a numeric field"
     And I wait until "field_display_name_en" is visible
-    And I fill in "field_display_name_en" with "My new number field"
+    And I fill in "My new number field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
@@ -168,7 +168,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Text Field"
     And I fill in "Help text" with "Help for a text field"
     And I wait until "field_display_name_en" is visible
-    And I fill in "field_display_name_en" with "My Text field"
+    And I fill in "My Text field" for "field_display_name_en"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
@@ -187,7 +187,7 @@ Feature: So that admin can customize fields in a form section
     one
     two
     """
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
 
     Then I should see "Field successfully added"
 
@@ -213,7 +213,7 @@ Feature: So that admin can customize fields in a form section
     Teddy bear
     Younger sibling
     """
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
 
     Then I should see "Field successfully added"
 
@@ -245,7 +245,7 @@ Feature: So that admin can customize fields in a form section
 	Lego
 	"""
 
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
     Then I should see "Field successfully added"
     And I should see "Toys" in the list of fields
     When I am on the add child page
@@ -258,7 +258,7 @@ Feature: So that admin can customize fields in a form section
       | Lego       | no       |
     When I check "Lego" for "Toys"
     And I check "Action Man" for "Toys"
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
     Then I should see "Action Man, Lego"
     When I follow "Edit"
     And I visit the "Family details" tab

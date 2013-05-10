@@ -59,10 +59,9 @@ end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
-    fill_in(field, :with => value)
+    fill_in(field, :visible => true, :with => value)
   end
 end
-
 
 When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"

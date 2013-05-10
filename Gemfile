@@ -73,14 +73,10 @@ group :test, :cucumber do
   gem 'rspec-instafail',  '~> 0.2.4'
   gem 'jasmine',          '~> 1.3.2'
 
-  gem 'capybara',         '~> 1.0.1'
+  gem 'capybara',         '~> 2.1.0'
   gem 'cucumber',           '~> 1.2.2'
   gem 'cucumber-rails',     '~> 0.3.2'
   gem 'selenium-webdriver', '~> 2.30'
   gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
-end
-
-group :profile do
-  gem 'ruby-prof'
 end

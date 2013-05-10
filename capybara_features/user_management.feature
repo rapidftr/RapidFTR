@@ -42,7 +42,6 @@ Feature: As an admin, I should be able to edit existing users.
     When I follow "Edit"
     And I fill in the following:
       | Full Name         | Julia Roberts      |
-      | User Name         | george             |
       | Password          | different password |
       | Re-enter password | different password |
       | Email             | xyz@nyu.com        |
