@@ -31,7 +31,6 @@ Feature:
 
 
  # @allow-rescue
-  @javascript
   Scenario: A user who is disabled mid-session can't continue using that session
 
     Given a user "george"

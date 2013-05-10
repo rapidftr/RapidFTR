@@ -76,7 +76,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I wait for the page to load
       And I should see "mary" in the search results
 
-  @javascript
   Scenario: Searching by 'Created By' - fuzzy search
    Given I am logged in
      And I am on child advanced search page
@@ -130,7 +129,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      And I wait for the page to load
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
 
-  @javascript
   Scenario: Searching by 'Date Created' specifying only the 'After' date
    Given I am logged in
      And I am on child advanced search page
@@ -148,7 +146,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should see "James" in the search results
 
-  @javascript
   Scenario: Searching by 'Date Updated' specifying only the 'After' date
    Given I am logged in
      And I am on child advanced search page
@@ -166,7 +163,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Peter" in the search results
     And I should see "James" in the search results
 
-  @javascript
   Scenario: Searching by 'Date Updated' specifying both 'After' and 'Before' dates
    Given I am logged in
      And I am on child advanced search page
@@ -239,7 +235,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should see "James" in the search results
 
 
-  @javascript
   Scenario: Add Paging to advanced search page
     Given I am logged in
     And I am on child advanced search page
