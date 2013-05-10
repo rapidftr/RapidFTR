@@ -292,9 +292,15 @@ describe FormSection do
     end
 
     it "should validate name is alpha_num" do
-      form_section = FormSection.new(:name=>"££ss")
+      form_section = FormSection.new(:name=>"££")
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
+    end
+
+    it "should allow arabic names" do
+      form_section = FormSection.new(:name=>"العربية")
+      form_section.should be_valid
+      form_section.errors.on(:name).should_not be_present
     end
 
     it "should validate name is unique" do
