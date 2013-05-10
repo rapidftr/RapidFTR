@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/farismosman/rapidftr-addon-cpims.git
-  revision: da71b186feac2e96dc5d86ac094d052ae665cf90
+  revision: 7d4cf4dd9ee13c401b945cdad00314ed0bd5b725
   specs:
     rapidftr_addon_cpims (0.0.2)
       activesupport
@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/farismosman/rapidftr-addon.git
-  revision: 9697b03ab3d6aa929196398de503380e1f47877e
+  revision: 30b6442b9ce69902c1b9b9b631061d54764f78bb
   specs:
     rapidftr_addon (0.0.2)
       activesupport
@@ -33,6 +33,7 @@ GEM
       rack-mount (~> 0.6.14)
       rack-test (~> 0.5.7)
       tzinfo (~> 0.3.23)
+    active_reload (0.6.1)
     activemodel (3.0.19)
       activesupport (= 3.0.19)
       builder (~> 2.1.2)
@@ -248,6 +249,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_reload
   cancan (~> 1.6.9)
   capistrano (~> 2.14.2)
   capybara (~> 1.0.1)

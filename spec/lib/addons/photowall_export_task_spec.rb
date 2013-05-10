@@ -8,11 +8,11 @@ module Addons
     end
 
     it 'should be an ExportTask addon' do
-      RapidftrAddon::ExportTask.implementations.should include PhotowallExportTask
+      RapidftrAddon::ExportTask.active.should include PhotowallExportTask
     end
 
-    it 'should have proper addon_id' do
-      RapidftrAddon::ExportTask.find_by_addon_id(:photowall).should == PhotowallExportTask
+    it 'should have proper id' do
+      RapidftrAddon::ExportTask.find_by_id(:photowall).should == PhotowallExportTask
     end
 
     it 'should delegate to ExportGenerator' do

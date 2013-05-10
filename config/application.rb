@@ -19,6 +19,7 @@ module RapidFTR
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(
       #{config.root}/lib
+      #{config.root}/lib/addons
       #{config.root}/lib/rapid_ftr
       #{config.root}/lib/extensions
       #{config.root}/app/presenters

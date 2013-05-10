@@ -1,7 +1,7 @@
 module Addons
   class PdfExportTask < RapidftrAddon::ExportTask
 
-    def self.addon_id
+    def self.id
       :pdf
     end
 

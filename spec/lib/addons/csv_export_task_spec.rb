@@ -8,11 +8,11 @@ module Addons
     end
 
     it 'should be an ExportTask addon' do
-      RapidftrAddon::ExportTask.implementations.should include CsvExportTask
+      RapidftrAddon::ExportTask.active.should include CsvExportTask
     end
 
-    it 'should have proper addon_id' do
-      RapidftrAddon::ExportTask.find_by_addon_id(:csv).should == CsvExportTask
+    it 'should have proper id' do
+      RapidftrAddon::ExportTask.find_by_id(:csv).should == CsvExportTask
     end
 
     it 'should delegate to ExportGenerator' do

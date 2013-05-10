@@ -1,7 +1,7 @@
 module Addons
   class CsvExportTask < RapidftrAddon::ExportTask
 
-    def self.addon_id
+    def self.id
       :csv
     end
 

@@ -8,11 +8,11 @@ module Addons
     end
 
     it 'should be an ExportTask addon' do
-      RapidftrAddon::ExportTask.implementations.should include PdfExportTask
+      RapidftrAddon::ExportTask.active.should include PdfExportTask
     end
 
-    it 'should have proper addon_id' do
-      RapidftrAddon::ExportTask.find_by_addon_id(:pdf).should == PdfExportTask
+    it 'should have proper id' do
+      RapidftrAddon::ExportTask.find_by_id(:pdf).should == PdfExportTask
     end
 
     it 'should delegate to ExportGenerator' do

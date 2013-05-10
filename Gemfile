@@ -52,6 +52,10 @@ end
 gem 'rufus-scheduler', '~> 2.0.18', :require => false
 gem 'daemons',         '~> 1.1.9',  :require => false
 
+group :development do
+  gem 'active_reload'
+end
+
 group :development, :assets do
   gem 'rubyzip',       '~> 0.9.9'
   gem 'sass',          '~> 3.2.7'

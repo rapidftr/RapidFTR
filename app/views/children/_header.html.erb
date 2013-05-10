@@ -8,8 +8,8 @@
       <span class="export"><%= t("children.export") %></span>
       <div class="dropdown hide">
         <% if can?(:export, Child) %>
-          <% RapidftrAddon::ExportTask.implementations.each do |addon| %>
-            <%= link_to t("addons.export_task.#{addon.addon_id}.all"), children_path(:format => addon.addon_id, :per_page => :all), :class => "password-prompt" %>
+          <% RapidftrAddon::ExportTask.active.each do |addon| %>
+            <%= link_to t("addons.export_task.#{addon.id}.all"), children_path(:format => addon.id, :per_page => :all), :class => "password-prompt" %>
           <% end %>
       <%end%>
       </div>

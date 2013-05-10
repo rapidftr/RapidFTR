@@ -1,7 +1,7 @@
 module Addons
   class PhotowallExportTask < RapidftrAddon::ExportTask
 
-    def self.addon_id
+    def self.id
       :photowall
     end
 
