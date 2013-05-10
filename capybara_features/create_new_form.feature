@@ -36,7 +36,7 @@ Feature: Create new forms
 
     Given I am on form section page
     And I follow "Create New Form Section"
-    And I fill in "form_section_name" with "This is D£dgy"
+    And I fill in "form_section_name" with "This is D$dgy"
     And I fill in "form_section_description" with "I am a new custom form.  Say hello!"
 
     When I press "Save Details"

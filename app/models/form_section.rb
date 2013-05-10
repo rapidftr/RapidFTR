@@ -18,12 +18,23 @@ class FormSection < CouchRestRails::Document
   view_by :order
   validates_presence_of "name_#{I18n.default_locale}", :message => I18n.t("activerecord.errors.models.form_section.presence_of_name")
   validates_with_method :name, :method => :valid_presence_of_base_language_name
-  validates_format_of :name, :with => /([^*!@#£%$\^])$/, :message => I18n.t("activerecord.errors.models.form_section.format_of_name")
+  validates_with_method :name, :method => :validate_name_format
   validates_with_method :unique_id, :method => :validate_unique_id
   validates_with_method :name, :method => :validate_unique_name
   validates_with_method :visible, :method => :validate_visible_field, :message => I18n.t("activerecord.errors.models.form_section.visible_method")
   validates_with_method :fixed_order, :method => :validate_fixed_order, :message => I18n.t("activerecord.errors.models.form_section.fixed_order_method")
   validates_with_method :perm_visible, :method => :validate_perm_visible, :message => I18n.t("activerecord.errors.models.form_section.perm_visible_method")
+
+  def validate_name_format
+    special_characters = /[*!@#%$\^]/
+    white_spaces = /^(\s+)$/
+    if (name =~ special_characters) || (name =~ white_spaces)
+      errors.add(:name, I18n.t("activerecord.errors.models.form_section.format_of_name"))
+      return false
+    else
+      return true
+    end
+  end
 
   def valid_presence_of_base_language_name
     if base_language==nil

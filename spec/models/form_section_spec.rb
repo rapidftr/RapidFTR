@@ -292,7 +292,13 @@ describe FormSection do
     end
 
     it "should validate name is alpha_num" do
-      form_section = FormSection.new(:name=>"££")
+      form_section = FormSection.new(:name=> "r@ndom name!")
+      form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
+    end
+
+    it "should not allow name with white speces only" do
+      form_section = FormSection.new(:name=> "     ")
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
     end
