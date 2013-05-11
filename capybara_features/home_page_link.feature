@@ -2,6 +2,7 @@ Feature: So that a user can get back to their initial start page from anywhere w
   As a user of the website
   I want to click on 'CHILDREN' link and return to initial start page
 
+  @search
   Scenario: From saved record page clicking on 'CHILDREN' link redirects to initial start page
     Given I am logged in
     And the following children exist in the system:

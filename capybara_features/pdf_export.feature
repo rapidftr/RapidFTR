@@ -10,7 +10,7 @@ Feature: So that hard copy printout of missing child photos are available
       | Willis    | willis_uid | user1      |
       | Wilma     | wilma_uid  | user1      |
 
-  @javascript
+  @javascript @search
   Scenario: In search results, when a single record is selected and the export button is clicked, a pdf file is generated
 
     When I fill in "query" with "Wil"
@@ -19,7 +19,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I press "Export Selected to PDF"
     Then password prompt should be enabled
 
-  @javascript
+  @javascript @search
   Scenario: In search results, when two records are selected a pdf referring to those two records is generated
 
     When I fill in "query" with "Wil"
@@ -29,8 +29,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I press "Export Selected to Photo Wall"
     Then password prompt should be enabled
 
-  @allow-rescue
-  @javascript
+  @allow-rescue @javascript @search
   Scenario: In search results, when no records are selected and the export button is clicked, the user is shown an error message
     Given I am on the child search page
     When I fill in "query" with "Wil"
@@ -77,7 +76,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I am on the saved record page for child with name "Will"
     Then "export" option should be unavailable to me
 
-  @javascript
+  @javascript @search
   Scenario: Password prompt throws an error message when left blank or filled with spaces
     Given I am on the child search page
     When I fill in "query" with "Wil"
