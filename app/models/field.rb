@@ -13,6 +13,7 @@ class Field < Hash
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
   property :base_language, :default=>'en'
+
   TEXT_FIELD = "text_field"
   TEXT_AREA = "textarea"
   RADIO_BUTTON = "radio_button"
@@ -58,8 +59,19 @@ class Field < Hash
   validates_with_method :display_name, :method => :validate_unique_display_name
   validates_with_method :option_strings, :method => :validate_has_2_options
   validates_with_method :option_strings, :method => :validate_has_a_option
-  validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => I18n.t("activerecord.errors.models.field.display_name_format")
+  validates_with_method :display_name, :method => :validate_name_format
   validates_with_method :display_name, :method => :valid_presence_of_base_language_name
+
+  def validate_name_format
+    special_characters = /[*!@#%$\^]/
+    white_spaces = /^(\s+)$/
+    if (display_name =~ special_characters) || (display_name =~ white_spaces)
+      errors.add(:display_name, I18n.t("activerecord.errors.models.field.display_name_format"))
+      return false
+    else
+      return true
+    end
+  end
 
   def valid_presence_of_base_language_name
     if base_language==nil

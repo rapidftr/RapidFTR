@@ -3,9 +3,9 @@ require 'spec_helper'
 
 describe FormSection do
 
-  def mock_formsection(stubs={})
-    stubs.reverse_merge!(:fields=>[], :save => true, :editable => true)
-    @mock_formsection ||= mock_model(FormSection, stubs)
+  def create_formsection(stubs={})
+    stubs.reverse_merge!(:fields=>[], :save => true, :editable => true, :base_language => "en")
+    @create_formsection = FormSection.new stubs
   end
 
   def new_field(fields = {})
@@ -123,15 +123,22 @@ describe FormSection do
 
     it "adds the field to the formsection" do
       field = Field.new_text_field("name")
-      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      formsection = create_formsection :fields => [new_field(), new_field()], :save => true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
     end
 
+    it "adds base_language to fields in formsection" do
+      field = Field.new_textarea("name")
+      formsection = create_formsection :fields => [new_field(), new_field()], :save=>true
+      FormSection.add_field_to_formsection formsection, field
+      formsection.fields[2].should have_key("base_language")
+    end
+
     it "saves the formsection" do
       field = Field.new_text_field("name")
-      formsection = mock_formsection
+      formsection = create_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
     end
@@ -149,7 +156,7 @@ describe FormSection do
 
     it "adds the textarea to the formsection" do
       field = Field.new_textarea("name")
-      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      formsection = create_formsection :fields => [new_field(), new_field()], :save=>true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
@@ -157,7 +164,7 @@ describe FormSection do
 
     it "saves the formsection with textarea field" do
       field = Field.new_textarea("name")
-      formsection = mock_formsection
+      formsection = create_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
     end
@@ -168,7 +175,7 @@ describe FormSection do
 
     it "adds the select drop down to the formsection" do
       field = Field.new_select_box("name", ["some", ""])
-      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      formsection = create_formsection :fields => [new_field(), new_field()], :save=>true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
@@ -176,7 +183,7 @@ describe FormSection do
 
     it "saves the formsection with select drop down field" do
       field = Field.new_select_box("name", ["some", ""])
-      formsection = mock_formsection
+      formsection = create_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
     end
@@ -292,9 +299,21 @@ describe FormSection do
     end
 
     it "should validate name is alpha_num" do
-      form_section = FormSection.new(:name=>"££ss")
+      form_section = FormSection.new(:name=> "r@ndom name!")
       form_section.should_not be_valid
       form_section.errors.on(:name).should be_present
+    end
+
+    it "should not allow name with white speces only" do
+      form_section = FormSection.new(:name=> "     ")
+      form_section.should_not be_valid
+      form_section.errors.on(:name).should be_present
+    end
+
+    it "should allow arabic names" do
+      form_section = FormSection.new(:name=>"العربية")
+      form_section.should be_valid
+      form_section.errors.on(:name).should_not be_present
     end
 
     it "should validate name is unique" do
