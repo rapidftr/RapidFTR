@@ -6,7 +6,7 @@ describe Migration do
   end
 
   it 'should list all migrations' do
-    Dir.should_receive(:[]).with(Migration.migration_dir.join "*.rb").and_return([ "04_migration.rb", "02_migration.rb" ])
+    Dir.should_receive(:[]).with(Migration.migration_dir.join "*.rb").and_return([ "/1/2/04_migration.rb", "/1/2/02_migration.rb" ])
     Migration.all_migrations.should == [ "02_migration.rb", "04_migration.rb" ]
   end
 
@@ -22,7 +22,7 @@ describe Migration do
   end
 
   it 'should apply only pending migrations' do
-    Migration.stub! :applied_migrations => [], :pending_migrations => [1, 2, 3]
+    Migration.stub! :applied_migrations => [], :pending_migrations => [1, 2, 3], :puts => true
     Migration.should_receive(:apply_migration).with(1).ordered
     Migration.should_receive(:apply_migration).with(2).ordered
     Migration.should_receive(:apply_migration).with(3).ordered
