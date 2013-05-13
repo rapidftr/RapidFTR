@@ -19,8 +19,8 @@ class Migration < CouchRestRails::Document
   end
 
   def self.all_migrations
-      Dir[migration_dir.join "*.rb"].sort
-    end
+    Dir[migration_dir.join "*.rb"].map{ |path| File.basename path }.sort
+  end
 
   def self.applied_migrations
       migration_ids = database.documents["rows"].select{|row| !row["id"].include?("_design")}.map{|row| row["id"]}
