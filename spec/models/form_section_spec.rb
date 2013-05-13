@@ -4,7 +4,7 @@ require 'spec_helper'
 describe FormSection do
 
   def mock_formsection(stubs={})
-    stubs.reverse_merge!(:fields=>[], :save => true, :editable => true)
+    stubs.reverse_merge!(:fields=>[], :save => true, :editable => true, :[] => "en")
     @mock_formsection ||= mock_model(FormSection, stubs)
   end
 
@@ -127,6 +127,13 @@ describe FormSection do
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
+    end
+
+    it "adds base_language to fields in formsection" do
+      field = Field.new_textarea("name")
+      formsection = mock_formsection :fields => [new_field(), new_field()], :save=>true
+      FormSection.add_field_to_formsection formsection, field
+      formsection.fields[2].should have_key("base_language")
     end
 
     it "saves the formsection" do
