@@ -3,6 +3,8 @@ class Child < CouchRestRails::Document
   require "uuidtools"
   include CouchRest::Validation
   include RapidFTR::Model
+  include RapidFTR::Clock
+
   include Searchable
   Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
@@ -394,13 +396,13 @@ view_by :protection_status, :gender, :ftr_status
   def set_creation_fields_for(user)
     self['created_by'] = user.try(:user_name)
     self['created_organisation'] = user.try(:organisation)
-    self['created_at'] ||= current_formatted_time
-    self['posted_at'] = current_formatted_time
+    self['created_at'] ||= RapidFTR::Clock.current_formatted_time
+    self['posted_at'] = RapidFTR::Clock.current_formatted_time
   end
 
   def set_updated_fields_for(user_name)
     self['last_updated_by'] = user_name
-    self['last_updated_at'] = current_formatted_time
+    self['last_updated_at'] = RapidFTR::Clock.current_formatted_time
   end
 
   def last_updated_by
@@ -620,11 +622,8 @@ view_by :protection_status, :gender, :ftr_status
       User.find_by_user_name(user_name).try(:organisation)
     end
 
-    def current_formatted_time
-      Clock.now.getutc.strftime("%Y-%m-%d %H:%M:%SUTC")
-    end
 
-    def changes_for(field_names)
+  def changes_for(field_names)
       field_names.inject({}) do |changes, field_name|
         changes.merge(field_name => {
             'from' => original_data[field_name],
@@ -680,7 +679,7 @@ view_by :protection_status, :gender, :ftr_status
           else
             self[name] = value unless value == nil
           end
-          self["#{name}_at"] = current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
+          self["#{name}_at"] = RapidFTR::Clock.current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
         end
         self.set_updated_fields_for user_name
       else
