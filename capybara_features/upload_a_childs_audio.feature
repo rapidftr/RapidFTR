@@ -42,7 +42,7 @@ Feature:
     Then I should see "Child was successfully updated"
     And I click the "Photos and Audio" link
     And I should see an audio element that can play the audio file named "sample.mp3"
-    And the record history should log "Audio changed "
+    And the record history should log "Audio changed"
     And the record history should log "by bob"
 
   @gc
