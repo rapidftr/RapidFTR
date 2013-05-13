@@ -594,7 +594,7 @@ en:
       photowall:
         all: Export All to Photowall
         one: Export to Photowall
-        selected: Export Selected to Photowall
+        selected: Export Selected to Photo Wall
       csv:
         all: Export All to CSV
         one: Export to CSV

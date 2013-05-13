@@ -17,6 +17,7 @@ class Child < CouchRestRails::Document
   property :nickname
   property :unique_identifier
   property :short_id
+  property :created_by
   property :created_organisation
   property :flag, :cast_as => :boolean
   property :reunited, :cast_as => :boolean

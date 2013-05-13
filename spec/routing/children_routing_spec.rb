@@ -37,9 +37,5 @@ describe ChildrenController do
     it 'handles a multi-child export request' do
       { :post => 'advanced_search/export_data' }.should route_to( :controller => 'advanced_search', :action => 'export_data' )
     end
-
-    it 'recognizes and generates export_photo_to_pdf for child' do
-      {:get => 'children/1/export_photo_to_pdf'}.should route_to(:controller => 'children', :action => 'export_photo_to_pdf', :id => '1')
-    end
   end
 end
