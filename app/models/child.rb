@@ -440,12 +440,13 @@ view_by :protection_status, :gender, :ftr_status
       self['photo_keys'].delete_at(photo_key_index) unless photo_key_index.nil?
       delete_attachment(key)
     end
+
     @deleted_photo_keys ||= []
     @deleted_photo_keys.concat(photo_names)
   end
 
-  def related_keys key
-    [key, "#{key}_328", "#{key}_160x160"]
+  def related_keys(for_key)
+    self['_attachments'].keys.select { |check_key| check_key.starts_with? for_key}
   end
 
   def photo=(new_photos)
