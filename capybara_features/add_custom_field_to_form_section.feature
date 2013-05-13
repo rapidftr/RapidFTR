@@ -22,8 +22,8 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Anything" for "field_display_name_en"
-    And I fill in "Really anything" for "Help text"
+    And I fill in "Help text" with "Really anything"
+    And I fill in "Help text" with "Really anything"
     And I press "Save Details" within "#new_field"
     And I wait until "Fields" is visible
 
@@ -49,8 +49,8 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Anything" for "field_display_name_en"
-    And I fill in "Really anything" for "Help text"
+    And I fill in "Help text" with "Really anything"
+    And I fill in "Help text" with "Really anything"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Anything"
@@ -60,7 +60,7 @@ Feature: So that admin can customize fields in a form section
     And I follow "Family details"
 
     Then I should see "Anything"
-    When I fill in "17 Nov 2010" for "Anything"
+    When I fill in "Anything" with "17 Nov 2010"
     And I press "Save"
     Then I should see "17 Nov 2010"
 
@@ -79,8 +79,8 @@ Feature: So that admin can customize fields in a form section
       | field_option_strings_text_en  |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Radio button name" for "field_display_name_en"
-    And I fill in "Something" for "Help text"
+    When I fill in "field_display_name_en" with "Radio button name"
+    And I fill in "Help text" with "Something"
     And I fill the following options into "field_option_strings_text_en":
     """
     one
@@ -141,9 +141,9 @@ Feature: So that admin can customize fields in a form section
     And I follow "Add Field"
 
     When I follow "Numeric Field"
-    And I fill in "Help for a numeric field" for "Help text"
+    And I fill in "Help text" with "Help for a numeric field"
     And I wait until "field_display_name_en" is visible
-    And I fill in "My new number field" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "My new number field"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
@@ -153,7 +153,7 @@ Feature: So that admin can customize fields in a form section
     When I am on children listing page
     And I follow "Register New Child"
     And I follow "Family details"
-    And I fill in "2345" for "My new number field"
+    And I fill in "My new number field" with "2345"
     And I press "Save"
 
     Then I should see "My new number field: 2345"
@@ -165,9 +165,9 @@ Feature: So that admin can customize fields in a form section
     And I follow "Add Field"
 
     When I follow "Text Field"
-    And I fill in "Help for a text field" for "Help text"
+    And I fill in "Help text" with "Help for a text field"
     And I wait until "field_display_name_en" is visible
-    And I fill in "My Text field" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "My Text field"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
@@ -180,7 +180,7 @@ Feature: So that admin can customize fields in a form section
     And I follow "Add Field"
     And I follow "Radio button"
     And I wait until "field_display_name_en" is visible
-    And I fill in "Radio button name" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "Radio button name"
     And I fill the following options into "field_option_strings_text_en":
     """
     one
@@ -192,7 +192,7 @@ Feature: So that admin can customize fields in a form section
 
     And I should see "Radio button name" in the list of fields
 
-    When I go to the add child page
+    When I am on the add child page
     And I visit the "Family details" tab
 
     Then the "Radio button name" radio_button should have the following options:
@@ -205,7 +205,7 @@ Feature: So that admin can customize fields in a form section
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Select drop down"
-    And I fill in "Favourite Toy" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "Favourite Toy"
     And I fill the following options into "field_option_strings_text_en":
     """
     Doll
@@ -218,7 +218,7 @@ Feature: So that admin can customize fields in a form section
 
     And I should see "Favourite Toy" in the list of fields
 
-    When I go to the add child page
+    When I am on the add child page
     And I visit the "Family details" tab
 
     Then the "Favourite toy" dropdown should have the following options:
@@ -236,7 +236,7 @@ Feature: So that admin can customize fields in a form section
     Given I am on the edit form section page for "family_details"
     And I follow "Add Field"
     And I follow "Check boxes"
-    And I fill in "Toys" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "Toys"
     And I fill the following options into "field_option_strings_text_en":
     """
 	Action Man
@@ -247,7 +247,7 @@ Feature: So that admin can customize fields in a form section
     And I press "Save Details" within "#new_field"
     Then I should see "Field successfully added"
     And I should see "Toys" in the list of fields
-    When I go to the add child page
+    When I am on the add child page
     And I visit the "Family details" tab
     And I wait until "Toys" is visible
     Then the "Toys" checkboxes should have the following options:

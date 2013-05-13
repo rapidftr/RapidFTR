@@ -18,31 +18,19 @@ Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^(?:|I )go to (.+)$/ do |page_name|
-  visit path_to(page_name)
-end
-
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     click_button(button)
   end
 end
 
-#  When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
-#  with_scope(selector) do
-#    find("//input[@class='btn_submit']").click
-#  end
-#end
-
 When /^I search$/ do
-  #page.execute_script("$('input[value=\"#{Search}\"]').click();")
   find("//input[@value='Search']").click
 end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
     click_link(link)
-  #find(:xpath, "//span[@class='export']").click
   end
 end
 
@@ -75,11 +63,6 @@ When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |fi
   end
 end
 
-When /^(?:|I )(?:can )?fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
-  with_scope(selector) do
-    fill_in(field, :with => value)
-  end
-end
 
 When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   page.execute_script "$('#{field}').trigger('focus')"

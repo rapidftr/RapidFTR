@@ -87,6 +87,6 @@ Feature: As an admin, I should be able to edit existing users.
   Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username
     Given I am logged in as an admin
     And I am on new user page
-    When I fill in "admin" for "User Name"
+    When I fill in "User Name" with "admin"
     When I press "Create"
     And I should see "Disabled"

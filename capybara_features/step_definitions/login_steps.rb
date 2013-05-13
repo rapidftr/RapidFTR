@@ -1,23 +1,23 @@
 Given /^I am logged in$/ do
   step "there is a User"
   step "I am on the login page"
-  step "I fill in \"#{User.first.user_name}\" for \"user_name\""
-  step "I fill in \"123\" for \"password\""
+  step "I fill in \"user_name\" with \"#{User.first.user_name}\""
+  step "I fill in \"password\" with \"123\""
   step "I press \"Log in\""
 end
 
 Given /^I am logged in as an admin$/ do
   step "there is a admin"
   step "I am on the login page"
-  step "I fill in \"admin\" for \"user_name\""
-  step "I fill in \"123\" for \"password\""
+  step "I fill in \"user_name\" with \"admin\""
+  step "I fill in \"password\" with \"123\""
   step "I press \"Log in\""
 end
 
 Given /^I am logged in as "(.+)"/ do |user_name|
   step "I am on the login page"
-  step "I fill in \"#{user_name}\" for \"user_name\""
-  step "I fill in \"123\" for \"password\""
+  step "I fill in \"user_name\" with \"#{user_name}\""
+  step "I fill in \"password\" with \"123\""
   #step "I press \"Log in\""
   find("//input[@class='btn_submit']").click
 end
@@ -37,8 +37,8 @@ end
 Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permissions|
   step "a user \"#{user_name}\" with a password \"123\" and \"#{permissions}\" permission"
   step "I am on the login page"
-  step "I fill in \"#{user_name}\" for \"user_name\""
-  step "I fill in \"123\" for \"password\""
+  step "I fill in \"user_name\" with \"#{user_name}\""
+  step "I fill in \"password\" with \"123\""
   find("//input[@class='btn_submit']").click
 end
 
@@ -55,8 +55,8 @@ Given /^there is a admin$/ do
 end
 Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
   step "I am on the login page"
-  step "I fill in \"#{user_name}\" for \"user_name\""
-  step "I fill in \"#{password}\" for \"password\""
+  step "I fill in \"user_name\" with \"#{user_name}\""
+  step "I fill in \"password\" with \"#{password}\""
   step "I press \"Log in\""
 
 end

@@ -1,7 +1,7 @@
 require 'spec/spec_helper'
 
 When /^I search using a name of "([^\"]*)"$/ do |name|
-  step "I fill in \"#{name}\" for \"query\""
+  step "I fill in \"query\" with \"#{name}\""
   step %q{I press "Go"}
 end
 

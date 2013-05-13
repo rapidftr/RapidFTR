@@ -84,7 +84,7 @@ Then /^I should not be able to see (.+)$/ do |page_name|
 end
 
 Then /^I should be able to see (.+)$/ do |page_name|
-  step "I go to #{page_name}"
+  step "I am on #{page_name}"
   step "I should be on #{page_name}"
 end
 

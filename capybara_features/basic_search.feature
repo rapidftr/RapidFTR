@@ -10,7 +10,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   |
       | Willis |
       | Will   |
-    When I fill in "Will" for "query"
+    When I fill in "query" with "Will"
     And I press "Go"
     And I should see "Willis" in the search results
 
@@ -19,7 +19,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   	| last_known_location 	| reporter | unique_id     |
       | andreas	| London		            | zubair   | zubairlon123  |
       | zak	    | London		            | zubair   | somerlion     |
-    When I fill in "rlon" for "query"
+    When I fill in "query" with "rlon"
     And I press "Go"
     Then I should be on the saved record page for child with name "andreas"
 
@@ -27,12 +27,12 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Given the following children exist in the system:
       | name   	|
       | Lisa	|
-    When I fill in "Lisa" for "query"
+    When I fill in "query" with "Lisa"
     And I press "Go"
     Then I should be on the saved record page for child with name "Lisa"
 
   Scenario: Search parameters are displayed in the search results
-    When I fill in "Will" for "query"
+    When I fill in "query" with "Will"
     And I press "Go"
     Then I should be on the child search results page
     And the "query" field should contain "Will"
@@ -51,7 +51,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   	|
       | Willis	|
       | Will	|
-    When I fill in "W" for "query"
+    When I fill in "query" with "W"
     And I press "Go"
     Then I should see the thumbnail of "Willis"
     And I should see the thumbnail of "Will"
@@ -61,7 +61,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   |
       | Willis |
       | Will   |
-    When I fill in "Will" for "query"
+    When I fill in "query" with "Will"
     And I press "Go"
     Then I should be on the child search results page
     And I should see "Willis" in the search results
@@ -74,14 +74,14 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Creating an invalid search
     Given I am on the children listing page
     Then I should not see any errors
-    When I fill in "   " for "query"
+    When I fill in "query" with "   "
     And I press "Go"
     Then I should be on the children listing page
 
   Scenario: Creating a search with non standard queries
     Given I am on the child search page
     Then I should not see any errors
-    When I fill in "\" for "query"
+    When I fill in "query" with "\"
     And I press "Go"
     Then I should be on the child search results page
 
@@ -116,6 +116,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And the following children exist in the system:
       | name   |
       | Andrew |
-    And I fill in "Andrew" for "query"
+    And I fill in "query" with "Andrew"
     And I press "Go"
     Then I should be on the saved record page for child with name "Andrew"

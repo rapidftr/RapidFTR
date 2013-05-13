@@ -24,8 +24,8 @@ Feature: So that admin can customize form section details
       | Name |
       | Description |
       | Visible |
-    When I fill in "Edited Form" for "Name"
-    When I fill in "Edited Description" for "Description"
+    When I fill in "Name" with "Edited Form"
+    When I fill in "Description" with "Edited Description"
     And I click the "Save Details" button
     And I am on the form section page
     And I should see the description text "Edited Description" for form section "Edited Form"

@@ -3,7 +3,7 @@ Feature: As an user, I should be able to request my password to be recovered.
   Scenario: To check that an user is able to request password recovery
     Given I am on the login page
     When I follow "Request Password Reset"
-    And I fill in "any old thing" for "Enter your user name"
+    And I fill in "Enter your user name" with "any old thing"
     And I press "Request Password"
     Then I should see "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
 

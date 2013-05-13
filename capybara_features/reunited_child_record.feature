@@ -39,7 +39,7 @@ Feature: Reunited Child
      And I fill in "child_reunited_message" with "Because I say it is reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
-     When I fill in "Will" for "query"
+     When I fill in "query" with "Will"
      And I press "Go"
     Then I should be on the child search results page
      And I should see "will_uid" as reunited in the search results
@@ -51,7 +51,7 @@ Feature: Reunited Child
      And I fill in "child_reunited_message" with "Because I say it is not reunited"
      And I click the "Reunite" button
     Then I should see "Child was successfully updated."
-     When I fill in "Fred" for "query"
+     When I fill in "query" with "Fred"
      And I press "Go"
     Then I should be on the child search results page
      And I should not see "fred_uid" as reunited in the search results
