@@ -1,21 +1,25 @@
 require 'factory_girl'
 
 FactoryGirl.define do
-  factory :child do
+  trait :model do
     ignore do
       sequence(:counter, 1000000)
     end
 
+    _id { "id-#{counter}" }
+  end
+
+  factory :child, :traits => [ :model ] do
     unique_identifier { counter.to_s }
     name { "Test Child #{counter}" }
+    created_by { "test_user" }
 
     after_build do |child, factory|
-      child["_id"] ||= UUIDTools::UUID.random_create.to_s
       Child.stub(:get).with(child.id).and_return(child)
     end
   end
 
-  factory :replication do
+  factory :replication, :traits => [ :model ] do
     description 'Sample Replication'
     remote_app_url 'app:1234'
     username 'test_user'
@@ -41,8 +45,8 @@ FactoryGirl.define do
     new_password_confirmation "confirm_new_password"
   end
 
-  factory :user do
-    user_name { "user_name_#{rand(10000)}" }
+  factory :user, :traits => [ :model ] do
+    user_name { "user_name_#{counter}" }
     full_name 'full name'
     password 'password'
     password_confirmation 'password'
@@ -53,13 +57,13 @@ FactoryGirl.define do
     role_ids ['random_role_id']
   end
 
-  factory :role do
-    name { "test_role_#{rand(10000)}" }
+  factory :role, :traits => [ :model ] do
+    name { "test_role_#{counter}" }
     description "test description"
     permissions { Permission.all_permissions }
   end
 
-  factory :report do
+  factory :report, :traits => [ :model ] do
     ignore do
       filename "test_report.csv"
       content_type "text/csv"

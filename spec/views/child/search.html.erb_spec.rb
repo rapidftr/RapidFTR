@@ -89,14 +89,14 @@ describe "children/search.html.erb" do
     it "should have a button to export to pdf" do
       render
 
-      export_to_photo_wall = Hpricot(rendered).submit_for("Export to PDF")
+      export_to_photo_wall = Hpricot(rendered).submit_for("Export Selected to PDF")
       export_to_photo_wall.size.should_not == 0
     end
 
     it "should have a button to export to photo wall" do
       render
 
-      export_to_photo_wall = Hpricot(rendered).submit_for("Export to Photo Wall")
+      export_to_photo_wall = Hpricot(rendered).submit_for("Export Selected to Photo Wall")
       export_to_photo_wall.size.should_not == 0
     end
 

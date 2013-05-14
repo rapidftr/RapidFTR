@@ -16,7 +16,7 @@ Feature: So that hard copy printout of missing child photos are available
     When I fill in "Wil" for "query"
     And I press "Go"
     And I select search result #1
-    And I press "Export to PDF"
+    And I press "Export Selected to PDF"
     Then password prompt should be enabled
 
   @javascript
@@ -26,7 +26,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I press "Go"
     And I select search result #1
     And I select search result #3
-    And I press "Export to Photo Wall"
+    And I press "Export Selected to Photo Wall"
     Then password prompt should be enabled
 
   @allow-rescue
@@ -35,7 +35,7 @@ Feature: So that hard copy printout of missing child photos are available
     Given I am on the child search page
     When I fill in "Wil" for "query"
     And I press "Go"
-    And I press "Export to PDF"
+    And I press "Export Selected to PDF"
     When I fill in "abcd" for "password-prompt-field"
     And I click the "OK" button
     Then I should see "You must select at least one record to be exported"
@@ -45,7 +45,7 @@ Feature: So that hard copy printout of missing child photos are available
   Scenario: Exporting full PDF from the child page
     Given I am on the children listing page
     And I follow "Export" for child records
-    And I follow "Export to PDF" for child records
+    And I follow "Export All to PDF" for child records
     Then password prompt should be enabled
 
   @javascript
@@ -81,7 +81,7 @@ Feature: So that hard copy printout of missing child photos are available
     Given I am on the child search page
     When I fill in "Wil" for "query"
     And I press "Go"
-    And I press "Export to PDF"
+    And I press "Export Selected to PDF"
     Then password prompt should be enabled
     When I fill in "" for "password-prompt-field"
     And I click the "OK" button

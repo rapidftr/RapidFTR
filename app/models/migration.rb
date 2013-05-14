@@ -19,7 +19,7 @@ class Migration < CouchRestRails::Document
   end
 
   def self.all_migrations
-    Dir[migration_dir.join "*.rb"].sort
+    Dir[migration_dir.join "*.rb"].map{ |path| File.basename path }.sort
   end
 
   def self.applied_migrations
