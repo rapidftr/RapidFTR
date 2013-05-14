@@ -34,3 +34,4 @@ lib/tasks/windows/*.msi
 vendor/bundle
 Gemfile.lock
 *.deb
+*.xls

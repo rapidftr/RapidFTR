@@ -43,15 +43,15 @@
   </div>
   <div class="profiles-button-wrapper">
     <% if !@results.nil? && @results.size > 0 %>
-    <%= hidden_field_tag 'password', nil, :id => 'hidden-password-field' %>
-    <%= check_box_tag 'allbottom', 'Select all records' %>
-    <%= label_tag 'allbottom', t("select_all") %>
-    <% end %>
-    <% if can? :export, Child %>
-    <%= submit_tag t("child.actions.export_to_photo_wall"), :class => "password-prompt" if has_results %>
-    <%= submit_tag t("child.actions.export_to_pdf"), :class => "password-prompt"  if has_results %>
-    <%= submit_tag t("child.actions.export_to_csv"), :class => "password-prompt"  if has_results %>
+      <%= hidden_field_tag 'password', nil, :id => 'hidden-password-field' %>
+      <%= check_box_tag 'allbottom', 'Select all records' %>
+      <%= label_tag 'allbottom', t("select_all") %>
+
+      <% if can? :export, Child %>
+        <% RapidftrAddon::ExportTask.active.each do |addon| %>
+          <%= submit_tag t("addons.export_task.#{addon.id}.selected"), :class => "password-prompt", :name => "commit" %>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 <%end%>
-

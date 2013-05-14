@@ -17,7 +17,7 @@ Feature:
     When I search using a name of "D"
     And I wait until "full_results" is visible
     And I select search result #1
-    And I press "Export to CSV"
+    And I press "Export Selected to CSV"
     Then password prompt should be enabled
 
   Scenario: When there are no search results, there is no csv export link
@@ -30,11 +30,10 @@ Feature:
     Given I am logged in as an admin
     And the date/time is "Oct 23 2010"
     When I am on the children listing page
-    And I follow "Export" for child records
-    And I follow "Export Some Records to CSV" for child records
+    And I follow "Advanced Search"
     And I search using a name of "D"
     And I select search result #1
-    And I press "Export to CSV"
+    And I press "Export Selected to CSV"
     Then password prompt should be enabled
 
   @javascript
@@ -44,11 +43,3 @@ Feature:
     And I follow "Export"
     When I follow "Export to CSV"
     Then password prompt should be enabled
-
-  @javascript
-  Scenario: User is redirected to Advanced Search Page when he exports some records to CSV
-    Given I am logged in as an admin
-    And  I am on the children listing page
-    When I follow "Export" for child records
-    And I follow "Export Some Records to CSV" for child records
-    Then I should be redirected to "Advanced Search" Page

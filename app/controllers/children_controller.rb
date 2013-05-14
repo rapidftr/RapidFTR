@@ -2,7 +2,7 @@ class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
   skip_before_filter :check_authentication, :only => [:reindex]
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo, :export_photo_to_pdf]
+  before_filter :load_child_or_redirect, :only => [ :show, :edit, :destroy, :edit_photo, :update_photo ]
   before_filter :current_user, :except => [:reindex]
   before_filter :sanitize_params, :only => [:update, :sync_unverified]
 
@@ -27,15 +27,8 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv @children
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@children).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename}.pdf")
-      end
+
+      respond_to_export format, @children
     end
   end
 
@@ -51,19 +44,9 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
+      format.json { render :json => @child.compact.to_json }
 
-      format.json {
-        render :json => @child.compact.to_json
-      }
-      format.csv do
-        authorize! :export, Child
-        render_as_csv([@child])
-      end
-      format.pdf do
-        authorize! :export, Child
-        pdf_data = ExportGenerator.new(@child).to_full_pdf
-        send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
-      end
+      respond_to_export format, [ @child ]
     end
   end
 
@@ -233,19 +216,6 @@ class ChildrenController < ApplicationController
     default_search_respond_to
   end
 
-  def export_photos_to_pdf children, filename
-    authorize! :export, Child
-
-    pdf_data = ExportGenerator.new(children).to_photowall_pdf
-    send_pdf(pdf_data, filename)
-  end
-
-  def export_photo_to_pdf
-    authorize! :export, Child
-    pdf_data = ExportGenerator.new(@child).to_photowall_pdf
-    send_pdf(pdf_data, "#{file_basename(@child)}.pdf")
-  end
-
   private
 
   def child_short_id child_params
@@ -261,25 +231,9 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def file_basename(child = nil)
-    prefix = child.nil? ? current_user_name : child.short_id
-    user = User.find_by_user_name(current_user_name)
-    "#{prefix}-#{Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')}"
-  end
-
   def sanitize_params
     child_params = params['child']
     child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
-  end
-
-  def file_name_datetime_string
-    user = User.find_by_user_name(current_user_name)
-    Clock.now.in_time_zone(user.time_zone).strftime('%Y%m%d-%H%M')
-  end
-
-  def file_name_date_string
-    user = User.find_by_user_name(current_user_name)
-    Clock.now.in_time_zone(user.time_zone).strftime("%Y%m%d")
   end
 
   def get_form_sections
@@ -293,23 +247,9 @@ class ChildrenController < ApplicationController
           redirect_to child_path(@results.first)
         end
       end
-      format.csv do
-        render_as_csv(@results) if @results
-      end
+
+      respond_to_export format, @results
     end
-  end
-
-  def render_as_csv results
-    results = results || [] # previous version handled nils - needed?
-
-    results.each do |child|
-      child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless (child.primary_photo_id.nil? || child.primary_photo_id == "")
-      child['audio_url'] = child_audio_url(child)
-    end
-
-    export_generator = ExportGenerator.new results
-    csv_data = export_generator.to_csv
-    send_csv(csv_data.data, csv_data.options)
   end
 
   def load_child_or_redirect
@@ -374,6 +314,20 @@ class ChildrenController < ApplicationController
     new_audio = params[:child].delete("audio")
     child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
     child
+  end
+
+  def respond_to_export(format, children)
+    RapidftrAddon::ExportTask.active.each do |export_task|
+      format.any(export_task.id) do
+        authorize! :export, Child
+        results = export_task.new.export(children)
+        encrypt_exported_files results, export_filename(children, export_task)
+      end
+    end
+  end
+
+  def export_filename(children, export_task)
+    (children.length == 1 ? children.first.short_id : current_user_name) + '_' + export_task.id.to_s + '.zip'
   end
 
 end
