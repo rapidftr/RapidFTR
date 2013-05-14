@@ -39,15 +39,6 @@ describe "children/_header.html.erb" do
     end
   end
 
-  describe "export some records to CSV" do
-    before :each do
-      @url = new_advanced_search_path
-    end
-
-    it_should_behave_like "not show links", []
-    it_should_behave_like "show links", [Permission::CHILDREN[:export]]
-  end
-
   describe "export all records to CSV" do
     before :each do
       @url = children_path(:format => :csv)

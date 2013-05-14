@@ -44,7 +44,7 @@ describe Role do
   end
 
   it "should generate id" do
-    role = create :role, :name => 'test role 123'
+    role = create :role, :name => 'test role 123', :_id => nil
     role.id.should == "role-test-role-123"
   end
 end

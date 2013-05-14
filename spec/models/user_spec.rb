@@ -62,7 +62,7 @@ describe User do
     end
 
     it "should generate id" do
-      user = create :user, :user_name => 'test_user_123'
+      user = create :user, :user_name => 'test_user_123', :_id => nil
       user.id.should == "user-test-user-123"
     end
   end

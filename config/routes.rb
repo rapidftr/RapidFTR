@@ -44,13 +44,7 @@ match '/' => 'home#index', :as => :root
       post :sync_unverified
       post :reindex
       get :advanced_search
-      post :export_csv
       get :search
-      post :export_photos_to_pdf
-    end
-
-    member do
-      get :export_photo_to_pdf
     end
 
     resources :attachments, :only => :show

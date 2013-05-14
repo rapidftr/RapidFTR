@@ -1,3 +1,20 @@
+GIT
+  remote: git://github.com/farismosman/rapidftr-addon-cpims.git
+  revision: 7d4cf4dd9ee13c401b945cdad00314ed0bd5b725
+  specs:
+    rapidftr_addon_cpims (0.0.2)
+      activesupport
+      i18n
+      writeexcel
+
+GIT
+  remote: git://github.com/farismosman/rapidftr-addon.git
+  revision: 30b6442b9ce69902c1b9b9b631061d54764f78bb
+  specs:
+    rapidftr_addon (0.0.2)
+      activesupport
+      i18n
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -16,6 +33,7 @@ GEM
       rack-mount (~> 0.6.14)
       rack-test (~> 0.5.7)
       tzinfo (~> 0.3.23)
+    active_reload (0.6.1)
     activemodel (3.0.19)
       activesupport (= 3.0.19)
       builder (~> 2.1.2)
@@ -222,6 +240,7 @@ GEM
     validatable (1.6.7)
     websocket (1.0.7)
     will_paginate (3.0.4)
+    writeexcel (1.0.0)
     xpath (0.1.4)
       nokogiri (~> 1.3)
     zipruby (0.3.6)
@@ -230,6 +249,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_reload
   cancan (~> 1.6.9)
   capistrano (~> 2.14.2)
   capybara (~> 1.0.1)
@@ -260,6 +280,8 @@ DEPENDENCIES
   pry
   rails (= 3.0.19)
   rake (= 0.8.7)
+  rapidftr_addon!
+  rapidftr_addon_cpims!
   rest-client (= 1.3.0)
   rspec (~> 2.11.0)
   rspec-instafail (~> 0.2.4)

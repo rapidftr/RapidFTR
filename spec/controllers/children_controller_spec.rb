@@ -96,18 +96,13 @@ describe ChildrenController do
         response.should render_template("#{Rails.root}/public/403.html")
       end
 
-      it "GET export_photo_to_pdf" do
-        @controller.current_ability.should_receive(:can?).with(:export, Child).and_return(false);
-        get :export_photo_to_pdf, :id => @child.id
-        response.should render_template("#{Rails.root}/public/403.html")
-      end
-
       it "DELETE destroy" do
         @controller.current_ability.should_receive(:can?).with(:destroy, @child_arg).and_return(false);
         delete :destroy, :id => @child.id
         response.should render_template("#{Rails.root}/public/403.html")
       end
     end
+  end
 
   describe "GET index" do
 
@@ -482,7 +477,6 @@ describe ChildrenController do
   end
 
   describe "GET search" do
-
     it "should not render error by default" do
       get(:search, :format => 'html')
       assigns[:search].should be_nil
@@ -510,7 +504,6 @@ describe ChildrenController do
       assigns[:results].should == fake_results
     end
 
-
     describe "with no results" do
       before do
         Summary.stub!(:basic_search).and_return([])
@@ -526,23 +519,8 @@ describe ChildrenController do
       end
 
     end
-
-    it 'sends csv data with the correct attributes' do
-			Child.stub!(:search).and_return([[]])
-      controller.stub(:authorize!)
-      export_generator = stub(ExportGenerator)
-			inject_export_generator(export_generator, [])
-
-			export_generator.should_receive(:to_csv).and_return(ExportGenerator::Export.new(:csv_data, {:foo=>:bar}))
-      @controller.stub!(:render) #to avoid looking for a template
-      @controller.
-        should_receive(:send_csv).
-        with( :csv_data, {:foo=>:bar} ).
-        and_return{controller.render :nothing => true}
-
-			get(:search, :format => 'csv', :query => 'blah')
-    end
   end
+
   describe "searching as field worker" do
     before :each do
       @session = fake_field_worker_login
@@ -560,29 +538,78 @@ describe ChildrenController do
     end
   end
 
+  it 'should export children using #respond_to_export' do
+    child1 = build :child
+    child2 = build :child
+    controller.stub! :paginated_collection => [ child1, child2 ], :render => true
+    controller.should_receive(:YAY).and_return(true)
 
-  describe "GET export_photo_to_pdf" do
+    controller.should_receive(:respond_to_export) { |format, children| 
+      format.mock { controller.send :YAY }
+      children.should == [ child1, child2 ]
+    }
 
-    before do
-      user = User.new(:user_name => "some-name")
-      user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export]])])
-      fake_login user
-      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+    get :index, :format => :mock
+  end
+
+  it 'should export child using #respond_to_export' do
+    child = build :child
+    controller.stub! :render => true
+    controller.should_receive(:YAY).and_return(true)
+
+    controller.should_receive(:respond_to_export) { |format, children| 
+      format.mock { controller.send :YAY }
+      children.should == [ child ]
+    }
+
+    get :show, :id => child.id, :format => :mock
+  end
+
+  describe '#respond_to_export' do
+    before :each do
+      @child1 = build :child
+      @child2 = build :child
+      controller.stub! :paginated_collection => [ @child1, @child2 ], :render => true
     end
 
-    it "should return the photo wall pdf for selected child" do
-      Child.should_receive(:get).with('1').and_return(stub_child = stub('child', :short_id => '1', :class => Child))
+    it "should handle full PDF" do
+      Addons::PdfExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      get :index, :format => :pdf
+    end
 
-      ExportGenerator.should_receive(:new).and_return(export_generator = mock('export_generator'))
-      export_generator.should_receive(:to_photowall_pdf).and_return(:fake_pdf_data)
+    it "should handle Photowall PDF" do
+      Addons::PhotowallExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      get :index, :format => :photowall
+    end
 
-      @controller.
-        should_receive(:send_pdf).
-        with(:fake_pdf_data, '1-20000101-0915.pdf').
-        and_return{controller.render :nothing => true}
+    it "should handle CSV" do
+      Addons::CsvExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      get :index, :format => :csv
+    end
 
-      get :export_photo_to_pdf, :id => '1'
+    it "should handle custom export addon" do
+      mock_addon = double()
+      mock_addon_class = double(:new => mock_addon, :id => "mock")
+      RapidftrAddon::ExportTask.stub! :active => [ mock_addon_class ]
+      mock_addon.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      get :index, :format => :mock
+    end
+
+    it "should encrypt result" do
+      Addons::CsvExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      controller.should_receive(:export_filename).with([ @child1, @child2 ], Addons::CsvExportTask).and_return("test_filename")
+      controller.should_receive(:encrypt_exported_files).with('data', 'test_filename').and_return(true)
+      get :index, :format => :csv
+    end
+
+    it "should generate filename based on child ID and addon ID when there is only one child" do
+      @child1.stub! :short_id => 'test_short_id'
+      controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask).should == "test_short_id_photowall.zip"
+    end
+
+    it "should generate filename based on username and addon ID when there are multiple children" do
+      controller.stub! :current_user_name => 'test_user'
+      controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask).should == "test_user_pdf.zip"
     end
   end
 
@@ -680,5 +707,4 @@ describe ChildrenController do
     end
   end
 
-  end
-  end
+end
