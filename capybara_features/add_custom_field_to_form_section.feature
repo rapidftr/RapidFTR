@@ -9,6 +9,7 @@ Feature: So that admin can customize fields in a form section
     Given I am logged in as an admin
 
   @javascript
+    @run
   Scenario: Admins should be able to add new text fields
     Given I am on the edit form section page for "family_details"
 
@@ -22,7 +23,7 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    And I fill in "Help text" with "Really anything"
+    When I fill in "field_display_name_en" with "Anything"
     And I fill in "Help text" with "Really anything"
     And I press "Save Details" within "#new_field"
     And I wait until "Fields" is visible
