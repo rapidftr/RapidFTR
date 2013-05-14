@@ -291,13 +291,12 @@ describe Child do
       end
 
       it 'should not be able to delete photo of child  with only one photo' do
-        @child = Child.new
-        @child.photo = uploadable_photo
-        @child.save
-        @child.delete_photos [@child.primary_photo.name]
-        @child.save
-        @child.should_not be_valid
-        @child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
+        child = Child.new
+        child.photo = uploadable_photo
+        child.save
+        child.delete_photos [child.primary_photo.name]
+        child.should_not be_valid
+        child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
       end
     end
 
@@ -1077,21 +1076,21 @@ describe Child do
       end
 
       it "should delete items like _328 and _160x160 in attachments" do
-        @child = Child.new
-        @child.photo = uploadable_photo
-        @child.save
+        child = Child.new
+        child.photo = uploadable_photo
+        child.save
 
-        photo_key = @child.photos[0].name
+        photo_key = child.photos[0].name
         uploadable_photo_328 = FileAttachment.new(photo_key+"_328", "image/jpg", "data")
         uploadable_photo_160x160 = FileAttachment.new(photo_key+"_160x160", "image/jpg", "data")
-        @child.attach(uploadable_photo_328)
-        @child.attach(uploadable_photo_160x160)
-        @child.save
-        @child[:_attachments].keys.size.should == 3
+        child.attach(uploadable_photo_328)
+        child.attach(uploadable_photo_160x160)
+        child.save
+        child[:_attachments].keys.size.should == 3
 
-        @child.delete_photos [@child.primary_photo.name]
-        @child.save
-        @child[:_attachments].keys.size.should == 0
+        child.delete_photos [child.primary_photo.name]
+        child.save
+        child[:_attachments].keys.size.should == 0
       end
     end
 
