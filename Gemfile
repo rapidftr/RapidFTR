@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 ruby '1.8.7'
 
-gem 'rapidftr_addon', :git => 'git://github.com/farismosman/rapidftr-addon.git'
-gem 'rapidftr_addon_cpims', :git => 'git://github.com/farismosman/rapidftr-addon-cpims.git'
+gem 'rapidftr_addon', :git => 'git://github.com/farismosman/rapidftr-addon.git', :branch => 'master'
+gem 'rapidftr_addon_cpims', :git => 'git://github.com/farismosman/rapidftr-addon-cpims.git', :branch => 'master'
 
 gem 'couchrest',      '0.34'
 gem 'fastercsv',      '1.5.3'
