@@ -279,7 +279,7 @@ module RapidFTR
                     }),
           Field.new({"name" => "care_arrangements_convoy_no",
                     "type" => "text_field",
-                    "display_name_all" => "Convoy #"
+                    "display_name_all" => "Convoy No"
                     })
         ]
         FormSection.create!({"visible"=>true,
