@@ -1,115 +1,45 @@
 require 'spec_helper'
 
-describe ApplicationController do
+describe PropertiesLocalization do
 
-  let(:user_full_name) { 'Bill Clinton' }
-  let(:user) { User.new(:full_name => user_full_name) }
-  let(:session) { mock('session', :user => user) }
-
-  describe 'current_user_full_name' do
-    it 'should return the user full name from the session' do
-      controller.stub!(:current_session).and_return(session)
-      subject.current_user_full_name.should == user_full_name
+  before :each do
+    RapidFTR::Application.stub :locales => [ "a", "b" ]
+    @klass = Class.new(CouchRestRails::Document) do
+      include PropertiesLocalization
     end
+    @klass.localize_properties [ :name ]
+    @object = @klass.new
   end
 
-  describe 'locale' do
-    it "should be set to default" do
-      controller.stub!(:current_session).and_return(session)
-      @controller.set_locale
-      I18n.locale.should == I18n.default_locale
-    end
-
-    it "should be change the locale" do
-      user = mock('user', :locale => :ar)
-      session = mock('session', :user => user)
-      controller.stub!(:current_session).and_return(session)
-
-      @controller.set_locale
-      user.locale.should == I18n.locale
-    end
-
-    context "when hasn't translations to locale" do
-      before :each do
-        user = mock('user', :locale => :ar)
-        session = mock('session', :user => user)
-        controller.stub!(:current_session).and_return(session)
-      end
-
-      xit "should set be set to default" do
-
-      end
-    end
+  it "should create localized properties" do
+    @object.should be_respond_to "name_a"
+    @object.should be_respond_to "name_b"
   end
 
-  describe "user" do
-    it "should return me the current logged in user" do
-      user = User.new(:user_name => 'user_name', :role_names => ["default"])
-      User.should_receive(:find_by_user_name).with('user_name').and_return(user)
-      session = Session.new :user_name => user.user_name
-      controller.stub(:get_session).and_return(session)
-      controller.current_user.user_name.should == 'user_name'
-    end
+  it "should create default property which sets system default locale" do
+    I18n.stub! :default_locale => :b
+    @object.name = "test"
+    @object.name_b.should == "test"
+    @object.name_a.should == nil
   end
 
-  describe "update activity" do
-    it "should not update session if the session expiry is not less 19 minutes from now" do
-      expires_at = Time.now + 20.minutes
-      session = Session.new(:user_name => user.user_name, :expires_at => expires_at)
-      controller.stub(:get_session).and_return(session)
-      session.should_not_receive(:save)
-      controller.send(:update_activity_time)
-    end
-
-    it "should update session if the session expiry is less 19 minutes from now" do
-      expires_at = Time.now + 18.minutes
-      session = Session.new(:user_name => user.user_name, :expires_at => expires_at)
-      controller.stub(:get_session).and_return(session)
-      session.should_receive(:save)
-      controller.send(:update_activity_time)
-    end
+  it "should create all property which sets all locales" do
+    @object.name_all = "test"
+    @object.name_a.should == "test"
+    @object.name_b.should == "test"
   end
 
-  describe '#send_encrypted_file' do
-    it 'should send encrypted zip with password' do
-      filename = "test_file.pdf"
-      content  = "TEST CONTENT"
-      password = "test_password"
+  it "should use constructor for default property" do
+    I18n.stub! :default_locale => :b
+    @object = @klass.new "name" => "test"
+    @object.name_b.should == "test"
+    @object.name_a.should == nil
+  end
 
-      controller.should_receive(:send_file) do |file, opts|
-        Zip::Archive.open(file) do |ar|
-          ar.decrypt password
-          ar.fopen(filename) do |f|
-            f.read.should == content
-          end
-        end
-      end
-
-      UUIDTools::UUID.stub! :random_create => "encrypt_spec"
-      controller.params[:password] = password
-      controller.send(:send_encrypted_file, content, :filename => filename)
-    end
-
-    it 'should save data to tmp folder' do
-      CleanupEncryptedFiles.stub! :dir_name => 'test_dir_name'
-      FileUtils.should_receive(:mkdir_p).with('test_dir_name').and_return(true)
-      filename = controller.send :generate_encrypted_filename
-      filename.should start_with 'test_dir_name'
-    end
-
-    it '#send_csv should use #send_encrypted_file' do
-      data = double()
-      args = double()
-      controller.should_receive(:send_encrypted_file).with(data, args).and_return(true)
-      controller.send :send_csv, data, args
-    end
-
-    it '#send_pdf should use #send_encrypted_file' do
-      data = double()
-      filename = "test_file"
-      controller.should_receive(:send_encrypted_file).with(data, hash_including({:filename => filename})).and_return(true)
-      controller.send :send_pdf, data, filename
-    end
+  it "should use constructor for all properties" do
+    @object = @klass.new "name_all" => "test"
+    @object.name_a.should == "test"
+    @object.name_b.should == "test"
   end
 
 end

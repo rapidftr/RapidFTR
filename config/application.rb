@@ -33,5 +33,13 @@ module RapidFTR
     LOCALES = ['en','fr','ar','zh','es','ru']
     LOCALES_WITH_DESCRIPTION = [['-', nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
     config.gem "jammit"
+
+    def locales
+      LOCALES
+    end
+
+    def locales_with_description
+      LOCALES_WITH_DESCRIPTION
+    end
   end
 end
