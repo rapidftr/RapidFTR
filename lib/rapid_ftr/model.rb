@@ -12,6 +12,14 @@ module RapidFTR
       !new_record?
     end
 
+    def _id=(new_id)
+      self["_id"] = new_id
+    end
+
+    def _id
+      self["_id"]
+    end
+
     def errors
       ErrorsAdapter.new super
     end

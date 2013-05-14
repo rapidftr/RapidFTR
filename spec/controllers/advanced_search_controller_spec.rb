@@ -141,7 +141,6 @@ describe AdvancedSearchController do
   end
 
   context 'constructor' do
-
     let(:controller) { AdvancedSearchController.new }
 
     it "should say child fields have been selected" do
@@ -151,67 +150,54 @@ describe AdvancedSearchController do
     it "should say child fields have NOT been selected" do
       controller.child_fields_selected?({"0" => {"field" => "", "value" => "", "index" => "0"}}).should == false
     end
-
   end
 
   describe "export data" do
-    it "asks the pdf generator to render each child as a PDF" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-      controller.stub :authorize!
-      controller.stub! :render
-      children = [:fake_child_one, :fake_child_two]
-      Child.stub(:get).and_return(:fake_child_one, :fake_child_two)
-
-      inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
-      mock_export_generator.should_receive(:to_full_pdf).and_return('')
-
-      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to PDF"}
+    before :each do
+      @child1 = build :child
+      @child2 = build :child
+      controller.stub! :authorize! => true, :render => true
     end
 
-    it "asks the pdf generator to render each child as a Photo Wall" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 01 2000 20:15").utc)
-      controller.stub :authorize!
-      controller.stub! :render
-      children = [:fake_one, :fake_two]
-      inject_export_generator( mock_export_generator = mock(ExportGenerator), children )
-      Child.stub(:get).and_return(*children )
-
-      mock_export_generator.should_receive(:to_photowall_pdf).and_return('')
-
-      post :export_data,{:selections =>{'0' => 'child_1','1' => 'child_2'},:commit => "Export to Photo Wall"}
+    it "should handle full PDF" do
+      Addons::PdfExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      post :export_data, { :selections => { '0' => @child1.id, '1' => @child2.id }, :commit => "Export Selected to PDF" }
     end
 
-  end
-
-  describe "GET photo_pdf" do
-    it 'extracts multiple selected ids from post params in correct order' do
-      stub_export_generator = stub_out_export_generator [nil, nil, nil]
-      controller.stub(:authorize!)
-      Child.should_receive(:get).with('child_zero').ordered
-      Child.should_receive(:get).with('child_one').ordered
-      Child.should_receive(:get).with('child_two').ordered
-      stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
-
-      controller.stub!(:render) #to avoid looking for a template
-
-      post :export_data, :selections =>{'2' => 'child_two','0' => 'child_zero','1' => 'child_one'}, :commit => "Export to Photo Wall"
+    it "should handle Photowall PDF" do
+      Addons::PhotowallExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      post :export_data, { :selections => { '0' => @child1.id, '1' => @child2.id }, :commit => "Export Selected to Photo Wall" }
     end
 
-    it "sends a response containing the pdf data, the correct content_type and file name, etc" do
-      fake_admin_login
+    it "should handle CSV" do
+      Addons::CsvExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      post :export_data, { :selections => { '0' => @child1.id, '1' => @child2.id }, :commit => "Export Selected to CSV" }
+    end
 
-      Clock.stub!(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-      stubbed_child = stub_out_child_get
-      stub_export_generator = stub_out_export_generator [stubbed_child] #this is getting a bit farcical now
-      stub_export_generator.stub!(:to_photowall_pdf).and_return(:fake_pdf_data)
+    it "should handle custom export addon" do
+      mock_addon = double()
+      mock_addon_class = double(:new => mock_addon, :id => "mock")
+      RapidftrAddon::ExportTask.stub! :active => [ mock_addon_class ]
+      controller.stub(:t).with("addons.export_task.mock.selected").and_return("Export Selected to Mock")
+      mock_addon.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      post :export_data, { :selections => { '0' => @child1.id, '1' => @child2.id }, :commit => "Export Selected to Mock" }
+    end
 
-      controller.stub! :render
-      controller.should_receive(:send_pdf).with( :fake_pdf_data, "fakeadmin-20000101-2015.pdf").and_return(true)
+    it "should encrypt result" do
+      Addons::CsvExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      controller.should_receive(:export_filename).with([ @child1, @child2 ], Addons::CsvExportTask).and_return("test_filename")
+      controller.should_receive(:encrypt_exported_files).with('data', 'test_filename').and_return(true)
+      post :export_data, { :selections => { '0' => @child1.id, '1' => @child2.id }, :commit => "Export Selected to CSV" }
+    end
 
-      post( :export_data, :selections => {'0' => 'ignored'}, :commit => "Export to Photo Wall" )
+    it "should generate filename based on child ID and addon ID when there is only one child" do
+      @child1.stub! :short_id => 'test_short_id'
+      controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask).should == "test_short_id_photowall.zip"
+    end
+
+    it "should generate filename based on username and addon ID when there are multiple children" do
+      controller.stub! :current_user_name => 'test_user'
+      controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask).should == "test_user_pdf.zip"
     end
   end
-
-
-
 end
