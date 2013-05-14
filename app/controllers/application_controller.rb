@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
 
       Zip::Archive.open(enc_filename, Zip::CREATE) do |ar|
         results.each do |result|
-          ar.add_or_replace_buffer result.filename, result.data
+          ar.add_or_replace_buffer File.basename(result.filename), result.data
         end
         ar.encrypt params[:password]
       end

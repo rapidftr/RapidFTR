@@ -58,7 +58,7 @@ describe ApplicationController do
     end
 
     it 'should send encrypted zip with one file' do
-      files = [ RapidftrAddon::ExportTask::Result.new("file_1.pdf", "content 1") ]
+      files = [ RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1") ]
 
       controller.should_receive(:send_file) do |file, opts|
         Zip::Archive.open(file) do |ar|
@@ -74,7 +74,7 @@ describe ApplicationController do
     end
 
     it 'should send encrypted zip with multiple files' do
-      files = [ RapidftrAddon::ExportTask::Result.new("file_1.pdf", "content 1"), RapidftrAddon::ExportTask::Result.new("file_2.xls", "content 2") ]
+      files = [ RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1"), RapidftrAddon::ExportTask::Result.new("file_2.xls", "content 2") ]
 
       controller.should_receive(:send_file) do |file, opts|
         Zip::Archive.open(file) do |ar|
