@@ -11,10 +11,10 @@ describe CleansingTmpDir do
 
   it 'should cleanup files older than 10 minutes' do
     CleansingTmpDir.stub! :dir_name => 'test_dir'
-    Dir.should_receive(:glob).with('test_dir/*.zip').and_yield("test_file_1.zip").and_yield("test_file_2.zip")
+    Dir.should_receive(:glob).with('test_dir/*').and_yield("test_file_1.zip").and_yield("test_file_2.xls")
     File.should_receive(:mtime).with('test_file_1.zip').and_return(9.minutes.ago)
-    File.should_receive(:mtime).with('test_file_2.zip').and_return(11.minutes.ago)
-    File.should_receive(:delete).with('test_file_2.zip')
+    File.should_receive(:mtime).with('test_file_2.xls').and_return(11.minutes.ago)
+    File.should_receive(:delete).with('test_file_2.xls')
     CleansingTmpDir.cleanup!
   end
 

@@ -30,7 +30,7 @@ module CleansingTmpDir
     end
 
     def cleanup!
-      Dir.glob(File.join(dir_name, "*.zip")) do |zip_file|
+      Dir.glob(File.join(dir, "*")) do |zip_file|
         if File.mtime(zip_file) < CLEANUP_TIME.ago
           File.delete zip_file
         end
