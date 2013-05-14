@@ -14,7 +14,6 @@ match '/' => 'home#index', :as => :root
     end
   end
   match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
-  match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
 
   resources :sessions, :except => :index
   match 'login' => 'sessions#new', :as => :login
@@ -57,7 +56,6 @@ match '/' => 'home#index', :as => :root
     resource :duplicate, :only => [:new, :create]
   end
 
-  match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
   match '/children-ids' => 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
@@ -136,6 +134,16 @@ match '/' => 'home#index', :as => :root
   resources :advanced_search, :only => [:index, :new]
   match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
+
+
+#######################
+# LOGGING URLS
+#######################
+
+  resources :log_entries, :only => :index
+  match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
+  match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
+
 
 #######################
 # REPLICATION URLS
