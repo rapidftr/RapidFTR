@@ -11,22 +11,22 @@ Feature:
     Given I am on children listing page
     And I follow "Register New Child"
 
-    When I fill in "Jorge Just" for "Name"
-    And I fill in "27" for "Date of Birth / Age"
+    When I fill in "Name" with "Jorge Just"
+    And I fill in "Date of Birth / Age" with "27"
     And I select "Male" from "Sex"
-    And I fill in "London" for "Nationality"
-    And I fill in "Haiti" for "Birthplace"
+    And I fill in "Nationality" with "London"
+    And I fill in "Birthplace" with "Haiti"
     And I click the "Photos and Audio" link
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And I press "Save"
 
     # editing the created record
     Then I follow "Edit"
-    When I fill in "George Harrison" for "Name"
-    And I fill in "56" for "Date of Birth / Age"
+    When I fill in "Name" with "George Harrison"
+    And I fill in "Date of Birth / Age" with "56"
     And I select "Female" from "Sex"
-    And I fill in "Bombay" for "Nationality"
-    And I fill in "Zambia" for "Birthplace"
+    And I fill in "Nationality" with "Bombay"
+    And I fill in "Birthplace" with "Zambia"
     And I click the "Photos and Audio" link
     And I attach a photo "capybara_features/resources/jeff.png"
     And I press "Save"
@@ -58,12 +58,12 @@ Feature:
     Given I am on children listing page
     And I follow "New Child"
 
-    When I fill in "Jorge Just" for "Name"
+    When I fill in "Name" with "Jorge Just"
     And I press "Save"
 
     # editing the created record
     Then I follow "Edit"
-    When I fill in "" for "Name"
+    When I fill in "Name" with ""
     And I press "Save"
 
     Then I should see "Please fill in at least one field or upload a file"

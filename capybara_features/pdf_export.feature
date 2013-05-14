@@ -13,7 +13,7 @@ Feature: So that hard copy printout of missing child photos are available
   @javascript
   Scenario: In search results, when a single record is selected and the export button is clicked, a pdf file is generated
 
-    When I fill in "Wil" for "query"
+    When I fill in "query" with "Wil"
     And I press "Go"
     And I select search result #1
     And I press "Export to PDF"
@@ -22,7 +22,7 @@ Feature: So that hard copy printout of missing child photos are available
   @javascript
   Scenario: In search results, when two records are selected a pdf referring to those two records is generated
 
-    When I fill in "Wil" for "query"
+    When I fill in "query" with "Wil"
     And I press "Go"
     And I select search result #1
     And I select search result #3
@@ -33,10 +33,10 @@ Feature: So that hard copy printout of missing child photos are available
   @javascript
   Scenario: In search results, when no records are selected and the export button is clicked, the user is shown an error message
     Given I am on the child search page
-    When I fill in "Wil" for "query"
+    When I fill in "query" with "Wil"
     And I press "Go"
     And I press "Export to PDF"
-    When I fill in "abcd" for "password-prompt-field"
+    When I fill in "password-prompt-field" with "abcd"
     And I click the "OK" button
     Then I should see "You must select at least one record to be exported"
 
@@ -68,10 +68,10 @@ Feature: So that hard copy printout of missing child photos are available
   Scenario: A user without file export permissions should not be able to export pdf/csv files
     Given I logout as "Mary"
     And an registration worker "john" with password "123"
-    When I fill in "john" for "user_name"
-    And I fill in "123" for "password"
+    When I fill in "user_name" with "john"
+    And I fill in "password" with "123"
     And I go and press "Login"
-    When I fill in "Wil" for "query"
+    When I fill in "query" with "Wil"
     And I press "Go"
     And I am on the saved record page for child with name "Will"
     Then "export" option should be unavailable to me
@@ -79,13 +79,13 @@ Feature: So that hard copy printout of missing child photos are available
   @javascript
   Scenario: Password prompt throws an error message when left blank or filled with spaces
     Given I am on the child search page
-    When I fill in "Wil" for "query"
+    When I fill in "query" with "Wil"
     And I press "Go"
     And I press "Export to PDF"
     Then password prompt should be enabled
-    When I fill in "" for "password-prompt-field"
+    When I fill in "password-prompt-field" with ""
     And I click the "OK" button
     Then Error message should be displayed
-    When I fill in " " for "password-prompt-field"
+    When I fill in "password-prompt-field" with " "
     And I click the "OK" button
     Then Error message should be displayed

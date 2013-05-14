@@ -21,7 +21,7 @@ Feature: Editing Custom Form Fields
       | field_display_name_en |
       | Help text |
       | Visible |
-    When I fill in "Edited Field" for "field_display_name_en"
+    When I fill in "field_display_name_en" with "Edited Field"
     When I uncheck "Visible" within ".field_details_panel"
     And I press "Save Details" within ".field_details_panel"
 
@@ -33,7 +33,7 @@ Feature: Editing Custom Form Fields
     Given I am logged in as an admin
     And I am on the edit field page for "another_field" on "family_details" form
     And I wait until "field_display_name_en" is visible
-    When I fill in "!@#$%$" for "field_display_name_en"
+    When I fill in "field_display_name_en" with "!@#$%$"
     And I press "Save Details" within ".field_details_panel"
     Then I should see errors
 

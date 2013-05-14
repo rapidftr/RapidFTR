@@ -4,8 +4,8 @@ Feature: As an user, I should be able to log in.
     Given a user "Harry" with a password "123"
     And I am on the login page
 
-    When I fill in "Harry" for "User Name"
-    And I fill in "123" for "password"
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "123"
     And I press "Log in"
 
     Then I should see "Hello harry"
@@ -13,14 +13,14 @@ Feature: As an user, I should be able to log in.
 
   Scenario: To check that a logged in user doesn't see the login page
     Given I am logged in
-    When I go to the login page
+    When I am on the login page
     Then I should see "View child listing"
     And I should not see "Hello mary"
 
   Scenario: User does not exist
     Given I am on the login page
-    When I fill in "Harry" for "User Name"
-    And I fill in "123" for "password"
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "123"
     And I press "Log in"
     Then I should see "Invalid credentials. Please try again!"
 
@@ -28,15 +28,15 @@ Feature: As an user, I should be able to log in.
     Given "Lawrence" is the user
     And I am logged in as "Lawrence"
     And I have an expired session
-    When I go to the home page
+    When I am on the home page
     Then I should be on the login page
 
   Scenario: User enters the wrong password
     Given a user "Harry" with a password "123"
     And I am on the login page
 
-    When I fill in "Harry" for "User Name"
-    And I fill in "1234" for "password"
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "1234"
     And I press "Log in"
 
     Then I should see "Invalid credentials. Please try again!"
@@ -46,8 +46,8 @@ Feature: As an user, I should be able to log in.
     And user "Harry" is disabled
     And I am on the login page
 
-    When I fill in "Harry" for "User Name"
-    And I fill in "123" for "password"
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "123"
     And I press "Log in"
 
     Then I should see "Invalid credentials. Please try again!"
@@ -57,7 +57,7 @@ Feature: As an user, I should be able to log in.
     Given I am logged in
     When I follow "Logout"
     Then I should be on the login page
-    When I go to new child page
+    When I am on new child page
     Then I should be on the login page
 
   Scenario: I should not see 'Logged in as' if I'm logged out
@@ -83,15 +83,15 @@ Feature: As an user, I should be able to log in.
     And I follow "My Account"
     And I follow "Change Password"
 
-    And I fill in "123" for "Old Password"
-    And I fill in "456" for "New Password"
-    And I fill in "456" for "Confirm New Password"
+    And I fill in "Old Password" with "123"
+    And I fill in "New Password" with "456"
+    And I fill in "Confirm New Password" with "456"
     And I click the "Save" button
     And I should see "Password changed successfully"
 
     And I follow "Logout"
     And I am on the login page
-    And I fill in "Harry" for "User Name"
-    And I fill in "456" for "Password"
+    And I fill in "User Name" with "Harry"
+    And I fill in "Password" with "456"
     And I press "Log in"
     And I should be on the home page

@@ -25,7 +25,7 @@ Feature: Viewing child records
 
     When I am on the child record page for "Jorge Just"
     And I follow "Edit"
-    And I fill in "28" for "Date of Birth / Age"
+    And I fill in "Date of Birth / Age" with "28"
     And I press "Save"
 
     Then I should see /Registered by: .+ and others on 19 July 2010 at 02:05 \(SST\)/

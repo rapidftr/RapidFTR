@@ -9,7 +9,7 @@ Feature:
 
   Scenario: Uploading a standard mp3 file to new child record
     Given I am on the new child page 
-    And I fill in "John" for "Name"
+    And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
     And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
@@ -21,7 +21,7 @@ Feature:
   @gc
   Scenario: Uploading a standard mp3 file to existing child record
     Given I am on the new child page
-    And I fill in "Harry" for "Name"
+    And I fill in "Name" with "Harry"
     And I press "Save"
     Then I should see "Child record successfully created"
 
@@ -48,7 +48,7 @@ Feature:
   @gc
   Scenario: Uploading an invalid file in the audio field
     Given I am on the new child page
-    And I fill in "John" for "Name"
+    And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
     And I attach an audio file "capybara_features/resources/textfile.txt"
     And I press "Save"

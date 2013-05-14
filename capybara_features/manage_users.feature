@@ -51,7 +51,7 @@ Feature: Manage Users
 
    Scenario: User clicks Save button on Edit User page and is then on User listing page
      When I follow "Edit" within "#user-row-jerry"
-     Then I fill in "9876543210" for "Phone"
+     Then I fill in "Phone" with "9876543210"
      And I press "Update"
      Then I should see "9876543210"
 
