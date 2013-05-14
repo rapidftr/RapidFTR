@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LogEntriesController do
+describe SystemLogsController do
 
   before :each do
     fake_login_as(Permission::SYSTEM[:contact_information])

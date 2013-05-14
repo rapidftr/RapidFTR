@@ -1,4 +1,4 @@
-class LogEntriesController < ApplicationController
+class SystemLogsController < ApplicationController
 
   def index
     authorize! :manage, ContactInformation

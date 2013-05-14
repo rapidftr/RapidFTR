@@ -602,6 +602,16 @@ describe ChildrenController do
       get :index, :format => :csv
     end
 
+    it "should create a log_entry when record is exported" do
+      fake_login User.new(:user_name => 'fakeuser', :organisation => "STC", :role_ids => ["abcd"])
+      @controller.stub(:authorize!)
+      RapidftrAddonCpims::ExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+
+      LogEntry.should_receive(:create!).with :type => LogEntry::TYPE[:cpims], :username => "fakeuser", :organisation => "STC", :number_of_records => 2
+
+      get :index, :format => :cpims
+    end
+
     it "should generate filename based on child ID and addon ID when there is only one child" do
       @child1.stub! :short_id => 'test_short_id'
       controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask).should == "test_short_id_photowall.zip"
@@ -611,6 +621,12 @@ describe ChildrenController do
       controller.stub! :current_user_name => 'test_user'
       controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask).should == "test_user_pdf.zip"
     end
+
+    it "should handle CSV" do
+      Addons::CsvExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
+      get :index, :format => :csv
+    end
+
   end
 
   describe "PUT select_primary_photo" do

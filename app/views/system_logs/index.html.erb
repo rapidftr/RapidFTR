@@ -1,0 +1,16 @@
+<div class="profile-header">
+  <ul class="history-details">
+    <% @log_entries.each do |entry| %>
+      <li>
+          <%= entry[:created_at]%>  <%= entry[:type] %> <%= t("histories.of") %> <%= entry[:number_of_records] %> <%= t("histories.system_logs.records_performed_by") %> <%= entry[:user_name] %> <%= t("histories.belong_to") %> <%= entry[:organisation] %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="profile-tools">
+  <ul>
+    <li class="back"><%= link_to t("buttons.back"), admin_path %></li>
+  </ul>
+</div>
+<%=	 %>

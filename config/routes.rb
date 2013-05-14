@@ -134,7 +134,7 @@ match '/' => 'home#index', :as => :root
 # LOGGING URLS
 #######################
 
-  resources :log_entries, :only => :index
+  resources :system_logs, :only => :index
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
   match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
 

@@ -320,6 +320,7 @@ class ChildrenController < ApplicationController
     RapidftrAddon::ExportTask.active.each do |export_task|
       format.any(export_task.id) do
         authorize! :export, Child
+        LogEntry.create! :type => LogEntry::TYPE[export_task.id], :username => current_user.user_name, :organisation => current_user.organisation, :number_of_records => children.size
         results = export_task.new.export(children)
         encrypt_exported_files results, export_filename(children, export_task)
       end

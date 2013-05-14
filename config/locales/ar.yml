@@ -405,6 +405,7 @@ ar:
     highlight_fields: "تسليط الضوء على حقول"
     manage_system_users: "معالجة مستخدمي النظام"
     create_system_user: تكوين مستخدم للنظام
+    system_logs: "مدخلات النظام"
 
   fields:
     label: "حقول"
@@ -538,12 +539,16 @@ ar:
 
 
   histories:
+    of: "ل"
     to: "إلى"
     by: "بواسطة"
     added_by: "أضيف بواسطة"
     belong_to: "ينتمي إلى"
     because: "بسبب:"
     deleted_by: "حذف بواسطة"
+
+    system_logs:
+          records_performed_by: "سجل تم إصداره ب"
 
     audio:
       audio: "الصوت"

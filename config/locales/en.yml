@@ -413,6 +413,7 @@ en:
     highlight_fields: "Highlight Fields"
     manage_system_users: "Manage Server Synchronisation Users"
     create_system_user: Create a System User
+    system_logs: "System Logs"
 
   fields:
     label: "Fields"
@@ -558,12 +559,16 @@ en:
   select_all_results: "Select all results"
 
   histories:
+    of: "of"
     to: "to"
     by: "by"
     added_by: "added by"
     belong_to: "belonging to"
     because: "because:"
     deleted_by: "deleted by"
+
+    system_logs:
+      records_performed_by: "records performed by"
 
     audio:
       audio: "Audio"
