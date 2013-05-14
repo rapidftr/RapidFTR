@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '1.8.7'
+
 gem 'couchrest',      '0.34'
 gem 'fastercsv',      '1.5.3'
 gem 'json',           '1.4.6'
