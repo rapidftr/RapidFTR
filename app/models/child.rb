@@ -276,7 +276,7 @@ view_by :protection_status, :gender, :ftr_status
 
   def validate_audio_size
     return true if @audio.blank? || @audio.size < 10.megabytes
-    [false, "File is too large"]
+    [false, I18n.t("activerecord.errors.models.child.audio_size")]
   end
 
   def validate_audio_file_name
