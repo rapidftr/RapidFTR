@@ -1,5 +1,5 @@
 class Replication < CouchRestRails::Document
-  MODELS_TO_SYNC = [ Role, Child, User ]
+  MODELS_TO_SYNC = [ Role, Child, User, MobileDbKey, Device ]
   STABLE_WAIT_TIME = 2.minutes
 
   include CouchRest::Validation
