@@ -20,3 +20,14 @@ Then /^I should blah$/ do
    puts "url " + current_url
 end
 
+Then /^I should see the following log entry:$/ do |table|
+  table.hashes.each do |log_hash|
+    child_id = Child.by_unique_identifier(:key => log_hash[:unique_id]).first.id
+    page.has_content?("#{log_hash[:type]} of child with id #{child_id} performed by #{log_hash[:user_name]} belonging to #{log_hash[:organization]}").should be_true
+  end
+end
+
+Then /^I save file with password "(.+)"$/ do |password|
+  step "I fill in \"#{password}\" for \"password\""
+  step "I press \"OK\""
+end

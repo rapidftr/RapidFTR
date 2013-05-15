@@ -36,6 +36,7 @@ Feature:
     And I press "Export Selected to CSV"
     Then password prompt should be enabled
 
+
   @javascript
   Scenario: User can export details of a single child to CSV
    Given I am logged in as an admin
@@ -43,3 +44,11 @@ Feature:
     And I follow "Export"
     When I follow "Export to CSV"
     Then password prompt should be enabled
+    And I save file with password "test"
+
+    When I follow "System settings"
+    And I follow "System Logs"
+    Then I should see the following log entry:
+      | type       | user_name | organisation | unique_id |
+      | CSV Export | admin     | UNICEF       | dan_123   |
+
