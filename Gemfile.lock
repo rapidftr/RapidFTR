@@ -1,15 +1,18 @@
 GIT
   remote: git://github.com/farismosman/rapidftr-addon-cpims.git
-  revision: 7d4cf4dd9ee13c401b945cdad00314ed0bd5b725
+  revision: 4019733a1c51cdc91e72af68ac3d1178d9cee4c3
+  branch: master
   specs:
     rapidftr_addon_cpims (0.0.2)
       activesupport
+      chronic
       i18n
       writeexcel
 
 GIT
   remote: git://github.com/farismosman/rapidftr-addon.git
   revision: 30b6442b9ce69902c1b9b9b631061d54764f78bb
+  branch: master
   specs:
     rapidftr_addon (0.0.2)
       activesupport
@@ -65,6 +68,7 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
+    chronic (0.9.1)
     chunky_png (1.2.8)
     coderay (1.0.9)
     compass (0.12.2)
