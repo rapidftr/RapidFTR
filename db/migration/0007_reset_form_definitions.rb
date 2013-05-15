@@ -1,2 +1,0 @@
-RapidFTR::FormSectionSetup.reset_definitions
-RapidFTR::I18nSetup.reset_definitions	
