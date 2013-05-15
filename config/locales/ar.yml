@@ -548,7 +548,9 @@ ar:
     deleted_by: "حذف بواسطة"
 
     system_logs:
+          performed_by: "تم إصداره ب"
           records_performed_by: "سجل تم إصداره ب"
+          of_child_with_id: "لطفل بهوية"
 
     audio:
       audio: "الصوت"

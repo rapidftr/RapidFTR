@@ -569,6 +569,8 @@ en:
 
     system_logs:
       records_performed_by: "records performed by"
+      performed_by: "performed by"
+      of_child_with_id: "of child with id"
 
     audio:
       audio: "Audio"

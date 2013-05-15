@@ -607,7 +607,7 @@ describe ChildrenController do
       @controller.stub(:authorize!)
       RapidftrAddonCpims::ExportTask.any_instance.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
 
-      LogEntry.should_receive(:create!).with :type => LogEntry::TYPE[:cpims], :username => "fakeuser", :organisation => "STC", :number_of_records => 2
+      LogEntry.should_receive(:create!).with :type => LogEntry::TYPE[:cpims], :user_name => "fakeuser", :organisation => "STC", :child_ids => [@child1.id, @child2.id]
 
       get :index, :format => :cpims
     end
