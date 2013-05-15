@@ -2,6 +2,7 @@
 
   <% if can? :manage, ContactInformation %>
     <br /><p><%= link_to t("admin.contact_info"), edit_contact_information_path(:administrator) %></p>
+    <br /><p><%= link_to t("admin.system_logs"), system_logs_path %></p>
   <% end %>
 
   <% if can? :highlight, Field %>
