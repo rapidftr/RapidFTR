@@ -9,42 +9,39 @@ Feature:
 
   Scenario: Uploading a standard mp3 file and a standard JPG image to new child record
     Given I am on the new child page
-    And I fill in "John" for "Name"
-    And I click the "Photos and Audio" link
+    When I fill in "John" for "Name"
     And I attach an audio file "capybara_features/resources/sample.mp3"
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And I press "Save"
-
     Then I should see "Child record successfully created"
-    And I click the "Photos and Audio" link
-    And I should see an audio element that can play the audio file named "sample.mp3"
+
+    When I click the "Photos and Audio" link
+    Then I should see an audio element that can play the audio file named "sample.mp3"
     And I should see the photo of "John"
     And the record history should log "Record created by bob"
 
   Scenario: Uploading an invalid file in the image and audio field
     Given I am on the new child page
-    And I fill in "John" for "Name"
+    When I fill in "John" for "Name"
     And I click the "Photos and Audio" link
     And I attach a photo "capybara_features/resources/textfile.txt"
     And I attach an audio file "capybara_features/resources/textfile.txt"
     And I press "Save"
-
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
     And I should see "Please upload a valid audio file (amr or mp3) for this child record"
 
   Scenario: Uploading multiple images
     Given I am on the new child page
-
-    And I fill in "John" for "Name"
+    When I fill in "John" for "Name"
     And I click the "Photos and Audio" link
     And I attach the following photos:
       |capybara_features/resources/jorge.jpg|
       |capybara_features/resources/jeff.png |
-
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
-    And I click the "Photos and Audio" link
+
+    When I click the "Photos and Audio" link
     Then I should see "2" thumbnails
 
     When I follow "Edit"
@@ -53,15 +50,14 @@ Feature:
 
   Scenario: Changing the photo field on an existing child record
     Given I am editing an existing child record
-    And I click the "Photos and Audio" link
+    When I click the "Photos and Audio" link
     And I attach a photo "capybara_features/resources/textfile.txt"
     And I press "Save"
-
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
 
   Scenario: Uploading a standard mp3 file to existing child record
     Given I am on the new child page
-    And I fill in "Harry" for "Name"
+    When I fill in "Harry" for "Name"
     And I press "Save"
     Then I should see "Child record successfully created"
 
@@ -70,8 +66,9 @@ Feature:
     And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child was successfully updated"
-    And I click the "Photos and Audio" link
-    And I should see an audio element that can play the audio file named "sample.mp3"
+
+    When I click the "Photos and Audio" link
+    Then I should see an audio element that can play the audio file named "sample.mp3"
     And the record history should log "Audio"
     And the record history should log "added by bob"
 
@@ -80,17 +77,19 @@ Feature:
     And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child was successfully updated"
-    And I click the "Photos and Audio" link
-    And I should see an audio element that can play the audio file named "sample.mp3"
+
+    When I click the "Photos and Audio" link
+    Then I should see an audio element that can play the audio file named "sample.mp3"
     And the record history should log "Audio changed"
     And the record history should log "by bob"
 
   Scenario: Uploaded child audio file can be downloaded
     Given I am on the new child page
-    And I fill in "John" for "Name"
+    When I fill in "John" for "Name"
     And I click the "Photos and Audio" link
     And I attach an audio file "capybara_features/resources/sample.mp3"
     And I press "Save"
+
     When I click the "Photos and Audio" link
     Then I should see an audio element that can play the audio file named "sample.mp3"
     And I can download the "audio_link"
@@ -100,6 +99,7 @@ Feature:
     And I am logged in as an admin
     When I am on the form section page
     Then the form section "Photos and Audio" should be listed as visible
+
     When I select the form section "photos_and_audio" to toggle visibility
     And I am on children listing page
     And I follow "Register New Child"
@@ -118,28 +118,28 @@ Feature:
 
   Scenario: Should be able to delete photo
     Given I am on the new child page
-
-    And I fill in "John" for "Name"
+    When I fill in "John" for "Name"
     And I click the "Photos and Audio" link
     And I attach the following photos:
       |capybara_features/resources/jorge.jpg|
       |capybara_features/resources/jeff.png |
-
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
-    And I click the "Photos and Audio" link
+
+    When I click the "Photos and Audio" link
     Then I should see "2" thumbnails
 
     When I follow "Edit"
     And I click the "Photos and Audio" link
     Then I should see "2" thumbnails
-    And I check "Delete photo?"
 
+    When I check "Delete photo?"
     And I press "Save"
     Then I should see "Child was successfully updated"
     And I should see the photo of "John"
-    And I click the "Photos and Audio" link
+
+    When I click the "Photos and Audio" link
     Then I should see "1" thumbnails
 
   Scenario: Manage & Edit Photo
