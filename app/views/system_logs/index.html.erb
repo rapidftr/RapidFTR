@@ -1,0 +1,20 @@
+<div class="profile-header">
+  <ul class="history-details">
+    <% @log_entries.each do |entry| %>
+      <li>
+        <% if entry[:child_ids].size == 1 %>
+          <%= entry[:created_at]%>  <%= entry[:type] %> <%= t("histories.system_logs.of_child_with_id") %> <%= entry[:child_ids] %> <%= t("histories.system_logs.performed_by") %> <%= entry[:user_name] %> <%= t("histories.belong_to") %> <%= entry[:organisation] %>
+        <% else %>
+          <%= entry[:created_at]%>  <%= entry[:type] %> <%= t("histories.of") %> <%= entry[:child_ids].size %> <%= t("histories.system_logs.records_performed_by") %> <%= entry[:user_name] %> <%= t("histories.belong_to") %> <%= entry[:organisation] %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="profile-tools">
+  <ul>
+    <li class="back"><%= link_to t("buttons.back"), admin_path %></li>
+  </ul>
+</div>
+<%=	 %>
