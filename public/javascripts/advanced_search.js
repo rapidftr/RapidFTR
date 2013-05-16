@@ -155,6 +155,7 @@
 
 	var validate = function(){
 		var result = "";
+        var white_space = /^\s*$/;
 
 		if (!createdAtIsValid()) {
 			result=I18n.t("messages.enter_valid_date")
@@ -165,10 +166,11 @@
         }
 
 		$('.criteria-list .criteria-value-text').each(function(){
-			if($(this).val() == "") { result = I18n.t("messages.enter_valid_field_value"); }
+
+			if(white_space.test($(this).val())) { result = I18n.t("messages.enter_valid_field_value"); }
 		});
 		$('.criteria-list .criteria-value-select').each(function(){
-			if($(this).val() == "") { result = I18n.t("messages.enter_valid_field_value"); }
+			if(white_space.test($(this).val())) { result = I18n.t("messages.enter_valid_field_value"); }
 		});
 
 		if ((result == "") && ($('.criteria-list .criteria-value-text').length == 0) && ($('.criteria-list .criteria-value-select').length == 0)) {
