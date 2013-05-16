@@ -56,7 +56,7 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
 
    Scenario: User clicks Save button on Edit User page and is then on User listing page
      When I follow "Edit" within "#user-row-jerry"
-     Then I fill in "9876543210" for "Phone"
+     Then I fill in "Phone" with "9876543210"
      And I press "Update"
      Then I should see "9876543210"
 
@@ -203,7 +203,7 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
 
   Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username
     And I am on new user page
-    When I fill in "admin" for "User Name"
+    When I fill in "User Name" with "admin"
     When I press "Create"
     And I should see "Disabled"
 

@@ -214,7 +214,7 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, flag|
 end
 
 Given /I am logged out/ do
-  step "I go to the logout page"
+  step "I am on the logout page"
 end
 
 Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|

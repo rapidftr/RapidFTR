@@ -64,8 +64,8 @@ Feature: Reports UI
 
     Given an senior official "Harry" with password "123"
     And I am on the login page
-    When I fill in "Harry" for "User Name"
-    And I fill in "123" for "password"
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "123"
     And I press "Log in"
     When I follow "REPORTS"
     Then the message "No entries found" should be displayed to me

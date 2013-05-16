@@ -10,10 +10,10 @@ Feature:
     And I am on the children listing page
     And I follow "Register New Child"
 
-    When I fill in "Jorge Just" for "Name"
-    And I fill in "27" for "Date of Birth / Age"
+    When I fill in "Name" with "Jorge Just"
+    And I fill in "Date of Birth / Age" with "27"
     And I select "Male" from "Sex"
-    And I fill in "Haiti" for "Birthplace"
+    And I fill in "Birthplace" with "Haiti"
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And the local date/time is "March 19 2010 13:05" and UTC time is "March 19 2010 13:05UTC"
     And I press "Save"
@@ -56,11 +56,11 @@ Feature:
 
     When I follow "Edit"
 
-    Then I fill in "George Harrison" for "Name"
-    And I fill in "56" for "Date of Birth / Age"
+    Then I fill in "Name" with "George Harrison"
+    And I fill in "Date of Birth / Age" with "56"
     And I select "Female" from "Sex"
-    And I fill in "Bombay" for "Nationality"
-    And I fill in "Zambia" for "Birthplace"
+    And I fill in "Nationality" with "Bombay"
+    And I fill in "Birthplace" with "Zambia"
     And the date/time is "Oct 29 2010 14:12:15 UTC"
     And I press "Save"
 
@@ -97,7 +97,7 @@ Feature:
 
     When I follow "Edit"
 
-    Then I fill in "George Harrison" for "Name"
+    Then I fill in "Name" with "George Harrison"
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And I attach the file "capybara_features/resources/sample.mp3" to "Recorded Audio"
     And the date/time is "Oct 29 2010 14:12:15UTC"
@@ -123,7 +123,7 @@ Feature:
     And I am on the children listing page
     And I follow "Register New Child"
 
-    When I fill in "Jorge Just" for "Name"
+    When I fill in "Name" with "Jorge Just"
     And the local date/time is "April 9 2013 13:05" and UTC time is "April 9 2013 13:05UTC"
     And I press "Save"
     And  I logout

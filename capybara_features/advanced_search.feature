@@ -31,7 +31,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will   |
     When I click text "Select A Criteria"
     And I click text "Name"
-    And I fill in "Will" for "criteria_list[0][value]"
+    And I fill in "criteria_list[0][value]" with "Will"
     And I search
     And I wait for the page to load
     Then I should see "Will" in the search results
@@ -71,7 +71,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I wait for the page to load
       Then I click text "Sex"
       And I click text "Name"
-      Then I fill in "mary" for "criteria_list[0][value]"
+      Then I fill in "criteria_list[0][value]" with "mary"
       Then I search
       And I wait for the page to load
       And I should see "mary" in the search results
@@ -84,7 +84,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob        | john                 |
       | Peter  | john       | bob                  |
       | James  | john       | john                 |
-    Then I fill in "rob" for "created_by_value"
+    Then I fill in "created_by_value" with "rob"
     And I search
     And I wait for the page to load
    Then I should see "Andrew" in the search results
@@ -103,8 +103,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | James   | bob         | smith                |
     When I click text "Select A Criteria"
      And I click text "Name"
-     And I fill in "Andrew" for "criteria_list[0][value]"
-     And I fill in "bob" for "created_by_value"
+     And I fill in "criteria_list[0][value]" with "Andrew"
+     And I fill in "created_by_value" with "bob"
      And I search
      And I wait for the page to load
     Then I should see "Andrew1" in the search results
@@ -115,7 +115,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Created' - entering 'After Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-     And I fill in "11/12/2012" for "created_at_after_value"
+     And I fill in "created_at_after_value" with "11/12/2012"
      And I search
     And I wait for the page to load
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
@@ -124,7 +124,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of 'Date Created' - entering 'Before Date' with incorrect format
    Given I am logged in
      And I am on child advanced search page
-     And I fill in "11/12/2012" for "created_at_before_value"
+     And I fill in "created_at_before_value" with "11/12/2012"
      And I search
      And I wait for the page to load
     Then I should see "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
@@ -138,7 +138,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |
       | James  | 2012-04-24 14:10:03UTC |
-    And I fill in "2012-04-23" for "created_at_after_value"
+    And I fill in "created_at_after_value" with "2012-04-23"
     And I search
     And I wait for the page to load
    Then I should not see "Emma" in the search results
@@ -155,7 +155,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |
       | James  | 2012-04-24 14:10:03UTC |
-    And I fill in "2012-04-23" for "updated_at_after_value"
+    And I fill in "updated_at_after_value" with "2012-04-23"
     And I search
     And I wait for the page to load
    Then I should not see "Emma" in the search results
@@ -172,8 +172,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
      | Andrew | 2012-04-22 11:23:58UTC |
      | Peter  | 2012-04-23 03:32:12UTC |
      | James  | 2012-04-24 14:10:03UTC |
-    And I fill in "2012-04-22" for "updated_at_after_value"
-    And I fill in "2012-04-23" for "updated_at_before_value"
+    And I fill in "updated_at_after_value" with "2012-04-22"
+    And I fill in "updated_at_before_value" with "2012-04-23"
     And I search
     And I wait for the page to load
    Then I should not see "Emma" in the search results
@@ -194,13 +194,13 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Wilfred | jane        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC | 2012-05-24 14:10:03UTC |
    When I click text "Select A Criteria"
     And I click text "Name"
-    And I fill in "Wil" for "criteria_list[0][value]"
-    And I fill in "bob" for "created_by_value"
-    And I fill in "jan" for "updated_by_value"
-    And I fill in "2012-04-22" for "created_at_after_value"
-    And I fill in "2012-04-24" for "created_at_before_value"
-    And I fill in "2012-05-21" for "updated_at_after_value"
-    And I fill in "2012-05-23" for "updated_at_before_value"
+    And I fill in "criteria_list[0][value]" with "Wil"
+    And I fill in "created_by_value" with "bob"
+    And I fill in "updated_by_value" with "jan"
+    And I fill in "created_at_after_value" with "2012-04-22"
+    And I fill in "created_at_before_value" with "2012-04-24"
+    And I fill in "updated_at_after_value" with "2012-05-21"
+    And I fill in "updated_at_before_value" with "2012-05-23"
     And I search
     And I wait for the page to load
    Then I should not see "Willis" in the search results
@@ -266,7 +266,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Diana   | john        | bob                  | bob             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | Rubel   | john        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC | 2012-05-24 14:10:03UTC |
 
-    When I fill in "john" for "created_by_value"
+    When I fill in "created_by_value" with "john"
     And I search
     And I wait for the page to load
     Then I should see first 20 records in the search results

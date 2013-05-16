@@ -7,8 +7,8 @@ Feature: show menus based on user permissions
 
     Given an user "Jerry" with password "123"
     And I am on the login page
-    When I fill in "Jerry" for "User Name"
-    And I fill in "123" for "password"
+    When I fill in "User Name" with "Jerry"
+    And I fill in "password" with "123"
     And I press "Log in"
     Then I should not be able to view the tab USERS
     And I should not be able to view the tab DEVICES
@@ -17,7 +17,7 @@ Feature: show menus based on user permissions
 
     Given an senior official "Harry" with password "123"
     And I am on the login page
-    When I fill in "Harry" for "User Name"
-    And I fill in "123" for "password"
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "123"
     And I press "Log in"
     Then I should not be able to view the tab CHILDREN
