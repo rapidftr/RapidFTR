@@ -3,6 +3,7 @@
     <%= link_to content_tag(:span, t("children.register_new_child"), :class => 'create_user'), new_child_path, :class=>'btn' %>
 <% end %>
 
+<% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Child)} %>
 <div class="btn dropdown_btn">
   <span class="export"><%= t("children.export") %></span>
   <div class="dropdown hide">        
@@ -13,6 +14,7 @@
     <% end %>
   </div>
 </div>
+<% end %>
 
 <script type="text/javascript">
   $(".export-password-prompt").each(function() {
