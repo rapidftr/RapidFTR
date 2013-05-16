@@ -4,7 +4,7 @@ Feature:
   I want to see the child record
 
   Background:
-    Given I am logged in as a user with "Edit Child,View And Search Child,Export to Photowall/CSV/PDF" permission
+    Given I am logged in as a user with "Edit Child,View And Search Child,Export to Photowall" permission
     And the following children exist in the system:
       | name | gender |
       | John | Male   |

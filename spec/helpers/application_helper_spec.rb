@@ -21,5 +21,4 @@ describe ApplicationHelper do
       url.should_not include('.pdf')
     end
   end
-
 end
