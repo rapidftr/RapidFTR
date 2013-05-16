@@ -33,7 +33,7 @@ Feature: Merge Child Records
 #    When I am on the child listing filtered by flagged
 #    And I select dropdown option "Flagged"
 #    And I click mark as duplicate for "Steve"
-#    And I fill in "red_uid" for "parent_id"
+#    And I fill in "parent_id" with "red_uid"
 #    And I press "Mark as Duplicate"
 #    Then I am on the child record page for "Steve"
 #    And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
@@ -51,6 +51,6 @@ Feature: Merge Child Records
 #     When I am on the child listing filtered by flagged
 #     And I select dropdown option "Flagged"
 #     And I click mark as duplicate for "Steve"
-#     And I fill in "fred_uid" for "parent_id"
+#     And I fill in "parent_id" with "fred_uid"
 #     And I press "Mark as Duplicate"
 #     And I should see "This is not a valid rapidftr id."
