@@ -47,11 +47,12 @@
       <%= check_box_tag 'allbottom', 'Select all records' %>
       <%= label_tag 'allbottom', t("select_all") %>
 
-      <% if can? :export, Child %>
-        <% RapidftrAddon::ExportTask.active.each do |addon| %>
-          <%= submit_tag t("addons.export_task.#{addon.id}.selected"), :class => "password-prompt", :name => "commit" %>
+      <% RapidftrAddon::ExportTask.active.each do |export_task| %>
+        <% if can?("export_#{export_task.id}".to_sym, Child) %>
+          <%= submit_tag t("addons.export_task.#{export_task.id}.selected"), :class => "password-prompt", :name => "commit" %>
         <% end %>
       <% end %>
+
     <% end %>
   </div>
 <%end%>

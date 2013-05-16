@@ -61,10 +61,6 @@ if should_seed? FormSection
   RapidFTR::I18nSetup.reset_definitions
 end
 
-if should_seed? SuggestedField
-  RapidFTR::SuggestedFieldsSetup.reset_definitions
-end
-
 if should_seed? ContactInformation
   ContactInformation.create(:id=>"administrator")
 end
