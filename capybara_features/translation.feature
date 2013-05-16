@@ -8,23 +8,25 @@ Feature: Ensure translations
       | en     | xxxx       | English Translated Name |
       | ru     | yyyy       | Whatever in Russian     |
       | fr     | ffff       | Whatever in French      |
-      | zh     | cccc       | Whatever in Chinese     |
+      | zh     | xxxx       | Chinese Translated Name |
 
-  Scenario: Field label translations
+  Scenario: Field label translations available for Arabic and Chinese
     When I set the system language to "English"-"en"
     And I set the user language to "العربية"-"ar"
     Then I should see "Arabic Translated Name" translated
+    And I set the user language to "中文"-"zh"
+    Then I should see "Chinese Translated Name" translated
 
-  Scenario: Field label translation missing
+  Scenario: Field label translation available for Arabic but missing for Russian
     When I set the system language to "العربية"-"ar"
     And I set the user language to "Русский"-"ru"
     Then I should see "Arabic Translated Name" translated
     And I logout
 
-  Scenario: Field label translation missing in system and user locale
+  Scenario: Field label translation available for Chinese but missing for French
     When I set the system language to "中文"-"zh"
     And I set the user language to "Français"-"fr"
-    Then I should see "English Translated Name" translated
+    Then I should see "Chinese Translated Name" translated
     And I logout
 
   Scenario: View system language changed by Admin
@@ -51,3 +53,4 @@ Feature: Ensure translations
     Then I should see "الإسم "
     And I should see "الوصف "
     And I should see "نص للمساعدة "
+
