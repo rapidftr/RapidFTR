@@ -35,8 +35,8 @@ Feature: Ensure translations
     And  I logout as "Admin"
 
     Given an user "jerry" with password "123"
-    When I fill in "jerry" for "user_name"
-    And I fill in "123" for "password"
+    When I fill in "user_name" with "jerry"
+    And I fill in "password" with "123"
     And I select "Log In" for language change
 
     Then I should see my system language as "العربية"-"ar"

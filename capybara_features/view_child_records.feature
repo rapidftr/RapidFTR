@@ -34,7 +34,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | meredith | Austin              | james    | james123     | false    | false | false     |
       | jane     | Eyre                | james    | james153     | false    | false | true      |
 
-    When I go to the children listing page
+    When I am on the children listing page
     And I select "Active" from "filter"
     Then I should see "zak"
     And I should see "meredith"
@@ -250,7 +250,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true  |
       | meredith | Austin              | james    | james123     | false    | false |
 
-    When I go to the children listing page
+    When I am on the children listing page
     Then I should see the order meredith,zak
 
   Scenario: Checking filter by Active shows the Order by options
@@ -262,7 +262,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | true     | true |
       | meredith | Austin              | james    | james123     | false    | true |
 
-    When I go to the children listing page
+    When I am on the children listing page
     Then I should see "Order by"
     And I should see "Most recently created"
 
@@ -276,7 +276,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | false    | true | 2002-02-03 04:05:06UTC |
       | meredith | Austin              | james    | james123     | false    | true | 2001-02-03 04:05:06UTC |
 
-    When I go to the children listing page
+    When I am on the children listing page
     And I select "Most recently created" from "order_by"
     Then I should see the order zak,jaco,meredith
 
@@ -289,7 +289,7 @@ Feature: So that I can filter the types of records being show when viewing searc
       | jaco     | NYC                 | james    | james456     | false    | true  |
       | meredith | Austin              | james    | james123     | false    | false |
 
-    When I go to the children listing page
+    When I am on the children listing page
     And I select "Most recently created" from "order_by"
     And I select "Name" from "order_by"
     Then I should see the order jaco,meredith,zak

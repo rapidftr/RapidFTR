@@ -28,7 +28,7 @@
     And the "basic_details" form section has the field "Height" with field type "numeric_field"
     And I am logged in as a user with "Register Child" permission
     And I am on new child page
-    When I fill in "very tall" for "Height"
+    When I fill in "Height" with "very tall"
     And I press "Save"
     Then I should see "Height must be a valid number"
 
