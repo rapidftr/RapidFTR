@@ -24,19 +24,15 @@ class AdvancedSearchController < ApplicationController
   end
 
   def export_data
-    authorize! :export, Child
-    record_ids = Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {} if params["all"] != "Select all records"
-    record_ids = params["full_results"].split(/,/) if params["all"] == "Select all records"
-    if record_ids.empty?
-      raise ErrorResponse.bad_request('You must select at least one record to be exported')
-    end
+    RapidftrAddon::ExportTask.active.each do |export_task|
+      if params[:commit] == t("addons.export_task.#{export_task.id}.selected")
+        authorize! "export_#{export_task.id}".to_sym, Child
+        record_ids = (params["all"] == "Select all records") ? record_ids = params["full_results"].split(/,/) : Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {}
+        raise ErrorResponse.bad_request('You must select at least one record to be exported') if record_ids.empty?
 
-    children = record_ids.map { |child_id| Child.get child_id }
-
-    RapidftrAddon::ExportTask.active.each do |addon|
-      if params[:commit] == t("addons.export_task.#{addon.id}.selected")
-        results = addon.new.export(children)
-        encrypt_exported_files results, export_filename(children, addon)
+        children = record_ids.map { |child_id| Child.get child_id }
+        results = export_task.new.export(children)
+        encrypt_exported_files results, export_filename(children, export_task)
       end
     end
   end
@@ -115,5 +111,4 @@ class AdvancedSearchController < ApplicationController
   def export_filename(children, export_task)
     (children.length == 1 ? children.first.short_id : current_user_name) + '_' + export_task.id.to_s + '.zip'
   end
-
 end
