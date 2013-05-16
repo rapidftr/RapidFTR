@@ -46,6 +46,32 @@ Feature:
     And I follow "Export"
     When I follow "Export to CSV"
     Then password prompt should be enabled
+    And I save file with password "test"
+
+    When I follow "System settings"
+    And I follow "System Logs"
+    Then I should see the following log entry:
+      | type       | user_name | organisation | unique_id |
+      | CSV Export | admin     | UNICEF       | dan_123   |
+
+  @javascript
+  Scenario: Admins can export some or all child records to CSV
+    Given I am logged in as an admin
+    And the date/time is "Oct 23 2010"
+    When I am on the children listing page
+    And I follow "Export" span
+    And I follow "Export All to CSV"
+    Then password prompt should be enabled
+    And I save file with password "test"
+
+    When I follow "System settings"
+    And I follow "System Logs"
+    Then I should see the following log entry:
+      | type       | user_name | organisation | unique_id |
+      | CSV Export | admin     | UNICEF       | dan_123   |
+      | CSV Export | admin     | UNICEF       | dave_456  |
+      | CSV Export | admin     | UNICEF       | mike_789  |
+
 
   @wip
   @javascript
