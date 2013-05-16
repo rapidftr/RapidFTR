@@ -4,9 +4,11 @@ existing_ftr_status_field = basic_identity_form_section.fields.find{|field| fiel
 if existing_ftr_status_field
   old_name = existing_ftr_status_field.name
   if old_name != "ftr_status"
-    Child.all.each do |child|
+    children_docs = Child.database.documents["rows"].select{|row| !row["id"].include?("_design")}
+    children_docs.each do |child_doc|
+      child = Child.database.get child_doc["id"]
       child["ftr_status"] = child.delete old_name
-      child.save!
+      child.save
     end
 
   	existing_ftr_status_field.name = "ftr_status"
