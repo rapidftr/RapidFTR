@@ -14,6 +14,7 @@ describe Replication do
   end
 
   before :each do
+    Replication.stub! :models_to_sync => [ Role, Child, User ]
     @rep = build :replication, :remote_couch_config => {
       "target" => "http://couch:1234",
       "databases" => {
@@ -73,10 +74,12 @@ describe Replication do
 
   describe 'getters' do
     it 'should return what models to sync' do
-      Replication.models_to_sync.should == [ Role, Child, User ]
+      Replication.rspec_reset
+      Replication.models_to_sync.should == [ Role, Child, User, MobileDbKey, Device ]
     end
 
     it 'should sync roles first, otherwise users will sync first and start throwing role errors' do
+      Replication.rspec_reset
       Replication.models_to_sync.first.should == Role
     end
 
