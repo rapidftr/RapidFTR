@@ -591,6 +591,7 @@ describe ChildrenController do
       mock_addon = double()
       mock_addon_class = double(:new => mock_addon, :id => "mock")
       RapidftrAddon::ExportTask.stub! :active => [ mock_addon_class ]
+      controller.stub(:authorize!)
       mock_addon.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
       get :index, :format => :mock
     end
