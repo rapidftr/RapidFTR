@@ -120,8 +120,8 @@ When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name,
   step 'I follow "Add Field"'
   step 'I wait for 5 seconds'
   step 'I follow "Text Field"'
-  step "I fill in \"#{display_name}\" for \"field_display_name_en\""
-  step "I fill in \"#{help_text}\" for \"Help text\""
+  step "I fill in \"field_display_name_en\" with \"#{display_name}\""
+  step "I fill in \"Help text\" with \"#{help_text}\""
   step 'I press "Save Details" within "#new_field"'
 end
 
