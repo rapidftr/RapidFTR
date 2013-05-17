@@ -19,7 +19,7 @@ GIT
       i18n
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     Ascii85 (1.0.2)
     abstract (1.0.0)

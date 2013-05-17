@@ -1,4 +1,5 @@
-require "prawn/measurement_extensions"
+require 'csv'
+require 'prawn/measurement_extensions'
 require 'prawn/layout'
 
 CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]

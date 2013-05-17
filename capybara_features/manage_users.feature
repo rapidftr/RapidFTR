@@ -12,6 +12,7 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
   Scenario: Admin disables a user and re-enables a user from the edit page
 
      When the user "jerry" checkbox is marked as "disabled"
+     And I wait for the page to load
      Then user "jerry" should be disabled
      And the user "jerry" should be marked as disabled
 
@@ -20,6 +21,7 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
 
      And I am on the manage users page
      When the user "jerry" checkbox is marked as "enabled"
+     And I wait for the page to load
      Then user "jerry" should not be disabled
      And the user "jerry" should be marked as enabled
 
@@ -160,7 +162,6 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
     When I follow "Edit"
     And I fill in the following:
       | Full Name         | Julia Roberts      |
-      | User Name         | george             |
       | Password          | different password |
       | Re-enter password | different password |
       | Email             | xyz@nyu.com        |
