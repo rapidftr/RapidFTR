@@ -1,4 +1,4 @@
-<% if RapidftrAddon::ExportTask.active.any?{|export_task|can?("export_#{export_task.id}".to_sym, Child)} %>
+<% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Child)} %>
 <div class="btn dropdown_btn btn_export">
   <span class="export">
     <a href="#"> <%= t("children.export") %> </a>
@@ -7,7 +7,7 @@
   <div class="dropdown hide">
     <% RapidftrAddon::ExportTask.active.each do |export_task| %>
       <% if can?("export_#{export_task.id}".to_sym, Child) %>
-        <%= link_to t("addons.export_task.#{export_task.id}.one"), children_path(:format => export_task.id, :per_page => :all), :class => "password-prompt" %>
+        <%= link_to t("addons.export_task.#{export_task.id}.one"), child_path(@child, :format => export_task.id, :per_page => :all), :class => "password-prompt" %>
       <% end %>
     <% end %>
   </div>
