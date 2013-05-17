@@ -99,6 +99,9 @@ describe Ability do
       it { should_not authorize :index, Child }
       it { should_not authorize :read, Child.new }
       it { should_not authorize :update, Child.new }
+      it { should_not authorize :export_pdf, Child.new }
+      it { should_not authorize :export_cpims, Child.new }
+      it { should_not authorize :export_csv, Child.new }
     end
 
     describe "export children to csv" do
@@ -110,6 +113,9 @@ describe Ability do
       it { should_not authorize :index, Child }
       it { should_not authorize :read, Child.new }
       it { should_not authorize :update, Child.new }
+      it { should_not authorize :export_pdf, Child.new }
+      it { should_not authorize :export_cpims, Child.new }
+      it { should_not authorize :export_photowall, Child.new }
     end
 
     describe "export children to pdf" do
@@ -121,6 +127,23 @@ describe Ability do
       it { should_not authorize :index, Child }
       it { should_not authorize :read, Child.new }
       it { should_not authorize :update, Child.new }
+      it { should_not authorize :export_cpims, Child.new }
+      it { should_not authorize :export_csv, Child.new }
+      it { should_not authorize :export_photowall, Child.new }
+    end
+
+    describe "export children to cpims" do
+      let(:permissions) { [Permission::CHILDREN[:export_cpims]] }
+
+      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report }
+
+      it { should authorize :export_cpims, Child }
+      it { should_not authorize :index, Child }
+      it { should_not authorize :read, Child.new }
+      it { should_not authorize :update, Child.new }
+      it { should_not authorize :export_pdf, Child.new }
+      it { should_not authorize :export_csv, Child.new }
+      it { should_not authorize :export_photowall, Child.new }
     end
 
     describe "view and search child records" do
@@ -250,6 +273,7 @@ describe Ability do
       it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, ContactInformation }
       it { should authorize :manage, SystemUsers }
     end
+
   end
 
 end
