@@ -44,6 +44,9 @@ class Ability
     if  user.has_permission?(Permission::CHILDREN[:export_pdf])
       can [:export_pdf], Child
     end
+    if  user.has_permission?(Permission::CHILDREN[:export_cpims])
+      can [:export_cpims], Child
+    end
 
     #
     # USERS
