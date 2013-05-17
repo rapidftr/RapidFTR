@@ -1,7 +1,6 @@
 Feature: So that admin can see Manage Form Sections Page, customize form section details, Create new forms，Disable and enable forms,
          delete fields from a form section
 
-（manage edit,create disable and enable, highlight fields,delete_fields）
   Background:
     Given I am logged in as an admin
     And the following form sections exist in the system:
