@@ -32,6 +32,7 @@ config/couchdb.yml
 *.pem
 lib/tasks/windows/*.msi
 vendor/bundle
+vendor/cache
 Gemfile.lock
 *.deb
 *.xls
