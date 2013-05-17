@@ -191,7 +191,7 @@ end
 Given /"([^\"]*)" is logged in/ do |user_name|
   step "\"#{user_name}\" is the user"
   step "I am on the login page"
-  step "I fill in \"#{user_name}\" for \"User Name\""
+  step "I fill in \"User Name\" with \"#{user_name}\""
   step "I fill in \"123\" for \"password\""
   step "I press \"Log in\""
 end

@@ -30,6 +30,6 @@ Then /^I should see the following log entry:$/ do |table|
 end
 
 Then /^I save file with password "(.+)"$/ do |password|
-  step "I fill in \"#{password}\" for \"password\""
+  step "I fill in \"password\" with \"#{password}\""
   step "I press \"OK\""
 end
