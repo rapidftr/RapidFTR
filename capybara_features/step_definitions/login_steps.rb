@@ -38,7 +38,7 @@ Given /^"([^\"]*)" logs in with "([^\"]*)" permissions?$/ do |user_name, permiss
   step "I am on the login page"
   step "I fill in \"user_name\" with \"#{user_name}\""
   step "I fill in \"password\" with \"123\""
-  step "I press \"Log in\""
+  find("//input[@class='btn_submit']").click
 end
 
 Given /^I am logged in as a user with "(.+)" permissions?$/ do |permissions|
