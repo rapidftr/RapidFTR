@@ -1,21 +1,5 @@
-Feature: So that we can keep track of children that are found in the field, a user should be able to go to a website and upload
-  basic information about the lost child,
-  So that I can filter the types of records being show when viewing search results
-  As a user
-  I want to go to a website and change the child's record
-  So that I can update details of children that are found in the field
-
-  view create edit
-
-  Viewing child records
-
-  So that we can keep track of children that are found in the field, a user should be able to go to a website and upload
-  basic information about the lost child.
-
-  edit_child_record      create child record    view-children-audio
-  As a user of the website
-  I want to enter a search query in to a search box and see all relevant results
-  I want to filter the search results by either all, reunited, flagged or active
+Feature:
+  Features related to child record, including view child record, view photo, view audio, create child record and filter child record etc.
 
   Background:
     Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
@@ -242,7 +226,6 @@ Feature: So that we can keep track of children that are found in the field, a us
     And I press "Save"
     Then I should see "Height must be a valid number"
 
-  @123
   Scenario: cancel button should prompt user
     Given I am on new child page
     Then the "Discard" button presents a confirmation message
@@ -251,3 +234,18 @@ Feature: So that we can keep track of children that are found in the field, a us
     Given I am on new child page
     When I follow "Children"
     Then I should be on children listing page
+
+
+  Scenario: Child record must not display the edit and manage photos links
+    Given the following children exist in the system:
+      | name    | gender  | photo                                    |
+      | John    | Male    | "capybara_features/resources/jorge.jpg"  |
+
+    And I am on the child record page for "John"
+    Then I should not see "Edit Photo"
+    And I should not see "Manage Photo"
+
+  Scenario: Seeing thumbnail when editing a child record
+    Given an existing child with name "John" and a photo from "capybara_features/resources/jorge.jpg"
+    When I am editing the child with name "John"
+    Then I should see the thumbnail of "John"
