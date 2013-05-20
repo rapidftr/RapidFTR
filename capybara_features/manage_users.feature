@@ -26,44 +26,51 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
      When I follow "Show" within "#user-row-jerry"
      Then I should see "Enabled"
 
-    Scenario: Admins should be able view himself
+  Scenario: Admins should be able view himself
+
      Then I should see "Show"
-     Then I should see "Edit"
-     Then I should not see "Delete" within "#user-row-admin"
-     Then I should see "Back"
-     Then I should see "Create User"
+     And I should see "Edit"
+     And I should not see "Delete" within "#user-row-admin"
+     And I should see "Back"
+     And I should see "Create User"
 
   Scenario: On the show User page, the breadcrumb consists of List User link and User Name
+
     When I follow "Show" within "#user-row-jerry"
     Then I should see "jerry (Edit)"
     And I am on manage users page
 
   Scenario: On the edit User page, the breadcrumb consists of Edit User link and User Name
+
     When I follow "Edit" within "#user-row-jerry"
     Then I should see "Users > jerry"
-    Then I follow "Users"
-   And I am on manage users page
+    When I follow "Users"
+   Then I am on manage users page
 
   Scenario: On the create User page, the breadcrumb consists of List Users page
-    Then I follow "Create User"
-    Then I follow "Users"
-    And I am on manage users page
+
+    When I follow "Create User"
+    And I follow "Users"
+    Then I am on manage users page
 
   Scenario: User clicks Cancel button and is then on the listing page
+
      When I follow "Edit" within "#user-row-jerry"
-     Then I follow "Cancel"
-     And I am on manage users page
+     And I follow "Cancel"
+     Then I am on manage users page
 
    Scenario: User clicks Save button on Edit User page and is then on User listing page
+
      When I follow "Edit" within "#user-row-jerry"
      Then I fill in "Phone" with "9876543210"
      And I press "Update"
      Then I should see "9876543210"
 
-  Scenario: User should be able to see active users sorted by Full Name by default on User Listing page
-     Given a user "henry"
+  Scenario: User should be able to see active users sorted by Full Name (by default) and User Name on User Listing page
+
+    Given a user "henry"
      And a user "homer"
-     And user "homer" is disabled
+     When user "homer" is disabled
      And I am on manage users page
      Then I should see the following users:
      |name |
@@ -71,22 +78,15 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
      |henry|
      |jerry|
      And I should not see "homer"
-
-  Scenario: User should be able to see active users sorted by User Name on User Listing page
-    Given a user "henry"
-    And a user "homer"
-    And user "homer" is disabled
-    And I am on manage users page
-    And I select "User Name" from "sort"
-    Then I should see the following users:
-      |name |
-      |admin|
-      |henry|
-      |jerry|
-    And I should not see "homer"
+     When I select "User Name" from "sort"
+     Then I should see the following users:
+     |name |
+     |admin|
+     |henry|
+     |jerry|
 
   @javascript
-  Scenario: User should be able to see all users sorted by Full Name on User Listing page
+  Scenario: User should be able to see all users sorted by (Full Name|User name) on User Listing page
     Given a user "henry"
     And a user "homer"
     And user "homer" is disabled
@@ -98,14 +98,7 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
       |henry|
       |homer|
       |jerry|
-
-  @javascript
-  Scenario: User should be able to see all users sorted by User Name on User Listing page
-    Given a user "henry"
-    And a user "homer"
-    And user "homer" is disabled
-    And I am on manage users page
-    And I select "All" from "filter"
+    When I select "All" from "filter"
     And I select "User Name" from "sort"
     Then I should see the following users:
       |name |
@@ -117,7 +110,7 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
   Scenario: Admin should be able to see the timestamp under device information
     Given a user "jerry" has logged in from a device
     And I am on manage users page
-    And I follow "Show" within "#user-row-jerry"
+    When I follow "Show" within "#user-row-jerry"
     Then I should see "2012-12-17 09:53:51 UTC"
 
   @roles
@@ -191,24 +184,27 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
     Then user "gui" should not exist on the page
 
   Scenario: Admin should not see "Disable" control or change role control when she is editing her own record
+
     And I am on manage users page
-    And I follow "Edit"
-    And I should not see "Roles" within "form"
-    Then I should not see "Disabled"
+    When I follow "Edit"
+    Then I should not see "Roles" within "form"
+    And I should not see "Disabled"
 
   Scenario: Check that a basic user cannot create a user record
+
     And I follow "Logout"
     When I am logged in as a user with "limited" permission
     Then I should not be able to see new user page
 
   Scenario: Should see "Disable" and change user type controls when trying to create a new user with the logged-in user's username
+
     And I am on new user page
     When I fill in "User Name" with "admin"
-    When I press "Create"
-    And I should see "Disabled"
+    And I press "Create"
+    Then I should see "Disabled"
 
-    @allow-rescue
-    Scenario: A user who is disabled mid-session can't continue using that session
+  @allow-rescue
+  Scenario: A user who is disabled mid-session can't continue using that session
 
     Given a user "george"
     And I follow "Logout"
@@ -217,3 +213,39 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
     When user "george" is disabled
     And I follow "Register New Child"
     Then I am on the login page
+
+  # Can create system users with the permission to synchronise
+
+  Scenario: Add, edit and delete system users
+
+    Given I logout as "Admin"
+    And I am logged in as a user with "Users for synchronisation" permission
+    When I am on system users page
+    Then I should see "Create a System User"
+
+    When I follow "Create a System User"
+    And I fill in "system_users_name" with "Adrian"
+    And I fill in "system_users_password" with "password"
+    And I click the "Save" button
+
+    Then I should see "Create a System User"
+    And I should see "Adrian"
+
+    When I follow "Edit" within "#system-row-Adrian"
+    And I fill in "system_users_password" with "new password"
+    And I click the "Save" button
+    Then I should see "Create a System User"
+
+    When I follow "Delete" within "#system-row-Adrian"
+    Then I should not see "Adrian"
+
+  # Attempting to sync a record as an unverified user
+
+  Scenario: An unverified user should be created on the server
+
+    When I request the creation of the following unverified user:
+      | user_name  | full_name   | organisation      | password    |
+      | bbob       | Billy Bob   | save the children | 12345       |
+
+    Then an unverified user "bbob" should be created
+
