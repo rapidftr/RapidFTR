@@ -49,12 +49,12 @@
 
     <p>
       <%= f.label :password, t('login.password.label'), :class=>'key'  %>
-      <%= f.password_field :password, :autocomplete => "off" %>
+      <%= f.password_field :password, :autocomplete => "off" %>*
     </p>
 
     <p>
       <%= f.label :password_confirmation,t("login.password.re_enter"), :class=>'key'  %>
-      <%= f.password_field :password_confirmation, :autocomplete => "off" %>
+      <%= f.password_field :password_confirmation, :autocomplete => "off" %>*
     </p>
 
     <% if !trying_to_edit_ourself %>
