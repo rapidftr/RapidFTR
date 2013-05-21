@@ -12,8 +12,8 @@ describe SystemLogsController do
     response.should render_template :index
   end
 
-  it "should assign all log entries to the view" do
-    LogEntry.should_receive(:all).and_return "all the log entries"
+  it "should assign all log entries to the view, ordered by the newest first" do
+    LogEntry.should_receive(:by_created_at).with(:descending => true).and_return "all the log entries"
 
     get :index
 

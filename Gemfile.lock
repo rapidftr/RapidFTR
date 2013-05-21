@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/farismosman/rapidftr-addon-cpims.git
-  revision: 80ba01c81c4315389875e65851db42d3b495a501
+  revision: 2a996845f3bbea2a7a24dba7a145608384707332
   branch: master
   specs:
     rapidftr_addon_cpims (0.0.2)

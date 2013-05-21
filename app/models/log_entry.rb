@@ -8,4 +8,13 @@ class LogEntry < CouchRestRails::Document
      self[:created_at] = RapidFTR::Clock.current_formatted_time
   end
 
+    view_by :created_at,
+          :map => "function(doc) {
+                if ((doc['couchrest-type'] == 'LogEntry') && doc['created_at'])
+                {
+                     emit(doc['created_at'],doc);
+                }
+          }"
+
+
 end
