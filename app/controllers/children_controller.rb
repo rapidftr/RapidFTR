@@ -27,6 +27,12 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
+      if !params[:format].nil?
+        if @children.empty?
+          flash[:notice] = t('child.export_error')
+          redirect_to :action => :index and return
+        end
+      end
 
       respond_to_export format, @children
     end
@@ -320,7 +326,6 @@ class ChildrenController < ApplicationController
     RapidftrAddon::ExportTask.active.each do |export_task|
       format.any(export_task.id) do
         authorize! "export_#{export_task.id}".to_sym, Child
-        # authorize! :export, Child
         LogEntry.create! :type => LogEntry::TYPE[export_task.id], :user_name => current_user.user_name, :organisation => current_user.organisation, :child_ids => children.collect(&:id)
         results = export_task.new.export(children)
         encrypt_exported_files results, export_filename(children, export_task)
