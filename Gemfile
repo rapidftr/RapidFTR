@@ -22,10 +22,8 @@ gem 'capistrano',     '~> 2.14.2'
 gem 'highline',       '1.6.16'
 gem 'will_paginate',  '~> 3.0.4'
 gem 'i18n-js',        '~> 2.1.2'
-gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => false
-gem 'win32-open3',    '~> 0.3.2',  :platforms => [:mswin, :mingw]
+gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => 'v8'
 gem 'os',             '~> 0.9.6'
-gem 'libv8',          '~> 3.11.8', :platform => :ruby
 gem 'thin',           '~> 1.5.1',  :platform => :ruby, :require => false
 gem 'encrypted-cookie-store', '~> 1.0'
 

@@ -55,6 +55,7 @@ set :branch, fetch(:branch, "master")
 set :keep_releases, 5
 set :use_sudo, false
 set :app_version, fetch(:branch) =~ /^release-.+$/ ? fetch(:branch).gsub("release-", "") : "1.1.0-SNAPSHOT"
+set :bundle_without, [ :development, :test, :cucumber ]
 
 load 'config/recipes/base_tasks'
 load 'config/recipes/app_tasks'
