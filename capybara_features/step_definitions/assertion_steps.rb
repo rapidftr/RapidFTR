@@ -100,10 +100,6 @@ Then /^I should not see an audio tag$/ do
   page.body.should_not have_selector("//audio")
 end
 
-When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
-  click_link name_of_tab
-end
-
 Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
    radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(" ", "")}")
    radio.should_not be_nil
@@ -148,4 +144,184 @@ When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
   label = page.find '//label', :text => checkbox_name
   checkbox_id = label["for"].split("_").last
 	page.check("child_#{checkbox_id}_#{value.dehumanize}")
+end
+
+Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
+  if defined?(Spec::Rails::Matchers)
+    page.should have_content(regexp)
+  else
+    page.text.should match(regexp)
+  end
+end
+
+Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
+  with_scope(selector) do
+    if defined?(Spec::Rails::Matchers)
+      page.should have_content(text)
+    else
+      assert page.has_content?(text)
+    end
+  end
+end
+
+Then /^(?:|I )should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
+  with_scope(selector) do
+    if defined?(Spec::Rails::Matchers)
+      page.should have_no_content(text)
+    else
+      assert page.has_no_content?(text)
+    end
+  end
+end
+
+Then /^(?:|I )should not see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
+  regexp = Regexp.new(regexp)
+  with_scope(selector) do
+    if defined?(Spec::Rails::Matchers)
+      page.should have_no_xpath('//*', :text => regexp)
+    else
+      assert page.has_no_xpath?('//*', :text => regexp)
+    end
+  end
+end
+
+Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should contain "([^\"]*)"$/ do |field, selector, value|
+  with_scope(selector) do
+    if defined?(Spec::Rails::Matchers)
+      find_field(field).value.should =~ /#{value}/
+    else
+      assert_match(/#{value}/, field_labeled(field).value)
+    end
+  end
+end
+
+Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"$/ do |field, selector, value|
+  with_scope(selector) do
+    if defined?(Spec::Rails::Matchers)
+      find_field(field).value.should_not =~ /#{value}/
+    else
+      assert_no_match(/#{value}/, find_field(field).value)
+    end
+  end
+end
+
+Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |label, selector|
+  with_scope(selector) do
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      ["true", "checked", true].should include field_checked
+    else
+      field_checked
+    end
+  end
+end
+
+Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should not be checked$/ do |label, selector|
+  with_scope(selector) do
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      field_checked.should == nil
+    else
+      !field_checked
+    end
+  end
+end
+
+Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |label, selector|
+  with_scope(selector) do
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      ["true", true].should include field_checked
+    else
+      field_checked
+    end
+  end
+end
+
+Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should not be checked$/ do |label, selector|
+  with_scope(selector) do
+    field_checked = find_field(label)['checked']
+    if field_checked.respond_to? :should
+      [nil, false].should include field_checked
+    else
+      !field_checked
+    end
+  end
+end
+
+Then /^(?:|I )should be on (.+)$/ do |page_name|
+  if defined?(Spec::Rails::Matchers)
+    URI.parse(current_url).path.should == path_to(page_name)
+  else
+    assert_equal path_to(page_name), URI.parse(current_url).path
+  end
+end
+
+Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
+  actual_params   = CGI.parse(URI.parse(current_url).query)
+  expected_params = Hash[expected_pairs.rows_hash.map{|k,v| [k,[v]]}]
+
+  if defined?(Spec::Rails::Matchers)
+    actual_params.should == expected_params
+  else
+    assert_equal expected_params, actual_params
+  end
+end
+
+Then /^I should see the order (.+)$/ do |input|
+  current = 0
+  input.split(',').each do |match|
+    index = page.body.index(match)
+    assert index > current, "The index of #{match} was not greater than #{current}"
+    current = index
+  end
+end
+
+Then /^(.+) button is disabled$/ do |text|
+  assert !find_button(text).visible?
+end
+
+Then /^I should see first (\d+) records in the search results$/ do |arg1|
+  assert page.has_content?("Displaying children 1 - 20 ")
+end
+
+Then /^"([^"]*)" option should be unavailable to me$/ do |element|
+  page.should have_no_xpath("//span[@class='"+element+"']")
+end
+
+Then /^password prompt should be enabled$/ do
+  assert page.has_content?("Password")
+end
+
+When /^I fill in "([^"]*)" in the password prompt$/ do |arg|
+  fill_in 'password-prompt-dialog', :with => 'abcd'
+end
+
+Then /^Error message should be displayed$/ do
+  assert page.has_content?("Enter a valid password")
+end
+
+When /^I follow "([^"]*)" for child records$/ do |arg|
+  find(:xpath, "//span[@class='export']").click
+end
+
+Then /^the message "([^"]*)" should be displayed to me$/ do |text|
+  assert page.has_content?("#{text}")
+end
+
+Then /^I should be redirected to "([^"]*)" Page$/ do |page_name|
+  assert page.has_content?("#{page_name}")
+end
+
+Then /^I should see next records in the search results$/ do
+  assert page.has_content?("Displaying children 21 - 25 ")
+end
+
+Then /^I should see link to "(.*?)"$/ do |text|
+  page.should have_xpath("//span[@class='"+text+"']")
+end
+
+Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
+  page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']").should == !not_visible
 end

@@ -70,9 +70,10 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       And I select "Male" from "criteria_list[0][value]"
       And I search
       And I wait for the page to load
-      Then I click "//a[text()='Sex']"
+      Then I click "//a[text()='Select A Criteria']"
       And I click "//a[text()='Name']"
-      Then I fill in "criteria_list[0][value]" with "mary"
+      And I select "Female" from "criteria_list[0][value]"
+      Then I fill in "criteria_list[1][value]" with "mary"
       Then I search
       And I wait for the page to load
       And I should see "mary" in the search results

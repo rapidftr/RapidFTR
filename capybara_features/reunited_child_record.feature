@@ -19,7 +19,7 @@ Feature: Reunited Child
     When I am on the child record page for "Will"
     And I follow "Mark as Reunited"
      And I fill in "child_reunited_message" with "Because I say it is reunited"
-     And I click the "Reunite" button
+     And I press "Reunite"
     Then I should see "Child was successfully updated."
      And I should see 1 divs with text "Reunited" for class "reunited-message"
 
@@ -28,7 +28,7 @@ Feature: Reunited Child
     When I am on the child record page for "Fred"
      And I follow "Mark as Not Reunited"
      And I fill in "child_reunited_message" with "Because I say it is not reunited"
-     And I click the "Undo Reunite" button
+     And I press "Undo Reunite"
     Then I should see "Child was successfully updated."
     Then I should see 0 divs with text "Reunited" for class "reunited-message"
 
@@ -37,7 +37,7 @@ Feature: Reunited Child
     When I am on the child record page for "Will"
      And I follow "Mark as Reunited"
      And I fill in "child_reunited_message" with "Because I say it is reunited"
-     And I click the "Reunite" button
+     And I press "Reunite"
     Then I should see "Child was successfully updated."
      When I fill in "query" with "Will"
      And I press "Go"
@@ -49,7 +49,7 @@ Feature: Reunited Child
     When I am on the child record page for "Fred"
      And I follow "Mark as Not Reunited"
      And I fill in "child_reunited_message" with "Because I say it is not reunited"
-     And I click the "Reunite" button
+     And I press "Reunite"
     Then I should see "Child was successfully updated."
      When I fill in "query" with "Fred"
      And I press "Go"

@@ -86,7 +86,7 @@ Feature: As an user, I should be able to log in.
     And I fill in "Old Password" with "123"
     And I fill in "New Password" with "456"
     And I fill in "Confirm New Password" with "456"
-    And I click the "Save" button
+    And I press "Save"
     And I should see "Password changed successfully"
 
     And I follow "Logout"

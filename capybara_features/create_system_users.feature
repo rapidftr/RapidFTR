@@ -10,14 +10,14 @@ Feature: Can create system users with the permission to synchronise
     When I follow "Create a System User"
     And I fill in "system_users_name" with "Adrian"
     And I fill in "system_users_password" with "password"
-    And I click the "Save" button
+    And I press "Save"
 
     Then I should see "Create a System User"
     And I should see "Adrian"
 
     When I follow "Edit" within "#system-row-Adrian"
     And I fill in "system_users_password" with "new password"
-    And I click the "Save" button
+    And I press "Save"
     Then I should see "Create a System User"
 
     When I follow "Delete" within "#system-row-Adrian"
