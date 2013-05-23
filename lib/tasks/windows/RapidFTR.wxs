@@ -33,11 +33,11 @@
     <Condition Message="Java Development Kit is not properly installed or outdated. Please install Oracle JDK 1.6 or later">
       (JDK_VERSION >= "1.6") OR JDK_HOME
     </Condition>
-    <Condition Message="CouchDB is not properly installed or outdated. Please install CouchDB 1.1">
+    <Condition Message="CouchDB is not properly installed or outdated. Please install CouchDB 1.3 or later">
       COUCH_HOME
     </Condition>
-    <Condition Message="RailsInstaller has not been installed. Please install RailsInstaller 1.3.0">
-      RAILS_VERSION = "1.3.0"
+    <Condition Message="RailsInstaller has not been installed. Please install RailsInstaller 2.2 or later">
+      RAILS_VERSION >= "2.2"
     </Condition>
 
     <Directory Id='TARGETDIR' Name='SourceDir'>
