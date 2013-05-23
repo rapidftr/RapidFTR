@@ -16,7 +16,7 @@ Feature:
     And I select "Male" from "Sex"
     And I fill in "Nationality" with "London"
     And I fill in "Birthplace" with "Haiti"
-    And I click the "Photos and Audio" link
+    And I follow "Photos and Audio"
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And I press "Save"
 
@@ -27,7 +27,7 @@ Feature:
     And I select "Female" from "Sex"
     And I fill in "Nationality" with "Bombay"
     And I fill in "Birthplace" with "Zambia"
-    And I click the "Photos and Audio" link
+    And I follow "Photos and Audio"
     And I attach a photo "capybara_features/resources/jeff.png"
     And I press "Save"
 
@@ -37,13 +37,13 @@ Feature:
     And I should see "Female"
     And I should see "Bombay"
     And I should see "Zambia"
-    And I click the "Photos and Audio" link
+    And I follow "Photos and Audio"
     And I should see the photo of "George Harrison"
     And I should see "Child was successfully updated."
 
    # checking if validations are still working fine
     Then I follow "Edit"
-    And I click the "Photos and Audio" link
+    And I follow "Photos and Audio"
     And I attach a photo "capybara_features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"

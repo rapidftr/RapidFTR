@@ -194,7 +194,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "Radio button name" in the list of fields
 
     When I am on the add child page
-    And I visit the "Family details" tab
+    And I follow "Family details"
 
     Then the "Radio button name" radio_button should have the following options:
       | one\n |
@@ -220,7 +220,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "Favourite Toy" in the list of fields
 
     When I am on the add child page
-    And I visit the "Family details" tab
+    And I follow "Family details"
 
     Then the "Favourite toy" dropdown should have the following options:
       | label           | selected? |
@@ -249,7 +249,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Field successfully added"
     And I should see "Toys" in the list of fields
     When I am on the add child page
-    And I visit the "Family details" tab
+    And I follow "Family details"
     And I wait until "Toys" is visible
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
@@ -261,7 +261,7 @@ Feature: So that admin can customize fields in a form section
     And I press "Save Details" within "#field_details_options"
     Then I should see "Action Man, Lego"
     When I follow "Edit"
-    And I visit the "Family details" tab
+    And I follow "Family details"
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | yes      |

@@ -38,6 +38,6 @@ Feature: So that admin can customize fields in a form section
     And I am on the edit form section page for "family_details"
 
     When I click the "Up" arrow on "mother" field
-    When I click the "Save Order" button
+    When I press "Save Order"
 
     Then I should be able to see "Order is successfully saved."

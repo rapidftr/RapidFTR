@@ -36,7 +36,7 @@ Feature: So that hard copy printout of missing child photos are available
     And I press "Go"
     And I press "Export Selected to PDF"
     When I fill in "password-prompt-field" with "abcd"
-    And I click the "OK" button
+    And I press "OK"
     Then I should see "You must select at least one record to be exported"
 
 
@@ -84,8 +84,8 @@ Feature: So that hard copy printout of missing child photos are available
     And I press "Export Selected to PDF"
     Then password prompt should be enabled
     When I fill in "password-prompt-field" with ""
-    And I click the "OK" button
+    And I press "OK"
     Then Error message should be displayed
     When I fill in "password-prompt-field" with " "
-    And I click the "OK" button
+    And I press "OK"
     Then Error message should be displayed

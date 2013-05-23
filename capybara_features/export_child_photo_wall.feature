@@ -16,7 +16,7 @@ Feature:
     And I follow "Export to Photo Wall"
     Then I should see "Enter password to encrypt file"
     When I fill in "password-prompt-field" with "  "
-    And I click the "OK" button
+    And I press "OK"
     Then I should see "Enter a valid password"
 
 

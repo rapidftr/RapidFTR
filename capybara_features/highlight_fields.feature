@@ -7,7 +7,7 @@ Feature: So that I can select fields to be highlighted in view children page
 
   @javascript
   Scenario: Adding a highlight field
-    And I click text "add"
+    And I follow "add"
     And I select menu "Basic Identity"
     And I select menu "Nationality"
     Then I should see "Nationality" within "#highlighted-fields"
@@ -26,7 +26,7 @@ Feature: So that I can select fields to be highlighted in view children page
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"
-    And I click text "add"
+    And I follow "add"
 
     When I select menu "Basic Identity"
 

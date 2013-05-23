@@ -26,7 +26,7 @@ Feature: So that admin can customize form section details
       | Visible |
     When I fill in "Name" with "Edited Form"
     When I fill in "Description" with "Edited Description"
-    And I click the "Save Details" button
+    And I press "Save Details"
     And I am on the form section page
     And I should see the description text "Edited Description" for form section "Edited Form"
 
@@ -69,7 +69,7 @@ Feature: So that admin can customize form section details
   Scenario: Admin should be able to change the order of the fields on edit form section page
     Given I am on the edit form section page for "basic_details"
     And I move field "Second Name" up
-    And I click the "Save Order" button
+    And I press "Save Order"
     Then I should find the form section with following attributes:
       | Name          |
       | Name          |

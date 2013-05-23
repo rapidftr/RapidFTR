@@ -55,12 +55,13 @@ Feature:
       | type       | user_name | organisation | unique_id |
       | CSV Export | admin     | UNICEF       | dan_123   |
 
+  @run
   @javascript
   Scenario: Admins can export some or all child records to CSV
     Given I am logged in as an admin
     And the date/time is "Oct 23 2010"
     When I am on the children listing page
-    And I follow "Export" span
+    And I click "//span[text()='Export']"
     And I follow "Export All to CSV"
     Then password prompt should be enabled
     And I save file with password "test"

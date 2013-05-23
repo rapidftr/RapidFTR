@@ -12,11 +12,11 @@ Feature: Replications
     And I fill in "User Name" with "rapidftr"
     And I fill in "Password" with "rapidftr"
     And I make sure that the Replication Configuration request fails
-    And I click the "Save" button
+    And I press "Save"
 
     Then I should see "The URL/Username/Password that you entered is incorrect"
     And I make sure that the Replication Configuration request succeeds
-    And I click the "Save" button
+    And I press "Save"
 
     Then I should see "Configure a Server"
     And I should see "Test Replication"
@@ -31,7 +31,7 @@ Feature: Replications
     And I fill in "User Name" with "rapidftr"
     And I fill in "Password" with "rapidftr"
     And I make sure that the Replication Configuration request succeeds
-    And I click the "Save" button
+    And I press "Save"
 
     Then I should see "Configure a Server"
     And I should see "New Replication"

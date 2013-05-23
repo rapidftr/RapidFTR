@@ -11,7 +11,7 @@ Feature:
     Given I am on the new child page
     
     And I fill in "Name" with "John"
-    And I click the "Photos and Audio" link
+    And I follow "Photos and Audio"
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And I press "Save"
 
