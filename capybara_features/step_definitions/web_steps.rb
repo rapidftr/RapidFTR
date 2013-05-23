@@ -30,18 +30,19 @@ end
 
 When /^(?:|I )(?:can )?follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
+    page.should have_link(link)
     click_link(link)
   end
 end
 
-When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, within|
-  with_scope(within) do
-    Page.find(selector).click
-  end
+When /^I click the "(.*)" button$/ do |button_value|
+  click_button button_value
 end
 
-When /^I follow "(.+)" span$/ do |locator|
-  find(:xpath, "//span[text()='#{locator}']").click
+When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, within|
+  with_scope(within) do
+    find(selector).click
+  end
 end
 
 When /^I cannot follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|

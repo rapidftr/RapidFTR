@@ -23,8 +23,8 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Anything" for "field_display_name_en"
-    And I fill in "Really anything" for "Help text"
+    When I fill in "field_display_name_en" with "Anything"
+    And I fill in "Help text" with "Really anything"
     And I press "Save Details" within "#new_field"
     And I wait until "Fields" is visible
 
@@ -50,8 +50,8 @@ Feature: So that admin can customize fields in a form section
       | Visible      |
     And the "Visible" checkbox should be checked
 
-    When I fill in "Anything" for "field_display_name_en"
-    And I fill in "Really anything" for "Help text"
+    When I fill in "field_display_name_en" with "Anything"
+    And I fill in "Help text" with "Really anything"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Anything"
@@ -144,7 +144,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Numeric Field"
     And I fill in "Help text" with "Help for a numeric field"
     And I wait until "field_display_name_en" is visible
-    And I fill in "My new number field" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "My new number field"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
@@ -168,7 +168,7 @@ Feature: So that admin can customize fields in a form section
     When I follow "Text Field"
     And I fill in "Help text" with "Help for a text field"
     And I wait until "field_display_name_en" is visible
-    And I fill in "My Text field" for "field_display_name_en"
+    And I fill in "field_display_name_en" with "My Text field"
     And I press "Save Details" within "#new_field"
 
     Then I should see "Field successfully added"
@@ -194,7 +194,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "Radio button name" in the list of fields
 
     When I am on the add child page
-    And I visit the "Family details" tab
+    And I follow "Family details"
 
     Then the "Radio button name" radio_button should have the following options:
       | one\n |
@@ -220,7 +220,7 @@ Feature: So that admin can customize fields in a form section
     And I should see "Favourite Toy" in the list of fields
 
     When I am on the add child page
-    And I visit the "Family details" tab
+    And I follow "Family details"
 
     Then the "Favourite toy" dropdown should have the following options:
       | label           | selected? |
@@ -249,7 +249,7 @@ Feature: So that admin can customize fields in a form section
     Then I should see "Field successfully added"
     And I should see "Toys" in the list of fields
     When I am on the add child page
-    And I visit the "Family details" tab
+    And I follow "Family details"
     And I wait until "Toys" is visible
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
@@ -261,7 +261,7 @@ Feature: So that admin can customize fields in a form section
     And I press "Save Details" within "#field_details_options"
     Then I should see "Action Man, Lego"
     When I follow "Edit"
-    And I visit the "Family details" tab
+    And I follow "Family details"
     Then the "Toys" checkboxes should have the following options:
       | value      | checked? |
       | Action Man | yes      |

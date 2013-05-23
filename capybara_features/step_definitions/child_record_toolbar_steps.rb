@@ -7,13 +7,6 @@ Then /^I should see the following links in the toolbars:$/ do |links_table|
   end
 end
 
-When /^I click the "(.*)" button$/ do |button_value|
-  click_button button_value
-end
-
-When /^I click the "(.*)" link$/ do |link|
-  click_link link
-end
 
 And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
   click_link("Mark as Investigated")
@@ -36,10 +29,6 @@ end
 
 When /^I click blacklist for "([^"]*)"$/ do |imei|
   page.find_by_id("#{imei}").click
-end
-
-def click_span(locator)
-  find(:xpath, "//span[text()='#{locator}']").click
 end
 
 When /^I view User Action History$/ do

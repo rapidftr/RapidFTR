@@ -15,8 +15,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Validation of search criteria field value
    Given I am logged in
      And I am on child advanced search page
-    When I click text "Select A Criteria"
-    And  I click text "Name"
+    When I click "//a[text()='Select A Criteria']"
+    And I click "//a[text()='Name']"
     And  I search
     And I wait for the page to load
     Then I should see "Please enter a valid field value."
@@ -30,8 +30,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   |
       | Willis |
       | Will   |
-    When I click text "Select A Criteria"
-    And I click text "Name"
+    When I click "//a[text()='Select A Criteria']"
+    And I click "//a[text()='Name']"
     And I fill in "criteria_list[0][value]" with "Will"
     And I search
     And I wait for the page to load
@@ -49,8 +49,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name    | gender           |
       | Andrew  | Male             |
       | mary    | Female           |
-    When I click text "Select A Criteria"
-    And I click text "Sex"
+    When I click "//a[text()='Select A Criteria']"
+    And I click "//a[text()='Sex']"
     And I select "Male" from "criteria_list[0][value]"
     And I search
     And I wait for the page to load
@@ -65,13 +65,13 @@ Feature: So that I can find a child that has been entered in to RapidFTR
         | name    | gender           |
         | Andrew  | Male             |
         | mary    | Female           |
-      When I click text "Select A Criteria"
-      And I click text "Sex"
+      When I click "//a[text()='Select A Criteria']"
+      And I click "//a[text()='Sex']"
       And I select "Male" from "criteria_list[0][value]"
       And I search
       And I wait for the page to load
-      Then I click text "Sex"
-      And I click text "Name"
+      Then I click "//a[text()='Sex']"
+      And I click "//a[text()='Name']"
       Then I fill in "criteria_list[0][value]" with "mary"
       Then I search
       And I wait for the page to load
@@ -102,8 +102,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
        | Andrew1 | bob         | john                 |
        | Andrew2 | john        | bob                  |
        | James   | bob         | smith                |
-    When I click text "Select A Criteria"
-     And I click text "Name"
+    When I click "//a[text()='Select A Criteria']"
+     And I click "//a[text()='Name']"
      And I fill in "criteria_list[0][value]" with "Andrew"
      And I fill in "created_by_value" with "bob"
      And I search
@@ -193,8 +193,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | James   | john        | bob                  | tim             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | William | tim         | bob                  | bob             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
       | Wilfred | jane        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC | 2012-05-24 14:10:03UTC |
-   When I click text "Select A Criteria"
-    And I click text "Name"
+   When I click "//a[text()='Select A Criteria']"
+    And I click "//a[text()='Name']"
     And I fill in "criteria_list[0][value]" with "Wil"
     And I fill in "created_by_value" with "bob"
     And I fill in "updated_by_value" with "jan"
@@ -220,8 +220,8 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Wilbert | Separated         | jane        |
       | James   | Unaccompanied     | john        |
       | William | Separated         | tim         |
-    When I click text "Select A Criteria"
-    And I click text "Protection Status"
+    When I click "//a[text()='Select A Criteria']"
+    And I click "//a[text()='Protection Status']"
     And I select "Separated" from "criteria_list[0][value]"
     And I search
     Then I should see "Wilbert" in the search results
@@ -235,7 +235,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should see "Willis" in the search results
     Then I should see "James" in the search results
 
-
+  @javascript
   Scenario: Add Paging to advanced search page
     Given I am logged in
     And I am on child advanced search page
@@ -271,7 +271,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I search
     And I wait for the page to load
     Then I should see first 20 records in the search results
-
+    And I wait for 30 seconds
     When I goto the "next_page"
     Then I should see next records in the search results
     And I should see link to "next_page disabled"

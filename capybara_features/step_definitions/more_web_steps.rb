@@ -8,12 +8,6 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
-When /^I click text "([^"]*)"(?: within "([^\"]*)")?$/ do |text_value, selector|
-  with_scope(selector) do
-    page.find('//a', :visible => true, :text => text_value).click
-  end
-end
-
 Then /^the "([^\"]*)" field should be disabled$/ do |label|
   field_labeled(label, :disabled => true)[:disabled].should be_true
 end

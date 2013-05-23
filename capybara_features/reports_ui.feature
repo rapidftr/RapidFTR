@@ -54,7 +54,7 @@ Feature: Reports UI
     Given I am logged in as a user with "Admin" permission
     When I follow "USERS"
     And I follow "Roles"
-    And I click the "Edit" link
+    And I follow "Edit"
     Then the "view_and_download_reports" checkbox should be assignable
 
   Scenario: User will be shown "No entries found" when there is no entries available
