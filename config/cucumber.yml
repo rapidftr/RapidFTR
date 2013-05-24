@@ -1,12 +1,10 @@
 <%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} features" : "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} #{rerun}"
-std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} --strict --require capybara_features --tags ~@wip"
+std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'pretty'} --strict --tags ~@wip --require capybara_features"
 %>
 default: <%= std_opts %> capybara_features
 wip: --tags @wip:3 --wip capybara_features
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
-browser: capybara_features --strict --tags @javascript --tags ~@wip --backtrace
-headless: capybara_features --strict --tags ~@wip --tags ~@javascript --backtrace
-browser_wip: --tags @javascript --tags @wip:3 --wip capybara_features
-headless_wip: --tags @headless --tags @wip:3 --wip capybara_features
+browser: <%= std_opts %> capybara_features --tags @javascript
+headless: <%= std_opts %> capybara_features --tags ~@javascript

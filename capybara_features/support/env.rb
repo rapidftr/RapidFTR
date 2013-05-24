@@ -5,15 +5,9 @@
 # files.
 
 ENV["RAILS_ENV"] ||= "cucumber"
-
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../..'))
-require 'config/environment'
 
-require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
-require 'cucumber/rails/rspec'
-require 'cucumber/rails/world'
-require 'cucumber/web/tableish'
-
+require 'cucumber/rails'
 require 'capybara/rails'
 require 'capybara/cucumber'
 
@@ -42,6 +36,5 @@ Capybara.default_wait_time = 5 #When we testing AJAX, we can set a default wait 
 Capybara.ignore_hidden_elements = false #Ignore hidden elements when testing, make helpful when you hide or show elements using javascript
 Capybara.javascript_driver = :selenium #default driver when you using @javascript tag
 # Capybara.server_boot_timeout = 50
-ActionController::Base.allow_rescue = false
 
 World(UploadableFiles, ChildFinder)
