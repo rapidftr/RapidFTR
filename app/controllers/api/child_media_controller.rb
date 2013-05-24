@@ -41,7 +41,7 @@ class Api::ChildMediaController < Api::ApiController
     end
 
     def no_photo_attachment
-      data = File.read(File.join(Rails.root, "public/images/no_photo_clip.jpg"))
+      data = File.binread(File.join(Rails.root, "public/images/no_photo_clip.jpg"))
       FileAttachment.new("no_photo", "image/jpg", data)
     end
 

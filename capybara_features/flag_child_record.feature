@@ -40,7 +40,7 @@ Feature:
     When I am on the children listing page
     Then I should not see "Flagged By"
 
-  @javascript
+  @javascript @search
   Scenario: Seeing Flagged Child in Search Results
     Given the following children exist in the system:
         | name   | flag |

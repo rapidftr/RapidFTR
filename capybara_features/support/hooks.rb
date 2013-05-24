@@ -1,17 +1,16 @@
-Before('@gc') do
-  GC.enable
+Before do
+  Child.stub! :index_record => true, :reindex! => true, :build_solar_schema => true
+  Sunspot.stub! :index => true, :index! => true
 end
 
-After do
-  unless ENV["CI"] == "true"
-    GC.enable
-    GC.start
-    GC.disable
-  end
+Before('@search') do
+  Child.rspec_reset
+  Sunspot.rspec_reset
+  Sunspot.remove_all!(Child)
 end
 
 Before do
-  I18n.locale = I18n.default_locale = "en"
+  I18n.locale = I18n.default_locale = :en
 
   CouchRestRails::Document.descendants.each do |model|
     docs = model.database.documents["rows"].map { |doc|
@@ -21,7 +20,6 @@ Before do
   end
 
   RapidFTR::FormSectionSetup.reset_definitions
-  Sunspot.remove_all!(Child)
 end
 
 Before('@roles') do |scenario|

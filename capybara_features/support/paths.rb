@@ -134,7 +134,7 @@ module NavigationHelpers
         child_ids_path
 
       when /the child listing filtered by (.+)/
-        child_filter_path (:filter => $1)
+        child_filter_path(:filter => $1)
 
       when /duplicate child page for "(.+)"$/
         child = Child.by_name(:key => $1).first

@@ -18,17 +18,17 @@ describe 'admin/index.html.erb' do
 
   describe 'with system settings permission' do
     let(:permissions) { [Permission::SYSTEM[:contact_information]] }
-    it { should have_link 'Admin Contact Information', edit_contact_information_path(:administrator) }
+    it { should have_link 'Admin Contact Information', :href => edit_contact_information_path(:administrator) }
   end
 
   describe 'with manage forms permisssion' do
     let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
-    it { should have_link 'Highlight Fields', highlight_fields_path }
+    it { should have_link 'Highlight Fields', :href => highlight_fields_path }
   end
 
   describe 'with manage replications permission' do
     let(:permissions) { [Permission::SYSTEM[:system_users]] }
-    it { should have_link 'Manage Server Synchronisation Users', system_users_path }
+    it { should have_link 'Manage Server Synchronisation Users', :href => system_users_path }
   end
 
 end

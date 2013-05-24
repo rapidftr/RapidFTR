@@ -33,7 +33,7 @@ Feature: So that admin can customize fields in a form section
     And I follow "Register New Child"
 
     Then I should see "Anything"
-  
+
   @javascript
   Scenario: Admins should be able to add new date fields
     Given I am on the edit form section page for "family_details"
@@ -88,7 +88,7 @@ Feature: So that admin can customize fields in a form section
     two
     """
     And I wait until "Save Details" is visible
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
 
     Then I should see "Radio button name"
     When I am on children listing page
@@ -187,7 +187,7 @@ Feature: So that admin can customize fields in a form section
     one
     two
     """
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
 
     Then I should see "Field successfully added"
 
@@ -213,7 +213,7 @@ Feature: So that admin can customize fields in a form section
     Teddy bear
     Younger sibling
     """
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
 
     Then I should see "Field successfully added"
 
@@ -245,7 +245,7 @@ Feature: So that admin can customize fields in a form section
 	Lego
 	"""
 
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
     Then I should see "Field successfully added"
     And I should see "Toys" in the list of fields
     When I am on the add child page
@@ -258,7 +258,7 @@ Feature: So that admin can customize fields in a form section
       | Lego       | no       |
     When I check "Lego" for "Toys"
     And I check "Action Man" for "Toys"
-    And I press "Save Details" within "#new_field"
+    And I press "Save Details" within "#field_details_options"
     Then I should see "Action Man, Lego"
     When I follow "Edit"
     And I visit the "Family details" tab

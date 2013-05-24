@@ -1,18 +1,15 @@
 source 'https://rubygems.org'
-ruby '1.8.7'
+ruby '1.9.3'
 
 gem 'rapidftr_addon', :git => 'git://github.com/farismosman/rapidftr-addon.git', :branch => 'master'
 gem 'rapidftr_addon_cpims', :git => 'git://github.com/farismosman/rapidftr-addon-cpims.git', :branch => 'master'
 
 gem 'couchrest',      '0.34'
-gem 'fastercsv',      '1.5.3'
-gem 'json',           '1.4.6'
-gem 'json_pure',      '1.4.6'
 gem 'mime-types',     '1.16'
 gem 'mini_magick',    '1.3.2'
 gem 'pdf-reader',     '0.8.6'
 gem 'prawn',          '0.8.4'
-gem 'rails',          '3.0.19'
+gem 'rails',          '3.0.20'
 gem 'rest-client',    '1.3.0'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
@@ -25,10 +22,8 @@ gem 'capistrano',     '~> 2.14.2'
 gem 'highline',       '1.6.16'
 gem 'will_paginate',  '~> 3.0.4'
 gem 'i18n-js',        '~> 2.1.2'
-gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby
-gem 'win32-open3',    '~> 0.3.2',  :platforms => [:mswin, :mingw]
+gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => 'v8'
 gem 'os',             '~> 0.9.6'
-gem 'libv8',          '~> 3.11.8', :platform => :ruby
 gem 'thin',           '~> 1.5.1',  :platform => :ruby, :require => false
 gem 'encrypted-cookie-store', '~> 1.0'
 
@@ -68,21 +63,18 @@ group :assets do
   gem 'jammit',        '~> 0.6.6'
 end
 
-group :development, :test, :cucumber do
+group :test, :cucumber do
+  gem 'factory_girl',     '~> 2.6'
+
   gem 'rspec',            '~> 2.11.0'
   gem 'rspec-rails',      '~> 2.11.0'
   gem 'rspec-instafail',  '~> 0.2.4'
-  gem 'pry'
-
-  gem 'capybara',         '~> 1.0.1'
-  gem 'factory_girl',     '~> 2.6'
   gem 'jasmine',          '~> 1.3.2'
-end
 
-group :test, :cucumber do
-  gem 'cucumber',           '~> 1.2.1'
+  gem 'capybara',         '~> 2.1.0'
+  gem 'cucumber',           '~> 1.2.2'
   gem 'cucumber-rails',     '~> 0.3.2'
   gem 'selenium-webdriver', '~> 2.30'
-  gem 'hpricot',            '~> 0.8.2'
+  gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
 end

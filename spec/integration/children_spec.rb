@@ -55,7 +55,7 @@ end
 
 def verify_attachment(attachment, uploadable_file)
   attachment.content_type.should == uploadable_file.content_type
-  attachment.data.read.should == uploadable_file.read
+  attachment.data.size.should == uploadable_file.data.size
 end
 
 def display_child_errors(errors)

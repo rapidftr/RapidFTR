@@ -11,7 +11,7 @@ Feature:
       | Dave    | dave_456 | user1      |
       | Mike    | mike_789 | user1      |
 
-  @javascript
+  @javascript @search
   Scenario: Users can export to CSV as the result of a search
     Given I am logged in as a user with "View And Search Child,Export to CSV" permissions
     When I search using a name of "D"
@@ -20,12 +20,13 @@ Feature:
     And I press "Export Selected to CSV"
     Then password prompt should be enabled
 
+  @search
   Scenario: When there are no search results, there is no csv export link
     Given I am logged in as a user with "View And Search Child,Export to CSV" permissions
     When I search using a name of "Z"
     Then I should not see "Export to CSV"
 
-  @javascript
+  @javascript @search
   Scenario: Admins can export some or all child records to CSV
     Given I am logged in as an admin
     And the date/time is "Oct 23 2010"
@@ -39,7 +40,7 @@ Feature:
     And I press "Export Selected to CSV"
     Then password prompt should be enabled
 
-  @javascript
+  @javascript @wip
   Scenario: User can export details of a single child to CSV
     Given I am logged in as an admin
 	  And I am on the child record page for "Dan"
@@ -49,7 +50,7 @@ Feature:
     And I save file with password "test"
 
     When I follow "System settings"
-    And I follow "System Logs"    
+    And I follow "System Logs"
     Then I should see the following log entry:
       | type       | user_name | organisation | unique_id |
       | CSV Export | admin     | UNICEF       | dan_123   |

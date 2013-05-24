@@ -29,7 +29,7 @@ namespace :app do
 
   desc "Migrate database"
   task :migrate_db do
-    run_with_path_env "bundle exec rake couchdb:create db:migrate db:seed"
+    run_with_path_env "bundle exec rake couchdb:create db:seed db:migrate"
   end
 
   desc "Precompile assets"

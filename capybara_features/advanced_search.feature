@@ -1,3 +1,4 @@
+@search
 Feature: So that I can find a child that has been entered in to RapidFTR
   As a user of the website
   I want to use the advanced search to find all relevant results

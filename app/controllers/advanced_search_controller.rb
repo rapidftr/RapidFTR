@@ -27,7 +27,7 @@ class AdvancedSearchController < ApplicationController
     RapidftrAddon::ExportTask.active.each do |export_task|
       if params[:commit] == t("addons.export_task.#{export_task.id}.selected")
         authorize! "export_#{export_task.id}".to_sym, Child
-        record_ids = (params["all"] == "Select all records") ? record_ids = params["full_results"].split(/,/) : Hash[params["selections"].to_a.sort_by { |k,v| k}].values.reverse || {}
+        record_ids = (params["all"] == "Select all records") ? params["full_results"].split(/,/) : Hash[params["selections"].sort].values rescue {}
         raise ErrorResponse.bad_request('You must select at least one record to be exported') if record_ids.empty?
 
         children = record_ids.map { |child_id| Child.get child_id }

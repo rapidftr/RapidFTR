@@ -18,7 +18,8 @@ class FileAttachment
   end
 
   def self.from_file(file, content_type, name_prefix="file", name_suffix ="", child=nil)
-    new generate_name(name_prefix, name_suffix), content_type, file.read, child
+    file = file.tempfile if file.respond_to?(:tempfile)
+    new generate_name(name_prefix, name_suffix), content_type, File.binread(file), child
   end
 
   def self.generate_name(name_prefix = "file", name_suffix = "")
@@ -26,7 +27,7 @@ class FileAttachment
     filename << name_suffix unless name_suffix.blank?
     filename.join('-')
   end
-  
+
   def mime_type
     Mime::Type.lookup(self.content_type.downcase)
   end
@@ -34,7 +35,7 @@ class FileAttachment
   def resize(new_size)
     new_name = "#{name}_#{new_size}"
     return child.media_for_key(new_name) if child && child.has_attachment?(new_name)
-    
+
     resized_data = resized_blob(new_size)
     new_attachment = FileAttachment.new new_name, content_type, resized_data, child
 

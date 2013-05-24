@@ -14,7 +14,7 @@ end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    step %Q{I attach the file "#{photo}" to "child[photo]#{i}"}
+    step %Q{I attach the file "#{photo.first}" to "child[photo]#{i}"}
   end
 end
 
@@ -111,12 +111,18 @@ When /^I wait for (\d+) seconds$/ do |seconds|
 end
 
 When 'I wait for the page to load' do
-  wait_until { page.evaluate_script('$ && $.active == 0') } if Capybara.current_driver == :selenium
-  page.has_content? ''
+  if Capybara.current_driver == :selenium
+    Timeout.timeout(Capybara.default_wait_time) do
+      sleep(0.1) until value = page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0')
+      value
+    end
+  else
+    page.has_content? ''
+  end
 end
 
 When /^I wait until "([^"]*)" is visible$/ do |selector|
-  page.has_css?("#{selector}", :visible => true)
+  page.has_content?(selector, :visible => true)
 end
 
 Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|

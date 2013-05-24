@@ -10,12 +10,12 @@ World(WithinHelpers)
 
 When /^I click text "([^"]*)"(?: within "([^\"]*)")?$/ do |text_value, selector|
   with_scope(selector) do
-    page.find('//a', :text => text_value).click
+    page.find('//a', :visible => true, :text => text_value).click
   end
 end
 
 Then /^the "([^\"]*)" field should be disabled$/ do |label|
-  field_labeled(label)[:disabled].should be_true
+  field_labeled(label, :disabled => true)[:disabled].should be_true
 end
 
 Given /^devices exist$/ do |devices|
@@ -98,7 +98,8 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
 end
 
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
-  page.body.should have_selector("//audio/source", :src=>current_path + "/audio/")
+  url = current_url.gsub '/edit', ''
+  page.body.should have_xpath("//audio/source[@src='#{url}/audio']")
 end
 
 Then /^I should not see an audio tag$/ do
