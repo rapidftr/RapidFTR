@@ -4,6 +4,10 @@ class Login
   attr_accessor :user_name
   attr_accessor :password
 
+  LOCKOUT_OPTIONS = {
+    :lockout_period => 1, # in minutes
+    :maximum_attempts => 3 # can have x number of login_attempts in this many minutes
+  }
 
   def initialize(params)
     @user_name = params[:user_name]
@@ -14,13 +18,12 @@ class Login
 
   def authenticate_user
     user = User.find_by_user_name(@user_name)
-
     if(user.nil?)
       return [nil, -1]
     end
 
-    if (user.failed_attempts == 3)
-      if ((Time.now - Time.parse(user.lock_time))/60<1)
+    if (user.failed_attempts == LOCKOUT_OPTIONS[:maximum_attempts])
+      if ((Time.now - Time.parse(user.lock_time))/60 < LOCKOUT_OPTIONS[:lockout_period])
         return [nil, user.failed_attempts]
       else
         unlock_user_account(user)
@@ -33,12 +36,13 @@ class Login
       session = user.verified ? Session.for_user(user, @imei) : ((imei == @imei) || (imei == "") ? Session.for_user(user, @imei) : nil)
       unlock_user_account(user)
     else
-      if (user.failed_attempts != 0 and (Time.now - Time.parse(user.last_failed_time))/60>1)
+      if (user.failed_attempts != 0 and (Time.now - Time.parse(user.last_failed_time))/60 > LOCKOUT_OPTIONS[:lockout_period])
         user.failed_attempts = 1;
         user.lock_time = nil;
       else
+        binding.pry
         user.failed_attempts += 1;
-        if (user.failed_attempts == 3)
+        if (user.failed_attempts == LOCKOUT_OPTIONS[:maximum_attempts])
           user.lock_time = Time.now
         end
       end
