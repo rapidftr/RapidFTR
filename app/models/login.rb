@@ -14,18 +14,50 @@ class Login
 
   def authenticate_user
     user = User.find_by_user_name(@user_name)
-    if (user and user.authenticate(@password))
+
+    if(user.nil?)
+      return [nil, -1]
+    end
+
+    if (user.failed_attempts == 3)
+      if ((Time.now - Time.parse(user.lock_time))/60<1)
+        return [nil, user.failed_attempts]
+      else
+        unlock_user_account(user)
+      end
+    end
+
+    if (user.authenticate(@password))
       mobile_login_history = user.mobile_login_history.first
       imei = mobile_login_history.nil? ? "" : mobile_login_history['imei']
-      session = user.verified ? Session.for_user( user, @imei ) : ((imei == @imei) || (imei == "") ? Session.for_user( user, @imei ) : nil)
+      session = user.verified ? Session.for_user(user, @imei) : ((imei == @imei) || (imei == "") ? Session.for_user(user, @imei) : nil)
+      unlock_user_account(user)
+    else
+      if (user.failed_attempts != 0 and (Time.now - Time.parse(user.last_failed_time))/60>1)
+        user.failed_attempts = 1;
+        user.lock_time = nil;
+      else
+        user.failed_attempts += 1;
+        if (user.failed_attempts == 3)
+          user.lock_time = Time.now
+        end
+      end
+      user.last_failed_time = Time.now
     end
 
     if session and @imei
       user.add_mobile_login_event(@imei, @mobile_number)
-      user.save
     end
+    user.save
 
-    session
+    failed_attempts = user.nil? ? -1 : user.failed_attempts
+    [session, failed_attempts]
+  end
+
+  def unlock_user_account(user)
+    user.failed_attempts = 0;
+    user.lock_time = nil;
+    user.last_failed_time = nil
   end
 
   def errors

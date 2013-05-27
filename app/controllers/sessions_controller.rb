@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   # GET /sessions/1.xml
   def show
     #logger.debug( cookies.inspect )
-    logger.debug( "Authorization header: #{request.headers['Authorization']}" )
+    logger.debug("Authorization header: #{request.headers['Authorization']}")
     @session = Session.get(params[:id])
 
     respond_to do |format|
@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @session }
+      format.xml { render :xml => @session }
     end
   end
 
@@ -40,13 +40,16 @@ class SessionsController < ApplicationController
   # POST /sessions.xml
   def create
     @login = Login.new(params)
-    @session = @login.authenticate_user
+    @session, failed_attempts = @login.authenticate_user
 
     if not @session
       respond_to do |format|
-        handle_login_error(t("session.invalid_credentials"), format)
+        if (failed_attempts==3)
+          handle_login_error("You are locked. Try one minute later.", format)
+        else
+          handle_login_error(failed_attempts, format)
+        end
       end
-
       return
     end
 
@@ -61,8 +64,8 @@ class SessionsController < ApplicationController
         session[:rftr_session_id] = @session.id
         flash[:notice] = t("hello") + " " + @session.user_name
         format.html { redirect_to(root_path) }
-        format.xml  { render :action => "show", :status => :created, :location => @session }
-        format.json { render_session_as_json(@session,:status => :created, :location => @session) }
+        format.xml { render :action => "show", :status => :created, :location => @session }
+        format.json { render_session_as_json(@session, :status => :created, :location => @session) }
       else
         handle_login_error(t("session.login_error"), format)
       end
@@ -82,7 +85,7 @@ class SessionsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(:login) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 
@@ -95,11 +98,11 @@ class SessionsController < ApplicationController
     format.html {
       flash[:error] = notice
       redirect_to :action => "new" }
-    format.xml  { render :xml => errors, :status => :unprocessable_entity }
+    format.xml { render :xml => errors, :status => :unprocessable_entity }
     format.json { head :unauthorized }
   end
 
-  def render_session_as_json(session,options = {})
+  def render_session_as_json(session, options = {})
     user = User.find_by_user_name(session.user_name)
     json = {
       :session => {
@@ -114,7 +117,7 @@ class SessionsController < ApplicationController
       :language => I18n.default_locale,
       :verified => user.verified?
     }
-    render( options.merge( :json => json ) )
+    render(options.merge(:json => json))
   end
 
 end

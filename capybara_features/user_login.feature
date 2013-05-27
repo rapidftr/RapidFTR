@@ -17,6 +17,24 @@ Feature: As an user, I should be able to log in.
     Then I should see "View child listing"
     And I should not see "Hello mary"
 
+  Scenario: User should be locked when they
+    Given a user "Harry" with a password "123"
+    And I am on the login page
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "1234"
+    And I press "Log in"
+    Then I should see "1"
+
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "1234"
+    And I press "Log in"
+    Then I should see "2"
+
+    When I fill in "User Name" with "Harry"
+    And I fill in "password" with "1234"
+    And I press "Log in"
+    Then I should see "You are locked. Try one minute later."
+
   Scenario: User does not exist
     Given I am on the login page
     When I fill in "User Name" with "Harry"
