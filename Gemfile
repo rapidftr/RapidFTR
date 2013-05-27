@@ -73,7 +73,7 @@ group :test, :cucumber do
 
   gem 'capybara',         '~> 2.1.0'
   gem 'cucumber',           '~> 1.2.2'
-  gem 'cucumber-rails',     '~> 0.3.2'
+  gem 'cucumber-rails',     '~> 1.3.1', :require => false
   gem 'selenium-webdriver', '~> 2.30'
   gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
