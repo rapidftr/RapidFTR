@@ -28,7 +28,6 @@ Feature:
     And I should not see "andreas"
     And I should not see "jaco"
     And I should not see "jane"
-    Then show me the page
 
   Scenario: Checking filter by All should by default show all children in alphabetical order
     Then I should see the order andreas,jaco,jane,meredith,zak
