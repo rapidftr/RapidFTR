@@ -57,15 +57,6 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I wait until "family_details" is visible
     Then I should see "Visible checkbox" with id "form_section_visible"
 
-  @javascript
-  @wip
-  Scenario: Admins should not be able to demote the name field by promoting following field
-    Given I am on the form section page
-    When I follow "Basic Identity"
-    And I demote field "nick_name"
-    Then I should not be able to promote the field "second_name"
-    And I should be able to promote the field "nick_name"
-
   Scenario: name field form section should not be editable
     Given I am on the edit form section page for "basic_identity"
     Then I should not be able to edit "Name" field
@@ -75,13 +66,15 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
   @wip
   Scenario: Admin should be able to change the order of the fields on edit form section page
     Given I am on the edit form section page for "basic_identity"
-    When I move field "Second Name" up
-    And I click the "Save Order" button
+    When I demote field "nick_name"
+    And I am on the edit form section page for "basic_identity"
     Then I should find the form section with following attributes:
       | Name          |
       | Name          |
       | Second Name   |
       | Nick Name     |
+      | characteristic|
+      | nationality   |
 
   @run
   Scenario: User creates a new form and it is added to the bottom of the list of forms
