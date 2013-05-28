@@ -36,29 +36,10 @@ RapidFTR is being developed using Ruby on Rails and CouchDB. Alongside the devel
 we've also started to develop the BlackBerry client, with an Android client to follow.
 If you've got experience with any of these and want to help, please get in touch.
 
-Install and run RapidFTR on OSX
--------------------------------
+Install and run RapidFTR
+------------------------
 
-PLEASE SEE [INSTALLATION INSTRUCTIONS](http://wiki.github.com/rapidftr/RapidFTR/install-and-run-rapidftr-on-osx)
-
-To run RapidFTR
----------------
-
-1. From the command line, go to the folder where your GitHub repo is and enter this command which will start SolR and the application server:
-
-        rake app:run
-
-2. Open CouchDBX
-
-4. in a browser, go to:
-
-    http://localhost:3000/children
-    or
-    http://localhost:3000/users/
-
-    CouchDB itself should be running here: http://localhost:5984
-
-    You should also be able to see the built-in database admin tool, Futon, here: http://localhost:5984/_utils/
+[Please see the Wiki for pages for Installing and Running](https://github.com/rapidftr/RapidFTR/wiki)
 
 Story Development
 -------------
@@ -66,17 +47,3 @@ Story Development
 Stories that are ready to picked up can be seen at [(2) Development Wall](http://bit.ly/U1obJ7) in  [Mingle](https://minglehosting.thoughtworks.com/rapidftr/projects/rapidftr).
 Please drop a signup email to rapidftr@googlegroups.com.
 You can signup for RapidFTR Mingle from [Signup](http://bit.ly/TfPpfb) and move cards by yourself.
-
-
-Cucumber & RSPEC Tests
--------------
-
-To run cucumber tests, type in the command line:
-
-    cucumber
-
-To run rspec tests, type in the command line:
-
-    rake spec
-
-========
