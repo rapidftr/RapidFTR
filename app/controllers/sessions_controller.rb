@@ -47,7 +47,7 @@ class SessionsController < ApplicationController
         if (failed_attempts==3)
           handle_login_error("You are locked. Try one minute later.", format)
         else
-          handle_login_error(failed_attempts, format)
+          handle_login_error("You have #{help.pluralize(3-failed_attempts,'attempt', 'attempts')} left.", format)
         end
       end
       return
@@ -120,4 +120,12 @@ class SessionsController < ApplicationController
     render(options.merge(:json => json))
   end
 
+  def help
+    Helper.instance
+  end
+
+  class Helper
+    include Singleton
+    include ActionView::Helpers::TextHelper
+  end
 end
