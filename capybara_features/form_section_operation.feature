@@ -175,16 +175,13 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
 
   @javascript
   Scenario: A hidden highlighted field must not be visible in Child Summary
-    Given I am on the admin page
-    When I follow "Highlight Fields"
     And I am on the form section page
     And I follow "Basic Identity"
-    And I hide "fields_second_name" from "Basic Identity"
+    And I hide "fields_nationality" from "Basic Identity"
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"
     And I click text "add"
-    When I select menu "Basic Identity"
     When I select menu "Basic Identity"
     Then I should not see "Nationality" in Child Summary
 
