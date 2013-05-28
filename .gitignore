@@ -31,3 +31,4 @@ config/couchdb.yml
 vendor/bundle/
 vendor/cache/
 vendor/ruby/
+.ruby-version
