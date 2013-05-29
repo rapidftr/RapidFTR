@@ -230,6 +230,20 @@ describe ChildrenController do
         it_should_behave_like "viewing children as a field worker"
       end
     end
+
+    describe "export all to PDF/CSV/CPIMS/Photo Wall" do
+      before do
+        fake_field_admin_login
+        @params ||= {}
+        controller.stub! :paginated_collection => [], :render => true
+      end
+      it "should flash notice when exporting no records" do
+        format = "cpims"
+        @params.merge!(:format => format)
+        get :index, @params
+        flash[:notice].should == "No Records Available!"
+      end
+    end
   end
 
   describe "GET show" do
