@@ -40,7 +40,6 @@ class Login
         user.failed_attempts = 1;
         user.lock_time = nil;
       else
-        binding.pry
         user.failed_attempts += 1;
         if (user.failed_attempts == LOCKOUT_OPTIONS[:maximum_attempts])
           user.lock_time = Time.now

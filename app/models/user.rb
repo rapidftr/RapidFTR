@@ -24,6 +24,10 @@ class User < CouchRestRails::Document
   property :last_failed_time
   property :lock_time
 
+  property :failed_attempts, :default=>0
+  property :last_failed_time
+  property :lock_time
+
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]
 

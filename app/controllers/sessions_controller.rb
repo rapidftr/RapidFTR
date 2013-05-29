@@ -46,6 +46,8 @@ class SessionsController < ApplicationController
       respond_to do |format|
         if (failed_attempts==3)
           handle_login_error("You are locked. Try one minute later.", format)
+        elsif(failed_attempts==-1)
+          handle_login_error("Invalid user name or password.", format)
         else
           handle_login_error("You have #{help.pluralize(3-failed_attempts,'attempt', 'attempts')} left.", format)
         end
