@@ -41,15 +41,14 @@ class SessionsController < ApplicationController
   def create
     @login = Login.new(params)
     @session, failed_attempts = @login.authenticate_user
-
     if not @session
       respond_to do |format|
-        if (failed_attempts==3)
+        if (failed_attempts == 3)
           handle_login_error("You are locked. Try one minute later.", format)
-        elsif(failed_attempts==-1)
-          handle_login_error("Invalid user name or password.", format)
+        elsif (failed_attempts == -1 || failed_attempts == -2)
+          handle_login_error("Invalid credentials. Please try again!", format)
         else
-          handle_login_error("You have #{help.pluralize(3-failed_attempts,'attempt', 'attempts')} left.", format)
+          handle_login_error("You have #{help.pluralize(3-failed_attempts, 'attempt', 'attempts')} left.", format)
         end
       end
       return

@@ -18,10 +18,12 @@ class Login
 
   def authenticate_user
     user = User.find_by_user_name(@user_name)
-    if(user.nil?)
+    if (user.nil?)
       return [nil, -1]
     end
-
+    if (user.disabled == true)
+      return[nil, -2]
+    end
     if (user.failed_attempts == LOCKOUT_OPTIONS[:maximum_attempts])
       if ((Time.now - Time.parse(user.lock_time))/60 < LOCKOUT_OPTIONS[:lockout_period])
         return [nil, user.failed_attempts]

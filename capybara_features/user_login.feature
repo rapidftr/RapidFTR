@@ -23,12 +23,12 @@ Feature: As an user, I should be able to log in.
     When I fill in "User Name" with "Harry"
     And I fill in "password" with "1234"
     And I press "Log in"
-    Then I should see "You have 2 attempts"
+    Then I should see "You have 2 attempts left."
 
     When I fill in "User Name" with "Harry"
     And I fill in "password" with "1234"
     And I press "Log in"
-    Then I should see "You have 1 attempt"
+    Then I should see "You have 1 attempt left."
 
     When I fill in "User Name" with "Harry"
     And I fill in "password" with "1234"
@@ -48,16 +48,6 @@ Feature: As an user, I should be able to log in.
     And I have an expired session
     When I am on the home page
     Then I should be on the login page
-
-  Scenario: User enters the wrong password
-    Given a user "Harry" with a password "123"
-    And I am on the login page
-
-    When I fill in "User Name" with "Harry"
-    And I fill in "password" with "1234"
-    And I press "Log in"
-
-    Then I should see "Invalid credentials. Please try again!"
 
   Scenario: Disabled user can't log in
     Given a user "Harry" with a password "123"
