@@ -110,7 +110,7 @@ end
 
 Then /^I should find the form section with following attributes:$/ do |form_section_fields|
   expected_order = form_section_fields.hashes.collect { |section_field| section_field['Name'] }
-  actual_order=page.all(:xpath, "//td[@class='breakword']").collect(&:text)
+  actual_order=page.all(:xpath, "//tr[@class='rowEnabled']/td[1]").collect(&:text)
   actual_order.should == expected_order
 end
 

@@ -99,7 +99,7 @@ end
 
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
   url = current_url.gsub '/edit', ''
-  page.body.should have_xpath("//audio/source[@src='#{url}/audio']")
+  page.body.should have_selector("//audio/source[@src='#{url}/audio']")
 end
 
 Then /^I should not see an audio tag$/ do
