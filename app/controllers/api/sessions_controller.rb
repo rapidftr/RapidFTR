@@ -4,8 +4,7 @@ class Api::SessionsController < Api::ApiController
 
   def login
     @login = Login.new(params)
-    @current_session = @login.authenticate_user
-
+    @current_session, failed_attempts = @login.authenticate_user
     raise ErrorResponse.unauthorized(t("session.invalid_credentials")) unless @current_session
     check_device_blacklisted
 

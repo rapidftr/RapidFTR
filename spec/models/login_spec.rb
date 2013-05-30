@@ -27,6 +27,7 @@ describe Login do
       User.stub(:find_by_user_name).and_return(user)
       user.stub(:authenticate).and_return false
       user.stub(:devices).and_return([])
+      user.stub(:last_failed_time).and_return(Time.new(2000,1,1,0,0,9).to_s)
       
       user.should_not_receive(:add_mobile_login_event).with(imei, mobile_number)
 
