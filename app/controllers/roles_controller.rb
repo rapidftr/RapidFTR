@@ -2,6 +2,7 @@ class RolesController < ApplicationController
 
   def index
     authorize! :index, Role
+    @page_name = t("roles.label")
     sort_option = params[:sort_by_descending_order] || false
     params[:show] ||= "All"
     @roles = params[:show] == "All" ? Role.by_name(:descending => sort_option) : Role.by_name(:descending => sort_option).find_all{|role| role.has_permission(params[:show])}
