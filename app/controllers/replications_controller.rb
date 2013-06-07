@@ -17,6 +17,7 @@ class ReplicationsController < ApplicationController
 
   def new
     authorize! :create, Replication
+    @page_name = t("replication.create")
     @replication = Replication.new
   end
 

@@ -8,6 +8,12 @@ describe SystemUsersController do
     get :index
   end
 
+  it "should show page name" do
+    fake_login_as
+    get :new
+    assigns[:page_name].should == "Create a System User"
+  end
+
   describe "create system users" do
     it "should create system users" do
       fake_login_as Permission::SYSTEM[:system_users]

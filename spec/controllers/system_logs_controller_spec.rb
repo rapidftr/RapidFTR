@@ -6,10 +6,11 @@ describe SystemLogsController do
     fake_login_as(Permission::SYSTEM[:contact_information])
   end
 
-  it "should render index" do
+  it "should render index with correct page name" do
     get :index
 
     response.should render_template :index
+    assigns[:page_name].should == "System Logs"
   end
 
   it "should assign all log entries to the view, ordered by the newest first" do
