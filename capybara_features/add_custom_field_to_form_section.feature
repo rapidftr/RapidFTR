@@ -61,9 +61,9 @@ Feature: So that admin can customize fields in a form section
     And I follow "Family details"
 
     Then I should see "Anything"
-    When I fill in "Anything" with "17 Nov 2010"
+    When I fill in "Anything" with "17/11/2010"
     And I press "Save"
-    Then I should see "17 Nov 2010"
+    Then I should see "17/11/2010"
 
   @javascript
   Scenario: Admins should be able to add new radio button
