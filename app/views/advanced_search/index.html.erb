@@ -112,6 +112,8 @@
 
 <% if @results && @results.size > 0 %>
   <%= render :partial => 'children/search_results' %>
+<% else %>
+    <%= t("advanced_search.records_found", :count => 0) %>
 <% end %>
 
 <script>
