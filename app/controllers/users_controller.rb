@@ -7,6 +7,8 @@ class UsersController < ApplicationController
 
   def index
     authorize! :read, User
+
+    @page_name = t("home.users")
     sort_option = params[:sort] || "full_name"
     filter_option=params[:filter] || "active"
 
@@ -20,6 +22,7 @@ class UsersController < ApplicationController
 
   def unverified
     authorize! :show, User
+    @page_name = t("users.unverified")
     flash[:verify] = t('users.select_role')
     @users = User.all_unverified
   end

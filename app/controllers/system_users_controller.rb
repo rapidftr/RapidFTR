@@ -10,6 +10,8 @@ class SystemUsersController < ApplicationController
 
   def new
     authorize! :create, SystemUsers
+
+    @page_name = t("admin.create_system_user")
     @user = SystemUsers.new
   end
 
