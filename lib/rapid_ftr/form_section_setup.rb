@@ -437,7 +437,7 @@ module RapidFTR
         ]
         FormSection.create!({"visible"=>true,:order=> 6,
                              :unique_id=>"childs_wishes", :fields => child_wishes_fields,
-                            "name_all" => "Childs Wishes",
+                            "name_all" => "Child's Wishes",
                             "description_all" => ""
                             })
 

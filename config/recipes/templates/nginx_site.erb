@@ -1,12 +1,12 @@
 server {
   listen <%= http_port %>;
-  <%= "server_name #{server_name};" if server_name %>
+  <%= "server_name #{server_name};" if exists?(:server_name) %>
   rewrite ^(.*)$ https://$host:<%= https_port %>$1 redirect;
 }
 
 server {
   listen <%= https_port %>;
-  <%= "server_name #{server_name};" if server_name %>
+  <%= "server_name #{server_name};" if exists?(:server_name) %>
   ssl on;
 
   passenger_enabled on;
@@ -35,4 +35,4 @@ server {
   }
 }
 
-<%= "passenger_pre_start https://#{server_name}:#{https_port}/;" if server_name %>
+<%= "passenger_pre_start https://#{server_name}:#{https_port}/;" if exists?(:server_name) %>
