@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe Search do
+
+  it "should be valid if search contains special characters" do
+    search = Search.new("r*")
+    search.valid?.should be_true
+    search.errors.on(:query).should be nil
+  end
   
   it "should not be valid if search has no query" do
     search = Search.new("")
@@ -17,30 +23,6 @@ describe Search do
     search.errors.on(:query).should == "is invalid"
   end
   
-  it "should not be valid if starts with * wildcard" do
-    search = Search.new("*")
-    search.valid?.should be_false
-    search.errors.on(:query).should == "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
-  end
-  
-  it "should not be valid if starts with ~ wildcard" do
-    search = Search.new("~")
-    search.valid?.should be_false
-    search.errors.on(:query).should == "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
-  end
-  
-  it "should not be valid if contains a \\ escape char" do
-    search = Search.new("\\")
-    search.valid?.should be_false
-    search.errors.on(:query).should == "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
-  end
-  
-  it "should not be valid if contains %asd" do
-    search = Search.new("\%asd")
-    search.valid?.should be_false
-    search.errors.on(:query).should == "must only be letters (a to z) or numbers (0-9). Please try again with a different key word."
-  end
-
   it "should strip spaces" do
      search = Search.new(" roger ")
      search.query.should == "roger"
