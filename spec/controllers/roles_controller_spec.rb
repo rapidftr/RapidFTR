@@ -3,6 +3,15 @@ require 'spec_helper'
 describe RolesController do
 
   describe "GET index" do
+
+    it "should show page name" do
+      fake_login_as(Permission::ROLES[:view])
+      mock = mock()
+      Role.should_receive(:by_name).and_return([mock])
+      get :index
+      assigns[:page_name].should == "Roles"
+    end
+
     it "should allow user to view the roles" do
       fake_login_as(Permission::ROLES[:view])
       mock = mock()
