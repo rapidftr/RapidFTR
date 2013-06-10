@@ -259,27 +259,27 @@ view_by :protection_status, :gender, :ftr_status
     return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
     return true if deprecated_fields && deprecated_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
-    [false, I18n.t("activerecord.errors.models.child.at_least_one_field")]
+    [false, I18n.t("errors.models.child.at_least_one_field")]
   end
 
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-    [false, I18n.t("activerecord.errors.models.child.age")]
+    [false, I18n.t("errors.models.child.age")]
   end
 
   def validate_photos
     return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    [false, I18n.t("activerecord.errors.models.child.photo_format")]
+    [false, I18n.t("errors.models.child.photo_format")]
   end
 
   def validate_photos_size
     return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-    [false, I18n.t("activerecord.errors.models.child.photo_size")]
+    [false, I18n.t("errors.models.child.photo_size")]
   end
 
   def validate_audio_size
     return true if @audio.blank? || @audio.size < 10.megabytes
-    [false, I18n.t("activerecord.errors.models.child.audio_size")]
+    [false, I18n.t("errors.models.child.audio_size")]
   end
 
   def validate_audio_file_name
@@ -521,7 +521,7 @@ view_by :protection_status, :gender, :ftr_status
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise I18n.t("activerecord.errors.models.child.primary_photo_id", :photo_id => photo_key)
+      raise I18n.t("errors.models.child.primary_photo_id", :photo_id => photo_key)
     end
     self['current_photo_key'] = photo_key
   end
@@ -767,7 +767,7 @@ view_by :protection_status, :gender, :ftr_status
     end
 
     def validate_duplicate_of
-      return [false, I18n.t("activerecord.errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
+      return [false, I18n.t("errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
       true
     end
 
