@@ -55,10 +55,6 @@ module RapidFTR
                   "option_strings_text_all" => "Yes\nNo",
                   "display_name_all" => "Name(s) given to child after separation?"
                   }),
-        #Field.new({"name" => "dob_or_age",
-        #          "type" => "text_field",
-        #          "display_name_all" => "Date of Birth / Age"
-        #          }),
         Field.new({"name" => "birthplace",
                   "type" => "text_field",
                   "display_name_all" => "Birthplace"
