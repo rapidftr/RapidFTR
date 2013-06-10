@@ -20,6 +20,8 @@ Before do
   end
 
   RapidFTR::FormSectionSetup.reset_definitions
+  migration = File.basename (Dir[Rails.root.join("db/migration").join "0010*.rb"].first)
+  Migration.apply_migration(migration)
 end
 
 Before('@roles') do |scenario|

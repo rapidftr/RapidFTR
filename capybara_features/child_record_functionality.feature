@@ -141,14 +141,14 @@ Feature:
   Scenario: Date-times should be displayed according to the current user's timezone setting.
     Given the date/time is "July 19 2010 13:05:32UTC"
     And the following children exist in the system:
-      | name       | age | age_is | gender | last_known_location |
-      | Jorge Just | 27  | Exact  | Male   | Haiti               |
+      | name       | gender | last_known_location |
+      | Jorge Just | Male   | Haiti               |
     And the date/time is "March 01 2010 17:59:33UTC"
     And the user's time zone is "(GMT-11:00) Samoa"
 
     When I am on the child record page for "Jorge Just"
     And I follow "Edit"
-    And I fill in "Date of Birth / Age" with "28"
+    And I fill in "Date of Birth (dd/mm/yyyy)" with "28/12/2000"
     And I press "Save"
 
     Then I should see /Registered by: .+ and others on 19 July 2010 at 02:05 \(SST\)/
@@ -157,7 +157,7 @@ Feature:
   Scenario: Editing a child record
     When I follow "Register New Child"
     And I fill in "Name" with "Jorge Just"
-    And I fill in "Date of Birth / Age" with "27"
+    And I fill in "Date of Birth (dd/mm/yyyy)" with "27/12/2000"
     And I select "Male" from "Sex"
     And I fill in "Nationality" with "London"
     And I fill in "Birthplace" with "Haiti"
@@ -167,7 +167,7 @@ Feature:
 
     Then I follow "Edit"
     When I fill in "Name" with "George Harrison"
-    And I fill in "Date of Birth / Age" with "56"
+    And I fill in "Date of Birth (dd/mm/yyyy)" with "12/12/2000"
     And I select "Female" from "Sex"
     And I fill in "Nationality" with "Bombay"
     And I fill in "Birthplace" with "Zambia"
@@ -176,7 +176,7 @@ Feature:
     And I press "Save"
 
     Then I should see "George Harrison"
-    And I should see "56"
+    And I should see "12/12/2000"
     And I should see "Female"
     And I should see "Bombay"
     And I should see "Zambia"
