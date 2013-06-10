@@ -285,9 +285,6 @@ module RapidFTR
                             })
 
         separation_history_fields = [
-          Field.new("name" => "separation_date",
-                    "display_name_all" => "Date of Separation",
-                    "type" => "text_field"),
           Field.new("name" => "separation_place",
                     "display_name_all" => "Place of Separation.",
                     "type" => "text_field"),
