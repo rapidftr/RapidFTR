@@ -478,65 +478,65 @@ ar:
     validations:
       blank: "%s لا يمكن أن يكون خالي"
 
-  activerecord:
-    errors:
 
-      template:
-        header:
-          one: "خطأ واحد منع هذا %{model} من أن يتم حفظه"
-          other: "%{count} أخطاء منعت عملية الحفظ"
-        body: "هنالك مشاكل في الحقول التالية:"
+  errors:
 
-      models:
-        user:
-          full_name: "الرجاء إدخال إسم المستخدم بالكامل"
-          password_confirmation: "الرجاء تأكيد كلمة السر"
-          role_ids: "الرجاء إختيار دور واحد على الأقل"
-          organisation: "الرجاء إدخال إسم المنظمة التي ينتمي لها المستخدم"
-          user_name: "إسم المستخدم غير صالح"
-          email: "البريد الإلكتروني غير صالح"
-          user_name_uniqueness: "إسم المستخدم قد تم إختياره من قبل! الرجاء إختيار إسم آخر"
-          authenticate: "لا يمكن تصريح مستخدم لم يتم حفظه"
+    template:
+      header:
+        one: "خطأ واحد منع هذا %{model} من أن يتم حفظه"
+        other: "%{count} أخطاء منعت عملية الحفظ"
+      body: "هنالك مشاكل في الحقول التالية:"
 
-        child:
-          at_least_one_field: "الرجاء ملء حقل واحد على الأقل أو تحميل ملف"
-          age: "العمر يجب أن يكون بين ١ و ٩٩"
-          photo_format: "الرجاء تحميل صورة صالحة (jpg أو png) لهذا السجل"
-          photo_size: "هذا الملف كبير"
-          primary_photo_id: "فشل المحاولة في ضبط %{photo_id} كصورة أساسية. الصورة لا توجد"
-          validate_duplicate: "يجب تزويد هوية مطابق صالحة"
+    models:
+      user:
+        full_name: "الرجاء إدخال إسم المستخدم بالكامل"
+        password_confirmation: "الرجاء تأكيد كلمة السر"
+        role_ids: "الرجاء إختيار دور واحد على الأقل"
+        organisation: "الرجاء إدخال إسم المنظمة التي ينتمي لها المستخدم"
+        user_name: "إسم المستخدم غير صالح"
+        email: "البريد الإلكتروني غير صالح"
+        user_name_uniqueness: "إسم المستخدم قد تم إختياره من قبل! الرجاء إختيار إسم آخر"
+        authenticate: "لا يمكن تصريح مستخدم لم يتم حفظه"
+
+      child:
+        at_least_one_field: "الرجاء ملء حقل واحد على الأقل أو تحميل ملف"
+        age: "العمر يجب أن يكون بين ١ و ٩٩"
+        photo_format: "الرجاء تحميل صورة صالحة (jpg أو png) لهذا السجل"
+        photo_size: "هذا الملف كبير"
+        primary_photo_id: "فشل المحاولة في ضبط %{photo_id} كصورة أساسية. الصورة لا توجد"
+        validate_duplicate: "يجب تزويد هوية مطابق صالحة"
 
 
-        field:
-          display_name_presence: "إسم العرض يجب أن لا يكون خالياً"
-          display_name_format: "إسم العرض يجب أن يحتوي على حرف هجائي واحد على الأقل"
-          default_value: " لا توجد قيمة أساسية للنوع "
-          has_2_options: "الحقل يجب أن يحتوي على خيارين على الأقل"
-          has_1_option: "صندوق الإختيار يجب أن يحتوي على خيار واحد على الأقل"
-          unique_name_other: "الحقل موجود في الإستمارة '%{form_name}'"
-          unique_name_this: "الحقل موجود في هذه الإستمارة"
+      field:
+        display_name_presence: "إسم العرض يجب أن لا يكون خالياً"
+        display_name_format: "إسم العرض يجب أن يحتوي على حرف هجائي واحد على الأقل"
+        default_value: " لا توجد قيمة أساسية للنوع "
+        has_2_options: "الحقل يجب أن يحتوي على خيارين على الأقل"
+        has_1_option: "صندوق الإختيار يجب أن يحتوي على خيار واحد على الأقل"
+        unique_name_other: "الحقل موجود في الإستمارة '%{form_name}'"
+        unique_name_this: "الحقل موجود في هذه الإستمارة"
 
-        form_section:
-          presence_of_name: "الإسم يجب أن لا يكون خالي"
-          format_of_name: "الإسم يجب أن يحتوي على حروف هجاء، أرقام و مساحات خالية فقط"
-          visible_method: "مريء لايمكن أن تكون خطأ إذا كان perm_visible صواب"
-          fixed_order_method: "لا يمكن fixed_order أن تكون خطأ إذا كان perm_enabled صواب"
-          perm_visible_method: "لا يمكن perm_visible أن تكون خطأ إذا كان perm_enabled صواب"
-          add_field_to_form_section: "الإستمارة غير مفعلة"
-          delete_field: "الحقل غير قابل للتعديل لا يمكن حذفه"
-          unique_name: "الإسم '%{name}' موجود"
-          unique_id: "الهوية المتفردة '%{unique_id}' موجوده"
+      form_section:
+        presence_of_name: "الإسم يجب أن لا يكون خالي"
+        format_of_name: "الإسم يجب أن يحتوي على حروف هجاء، أرقام و مساحات خالية فقط"
+        visible_method: "مريء لايمكن أن تكون خطأ إذا كان perm_visible صواب"
+        fixed_order_method: "لا يمكن fixed_order أن تكون خطأ إذا كان perm_enabled صواب"
+        perm_visible_method: "لا يمكن perm_visible أن تكون خطأ إذا كان perm_enabled صواب"
+        add_field_to_form_section: "الإستمارة غير مفعلة"
+        delete_field: "الحقل غير قابل للتعديل لا يمكن حذفه"
+        unique_name: "الإسم '%{name}' موجود"
+        unique_id: "الهوية المتفردة '%{unique_id}' موجوده"
 
-        role:
-          permission_presence: "الرجاء إختيار دور واحد على الأقل"
-          unique_name: "هنالك دور بهذا الإسم. الرجاء إختيار إسم مختلف"
+      role:
+        permission_presence: "الرجاء إختيار دور واحد على الأقل"
+        unique_name: "هنالك دور بهذا الإسم. الرجاء إختيار إسم مختلف"
 
-        system_users:
-          username_unique: "إسم المستخدم موجود! الرجاء إختيار إسم مستخدم آخر"
+      system_users:
+        username_unique: "إسم المستخدم موجود! الرجاء إختيار إسم مستخدم آخر"
 
-        replication:
-          remote_app_url: "الرجاء إدخال رابط صحيح. مثال: http://<server>:<port>"
-          save_remote_couch_config: "الرابط أو إسم المستخدم أو كلمة السر التي تم إدخالها غير صحيح"
+      replication:
+        remote_app_url: "الرجاء إدخال رابط صحيح. مثال: http://<server>:<port>"
+        save_remote_couch_config: "الرابط أو إسم المستخدم أو كلمة السر التي تم إدخالها غير صحيح"
 
 
   histories:
