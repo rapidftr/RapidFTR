@@ -17,6 +17,11 @@ describe UsersController do
       @user = mock_user({:merge => {}, :user_name => "someone"})
     end
 
+    it "shows the page name" do
+      get :index
+      assigns[:page_name].should == "Users"
+    end
+
     context "filter and sort users" do
        before do
          @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one",:disabled=>false,:full_name=>"XYZ"})
@@ -340,6 +345,11 @@ describe UsersController do
       get :unverified
       assigns[:users].should == unverified_users
       flash[:verify].should == "Please select a role before verifying the user"
+    end
+
+    it "should show page name" do
+      get :unverified
+      assigns[:page_name].should == "Unverified Users"
     end
   end
 

@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe ReplicationsController do
 
+  describe :new do
+
+    it "should show page name" do
+      fake_login_as
+      get :new
+      assigns[:page_name].should == "Configure a Server"
+    end
+
+  end
+
   it "should authenticate configuration request through internal _users database of couchdb" do
     config = { "a" => "a", "b" => "b", "c" => "c" }
     CouchSettings.instance.should_receive(:authenticate).with("rapidftr", "rapidftr").and_return(true)
