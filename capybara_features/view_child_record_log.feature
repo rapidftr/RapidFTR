@@ -11,7 +11,7 @@ Feature:
     And I follow "Register New Child"
 
     When I fill in "Name" with "Jorge Just"
-    And I fill in "Date of Birth / Age" with "27"
+    And I fill in "Date of Birth (dd/mm/yyyy)" with "27"
     And I select "Male" from "Sex"
     And I fill in "Birthplace" with "Haiti"
     And I attach a photo "capybara_features/resources/jorge.jpg"
@@ -48,8 +48,8 @@ Feature:
 
     Given the date/time is "July 19 2010 13:05:15 UTC"
     And the following children exist in the system:
-    | name       | dob_or_age | gender | birthplace |
-    | Jorge Just | 27  | Male   | Haiti               |
+    | name       | date_of_birth | gender | birthplace |
+    | Jorge Just | 12/12/2000  | Male   | Haiti        |
     And the date/time is "Oct 29 2010 10:12 UTC"
     And "Bobby" logs in with "Edit Child,View And Search Child" permissions
     And I am on the children listing page
@@ -57,7 +57,7 @@ Feature:
     When I follow "Edit"
 
     Then I fill in "Name" with "George Harrison"
-    And I fill in "Date of Birth / Age" with "56"
+    And I fill in "Date of Birth (dd/mm/yyyy)" with "12/12/1999"
     And I select "Female" from "Sex"
     And I fill in "Nationality" with "Bombay"
     And I fill in "Birthplace" with "Zambia"
@@ -68,7 +68,7 @@ Feature:
 
     Then I should see "2010-10-29 14:12:15 UTC Birthplace changed from Haiti to Zambia by bobby"
     And I should see "2010-10-29 14:12:15 UTC Nationality initially set to Bombay by bobby"
-    And I should see "2010-10-29 14:12:15 UTC Dob or age changed from 27 to 56 by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Date of birth changed from 12/12/2000 to 12/12/1999 by bobby"
     And I should see "2010-10-29 14:12:15 UTC Name changed from Jorge Just to George Harrison by bobby"
     And I should see "2010-10-29 14:12:15 UTC Gender changed from Male to Female by bobby"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories

@@ -14,7 +14,6 @@ class Child < CouchRestRails::Document
   before_save :add_creation_history, :if => :new?
   before_save :update_photo_keys
 
-  property :age
   property :name
   property :nickname
   property :unique_identifier
