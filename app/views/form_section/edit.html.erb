@@ -21,6 +21,8 @@
         <th width="220" align="center">Actions</th>
       </tr>
       </thead>
+
+
       <tbody>
       <input type="hidden" id="toggle_url" value="<%= toggle_fields_form_section_fields_path(@form_section) %>">
       <input type="hidden" id="edit_url" value="<%= edit_form_section_path(@form_section) %>">
@@ -31,7 +33,7 @@
           <tr data="<%= field.name %>" class="<%= field.visible? ? "rowEnabled" : "rowDisabled" %>">
             <td width="280"><%= field.display_name %></td>
             <td width="190"><%= field.help_text %></td>
-            <td width="100"><%= field.option_strings %></td>
+            <td width="100"><%= field.option_strings unless field.option_strings.empty? %></td>
             <td width="75"><%= field.type.try(:humanize) %></td>
 
             <% if @form_section.editable? %>

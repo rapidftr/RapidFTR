@@ -28,6 +28,28 @@ describe "form_section/edit.html.erb" do
     document.css("#fieldRow .down-link").should be_empty
   end
 
+  it "should be blank if the options is empty" do
+    fields = [{:option_strings_text=>""}]
+    form_section = FormSection.new :fields => fields, :unique_id=>"foo"
+    assign(:form_section, form_section)
+    render
+
+    document = Nokogiri::HTML(rendered)
+
+    document.css("#form_sections tbody tr td:nth-child(3)").inner_text.should be_empty
+  end
+
+  it "should have the options if the options strings text is not empty" do
+    fields = [{:option_strings_text=>"1"}]
+    form_section = FormSection.new :fields => fields, :unique_id=>"foo"
+    assign(:form_section, form_section)
+    render
+
+    document = Nokogiri::HTML(rendered)
+
+    document.css("#form_sections tbody tr td:nth-child(3)").inner_text.should =='["1"]'
+  end
+
   it "should not have edit or delete or enable UI elements for uneditable fields" do
     fields = [{:name=>"topfield"}, {:name=>"field", :editable=>false},{:name=>"bottomfield"}]
     form_section = FormSection.new :fields => fields, :unique_id=>"foo"
