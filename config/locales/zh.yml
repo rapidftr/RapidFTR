@@ -499,65 +499,65 @@ zh:
     validations:
       blank: "%s 不能为空"
 
-  activerecord:
-    errors:
 
-      template:
-        header:
-          one: "1个错误导致%{model}不能被保存"
-          other: "%{count}个错误导致%{model}不能被保存"
-        body: "以下字段有错误:"
+  errors:
 
-      models:
-        user:
-          full_name: "请输入用户的全名"
-          password_confirmation: "请输入密码确认"
-          role_ids: "请选择至少一个角色"
-          organisation: "请输入用户的组织名"
-          user_name: "请输入一个有效的用户名"
-          email: "请输入一个有效的邮箱地址"
-          user_name_uniqueness: "用户名已存在! 请选择一个新的用户名"
-          authenticate: "不能认证一个没有保存的用户"
+    template:
+      header:
+        one: "1个错误导致%{model}不能被保存"
+        other: "%{count}个错误导致%{model}不能被保存"
+      body: "以下字段有错误:"
 
-        child:
-          at_least_one_field: "请至少填一个字段或者上传文件"
-          age: "年龄必须在1在99岁之间"
-          photo_format: "请给这个儿童记录上传合适的(jpg or png)图片"
-          photo_size: "文件太大"
-          primary_photo_id: "把'%{photo_id}'做为主图片失败:没有这个图片"
-          validate_duplicate: "必须提供一个有效的副本ID"
+    models:
+      user:
+        full_name: "请输入用户的全名"
+        password_confirmation: "请输入密码确认"
+        role_ids: "请选择至少一个角色"
+        organisation: "请输入用户的组织名"
+        user_name: "请输入一个有效的用户名"
+        email: "请输入一个有效的邮箱地址"
+        user_name_uniqueness: "用户名已存在! 请选择一个新的用户名"
+        authenticate: "不能认证一个没有保存的用户"
 
-        field:
-          display_name_presence: "名字不能为空"
-          display_name_format: "名字应至少包含一个字母数字"
-          default_value: "找不到类型的默认值 "
-          has_2_options: "字段至少需要两个选择项"
-          has_1_option: "检查框至少需要一个选择项"
-          unique_name_other: "表单已经存在'%{form_name}'字段"
-          unique_name_this: "表单已经存在该字段"
+      child:
+        at_least_one_field: "请至少填一个字段或者上传文件"
+        age: "年龄必须在1在99岁之间"
+        photo_format: "请给这个儿童记录上传合适的(jpg or png)图片"
+        photo_size: "文件太大"
+        primary_photo_id: "把'%{photo_id}'做为主图片失败:没有这个图片"
+        validate_duplicate: "必须提供一个有效的副本ID"
 
-        form_section:
-          presence_of_name: "名字不能为空"
-          presence_of_base_language_name: "基始语言'%{base_language}'对应的名字不能为空"
-          format_of_name: "名字只能包含字母数字和空格"
-          visible_method: "如果允许查看可见性字段不能为假"
-          fixed_order_method: "fixed_order不能为假如果perm_enabled是真"
-          perm_visible_method: "perm_visible不能为假if perm_enabled为真"
-          add_field_to_form_section: "表单项不能编辑"
-          delete_field: "不能编辑的字段不能被删除"
-          unique_name: "'%{name}'这个名字已存在."
-          unique_id: "'%{unique_id}'已存在."
+      field:
+        display_name_presence: "名字不能为空"
+        display_name_format: "名字应至少包含一个字母数字"
+        default_value: "找不到类型的默认值 "
+        has_2_options: "字段至少需要两个选择项"
+        has_1_option: "检查框至少需要一个选择项"
+        unique_name_other: "表单已经存在'%{form_name}'字段"
+        unique_name_this: "表单已经存在该字段"
 
-        role:
-          permission_presence: "请至少选择一项权限"
-          unique_name: "角色名已存在, 请输入一个不同的名字"
+      form_section:
+        presence_of_name: "名字不能为空"
+        presence_of_base_language_name: "基始语言'%{base_language}'对应的名字不能为空"
+        format_of_name: "名字只能包含字母数字和空格"
+        visible_method: "如果允许查看可见性字段不能为假"
+        fixed_order_method: "fixed_order不能为假如果perm_enabled是真"
+        perm_visible_method: "perm_visible不能为假if perm_enabled为真"
+        add_field_to_form_section: "表单项不能编辑"
+        delete_field: "不能编辑的字段不能被删除"
+        unique_name: "'%{name}'这个名字已存在."
+        unique_id: "'%{unique_id}'已存在."
 
-        system_users:
-          username_unique: "用户名已存在!请选择一个新的用户名"
+      role:
+        permission_presence: "请至少选择一项权限"
+        unique_name: "角色名已存在, 请输入一个不同的名字"
 
-        replication:
-          remote_app_url: "请输入合适的 URL, e.g. http://<server>:<port>"
-          save_remote_couch_config: "The URL/Username/Password输入不正确"
+      system_users:
+        username_unique: "用户名已存在!请选择一个新的用户名"
+
+      replication:
+        remote_app_url: "请输入合适的 URL, e.g. http://<server>:<port>"
+        save_remote_couch_config: "The URL/Username/Password输入不正确"
 
   select_all_results: "选择所有的结果"
 

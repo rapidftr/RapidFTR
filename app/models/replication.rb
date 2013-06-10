@@ -179,7 +179,7 @@ class Replication < CouchRestRails::Document
       raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
       true
     rescue
-      [false, I18n.t("activerecord.errors.models.replication.remote_app_url")]
+      [false, I18n.t("errors.models.replication.remote_app_url")]
     end
   end
 
@@ -197,7 +197,7 @@ class Replication < CouchRestRails::Document
       self.remote_couch_config = JSON.parse response.body
       true
     rescue => e
-      [false, I18n.t("activerecord.errors.models.replication.save_remote_couch_config")]
+      [false, I18n.t("errors.models.replication.save_remote_couch_config")]
     end
   end
 

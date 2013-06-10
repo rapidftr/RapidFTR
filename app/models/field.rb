@@ -54,7 +54,7 @@ class Field < Hash
                         DATE_FIELD       => "",
                         NUMERIC_FIELD    => ""}
 
-  validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("activerecord.errors.models.field.display_name_presence")
+  validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
   validates_with_method :name, :method => :validate_unique_name
   validates_with_method :display_name, :method => :validate_unique_display_name
   validates_with_method :option_strings, :method => :validate_has_2_options
@@ -66,7 +66,7 @@ class Field < Hash
     special_characters = /[*!@#%$\^]/
     white_spaces = /^(\s+)$/
     if (display_name =~ special_characters) || (display_name =~ white_spaces)
-      errors.add(:display_name, I18n.t("activerecord.errors.models.field.display_name_format"))
+      errors.add(:display_name, I18n.t("errors.models.field.display_name_format"))
       return false
     else
       return true
@@ -78,7 +78,7 @@ class Field < Hash
       self.base_language='en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("activerecord.errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
   end
 
   def form
@@ -129,7 +129,7 @@ class Field < Hash
   end
 
   def default_value
-    raise I18n.t("activerecord.errors.models.field.default_value") + type unless DEFAULT_VALUES.has_key? type
+    raise I18n.t("errors.models.field.default_value") + type unless DEFAULT_VALUES.has_key? type
     return DEFAULT_VALUES[type]
   end
 
@@ -207,29 +207,29 @@ class Field < Hash
 
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
-    return [false, I18n.t("activerecord.errors.models.field.has_2_options")] if option_strings == nil || option_strings.length < 2
+    return [false, I18n.t("errors.models.field.has_2_options")] if option_strings == nil || option_strings.length < 2
     true
   end
 
   def validate_has_a_option
     return true unless (type == CHECK_BOXES)
-    return [false, I18n.t("activerecord.errors.models.field.has_1_option")] if option_strings == nil || option_strings.length < 1
+    return [false, I18n.t("errors.models.field.has_1_option")] if option_strings == nil || option_strings.length < 1
     true
   end
 
   def validate_unique_name
     return true unless new? && form
-    return [false, I18n.t("activerecord.errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.name == name})
+    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.name == name})
     other_form = FormSection.get_form_containing_field name
-    return [false, I18n.t("activerecord.errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
     true
   end
 
   def validate_unique_display_name
     return true unless new? && form
-    return [false, I18n.t("activerecord.errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
     other_form = FormSection.get_form_containing_field display_name
-    return [false, I18n.t("activerecord.errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
     true
   end
 

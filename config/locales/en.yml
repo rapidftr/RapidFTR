@@ -499,66 +499,65 @@ en:
     validations:
       blank: "%s must not be blank"
 
-  activerecord:
-    errors:
+  errors:
 
-      template:
-        header:
-          one: "1 error prohibited this %{model} from being saved"
-          other: "%{count} errors prohibited this %{model} from being saved"
+    template:
+      header:
+        one: "1 error prohibited this %{model} from being saved"
+        other: "%{count} errors prohibited this %{model} from being saved"
         body: "There were problems with the following fields:"
 
-      models:
-        user:
-          full_name: "Please enter full name of the user"
-          password_confirmation: "Please enter password confirmation"
-          role_ids: "Please select at least one role"
-          organisation: "Please enter the user's organisation name"
-          user_name: "Please enter a valid user name"
-          email: "Please enter a valid email address"
-          user_name_uniqueness: "User name has already been taken! Please select a new User name"
-          authenticate: "Can't authenticate a un-saved user"
+    models:
+      user:
+        full_name: "Please enter full name of the user"
+        password_confirmation: "Please enter password confirmation"
+        role_ids: "Please select at least one role"
+        organisation: "Please enter the user's organisation name"
+        user_name: "Please enter a valid user name"
+        email: "Please enter a valid email address"
+        user_name_uniqueness: "User name has already been taken! Please select a new User name"
+        authenticate: "Can't authenticate a un-saved user"
 
-        child:
-          at_least_one_field: "Please fill in at least one field or upload a file"
-          age: "Age must be between 1 and 99"
-          photo_format: "Please upload a valid photo file (jpg or png) for this child record"
-          photo_size: "Photo file is too large"
-          audio_size: "Audio file is too large"
-          primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
-          validate_duplicate: "A valid duplicate ID must be provided"
+      child:
+        at_least_one_field: "Please fill in at least one field or upload a file"
+        age: "Age must be between 1 and 99"
+        photo_format: "Please upload a valid photo file (jpg or png) for this child record"
+        photo_size: "Photo file is too large"
+        audio_size: "Audio file is too large"
+        primary_photo_id: "Failed trying to set '%{photo_id}' to primary photo: no such photo key"
+        validate_duplicate: "A valid duplicate ID must be provided"
 
-        field:
-          display_name_presence: "Display name must not be blank"
-          display_name_format: "Display name must contain at least one alphabetic characters"
-          default_value: "Cannot find default value for type "
-          has_2_options: "Field must have at least 2 options"
-          has_1_option: "Checkbox must have at least 1 option"
-          unique_name_other: "Field already exists on form '%{form_name}'"
-          unique_name_this: "Field already exists on this form"
+      field:
+        display_name_presence: "Display name must not be blank"
+        display_name_format: "Display name must contain at least one alphabetic characters"
+        default_value: "Cannot find default value for type "
+        has_2_options: "Field must have at least 2 options"
+        has_1_option: "Checkbox must have at least 1 option"
+        unique_name_other: "Field already exists on form '%{form_name}'"
+        unique_name_this: "Field already exists on this form"
 
-        form_section:
-          presence_of_name: "Name must not be blank"
-          presence_of_base_language_name: "The name of the base language '%{base_language}' can not be blank"
-          format_of_name: "Name must contain only alphanumeric characters and spaces"
-          visible_method: "visible can't be false if perm_visible is true"
-          fixed_order_method: "fixed_order can't be false if perm_enabled is true"
-          perm_visible_method: "perm_visible can't be false if perm_enabled is true"
-          add_field_to_form_section: "Form section not editable"
-          delete_field: "Uneditable field cannot be deleted"
-          unique_name: "The name '%{name}' is already taken."
-          unique_id: "The unique id '%{unique_id}' is already taken."
+      form_section:
+        presence_of_name: "Name must not be blank"
+        presence_of_base_language_name: "The name of the base language '%{base_language}' can not be blank"
+        format_of_name: "Name must contain only alphanumeric characters and spaces"
+        visible_method: "visible can't be false if perm_visible is true"
+        fixed_order_method: "fixed_order can't be false if perm_enabled is true"
+        perm_visible_method: "perm_visible can't be false if perm_enabled is true"
+        add_field_to_form_section: "Form section not editable"
+        delete_field: "Uneditable field cannot be deleted"
+        unique_name: "The name '%{name}' is already taken."
+        unique_id: "The unique id '%{unique_id}' is already taken."
 
-        role:
-          permission_presence: "Please select at least one permission"
-          unique_name: "A role with that name already exists, please enter a different name"
+      role:
+        permission_presence: "Please select at least one permission"
+        unique_name: "A role with that name already exists, please enter a different name"
 
-        system_users:
-          username_unique: "User name has already been taken! Please select a new User name"
+      system_users:
+        username_unique: "User name has already been taken! Please select a new User name"
 
-        replication:
-          remote_app_url: "Please enter a proper URL, e.g. http://<server>:<port>"
-          save_remote_couch_config: "The URL/Username/Password that you entered is incorrect"
+      replication:
+        remote_app_url: "Please enter a proper URL, e.g. http://<server>:<port>"
+        save_remote_couch_config: "The URL/Username/Password that you entered is incorrect"
 
   select_all_results: "Select all results"
 
