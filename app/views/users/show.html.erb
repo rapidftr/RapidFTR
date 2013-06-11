@@ -1,6 +1,6 @@
 <h1 class="no_border"><%= t("users.label") %></h1>
 <div class="page-content-new">
-  <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => 'users'} %>
+  <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => ''} %>
   <div class="side-tab-content">
     <h2 class="float_left no_border"><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %>
       <% if can? :edit, User %>
