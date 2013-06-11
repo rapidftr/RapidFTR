@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @page_name = t("users.account_details")
     authorize! :show, @user
   end
 

@@ -14,6 +14,7 @@ zh:
     current_time_zone: "时区"
     language: "语言"
     view_records: "查看记录"
+    users: "管理用户"
     manage_system_users: "管理服务器同步用户"
     records_need_attention: "个需要注意的记录"
     label: "首页"
@@ -208,6 +209,7 @@ zh:
     manage: "管理用户"
     label: "用户"
     create: "创建用户"
+    account_details: "帐户明细"
     actions:
       show_all: "显示所有"
       show: "显示"
