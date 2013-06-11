@@ -1,7 +1,9 @@
  <div class="side-tab">
     <ul>
-      <li class=<%= (highlight_page == 'users' ? 'current' : '') %>><%= link_to I18n.t("users.label"), users_path %></li>
-      <li class=<%= (highlight_page == 'unverified' ? 'current' : '') %>><%= link_to I18n.t("users.unverified"), unverified_users_path %></li>
-      <li class=<%= (highlight_page == 'roles' ? 'current' : '') %>><%= link_to t("roles.label"), roles_path %></li>
+      <li class=<%= (highlight_page == 'users' ? 'current' : '') %>><%= link_to I18n.t("users.label"), users_path if can?(:read, User)%></li>
+      <li class=<%= (highlight_page == 'unverified' ? 'current' : '') %>>
+      	<%= link_to I18n.t("users.unverified"), unverified_users_path if can?(:show, User)  %></li>
+      <li class=<%= (highlight_page == 'roles' ? 'current' : '') %>>
+      	<%= link_to t("roles.label"), roles_path if can?(:index, Role) %></li>
     </ul>
  </div>
