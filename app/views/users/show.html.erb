@@ -1,8 +1,8 @@
-<h1 class="no_border"><%= t("users.label") %></h1>
+<h1 class="no_border"><%= t("users.account_details") %></h1>
 <div class="page-content-new">
   <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => ''} %>
   <div class="side-tab-content">
-    <h2 class="float_left no_border"><%= link_to I18n.t("users.label"), users_path %> &gt; <%= @user.user_name %>
+    <h2 class="float_left no_border"><%= link_to(I18n.t("users.label"), users_path) + " > " if can?(:read, User)%>  <%= @user.user_name %>
       <% if can? :edit, User %>
           <%= link_to '('+I18n.t("buttons.edit")+')', edit_user_path(@user), :class => 'edit_crumb'%>
         <% else %>
