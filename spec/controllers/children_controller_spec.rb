@@ -502,6 +502,12 @@ describe ChildrenController do
       search.errors.should_not be_empty
     end
 
+    it "should not render error if search contains only special characters" do
+      get(:search, :format => 'html', :query => "@")
+      search = assigns[:search]
+      search.errors.should be_empty
+    end
+
     it "should stay in the page if search is invalid" do
       get(:search, :format => 'html', :query => '1'*160)
       response.should render_template("search")

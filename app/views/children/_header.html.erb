@@ -3,17 +3,19 @@
     <%= link_to content_tag(:span, t("children.register_new_child"), :class => 'create_user'), new_child_path, :class=>'btn' %>
 <% end %>
 
-<% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Child)} %>
-<div class="btn dropdown_btn">
-  <span class="export"><%= t("children.export") %></span>
-  <div class="dropdown hide">        
-    <% RapidftrAddon::ExportTask.active.each do |export_task| %>
-      <% if can?("export_#{export_task.id}".to_sym, Child) %>
-        <%= link_to t("addons.export_task.#{export_task.id}.all"), children_path(:format => export_task.id, :per_page => :all), :class => "password-prompt" %>
-      <% end %>
+<% if @children and !@children.empty? %>
+    <% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Child)} %>
+    <div class="btn dropdown_btn">
+      <span class="export"><%= t("children.export") %></span>
+      <div class="dropdown hide">
+        <% RapidftrAddon::ExportTask.active.each do |export_task| %>
+          <% if can?("export_#{export_task.id}".to_sym, Child) %>
+            <%= link_to t("addons.export_task.#{export_task.id}.all"), children_path(:format => export_task.id, :per_page => :all), :class => "password-prompt" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
     <% end %>
-  </div>
-</div>
 <% end %>
 
 <script type="text/javascript">
