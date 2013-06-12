@@ -15,6 +15,7 @@ ar:
     language: "اللغة"
     view_records: "عرض السجلات"
     manage_system_users: "معالجة مستخدمي النظام"
+    users: "إدارة المستخدمين"
     records_need_attention: "سجلات تحتاج المشاهدة"
     label: "الرئيسية"
   clear: "Clear"
@@ -194,6 +195,7 @@ ar:
     manage: "معالجة المستخدمين"
     label: "المستخدمين"
     create: "تكوين مستخدم"
+    account_details: "تفاصيل الحساب"
     actions:
       show_all: "عرض كل"
       show: "عرض"

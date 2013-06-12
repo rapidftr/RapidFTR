@@ -14,7 +14,7 @@ en:
     current_time_zone: "Current time zone"
     language: "Language"
     view_records: "View Records"
-    users: "Users"
+    users: "Manage Users"
     manage_system_users: "Manage Server Synchronisation Users"
     records_need_attention: "Records need Attention"
     label: "Home"
@@ -207,6 +207,7 @@ en:
     manage: "Manage Users"
     label: "Users"
     create: "Create User"
+    account_details: "Account Details"
     actions:
       show_all: "Showing all"
       show: "Show"
