@@ -19,7 +19,7 @@ describe UsersController do
 
     it "shows the page name" do
       get :index
-      assigns[:page_name].should == "Users"
+      assigns[:page_name].should == "Manage Users"
     end
 
     context "filter and sort users" do
