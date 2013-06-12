@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/farismosman/rapidftr-addon-cpims.git
+  remote: git://github.com/rapidftr/rapidftr-addon-cpims.git
   revision: cd09dabbf2815fe743285ce8ee2162d82a3b2d9f
   branch: master
   specs:
@@ -10,7 +10,7 @@ GIT
       writeexcel
 
 GIT
-  remote: git://github.com/farismosman/rapidftr-addon.git
+  remote: git://github.com/rapidftr/rapidftr-addon.git
   revision: 30b6442b9ce69902c1b9b9b631061d54764f78bb
   branch: master
   specs:
