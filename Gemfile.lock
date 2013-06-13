@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/rapidftr/rapidftr-addon-cpims.git
-  revision: cd09dabbf2815fe743285ce8ee2162d82a3b2d9f
+  revision: 999db48da0baadee97af451fa0f8e6d930126fd3
   branch: master
   specs:
-    rapidftr_addon_cpims (0.0.2)
+    rapidftr_addon_cpims (0.0.3)
       activesupport
       chronic
       i18n
