@@ -1,5 +1,7 @@
 class Api::ChildrenController < Api::ApiController
 
+  before_filter :sanitize_params, :only => [:update, :create, :sync_unverified]
+
   def index
 		authorize! :index, Child
 		render :json => Child.all
@@ -58,6 +60,11 @@ class Api::ChildrenController < Api::ApiController
   end
 
   private
+
+  def sanitize_params
+    child_params = params['child']
+    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
+  end
 
   def create_or_update_child(params)
     @child = Child.by_short_id(:key => child_short_id(params)).first if params[:child][:unique_identifier]
