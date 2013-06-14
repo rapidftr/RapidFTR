@@ -18,6 +18,7 @@ server {
   root <%= fetch :current_path %>/public;
   access_log <%= fetch :current_path %>/log/server.log;
   error_log <%= fetch :current_path %>/log/error.log error;
+  client_max_body_size 50M;
 
   #Need to change this accordingly once we move to rails3.1
   location ~* ^/(images|javascripts|stylesheets)/ {
