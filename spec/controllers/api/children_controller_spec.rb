@@ -68,7 +68,7 @@ describe Api::ChildrenController do
       Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       histories = JSON.parse "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
 
-     put :update, :id => child.id, :format => "json", :child => {:last_known_location => "Manchester", :histories => histories}.to_json
+     put :update, :id => child.id, :format => :json, :child => {:last_known_location => "Manchester", :histories => histories}.to_json
 
      JSON.parse(response.body)['histories'].should == histories
     end
