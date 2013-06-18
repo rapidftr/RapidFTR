@@ -1,6 +1,6 @@
 class Api::ChildrenController < Api::ApiController
 
-  before_filter :sanitize_params, :only => [:update, :create, :sync_unverified]
+  before_filter :sanitize_params, :only => [:update, :create, :unverified]
 
   def index
 		authorize! :index, Child
@@ -20,7 +20,6 @@ class Api::ChildrenController < Api::ApiController
 
   def create
 	 	authorize! :create, Child
-		params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
 		create_or_update_child(params)
 		@child['created_by_full_name'] = current_user_full_name
 
@@ -30,14 +29,14 @@ class Api::ChildrenController < Api::ApiController
 
   def update
 		authorize! :update, Child
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
+    
     child = update_child_from params
+
     child.save!
     render :json => child.compact
   end
 
   def unverified
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
     unless params[:child][:_id]
       params[:child].merge!(:verified => current_user.verified?)
@@ -62,6 +61,7 @@ class Api::ChildrenController < Api::ApiController
   private
 
   def sanitize_params
+    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     child_params = params['child']
     child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
   end
