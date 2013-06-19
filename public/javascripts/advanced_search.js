@@ -156,6 +156,7 @@
 	var validate = function(){
 		var result = "";
         var white_space = /^\s*$/;
+        var special_char = /^[@#!%$\^-]+/;
 
 		if (!createdAtIsValid()) {
 			result=I18n.t("messages.enter_valid_date")
@@ -167,10 +168,10 @@
 
 		$('.criteria-list .criteria-value-text').each(function(){
 
-			if(white_space.test($(this).val())) { result = I18n.t("messages.enter_valid_field_value"); }
+			if(special_char.test($(this).val()) || white_space.test($(this).val())) { result = I18n.t("messages.enter_valid_field_value"); }
 		});
 		$('.criteria-list .criteria-value-select').each(function(){
-			if(white_space.test($(this).val())) { result = I18n.t("messages.enter_valid_field_value"); }
+			if(special_char.test($(this).val()) || white_space.test($(this).val())) { result = I18n.t("messages.enter_valid_field_value"); }
 		});
 
 		if ((result == "") && ($('.criteria-list .criteria-value-text').length == 0) && ($('.criteria-list .criteria-value-select').length == 0)) {
