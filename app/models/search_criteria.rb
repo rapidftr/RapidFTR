@@ -1,4 +1,6 @@
 class SearchCriteria
+  SOLR_SPECIAL_CHARS = %w{@ # ! % $ \ ^ -}
+
   attr_accessor :index, :value, :join, :field, :field_display_name
 
   def initialize(params = {})
@@ -35,7 +37,7 @@ class SearchCriteria
   def to_lucene_query
     phrases = value.split(/\s+OR\s+/i)
     phrases.map do |phrase|
-      query = phrase.split(/[ ,]+/) - %w{@ # ! % $ \ ^ -}
+      query = phrase.split(/[ ,]+/) - SOLR_SPECIAL_CHARS
       query = query.delete_if{|word| word.empty?}
       query = query.map{|word| word.sub!(/^[@#!%$\^-]+/, '') || word}
       query = query.map {|word| "(#{field}_text:#{word.downcase}~ OR #{field}_text:#{word.downcase}*)"}.join(" AND ")

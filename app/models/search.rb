@@ -7,7 +7,7 @@ class Search
   validates_length_of :query, :maximum => 150
 
   def initialize(query)
-    @query = query.strip
+    @query = query.tr(SearchCriteria::SOLR_SPECIAL_CHARS.join, "").strip
   end
 
 end
