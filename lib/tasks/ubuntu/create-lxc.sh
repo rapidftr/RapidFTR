@@ -12,6 +12,8 @@ do
   esac
 done
 
+lxc_host="10.0.3.3"
+
 ssl_crt=${ssl_crt?'--ssl-crt is required'}
 ssl_key=${ssl_key?'--ssl-key is required'}
 ssh_crt=${ssh_crt?'--ssh-crt is required'}
@@ -20,6 +22,7 @@ ssh_key=${ssh_key?'--ssh-key is required'}
 which lxc-create || apt-get install --force-yes -y lxc
 lxc-create -t ubuntu -n rapidftr_lxc --fssize 2G -- --auth-key $ssh_crt
 lxc_dir=/var/lib/lxc/rapidftr_lxc
+echo "lxc.network.ipv4=$lxc_host/24" >> $lxc_dir/config
 
 cp -r lib/tasks/ubuntu/firstboot $lxc_dir/rootfs/
 cp lib/tasks/ubuntu/firstboot/firstboot.conf $lxc_dir/rootfs/etc/init/firstboot.conf
