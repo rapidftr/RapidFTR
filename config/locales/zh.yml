@@ -3,7 +3,7 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 zh:
-  home:   
+  home:
     fr: "Français"
     en: "English"
     ar: "العربية"
@@ -416,9 +416,10 @@ zh:
 
   admin:
     contact_info: "管理员联系信息"
+    create_system_user: "创建系统用户"
     highlight_fields: "高亮字段"
     manage_system_users: "管理服务器同步用户"
-    create_system_user: 创建系统用户
+    system_logs: "系统日志"
 
   fields:
     label: "字段"
