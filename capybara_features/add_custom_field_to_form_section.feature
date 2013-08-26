@@ -197,7 +197,7 @@ Feature: So that admin can customize fields in a form section
     And I visit the "Family details" tab
 
     Then the "Radio button name" radio_button should have the following options:
-      | one\n |
+      | one |
       | two |
 
   @javascript

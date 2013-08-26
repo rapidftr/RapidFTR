@@ -93,7 +93,7 @@ describe "Child record field view model" do
     end
 
     it "should validate checkbox has at least 1 option to be checked" do
-      field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::CHECK_BOXES)
+      field = Field.new(:display_name => "test", :option_strings => nil, :type => Field::CHECK_BOXES)
 
       field.valid?
       field.errors.on(:option_strings).should ==  ["Checkbox must have at least 1 option"]
@@ -226,5 +226,27 @@ describe "Child record field view model" do
       field_hash["option_strings_text"] == {"en" => ["Yes", "No"]}
     end
 
+  end
+
+  describe "normalize line endings" do
+    it "should convert \\r\\n to \\n" do
+      field = Field.new name: "test", display_name_en: "test", option_strings_text_en: "Uganda\r\nSudan"
+      field.option_strings.should == [ "Uganda", "Sudan" ]
+    end
+
+    it "should use \\n as it is" do
+      field = Field.new name: "test", display_name_en: "test", option_strings_text_en: "Uganda\nSudan"
+      field.option_strings.should == [ "Uganda", "Sudan" ]
+    end
+
+    it "should convert option_strings to option_strings_text" do
+      field = Field.new name: "test", display_name_en: "test", option_strings: "Uganda\nSudan"
+      field.option_strings_text.should == "Uganda\nSudan"
+    end
+
+    it "should convert option_strings to option_strings_text" do
+      field = Field.new name: "test", display_name_en: "test", option_strings: ["Uganda", "Sudan"]
+      field.option_strings_text.should == "Uganda\nSudan"
+    end
   end
 end

@@ -118,14 +118,16 @@ class Field < Hash
   end
 
   def option_strings= value
-    if value && value.class != Array
-      self.option_strings_text = value.split("\n").select {|x| not "#{x}".strip.empty? }.map(&:rstrip)
+    if value
+      value = value.gsub(/\r\n?/, "\n").split("\n") if value.is_a?(String)
+      self.option_strings_text = value.select {|x| not "#{x}".strip.empty? }.map(&:rstrip).join("\n")
     end
   end
 
   def option_strings
-    return [] unless  self.option_strings_text
-    self.option_strings_text.split("\n")
+    return [] unless self.option_strings_text
+    return self.option_strings_text if self.option_strings_text.is_a?(Array)
+    self.option_strings_text.gsub(/\r\n?/, "\n").split("\n")
   end
 
   def default_value
