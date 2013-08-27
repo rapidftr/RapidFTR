@@ -89,6 +89,7 @@
             var last_criteria_index = criteriaList.find("p:last .criteria-index").val();
             var new_index = (last_criteria_index == undefined) ? 0 : (parseInt(last_criteria_index) + 1);
             buildCriteria({index:new_index, join:"AND", field_display_name:""});
+            $(".criteria_menu ul.fields").css("height", $(".criteria_menu ul.forms").height() + "px");
         });
 
 
