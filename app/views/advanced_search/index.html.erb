@@ -7,17 +7,12 @@
   <form action="index">
 
     <div class='criteria_menu' style='display:none;'>
+      <a class='close-link'><%= image_tag("dialog-close.png") %></a>
       <div class='box-shadow content'>
-        <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
 
-        <ul class='forms' style="width: 48%;">
-          <% @forms.each do |form| %>
-              <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.visible? ? "" : "(Disabled)" %></li>
-          <% end %>
-        </ul>
         <% @all_fields = [] %>
         <% @forms.each do |form| %>
-            <ul id="<%= form.unique_id %>_form_fields" class="fields" style='overflow:auto;width:48%'>
+            <ul id="<%= form.unique_id %>_form_fields" class="fields">
 
               <% form.all_searchable_fields.each do |field| %>
                   <% @all_fields << field %>
@@ -32,12 +27,14 @@
                       </li>
                   <% end %>
               <% end %>
-
-              <% empty_lines(form.all_searchable_fields).times do %>
-                  <li>&nbsp;&nbsp;</li>
-              <% end %>
             </ul>
         <% end %>
+
+        <ul class='forms'>
+          <% @forms.each do |form| %>
+              <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.visible? ? "" : "(Disabled)" %></li>
+          <% end %>
+        </ul>
       </div>
     </div>
 
@@ -125,5 +122,6 @@
     return field_display_name == "" ? "Select A Criteria" : field_display_name;
   }
   CriteriaTemplateHelper.SEARCH_FILTER_START_INDEX = 100
+
   $(".advanced-search").advancedSearch({criteria: <%= raw @criteria_list.to_json %>});
 </script>

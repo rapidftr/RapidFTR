@@ -6,14 +6,14 @@
 .criteria_menu {
   position: absolute;
   z-index: 1000;
+  max-width: 800px;
 
   .content {
     background-color: #EEEEEE;
     border: 1px solid #CCCCCC;
     overflow: scroll;
-    padding: 8px 6px;
+    padding: 8px 20px 8px 6px;
     position: relative;
-    z-index: 200;
   }
 
   p {
@@ -26,9 +26,17 @@
     text-decoration: underline;
   }
 
+  a.close-link {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 999;
+  }
+
   ul {
-    float: left;
+    float: right;
     margin: 0;
+    width: 49%;
 
     li {
       padding: 3px 20px;
@@ -36,12 +44,13 @@
   }
 
   ul.fields {
-    max-height: 298px;
+    margin-left: -1px;
+    z-index: -1;
+
     overflow: auto;
     background-color: white;
     border: 1px solid #AAAAAA;
     display: none;
-    width: 220px;
 
     li.disabled a {
       color: black;
@@ -55,9 +64,7 @@
   }
 
   ul.forms {
-    height: 300px;
-    position: relative;
-    right: -1px;
+    z-index: 999;
 
     li.selected {
       background-color: white;
