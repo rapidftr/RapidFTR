@@ -10,14 +10,14 @@
       <div class='box-shadow content'>
         <a class='close-link' style="float:right;margin-left:6px;"><%= image_tag("dialog-close.png") %></a>
 
-        <ul class='forms'>
+        <ul class='forms' style="width: 48%;">
           <% @forms.each do |form| %>
               <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.visible? ? "" : "(Disabled)" %></li>
           <% end %>
         </ul>
         <% @all_fields = [] %>
         <% @forms.each do |form| %>
-            <ul id="<%= form.unique_id %>_form_fields" class="fields" style='overflow:auto;width:auto'>
+            <ul id="<%= form.unique_id %>_form_fields" class="fields" style='overflow:auto;width:48%'>
 
               <% form.all_searchable_fields.each do |field| %>
                   <% @all_fields << field %>
