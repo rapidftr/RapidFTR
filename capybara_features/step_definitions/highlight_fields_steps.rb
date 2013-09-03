@@ -3,7 +3,6 @@ Given /^I select menu "(.+)"$/ do |text_value|
 end
 
 And /^I select dropdown option "(.+)"$/ do |option|
-  page.find('//select', :text => option).click
   page.find('//option', :text => option).click
 end
 
