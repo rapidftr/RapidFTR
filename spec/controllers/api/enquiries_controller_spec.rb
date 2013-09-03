@@ -26,6 +26,17 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.all.first
       enquiry.reporter_name.should == reporter_name
     end
+
+    it "should not create record if it exists" do
+      enquiry = Enquiry.new({:reporter_name => 'old name'})
+      enquiry.save!
+      controller.stub(:authorize!)
+
+      post :create, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
+
+      updated_enquiry = Enquiry.get(enquiry.id)
+      updated_enquiry.reporter_name.should == 'new name'
+    end
   end
 
 end
