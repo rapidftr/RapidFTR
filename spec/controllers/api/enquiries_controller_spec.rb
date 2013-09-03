@@ -18,15 +18,13 @@ describe Api::EnquiriesController do
   describe "POST create" do
     it "should create the enquiry record" do
       controller.stub(:authorize!)
-
-      Enquiry.all.size.should == 0
-
       reporter_name = 'reporter'
+
       post :create, :enquiry => {:reporter_name => reporter_name}, :format => :json
 
       Enquiry.all.size.should == 1
-      Enquiry.all.first.reporter_name.should == reporter_name
-
+      enquiry = Enquiry.all.first
+      enquiry.reporter_name.should == reporter_name
     end
   end
 

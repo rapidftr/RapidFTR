@@ -4,7 +4,7 @@ class Api::EnquiriesController < Api::ApiController
     authorize! :create, Enquiry
     @enquiry = Enquiry.new(params[:enquiry])
     @enquiry.save!
-
+    render :json => @enquiry
   end
 
 
