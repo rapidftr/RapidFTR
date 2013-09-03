@@ -76,6 +76,8 @@ match '/' => 'home#index', :as => :root
       post :logout
     end
 
+    # CHILDREN
+
     resources :children do
       collection do
         get  :ids
@@ -89,6 +91,11 @@ match '/' => 'home#index', :as => :root
         end
       end
     end
+
+    # ENQUIRIES
+
+    resources :enquiries
+
   end
 
 #######################
