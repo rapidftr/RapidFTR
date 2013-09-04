@@ -51,6 +51,17 @@ describe Api::EnquiriesController do
   end
 
   describe "PUT update" do
+
+    it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
+      enquiry = Enquiry.create({:reporter_name => "Machaba"})
+      controller.stub(:authorize!)
+
+      put :update, :id => enquiry.id, :format => :json, :enquiry => {:id => enquiry.id,:reporter_name => "Manchaba"}.to_json
+
+      response.response_code.should == 200
+
+    end
+
     it "should return an error if enquiry does not exist" do
       controller.stub(:authorize!)
       id = "12345"

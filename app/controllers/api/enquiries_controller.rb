@@ -1,5 +1,7 @@
 class Api::EnquiriesController < Api::ApiController
 
+  before_filter :sanitize_params, :only => [:update, :create]
+
   def create
     authorize! :create, Enquiry
     object = params[:enquiry]
@@ -24,4 +26,9 @@ class Api::EnquiriesController < Api::ApiController
       render :json => @enquiry
     end
   end
- end
+
+  private
+  def sanitize_params
+    super :enquiry
+  end
+end
