@@ -16,26 +16,30 @@ describe Api::EnquiriesController do
 
 
   describe "POST create" do
-    it "should create the enquiry record" do
+    it "should create the enquiry record and return a success code" do
       controller.stub(:authorize!)
-      reporter_name = 'reporter'
+      name = 'reporter'
 
-      post :create, :enquiry => {:reporter_name => reporter_name}, :format => :json
+      post :create, :enquiry => {:reporter_name => name}, :format => :json
 
       Enquiry.all.size.should == 1
       enquiry = Enquiry.all.first
-      enquiry.reporter_name.should == reporter_name
+
+      enquiry.reporter_name.should == name
+      response.response_code.should == 200
     end
 
-    it "should not create record if it exists" do
+    it "should not update record if it exists and return error" do
       enquiry = Enquiry.new({:reporter_name => 'old name'})
       enquiry.save!
       controller.stub(:authorize!)
 
       post :create, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
 
-      updated_enquiry = Enquiry.get(enquiry.id)
-      updated_enquiry.reporter_name.should == 'new name'
+      enquiry = Enquiry.get(enquiry.id)
+      enquiry.reporter_name.should == 'old name'
+      JSON.parse(response.body)["error"].should == "Forbidden"
+      response.response_code.should == 403
     end
   end
 
