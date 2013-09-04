@@ -12,6 +12,13 @@ describe Api::EnquiriesController do
       post :create, :format => :json
       response.should be_forbidden
     end
+
+    it "should fail to update when unauthorized" do
+      @controller.current_ability.should_receive(:can?).with(:update, Enquiry).and_return(false)
+      test_id = "12345"
+      put :update, :id => test_id, :enquiry => {:id => test_id, :reporter_name => 'new name'}, :format => :json
+      response.should be_forbidden
+    end
   end
 
 
@@ -38,9 +45,35 @@ describe Api::EnquiriesController do
 
       enquiry = Enquiry.get(enquiry.id)
       enquiry.reporter_name.should == 'old name'
+      response.should be_forbidden
       JSON.parse(response.body)["error"].should == "Forbidden"
-      response.response_code.should == 403
     end
   end
 
+  describe "PUT update" do
+    it "should return an error if enquiry does not exist" do
+      controller.stub(:authorize!)
+      id = "12345"
+      Enquiry.stub!(:get).with(id).and_return(nil)
+
+      put :update, :id => id, :enquiry => {:id => id, :reporter_name => 'new name'}, :format => :json
+
+      response.response_code.should == 404
+      JSON.parse(response.body)["error"].should == "Not found"
+    end
+
+    it "should update record if it exists and return the updated record" do
+      controller.stub(:authorize!)
+      enquiry = Enquiry.create({:reporter_name => 'old name'})
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
+
+      enquiry = Enquiry.get(enquiry.id)
+      enquiry.reporter_name.should == 'new name'
+      response.response_code.should == 200
+      JSON.parse(response.body).should == enquiry
+    end
+
+
+  end
 end

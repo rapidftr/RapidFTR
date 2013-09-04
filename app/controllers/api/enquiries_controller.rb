@@ -13,15 +13,15 @@ class Api::EnquiriesController < Api::ApiController
     end
   end
 
-
-  private
-
-    def create_or_update_enquiry(object)
-      @enquiry = Enquiry.get(object[:id])
-      if @enquiry.nil?
-        @enquiry = Enquiry.new(object)
-      else
-        @enquiry.update_from(object)
-      end
+  def update
+    authorize! :update, Enquiry
+    @enquiry = Enquiry.get(params[:enquiry][:id])
+    if @enquiry.nil?
+      render :json => {:error => "Not found"}, :status => 404
+    else
+      @enquiry.update_from(params[:enquiry])
+      @enquiry.save
+      render :json => @enquiry
     end
-end
+  end
+ end
