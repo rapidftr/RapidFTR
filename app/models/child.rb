@@ -28,7 +28,7 @@ class Child < CouchRestRails::Document
   property :verified, :cast_as => :boolean
 
 
-view_by :protection_status, :gender, :ftr_status
+  view_by :protection_status, :gender, :ftr_status
 
   view_by :name,
           :map => "function(doc) {
@@ -41,7 +41,7 @@ view_by :protection_status, :gender, :ftr_status
           }"
 
   ['created_at', 'name', 'flag_at', 'reunited_at'].each do |field|
-      view_by "all_view_with_created_by_#{field}",
+    view_by "all_view_with_created_by_#{field}",
             :map => "function(doc) {
                 var fDate = doc['#{field}'];
                 if (doc['couchrest-type'] == 'Child')
@@ -62,8 +62,8 @@ view_by :protection_status, :gender, :ftr_status
                }
             }"
 
-      view_by "all_view_#{field}",
-              :map => "function(doc) {
+    view_by "all_view_#{field}",
+            :map => "function(doc) {
                 var fDate = doc['#{field}'];
                 if (doc['couchrest-type'] == 'Child')
                 {
@@ -88,7 +88,7 @@ view_by :protection_status, :gender, :ftr_status
                }
             }"
 
-      view_by "all_view_#{field}_count",
+    view_by "all_view_#{field}_count",
             :map => "function(doc) {
                 if (doc['couchrest-type'] == 'Child')
                {
@@ -107,7 +107,7 @@ view_by :protection_status, :gender, :ftr_status
                   }
                }
             }"
-      view_by "all_view_with_created_by_#{field}_count",
+    view_by "all_view_with_created_by_#{field}_count",
             :map => "function(doc) {
                 if (doc['couchrest-type'] == 'Child')
                {
@@ -353,7 +353,7 @@ view_by :protection_status, :gender, :ftr_status
     search(search, page_number, created_by_criteria, created_by)
   end
 
-  def self.search(search, page_number = 1, criteria = [], created_by = "" )
+  def self.search(search, page_number = 1, criteria = [], created_by = "")
     return [] unless search.valid?
     query = search.query
     search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
@@ -386,26 +386,6 @@ view_by :protection_status, :gender, :ftr_status
     (self['unique_identifier'] || "").last 7
   end
 
-  def update_organisation
-    self['created_organisation'] ||= created_by_user.try(:organisation)
-  end
-
-  def created_by_user
-    User.find_by_user_name self['created_by'] unless self['created_by'].to_s.empty?
-  end
-
-  def set_updated_fields_for(user_name)
-    self['last_updated_by'] = user_name
-    self['last_updated_at'] = RapidFTR::Clock.current_formatted_time
-  end
-
-  def last_updated_by
-    self['last_updated_by'] || self['created_by']
-  end
-
-  def last_updated_at
-    self['last_updated_at'] || self['created_at']
-  end
 
   def unique_identifier
     self['unique_identifier']
@@ -431,7 +411,7 @@ view_by :protection_status, :gender, :ftr_status
   def delete_photos(photo_names)
     return unless photo_names
     photo_names = photo_names.keys if photo_names.is_a? Hash
-    photo_names.map{|x| related_keys(x)}.flatten.each do |key|
+    photo_names.map { |x| related_keys(x) }.flatten.each do |key|
       photo_key_index = self['photo_keys'].find_index(key)
       self['photo_keys'].delete_at(photo_key_index) unless photo_key_index.nil?
       delete_attachment(key)
@@ -442,7 +422,7 @@ view_by :protection_status, :gender, :ftr_status
   end
 
   def related_keys(for_key)
-    self['_attachments'].keys.select { |check_key| check_key.starts_with? for_key}
+    self['_attachments'].keys.select { |check_key| check_key.starts_with? for_key }
   end
 
   def photo=(new_photos)
@@ -565,11 +545,11 @@ view_by :protection_status, :gender, :ftr_status
 
   def add_creation_history
     self['histories'].unshift({
-      'user_name' => created_by,
-      'user_organisation' => organisation_of(created_by),
-      'datetime' => created_at,
-      'changes' => {'child' => {:created => created_at}}
-    })
+                                  'user_name' => created_by,
+                                  'user_organisation' => organisation_of(created_by),
+                                  'datetime' => created_at,
+                                  'changes' => {'child' => {:created => created_at}}
+                              })
   end
 
   def has_one_interviewer?
@@ -591,7 +571,7 @@ view_by :protection_status, :gender, :ftr_status
 
   def self.schedule(scheduler)
     scheduler.every("24h") do
-     Child.reindex!
+      Child.reindex!
     end
   end
 
@@ -613,155 +593,155 @@ view_by :protection_status, :gender, :ftr_status
 
   protected
 
-    def add_to_history(changes)
-      last_updated_user_name = last_updated_by
-      self['histories'].unshift({
-                                    'user_name' => last_updated_user_name,
-                                    'user_organisation' => organisation_of(last_updated_user_name),
-                                    'datetime' => last_updated_at,
-                                    'changes' => changes})
-    end
+  def add_to_history(changes)
+    last_updated_user_name = last_updated_by
+    self['histories'].unshift({
+                                  'user_name' => last_updated_user_name,
+                                  'user_organisation' => organisation_of(last_updated_user_name),
+                                  'datetime' => last_updated_at,
+                                  'changes' => changes})
+  end
 
-    def organisation_of(user_name)
-      User.find_by_user_name(user_name).try(:organisation)
-    end
+  def organisation_of(user_name)
+    User.find_by_user_name(user_name).try(:organisation)
+  end
 
 
   def changes_for(field_names)
-      field_names.inject({}) do |changes, field_name|
-        changes.merge(field_name => {
-            'from' => original_data[field_name],
-            'to' => self[field_name]
-        })
-      end
+    field_names.inject({}) do |changes, field_name|
+      changes.merge(field_name => {
+          'from' => original_data[field_name],
+          'to' => self[field_name]
+      })
     end
+  end
 
-    def photo_changes_for(new_photo_keys, deleted_photo_keys)
-      return if new_photo_keys.blank? && deleted_photo_keys.blank?
-      {'photo_keys' => {'added' => new_photo_keys, 'deleted' => deleted_photo_keys}}
-    end
+  def photo_changes_for(new_photo_keys, deleted_photo_keys)
+    return if new_photo_keys.blank? && deleted_photo_keys.blank?
+    {'photo_keys' => {'added' => new_photo_keys, 'deleted' => deleted_photo_keys}}
+  end
 
-    def field_name_changes
-      field_names = field_definitions.map { |f| f.name }
-      other_fields = [
-          "flag", "flag_message",
-          "reunited", "reunited_message",
-          "investigated", "investigated_message",
-          "duplicate", "duplicate_of"
-      ]
-      all_fields = field_names + other_fields
-      all_fields.select { |field_name| changed?(field_name) }
-    end
+  def field_name_changes
+    field_names = field_definitions.map { |f| f.name }
+    other_fields = [
+        "flag", "flag_message",
+        "reunited", "reunited_message",
+        "investigated", "investigated_message",
+        "duplicate", "duplicate_of"
+    ]
+    all_fields = field_names + other_fields
+    all_fields.select { |field_name| changed?(field_name) }
+  end
 
-    def changed?(field_name)
-      return false if self[field_name].blank? && original_data[field_name].blank?
-      return true if original_data[field_name].blank?
-      if self[field_name].respond_to? :strip
-        self[field_name].strip != original_data[field_name].strip
-      else
-        self[field_name] != original_data[field_name]
-      end
+  def changed?(field_name)
+    return false if self[field_name].blank? && original_data[field_name].blank?
+    return true if original_data[field_name].blank?
+    if self[field_name].respond_to? :strip
+      self[field_name].strip != original_data[field_name].strip
+    else
+      self[field_name] != original_data[field_name]
     end
+  end
 
-    def original_data
-      (@original_data ||= Child.get(self.id) rescue nil) || self
-    end
+  def original_data
+    (@original_data ||= Child.get(self.id) rescue nil) || self
+  end
 
-    def is_filled_in? field
-      !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
-    end
+  def is_filled_in? field
+    !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
+  end
 
   private
 
-    def update_properties(properties, user_name)
-      properties['histories'] = remove_newly_created_media_history(properties['histories'])
-      should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
-      if should_update
-        properties.each_pair do |name, value|
-          if name == "histories"
-            merge_histories(properties['histories'])
-          else
-            self[name] = value unless value == nil
-          end
-          self["#{name}_at"] = RapidFTR::Clock.current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
+  def update_properties(properties, user_name)
+    properties['histories'] = remove_newly_created_media_history(properties['histories'])
+    should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
+    if should_update
+      properties.each_pair do |name, value|
+        if name == "histories"
+          merge_histories(properties['histories'])
+        else
+          self[name] = value unless value == nil
         end
-        self.set_updated_fields_for user_name
-      else
-        merge_histories(properties['histories'])
+        self["#{name}_at"] = RapidFTR::Clock.current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
       end
+      self.set_updated_fields_for user_name
+    else
+      merge_histories(properties['histories'])
     end
+  end
 
-    def merge_histories(given_histories)
-      current_histories = self['histories']
-      to_be_merged = []
-      (given_histories || []).each do |history|
-        matched = current_histories.find do |c_history|
-          c_history["user_name"] == history["user_name"] && c_history["datetime"] == history["datetime"] && c_history["changes"].keys == history["changes"].keys
-        end
-        to_be_merged.push(history) unless matched
+  def merge_histories(given_histories)
+    current_histories = self['histories']
+    to_be_merged = []
+    (given_histories || []).each do |history|
+      matched = current_histories.find do |c_history|
+        c_history["user_name"] == history["user_name"] && c_history["datetime"] == history["datetime"] && c_history["changes"].keys == history["changes"].keys
       end
-      self["histories"] = current_histories.push(to_be_merged).flatten!
+      to_be_merged.push(history) unless matched
     end
+    self["histories"] = current_histories.push(to_be_merged).flatten!
+  end
 
-    def remove_newly_created_media_history(given_histories)
-      (given_histories || []).delete_if do |history|
-        (history["changes"]["current_photo_key"].present? and history["changes"]["current_photo_key"]["to"].present? and !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
-            (history["changes"]["recorded_audio"].present? and history["changes"]["recorded_audio"]["to"].present? and !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
-      end
-      given_histories
+  def remove_newly_created_media_history(given_histories)
+    (given_histories || []).delete_if do |history|
+      (history["changes"]["current_photo_key"].present? and history["changes"]["current_photo_key"]["to"].present? and !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
+          (history["changes"]["recorded_audio"].present? and history["changes"]["recorded_audio"]["to"].present? and !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
     end
+    given_histories
+  end
 
-    def attachment(key)
-      begin
-        data = read_attachment key
-        content_type = self['_attachments'][key]['content_type']
-      rescue
-        return nil
-      end
-        FileAttachment.new key, content_type, data
+  def attachment(key)
+    begin
+      data = read_attachment key
+      content_type = self['_attachments'][key]['content_type']
+    rescue
+      return nil
     end
+    FileAttachment.new key, content_type, data
+  end
 
-    def deprecated_fields
-      system_fields = ["created_at",
-                       "last_updated_at",
-                       "last_updated_by",
-                       "last_updated_by_full_name",
-                       "posted_at",
-                       "posted_from",
-                       "_rev",
-                       "_id",
-                       "short_id",
-                       "created_by",
-                       "created_by_full_name",
-                       "couchrest-type",
-                       "histories",
-                       "unique_identifier",
-                       "current_photo_key",
-                       "created_organisation",
-                       "photo_keys"]
-      existing_fields = system_fields + field_definitions.map { |x| x.name }
-      self.reject { |k, v| existing_fields.include? k }
-    end
+  def deprecated_fields
+    system_fields = ["created_at",
+                     "last_updated_at",
+                     "last_updated_by",
+                     "last_updated_by_full_name",
+                     "posted_at",
+                     "posted_from",
+                     "_rev",
+                     "_id",
+                     "short_id",
+                     "created_by",
+                     "created_by_full_name",
+                     "couchrest-type",
+                     "histories",
+                     "unique_identifier",
+                     "current_photo_key",
+                     "created_organisation",
+                     "photo_keys"]
+    existing_fields = system_fields + field_definitions.map { |x| x.name }
+    self.reject { |k, v| existing_fields.include? k }
+  end
 
-    def setup_original_audio(attachment)
-      audio_attachments = (self['audio_attachments'] ||= {})
-      audio_attachments.clear
-      audio_attachments['original'] = attachment.name
-    end
+  def setup_original_audio(attachment)
+    audio_attachments = (self['audio_attachments'] ||= {})
+    audio_attachments.clear
+    audio_attachments['original'] = attachment.name
+  end
 
-    def setup_mime_specific_audio(file_attachment)
-      audio_attachments = (self['audio_attachments'] ||= {})
-      content_type_for_key = file_attachment.mime_type.to_sym.to_s
-      audio_attachments[content_type_for_key] = file_attachment.name
-    end
+  def setup_mime_specific_audio(file_attachment)
+    audio_attachments = (self['audio_attachments'] ||= {})
+    content_type_for_key = file_attachment.mime_type.to_sym.to_s
+    audio_attachments[content_type_for_key] = file_attachment.name
+  end
 
-    def key_for_content_type(content_type)
-      Mime::Type.lookup(content_type).to_sym.to_s
-    end
+  def key_for_content_type(content_type)
+    Mime::Type.lookup(content_type).to_sym.to_s
+  end
 
-    def validate_duplicate_of
-      return [false, I18n.t("errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
-      true
-    end
+  def validate_duplicate_of
+    return [false, I18n.t("errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
+    true
+  end
 
 end
