@@ -575,9 +575,7 @@ describe Child do
         child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
         child['created_at'].should == "2010-01-14 14:05:00UTC"
       end
-
     end
-
   end
 
   it "should create a unique id" do

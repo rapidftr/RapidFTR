@@ -1,7 +1,12 @@
 class Enquiry < CouchRestRails::Document
   use_database :enquiry
   include RapidFTR::Model
+  include RecordHelper
 
+  def initialize(user, *args)
+    self.set_creation_fields_for(user)
+    super *args
+  end
 
   property :reporter_name
 
