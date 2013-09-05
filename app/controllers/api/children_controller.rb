@@ -61,9 +61,8 @@ class Api::ChildrenController < Api::ApiController
   private
 
   def sanitize_params
-    params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
-    child_params = params['child']
-    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
+    super :child
+    params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) #histories might come as string from the mobile client.
   end
 
   def create_or_update_child(params)
