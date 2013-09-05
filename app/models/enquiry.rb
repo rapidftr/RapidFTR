@@ -3,9 +3,10 @@ class Enquiry < CouchRestRails::Document
   include RapidFTR::Model
   include RecordHelper
 
-  def initialize(user, *args)
-    self.set_creation_fields_for(user)
-    super *args
+  def self.new_with_user_name (user, *args)
+    enquiry = new *args
+    enquiry.set_creation_fields_for(user)
+    enquiry
   end
 
   property :reporter_name

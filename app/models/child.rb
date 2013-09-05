@@ -239,10 +239,6 @@ class Child < CouchRestRails::Document
     ids_and_revs
   end
 
-  def field_definitions
-    @field_definitions ||= FormSection.all_visible_child_fields
-  end
-
   def self.fetch_paginated(options, page, per_page)
     row_count = self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
     per_page = row_count if per_page == "all"

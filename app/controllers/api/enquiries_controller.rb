@@ -7,7 +7,7 @@ class Api::EnquiriesController < Api::ApiController
     object = params[:enquiry]
     @enquiry = Enquiry.get(object[:id])
     if @enquiry.nil?
-      @enquiry = Enquiry.new(object)
+      @enquiry = Enquiry.new_with_user_name(current_user, object)
       @enquiry.save!
       render :json => @enquiry
     else

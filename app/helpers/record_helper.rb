@@ -67,6 +67,9 @@ module RecordHelper
     self.audio = new_audio
   end
 
+  def field_definitions
+    @field_definitions ||= FormSection.all_visible_child_fields
+  end
 
   protected
 

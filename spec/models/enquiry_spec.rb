@@ -15,9 +15,11 @@ describe Enquiry do
   end
 
   describe "new_with_user_name" do
-    it "should create a created_by field with the user name" do
-      enquiry = create_enquiry_with_created_by('jdoe', 'some_field' => 'some_value')
+    it "should create a created_by field with the user name and organisation" do
+      enquiry = create_enquiry_with_created_by('jdoe', {'some_field' => 'some_value'}, "Jdoe-organisation")
       enquiry['created_by'].should == 'jdoe'
+      enquiry['created_organisation'].should == 'Jdoe-organisation'
+
     end
   end
 
@@ -37,9 +39,9 @@ describe Enquiry do
 
   private
 
-  def create_enquiry_with_created_by(created_by,options = {})
-    user = User.new({:user_name => created_by, :organisation=> "UNICEF"})
-    Enquiry.new( user, options)
+  def create_enquiry_with_created_by(created_by,options = {}, organisation = "UNICEF")
+    user = User.new({:user_name => created_by, :organisation=> organisation})
+    Enquiry.new_with_user_name( user, options)
   end
 
 end
