@@ -1,34 +1,73 @@
 class Child < CouchRestRails::Document
   use_database :child
-  require "uuidtools"
   include CouchRest::Validation
-  include RapidFTR::Model
+  require "uuidtools"
   include RecordHelper
+  include RapidFTR::Model
+
+  include AttachmentHelper
+  include AudioHelper
+  include PhotoHelper
 
   include Searchable
-  Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
+
   Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, Child)
+  Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, Child)
 
-  before_save :update_organisation
   before_save :update_history, :unless => :new?
-  before_save :add_creation_history, :if => :new?
+  before_save :update_organisation
   before_save :update_photo_keys
+  before_save :add_creation_history, :if => :new?
 
-  property :name
   property :nickname
-  property :unique_identifier
+  property :name
   property :short_id
-  property :created_by
+  property :unique_identifier
   property :created_organisation
-  property :flag, :cast_as => :boolean
+  property :created_by
   property :reunited, :cast_as => :boolean
-  property :investigated, :cast_as => :boolean
+  property :flag, :cast_as => :boolean
   property :duplicate, :cast_as => :boolean
-  property :verified
+  property :investigated, :cast_as => :boolean
   property :verified, :cast_as => :boolean
+  property :verified
+
+  validates_with_method :validate_photos_size
+  validates_with_method :validate_photos
+  validates_with_method :validate_audio_size
+  validates_with_method :validate_audio_file_name
+  validates_fields_of_type Field::NUMERIC_FIELD
+  validates_with_method :validate_duplicate_of
+  validates_fields_of_type Field::TEXT_AREA
+  validates_fields_of_type Field::TEXT_FIELD
+  validates_with_method :created_at, :method => :validate_created_at
+  validates_with_method :validate_has_at_least_one_field_value
 
 
   view_by :protection_status, :gender, :ftr_status
+  validates_with_method :last_updated_at, :method => :validate_last_updated_at
+
+  def initialize *args
+    self['photo_keys'] ||= []
+    arguments = args.first
+
+    if arguments.is_a?(Hash) && arguments["current_photo_key"]
+      self['current_photo_key'] = arguments["current_photo_key"]
+      arguments.delete("current_photo_key")
+    end
+
+    self['histories'] = []
+    super *args
+  end
+
+  def self.new_with_user_name(user, fields = {})
+    child = new(fields)
+    child.create_unique_id
+    child['short_id'] = child.short_id
+    child['name'] = fields['name'] || child.name || ''
+    child.set_creation_fields_for user
+    child
+  end
 
   view_by :name,
           :map => "function(doc) {
@@ -107,6 +146,7 @@ class Child < CouchRestRails::Document
                   }
                }
             }"
+
     view_by "all_view_with_created_by_#{field}_count",
             :map => "function(doc) {
                 if (doc['couchrest-type'] == 'Child')
@@ -128,7 +168,6 @@ class Child < CouchRestRails::Document
             }"
   end
 
-
   view_by :flag,
           :map => "function(doc) {
                 if (doc.hasOwnProperty('flag'))
@@ -146,6 +185,7 @@ class Child < CouchRestRails::Document
                   emit(doc['unique_identifier'],doc);
                }
             }"
+
   view_by :short_id,
           :map => "function(doc) {
                 if (doc.hasOwnProperty('short_id'))
@@ -177,40 +217,13 @@ class Child < CouchRestRails::Document
                }
             }"
 
+  view_by :created_by
   view_by :ids_and_revs,
           :map => "function(doc) {
           if (doc['couchrest-type'] == 'Child'){
             emit(doc._id, {_id: doc._id, _rev: doc._rev});
           }
           }"
-
-
-  view_by :created_by
-
-  validates_with_method :validate_photos
-  validates_with_method :validate_photos_size
-  validates_with_method :validate_audio_file_name
-  validates_with_method :validate_audio_size
-  validates_with_method :validate_duplicate_of
-  validates_fields_of_type Field::NUMERIC_FIELD
-  validates_fields_of_type Field::TEXT_FIELD
-  validates_fields_of_type Field::TEXT_AREA
-  validates_with_method :validate_has_at_least_one_field_value
-  validates_with_method :created_at, :method => :validate_created_at
-  validates_with_method :last_updated_at, :method => :validate_last_updated_at
-
-  def initialize *args
-    self['photo_keys'] ||= []
-    arguments = args.first
-
-    if arguments.is_a?(Hash) && arguments["current_photo_key"]
-      self['current_photo_key'] = arguments["current_photo_key"]
-      arguments.delete("current_photo_key")
-    end
-
-    self['histories'] = []
-    super *args
-  end
 
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
@@ -302,7 +315,6 @@ class Child < CouchRestRails::Document
     end
   end
 
-
   def validate_last_updated_at
     begin
       if self['last_updated_at']
@@ -366,8 +378,6 @@ class Child < CouchRestRails::Document
     (by_user_name(:key => user_name) + all_by_creator(user_name)).uniq
   end
 
-
-
   def create_unique_id
     self['unique_identifier'] ||= UUIDTools::UUID.random_create.to_s
   end
@@ -376,58 +386,8 @@ class Child < CouchRestRails::Document
     (self['unique_identifier'] || "").last 7
   end
 
-
   def unique_identifier
     self['unique_identifier']
-  end
-
-
-
-  def audio
-    return nil if self.id.nil? || self['audio_attachments'].nil?
-    attachment_key = self['audio_attachments']['original']
-    return nil unless has_attachment? attachment_key
-
-    data = read_attachment attachment_key
-    content_type = self['_attachments'][attachment_key]['content_type']
-    FileAttachment.new attachment_key, content_type, data
-  end
-
-  def audio=(audio_file)
-    return unless audio_file.respond_to? :content_type
-    @audio_file_name = audio_file.original_filename
-    @audio = audio_file
-    attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
-    self['recorded_audio'] = attachment.name
-    attach(attachment)
-    setup_original_audio(attachment)
-    setup_mime_specific_audio(attachment)
-  end
-
-  def recorded_audio=(audio_file_name = "")
-    self["recorded_audio"] ||= audio_file_name
-  end
-
-  def add_audio_file(audio_file, content_type)
-    attachment = FileAttachment.from_file(audio_file, content_type, "audio", key_for_content_type(content_type))
-    attach(attachment)
-    setup_mime_specific_audio(attachment)
-  end
-
-  def media_for_key(media_key)
-    data = read_attachment media_key
-    content_type = self['_attachments'][media_key]['content_type']
-    FileAttachment.new media_key, content_type, data, self
-  end
-
-
-  def self.new_with_user_name(user, fields = {})
-    child = new(fields)
-    child.create_unique_id
-    child['short_id'] = child.short_id
-    child['name'] = fields['name'] || child.name || ''
-    child.set_creation_fields_for user
-    child
   end
 
   def has_one_interviewer?
@@ -441,19 +401,11 @@ class Child < CouchRestRails::Document
     self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
   end
 
-  def attach(attachment)
-    create_attachment :name => attachment.name,
-                      :content_type => attachment.content_type,
-                      :file => attachment.data
-  end
-
   def self.schedule(scheduler)
     scheduler.every("24h") do
       Child.reindex!
     end
   end
-
-
 
   private
 
@@ -479,18 +431,6 @@ class Child < CouchRestRails::Document
     self.reject { |k, v| existing_fields.include? k }
   end
 
-  def setup_original_audio(attachment)
-    audio_attachments = (self['audio_attachments'] ||= {})
-    audio_attachments.clear
-    audio_attachments['original'] = attachment.name
-  end
-
-  def setup_mime_specific_audio(file_attachment)
-    audio_attachments = (self['audio_attachments'] ||= {})
-    content_type_for_key = file_attachment.mime_type.to_sym.to_s
-    audio_attachments[content_type_for_key] = file_attachment.name
-  end
-
   def key_for_content_type(content_type)
     Mime::Type.lookup(content_type).to_sym.to_s
   end
@@ -499,5 +439,4 @@ class Child < CouchRestRails::Document
     return [false, I18n.t("errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
     true
   end
-
 end
