@@ -9,7 +9,7 @@ class Api::EnquiriesController < Api::ApiController
     if @enquiry.nil?
       @enquiry = Enquiry.new_with_user_name(current_user, object)
       @enquiry.save!
-      render :json => @enquiry
+      render :json => @enquiry, :status => 201
     else
       render :json => {:error => "Forbidden"}, :status => 403
     end
