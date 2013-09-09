@@ -33,7 +33,7 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.all.first
 
       enquiry.reporter_name.should == name
-      response.response_code.should == 200
+      response.response_code.should == 201
     end
 
     it "should not update record if it exists and return error" do
