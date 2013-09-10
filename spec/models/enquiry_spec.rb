@@ -2,6 +2,20 @@ require 'spec_helper'
 
 describe Enquiry do
 
+  describe 'criteria' do
+    it 'should not create enquiry without criteria' do
+      enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek'})
+      enquiry.should_not be_valid
+      enquiry.errors[:criteria].should == ["Please add criteria to your enquiry"]
+    end
+
+    it "should not create enquiry with empty criteria" do
+      enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek', :criteria => {}})
+      enquiry.should_not be_valid
+      enquiry.errors[:criteria].should == ["Please add criteria to your enquiry"]
+    end
+  end
+
   describe '#update_from_properties' do
     it "should update the enquiry" do
       enquiry = create_enquiry_with_created_by("jdoe", {:reporter_name => 'Vivek', :place => 'Kampala'})

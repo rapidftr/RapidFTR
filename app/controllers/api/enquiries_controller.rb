@@ -6,12 +6,17 @@ class Api::EnquiriesController < Api::ApiController
     authorize! :create, Enquiry
     object = params[:enquiry]
     @enquiry = Enquiry.get(object[:id])
-    if @enquiry.nil?
-      @enquiry = Enquiry.new_with_user_name(current_user, object)
+    if !@enquiry.nil?
+      render :json => {:error => I18n.t("errors.models.enquiry.create_forbidden")}, :status => 403
+      return
+    end
+    @enquiry = Enquiry.new_with_user_name(current_user, object)
+    if !@enquiry.valid?
+      render :json => {:error => I18n.t("errors.models.enquiry.presence_of_criteria")}, :status => 422
+      return
+    else
       @enquiry.save!
       render :json => @enquiry, :status => 201
-    else
-      render :json => {:error => "Forbidden"}, :status => 403
     end
   end
 
@@ -28,7 +33,9 @@ class Api::EnquiriesController < Api::ApiController
   end
 
   private
-  def sanitize_params
-    super :enquiry
-  end
+
+    def sanitize_params
+      super :enquiry
+    end
+
 end
