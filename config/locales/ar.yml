@@ -529,6 +529,10 @@ ar:
         unique_name: "الإسم '%{name}' موجود"
         unique_id: "الهوية المتفردة '%{unique_id}' موجوده"
 
+      enquiry:
+        presence_of_criteria: "الرجاء إضافة معايير للطلب"
+        create_forbidden: "ممنوع"
+
       role:
         permission_presence: "الرجاء إختيار دور واحد على الأقل"
         unique_name: "هنالك دور بهذا الإسم. الرجاء إختيار إسم مختلف"

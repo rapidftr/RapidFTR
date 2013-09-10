@@ -549,6 +549,10 @@ en:
         unique_name: "The name '%{name}' is already taken."
         unique_id: "The unique id '%{unique_id}' is already taken."
 
+      enquiry:
+        presence_of_criteria: "Please add criteria to your enquiry"
+        create_forbidden: "Forbidden"
+
       role:
         permission_presence: "Please select at least one permission"
         unique_name: "A role with that name already exists, please enter a different name"
@@ -559,6 +563,8 @@ en:
       replication:
         remote_app_url: "Please enter a proper URL, e.g. http://<server>:<port>"
         save_remote_couch_config: "The URL/Username/Password that you entered is incorrect"
+
+
 
   select_all_results: "Select all results"
 

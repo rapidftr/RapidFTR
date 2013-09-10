@@ -16,7 +16,10 @@ Feature: Creating an enquiry using the API
           "created_at": "2011-03-28 13:23:12UTC",
           "reporter_name" : "bob",
           "child_name" : "Vini",
-           "posted_from" : "Mobile"
+          "posted_from" : "Mobile",
+          "criteria" : {
+            "name" : "Batman"
+          }
         }
       }
       """
@@ -29,3 +32,4 @@ Feature: Creating an enquiry using the API
     And the JSON at "created_by" should be "tim"
     And the JSON at "_id" should be a string
     And the JSON at "_rev" should be a string
+    Then the JSON at "criteria" should be a hash
