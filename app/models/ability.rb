@@ -53,8 +53,8 @@ class Ability
     #
 
     if user.has_permission?(Permission::ENQUIRIES[:create])
-      can [:create], Enquiry do |child|
-        child.created_by == user.user_name
+      can [:create], Enquiry do |enquiry|
+        enquiry.created_by == user.user_name
       end
     end
 
