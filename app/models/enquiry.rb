@@ -13,11 +13,15 @@ class Enquiry < CouchRestRails::Document
   property :reporter_name
   property :criteria
 
-  validates_presence_of :criteria, :message=> I18n.t("errors.models.enquiry.presence_of_criteria")
+  validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
 
   def update_from(properties)
     properties.each_pair do |name, value|
-      self[name] = value unless value == nil
+      if value.instance_of? HashWithIndifferentAccess
+        self[name] = self[name].merge!(value)
+      else
+        self[name] = value
+      end
     end
   end
 end
