@@ -86,6 +86,19 @@ describe Api::EnquiriesController do
       JSON.parse(response.body)["error"].should == "Not found"
     end
 
+    it "should not update enquiry with empty criteria" do
+      controller.stub(:authorize!)
+      criteria = {"name" => "Batman"}
+      enquiry = Enquiry.new({:reporter_name => 'old name', :criteria => criteria})
+      enquiry.save!
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name', :criteria => {}}, :format => :json
+      response.response_code.should == 422
+      Enquiry.get(enquiry.id)[:criteria].should == criteria
+      JSON.parse(response.body)["error"].should == "Please add criteria to your enquiry"
+    end
+
+
     it "should update record if it exists and return the updated record" do
       controller.stub(:authorize!)
       enquiry = Enquiry.create({:reporter_name => 'old name', :criteria => {:name => "name"}})

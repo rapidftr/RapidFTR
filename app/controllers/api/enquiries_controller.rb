@@ -4,8 +4,7 @@ class Api::EnquiriesController < Api::ApiController
 
   def create
     authorize! :create, Enquiry
-
-    unless Enquiry.get(params['enquiry']['id']).nil? then render_error("errors.models.enquiry.create_forbidden", 403) and return end
+    unless Enquiry.get(params['enquiry'][:id]).nil? then render_error("errors.models.enquiry.create_forbidden", 403) and return end
 
     @enquiry = Enquiry.new_with_user_name(current_user, params['enquiry'])
 
@@ -15,17 +14,18 @@ class Api::EnquiriesController < Api::ApiController
     render :json => @enquiry, :status => 201
   end
 
-    def update
-      authorize! :update, Enquiry
-      @enquiry = Enquiry.get(params[:enquiry][:id])
-      if @enquiry.nil?
-        render :json => {:error => "Not found"}, :status => 404
-      else
-        @enquiry.update_from(params[:enquiry])
-        @enquiry.save
-        render :json => @enquiry
-      end
-    end
+  def update
+    authorize! :update, Enquiry
+    @enquiry = Enquiry.get(params['enquiry'][:id])
+    if @enquiry.nil? then render_error("errors.models.enquiry.not_found", 404) and return end
+
+    @enquiry.update_from(params['enquiry'])
+
+    unless @enquiry.valid? then render_error("errors.models.enquiry.presence_of_criteria", 422) and return end
+
+    @enquiry.save
+    render :json => @enquiry
+  end
 
   private
 

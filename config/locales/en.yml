@@ -552,6 +552,7 @@ en:
       enquiry:
         presence_of_criteria: "Please add criteria to your enquiry"
         create_forbidden: "Forbidden"
+        not_found: "Not found"
 
       role:
         permission_presence: "Please select at least one permission"
