@@ -86,6 +86,20 @@ describe Api::EnquiriesController do
       JSON.parse(response.body)["error"].should == "Not found"
     end
 
+    it "should not delete existing criteria when sending empty criteria" do
+      controller.stub(:authorize!)
+      criteria = {"name" => "Batman"}
+      enquiry = Enquiry.new({:reporter_name => 'old name', :criteria => criteria})
+      enquiry.save!
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name', :criteria => {}}, :format => :json
+
+      response.response_code.should == 200
+      Enquiry.get(enquiry.id)[:criteria].should == criteria
+      JSON.parse(response.body)["error"].should be_nil
+    end
+
+
     it "should update record if it exists and return the updated record" do
       controller.stub(:authorize!)
       enquiry = Enquiry.create({:reporter_name => 'old name', :criteria => {:name => "name"}})
@@ -98,6 +112,24 @@ describe Api::EnquiriesController do
       JSON.parse(response.body).should == enquiry
     end
 
+    it "should merge updated fields and return the latest record" do
+      controller.stub(:authorize!)
+      enquiry = Enquiry.create({:reporter_name => 'old name', :criteria => {:name => "child name"}})
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :criteria => {:name => 'child new name'}}, :format => :json
+
+      enquiry = Enquiry.get(enquiry.id)
+      enquiry.criteria.should == {"name" => 'child new name'}
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => 'Kampala', :criteria => {:sex => 'female'}}, :format => :json
+
+      enquiry = Enquiry.get(enquiry.id)
+
+      enquiry.criteria.should == {"name" => 'child new name', "sex" => 'female'}
+      enquiry['location'].should == 'Kampala'
+      response.response_code.should == 200
+      JSON.parse(response.body).should == enquiry
+    end
 
   end
 end
