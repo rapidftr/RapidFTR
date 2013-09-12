@@ -112,6 +112,18 @@ describe Api::EnquiriesController do
       JSON.parse(response.body).should == enquiry
     end
 
+    it "should update record without passing the id in the enquiry params" do
+      controller.stub(:authorize!)
+      enquiry = Enquiry.create({:reporter_name => 'old name', :criteria => {:name => "name"}})
+
+      put :update, :id => enquiry.id, :enquiry => {:reporter_name => 'new name'}, :format => :json
+
+      enquiry = Enquiry.get(enquiry.id)
+      enquiry.reporter_name.should == 'new name'
+      response.response_code.should == 200
+      JSON.parse(response.body).should == enquiry
+    end
+
     it "should merge updated fields and return the latest record" do
       controller.stub(:authorize!)
       enquiry = Enquiry.create({:reporter_name => 'old name', :criteria => {:name => "child name"}})

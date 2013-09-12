@@ -16,7 +16,7 @@ class Api::EnquiriesController < Api::ApiController
 
   def update
     authorize! :update, Enquiry
-    @enquiry = Enquiry.get(params['enquiry'][:id])
+    @enquiry = Enquiry.get(params[:id])
     if @enquiry.nil? then render_error("errors.models.enquiry.not_found", 404) and return end
 
     @enquiry.update_from(params['enquiry'])
