@@ -41,16 +41,46 @@ describe Api::EnquiriesController do
 
     it "should not create enquiry without criteria" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name'}, :format => :json
+      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {"location" => "kampala"}}, :format => :json
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should == "Please add criteria to your enquiry"
+      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
     end
 
     it "should not create enquiry with empty criteria" do
       controller.stub(:authorize!)
       post :create, :enquiry => {:reporter_name => 'new name', :criteria => {}}, :format => :json
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should == "Please add criteria to your enquiry"
+      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+    end
+
+    it "should not create enquiry without reporter details" do
+      controller.stub(:authorize!)
+      post :create, :enquiry => {:reporter_name => 'new name', :criteria => {"location" => "kampala"}}, :format => :json
+      response.response_code.should == 422
+      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
+    end
+
+    it "should not create enquiry with empty reporter details" do
+      controller.stub(:authorize!)
+      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {},:criteria => {"location" => "kampala"}}, :format => :json
+      response.response_code.should == 422
+      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
+    end
+
+    it "should not create enquiry with out both criteria and reporter details" do
+      controller.stub(:authorize!)
+      post :create, :enquiry => {:reporter_name => 'new name'}, :format => :json
+      response.response_code.should == 422
+      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
+    end
+
+    it "should not create enquiry with empty criteria and empty reporter details" do
+      controller.stub(:authorize!)
+      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {},:criteria => {}}, :format => :json
+      response.response_code.should == 422
+      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
     end
 
     it "should not update record if it exists and return error" do
