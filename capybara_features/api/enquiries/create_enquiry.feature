@@ -15,6 +15,7 @@ Feature: Creating an enquiry using the API
         "enquiry": {
           "created_at": "2011-03-28 13:23:12UTC",
           "reporter_name" : "bob",
+          "reporter_details" : {"location" :"Kampala"},
           "child_name" : "Vini",
           "posted_from" : "Mobile",
           "criteria" : {

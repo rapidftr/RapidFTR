@@ -29,7 +29,7 @@ class Api::ChildrenController < Api::ApiController
 
   def update
 		authorize! :update, Child
-    
+
     child = update_child_from params
 
     child.save!
@@ -61,8 +61,13 @@ class Api::ChildrenController < Api::ApiController
   private
 
   def sanitize_params
-    super :child
-    params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) #histories might come as string from the mobile client.
+    begin
+      super :child
+      params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) #histories might come as string from the mobile client.
+    rescue JSON::ParserError
+      render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
+    end
+
   end
 
   def create_or_update_child(params)

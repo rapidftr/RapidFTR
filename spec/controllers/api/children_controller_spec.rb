@@ -73,6 +73,21 @@ describe Api::ChildrenController do
      JSON.parse(response.body)['histories'].should == histories
     end
 
+    it "should return 422 and descriptive error message given a malformed query" do
+      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
+      child['histories'] = []
+      child.save!
+      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      histories = "{'name'}"
+
+      put :update, :id => child.id, :child => {:last_known_location => "Manchester", :histories => histories}, :format => :json
+
+          response.response_code.should == 422
+      JSON.parse(response.body)['error'].should == "Malformed query"
+    end
+
+
     it "should allow a records ID to be specified to create a new record with a known id" do
       new_uuid = UUIDTools::UUID.random_create()
       put :update, :id => new_uuid.to_s, :child => { :id => new_uuid.to_s, :_id => new_uuid.to_s, :last_known_location => "London", :age => "7" }, :format => :json

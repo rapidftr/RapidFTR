@@ -531,8 +531,11 @@ ar:
 
       enquiry:
         presence_of_criteria: "الرجاء إضافة معايير للطلب"
+        presence_of_reporter_name: "الرجاء إدخال إسم مقدم الطلب"
+        presence_of_reporter_details: "الرجاء إدخال تفاصيل مقدم الطلب"
         create_forbidden: "ممنوع"
         not_found: "غير موجود"
+        malformed_query: "طلب مشوه لايمكن معالجته"
 
       role:
         permission_presence: "الرجاء إختيار دور واحد على الأقل"
