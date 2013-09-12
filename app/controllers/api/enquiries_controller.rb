@@ -16,7 +16,7 @@ class Api::EnquiriesController < Api::ApiController
 
   def update
     authorize! :update, Enquiry
-    @enquiry = Enquiry.get(params['enquiry'][:id])
+    @enquiry = Enquiry.get(params[:id])
     if @enquiry.nil? then render_error("errors.models.enquiry.not_found", 404) and return end
 
     @enquiry.update_from(params['enquiry'])
@@ -34,6 +34,10 @@ class Api::EnquiriesController < Api::ApiController
     end
 
     def sanitize_params
-      super :enquiry
+      begin
+        super :enquiry
+      rescue JSON::ParserError
+        render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
+      end
     end
 end
