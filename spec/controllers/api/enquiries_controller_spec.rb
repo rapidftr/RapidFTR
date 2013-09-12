@@ -72,7 +72,27 @@ describe Api::EnquiriesController do
       put :update, :id => enquiry.id, :format => :json, :enquiry => {:id => enquiry.id,:reporter_name => "Manchaba"}.to_json
 
       response.response_code.should == 200
+    end
 
+    it 'should throw an exception given malformed query' do
+      enquiry = Enquiry.create({:reporter_name => "Machaba", :criteria => {:name => "name"}})
+      controller.stub(:authorize!)
+      malformed_query = "{
+                  'enquiry':
+                    {
+                      'reporter_name': 'dummy enquirer from API',
+                      'location' :    'Kampala'
+                      'criteria'
+                                    {
+                                      'name' : 'The updated name of the child'
+                                      'sex'  : 'Female'
+                                    }
+                      }"
+
+      put :update, :id => enquiry.id, :format => :json, :enquiry => malformed_query
+
+      response.response_code.should == 422
+      JSON.parse(response.body)["error"].should == "Malformed query"
     end
 
     it "should return an error if enquiry does not exist" do

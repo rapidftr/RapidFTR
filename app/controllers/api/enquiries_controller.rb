@@ -34,6 +34,10 @@ class Api::EnquiriesController < Api::ApiController
     end
 
     def sanitize_params
-      super :enquiry
+      begin
+        super :enquiry
+      rescue JSON::ParserError
+        render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
+      end
     end
 end

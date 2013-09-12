@@ -533,6 +533,7 @@ ar:
         presence_of_criteria: "الرجاء إضافة معايير للطلب"
         create_forbidden: "ممنوع"
         not_found: "غير موجود"
+        malformed_query: "طلب مشوه لايمكن معالجته"
 
       role:
         permission_presence: "الرجاء إختيار دور واحد على الأقل"
