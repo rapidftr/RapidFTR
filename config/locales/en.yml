@@ -551,6 +551,8 @@ en:
 
       enquiry:
         presence_of_criteria: "Please add criteria to your enquiry"
+        presence_of_reporter_name: "Please add reporter name to your enquiry"
+        presence_of_reporter_details: "Please add reporter details to your enquiry"
         create_forbidden: "Forbidden"
         not_found: "Not found"
         malformed_query: "Malformed query"
