@@ -4,7 +4,7 @@ RapidFTR
 [![Build Status](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/app/rest/builds/buildType:bt2/statusIcon)](http://ec2-54-224-119-2.compute-1.amazonaws.com:8111/viewType.html?buildTypeId=bt2)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapidftr/RapidFTR)
 
-RapidFTR is a mobile application that lets aid workers collect, sort and share information about children in emergency situations. RapidFTR is
+RapidFTR is an Android-based mobile application that lets aid workers collect, sort and share information about children in emergency situations. RapidFTR is
 specifically designed to streamline and speed up Family Tracing and Reunification efforts both in the immediate aftermath of a crisis and during ongoing recovery efforts.
 
 RapidFTR allows for quick input of essential data about a child on a mobile phone, including a photograph, the child's age, family, health status and location information. Data is saved automatically and uploaded to a central database whenever network access becomes available. Registered aid workers will be able to create and modify entries for children in their care as well as search all existing records in order to help distressed parents find information about their missing children. Because RapidFTR is designed specifically to collect and distribute information about children, data security is extremely important.
@@ -26,24 +26,24 @@ We're working with developers from ThoughtWorks and around the world on version 
 You can get the source code by forking the GitHub repositories.
 Please feel free to comment or contribute.
 
-Join the google group and read through the wikis on the main repo for how to join the project.
+Join the [RapidFTR Google Group] (https://groups.google.com/forum/#!forum/rapidftr) and read through the wikis on the main repo for how to join the project.
 
 * [RapidFTR Repository](http://github.com/rapidftr/RapidFTR/)
 * [RapidFTR BlackBerry Repository](http://github.com/rapidftr/RapidFTR---BlackBerry-Edition)
 * [RapidFTR Android Repository](http://github.com/rapidftr/RapidFTR---Android)
 
-RapidFTR is being developed using Ruby on Rails and CouchDB. Alongside the development of the API,
-we've also started to develop the BlackBerry client, with an Android client to follow.
-If you've got experience with any of these and want to help, please get in touch.
+RapidFTR is developed using Ruby on Rails and CouchDB. Alongside the development of the API,
+there is now an Android mobile client for field workers. If you've got experience with any of these 
+and want to help, please get in touch.
 
-Install and run RapidFTR
-------------------------
+Installing  and running RapidFTR
+----------------------------------
 
 [Please see the Wiki for pages for Installing and Running](https://github.com/rapidftr/RapidFTR/wiki)
 
 Story Development
--------------
+-------------------
 
 Stories that are ready to picked up can be seen at [(2) Development Wall](http://bit.ly/U1obJ7) in  [Mingle](https://minglehosting.thoughtworks.com/rapidftr/projects/rapidftr).
-Please drop a signup email to rapidftr@googlegroups.com.
+Please drop a signup email to the [RapidFTR Google Group] (https://groups.google.com/forum/#!forum/rapidftr).
 You can signup for RapidFTR Mingle from [Signup](http://bit.ly/TfPpfb) and move cards by yourself.
