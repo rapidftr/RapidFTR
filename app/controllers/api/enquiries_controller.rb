@@ -8,7 +8,7 @@ class Api::EnquiriesController < Api::ApiController
 
     @enquiry = Enquiry.new_with_user_name(current_user, params['enquiry'])
 
-    unless @enquiry.valid? then render_error("errors.models.enquiry.presence_of_criteria", 422) and return end
+    unless @enquiry.valid? then render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return end
 
     @enquiry.save!
     render :json => @enquiry, :status => 201
@@ -21,7 +21,7 @@ class Api::EnquiriesController < Api::ApiController
 
     @enquiry.update_from(params['enquiry'])
 
-    unless @enquiry.valid? then render_error("errors.models.enquiry.presence_of_criteria", 422) and return end
+    unless @enquiry.valid? then render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return end
 
     @enquiry.save
     render :json => @enquiry
@@ -29,8 +29,8 @@ class Api::EnquiriesController < Api::ApiController
 
   private
 
-    def render_error(error_message_key, status_code)
-      render :json => {:error => I18n.t(error_message_key)}, :status => status_code
+    def render_error(message, status_code)
+      render :json => {:error => I18n.t(message)}, :status => status_code
     end
 
     def sanitize_params
