@@ -15,7 +15,11 @@ When /^I send a GET request to "([^\"]*)"$/ do |path|
 end
 
 When /^I send a POST request to "([^\"]*)" with JSON:$/ do |path, body|
-  post path, JSON.parse(body)
+  begin
+    post path, JSON.parse(body)
+  rescue JSON::ParserError => e
+    post path, body
+  end
 end
 
 When /^I send a PUT request to "([^\"]*)" with JSON:$/ do |path, body|
