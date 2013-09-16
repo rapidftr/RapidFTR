@@ -14,7 +14,7 @@ gem 'rest-client',    '1.3.0'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
 gem 'dynamic_form',   '~> 1.1.4'
-gem 'sunspot',        '1.3.3'
+gem 'sunspot',        '2.0.0'
 gem 'rake',           '0.8.7'
 gem 'jquery-rails',   '~> 2.2.1'
 gem 'cancan',         '~> 1.6.9'
@@ -26,15 +26,16 @@ gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => 'v8'
 gem 'os',             '~> 0.9.6'
 gem 'thin',           '~> 1.5.1',  :platform => :ruby, :require => false
 gem 'encrypted-cookie-store', '~> 1.0'
+gem 'pry'
 
 # NOTE: zipruby gem needs to be installed in Windows using a special gem install directive, which is unsupported by bundler
 # NOTE: Sunspot 1.3.3 has bug in Linux, But 1.3.1 has problem in Windows
 if RUBY_PLATFORM =~ /(win32|w32)/
   gem 'zipruby',      '0.3.6', :path => 'vendor/windows/gems/zipruby-0.3.6-x86-mswin32'
-  gem 'sunspot_solr', '1.3.3'
+  gem 'sunspot_solr', '2.0.0'
 else
   gem 'zipruby',      '~> 0.3.6'
-  gem 'sunspot_solr', '1.3.1'
+  gem 'sunspot_solr', '2.0.0'
 end
 # NOTE: Having If conditions in the Gemfile is not generally recommended
 # Because using the above code, if you run bundle install in Linux, it will generate a different Gemfile.lock
