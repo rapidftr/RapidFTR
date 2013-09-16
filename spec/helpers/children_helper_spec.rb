@@ -68,7 +68,7 @@ describe ChildrenHelper do
     it "should show the name if it is present" do
       name = "Ygor"
       child = Child.new(:name => name,:unique_identifier => '123412341234')
-      helper.text_to_identify_child(child).should == 'Ygor (2341234)'
+      helper.text_to_identify_child(child).should == 'Ygor: 2341234'
     end
 
     it "should show the child unique id if name is empty" do

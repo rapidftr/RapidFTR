@@ -42,7 +42,7 @@ $(".profile-tools .investigated a").click( function(){
 </script>
 <% end %>
 
-<h1 class="float_left no_border"><%= link_to t("children.label"), children_path %> &gt; <%= @child.name %> (<%= @child.short_id %>)</h1>
+<h1 class="float_left no_border"><%= link_to t("children.label"), children_path %> &gt; <%= text_to_identify_child(@child) %></h1>
 
 <% if can? :update, @child %>
     <%= link_to content_tag(:span, t("buttons.edit"), :class => 'edit'), edit_child_path(@child), :class=>'btn' %>
