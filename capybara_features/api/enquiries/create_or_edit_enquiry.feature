@@ -34,3 +34,44 @@ Feature: Creating an enquiry using the API
     And the JSON at "_id" should be a string
     And the JSON at "_rev" should be a string
     Then the JSON at "criteria" should be a hash
+
+
+  Scenario: Create Enquiry with no criteria
+
+    When I send a POST request to "/api/enquiries" with JSON:
+    """
+      {
+        "enquiry": {
+          "created_at": "2011-03-28 13:23:12UTC",
+          "reporter_name" : "bob",
+          "reporter_details" : {"location" :"Kampala"},
+          "child_name" : "Vini",
+          "posted_from" : "Mobile",
+          "criteria" : {
+          }
+        }
+      }
+    """
+    Then I should receive HTTP 422
+
+    #Exception returned currently is 500, but should be 422
+    #Bug fixing in progress
+    @wip
+  Scenario: Create Enquiry with malformed criteria
+
+    When I send a POST request to "/api/enquiries" with JSON:
+    """
+      {
+        "enquiry": {
+          "created_at": "2011-03-28 13:23:12UTC",
+          "reporter_name" : "bob",
+          "reporter_details" : {"location" :"Kampala"},
+          "child_name" : "Vini",
+          "posted_from" : "Mobile",
+          "criteria" : {
+             "name"
+          }
+        }
+      }
+    """
+    Then I should receive HTTP 422
