@@ -41,7 +41,15 @@ describe Api::ChildrenController do
   		Child.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "a child record")))
   		get :show, :id => "123", :format => "json"
   		response.body.should == "a child record"
-  	end
+    end
+
+    it "should return a 404 with empty body if no child record is found" do
+      Child.should_receive(:get).with("123").and_return(nil)
+      get :show, :id => "123", :format => "json"
+      response.response_code.should == 404
+      response.body.should == ""
+    end
+
   end
 
   describe "POST create" do
