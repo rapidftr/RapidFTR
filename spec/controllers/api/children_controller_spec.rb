@@ -84,7 +84,7 @@ describe Api::ChildrenController do
       put :update, :id => child.id, :child => {:last_known_location => "Manchester", :histories => histories}, :format => :json
 
           response.response_code.should == 422
-      JSON.parse(response.body)['error'].should == "Malformed query"
+      JSON.parse(response.body)['error'].should == "Malformed data was received"
     end
 
 

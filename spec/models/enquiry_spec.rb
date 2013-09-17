@@ -76,11 +76,25 @@ describe Enquiry do
     end
   end
 
+  describe "all_enquires" do
+    xit "should return a list of all enquiries" do
+      save_valid_enquiry('user1', 'enquiry_id' => 'id1')
+      save_valid_enquiry('user2', 'enquiry_id' => 'id2')
+      Enquiry.all.size.should == 2
+    end
+  end
+
   private
 
   def create_enquiry_with_created_by(created_by,options = {}, organisation = "UNICEF")
     user = User.new({:user_name => created_by, :organisation=> organisation})
     Enquiry.new_with_user_name( user, options)
+  end
+
+  def save_valid_enquiry(user, options = {}, organisation = "UNICEF")
+    enquiry = create_enquiry_with_created_by(user, options, organisation)
+    enquiry.should be_valid
+    enquiry.save!
   end
 
 end
