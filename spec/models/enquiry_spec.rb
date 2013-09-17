@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe Enquiry do
 
+  before :each do
+    Enquiry.all.each do |e|
+      e.destroy!
+    end
+  end
+
   describe 'validation' do
     it 'should not create enquiry without criteria' do
       enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek'})
@@ -77,9 +83,9 @@ describe Enquiry do
   end
 
   describe "all_enquires" do
-    xit "should return a list of all enquiries" do
-      save_valid_enquiry('user1', 'enquiry_id' => 'id1')
-      save_valid_enquiry('user2', 'enquiry_id' => 'id2')
+    it "should return a list of all enquiries" do
+      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
+      save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
       Enquiry.all.size.should == 2
     end
   end
@@ -93,7 +99,6 @@ describe Enquiry do
 
   def save_valid_enquiry(user, options = {}, organisation = "UNICEF")
     enquiry = create_enquiry_with_created_by(user, options, organisation)
-    enquiry.should be_valid
     enquiry.save!
   end
 
