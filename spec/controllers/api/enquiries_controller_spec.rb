@@ -83,6 +83,13 @@ describe Api::EnquiriesController do
       JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
     end
 
+    it "should not create enquiry if malformed data is received" do
+      controller.stub(:authorize!)
+      post :create, :enquiry => 'asdfasdf', :format => :json
+      response.response_code.should == 422
+      JSON.parse(response.body)["error"].should include("Malformed data was received")
+    end
+
     it "should not update record if it exists and return error" do
       enquiry = Enquiry.new({:reporter_name => 'old name',:reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       enquiry.save!
@@ -125,7 +132,7 @@ describe Api::EnquiriesController do
       put :update, :id => enquiry.id, :format => :json, :enquiry => malformed_query
 
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should == "Malformed query"
+      JSON.parse(response.body)["error"].should == "Malformed data was received"
     end
 
     it "should return an error if enquiry does not exist" do
