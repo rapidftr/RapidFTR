@@ -2,18 +2,17 @@ class MatchCriteria
 
   SOLR_SPECIAL_CHARS = %w{@ # ! % $ \ ^ -}
 
-  @criteria = []
-
   def self.dismax_query(criteria_hash)
+    criteria = []
     criteria_hash.values.each do |value|
       phrases = value.split(/\s+OR\s+/i)
       phrases.map do |phrase|
         query = sanitize_phrase(phrase)
         query = query.map { |word| "(#{word.downcase}~ OR #{word.downcase}*)" }.join(" OR ")
-        @criteria.push("#{query}")
+        criteria.push("#{query}")
       end
     end
-    @criteria.join(" OR ")
+    criteria.join(" OR ")
   end
 
   private
