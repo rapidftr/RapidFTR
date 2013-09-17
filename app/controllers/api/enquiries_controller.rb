@@ -27,6 +27,21 @@ class Api::EnquiriesController < Api::ApiController
     render :json => @enquiry
   end
 
+  def index
+    authorize! :index, Enquiry
+    render :json => Enquiry.all
+  end
+
+  def show
+    authorize! :show, Enquiry
+    enquiry = Enquiry.get (params[:id])
+    if !enquiry.nil?
+      render :json => enquiry.compact
+    else
+      render :json => "", :status => 404
+    end
+  end
+
   private
 
     def render_error(message, status_code)
