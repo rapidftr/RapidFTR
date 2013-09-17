@@ -138,4 +138,10 @@ describe SearchCriteria do
     ]
     SearchCriteria.lucene_query(criteria_list).should == "CRITERIA"
   end
+
+  it "should build dismax query" do
+    criteria = {"nationality" => "uganda", "name" => "Kevin Smith", "gender" => "male" }
+    MatchCriteria.dismax_query(criteria).should == "(uganda~ OR uganda*) OR (kevin~ OR kevin*) OR (smith~ OR smith*) OR (male~ OR male*)"
+  end
+
 end

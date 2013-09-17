@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'sunspot' # In the real world we should probably vendor this.
 require 'spec_helper'
-require 'pry'
 
 describe "Solar" do
 
