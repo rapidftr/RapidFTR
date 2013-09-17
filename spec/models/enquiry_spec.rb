@@ -4,7 +4,7 @@ describe Enquiry do
 
   before :each do
     Enquiry.all.each do |e|
-      e.destroy!
+      e.destroy
     end
   end
 
