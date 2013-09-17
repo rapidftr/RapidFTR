@@ -27,4 +27,5 @@ class Enquiry < CouchRestRails::Document
       end
     end
   end
+
 end

@@ -1,6 +1,6 @@
 RapidFTR::Application.routes.draw do
 
-match '/' => 'home#index', :as => :root
+  match '/' => 'home#index', :as => :root
 
 #######################
 # USER URLS
@@ -80,7 +80,7 @@ match '/' => 'home#index', :as => :root
 
     resources :children do
       collection do
-        get  :ids
+        get :ids
         post :unverified
       end
 
@@ -161,12 +161,12 @@ match '/' => 'home#index', :as => :root
     end
   end
 
-  resources :system_users, :path =>"/admin/system_users"
+  resources :system_users, :path => "/admin/system_users"
 
 #######################
 # REPORTING URLS
 #######################
-  resources :reports, :only => [ :index, :show ]
+  resources :reports, :only => [:index, :show]
 
 #######################
 # TESTING URLS
