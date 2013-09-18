@@ -33,18 +33,6 @@ describe Enquiry do
       enquiry.errors[:reporter_name].should == ["Please add reporter name to your enquiry"]
     end
 
-    it "should not create enquiry without reporter details" do
-      enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek',:criteria => {:name=>'Child name'}})
-      enquiry.should_not be_valid
-      enquiry.errors[:reporter_details].should == ["Please add reporter details to your enquiry"]
-    end
-
-    it "should not create enquiry without empty reporter details" do
-      enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek', :reporter_details => {},:criteria => {:name=>'Child name'}})
-      enquiry.should_not be_valid
-      enquiry.errors[:reporter_details].should == ["Please add reporter details to your enquiry"]
-    end
-
   end
 
   describe '#update_from_properties' do

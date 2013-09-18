@@ -12,10 +12,8 @@ class Enquiry < CouchRestRails::Document
 
   property :reporter_name
   property :criteria
-  property :reporter_details
 
   validates_presence_of :reporter_name, :message => I18n.t("errors.models.enquiry.presence_of_reporter_name")
-  validates_presence_of :reporter_details, :message => I18n.t("errors.models.enquiry.presence_of_reporter_details")
   validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
 
   def update_from(properties)
