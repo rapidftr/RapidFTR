@@ -4,12 +4,15 @@ Feature: Creating an enquiry using the API
     Given devices exist
       | imei  | blacklisted | user_name |
       | 10001 | false       | tim       |
+      | 10002 | false       | jim      |
     Given a registration worker "tim" with a password "123"
     And I login as tim with password 123 and imei 10001
 
   Scenario: Create Enquiry
 
-    When I send a POST request to "/api/enquiries" with JSON:
+   Given a registration worker "tim" with a password "123"
+   And I login as tim with password 123 and imei 10001
+   When I send a POST request to "/api/enquiries" with JSON:
     """
       {
         "enquiry": {
@@ -38,6 +41,8 @@ Feature: Creating an enquiry using the API
 
   Scenario: Create Enquiry with no criteria
 
+    Given a registration worker "tim" with a password "123"
+    And I login as tim with password 123 and imei 10001
     When I send a POST request to "/api/enquiries" with JSON:
     """
       {
@@ -59,7 +64,9 @@ Feature: Creating an enquiry using the API
     @wip
   Scenario: Create Enquiry with malformed criteria
 
-    When I send a POST request to "/api/enquiries" with JSON:
+      Given a registration worker "tim" with a password "123"
+      And I login as tim with password 123 and imei 10001
+      When I send a POST request to "/api/enquiries" with JSON:
     """
       {
         "enquiry": {
@@ -75,3 +82,45 @@ Feature: Creating an enquiry using the API
       }
     """
     Then I should receive HTTP 422
+
+  Scenario: Two users editing the same field, the last made change should be visible
+
+    Given the following enquiries exist in the system:
+        | reporter_name | _id | created_at  	    	| posted_at		        | created_by |
+        |   bob         | 1   | 2011-06-22 02:07:51UTC	| 2011-06-22 02:07:51UTC| Sanchari   |
+    When I send a PUT request to "/api/enquiries/1" with JSON:
+          """
+      {
+        "enquiry": {
+          "created_at": "2011-03-28 13:23:12UTC",
+          "reporter_name" : "bob",
+          "reporter_details" : {"location" :"Somewhere in Kampala"},
+          "child_name" : "Vinicius",
+          "posted_from" : "Mobile",
+          "criteria" : {
+            "name" : "Batman"
+          }
+        }
+      }
+      """
+    Then the JSON at "child_name" should be "Vinicius"
+    And then I logout
+    When a registration worker "tim" with a password "123"
+    And I login as tim with password 123 and imei 10001
+    When I send a PUT request to "/api/enquiries/1" with JSON:
+    """
+      {
+        "enquiry": {
+          "created_at": "2011-03-28 13:23:12UTC",
+          "reporter_name" : "bob",
+          "reporter_details" : {"location" :"Kampala"},
+          "child_name" : "Vinny",
+          "posted_from" : "Mobile",
+          "criteria" : {
+            "name" : "Batman"
+          }
+        }
+      }
+      """
+    Then the JSON at "child_name" should be "Vinny"
+
