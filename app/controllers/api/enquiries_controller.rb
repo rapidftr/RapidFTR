@@ -14,10 +14,8 @@ class Api::EnquiriesController < Api::ApiController
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return
     end
 
-    if @enquiry.save
-      MatchService.search_for_matching_children(@enquiry["criteria"])
-      render :json => @enquiry, :status => 201
-    end
+    @enquiry.save
+    render :json => @enquiry, :status => 201
   end
 
   def update
@@ -33,10 +31,8 @@ class Api::EnquiriesController < Api::ApiController
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return
     end
 
-    if @enquiry.save
-      MatchService.search_for_matching_children(@enquiry["criteria"])
-      render :json => @enquiry
-    end
+    @enquiry.save
+    render :json => @enquiry
   end
 
   def index
@@ -67,4 +63,5 @@ class Api::EnquiriesController < Api::ApiController
       render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
     end
   end
+
 end

@@ -3,9 +3,7 @@ require 'spec_helper'
 describe Enquiry do
 
   before :each do
-    Enquiry.all.each do |e|
-      e.destroy
-    end
+    Enquiry.all.each{|e| e.destroy}
   end
 
   describe 'validation' do
@@ -68,6 +66,57 @@ describe Enquiry do
       enquiry = create_enquiry_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
       enquiry['created_at'].should == "2010-01-14 14:05:00UTC"
     end
+  end
+
+  describe "potential_matches" do
+
+    before :all do
+      form = FormSection.new(:name => "test_form")
+      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
+      form.fields << Field.new(:name => "location", :type => Field::TEXT_FIELD, :display_name => "location")
+      form.fields << Field.new(:name => "gender", :type => Field::TEXT_FIELD, :display_name => "gender")
+      form.save!
+    end
+
+    after :all do
+      FormSection.all.each{|form| form.destroy}
+    end
+
+    before :each do
+      Child.all.each{|c| c.destroy}
+    end
+
+
+    it "should be an empty array when enquiry is created" do
+      enquiry = Enquiry.new(:criteria => {"name" => "Stephen"})
+      enquiry.potential_matches.should == []
+    end
+
+    it "should contain potential matches given one matching child" do
+      child = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
+      enquiry = Enquiry.create!(:criteria => {"name "=> "eduardo"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.should_not be_empty
+      enquiry.potential_matches.should == [child.id]
+    end
+
+    it "should not fail when enquiry has no potential matches" do
+      enquiry = Enquiry.create!(:criteria => {:name => "does not exist"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.should be_empty
+    end
+
+    it "should contain multiple potential matches given multiple matching children" do
+      child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "john doe", 'created_by' => "me",:location => "kampala", 'created_organisation' => "stc")
+      child3 = Child.create(:name => "foo bar", 'created_by' => "me",:gender => "male", 'created_organisation' => "stc")
+
+      enquiry = Enquiry.create!(:criteria => {:name => "eduardo", :location => "kampala", :gender => "male"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.size.should == 3
+      enquiry.potential_matches.should include(child1.id, child2.id, child3.id)
+    end
+
   end
 
   describe "all_enquires" do

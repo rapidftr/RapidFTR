@@ -31,7 +31,7 @@ describe Api::EnquiriesController do
       details = {"location" => "Kampala"}
       criteria = {"name" => "Magso"}
 
-      MatchService.should_receive(:search_for_matching_children).with(criteria)
+
 
       post :create, :enquiry => {:reporter_name => name, :reporter_details => details, :criteria => criteria}, :format => :json
     end
@@ -41,7 +41,7 @@ describe Api::EnquiriesController do
       name = 'reporter'
       details = {"location" => "Kampala"}
 
-      MatchService.should_not_receive(:search_for_matching_children)
+      Enquiry.should_not_receive(:find_matching_children)
 
       post :create, :enquiry => {:reporter_name => name, :reporter_details => details}, :format => :json
 
@@ -105,7 +105,7 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
       controller.stub(:authorize!)
 
-      MatchService.should_receive(:search_for_matching_children).with(criteria)
+      Enquiry.should_not_receive(:find_matching_children)
 
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
 
@@ -117,7 +117,7 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
       controller.stub(:authorize!)
 
-      MatchService.should_not_receive(:search_for_matching_children).with(criteria)
+      Enquiry.should_not_receive(:find_matching_children)
 
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => ''}, :format => :json
 
