@@ -33,13 +33,17 @@ end
 When /^I request the creation of the following unverified user:$/ do |table|
   table.hashes.each do |hash|
     post(register_unverified_user_path,
-      {:format => 'json', :user =>
-        {:user_name => hash["user_name"],
-        :full_name => hash["full_name"],
-        :organisation => hash["organisation"],
-        :unauthenticated_password => hash["password"]
-      }})
+         {:format => 'json', :user =>
+             {:user_name => hash["user_name"],
+              :full_name => hash["full_name"],
+              :organisation => hash["organisation"],
+              :unauthenticated_password => hash["password"]
+             }})
   end
+end
+
+When /^then I logout$/ do
+  post(api_logout_path)
 end
 
 Then /^an unverified user "(.+)" should be created$/ do |user_name|
@@ -52,3 +56,4 @@ end
 def last_json
   last_response.body
 end
+
