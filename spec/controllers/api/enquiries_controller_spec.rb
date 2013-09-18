@@ -215,19 +215,33 @@ describe Api::EnquiriesController do
     it "should fetch all the enquiries" do
       controller.stub(:authorize!)
 
-      Enquiry.should_receive(:all).and_return(mock(:to_json => "all enquiry records"))
+      enquiry = Enquiry.new({:_id => "123"})
+      Enquiry.should_receive(:all).and_return([enquiry])
 
       get :index, :format => :json
       response.response_code.should == 200
-      response.body.should == "all enquiry records"
+      response.body.should == [{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json
     end
+
+    it "should return enquiries with new matches when passed query parameter with last update timestamp" do
+      controller.stub(:authorize!)
+
+      enquiry = Enquiry.new({:_id => "123"})
+      Enquiry.should_receive(:search_by_match_updated_since).with('2013-09-18 06:42:12UTC').and_return([enquiry])
+
+      get :index, :updated_after => '2013-09-18 06:42:12UTC', :format => :json
+
+      response.response_code.should == 200
+      response.body.should == [{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json
+    end
+
   end
 
   describe "GET show" do
     it "should fetch a particular enquiry" do
       controller.stub(:authorize!)
 
-      Enquiry.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "an enquiry record")))
+      Enquiry.should_receive(:get).with("123").and_return(mock(:to_json => "an enquiry record"))
 
       get :show, :id => "123", :format => :json
       response.response_code.should == 200
@@ -243,17 +257,6 @@ describe Api::EnquiriesController do
 
       response.body.should == ""
       response.response_code.should == 404
-    end
-
-    it "should return enquiries with new matches when passed query parameter with last update timestamp" do
-      controller.stub(:authorize!)
-
-      Enquiry.should_receive(:search_by_match_updated_since).with('2013-09-18 06:42:12UTC').and_return(mock(:to_json => "filtered results"))
-
-      get :index, :updated_after => '2013-09-18 06:42:12UTC', :format => :json
-
-      response.response_code.should == 200
-      response.body.should == "filtered results"
     end
 
   end

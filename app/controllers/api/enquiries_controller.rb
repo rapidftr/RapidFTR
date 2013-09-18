@@ -38,17 +38,20 @@ class Api::EnquiriesController < Api::ApiController
   def index
     authorize! :index, Enquiry
     if params[:updated_after].nil?
-      render :json => Enquiry.all
+      enquiries = Enquiry.all
     else
-      render :json => Enquiry.search_by_match_updated_since(params[:updated_after])
+      enquiries = Enquiry.search_by_match_updated_since(params[:updated_after])
     end
+    render :json => enquiries.map { |enquiry|
+      {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"}
+    }
   end
 
   def show
     authorize! :show, Enquiry
     enquiry = Enquiry.get (params[:id])
     if !enquiry.nil?
-      render :json => enquiry.compact
+      render :json => enquiry
     else
       render :json => "", :status => 404
     end
