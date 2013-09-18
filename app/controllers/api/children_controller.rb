@@ -14,7 +14,7 @@ class Api::ChildrenController < Api::ApiController
     if child
       render :json => child.compact
     else
-      render :json => nil, :status => 404
+      render :json => "", :status => 404
     end
 	end
 
