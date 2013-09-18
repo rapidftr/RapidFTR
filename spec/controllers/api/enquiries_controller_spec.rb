@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Api::EnquiriesController do
 
@@ -6,7 +6,7 @@ describe Api::EnquiriesController do
     fake_admin_login
   end
 
-  describe '#authorizations' do
+  describe "#authorizations" do
     it "should fail to POST create when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:create, Enquiry).and_return(false)
       post :create, :format => :json
@@ -16,7 +16,7 @@ describe Api::EnquiriesController do
     it "should fail to update when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:update, Enquiry).and_return(false)
       test_id = "12345"
-      put :update, :id => test_id, :enquiry => {:id => test_id, :reporter_name => 'new name'}, :format => :json
+      put :update, :id => test_id, :enquiry => {:id => test_id, :reporter_name => "new name"}, :format => :json
       response.should be_forbidden
     end
   end
@@ -25,7 +25,7 @@ describe Api::EnquiriesController do
   describe "POST create" do
     it "should create the enquiry record and return a success code" do
       controller.stub(:authorize!)
-      name = 'reporter'
+      name = "reporter"
 
       details = {"location" => "Kampala"}
 
@@ -41,35 +41,35 @@ describe Api::EnquiriesController do
 
     it "should not create enquiry without criteria" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {"location" => "kampala"}}, :format => :json
+      post :create, :enquiry => {:reporter_name => "new name", :reporter_details => {"location" => "kampala"}}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
     end
 
     it "should not create enquiry with empty criteria" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :criteria => {}}, :format => :json
+      post :create, :enquiry => {:reporter_name => "new name", :criteria => {}}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
     end
 
     it "should not create enquiry without reporter details" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :criteria => {"location" => "kampala"}}, :format => :json
+      post :create, :enquiry => {:reporter_name => "new name", :criteria => {"location" => "kampala"}}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
     end
 
     it "should not create enquiry with empty reporter details" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {}, :criteria => {"location" => "kampala"}}, :format => :json
+      post :create, :enquiry => {:reporter_name => "new name", :reporter_details => {}, :criteria => {"location" => "kampala"}}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
     end
 
     it "should not create enquiry with out both criteria and reporter details" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name'}, :format => :json
+      post :create, :enquiry => {:reporter_name => "new name"}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
       JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
@@ -77,7 +77,7 @@ describe Api::EnquiriesController do
 
     it "should not create enquiry with empty criteria and empty reporter details" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {}, :criteria => {}}, :format => :json
+      post :create, :enquiry => {:reporter_name => "new name", :reporter_details => {}, :criteria => {}}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
       JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
@@ -85,20 +85,20 @@ describe Api::EnquiriesController do
 
     it "should not create enquiry if malformed data is received" do
       controller.stub(:authorize!)
-      post :create, :enquiry => 'asdfasdf', :format => :json
+      post :create, :enquiry => "asdfasdf", :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Malformed data was received")
     end
 
     it "should not update record if it exists and return error" do
-      enquiry = Enquiry.new({:reporter_name => 'old name', :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
+      enquiry = Enquiry.new({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       enquiry.save!
       controller.stub(:authorize!)
 
-      post :create, :enquiry => {:id => enquiry.id, :reporter_name => 'new name', :criteria => {:name => "name"}}, :format => :json
+      post :create, :enquiry => {:id => enquiry.id, :reporter_name => "new name", :criteria => {:name => "name"}}, :format => :json
 
       enquiry = Enquiry.get(enquiry.id)
-      enquiry.reporter_name.should == 'old name'
+      enquiry.reporter_name.should == "old name"
       response.should be_forbidden
       JSON.parse(response.body)["error"].should == "Forbidden"
     end
@@ -114,7 +114,7 @@ describe Api::EnquiriesController do
       response.response_code.should == 200
     end
 
-    it 'should throw an exception given malformed query' do
+    it "should throw an exception given malformed query" do
       enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       controller.stub(:authorize!)
       malformed_query = "{
@@ -140,7 +140,7 @@ describe Api::EnquiriesController do
       id = "12345"
       Enquiry.stub!(:get).with(id).and_return(nil)
 
-      put :update, :id => id, :enquiry => {:id => id, :reporter_name => 'new name'}, :format => :json
+      put :update, :id => id, :enquiry => {:id => id, :reporter_name => "new name"}, :format => :json
 
       response.response_code.should == 404
       JSON.parse(response.body)["error"].should == "Not found"
@@ -150,10 +150,10 @@ describe Api::EnquiriesController do
       controller.stub(:authorize!)
       criteria = {"name" => "Batman"}
       details = {"location" => "kampala"}
-      enquiry = Enquiry.new({:reporter_name => 'old name', :reporter_details => details, :criteria => criteria})
+      enquiry = Enquiry.new({:reporter_name => "old name", :reporter_details => details, :criteria => criteria})
       enquiry.save!
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name', :criteria => {}, :reporter_details => {}}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => "new name", :criteria => {}, :reporter_details => {}}, :format => :json
 
       response.response_code.should == 200
       Enquiry.get(enquiry.id)[:criteria].should == criteria
@@ -165,12 +165,12 @@ describe Api::EnquiriesController do
     it "should update record if it exists and return the updated record" do
       controller.stub(:authorize!)
       details = {"location" => "kampala"}
-      enquiry = Enquiry.create({:reporter_name => 'old name', :reporter_details => details, :criteria => {:name => "name"}})
+      enquiry = Enquiry.create({:reporter_name => "old name", :reporter_details => details, :criteria => {:name => "name"}})
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => "new name"}, :format => :json
 
       enquiry = Enquiry.get(enquiry.id)
-      enquiry.reporter_name.should == 'new name'
+      enquiry.reporter_name.should == "new name"
       enquiry.reporter_details.should == details
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
@@ -178,32 +178,32 @@ describe Api::EnquiriesController do
 
     it "should update record without passing the id in the enquiry params" do
       controller.stub(:authorize!)
-      enquiry = Enquiry.create({:reporter_name => 'old name', :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
+      enquiry = Enquiry.create({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
 
-      put :update, :id => enquiry.id, :enquiry => {:reporter_name => 'new name'}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:reporter_name => "new name"}, :format => :json
 
       enquiry = Enquiry.get(enquiry.id)
-      enquiry.reporter_name.should == 'new name'
+      enquiry.reporter_name.should == "new name"
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
     end
 
     it "should merge updated fields and return the latest record" do
       controller.stub(:authorize!)
-      enquiry = Enquiry.create({:reporter_name => 'old name', :reporter_details => {"location" => "kampala"}, :criteria => {:name => "child name"}})
+      enquiry = Enquiry.create({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "child name"}})
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :criteria => {:name => 'child new name'}}, :format => :json
-
-      enquiry = Enquiry.get(enquiry.id)
-      enquiry.criteria.should == {"name" => 'child new name'}
-
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => 'Kampala', :reporter_details => {"age" => "100"}, :criteria => {:sex => 'female'}}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :criteria => {:name => "child new name"}}, :format => :json
 
       enquiry = Enquiry.get(enquiry.id)
+      enquiry.criteria.should == {"name" => "child new name"}
 
-      enquiry.criteria.should == {"name" => 'child new name', "sex" => 'female'}
-      enquiry.reporter_details.should == {"location" => 'kampala', "age" => '100'}
-      enquiry['location'].should == 'Kampala'
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => "Kampala", :reporter_details => {"age" => "100"}, :criteria => {:sex => "female"}}, :format => :json
+
+      enquiry = Enquiry.get(enquiry.id)
+
+      enquiry.criteria.should == {"name" => "child new name", "sex" => "female"}
+      enquiry.reporter_details.should == {"location" => "kampala", "age" => "100"}
+      enquiry["location"].should == "Kampala"
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
     end
@@ -244,6 +244,18 @@ describe Api::EnquiriesController do
       response.body.should == ""
       response.response_code.should == 404
     end
+
+    it "should return enquiries with new matches when passed query parameter with last update timestamp" do
+      controller.stub(:authorize!)
+
+      Enquiry.should_receive(:search_by_match_updated_since).with('2013-09-18 06:42:12UTC').and_return(mock(:to_json => "filtered results"))
+
+      get :index, :updated_after => '2013-09-18 06:42:12UTC', :format => :json
+
+      response.response_code.should == 200
+      response.body.should == "filtered results"
+    end
+
   end
 
 end

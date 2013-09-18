@@ -13,6 +13,7 @@ class Enquiry < CouchRestRails::Document
   property :reporter_name
   property :criteria
   property :reporter_details
+  property :match_updated_at
 
   validates_presence_of :reporter_name, :message => I18n.t("errors.models.enquiry.presence_of_reporter_name")
   validates_presence_of :reporter_details, :message => I18n.t("errors.models.enquiry.presence_of_reporter_details")
@@ -26,6 +27,12 @@ class Enquiry < CouchRestRails::Document
         self[name] = value
       end
     end
+  end
+
+  def self.search_by_match_updated_since(timestamp)
+    Enquiry.all.keep_if{ |e|
+      !e['match_updated_at'].nil? and DateTime.parse(e['match_updated_at']) >= timestamp
+    }
   end
 
 end
