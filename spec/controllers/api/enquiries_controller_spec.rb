@@ -130,6 +130,31 @@ describe Api::EnquiriesController do
   end
 
   describe "PUT update" do
+
+    it "should trigger the match functionality every time a record is created" do
+      criteria = {"name" => "old name"}
+      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
+      controller.stub(:authorize!)
+
+      MatchService.should_receive(:search_for_matching_children).with(criteria)
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
+
+      response.response_code.should == 200
+    end
+
+    it "should not trigger the match unless record is created" do
+      criteria = {"name" => "old name"}
+      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
+      controller.stub(:authorize!)
+
+      MatchService.should_not_receive(:search_for_matching_children).with(criteria)
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => ''}, :format => :json
+
+      response.response_code.should == 422
+    end
+
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       controller.stub(:authorize!)
