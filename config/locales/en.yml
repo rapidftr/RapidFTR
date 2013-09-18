@@ -555,7 +555,7 @@ en:
         presence_of_reporter_details: "Please add reporter details to your enquiry"
         create_forbidden: "Forbidden"
         not_found: "Not found"
-        malformed_query: "Malformed query"
+        malformed_query: "Malformed data was received"
 
       role:
         permission_presence: "Please select at least one permission"
