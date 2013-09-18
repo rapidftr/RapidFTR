@@ -514,6 +514,7 @@ zh:
       user:
         full_name: "请输入用户的全名"
         password_confirmation: "请输入密码确认"
+        password_mismatch: "密码字段不具有相同的密码"
         role_ids: "请选择至少一个角色"
         organisation: "请输入用户的组织名"
         user_name: "请输入一个有效的用户名"
@@ -560,6 +561,10 @@ zh:
       replication:
         remote_app_url: "请输入合适的 URL, e.g. http://<server>:<port>"
         save_remote_couch_config: "The URL/Username/Password输入不正确"
+
+      password_recovery_request:
+        user_name_mandatory: "请输入有效的用户名"
+
 
   select_all_results: "选择所有的结果"
 

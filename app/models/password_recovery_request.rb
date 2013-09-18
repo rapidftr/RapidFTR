@@ -9,7 +9,7 @@ class PasswordRecoveryRequest < CouchRestRails::Document
 
   timestamps!
 
-  validates_presence_of :user_name
+  validates_presence_of :user_name, :message => I18n.t("errors.models.password_recovery_request.user_name_mandatory")
 
   def hide!
     self.hidden = true

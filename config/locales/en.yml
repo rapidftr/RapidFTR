@@ -217,6 +217,8 @@ en:
       label: "Sort by"
       full_name: "Full Name"
 
+
+
   roles:
     label: "Roles"
     list: "List of Roles"
@@ -512,6 +514,7 @@ en:
       user:
         full_name: "Please enter full name of the user"
         password_confirmation: "Please enter password confirmation"
+        password_mismatch: "The password fields do not have the same password"
         role_ids: "Please select at least one role"
         organisation: "Please enter the user's organisation name"
         user_name: "Please enter a valid user name"
@@ -567,6 +570,9 @@ en:
       replication:
         remote_app_url: "Please enter a proper URL, e.g. http://<server>:<port>"
         save_remote_couch_config: "The URL/Username/Password that you entered is incorrect"
+
+      password_recovery_request:
+        user_name_mandatory: "Please enter a valid user name"
 
 
 
