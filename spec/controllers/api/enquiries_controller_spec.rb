@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Api::EnquiriesController do
 
   before :each do
+    Enquiry.all.each{|enquiry| enquiry.destroy}
     fake_admin_login
   end
 
@@ -23,6 +24,30 @@ describe Api::EnquiriesController do
 
 
   describe "POST create" do
+
+    it "should trigger the match functionality every time a record is created" do
+      controller.stub(:authorize!)
+      name = 'reporter'
+      details = {"location" => "Kampala"}
+      criteria = {"name" => "Magso"}
+
+      MatchService.should_receive(:search_for_matching_children).with(criteria)
+
+      post :create, :enquiry => {:reporter_name => name, :reporter_details => details, :criteria => criteria}, :format => :json
+    end
+
+    it "should not trigger the match unless record is created" do
+      controller.stub(:authorize!)
+      name = 'reporter'
+      details = {"location" => "Kampala"}
+
+      MatchService.should_not_receive(:search_for_matching_children)
+
+      post :create, :enquiry => {:reporter_name => name, :reporter_details => details}, :format => :json
+
+      response.response_code.should == 422
+    end
+
     it "should create the enquiry record and return a success code" do
       controller.stub(:authorize!)
       name = 'reporter'

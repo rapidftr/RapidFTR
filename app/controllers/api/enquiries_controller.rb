@@ -10,8 +10,10 @@ class Api::EnquiriesController < Api::ApiController
 
     unless @enquiry.valid? then render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return end
 
-    @enquiry.save!
-    render :json => @enquiry, :status => 201
+    if @enquiry.save!
+      MatchService.search_for_matching_children(@enquiry["criteria"])
+      render :json => @enquiry, :status => 201
+    end
   end
 
   def update
