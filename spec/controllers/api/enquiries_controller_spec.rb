@@ -60,7 +60,6 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.all.first
 
       enquiry.reporter_name.should == name
-      enquiry.reporter_details.should == details
       response.response_code.should == 201
     end
 
@@ -76,36 +75,6 @@ describe Api::EnquiriesController do
       post :create, :enquiry => {:reporter_name => 'new name', :criteria => {}}, :format => :json
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
-    end
-
-    it "should not create enquiry without reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :criteria => {"location" => "kampala"}}, :format => :json
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
-    it "should not create enquiry with empty reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {}, :criteria => {"location" => "kampala"}}, :format => :json
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
-    it "should not create enquiry with out both criteria and reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name'}, :format => :json
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
-    it "should not create enquiry with empty criteria and empty reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => 'new name', :reporter_details => {}, :criteria => {}}, :format => :json
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
     end
 
     it "should not create enquiry if malformed data is received" do
@@ -221,7 +190,6 @@ describe Api::EnquiriesController do
 
       enquiry = Enquiry.get(enquiry.id)
       enquiry.reporter_name.should == 'new name'
-      enquiry.reporter_details.should == details
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
     end
@@ -252,7 +220,7 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.get(enquiry.id)
 
       enquiry.criteria.should == {"name" => 'child new name', "sex" => 'female'}
-      enquiry.reporter_details.should == {"location" => 'kampala', "age" => '100'}
+      enquiry["reporter_details"].should == {"location" => 'kampala', "age" => '100'}
       enquiry['location'].should == 'Kampala'
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
