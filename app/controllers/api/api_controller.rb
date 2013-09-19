@@ -34,7 +34,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def malformed_json(e)
-    render :status => 422, :json => "Invalid request"
+    render :status => 422, :json => I18n.t("errors.models.enquiry.malformed_query")
   end
 
 end
