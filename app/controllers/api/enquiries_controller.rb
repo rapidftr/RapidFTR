@@ -1,5 +1,7 @@
 class Api::EnquiriesController < Api::ApiController
 
+  before_filter :sanitise_params
+
   def create
     authorize! :create, Enquiry
     unless Enquiry.get(params['enquiry'][:id]).nil? then
@@ -59,5 +61,15 @@ class Api::EnquiriesController < Api::ApiController
 
   def render_error(message, status_code)
     render :json => {:error => I18n.t(message)}, :status => status_code
+  end
+
+  def sanitise_params
+    begin
+      if !(params[:updated_after]).nil?
+        DateTime.parse params[:updated_after]
+      end
+    rescue
+      render :json => "Invalid request", :status => 422
+    end
   end
 end
