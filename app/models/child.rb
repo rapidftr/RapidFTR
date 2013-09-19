@@ -360,7 +360,6 @@ class Child < CouchRestRails::Document
 
   def self.search(search, page_number = 1, criteria = [], created_by = "")
     return [] unless search.valid?
-    query = search.query
     search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
     search_criteria.concat([SearchCriteria.new(:field => "name", :value => search.query, :join => "OR")]).concat(criteria)
     SearchService.search page_number, search_criteria
