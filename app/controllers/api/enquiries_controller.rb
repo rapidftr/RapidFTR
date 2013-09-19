@@ -12,7 +12,7 @@ class Api::EnquiriesController < Api::ApiController
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return
     end
 
-    @enquiry.save!
+    @enquiry.save
     render :json => @enquiry, :status => 201
   end
 

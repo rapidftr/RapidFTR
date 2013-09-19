@@ -46,7 +46,9 @@ module Searchable
 
     def paginated_and_full_results(page_number, query)
       full_result = []
-      get_search(nil, query).hits.each do | hit | full_result.push hit.to_param end
+      get_search(nil, query).hits.each do |hit|
+        full_result.push hit.to_param
+      end
       return get_search(page_number, query).results, full_result
     end
 
@@ -67,6 +69,28 @@ module Searchable
         end
       end
       response
+    end
+
+
+    def sunspot_matches(query = "")
+      Child.build_solar_schema
+
+      begin
+        return get_matches(query).results
+      rescue
+        self.reindex!
+        Sunspot.commit
+        return get_matches(query).results
+      end
+    end
+
+    def get_matches(criteria)
+      Sunspot.search(self) do
+        fulltext(criteria, :minimum_match => 1)
+        adjust_solr_params do |params|
+          params[:defType] = "dismax"
+        end
+      end
     end
   end
 
