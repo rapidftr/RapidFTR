@@ -70,7 +70,7 @@ RapidFTR::Application.routes.draw do
 #######################
 
   namespace :api do
-    controller :sessions do
+    controller :sessions, :defaults => {:format => :json} do
       post :login
       post :register
       post :logout
@@ -80,8 +80,8 @@ RapidFTR::Application.routes.draw do
 
     resources :children do
       collection do
-        get :ids
-        post :unverified
+        get :ids, :defaults => {:format => :json}
+        post :unverified, :defaults => {:format => :json}
       end
 
       member do
