@@ -83,13 +83,6 @@ describe Api::EnquiriesController do
       JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
     end
 
-    it "should not create enquiry if malformed data is received" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => "asdfasdf", :format => :json
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Malformed data was received")
-    end
-
     it "should not update record if it exists and return error" do
       enquiry = Enquiry.new({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       enquiry.save!
@@ -105,35 +98,6 @@ describe Api::EnquiriesController do
   end
 
   describe "PUT update" do
-    it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
-      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
-      controller.stub(:authorize!)
-
-      put :update, :id => enquiry.id, :format => :json, :enquiry => {:id => enquiry.id, :reporter_name => "Manchaba"}.to_json
-
-      response.response_code.should == 200
-    end
-
-    it "should throw an exception given malformed query" do
-      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
-      controller.stub(:authorize!)
-      malformed_query = "{
-                  'enquiry':
-                    {
-                      'reporter_name': 'dummy enquirer from API',
-                      'location' :    'Kampala'
-                      'criteria'
-                                    {
-                                      'name' : 'The updated name of the child'
-                                      'sex'  : 'Female'
-                                    }
-                      }"
-
-      put :update, :id => enquiry.id, :format => :json, :enquiry => malformed_query
-
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should == "Malformed data was received"
-    end
 
     it "should return an error if enquiry does not exist" do
       controller.stub(:authorize!)

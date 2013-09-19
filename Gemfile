@@ -26,6 +26,8 @@ gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => 'v8'
 gem 'os',             '~> 0.9.6'
 gem 'thin',           '~> 1.5.1',  :platform => :ruby, :require => false
 gem 'encrypted-cookie-store', '~> 1.0'
+gem 'request_exception_handler'
+gem 'multi_json',     '~> 1.7.9'
 
 # NOTE: zipruby gem needs to be installed in Windows using a special gem install directive, which is unsupported by bundler
 # NOTE: Sunspot 1.3.3 has bug in Linux, But 1.3.1 has problem in Windows
