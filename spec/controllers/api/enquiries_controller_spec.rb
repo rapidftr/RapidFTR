@@ -3,6 +3,7 @@ require "spec_helper"
 describe Api::EnquiriesController do
 
   before :each do
+    Enquiry.all.each{|enquiry| enquiry.destroy}
     fake_admin_login
   end
 
@@ -23,6 +24,30 @@ describe Api::EnquiriesController do
 
 
   describe "POST create" do
+
+    it "should trigger the match functionality every time a record is created" do
+      controller.stub(:authorize!)
+      name = 'reporter'
+      details = {"location" => "Kampala"}
+      criteria = {"name" => "Magso"}
+
+
+
+      post :create, :enquiry => {:reporter_name => name, :reporter_details => details, :criteria => criteria}, :format => :json
+    end
+
+    it "should not trigger the match unless record is created" do
+      controller.stub(:authorize!)
+      name = 'reporter'
+      details = {"location" => "Kampala"}
+
+      Enquiry.should_not_receive(:find_matching_children)
+
+      post :create, :enquiry => {:reporter_name => name, :reporter_details => details}, :format => :json
+
+      response.response_code.should == 422
+    end
+
     it "should create the enquiry record and return a success code" do
       controller.stub(:authorize!)
       name = "reporter"
@@ -35,7 +60,6 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.all.first
 
       enquiry.reporter_name.should == name
-      enquiry.reporter_details.should == details
       response.response_code.should == 201
     end
 
@@ -53,36 +77,6 @@ describe Api::EnquiriesController do
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
     end
 
-    it "should not create enquiry without reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => "new name", :criteria => {"location" => "kampala"}} 
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
-    it "should not create enquiry with empty reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => "new name", :reporter_details => {}, :criteria => {"location" => "kampala"}} 
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
-    it "should not create enquiry with out both criteria and reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => "new name"} 
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
-    it "should not create enquiry with empty criteria and empty reporter details" do
-      controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => "new name", :reporter_details => {}, :criteria => {}} 
-      response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
-      JSON.parse(response.body)["error"].should include("Please add reporter details to your enquiry")
-    end
-
     it "should not update record if it exists and return error" do
       enquiry = Enquiry.new({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       enquiry.save!
@@ -98,6 +92,30 @@ describe Api::EnquiriesController do
   end
 
   describe "PUT update" do
+
+    it "should trigger the match functionality every time a record is created" do
+      criteria = {"name" => "old name"}
+      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
+      controller.stub(:authorize!)
+
+      Enquiry.should_not_receive(:find_matching_children)
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
+
+      response.response_code.should == 200
+    end
+
+    it "should not trigger the match unless record is created" do
+      criteria = {"name" => "old name"}
+      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
+      controller.stub(:authorize!)
+
+      Enquiry.should_not_receive(:find_matching_children)
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => ''}, :format => :json
+
+      response.response_code.should == 422
+    end
 
     it "should return an error if enquiry does not exist" do
       controller.stub(:authorize!)
@@ -134,6 +152,7 @@ describe Api::EnquiriesController do
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => "new name"} 
 
       enquiry = Enquiry.get(enquiry.id)
+
       enquiry.reporter_name.should == "new name"
       enquiry.reporter_details.should == details
       response.response_code.should == 200
@@ -164,6 +183,7 @@ describe Api::EnquiriesController do
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => "Kampala", :reporter_details => {"age" => "100"}, :criteria => {:sex => "female"}} 
 
       enquiry = Enquiry.get(enquiry.id)
+
 
       enquiry.criteria.should == {"name" => "child new name", "sex" => "female"}
       enquiry.reporter_details.should == {"location" => "kampala", "age" => "100"}

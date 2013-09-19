@@ -1,4 +1,5 @@
 class SearchCriteria
+
   SOLR_SPECIAL_CHARS = %w{@ # ! % $ \ ^ -}
 
   attr_accessor :index, :value, :join, :field, :field_display_name
@@ -27,6 +28,10 @@ class SearchCriteria
     end.sort_by(&:index)
   end
 
+  def self.build_enquiry_criteria(criteria_list)
+    SearchCriteria.new(criteria_list)
+  end
+
   def self.lucene_query(criteria_list)
     criteria_list = criteria_list.clone
     criteria = criteria_list.shift
@@ -42,6 +47,24 @@ class SearchCriteria
       query = query.map{|word| word.sub!(/^[@#!%$\^-]+/, '') || word}
       query = query.map {|word| "(#{field}_text:#{word.downcase}~ OR #{field}_text:#{word.downcase}*)"}.join(" AND ")
       "(#{query})"
+    end.join(" OR ")
+  end
+
+  def self.dismax_query(criteria_list)
+    puts criteria_list.inspect
+    criteria_list = criteria_list.clone
+    criteria = criteria_list.shift
+    criteria.to_dismax_query
+  end
+
+  def to_dismax_query
+    phrases = value.split(/\s+OR\s+/i)
+    phrases.map do |phrase|
+      query = phrase.split(/[ ,]+/) - SOLR_SPECIAL_CHARS
+      query = query.delete_if{|word| word.empty?}
+      query = query.map{|word| word.sub!(/^[@#!%$\^-]+/, '') || word}
+      query = query.map {|word| "(#{word.downcase}~ OR #{word.downcase}*)"}.join(" OR ")
+      "#{query}"
     end.join(" OR ")
   end
 

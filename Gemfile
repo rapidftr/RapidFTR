@@ -14,7 +14,7 @@ gem 'rest-client',    '1.3.0'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
 gem 'dynamic_form',   '~> 1.1.4'
-gem 'sunspot',        '1.3.3'
+gem 'sunspot',        '2.0.0'
 gem 'rake',           '0.8.7'
 gem 'jquery-rails',   '~> 2.2.1'
 gem 'cancan',         '~> 1.6.9'
@@ -33,10 +33,10 @@ gem 'multi_json',     '~> 1.7.9'
 # NOTE: Sunspot 1.3.3 has bug in Linux, But 1.3.1 has problem in Windows
 if RUBY_PLATFORM =~ /(win32|w32)/
   gem 'zipruby',      '0.3.6', :path => 'vendor/windows/gems/zipruby-0.3.6-x86-mswin32'
-  gem 'sunspot_solr', '1.3.3'
+  gem 'sunspot_solr', '2.0.0'
 else
   gem 'zipruby',      '~> 0.3.6'
-  gem 'sunspot_solr', '1.3.1'
+  gem 'sunspot_solr', '2.0.0'
 end
 # NOTE: Having If conditions in the Gemfile is not generally recommended
 # Because using the above code, if you run bundle install in Linux, it will generate a different Gemfile.lock
@@ -74,7 +74,7 @@ group :test, :cucumber do
   gem 'jasmine',          '~> 1.3.2'
 
   gem 'capybara',         '~> 2.1.0'
-  gem 'cucumber',           '~> 1.2.2'
+  gem 'cucumber',           '~> 1.3.8'
   gem 'cucumber-rails',     '~> 0.3.2'
   gem 'selenium-webdriver', '~> 2.30'
   gem 'hpricot',            '~> 0.8.6'
@@ -85,3 +85,4 @@ group :development, :test, :cucumber do
   gem 'pry'
   gem 'pry-debugger'
 end
+
