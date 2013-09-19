@@ -179,7 +179,15 @@ describe Enquiry do
       enquiry.potential_matches.should == [child2.id]
     end
 
+    it "should sort the results based on solr scores" do
+      child1 = Child.create(:name => "Eduardo aquiles", :location => "Kampala", 'created_by' => "me", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "Batman", :location => "Kampala",'created_by' => "not me", 'created_organisation' => "stc")
 
+      enquiry = Enquiry.create!(:criteria => {"name" => "Eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.size.should == 2
+      enquiry.potential_matches.should == [child1.id, child2.id]
+    end
 
   end
 
