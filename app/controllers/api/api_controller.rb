@@ -1,6 +1,9 @@
+require "active_support/json/backends/okjson"
+
 class Api::ApiController < ActionController::Base
 
   include Security::Authentication
+
   before_filter :extend_session_lifetime
   before_filter :check_authentication
   before_filter :check_device_blacklisted
@@ -12,6 +15,7 @@ class Api::ApiController < ActionController::Base
   rescue_from(AuthenticationFailure) { |e| render_error_response ErrorResponse.unauthorized e.message }
   rescue_from(CanCan::AccessDenied) { |e| render_error_response ErrorResponse.forbidden e.message }
   rescue_from(ErrorResponse) { |e| render_error_response e }
+  rescue_from(ActiveSupport::OkJson::Error) {|e| malformed_json(e) }
 
   def check_device_blacklisted
     raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
@@ -29,8 +33,8 @@ class Api::ApiController < ActionController::Base
     request.env[ActionDispatch::Session::AbstractStore::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week
   end
 
-  def sanitize_params(object)
-    params[object.to_sym] = JSON.parse(params[object.to_sym]) if params[object.to_sym].is_a?(String)
+  def malformed_json(e)
+    render :status => 422, :json => I18n.t("errors.models.enquiry.malformed_query")
   end
 
 end
