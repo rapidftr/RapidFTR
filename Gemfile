@@ -82,4 +82,6 @@ end
 
 group :development, :test, :cucumber do
   gem 'pry'
+  gem 'pry-debugger'
 end
+
