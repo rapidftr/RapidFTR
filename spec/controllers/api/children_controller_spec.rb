@@ -9,19 +9,19 @@ describe Api::ChildrenController do
   describe '#authorizations' do
     it "should fail GET index when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false)
-      get :index, :format => "json"
+      get :index
       response.should be_forbidden
     end
 
     it "should fail GET show when unauthorized" do
   		@controller.current_ability.should_receive(:can?).with(:show, Child).and_return(false)
-      get :show, :id => "123", :format => "json"
+      get :show, :id => "123"
       response.should be_forbidden
   	end
 
     it "should fail to POST create when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false)
-      post :create, :format => :json
+      post :create
       response.should be_forbidden
     end
   end
@@ -59,7 +59,7 @@ describe Api::ChildrenController do
       child.save!
       controller.stub(:authorize!)
 
-      post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}, :format => :json
+      post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
 
       updated_child = Child.by_short_id(:key => child.short_id)
       updated_child.size.should == 1
@@ -70,7 +70,7 @@ describe Api::ChildrenController do
 	describe "PUT update" do
     it "should allow a records ID to be specified to create a new record with a known id" do
       new_uuid = UUIDTools::UUID.random_create()
-      put :update, :id => new_uuid.to_s, :child => { :id => new_uuid.to_s, :_id => new_uuid.to_s, :last_known_location => "London", :age => "7" }, :format => :json
+      put :update, :id => new_uuid.to_s, :child => { :id => new_uuid.to_s, :_id => new_uuid.to_s, :last_known_location => "London", :age => "7" }
 
       Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
     end
@@ -87,7 +87,7 @@ describe Api::ChildrenController do
       Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
       child.should_receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy"}, :format => :json}
+      post :unverified, {:child => {:name => "timmy"} }
 
       @user.verified = true
     end
@@ -96,7 +96,7 @@ describe Api::ChildrenController do
       Child.should_receive(:new_with_user_name).and_return(child = Child.new)
       child.should_receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy"}, :format => :json}
+      post :unverified, {:child => {:name => "timmy"} }
 
       child['created_by_full_name'].should eq @user.full_name
     end
@@ -106,7 +106,7 @@ describe Api::ChildrenController do
       controller.should_receive(:update_child_from).and_return(child)
       child.should_receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'}, :format => :json}
+      post :unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'} }
 
       child['created_by_full_name'].should eq @user.full_name
     end
