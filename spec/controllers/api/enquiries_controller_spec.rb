@@ -219,6 +219,14 @@ describe Api::EnquiriesController do
       response.body.should == [{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json
     end
 
+    it "should return 422 if query parameter with last update timestamp is not a valid timestamp" do
+      controller.stub(:authorize!)
+      bypass_rescue
+      get :index, :updated_after => 'adsflkj', :format => :json
+
+      response.response_code.should == 422
+    end
+
   end
 
   describe "GET show" do
