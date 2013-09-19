@@ -94,7 +94,7 @@ RapidFTR::Application.routes.draw do
 
     # ENQUIRIES
 
-    resources :enquiries
+    resources :enquiries, :defaults => {:format => :json}
 
   end
 

@@ -20,17 +20,16 @@ describe Enquiry do
     end
 
     it "should not create enquiry without reporter_name" do
-      enquiry = create_enquiry_with_created_by('user name', {:criteria => {:name=>'Child name'}})
+      enquiry = create_enquiry_with_created_by('user name', {:criteria => {:name => 'Child name'}})
       enquiry.should_not be_valid
       enquiry.errors[:reporter_name].should == ["Please add reporter name to your enquiry"]
     end
 
     it "should not create enquiry with empty reporter name" do
-      enquiry = create_enquiry_with_created_by('user name', {:criteria => {:name=>''}})
+      enquiry = create_enquiry_with_created_by('user name', {:criteria => {:name => ''}})
       enquiry.should_not be_valid
       enquiry.errors[:reporter_name].should == ["Please add reporter name to your enquiry"]
     end
-
   end
 
   describe '#update_from_properties' do
@@ -193,17 +192,27 @@ describe Enquiry do
 
   describe "all_enquires" do
     it "should return a list of all enquiries" do
-      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
       save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
+      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
       Enquiry.all.size.should == 2
+    end
+  end
+
+  describe "search_by_match_updated_since" do
+    it "should fetch enquiries with match_updated_at time that is at or after timestamp" do
+      save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'}, 'match_updated_at' => '2013-09-18 06:42:12UTC')
+      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'}, 'match_updated_at' => '2013-07-18 06:42:12UTC')
+
+      Enquiry.search_by_match_updated_since(DateTime.parse('2013-09-18 05:42:12UTC')).size.should == 1
+      Enquiry.search_by_match_updated_since(DateTime.parse('2013-09-18 06:42:12UTC')).size.should == 1
     end
   end
 
   private
 
-  def create_enquiry_with_created_by(created_by,options = {}, organisation = "UNICEF")
-    user = User.new({:user_name => created_by, :organisation=> organisation})
-    Enquiry.new_with_user_name( user, options)
+  def create_enquiry_with_created_by(created_by, options = {}, organisation = "UNICEF")
+    user = User.new({:user_name => created_by, :organisation => organisation})
+    Enquiry.new_with_user_name(user, options)
   end
 
   def save_valid_enquiry(user, options = {}, organisation = "UNICEF")

@@ -61,7 +61,7 @@ Feature: Creating an enquiry using the API
 
     #Exception returned currently is 500, but should be 422
     #Bug fixing in progress
-    @wip
+#    @wip
   Scenario: Create Enquiry with malformed criteria
 
       Given a registration worker "tim" with a password "123"
