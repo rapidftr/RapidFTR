@@ -43,11 +43,13 @@ When /^I request the creation of the following unverified user:$/ do |table|
     header 'Content-Type', 'application/json'
 
     post(register_unverified_user_path,
-             {:user_name => hash["user_name"],
-              :full_name => hash["full_name"],
-              :organisation => hash["organisation"],
-              :unauthenticated_password => hash["password"]
-             }.to_json)
+         {:user =>
+              {:user_name => hash["user_name"],
+               :full_name => hash["full_name"],
+               :organisation => hash["organisation"],
+               :unauthenticated_password => hash["password"]
+              }
+         }.to_json)
   end
 end
 
