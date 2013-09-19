@@ -31,9 +31,8 @@ class Enquiry < CouchRestRails::Document
 
   def find_matching_children
     children = MatchService.search_for_matching_children(self.criteria)
-    children.each do |child|
-      self.potential_matches.push(child.id)
-    end
+    self.potential_matches = children.map{|child| child.id}
+    self.potential_matches.uniq!
   end
 
 end

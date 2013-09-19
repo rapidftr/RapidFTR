@@ -117,6 +117,70 @@ describe Enquiry do
       enquiry.potential_matches.should include(child1.id, child2.id, child3.id)
     end
 
+    it "should assure that potential_matches contains no duplicates" do
+      child1 = Child.create(:name => "eduardo aquiles", :gender => "male", 'created_by' => "me", 'created_organisation' => "stc")
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.size.should == 1
+      enquiry.potential_matches.should == [child1.id]
+
+      enquiry[:criteria].merge!({"gender" => "male"})
+      enquiry.save!
+
+      enquiry.potential_matches.size.should == 1
+      enquiry.potential_matches.should == [child1.id]
+    end
+
+    it "should update potential matches with new matches whenever an enquiry is edited" do
+      child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "john doe", 'created_by' => "me",:location => "kampala", 'created_organisation' => "stc")
+      child3 = Child.create(:name => "foo bar", 'created_by' => "me",:gender => "male", 'created_organisation' => "stc")
+
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "kampala"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.size.should == 2
+      enquiry.potential_matches.should include(child1.id, child2.id)
+
+      enquiry[:criteria].merge!({"gender" => "male"})
+      enquiry.save!
+
+      enquiry.potential_matches.size.should == 3
+      enquiry.potential_matches.should include(child1.id, child2.id, child3.id)
+    end
+
+    it "should remove id that dont match anymore whenever criteria changes" do
+      child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
+
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.size.should == 1
+      enquiry.potential_matches.should == [child1.id]
+
+      enquiry[:criteria].merge!("name" => "John")
+      enquiry.save!
+
+      enquiry.potential_matches.size.should == 0
+      enquiry.potential_matches.should == []
+    end
+
+    it "should keep only matching ids when criteria changes" do
+      child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "foo bar", :location => "Kampala",'created_by' => "me", 'created_organisation' => "stc")
+
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
+
+      enquiry.potential_matches.size.should == 2
+      enquiry.potential_matches.should include(child1.id, child2.id)
+
+      enquiry[:criteria].merge!("name" => "John")
+      enquiry.save!
+
+      enquiry.potential_matches.size.should == 1
+      enquiry.potential_matches.should == [child2.id]
+    end
+
+
+
   end
 
   describe "all_enquires" do
