@@ -8,7 +8,6 @@ class Enquiry < CouchRestRails::Document
   property :reporter_name
   property :criteria
   property :potential_matches, :default => []
-  property :reporter_details
   property :match_updated_at
 
 

@@ -128,7 +128,7 @@ describe Api::EnquiriesController do
       JSON.parse(response.body)["error"].should == "Not found"
     end
 
-    it "should not override existing criteria or reporter_details when sending empty criteria or reporter_details" do
+    it "should not override existing criteria when sending empty criteria" do
       controller.stub(:authorize!)
       criteria = {"name" => "Batman"}
       details = {"location" => "kampala"}
@@ -146,15 +146,13 @@ describe Api::EnquiriesController do
 
     it "should update record if it exists and return the updated record" do
       controller.stub(:authorize!)
-      details = {"location" => "kampala"}
-      enquiry = Enquiry.create({:reporter_name => "old name", :reporter_details => details, :criteria => {:name => "name"}})
+      enquiry = Enquiry.create({:reporter_name => "old name", :criteria => {:name => "name"}})
 
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => "new name"} 
 
       enquiry = Enquiry.get(enquiry.id)
 
       enquiry.reporter_name.should == "new name"
-      enquiry.reporter_details.should == details
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
     end
@@ -186,7 +184,7 @@ describe Api::EnquiriesController do
 
 
       enquiry.criteria.should == {"name" => "child new name", "sex" => "female"}
-      enquiry.reporter_details.should == {"location" => "kampala", "age" => "100"}
+      enquiry["reporter_details"].should == {"location" => "kampala", "age" => "100"}
       enquiry["location"].should == "Kampala"
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
