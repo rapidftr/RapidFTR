@@ -12,6 +12,10 @@ describe PasswordRecoveryRequest do
       PasswordRecoveryRequest.to_display.map(&:user_name).should_not   include("goodduck")
     end
 
+    it "should raise error if username is empty" do
+      lambda {PasswordRecoveryRequest.create! :user_name => ""}.should raise_error
+    end
+
     it "should hide password requests" do
       request = PasswordRecoveryRequest.create! :user_name => "moderateduck"
       request.hide!

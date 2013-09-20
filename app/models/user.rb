@@ -88,7 +88,9 @@ class User < CouchRestRails::Document
   validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
                       :message => I18n.t("errors.models.user.email")
 
-  validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?
+  validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?,
+                            :message => I18n.t("errors.models.user.password_mismatch")
+
   validates_with_method :user_name, :method => :is_user_name_unique
 
   before_save :generate_id

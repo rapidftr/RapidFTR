@@ -493,6 +493,7 @@ ar:
       user:
         full_name: "الرجاء إدخال إسم المستخدم بالكامل"
         password_confirmation: "الرجاء تأكيد كلمة السر"
+        password_mismatch: "الحقول كلمة المرور لم يكن لديك نفس كلمة المرور"
         role_ids: "الرجاء إختيار دور واحد على الأقل"
         organisation: "الرجاء إدخال إسم المنظمة التي ينتمي لها المستخدم"
         user_name: "إسم المستخدم غير صالح"
@@ -547,6 +548,9 @@ ar:
       replication:
         remote_app_url: "الرجاء إدخال رابط صحيح. مثال: http://<server>:<port>"
         save_remote_couch_config: "الرابط أو إسم المستخدم أو كلمة السر التي تم إدخالها غير صحيح"
+
+      password_recovery_request:
+        user_name_mandatory: "الرجاء إدخال اسم مستخدم صالح"
 
 
   histories:
