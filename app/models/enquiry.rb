@@ -9,7 +9,7 @@ class Enquiry < CouchRestRails::Document
   property :criteria
   property :potential_matches, :default => []
   property :reporter_details
-  property :match_updated_at
+  property :match_updated_at, :default => ""
 
 
   validates_presence_of :reporter_name, :message => I18n.t("errors.models.enquiry.presence_of_reporter_name")
@@ -33,9 +33,14 @@ class Enquiry < CouchRestRails::Document
   end
 
   def find_matching_children
+    previous_matches = self.potential_matches
+
     children = MatchService.search_for_matching_children(self.criteria)
     self.potential_matches = children.map { |child| child.id }
-    self.potential_matches.uniq!
+
+    unless previous_matches.sort.eql?(self.potential_matches.sort)
+      self.match_updated_at = Clock.now.to_s
+    end
   end
 
   def self.search_by_match_updated_since(timestamp)
