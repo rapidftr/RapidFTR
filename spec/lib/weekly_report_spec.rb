@@ -16,6 +16,12 @@ describe WeeklyReport do
       @child3 = Child.new_with_user_name(@user, {:name => "childThree", :protection_status => "Separated", :gender => "Female", :ftr_status => "Family Located- Inter-Camp FR Pending"}).save!
     end
 
+    after :all do
+      FormSection.all.each{|form| form.destroy}
+      Child.all.each{|c| c.destroy}
+      User.all.each{|user| user.destroy}
+    end
+
   	it "should provide data for weekly report" do
       data = WeeklyReport.data
       report = CSV.parse data
