@@ -91,7 +91,10 @@ describe User do
     user.create!
     user.password = 'foo'
     user.password_confirmation = 'not foo'
+
+    user.valid?
     user.should_not be_valid
+    user.errors[:password].should include(I18n.t("errors.models.user.password_mismatch"))
   end
 
   it "should allow password update if confirmation matches" do
