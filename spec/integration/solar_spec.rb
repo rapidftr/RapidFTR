@@ -131,7 +131,7 @@ describe "Enquiry Mapping" do
     @child2 = Child.create('last_known_location' => "New York", "name" => "Muhammed Jones")
     @child3 = Child.create('last_known_location' => "New York", "name" => "Muhammad Brown")
     @child4 = Child.create('last_known_location' => "New York", "name" => "Ammad Brown")
-    @enquiry = Enquiry.create("reporter_name" => "Kavitha", "criteria" => {"name" => "Ammad"}, "reporter_details" => {"location" => "Kyangwali"})
+    @enquiry = Enquiry.create("enquirer_name" => "Kavitha", "criteria" => {"name" => "Ammad"}, "reporter_details" => {"location" => "Kyangwali"})
     Sunspot.index([@child1, @child2, @child3, @child4])
     Sunspot.commit
   end
