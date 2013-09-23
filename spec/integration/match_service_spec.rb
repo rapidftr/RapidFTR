@@ -23,7 +23,7 @@ describe MatchService do
   it "should match children from a country given enquiry criteria with key different from child's country key " do
     Child.create!(:name => "christine", :created_by => "me", :country => "uganda", :created_organisation => "stc")
     Child.create!(:name => "john", :created_by => "not me", :nationality => "uganda", :created_organisation => "stc")
-    enquiry = Enquiry.create!(:reporter_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
+    enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
 
     children = MatchService.search_for_matching_children(enquiry["criteria"])
 
@@ -34,7 +34,7 @@ describe MatchService do
 
   it "should match records when criteria has a space" do
     Child.create!(:name => "Christine", :created_by => "me", :country => "Republic of Uganda", :created_organisation => "stc")
-    enquiry = Enquiry.create!(:reporter_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
+    enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
 
     children = MatchService.search_for_matching_children(enquiry["criteria"])
 
@@ -46,7 +46,7 @@ describe MatchService do
     Child.create!(:name => "Christine", :created_by => "me", :country => "Republic of Uganda", :created_organisation => "stc")
     Child.create!(:name => "Man", :created_by => "me", :nationality => "Uganda", :gender => "Male", :created_organisation => "stc")
     Child.create!(:name => "dude", :created_by => "me", :birthplace => "Dodoma", :languages => "Swahili", :created_organisation => "stc")
-    enquiry = Enquiry.create!(:reporter_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda", :birthplace=>"dodoma", :languages => "Swahili"})
+    enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda", :birthplace=>"dodoma", :languages => "Swahili"})
 
     children = MatchService.search_for_matching_children(enquiry["criteria"])
 
