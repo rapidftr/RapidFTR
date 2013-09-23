@@ -8,38 +8,38 @@ describe Enquiry do
 
   describe 'validation' do
     it 'should not create enquiry without criteria' do
-      enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek'})
+      enquiry = create_enquiry_with_created_by('user name', {:enquirer_name => 'Vivek'})
       enquiry.should_not be_valid
       enquiry.errors[:criteria].should == ["Please add criteria to your enquiry"]
     end
 
     it "should not create enquiry with empty criteria" do
-      enquiry = create_enquiry_with_created_by('user name', {:reporter_name => 'Vivek', :criteria => {}})
+      enquiry = create_enquiry_with_created_by('user name', {:enquirer_name => 'Vivek', :criteria => {}})
       enquiry.should_not be_valid
       enquiry.errors[:criteria].should == ["Please add criteria to your enquiry"]
     end
 
-    it "should not create enquiry without reporter_name" do
+    it "should not create enquiry without enquirer_name" do
       enquiry = create_enquiry_with_created_by('user name', {:criteria => {:name => 'Child name'}})
       enquiry.should_not be_valid
-      enquiry.errors[:reporter_name].should == ["Please add reporter name to your enquiry"]
+      enquiry.errors[:enquirer_name].should == ["Please add enquirer name to your enquiry"]
     end
 
-    it "should not create enquiry with empty reporter name" do
+    it "should not create enquiry with empty enquirer name" do
       enquiry = create_enquiry_with_created_by('user name', {:criteria => {:name => ''}})
       enquiry.should_not be_valid
-      enquiry.errors[:reporter_name].should == ["Please add reporter name to your enquiry"]
+      enquiry.errors[:enquirer_name].should == ["Please add enquirer name to your enquiry"]
     end
   end
 
   describe '#update_from_properties' do
     it "should update the enquiry" do
-      enquiry = create_enquiry_with_created_by("jdoe", {:reporter_name => 'Vivek', :place => 'Kampala'})
-      properties = {:reporter_name => 'DJ', :place => 'Kampala'}
+      enquiry = create_enquiry_with_created_by("jdoe", {:enquirer_name => 'Vivek', :place => 'Kampala'})
+      properties = {:enquirer_name => 'DJ', :place => 'Kampala'}
 
       enquiry.update_from(properties)
 
-      enquiry.reporter_name.should == 'DJ'
+      enquiry.enquirer_name.should == 'DJ'
       enquiry['place'].should == 'Kampala'
     end
   end
@@ -93,14 +93,14 @@ describe Enquiry do
 
     it "should contain potential matches given one matching child" do
       child = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
-      enquiry = Enquiry.create!(:criteria => {"name "=> "eduardo"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name "=> "eduardo"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.should_not be_empty
       enquiry.potential_matches.should == [child.id]
     end
 
     it "should not fail when enquiry has no potential matches" do
-      enquiry = Enquiry.create!(:criteria => {:name => "does not exist"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {:name => "does not exist"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.should be_empty
     end
@@ -110,7 +110,7 @@ describe Enquiry do
       child2 = Child.create(:name => "john doe", 'created_by' => "me",:location => "kampala", 'created_organisation' => "stc")
       child3 = Child.create(:name => "foo bar", 'created_by' => "me",:gender => "male", 'created_organisation' => "stc")
 
-      enquiry = Enquiry.create!(:criteria => {:name => "eduardo", :location => "kampala", :gender => "male"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {:name => "eduardo", :location => "kampala", :gender => "male"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.size.should == 3
       enquiry.potential_matches.should include(child1.id, child2.id, child3.id)
@@ -118,7 +118,7 @@ describe Enquiry do
 
     it "should assure that potential_matches contains no duplicates" do
       child1 = Child.create(:name => "eduardo aquiles", :gender => "male", 'created_by' => "me", 'created_organisation' => "stc")
-      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.size.should == 1
       enquiry.potential_matches.should == [child1.id]
@@ -135,7 +135,7 @@ describe Enquiry do
       child2 = Child.create(:name => "john doe", 'created_by' => "me",:location => "kampala", 'created_organisation' => "stc")
       child3 = Child.create(:name => "foo bar", 'created_by' => "me",:gender => "male", 'created_organisation' => "stc")
 
-      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "kampala"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "kampala"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.size.should == 2
       enquiry.potential_matches.should include(child1.id, child2.id)
@@ -150,7 +150,7 @@ describe Enquiry do
     it "should remove id that dont match anymore whenever criteria changes" do
       child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
 
-      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.size.should == 1
       enquiry.potential_matches.should == [child1.id]
@@ -166,7 +166,7 @@ describe Enquiry do
       child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
       child2 = Child.create(:name => "foo bar", :location => "Kampala",'created_by' => "me", 'created_organisation' => "stc")
 
-      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "Kampala"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.size.should == 2
       enquiry.potential_matches.should include(child1.id, child2.id)
@@ -182,7 +182,7 @@ describe Enquiry do
       child1 = Child.create(:name => "Eduardo aquiles", :location => "Kampala", 'created_by' => "me", 'created_organisation' => "stc")
       child2 = Child.create(:name => "Batman", :location => "Kampala",'created_by' => "not me", 'created_organisation' => "stc")
 
-      enquiry = Enquiry.create!(:criteria => {"name" => "Eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name" => "Eduardo", "location" => "Kampala"}, :enquirer_name => "Kisitu")
 
       enquiry.potential_matches.size.should == 2
       enquiry.potential_matches.should == [child1.id, child2.id]
@@ -192,16 +192,16 @@ describe Enquiry do
 
   describe "all_enquires" do
     it "should return a list of all enquiries" do
-      save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
-      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
+      save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
+      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
       Enquiry.all.size.should == 2
     end
   end
 
   describe "search_by_match_updated_since" do
     it "should fetch enquiries with match_updated_at time that is at or after timestamp" do
-      save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'}, 'match_updated_at' => '2013-09-18 06:42:12UTC')
-      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'reporter_name' => 'John', 'reporter_details' => {'location' => 'Kampala'}, 'match_updated_at' => '2013-07-18 06:42:12UTC')
+      save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'}, 'match_updated_at' => '2013-09-18 06:42:12UTC')
+      save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'}, 'match_updated_at' => '2013-07-18 06:42:12UTC')
 
       Enquiry.search_by_match_updated_since(DateTime.parse('2013-09-18 05:42:12UTC')).size.should == 1
       Enquiry.search_by_match_updated_since(DateTime.parse('2013-09-18 06:42:12UTC')).size.should == 1

@@ -17,7 +17,7 @@ describe Api::EnquiriesController do
     it "should fail to update when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:update, Enquiry).and_return(false)
       test_id = "12345"
-      put :update, :id => test_id, :enquiry => {:id => test_id, :reporter_name => "new name"} 
+      put :update, :id => test_id, :enquiry => {:id => test_id, :enquirer_name => "new name"}
       response.should be_forbidden
     end
   end
@@ -33,7 +33,7 @@ describe Api::EnquiriesController do
 
 
 
-      post :create, :enquiry => {:reporter_name => name, :reporter_details => details, :criteria => criteria}, :format => :json
+      post :create, :enquiry => {:enquirer_name => name, :reporter_details => details, :criteria => criteria}, :format => :json
     end
 
     it "should not trigger the match unless record is created" do
@@ -43,7 +43,7 @@ describe Api::EnquiriesController do
 
       Enquiry.should_not_receive(:find_matching_children)
 
-      post :create, :enquiry => {:reporter_name => name, :reporter_details => details}, :format => :json
+      post :create, :enquiry => {:enquirer_name => name, :reporter_details => details}, :format => :json
 
       response.response_code.should == 422
     end
@@ -54,38 +54,38 @@ describe Api::EnquiriesController do
 
       details = {"location" => "Kampala"}
 
-      post :create, :enquiry => {:reporter_name => name, :reporter_details => details, :criteria => {:name => "name"}} 
+      post :create, :enquiry => {:enquirer_name => name, :reporter_details => details, :criteria => {:name => "name"}}
 
       Enquiry.all.size.should == 1
       enquiry = Enquiry.all.first
 
-      enquiry.reporter_name.should == name
+      enquiry.enquirer_name.should == name
       response.response_code.should == 201
     end
 
     it "should not create enquiry without criteria" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => "new name", :reporter_details => {"location" => "kampala"}} 
+      post :create, :enquiry => {:enquirer_name => "new name", :reporter_details => {"location" => "kampala"}}
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
     end
 
     it "should not create enquiry with empty criteria" do
       controller.stub(:authorize!)
-      post :create, :enquiry => {:reporter_name => "new name", :criteria => {}} 
+      post :create, :enquiry => {:enquirer_name => "new name", :criteria => {}}
       response.response_code.should == 422
       JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
     end
 
     it "should not update record if it exists and return error" do
-      enquiry = Enquiry.new({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
+      enquiry = Enquiry.new({:enquirer_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
       enquiry.save!
       controller.stub(:authorize!)
 
-      post :create, :enquiry => {:id => enquiry.id, :reporter_name => "new name", :criteria => {:name => "name"}} 
+      post :create, :enquiry => {:id => enquiry.id, :enquirer_name => "new name", :criteria => {:name => "name"}}
 
       enquiry = Enquiry.get(enquiry.id)
-      enquiry.reporter_name.should == "old name"
+      enquiry.enquirer_name.should == "old name"
       response.should be_forbidden
       JSON.parse(response.body)["error"].should == "Forbidden"
     end
@@ -95,24 +95,24 @@ describe Api::EnquiriesController do
 
     it "should trigger the match functionality every time a record is created" do
       criteria = {"name" => "old name"}
-      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
+      enquiry = Enquiry.create({:enquirer_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
       controller.stub(:authorize!)
 
       Enquiry.should_not_receive(:find_matching_children)
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => 'new name'}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => 'new name'}, :format => :json
 
       response.response_code.should == 200
     end
 
     it "should not trigger the match unless record is created" do
       criteria = {"name" => "old name"}
-      enquiry = Enquiry.create({:reporter_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
+      enquiry = Enquiry.create({:enquirer_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
       controller.stub(:authorize!)
 
       Enquiry.should_not_receive(:find_matching_children)
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => ''}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => ''}, :format => :json
 
       response.response_code.should == 422
     end
@@ -122,7 +122,7 @@ describe Api::EnquiriesController do
       id = "12345"
       Enquiry.stub!(:get).with(id).and_return(nil)
 
-      put :update, :id => id, :enquiry => {:id => id, :reporter_name => "new name"} 
+      put :update, :id => id, :enquiry => {:id => id, :enquirer_name => "new name"}
 
       response.response_code.should == 404
       JSON.parse(response.body)["error"].should == "Not found"
@@ -132,10 +132,10 @@ describe Api::EnquiriesController do
       controller.stub(:authorize!)
       criteria = {"name" => "Batman"}
       details = {"location" => "kampala"}
-      enquiry = Enquiry.new({:reporter_name => "old name", :reporter_details => details, :criteria => criteria})
+      enquiry = Enquiry.new({:enquirer_name => "old name", :reporter_details => details, :criteria => criteria})
       enquiry.save!
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => "new name", :criteria => {}, :reporter_details => {}} 
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => "new name", :criteria => {}, :reporter_details => {}}
 
       response.response_code.should == 200
       Enquiry.get(enquiry.id)[:criteria].should == criteria
@@ -146,32 +146,32 @@ describe Api::EnquiriesController do
 
     it "should update record if it exists and return the updated record" do
       controller.stub(:authorize!)
-      enquiry = Enquiry.create({:reporter_name => "old name", :criteria => {:name => "name"}})
+      enquiry = Enquiry.create({:enquirer_name => "old name", :criteria => {:name => "name"}})
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :reporter_name => "new name"} 
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => "new name"}
 
       enquiry = Enquiry.get(enquiry.id)
 
-      enquiry.reporter_name.should == "new name"
+      enquiry.enquirer_name.should == "new name"
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
     end
 
     it "should update record without passing the id in the enquiry params" do
       controller.stub(:authorize!)
-      enquiry = Enquiry.create({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
+      enquiry = Enquiry.create({:enquirer_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "name"}})
 
-      put :update, :id => enquiry.id, :enquiry => {:reporter_name => "new name"} 
+      put :update, :id => enquiry.id, :enquiry => {:enquirer_name => "new name"}
 
       enquiry = Enquiry.get(enquiry.id)
-      enquiry.reporter_name.should == "new name"
+      enquiry.enquirer_name.should == "new name"
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
     end
 
     it "should merge updated fields and return the latest record" do
       controller.stub(:authorize!)
-      enquiry = Enquiry.create({:reporter_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "child name"}})
+      enquiry = Enquiry.create({:enquirer_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "child name"}})
 
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :criteria => {:name => "child new name"}} 
 
