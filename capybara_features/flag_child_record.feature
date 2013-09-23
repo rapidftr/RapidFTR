@@ -21,7 +21,7 @@ Feature:
     And the edit record page should show the record is flagged
     And the record history should log "Record was flagged by praful belonging to UNICEF because: He is a bad guy."
     And the child listing page filtered by flagged should show the following children:
-      | Peter (id_1) |
+      | Peter: id_1 |
     When I am on the children listing page
     Then I should see "Flagged By"
 

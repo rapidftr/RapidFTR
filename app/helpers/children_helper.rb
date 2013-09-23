@@ -68,7 +68,8 @@ module ChildrenHelper
   end
 
   def text_to_identify_child child
-    child['name'].blank? ? child.short_id : child['name'] + " (#{child.short_id})"
+    child['name'].blank? ? child.short_id : child['name'] + ": #{child.short_id}"
+    # child['name'].blank? ? child.short_id : content_tag(:p, child['name'],  class: "strong") + content_tag(:span, "(#{child.short_id})",  class: "strong")
   end
 
   def toolbar_for_child child
