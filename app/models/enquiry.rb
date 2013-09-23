@@ -5,14 +5,13 @@ class Enquiry < CouchRestRails::Document
   include CouchRest::Validation
   before_save :find_matching_children
 
-  property :reporter_name
+  property :enquirer_name
   property :criteria
   property :potential_matches, :default => []
-  property :reporter_details
   property :match_updated_at
 
 
-  validates_presence_of :reporter_name, :message => I18n.t("errors.models.enquiry.presence_of_reporter_name")
+  validates_presence_of :enquirer_name, :message => I18n.t("errors.models.enquiry.presence_of_enquirer_name")
   validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
 
 
