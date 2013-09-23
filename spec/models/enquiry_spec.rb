@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Enquiry do
 
   before :each do
-    Enquiry.all.each{|e| e.destroy}
+    Enquiry.all.each { |e| e.destroy }
   end
 
   describe 'validation' do
@@ -78,11 +78,11 @@ describe Enquiry do
     end
 
     after :all do
-      FormSection.all.each{|form| form.destroy}
+      FormSection.all.each { |form| form.destroy }
     end
 
     before :each do
-      Child.all.each{|c| c.destroy}
+      Child.all.each { |c| c.destroy }
     end
 
 
@@ -93,7 +93,7 @@ describe Enquiry do
 
     it "should contain potential matches given one matching child" do
       child = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
-      enquiry = Enquiry.create!(:criteria => {"name "=> "eduardo"}, :reporter_name => "Kisitu")
+      enquiry = Enquiry.create!(:criteria => {"name " => "eduardo"}, :reporter_name => "Kisitu")
 
       enquiry.potential_matches.should_not be_empty
       enquiry.potential_matches.should == [child.id]
@@ -107,8 +107,8 @@ describe Enquiry do
 
     it "should contain multiple potential matches given multiple matching children" do
       child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
-      child2 = Child.create(:name => "john doe", 'created_by' => "me",:location => "kampala", 'created_organisation' => "stc")
-      child3 = Child.create(:name => "foo bar", 'created_by' => "me",:gender => "male", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "john doe", 'created_by' => "me", :location => "kampala", 'created_organisation' => "stc")
+      child3 = Child.create(:name => "foo bar", 'created_by' => "me", :gender => "male", 'created_organisation' => "stc")
 
       enquiry = Enquiry.create!(:criteria => {:name => "eduardo", :location => "kampala", :gender => "male"}, :reporter_name => "Kisitu")
 
@@ -132,8 +132,8 @@ describe Enquiry do
 
     it "should update potential matches with new matches whenever an enquiry is edited" do
       child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
-      child2 = Child.create(:name => "john doe", 'created_by' => "me",:location => "kampala", 'created_organisation' => "stc")
-      child3 = Child.create(:name => "foo bar", 'created_by' => "me",:gender => "male", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "john doe", 'created_by' => "me", :location => "kampala", 'created_organisation' => "stc")
+      child3 = Child.create(:name => "foo bar", 'created_by' => "me", :gender => "male", 'created_organisation' => "stc")
 
       enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "kampala"}, :reporter_name => "Kisitu")
 
@@ -164,7 +164,7 @@ describe Enquiry do
 
     it "should keep only matching ids when criteria changes" do
       child1 = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
-      child2 = Child.create(:name => "foo bar", :location => "Kampala",'created_by' => "me", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "foo bar", :location => "Kampala", 'created_by' => "me", 'created_organisation' => "stc")
 
       enquiry = Enquiry.create!(:criteria => {"name" => "eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
 
@@ -180,7 +180,7 @@ describe Enquiry do
 
     it "should sort the results based on solr scores" do
       child1 = Child.create(:name => "Eduardo aquiles", :location => "Kampala", 'created_by' => "me", 'created_organisation' => "stc")
-      child2 = Child.create(:name => "Batman", :location => "Kampala",'created_by' => "not me", 'created_organisation' => "stc")
+      child2 = Child.create(:name => "Batman", :location => "Kampala", 'created_by' => "not me", 'created_organisation' => "stc")
 
       enquiry = Enquiry.create!(:criteria => {"name" => "Eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
 
@@ -188,6 +188,43 @@ describe Enquiry do
       enquiry.potential_matches.should == [child1.id, child2.id]
     end
 
+    describe "match_updated_at" do
+
+      before do
+        Clock.stub!(:now).and_return(Time.utc(2013, "jan", 01, 00, 00, 0))
+        Child.create(:name => "Eduardo aquiles", :location => "Kyangwali", 'created_by' => "One", 'created_organisation' => "stc")
+        Child.create(:name => "Batman", :location => "Kampala", 'created_by' => "Two", 'created_organisation' => "stc")
+      end
+
+      after do
+        Enquiry.all.each { |enquiry| enquiry.destroy }
+        Child.all.each { |child| child.destroy }
+      end
+
+      it "should update match_updated_at timestamp when new matching children are found on creation of an Enquiry" do
+        enquiry = Enquiry.create!(:criteria => {"name" => "Eduardo", "location" => "Kampala"}, :reporter_name => "Kisitu")
+        enquiry.match_updated_at.should == Time.utc(2013, "jan", 01, 00, 00, 0).to_s
+      end
+
+      it "should not update match_updated_at if there are no matching children records on creation of an Enquiry" do
+        enquiry = Enquiry.create!(:criteria => {"name" => "Dennis", "location" => "Space"}, :reporter_name => "Kisitu")
+        enquiry.match_updated_at.should == ""
+      end
+
+      it "should update match_updated_at timestamp when new matching children are found on updation of an Enquiry" do
+
+        enquiry = Enquiry.create!(:criteria => {"name" => "Eduardo"}, :reporter_name => "Kisitu")
+        enquiry.match_updated_at.should == Time.utc(2013, "jan", 01, 00, 00, 0).to_s
+        enquiry.potential_matches.size.should == 1
+
+        Clock.stub!(:now).and_return(Time.utc(2013, "jan", 02, 00, 00, 0).to_s)
+        enquiry.criteria.merge!({"location" => "Kampala"})
+        enquiry.save!
+
+        enquiry.match_updated_at.should == Time.utc(2013, "jan", 02, 00, 00, 0).to_s
+        enquiry.potential_matches.size.should == 2
+      end
+    end
   end
 
   describe "all_enquires" do
