@@ -21,14 +21,16 @@ class Api::EnquiriesController < Api::ApiController
   def update
     authorize! :update, Enquiry
     @enquiry = Enquiry.get(params[:id])
-    if @enquiry.nil? then
-      render_error("errors.models.enquiry.not_found", 404) and return
+    if @enquiry.nil?
+      render_error("errors.models.enquiry.not_found", 404)
+      return
     end
 
     @enquiry.update_from(params['enquiry'])
 
-    unless @enquiry.valid? then
-      render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return
+    unless @enquiry.valid? && !params['enquiry']['criteria'].empty?
+      render :json => {:error => @enquiry.errors.full_messages}, :status => 422
+      return
     end
 
     @enquiry.save
