@@ -65,7 +65,7 @@ class Api::EnquiriesController < Api::ApiController
 
   def sanitise_params
     begin
-      if !(params[:updated_after]).nil?
+      unless (params[:updated_after]).nil?
         DateTime.parse params[:updated_after]
       end
     rescue
