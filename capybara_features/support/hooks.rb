@@ -7,6 +7,7 @@ Before('@search') do
   Child.rspec_reset
   Sunspot.rspec_reset
   Sunspot.remove_all!(Child)
+  Sunspot.remove_all!(Enquiry)
 end
 
 Before do
