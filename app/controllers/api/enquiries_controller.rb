@@ -28,7 +28,7 @@ class Api::EnquiriesController < Api::ApiController
 
     @enquiry.update_from(params['enquiry'])
 
-    unless @enquiry.valid? && !params['enquiry']['criteria'].empty?
+    unless @enquiry.valid? && !params['enquiry']['criteria'].nil? && !params['enquiry']['criteria'].empty?
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422
       return
     end
