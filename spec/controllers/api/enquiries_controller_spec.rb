@@ -109,6 +109,15 @@ describe Api::EnquiriesController do
       response.response_code.should == 422
     end
 
+    it 'should not update record when there is no criteria' do
+      enquiry = Enquiry.create({:enquirer_name => 'Someone', :criteria => {'name' => 'child name'}})
+      controller.stub(:authorize!)
+
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id}, :format => :json
+
+      response.response_code.should == 422
+    end
+
     it "should trigger the match functionality every time a record is created" do
       criteria = {"name" => "old name"}
       enquiry = Enquiry.create({:enquirer_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
