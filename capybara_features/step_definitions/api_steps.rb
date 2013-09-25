@@ -15,6 +15,9 @@ When /^I login as (.+) with password (.+) and imei (.+)$/ do |user, password, im
 end
 
 When /^I send a GET request to "([^\"]*)"$/ do |path|
+  header 'Accept', 'application/json'
+  header 'Content-Type', 'application/json'
+
   get path
 end
 
