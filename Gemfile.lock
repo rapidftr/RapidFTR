@@ -69,6 +69,7 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
     chunky_png (1.2.8)
+    cliver (0.2.1)
     coderay (1.0.9)
     columnize (0.3.6)
     compass (0.12.2)
@@ -159,6 +160,11 @@ GEM
     os (0.9.6)
     pdf-reader (0.8.6)
       Ascii85 (>= 0.9)
+    poltergeist (1.4.1)
+      capybara (~> 2.1.0)
+      cliver (~> 0.2.1)
+      multi_json (~> 1.0)
+      websocket-driver (>= 0.2.0)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
     prawn (0.8.4)
@@ -251,6 +257,7 @@ GEM
     uuidtools (2.1.1)
     validatable (1.6.7)
     websocket (1.0.7)
+    websocket-driver (0.3.0)
     will_paginate (3.0.5)
     writeexcel (1.0.1)
     xpath (2.0.0)
@@ -285,6 +292,7 @@ DEPENDENCIES
   multi_json (~> 1.7.9)
   os (~> 0.9.6)
   pdf-reader (= 0.8.6)
+  poltergeist
   prawn (= 0.8.4)
   pry
   pry-debugger

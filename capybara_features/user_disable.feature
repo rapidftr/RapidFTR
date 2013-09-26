@@ -15,7 +15,6 @@ Feature:
     And I am on the manage users page
 
     When the user "pooja" checkbox is marked as "disabled"
-    And I wait for the page to load
     Then user "pooja" should be disabled
     And the user "pooja" should be marked as disabled
 

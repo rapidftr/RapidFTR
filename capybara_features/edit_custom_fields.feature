@@ -37,7 +37,7 @@ Feature: Editing Custom Form Fields
     And I press "Save Details" within ".field_details_panel"
     Then I should see errors
 
-  @javascript
+  @wip @javascript
   Scenario: moving a field to another form
 	Given I am logged in as an admin
     And I am on the edit form section page for "family_details"

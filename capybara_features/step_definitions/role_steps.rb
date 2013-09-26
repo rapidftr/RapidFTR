@@ -37,6 +37,7 @@ end
 
 Then /^I should see the following roles sorted:$/ do |table|
   expected_order = table.hashes.collect { |role| role['name'] }
+  sleep 1
   actual_order_against(expected_order).should == expected_order
 end
 

@@ -38,8 +38,7 @@ Feature: Add new role
       |Field Admin  |
       |Field Worker |
 
-  @javascript
-  @roles
+  @javascript @roles
   Scenario: Sorting by Descending Order
     Given I am logged in as a user with "Admin" permission
     When I try to filter user roles sorted by "Descending"

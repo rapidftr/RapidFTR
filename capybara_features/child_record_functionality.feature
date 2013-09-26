@@ -70,7 +70,7 @@ Feature:
     And I select "Most recently reunited" from "order_by"
     Then I should see the order jaco,andreas
 
-  @javascript
+  @wip
   Scenario: Checking filter by Reunited by name should show records in alphabetical order
     And I select "Reunited" from "filter"
     And I select "Most recently reunited" from "order_by"

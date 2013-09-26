@@ -8,8 +8,7 @@ Feature: So that admin can customize fields in a form section
       | Family details | family_details | true     | 2     | true    | false        |
     Given I am logged in as an admin
 
-  @javascript
-  @run
+  @wip @javascript
   Scenario: Admins should be able to add new text fields
     Given I am on the edit form section page for "family_details"
 
