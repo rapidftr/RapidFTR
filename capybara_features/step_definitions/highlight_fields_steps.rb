@@ -3,7 +3,7 @@ Given /^I select menu "(.+)"$/ do |text_value|
 end
 
 And /^I select dropdown option "(.+)"$/ do |option|
-  page.find('//option', :text => option).click
+  page.find('//option', :text => option).select_option
 end
 
 And /^I remove highlight "(.+)"$/ do |highlight_field|

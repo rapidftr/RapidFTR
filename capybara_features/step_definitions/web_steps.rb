@@ -21,6 +21,7 @@ end
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
     click_button(button)
+    sleep 1
   end
 end
 
@@ -243,6 +244,7 @@ end
 
 Then /^I should see the order (.+)$/ do |input|
   current = 0
+  sleep 1
   input.split(',').each do |match|
     index = page.body.index(match)
     assert index > current, "The index of #{match} was not greater than #{current}"
