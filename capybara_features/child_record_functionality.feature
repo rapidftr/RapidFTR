@@ -4,14 +4,15 @@ Feature:
   Background:
     Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
     And the following children exist in the system:
-      | name     | last_known_location | reporter | unique_id    | reunited | flag  | duplicate | created_at             |flagged_at                   | reunited_at                  |
-      | andreas  | London              | zubair   | zubairlon123 | true     | false | true      | 2004-02-03 04:05:06UTC | DateTime.new(2001,2,3,4,5,6)| DateTime.new(2001,2,3,4,5,6) |
-      | zak      | London              | zubair   | zubairlon456 | false    | true  | false     | 2003-02-03 04:05:06UTC | DateTime.new(2004,2,3,4,5,6)| DateTime.new(2004,2,3,4,5,6) |
-      | jaco     | NYC                 | james    | james456     | true     | true  | false     | 2002-02-03 04:05:06UTC |DateTime.new(2002,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
-      | meredith | Austin              | james    | james123     | false    | false | false     | 2001-02-03 04:05:06UTC |DateTime.new(2003,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
-      | jane     | Eyre                | james    | james153     | false    | false | true      | 2001-02-02 04:05:06UTC | DateTime.new(2008,2,3,4,5,6)| DateTime.new(2008,2,3,4,5,6) |
+      | name     | last_known_location | reporter | unique_id    | reunited | flag  | duplicate | created_at             | flagged_at                   | reunited_at                  |
+      | andreas  | London              | zubair   | zubairlon123 | true     | false | true      | 2004-02-03 04:05:06UTC | DateTime.new(2001,2,3,4,5,6) | DateTime.new(2001,2,3,4,5,6) |
+      | zak      | London              | zubair   | zubairlon456 | false    | true  | false     | 2003-02-03 04:05:06UTC | DateTime.new(2004,2,3,4,5,6) | DateTime.new(2004,2,3,4,5,6) |
+      | jaco     | NYC                 | james    | james456     | true     | true  | false     | 2002-02-03 04:05:06UTC | DateTime.new(2002,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
+      | meredith | Austin              | james    | james123     | false    | false | false     | 2001-02-03 04:05:06UTC | DateTime.new(2003,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
+      | jane     | Eyre                | james    | james153     | false    | false | true      | 2001-02-02 04:05:06UTC | DateTime.new(2008,2,3,4,5,6) | DateTime.new(2008,2,3,4,5,6) |
     And I am on the children listing page
 
+  @search
   Scenario: Checking filter by All returns all the children in the system
     When I select "All" from "filter"
     Then I should see "andreas"
@@ -70,10 +71,12 @@ Feature:
     And I select "Most recently reunited" from "order_by"
     Then I should see the order jaco,andreas
 
-  @wip
+  @search
+  @javascript
   Scenario: Checking filter by Reunited by name should show records in alphabetical order
     And I select "Reunited" from "filter"
     And I select "Most recently reunited" from "order_by"
+    Then I wait for 5 seconds
     And I select "Name" from "order_by"
     Then I should see the order andreas,jaco
 
@@ -217,8 +220,8 @@ Feature:
 
   Scenario: create child with numeric custom field
     Given the following form sections exist in the system:
-      | name          | unique_id     | editable  | order | visible |
-      | Basic details | basic_details | false     | 1     | true    |
+      | name          | unique_id     | editable | order | visible |
+      | Basic details | basic_details | false    | 1     | true    |
     And the "basic_details" form section has the field "Height" with field type "numeric_field"
     And I am on new child page
     When I fill in "Height" with "very tall"
@@ -237,8 +240,8 @@ Feature:
 
   Scenario: Child record must not display the edit and manage photos links
     Given the following children exist in the system:
-      | name    | gender  | photo                                    |
-      | John    | Male    | "capybara_features/resources/jorge.jpg"  |
+      | name | gender | photo                                   |
+      | John | Male   | "capybara_features/resources/jorge.jpg" |
 
     And I am on the child record page for "John"
     Then I should not see "Edit Photo"
