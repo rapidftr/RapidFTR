@@ -16,7 +16,8 @@ Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form
 end
 
 Then /^I should see the following form sections in this order:$/ do |table|
-  all(:css, "#form_sections tbody tr td a[@class='formSectionLink']").map(&:text).should == table.raw.flatten
+  form_section_names = all(:css, "#form_sections tbody tr td a[@class='formSectionLink']").map(&:text)
+  form_section_names.should == table.raw.flatten
 end
 
 Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|

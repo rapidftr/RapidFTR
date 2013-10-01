@@ -47,11 +47,13 @@ When /^I choose to add suggested field "([^\"]*)"$/ do |field_id|
 end
 
 Then /^I should not be able to edit "([^\"]*)" field$/ do |field_name|
-  page.should have_no_selector(:xpath, "//td[text()=\"#{field_name}\"]/parent::*/td/div/select")
+  edit_field_selector = "//td[text()=\"#{field_name}\"]/parent::*/td/div/select"
+  page.should have_no_selector(:xpath, edit_field_selector)
 end
 
 Then /^I should be able to edit "([^\"]*)" field$/ do |field_name|
-  page.should have_selector(:xpath, "//td[text()=\"#{field_name}\"]/parent::*/td/div/select")
+  edit_field_selector = "//td[text()=\"#{field_name}\"]/parent::*/td/div/select"
+  page.should have_selector(:xpath, edit_field_selector)
 end
 
 When /^(?:|I )move field "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
