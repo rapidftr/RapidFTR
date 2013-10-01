@@ -45,37 +45,50 @@ And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
   find(:css, ".blacklisted-checkbox-#{imei_number}").set(true)
 end
 
+def get_user_row_element(full_name)
+  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }
+end
+
 Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }.should_not raise_error(Capybara::ElementNotFound)
+  get_user_row_element(full_name).should_not raise_error(Capybara::ElementNotFound)
 end
 
 Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }.should raise_error(Capybara::ElementNotFound)
+  get_user_row_element(full_name).should raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should not see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
-  page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*").should_not have_content(text);
+  child_summary_panel = page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*")
+  child_summary_panel.should_not have_content(text);
 end
 
-
 Then /^I should see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
-  page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*").should have_content(text);
+  child_summary_panel = page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*")
+  child_summary_panel.should have_content(text);
+end
+
+def get_element_for_edit_user_link(full_name, link)
+  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }
 end
 
 Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }.should_not raise_error(Capybara::ElementNotFound)
+  get_element_for_edit_user_link(full_name, link).should_not raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should not see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }.should raise_error(Capybara::ElementNotFound)
+  get_element_for_edit_user_link(full_name, link).should raise_error(Capybara::ElementNotFound)
 end
 
 Then /^the field "([^"]*)" should have the following options:$/ do |locator, table|
   page.should have_select(locator, :options => table.raw.flatten)
 end
 
+def get_link_for_page(page_name)
+  lambda { page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ") }
+end
+
 Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
-  page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ")
+  get_link_for_page(page_name).should_not raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should not be able to see (.+)$/ do |page_name|
@@ -126,7 +139,8 @@ end
 Then /^I should find the following links:$/ do |table|
   table.rows_hash.each do |label, named_path|
     href = path_to(named_path)
-    page.should have_xpath "//a[@href='#{href}' and text()='#{label}']"  end
+    page.should have_xpath "//a[@href='#{href}' and text()='#{label}']"
+  end
 end
 
 Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
