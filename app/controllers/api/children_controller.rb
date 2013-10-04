@@ -1,5 +1,7 @@
 class Api::ChildrenController < Api::ApiController
 
+  before_filter :sanitize_params, :only => [:update, :create, :unverified]
+
   def index
 		authorize! :index, Child
 		render :json => Child.all
@@ -57,6 +59,16 @@ class Api::ChildrenController < Api::ApiController
   end
 
   private
+
+  def sanitize_params
+    begin
+      super :child
+      params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) #histories might come as string from the mobile client.
+    rescue JSON::ParserError
+      render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
+    end
+
+  end
 
   def create_or_update_child(params)
     @child = Child.by_short_id(:key => child_short_id(params)).first if params[:child][:unique_identifier]
