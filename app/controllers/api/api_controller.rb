@@ -15,7 +15,7 @@ class Api::ApiController < ActionController::Base
   rescue_from(AuthenticationFailure) { |e| render_error_response ErrorResponse.unauthorized e.message }
   rescue_from(CanCan::AccessDenied) { |e| render_error_response ErrorResponse.forbidden e.message }
   rescue_from(ErrorResponse) { |e| render_error_response e }
-  rescue_from(ActiveSupport::OkJson::Error) {|e| malformed_json(e) }
+  rescue_from(ActiveSupport::OkJson::Error) { |e| malformed_json(e) }
 
   def check_device_blacklisted
     raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
@@ -35,6 +35,10 @@ class Api::ApiController < ActionController::Base
 
   def malformed_json(e)
     render :status => 422, :json => I18n.t("errors.models.enquiry.malformed_query")
+  end
+
+  def sanitize_params(object)
+    params[object.to_sym] = JSON.parse(params[object.to_sym]) if params[object.to_sym].is_a?(String)
   end
 
 end
