@@ -13,8 +13,7 @@ When /^I select search result \#(\d+)$/ do |ordinal|
 end
 
 Then /^I should see "([^\"]*)" in the search results$/ do |value|
-	match = page.find('//a', :text => value)
-  raise Spec::Expectations::ExpectationNotMetError, "Could not find the value: #{value} in the search results" unless match
+  search_results.should_contain_result(value)
 end
 
 Then /^I should not see "([^\"]*)" in the search results$/ do |value|
@@ -30,5 +29,9 @@ Then /^I should see "(.*)" as reunited in the search results$/ do |child_id|
 end
 
 Then /^I should not see "(.*)" as reunited in the search results$/ do |child_id|
-  page.should_not have_xpath "//div[@id='#{child_id}']/div/img[@class='reunited']"
+  search_results.child_should_not_be_reunited(child_id)
+end
+
+def search_results
+  SearchResults.new(Capybara.current_session)
 end
