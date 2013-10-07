@@ -1,8 +1,8 @@
 require 'spec/spec_helper'
 
 When /^I search using a name of "([^\"]*)"$/ do |name|
-  step "I fill in \"query\" with \"#{name}\""
-  step %q{I press "Go"}
+  search = SearchWidget.new(Capybara.current_session)
+  search.search_for(name)
 end
 
 When /^I select search result \#(\d+)$/ do |ordinal|
