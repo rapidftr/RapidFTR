@@ -70,6 +70,10 @@ RapidFTR::Application.routes.draw do
 #######################
 
   namespace :api do
+    controller :device do
+      get 'is_blacklisted/:imei', :action => 'is_blacklisted'
+    end
+
     controller :sessions, :defaults => {:format => :json} do
       post :login
       post :register
