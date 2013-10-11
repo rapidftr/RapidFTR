@@ -1,5 +1,6 @@
 class Api::ChildrenController < Api::ApiController
 
+  before_filter :check_device_blacklisted, :only => :show
   before_filter :sanitize_params, :only => [:update, :create, :unverified]
 
   def index

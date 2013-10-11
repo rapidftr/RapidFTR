@@ -50,6 +50,12 @@ describe Api::ChildrenController do
       response.body.should == ""
     end
 
+    it "should return a 403 if the device is blacklisted" do
+      controller.should_receive(:check_device_blacklisted) { raise ErrorResponse.forbidden("Device Blacklisted") }
+      get :show, :id => "123", :format => "json"
+      response.response_code.should == 403
+    end
+
   end
 
   describe "POST create" do
