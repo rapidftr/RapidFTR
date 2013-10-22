@@ -23,6 +23,7 @@ chown -R root:root .
 # rm Gemfile.lock
 bundle install --deployment
 gem install bundler -v 1.2.5 --install-dir=vendor/bundle/ruby/1.8/
+gem install rake -v 0.8.7 --install-dir=vendor/bundle/ruby/1.8/
 fpm -s dir -t deb -n "rapidftr" -v 1.1 --after-install /usr/lib/rapidftr/lib/tasks/ubuntu/postinstall.sh --before-remove /usr/lib/rapidftr/lib/tasks/ubuntu/before_remove.sh /usr/lib/rapidftr
 
 mv *.deb $BASEDIR/
