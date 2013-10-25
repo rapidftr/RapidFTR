@@ -1,13 +1,12 @@
 require 'spec_helper'
 
 describe Api::DeviceController do
-
-  before :each do
-    fake_admin_login
-	end
-
-
   describe '#is_blacklisted' do
+    it 'does not authenticate' do
+      controller.should_not_receive(:check_authentication)
+      get :is_blacklisted, :imei => '123123'
+    end
+
     it 'is true if device IMEI is blacklisted' do
       device = Device.create({:imei => 123123, :blacklisted => "true",:user_name => "bob"})
       Device.stub(:find_by_imei).and_return([device])
@@ -31,7 +30,6 @@ describe Api::DeviceController do
       response.response_code.should == 404
       JSON.parse(response.body)["error"].should == "Not found"
     end
-
   end
 
 end
