@@ -80,7 +80,7 @@ describe Api::EnquiriesController do
       enquiry.save!
       controller.stub(:authorize!)
 
-      post :create, :enquiry => {:id => enquiry.id, :enquirer_name => "new name", :criteria => {:name => "name"}}
+      post :create, :enquiry => {'id' => enquiry.id, :enquirer_name => "new name", :criteria => {:name => "name"}}
 
       enquiry = Enquiry.get(enquiry.id)
       enquiry.enquirer_name.should == "old name"
