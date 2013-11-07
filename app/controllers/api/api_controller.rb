@@ -8,6 +8,7 @@ class Api::ApiController < ActionController::Base
   before_filter :check_authentication
   before_filter :check_device_blacklisted
   before_filter :current_user
+  before_filter :restrict_to_test, :only => :destroy_all
 
   private
 
@@ -19,6 +20,10 @@ class Api::ApiController < ActionController::Base
 
   def check_device_blacklisted
     raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
+  end
+
+  def restrict_to_test
+    raise ErrorResponse.unauthorized("Unauthorized Operation") unless Rails.env.android?
   end
 
   def render_error_response(e)

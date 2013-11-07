@@ -6,7 +6,13 @@ class Api::ChildrenController < Api::ApiController
   def index
 		authorize! :index, Child
 		render :json => Child.all
-	end
+  end
+
+  def destroy_all
+    authorize! :create, Child
+    Child.all.each{|c| c.destroy}
+    render :json => ""
+  end
 
 	def show
     authorize! :show, Child
