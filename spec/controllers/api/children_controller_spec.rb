@@ -26,6 +26,31 @@ describe Api::ChildrenController do
     end
   end
 
+  describe "DELETE destroy_all" do
+    it 'should fail to delete when env is not android' do
+      stub_env('production') do
+        delete :destroy_all
+        response.body.should == "Unauthorized Operation"
+        response.response_code.should == 401
+      end
+
+      stub_env('test') do
+        delete :destroy_all
+        response.body.should == "Unauthorized Operation"
+        response.response_code.should == 401
+      end
+    end
+
+    it 'should delete all child records when env is android' do
+      stub_env('android') do
+        @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(true)
+        delete :destroy_all
+        response.body.should == ""
+        response.response_code.should == 200
+      end
+    end
+end
+
   describe "GET index" do
   	it "should render all children as json" do
   		Child.should_receive(:all).and_return(mock(:to_json => "all the children"))
@@ -116,6 +141,16 @@ describe Api::ChildrenController do
 
       child['created_by_full_name'].should eq @user.full_name
     end
+  end
+
+  private
+
+  def stub_env(new_env, &block)
+    original_env = Rails.env
+    Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(new_env))
+    block.call
+  ensure
+    Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(original_env))
   end
 
 end

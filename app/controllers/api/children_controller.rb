@@ -2,11 +2,18 @@ class Api::ChildrenController < Api::ApiController
 
   before_filter :check_device_blacklisted, :only => :show
   before_filter :sanitize_params, :only => [:update, :create, :unverified]
+  before_filter :restrict_to_test, :only => :destroy_all
 
   def index
 		authorize! :index, Child
 		render :json => Child.all
-	end
+  end
+
+  def destroy_all
+    authorize! :create, Child
+    Child.all.each{|c| c.destroy}
+    render :json => ""
+  end
 
 	def show
     authorize! :show, Child

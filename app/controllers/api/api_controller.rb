@@ -21,6 +21,10 @@ class Api::ApiController < ActionController::Base
     raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
   end
 
+  def restrict_to_test
+    raise ErrorResponse.unauthorized("Unauthorized Operation") unless Rails.env.android?
+  end
+
   def render_error_response(e)
     render :status => e.status_code, :json => e.message
   end
