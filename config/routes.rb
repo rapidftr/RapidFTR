@@ -99,8 +99,11 @@ RapidFTR::Application.routes.draw do
 
     # ENQUIRIES
 
-    resources :enquiries, :defaults => {:format => :json}
-
+    resources :enquiries, :defaults => {:format => :json} do
+      collection do
+        delete "/destroy_all" => 'enquiries#destroy_all'
+      end
+    end
   end
 
 #######################

@@ -277,4 +277,29 @@ describe Api::EnquiriesController do
 
   end
 
+  describe "DELETE destroy_all" do
+    it 'should not remove all enquires when env is not android' do
+      stub_env('production') do
+        delete :destroy_all
+        response.body.should == "Unauthorized Operation"
+        response.response_code.should == 401
+      end
+
+      stub_env('test') do
+        delete :destroy_all
+        response.body.should == "Unauthorized Operation"
+        response.response_code.should == 401
+      end
+    end
+
+    it 'should delete all enquiry records when env is android' do
+      stub_env('android') do
+        @controller.current_ability.should_receive(:can?).with(:create, Enquiry).and_return(true)
+        delete :destroy_all
+        response.body.should == ""
+        response.response_code.should == 200
+      end
+    end
+  end
+
 end

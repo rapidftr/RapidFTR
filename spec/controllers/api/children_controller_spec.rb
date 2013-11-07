@@ -4,7 +4,7 @@ describe Api::ChildrenController do
 
   before :each do
     fake_admin_login
-	end
+  end
 
   describe '#authorizations' do
     it "should fail GET index when unauthorized" do
@@ -14,10 +14,10 @@ describe Api::ChildrenController do
     end
 
     it "should fail GET show when unauthorized" do
-  		@controller.current_ability.should_receive(:can?).with(:show, Child).and_return(false)
+      @controller.current_ability.should_receive(:can?).with(:show, Child).and_return(false)
       get :show, :id => "123"
       response.should be_forbidden
-  	end
+    end
 
     it "should fail to POST create when unauthorized" do
       @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false)
@@ -49,23 +49,23 @@ describe Api::ChildrenController do
         response.response_code.should == 200
       end
     end
-end
+  end
 
   describe "GET index" do
-  	it "should render all children as json" do
-  		Child.should_receive(:all).and_return(mock(:to_json => "all the children"))
+    it "should render all children as json" do
+      Child.should_receive(:all).and_return(mock(:to_json => "all the children"))
 
-			get :index, :format => "json"
+      get :index, :format => "json"
 
-			response.body.should == "all the children"
-  	end
+      response.body.should == "all the children"
+    end
   end
 
   describe "GET show" do
-  	it "should render a child record as json" do
-  		Child.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "a child record")))
-  		get :show, :id => "123", :format => "json"
-  		response.body.should == "a child record"
+    it "should render a child record as json" do
+      Child.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "a child record")))
+      get :show, :id => "123", :format => "json"
+      response.body.should == "a child record"
     end
 
     it "should return a 404 with empty body if no child record is found" do
@@ -96,12 +96,12 @@ end
       updated_child.size.should == 1
       updated_child.first.name.should == 'new name'
     end
-	end
+  end
 
-	describe "PUT update" do
+  describe "PUT update" do
     it "should allow a records ID to be specified to create a new record with a known id" do
       new_uuid = UUIDTools::UUID.random_create()
-      put :update, :id => new_uuid.to_s, :child => { :id => new_uuid.to_s, :_id => new_uuid.to_s, :last_known_location => "London", :age => "7" }
+      put :update, :id => new_uuid.to_s, :child => {:id => new_uuid.to_s, :_id => new_uuid.to_s, :last_known_location => "London", :age => "7"}
 
       Child.get(new_uuid.to_s)[:unique_identifier].should_not be_nil
     end
@@ -118,7 +118,7 @@ end
       Child.should_receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
       child.should_receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy"} }
+      post :unverified, {:child => {:name => "timmy"}}
 
       @user.verified = true
     end
@@ -127,7 +127,7 @@ end
       Child.should_receive(:new_with_user_name).and_return(child = Child.new)
       child.should_receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy"} }
+      post :unverified, {:child => {:name => "timmy"}}
 
       child['created_by_full_name'].should eq @user.full_name
     end
@@ -137,20 +137,10 @@ end
       controller.should_receive(:update_child_from).and_return(child)
       child.should_receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'} }
+      post :unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'}}
 
       child['created_by_full_name'].should eq @user.full_name
     end
-  end
-
-  private
-
-  def stub_env(new_env, &block)
-    original_env = Rails.env
-    Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(new_env))
-    block.call
-  ensure
-    Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(original_env))
   end
 
 end
