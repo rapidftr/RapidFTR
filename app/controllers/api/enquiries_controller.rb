@@ -1,7 +1,6 @@
 class Api::EnquiriesController < Api::ApiController
 
   before_filter :sanitise_params
-  before_filter :restrict_to_test, :only => :destroy_all
 
   def destroy_all
     authorize! :create, Enquiry
