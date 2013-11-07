@@ -91,6 +91,18 @@ describe Api::EnquiriesController do
 
   describe "PUT update" do
 
+
+    before :all do
+      form = FormSection.new(:name => "test_form")
+      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
+      form.fields << Field.new(:name => "sex", :type => Field::TEXT_FIELD, :display_name => "sex")
+      form.save!
+    end
+
+    after :all do
+      FormSection.all.each { |form| form.destroy }
+    end
+
     it 'should not update record when criteria is empty' do
       enquiry = Enquiry.create({:enquirer_name => 'Someone', :criteria => {'name' => 'child name'}})
       controller.stub(:authorize!)
@@ -117,6 +129,7 @@ describe Api::EnquiriesController do
 
       response.response_code.should == 422
     end
+
 
     it "should trigger the match functionality every time a record is created" do
       criteria = {"name" => "old name"}
@@ -214,6 +227,31 @@ describe Api::EnquiriesController do
       enquiry["location"].should == "Kampala"
       response.response_code.should == 200
       JSON.parse(response.body).should == enquiry
+    end
+
+    it "should update existing enquiry with potential matches" do
+      controller.stub(:authorize!)
+      child1 = Child.create('name' => "Clayton aquiles", 'created_by' => 'fakeadmin', 'created_organisation' => "stc")
+      child2 = Child.create('name' => "Steven aquiles", 'sex' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => "stc")
+
+      enquiry_json = "{\"enquirer_name\": \"Godwin\",\"criteria\": {\"sex\": \"male\",\"age\": \"10\",\"location\": \"Kampala\"  }}"
+      enquiry = Enquiry.new(JSON.parse(enquiry_json))
+      enquiry.save!
+
+      Enquiry.get(enquiry.id)['potential_matches'].should == [child2.id]
+
+      updated_enquiry = "{\"criteria\": {\"name\": \"aquiles\", \"age\": \"10\", \"location\": \"Kampala\"}}"
+
+      put :update, :id => enquiry.id, :enquiry => updated_enquiry
+
+      response.response_code.should == 200
+
+      enquiry_after_update = Enquiry.get(enquiry.id)
+      enquiry_after_update['potential_matches'].size.should == 2
+      enquiry_after_update['potential_matches'].include?(child1.id).should == true
+      enquiry_after_update['potential_matches'].include?(child2.id).should == true
+      #enquiry_after_update['potential_matches'].size.should == [child2.id,child1.id]
+      enquiry_after_update['criteria'].should == {"name" => "aquiles", "age" => "10", "location" => "Kampala"}
     end
 
   end

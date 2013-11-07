@@ -5,12 +5,11 @@ class Api::EnquiriesController < Api::ApiController
   def create
     authorize! :create, Enquiry
 
-    enquiry_json = parse_json()
-    unless Enquiry.get(enquiry_json['id']).nil? then
+    unless Enquiry.get(enquiry_json()['id']).nil? then
       render_error("errors.models.enquiry.create_forbidden", 403) and return
     end
 
-    @enquiry = Enquiry.new_with_user_name(current_user, enquiry_json)
+    @enquiry = Enquiry.new_with_user_name(current_user, enquiry_json())
 
     unless @enquiry.valid? then
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return
@@ -28,7 +27,6 @@ class Api::EnquiriesController < Api::ApiController
       return
     end
 
-    enquiry_json = parse_json
     @enquiry.update_from(enquiry_json)
 
     unless @enquiry.valid? && !enquiry_json['criteria'].nil? && !enquiry_json['criteria'].empty?
@@ -78,7 +76,7 @@ class Api::EnquiriesController < Api::ApiController
     end
   end
 
-  def parse_json
+  def enquiry_json
     if params['enquiry'].is_a?(String)
       enquiry = JSON.parse(params['enquiry'])
     else
