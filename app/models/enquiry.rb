@@ -33,11 +33,11 @@ class Enquiry < CouchRestRails::Document
 
   def find_matching_children
     previous_matches = self.potential_matches
-
     children = MatchService.search_for_matching_children(self.criteria)
     self.potential_matches = children.map { |child| child.id }
+    verify_format_of(previous_matches)
 
-    unless previous_matches.sort.eql?(self.potential_matches.sort)
+    unless previous_matches.eql?(self.potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
   end
@@ -46,6 +46,15 @@ class Enquiry < CouchRestRails::Document
     Enquiry.all.keep_if { |e|
       !e['match_updated_at'].empty? and DateTime.parse(e['match_updated_at']) >= timestamp
     }
+  end
+
+  private
+
+  def verify_format_of(previous_matches)
+    unless previous_matches.is_a?(Array)
+      previous_matches = JSON.parse(previous_matches)
+    end
+    previous_matches
   end
 
 end
