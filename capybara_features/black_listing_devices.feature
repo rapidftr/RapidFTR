@@ -11,10 +11,8 @@ Feature:As a device manager, i should be able to blacklist or un blacklist a dev
       | eve       | 1212121212  | false       |
     When I am on devices listing page
     Then I click blacklist for "1212121212"
-    And I press "Yes"
     And I wait for the page to load
     Then device "1212121212" should be blacklisted
     Then I click blacklist for "82828282882"
-    And I press "Yes"
     And I wait for the page to load
     Then device "82828282882" should not be blacklisted
