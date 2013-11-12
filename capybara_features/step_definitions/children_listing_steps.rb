@@ -1,30 +1,29 @@
 Then /^I should not see pagination links$/ do
-  page.should have_no_selector(:css, 'nav.pagination')
+  child_list_page.should_not_be_paged
 end
 
 Then /^I should see pagination links for first page$/ do
-  page.should have_selector(:css, 'div.pagination')
-  page.should have_selector(:css, 'div.pagination a.next_page')
-  page.should have_selector(:css, 'div.pagination span.previous_page')
-  page.find(:css, 'div.pagination em.current').should have_content('1')
+  child_list_page.should_be_showing_first_page
 end
 
 Then /^I should see pagination links for last page$/ do
-  page.should have_selector(:css, 'div.pagination')
-  page.should have_selector(:css, 'div.pagination a.previous_page')
-  page.should have_selector(:css, 'div.pagination span.next_page')
-  page.find(:css, 'div.pagination em.current').should have_content('2')
+  child_list_page.should_be_showing_last_page
 end
 
 Then /^I should see "([^\"]*)" children on the page$/ do |number_of_records|
-  page.all(:css,'.child_summary_panel').count.should eq number_of_records.to_i
+  child_list_page.should_be_showing(number_of_records.to_i)
 end
 
 And /^I should see children listing page "([^\"]*)"$/ do | page_number|
-  page.find(:css, 'div.pagination em.current').should have_content(page_number)
+  child_list_page.should_be_on_page(page_number)
 end
 
 And /^I visit children listing page "([^\"]*)"$/ do|page_number|
-  page.find(:css,'div.pagination').click_link(page_number)
+  child_list_page.go_to_page(page_number)
 end
 
+private
+
+def child_list_page
+  ChildListPage.new(Capybara.current_session)
+end

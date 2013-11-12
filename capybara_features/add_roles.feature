@@ -53,29 +53,28 @@ Feature: Add new role
   Scenario:Editing a newly created role
    Given I am logged in as a user with "Admin" permission
    And I am on create role page
-    And I enter the following role details
-      | name           | description              | permissions       |
-      | Automation Role | can edit child           | view_users        |
-    And I submit the form
-    When I edit the role Automation Role
+   And I enter the following role details
+      | name            | description    | permissions |
+      | Automation Role | can edit child | view_users  |
+   And I submit the form
+   When I edit the role Automation Role
    And I enter the following permission details
-       | permissions       |
-       | register_child        |
-       | view_and_search_child |
-       | view_roles             |
-       | edit_child             |
-       | create_and_edit_users  |
+       | permissions               |
+       | register_child            |
+       | view_and_search_child     |
+       | view_roles                |
+       | edit_child                |
+       | create_and_edit_users     |
        | view_and_download_reports |
-    And I update the form
+   And I update the form
    And I am on manage users page
    And I follow "Create User"
    When I fill in the following:
-     | Full Name         | Test Automation     |
-     | User Name         | Automation          |
-     | Password          | automation |
-     | Re-enter password | automation |
-     | Organisation      | UNICEF       |
-
+     | Full Name         | Test Automation |
+     | User Name         | Automation      |
+     | Password          | automation      |
+     | Re-enter password | automation      |
+     | Organisation      | UNICEF          |
    And I check "Automation role"
    And I press "Create"
    And I logout

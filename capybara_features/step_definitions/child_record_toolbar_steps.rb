@@ -16,17 +16,11 @@ When /^I click the "(.*)" link$/ do |link|
 end
 
 And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
-  click_link("Mark as Investigated")
-
-  fill_in("Investigation Details", :with => details)
-  click_button("Mark as Investigated")
+  child_record_toolbar.mark_as_investigated(details)
 end
 
 And /^I mark "([^\"]*)" as not investigated with the following details:$/ do |name, details|
-
-  click_link("Mark as Not Investigated")
-  fill_in("Undo Investigation Details", :with => details)
-  click_button("Undo Investigated")
+  child_record_toolbar.mark_as_not_investigated(details)
 end
 
 When /^I click mark as duplicate for "([^"]*)"$/ do |child_name|
@@ -35,7 +29,7 @@ When /^I click mark as duplicate for "([^"]*)"$/ do |child_name|
 end
 
 When /^I click blacklist for "([^"]*)"$/ do |imei|
-  page.find_by_id("#{imei}").click
+  device_list_page.blacklist_device(imei)
 end
 
 def click_span(locator)
@@ -43,5 +37,15 @@ def click_span(locator)
 end
 
 When /^I view User Action History$/ do
-  find(:xpath, "//a[@class='btn']").click
+  child_record_toolbar.view_user_action_history
+end
+
+private
+
+def child_record_toolbar
+  ChildRecordToolbarWidget.new(Capybara.current_session)
+end
+
+def device_list_page
+  DeviceListPage.new(Capybara.current_session)
 end

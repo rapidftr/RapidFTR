@@ -1,31 +1,14 @@
 Given /^an? (user|admin|senior official|registration worker) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
+  case user_type
+    when 'user'
+      DataPopulator.new.create_user(username, password, permission)
+    when 'admin'
+      DataPopulator.new.create_admin(username, password, permission)
+    when 'senior official'
+      DataPopulator.new.create_senior_official(username, password, permission)
+    when 'registration worker'
+      DataPopulator.new.create_registration_worker(username, password, permission)
 
-  permissions = []
-  permissions.push(Permission.all_permissions) if user_type.downcase == "admin" and permission.nil?
-  permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
-  permissions.push(Permission::REPORTS[:view]) if user_type.downcase == "senior official" and permission.nil?
-  permissions.push(Permission::CHILDREN[:edit], Permission::CHILDREN[:register], Permission::CHILDREN[:view_and_search], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]) if user_type.downcase == "registration worker" and permission.nil?
-  permissions.push(Permission.all_permissions) if permission.to_s.downcase.split(',').include?('admin')
-  permissions.push(permission.split(",")) if permission
-  permissions.flatten!
-
-  role_name = permissions.join("-")
-  role = Role.find_by_name(role_name) || Role.create(:name => role_name, :permissions => permissions)
-
-  @user = User.find_by_user_name(username)
-
-  if @user.nil?
-    @user = User.new(
-        :user_name=>username,
-        :password=>password,
-        :password_confirmation=>password,
-        :full_name=>username,
-        :organisation=>"UNICEF",
-        :disabled => "false",
-        :email=>"#{username}@test.com",
-        :role_ids => [role.id]
-    )
-    @user.save!
   end
 end
 
