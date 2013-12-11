@@ -6,6 +6,10 @@ describe ChildrenHelper do
     it "should have PER_PAGE constant" do
       ChildrenHelper::View::PER_PAGE.should == 20
     end
+
+    it "should have MAX_PER_PAGE constant" do
+      ChildrenHelper::View::MAX_PER_PAGE.should == 9999
+    end
   end
 
   context "EditView module" do
