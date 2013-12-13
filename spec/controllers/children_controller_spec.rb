@@ -36,25 +36,25 @@ describe ChildrenController do
       it "GET index" do
         @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :index
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "GET search" do
         @controller.current_ability.should_receive(:can?).with(:index, Child).and_return(false);
         get :search
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "GET new" do
         @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
         get :new
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "POST create" do
         @controller.current_ability.should_receive(:can?).with(:create, Child).and_return(false);
         post :create
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
     end
@@ -69,37 +69,37 @@ describe ChildrenController do
       it "GET show" do
         @controller.current_ability.should_receive(:can?).with(:read, @child_arg).and_return(false);
          get :show, :id => @child.id
-         response.should render_template("#{Rails.root}/public/403.html")
+         response.status.should == 403
       end
 
       it "PUT update" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :update, :id => @child.id
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "PUT edit_photo" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :edit_photo, :id => @child.id
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "PUT update_photo" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :update_photo, :id => @child.id
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "PUT select_primary_photo" do
         @controller.current_ability.should_receive(:can?).with(:update, @child_arg).and_return(false);
         put :select_primary_photo, :child_id => @child.id, :photo_id => 0
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
 
       it "DELETE destroy" do
         @controller.current_ability.should_receive(:can?).with(:destroy, @child_arg).and_return(false);
         delete :destroy, :id => @child.id
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
     end
   end
@@ -374,7 +374,7 @@ describe ChildrenController do
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
-          :photo => uploadable_photo_jeff }
+          :photo => Rack::Test::UploadedFile.new(uploadable_photo_jeff) }
 
       assigns[:child]['last_known_location'].should == "Manchester"
       assigns[:child]['_attachments'].size.should == 2
@@ -446,7 +446,7 @@ describe ChildrenController do
     it "should update the last_updated_by_full_name field with the logged in user full name" do
       User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'existing child'})
-      Child.stub(:get).with(123).and_return(child)
+      Child.stub(:get).with("123").and_return(child)
       subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
 
       put :update, :id => 123, :child => {:flag => true, :flag_message => "Test"}
@@ -558,7 +558,7 @@ describe ChildrenController do
     controller.stub! :paginated_collection => [ child1, child2 ], :render => true
     controller.should_receive(:YAY).and_return(true)
 
-    controller.should_receive(:respond_to_export) { |format, children| 
+    controller.should_receive(:respond_to_export) { |format, children|
       format.mock { controller.send :YAY }
       children.should == [ child1, child2 ]
     }
@@ -571,7 +571,7 @@ describe ChildrenController do
     controller.stub! :render => true
     controller.should_receive(:YAY).and_return(true)
 
-    controller.should_receive(:respond_to_export) { |format, children| 
+    controller.should_receive(:respond_to_export) { |format, children|
       format.mock { controller.send :YAY }
       children.should == [ child ]
     }
@@ -646,11 +646,11 @@ describe ChildrenController do
 
   describe "PUT select_primary_photo" do
     before :each do
-      @child = stub_model(Child, :id => :id)
+      @child = stub_model(Child, :id => "id")
       @photo_key = "key"
       @child.stub(:primary_photo_id=)
       @child.stub(:save)
-      Child.stub(:get).with(:id).and_return @child
+      Child.stub(:get).with("id").and_return @child
     end
 
     it "set the primary photo on the child and save" do

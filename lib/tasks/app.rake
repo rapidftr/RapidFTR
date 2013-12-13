@@ -1,10 +1,4 @@
 namespace :app do
-  desc "Pre compiles the static assets and creates assets folder with common js and common css."
-  task :assets_precompile do
-    require 'jammit'
-    Jammit.package!
-  end
-
   desc "Start the server in development mode with Sunspot running"
   task :run => %w( sunspot:clean_start scheduler:restart app:assets_precompile) do
     sh 'bundle exec rails server'

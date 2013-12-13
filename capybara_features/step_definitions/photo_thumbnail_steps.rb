@@ -1,4 +1,3 @@
-require 'spec/spec_helper'
 require 'spec/support/matchers/attachment_response'
 include CustomMatchers
 

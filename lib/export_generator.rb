@@ -105,8 +105,8 @@ class ExportGenerator
     if child.primary_photo
       render_image(child.primary_photo.data)
     else
-      data = File.binread("public/images/no_photo_clip.jpg")
-      @attachment = FileAttachment.new("no_photo", "image/jpg", data)
+      @@no_photo_clip = File.binread("app/assets/images/no_photo_clip.jpg")
+      @attachment = FileAttachment.new("no_photo", "image/jpg", @@no_photo_clip)
       render_image(@attachment.data)
     end
     @pdf.move_down 25

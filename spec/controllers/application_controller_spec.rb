@@ -61,7 +61,7 @@ describe ApplicationController do
       files = [ RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1") ]
 
       controller.should_receive(:send_file) do |file, opts|
-        Zip::Archive.open(file) do |ar|
+        ZipRuby::Archive.open(file) do |ar|
           ar.num_files.should == 1
           ar.decrypt 'test_password'
           ar.fopen("file_1.pdf") do |f|
@@ -77,7 +77,7 @@ describe ApplicationController do
       files = [ RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1"), RapidftrAddon::ExportTask::Result.new("file_2.xls", "content 2") ]
 
       controller.should_receive(:send_file) do |file, opts|
-        Zip::Archive.open(file) do |ar|
+        ZipRuby::Archive.open(file) do |ar|
           ar.num_files.should == 2
           ar.decrypt 'test_password'
           ar.fopen("file_1.pdf") do |f|
@@ -93,8 +93,8 @@ describe ApplicationController do
     end
 
     it 'should send proper filename to the browser' do
-      CleansingTmpDir.stub! :temp_file_name => 'encrypted_file'      
-      Zip::Archive.stub! :open => true
+      CleansingTmpDir.stub! :temp_file_name => 'encrypted_file'
+      ZipRuby::Archive.stub! :open => true
 
       controller.should_receive(:send_file).with('encrypted_file', hash_including(:filename => 'test_filename.zip', :type => 'application/zip', :disposition => "inline"))
       controller.encrypt_exported_files [], 'test_filename.zip'

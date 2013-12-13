@@ -25,10 +25,10 @@ describe AdvancedSearchController do
   describe 'collection' do
     it "GET export_data" do
       controller.current_ability.should_receive(:can?).with(:export_pdf, Child).and_return(false);
-      
+
       get :export_data, :commit => "Export Selected to PDF"
-      
-      response.should render_template("#{Rails.root}/public/403.html")
+
+      response.status.should == 403
     end
   end
 

@@ -26,21 +26,21 @@ module CouchRestRails
         end
 
         # Check for views directory
-        unless File.exist?(File.join(RAILS_ROOT, CouchRestRails.lucene_path, db))
-          response << "Lucene directory (#{CouchRestRails.lucene_path}/#{db}) does not exist" 
+        unless File.exist?(File.join(Rails.root, CouchRestRails.lucene_path, db))
+          response << "Lucene directory (#{CouchRestRails.lucene_path}/#{db}) does not exist"
           next
         end
 
         # Assemble searches for each design document
         db_conn = CouchRest.database(full_db_path)
 
-        Dir.glob(File.join(RAILS_ROOT, CouchRestRails.lucene_path, db, "lucene", design_doc_name)).each do |doc|
+        Dir.glob(File.join(Rails.root, CouchRestRails.lucene_path, db, "lucene", design_doc_name)).each do |doc|
 
           searches = {}
           couchdb_design_doc = db_conn.get("_design/#{File.basename(doc)}") rescue nil
-          
+
           searches = assemble_lucene_searches(doc)
-          
+
           # Warn if overwriting existing search
           if couchdb_design_doc && couchdb_design_doc['fulltext']
             searches.keys.each do |search|
@@ -53,7 +53,7 @@ module CouchRestRails
           # Save or update
           if couchdb_design_doc.nil?
             couchdb_design_doc = {
-              "_id" => "_design/#{File.basename(doc)}", 
+              "_id" => "_design/#{File.basename(doc)}",
               'language' => 'javascript',
               'fulltext' => searches
             }
@@ -74,7 +74,7 @@ module CouchRestRails
 
     end
 
-    # Assemble Lucene searches 
+    # Assemble Lucene searches
     def assemble_lucene_searches(lucene_doc_path)
       searches = {}
       Dir.glob(File.join(lucene_doc_path, '*')).each do |search_file|

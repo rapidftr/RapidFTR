@@ -9,7 +9,7 @@ describe "users/_user_disabled_checkbox.html.erb" do
         user.disabled = false
         user.user_name = "someusername"
 
-        render :partial => 'users/user_disabled_checkbox.html.erb', :locals => {:current_user_name => "someusername", :user => user}
+        render :partial => 'users/user_disabled_checkbox', :locals => {:current_user_name => "someusername", :user => user}, :formats => [:html], :handlers => [:erb]
 
         rendered.should_not =~ /checkbox/
       end
@@ -24,10 +24,10 @@ describe "users/_user_disabled_checkbox.html.erb" do
       it "should show checkbox as NOT checked for enabled user" do
         @user.disabled = "false"
 
-        render :partial => 'users/user_disabled_checkbox.html.erb', :locals => {
+        render :partial => 'users/user_disabled_checkbox', :locals => {
           :current_user_name => "different",
           :user => @user
-        }
+        }, :formats => [:html], :handlers => [:erb]
 
         rendered.should =~ /checkbox/
         rendered.should_not =~ /checked/
@@ -36,10 +36,10 @@ describe "users/_user_disabled_checkbox.html.erb" do
       it "should show checkbox as checked for disabled user" do
         @user.disabled = "true"
 
-        render :partial => 'users/user_disabled_checkbox.html.erb', :locals => {
+        render :partial => 'users/user_disabled_checkbox', :locals => {
           :current_user_name => "different",
           :user => @user
-        }
+        }, :formats => [:html], :handlers => [:erb]
 
         rendered.should =~ /checkbox/
         rendered.should =~ /checked/

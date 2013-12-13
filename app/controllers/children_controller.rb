@@ -21,6 +21,7 @@ class ChildrenController < ApplicationController
     @filter = params[:filter] || params[:status] || "all"
     @order = params[:order_by] || 'name'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
+    per_page = per_page.to_i unless per_page == 'all'
 
     filter_children per_page
 
@@ -289,7 +290,7 @@ class ChildrenController < ApplicationController
     else
       options.merge!({:startkey => keys, :endkey => [keys, {}].flatten})
     end
-    Child.fetch_paginated(options, params[:page] || 1, per_page)
+    Child.fetch_paginated(options, (params[:page] || 1).to_i, per_page)
   end
 
   def paginated_collection instances, total_rows

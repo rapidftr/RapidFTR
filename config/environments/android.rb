@@ -16,5 +16,10 @@ RapidFTR::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
+  # Asset pipeline
+  config.assets.compress = true
+  config.assets.compile = false
+  config.assets.digest = true
+
   ENV['SOLR_PORT'] = "8902"
 end

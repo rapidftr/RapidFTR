@@ -2,7 +2,7 @@ module CouchRestRails
   module Fixtures
 
     extend self
-    
+
     def blurbs
       res = []
       res << "Cras dictum. Maecenas ut turpis. In vitae erat ac orci dignissim eleifend. Nunc quis justo. Sed vel ipsum in purus tincidunt pharetra. Sed pulvinar, felis id consectetuer malesuada, enim nisl mattis elit, a facilisis tortor nibh quis leo. Sed augue lacus, pretium vitae, molestie eget, rhoncus quis, elit. Donec in augue. Fusce orci wisi, ornare id, mollis vel, lacinia vel, massa. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."
@@ -12,26 +12,26 @@ module CouchRestRails
       res << "Morbi non erat non ipsum pharetra tempus. Donec orci. Proin in ante. Pellentesque sit amet purus. Cras egestas diam sed ante. Etiam imperdiet urna sit amet risus. Donec ornare arcu id erat. Aliquam ultrices scelerisque sem. In elit nulla, molestie vel, ornare sit amet, interdum vel, mauris. Etiam dignissim imperdiet metus."
       res << "Donec placerat. Nullam nibh dolor, blandit sed, fermentum id, imperdiet sit amet, neque. Nam mollis ultrices justo. Sed tempor. Sed vitae tellus. Etiam sem arcu, eleifend sit amet, gravida eget, porta at, wisi. Nam non lacus vitae ipsum viverra pretium. Phasellus massa. Fusce magna sem, gravida in, feugiat ac, molestie eget, wisi. Fusce consectetuer luctus ipsum. Vestibulum nunc. Suspendisse dignissim adipiscing libero. Integer leo. Sed pharetra ligula a dui. Quisque ipsum nibh, ullamcorper eget, pulvinar sed, posuere vitae, nulla. Sed varius nibh ut lacus. Curabitur fringilla. Nunc est ipsum, pretium quis, dapibus sed, varius non, lectus. Proin a quam. Praesent lacinia, eros quis aliquam porttitor, urna lacus volutpat urna, ut fermentum neque mi egestas dolor."
     end
-    
+
     def load(database_name = '*', opts = {})
-      
+
       CouchRestRails.process_database_method(database_name) do |db, response|
-       
-        unless File.exist?(File.join(RAILS_ROOT, CouchRestRails.fixtures_path, "#{db}.yml"))
+
+        unless File.exist?(File.join(Rails.root, CouchRestRails.fixtures_path, "#{db}.yml"))
           response << "Fixtures file (#{File.join(CouchRestRails.fixtures_path, "#{db}.yml")}) does not exist"
           next
         end
-        
+
         full_db_name = [COUCHDB_CONFIG[:db_prefix], db, COUCHDB_CONFIG[:db_suffix]].join
         full_db_path = [COUCHDB_CONFIG[:host_path], '/', full_db_name].join
         unless COUCHDB_SERVER.databases.include?(full_db_name)
           response << "The CouchDB database #{db} (#{full_db_name}) does not exist - create it first"
           next
         end
-        
+
         db_conn = CouchRest.database(full_db_path)
         fixture_files = []
-        Dir.glob(File.join(RAILS_ROOT, CouchRestRails.fixtures_path, "#{db}.yml")).each do |file|
+        Dir.glob(File.join(Rails.root, CouchRestRails.fixtures_path, "#{db}.yml")).each do |file|
           db_conn.bulk_save(YAML::load(ERB.new(IO.read(file)).result).map {|f| f[1]})
           fixture_files << File.basename(file)
         end
@@ -40,27 +40,27 @@ module CouchRestRails
         else
           response << "Loaded the following fixture files into #{db} (#{full_db_name}): #{fixture_files.join(', ')}"
         end
-        
+
       end
 
     end
 
     def dump(database_name = '*', opts = {})
-      
+
       CouchRestRails.process_database_method(database_name) do |db, response|
-        
+
         full_db_name = [COUCHDB_CONFIG[:db_prefix], db, COUCHDB_CONFIG[:db_suffix]].join
         full_db_path = [COUCHDB_CONFIG[:host_path], '/', full_db_name].join
         unless COUCHDB_SERVER.databases.include?(full_db_name)
           response << "The CouchDB database #{db} (#{full_db_name}) does not exist"
           next
         end
-        
-        fixtures_file = File.join(RAILS_ROOT, CouchRestRails.fixtures_path, "#{db}.yml")
+
+        fixtures_file = File.join(Rails.root, CouchRestRails.fixtures_path, "#{db}.yml")
         if File.exist?(fixtures_file)
           response << "Overwriting fixtures in #{File.join(CouchRestRails.fixtures_path, "#{db}.yml")}"
         end
-        
+
         File.open(fixtures_file, 'w' ) do |file|
           yaml_hash = {}
           db_conn = CouchRest.database(full_db_path)
@@ -74,15 +74,15 @@ module CouchRestRails
           end
           file.write yaml_hash.to_yaml
         end
-        
+
         response << "Dumped fixtures into #{File.join(CouchRestRails.fixtures_path, "#{db}.yml")}"
-        
+
       end
     end
-  
+
     def random_blurb
       blurbs.sort_by {rand}.first
     end
-  
+
   end
 end

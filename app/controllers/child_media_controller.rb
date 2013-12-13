@@ -60,8 +60,8 @@ class ChildMediaController < ApplicationController
   end
 
   def no_photo_attachment
-    data = File.binread(File.join(Rails.root, "public/images/no_photo_clip.jpg"))
-    FileAttachment.new("no_photo", "image/jpg", data)
+    @@no_photo_clip ||= File.binread(File.join(Rails.root, "app/assets/images/no_photo_clip.jpg"))
+    FileAttachment.new "no_photo", "image/jpg", @@no_photo_clip
   end
 
   def audio_filename attachment

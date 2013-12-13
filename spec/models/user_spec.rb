@@ -213,16 +213,12 @@ describe User do
   end
 
   it "should localize date using user's timezone" do
-    user = build_user({
-                          :time_zone => "Samoa"
-                      })
+    user = build_user({ :time_zone => "American Samoa"})
     user.localize_date("2011-11-12 21:22:23 UTC").should == "12 November 2011 at 10:22 (SST)"
   end
 
   it "should localize date using specified format" do
-    user = build_user({
-                          :time_zone => "UTC"
-                      })
+    user = build_user({ :time_zone => "UTC" })
     user.localize_date("2011-11-12 21:22:23 UTC", "%Y-%m-%d %H:%M:%S (%Z)").should == "2011-11-12 21:22:23 (UTC)"
   end
 

@@ -1,5 +1,3 @@
-require 'spec/spec_helper'
-
 Given /^the following translations exist:$/ do |translations|
   translations.hashes.each do |translation|
     store translation

@@ -11,7 +11,6 @@ RapidFTR::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
   # Print deprecation notices to the Rails logger
@@ -19,5 +18,8 @@ RapidFTR::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-end
 
+  # Asset pipeline
+  config.assets.compress = false
+  config.assets.debug = true
+end

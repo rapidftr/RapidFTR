@@ -61,17 +61,17 @@
 
       .reunited{
         right:10px;
-        background:url(../images/new/icon_reunited.png) no-repeat;
+        background:image-url('new/icon_reunited.png') no-repeat;
       }
 
       .suspect{
         right: 40px;
-        background:url(../images/new/icon_flagged.png) no-repeat;
+        background:image-url('new/icon_flagged.png') no-repeat;
       }
 
       .photowall {
         right: 70px;
-        background: url(../images/new/icon_photowall.png) no-repeat;
+        background: image-url('new/icon_photowall.png') no-repeat;
       }
 
       .summary_item{
@@ -115,7 +115,7 @@
     }
   }
 
-  .results-count{    
+  .results-count{
     float: right;
     margin: 0 26px 0 0;
     color: #4b515f;

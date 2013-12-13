@@ -2,7 +2,7 @@
 module ApplicationHelper
 
   def current_url_with_format_of( format )
-    url_for( params.merge( 'format' => format, 'escape' => false ) )
+    url_for( params.merge( :format => format ) )
   end
 
   def session

@@ -3,7 +3,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require "action_controller/railtie"
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+Bundler.require *Rails.groups(:assets => %w(development test))
 
 module RapidFTR
   class Application < Rails::Application
@@ -26,10 +26,12 @@ module RapidFTR
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    # Asset pipeline
+    config.assets.enabled = true
+    config.assets.version = '1.0'
+
     LOCALES = ['en','fr','ar','zh','es','ru']
     LOCALES_WITH_DESCRIPTION = [['-', nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
-
-    config.gem "jammit"
 
     def locales
       LOCALES

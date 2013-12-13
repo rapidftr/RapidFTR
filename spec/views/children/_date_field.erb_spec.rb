@@ -12,7 +12,7 @@ describe "children/_date_field.html.erb" do
     :type => 'date_field',
     :help_text => "This is my help text"
 
-    render :partial => 'children/date_field.html.erb', :locals => { :date_field => date_field }
+    render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
 
     rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
 
@@ -23,7 +23,7 @@ describe "children/_date_field.html.erb" do
     :display_name => "field name",
     :type => 'date_field'
 
-    render :partial => 'children/date_field.html.erb', :locals => { :date_field => date_field }
+    render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
 
     rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
   end
@@ -34,7 +34,7 @@ describe "children/_date_field.html.erb" do
                            :type => 'date_field',
                            :help_text => "This is my help text"
 
-    render :partial => 'children/date_field.html.erb', :locals => { :date_field => date_field }
+    render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
 
     rendered.should be_include("dateFormat: 'dd/mm/yy'")
 

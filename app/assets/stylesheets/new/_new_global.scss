@@ -125,7 +125,7 @@ input[type=text], input[type=password], textarea, input[type=file], select {
     padding: 7px 10px 7px 41px;
     background-repeat: no-repeat;
     background-position: 10px center;
-    background-image: url(../images/new/icons_btn.png);
+    background-image: image-url('new/icons_btn.png');
 
     &:hover{
       color: $btn-hover-text-color;
@@ -337,12 +337,12 @@ fieldset {
 }
 
 a.edit {
-  background: url(../images/new/icon_edit.png) no-repeat 0px 0px;
+  background: image-url('new/icon_edit.png') no-repeat 0px 0px;
   padding-left: 17px;
 }
 
 a.mark_as_duplicate {
-  background: url(../images/new/icon_duplicate.png) no-repeat 0px 0px;
+  background: image-url('new/icon_duplicate.png') no-repeat 0px 0px;
   padding-left: 20px;
 }
 

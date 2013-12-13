@@ -5,13 +5,11 @@
   <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
   <title><%= @page_name %></title>
   <link rel="shortcut icon" href="/favicon.ico"/>
-  <%= include_stylesheets :common, :media => 'all' %>
+  <%= stylesheet_link_tag "application" %>
   <%= yield :stylesheet %>
-  <%= include_javascripts :common %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tag %>
   <%= yield :javascript %>
-  <%= javascript_include_tag "i18n" %>
-  <%= javascript_include_tag "translations" %>
   <%= javascript_tag do %>
       I18n.defaultLocale = "<%= I18n.default_locale %>";
       I18n.locale = "<%= I18n.locale %>";

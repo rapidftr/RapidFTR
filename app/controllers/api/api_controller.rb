@@ -1,5 +1,3 @@
-require "active_support/json/backends/okjson"
-
 class Api::ApiController < ActionController::Base
 
   include Security::Authentication
@@ -16,7 +14,7 @@ class Api::ApiController < ActionController::Base
   rescue_from(AuthenticationFailure) { |e| render_error_response ErrorResponse.unauthorized e.message }
   rescue_from(CanCan::AccessDenied) { |e| render_error_response ErrorResponse.forbidden e.message }
   rescue_from(ErrorResponse) { |e| render_error_response e }
-  rescue_from(ActiveSupport::OkJson::Error) { |e| malformed_json(e) }
+  rescue_from(ActiveSupport::JSON.parse_error) { |e| malformed_json(e) }
 
   def check_device_blacklisted
     raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
@@ -35,7 +33,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def extend_session_lifetime
-    request.env[ActionDispatch::Session::AbstractStore::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week
+    request.env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week
   end
 
   def malformed_json(e)
