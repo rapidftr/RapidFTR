@@ -13,8 +13,7 @@ require 'spec/support/uploadable_files'
 require 'spec/support/child_finder'
 require 'json_spec/cucumber'
 require 'rack/test'
-
-World(UploadableFiles, ChildFinder)
+require 'selenium/webdriver'
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
@@ -34,3 +33,10 @@ Capybara.ignore_hidden_elements = false #Ignore hidden elements when testing, ma
 Capybara.javascript_driver = :selenium #default driver when you using @javascript tag
 
 ActionController::Base.allow_rescue = true
+
+module UrlHelpers
+  include Rails.application.routes.url_helpers
+end
+
+World(UrlHelpers)
+World(UploadableFiles, ChildFinder)

@@ -20,6 +20,9 @@ module RapidFTR
       #{config.root}/app/presenters
     )
 
+    # I18n deprecation
+    config.i18n.enforce_available_locales = false
+
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 

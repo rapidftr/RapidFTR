@@ -1,4 +1,8 @@
 module NavigationHelpers
+  def self.included(base)
+    base.send :include, Rails.application.routes.url_helpers
+  end
+
   # Maps a name to a path. Used by the
   #
   #   When /^I go to (.+)$/ do |page_name|
@@ -6,7 +10,6 @@ module NavigationHelpers
   # step definition in web_steps.rb
   #
   def path_to(page_name, options = {})
-
     format = page_name[/^(?:|the )(\w+) formatted/, 1]
     options.reverse_merge!(:format => format)
 
