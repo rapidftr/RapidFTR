@@ -520,7 +520,6 @@ describe ChildrenController do
 
     describe "with no results" do
       before do
-        Summary.stub!(:basic_search).and_return([])
         get(:search, :query => 'blah')
       end
 

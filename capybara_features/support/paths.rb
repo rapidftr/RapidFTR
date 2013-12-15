@@ -40,19 +40,19 @@ module NavigationHelpers
 
       when /saved record page for child with name "(.+)"/
         child_name = $1
-        child = Summary.by_name(:key => child_name)
+        child = Child.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path(child, options)
 
       when /child record page for "(.+)"/
         child_name = $1
-        child = Summary.by_name(:key => child_name)
+        child = Child.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_path(child, options)
 
       when /change log page for "(.+)"/
         child_name = $1
-        child = Summary.by_name(:key => child_name)
+        child = Child.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil?
         child_history_path(child, options)
 
