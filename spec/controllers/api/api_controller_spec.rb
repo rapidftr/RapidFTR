@@ -30,7 +30,7 @@ describe TestController do
   it "should return 422 for malformed json" do
 
     controller.stub(:logged_in?).and_return(true)
-    controller.stub(:index) { raise ActiveSupport::OkJson::Error }
+    controller.stub(:index) { raise ActiveSupport::JSON.parse_error }
     get :index
     response.response_code.should == 422
     response.body.should == "Invalid request"

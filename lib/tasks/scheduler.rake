@@ -9,15 +9,15 @@ namespace :scheduler do
     daemon_options = {
       :multiple => false,
       :backtrace => true,
-      :dir => File.join(RAILS_ROOT, 'log'),
+      :dir => File.join(Rails.root, 'log'),
       :dir_mode => :normal,
-      :log_dir => File.join(RAILS_ROOT, 'log'),
+      :log_dir => File.join(Rails.root, 'log'),
       :log_output => true,
       :ARGV => [ argv ].flatten
     }
 
     Daemons.run_proc('rapidftr-scheduler', daemon_options) do
-      load File.join(RAILS_ROOT, 'Rakefile')
+      load File.join(Rails.root, 'Rakefile')
       Rake::Task["scheduler:run"].invoke
     end
   end

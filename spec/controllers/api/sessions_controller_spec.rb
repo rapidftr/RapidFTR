@@ -35,7 +35,7 @@ describe Api::SessionsController do
 
     post :login, :user_name => @user.user_name, :password => "test_password", :imei => 'TEST_IMEI'
     response.should be_success
-    request.env[ActionDispatch::Session::AbstractStore::ENV_SESSION_OPTIONS_KEY][:expire_after].should == 1.week
+    request.env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY][:expire_after].should == 1.week
   end
 
   describe "#register" do

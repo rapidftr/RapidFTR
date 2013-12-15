@@ -1,5 +1,5 @@
 body {
-  background: url(../images/new/bg_body.png) repeat-x;
+  background: image-url('new/bg_body.png') repeat-x;
   font: $default-font-size $default-font-family;
   background-attachment: fixed;
 
@@ -15,7 +15,7 @@ body {
       @extend .clearfix;
 
       .logo {
-        background: url(../images/new/logo.png) no-repeat;
+        background: image-url('new/logo.png') no-repeat;
         float: left;
         width: 200px;
         height: 35px;
@@ -67,7 +67,7 @@ body {
             }
             a.sel {
               color: $main-nav-sel-color;
-              background: url(../images/new/main_tab_pointer.png) no-repeat center 30px;
+              background: image-url('new/main_tab_pointer.png') no-repeat center 30px;
               height: 45px;
             }
           }
@@ -313,7 +313,7 @@ body {
     width:300px;
     margin:30px auto;
     padding:10px;
-    background: url(../images/new/bg_login.png) repeat-x #eee;
+    background: image-url('new/bg_login.png') repeat-x #eee;
     border:3px solid #fff;
     @include borderRadius(3px);
     @include boxShadow(0px 0px 3px #aaa);
@@ -381,7 +381,7 @@ body {
     padding:0px 10px 10px;
 
     a{
-      background:url(../images/new/photo_rotate.png) no-repeat #eee;
+      background:image-url('new/photo_rotate.png') no-repeat #eee;
       padding:6px 0 6px 30px;
       border:1px dashed #bbb;
       @include borderRadius(2px);

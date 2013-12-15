@@ -50,7 +50,7 @@ module UploadableFiles
   end
 
   def no_photo_clip
-    uploadable_photo "public/images/no_photo_clip.jpg"
+    uploadable_photo "app/assets/images/no_photo_clip.jpg"
   end
 
   def uploadable_text_file

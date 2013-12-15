@@ -3,7 +3,7 @@ module FakeLogin
     session = Session.new :user_name => user.user_name
   	session.save
 
-    user.stub(:id => 1234) unless user.try(:id)
+    user.stub(:id => "1234") unless user.try(:id)
     User.stub!(:get).with(user.id).and_return(user)
 
     @controller.stub!(:current_session).and_return(session)

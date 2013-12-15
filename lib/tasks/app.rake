@@ -1,8 +1,6 @@
 namespace :app do
-  desc "Pre compiles the static assets and creates assets folder with common js and common css."
   task :assets_precompile do
-    require 'jammit'
-    Jammit.package!
+    Rake::Task['assets:precompile'].invoke
   end
 
   desc "Start the server in development mode with Sunspot running"

@@ -12,7 +12,7 @@ describe "children/_textarea.html.erb" do
     :type => 'textarea',
     :help_text => "This is my help text"
 
-    render :partial => 'children/textarea.html.erb', :locals => { :textarea => textarea}
+    render :partial => 'children/textarea', :locals => { :textarea => textarea}, :formats => [:html], :handlers => [:erb]
     rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
   end
 
@@ -21,7 +21,7 @@ describe "children/_textarea.html.erb" do
     :display_name => "field name",
     :type => 'textarea'
 
-    render :partial => 'children/textarea.html.erb', :locals => { :textarea => textarea}
+    render :partial => 'children/textarea', :locals => { :textarea => textarea}, :formats => [:html], :handlers => [:erb]
 
     rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
   end

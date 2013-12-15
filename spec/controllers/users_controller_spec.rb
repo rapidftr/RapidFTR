@@ -113,7 +113,7 @@ describe UsersController do
       mock_user = mock({:user_name => 'some_random'})
       User.stub!(:get).with("37").and_return(mock_user)
       get :show, :id => "37"
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.status.should == 403
     end
   end
 
@@ -135,7 +135,7 @@ describe UsersController do
     it "should throw error if an user without authorization tries to access" do
       fake_login_as(Permission::USERS[:view])
       get :new
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.status.should == 403
     end
   end
 
@@ -161,7 +161,7 @@ describe UsersController do
       mock_user = stub_model(User, :full_name => "Test Name", :user_name => 'fakeuser')
       User.stub!(:get).with("24").and_return(mock_user)
       get :edit, :id => "24"
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.status.should_not == 403
     end
   end
 
@@ -183,7 +183,7 @@ describe UsersController do
       fake_login_as(Permission::USERS[:create_and_edit])
       User.stub!(:get).and_return(mock_user(:destroy => true))
       delete :destroy, :id => "37"
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.status.should == 403
     end
 
     it "should allow user deletion for relevant user role" do
@@ -192,7 +192,7 @@ describe UsersController do
       User.should_receive(:get).with("37").and_return(mock_user)
       mock_user.should_receive(:destroy).and_return(true)
       delete :destroy, :id => "37"
-      response.should_not render_template("#{Rails.root}/public/403.html")
+      response.status.should_not == 403
     end
   end
 
@@ -205,7 +205,7 @@ describe UsersController do
         controller.stub(:current_user_name).and_return("test_user")
         mock_user.stub(:has_role_ids?).and_return(false)
         post :update, {:id => "24", :user => {:user_type => "Administrator"}}
-        response.should render_template("#{Rails.root}/public/403.html")
+        response.status.should == 403
       end
     end
 
@@ -289,7 +289,7 @@ describe UsersController do
       @user = User.new(:user_name => 'fakeuser')
       @mock_change_form = mock()
       fake_login @user
-      @mock_params = mock()
+      @mock_params = { "mock" => "mock" }
       Forms::ChangePasswordForm.stub(:new).with(@mock_params).and_return(@mock_change_form)
     end
 

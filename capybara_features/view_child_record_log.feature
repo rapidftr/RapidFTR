@@ -103,7 +103,7 @@ Feature:
     And the date/time is "Oct 29 2010 14:12:15UTC"
     And I press "Save"
 
-    When the user's time zone is "(GMT-11:00) Samoa"
+    When the user's time zone is "(GMT-11:00) American Samoa"
     And I am on the change log page for "George Harrison"
 
     Then I should see "2010-10-29 03:12:15 SST Audio"

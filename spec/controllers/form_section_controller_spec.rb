@@ -92,7 +92,7 @@ describe FormSectionController do
   describe "post update" do
     it "should save update if valid" do
       form_section = FormSection.new
-      params = {"some" => :params}
+      params = {"some" => "params"}
       FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section)
       form_section.should_receive(:properties=).with(params)
       form_section.should_receive(:valid?).and_return(true)
@@ -103,7 +103,7 @@ describe FormSectionController do
 
     it "should show errors if invalid" do
       form_section = FormSection.new
-      params = {"some" => :params}
+      params = {"some" => "params"}
       FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section)
       form_section.should_receive(:properties=).with(params)
       form_section.should_receive(:valid?).and_return(false)

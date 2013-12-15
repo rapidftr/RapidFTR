@@ -1,4 +1,8 @@
 module NavigationHelpers
+  def self.included(base)
+    base.send :include, Rails.application.routes.url_helpers
+  end
+
   # Maps a name to a path. Used by the
   #
   #   When /^I go to (.+)$/ do |page_name|
@@ -6,7 +10,6 @@ module NavigationHelpers
   # step definition in web_steps.rb
   #
   def path_to(page_name, options = {})
-
     format = page_name[/^(?:|the )(\w+) formatted/, 1]
     options.reverse_merge!(:format => format)
 
@@ -37,21 +40,27 @@ module NavigationHelpers
 
       when /saved record page for child with name "(.+)"/
         child_name = $1
-        child = Summary.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
-        child_path(child, options)
+        child = Child.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        child_path(child.first, options)
 
       when /child record page for "(.+)"/
         child_name = $1
-        child = Summary.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
+        child = Child.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        child_path(child.first, options)
+
+      when /child record page for unique id "(.+)"/
+        unique_id = $1
+        child = Child.get unique_id
+        rails "no child with unique id '#{unique_id}'" if child.nil?
         child_path(child, options)
 
       when /change log page for "(.+)"/
         child_name = $1
-        child = Summary.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
-        child_history_path(child, options)
+        child = Child.by_name(:key => child_name)
+        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        child_history_path(child.first, options)
 
       when /new user page/
         new_user_path(options)

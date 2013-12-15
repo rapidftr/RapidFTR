@@ -1,5 +1,3 @@
-require 'spec/spec_helper'
-
 When /^I search using a name of "([^\"]*)"$/ do |name|
   search.search_for(name)
 end

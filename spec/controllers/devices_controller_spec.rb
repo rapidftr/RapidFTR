@@ -50,7 +50,7 @@ describe DevicesController do
       fake_login_as(Permission::USERS[:create_and_edit])
       Device.should_not_receive(:view).with("by_imei")
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
-      response.should render_template("#{Rails.root}/public/403.html")
+      response.status.should == 403
     end
   end
 

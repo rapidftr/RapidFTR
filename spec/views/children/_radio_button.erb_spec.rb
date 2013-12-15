@@ -13,7 +13,7 @@ describe "children/_radio_button.html.erb" do
     :option_strings => Array['M', 'F'],
     :help_text => "This is my help text"
 
-    render :partial => 'children/radio_button.html.erb', :locals => { :radio_button => radio_button}
+    render :partial => 'children/radio_button', :locals => { :radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
 
     rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
   end
@@ -24,7 +24,7 @@ describe "children/_radio_button.html.erb" do
     :type => 'radio_button',
     :option_strings => Array['M', 'F']
 
-    render :partial => 'children/radio_button.html.erb', :locals => { :radio_button => radio_button}
+    render :partial => 'children/radio_button', :locals => { :radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
 
     rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
   end

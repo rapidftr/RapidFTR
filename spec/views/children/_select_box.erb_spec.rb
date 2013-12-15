@@ -13,7 +13,7 @@ describe "children/_select_box.html.erb" do
     :option_strings => Array['M', 'F'],
     :help_text => "This is my help text"
 
-    render :partial => 'children/select_box.html.erb', :locals => { :select_box => select_box}
+    render :partial => 'children/select_box', :locals => { :select_box => select_box}, :formats => [:html], :handlers => [:erb]
 
     rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
   end
@@ -24,7 +24,7 @@ describe "children/_select_box.html.erb" do
     :type => 'select_box',
     :option_strings => Array['M', 'F']
 
-    render :partial => 'children/select_box.html.erb', :locals => { :select_box => select_box}
+    render :partial => 'children/select_box', :locals => { :select_box => select_box}, :formats => [:html], :handlers => [:erb]
 
     rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
   end

@@ -19,12 +19,12 @@ class ApplicationController < ActionController::Base
     if request.format == "application/json"
       render :json => "unauthorized", :status => 403
     else
-      render :file => "#{Rails.root}/public/403.html", :status => 403, :layout => false
+      render :file => "#{Rails.root}/public/403", :status => 403, :layout => false, :formats => [:html]
     end
   end
 
   def extend_session_lifetime
-    request.env[ActionDispatch::Session::AbstractStore::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week if request.format.json?
+    request.env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week if request.format.json?
   end
 
   def handle_authentication_failure(auth_failure)
@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
     if params[:password].present?
       enc_filename = CleansingTmpDir.temp_file_name
 
-      Zip::Archive.open(enc_filename, Zip::CREATE) do |ar|
+      ZipRuby::Archive.open(enc_filename, ZipRuby::CREATE) do |ar|
         results.each do |result|
           ar.add_or_replace_buffer File.basename(result.filename), result.data
         end

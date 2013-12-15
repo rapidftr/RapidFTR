@@ -144,7 +144,7 @@ Feature:
       | name       | gender | last_known_location |
       | Jorge Just | Male   | Haiti               |
     And the date/time is "March 01 2010 17:59:33UTC"
-    And the user's time zone is "(GMT-11:00) Samoa"
+    And the user's time zone is "(GMT-11:00) American Samoa"
 
     When I am on the child record page for "Jorge Just"
     And I follow "Edit"

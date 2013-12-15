@@ -1,5 +1,3 @@
-require 'spec/spec_helper'
-
 def create_user(user_name)
   User.create!("user_name" => user_name,
                "password" => "rapidftr",

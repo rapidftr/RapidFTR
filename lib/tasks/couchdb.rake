@@ -1,7 +1,7 @@
 namespace :db do
   namespace :test do
     task :prepare do
-      # Nah.
+      Rake::Task['couchdb:create'].invoke
     end
   end
 end

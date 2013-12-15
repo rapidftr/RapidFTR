@@ -3,6 +3,7 @@ require "spec_helper"
 describe MatchService do
 
   before :all do
+    FormSection.all.each(&:destroy)
     form = FormSection.new(:name => "test_form")
     form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
     form.fields << Field.new(:name => "nationality", :type => Field::TEXT_FIELD, :display_name => "nationality")

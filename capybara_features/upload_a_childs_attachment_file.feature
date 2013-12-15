@@ -170,8 +170,3 @@ Feature:
     When I click the "Photos and Audio" link
     And I select the "image"
     Then I should see the "lightbox-nav" of image
-
-
-
-
-

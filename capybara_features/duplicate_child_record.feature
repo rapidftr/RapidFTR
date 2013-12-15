@@ -43,7 +43,7 @@ Feature: Merge Child Records
     When I am on the child record page for "Dave"
     Then I should see "Another record has been marked as a duplicate of this one. Click here to see the duplicate record."
     And I follow "here"
-    Then I am on the child record page for "Bob"
+    Then I am on the child record page for unique id "bob_uid"
 
 # This test is causing Firefox to crash (Firefox v19, selenium-webdriver v2.30.0)
 #   @javascript

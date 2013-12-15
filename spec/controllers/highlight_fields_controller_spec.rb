@@ -9,11 +9,11 @@ describe HighlightFieldsController do
       user.stub!(:roles).and_return([Role.new(:permissions => [Permission::SYSTEM[:highlight_fields]])])
       fake_login user
       get :index
-      assigns[:highlighted_fields].should be_empty          
+      assigns[:highlighted_fields].should be_empty
     end
-    
+
     it "should have forms assigned" do
-      FormSection.stub(:all).and_return([FormSection.new(:name => "Form1"), FormSection.new(:name => "Form2")])
+      FormSection.stub(:enabled_by_order).and_return([FormSection.new(:name => "Form1"), FormSection.new(:name => "Form2")])
       fake_admin_login
       get :index
       assigns[:forms].size.should == 2
@@ -36,22 +36,22 @@ describe HighlightFieldsController do
     end
 
   end
-  
+
   describe "create" do
     it "should update field as highlighted" do
       field1 = Field.new(:name => "field1", :display_name => "field1_display" , :highlight_information => { :order => "1", :highlighted => true })
       field2 = Field.new(:name => "field2", :display_name => "field2_display" , :highlight_information => { :order => "2", :highlighted => true })
       field3 = Field.new(:name => "field3", :display_name => "field3_display")
-      form = FormSection.new(:name => "Form1", :unique_id => "form1", :fields => [field1, field2, field3])      
+      form = FormSection.new(:name => "Form1", :unique_id => "form1", :fields => [field1, field2, field3])
       FormSection.stub(:get_by_unique_id).and_return(form)
       form.should_receive(:update_field_as_highlighted).with("field3")
       fake_admin_login
       post :create, :form_id => "form1", :field_name => "field3"
     end
   end
-  
+
   describe "remove" do
-    it  "should unhighlight a field"  do 
+    it  "should unhighlight a field"  do
       field1 = Field.new(:name => "newfield1", :display_name => "new_field1_display" , :highlight_information => { :order => "1", :highlighted => true })
       form = FormSection.new(:name => "another form", :unique_id => "unique_form1", :fields => [field1])
       FormSection.stub(:get_by_unique_id).and_return(form)

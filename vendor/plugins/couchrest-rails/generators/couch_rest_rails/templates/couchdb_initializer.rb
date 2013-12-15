@@ -2,7 +2,7 @@ begin
 
   env = ENV['RAILS_ENV'] || 'development'
 
-  couchdb_config = YAML::load(ERB.new(IO.read(RAILS_ROOT + "/config/couchdb.yml")).result)[env]
+  couchdb_config = YAML::load(ERB.new(IO.read(Rails.root + "/config/couchdb.yml")).result)[env]
 
   host      = couchdb_config["host"]      || 'localhost'
   port      = couchdb_config["port"]      || '5984'

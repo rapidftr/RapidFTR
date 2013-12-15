@@ -336,3 +336,7 @@ end
 When /^I can download the "([^"]*)"$/ do |item|
   find("//a[@id='"+item+"']").click
 end
+
+When /^I click OK in the browser popup$/ do
+  page.driver.browser.switch_to.alert.accept
+end
