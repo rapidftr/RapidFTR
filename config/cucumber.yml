@@ -6,7 +6,7 @@ std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} --strict --require 
 default: <%= std_opts %> capybara_features
 wip: --tags @wip:3 --wip capybara_features
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
-browser: capybara_features --strict --tags @javascript --tags ~@wip --backtrace
-headless: capybara_features --strict --tags ~@wip --tags ~@javascript --backtrace
+browser: --require capybara_features --strict --tags @javascript --tags ~@wip --backtrace capybara_features
+headless: --require capybara_features --strict --tags ~@wip --tags ~@javascript --backtrace capybara_features
 browser_wip: --tags @javascript --tags @wip:3 --wip capybara_features
 headless_wip: --tags @headless --tags @wip:3 --wip capybara_features
