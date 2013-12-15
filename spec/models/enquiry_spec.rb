@@ -68,7 +68,8 @@ describe Enquiry do
 
     describe "potential_matches" do
 
-      before :all do
+      before :each do
+        FormSection.all.each(&:destroy)
         form = FormSection.new(:name => "test_form")
         form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
         form.fields << Field.new(:name => "location", :type => Field::TEXT_FIELD, :display_name => "location")
@@ -76,8 +77,8 @@ describe Enquiry do
         form.save!
       end
 
-      after :all do
-        FormSection.all.each { |form| form.destroy }
+      after :each do
+        FormSection.all.each(&:destroy)
       end
 
       before :each do
