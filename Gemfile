@@ -56,8 +56,3 @@ group :test, :cucumber do
   gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
 end
-
-group :development, :test, :cucumber do
-  gem 'pry'
-  gem 'pry-debugger'
-end

@@ -1,0 +1,23 @@
+language: ruby
+bundler_args: --without development
+rvm:
+  - 1.9.3
+services:
+  - couchdb
+addons:
+  firefox: "17.0"
+before_install:
+  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - "gem install bundler --pre"
+  - "bundle config --global jobs 7"
+before_script:
+  - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr]"
+  - "bundle exec rake sunspot:start"
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+script:
+  - "RAILS_ENV=test bundle exec rspec"
+  - "RAILS_ENV=cucumber bundle exec rake cucumber:headless"
+  - "RAILS_ENV=cucumber bundle exec rake cucumber:browser"
+notifications:
+  - email: false
