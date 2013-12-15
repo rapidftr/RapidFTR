@@ -79,16 +79,16 @@ class AdvancedSearchController < ApplicationController
 
   def add_created_at_filter params
     @criteria_list.push(SearchDateFilter.new({:field => "created_at",
-                                             :from_value => (params[:created_at_after_value].present? ? "*" : "#{params[:created_at_after_value]}T00:00:00Z"),
-                                             :to_value => (params[:created_at_before_value].present? ? "*" : "#{params[:created_at_before_value]}T00:00:00Z"),
+                                             :from_value => (params[:created_at_after_value].blank? ? "*" : "#{params[:created_at_after_value]}T00:00:00Z"),
+                                             :to_value => (params[:created_at_before_value].blank? ? "*" : "#{params[:created_at_before_value]}T00:00:00Z"),
                                              :index => 1,
                                              :join => "AND"})) if (params[:created_at_after_value].present? || params[:created_at_before_value].present?)
   end
 
   def add_updated_at_filter params
     @criteria_list.push(SearchDateFilter.new({:field => "last_updated_at",
-                                             :from_value => (params[:updated_at_after_value].present? ? "*" : "#{params[:updated_at_after_value]}T00:00:00Z"),
-                                             :to_value => (params[:updated_at_before_value].present? ? "*" : "#{params[:updated_at_before_value]}T00:00:00Z"),
+                                             :from_value => (params[:updated_at_after_value].blank? ? "*" : "#{params[:updated_at_after_value]}T00:00:00Z"),
+                                             :to_value => (params[:updated_at_before_value].blank? ? "*" : "#{params[:updated_at_before_value]}T00:00:00Z"),
                                              :index => 2,
                                              :join => "AND"})) if (params[:updated_at_after_value].present? || params[:updated_at_before_value].present?)
   end
