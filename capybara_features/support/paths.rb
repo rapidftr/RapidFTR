@@ -41,20 +41,20 @@ module NavigationHelpers
       when /saved record page for child with name "(.+)"/
         child_name = $1
         child = Child.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
-        child_path(child, options)
+        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        child_path(child.first, options)
 
       when /child record page for "(.+)"/
         child_name = $1
         child = Child.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
-        child_path(child, options)
+        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        child_path(child.first, options)
 
       when /change log page for "(.+)"/
         child_name = $1
         child = Child.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil?
-        child_history_path(child, options)
+        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        child_history_path(child.first, options)
 
       when /new user page/
         new_user_path(options)
