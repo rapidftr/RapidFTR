@@ -4,7 +4,7 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
-ENV['RAILS_ENV'] ||= 'cucumber'
+ENV['RAILS_ENV'] = 'cucumber'
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../..'))
 
 require 'cucumber/rails'
@@ -14,6 +14,8 @@ require 'spec/support/child_finder'
 require 'json_spec/cucumber'
 require 'rack/test'
 require 'selenium/webdriver'
+
+puts Rails.env
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new

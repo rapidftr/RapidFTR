@@ -50,6 +50,12 @@ module NavigationHelpers
         raise "no child named '#{child_name}'" if child.nil? || child.empty?
         child_path(child.first, options)
 
+      when /child record page for unique id "(.+)"/
+        unique_id = $1
+        child = Child.get unique_id
+        rails "no child with unique id '#{unique_id}'" if child.nil?
+        child_path(child, options)
+
       when /change log page for "(.+)"/
         child_name = $1
         child = Child.by_name(:key => child_name)

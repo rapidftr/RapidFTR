@@ -16,20 +16,20 @@
     </tbody>
   </table>
 
-<%form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
+<%= form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
   <div id="add-field">
-  </div>  
+  </div>
 <% end %>
 
-<%form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
+<%= form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
   <div id="remove-field">
-  </div>  
+  </div>
 <% end %>
 
 
 
-<script id="highlight-field-template" type="text/x-jquery-tmpl"> 
-  <tr>     
+<script id="highlight-field-template" type="text/x-jquery-tmpl">
+  <tr>
     <td>${display_name}</td>
     <td>${form_name}</td>
     <td>
@@ -45,9 +45,9 @@
     <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
 </script>
 
-<script> 
+<script>
 
-var updateWithSelectedItem = function(selectedElement){
+var updateWithSelectedItem = function(selectedElement) {
   $("#add-field").append($("#form-template").tmpl(selectedElement));
   $("#add-form").submit();
 }
@@ -66,5 +66,5 @@ $(".remove_field").live("click", function(){
 </script>
 
 <%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" ,
-                                                          :on_item_select => "updateWithSelectedItem", 
+                                                          :on_item_select => "updateWithSelectedItem",
                                                           :prev_selected_field_selector => ".highlighted-field"} %>

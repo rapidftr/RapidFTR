@@ -1,17 +1,8 @@
 <div class="form-fields-container hide">
   <div class="criteria_menu">
+  <a class='close-link'><%= image_tag("dialog-close.png") %></a>
   <div class='box-shadow content'>
-          <a class="close-link" style="float:right;margin-left:6px;">
-            <img src="/images/dialog-close.png?1353996373" alt="Dialog-close">
-          </a>
 
-    <ul class="forms">
-        <% FormSection.enabled_by_order.each do|form| %>
-          <li id="form-<%= form.id%>" class="form">
-            <%= form.name %>
-          </li>
-        <%end%>
-    </ul>
       <% @forms.each do|form|%>
         <ul id="fields-for-form-<%= form.id%>" class="fields" data-id="<%= form.unique_id %>">
           <% form.fields.each do |field| %>
@@ -22,10 +13,20 @@
           <%end%>
         </ul>
       <%end%>
+
+    <ul class="forms">
+        <% @forms.each do|form| %>
+          <li id="form-<%= form.id%>" class="form">
+            <%= form.name %>
+          </li>
+        <%end%>
+    </ul>
   <div>
 </div>
 
 <script>
+
+        $("ul.forms li:first, ul.fields:first").addClass('selected');
 
         $(".add_field").click(function(){
             $(".form-fields-container").toggleClass("hide");

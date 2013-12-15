@@ -1,5 +1,6 @@
 Feature: Replications
 
+  @javascript
   Scenario: Add, edit and delete replication
     Given I am logged in as a user with "Manage Replications" permission
     When I am on devices listing page
@@ -16,6 +17,7 @@ Feature: Replications
 
     Then I should see "The URL/Username/Password that you entered is incorrect"
     And I make sure that the Replication Configuration request succeeds
+    And I fill in "Password" with "rapidftr"
     And I click the "Save" button
 
     Then I should see "Configure a Server"
@@ -40,6 +42,7 @@ Feature: Replications
     And I should not see "http://localhost:99999/"
 
     And I follow "Delete"
-    And I should not see "New Replication"
+    And I click OK in the browser popup
+    Then I should not see "New Replication"
     And I should not see "http://localhost:88888/"
     And I clear the Replication Configuration expectations
