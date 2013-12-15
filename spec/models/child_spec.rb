@@ -141,6 +141,32 @@ describe Child do
 
   end
 
+  describe ".sunspot_search" do
+    before :each do
+      Sunspot.remove_all(Child)
+    end
+
+    before :all do
+      form = FormSection.new(:name => "test_form")
+      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
+      form.save!
+    end
+
+    after :all do
+      FormSection.all.each { |form| form.destroy }
+    end
+
+
+    it "should return all results" do
+      40.times do
+        create_child("Exact")
+      end
+      criteria_list = SearchCriteria.build_from_params("1" => {:field => "name", :value => "Exact", :join => "AND", :display_name => "name" } )
+      query = SearchCriteria.lucene_query(criteria_list)
+      Child.sunspot_search(1, query).last.count.should == 40
+    end
+  end
+
   describe "update_properties_with_user_name" do
 
     it "should replace old properties with updated ones" do
