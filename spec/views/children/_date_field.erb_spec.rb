@@ -13,9 +13,7 @@ describe "children/_date_field.html.erb" do
     :help_text => "This is my help text"
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
-
-    rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
-
+    rendered.should have_tag("img.vtip")
   end
 
   it "should not include image for tooltip when help text not exists" do
@@ -24,8 +22,7 @@ describe "children/_date_field.html.erb" do
     :type => 'date_field'
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
-
-    rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
+    rendered.should_not have_tag("img.vtip")
   end
 
   it "should configure the date picker date format" do

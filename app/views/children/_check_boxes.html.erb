@@ -10,7 +10,6 @@
 				<%= label_tag option.tag_id, option.option_name %>
 		<% end %>
     </span>
-  <% if check_boxes.help_text.present? %>
-      <img class="tool-tip-icon vtip" title="<%=check_boxes.help_text%>" src="/images/new/icon_help.png"/>
-  <% end%>
+
+  <%= image_tag "new/icon_help.png", title: check_boxes.help_text, class: 'tool-tip-icon vtip' if check_boxes.help_text.present? %>
 </p>

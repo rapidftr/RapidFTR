@@ -8,9 +8,8 @@
 
   </span>
   <%= file_field_tag "child[photo]#{i}" %>
-  <% if photo_upload_box.help_text.present?%>
-      <img class="tool-tip-icon vtip" title="<%=photo_upload_box.help_text%>" src="/images/new/icon_help.png"/>
-  <% end%>
+
+  <%= image_tag "new/icon_help.png", title: photo_upload_box.help_text, class: 'tool-tip-icon vtip' if photo_upload_box.help_text.present? %>
 </p>
 <% end %>
 
@@ -20,4 +19,4 @@
       <%= check_box_tag("delete_child_photo[#{photo.name}]") %>
       <%= thumbnail_tag(@child, photo.name) %>
     </p>
-<% end %> 
+<% end %>

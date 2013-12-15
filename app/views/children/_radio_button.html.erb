@@ -8,8 +8,7 @@
           <%= radio_button_tag radio_button.tag_name_attribute, option.option_name, option.option_name == @child[radio_button.name] %>
           <%= label_tag option.tag_id, option.option_name %>
     <% end %>
-  <% if radio_button.help_text.present?%>
-      <img class="tool-tip-icon vtip" title="<%=radio_button.help_text%>" src="/images/new/icon_help.png"/>
-  <% end%>
+
+  <%= image_tag "new/icon_help.png", title: radio_button.help_text, class: 'tool-tip-icon vtip' if radio_button.help_text.present? %>
 </p>
 
