@@ -15,14 +15,13 @@ Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form
   page.should have_xpath("//table[@id='form_sections']/tbody/tr[#{form_order}]/td/a[text()='#{section_name}']")
 end
 
-Then /^I should see the following form sections in this order:$/ do |table|
-  form_section_names = all(:css, "#form_sections tbody tr td a[@class='formSectionLink']").map(&:text)
-  form_section_names.should == table.raw.flatten
+Then /^I should see the following form sections in this order:$/ do |section_names_table|
+  section_names = section_names_table.raw.flatten
+  form_section_page.should_list_the_following_sections(section_names)
 end
 
 Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|
-  #row_for(form_section).should have_css("td:nth-child(2)", :text => expected_description)
-  row_for(form_section).should have_xpath("//td[text()='#{expected_description}']")
+  form_section_page.section_should_have_description(form_section, expected_description)
 end
 
 Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expected_name, form_section|
@@ -42,13 +41,7 @@ Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |for
 end
 
 When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|
-  checkbox = form_section_visibility_checkbox_id(form_section)
-  yes_no = find("//input[@id='#{checkbox}']").checked?
-  if yes_no == false
-    check form_section_visibility_checkbox_id(form_section)
-  else
-    uncheck form_section_visibility_checkbox_id(form_section)
-  end
+  form_section_page.toggle_section_visibility(form_section)
 end
 
 Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ do |form_section|
@@ -110,19 +103,12 @@ Then /^I should find the form section with following attributes:$/ do |form_sect
   actual_order.should == expected_order
 end
 
-
-
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
-  step 'I follow "Add Field"'
-  step 'I wait until "field_display_name_en" is visible'
-  step 'I follow "Text Field"'
-  step "I fill in \"field_display_name_en\" with \"#{display_name}\""
-  step "I fill in \"Help text\" with \"#{help_text}\""
-  step 'I press "Save Details" within "#new_field"'
+  form_section_page.create_text_field(display_name, help_text)
 end
 
 Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|
-  page.should_not have_xpath "//tr[@id=basic_details_row and contains(., '#{link}')]"
+  form_section_page.should_not_see_the_manage_fields_link
 end
 
 def row_for(section_name)
@@ -146,7 +132,12 @@ When /^I click Cancel$/ do
   click_link('Cancel')
 end
 
-
 Then /^the "([^"]*)" checkbox should be assignable$/ do |field|
   find(:xpath,"//input[@id='#{field}']").should be_checked
+end
+
+private
+
+def form_section_page
+  FormSectionPage.new(Capybara.current_session)
 end

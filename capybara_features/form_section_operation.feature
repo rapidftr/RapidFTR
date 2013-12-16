@@ -124,7 +124,6 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
       | Other hidden section |
       | Other visible section|
 
-
   Scenario: Can create a form section disabled
 
     Given I am on form section page
