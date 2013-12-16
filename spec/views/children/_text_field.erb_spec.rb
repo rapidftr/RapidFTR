@@ -13,8 +13,7 @@ describe "children/_text_field.html.erb" do
     :help_text => "This is my help text"
 
     render :partial => 'children/text_field', :locals => { :text_field => text_field }, :formats => [:html], :handlers => [:erb]
-
-    rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
+    rendered.should have_tag("img.vtip")
 
   end
 
@@ -24,8 +23,7 @@ describe "children/_text_field.html.erb" do
     :type => 'text_field'
 
     render :partial => 'children/text_field', :locals => { :text_field => text_field }, :formats => [:html], :handlers => [:erb]
-
-    rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
+    rendered.should_not have_tag("img.vtip")
   end
 
 end

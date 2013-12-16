@@ -13,8 +13,7 @@ describe "children/_numeric_field.html.erb" do
     :help_text => "This is my help text"
 
     render :partial => 'children/numeric_field', :locals => { :numeric_field => numeric_field }, :formats => [:html], :handlers => [:erb]
-
-    rendered.should be_include("<img class=\"tool-tip-icon vtip\"")
+    rendered.should have_tag("img.vtip")
   end
 
   it "should not include image for tooltip when help text not exists" do
@@ -23,8 +22,7 @@ describe "children/_numeric_field.html.erb" do
     :type => 'numeric_field'
 
     render :partial => 'children/numeric_field', :locals => { :numeric_field => numeric_field }, :formats => [:html], :handlers => [:erb]
-
-    rendered.should_not be_include("<img class=\"tool-tip-icon vtip\"")
+    rendered.should_not have_tag("img.vtip")
   end
 
 end

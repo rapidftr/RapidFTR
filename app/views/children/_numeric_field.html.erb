@@ -6,8 +6,7 @@
   <span class="<%= klass %>">
     <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %>
   </span>
-  <% if numeric_field.help_text.present?%>
-      <img class="tool-tip-icon vtip" title="<%=numeric_field.help_text%>" src="/images/new/icon_help.png"/>
-  <% end%>
+
+  <%= image_tag "new/icon_help.png", title: numeric_field.help_text, class: 'tool-tip-icon vtip' if numeric_field.help_text.present? %>
 
 </p>

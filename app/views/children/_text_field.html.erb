@@ -3,7 +3,6 @@
       <%= label_tag text_field.tag_name_attribute, t(text_field.name, :default => text_field.display_name), :class=>'key' %>
   </span>
   <%= text_field_tag text_field.tag_name_attribute, @child[text_field.name] %>
-  <% if text_field.help_text.present?%>
-      <img class="tool-tip-icon vtip" title="<%=text_field.help_text%>" src="/images/new/icon_help.png"/>
-  <% end%>
+
+  <%= image_tag "new/icon_help.png", title: text_field.help_text, class: 'tool-tip-icon vtip' if text_field.help_text.present? %>
 </p>

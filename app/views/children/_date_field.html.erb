@@ -5,7 +5,6 @@
   </span>
   <%= text_field_tag date_field.tag_name_attribute, @child[date_field.name] %>
   <%= javascript_tag "$(document).ready(function(){ $(\"##{date_field.tag_id}\").datepicker({ dateFormat: 'dd/mm/yy' }); });" %>
-  <% if date_field.help_text.present?%>
-      <img class="tool-tip-icon vtip" title="<%=date_field.help_text%>" src="/images/new/icon_help.png"/>
-  <% end%>
+
+  <%= image_tag "new/icon_help.png", class: 'tool-tip-icon vtip', title: date_field.help_text if date_field.help_text.present? %>
 </p>
