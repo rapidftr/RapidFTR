@@ -6,7 +6,8 @@
         <% notification_for_user = User.find_by_user_name notification.user_name %>
         <li>
           <% if notification_for_user.nil? %>
-            <%= "#{notification.user_name} at #{notification.created_at.strftime('%Y/%m/%d')}. This username does not currently exist in the system. #{link_to("[hide]", hide_password_recovery_request_path(notification), :method => :delete) }".html_safe %>
+            <%= "#{notification.user_name}" %>  
+            <%= " at #{notification.created_at.strftime('%Y/%m/%d')}. This username does not currently exist in the system. #{link_to("[hide]", hide_password_recovery_request_path(notification), :method => :delete) }".html_safe %>
           <% else %>
             <%= "#{link_to notification.user_name, user_path(notification_for_user)} at #{notification.created_at.strftime('%Y/%m/%d')}. #{link_to("hide", hide_password_recovery_request_path(notification), :method => :delete)}".html_safe %>
           <% end %>
