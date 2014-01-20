@@ -24,10 +24,6 @@ Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$
   form_section_page.section_should_have_description(form_section, expected_description)
 end
 
-Then /^I should see the name "([^\"]*)" for form section "([^\"]*)"$/ do |expected_name, form_section|
-  row_for(form_section).should have_css("td:nth-child(3)", :text => expected_name)
-end
-
 Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |form_section, visibility|
   #within row_xpath_for(form_section) do
   #  page.should have_css("td[3] input", :checked  => (visibility == 'hidden'))
@@ -86,15 +82,6 @@ end
 Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
   row = Nokogiri::HTML(page.body).css("##{field_name}Row").first
   row.inner_html.should include(arrow_name)
-end
-
-And /^I move field "([^\"]*)" up$/ do |field_name|
-  page.find(:xpath, "//td[text()=\"#{field_name}\"]/parent::*").find(:css, "a.moveUp").click
-end
-
-
-And /^I move field "([^\"]*)" down$/ do |field_name|
-  page.find(:xpath, "//td[text()=\"#{field_name}\"]/parent::*").find(:css, "a.moveDown").click
 end
 
 Then /^I should find the form section with following attributes:$/ do |form_section_fields|
