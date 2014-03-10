@@ -26,4 +26,6 @@ RapidFTR::Application.configure do
   # Asset pipeline
   config.serve_static_assets = true
   config.static_cache_control = "public, max-age=3600"
+
+  config.eager_load = false
 end

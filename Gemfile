@@ -4,13 +4,13 @@ ruby '1.9.3'
 gem 'rapidftr_addon', :git => 'https://github.com/rapidftr/rapidftr-addon.git', :branch => 'master'
 gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-cpims.git', :branch => 'master'
 
-gem 'couchrest',      '0.34'
+gem 'couchrest',      '~> 1.2.0'
 gem 'mime-types',     '1.16'
 gem 'mini_magick',    '1.3.2'
 gem 'pdf-reader',     '0.8.6'
 gem 'prawn',          '0.8.4'
-gem 'rails',          '3.2.16'
-gem 'rest-client',    '1.3.0'
+gem 'rails',          '4.0.3'
+gem 'rest-client',    '~> 1.6.1'
 gem 'uuidtools',      '~> 2.1.1'
 gem 'validatable',    '1.6.7'
 gem 'dynamic_form',   '~> 1.1.4'
@@ -25,7 +25,6 @@ gem 'i18n-js',        '~> 2.1.2'
 gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => 'v8'
 gem 'os',             '~> 0.9.6'
 gem 'thin',           '~> 1.6.1', :platforms => :ruby, :require => false
-gem 'encrypted-cookie-store', '~> 1.0'
 gem 'request_exception_handler'
 gem 'multi_json',     '~> 1.8.2'
 gem 'sunspot_solr',   '2.0.0'
@@ -35,10 +34,12 @@ gem 'rufus-scheduler', '~> 2.0.18', :require => false
 gem 'daemons',         '~> 1.1.9',  :require => false
 
 group :development, :assets, :cucumber do
-  gem 'sass-rails',    '~> 3.2.3'
-  gem 'compass-rails', '~> 1.0.3'
-  gem 'coffee-rails',  '~> 3.2.1'
+  gem 'sass-rails',    '~> 4.0.1'
+  gem 'compass-rails', '~> 1.1.3'
+  gem 'coffee-rails',  '~> 4.0.1'
   gem 'uglifier',      '~> 2.0.1'
+  gem 'pry'
+  gem 'pry-debugger'
 end
 
 group :test, :cucumber do

@@ -33,4 +33,7 @@ RapidFTR::Application.configure do
   config.assets.compress = true
   config.assets.compile = false
   config.assets.digest = true
+
+  # TODO is production ?
+  config.eager_load = true
 end

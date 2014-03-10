@@ -1,4 +1,5 @@
 require 'delegate'
+require 'active_model'
 
 module RapidFTR
   module Model
