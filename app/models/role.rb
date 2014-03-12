@@ -1,23 +1,24 @@
-class Role < CouchRestRails::Document
+class Role < CouchRest::Model::Base
   use_database :role
 
-  include CouchRest::Validation
   include RapidFTR::Model
 
   property :name
   property :description
   property :permissions, :type => [String]
 
-  view_by :name,
-    :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'Role') && doc['name']) {
-                emit(doc['name'], doc);
-             }
-          }"
+  design do
+    view :by_name,
+            :map => "function(doc) {
+                if ((doc['couchrest-type'] == 'Role') && doc['name']) {
+                  emit(doc['name'], doc);
+                }
+            }"
+  end
 
-  validates_presence_of :name
-  validates_presence_of :permissions, :message => I18n.t("errors.models.role.permission_presence")
-  validates_with_method :name, :method => :is_name_unique, :if => :name
+#  validates_presence_of :name
+#  validates_presence_of :permissions, :message => I18n.t("errors.models.role.permission_presence")
+#  validates_with_method :name, :method => :is_name_unique, :if => :name
 
   before_save :generate_id
 

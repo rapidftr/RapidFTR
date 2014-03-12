@@ -1,4 +1,4 @@
-class SuggestedField   < CouchRestRails::Document
+class SuggestedField   < CouchRest::Model::Base
   use_database :suggested_field
   
   include RapidFTR::Model

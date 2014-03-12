@@ -1,4 +1,4 @@
-class Session < CouchRestRails::Document
+class Session < CouchRest::Model::Base
   use_database :sessions
 
   include RapidFTR::Model
@@ -6,7 +6,9 @@ class Session < CouchRestRails::Document
   property :imei
   property :user_name
 
-  view_by :user_name
+  design do
+    view :by_user_name
+  end
 
   def self.for_user( user, imei)
     Session.new(

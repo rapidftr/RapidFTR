@@ -1,29 +1,31 @@
-class FormSection < CouchRestRails::Document
-  include CouchRest::Validation
+class FormSection < CouchRest::Model::Base
   include RapidFTR::Model
   include PropertiesLocalization
   use_database :form_section
   localize_properties [:name, :help_text, :description]
   property :unique_id
-  property :visible, :cast_as => 'boolean', :default => true
-  property :order, :type => Integer
-  property :fields, :cast_as => ['Field']
-  property :editable, :cast_as => 'boolean', :default => true
-  property :fixed_order, :cast_as => 'boolean', :default => false
-  property :perm_visible, :cast_as => 'boolean', :default => false
-  property :perm_enabled, :cast_as => 'boolean'
-  property :validations, :type => [String]
+  property :visible, TrueClass, :default => true
+  property :order, Integer
+  property :fields, [Field]
+  property :editable, TrueClass, :default => true
+  property :fixed_order, TrueClass, :default => false
+  property :perm_visible, TrueClass, :default => false
+  property :perm_enabled, TrueClass
+  property :validations, [String]
   property :base_language, :default=>'en'
-  view_by :unique_id
-  view_by :order
-  validates_presence_of "name_#{I18n.default_locale}", :message => I18n.t("errors.models.form_section.presence_of_name")
-  validates_with_method :name, :method => :valid_presence_of_base_language_name
-  validates_with_method :name, :method => :validate_name_format
-  validates_with_method :unique_id, :method => :validate_unique_id
-  validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :visible, :method => :validate_visible_field, :message => I18n.t("errors.models.form_section.visible_method")
-  validates_with_method :fixed_order, :method => :validate_fixed_order, :message => I18n.t("errors.models.form_section.fixed_order_method")
-  validates_with_method :perm_visible, :method => :validate_perm_visible, :message => I18n.t("errors.models.form_section.perm_visible_method")
+
+  design do
+    view :by_unique_id
+    view :by_order
+  end
+#  validates_presence_of "name_#{I18n.default_locale}", :message => I18n.t("errors.models.form_section.presence_of_name")
+#  validates_with_method :name, :method => :valid_presence_of_base_language_name
+#  validates_with_method :name, :method => :validate_name_format
+#  validates_with_method :unique_id, :method => :validate_unique_id
+#  validates_with_method :name, :method => :validate_unique_name
+#  validates_with_method :visible, :method => :validate_visible_field, :message => I18n.t("errors.models.form_section.visible_method")
+#  validates_with_method :fixed_order, :method => :validate_fixed_order, :message => I18n.t("errors.models.form_section.fixed_order_method")
+#  validates_with_method :perm_visible, :method => :validate_perm_visible, :message => I18n.t("errors.models.form_section.perm_visible_method")
 
   def valid_presence_of_base_language_name
     if base_language==nil
@@ -33,9 +35,9 @@ class FormSection < CouchRestRails::Document
     [!(base_lang_name.nil?||base_lang_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
   end
 
-  def initialize args={}
+  def initialize(args={}, args1={})
     self["fields"] = []
-    super args
+    super args, args1
     create_unique_id
   end
 

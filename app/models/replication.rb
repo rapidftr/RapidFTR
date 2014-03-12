@@ -1,26 +1,34 @@
-class Replication < CouchRestRails::Document
+class Replication < CouchRest::Model::Base
   MODELS_TO_SYNC = [ Role, Child, User, MobileDbKey, Device ]
   STABLE_WAIT_TIME = 2.minutes
 
-  include CouchRest::Validation
   include RapidFTR::Model
 
   use_database :replication_config
 
   property :remote_app_url
-  property :remote_couch_config, :cast_as => 'Hash', :default => {}
+  property :remote_couch_config, Hash, :default => {}
 
   property :description
   property :username
   property :password
-  property :needs_reindexing, :cast_as => :boolean, :default => true
+  property :needs_reindexing, TrueClass, :default => true
 
-  validates_presence_of :remote_app_url
-  validates_presence_of :description
-  validates_presence_of :username
-  validates_presence_of :password
-  validates_with_method :remote_app_url, :method => :validate_remote_app_url
-  validates_with_method :save_remote_couch_config
+  design do
+    view :all,
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'Replication') {
+                    emit(doc['_id'],1);
+                }
+            }"
+  end
+
+#  validates_presence_of :remote_app_url
+#  validates_presence_of :description
+#  validates_presence_of :username
+#  validates_presence_of :password
+#  validates_with_method :remote_app_url, :method => :validate_remote_app_url
+#  validates_with_method :save_remote_couch_config
 
   before_save   :normalize_remote_app_url
   before_save   :mark_for_reindexing

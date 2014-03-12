@@ -1,7 +1,6 @@
-class ContactInformation < CouchRestRails::Document
+class ContactInformation < CouchRest::Model::Base
   use_database :contact_information
 
-  include CouchRest::Validation
   include RapidFTR::Model
 
   property :id

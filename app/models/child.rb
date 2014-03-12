@@ -1,6 +1,6 @@
-class Child < CouchRestRails::Document
+class Child < CouchRest::Model::Base
   use_database :child
-  include CouchRest::Validation
+
   require "uuidtools"
   include RecordHelper
   include RapidFTR::Model
@@ -25,27 +25,24 @@ class Child < CouchRestRails::Document
   property :unique_identifier
   property :created_organisation
   property :created_by
-  property :reunited, :cast_as => :boolean
-  property :flag, :cast_as => :boolean
-  property :duplicate, :cast_as => :boolean
-  property :investigated, :cast_as => :boolean
-  property :verified, :cast_as => :boolean
+  property :reunited, TrueClass
+  property :flag, TrueClass
+  property :duplicate, TrueClass
+  property :investigated, TrueClass
+  property :verified, TrueClass
   property :verified
 
-  validates_with_method :validate_photos_size
-  validates_with_method :validate_photos
-  validates_with_method :validate_audio_size
-  validates_with_method :validate_audio_file_name
-  validates_fields_of_type Field::NUMERIC_FIELD
-  validates_with_method :validate_duplicate_of
-  validates_fields_of_type Field::TEXT_AREA
-  validates_fields_of_type Field::TEXT_FIELD
-  validates_with_method :created_at, :method => :validate_created_at
-  validates_with_method :validate_has_at_least_one_field_value
-
-
-  view_by :protection_status, :gender, :ftr_status
-  validates_with_method :last_updated_at, :method => :validate_last_updated_at
+#  validates_with_method :validate_photos_size
+#  validates_with_method :validate_photos
+#  validates_with_method :validate_audio_size
+#  validates_with_method :validate_audio_file_name
+#  validates_fields_of_type Field::NUMERIC_FIELD
+#  validates_with_method :validate_duplicate_of
+#  validates_fields_of_type Field::TEXT_AREA
+#  validates_fields_of_type Field::TEXT_FIELD
+#  validates_with_method :created_at, :method => :validate_created_at
+#  validates_with_method :validate_has_at_least_one_field_value
+#  validates_with_method :last_updated_at, :method => :validate_last_updated_at
 
   def initialize *args
     self['photo_keys'] ||= []
@@ -69,161 +66,166 @@ class Child < CouchRestRails::Document
     child
   end
 
-  view_by :name,
-          :map => "function(doc) {
-              if (doc['couchrest-type'] == 'Child')
-             {
-                if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
-                  emit(doc['name'], doc);
+  design do
+      view :by_protection_status_and_gender_and_ftr_status
+
+      view :by_name,
+              :map => "function(doc) {
+                  if (doc['couchrest-type'] == 'Child')
+                 {
+                    if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                      emit(doc['name'], doc);
+                    }
+                 }
+              }"
+
+      ['created_at', 'name', 'flag_at', 'reunited_at'].each do |field|
+        view "by_all_view_with_created_by_#{field}",
+                :map => "function(doc) {
+                    var fDate = doc['#{field}'];
+                    if (doc['couchrest-type'] == 'Child')
+                    {
+                      emit(['all', doc['created_by'], fDate], doc);
+                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                        emit(['flag', doc['created_by'], fDate], doc);
+                      }
+                      if (doc.hasOwnProperty('reunited')) {
+                        if (doc['reunited'] == 'true') {
+                          emit(['reunited', doc['created_by'], fDate], doc);
+                        } else {
+                          emit(['active', doc['created_by'], fDate], doc);
+                        }
+                      } else {
+                        emit(['active', doc['created_by'], fDate], doc);
+                      }
+                   }
+                }"
+
+        view "by_all_view_#{field}",
+                :map => "function(doc) {
+                    var fDate = doc['#{field}'];
+                    if (doc['couchrest-type'] == 'Child')
+                    {
+                      emit(['all', fDate], doc);
+                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                        emit(['flag', fDate], doc);
+                      }
+
+                      if (doc.hasOwnProperty('reunited')) {
+                        if (doc['reunited'] == 'true') {
+                          emit(['reunited', fDate], doc);
+                        } else {
+                         if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
+                          emit(['active', fDate], doc);
+                        }
+                        }
+                      } else {
+                         if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
+                                        emit(['active', fDate], doc);
+                      }
+                      }
+                   }
+                }"
+
+        view "by_all_view_#{field}_count",
+                :map => "function(doc) {
+                    if (doc['couchrest-type'] == 'Child')
+                   {
+                      emit(['all', doc['created_by']], 1);
+                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                        emit(['flag', doc['created_by']], 1);
+                      }
+                      if (doc.hasOwnProperty('reunited')) {
+                        if (doc['reunited'] == 'true') {
+                          emit(['reunited', doc['created_by']], 1);
+                        } else {
+                          emit(['active', doc['created_by']], 1);
+                        }
+                      } else {
+                        emit(['active', doc['created_by']], 1);
+                      }
+                   }
+                }"
+
+        view "by_all_view_with_created_by_#{field}_count",
+                :map => "function(doc) {
+                    if (doc['couchrest-type'] == 'Child')
+                   {
+                      emit(['all', doc['created_by']], 1);
+                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                        emit(['flag', doc['created_by']], 1);
+                      }
+                      if (doc.hasOwnProperty('reunited')) {
+                        if (doc['reunited'] == 'true') {
+                          emit(['reunited', doc['created_by']], 1);
+                        } else {
+                          emit(['active', doc['created_by']], 1);
+                        }
+                      } else {
+                        emit(['active', doc['created_by']], 1);
+                      }
+                   }
+                }"
+      end
+
+      view :by_flag,
+              :map => "function(doc) {
+                    if (doc.hasOwnProperty('flag'))
+                   {
+                     if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                       emit(doc['flag'],doc);
+                     }
+                   }
+                }"
+
+      view :by_unique_identifier,
+              :map => "function(doc) {
+                    if (doc.hasOwnProperty('unique_identifier'))
+                   {
+                      emit(doc['unique_identifier'],doc);
+                   }
+                }"
+
+      view :by_short_id,
+              :map => "function(doc) {
+                    if (doc.hasOwnProperty('short_id'))
+                   {
+                      emit(doc['short_id'],doc);
+                   }
+                }"
+
+      view :by_duplicate,
+              :map => "function(doc) {
+                if (doc.hasOwnProperty('duplicate')) {
+                  emit(doc['duplicate'], doc);
                 }
-             }
-          }"
+              }"
 
-  ['created_at', 'name', 'flag_at', 'reunited_at'].each do |field|
-    view_by "all_view_with_created_by_#{field}",
-            :map => "function(doc) {
-                var fDate = doc['#{field}'];
-                if (doc['couchrest-type'] == 'Child')
-                {
-                  emit(['all', doc['created_by'], fDate], doc);
-                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
-                    emit(['flag', doc['created_by'], fDate], doc);
-                  }
-                  if (doc.hasOwnProperty('reunited')) {
-                    if (doc['reunited'] == 'true') {
-                      emit(['reunited', doc['created_by'], fDate], doc);
-                    } else {
-                      emit(['active', doc['created_by'], fDate], doc);
-                    }
-                  } else {
-                    emit(['active', doc['created_by'], fDate], doc);
-                  }
-               }
-            }"
+      view :by_duplicates_of,
+              :map => "function(doc) {
+                if (doc.hasOwnProperty('duplicate_of')) {
+                  emit(doc['duplicate_of'], doc);
+                }
+              }"
 
-    view_by "all_view_#{field}",
-            :map => "function(doc) {
-                var fDate = doc['#{field}'];
-                if (doc['couchrest-type'] == 'Child')
-                {
-                  emit(['all', fDate], doc);
-                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
-                    emit(['flag', fDate], doc);
-                  }
+      view :by_user_name,
+              :map => "function(doc) {
+                    if (doc.hasOwnProperty('histories')){
+                      for(var index=0; index<doc['histories'].length; index++){
+                          emit(doc['histories'][index]['user_name'], doc)
+                      }
+                   }
+                }"
 
-                  if (doc.hasOwnProperty('reunited')) {
-                    if (doc['reunited'] == 'true') {
-                      emit(['reunited', fDate], doc);
-                    } else {
-                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
-                      emit(['active', fDate], doc);
-                    }
-                    }
-                  } else {
-                     if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
-                                    emit(['active', fDate], doc);
-                  }
-                  }
-               }
-            }"
+      view :by_created_by
 
-    view_by "all_view_#{field}_count",
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'Child')
-               {
-                  emit(['all', doc['created_by']], 1);
-                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
-                    emit(['flag', doc['created_by']], 1);
-                  }
-                  if (doc.hasOwnProperty('reunited')) {
-                    if (doc['reunited'] == 'true') {
-                      emit(['reunited', doc['created_by']], 1);
-                    } else {
-                      emit(['active', doc['created_by']], 1);
-                    }
-                  } else {
-                    emit(['active', doc['created_by']], 1);
-                  }
-               }
-            }"
-
-    view_by "all_view_with_created_by_#{field}_count",
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'Child')
-               {
-                  emit(['all', doc['created_by']], 1);
-                  if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
-                    emit(['flag', doc['created_by']], 1);
-                  }
-                  if (doc.hasOwnProperty('reunited')) {
-                    if (doc['reunited'] == 'true') {
-                      emit(['reunited', doc['created_by']], 1);
-                    } else {
-                      emit(['active', doc['created_by']], 1);
-                    }
-                  } else {
-                    emit(['active', doc['created_by']], 1);
-                  }
-               }
+      view :by_ids_and_revs,
+              :map => "function(doc) {
+              if (doc['couchrest-type'] == 'Child'){
+                emit(doc._id, {_id: doc._id, _rev: doc._rev});
+              }
             }"
   end
-
-  view_by :flag,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('flag'))
-               {
-                 if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
-                   emit(doc['flag'],doc);
-                 }
-               }
-            }"
-
-  view_by :unique_identifier,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('unique_identifier'))
-               {
-                  emit(doc['unique_identifier'],doc);
-               }
-            }"
-
-  view_by :short_id,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('short_id'))
-               {
-                  emit(doc['short_id'],doc);
-               }
-            }"
-
-  view_by :duplicate,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('duplicate')) {
-              emit(doc['duplicate'], doc);
-            }
-          }"
-
-  view_by :duplicates_of,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('duplicate_of')) {
-              emit(doc['duplicate_of'], doc);
-            }
-          }"
-
-  view_by :user_name,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('histories')){
-                  for(var index=0; index<doc['histories'].length; index++){
-                      emit(doc['histories'][index]['user_name'], doc)
-                  }
-               }
-            }"
-
-  view_by :created_by
-  view_by :ids_and_revs,
-          :map => "function(doc) {
-          if (doc['couchrest-type'] == 'Child'){
-            emit(doc._id, {_id: doc._id, _rev: doc._rev});
-          }
-          }"
 
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?

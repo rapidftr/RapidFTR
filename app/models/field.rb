@@ -1,15 +1,14 @@
-class Field < Hash
-  include CouchRest::CastedModel
-  include CouchRest::Validation
+class Field < CouchRest::Model::Base
+  include CouchRest::Model::CastedModel
   include RapidFTR::Model
   include PropertiesLocalization
 
 
   property :name
-  property :visible, :cast_as => 'boolean', :default => true
+  property :visible, TrueClass, :default => true
   property :type
-  property :highlight_information , :cast_as=> 'HighlightInformation'
-  property :editable, :cast_as => 'boolean', :default => true
+  property :highlight_information , HighlightInformation
+  property :editable, TrueClass, :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
   property :base_language, :default=>'en'
@@ -55,12 +54,12 @@ class Field < Hash
                         NUMERIC_FIELD    => ""}
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
-  validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :display_name, :method => :validate_unique_display_name
-  validates_with_method :option_strings, :method => :validate_has_2_options
-  validates_with_method :option_strings, :method => :validate_has_a_option
-  validates_with_method :display_name, :method => :validate_name_format
-  validates_with_method :display_name, :method => :valid_presence_of_base_language_name
+#  validates_with_method :name, :method => :validate_unique_name
+#  validates_with_method :display_name, :method => :validate_unique_display_name
+#  validates_with_method :option_strings, :method => :validate_has_2_options
+#  validates_with_method :option_strings, :method => :validate_has_a_option
+#  validates_with_method :display_name, :method => :validate_name_format
+#  validates_with_method :display_name, :method => :valid_presence_of_base_language_name
 
   def validate_name_format
     special_characters = /[*!@#%$\^]/

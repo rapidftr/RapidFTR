@@ -3,19 +3,20 @@
 # The actual report data should be attached as a document
 # If you want multiple attachments - better create multiple Report objects
 
-class Report < CouchRestRails::Document
+class Report < CouchRest::Model::Base
   use_database :report
   include RapidFTR::Model
-  include CouchRest::Validation
 
-  validates_with_method :must_have_attached_report
+#  validates_with_method :must_have_attached_report
 
-  property :as_of_date, :cast_as => 'Date', :init_method => 'parse'
+  property :as_of_date, Date, :init_method => 'parse'
   property :report_type
 
   timestamps!
 
-  view_by :as_of_date
+  design do
+    view :by_as_of_date
+  end
 
   def file_name
     self['_attachments'].keys.first

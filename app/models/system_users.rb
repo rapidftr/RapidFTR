@@ -1,5 +1,5 @@
-class SystemUsers < CouchRestRails::Document
-  include CouchRest::Validation
+class SystemUsers < CouchRest::Model::Base
+
   include RapidFTR::Model
   self.database = COUCHDB_SERVER.database("_users")
 
@@ -9,9 +9,9 @@ class SystemUsers < CouchRestRails::Document
   property :roles
   property :_id
 
-  validates_presence_of :name, :password
-
-  validates_with_method :name, :method => :is_user_name_unique
+#  validates_presence_of :name, :password
+#
+#  validates_with_method :name, :method => :is_user_name_unique
 
   before_save :generate_id, :assign_admin_role
 

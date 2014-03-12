@@ -1,4 +1,4 @@
-class LogEntry < CouchRestRails::Document
+class LogEntry < CouchRest::Model::Base
   use_database :log_entry
   before_save :set_created_at
 
