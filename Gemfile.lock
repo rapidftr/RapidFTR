@@ -321,5 +321,5 @@ DEPENDENCIES
   uglifier (~> 2.0.1)
   uuidtools (~> 2.1.1)
   validatable (= 1.6.7)
-  will_paginate (~> 3.0.4)
+  will_paginate (~> 3.0.5)
   zipruby-compat!

@@ -16,6 +16,13 @@ class Report < CouchRest::Model::Base
 
   design do
     view :by_as_of_date
+
+    view :all,
+      :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Report') {
+            emit(doc._id, null);
+          }
+        }"
   end
 
   def file_name
@@ -38,4 +45,11 @@ class Report < CouchRest::Model::Base
     return true if self['_attachments'] && self['_attachments'].size == 1
     [ false, 'No report file attached!' ] # No need to translate since this is a background activity, not a user-facing activity
   end
+
+  def self.paginate(pagination_options = {})
+    self.paginates_per pagination_options[:per_page] if pagination_options[:per_page]
+    #TODO maybe use send somehow?
+    eval("self.#{pagination_options[:view_name]}(#{pagination_options}).page(#{pagination_options[:page]}).rows")
+  end
+
 end
