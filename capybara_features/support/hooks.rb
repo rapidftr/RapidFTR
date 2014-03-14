@@ -1,6 +1,6 @@
 Before do
-  Child.stub! :index_record => true, :reindex! => true, :build_solar_schema => true
-  Sunspot.stub! :index => true, :index! => true
+  Child.stub :index_record => true, :reindex! => true, :build_solar_schema => true
+  Sunspot.stub :index => true, :index! => true
 end
 
 Before('@search') do

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 describe Api::ChildrenController do
 
@@ -53,7 +54,7 @@ describe Api::ChildrenController do
 
   describe "GET index" do
     it "should render all children as json" do
-      Child.should_receive(:all).and_return(mock(:to_json => "all the children"))
+      Child.should_receive(:all).and_return(double(:to_json => "all the children"))
 
       get :index, :format => "json"
 
@@ -63,7 +64,7 @@ describe Api::ChildrenController do
 
   describe "GET show" do
     it "should render a child record as json" do
-      Child.should_receive(:get).with("123").and_return(mock(:compact => mock(:to_json => "a child record")))
+      Child.should_receive(:get).with("123").and_return(double(:compact => double(:to_json => "a child record")))
       get :show, :id => "123", :format => "json"
       response.body.should == "a child record"
     end
@@ -85,7 +86,7 @@ describe Api::ChildrenController do
 
   describe "POST create" do
     it "should update the child record instead of creating if record already exists" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'old name'})
       child.save!
       controller.stub(:authorize!)
@@ -93,7 +94,7 @@ describe Api::ChildrenController do
       post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
 
       updated_child = Child.by_short_id(:key => child.short_id)
-      updated_child.size.should == 1
+      updated_child.rows.size.should == 1
       updated_child.first.name.should == 'new name'
     end
   end

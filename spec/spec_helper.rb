@@ -10,7 +10,6 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("lib/**/*.rb")].each {|f| require f}
 
 # This clears couchdb between tests.
-CouchRestRails::Tests.setup
 FactoryGirl.find_definitions
 Mime::Type.register 'application/zip', :mock
 

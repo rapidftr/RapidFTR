@@ -14,7 +14,7 @@ describe TestController do
     Rails.application.routes.draw do
 
       # add the route that you need in order to test
-      match '/' => "test#index"
+      get '/', to: "test#index"
 
     end
   end
