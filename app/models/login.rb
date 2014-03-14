@@ -1,4 +1,3 @@
-require 'pry'
 class Login
   include Validatable
   attr_accessor :errors
