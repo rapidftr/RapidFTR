@@ -4,6 +4,17 @@ require 'erb'
 require 'readline'
 
 namespace :db do
+
+    namespace :test do
+    task :prepare do
+      # do nothing - work around
+      # cucumber is calling this
+      # but does not exist anymore
+      # in rails 4
+    end
+  end
+
+
   desc "Seed with data (task manually created during the 3.0 upgrade, as it went missing)"
   task :seed => :environment do
     load(Rails.root.join("db", "seeds.rb"))
@@ -21,7 +32,7 @@ namespace :db do
       **************************************************************
     "
 
-    url       = "http://localhost:5984"
+    url       = "http://localhost:5986"
     user_name = args[:user_name] || get("Enter username for CouchDB: ")
     password  = args[:password]  || get("Enter password for CouchDB: ")
 
@@ -46,8 +57,8 @@ namespace :db do
 
     default_config = {
       "host" => "localhost",
-      "port" => 5984,
-      "https_port" => 6984,
+      "port" => 5986,
+      "https_port" => 6986,
       "database_prefix" => "rapidftr_",
       "username" => user_name,
       "password" => password,
