@@ -3,6 +3,7 @@ class User < CouchRest::Model::Base
   use_database :user
 
   include RapidFTR::Model
+  include RapidFTR::CouchRestRailsBackward
 
   property :full_name
   property :user_name
@@ -101,11 +102,6 @@ class User < CouchRest::Model::Base
   #validates_with_method :user_name, :method => :is_user_name_unique
 
   before_save :generate_id
-
-  def self.view(view_name, options = {})
-    #User.view("by_#{sort_option}_filter_view", {:startkey => [filter_option], :endkey => [filter_option, {}]})
-    self.send(view_name, options)
-  end
 
   def self.all_unverified
     User.by_unverified
