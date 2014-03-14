@@ -227,6 +227,10 @@ class Child < CouchRest::Model::Base
             }"
   end
 
+  def self.view(view_name, options = {})
+    self.send(view_name, options)
+  end
+
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
     self
@@ -245,6 +249,12 @@ class Child < CouchRest::Model::Base
     row_count = self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
     per_page = row_count if per_page == "all"
     [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
+  end
+
+  def self.paginate(pagination_options = {})
+    self.paginates_per pagination_options[:per_page] if pagination_options[:per_page]
+    #TODO maybe use send somehow?
+    eval("self.#{pagination_options[:view_name]}(#{pagination_options}).page(#{pagination_options[:page]}).rows")
   end
 
   def self.build_solar_schema
