@@ -44,15 +44,15 @@ end
 group :test, :cucumber do
   gem 'factory_girl',     '~> 2.6'
 
-  gem 'rspec',            '~> 2.11.0'
-  gem 'rspec-rails',      '~> 2.11.0'
+  gem 'rspec',            '~> 2.14.1'
+  gem 'rspec-rails',      '~> 2.14.1'
   gem 'rspec-instafail',  '~> 0.2.4'
   gem 'jasmine',          '~> 1.3.2'
 
-  gem 'capybara',         '~> 2.1.0'
-  gem 'cucumber',           '~> 1.2.2'
+  gem 'capybara',         '~> 2.2.1'
+  gem 'cucumber',           '~> 1.3.11'
   gem 'cucumber-rails',     '~> 1.4.0', :require => false
-  gem 'selenium-webdriver', '~> 2.30'
+  gem 'selenium-webdriver', '~> 2.40.0'
   gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
 end
