@@ -1,3 +1,5 @@
+require 'pry'
+
 module RecordHelper
   include RapidFTR::Model
   include RapidFTR::Clock
@@ -95,7 +97,7 @@ module RecordHelper
         "duplicate", "duplicate_of"
     ]
     all_fields = field_names + other_fields
-    all_fields.select { |field_name| changed?(field_name) }
+    all_fields.select { |field_name| changed_field?(field_name) }
   end
 
   def changes_for(field_names)
@@ -107,7 +109,7 @@ module RecordHelper
     end
   end
 
-  def changed?(field_name)
+  def changed_field?(field_name)
     return false if self[field_name].blank? && original_data[field_name].blank?
     return true if original_data[field_name].blank?
     if self[field_name].respond_to? :strip
