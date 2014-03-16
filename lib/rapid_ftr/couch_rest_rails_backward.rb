@@ -17,9 +17,14 @@ module RapidFTR
         convert_to_model(design_view)
       end
 
+      #This method returns a CouchRest::Model::Designs::View
+      #If we want the object model, use view_raw.
       def view(view_name, options = {})
-        # CouchRestRails::Document returns the instance model
-        # so do the same thing for compatibility.
+        send(view_name, options)
+      end
+
+      #This method returns the object model instead the view.
+      def view_raw(view_name, options = {})
         convert_to_model(send(view_name, options))
       end
 
