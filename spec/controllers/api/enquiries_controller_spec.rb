@@ -158,7 +158,7 @@ describe Api::EnquiriesController do
     it "should return an error if enquiry does not exist" do
       controller.stub(:authorize!)
       id = "12345"
-      Enquiry.stub!(:get).with(id).and_return(nil)
+      Enquiry.stub(:get).with(id).and_return(nil)
 
       put :update, :id => id, :enquiry => {:id => id, :enquirer_name => "new name"}
 
@@ -295,7 +295,7 @@ describe Api::EnquiriesController do
     it "should fetch a particular enquiry" do
       controller.stub(:authorize!)
 
-      Enquiry.should_receive(:get).with("123").and_return(mock(:to_json => "an enquiry record"))
+      Enquiry.should_receive(:get).with("123").and_return(double(:to_json => "an enquiry record"))
 
       get :show, :id => "123" 
       response.response_code.should == 200

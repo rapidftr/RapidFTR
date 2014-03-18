@@ -54,7 +54,7 @@ describe Enquiry do
 
     describe "timestamp" do
       it "should create a posted_at and created_at fields with the current date" do
-        Clock.stub!(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
+        Clock.stub(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
         enquiry = create_enquiry_with_created_by('some_user', 'some_field' => 'some_value')
         enquiry['posted_at'].should == "2010-01-22 14:05:00UTC"
         enquiry['created_at'].should == "2010-01-22 14:05:00UTC"
@@ -191,7 +191,7 @@ describe Enquiry do
       describe "match_updated_at" do
 
         before do
-          Clock.stub!(:now).and_return(Time.utc(2013, "jan", 01, 00, 00, 0))
+          Clock.stub(:now).and_return(Time.utc(2013, "jan", 01, 00, 00, 0))
           Child.create(:name => "Eduardo aquiles", :location => "Kyangwali", 'created_by' => "One", 'created_organisation' => "stc")
           Child.create(:name => "Batman", :location => "Kampala", 'created_by' => "Two", 'created_organisation' => "stc")
         end
@@ -217,7 +217,7 @@ describe Enquiry do
           enquiry.match_updated_at.should == Time.utc(2013, "jan", 01, 00, 00, 0).to_s
           enquiry.potential_matches.size.should == 1
 
-          Clock.stub!(:now).and_return(Time.utc(2013, "jan", 02, 00, 00, 0).to_s)
+          Clock.stub(:now).and_return(Time.utc(2013, "jan", 02, 00, 00, 0).to_s)
           enquiry.criteria.merge!({"location" => "Kampala"})
           enquiry.save!
 

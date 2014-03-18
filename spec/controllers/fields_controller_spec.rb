@@ -4,7 +4,7 @@ require 'spec_helper'
 describe FieldsController do
   before :each do
     user = User.new(:user_name => 'manager_of_forms')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
+    user.stub(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
     fake_login user
   end
 
@@ -13,7 +13,7 @@ describe FieldsController do
       @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
       SuggestedField.stub(:mark_as_used)
       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
-      FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
+      FormSection.stub(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end
 
     it "should add the new field to the formsection" do
@@ -66,9 +66,9 @@ describe FieldsController do
   describe "edit" do
     it "should render form_section/edit template" do
       @form_section = FormSection.new
-      field = mock('field', :name => 'field1')
-      @form_section.stub!(:fields).and_return([field])
-      FormSection.stub!(:get_by_unique_id).with('unique_id').and_return(@form_section)
+      field = double('field', :name => 'field1')
+      @form_section.stub(:fields).and_return([field])
+      FormSection.stub(:get_by_unique_id).with('unique_id').and_return(@form_section)
       get :edit, :form_section_id => "unique_id", :id => 'field1'
       assigns[:body_class].should == "forms-page"
       assigns[:field].should == field
@@ -82,7 +82,7 @@ describe FieldsController do
       @form_section_id = "fred"
       @field_name = "barney"
       @form_section = FormSection.new
-      FormSection.stub!(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
+      FormSection.stub(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
     end
 
     it "should save the given field in the same order as given" do
@@ -98,11 +98,11 @@ describe FieldsController do
     before :each do
       @form_section_id = "fred"
       @form_section = FormSection.new
-      FormSection.stub!(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
+      FormSection.stub(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
     end
 
     it "should toggle the given field" do
-      fields = [mock(:field, :name => 'bla', :visible => true)]
+      fields = [double(:field, :name => 'bla', :visible => true)]
 
       @form_section.should_receive(:fields).and_return(fields)
       fields.first.should_receive(:visible=).with(false)
@@ -133,8 +133,8 @@ describe FieldsController do
     end
 
     it "should display errors if field could not be saved" do
-      field_with_error = mock("field", :name => "field", :attributes= => [], :errors => ["error"])
-      FormSection.stub(:get_by_unique_id).and_return(mock("form_section", :fields => [field_with_error], :save => false))
+      field_with_error = double("field", :name => "field", :attributes= => [], :errors => ["error"])
+      FormSection.stub(:get_by_unique_id).and_return(double("form_section", :fields => [field_with_error], :save => false))
 
       put :update, :id => "field", :form_section_id => "unique_id",
           :field => {:display_name => "What Country Are You From", :visible => false, :help_text => "new help text"}

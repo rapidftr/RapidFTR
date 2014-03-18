@@ -155,7 +155,7 @@ describe User do
     user = build_user
     user.create!
 
-    Clock.stub!(:now).and_return(now)
+    Clock.stub(:now).and_return(now)
 
     user.add_mobile_login_event(imei, mobile_number)
     user.save
@@ -223,7 +223,7 @@ describe User do
   end
 
   it "should load roles only once" do
-    role = mock("roles")
+    role = double("roles")
     user = build_and_save_user
     Role.should_receive(:get).with(user.role_ids.first).and_return(role)
     user.roles.should == [role]

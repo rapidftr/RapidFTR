@@ -4,7 +4,7 @@ describe Session do
   describe "device blacklisting" do
     it "should not allow blacklisted imei to login" do
       imei = "1335"
-      user = mock(User).as_null_object
+      user = double(User).as_null_object
       Device.stub(:all).and_return([Device.new({:imei => "1335", :blacklisted => true})])
 
       session = Session.for_user(user, imei)
@@ -13,7 +13,7 @@ describe Session do
 
     it "should allow non blacklisted imei to login" do
       imei = "1335"
-      user = mock(User).as_null_object
+      user = double(User).as_null_object
       Device.stub(:all).and_return([Device.new({:imei => "1335", :blacklisted => false})])
 
       session = Session.for_user(user, imei)

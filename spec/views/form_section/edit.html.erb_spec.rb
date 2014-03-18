@@ -66,7 +66,7 @@ describe "form_section/edit.html.erb" do
 
   it "should display forms in system language when user language is different" do
     I18n.default_locale = :fr
-    user = mock('user', :has_permission? => true, :user_name => 'name', :locale => :en)
+    user = double('user', :has_permission? => true, :user_name => 'name', :locale => :en)
     controller.stub(:current_user).and_return(user)
     # view.stub(:current_user).and_return(@user)
 

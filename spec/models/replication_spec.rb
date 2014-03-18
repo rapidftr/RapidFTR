@@ -14,7 +14,7 @@ describe Replication do
   end
 
   before :each do
-    Replication.stub! :models_to_sync => [ Role, Child, User ]
+    Replication.stub :models_to_sync => [ Role, Child, User ]
     @rep = build :replication, :remote_couch_config => {
       "target" => "http://couch:1234",
       "databases" => {
@@ -84,19 +84,19 @@ describe Replication do
     end
 
     it 'should return the couchdb url without the source username and password' do
-      CouchSettings.instance.stub! :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
+      CouchSettings.instance.stub :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
       target_hash = Replication.couch_config
       target_hash[:target].should == "http://couchdb:5986/"
     end
 
     it 'should return HTTPS url when enabled in Couch' do
-      CouchSettings.instance.stub! :ssl_enabled_for_couch? => true, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
+      CouchSettings.instance.stub :ssl_enabled_for_couch? => true, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
       target_hash = Replication.couch_config
       target_hash[:target].should == "https://couchdb:6986/"
     end
 
     it "should include database names of models to sync" do
-      Replication.stub! :models_to_sync => [ User ]
+      Replication.stub :models_to_sync => [ User ]
       Replication.couch_config[:databases].should include "User" => User.database.name
     end
 
@@ -118,7 +118,7 @@ describe Replication do
     it 'should replace localhost in Couch URL with the actual host name from App URL' do
       @rep.remote_app_url = "https://app:3000"
       @rep.username = @rep.password = nil
-      @rep.stub! :remote_couch_config => { "target" => "http://localhost:1234" }
+      @rep.stub :remote_couch_config => { "target" => "http://localhost:1234" }
       @rep.remote_couch_uri.to_s.should == 'http://app:1234/'
     end
 
@@ -136,29 +136,29 @@ describe Replication do
     end
 
     it 'should return configurations for push/pull of user/children/role' do
-      Replication.stub! :models_to_sync => [ User, User, User ]
+      Replication.stub :models_to_sync => [ User, User, User ]
       @rep.should_receive(:push_config).exactly(3).times.with(User).and_return("a")
       @rep.should_receive(:pull_config).exactly(3).times.with(User).and_return("b")
       @rep.build_configs.should == ["a", "b", "a", "b", "a", "b"]
     end
 
     it 'should return all replication documents' do
-      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
+      @rep.stub :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
       @rep.fetch_configs.should == [ @default_config, @default_config ]
     end
 
     it 'should cache all replication documents' do
-      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
+      @rep.stub :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
       @rep.fetch_configs.should == [ @default_config, @default_config ]
-      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, @default_config, @default_config ]
+      @rep.stub :replicator_docs =>  [ { "test" => "1" }, @default_config, @default_config, @default_config ]
       @rep.fetch_configs.should == [ @default_config, @default_config ]
     end
 
     it 'should invalidate replication document cache' do
-      @rep.stub! :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
+      @rep.stub :replicator_docs =>  [ { "test" => "1" }, @default_config, { "test" => "2" }, @default_config ]
       @rep.fetch_configs.should == [ @default_config, @default_config ]
       @rep.send :invalidate_fetch_configs
-      @rep.stub! :replicator_docs => [ { "test" => "1" }, @default_config, @default_config, @default_config ]
+      @rep.stub :replicator_docs => [ { "test" => "1" }, @default_config, @default_config, @default_config ]
       @rep.fetch_configs.should == [ @default_config, @default_config, @default_config ]
     end
 
@@ -170,8 +170,8 @@ describe Replication do
 
     it 'should start replication' do
       configuration = double()
-      @rep.stub! :build_configs => [ configuration, configuration, configuration ]
-      @rep.stub! :save_without_callbacks => nil
+      @rep.stub :build_configs => [ configuration, configuration, configuration ]
+      @rep.stub :save_without_callbacks => nil
 
       @rep.send(:replicator).should_receive(:save_doc).exactly(3).times.with(configuration).and_return(nil)
       @rep.start_replication
@@ -179,8 +179,8 @@ describe Replication do
 
     it 'should stop replication and invalidate fetch config' do
       configuration = double()
-      @rep.stub! :fetch_configs => [ configuration, configuration, configuration ]
-      @rep.stub! :save_without_callbacks => nil
+      @rep.stub :fetch_configs => [ configuration, configuration, configuration ]
+      @rep.stub :save_without_callbacks => nil
 
       @rep.send(:replicator).should_receive(:delete_doc).exactly(3).times.with(configuration).and_return(nil)
       @rep.should_receive(:invalidate_fetch_configs).and_return(nil)
@@ -195,13 +195,13 @@ describe Replication do
 
   describe 'timestamp' do
     it 'timestamp should be nil' do
-      @rep.stub! :fetch_configs => []
+      @rep.stub :fetch_configs => []
       @rep.timestamp.should be_nil
     end
 
     it 'timestamp should be latest timestamp' do
       latest = 5.minutes.ago
-      @rep.stub! :fetch_configs => [
+      @rep.stub :fetch_configs => [
         @default_config.merge("_replication_state_time" => 1.day.ago.to_s),
         @default_config.merge("_replication_state_time" => latest.to_s),
         @default_config.merge("_replication_state_time" => 2.days.ago.to_s)
@@ -213,11 +213,11 @@ describe Replication do
 
   describe 'status' do
     before :each do
-      @rep.stub! :timestamp => nil
+      @rep.stub :timestamp => nil
     end
 
     it 'statuses should return array of statuses' do
-      @rep.stub! :fetch_configs => [
+      @rep.stub :fetch_configs => [
         @default_config.merge("_replication_state" => 'a'), @default_config.merge("_replication_state" => 'b'),
         @default_config.merge("_replication_state" => 'c'), @default_config.merge("_replication_state" => 'd')
       ]
@@ -225,44 +225,44 @@ describe Replication do
     end
 
     it 'statuses should substitute triggered if status is empty' do
-      @rep.stub! :fetch_configs => [
+      @rep.stub :fetch_configs => [
         @default_config.merge("_replication_state" => nil), @default_config.merge("_replication_state" => 'd')
       ]
       @rep.statuses.should == [ 'triggered', 'd' ]
     end
 
     it 'active should be false if no replication was configured' do
-      @rep.stub! :statuses => [ ]
+      @rep.stub :statuses => [ ]
       @rep.should_not be_active
     end
 
     it 'active should be false if no operations have status as "triggered"' do
-      @rep.stub! :statuses => [ "abcd", "abcd" ]
+      @rep.stub :statuses => [ "abcd", "abcd" ]
       @rep.should_not be_active
     end
 
     it 'active should be true if any operation has status as "triggered"' do
-      @rep.stub! :statuses => [ "triggered", "abcd" ]
+      @rep.stub :statuses => [ "triggered", "abcd" ]
       @rep.should be_active
     end
 
     it 'active should be true if the replications completed less than 2 mins ago' do
-      @rep.stub! :statuses => [ "completed", "error" ], :timestamp => 1.minute.ago
+      @rep.stub :statuses => [ "completed", "error" ], :timestamp => 1.minute.ago
       @rep.should be_active
     end
 
     it 'active should be false if the replications completed more than 2 mins ago' do
-      @rep.stub! :statuses => [ "completed", "error" ], :timestamp => 3.minutes.ago
+      @rep.stub :statuses => [ "completed", "error" ], :timestamp => 3.minutes.ago
       @rep.should_not be_active
     end
 
     it 'success should be true if all operations have status as "completed"' do
-      @rep.stub! :statuses => [ "completed", "completed" ]
+      @rep.stub :statuses => [ "completed", "completed" ]
       @rep.should be_success
     end
 
     it 'success should be false if any operation doesnt have status as "completed"' do
-      @rep.stub! :statuses => [ "completed", "abcd" ]
+      @rep.stub :statuses => [ "completed", "abcd" ]
       @rep.should_not be_success
     end
   end
@@ -283,14 +283,14 @@ describe Replication do
     end
 
     it 'should trigger reindex after completing' do
-      @rep.stub! :active? => false, :needs_reindexing? => true
+      @rep.stub :active? => false, :needs_reindexing? => true
       @rep.should_receive(:trigger_local_reindex).and_return(nil)
       @rep.should_receive(:trigger_remote_reindex).and_return(nil)
       @rep.check_status_and_reindex
     end
 
     it 'should not trigger reindex twice' do
-      @rep.stub! :active? => false, :needs_reindexing? => false
+      @rep.stub :active? => false, :needs_reindexing? => false
       @rep.should_not_receive(:trigger_local_reindex)
       @rep.should_not_receive(:trigger_remote_reindex)
       @rep.check_status_and_reindex
@@ -305,7 +305,7 @@ describe Replication do
 
     it 'should trigger remote reindexing' do
       uri = @rep.remote_app_uri
-      @rep.stub! :remote_app_uri => uri
+      @rep.stub :remote_app_uri => uri
 
       Net::HTTP.should_receive(:post_form).with(uri, {}).and_return(nil)
       @rep.send :trigger_remote_reindex
@@ -318,7 +318,7 @@ describe Replication do
 
       replication = build :replication
       replication.should_receive(:check_status_and_reindex).and_return(nil)
-      Replication.stub! :all => [ replication ]
+      Replication.stub :all => [ replication ]
 
       Replication.schedule scheduler
     end

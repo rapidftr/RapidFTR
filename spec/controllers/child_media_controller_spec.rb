@@ -38,14 +38,14 @@ describe ChildMediaController do
 
   describe '#send_photo_data' do
     it 'should add expires header if timestamp is supplied in query params' do
-      controller.stub! :send_data => nil
+      controller.stub :send_data => nil
       controller.stub :params => { :ts => 'test' }
       controller.should_receive(:expires_in).with(1.year, :public => true)
       controller.send :send_photo_data
     end
 
     it 'should not add expires header for normal requests' do
-      controller.stub! :send_data => nil
+      controller.stub :send_data => nil
       controller.stub :params => { }
       controller.should_not_receive(:expires_in)
       controller.send :send_photo_data

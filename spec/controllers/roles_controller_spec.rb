@@ -6,7 +6,7 @@ describe RolesController do
 
     it "should show page name" do
       fake_login_as(Permission::ROLES[:view])
-      mock = mock()
+      mock = double()
       Role.should_receive(:by_name).and_return([mock])
       get :index
       assigns[:page_name].should == "Roles"
@@ -14,7 +14,7 @@ describe RolesController do
 
     it "should allow user to view the roles" do
       fake_login_as(Permission::ROLES[:view])
-      mock = mock()
+      mock = double()
       Role.should_receive(:by_name).and_return([mock])
       get :index
       response.should_not be_forbidden
@@ -125,7 +125,7 @@ describe RolesController do
   describe "POST create" do
     it "should not allow invalid user to create roles" do
       fake_login_as(Permission::ROLES[:view])
-      role_mock = mock()
+      role_mock = double()
       Role.should_not_receive(:new).with(anything)
       post :create, :role => role_mock
       response.should be_forbidden
@@ -143,7 +143,7 @@ describe RolesController do
 
     it "should take back to new page if save failed" do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      role_mock = mock()
+      role_mock = double()
       role_mock.should_receive(:save).and_return(false)
       Role.should_receive(:new).with(anything).and_return(role_mock)
       post :create, :role => role_mock

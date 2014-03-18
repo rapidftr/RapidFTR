@@ -3,7 +3,7 @@ require 'spec_helper'
 module Addons
   describe PdfExportTask do
     before :each do
-      PdfExportTask.stub! :enabled? => true
+      PdfExportTask.stub :enabled? => true
       @task = PdfExportTask.new
     end
 

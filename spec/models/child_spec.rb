@@ -5,7 +5,7 @@ describe Child do
   describe 'build solar schema' do
 
     it "should build with free text search fields" do
-      Field.stub!(:all_searchable_field_names).and_return []
+      Field.stub(:all_searchable_field_names).and_return []
       Child.build_text_fields_for_solar.should == ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name","created_organisation"]
     end
 
@@ -47,31 +47,31 @@ describe Child do
     end
 
     it "should return empty array if search is not valid" do
-      search = mock("search", :query => "", :valid? => false)
+      search = double("search", :query => "", :valid? => false)
       Child.search(search).should == []
     end
 
     it "should return empty array for no match" do
-      search = mock("search", :query => "Nothing", :valid? => true)
+      search = double("search", :query => "Nothing", :valid? => true)
       Child.search(search).should == [[],[]]
     end
 
     it "should return an exact match" do
       create_child("Exact")
-      search = mock("search", :query => "Exact", :valid? => true)
+      search = double("search", :query => "Exact", :valid? => true)
       Child.search(search).first.map(&:name).should == ["Exact"]
     end
 
     it "should return a match that starts with the query" do
       create_child("Starts With")
-      search = mock("search", :query => "Star", :valid? => true)
+      search = double("search", :query => "Star", :valid? => true)
       Child.search(search).first.map(&:name).should == ["Starts With"]
     end
 
     it "should return a fuzzy match" do
       create_child("timithy")
       create_child("timothy")
-      search = mock("search", :query => "timothy", :valid? => true)
+      search = double("search", :query => "timothy", :valid? => true)
       Child.search(search).first.map(&:name).should =~ ["timithy", "timothy"]
     end
 
@@ -79,7 +79,7 @@ describe Child do
       child_active = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
       child_duplicate = Child.create(:name => "aquiles", :duplicate => true, 'created_by' => "me", 'created_organisation' => "stc")
 
-      search = mock("search", :query => "aquiles", :valid? => true)
+      search = double("search", :query => "aquiles", :valid? => true)
       result = Child.search(search)
 
       result.first.map(&:name).should == ["eduardo aquiles"]
@@ -89,7 +89,7 @@ describe Child do
       child_active = Child.create(:name => "eduardo aquiles", :duplicate => false, 'created_by' => "me", 'created_organisation' => "stc")
       child_duplicate = Child.create(:name => "aquiles", :duplicate => true, 'created_by' => "me", 'created_organisation' => "stc")
 
-      search = mock("search", :query => "aquiles", :valid? => true)
+      search = double("search", :query => "aquiles", :valid? => true)
       result = Child.search(search)
 
       result.first.map(&:name).should == ["eduardo aquiles"]
@@ -99,7 +99,7 @@ describe Child do
       uuid = UUIDTools::UUID.random_create.to_s
       Child.create("name" => "kev", :unique_identifier => "1234567890", "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
       Child.create("name" => "kev", :unique_identifier => "0987654321", "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
-      search = mock("search", :query => "7654321", :valid? => true)
+      search = double("search", :query => "7654321", :valid? => true)
       results, full_results = Child.search(search)
       results.length.should == 1
       results.first[:unique_identifier].should == "0987654321"
@@ -108,33 +108,33 @@ describe Child do
 
     it "should match more than one word" do
       create_child("timothy cochran")
-      search = mock("search", :query => "timothy cochran", :valid? => true)
+      search = double("search", :query => "timothy cochran", :valid? => true)
       Child.search(search).first.map(&:name).should =~ ["timothy cochran"]
     end
 
     it "should match more than one word with fuzzy search" do
       create_child("timothy cochran")
-      search = mock("search", :query => "timithy cichran", :valid? => true)
+      search = double("search", :query => "timithy cichran", :valid? => true)
       Child.search(search).first.map(&:name).should =~ ["timothy cochran"]
     end
 
     it "should match more than one word with starts with" do
       create_child("timothy cochran")
-      search = mock("search", :query => "timo coch", :valid? => true)
+      search = double("search", :query => "timo coch", :valid? => true)
       Child.search(search).first.map(&:name).should =~ ["timothy cochran"]
     end
 
     it "should return the children registered by the user if the user has limited permission" do
       Child.create(:name => "suganthi", 'created_by' => "me", 'created_organisation' => "stc")
       Child.create(:name => "kavitha", 'created_by' => "you", 'created_organisation' => "stc")
-      search = mock("search", :query => "kavitha", :valid? => true, :page => 1)
+      search = double("search", :query => "kavitha", :valid? => true, :page => 1)
       Child.search_by_created_user(search, "you", 1).first.map(&:name).should =~ ["kavitha"]
     end
 
     it "should not return any results if a limited user searches with unique id of a child registerd by a different user" do
       create_child("suganthi", {"created_by" => "thirumani", "unique_identifier" => "thirumanixxx12345"})
       create_child("kavitha", {"created_by" => "rajagopalan", "unique_identifier" => "rajagopalanxxx12345"})
-      search = mock("search", :query => "thirumanixxx12345", :valid? => true)
+      search = double("search", :query => "thirumanixxx12345", :valid? => true)
       Child.search_by_created_user(search, "rajagopalan", 1).first.map(&:name).should =~ []
     end
 
@@ -230,7 +230,7 @@ describe Child do
 
     # This spec is almost always failing randomly, need to fix this spec if possible or think of other ways to test this?
     xit "should not add changes to history if its already added to the history" do
-      FormSection.stub!(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields =>
                             [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
                              Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
       child = Child.new("name" => "old", "last_updated_at" => "2012-12-12 00:00:00UTC")
@@ -254,15 +254,15 @@ describe Child do
 
     it "should assign histories order by datetime of history" do
       child = Child.new()
-      first_history = mock("history", :[] => "2010-01-01 01:01:02UTC")
-      second_history = mock("history", :[] => "2010-01-02 01:01:02UTC")
-      third_history = mock("history", :[] => "2010-01-02 01:01:03UTC")
+      first_history = double("history", :[] => "2010-01-01 01:01:02UTC")
+      second_history = double("history", :[] => "2010-01-02 01:01:02UTC")
+      third_history = double("history", :[] => "2010-01-02 01:01:03UTC")
       child["histories"] = [first_history, second_history, third_history]
       child.ordered_histories.should == [third_history, second_history, first_history]
     end
 
     it "should populate last_updated_at field with the time of the update" do
-      Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
+      Clock.stub(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, nil, {}
       child['last_updated_at'].should == "2010-01-17 19:05:00UTC"
@@ -275,7 +275,7 @@ describe Child do
     end
 
     it "should update attachment when there is audio update" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       child = Child.new
       child.update_properties_with_user_name "jdoe", nil, nil, uploadable_audio, {}
       child['_attachments']['audio-2010-01-17T140532']['data'].should_not be_blank
@@ -294,14 +294,14 @@ describe Child do
     end
 
     it "should set flagged_at if the record has been flagged" do
-      Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
+      Clock.stub(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = create_child("timothy cochran")
       child.update_properties_with_user_name 'some user name', nil, nil, nil, {:flag => true}
       child.flag_at.should == "2010-01-17 19:05:00UTC"
     end
 
     it "should set reunited_at if the record has been reunited" do
-      Clock.stub!(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
+      Clock.stub(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = create_child("timothy cochran")
       child.update_properties_with_user_name 'some user name', nil, nil, nil, {:reunited => true}
       child.reunited_at.should == "2010-01-17 19:05:00UTC"
@@ -313,7 +313,7 @@ describe Child do
   describe "validation" do
     context "child with only a photo registered" do
       before :each do
-        User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+        User.stub(:find_by_user_name).and_return(double(:organisation => 'stc'))
       end
 
       it 'should not be able to delete photo of child  with only one photo' do
@@ -328,14 +328,14 @@ describe Child do
 
     it "should fail to validate if all fields are nil" do
       child = Child.new
-      FormSection.stub!(:all_visible_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
+      FormSection.stub(:all_visible_child_fields).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
       child.should_not be_valid
       child.errors[:validate_has_at_least_one_field_value].should == ["Please fill in at least one field or upload a file"]
     end
 
     it "should fail to validate if all fields on child record are the default values" do
       child = Child.new({:height=>"",:reunite_with_mother=>""})
-      FormSection.stub!(:all_visible_child_fields).and_return [
+      FormSection.stub(:all_visible_child_fields).and_return [
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
         Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
@@ -347,7 +347,7 @@ describe Child do
       fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"})]
       child = Child.new
       child[:height] = "very tall"
-      FormSection.stub!(:all_visible_child_fields).and_return(fields)
+      FormSection.stub(:all_visible_child_fields).and_return(fields)
 
       child.should_not be_valid
       child.errors.on(:height).should == ["height must be a valid number"]
@@ -359,7 +359,7 @@ describe Child do
         child = Child.new
         child[:height] = "very tall"
         child[:new_age] = "very old"
-        FormSection.stub!(:all_visible_child_fields).and_return(fields)
+        FormSection.stub(:all_visible_child_fields).and_return(fields)
 
         child.should_not be_valid
         child.errors.on(:height).should == ["height must be a valid number"]
@@ -367,7 +367,7 @@ describe Child do
     end
 
     it "should disallow text field values to be more than 200 chars" do
-      FormSection.stub!(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields =>
                         [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
                          Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
                         child = Child.new :name => ('a' * 201)
@@ -376,7 +376,7 @@ describe Child do
     end
 
     it "should disallow text area values to be more than 400,000 chars" do
-      FormSection.stub!(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
                         child = Child.new :a_textfield => ('a' * 400_001)
                         child.should_not be_valid
@@ -384,21 +384,21 @@ describe Child do
     end
 
     it "should allow text area values to be 400,000 chars" do
-      FormSection.stub!(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
                         child = Child.new :a_textfield => ('a' * 400_000)
                         child.should be_valid
     end
 
     it "should allow date fields formatted as dd M yy" do
-      FormSection.stub!(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields =>
                         [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
                         child = Child.new :a_datefield => ('27 Feb 2010')
                         child.should be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
-      FormSection.stub!(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields =>
                         [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
                         Child.new(:height => "10.2").should be_valid
     end
@@ -515,7 +515,7 @@ describe Child do
     end
 
     it "should save blank age" do
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+      User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
       child = Child.new(:age => "", :another_field => "blah", 'created_by' => "me", 'created_organisation' => "stc")
       child.save.should == true
       child = Child.new :foo => "bar"
@@ -573,13 +573,13 @@ describe Child do
     end
 
     it "should create a posted_at field with the current date" do
-      Clock.stub!(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
+      Clock.stub(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
       child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
       child['posted_at'].should == "2010-01-22 14:05:00UTC"
     end
 
     it "should assign name property as '' if name is not passed before saving child record" do
-      child = Child.new_with_user_name(mock('user', :user_name => 'user', :organisation => 'org'), {'some_field' => 'some_value'})
+      child = Child.new_with_user_name(double('user', :user_name => 'user', :organisation => 'org'), {'some_field' => 'some_value'})
       child.save
       child = Child.get(child.id)
       child.name.should == ''
@@ -588,7 +588,7 @@ describe Child do
     describe "when the created at field is not supplied" do
 
       it "should create a created_at field with time of creation" do
-        Clock.stub!(:now).and_return(Time.utc(2010, "jan", 14, 14, 5, 0))
+        Clock.stub(:now).and_return(Time.utc(2010, "jan", 14, 14, 5, 0))
         child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
         child['created_at'].should == "2010-01-14 14:05:00UTC"
       end
@@ -621,7 +621,7 @@ describe Child do
   describe "photo attachments" do
 
     before(:each) do
-      Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 17:10:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 20 2010 17:10:32"))
     end
 
     context "with no photos" do
@@ -636,7 +636,7 @@ describe Child do
 
     context "with a single new photo" do
       before :each do
-        User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+        User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
         @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
       end
 
@@ -652,7 +652,7 @@ describe Child do
 
     context "with multiple new photos" do
       before :each do
-        User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+        User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
         @child = Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London', 'created_by' => "me")
       end
 
@@ -673,9 +673,9 @@ describe Child do
 
     context "when rotating an existing photo" do
       before :each do
-        User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+        User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
         @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-        Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
+        Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       end
 
       it "should become the primary photo" do
@@ -703,7 +703,7 @@ describe Child do
 
     before(:each) do
       @child = Child.new
-      @child.stub!(:attach)
+      @child.stub(:attach)
       @file_attachment = mock_model(FileAttachment, :data => "My Data", :name => "some name", :mime_type => Mime::Type.lookup("audio/mpeg"))
     end
 
@@ -719,13 +719,13 @@ describe Child do
     end
 
     it "should store the audio attachment key with the 'original' key in the audio hash" do
-      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+      FileAttachment.stub(:from_uploadable_file).and_return(@file_attachment)
       @child.audio= uploadable_audio
       @child['audio_attachments']['original'].should == 'some name'
     end
 
     it "should store the audio attachment key with the 'mime-type' key in the audio hash" do
-      FileAttachment.stub!(:from_uploadable_file).and_return(@file_attachment)
+      FileAttachment.stub(:from_uploadable_file).and_return(@file_attachment)
       @child.audio= uploadable_audio
       @child['audio_attachments']['mp3'].should == 'some name'
     end
@@ -736,7 +736,7 @@ describe Child do
 
     before :each do
       @file = stub!("File")
-      File.stub!(:binread).with(@file).and_return("ABC")
+      File.stub(:binread).with(@file).and_return("ABC")
       @file_attachment = FileAttachment.new("attachment_file_name", "audio/mpeg", "data")
     end
 
@@ -748,14 +748,14 @@ describe Child do
 
     it "should create a file attachment for the file with 'audio' prefix, mime mediatype as postfix" do
       child = Child.new()
-      Mime::Type.stub!(:lookup).and_return("abc".to_sym)
+      Mime::Type.stub(:lookup).and_return("abc".to_sym)
       FileAttachment.should_receive(:from_file).with(@file, "audio/mpeg", "audio", "abc").and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
     end
 
     it "should add attachments key attachment to the audio hash using the content's media type as key" do
       child = Child.new()
-      FileAttachment.stub!(:from_file).and_return(@file_attachment)
+      FileAttachment.stub(:from_file).and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
       child['audio_attachments']['mp3'].should == "attachment_file_name"
     end
@@ -765,7 +765,7 @@ describe Child do
   describe ".audio" do
 
     before :each do
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+      User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
     end
 
     it "should return nil if no audio file has been set" do
@@ -787,18 +787,18 @@ describe Child do
     end
 
     it "should retrieve attachment data for attachment key" do
-      Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
+      Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       child = Child.create('audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
       child.should_receive(:read_attachment).with('audio-2010-02-20T120432').and_return("Some audio")
       child.audio
     end
 
     it 'should create a FileAttachment with the read attachment and the attachments content type' do
-      Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
+      Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       uploaded_amr = uploadable_audio_amr
       child = Child.create('audio' => uploaded_amr, 'created_by' => "me", 'created_organisation' => "stc")
       expected_data = 'LA! LA! LA! Audio Data'
-      child.stub!(:read_attachment).and_return(expected_data)
+      child.stub(:read_attachment).and_return(expected_data)
       FileAttachment.should_receive(:new).with('audio-2010-02-20T120432', uploaded_amr.content_type, expected_data)
       child.audio
 
@@ -814,11 +814,11 @@ describe Child do
 
   describe "audio attachment" do
     before :each do
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+      User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
     end
 
     it "should create a field with recorded_audio on creation" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 17:10:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 20 2010 17:10:32"))
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
 
       child['audio_attachments']['original'].should == 'audio-2010-01-20T171032'
@@ -826,7 +826,7 @@ describe Child do
 
     it "should change audio file if a new audio file is set" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio, 'created_by' => "me", 'created_organisation' => "stc")
-      Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
+      Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:32"))
       child.update_attributes :audio => uploadable_audio
       child['audio_attachments']['original'].should == 'audio-2010-02-20T120432'
     end
@@ -843,9 +843,9 @@ describe Child do
           Field.new_radio_button("gender", ["male", "female"]),
           Field.new_photo_upload_box("current_photo_key"),
           Field.new_audio_upload_box("recorded_audio")]
-      FormSection.stub!(:all_visible_child_fields).and_return(fields)
-      mock_user = mock({:organisation => 'UNICEF'})
-      User.stub!(:find_by_user_name).with(anything).and_return(mock_user)
+      FormSection.stub(:all_visible_child_fields).and_return(fields)
+      mock_user = double({:organisation => 'UNICEF'})
+      User.stub(:find_by_user_name).with(anything).and_return(mock_user)
     end
 
     it "should add a history entry when a record is created" do
@@ -960,10 +960,10 @@ describe Child do
     describe "photo logging" do
 
       before :each do
-        Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 12:04:24"))
-        User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+        Clock.stub(:now).and_return(Time.parse("Jan 20 2010 12:04:24"))
+        User.stub(:find_by_user_name).and_return(double(:organisation => 'stc'))
         @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-        Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:24"))
+        Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:24"))
       end
 
       it "should log new photo key on adding a photo" do
@@ -1049,10 +1049,10 @@ describe Child do
     describe "photo changes" do
 
       before :each do
-        Clock.stub!(:now).and_return(Time.parse("Jan 20 2010 12:04:24"))
-        User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+        Clock.stub(:now).and_return(Time.parse("Jan 20 2010 12:04:24"))
+        User.stub(:find_by_user_name).and_return(double(:organisation => 'stc'))
         @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-        Clock.stub!(:now).and_return(Time.parse("Feb 20 2010 12:04:24"))
+        Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:24"))
       end
 
       it "should log new photo key on adding a photo" do
@@ -1122,7 +1122,7 @@ describe Child do
 
   describe ".has_one_interviewer?" do
     before :each do
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'stc'))
+      User.stub(:find_by_user_name).and_return(double(:organisation => 'stc'))
     end
 
     it "should be true if was created and not updated" do
@@ -1173,7 +1173,7 @@ describe Child do
   describe "when fetching children" do
 
     before do
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
+      User.stub(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
       Child.all.each { |child| child.destroy }
     end
 
@@ -1221,7 +1221,7 @@ describe Child do
     before :each do
       @photo1 = uploadable_photo("capybara_features/resources/jorge.jpg")
       @photo2 = uploadable_photo("capybara_features/resources/jeff.png")
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
+      User.stub(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
       @child = Child.new("name" => "Tom", 'created_by' => "me")
       @child.photo= {0 => @photo1, 1 => @photo2}
       @child.save
@@ -1251,7 +1251,7 @@ describe Child do
     before do
       Child.all.each { |child| child.destroy }
       Child.duplicates.each { |child| child.destroy }
-      User.stub!(:find_by_user_name).and_return(mock(:organisation => 'UNICEF'))
+      User.stub(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
     end
 
     describe "mark_as_duplicate" do
@@ -1313,7 +1313,7 @@ describe Child do
     end
 
     it 'should be set from user' do
-      User.stub!(:find_by_user_name).with('mj').and_return(mock(:organisation => 'UNICEF'))
+      User.stub(:find_by_user_name).with('mj').and_return(double(:organisation => 'UNICEF'))
       child = Child.create 'name' => 'Jaco', :created_by => "mj"
 
       child.created_organisation.should == 'UNICEF'
