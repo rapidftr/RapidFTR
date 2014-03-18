@@ -14,6 +14,14 @@ class Enquiry < CouchRest::Model::Base
 #  validates_presence_of :enquirer_name, :message => I18n.t("errors.models.enquiry.presence_of_enquirer_name")
 #  validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
 
+  design do
+    view :all,
+      :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Enquiry') {
+            emit(doc['_id'],1);
+          }
+        }"
+  end
 
   def self.new_with_user_name (user, *args)
     enquiry = new *args

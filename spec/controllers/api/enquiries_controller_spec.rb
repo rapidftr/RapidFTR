@@ -54,7 +54,7 @@ describe Api::EnquiriesController do
 
       post :create, :enquiry => {:enquirer_name => name, :reporter_details => details, :criteria => {:name => "name"}}
 
-      Enquiry.all.size.should == 1
+      Enquiry.all.total_rows.should == 1
       enquiry = Enquiry.all.first
 
       enquiry.enquirer_name.should == name
