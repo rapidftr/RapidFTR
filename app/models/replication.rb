@@ -23,12 +23,12 @@ class Replication < CouchRest::Model::Base
             }"
   end
 
-#  validates_presence_of :remote_app_url
-#  validates_presence_of :description
-#  validates_presence_of :username
-#  validates_presence_of :password
-#  validates_with_method :remote_app_url, :method => :validate_remote_app_url
-#  validates_with_method :save_remote_couch_config
+  validates_presence_of :remote_app_url
+  validates_presence_of :description
+  validates_presence_of :username
+  validates_presence_of :password
+  validate :validate_remote_app_url
+  validate :save_remote_couch_config
 
   before_save   :normalize_remote_app_url
   before_save   :mark_for_reindexing
@@ -187,7 +187,7 @@ class Replication < CouchRest::Model::Base
       raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
       true
     rescue
-      [false, I18n.t("errors.models.replication.remote_app_url")]
+      errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
     end
   end
 
@@ -205,7 +205,7 @@ class Replication < CouchRest::Model::Base
       self.remote_couch_config = JSON.parse response.body
       true
     rescue => e
-      [false, I18n.t("errors.models.replication.save_remote_couch_config")]
+      errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
     end
   end
 

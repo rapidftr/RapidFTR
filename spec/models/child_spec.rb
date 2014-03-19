@@ -471,13 +471,13 @@ describe Child do
       it "should validate duplicate_of field present when duplicate flag true" do
         child = Child.new('duplicate' => true, 'duplicate_of' => nil)
         child.should_not be_valid
-        child.errors.full_messages.should include("A valid duplicate ID must be provided")
+        child.errors[:duplicate].should include("A valid duplicate ID must be provided")
       end
 
       it "should not validate duplicate_of field present when duplicate flag is false" do
         child = Child.new('duplicate' => false, 'duplicate_of' => nil)
         child.valid?
-        child.errors.full_messages.should_not include("A valid duplicate ID must be provided")
+        child.errors[:duplicate].should_not include("A valid duplicate ID must be provided")
       end
     end
   end

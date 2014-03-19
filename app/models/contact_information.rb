@@ -25,4 +25,9 @@ class ContactInformation < CouchRest::Model::Base
     new_contact_info.save!
     new_contact_info
   end
+
+  design do
+    view :all,
+         :map => "function(doc) { if (doc['couchrest-type'] == 'ContactInformation') { emit(doc._id, null); } }"
+  end
 end
