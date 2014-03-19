@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pry'
 
 describe Api::ChildrenController do
 
@@ -134,7 +133,10 @@ describe Api::ChildrenController do
     end
 
     it "should update the child instead of creating new child everytime" do
-      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(child = Child.new)
+      child = Child.new
+      view = double(CouchRest::Model::Designs::View)
+      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(view)
+      view.should_receive(:first).and_return(child)
       controller.should_receive(:update_child_from).and_return(child)
       child.should_receive(:save).and_return true
 
