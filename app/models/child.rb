@@ -33,17 +33,17 @@ class Child < CouchRest::Model::Base
   property :verified, TrueClass
   property :verified
 
-#  validates_with_method :validate_photos_size
-#  validates_with_method :validate_photos
-#  validates_with_method :validate_audio_size
-#  validates_with_method :validate_audio_file_name
-#  validates_fields_of_type Field::NUMERIC_FIELD
-#  validates_with_method :validate_duplicate_of
+  validate :validate_photos_size
+  validate :validate_photos
+  validate :validate_audio_size
+  validate :validate_audio_file_name
+#  validates Field::NUMERIC_FIELD, numericality: true
+  validate :validate_duplicate_of
 #  validates_fields_of_type Field::TEXT_AREA
 #  validates_fields_of_type Field::TEXT_FIELD
-#  validates_with_method :created_at, :method => :validate_created_at
-#  validates_with_method :validate_has_at_least_one_field_value
-#  validates_with_method :last_updated_at, :method => :validate_last_updated_at
+  validate :validate_created_at
+  validate :validate_has_at_least_one_field_value
+  validate :validate_last_updated_at
 
   def initialize *args
     self['photo_keys'] ||= []
@@ -271,32 +271,32 @@ class Child < CouchRest::Model::Base
     return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
     return true if deprecated_fields && deprecated_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
-    [false, I18n.t("errors.models.child.at_least_one_field")]
+    errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
   end
 
   def validate_age
     return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-    [false, I18n.t("errors.models.child.age")]
+    errors.add(:age, I18n.t("errors.models.child.age"))
   end
 
   def validate_photos
     return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    [false, I18n.t("errors.models.child.photo_format")]
+    errors.add(:photo, I18n.t("errors.models.child.photo_format"))
   end
 
   def validate_photos_size
     return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-    [false, I18n.t("errors.models.child.photo_size")]
+    errors.add(:photo, I18n.t("errors.models.child.photo_size"))
   end
 
   def validate_audio_size
     return true if @audio.blank? || @audio.size < 10.megabytes
-    [false, I18n.t("errors.models.child.audio_size")]
+    errors.add(:audio, I18n.t("errors.models.child.audio_size"))
   end
 
   def validate_audio_file_name
     return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
-    [false, "Please upload a valid audio file (amr or mp3) for this child record"]
+    errors.add(:audio, "Please upload a valid audio file (amr or mp3) for this child record")
   end
 
   def has_valid_audio?
@@ -310,7 +310,7 @@ class Child < CouchRest::Model::Base
       end
       true
     rescue
-      [false, '']
+      errors.add(:created_at, '')
     end
   end
 
@@ -321,7 +321,7 @@ class Child < CouchRest::Model::Base
       end
       true
     rescue
-      [false, '']
+      errors.add(:last_updated_at, '')
     end
   end
 
@@ -434,7 +434,6 @@ class Child < CouchRest::Model::Base
   end
 
   def validate_duplicate_of
-    return [false, I18n.t("errors.models.child.validate_duplicate")] if self["duplicate"] && self["duplicate_of"].blank?
-    true
+    return errors.add(:duplicate, I18n.t("errors.models.child.validate_duplicate")) if self["duplicate"] && self["duplicate_of"].blank?
   end
 end

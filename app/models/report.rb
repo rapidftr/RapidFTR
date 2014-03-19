@@ -8,7 +8,7 @@ class Report < CouchRest::Model::Base
   include RapidFTR::Model
   include RapidFTR::CouchRestRailsBackward
 
-#  validates_with_method :must_have_attached_report
+  validate :must_have_attached_report
 
   property :as_of_date, Date, :init_method => 'parse'
   property :report_type
@@ -44,6 +44,6 @@ class Report < CouchRest::Model::Base
 
   def must_have_attached_report
     return true if self['_attachments'] && self['_attachments'].size == 1
-    [ false, 'No report file attached!' ] # No need to translate since this is a background activity, not a user-facing activity
+    errors.add(:must_have_attached_report, 'No report file attached!' ) # No need to translate since this is a background activity, not a user-facing activity
   end
 end

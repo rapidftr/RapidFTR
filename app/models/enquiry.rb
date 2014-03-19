@@ -11,8 +11,8 @@ class Enquiry < CouchRest::Model::Base
   property :match_updated_at, :default => ""
 
 
-#  validates_presence_of :enquirer_name, :message => I18n.t("errors.models.enquiry.presence_of_enquirer_name")
-#  validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
+  validates_presence_of :enquirer_name, :message => I18n.t("errors.models.enquiry.presence_of_enquirer_name")
+  validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
 
   design do
     view :all,

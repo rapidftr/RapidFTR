@@ -112,8 +112,8 @@ RapidFTR::Application.routes.draw do
 
   resources :form_sections, :path => 'form_section', :controller => 'form_section' do
     collection do
-      get 'save_order'
-      get 'toggle'
+      post 'save_order'
+      post 'toggle'
       get 'published'
     end
 

@@ -41,6 +41,11 @@ group :development, :assets, :cucumber do
   gem 'pry-debugger'
 end
 
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end
+
 group :test, :cucumber do
   gem 'factory_girl',     '~> 2.6'
 

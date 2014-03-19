@@ -4,7 +4,7 @@ describe PropertiesLocalization do
 
   before :each do
     RapidFTR::Application.stub :locales => [ "a", "b" ]
-    @klass = Class.new(CouchRestRails::Document) do
+    @klass = Class.new(CouchRest::Model::Base) do
       include PropertiesLocalization
     end
     @klass.localize_properties [ :name ]
