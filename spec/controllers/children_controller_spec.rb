@@ -351,8 +351,8 @@ describe ChildrenController do
   describe "PUT update" do
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
-      child['histories'] = []
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname", :created_at => "Jan 16 2010 14:05:32")
+      child.attributes = {'histories' => [] }
       child.save!
 
       Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
@@ -447,7 +447,7 @@ describe ChildrenController do
       User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'existing child'})
       Child.stub(:get).with("123").and_return(child)
-      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      subject.should_receive('current_user_full_name').and_return('Bill Clinton')
 
       put :update, :id => 123, :child => {:flag => true, :flag_message => "Test"}
 
@@ -713,7 +713,10 @@ describe ChildrenController do
     end
 
     it "should update the child instead of creating new child everytime" do
-      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(child = Child.new)
+      child = Child.new
+      view = double(CouchRest::Model::Designs::View)
+      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(view)
+      view.should_receive(:first).and_return(child)
       controller.should_receive(:update_child_from).and_return(child)
       child.should_receive(:save).and_return true
 
@@ -732,7 +735,7 @@ describe ChildrenController do
       controller.stub(:authorize!)
       post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
       updated_child = Child.by_short_id(:key => child.short_id)
-      updated_child.size.should == 1
+      updated_child.rows.size.should == 1
       updated_child.first.name.should == 'new name'
     end
   end
