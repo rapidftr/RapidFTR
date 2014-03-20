@@ -30,13 +30,18 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def update_from(properties)
+    attributes_to_update = {}
     properties.each_pair do |name, value|
-      if value.instance_of? HashWithIndifferentAccess
-        self[name] = self[name].merge!(value)
+      if value.instance_of? HashWithIndifferentAccess or value.instance_of? ActionController::Parameters
+        attributes_to_update[name] = self[name] if attributes_to_update[name].nil?
+        #Don't change the code to use merge!
+        #It will break the access to dynamic attributes.
+        attributes_to_update[name] = attributes_to_update[name].merge(value)
       else
-        self[name] = value
+        attributes_to_update[name] = value
       end
     end
+    self.attributes = attributes_to_update unless attributes_to_update.empty?
   end
 
   def find_matching_children

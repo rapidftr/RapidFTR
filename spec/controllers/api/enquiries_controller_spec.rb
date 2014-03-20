@@ -65,14 +65,14 @@ describe Api::EnquiriesController do
       controller.stub(:authorize!)
       post :create, :enquiry => {:enquirer_name => "new name", :reporter_details => {"location" => "kampala"}}
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+      JSON.parse(response.body)["error"].should include("Criteria Please add criteria to your enquiry")
     end
 
     it "should not create enquiry with empty criteria" do
       controller.stub(:authorize!)
       post :create, :enquiry => {:enquirer_name => "new name", :criteria => {}}
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+      JSON.parse(response.body)["error"].should include("Criteria Please add criteria to your enquiry")
     end
 
     it "should not update record if it exists and return error" do
@@ -192,7 +192,7 @@ describe Api::EnquiriesController do
 
       enquiry.enquirer_name.should == "new name"
       response.response_code.should == 200
-      JSON.parse(response.body).should == enquiry
+      JSON.parse(response.body).should == JSON.parse(enquiry.to_json)
     end
 
     it "should update record without passing the id in the enquiry params" do
@@ -205,7 +205,7 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.get(enquiry.id)
       enquiry.enquirer_name.should == "new name"
       response.response_code.should == 200
-      JSON.parse(response.body).should == enquiry
+      JSON.parse(response.body).should == JSON.parse(enquiry.to_json)
     end
 
     it "should merge updated fields and return the latest record" do
@@ -226,7 +226,7 @@ describe Api::EnquiriesController do
       enquiry["reporter_details"].should == {"location" => "kampala", "age" => "100"}
       enquiry["location"].should == "Kampala"
       response.response_code.should == 200
-      JSON.parse(response.body).should == enquiry
+      JSON.parse(response.body).should == JSON.parse(enquiry.to_json)
     end
 
     it "should update existing enquiry with potential matches" do
