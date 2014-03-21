@@ -27,7 +27,6 @@ class ContactInformation < CouchRest::Model::Base
   end
 
   design do
-    view :all,
-         :map => "function(doc) { if (doc['couchrest-type'] == 'ContactInformation') { emit(doc._id, null); } }"
+    view :all
   end
 end

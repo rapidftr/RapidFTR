@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Forms::ChangePasswordForm do
 
+  before :all do
+    User.all.each {|u| u.destroy}
+  end
+
   describe "Validation" do
 
     it "should be valid when user exits" do
@@ -42,8 +46,8 @@ describe Forms::ChangePasswordForm do
 
     it "should not be valid if confirmation does not match new password" do
       password_form = build :change_password_form, :new_password => 'password', :new_password_confirmation => 'wrong_confirm'
-      password_form.valid?
-      password_form.errors[:new_password].should_not be_empty
+      password_form.should_not be_valid
+      password_form.errors[:new_password_confirmation].should_not be_empty
     end
 
     it "should not be valid if old password does not match existing one" do

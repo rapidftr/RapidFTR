@@ -29,7 +29,7 @@ describe User do
     it "should not be valid when username contains whitespace" do
       user = build_user :user_name => "in val id"
       user.should_not be_valid
-      user.errors.on(:user_name).should == ["Please enter a valid user name"]
+      user.errors[:user_name].should == ["Please enter a valid user name"]
     end
 
     it "should be valid when password contains whitespace" do
@@ -41,19 +41,19 @@ describe User do
       build_and_save_user :user_name => "existing_user"
       user = build_user :user_name => "existing_user"
       user.should_not be_valid
-      user.errors.on(:user_name).should == ["User name has already been taken! Please select a new User name"]
+      user.errors[:user_name].should == ["User name has already been taken! Please select a new User name"]
     end
 
     it "should not be valid when email address is invalid" do
       user = build_user :email => "invalid_email"
       user.should_not be_valid
-      user.errors.on(:email).should == ["Please enter a valid email address"]
+      user.errors[:email].should == ["Please enter a valid email address"]
     end
 
     it "should throw error if organisation detail not entered" do
       user = build_user :organisation => nil
       user.should_not be_valid
-      user.errors.on(:organisation).should == ["Please enter the user's organisation name"]
+      user.errors[:organisation].should == ["Please enter the user's organisation name"]
       end
 
     it "should default disabled to false" do
@@ -68,6 +68,7 @@ describe User do
   end
 
   it 'should validate uniqueness of username for new users' do
+    User.all.each {|user| user.destroy}
     user = build_user(:user_name => 'the_user_name')
     user.should be_valid
     user.create!
@@ -94,7 +95,7 @@ describe User do
 
     user.valid?
     user.should_not be_valid
-    user.errors[:password].should include(I18n.t("errors.models.user.password_mismatch"))
+    user.errors[:password_confirmation].should include(I18n.t("errors.models.user.password_mismatch"))
   end
 
   it "should allow password update if confirmation matches" do

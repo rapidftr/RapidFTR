@@ -57,7 +57,7 @@ describe "Child record field view model" do
     it "should not allow blank display name" do
       field = Field.new(:display_name => "")
       field.valid?
-      field.errors.on(:display_name).first.include? "Display name must not be blank"
+      field.errors[:display_name].first.include? "Display name must not be blank"
     end
 
     it "should not allows empty field display_name of field base language " do
@@ -72,7 +72,7 @@ describe "Child record field view model" do
     it "should not allow display name without alphabetic characters" do
       field = Field.new(:display_name => "!@£$@")
       field.valid?.should == false
-      field.errors.on(:display_name).should include("Display name must contain at least one alphabetic characters")
+      field.errors[:display_name].should include("Display name must contain at least one alphabetic characters")
     end
 
     it "should validate unique within form" do
@@ -81,29 +81,29 @@ describe "Child record field view model" do
       form.fields << field
 
       field.valid?
-      field.errors.on(:name).should ==  ["Field already exists on this form"]
-      field.errors.on(:display_name).should ==  ["Field already exists on this form"]
+      field.errors[:name].should ==  ["Field already exists on this form"]
+      field.errors[:display_name].should ==  ["Field already exists on this form"]
     end
 
     it "should validate radio button has at least 2 options" do
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::RADIO_BUTTON)
 
       field.valid?
-      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"]
+      field.errors[:option_strings].should ==  ["Field must have at least 2 options"]
     end
 
     it "should validate checkbox has at least 1 option to be checked" do
       field = Field.new(:display_name => "test", :option_strings => nil, :type => Field::CHECK_BOXES)
 
       field.valid?
-      field.errors.on(:option_strings).should ==  ["Checkbox must have at least 1 option"]
+      field.errors[:option_strings].should ==  ["Checkbox must have at least 1 option"]
     end
 
     it "should validate select box has at least 2 options" do
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::SELECT_BOX)
 
       field.valid?
-      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"]
+      field.errors[:option_strings].should ==  ["Field must have at least 2 options"]
     end
 
     it "should validate unique within other forms" do
@@ -115,8 +115,8 @@ describe "Child record field view model" do
       form.fields << field
 
       field.valid?
-      field.errors.on(:name).should ==  ["Field already exists on form 'test form'"]
-      field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"]
+      field.errors[:name].should ==  ["Field already exists on form 'test form'"]
+      field.errors[:display_name].should ==  ["Field already exists on form 'test form'"]
     end
   end
 

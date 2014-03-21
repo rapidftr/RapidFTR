@@ -54,12 +54,12 @@ class Field < CouchRest::Model::Base
                         NUMERIC_FIELD    => ""}
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
-#  validates_with_method :name, :method => :validate_unique_name
-#  validates_with_method :display_name, :method => :validate_unique_display_name
-#  validates_with_method :option_strings, :method => :validate_has_2_options
-#  validates_with_method :option_strings, :method => :validate_has_a_option
-#  validates_with_method :display_name, :method => :validate_name_format
-#  validates_with_method :display_name, :method => :valid_presence_of_base_language_name
+  validate :validate_unique_name
+  validate :validate_unique_display_name
+  validate :validate_has_2_options
+  validate :validate_has_a_option
+  validate :validate_name_format
+  validate :valid_presence_of_base_language_name
 
   def validate_name_format
     special_characters = /[*!@#%$\^]/
@@ -208,13 +208,13 @@ class Field < CouchRest::Model::Base
 
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
-    return [false, I18n.t("errors.models.field.has_2_options")] if option_strings == nil || option_strings.length < 2
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings == nil || option_strings.length < 2
     true
   end
 
   def validate_has_a_option
     return true unless (type == CHECK_BOXES)
-    return [false, I18n.t("errors.models.field.has_1_option")] if option_strings == nil || option_strings.length < 1
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings == nil || option_strings.length < 1
     true
   end
 
@@ -222,7 +222,7 @@ class Field < CouchRest::Model::Base
     return true unless new? && form
     return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.name == name})
     other_form = FormSection.get_form_containing_field name
-    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form  != nil
     true
   end
 
@@ -230,7 +230,7 @@ class Field < CouchRest::Model::Base
     return true unless new? && form
     return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
     other_form = FormSection.get_form_containing_field display_name
-    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form  != nil
     true
   end
 
