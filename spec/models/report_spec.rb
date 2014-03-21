@@ -5,7 +5,7 @@ describe Report do
   it 'should have at least one attachment' do
     report = build :report, :data => nil
     report.should_not be_valid
-    report.errors.on(:must_have_attached_report).should_not be_empty
+    report.errors[:must_have_attached_report].should_not be_empty
   end
 
   it 'should return file name' do
@@ -19,7 +19,7 @@ describe Report do
   end
 
   it 'should return data' do
-    report = create :report, :data => 'TEST DATA'
+    report = build :report, :data => 'TEST DATA'
     report.data.should == 'TEST DATA'
   end
 

@@ -15,7 +15,7 @@ describe DatabaseController do
   end
 
   it "should delete all children in android environment" do
-    User.stub!(:find_by_user_name).with("me").and_return(mock(:organisation => "stc"))
+    User.stub(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
     Child.create('last_known_location' => "London", :created_by => "me")
     Child.create('last_known_location' => "India", :created_by => "me")
     

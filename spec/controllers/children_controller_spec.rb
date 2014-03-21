@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 def inject_export_generator( fake_export_generator, child_data )
-	ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
+	ExportGenerator.stub(:new).with(child_data).and_return( fake_export_generator )
 end
 
 def stub_out_export_generator child_data = []
 	inject_export_generator( stub_export_generator = stub(ExportGenerator) , child_data)
-	stub_export_generator.stub!(:child_photos).and_return('')
+	stub_export_generator.stub(:child_photos).and_return('')
 	stub_export_generator
 end
 
-def stub_out_child_get(mock_child = mock(Child))
+def stub_out_child_get(mock_child = double(Child))
 	Child.stub(:get).and_return( mock_child )
 	mock_child
 end
@@ -61,7 +61,7 @@ describe ChildrenController do
 
     describe 'member' do
       before :each do
-        User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+        User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
         @child = Child.create('last_known_location' => "London", :short_id => 'short_id', :created_by => "uname")
         @child_arg = hash_including("_id" => @child.id)
       end
@@ -119,7 +119,7 @@ describe ChildrenController do
           per_page = @options.delete(:per_page)
           children = [mock_child(@stubs)]
           @status ||= "all"
-          children.stub!(:paginate).and_return(children)
+          children.stub(:paginate).and_return(children)
           Child.should_receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
 
           get :index, :status => @status
@@ -142,7 +142,7 @@ describe ChildrenController do
           page = @options.delete(:page)
           per_page = @options.delete(:per_page)
           @status ||= "all"
-          children.stub!(:paginate).and_return(children)
+          children.stub(:paginate).and_return(children)
           Child.should_receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
           @params.merge!(:status => @status)
           get :index, @params
@@ -235,7 +235,7 @@ describe ChildrenController do
       before do
         fake_field_admin_login
         @params ||= {}
-        controller.stub! :paginated_collection => [], :render => true
+        controller.stub :paginated_collection => [], :render => true
       end
       it "should flash notice when exporting no records" do
         format = "cpims"
@@ -249,53 +249,53 @@ describe ChildrenController do
   describe "GET show" do
     it 'does not assign child name in page name' do
       child = build :child, :unique_identifier => "1234"
-      controller.stub! :render
+      controller.stub :render
       get :show, :id => child.id
       assigns[:page_name].should == "View Child 1234"
     end
 
     it "assigns the requested child" do
-      Child.stub!(:get).with("37").and_return(mock_child)
+      Child.stub(:get).with("37").and_return(mock_child)
       get :show, :id => "37"
       assigns[:child].should equal(mock_child)
     end
 
     it 'should not fail if primary_photo_id is not present' do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", :created_by => "uname")
       child.create_unique_id
-      Child.stub!(:get).with("37").and_return(child)
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      Child.stub(:get).with("37").and_return(child)
+      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
 
-      controller.stub! :render
+      controller.stub :render
       get(:show, :format => 'csv', :id => "37")
     end
 
     it "should set current photo key as blank instead of nil" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", :created_by => "uname")
       child.create_unique_id
-      Child.stub!(:get).with("37").and_return(child)
+      Child.stub(:get).with("37").and_return(child)
       assigns[child[:current_photo_key]] == ""
       get(:show, :format => 'json', :id => "37")
     end
 
     it "orders and assigns the forms" do
-      Child.stub!(:get).with("37").and_return(mock_child)
+      Child.stub(:get).with("37").and_return(mock_child)
       FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :show, :id => "37"
       assigns[:form_sections].should == [:the_form_sections]
     end
 
     it "should flash an error and go to listing page if the resource is not found" do
-      Child.stub!(:get).with("invalid record").and_return(nil)
+      Child.stub(:get).with("invalid record").and_return(nil)
       get :show, :id=> "invalid record"
       flash[:error].should == "Child with the given id is not found"
       response.should redirect_to(:action => :index)
     end
 
     it "should include duplicate records in the response" do
-      Child.stub!(:get).with("37").and_return(mock_child)
+      Child.stub(:get).with("37").and_return(mock_child)
       duplicates = [Child.new(:name => "duplicated")]
       Child.should_receive(:duplicates_of).with("37").and_return(duplicates)
       get :show, :id => "37"
@@ -305,13 +305,13 @@ describe ChildrenController do
 
   describe "GET new" do
     it "assigns a new child as @child" do
-      Child.stub!(:new).and_return(mock_child)
+      Child.stub(:new).and_return(mock_child)
       get :new
       assigns[:child].should equal(mock_child)
     end
 
     it "orders and assigns the forms" do
-      Child.stub!(:new).and_return(mock_child)
+      Child.stub(:new).and_return(mock_child)
       FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :new
       assigns[:form_sections].should == [:the_form_sections]
@@ -320,14 +320,14 @@ describe ChildrenController do
 
   describe "GET edit" do
     it "assigns the requested child as @child" do
-      Child.stub!(:get).with("37").and_return(mock_child)
+      Child.stub(:get).with("37").and_return(mock_child)
       FormSection.should_receive(:enabled_by_order)
       get :edit, :id => "37"
       assigns[:child].should equal(mock_child)
     end
 
     it "orders and assigns the forms" do
-      Child.stub!(:get).with("37").and_return(mock_child)
+      Child.stub(:get).with("37").and_return(mock_child)
       FormSection.should_receive(:enabled_by_order).and_return([:the_form_sections])
       get :edit, :id => "37"
       assigns[:form_sections].should == [:the_form_sections]
@@ -342,7 +342,7 @@ describe ChildrenController do
     end
 
     it "redirects to the children list" do
-      Child.stub!(:get).and_return(mock_child(:destroy => true))
+      Child.stub(:get).and_return(mock_child(:destroy => true))
       delete :destroy, :id => "1"
       response.should redirect_to(children_url)
     end
@@ -350,12 +350,12 @@ describe ChildrenController do
 
   describe "PUT update" do
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
-      child['histories'] = []
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname", :created_at => "Jan 16 2010 14:05:32")
+      child.attributes = {'histories' => [] }
       child.save!
 
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
       put :update, :id => child.id,
            :child => {
@@ -367,10 +367,10 @@ describe ChildrenController do
     end
 
     it "should update child on a field and photo update" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
 
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       put :update, :id => child.id,
         :child => {
           :last_known_location => "Manchester",
@@ -383,7 +383,7 @@ describe ChildrenController do
     end
 
     it "should update only non-photo fields when no photo update" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
 
       put :update, :id => child.id,
@@ -397,7 +397,7 @@ describe ChildrenController do
     end
 
     it "should not update history on photo rotation" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
       Child.get(child.id)["histories"].size.should be 1
 
@@ -417,7 +417,7 @@ describe ChildrenController do
     end
 
     it "should update flag (cast as boolean) and flag message" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
       put :update, :id => child.id,
         :child => {
@@ -431,9 +431,9 @@ describe ChildrenController do
     it "should update history on flagging of record" do
       current_time_in_utc = Time.parse("20 Jan 2010 17:10:32UTC")
       current_time = Time.parse("20 Jan 2010 17:10:32")
-      Clock.stub!(:now).and_return(current_time)
-      current_time.stub!(:getutc).and_return current_time_in_utc
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      Clock.stub(:now).and_return(current_time)
+      current_time.stub(:getutc).and_return current_time_in_utc
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
 
       put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}
@@ -444,10 +444,10 @@ describe ChildrenController do
     end
 
     it "should update the last_updated_by_full_name field with the logged in user full name" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'existing child'})
       Child.stub(:get).with("123").and_return(child)
-      subject.should_receive('current_user_full_name').any_number_of_times.and_return('Bill Clinton')
+      subject.should_receive('current_user_full_name').and_return('Bill Clinton')
 
       put :update, :id => 123, :child => {:flag => true, :flag_message => "Test"}
 
@@ -455,7 +455,7 @@ describe ChildrenController do
     end
 
     it "should not set photo if photo is not passed" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
       params_child = {"name" => 'update'}
       controller.stub(:current_user_name).and_return("user_name")
@@ -466,7 +466,7 @@ describe ChildrenController do
 
 
     it "should redirect to redirect_url if it is present in params" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
       params_child = {"name" => 'update'}
       controller.stub(:current_user_name).and_return("user_name")
@@ -477,7 +477,7 @@ describe ChildrenController do
     end
 
     it "should redirect to child page if redirect_url is not present in params" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})
 
       params_child = {"name" => 'update'}
@@ -508,8 +508,8 @@ describe ChildrenController do
     end
 
     it "performs a search using the parameters passed to it" do
-      search = mock("search", :query => 'the child name', :valid? => true, :page => 1)
-      Search.stub!(:new).and_return(search)
+      search = double("search", :query => 'the child name', :valid? => true, :page => 1)
+      Search.stub(:new).and_return(search)
 
       fake_results = ["fake_child","fake_child"]
       fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
@@ -539,8 +539,8 @@ describe ChildrenController do
       @session = fake_field_worker_login
     end
     it "should only list the children which the user has registered" do
-      search = mock("search", :query => 'some_name', :valid? => true, :page => 1)
-      Search.stub!(:new).and_return(search)
+      search = double("search", :query => 'some_name', :valid? => true, :page => 1)
+      Search.stub(:new).and_return(search)
 
       fake_results = [:fake_child,:fake_child]
       fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
@@ -554,7 +554,7 @@ describe ChildrenController do
   it 'should export children using #respond_to_export' do
     child1 = build :child
     child2 = build :child
-    controller.stub! :paginated_collection => [ child1, child2 ], :render => true
+    controller.stub :paginated_collection => [ child1, child2 ], :render => true
     controller.should_receive(:YAY).and_return(true)
 
     controller.should_receive(:respond_to_export) { |format, children|
@@ -567,7 +567,7 @@ describe ChildrenController do
 
   it 'should export child using #respond_to_export' do
     child = build :child
-    controller.stub! :render => true
+    controller.stub :render => true
     controller.should_receive(:YAY).and_return(true)
 
     controller.should_receive(:respond_to_export) { |format, children|
@@ -582,7 +582,7 @@ describe ChildrenController do
     before :each do
       @child1 = build :child
       @child2 = build :child
-      controller.stub! :paginated_collection => [ @child1, @child2 ], :render => true
+      controller.stub :paginated_collection => [ @child1, @child2 ], :render => true
     end
 
     it "should handle full PDF" do
@@ -603,7 +603,7 @@ describe ChildrenController do
     it "should handle custom export addon" do
       mock_addon = double()
       mock_addon_class = double(:new => mock_addon, :id => "mock")
-      RapidftrAddon::ExportTask.stub! :active => [ mock_addon_class ]
+      RapidftrAddon::ExportTask.stub :active => [ mock_addon_class ]
       controller.stub(:authorize!)
       mock_addon.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
       get :index, :format => :mock
@@ -627,12 +627,12 @@ describe ChildrenController do
     end
 
     it "should generate filename based on child ID and addon ID when there is only one child" do
-      @child1.stub! :short_id => 'test_short_id'
+      @child1.stub :short_id => 'test_short_id'
       controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask).should == "test_short_id_photowall.zip"
     end
 
     it "should generate filename based on username and addon ID when there are multiple children" do
-      controller.stub! :current_user_name => 'test_user'
+      controller.stub :current_user_name => 'test_user'
       controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask).should == "test_user_pdf.zip"
     end
 
@@ -713,7 +713,10 @@ describe ChildrenController do
     end
 
     it "should update the child instead of creating new child everytime" do
-      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(child = Child.new)
+      child = Child.new
+      view = double(CouchRest::Model::Designs::View)
+      Child.should_receive(:by_short_id).with(:key => '1234567').and_return(view)
+      view.should_receive(:first).and_return(child)
       controller.should_receive(:update_child_from).and_return(child)
       child.should_receive(:save).and_return true
 
@@ -725,14 +728,14 @@ describe ChildrenController do
 
   describe "POST create" do
     it "should update the child record instead of creating if record already exists" do
-      User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
+      User.stub(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'old name'})
       child.save
       fake_admin_login
       controller.stub(:authorize!)
       post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
       updated_child = Child.by_short_id(:key => child.short_id)
-      updated_child.size.should == 1
+      updated_child.rows.size.should == 1
       updated_child.first.name.should == 'new name'
     end
   end

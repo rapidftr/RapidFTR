@@ -29,6 +29,9 @@ module RapidFTR
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    # i18n-js recommended configuration.
+    config.assets.initialize_on_precompile = true
+
     # Asset pipeline
     config.assets.enabled = true
     config.assets.version = '1.0'

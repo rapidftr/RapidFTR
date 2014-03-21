@@ -1,7 +1,6 @@
-class ContactInformation < CouchRestRails::Document
+class ContactInformation < CouchRest::Model::Base
   use_database :contact_information
 
-  include CouchRest::Validation
   include RapidFTR::Model
 
   property :id
@@ -25,5 +24,9 @@ class ContactInformation < CouchRestRails::Document
     new_contact_info = ContactInformation.new :id=>id
     new_contact_info.save!
     new_contact_info
+  end
+
+  design do
+    view :all
   end
 end

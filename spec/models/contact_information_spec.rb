@@ -8,7 +8,7 @@ describe ContactInformation do
       contact_info = ContactInformation.get_or_create "ThisIsATest"
       contact_info.should_not be_nil
       contact_info.id.should == "ThisIsATest"
-      ContactInformation.all[0].id.should == "ThisIsATest"
+      ContactInformation.all.rows[0].id.should == "ThisIsATest"
     end
   end
   describe "get_by_id" do

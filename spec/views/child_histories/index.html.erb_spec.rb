@@ -5,13 +5,13 @@ describe "child_histories/index.html.erb" do
 
   describe "child history" do
     before do
-      FormSection.stub!(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
-      @user = mock(:user)
+      FormSection.stub(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
+      @user = double(:user)
     end
 
     describe "rendering history for a newly created record" do
       it "should render only the creation record" do
-        User.stub!(:find_by_user_name).with("me").and_return(user = mock(:organisation => "stc", :localize_date => "2010-12-31 09:55:00 SST"))
+        User.stub(:find_by_user_name).with("me").and_return(user = double(:organisation => "stc", :localize_date => "2010-12-31 09:55:00 SST"))
         child = Child.create!(:name => "billybob", "created_by" => "me")
         assign(:child,  child)
         assign(:user,  user)
@@ -39,9 +39,9 @@ describe "child_histories/index.html.erb" do
     describe "rendering the history of a flagged child record" do
       before do
         #Set up a child record and then flag it as suspect
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
+        @user = double(:user)
+        @user.stub(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub(:localize_date).and_return "2010-12-31 09:55:00 SST"
       end
 
       it "should display the date/time of the change using the user's timezone setting" do
@@ -71,9 +71,9 @@ describe "child_histories/index.html.erb" do
 
     describe "rendering changes to photos" do
       before do
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
-        @user.stub!(:localize_date).and_return "2010-12-31 20:55:00 UTC"
+        @user = double(:user)
+        @user.stub(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub(:localize_date).and_return "2010-12-31 20:55:00 UTC"
       end
 
       it "should render photo change record with links when adding a photo to an existing record" do
@@ -129,9 +129,9 @@ describe "child_histories/index.html.erb" do
 
     describe "rendering changes to audio" do
       before do
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
-        @user.stub!(:localize_date).and_return "2010-12-31 20:55:00 UTC"
+        @user = double(:user)
+        @user.stub(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub(:localize_date).and_return "2010-12-31 20:55:00 UTC"
       end
 
       it "should render audio change record" do
@@ -187,9 +187,9 @@ describe "child_histories/index.html.erb" do
 
     describe "rendering several history entries" do
       before do
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
-        @user.stub!(:localize_date).and_return ""
+        @user = double(:user)
+        @user.stub(:time_zone).and_return TZInfo::Timezone.get("UTC")
+        @user.stub(:localize_date).and_return ""
       end
 
       it "should order history log from most recent change to oldest change" do
@@ -213,9 +213,9 @@ describe "child_histories/index.html.erb" do
 
     describe "rendering changes to general attributes" do
       before do
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
+        @user = double(:user)
+        @user.stub(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub(:localize_date).and_return "2010-12-31 09:55:00 SST"
       end
 
       it "should display the date/time of the change using the user's timezone setting" do
@@ -246,9 +246,9 @@ describe "child_histories/index.html.erb" do
     describe "rendering the history of a reunited child record" do
       before do
         #Set up a child record and then flag it as suspect
-        @user = mock(:user)
-        @user.stub!(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
-        @user.stub!(:localize_date).and_return "2010-12-31 09:55:00 SST"
+        @user = double(:user)
+        @user.stub(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
+        @user.stub(:localize_date).and_return "2010-12-31 09:55:00 SST"
       end
 
       it "should display the date/time of the change using the user's timezone setting" do

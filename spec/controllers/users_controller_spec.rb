@@ -30,31 +30,31 @@ describe UsersController do
 
        end
        it "should filter active users and sort them by full_name by default" do
-         User.should_receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+         User.should_receive(:view_raw).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
          get :index
          assigns[:users].should == [@active_user_two,@active_user_one]
        end
 
        it "should filter all users and sort them by full_name" do
-         User.should_receive(:view).with("by_full_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_two,@inactive_user,@active_user_one])
+         User.should_receive(:view_raw).with("by_full_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_two,@inactive_user,@active_user_one])
          get :index, :sort => "full_name", :filter=>"all"
          assigns[:users].should == [@active_user_two,@inactive_user,@active_user_one]
        end
 
        it "should filter all users and sort them by user_name" do
-         User.should_receive(:view).with("by_user_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_one,@active_user_two,@inactive_user])
+         User.should_receive(:view_raw).with("by_user_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_one,@active_user_two,@inactive_user])
          get :index, :sort => "user_name",:filter=>"all"
          assigns[:users].should == [@active_user_one,@active_user_two,@inactive_user]
        end
 
        it "should filter active users and sort them by full_name" do
-         User.should_receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+         User.should_receive(:view_raw).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
          get :index, :sort => "full_name", :filter=>"active"
          assigns[:users].should == [@active_user_two,@active_user_one]
        end
 
        it "should filter active users and sort them by user_name" do
-         User.should_receive(:view).with("by_user_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_one,@active_user_two])
+         User.should_receive(:view_raw).with("by_user_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_one,@active_user_two])
          get :index, :sort => "user_name", :filter=>"active"
          assigns[:users].should == [@active_user_one,@active_user_two]
        end
@@ -62,7 +62,7 @@ describe UsersController do
 
 
     it "assigns users_details for backbone" do
-      User.stub!(:view).and_return([@user])
+      User.stub(:view_raw).and_return([@user])
       get :index
       users_details = assigns[:users_details]
       users_details.should_not be_nil
@@ -80,7 +80,7 @@ describe UsersController do
 
     it "should authorize index page for read only users" do
       user = User.new(:user_name => 'view_user')
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
+      user.stub(:roles).and_return([Role.new(:permissions => [Permission::USERS[:view]])])
       fake_login user
       get :index
       assigns(:access_error).should be_nil
@@ -89,14 +89,14 @@ describe UsersController do
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      mock_user = mock(:user_name => "fakeadmin")
-      User.stub!(:get).with("37").and_return(mock_user)
+      mock_user = double(:user_name => "fakeadmin")
+      User.stub(:get).with("37").and_return(mock_user)
       get :show, :id => "37"
       assigns[:user].should equal(mock_user)
     end
 
     it "should flash an error and go to listing page if the resource is not found" do
-      User.stub!(:get).with("invalid record").and_return(nil)
+      User.stub(:get).with("invalid record").and_return(nil)
       get :show, :id => "invalid record"
       flash[:error].should == "User with the given id is not found"
       response.should redirect_to(:action => :index)
@@ -110,8 +110,8 @@ describe UsersController do
 
     it "should not show non-self user for non-admin" do
       fake_login
-      mock_user = mock({:user_name => 'some_random'})
-      User.stub!(:get).with("37").and_return(mock_user)
+      mock_user = double({:user_name => 'some_random'})
+      User.stub(:get).with("37").and_return(mock_user)
       get :show, :id => "37"
       response.status.should == 403
     end
@@ -120,14 +120,14 @@ describe UsersController do
   describe "GET new" do
     it "assigns a new user as @user" do
       user = stub_model User
-      User.stub!(:new).and_return(user)
+      User.stub(:new).and_return(user)
       get :new
       assigns[:user].should equal(user)
     end
 
     it "should assign all the available roles as @roles" do
       roles = ["roles"]
-      Role.stub!(:all).and_return(roles)
+      Role.stub(:all).and_return(roles)
       get :new
       assigns[:roles].should == roles
     end
@@ -141,9 +141,9 @@ describe UsersController do
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      Role.stub!(:all).and_return(["roles"])
+      Role.stub(:all).and_return(["roles"])
       mock_user = stub_model(User, :user_name => "Test Name", :full_name => "Test")
-      User.stub!(:get).with("37").and_return(mock_user)
+      User.stub(:get).with("37").and_return(mock_user)
       get :edit, :id => "37"
       assigns[:user].should equal(mock_user)
       assigns[:roles].should == ["roles"]
@@ -151,7 +151,7 @@ describe UsersController do
 
     it "should not allow editing a non-self user for users without access" do
       fake_login_as(Permission::USERS[:view])
-      User.stub!(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
+      User.stub(:get).with("37").and_return(mock_user(:full_name => "Test Name"))
       get :edit, :id => "37"
       response.should be_forbidden
     end
@@ -159,7 +159,7 @@ describe UsersController do
     it "should allow editing a non-self user for user having edit permission" do
       fake_login_as(Permission::USERS[:create_and_edit])
       mock_user = stub_model(User, :full_name => "Test Name", :user_name => 'fakeuser')
-      User.stub!(:get).with("24").and_return(mock_user)
+      User.stub(:get).with("24").and_return(mock_user)
       get :edit, :id => "24"
       response.status.should_not == 403
     end
@@ -174,14 +174,14 @@ describe UsersController do
     end
 
     it "redirects to the users list" do
-      User.stub!(:get).and_return(mock_user(:destroy => true))
+      User.stub(:get).and_return(mock_user(:destroy => true))
       delete :destroy, :id => "1"
       response.should redirect_to(users_url)
     end
 
     it "should not allow a destroy" do
       fake_login_as(Permission::USERS[:create_and_edit])
-      User.stub!(:get).and_return(mock_user(:destroy => true))
+      User.stub(:get).and_return(mock_user(:destroy => true))
       delete :destroy, :id => "37"
       response.status.should == 403
     end
@@ -200,7 +200,7 @@ describe UsersController do
     context "when not admin user" do
       it "should not allow to edit admin specific fields" do
         fake_login
-        mock_user = mock({:user_name => "User_name"})
+        mock_user = double({:user_name => "User_name"})
         User.stub(:get).with("24").and_return(mock_user)
         controller.stub(:current_user_name).and_return("test_user")
         mock_user.stub(:has_role_ids?).and_return(false)
@@ -224,7 +224,7 @@ describe UsersController do
         user = stub_model User, :user_name => 'some name'
         params = { :id => '24', :user => { :disabled => true } }
         User.stub :get => user
-        User.stub!(:find_by_user_name).with(user.user_name).and_return(user)
+        User.stub(:find_by_user_name).with(user.user_name).and_return(user)
         post :update, params
         response.should_not be_forbidden
       end
@@ -254,17 +254,17 @@ describe UsersController do
 
   describe "POST update unverified user" do
     it "should set verify to true, if user is invalid" do
-      controller.stub!(:authorize!).and_return(true)
-      User.should_receive(:get).with("unique_id").and_return(mock("user", :update_attributes => false, :verified? => false))
+      controller.stub(:authorize!).and_return(true)
+      User.should_receive(:get).with("unique_id").and_return(double("user", :update_attributes => false, :verified? => false))
       post :update, {:id => "unique_id", :user => {:verified => true}}
       controller.params[:verify].should be_true
     end
 
     it "should update all the children of recently verified users" do
       mock_user = User.new(:user_name => "user", :verified => false)
-      controller.stub!(:authorize!).and_return(true)
-      child1 = mock("child")
-      child2 = mock("child")
+      controller.stub(:authorize!).and_return(true)
+      child1 = double("child")
+      child2 = double("child")
       mock_user.stub(:update_attributes).and_return(true)
       User.should_receive(:get).with("unique_id").and_return(mock_user)
       child1.should_receive(:verified=).with(true)
@@ -287,7 +287,7 @@ describe UsersController do
   describe "GET change_password" do
     before :each do
       @user = User.new(:user_name => 'fakeuser')
-      @mock_change_form = mock()
+      @mock_change_form = double()
       fake_login @user
       @mock_params = { "mock" => "mock" }
       Forms::ChangePasswordForm.stub(:new).with(@mock_params).and_return(@mock_change_form)
@@ -340,7 +340,7 @@ describe UsersController do
 
   describe "index unverified users" do
     it "should list all unverfied users" do
-      unverified_users = [mock("user")]
+      unverified_users = [double("user")]
       User.should_receive(:all_unverified).and_return(unverified_users)
       get :unverified
       assigns[:users].should == unverified_users

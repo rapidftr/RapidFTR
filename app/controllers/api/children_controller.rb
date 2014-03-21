@@ -49,7 +49,7 @@ class Api::ChildrenController < Api::ApiController
       params[:child].merge!(:verified => current_user.verified?)
       child = create_or_update_child(params)
 
-      child['created_by_full_name'] = current_user.full_name
+      child.attributes = {:created_by_full_name => current_user.full_name}
       if child.save
         render :json => child.compact
       end

@@ -19,12 +19,12 @@ describe "advanced_search/index.html.erb" do
     assign(:forms, form_sections)
     assign(:criteria_list, [])
 
-    view.stub!(:current_user).and_return(user)
-    controller.stub!(:current_user).and_return(user)
-    view.stub!(:current_user_name).and_return(user.user_name)
+    view.stub(:current_user).and_return(user)
+    controller.stub(:current_user).and_return(user)
+    view.stub(:current_user_name).and_return(user.user_name)
 
-    controller.stub!(:logged_in?).and_return(true)
-    view.stub!(:logged_in?).and_return(true)
+    controller.stub(:logged_in?).and_return(true)
+    view.stub(:logged_in?).and_return(true)
 
     render :template => "advanced_search/index", :layout => "layouts/application"
 
@@ -34,8 +34,8 @@ describe "advanced_search/index.html.erb" do
 
   it "show not navigation links when no user logged in" do
     form_sections = [FormSection.new("name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => [])]
-    view.stub!(:current_user).and_return(nil)
-    view.stub!(:logged_in?).and_return(false)
+    view.stub(:current_user).and_return(nil)
+    view.stub(:logged_in?).and_return(false)
     assign(:forms, form_sections)
     assign(:criteria_list, [])
     render :template => "advanced_search/index", :layout => "layouts/application"

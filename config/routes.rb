@@ -1,6 +1,6 @@
 RapidFTR::Application.routes.draw do
 
-  match '/' => 'home#index', :as => :root
+  get '/', to: 'home#index', :as => :root
 
 #######################
 # USER URLS
@@ -16,9 +16,9 @@ RapidFTR::Application.routes.draw do
   match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
 
   resources :sessions, :except => :index
-  match 'login' => 'sessions#new', :as => :login
-  match 'logout' => 'sessions#destroy', :as => :logout
-  match '/active' => 'sessions#active', :as => :session_active
+  get 'login', to: 'sessions#new', :as => :login
+  get 'logout', to: 'sessions#destroy', :as => :logout
+  get '/active', to: 'sessions#active', :as => :session_active
 
   resources :user_preferences
   resources :password_recovery_requests, :only => [:new, :create]
@@ -30,8 +30,8 @@ RapidFTR::Application.routes.draw do
   match 'devices/update_blacklist' => 'devices#update_blacklist', :via => :post
 
   resources :roles
-  match 'admin' => 'admin#index', :as => :admin
-  match 'admin/update' => 'admin#update', :as => :admin_update
+  get 'admin', to: 'admin#index', :as => :admin
+  get 'admin/update', to: 'admin#update', :as => :admin_update
 
 
 #######################
@@ -50,19 +50,19 @@ RapidFTR::Application.routes.draw do
     resource :duplicate, :only => [:new, :create]
   end
 
-  match '/children-ids' => 'child_ids#all', :as => :child_ids
+  get '/children-ids', to: 'child_ids#all', :as => :child_ids
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
-  match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index
-  match '/children/:child_id/photos' => 'child_media#manage_photos', :as => :manage_photos
-  match '/children/:child_id/audio(/:id)' => 'child_media#download_audio', :as => :child_audio
-  match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo', :as => :child_photo
-  match '/children/:child_id/photo' => 'child_media#show_photo', :as => :child_legacy_photo
+  get '/children/:child_id/photos_index', to: 'child_media#index', :as => :photos_index
+  get '/children/:child_id/photos', to: 'child_media#manage_photos', :as => :manage_photos
+  get '/children/:child_id/audio(/:id)', to: 'child_media#download_audio', :as => :child_audio
+  get '/children/:child_id/photo/:photo_id', to: 'child_media#show_photo', :as => :child_photo
+  get '/children/:child_id/photo', to: 'child_media#show_photo', :as => :child_legacy_photo
   match 'children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
-  match '/children/:child_id/resized_photo/:size' => 'child_media#show_resized_photo', :as => :child_legacy_resized_photo
-  match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo
-  match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail
-  match '/children' => 'children#index', :as => :child_filter
+  get '/children/:child_id/resized_photo/:size', to: 'child_media#show_resized_photo', :as => :child_legacy_resized_photo
+  get '/children/:child_id/photo/:photo_id/resized/:size', to: 'child_media#show_resized_photo', :as => :child_resized_photo
+  get '/children/:child_id/thumbnail(/:photo_id)', to: 'child_media#show_thumbnail', :as => :child_thumbnail
+  get '/children', to: 'children#index', :as => :child_filter
 
 
 #######################
@@ -112,9 +112,9 @@ RapidFTR::Application.routes.draw do
 
   resources :form_sections, :path => 'form_section', :controller => 'form_section' do
     collection do
-      match 'save_order'
-      match 'toggle'
-      match 'published'
+      post 'save_order'
+      post 'toggle'
+      get 'published'
     end
 
     resources :fields, :controller => 'fields' do
@@ -133,7 +133,7 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-  match '/published_form_sections' => 'form_section#published', :as => :published_form_sections
+  get '/published_form_sections', to: 'form_section#published'
 
 
 #######################
@@ -141,7 +141,7 @@ RapidFTR::Application.routes.draw do
 #######################
 
   resources :advanced_search, :only => [:index, :new]
-  match 'advanced_search/index' => 'advanced_search#index', :as => :advanced_search_index
+  get 'advanced_search/index', to: 'advanced_search#index'
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
 
 

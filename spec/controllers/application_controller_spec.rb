@@ -4,26 +4,26 @@ describe ApplicationController do
 
   let(:user_full_name) { 'Bill Clinton' }
   let(:user) { User.new(:full_name => user_full_name) }
-  let(:session) { mock('session', :user => user) }
+  let(:session) { double('session', :user => user) }
 
   describe 'current_user_full_name' do
     it 'should return the user full name from the session' do
-      controller.stub!(:current_session).and_return(session)
+      controller.stub(:current_session).and_return(session)
       subject.current_user_full_name.should == user_full_name
     end
   end
 
   describe 'locale' do
     it "should be set to default" do
-      controller.stub!(:current_session).and_return(session)
+      controller.stub(:current_session).and_return(session)
       @controller.set_locale
       I18n.locale.should == I18n.default_locale
     end
 
     it "should be change the locale" do
-      user = mock('user', :locale => :ar)
-      session = mock('session', :user => user)
-      controller.stub!(:current_session).and_return(session)
+      user = double('user', :locale => :ar)
+      session = double('session', :user => user)
+      controller.stub(:current_session).and_return(session)
 
       @controller.set_locale
       user.locale.should == I18n.locale
@@ -31,9 +31,9 @@ describe ApplicationController do
 
     context "when hasn't translations to locale" do
       before :each do
-        user = mock('user', :locale => :ar)
-        session = mock('session', :user => user)
-        controller.stub!(:current_session).and_return(session)
+        user = double('user', :locale => :ar)
+        session = double('session', :user => user)
+        controller.stub(:current_session).and_return(session)
       end
 
       xit "should set be set to default" do
@@ -93,8 +93,8 @@ describe ApplicationController do
     end
 
     it 'should send proper filename to the browser' do
-      CleansingTmpDir.stub! :temp_file_name => 'encrypted_file'
-      ZipRuby::Archive.stub! :open => true
+      CleansingTmpDir.stub :temp_file_name => 'encrypted_file'
+      ZipRuby::Archive.stub :open => true
 
       controller.should_receive(:send_file).with('encrypted_file', hash_including(:filename => 'test_filename.zip', :type => 'application/zip', :disposition => "inline"))
       controller.encrypt_exported_files [], 'test_filename.zip'

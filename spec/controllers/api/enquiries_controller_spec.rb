@@ -54,7 +54,7 @@ describe Api::EnquiriesController do
 
       post :create, :enquiry => {:enquirer_name => name, :reporter_details => details, :criteria => {:name => "name"}}
 
-      Enquiry.all.size.should == 1
+      Enquiry.all.total_rows.should == 1
       enquiry = Enquiry.all.first
 
       enquiry.enquirer_name.should == name
@@ -65,14 +65,14 @@ describe Api::EnquiriesController do
       controller.stub(:authorize!)
       post :create, :enquiry => {:enquirer_name => "new name", :reporter_details => {"location" => "kampala"}}
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+      JSON.parse(response.body)["error"].should include("Criteria Please add criteria to your enquiry")
     end
 
     it "should not create enquiry with empty criteria" do
       controller.stub(:authorize!)
       post :create, :enquiry => {:enquirer_name => "new name", :criteria => {}}
       response.response_code.should == 422
-      JSON.parse(response.body)["error"].should include("Please add criteria to your enquiry")
+      JSON.parse(response.body)["error"].should include("Criteria Please add criteria to your enquiry")
     end
 
     it "should not update record if it exists and return error" do
@@ -158,7 +158,7 @@ describe Api::EnquiriesController do
     it "should return an error if enquiry does not exist" do
       controller.stub(:authorize!)
       id = "12345"
-      Enquiry.stub!(:get).with(id).and_return(nil)
+      Enquiry.stub(:get).with(id).and_return(nil)
 
       put :update, :id => id, :enquiry => {:id => id, :enquirer_name => "new name"}
 
@@ -192,7 +192,7 @@ describe Api::EnquiriesController do
 
       enquiry.enquirer_name.should == "new name"
       response.response_code.should == 200
-      JSON.parse(response.body).should == enquiry
+      JSON.parse(response.body).should == JSON.parse(enquiry.to_json)
     end
 
     it "should update record without passing the id in the enquiry params" do
@@ -205,7 +205,7 @@ describe Api::EnquiriesController do
       enquiry = Enquiry.get(enquiry.id)
       enquiry.enquirer_name.should == "new name"
       response.response_code.should == 200
-      JSON.parse(response.body).should == enquiry
+      JSON.parse(response.body).should == JSON.parse(enquiry.to_json)
     end
 
     it "should merge updated fields and return the latest record" do
@@ -226,7 +226,7 @@ describe Api::EnquiriesController do
       enquiry["reporter_details"].should == {"location" => "kampala", "age" => "100"}
       enquiry["location"].should == "Kampala"
       response.response_code.should == 200
-      JSON.parse(response.body).should == enquiry
+      JSON.parse(response.body).should == JSON.parse(enquiry.to_json)
     end
 
     it "should update existing enquiry with potential matches" do
@@ -295,7 +295,7 @@ describe Api::EnquiriesController do
     it "should fetch a particular enquiry" do
       controller.stub(:authorize!)
 
-      Enquiry.should_receive(:get).with("123").and_return(mock(:to_json => "an enquiry record"))
+      Enquiry.should_receive(:get).with("123").and_return(double(:to_json => "an enquiry record"))
 
       get :show, :id => "123" 
       response.response_code.should == 200

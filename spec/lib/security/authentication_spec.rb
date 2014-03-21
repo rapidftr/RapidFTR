@@ -34,7 +34,7 @@ module Security
 
     it "should raise AuthenticationFailure if no such session object" do
       lambda {
-        @controller.stub! :current_session => nil
+        @controller.stub :current_session => nil
         @controller.send :check_authentication
       }.should raise_error(AuthenticationFailure)
     end
@@ -42,8 +42,8 @@ module Security
     xit "should raise AuthenticationFailure if device blacklisted" do
       lambda {
         mock_session = Session.new
-        mock_session.stub! :device_blacklisted? => true
-        @controller.stub! :current_session => mock_session
+        mock_session.stub :device_blacklisted? => true
+        @controller.stub :current_session => mock_session
         @controller.send :check_authentication
       }.should raise_error(AuthenticationFailure)
     end

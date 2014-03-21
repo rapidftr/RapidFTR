@@ -7,20 +7,20 @@ include HpricotSearch
 describe "children/search.html.erb" do
   describe "rendering search results" do
     before :each do
-      @user = mock(:user)
-      @user.stub!(:time_zone).and_return TZInfo::Timezone.get("UTC")
-      @user.stub!(:localize_date).and_return("some date")
-      @user.stub!(:has_permission?).and_return(true)
+      @user = double(:user)
+      @user.stub(:time_zone).and_return TZInfo::Timezone.get("UTC")
+      @user.stub(:localize_date).and_return("some date")
+      @user.stub(:has_permission?).and_return(true)
       controller.stub(:current_user).and_return(@user)
       view.stub(:current_user).and_return(@user)
       
       @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
-      @results.stub! :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
+      @results.stub :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [
         Field.new(:name => "field_2", :display_name => "field display 2", :visible => true ),
         Field.new(:name => "field_4", :display_name => "field display 4", :visible => true ) ]
-      FormSection.stub!(:sorted_highlighted_fields).and_return @highlighted_fields
+      FormSection.stub(:sorted_highlighted_fields).and_return @highlighted_fields
       assign(:current_user, @user)
       assign(:results, @results)
     end
@@ -37,7 +37,7 @@ describe "children/search.html.erb" do
       "created_at" => time_now(),
       "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4",
       "current_photo_key" => "some-photo-id")
-      child.stub!(:has_one_interviewer?).and_return(true)
+      child.stub(:has_one_interviewer?).and_return(true)
       child.create_unique_id
       @results.clear
       @results << child
@@ -103,7 +103,7 @@ describe "children/search.html.erb" do
     def random_child_summary(id = 'some_id')
       child = Child.create("age_is" => "Approx", "created_by" => "dave", "current_photo_key" => "photo-id")
       child.create_unique_id
-      child.stub!(:has_one_interviewer?).and_return(true)
+      child.stub(:has_one_interviewer?).and_return(true)
       child
     end
 

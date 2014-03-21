@@ -1,8 +1,8 @@
 require 'delegate'
+require 'active_model'
 
 module RapidFTR
   module Model
-    include ActiveModel::Conversion
 
     def self.included(base)
       base.extend ActiveModel::Naming

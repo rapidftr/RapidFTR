@@ -3,7 +3,7 @@ require 'spec_helper'
 module Addons
   describe PhotowallExportTask do
     before :each do
-      PhotowallExportTask.stub! :enabled? => true
+      PhotowallExportTask.stub :enabled? => true
       @task = PhotowallExportTask.new
     end
 

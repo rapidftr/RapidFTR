@@ -3,7 +3,7 @@ require "spec_helper"
 describe LogEntry do
 
 	it "should save with creation timestamp" do
-		RapidFTR::Clock.stub!(:current_formatted_time).and_return("this is now")
+		RapidFTR::Clock.stub(:current_formatted_time).and_return("this is now")
 
 		log_entry = LogEntry.create! :type => LogEntry::TYPE[:cpims], :username => "rapidftr", :organisation => "urc", :format => "cpims", :number_or_records => "123"
 
@@ -12,11 +12,11 @@ describe LogEntry do
 
 	it "should return all entries sorted by created_at date" do
 		LogEntry.all.each(&:destroy)
-		Clock.stub!(:now).and_return(1.day.ago)
+		Clock.stub(:now).and_return(1.day.ago)
 		old_entry = LogEntry.create! :type => LogEntry::TYPE[:csv], :username => "rapidftr", :organisation => "urc", :format => "cpims", :number_or_records => "123"
-		Clock.stub!(:now).and_return(1.day.from_now)
+		Clock.stub(:now).and_return(1.day.from_now)
 		newest_entry = LogEntry.create! :type => LogEntry::TYPE[:cpims], :username => "rapidftr", :organisation => "urc", :format => "cpims", :number_or_records => "123"
-		Clock.stub!(:now).and_return(2.days.ago)
+		Clock.stub(:now).and_return(2.days.ago)
 		oldest_entry = LogEntry.create! :type => LogEntry::TYPE[:pdf], :username => "rapidftr", :organisation => "urc", :format => "cpims", :number_or_records => "123"
 
 		entries = LogEntry.by_created_at(:descending => true)

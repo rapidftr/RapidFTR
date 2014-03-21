@@ -6,7 +6,7 @@ describe Login do
       imei = "1336"
       mobile_number = "555-555"
 
-      user = mock(User).as_null_object
+      user = double(User).as_null_object
       User.stub(:find_by_user_name).and_return(user)
       user.stub(:authenticate).and_return true
       user.stub(:devices).and_return([])
@@ -23,7 +23,7 @@ describe Login do
       imei = "1334"
       mobile_number = "555-555"
 
-      user = mock(User).as_null_object
+      user = double(User).as_null_object
       User.stub(:find_by_user_name).and_return(user)
       user.stub(:authenticate).and_return false
       user.stub(:devices).and_return([])
@@ -36,7 +36,7 @@ describe Login do
     end
 
     it "should not save mobile login events for non-mobile logins" do
-      user = mock(User).as_null_object
+      user = double(User).as_null_object
       User.stub(:find_by_user_name).and_return(user)
       user.stub(:authenticate).and_return true
       user.stub(:devices).and_return([])
@@ -49,7 +49,7 @@ describe Login do
       end
 
     it "should not allow unverified users to login" do
-      user = mock(User).as_null_object
+      user = double(User).as_null_object
       User.stub(:find_by_user_name).and_return(user)
       user.stub(:authenticate).and_return true
       user.stub(:devices).and_return([])

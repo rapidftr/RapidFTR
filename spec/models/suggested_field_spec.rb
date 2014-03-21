@@ -21,7 +21,7 @@ describe SuggestedField do
     before :each do
       @suggested_field_id = "the_field"
       @suggested_field =  mock_suggestedfield()
-      SuggestedField.stub!(:get_by_unique_id).with(@suggested_field_id).and_return(@suggested_field)
+      SuggestedField.stub(:get_by_unique_id).with(@suggested_field_id).and_return(@suggested_field)
     end
     it "should set is_used to true" do
       @suggested_field.should_receive(:is_used=).with(true)
@@ -35,7 +35,7 @@ describe SuggestedField do
   describe "all_unused" do
     it "only return the suggested fields that have not been used" do
       suggested_fields = [SuggestedField.new, SuggestedField.new]
-      SuggestedField.stub!(:by_is_used).with(:key=>false).and_return(suggested_fields)
+      SuggestedField.stub(:by_is_used).with(:key=>false).and_return(suggested_fields)
       SuggestedField.all_unused().should == suggested_fields  
     end
   end

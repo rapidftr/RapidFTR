@@ -1,10 +1,10 @@
-class Device < CouchRestRails::Document
+class Device < CouchRest::Model::Base
   use_database :device
-  
+
   include RapidFTR::Model
-  
+
   property :imei
-  property :blacklisted, :cast_as => :boolean
+  property :blacklisted, TrueClass
   property :user_name
 
   before_save :set_appropriate_data_type
@@ -18,6 +18,8 @@ class Device < CouchRestRails::Document
     self.imei = self.imei.to_s
   end
 
-  view_by :imei
+  design do
+    view :by_imei
+  end
 
 end
