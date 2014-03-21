@@ -107,14 +107,14 @@ describe User do
     user.should be_valid
   end
 
-  it "doesn't use _id for equality" do
+  it "doesn't use id for equality" do
     user = build_user
     user.create!
 
     reloaded_user = User.get(user.id)
-
-    reloaded_user.should_not == user
-    reloaded_user.should_not eql(user)
+    #Now couchrest_model use the id for equality.
+    reloaded_user.should == user
+    reloaded_user.should eql(user)
     reloaded_user.should_not equal(user)
   end
 
