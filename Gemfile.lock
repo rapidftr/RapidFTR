@@ -61,7 +61,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.1.4)
-    cancan (1.6.10)
+    cancancan (1.7.1)
     capistrano (2.14.2)
       highline
       net-scp (>= 1.0.0)
@@ -291,7 +291,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
-  cancan (~> 1.6.9)
+  cancancan (~> 1.7)
   capistrano (~> 2.14.2)
   capybara (~> 2.2.1)
   coffee-rails (~> 4.0.1)
