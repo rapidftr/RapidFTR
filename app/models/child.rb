@@ -376,7 +376,7 @@ class Child < CouchRest::Model::Base
     #TODO for some reason content for both arrays is the same, but the hash get different value
     #     so use the id which should unique to get records.
     (self.convert_to_model(by_user_name(:key => user_name)) +
-     self.convert_to_model(all_by_creator(user_name))).uniq {|child| child.id}
+     self.convert_to_model(all_by_creator(user_name))).uniq {|child| child.unique_identifier}
   end
 
   def create_unique_id
