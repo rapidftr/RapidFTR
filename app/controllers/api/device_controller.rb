@@ -4,7 +4,7 @@ class Api::DeviceController < Api::ApiController
   skip_before_filter :check_authentication
 
   def is_blacklisted
-    device = Device.find_by_imei(params[:imei]).first
+    device = Device.find_by_imei_view(params[:imei]).first
     if device
       render :json => { :blacklisted => device.blacklisted }
     else

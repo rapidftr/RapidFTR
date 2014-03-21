@@ -41,14 +41,14 @@ Then /^user "(.+)" should not be disabled$/ do |username|
 end
 
 Then /^device "(.+)" should be blacklisted/ do |imei|
-  devices = Device.find_by_imei(imei)
+  devices = Device.find_by_imei_view(imei)
   devices.each do |device|
     device[:blacklisted].should be_true
   end
 end
 
 Then /^device "(.+)" should not be blacklisted/ do |imei|
-  devices = Device.find_by_imei(imei)
+  devices = Device.find_by_imei_view(imei)
   devices.each do |device|
     device[:blacklisted].should be_false
   end
