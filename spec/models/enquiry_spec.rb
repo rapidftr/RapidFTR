@@ -141,7 +141,7 @@ describe Enquiry do
         enquiry.potential_matches.should include(child1.id, child2.id)
 
         enquiry[:criteria].merge!({"gender" => "male"})
-        enquiry.save!
+        enquiry.update_attributes enquiry[:criteria]
 
         enquiry.potential_matches.size.should == 3
         enquiry.potential_matches.should include(child1.id, child2.id, child3.id)
@@ -156,7 +156,7 @@ describe Enquiry do
         enquiry.potential_matches.should == [child1.id]
 
         enquiry[:criteria].merge!("name" => "John")
-        enquiry.save!
+        enquiry.update_attributes enquiry[:criteria]
 
         enquiry.potential_matches.size.should == 0
         enquiry.potential_matches.should == []
@@ -172,7 +172,7 @@ describe Enquiry do
         enquiry.potential_matches.should include(child1.id, child2.id)
 
         enquiry[:criteria].merge!("name" => "John")
-        enquiry.save!
+        enquiry.update_attributes enquiry[:criteria]
 
         enquiry.potential_matches.size.should == 1
         enquiry.potential_matches.should == [child2.id]
@@ -219,7 +219,7 @@ describe Enquiry do
 
           Clock.stub(:now).and_return(Time.utc(2013, "jan", 02, 00, 00, 0).to_s)
           enquiry.criteria.merge!({"location" => "Kampala"})
-          enquiry.save!
+          enquiry.update_attributes enquiry.criteria
 
           enquiry.match_updated_at.should == Time.utc(2013, "jan", 02, 00, 00, 0).to_s
           enquiry.potential_matches.size.should == 2
@@ -231,7 +231,7 @@ describe Enquiry do
       it "should return a list of all enquiries" do
         save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
         save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
-        Enquiry.all.size.should == 2
+        Enquiry.all.rows.size.should == 2
       end
     end
 
