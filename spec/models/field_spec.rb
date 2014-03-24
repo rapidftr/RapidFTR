@@ -57,7 +57,7 @@ describe "Child record field view model" do
     it "should not allow blank display name" do
       field = Field.new(:display_name => "")
       field.valid?
-      field.errors[:display_name].first.include? "Display name must not be blank"
+      field.errors[:"display_name_#{I18n.default_locale}"].first.include? "Display name must not be blank"
     end
 
     it "should not allows empty field display_name of field base language " do
