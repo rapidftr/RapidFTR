@@ -351,7 +351,7 @@ class Child < CouchRest::Model::Base
   end
 
   def self.duplicates_of(id)
-    duplicates = by_duplicates_of(:key => id)
+    duplicates = Child.by_duplicates_of(:key => id)
     duplicates ||= Array.new
     duplicates
   end
