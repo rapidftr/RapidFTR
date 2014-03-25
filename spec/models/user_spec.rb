@@ -243,7 +243,7 @@ describe User do
     it "should require atleast one role for a verified user" do
       user = build_user(:role_ids => [])
       user.should_not be_valid
-      user.errors.on(:role_ids).should == ["Please select at least one role"]
+      user.errors[:role_ids].should == ["Please select at least one role"]
     end
 
     it "allow an unverified user to have no role" do

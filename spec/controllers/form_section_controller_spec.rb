@@ -85,7 +85,7 @@ describe FormSectionController do
       FormSection.get_by_unique_id(form_one.unique_id).order.should == 2
       FormSection.get_by_unique_id(form_two.unique_id).order.should == 3
       FormSection.get_by_unique_id(form_three.unique_id).order.should == 1
-      response.should render_template(:text => "OK")
+      response.should redirect_to(form_sections_path)
     end
   end
 
