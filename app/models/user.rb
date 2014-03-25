@@ -101,6 +101,19 @@ class User < CouchRest::Model::Base
 
   before_save :generate_id
 
+  #In order to track changes on attributes declared as attr_accessor and
+  #trigger the callbacks we need to use attribute_will_change! method.
+  #check lib/couchrest/model/extended_attachments.rb in source code.
+  #So, override the method for password in order to track changes.
+  def password= value
+    attribute_will_change!("password") if use_dirty? && @password != value
+    @password = value
+  end
+
+  def password
+    @password
+  end
+
   def self.all_unverified
     User.by_unverified
   end
