@@ -48,8 +48,8 @@ describe Ability do
     describe '#edit my account' do
       let(:permissions) { [] }
       it { should_not authorize_any [:update, :show], User, User.new, User.new(:user_name => 'some_other_user') }
-      it { should authorize :update, stub_model(User, :user_name => user.user_name) }
-      it { should authorize :show, stub_model(User, :user_name => user.user_name) }
+      it { should authorize :update, stub_model(User, :user_name => user.user_name, :id => user.id) }
+      it { should authorize :show, stub_model(User, :user_name => user.user_name, :id => user.id) }
     end
   end
 
