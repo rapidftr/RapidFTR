@@ -30,9 +30,9 @@ describe HighlightFieldsController do
       fake_admin_login
       get :index
       assigns[:highlighted_fields].size.should == 3
-      assigns[:highlighted_fields].should == [  { "field_name" => "field1", "display_name" => "field1_display" , "order" => "1", "form_name" => "Form1", "form_id" => "form1" },
-                                                { "field_name" => "field2", "display_name" => "field2_display" , "order" => "2", "form_name" => "Form2", "form_id" => "form2" },
-                                                { "field_name" => "field3", "display_name" => "field3_display" , "order" => "3", "form_name" => "Form3", "form_id" => "form3" } ]
+      assigns[:highlighted_fields].should == [  { :field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Form1", :form_id => "form1" },
+                                                { :field_name => "field2", :display_name => "field2_display" , :order => "2", :form_name => "Form2", :form_id => "form2" },
+                                                { :field_name => "field3", :display_name => "field3_display" , :order => "3", :form_name => "Form3", :form_id => "form3" } ]
     end
 
   end
