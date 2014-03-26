@@ -141,7 +141,7 @@ describe Enquiry do
         enquiry.potential_matches.should include(child1.id, child2.id)
 
         enquiry[:criteria].merge!({"gender" => "male"})
-        enquiry.update_attributes enquiry[:criteria]
+        enquiry.save!
 
         enquiry.potential_matches.size.should == 3
         enquiry.potential_matches.should include(child1.id, child2.id, child3.id)
@@ -156,7 +156,7 @@ describe Enquiry do
         enquiry.potential_matches.should == [child1.id]
 
         enquiry[:criteria].merge!("name" => "John")
-        enquiry.update_attributes enquiry[:criteria]
+        enquiry.save!
 
         enquiry.potential_matches.size.should == 0
         enquiry.potential_matches.should == []
@@ -172,7 +172,7 @@ describe Enquiry do
         enquiry.potential_matches.should include(child1.id, child2.id)
 
         enquiry[:criteria].merge!("name" => "John")
-        enquiry.update_attributes enquiry[:criteria]
+        enquiry.save!
 
         enquiry.potential_matches.size.should == 1
         enquiry.potential_matches.should == [child2.id]
@@ -219,7 +219,7 @@ describe Enquiry do
 
           Clock.stub(:now).and_return(Time.utc(2013, "jan", 02, 00, 00, 0).to_s)
           enquiry.criteria.merge!({"location" => "Kampala"})
-          enquiry.update_attributes enquiry.criteria
+          enquiry.save!
 
           enquiry.match_updated_at.should == Time.utc(2013, "jan", 02, 00, 00, 0).to_s
           enquiry.potential_matches.size.should == 2

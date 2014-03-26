@@ -6,7 +6,7 @@ class Enquiry < CouchRest::Model::Base
   before_save :find_matching_children
 
   property :enquirer_name
-  property :criteria
+  property :criteria, Hash
   property :potential_matches, :default => []
   property :match_updated_at, :default => ""
 
