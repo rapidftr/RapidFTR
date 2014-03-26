@@ -3,6 +3,13 @@ require 'fileutils'
 require 'erb'
 require 'readline'
 
+
+def databases_for_env
+    COUCHDB_SERVER.databases
+                  .select { |db| db =~ /_#{Rails.env}$/ }
+                  .map { |name| COUCHDB_SERVER.database(name) }
+end
+
 namespace :db do
 
     namespace :test do
@@ -71,6 +78,12 @@ namespace :db do
     end
 
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
+  end
+
+  task :delete => :environment do
+    databases_for_env.each do |db| 
+      db.delete!
+    end
   end
 end
 
