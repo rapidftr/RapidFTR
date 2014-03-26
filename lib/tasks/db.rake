@@ -32,7 +32,7 @@ namespace :db do
       **************************************************************
     "
 
-    url       = "http://localhost:5986"
+    url       = "http://localhost:5984"
     user_name = args[:user_name] || get("Enter username for CouchDB: ")
     password  = args[:password]  || get("Enter password for CouchDB: ")
 
@@ -57,8 +57,8 @@ namespace :db do
 
     default_config = {
       "host" => "localhost",
-      "port" => 5986,
-      "https_port" => 6986,
+      "port" => 5984,
+      "https_port" => 6984,
       "database_prefix" => "rapidftr_",
       "username" => user_name,
       "password" => password,
