@@ -1,0 +1,36 @@
+require 'spec_helper'
+
+describe "couchrest_model" do
+
+  describe "dynamic assignment monkeypatch" do
+
+    it "marks attributes set via []= as changed" do
+      child = Child.create('foo_attribute' => 'Value A', 'created_by' => 'me')
+      child['foo_attribute'] = 'Value B'
+
+      expect(child.changed?).to be_true
+      expect(child.changed_attributes.keys.include?('foo_attribute')).to be_true
+      expect(child.changed_attributes['foo_attribute']).to eql('Value A')
+    end
+
+    it 'marks attributes set via set_attributes as changed' do
+      child = Child.create('foo_attribute' => 'Value A', 'created_by' => 'me')
+      child.set_attributes({'foo_attribute' => 'Value B'})
+
+      expect(child.changed?).to be_true
+      expect(child.changed_attributes.keys.include?('foo_attribute')).to be_true
+      expect(child.changed_attributes['foo_attribute']).to eql('Value A')
+    end
+
+    it 'marks nested attributes as changed' do
+      child = Child.create('foo_attribute' => {'bar_attribute' => 'Value A'}, 'created_by' => 'me')
+      child['foo_attribute']['bar_attribute'] = 'Value B'
+
+      expect(child.changed?).to be_true
+      expect(child.changed_attributes.keys.include?('foo_attribute')).to be_true
+      #expect(child.changed_attributes['foo_attribute']).to eql('Value A')
+    end
+
+  end
+
+end
