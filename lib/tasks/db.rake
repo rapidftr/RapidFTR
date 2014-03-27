@@ -3,6 +3,13 @@ require 'fileutils'
 require 'erb'
 require 'readline'
 
+
+def databases_for_env
+    COUCHDB_SERVER.databases
+                  .select { |db| db =~ /_#{Rails.env}$/ }
+                  .map { |name| COUCHDB_SERVER.database(name) }
+end
+
 namespace :db do
 
     namespace :test do
@@ -32,7 +39,7 @@ namespace :db do
       **************************************************************
     "
 
-    url       = "http://localhost:5986"
+    url       = "http://localhost:5984"
     user_name = args[:user_name] || get("Enter username for CouchDB: ")
     password  = args[:password]  || get("Enter password for CouchDB: ")
 
@@ -57,8 +64,8 @@ namespace :db do
 
     default_config = {
       "host" => "localhost",
-      "port" => 5986,
-      "https_port" => 6986,
+      "port" => 5984,
+      "https_port" => 6984,
       "database_prefix" => "rapidftr_",
       "username" => user_name,
       "password" => password,
@@ -71,6 +78,12 @@ namespace :db do
     end
 
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
+  end
+
+  task :delete => :environment do
+    databases_for_env.each do |db| 
+      db.delete!
+    end
   end
 end
 

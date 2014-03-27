@@ -7,7 +7,7 @@ gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-
 gem 'couchrest_model', '~> 2.0.1'
 gem 'mime-types',     '1.16'
 gem 'mini_magick',    '1.3.2'
-gem 'pdf-reader',     '0.8.6'
+gem 'pdf-reader',     '1.3.3'
 gem 'prawn',          '0.8.4'
 gem 'rails',          '4.0.3'
 gem 'uuidtools',      '~> 2.1.1'
@@ -61,4 +61,5 @@ group :test, :cucumber do
   gem 'selenium-webdriver', '~> 2.40.0'
   gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
+  gem "pdf-inspector",      '~> 1.1.0', :require => 'pdf/inspector'
 end

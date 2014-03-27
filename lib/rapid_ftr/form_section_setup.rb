@@ -311,7 +311,7 @@ module RapidFTR
           Field.new("name" => "evacuation_date",
                     "display_name_all" => "Evacuation Date",
                     "type" => "text_field"),
-          Field.new("name" => "care_arrangements_arrival_date",
+          Field.new("name" => "separation_care_arrangements_arrival_date",
                     "display_name_all" => "Arrival Date",
                     "type" => "text_field"),
         ]
