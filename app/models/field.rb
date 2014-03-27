@@ -220,7 +220,7 @@ class Field < CouchRest::Model::Base
 
   def validate_unique_name
     return true unless new? && form
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
     other_form = FormSection.get_form_containing_field name
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form  != nil
     true
@@ -228,7 +228,7 @@ class Field < CouchRest::Model::Base
 
   def validate_unique_display_name
     return true unless new? && form
-    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.display_name == display_name})
+    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
     true
   end
 
