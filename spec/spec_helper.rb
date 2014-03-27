@@ -16,12 +16,23 @@ Mime::Type.register 'application/zip', :mock
 #This work if we keep in the suffix the same as the RAILS_ENV.
 TEST_DATABASES = COUCHDB_SERVER.databases.select {|db| db =~ /#{ENV["RAILS_ENV"]}$/}
 
+module VerifyAndResetHelpers
+  def verify(object)
+    RSpec::Mocks.proxy_for(object).verify
+  end
+
+  def reset(object)
+    RSpec::Mocks.proxy_for(object).reset
+  end
+end
+
 RSpec.configure do |config|
 
   config.include FactoryGirl::Syntax::Methods
   config.include UploadableFiles
   config.include ChildFinder
   config.include FakeLogin, :type => :controller
+  config.include VerifyAndResetHelpers
 
   # ## Mock Framework
   #
