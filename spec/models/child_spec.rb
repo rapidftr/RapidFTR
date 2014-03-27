@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Child do
 
-  before :all do
-    Child.all.each {|c| c.destroy}
-  end
-
   describe 'build solar schema' do
 
     it "should build with free text search fields" do
@@ -501,7 +497,7 @@ describe Child do
       child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       photo = uploadable_jpg_photo_without_file_extension
       child.photo = photo
-      child.save!.should == true
+      child.save.should == true
     end
 
     it "should not save with file formats that are not supported audio formats" do
@@ -509,9 +505,9 @@ describe Child do
       child.audio = uploadable_photo_gif
       child.save.should == false
       child.audio = uploadable_audio_amr
-      child.save!.should == true
+      child.save.should == true
       child.audio = uploadable_audio_mp3
-      child.save!.should == true
+      child.save.should == true
       child.audio = uploadable_audio_wav
       child.save.should == false
       child.audio = uploadable_audio_ogg
@@ -521,16 +517,16 @@ describe Child do
     it "should save blank age" do
       User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
       child = Child.new(:age => "", :another_field => "blah", 'created_by' => "me", 'created_organisation' => "stc")
-      child.save!.should == true
+      child.save.should == true
       child = Child.new :foo => "bar"
-      child.save!.should == true
+      child.save.should == true
     end
 
     it "should not save with image file formats that are not png or jpg" do
       photo = uploadable_photo
       child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.photo = photo
-      child.save!.should == true
+      child.save.should == true
       loaded_child = Child.get(child.id)
       loaded_child.save.should == true
       loaded_child.photo = uploadable_text_file
@@ -927,7 +923,7 @@ describe Child do
     it "should record history for newly populated field that previously was null" do
       # gender is the only field right now that is allowed to be nil when creating child document
       child = Child.create('gender' => nil, 'last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
-      child[:gender] = 'Male'
+      child['gender'] = 'Male'
       child.save!
       child['histories'].first['changes']['gender']['from'].should be_nil
       child['histories'].first['changes']['gender']['to'].should == 'Male'
@@ -935,9 +931,9 @@ describe Child do
 
     it "should apend latest history to the front of histories" do
       child = Child.create('last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
-      child[:last_known_location] = 'New York'
+      child['last_known_location'] = 'New York'
       child.save!
-      child[:last_known_location] = 'Philadelphia'
+      child['last_known_location'] = 'Philadelphia'
       child.save!
       child['histories'].size.should == 3
       child['histories'][0]['changes']['last_known_location']['to'].should == 'Philadelphia'
@@ -1031,7 +1027,7 @@ describe Child do
       child.save!
       flag_history = child['histories'].first['changes']['flag']
       flag_history['from'].should be_nil
-      flag_history['to'].should == true
+      flag_history['to'].should == 'true'
       flag_message_history = child['histories'].first['changes']['flag_message']
       flag_message_history['from'].should be_nil
       flag_message_history['to'].should == 'Duplicate record!'
@@ -1044,7 +1040,7 @@ describe Child do
       child.save!
       reunited_history = child['histories'].first['changes']['reunited']
       reunited_history['from'].should be_nil
-      reunited_history['to'].should == true
+      reunited_history['to'].should == 'true'
       reunited_message_history = child['histories'].first['changes']['reunited_message']
       reunited_message_history['from'].should be_nil
       reunited_message_history['to'].should == 'Finally home!'
