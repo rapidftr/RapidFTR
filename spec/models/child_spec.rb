@@ -860,35 +860,41 @@ describe Child do
 
     it "should update history with 'from' value on last_known_location update" do
       child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
-      child.update_attributes :last_known_location => 'Philadelphia'
+      child['last_known_location'] = 'Philadelphia'
+      child.save!
       changes = child['histories'].first['changes']
       changes['last_known_location']['from'].should == 'New York'
     end
 
     it "should update history with 'to' value on last_known_location update" do
       child = Child.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
-      child.update_attributes :last_known_location => 'Philadelphia'
+      child['last_known_location'] = 'Philadelphia'
+      child.save!
       changes = child['histories'].first['changes']
       changes['last_known_location']['to'].should == 'Philadelphia'
     end
 
     it "should update history with 'from' value on age update" do
       child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
-      child.update_attributes :age => '6'
+      child['age'] = '6'
+      child.save!
       changes = child['histories'].first['changes']
       changes['age']['from'].should == '8'
     end
 
     it "should update history with 'to' value on age update" do
       child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
-      child.update_attributes :age => '6'
+      child['age'] = '6'
+      child.save!
       changes = child['histories'].first['changes']
       changes['age']['to'].should == '6'
     end
 
     it "should update history with a combined history record when multiple fields are updated" do
       child = Child.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => "me")
-      child.update_attributes :age => '6', :last_known_location => 'Philadelphia'
+      child['age'] = '6'
+      child['last_known_location'] = 'Philadelphia'
+      child.save!
       child['histories'].size.should == 2
       changes = child['histories'].first['changes']
       changes['age']['from'].should == '8'
@@ -921,15 +927,18 @@ describe Child do
     it "should record history for newly populated field that previously was null" do
       # gender is the only field right now that is allowed to be nil when creating child document
       child = Child.create('gender' => nil, 'last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
-      child.update_attributes :gender => 'Male'
+      child[:gender] = 'Male'
+      child.save!
       child['histories'].first['changes']['gender']['from'].should be_nil
       child['histories'].first['changes']['gender']['to'].should == 'Male'
     end
 
     it "should apend latest history to the front of histories" do
       child = Child.create('last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => "me", 'created_organisation' => "stc")
-      child.update_attributes :last_known_location => 'New York'
-      child.update_attributes :last_known_location => 'Philadelphia'
+      child[:last_known_location] = 'New York'
+      child.save!
+      child[:last_known_location] = 'Philadelphia'
+      child.save!
       child['histories'].size.should == 3
       child['histories'][0]['changes']['last_known_location']['to'].should == 'Philadelphia'
       child['histories'][1]['changes']['last_known_location']['to'].should == 'New York'
@@ -937,10 +946,8 @@ describe Child do
 
     it "should update history with username from last_updated_by" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-      child.update_attributes(
-        :last_known_location => 'Philadelphia',
-        :last_updated_by => 'some_user'
-      )
+      child['last_known_location'] = 'Philadelphia'
+      child['last_updated_by'] = 'some_user'
       child.save!
       child['histories'].first['user_name'].should == 'some_user'
       child['histories'].first['user_organisation'].should == 'UNICEF'
@@ -948,10 +955,9 @@ describe Child do
 
     it "should update history with the datetime from last_updated_at" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-      child.update_attributes(
-        :last_known_location => 'Philadelphia',
-        :last_updated_at => '2010-01-14 14:05:00UTC'
-      )
+      child['last_known_location'] = 'Philadelphia'
+      child['last_updated_at'] = '2010-01-14 14:05:00UTC'
+      child.save!
       child['histories'].first['datetime'].should == '2010-01-14 14:05:00UTC'
     end
 
@@ -1020,10 +1026,9 @@ describe Child do
 
     it "should maintain history when child is flagged and message is added" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-      child.update_attributes(
-          :flag => 'true',
-          :flag_message => 'Duplicate record!'
-      )
+      child['flag'] = 'true'
+      child['flag_message'] = 'Duplicate record!'
+      child.save!
       flag_history = child['histories'].first['changes']['flag']
       flag_history['from'].should be_nil
       flag_history['to'].should == true
@@ -1034,7 +1039,9 @@ describe Child do
 
     it "should maintain history when child is reunited and message is added" do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => "me", 'created_organisation' => "stc")
-      child.update_attributes :reunited => 'true', :reunited_message => 'Finally home!'
+      child['reunited'] = 'true'
+      child['reunited_message'] = 'Finally home!'
+      child.save!
       reunited_history = child['histories'].first['changes']['reunited']
       reunited_history['from'].should be_nil
       reunited_history['to'].should == true
@@ -1279,8 +1286,8 @@ describe Child do
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.duplicates_of(record_active.id)
-        all = Child.all
+        duplicates = Child.duplicates_of(record_active.id).rows
+        all = Child.all.rows
 
         duplicates.size.should be 1
         all.size.should be 1
@@ -1293,8 +1300,7 @@ describe Child do
         record_duplicate = create_duplicate(record_active)
 
         duplicates = Child.duplicates_of(record_active.id)
-
-        duplicates.size.should be 1
+        duplicates.rows.size.should be 1
         duplicates.first.id.should == record_duplicate.id
       end
 
