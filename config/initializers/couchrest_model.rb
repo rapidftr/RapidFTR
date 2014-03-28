@@ -9,6 +9,7 @@ end
 #Couchrest_model is using the inherited []= setter which fails to set the flag.
 #See: https://github.com/couchrest/couchrest_model/issues/114
 #See: https://github.com/couchrest/couchrest_model/issues/130
+#TODO: Still a hack, doesn't cover the model['foo']['bar']='value' case.
 module CouchRest
   module Model
     class Base
