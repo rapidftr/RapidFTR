@@ -77,7 +77,9 @@ class Field < CouchRest::Model::Base
       self.base_language='en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+    if (base_lang_display_name.nil?||base_lang_display_name.empty?)
+      errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
+    end
   end
 
   def form
