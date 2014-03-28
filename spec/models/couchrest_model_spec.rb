@@ -7,7 +7,6 @@ describe "couchrest_model" do
     it "marks attributes set via []= as changed" do
       child = Child.create('foo_attribute' => 'Value A', 'created_by' => 'me')
       child['foo_attribute'] = 'Value B'
-      binding.pry
 
       expect(child.changed?).to be_true
       expect(child.changed_attributes.keys.include?('foo_attribute')).to be_true
