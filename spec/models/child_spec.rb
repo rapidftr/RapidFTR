@@ -350,7 +350,7 @@ describe Child do
       FormSection.stub(:all_visible_child_fields).and_return(fields)
 
       child.should_not be_valid
-      child.errors.on(:height).should == ["height must be a valid number"]
+      child.errors[:height].should == ["height must be a valid number"]
     end
 
     it "should validate multiple numeric types" do
@@ -362,8 +362,8 @@ describe Child do
         FormSection.stub(:all_visible_child_fields).and_return(fields)
 
         child.should_not be_valid
-        child.errors.on(:height).should == ["height must be a valid number"]
-        child.errors.on(:new_age).should == ["new age must be a valid number"]
+        child.errors[:height].should == ["height must be a valid number"]
+        child.errors[:new_age].should == ["new age must be a valid number"]
     end
 
     it "should disallow text field values to be more than 200 chars" do
