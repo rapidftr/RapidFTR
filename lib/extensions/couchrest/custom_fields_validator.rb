@@ -1,19 +1,15 @@
 class CustomFieldsValidator
 
-  def initialize(record, options)
+  def initialize(target, options)
     @options = options
-    call(record) if record
+    fields = retrieve_field_definitions(target)
+    validated_fields = fields.select { |field| field.type == @options[:type] }
+    validate_fields(validated_fields, target)
   end
 
   def retrieve_field_definitions(target)
     return target.field_definitions if (target.respond_to? :field_definitions) && !target.field_definitions.nil?
     return FormSection.all_enabled_child_fields
-  end
-
-  def call(target)
-    fields = retrieve_field_definitions(target)
-    validated_fields = fields.select { |field| field.type == @options[:type] }
-    return validate_fields(validated_fields, target)
   end
 
   def validate_fields(fields, target)
@@ -78,15 +74,16 @@ class FieldValidator  < ActiveModel::Validator
   def validate(record)
     case @options[:type]
       when Field::NUMERIC_FIELD
-        CustomNumericFieldsValidator.new(record, @options)
+        validator = CustomNumericFieldsValidator
       when Field::TEXT_FIELD
-        CustomTextFieldsValidator.new(record, @options)
+        validator = CustomTextFieldsValidator
       when Field::TEXT_AREA
-        CustomTextAreasValidator.new(record, @options)
+        validator = CustomTextAreasValidator
       when Field::DATE_FIELD
-        DateFieldsValidator.new(record, @options)
+        validator = DateFieldsValidator
       else
         raise "Unrecognised field type " + field_type.to_s + " for validation"
     end
+    validator.new(record, @options) if validator
   end
 end
