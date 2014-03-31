@@ -735,7 +735,7 @@ describe ChildrenController do
       controller.stub(:authorize!)
       post :create, :child => {:unique_identifier => child.unique_identifier, :name => 'new name'}
       updated_child = Child.by_short_id(:key => child.short_id)
-      updated_child.rows.size.should == 1
+      updated_child.all.size.should == 1
       updated_child.first.name.should == 'new name'
     end
   end
