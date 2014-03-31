@@ -1,9 +1,8 @@
 class CustomFieldsValidator
 
   def initialize(target, options)
-    @options = options
     fields = retrieve_field_definitions(target)
-    validated_fields = fields.select { |field| field.type == @options[:type] }
+    validated_fields = fields.select { |field| field.type == options[:type] }
     validate_fields(validated_fields, target)
   end
 
