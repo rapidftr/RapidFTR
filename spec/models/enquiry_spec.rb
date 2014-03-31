@@ -231,7 +231,7 @@ describe Enquiry do
       it "should return a list of all enquiries" do
         save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
         save_valid_enquiry('user1', 'enquiry_id' => 'id1', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
-        Enquiry.all.size.should == 2
+        Enquiry.all.all.size.should == 2
       end
     end
 

@@ -6,7 +6,7 @@ class Enquiry < CouchRest::Model::Base
   before_save :find_matching_children
 
   property :enquirer_name
-  property :criteria
+  property :criteria, Hash
   property :potential_matches, :default => []
   property :match_updated_at, :default => ""
 
@@ -56,7 +56,7 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def self.search_by_match_updated_since(timestamp)
-    Enquiry.all.keep_if { |e|
+    Enquiry.all.all.keep_if { |e|
       !e['match_updated_at'].empty? and DateTime.parse(e['match_updated_at']) >= timestamp
     }
   end
