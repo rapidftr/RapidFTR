@@ -3,6 +3,8 @@ require "spec_helper"
 describe LogEntry do
 
 	it "should save with creation timestamp" do
+require 'pry'
+binding.pry
 		RapidFTR::Clock.stub(:current_formatted_time).and_return("this is now")
 
 		log_entry = LogEntry.create! :type => LogEntry::TYPE[:cpims], :username => "rapidftr", :organisation => "urc", :format => "cpims", :number_or_records => "123"
@@ -19,7 +21,7 @@ describe LogEntry do
 		Clock.stub(:now).and_return(2.days.ago)
 		oldest_entry = LogEntry.create! :type => LogEntry::TYPE[:pdf], :username => "rapidftr", :organisation => "urc", :format => "cpims", :number_or_records => "123"
 
-		entries = LogEntry.by_created_at(:descending => true)
+		entries = LogEntry.by_created_at(:descending => true).all
 		entries.size.should == 3
 		entries[0][:type].should == LogEntry::TYPE[:cpims]
 		entries[1][:type].should == LogEntry::TYPE[:csv]
