@@ -235,7 +235,7 @@ class Child < CouchRest::Model::Base
 
   def self.fetch_all_ids_and_revs
     ids_and_revs = []
-    all_rows = self.view("by_ids_and_revs", :include_docs => false)["rows"]
+    all_rows = self.by_ids_and_revs({:include_docs => false})["rows"]
     all_rows.each do |row|
       ids_and_revs << row["value"]
     end
@@ -243,7 +243,7 @@ class Child < CouchRest::Model::Base
   end
 
   def self.fetch_paginated(options, page, per_page)
-    row_count = self.view("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
+    row_count = send("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
     per_page = row_count if per_page == "all"
     [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
@@ -351,9 +351,7 @@ class Child < CouchRest::Model::Base
   end
 
   def self.duplicates_of(id)
-    duplicates = by_duplicates_of(:key => id)
-    duplicates ||= Array.new
-    duplicates
+    by_duplicates_of(:key => id).all
   end
 
   def self.search_by_created_user(search, created_by, page_number = 1)
@@ -373,10 +371,8 @@ class Child < CouchRest::Model::Base
   end
 
   def self.all_connected_with(user_name)
-    #TODO for some reason content for both arrays is the same, but the hash get different value
-    #     so use the id which should unique to get records.
-    (self.convert_to_model(by_user_name(:key => user_name)) +
-     self.convert_to_model(all_by_creator(user_name))).uniq {|child| child.unique_identifier}
+     #TODO Investigate why the hash of the objects got different.
+     (by_user_name(:key => user_name).all + all_by_creator(user_name).all).uniq {|child| child.unique_identifier}
   end
 
   def create_unique_id

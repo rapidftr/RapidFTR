@@ -56,7 +56,7 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def self.search_by_match_updated_since(timestamp)
-    Enquiry.all.select { |e|
+    Enquiry.all.all.select { |e|
       !e['match_updated_at'].empty? and DateTime.parse(e['match_updated_at']) >= timestamp
     }
   end
