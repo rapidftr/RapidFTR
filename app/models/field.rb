@@ -77,7 +77,9 @@ class Field < CouchRest::Model::Base
       self.base_language='en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+    if (base_lang_display_name.nil?||base_lang_display_name.empty?)
+      errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
+    end
   end
 
   def form
@@ -220,7 +222,7 @@ class Field < CouchRest::Model::Base
 
   def validate_unique_name
     return true unless new? && form
-    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
     other_form = FormSection.get_form_containing_field name
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form  != nil
     true
@@ -228,9 +230,7 @@ class Field < CouchRest::Model::Base
 
   def validate_unique_display_name
     return true unless new? && form
-    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
-    other_form = FormSection.get_form_containing_field display_name
-    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form  != nil
+    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
     true
   end
 

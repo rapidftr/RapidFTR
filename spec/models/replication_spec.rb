@@ -65,32 +65,32 @@ describe Replication do
     end
 
     it 'should validate remote couch config' do
-      r = build :replication, :remote_app_url => 'abcd://app:3000'
-      r.should_receive(:save_remote_couch_config).and_return(false)
-      r.should_not be_valid
+      r = build :replication, :remote_app_url => 'http://app:3000'
+      expect(r).to receive(:save_remote_couch_config).and_return(false).and_call_original
+      expect(r).not_to be_valid
       r.errors[:save_remote_couch_config].should_not be_empty
     end
   end
 
   describe 'getters' do
     it 'should return what models to sync' do
-      Replication.rspec_reset
+      reset Replication
       Replication.models_to_sync.should == [ Role, Child, User, MobileDbKey, Device ]
     end
 
     it 'should sync roles first, otherwise users will sync first and start throwing role errors' do
-      Replication.rspec_reset
+      reset Replication
       Replication.models_to_sync.first.should == Role
     end
 
     it 'should return the couchdb url without the source username and password' do
-      CouchSettings.instance.stub :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
+      CouchSettings.instance.stub :ssl_enabled_for_couch? => false, :host => "couchdb", :username => "rapidftr", :password => "rapidftr", :port => 5986
       target_hash = Replication.couch_config
       target_hash[:target].should == "http://couchdb:5986/"
     end
 
     it 'should return HTTPS url when enabled in Couch' do
-      CouchSettings.instance.stub :ssl_enabled_for_couch? => true, :host => "couchdb", :username => "rapidftr", :password => "rapidftr"
+      CouchSettings.instance.stub :ssl_enabled_for_couch? => true, :host => "couchdb", :username => "rapidftr", :password => "rapidftr", :port => 6986
       target_hash = Replication.couch_config
       target_hash[:target].should == "https://couchdb:6986/"
     end

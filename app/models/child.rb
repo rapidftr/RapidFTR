@@ -37,10 +37,10 @@ class Child < CouchRest::Model::Base
   validate :validate_photos
   validate :validate_audio_size
   validate :validate_audio_file_name
-#  validates Field::NUMERIC_FIELD, numericality: true
+  validates_with FieldValidator, :type => Field::NUMERIC_FIELD
   validate :validate_duplicate_of
-#  validates_fields_of_type Field::TEXT_AREA
-#  validates_fields_of_type Field::TEXT_FIELD
+  validates_with FieldValidator, :type => Field::TEXT_AREA
+  validates_with FieldValidator, :type => Field::TEXT_FIELD
   validate :validate_created_at
   validate :validate_has_at_least_one_field_value
   validate :validate_last_updated_at

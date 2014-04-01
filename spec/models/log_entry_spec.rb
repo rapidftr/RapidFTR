@@ -21,8 +21,8 @@ describe LogEntry do
 
 		entries = LogEntry.by_created_at(:descending => true).all
 		entries.size.should == 3
-		entries[0][:type].should == LogEntry::TYPE[:cpims]
-		entries[1][:type].should == LogEntry::TYPE[:csv]
-		entries[2][:type].should == LogEntry::TYPE[:pdf]
+		entries[0]['type'].should == LogEntry::TYPE[:cpims]
+		entries[1]['type'].should == LogEntry::TYPE[:csv]
+		entries[2]['type'].should == LogEntry::TYPE[:pdf]
 	end
 end

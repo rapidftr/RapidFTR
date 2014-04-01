@@ -350,7 +350,7 @@ describe Child do
       FormSection.stub(:all_visible_child_fields).and_return(fields)
 
       child.should_not be_valid
-      child.errors.on(:height).should == ["height must be a valid number"]
+      child.errors[:height].should == ["height must be a valid number"]
     end
 
     it "should validate multiple numeric types" do
@@ -362,8 +362,8 @@ describe Child do
         FormSection.stub(:all_visible_child_fields).and_return(fields)
 
         child.should_not be_valid
-        child.errors.on(:height).should == ["height must be a valid number"]
-        child.errors.on(:new_age).should == ["new age must be a valid number"]
+        child.errors[:height].should == ["height must be a valid number"]
+        child.errors[:new_age].should == ["new age must be a valid number"]
     end
 
     it "should disallow text field values to be more than 200 chars" do
@@ -1190,9 +1190,9 @@ describe Child do
       Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
-      childrens = Child.all
+      childrens = Child.all.all
       childrens.first['name'].should == ''
-      childrens.size.should == 3
+      Child.all.all.size.should == 3
     end
 
   end
@@ -1282,8 +1282,8 @@ describe Child do
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.duplicates_of(record_active.id)
-        all = Child.all
+        duplicates = Child.duplicates_of(record_active.id).rows
+        all = Child.all.all
 
         duplicates.size.should be 1
         all.size.should be 1
@@ -1296,7 +1296,6 @@ describe Child do
         record_duplicate = create_duplicate(record_active)
 
         duplicates = Child.duplicates_of(record_active.id)
-
         duplicates.size.should be 1
         duplicates.first.id.should == record_duplicate.id
       end

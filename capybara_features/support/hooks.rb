@@ -4,16 +4,15 @@ Before do
 end
 
 Before('@search') do
-  Child.rspec_reset
-  Sunspot.rspec_reset
+  RSpec::Mocks.proxy_for(Child).reset
+  RSpec::Mocks.proxy_for(Sunspot).reset
   Sunspot.remove_all!(Child)
   Sunspot.remove_all!(Enquiry)
 end
 
 Before do
   I18n.locale = I18n.default_locale = :en
-
-  CouchRestRails::Document.descendants.each do |model|
+  CouchRest::Model::Base.descendants.each do |model|
     docs = model.database.documents["rows"].map { |doc|
       { "_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true } unless doc["id"].include? "_design"
     }.compact

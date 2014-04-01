@@ -116,7 +116,6 @@ describe "Child record field view model" do
 
       field.valid?
       field.errors[:name].should ==  ["Field already exists on form 'test form'"]
-      field.errors[:display_name].should ==  ["Field already exists on form 'test form'"]
     end
   end
 
