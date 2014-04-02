@@ -1,4 +1,4 @@
-class HighlightInformation < CouchRest::Model::Base
+class HighlightInformation
   include CouchRest::Model::CastedModel
 
   property :order
