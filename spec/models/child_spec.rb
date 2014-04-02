@@ -496,8 +496,8 @@ describe Child do
     it "should save file based on content type" do
       child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       photo = uploadable_jpg_photo_without_file_extension
-      child.photo = photo
-      child.save.should == true
+      child[:photo] = photo
+      child.save.present?.should == true
     end
 
     it "should not save with file formats that are not supported audio formats" do
@@ -505,9 +505,9 @@ describe Child do
       child.audio = uploadable_photo_gif
       child.save.should == false
       child.audio = uploadable_audio_amr
-      child.save.should == true
+      child.save.present?.should == true
       child.audio = uploadable_audio_mp3
-      child.save.should == true
+      child.save.present?.should == true
       child.audio = uploadable_audio_wav
       child.save.should == false
       child.audio = uploadable_audio_ogg
@@ -517,18 +517,18 @@ describe Child do
     it "should save blank age" do
       User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
       child = Child.new(:age => "", :another_field => "blah", 'created_by' => "me", 'created_organisation' => "stc")
-      child.save.should == true
+      child.save.present?.should == true
       child = Child.new :foo => "bar"
-      child.save.should == true
+      child.save.present?.should == true
     end
 
     it "should not save with image file formats that are not png or jpg" do
       photo = uploadable_photo
       child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.photo = photo
-      child.save.should == true
+      child.save.present?.should == true
       loaded_child = Child.get(child.id)
-      loaded_child.save.should == true
+      loaded_child.save.present?.should == true
       loaded_child.photo = uploadable_text_file
       loaded_child.save.should == false
     end
