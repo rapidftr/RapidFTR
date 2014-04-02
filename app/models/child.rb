@@ -5,7 +5,7 @@ class Child < CouchRest::Model::Base
   include RecordHelper
   include RapidFTR::Model
   include RapidFTR::CouchRestRailsBackward
-
+  include Extensions::CustomValidator::CustomFieldsValidator
   include AttachmentHelper
   include AudioHelper
   include PhotoHelper
