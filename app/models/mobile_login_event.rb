@@ -1,4 +1,4 @@
-class MobileLoginEvent < CouchRest::Model::Base
+class MobileLoginEvent
   include CouchRest::Model::CastedModel
 
   property :imei

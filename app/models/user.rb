@@ -50,7 +50,7 @@ class User < CouchRest::Model::Base
                   if ((doc['couchrest-type'] == 'User') && doc['user_name'])
                   {
                       emit(['all',doc['user_name']],doc);
-                      if(doc['disabled'] == 'false')
+                      if(doc['disabled'] == 'false' || doc['disabled'] == false)
                         emit(['active',doc['user_name']],doc);
                   }
             }"
@@ -59,7 +59,7 @@ class User < CouchRest::Model::Base
                 if ((doc['couchrest-type'] == 'User') && doc['full_name'])
                 {
                   emit(['all',doc['full_name']],doc);
-                  if(doc['disabled'] == 'false')
+                  if(doc['disabled'] == 'false' || doc['disabled'] == false)
                     emit(['active',doc['full_name']],doc);
 
                 }

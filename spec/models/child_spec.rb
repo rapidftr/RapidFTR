@@ -1190,9 +1190,9 @@ describe Child do
       Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
       Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
-      childrens = Child.all.all
+      childrens = Child.all
       childrens.first['name'].should == ''
-      Child.all.all.size.should == 3
+      Child.all.size.should == 3
     end
 
   end
@@ -1282,8 +1282,8 @@ describe Child do
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.duplicates_of(record_active.id).rows
-        all = Child.all.all
+        duplicates = Child.duplicates_of(record_active.id)
+        all = Child.all
 
         duplicates.size.should be 1
         all.size.should be 1

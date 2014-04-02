@@ -87,11 +87,11 @@ class Child < CouchRest::Model::Base
                     if (doc['couchrest-type'] == 'Child')
                     {
                       emit(['all', doc['created_by'], fDate], doc);
-                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                      if (doc.hasOwnProperty('flag') && (doc['flag'] == 'true' || doc['flag'] == true)) {
                         emit(['flag', doc['created_by'], fDate], doc);
                       }
                       if (doc.hasOwnProperty('reunited')) {
-                        if (doc['reunited'] == 'true') {
+                        if (doc['reunited'] == 'true' || doc['reunited'] == true) {
                           emit(['reunited', doc['created_by'], fDate], doc);
                         } else {
                           emit(['active', doc['created_by'], fDate], doc);
@@ -108,12 +108,12 @@ class Child < CouchRest::Model::Base
                     if (doc['couchrest-type'] == 'Child')
                     {
                       emit(['all', fDate], doc);
-                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                      if (doc.hasOwnProperty('flag') && (doc['flag'] == 'true' || doc['flag'] == true)) {
                         emit(['flag', fDate], doc);
                       }
 
                       if (doc.hasOwnProperty('reunited')) {
-                        if (doc['reunited'] == 'true') {
+                        if (doc['reunited'] == 'true' || doc['reunited'] == true) {
                           emit(['reunited', fDate], doc);
                         } else {
                          if (!doc.hasOwnProperty('duplicate') && !doc['duplicate']) {
@@ -133,11 +133,11 @@ class Child < CouchRest::Model::Base
                     if (doc['couchrest-type'] == 'Child')
                    {
                       emit(['all', doc['created_by']], 1);
-                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                      if (doc.hasOwnProperty('flag') && (doc['flag'] == 'true' || doc['flag'] == true)) {
                         emit(['flag', doc['created_by']], 1);
                       }
                       if (doc.hasOwnProperty('reunited')) {
-                        if (doc['reunited'] == 'true') {
+                        if (doc['reunited'] == 'true' || doc['reunited'] == true) {
                           emit(['reunited', doc['created_by']], 1);
                         } else {
                           emit(['active', doc['created_by']], 1);
@@ -153,11 +153,11 @@ class Child < CouchRest::Model::Base
                     if (doc['couchrest-type'] == 'Child')
                    {
                       emit(['all', doc['created_by']], 1);
-                      if (doc.hasOwnProperty('flag') && doc['flag'] == 'true') {
+                      if (doc.hasOwnProperty('flag') && (doc['flag'] == 'true' || doc['flag'] == true)) {
                         emit(['flag', doc['created_by']], 1);
                       }
                       if (doc.hasOwnProperty('reunited')) {
-                        if (doc['reunited'] == 'true') {
+                        if (doc['reunited'] == 'true' || doc['reunited'] == true) {
                           emit(['reunited', doc['created_by']], 1);
                         } else {
                           emit(['active', doc['created_by']], 1);

@@ -23,3 +23,24 @@ module CouchRest
     end
   end
 end
+
+#couchrest 0.34
+#CouchRest::CastedModel did not provide "to_key" method.
+#
+#couchrest 1.1.3 defined the module CouchRest::Model::Embeddable
+#as the new way to define CastedModel, this class define the
+#method "to_key" which returns the the id, but
+#actionpack-4.0.3/lib/action_view/record_identifier.rb needs the
+#return value as a Enumerable type such an array.
+#
+#The following solve the issue in /form_section/ when edit fields.
+module CouchRest
+  module Model
+    module Embeddable
+      def to_key
+        key = respond_to?(:id) && id
+        key ? [key] : nil
+      end
+    end
+  end
+end
