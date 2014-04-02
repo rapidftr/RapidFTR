@@ -19,7 +19,7 @@ describe Report do
   end
 
   it 'should return data' do
-    report = build :report, :data => 'TEST DATA'
+    report = create :report, :data => 'TEST DATA'
     report.data.should == 'TEST DATA'
   end
 
