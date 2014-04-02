@@ -1,4 +1,4 @@
-class Field < CouchRest::Model::Base
+class Field
   include CouchRest::Model::CastedModel
   include RapidFTR::Model
   include PropertiesLocalization
