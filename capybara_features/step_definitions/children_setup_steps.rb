@@ -6,7 +6,7 @@ def create_user(user_name)
                "organisation" => "UNICEF",
                "disabled" => "false",
                "email" => "rapidftr@rapidftr.com",
-               "role_ids" => "ADMIN")
+               "role_ids" => ["ADMIN"])
 end
 
 Given /^the following children exist in the system:$/ do |children_table|
