@@ -71,10 +71,10 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     Then I should find the form section with following attributes:
       | Name          |
       | Name          |
-      | Second Name   |
       | Nick Name     |
-      | characteristic|
-      | nationality   |
+      | Second Name   |
+      | Characteristic|
+      | Nationality   |
 
   @run
   Scenario: User creates a new form and it is added to the bottom of the list of forms

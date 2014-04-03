@@ -86,8 +86,7 @@ end
 
 Then /^I should find the form section with following attributes:$/ do |form_section_fields|
   expected_order = form_section_fields.hashes.collect { |section_field| section_field['Name'] }
-  actual_order=page.all(:xpath, "//tr[@class='rowEnabled']/td[1]").collect(&:text)
-  actual_order.should == expected_order
+  form_section_page.should_show_fields_in_order(expected_order)
 end
 
 When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name, help_text|
@@ -111,16 +110,15 @@ def form_section_visibility_checkbox_id(section_name)
 end
 
 Then /^I land in edit page of form (.+)$/ do  |section_name|
-  id = FormSection.all.find { |f| f.name == section_name }.unique_id
-  URI.parse(current_url).path.should eq "/form_section/#{id}/edit"
+  form_section_page.should_be_editing_section(section_name)
 end
 
 When /^I click Cancel$/ do
-  click_link('Cancel')
+  form_section_page.cancel
 end
 
 Then /^the "([^"]*)" checkbox should be assignable$/ do |field|
-  find(:xpath,"//input[@id='#{field}']").should be_checked
+  form_section_page.should_have_view_and_download_reports_section_selected
 end
 
 private

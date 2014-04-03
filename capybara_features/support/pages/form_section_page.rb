@@ -39,6 +39,24 @@ class FormSectionPage
     find(:xpath, "//form[@id='new_field']//input[@value='Save Details']").click
   end
 
+  def should_have_view_and_download_reports_section_selected
+    @session.find(:xpath,"//input[@id='view_and_download_reports']").should be_checked
+  end
+
+  def cancel
+    @session.click_link('Cancel')
+  end
+
+  def should_be_editing_section(section_name)
+    id = FormSection.all.find { |f| f.name == section_name }.unique_id
+    URI.parse(@session.current_url).path.should eq "/form_section/#{id}/edit"
+  end
+
+  def should_show_fields_in_order(expected_field_order)
+    actual_order = @session.all(:xpath, "//tr[@class='rowEnabled']/td[1]").collect(&:text)
+    actual_order.should == expected_field_order
+  end
+
   private
 
   def row_for(section_name)
