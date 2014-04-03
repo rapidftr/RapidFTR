@@ -419,6 +419,7 @@ zh:
     highlight_fields: "高亮字段"
     manage_system_users: "管理服务器同步用户"
     create_system_user: 创建系统用户
+    system_logs: "系统日志"
 
   fields:
     label: "字段"
