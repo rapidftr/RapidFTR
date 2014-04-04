@@ -1,3 +1,5 @@
+TEST_DATABASES = COUCHDB_SERVER.databases.select {|db| db =~ /#{ENV["RAILS_ENV"]}$/}
+
 Before do
   Child.stub :index_record => true, :reindex! => true, :build_solar_schema => true
   Sunspot.stub :index => true, :index! => true
@@ -26,4 +28,11 @@ Before('@roles') do |scenario|
   Role.create(:name => 'Field Worker', :permissions => [Permission::CHILDREN[:register]])
   Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
   Role.create(:name => 'Admin', :permissions => Permission.all_permissions)
+end
+
+
+After do
+  TEST_DATABASES.each do |db|
+    COUCHDB_SERVER.database(db).delete! rescue nil
+  end
 end
