@@ -367,7 +367,7 @@ class Child < CouchRest::Model::Base
   end
 
   def self.flagged
-    by_flag(:key => 'true')
+    by_flag(:key => true)
   end
 
   def self.all_connected_with(user_name)
