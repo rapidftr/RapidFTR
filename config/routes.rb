@@ -31,7 +31,7 @@ RapidFTR::Application.routes.draw do
 
   resources :roles
   get 'admin', to: 'admin#index', :as => :admin
-  get 'admin/update', to: 'admin#update', :as => :admin_update
+  put 'admin/update', to: 'admin#update', :as => :admin_update
 
 
 #######################
