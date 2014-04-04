@@ -31,7 +31,7 @@ Before('@roles') do |scenario|
 end
 
 
-After do
+at_exit do
   TEST_DATABASES.each do |db|
     COUCHDB_SERVER.database(db).delete! rescue nil
   end
