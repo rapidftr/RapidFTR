@@ -1,6 +1,6 @@
 RapidFTR::Application.routes.draw do
 
-  match '/' => 'home#index', :as => :root, :via => [:post, :get, :put]
+  match '/' => 'home#index', :as => :root, :via => [:post, :get, :put, :delete]
 
 #######################
 # USER URLS
@@ -16,9 +16,9 @@ RapidFTR::Application.routes.draw do
   match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
 
   resources :sessions, :except => :index
-  match 'login' => 'sessions#new', :as => :login, :via => [:post, :get, :put]
-  match 'logout' => 'sessions#destroy', :as => :logout, :via => [:post, :get, :put]
-  match '/active' => 'sessions#active', :as => :session_active, :via => [:post, :get, :put]
+  match 'login' => 'sessions#new', :as => :login, :via => [:post, :get, :put, :delete]
+  match 'logout' => 'sessions#destroy', :as => :logout, :via => [:post, :get, :put, :delete]
+  match '/active' => 'sessions#active', :as => :session_active, :via => [:post, :get, :put, :delete]
 
   resources :user_preferences
   resources :password_recovery_requests, :only => [:new, :create]
@@ -30,8 +30,8 @@ RapidFTR::Application.routes.draw do
   match 'devices/update_blacklist' => 'devices#update_blacklist', :via => :post
 
   resources :roles
-  match 'admin' => 'admin#index', :as => :admin, :via => [:post, :get, :put]
-  match 'admin/update' => 'admin#update', :as => :admin_update, :via => [:post, :get, :put]
+  match 'admin' => 'admin#index', :as => :admin, :via => [:post, :get, :put, :delete]
+  match 'admin/update' => 'admin#update', :as => :admin_update, :via => [:post, :get, :put, :delete]
 
 
 #######################
@@ -50,19 +50,19 @@ RapidFTR::Application.routes.draw do
     resource :duplicate, :only => [:new, :create]
   end
 
-  match '/children-ids' => 'child_ids#all', :as => :child_ids, :via => [:post, :get, :put]
+  match '/children-ids' => 'child_ids#all', :as => :child_ids, :via => [:post, :get, :put, :delete]
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
-  match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index, :via => [:post, :get, :put]
-  match '/children/:child_id/photos' => 'child_media#manage_photos', :as => :manage_photos, :via => [:post, :get, :put]
-  match '/children/:child_id/audio(/:id)' => 'child_media#download_audio', :as => :child_audio, :via => [:post, :get, :put]
-  match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo', :as => :child_photo, :via => [:post, :get, :put]
-  match '/children/:child_id/photo' => 'child_media#show_photo', :as => :child_legacy_photo, :via => [:post, :get, :put]
+  match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photos' => 'child_media#manage_photos', :as => :manage_photos, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/audio(/:id)' => 'child_media#download_audio', :as => :child_audio, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo', :as => :child_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photo' => 'child_media#show_photo', :as => :child_legacy_photo, :via => [:post, :get, :put, :delete]
   match 'children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
-  match '/children/:child_id/resized_photo/:size' => 'child_media#show_resized_photo', :as => :child_legacy_resized_photo, :via => [:post, :get, :put]
-  match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo, :via => [:post, :get, :put]
-  match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put]
-  match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put]
+  match '/children/:child_id/resized_photo/:size' => 'child_media#show_resized_photo', :as => :child_legacy_resized_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put, :delete]
+  match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
 
 
 #######################
@@ -112,9 +112,9 @@ RapidFTR::Application.routes.draw do
 
   resources :form_sections, :path => 'form_section', :controller => 'form_section' do
     collection do
-      match 'save_order', :via => [:post, :get, :put]
-      match 'toggle', :via => [:post, :get, :put]
-      match 'published', :via => [:post, :get, :put]
+      match 'save_order', :via => [:post, :get, :put, :delete]
+      match 'toggle', :via => [:post, :get, :put, :delete]
+      match 'published', :via => [:post, :get, :put, :delete]
     end
 
     resources :fields, :controller => 'fields' do
@@ -133,7 +133,7 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-  match '/published_form_sections', :to => 'form_section#published', :via => [:post, :get, :put]
+  match '/published_form_sections', :to => 'form_section#published', :via => [:post, :get, :put, :delete]
 
 
 #######################
@@ -141,7 +141,7 @@ RapidFTR::Application.routes.draw do
 #######################
 
   resources :advanced_search, :only => [:index, :new]
-  match 'advanced_search/index', :to => 'advanced_search#index', :via => [:post, :get, :put]
+  match 'advanced_search/index', :to => 'advanced_search#index', :via => [:post, :get, :put, :delete]
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
 
 
