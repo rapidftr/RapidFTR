@@ -1,6 +1,6 @@
 RapidFTR::Application.routes.draw do
 
-  match '/' => 'home#index', :as => :root, :via => [:post, :get, :put, :delete]
+  match '/' => 'home#index', :as => :root, :via => :get
 
 #######################
 # USER URLS
