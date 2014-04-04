@@ -23,8 +23,8 @@ describe CouchSettings do
     it { @settings.host.should == 'localhost' }
     it { @settings.http_port.should == '5984' }
     it { @settings.https_port.should == '6984' }
-    it { @settings.db_prefix.should == 'rapidftr_' }
-    it { @settings.db_suffix.should == '_test_env' }
+    it { @settings.db_prefix.should == 'rapidftr' }
+    it { @settings.db_suffix.should == 'test_env' }
     it { @settings.ssl_enabled_for_rapidftr?.should == false }
   end
 
