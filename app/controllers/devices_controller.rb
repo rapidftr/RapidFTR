@@ -1,11 +1,12 @@
 class DevicesController < ApplicationController
   def index
+    #binding.pry
     @page_name = t("devices")
     if can? :read, Replication
       @replications = Replication.all
     end
     if can? :read, Device
-      @devices = Device.view("by_imei")
+      @devices = Device.all
     end
   end
 
