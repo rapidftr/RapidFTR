@@ -74,16 +74,6 @@ Then /^I should be able to promote the field "([^"]*)"$/ do |field|
  page.should have_selector("//a[@id='#{field}_up' and @style='display: inline;']")
 end
 
-Then /^I should not see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
-  row = Nokogiri::HTML(page.body).css("##{field_name}Row").first
-  row.inner_html.should_not include(arrow_name)
-end
-
-Then /^I should see the "([^\"]*)" arrow for the "([^\"]*)" field$/ do |arrow_name, field_name|
-  row = Nokogiri::HTML(page.body).css("##{field_name}Row").first
-  row.inner_html.should include(arrow_name)
-end
-
 Then /^I should find the form section with following attributes:$/ do |form_section_fields|
   expected_order = form_section_fields.hashes.collect { |section_field| section_field['Name'] }
   form_section_page.should_show_fields_in_order(expected_order)
