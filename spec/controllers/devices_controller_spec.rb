@@ -7,7 +7,7 @@ describe DevicesController do
     it "fetches all the blacklisted devices but not the replication details if user have only black listed permission" do
       fake_login_as(Permission::DEVICES[:black_list])
       device = double({:user_name => "someone"})
-      Device.should_receive(:view).with("by_imei").and_return([device])
+      Device.should_receive(:by_imei).and_return([device])
       Replication.should_not_receive(:all)
       get :index
       assigns[:devices].should == [device]
@@ -15,7 +15,7 @@ describe DevicesController do
 
     it "should not show black listed devices, if the user have only manage replication permission" do
       fake_login_as(Permission::DEVICES[:replications])
-      Device.should_not_receive(:view).with("by_imei")
+      Device.should_not_receive(:by_imei)
       Replication.should_receive(:all)
       get :index
     end
@@ -23,7 +23,7 @@ describe DevicesController do
     it "should show black listed devices and the replications if the user have both the permissions" do
       fake_login_as([Permission::DEVICES[:replications], Permission::DEVICES[:black_list]].flatten)
       Replication.should_receive(:all)
-      Device.should_receive(:view)
+      Device.should_receive(:by_imei)
       get :index
     end
   end
@@ -50,7 +50,7 @@ describe DevicesController do
 
     it "should not update the device by user without blacklist permission" do
       fake_login_as(Permission::USERS[:create_and_edit])
-      Device.should_not_receive(:view).with("by_imei")
+      Device.should_not_receive(:by_imei)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
       response.status.should == 403
     end
