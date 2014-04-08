@@ -1,10 +1,3 @@
-
-Then /^I should see the "([^\"]*)" section without any ordering links$/ do |section_name|
-  row = row_for section_name
-  row.should_not have_css("span.moveUp")
-  row.should_not have_css("span.moveDown")
-end
-
 Then /^I should see the "([^\"]*)" section with(out)? an enabled checkbox$/ do |section_name, without|
   should = without ? :should_not : :should
   row_for(section_name).send(should, have_css("input[id^='sections_'][type='checkbox']"))
@@ -44,18 +37,6 @@ Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ 
   find_field(form_section_visibility_checkbox_id(form_section)).should_not be_checked
 end
 
-Then /^I should not be able to promote the field "([^"]*)"$/ do |field|
-  page.should have_selector("//a[@id='#{field}_up' and @style='display: none;']")
-end
-
-Then /^I should not be able to demote the field "([^"]*)"$/ do |field|
-   page.should have_selector("//a[@id='#{field}_down' and @style='display: none;']")
-end
-
-Then /^I should be able to demote the field "([^"]*)"$/ do |field|
-  page.should have_selector("//a[@id='#{field}_down' and @style='display: inline;']")
-end
-
 When /^I demote field "([^"]*)"$/ do |field|
   ##find(:css, "a##{field}_down").click
   ##drag = page.find("//tr[@data='#{field}']")
@@ -68,10 +49,6 @@ When /^I demote field "([^"]*)"$/ do |field|
     $.getScript("https://github.com/mattheworiordan/jquery.simulate.drag-sortable.js/blob/master/jquery.simulate.drag-sortable.js", function() {
       $("tr[data=\'\'#{field}\'\']").simulateDragSortable({ move: 1});
     });}
-end
-
-Then /^I should be able to promote the field "([^"]*)"$/ do |field|
- page.should have_selector("//a[@id='#{field}_up' and @style='display: inline;']")
 end
 
 Then /^I should find the form section with following attributes:$/ do |form_section_fields|
