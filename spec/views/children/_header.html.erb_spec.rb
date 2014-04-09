@@ -42,6 +42,7 @@ describe "children/_header.html.erb" do
   describe "export all records to CSV" do
     before :each do
       @url = children_path(:format => :csv)
+      @children = random_child_array
     end
 
     it_should_behave_like "not show links with per_page", []
@@ -52,10 +53,41 @@ describe "children/_header.html.erb" do
   describe "export all records to PDF" do
     before :each do
       @url = children_path(:format => :pdf)
+      @children = random_child_array
     end
 
     it_should_behave_like "not show links with per_page", []
     it_should_behave_like "show links with per_page", [Permission::CHILDREN[:export_pdf],
                                                        Permission::CHILDREN[:view_and_search]]
+  end
+
+  describe "export to CSV with no records" do
+    before :each do
+      @url = children_path(:format => :csv)
+      @children = []
+    end
+
+    it_should_behave_like "not show links with per_page", []
+    it_should_behave_like "not show links with per_page", [Permission::CHILDREN[:export_pdf],
+                                                           Permission::CHILDREN[:view_and_search]]
+  end
+
+  describe "export to PDF with no records" do
+    before :each do
+      @url = children_path(:format => :pdf)
+      @children = []
+    end
+
+    it_should_behave_like "not show links with per_page", []
+    it_should_behave_like "not show links with per_page", [Permission::CHILDREN[:export_pdf],
+                                                           Permission::CHILDREN[:view_and_search]]
+  end
+
+  def random_child_array
+    Array.new(3) do
+      child = Child.create("created_by" => "dave")
+      child.create_unique_id
+      child
+    end
   end
 end
