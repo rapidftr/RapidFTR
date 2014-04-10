@@ -3,6 +3,15 @@ class Field
   include RapidFTR::Model
   include PropertiesLocalization
 
+  #track down whether the instance is new or not.
+  #CouchRest::Model::Embeddable new? method rely
+  #on the new? of the parent object. This make not
+  #possible to know if the embedded item already
+  #exists or not in the database. The parent object
+  #is responsible to set the flag.
+  #document_saved nil or false consider the field as new.
+  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  attr_accessor :document_saved
 
   property :name
   property :visible, TrueClass, :default => true
@@ -81,6 +90,13 @@ class Field
       errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
     end
   end
+
+  #Override new? method to not rely on the new? of the parent object.
+  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  def new?
+    !@document_saved
+  end
+  alias :new_record? :new?
 
   def form
     base_doc
@@ -221,16 +237,27 @@ class Field
   end
 
   def validate_unique_name
-    return true unless new? && form
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
+    #Does not make sense use new? for validity ?
+    #it is perfectly valid FormSection.new(...) then add several field then save and
+    #the validation should work rejecting the duplicate fields.
+    #Also with new? still possible duplicate things for example change the
+    #name/display_name for existing fields.
+    #What we really need is avoid check the field with itself.
+    #return true unless new? && form
+    return true unless form
+    #return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
     other_form = FormSection.get_form_containing_field name
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form  != nil
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
     true
   end
 
   def validate_unique_display_name
-    return true unless new? && form
-    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    #See comment at validate_unique_name.
+    #return true unless new? && form
+    return true unless form
+    #return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.display_name == display_name})
     true
   end
 
