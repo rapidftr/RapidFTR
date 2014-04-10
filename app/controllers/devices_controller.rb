@@ -5,7 +5,7 @@ class DevicesController < ApplicationController
       @replications = Replication.all
     end
     if can? :read, Device
-      @devices = Device.by_imei
+      @devices = Device.view("by_imei")
     end
   end
 
