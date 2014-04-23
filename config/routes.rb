@@ -66,6 +66,13 @@ RapidFTR::Application.routes.draw do
 
 
 #######################
+# ENQUIRY URLS
+#######################
+
+  resources :enquiries
+
+
+#######################
 # API URLS
 #######################
 

@@ -1,0 +1,33 @@
+<!-- BEGIN: item -->
+<div id="enquiry_<%= enquiry.id %>" class="child_summary_panel">
+
+  <div class="summary_panel">
+
+    <h2><%= link_to text_to_identify_enquiry(enquiry), enquiry_path(enquiry) %></h2>
+    <div class="clearfix"></div>
+
+      <% @fields.each do |relevant_field| %>
+        <% if relevant_field.visible? %>
+        <div class="summary_item">
+          <div class="key"><%= t(relevant_field.display_name) %>:</div>
+          <div class="value"><%= enquiry[relevant_field[:name]] %></div>
+        </div>
+         <% end %>
+      <% end %>
+  </div>
+
+  <div class="clearfix"></div>
+  <div class="action_panel">
+    <% show_links = true unless local_assigns.has_key? :show_links %>
+    <% if show_links %>
+        <ul class="view-edit">
+          <% if can?(:update, enquiry) %>
+              <li>
+              <%= link_to(t('buttons.edit'), edit_enquiry_path(enquiry), :class=>'edit') %> |
+              </li>
+        <% end %>
+        </ul>
+    <% end %>
+</div>
+</div>
+<!-- END: item -->

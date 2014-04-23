@@ -1,0 +1,22 @@
+<!-- Photo fields are not shown inline-->
+
+<% content_for :javascript do %>
+<script type="text/javascript" language="javascript">
+
+$(function() {
+    $('.thumbnails .thumbnail a').lightBox({fixedNavigation:true,
+            imageLoading:			'/images/lightbox-ico-loading.gif',
+            imageBtnPrev:			'/images/lightbox-btn-prev.gif',
+            imageBtnNext:			'/images/lightbox-btn-next.gif',
+            imageBtnClose:			'/images/lightbox-btn-close.gif',
+            imageBlank:				'/images/lightbox-blank.gif'
+    });
+});
+</script>
+<% end %>
+
+<div class="clearfix"></div>
+<div class="thumbnails photos">
+  <% # Not yet implemented %>
+</div>
+<div class="clearfix"></div>

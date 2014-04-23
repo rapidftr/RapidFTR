@@ -23,6 +23,7 @@ class Field < Hash
   PHOTO_UPLOAD_BOX = "photo_upload_box"
   AUDIO_UPLOAD_BOX = "audio_upload_box"
   DATE_FIELD = "date_field"
+  LIST_RECORD_FIELD = "list_record_field"
 
   FIELD_FORM_TYPES = {  TEXT_FIELD       => "basic",
                         TEXT_AREA        => "basic",
@@ -32,7 +33,8 @@ class Field < Hash
                         PHOTO_UPLOAD_BOX => "basic",
                         AUDIO_UPLOAD_BOX => "basic",
                         DATE_FIELD       => "basic",
-                        NUMERIC_FIELD    => "basic"}
+                        NUMERIC_FIELD    => "basic",
+                        LIST_RECORD_FIELD => "basic"}
   FIELD_DISPLAY_TYPES = {
 												TEXT_FIELD       => "basic",
                         TEXT_AREA        => "basic",
@@ -42,7 +44,8 @@ class Field < Hash
                         PHOTO_UPLOAD_BOX => "photo",
                         AUDIO_UPLOAD_BOX => "audio",
                         DATE_FIELD       => "basic",
-                        NUMERIC_FIELD    => "basic"}
+                        NUMERIC_FIELD    => "basic",
+                        LIST_RECORD_FIELD => "basic"}
 
   DEFAULT_VALUES = {  TEXT_FIELD       => "",
                         TEXT_AREA        => "",
@@ -52,7 +55,8 @@ class Field < Hash
                         PHOTO_UPLOAD_BOX => nil,
                         AUDIO_UPLOAD_BOX => nil,
                         DATE_FIELD       => "",
-                        NUMERIC_FIELD    => ""}
+                        NUMERIC_FIELD    => "",
+                        LIST_RECORD_FIELD => []}
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
   validates_with_method :name, :method => :validate_unique_name
