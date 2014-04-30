@@ -10,10 +10,14 @@
     <% end %>
 
 <div class="page-content-new">
+
+  <div class="side-tab">
+    <%= render :partial => "tabs", :object => @form_sections %>
+  </div>
+
   <div class="side-tab-content">
     <div class="clearfix"></div>
-    <% (@fields.select{|field| field.visible?}).each do |field| %>
-          <%= render :partial => "field_display_#{field.display_type}",  :locals=>{:field => field, :enquiry=>@enquiry} %>
-    <% end %>
+    <%= render :partial => "show_form_section" %>
   </div>
+
 </div>

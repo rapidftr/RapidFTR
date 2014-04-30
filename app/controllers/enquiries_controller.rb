@@ -100,27 +100,36 @@ class EnquiriesController < ApplicationController
 
   def setup_fields!
     @form_sections = get_form_sections
-    field_hash_list = @form_sections.collect{ |section| section["fields"] }.flatten
-    @fields = field_hash_list.collect do |field|
-      
-      field["display_name"].each do |lang, str|
-        field["display_name_#{lang}"] = str
-      end
-      field.delete("display_name")
-
-      if field.has_key? "option_strings_text"
-        field["option_strings_text"].each do |lang, arr|
-          field["option_strings_text_#{lang}"] = arr.join("\n")
-        end
-        field.delete("option_strings_text")
-      end
-
-      Field.new(field)
-    end
+    @fields = @form_sections.collect{ |section| section["fields"] }.flatten
   end
 
   def get_form_sections
-    JSON.parse(File.read(Rails.root.join("config", "enquiry_form_sections.json").to_s))
+    JSON.parse(File.read(Rails.root.join("config", "enquiry_form_sections.json").to_s)).collect do |form_section|
+      form_section["fields"].each do |field|
+        field["display_name"].each do |lang, str|
+          field["display_name_#{lang}"] = str
+        end
+        field.delete("display_name")
+
+        if field.has_key? "option_strings_text"
+          field["option_strings_text"].each do |lang, arr|
+            field["option_strings_text_#{lang}"] = arr.join("\n")
+          end
+          field.delete("option_strings_text")
+        end
+
+        Field.new(field)
+      end
+
+      ["name", "help_text", "description"].each do |property|
+        form_section[property].each do |lang, str|
+          form_section["#{property}_#{lang}"] = str
+        end
+        form_section.delete(property)
+      end
+
+      FormSection.new(form_section)
+    end
   end
 
 end

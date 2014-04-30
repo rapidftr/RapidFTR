@@ -1,0 +1,15 @@
+<h2><%= t(form_section.unique_id,:default => form_section.name) %></h2>
+<div class="clearfix"></div>
+
+<div class="form_info">
+  <% if form_section.description.present? %>
+    <div class="form-section-description">
+      <%= form_section.description %>
+    </div>
+  <% end %>
+  <% if form_section.help_text.present? %>
+    <div class="form-section-help-text">
+      <%= form_section.help_text %>
+    </div>
+  <% end %>
+</div>
