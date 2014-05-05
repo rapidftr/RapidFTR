@@ -1,0 +1,11 @@
+<% if form_section.name_en != "Potential matches" %>
+	<fieldset id="tab_<%= form_section.section_name %>" class="<%= form_section.section_name %> tab">
+	  <%= render :partial => "form_section_info", :locals => {:form_section => form_section} %>
+	  <% (form_section.fields.select {|field| field.visible? }).each do |field| %>
+	  		<% if field.type != "list_record_field" && field.type != "photo_upload_box" %>
+	        	<%= render :partial => field.type, :object => field %>
+	        <% end %>
+	  <% end %>
+
+	</fieldset>
+<% end %> 

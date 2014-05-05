@@ -37,7 +37,7 @@ class EnquiriesController < ApplicationController
 
     @page_name = t("enquiries.create_new_enquiry")
     setup_fields!
-    @enquiry = Enquiry.new
+    @enquiry = Enquiry.new 
   end
 
   # GET /enquiries/1/edit
@@ -53,13 +53,24 @@ class EnquiriesController < ApplicationController
   def create
     # Skeleton based on child controller code
     authorize! :create, Enquiry
-    params[:enquiry] = JSON.parse(params[:enquiry]) if params[:enquiry].is_a?(String)
+    params[:enquiry] = params[:child]
+    params[:enquiry][:criteria] = params[:child]
     create_or_update_enquiry(params[:enquiry])
-    if @enquiry.save
-      flash[:notice] = t("enquiry.messages.creation_success")
-      redirect_to(@enquiry)
-    else
-      render :action => "new"
+    @enquiry['created_by_full_name'] = current_user_full_name    
+    respond_to do |format|    
+      if @enquiry.save!
+          format.html { redirect_to(@enquiry) }
+          format.xml { render :xml => @enquiry, :status => :created, :location => @enquiry }
+          format.json {
+            render :json => @enquiry.compact.to_json
+          }
+      else
+          format.html {
+            @form_sections = get_form_sections
+            render :action => "new"
+          }
+          format.xml { render :xml => @enquiry.errors, :status => :unprocessable_entity }
+      end
     end
   end
 
@@ -130,6 +141,14 @@ class EnquiriesController < ApplicationController
 
       FormSection.new(form_section)
     end
+  end
+
+  def create_or_update_enquiry(enquiry_params)
+    if @enquiry.nil?
+      @enquiry = Enquiry.new_with_user_name(current_user, enquiry_params)
+    else
+      @enquiry = update_from(params)
+    end    
   end
 
 end
