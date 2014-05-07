@@ -37,7 +37,7 @@ class Enquiry < CouchRestRails::Document
     self.potential_matches = children.map { |child| child.id }
     verify_format_of(previous_matches)
 
-    unless previous_matches.eql?(self.potential_matches)
+    if previous_matches.empty? or not previous_matches.eql?(self.potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
   end

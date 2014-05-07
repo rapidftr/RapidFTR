@@ -1,4 +1,4 @@
-<h1><%= link_to t("enquiries.label"), enquiries_path %> <%= t("enquiries.create_new_enquiry") %></h1>
+<h1><%= link_to t("enquiries.label"), enquiries_path %> &gt; <%= t("enquiries.create_new_enquiry") %></h1>
 
 <%= form_tag enquiries_path, :multipart => true do %>
     <div class="page-content-new">
@@ -12,7 +12,7 @@
             <%= discard_button :back %>
             <%= submit_button %>    
         </div> 
-    </div> 
+      </div> 
     </div>    
     <div class="clearfix"></div>
 <% end %>

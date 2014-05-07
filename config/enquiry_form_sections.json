@@ -1,7 +1,7 @@
 [
    {
       "name":{
-         "en":"Potential matches"
+         "en":"Potential Matches"
       },
       "help_text":{
          "en":""
@@ -18,7 +18,7 @@
             "visible":"true",
             "type":"list_record_field",
             "highlight_information":{
-               "highlighted":false
+               "highlighted":true
             },
             "editable":false,
             "display_name":{

@@ -1,7 +1,7 @@
 <ul class="tab-handles">
   <% is_first_tab = true %>
   <% tabs.each do |form_section| %>
-      <% if form_section.name_en != "Potential matches" %>
+      <% unless @exclude_tabs.include?(form_section.unique_id) %>
         <% if is_first_tab %>
             <li class="current">
         <% else %>

@@ -210,6 +210,7 @@ en:
   enquiry:
     view: "View Enquiry"
     edit: "Edit Enquiry"
+    match_updated: "Matches last updated"
 
     messages:
       creation_success: "Enquiry successfully created."

@@ -24,6 +24,7 @@ class EnquiriesController < ApplicationController
   # GET /enquiries/1
   def show
     authorize! :show, @enquiry
+
     @page_name = t("enquiry.view")
     @body_class = 'profile-page'
     @enquiry = Enquiry.get(params[:id])
@@ -37,6 +38,7 @@ class EnquiriesController < ApplicationController
 
     @page_name = t("enquiries.create_new_enquiry")
     setup_fields!
+    @exclude_tabs = ["e98c765c"]
     @enquiry = Enquiry.new 
   end
 
@@ -53,6 +55,7 @@ class EnquiriesController < ApplicationController
   def create
     # Skeleton based on child controller code
     authorize! :create, Enquiry
+
     params[:enquiry] = params[:child]
     params[:enquiry][:criteria] = params[:child]
     create_or_update_enquiry(params[:enquiry])
@@ -112,6 +115,7 @@ class EnquiriesController < ApplicationController
   def setup_fields!
     @form_sections = get_form_sections
     @fields = @form_sections.collect{ |section| section["fields"] }.flatten
+    @exclude_tabs = []
   end
 
   def get_form_sections
