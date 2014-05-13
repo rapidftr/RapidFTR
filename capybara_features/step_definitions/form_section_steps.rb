@@ -31,10 +31,6 @@ When /^I select the form section "([^"]*)" to toggle visibility$/ do |section_na
   form_section_page.toggle_section_visibility(section_name)
 end
 
-Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ do |section_name|
-  find_field(form_section_visibility_checkbox_id(section_name)).should_not be_checked
-end
-
 When /^I demote field "([^"]*)"$/ do |field|
   ##find(:css, "a##{field}_down").click
   ##drag = page.find("//tr[@data='#{field}']")
@@ -60,18 +56,6 @@ end
 
 Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|
   form_section_page.should_not_see_the_manage_fields_link
-end
-
-def row_for(section_name)
-  page.find row_xpath_for(section_name)
-end
-
-def row_xpath_for(section_name)
-  "//a[@class='formSectionLink' and contains(., '#{section_name}')]/ancestor::tr"
-end
-
-def form_section_visibility_checkbox_id(section_name)
-  "sections_#{section_name}"
 end
 
 Then /^I land in edit page of form (.+)$/ do  |section_name|
