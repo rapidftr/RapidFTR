@@ -19,16 +19,12 @@ Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$
   form_section_page.section_should_have_description(form_section, expected_description)
 end
 
-Then /^the form section "([^"]*)" should be listed as (visible|hidden)$/ do |form_section, visibility|
-  #within row_xpath_for(form_section) do
-  #  page.should have_css("td[3] input", :checked  => (visibility == 'hidden'))
-  #end
-  checkbox = page.find("//a[@class='formSectionLink' and contains(., '#{form_section}')]/ancestor::tr/td[3]/input[@class='field_hide_show']")
-  if visibility == 'hidden'
-    checkbox.should be_checked
-  else
-    checkbox.should_not be_checked
-  end
+Then /^the form section "([^"]*)" should be listed as visible$/ do |form_section|
+  form_section_page.section_should_be_marked_as_visible(form_section)
+end
+
+Then /^the form section "([^"]*)" should be listed as hidden$/ do |form_section|
+  form_section_page.section_should_be_marked_as_hidden(form_section)
 end
 
 When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|

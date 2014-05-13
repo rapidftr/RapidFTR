@@ -69,6 +69,16 @@ class FormSectionPage
     @session.should(have_xpath("//table[@id='form_sections']/tbody/tr[#{expected_index}]/td/a[text()='#{section_name}']"))
   end
 
+  def section_should_be_marked_as_visible(section_name)
+    hide_section_checkbox = @session.find("//a[@class='formSectionLink' and contains(., '#{section_name}')]/ancestor::tr/td[3]/input[@class='field_hide_show']")
+    hide_section_checkbox.should_not(be_checked)
+  end
+
+  def section_should_be_marked_as_hidden(section_name)
+    hide_section_checkbox = @session.find("//a[@class='formSectionLink' and contains(., '#{section_name}')]/ancestor::tr/td[3]/input[@class='field_hide_show']")
+    hide_section_checkbox.should(be_checked)
+  end
+
   private
 
   def row_for(section_name)
