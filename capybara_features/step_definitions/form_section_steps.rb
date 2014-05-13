@@ -66,7 +66,7 @@ When /^I click Cancel$/ do
   form_section_page.cancel
 end
 
-Then /^the "([^"]*)" checkbox should be assignable$/ do |field|
+Then /^the view_and_download_reports checkbox should be assignable$/ do
   form_section_page.should_have_view_and_download_reports_section_selected
 end
 
