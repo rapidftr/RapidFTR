@@ -16,8 +16,7 @@ And /^I mark as not investigated with the following details:$/ do |details|
 end
 
 When /^I click mark as duplicate for "([^"]*)"$/ do |child_name|
-  child_with_specified_name = Child.all.detect { |c| c.name == child_name }
-  page.find_by_id("child_#{child_with_specified_name._id}").click_link("Mark as Duplicate")
+  child_record_toolbar.mark_as_duplicate(child_name)
 end
 
 When /^I click blacklist for "([^"]*)"$/ do |imei|
