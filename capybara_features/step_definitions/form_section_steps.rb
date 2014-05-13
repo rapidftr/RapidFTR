@@ -1,6 +1,9 @@
-Then /^I should see the "([^\"]*)" section with(out)? an enabled checkbox$/ do |section_name, without|
-  should = without ? :should_not : :should
-  row_for(section_name).send(should, have_css("input[id^='sections_'][type='checkbox']"))
+Then /^I should see the "([^\"]*)" section without an enabled checkbox$/ do |section_name|
+  form_section_page.section_should_not_be_enabled(section_name)
+end
+
+Then /^I should see the "([^\"]*)" section with an enabled checkbox$/ do |section_name|
+  form_section_page.section_should_be_enabled(section_name)
 end
 
 Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form_order|

@@ -57,6 +57,14 @@ class FormSectionPage
     actual_order.should == expected_field_order
   end
 
+  def section_should_not_be_enabled(section_name)
+    row_for(section_name).should_not(have_css("input[id^='sections_'][type='checkbox']"))
+  end
+
+  def section_should_be_enabled(section_name)
+    row_for(section_name).should(have_css("input[id^='sections_'][type='checkbox']"))
+  end
+
   private
 
   def row_for(section_name)
