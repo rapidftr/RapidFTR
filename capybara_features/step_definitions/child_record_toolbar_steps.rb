@@ -7,14 +7,6 @@ Then /^I should see the following links in the toolbars:$/ do |links_table|
   end
 end
 
-When /^I click the "(.*)" button$/ do |button_value|
-  click_button button_value
-end
-
-When /^I click the "(.*)" link$/ do |link|
-  click_link link
-end
-
 And /^I mark as investigated with the following details:$/ do |details|
   child_record_toolbar.mark_as_investigated(details)
 end

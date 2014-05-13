@@ -169,3 +169,11 @@ When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
   checkbox_id = label["for"].split("_").last
 	page.check("child_#{checkbox_id}_#{value.dehumanize}")
 end
+
+When /^I click the "(.*)" button$/ do |button_value|
+  click_button button_value
+end
+
+When /^I click the "(.*)" link$/ do |link|
+  click_link link
+end
