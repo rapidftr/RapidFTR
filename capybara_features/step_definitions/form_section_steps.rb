@@ -15,24 +15,24 @@ Then /^I should see the following form sections in this order:$/ do |section_nam
   form_section_page.should_list_the_following_sections(section_names)
 end
 
-Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, form_section|
-  form_section_page.section_should_have_description(form_section, expected_description)
+Then /^I should see the description text "([^\"]*)" for form section "([^\"]*)"$/ do |expected_description, section_name|
+  form_section_page.section_should_have_description(section_name, expected_description)
 end
 
-Then /^the form section "([^"]*)" should be listed as visible$/ do |form_section|
-  form_section_page.section_should_be_marked_as_visible(form_section)
+Then /^the form section "([^"]*)" should be listed as visible$/ do |section_name|
+  form_section_page.section_should_be_marked_as_visible(section_name)
 end
 
-Then /^the form section "([^"]*)" should be listed as hidden$/ do |form_section|
-  form_section_page.section_should_be_marked_as_hidden(form_section)
+Then /^the form section "([^"]*)" should be listed as hidden$/ do |section_name|
+  form_section_page.section_should_be_marked_as_hidden(section_name)
 end
 
-When /^I select the form section "([^"]*)" to toggle visibility$/ do |form_section|
-  form_section_page.toggle_section_visibility(form_section)
+When /^I select the form section "([^"]*)" to toggle visibility$/ do |section_name|
+  form_section_page.toggle_section_visibility(section_name)
 end
 
-Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ do |form_section|
-  find_field(form_section_visibility_checkbox_id(form_section)).should_not be_checked
+Then /^the form section "([^"]*)" should not be selected to toggle visibility$/ do |section_name|
+  find_field(form_section_visibility_checkbox_id(section_name)).should_not be_checked
 end
 
 When /^I demote field "([^"]*)"$/ do |field|
