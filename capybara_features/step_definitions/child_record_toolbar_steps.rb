@@ -15,11 +15,11 @@ When /^I click the "(.*)" link$/ do |link|
   click_link link
 end
 
-And /^I mark "([^\"]*)" as investigated with the following details:$/ do |name, details|
+And /^I mark as investigated with the following details:$/ do |details|
   child_record_toolbar.mark_as_investigated(details)
 end
 
-And /^I mark "([^\"]*)" as not investigated with the following details:$/ do |name, details|
+And /^I mark as not investigated with the following details:$/ do |details|
   child_record_toolbar.mark_as_not_investigated(details)
 end
 
@@ -30,10 +30,6 @@ end
 
 When /^I click blacklist for "([^"]*)"$/ do |imei|
   device_list_page.blacklist_device(imei)
-end
-
-def click_span(locator)
-  find(:xpath, "//span[text()='#{locator}']").click
 end
 
 When /^I view User Action History$/ do
