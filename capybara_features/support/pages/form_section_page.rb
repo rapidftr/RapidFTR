@@ -65,6 +65,10 @@ class FormSectionPage
     row_for(section_name).should(have_css("input[id^='sections_'][type='checkbox']"))
   end
 
+  def section_should_be_at_index(section_name, expected_index)
+    @session.should(have_xpath("//table[@id='form_sections']/tbody/tr[#{expected_index}]/td/a[text()='#{section_name}']"))
+  end
+
   private
 
   def row_for(section_name)

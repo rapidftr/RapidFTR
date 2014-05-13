@@ -7,8 +7,7 @@ Then /^I should see the "([^\"]*)" section with an enabled checkbox$/ do |sectio
 end
 
 Then /^I should see "([^\"]*)" with order of "([^\"]*)"$/ do |section_name, form_order|
-  #row_for(section_name).find("//span[@class='formSectionOrder']").text.should == form_order
-  page.should have_xpath("//table[@id='form_sections']/tbody/tr[#{form_order}]/td/a[text()='#{section_name}']")
+  form_section_page.section_should_be_at_index(section_name, form_order)
 end
 
 Then /^I should see the following form sections in this order:$/ do |section_names_table|
