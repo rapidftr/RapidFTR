@@ -40,13 +40,17 @@ class SessionsController < ApplicationController
   # POST /sessions.xml
   def create
     @login = Login.new(params)
-    @session = @login.authenticate_user
-
+    @session, failed_attempts = @login.authenticate_user
     if not @session
       respond_to do |format|
-        handle_login_error(t("session.invalid_credentials"), format)
+        if (failed_attempts == 3)
+          handle_login_error("You are locked. Try one minute later.", format)
+        elsif (failed_attempts == -1 || failed_attempts == -2)
+          handle_login_error("Invalid credentials. Please try again!", format)
+        else
+          handle_login_error("You have #{help.pluralize(3-failed_attempts, 'attempt', 'attempts')} left.", format)
+        end
       end
-
       return
     end
 
@@ -117,4 +121,12 @@ class SessionsController < ApplicationController
     render( options.merge( :json => json ) )
   end
 
+  def help
+    Helper.instance
+  end
+
+  class Helper
+    include Singleton
+    include ActionView::Helpers::TextHelper
+  end
 end
