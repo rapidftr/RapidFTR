@@ -37,7 +37,5 @@ end
 
 # Make CouchDB use the updated local.ini file
 service "couchdb" do
-  action :reload
-  reload_command "service couchdb force-reload"
-  not_if "netstat -an | grep -q '0\.0\.0\.0:5984'"
+  action :restart
 end

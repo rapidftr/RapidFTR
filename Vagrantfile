@@ -1,21 +1,29 @@
-# This file is for running the RapidFTR Rails development virtual machine.
-# For instructions, see
-# https://github.com/rapidftr/RapidFTR/wiki/Using-a-VM-for-development
-# For documentation on this file format, see
-# http://vagrantup.com/docs/vagrantfile.html
-Vagrant::Config.run do |config|
-  config.vm.box = "rapidftr"
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-  
-  config.vm.forward_port 3000, 3000
-  config.vm.forward_port 5984, 5984
-  
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "hashicorp/precise64"
+
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 5984, host: 5984
+
   config.vm.provision :chef_solo do |chef|
     chef.add_recipe "core"
     chef.add_recipe "couchdb"
     chef.add_recipe "rvm"
-    chef.add_recipe "ruby"
     chef.add_recipe "xvfb"
     chef.add_recipe "firefox"
+    chef.add_recipe "seed"
+    chef.log_level = "debug"
+    chef.verbose_logging = true
   end
+
+  # Sync apt and gem caches, so that they don't re-download everytime
+  config.vm.synced_folder 'tmp/vagrant/apt', '/var/cache/apt/archives', create: true
+  config.vm.synced_folder 'tmp/vagrant/rubies', '/usr/local/rvm/archives', create: true
+  config.vm.synced_folder 'tmp/vagrant/gems', '/usr/local/rvm/gems/ruby-1.9.3-p392@rapidftr/cache', create: true
+
 end

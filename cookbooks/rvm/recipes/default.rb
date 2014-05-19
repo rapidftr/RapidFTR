@@ -11,7 +11,12 @@ package "curl" do
   action :install
 end
 
-execute "download-install-rvm" do
-  command "su -l vagrant -c 'curl -L https://get.rvm.io | bash'"
-  not_if { ::File.exists? "/home/vagrant/.rvm" }
+execute "install-rvm" do
+  command "sudo sh -c 'curl -L https://get.rvm.io | bash -s -- --auto-dotfiles'"
+  not_if { ::File.exists? "/usr/local/rvm/bin/rvm" }
+end
+
+execute "rvm-ruby-1.9.3" do
+  command "sudo sh -c '/usr/local/rvm/bin/rvm install 1.9.3-p392'"
+  not_if { ::File.exists? "/usr/local/rvm/rubies/ruby-1.9.3-p392/bin/ruby" }
 end
