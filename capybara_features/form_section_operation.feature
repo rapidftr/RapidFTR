@@ -169,7 +169,7 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
   Scenario: A hidden highlighted field must not be visible in Child Summary
     And I am on the form section page
     And I follow "Basic Identity"
-    And I hide "fields_nationality" from "Basic Identity"
+    And I hide the Nationality field
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"

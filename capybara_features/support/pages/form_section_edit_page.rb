@@ -15,6 +15,10 @@ class FormSectionEditPage
     @session.should(have_selector(:xpath, field_selector(field_name)))
   end
 
+  def mark_nationality_field_as_hidden
+    check('fields_nationality')
+  end
+
   private
 
   def field_selector(field_name)
