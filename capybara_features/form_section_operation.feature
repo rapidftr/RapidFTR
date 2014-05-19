@@ -175,7 +175,7 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I follow "Highlight Fields"
     And I click text "add"
     When I select menu "Basic Identity"
-    Then I should not see "Nationality" in Child Summary
+    Then I should not see "Nationality"
 
   Scenario: Admins should be able to delete a field from a form section
     When I am on the form section page
