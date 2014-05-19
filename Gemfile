@@ -39,6 +39,7 @@ group :development, :assets, :cucumber do
   gem 'compass-rails', '~> 1.0.3'
   gem 'coffee-rails',  '~> 3.2.1'
   gem 'uglifier',      '~> 2.0.1'
+  gem 'rails-dev-tweaks', '~> 1.1'
 end
 
 group :test, :cucumber do

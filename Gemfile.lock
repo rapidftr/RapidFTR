@@ -184,6 +184,9 @@ GEM
       activesupport (= 3.2.16)
       bundler (~> 1.0)
       railties (= 3.2.16)
+    rails-dev-tweaks (1.1.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
     railties (3.2.16)
       actionpack (= 3.2.16)
       activesupport (= 3.2.16)
@@ -291,6 +294,7 @@ DEPENDENCIES
   pdf-reader (= 0.8.6)
   prawn (= 0.8.4)
   rails (= 3.2.16)
+  rails-dev-tweaks (~> 1.1)
   rake (= 0.9.3)
   rapidftr_addon!
   rapidftr_addon_cpims!
