@@ -1,11 +1,15 @@
 Then /^I should not be able to edit "([^\"]*)" field$/ do |field_name|
-  edit_field_selector = "//td[text()=\"#{field_name}\"]/parent::*/td/div/select"
-  page.should have_no_selector(:xpath, edit_field_selector)
+  form_section_edit_page.should_not_be_able_to_edit_field(field_name)
 end
 
 Then /^I should be able to edit "([^\"]*)" field$/ do |field_name|
-  edit_field_selector = "//td[text()=\"#{field_name}\"]/parent::*/td/div/select"
-  page.should have_selector(:xpath, edit_field_selector)
+  form_section_edit_page.should_be_able_to_edit_field(field_name)
+end
+
+private
+
+def form_section_edit_page
+  FormSectionEditPage.new(Capybara.current_session)
 end
 
 Then /^(?:|I )move field "([^"]*)" to form "([^"]*)"$/ do |field_name, form_name|
