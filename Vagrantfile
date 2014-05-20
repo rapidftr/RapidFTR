@@ -5,20 +5,31 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "hashicorp/precise32"
 
-  config.vm.network "forwarded_port", guest: 3000, host: 3000
-  config.vm.network "forwarded_port", guest: 5984, host: 5984
+  config.vm.define "dev", primary: true, autostart: false do |dev|
+    dev.vm.box = "hashicorp/precise32"
+    dev.vm.network "forwarded_port", guest: 3000, host: 3000
+    dev.vm.network "forwarded_port", guest: 5984, host: 5984
+    dev.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = 'chef/cookbooks'
+      chef.roles_path = 'chef/roles'
+      chef.add_role 'development'
+      chef.verbose_logging = true
+    end
+  end
 
-  config.vm.provision :chef_solo do |chef|
-    chef.add_recipe "core"
-    chef.add_recipe "couchdb"
-    chef.add_recipe "rvm"
-    chef.add_recipe "xvfb"
-    chef.add_recipe "firefox"
-    chef.add_recipe "seed"
-    chef.log_level = "debug"
-    chef.verbose_logging = true
+  config.vm.define "prod", autostart: false do |prod|
+    prod.vm.box = "hashicorp/precise64"
+    prod.vm.network "forwarded_port", guest: 80, host: 8080
+    prod.vm.network "forwarded_port", guest: 443, host: 8443
+    prod.vm.network "forwarded_port", guest: 5984, host: 5984
+    prod.vm.network "forwarded_port", guest: 6984, host: 6984
+    prod.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = 'chef/cookbooks'
+      chef.roles_path = 'chef/roles'
+      chef.add_role 'production'
+      chef.verbose_logging = true
+    end
   end
 
   # Sync apt and gem caches, so that they don't re-download everytime
