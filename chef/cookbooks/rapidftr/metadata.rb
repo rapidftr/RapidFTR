@@ -1,4 +1,4 @@
-name             'rapidftr-nginx'
+name             'rapidftr'
 maintainer       'YOUR_COMPANY_NAME'
 maintainer_email 'YOUR_EMAIL'
 license          'All rights reserved'

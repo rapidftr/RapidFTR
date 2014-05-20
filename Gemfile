@@ -21,7 +21,6 @@ gem 'cancan',         '~> 1.6.9'
 gem 'capistrano',     '~> 2.14.2'
 gem 'highline',       '1.6.16'
 gem 'will_paginate',  '~> 3.0.4'
-gem 'i18n-js',        '~> 2.1.2'
 gem 'therubyracer',   '~> 0.11.4', :platforms => :ruby, :require => 'v8'
 gem 'os',             '~> 0.9.6'
 gem 'thin',           '~> 1.6.1', :platforms => :ruby, :require => false
@@ -40,6 +39,7 @@ group :development, :assets, :cucumber do
   gem 'coffee-rails',  '~> 3.2.1'
   gem 'uglifier',      '~> 2.0.1'
   gem 'rails-dev-tweaks', '~> 1.1'
+  gem 'i18n-js',        '~> 2.1.2'
 end
 
 group :test, :cucumber do

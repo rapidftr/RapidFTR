@@ -32,5 +32,5 @@ vendor/bundle/
 vendor/cache/
 vendor/ruby/
 .ruby-version
-<Solr_data_dir>
-
+*.crt
+*.key

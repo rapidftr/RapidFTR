@@ -23,6 +23,7 @@ end
 execute "apt-add-repository-ruby" do
   command "apt-add-repository -y ppa:brightbox/ruby-ng"
   not_if "dpkg --get-selections | grep -q 'ruby1.9.3'"
+  notifies :run, "execute[apt-get-update]", :immediately
 end
 
 package "ruby1.9.3" do

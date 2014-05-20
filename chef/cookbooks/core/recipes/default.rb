@@ -10,7 +10,6 @@
 # 'apt-get update' is required before installing packages
 execute "apt-get-update" do
   command "apt-get update"
-  #not_if "dpkg --get-selections | grep -q 'build-essential'"
 end
 
 package "build-essential" do

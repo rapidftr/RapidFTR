@@ -11,6 +11,14 @@ package "curl" do
   action :install
 end
 
+file "/etc/gemrc" do
+  owner "root"
+  group "root"
+  mode 0664
+  action :create
+  content "gem: --no-ri --no-rdoc"
+end
+
 execute "install-rvm" do
   command "sudo sh -c 'curl -L https://get.rvm.io | bash -s -- --auto-dotfiles'"
   not_if { ::File.exists? "/usr/local/rvm/bin/rvm" }

@@ -13,11 +13,16 @@ package "python-software-properties" do
 end
 
 execute "apt-add-repository-ruby" do
-  command "apt-add-repository -y ppa:brightbox/passenger-nginx"
+  command "apt-add-repository -y ppa:brightbox/ruby-ng"
   not_if "dpkg --get-selections | grep -q 'nginx-full'"
+  notifies :run, "execute[apt-get-update]", :immediately
 end
 
 package "nginx-full" do
+  action :install
+end
+
+package "passenger-common1.9" do
   action :install
 end
 
