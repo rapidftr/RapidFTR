@@ -32,3 +32,7 @@ cookbook_file "/etc/nginx/conf.d/passenger.conf" do
   group "root"
   mode 0664
 end
+
+service "nginx" do
+  action :enable
+end

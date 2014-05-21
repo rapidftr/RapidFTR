@@ -1,3 +1,4 @@
+default.rapidftr.repository = 'https://github.com/rapidftr/RapidFTR.git'
 default.rapidftr.revision = 'master'
 default.rapidftr.rails_env = 'production'
 

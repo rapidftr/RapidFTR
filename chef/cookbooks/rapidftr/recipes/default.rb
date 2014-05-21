@@ -23,7 +23,7 @@ end
 git "rapidftr-git" do
   user 'www-data'
   group 'www-data'
-  repository 'https://github.com/rapidftr/RapidFTR.git'
+  repository node.rapidftr.repository
   revision node.rapidftr.revision
   depth 1
   destination node.rapidftr.src_dir
@@ -87,6 +87,14 @@ cookbook_file "certificate.key" do
   mode 0440
 end
 
+template "rails-environment" do
+  path File.join(node.rapidftr.src_dir, 'config', 'environments', node.rapidftr.rails_env + '.rb')
+  owner "www-data"
+  group "www-data"
+  mode 0644
+  variables node.rapidftr.to_hash
+end
+
 template "nginx-site" do
   path File.join(node.rapidftr.nginx_site_conf, node.rapidftr.host + '.conf')
   owner "www-data"
@@ -100,3 +108,6 @@ file "nginx-default-localhost" do
   action :delete
 end
 
+service "nginx" do
+  action :restart
+end

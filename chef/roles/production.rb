@@ -7,3 +7,10 @@ run_list(
   "recipe[passenger]",
   "recipe[rapidftr]"
 )
+
+override_attributes(
+  "rapidftr" => {
+    "repository" => "https://github.com/rdsubhas/RapidFTR.git",
+    "revision" => "release-2.0.0"
+  }
+)
