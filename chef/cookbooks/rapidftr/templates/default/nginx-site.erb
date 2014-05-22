@@ -18,22 +18,15 @@ server {
   rails_env <%= @rails_env %>;
   gzip on;
   gzip_disable "MSIE [1-6]\.";
-  root <%= @src_dir %>/public;
-  # access_log <%= @src_dir %>/log/server.log;
-  # error_log <%= @src_dir %>/log/error.log error;
+
+  root <%= @release_dir %>/public;
+  access_log <%= @release_dir %>/log/server.log;
+  error_log <%= @release_dir %>/log/error.log error;
   client_max_body_size 50M;
 
-  #Need to change this accordingly once we move to rails3.1
-  location ~* ^/(images|javascripts|stylesheets)/ {
-    # Per RFC2616 - 1 year maximum expiry
-    # http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+  location ~ ^/assets/ {
     expires 1y;
     add_header Cache-Control public;
-
-    # Some browsers still send conditional-GET requests if there's a
-    # Last-Modified header or an ETag header even if they haven't
-    # reached the expiry date sent in the Expires header.
-    add_header Last-Modified "";
     add_header ETag "";
     break;
   }

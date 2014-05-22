@@ -1,6 +1,7 @@
-default.rapidftr.repository = 'https://github.com/rapidftr/RapidFTR.git'
+default.rapidftr.repository = "git://github.com/rapidftr/RapidFTR.git"
 default.rapidftr.revision = 'master'
 default.rapidftr.rails_env = 'production'
+default.rapidftr.release_base_dir = '/srv/rapidftr'
 
 default.rapidftr.host = 'localhost'
 default.rapidftr.http_port = '80'
