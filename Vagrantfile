@@ -4,6 +4,7 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = '2'
 
+# Make sure you have run "git submodule init && git submodule update" to pull the infrastructure code
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define 'dev', primary: true do |dev|
@@ -11,8 +12,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dev.vm.network 'forwarded_port', guest: 3000, host: 3000
     dev.vm.network 'forwarded_port', guest: 5984, host: 5984
     dev.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = 'chef/cookbooks'
-      chef.roles_path = 'chef/roles'
+      chef.cookbooks_path = 'infrastructure/cookbooks'
+      chef.roles_path = 'infrastructure/roles'
       chef.add_role 'development'
       chef.verbose_logging = true
     end
@@ -26,8 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     prod.vm.network 'forwarded_port', guest: 5984, host: 5984
     prod.vm.network 'forwarded_port', guest: 6984, host: 6984
     prod.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = 'chef/cookbooks'
-      chef.roles_path = 'chef/roles'
+      chef.cookbooks_path = 'infrastructure/cookbooks'
+      chef.roles_path = 'infrastructure/roles'
       chef.add_role 'production'
       chef.verbose_logging = true
     end
