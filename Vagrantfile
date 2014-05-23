@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dev.vm.network 'forwarded_port', guest: 3000, host: 3000
     dev.vm.network 'forwarded_port', guest: 5984, host: 5984
     dev.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = 'infrastructure/cookbooks'
+      chef.cookbooks_path = 'infrastructure/site-cookbooks'
       chef.roles_path = 'infrastructure/roles'
       chef.add_role 'development'
       chef.verbose_logging = true
@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     prod.vm.network 'forwarded_port', guest: 5984, host: 5984
     prod.vm.network 'forwarded_port', guest: 6984, host: 6984
     prod.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = 'infrastructure/cookbooks'
+      chef.cookbooks_path = 'infrastructure/site-cookbooks'
       chef.roles_path = 'infrastructure/roles'
       chef.add_role 'production'
       chef.verbose_logging = true
