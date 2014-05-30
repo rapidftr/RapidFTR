@@ -8,7 +8,6 @@ addons:
   firefox: "17.0"
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
-  - "gem install bundler --pre"
 before_script:
   - "export DISPLAY=:99.0"
   - "export RUBY_HEAP_MIN_SLOTS=2000000"

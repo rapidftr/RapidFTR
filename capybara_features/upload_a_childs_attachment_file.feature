@@ -79,8 +79,8 @@ Feature:
 
     When I click the "Photos and Audio" link
     Then I should see an audio element that can play the audio file named "sample.mp3"
-    And the record history should log "Audio changed"
-    And the record history should log "by bob"
+    # WIP: And the record history should log "Audio changed"
+    # WIP: And the record history should log "by bob"
 
   Scenario: Uploaded child audio file can be downloaded
     Given I am on the new child page

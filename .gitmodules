@@ -1,0 +1,5 @@
+[submodule "infrastructure"]
+	path = infrastructure
+	url = git://github.com/rapidftr/rapidftr-infrastructure.git
+	ignore = dirty
+
