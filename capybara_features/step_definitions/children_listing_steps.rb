@@ -22,6 +22,10 @@ And /^I visit children listing page "([^\"]*)"$/ do|page_number|
   child_list_page.go_to_page(page_number)
 end
 
+And /^I select dropdown option "(.+)"$/ do |option|
+  page.find('//option', :text => option).click
+end
+
 private
 
 def child_list_page
