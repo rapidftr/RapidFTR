@@ -3,9 +3,6 @@ class Api::SessionsController < Api::ApiController
   skip_before_filter :check_authentication, :check_device_blacklisted, :only => [ :login, :register ]
 
   def login
-    params[:imei] = request.headers["X-FTR-Imei"] if request.headers["X-FTR-Imei"].present?
-    params[:mobile_number] = request.headers["X-FTR-MobileNumber"] if request.headers["X-FTR-MobileNumber"].present?
-
     @login = Login.new(params)
     @current_session = @login.authenticate_user
 
