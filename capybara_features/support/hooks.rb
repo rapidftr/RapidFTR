@@ -28,3 +28,8 @@ Before('@roles') do |scenario|
   Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
   Role.create(:name => 'Admin', :permissions => Permission.all_permissions)
 end
+
+Before('@no_expire') do |scenario|
+  ApplicationController.any_instance.stub(:expired?).and_return(false)
+  Api::ApiController.any_instance.stub(:expired?).and_return(false)
+end

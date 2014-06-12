@@ -6,10 +6,24 @@ describe ApplicationController do
   let(:user) { User.new(:full_name => user_full_name) }
   let(:session) { mock('session', :user => user) }
 
+  before :each do
+    controller.session[:last_access_time] = Clock.now.rfc2822
+  end
+
   describe 'current_user_full_name' do
     it 'should return the user full name from the session' do
       controller.stub!(:current_session).and_return(session)
       subject.current_user_full_name.should == user_full_name
+    end
+  end
+
+  describe 'session expiry' do
+    it 'should extend session lifetime' do
+      access_time = DateTime.now
+      Clock.stub(:now).and_return(access_time)
+      controller.session[:last_access_time] = nil
+      controller.extend_session_lifetime
+      controller.session[:last_access_time].should == access_time.rfc2822
     end
   end
 

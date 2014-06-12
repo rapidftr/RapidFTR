@@ -11,6 +11,7 @@ class Api::SessionsController < Api::ApiController
 
     @current_session.save!
     session[:rftr_session_id] = @current_session.id
+    session[:last_access_time] = Clock.now.rfc2822
     render_session_as_json @current_session
   end
 

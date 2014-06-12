@@ -7,6 +7,8 @@ module FakeLogin
     User.stub!(:get).with(user.id).and_return(user)
 
     @controller.stub!(:current_session).and_return(session)
+    @controller.session[:last_access_time] = Clock.now.rfc2822
+
     Role.stub!(:get).with("abcd").and_return(Role.new(:name => "default", :permissions => [Permission::CHILDREN[:register]]))
     User.stub!(:find_by_user_name).with(user.user_name).and_return(user)
     session

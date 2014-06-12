@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
-  skip_before_filter :check_authentication, :only => %w{new create active}
+  skip_before_filter :check_authentication, only: %w{new create active}
+  skip_before_filter :extend_session_lifetime, only: %w{new create active}
 
   # GET /sessions/1
   # GET /sessions/1.xml
@@ -22,9 +23,7 @@ class SessionsController < ApplicationController
   # GET /sessions/new.xml
   def new
     I18n.locale = I18n.default_locale
-    unless (@session = current_session).nil?
-      return redirect_to(:action => "show", :id => @session)
-    end
+    return redirect_to(:action => "show", :id => @session) if logged_in?
 
     @session = Session.new(params[:login])
 
@@ -59,6 +58,7 @@ class SessionsController < ApplicationController
       if @session.save
         reset_session
         session[:rftr_session_id] = @session.id
+        session[:last_access_time] = Clock.now.rfc2822
         flash[:notice] = t("hello") + " " + @session.user_name
         format.html { redirect_to(root_path) }
         format.xml  { render :action => "show", :status => :created, :location => @session }

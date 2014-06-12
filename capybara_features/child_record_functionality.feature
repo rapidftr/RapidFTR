@@ -138,6 +138,7 @@ Feature:
     When I am on the child record page for "Barney"
     Then I should not see an audio tag
 
+  @no_expire
   Scenario: Date-times should be displayed according to the current user's timezone setting.
     Given the date/time is "July 19 2010 13:05:32UTC"
     And the following children exist in the system:

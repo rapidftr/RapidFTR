@@ -2,9 +2,9 @@ class Api::ApiController < ActionController::Base
 
   include Security::Authentication
 
-  before_filter :extend_session_lifetime
   before_filter :check_authentication
   before_filter :check_device_blacklisted
+  before_filter :extend_session_lifetime
   before_filter :current_user
   before_filter :restrict_to_test, :only => :destroy_all
 
@@ -33,7 +33,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def extend_session_lifetime
-    request.env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week
+    session[:last_access_time] = Clock.now.rfc2822
   end
 
   def malformed_json(e)

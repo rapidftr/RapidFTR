@@ -464,12 +464,10 @@ en:
 
   session:
     about_to_expire: "Your session is about to expire!"
-    has_expired: "Your session has expired. Please re-login."
-    invalid_credentials: "Invalid credentials. Please try again!"
     login_error: "There was a problem logging in.  Please try again."
     invalid_token: "invalid session token"
-    no_token_provided: "no session token provided"
-    no_token_in_header: "no session token in headers or cookies"
+    has_expired: "Your session has expired. Please re-login."
+    invalid_credentials: "Invalid credentials. Please try again!"
 
   report:
     heading: "RapidFTR Reports"
