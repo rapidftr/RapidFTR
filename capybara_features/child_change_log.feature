@@ -52,7 +52,6 @@ Feature:
 
     When I follow "Edit"
     And I follow "Photos and Audio"
-    And I should blah
 #    And I wait for 5 seconds
     And I attach a photo "capybara_features/resources/jorge.jpg"
     And I submit the form

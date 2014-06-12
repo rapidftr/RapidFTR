@@ -1,6 +1,5 @@
 
 Then /^I should see change log of creation by user "(.*?)"$/ do |user_name|
-  puts "org " + User.find_by_user_name(user_name).organisation
   page.has_content?("UTC Record created by #{user_name} belonging to #{User.find_by_user_name(user_name).organisation}").should be_true
 end
 
@@ -14,10 +13,6 @@ end
 
 Then /^I should see change log for record flag by "(.*?)" for "(.*?)"$/ do |user_name, reason|
   page.has_content?("Record was flagged by #{user_name} belonging to #{User.find_by_user_name(user_name).organisation} because: #{reason}").should be_true
-end
-
-Then /^I should blah$/ do
-   puts "url " + current_url
 end
 
 Then /^I should see the following log entry:$/ do |table|

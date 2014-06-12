@@ -3,27 +3,11 @@ class SessionsController < ApplicationController
   skip_before_filter :check_authentication, only: %w{new create active}
   skip_before_filter :extend_session_lifetime, only: %w{new create active}
 
-  # GET /sessions/1
-  # GET /sessions/1.xml
-  def show
-    #logger.debug( cookies.inspect )
-    logger.debug( "Authorization header: #{request.headers['Authorization']}" )
-    @session = Session.get(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml
-      format.json do
-        render_session_as_json(@session)
-      end
-    end
-  end
-
   # GET /sessions/new
   # GET /sessions/new.xml
   def new
     I18n.locale = I18n.default_locale
-    return redirect_to(:action => "show", :id => @session) if logged_in?
+    return redirect_to(root_path) if logged_in?
 
     @session = Session.new(params[:login])
 
@@ -91,6 +75,7 @@ class SessionsController < ApplicationController
   end
 
   private
+
   def handle_login_error(notice, format)
     format.html {
       flash[:error] = notice

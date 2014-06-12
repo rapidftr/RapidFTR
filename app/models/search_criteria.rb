@@ -51,7 +51,6 @@ class SearchCriteria
   end
 
   def self.dismax_query(criteria_list)
-    puts criteria_list.inspect
     criteria_list = criteria_list.clone
     criteria = criteria_list.shift
     criteria.to_dismax_query

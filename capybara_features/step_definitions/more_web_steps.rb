@@ -152,11 +152,9 @@ Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbo
 		result[element['value']] = !!element[:checked]
 		result
   end
-  puts "checkboxes #{checkboxes}"
 
   table.hashes.each do |expected_checkbox|
     expected_value = expected_checkbox['value']
-    puts "expected_value #{expected_value}"
     should_be_checked = (expected_checkbox['checked?'] == 'yes')
     checkboxes.should have_key expected_value
 		checkboxes[expected_value].should == should_be_checked
