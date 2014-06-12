@@ -15,8 +15,6 @@ require 'json_spec/cucumber'
 require 'rack/test'
 require 'selenium/webdriver'
 
-puts Rails.env
-
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
   http_client.timeout = 60

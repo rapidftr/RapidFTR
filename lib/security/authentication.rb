@@ -25,12 +25,17 @@ module Security
       session[:rftr_session_id] rescue nil
     end
 
-    def logged_in?
-      request && current_session && current_user
+    def expired?
+      (20.minutes.ago > DateTime.parse(session[:last_access_time])) rescue true
     end
 
+    def logged_in?
+      request && !expired? && current_session && current_user
+    end
+
+    # TODO: Rename to check_expiry or logged_in! something
     def check_authentication
-      raise AuthenticationFailure.new(I18n.t("session.has_expired")) unless logged_in?
+      logged_in? || raise(AuthenticationFailure.new(I18n.t("session.has_expired")))
     end
 
   end

@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
 
   include Security::Authentication
 
-  before_filter :extend_session_lifetime
   before_filter :check_authentication
+  before_filter :extend_session_lifetime
   before_filter :set_locale
 
   rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def extend_session_lifetime
-    request.env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY][:expire_after] = 1.week if request.format.json?
+    session[:last_access_time] = Clock.now.rfc2822
   end
 
   def handle_authentication_failure(auth_failure)
