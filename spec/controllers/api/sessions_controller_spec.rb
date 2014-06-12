@@ -31,7 +31,7 @@ describe Api::SessionsController do
 
   it 'should set session lifetime to 1 week' do
     last_access_time = DateTime.now
-    Clock.stub(:get).and_return(last_access_time)
+    Clock.stub(:now).and_return(last_access_time)
     post :login, :user_name => @user.user_name, :password => "test_password", :imei => 'TEST_IMEI'
     controller.session[:last_access_time].should == last_access_time.rfc2822
     response.should be_success

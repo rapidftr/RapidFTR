@@ -209,6 +209,7 @@ debug.html
 .vagrant
 
 tags
+/bundle/
 vendor/cache/
 vendor/ruby/
 capybara_features/resources/huge.jpg
