@@ -31,7 +31,7 @@ gem 'daemons',         '~> 1.1.9',  :require => false
 
 gem 'sass-rails',    '~> 3.2.3'
 gem 'uglifier',      '~> 2.0.1'
-gem 'execjs',        '~> 2.0.1'
+gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
 
 group :development do
