@@ -30,6 +30,6 @@ Before('@roles') do |scenario|
 end
 
 Before('@no_expire') do |scenario|
-  ApplicationController.any_instance.stub(:expired?).and_return(false)
-  Api::ApiController.any_instance.stub(:expired?).and_return(false)
+  ApplicationController.any_instance.stub(:session_expired?).and_return(false)
+  Api::ApiController.any_instance.stub(:session_expired?).and_return(false)
 end
