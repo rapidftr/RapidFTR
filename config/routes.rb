@@ -85,7 +85,6 @@ RapidFTR::Application.routes.draw do
 
     resources :children do
       collection do
-        delete "/destroy_all" => 'children#destroy_all'
         get :ids, :defaults => {:format => :json}
         post :unverified, :defaults => {:format => :json}
       end
@@ -100,11 +99,8 @@ RapidFTR::Application.routes.draw do
 
     # ENQUIRIES
 
-    resources :enquiries, :defaults => {:format => :json} do
-      collection do
-        delete "/destroy_all" => 'enquiries#destroy_all'
-      end
-    end
+    resources :enquiries, :defaults => {:format => :json}
+    
   end
 
 #######################
@@ -180,6 +176,6 @@ RapidFTR::Application.routes.draw do
 #######################
 # TESTING URLS
 #######################
-  match 'database/delete_children' => 'database#delete_children', :via => :delete
+  match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
 
 end

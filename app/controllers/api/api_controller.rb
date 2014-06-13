@@ -6,7 +6,6 @@ class Api::ApiController < ActionController::Base
   before_filter :check_device_blacklisted
   before_filter :extend_session_lifetime
   before_filter :current_user
-  before_filter :restrict_to_test, :only => :destroy_all
 
   private
 
