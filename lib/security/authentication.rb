@@ -30,7 +30,7 @@ module Security
     end
 
     def session_expired?
-      (session_expiry_timeout.ago > DateTime.parse(session[:last_access_time])) rescue true
+      (session_expiry_timeout.ago(Clock.now) > DateTime.parse(session[:last_access_time])) rescue true
     end
 
     def logged_in?

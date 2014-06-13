@@ -7,4 +7,6 @@ When /^the user "([^"]*)" checkbox is marked as "([^"]*)"$/ do |username, status
   click_button("Yes")
 end
 
-
+When /^I expire my session$/ do
+  Clock.stub(:now).and_return(21.minutes.from_now)
+end

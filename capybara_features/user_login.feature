@@ -89,3 +89,9 @@ Feature: As an user, I should be able to log in.
     And I fill in "Password" with "456"
     And I press "Log in"
     And I should be on the home page
+
+  Scenario: My session should timeout after 20 minutes
+    Given I am logged in
+    And I expire my session
+    And I am on the home page
+    Then I should be on the login page

@@ -1,4 +1,19 @@
 Before do
+  I18n.locale = I18n.default_locale = :en
+
+  CouchRestRails::Document.descendants.each do |model|
+    docs = model.database.documents["rows"].map { |doc|
+      { "_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true } unless doc["id"].include? "_design"
+    }.compact
+    RestClient.post "#{model.database.root}/_bulk_docs", { :docs => docs }.to_json, { "Content-type" => "application/json" } unless docs.empty?
+  end
+
+  RapidFTR::FormSectionSetup.reset_definitions
+
+  Rails.application.config.rspec_reset
+  Clock.rspec_reset
+  I18n.rspec_reset
+
   Child.stub! :index_record => true, :reindex! => true, :build_solar_schema => true
   Sunspot.stub! :index => true, :index! => true
 end
@@ -10,19 +25,6 @@ Before('@search') do
   Sunspot.remove_all!(Enquiry)
 end
 
-Before do
-  I18n.locale = I18n.default_locale = :en
-
-  CouchRestRails::Document.descendants.each do |model|
-    docs = model.database.documents["rows"].map { |doc|
-      { "_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true } unless doc["id"].include? "_design"
-    }.compact
-    RestClient.post "#{model.database.root}/_bulk_docs", { :docs => docs }.to_json, { "Content-type" => "application/json" } unless docs.empty?
-  end
-
-  RapidFTR::FormSectionSetup.reset_definitions
-end
-
 Before('@roles') do |scenario|
   Role.create(:name => 'Field Worker', :permissions => [Permission::CHILDREN[:register]])
   Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
@@ -30,6 +32,12 @@ Before('@roles') do |scenario|
 end
 
 Before('@no_expire') do |scenario|
-  ApplicationController.any_instance.stub(:session_expired?).and_return(false)
-  Api::ApiController.any_instance.stub(:session_expired?).and_return(false)
+  Rails.application.config.stub(:session_options).and_return({
+    key: '_session',
+    expire_after: 99.years,
+    rapidftr: {
+      web_expire_after: 99.years,
+      mobile_expire_after: 99.years
+    }
+  })
 end
