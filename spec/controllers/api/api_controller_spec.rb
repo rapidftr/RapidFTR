@@ -28,6 +28,11 @@ describe TestController do
     response.body.should == "Invalid request"
   end
 
+  it "should override session expiry timeout from configuration" do
+      Rails.application.config.session_options[:rapidftr].stub(:[]).with(:mobile_expire_after).and_return(100.minutes)
+      controller.send(:session_expiry_timeout).should == 100.minutes
+  end
+
   it "should extend session lifetime" do
     last_access_time = DateTime.now
     Clock.stub(:now).and_return(last_access_time)

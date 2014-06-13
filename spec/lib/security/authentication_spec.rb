@@ -18,8 +18,15 @@ module Security
       @controller = FakeController.new
       @session = create :session
 
+      @controller.stub(:session_expiry_timeout).and_return(5.minutes)
       @controller.session[:rftr_session_id] = @session.id
       @controller.session[:last_access_time] = 1.minute.ago.rfc2822
+    end
+
+    it "should fetch session expiry timeout from configuration" do
+      Rails.application.config.session_options[:rapidftr].stub(:[]).with(:web_expire_after).and_return(100.minutes)
+      @controller.unstub(:session_expiry_timeout)
+      @controller.session_expiry_timeout.should == 100.minutes
     end
 
     it "should check successful authentication" do
@@ -42,7 +49,7 @@ module Security
 
     it "should raise AuthenticationFailure if access time expired" do
       lambda {
-        @controller.session[:last_access_time] = 21.minutes.ago.rfc2822
+        @controller.session[:last_access_time] = 6.minutes.ago.rfc2822
         @controller.send :check_authentication
       }.should raise_error(AuthenticationFailure, I18n.t("session.has_expired"))
     end

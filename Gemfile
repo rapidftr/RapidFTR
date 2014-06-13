@@ -35,8 +35,9 @@ gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
 
 group :development do
-  gem 'rails-dev-tweaks', '~> 1.1'
-  gem 'thin',           '~> 1.6.1', :platforms => :ruby, :require => false
+  gem 'rails-dev-tweaks', '~> 1.1',   platforms: :ruby
+  gem 'thin',             '~> 1.6.1', platforms: :ruby, require: false
+  gem 'pry-rails',        '~> 0.3.2', platforms: :ruby
 end
 
 group :test, :cucumber do

@@ -16,6 +16,10 @@ class Api::ApiController < ActionController::Base
   rescue_from(ErrorResponse) { |e| render_error_response e }
   rescue_from(ActiveSupport::JSON.parse_error) { |e| malformed_json(e) }
 
+  def session_expiry_timeout
+      Rails.application.config.session_options[:rapidftr][:mobile_expire_after]
+  end
+
   def check_device_blacklisted
     raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
   end
