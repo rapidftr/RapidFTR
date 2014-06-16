@@ -1,7 +1,7 @@
 class DatabaseController < ApplicationController
 
   def delete_data
-    raise "Database operation not allowed" unless (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
+    restrict_to_nonproduction
 
     data_type   = params[:data_type]
     model_class = data_type.camelize.constantize
@@ -12,6 +12,28 @@ class DatabaseController < ApplicationController
     RestClient.post "#{model_class.database.root}/_bulk_docs", { :docs => docs }.to_json, { "Content-type" => "application/json" } unless docs.empty?
 
     render text: "Deleted all #{data_type} documents"
+  end
+
+  def reset_fieldworker
+    restrict_to_nonproduction
+    user = User.find_by_user_name('field_worker')
+    user.destroy if user
+    role = Role.find_by_name('Registration Worker')
+    User.create!("user_name" => "field_worker",
+                 "password" => "field_worker",
+                 "password_confirmation" => "field_worker",
+                 "full_name" => "Field Worker",
+                 "email" => "field_worker@rapidftr.com",
+                 "disabled" => "false",
+                 "organisation" => "N/A",
+                 "role_ids" => [role.id])
+
+    render text: "Field Worker Reset: #{user}"
+  end
+
+  private
+  def restrict_to_nonproduction
+    raise "Database operation not allowed" unless (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
   end
 
 end
