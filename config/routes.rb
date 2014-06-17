@@ -177,5 +177,6 @@ RapidFTR::Application.routes.draw do
 # TESTING URLS
 #######################
   match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
+  match 'database/reset_fieldworker' => 'database#reset_fieldworker', :as => :reset_fieldworker, :via => :delete
 
 end
