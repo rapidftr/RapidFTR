@@ -1,6 +1,5 @@
 class ErrorResponse < StandardError
   attr_reader :status_code
-  attr_reader :status_text
 
   def self.bad_request(message)
     new(400, message)
@@ -18,9 +17,13 @@ class ErrorResponse < StandardError
     new(404, message)
   end
 
+  def self.internal_server_error(message)
+    new(500, message)
+  end
+
   def initialize( status_code, message )
     @status_code = status_code
-    super(message)
+    super(I18n.t(message))
   end
 
   def status_text

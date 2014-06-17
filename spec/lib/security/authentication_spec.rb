@@ -33,34 +33,34 @@ module Security
       @controller.send(:check_authentication).should be_true
     end
 
-    it "should raise AuthenticationFailure if no session ID" do
+    it "should raise ErrorResponse if no session ID" do
       lambda {
         @controller.session[:rftr_session_id] = nil
         @controller.send :check_authentication
-      }.should raise_error(AuthenticationFailure, I18n.t("session.has_expired"))
+      }.should raise_error(ErrorResponse, I18n.t("session.has_expired"))
     end
 
-    it "should raise AuthenticationFailure if no Access Timestamp" do
+    it "should raise ErrorResponse if no Access Timestamp" do
       lambda {
         @controller.session[:last_access_time] = nil
         @controller.send :check_authentication
-      }.should raise_error(AuthenticationFailure, I18n.t("session.has_expired"))
+      }.should raise_error(ErrorResponse, I18n.t("session.has_expired"))
     end
 
-    it "should raise AuthenticationFailure if access time expired" do
+    it "should raise ErrorResponse if access time expired" do
       lambda {
         @controller.session[:last_access_time] = 6.minutes.ago.rfc2822
         @controller.send :check_authentication
-      }.should raise_error(AuthenticationFailure, I18n.t("session.has_expired"))
+      }.should raise_error(ErrorResponse, I18n.t("session.has_expired"))
     end
 
-    xit "should raise AuthenticationFailure if device blacklisted" do
+    xit "should raise ErrorResponse if device blacklisted" do
       lambda {
         mock_session = Session.new
         mock_session.stub! :device_blacklisted? => true
         @controller.stub! :current_session => mock_session
         @controller.send :check_authentication
-      }.should raise_error(AuthenticationFailure)
+      }.should raise_error(ErrorResponse)
     end
 
   end

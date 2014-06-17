@@ -9,38 +9,33 @@ class Api::ApiController < ActionController::Base
 
   private
 
-  rescue_from(Exception) { |e| render_exception e }
-  rescue_from(AuthenticationFailure) { |e| render_error_response ErrorResponse.unauthorized e.message }
-  rescue_from(CanCan::AccessDenied) { |e| render_error_response ErrorResponse.forbidden e.message }
-  rescue_from(ErrorResponse) { |e| render_error_response e }
-  rescue_from(ActiveSupport::JSON.parse_error) { |e| malformed_json(e) }
+  rescue_from(Exception) do |e|
+    render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
+  end
+  rescue_from(CanCan::AccessDenied) do |e|
+    render_error_response ErrorResponse.forbidden "session.forbidden"
+  end
+  rescue_from(ErrorResponse) do |e|
+    render_error_response e
+  end
+  rescue_from(ActiveSupport::JSON.parse_error) do |e|
+    render_error_response ErrorResponse.new 422, "session.invalid_request"
+  end
 
   def session_expiry_timeout
-      Rails.application.config.session_options[:rapidftr][:mobile_expire_after]
+    Rails.application.config.session_options[:rapidftr][:mobile_expire_after]
   end
 
   def check_device_blacklisted
-    raise ErrorResponse.forbidden("Device Blacklisted") if current_session && current_session.device_blacklisted?
-  end
-
-  def restrict_to_test
-    raise ErrorResponse.unauthorized("Unauthorized Operation") unless Rails.env.android?
+    raise ErrorResponse.forbidden("session.device_blacklisted") if current_session && current_session.device_blacklisted?
   end
 
   def render_error_response(e)
-    render :status => e.status_code, :json => e.message
-  end
-
-  def render_exception(e)
-    render :status => 500, :json => e.message
+    render status: e.status_code, text: e.message
   end
 
   def extend_session_lifetime
     session[:last_access_time] = Clock.now.rfc2822
-  end
-
-  def malformed_json(e)
-    render :status => 422, :json => I18n.t("errors.models.enquiry.malformed_query")
   end
 
   def sanitize_params(object)

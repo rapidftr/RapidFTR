@@ -33,6 +33,9 @@ module RapidFTR
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    # Delete unnecessary ETag middleware
+    config.middleware.delete Rack::ETag
+
     # Asset pipeline
     config.assets.enabled = true
     config.assets.version = '1.0'
