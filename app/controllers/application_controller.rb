@@ -12,45 +12,31 @@ class ApplicationController < ActionController::Base
   before_filter :extend_session_lifetime
   before_filter :set_locale
 
-  rescue_from( AuthenticationFailure ) { |e| handle_authentication_failure(e) }
-  rescue_from( AuthorizationFailure ) { |e| handle_authorization_failure(e) }
-  rescue_from( ErrorResponse ) { |e| render_error_response(e) }
+  rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
+    render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
+  end
   rescue_from CanCan::AccessDenied do |exception|
-    if request.format == "application/json"
-      render :json => "unauthorized", :status => 403
-    else
-      render :file => "#{Rails.root}/public/403", :status => 403, :layout => false, :formats => [:html]
-    end
+    render_error_response ErrorResponse.forbidden "session.forbidden"
+  end
+  rescue_from(ErrorResponse) do |e|
+    render_error_response e
   end
 
   def extend_session_lifetime
     session[:last_access_time] = Clock.now.rfc2822
   end
 
-  def handle_authentication_failure(auth_failure)
-    respond_to do |format|
-      format.html { redirect_to(:login) }
-      format.any(:xml,:json) { render_error_response ErrorResponse.unauthorized(I18n.t("session.invalid_token")) }
-    end
-  end
-
-  def handle_authorization_failure(authorization_failure)
-    respond_to do |format|
-      format.any { render_error_response ErrorResponse.new(403, authorization_failure.message) }
-    end
-  end
-
-  def handle_device_blacklisted(session)
-    render(:status => 403, :json => session.imei)
-  end
-
-  def render_error_response(ex)
+  def render_error_response(e)
     respond_to do |format|
       format.html do
-        render :template => "shared/error_response",:status => ex.status_code, :locals => { :exception => ex }
+        if e.status_code == 401
+          redirect_to :login
+        else
+          render :template => "shared/error_response",:status => e.status_code, :locals => { :exception => e }
+        end
       end
-      format.any(:xml,:json) do
-        render :text => nil, :status => ex.status_code
+      format.json do
+        render status: e.status_code, text: e.message
       end
     end
   end

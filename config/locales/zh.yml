@@ -467,9 +467,6 @@ zh:
     has_expired: "你的对话已到期。请重新登陆"
     invalid_credentials: "无效的验证，请重试!"
     login_error: "登陆时出现错误，请重试"
-    invalid_token: "不正确的会话令牌"
-    no_token_provided: "没有会话令牌"
-    no_token_in_header: "缓存里面没有会话令牌"
 
   report:
     heading: "RapidFTR报告"

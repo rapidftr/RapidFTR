@@ -11,6 +11,7 @@ FactoryGirl.define do
 
   factory :session, traits: [:model] do
     user_name { FactoryGirl.create(:user).user_name }
+    imei "123456789"
   end
 
   factory :child, :traits => [ :model ] do

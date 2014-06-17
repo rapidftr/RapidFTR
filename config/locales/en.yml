@@ -465,9 +465,12 @@ en:
   session:
     about_to_expire: "Your session is about to expire!"
     login_error: "There was a problem logging in.  Please try again."
-    invalid_token: "invalid session token"
     has_expired: "Your session has expired. Please re-login."
     invalid_credentials: "Invalid credentials. Please try again!"
+    invalid_request: "Invalid request format"
+    forbidden: "You are not authorized to perform this action!"
+    internal_server_error: "The server encountered an error while processing this request. Please contact the system administrator"
+    device_blacklisted: "Your device has been blacklisted. Please contact the system administrator"
 
   report:
     heading: "RapidFTR Reports"

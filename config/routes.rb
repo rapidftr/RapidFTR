@@ -100,7 +100,7 @@ RapidFTR::Application.routes.draw do
     # ENQUIRIES
 
     resources :enquiries, :defaults => {:format => :json}
-    
+
   end
 
 #######################
@@ -176,7 +176,9 @@ RapidFTR::Application.routes.draw do
 #######################
 # TESTING URLS
 #######################
-  match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
-  match 'database/reset_fieldworker' => 'database#reset_fieldworker', :as => :reset_fieldworker, :via => :delete
+  if (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
+    match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
+    match 'database/reset_fieldworker' => 'database#reset_fieldworker', :as => :reset_fieldworker, :via => :delete
+  end
 
 end

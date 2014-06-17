@@ -39,7 +39,7 @@ module Security
 
     # TODO: Rename to check_expiry or logged_in! something
     def check_authentication
-      logged_in? || raise(AuthenticationFailure.new(I18n.t("session.has_expired")))
+      logged_in? || raise(ErrorResponse.unauthorized("session.has_expired"))
     end
 
   end

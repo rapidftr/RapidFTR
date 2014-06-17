@@ -1,2 +1,0 @@
-class AuthenticationFailure < StandardError
-end

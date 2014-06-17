@@ -1,8 +1,8 @@
 class DatabaseController < ApplicationController
 
-  def delete_data
-    restrict_to_nonproduction
+  before_filter :restrict_to_nonproduction
 
+  def delete_data
     data_type   = params[:data_type]
     model_class = data_type.camelize.constantize
 
@@ -15,7 +15,6 @@ class DatabaseController < ApplicationController
   end
 
   def reset_fieldworker
-    restrict_to_nonproduction
     user = User.find_by_user_name('field_worker')
     user.destroy if user
     role = Role.find_by_name('Registration Worker')
@@ -32,8 +31,9 @@ class DatabaseController < ApplicationController
   end
 
   private
+
   def restrict_to_nonproduction
-    raise "Database operation not allowed" unless (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
+    raise CanCan::AccessDenied unless (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
   end
 
 end
