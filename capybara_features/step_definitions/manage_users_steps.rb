@@ -1,5 +1,10 @@
 Then /^I should see the following users:$/ do |user_table|
-  expected_order = user_table.hashes.collect { |user| user['name'] }
-  actual_order=page.all(:xpath, "//td[@class='full_name']").collect(&:text)
-  actual_order.should == expected_order
+  user_names = user_table.hashes.collect { |user| user['name'] }
+  manage_users_page.should_show_users_in_order(user_names)
+end
+
+private
+
+def manage_users_page
+  ManageUsersPage.new(Capybara.current_session)
 end
