@@ -47,10 +47,10 @@ When /^I request the creation of the following unverified user:$/ do |table|
 
     post(register_unverified_user_path,
          {:user =>
-              {:user_name => hash["user_name"],
-               :full_name => hash["full_name"],
-               :organisation => hash["organisation"],
-               :unauthenticated_password => hash["password"]
+              {:user_name => hash['user_name'],
+               :full_name => hash['full_name'],
+               :organisation => hash['organisation'],
+               :unauthenticated_password => hash['password']
               }
          }.to_json)
   end
@@ -70,4 +70,3 @@ end
 def last_json
   last_response.body
 end
-
