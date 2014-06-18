@@ -1,5 +1,5 @@
 require 'uri'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'support', 'paths'))
 
 module WithinHelpers
   def with_scope(locator)
@@ -33,7 +33,7 @@ end
 
 When /^I uncheck the disabled checkbox for user "([^"]*)"$/ do |username|
   page.find("//tr[@id='user-row-#{username}']/td/input[@type='checkbox']").click
-  click_button("Yes")
+  click_button('Yes')
 end
 
 Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, element, id|
@@ -103,7 +103,7 @@ end
 
 And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username, status|
   disbled_checkbox = find(:css, "#user-row-#{username} td.user-status input")
-  if status == "disabled"
+  if status == 'disabled'
     disbled_checkbox.should be_checked
   else
     disbled_checkbox.should_not be_checked
@@ -116,7 +116,7 @@ Then /^I should see an audio element that can play the audio file named "([^"]*)
 end
 
 Then /^I should not see an audio tag$/ do
-  page.body.should_not have_selector("//audio")
+  page.body.should_not have_selector('//audio')
 end
 
 When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
@@ -124,9 +124,9 @@ When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
 end
 
 Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
-   radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(" ", "")}")
+   radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(' ', '')}")
    radio.should_not be_nil
-   table.raw.each { |row| radio.css("label").map(&:text).should include row.first }
+   table.raw.each { |row| radio.css('label').map(&:text).should include row.first }
 
 end
 
@@ -145,7 +145,7 @@ end
 
 Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
   checkbox_label = page.find "//label[contains(., '#{checkbox_name}')]"
-  checkbox_id = checkbox_label["for"].split("_").last
+  checkbox_id = checkbox_label['for'].split('_').last
 	checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_id}][]']")
 
 	checkboxes = checkbox_elements.inject({}) do | result,  element |
@@ -164,7 +164,7 @@ end
 
 When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
   label = page.find '//label', :text => checkbox_name
-  checkbox_id = label["for"].split("_").last
+  checkbox_id = label['for'].split('_').last
 	page.check("child_#{checkbox_id}_#{value.dehumanize}")
 end
 

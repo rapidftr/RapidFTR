@@ -56,16 +56,16 @@ end
 
 Given /^a user "(.+)" has logged in from a device$/ do |user_name|
   user = User.find_by_user_name(user_name)
-  user.mobile_login_history << MobileLoginEvent.new(:imei => "45345", :mobile_number => "244534", :timestamp => "2012-12-17 09:53:51 UTC")
+  user.mobile_login_history << MobileLoginEvent.new(:imei => '45345', :mobile_number => '244534', :timestamp => '2012-12-17 09:53:51 UTC')
   user.save!
 end
 
 Given /^the following admin contact info:$/ do |table|
   contact_info = table.hashes.inject({}) do |result, current|
-    result[current["key"]] = current["value"]
+    result[current['key']] = current['value']
     result
   end
-  contact_info[:id] = "administrator"
+  contact_info[:id] = 'administrator'
   ContactInformation.create contact_info
 end
 
@@ -76,9 +76,9 @@ Given /^I have the following devices:$/ do |table|
 end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|
-  step %Q|I am on the home page|
+  step 'I am on the home page'
   step %Q|I select "#{timezone}" from "Current time zone"|
-  step %Q|I press "Save"|
+  step 'I press "Save"'
 end
 
 Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*)"$/ do |field_name, child_name, field_value|
@@ -97,5 +97,4 @@ When /^I re-enable the user "([^"]*)"$/ do |username|
   user = User.find_by_user_name(username)
   user.disabled = false
   user.save
-
 end

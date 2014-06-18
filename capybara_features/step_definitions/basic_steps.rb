@@ -1,5 +1,5 @@
 When /^I fill in the basic details of a child$/ do
-  fill_in("Birthplace", :with => "Haiti")
+  fill_in('Birthplace', :with => 'Haiti')
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
@@ -21,18 +21,18 @@ Given /^the following form sections exist in the system:$/ do |form_sections_tab
 
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
-      'unique_id'=> form_section_hash["name"].gsub(/\s/, "_").downcase,
+      'unique_id'=> form_section_hash['name'].gsub(/\s/, '_').downcase,
       'fields'=> Array.new
     )
 
-    form_section_hash["order"] = form_section_hash["order"].to_i
+    form_section_hash['order'] = form_section_hash['order'].to_i
     form_section = FormSection.new(form_section_hash)
     form_section.save!
   end
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with field type "([^\"]*)"$/ do |form_section, field_name, field_type|
-  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, '_'))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :type => field_type)
   FormSection.add_field_to_formsection(form_section, field)
 end
@@ -84,17 +84,17 @@ end
 
 Given /^I am editing an existing child record$/ do
   child = Child.new
-  child[:created_by] = "mary"
-  child["birthplace"] = "haiti"
+  child[:created_by] = 'mary'
+  child['birthplace'] = 'haiti'
   child.photo = uploadable_photo
-  child["unique_identifier"] = "UNIQUE_IDENTIFIER"
-  raise "Failed to save a valid child record" unless child.save
+  child['unique_identifier'] = 'UNIQUE_IDENTIFIER'
+  raise 'Failed to save a valid child record' unless child.save
 
   visit children_path+"/#{child.id}/edit"
 end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
-  child = Child.new( :name => name, :birthplace => 'unknown', :created_by => "mary")
+  child = Child.new( :name => name, :birthplace => 'unknown', :created_by => 'mary')
   child.photo = uploadable_photo(photo_file_path)
   child.create
 end
@@ -142,37 +142,37 @@ end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
   click_flag_as_suspect_record_link_for(name)
-  fill_in("Flag Reason", :with => "Test")
-  click_button("Flag")
+  fill_in('Flag Reason', :with => 'Test')
+  click_button('Flag')
 end
 
 When /^I flag "([^\"]*)" as suspect with the following reason:$/ do |name, reason|
   page.find(:xpath, "//div[text()=\"#{name}\"]/parent::*/parent::*/parent::*").click_link('Flag record')
-  fill_in("Flag Reason:", :with => reason)
-  click_button("Flag")
+  fill_in('Flag Reason:', :with => reason)
+  click_button('Flag')
 end
 
 When /^I flag as suspect with the following reason:$/ do |reason|
   click_link('Flag record')
-  fill_in("Flag Reason:", :with => reason)
-  click_button("Flag")
+  fill_in('Flag Reason:', :with => reason)
+  click_button('Flag')
 end
 
 When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
   click_flag_as_suspect_record_link_for(name)
-  fill_in("Unflag Reason", :with => reason)
-  click_button("Unflag")
+  fill_in('Unflag Reason', :with => reason)
+  click_button('Unflag')
 end
 
 Then /^the (view|edit) record page should show the record is flagged$/ do |page_type|
   path = children_path+"/#{Child.all[0].id}"
-  (page_type == "edit") ? visit(path + "/edit") : visit(path)
-  page.should have_content("Flagged as suspect record by")
+  (page_type == 'edit') ? visit(path + '/edit') : visit(path)
+  page.should have_content('Flagged as suspect record by')
 end
 
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
-  visit child_filter_path(:filter => "flag")
+  visit child_filter_path(:filter => 'flag')
   expected_child_names.each do |name|
     page.should have_xpath "//h2//a[contains(., '#{name}')]"
   end
@@ -185,7 +185,7 @@ end
 
 Then /^I should (not )?see the "([^\"]*)" tab$/ do |do_not_want, tab_name|
   should = do_not_want ? :should_not : :should
-  page.all(:css, ".tab-handles a").map(&:text).send(should, include(tab_name))
+  page.all(:css, '.tab-handles a').map(&:text).send(should, include(tab_name))
 end
 
 When /^I sleep (\d*) seconds$/ do |sleep_time|
@@ -194,7 +194,7 @@ end
 
 Given /"([^\"]*)" is logged in/ do |user_name|
   step "\"#{user_name}\" is the user"
-  step "I am on the login page"
+  step 'I am on the login page'
   step "I fill in \"User Name\" with \"#{user_name}\""
   step "I fill in \"123\" for \"password\""
   step "I press \"Log in\""
@@ -218,7 +218,7 @@ Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, flag|
 end
 
 Given /I am logged out/ do
-  step "I am on the logout page"
+  step 'I am on the logout page'
 end
 
 Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
@@ -263,6 +263,5 @@ private
 def click_flag_as_suspect_record_link_for(name)
   child = find_child_by_name name
   visit children_path+"/#{child.id}"
-  find(:css, ".btn_flag").click
+  find(:css, '.btn_flag').click
 end
-
