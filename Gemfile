@@ -6,7 +6,6 @@ gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-
 gem 'couchrest_model', '~> 2.0.1'
 gem 'mime-types',      '1.16'
 gem 'mini_magick',     '1.3.2'
-gem 'pdf-reader',      '1.3.3'
 gem 'prawn',           '0.8.4'
 gem 'rails',           '4.0.3'
 gem 'uuidtools',       '~> 2.1.1'
@@ -30,9 +29,8 @@ gem 'uglifier',      '~> 2.0.1'
 gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
 
-group :development, :test, :cucumber do
+group :development do
   gem 'rails-dev-tweaks',  '~> 1.1',   platforms: :ruby
-  gem 'thin',              '~> 1.6.1', platforms: :ruby, require: false
   gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
   gem 'better_errors',     '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
@@ -52,4 +50,5 @@ group :test, :cucumber do
   gem 'selenium-webdriver', '~> 2.42.0'
   gem 'hpricot',            '~> 0.8.6'
   gem 'json_spec',          '~> 1.1.1'
+  gem 'pdf-inspector',      '~> 1.1.0'
 end
