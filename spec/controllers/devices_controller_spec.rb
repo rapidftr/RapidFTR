@@ -6,7 +6,7 @@ describe DevicesController do
   describe "GET index" do
     it "fetches all the blacklisted devices but not the replication details if user have only black listed permission" do
       fake_login_as(Permission::DEVICES[:black_list])
-      device = mock({:user_name => "someone"})
+      device = double({:user_name => "someone"})
       Device.should_receive(:view).with("by_imei").and_return([device])
       Replication.should_not_receive(:all)
       get :index
@@ -30,7 +30,8 @@ describe DevicesController do
   describe "POST update_blacklist" do
     it "should update the blacklist flag" do
       fake_login_as(Permission::DEVICES[:black_list])
-      device = mock()
+      device = double()
+      Device.should_receive(:find_by_device_imei).with("123").and_call_original
       Device.should_receive(:by_imei).with(:key => "123").and_return([device])
       device.should_receive(:update_attributes).with({:blacklisted => true}).and_return(true)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}
@@ -39,7 +40,8 @@ describe DevicesController do
 
     it "should return failure if blacklist fails" do
       fake_login_as(Permission::DEVICES[:black_list])
-      device = mock()
+      device = double()
+      Device.should_receive(:find_by_device_imei).with("123").and_call_original
       Device.should_receive(:by_imei).with(:key => "123").and_return([device])
       device.should_receive(:update_attributes).with({:blacklisted => true}).and_return(false)
       post :update_blacklist, {:imei => "123", :blacklisted => "true"}

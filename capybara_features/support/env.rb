@@ -15,12 +15,6 @@ require 'json_spec/cucumber'
 require 'rack/test'
 require 'selenium/webdriver'
 
-Capybara.register_driver :selenium do |app|
-  http_client = Selenium::WebDriver::Remote::Http::Default.new
-  http_client.timeout = 60
-  Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => http_client)
-end
-
 Capybara.configure do |config|
   config.match = :prefer_exact
   config.ignore_hidden_elements = false

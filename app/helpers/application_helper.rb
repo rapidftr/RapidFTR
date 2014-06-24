@@ -14,29 +14,26 @@ module ApplicationHelper
   end
 
   def cancel_button(path)
-      link_to t('cancel'), path, :confirm => t('messages.cancel_confirmation'), :class => "link_cancel"
+      link_to t('cancel'), path, :class => "link_cancel", data: { confirm: t('messages.cancel_confirmation') }
   end
 
   def discard_button(path)
-      link_to t('discard'), path, :confirm => t('messages.confirmation_message'), :class => 'link_discard'
+      link_to t('discard'), path, :class => 'link_discard', data: { confirm: t('messages.confirmation_message') }
   end
 
   def link_with_confirm(link_to, anchor, link_options = {})
-    link_options.merge!(link_confirm_options(controller))
-    link_to link_to, anchor, link_options
-  end
-
-  def link_confirm_options(controller)
-    confirm_options = { }
+    msg = nil
     confirm_message = t('messages.confirmation_message')
     if /children/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
-      confirm_options[:confirm] = confirm_message % 'Child Record'
+      msg = confirm_message % 'Child Record'
     elsif /user/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
-      confirm_options[:confirm] = confirm_message % 'Users Page'
+      msg = confirm_message % 'Users Page'
     elsif /form_section/.match(controller.controller_name) and /index/.match(controller.action_name)
-       confirm_options[:confirm] = confirm_message % 'Manage Form Sections'
+       msg = confirm_message % 'Manage Form Sections'
     end
-    confirm_options
+
+    link_options.merge data: { confirm: msg } if msg
+    link_to link_to, anchor, link_options
   end
 
   def translated_permissions

@@ -10,9 +10,21 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("lib/**/*.rb")].each {|f| require f}
 
 # This clears couchdb between tests.
-CouchRestRails::Tests.setup
 FactoryGirl.find_definitions
 Mime::Type.register 'application/zip', :mock
+
+#This work if we keep in the suffix the same as the RAILS_ENV.
+TEST_DATABASES = COUCHDB_SERVER.databases.select {|db| db =~ /#{ENV["RAILS_ENV"]}$/}
+
+module VerifyAndResetHelpers
+  def verify(object)
+    RSpec::Mocks.proxy_for(object).verify
+  end
+
+  def reset(object)
+    RSpec::Mocks.proxy_for(object).reset
+  end
+end
 
 RSpec.configure do |config|
 
@@ -20,6 +32,7 @@ RSpec.configure do |config|
   config.include UploadableFiles
   config.include ChildFinder
   config.include FakeLogin, :type => :controller
+  config.include VerifyAndResetHelpers
 
   # ## Mock Framework
   #
@@ -47,6 +60,22 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  #Recreate db if needed.
+  config.before(:all) do
+    TEST_DATABASES.each do |db|
+      COUCHDB_SERVER.database(db).recreate! rescue nil
+      # Reset the Design Cache
+      Thread.current[:couchrest_design_cache] = {}
+    end
+  end
+
+  #Delete db if needed.
+  config.after(:all) do
+    TEST_DATABASES.each do |db|
+      COUCHDB_SERVER.database(db).delete! rescue nil
+    end
+  end
 
   config.before(:each) { I18n.locale = I18n.default_locale = :en }
 

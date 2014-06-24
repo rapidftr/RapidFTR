@@ -14,8 +14,8 @@ describe TestController do
   before :each do
     Rails.application.routes.draw do
       # add the route that you need in order to test
-      match '/' => "test#index"
-      match '/forbidden' => 'test#forbidden'
+      get '/' => "test#index"
+      get'/forbidden' => 'test#forbidden'
     end
   end
 

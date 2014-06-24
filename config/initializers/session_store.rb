@@ -1,6 +1,6 @@
-Rails.application.config.session_store :encrypted_cookie_store, {
+Rails.application.config.session_store :cookie_store, {
   # name of the encrypted cookie
-  key: '_session',
+  key: '_rftr_session',
 
   # cookie expiry *not* session expiry,
   expire_after: 1.week,

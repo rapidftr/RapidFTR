@@ -1,10 +1,6 @@
 # encoding: utf-8
 
-begin
-  require File.expand_path('../../bundle/bundler/setup', __FILE__)
-rescue LoadError
-  require File.expand_path('../boot', __FILE__)
-end
+require File.expand_path('../boot', __FILE__)
 
 require "action_controller/railtie"
 Bundler.require *Rails.groups(:assets => %w(development test)) if defined? Bundler
@@ -35,6 +31,9 @@ module RapidFTR
 
     # Delete unnecessary ETag middleware
     config.middleware.delete Rack::ETag
+
+    # i18n-js recommended configuration.
+    config.assets.initialize_on_precompile = true
 
     # Asset pipeline
     config.assets.enabled = true

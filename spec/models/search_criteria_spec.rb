@@ -54,87 +54,87 @@ describe SearchCriteria do
   end
   
   it "should build query for one criteria with no join" do
-    criteria_list = [mock(:join => "", :to_lucene_query => "QUERY")]
+    criteria_list = [double(:join => "", :to_lucene_query => "QUERY")]
     SearchCriteria.lucene_query(criteria_list).should == "QUERY"
   end
   
   it "should build query for ANDed criteria" do
     criteria_list = [ 
-      mock(:join => "", :to_lucene_query => "QUERY1"), 
-      mock(:join => "AND", :to_lucene_query => "QUERY2")
+      double(:join => "", :to_lucene_query => "QUERY1"), 
+      double(:join => "AND", :to_lucene_query => "QUERY2")
     ]
     SearchCriteria.lucene_query(criteria_list).should == "(QUERY1 AND QUERY2)"
   end
   
   it "should build query for ORed criteria" do
      criteria_list = [ 
-       mock(:join => "", :to_lucene_query => "QUERY1"), 
-       mock(:join => "OR", :to_lucene_query => "QUERY2")
+       double(:join => "", :to_lucene_query => "QUERY1"), 
+       double(:join => "OR", :to_lucene_query => "QUERY2")
      ]
      SearchCriteria.lucene_query(criteria_list).should == "QUERY1 OR QUERY2"
   end
 
   it "should build query for downcase ORed criteria" do
     criteria_list = [
-        mock(:join => "", :to_lucene_query => "QUERY1"),
-        mock(:join => "or", :to_lucene_query => "QUERY2")
+        double(:join => "", :to_lucene_query => "QUERY1"),
+        double(:join => "or", :to_lucene_query => "QUERY2")
     ]
     SearchCriteria.lucene_query(criteria_list).should == "QUERY1 OR QUERY2"
   end
 
   it "should build query for multiple OR criteria" do
      criteria_list = [ 
-       mock(:join => "", :to_lucene_query => "QUERY1"), 
-       mock(:join => "OR", :to_lucene_query => "QUERY2"),
-       mock(:join => "OR", :to_lucene_query => "QUERY3")
+       double(:join => "", :to_lucene_query => "QUERY1"), 
+       double(:join => "OR", :to_lucene_query => "QUERY2"),
+       double(:join => "OR", :to_lucene_query => "QUERY3")
      ]
      SearchCriteria.lucene_query(criteria_list).should == "QUERY1 OR QUERY2 OR QUERY3" 
   end
   
   it "should build query for criteria with AND having precedence" do
      criteria_list = [ 
-       mock(:join => "", :to_lucene_query => "QUERY1"), 
-       mock(:join => "AND", :to_lucene_query => "QUERY2"),
-       mock(:join => "OR", :to_lucene_query => "QUERY3")
+       double(:join => "", :to_lucene_query => "QUERY1"), 
+       double(:join => "AND", :to_lucene_query => "QUERY2"),
+       double(:join => "OR", :to_lucene_query => "QUERY3")
      ]
      SearchCriteria.lucene_query(criteria_list).should == "(QUERY1 AND QUERY2) OR QUERY3"
   end
   
   it "should build query for multiple AND criteria with first join having precedence" do
      criteria_list = [ 
-       mock(:join => "", :to_lucene_query => "QUERY1"), 
-       mock(:join => "AND", :to_lucene_query => "QUERY2"),
-       mock(:join => "AND", :to_lucene_query => "QUERY3")
+       double(:join => "", :to_lucene_query => "QUERY1"), 
+       double(:join => "AND", :to_lucene_query => "QUERY2"),
+       double(:join => "AND", :to_lucene_query => "QUERY3")
      ]
      SearchCriteria.lucene_query(criteria_list).should == "((QUERY1 AND QUERY2) AND QUERY3)"
   end
   
   it "should build query for mixed multiple AND and OR criteria with first AND join having precedence" do
      criteria_list = [ 
-       mock(:join => "", :to_lucene_query => "QUERY1"), 
-       mock(:join => "AND", :to_lucene_query => "QUERY2"),
-       mock(:join => "OR", :to_lucene_query => "QUERY3"),
-       mock(:join => "AND", :to_lucene_query => "QUERY4"),
-       mock(:join => "AND", :to_lucene_query => "QUERY5")
+       double(:join => "", :to_lucene_query => "QUERY1"), 
+       double(:join => "AND", :to_lucene_query => "QUERY2"),
+       double(:join => "OR", :to_lucene_query => "QUERY3"),
+       double(:join => "AND", :to_lucene_query => "QUERY4"),
+       double(:join => "AND", :to_lucene_query => "QUERY5")
      ]
      SearchCriteria.lucene_query(criteria_list).should == "(QUERY1 AND QUERY2) OR ((QUERY3 AND QUERY4) AND QUERY5)"
   end
   
   it "should build query for mixed multiple AND and multiple OR criteria with AND joins having precedence" do
       criteria_list = [ 
-        mock(:join => "", :to_lucene_query => "QUERY1"), 
-        mock(:join => "AND", :to_lucene_query => "QUERY2"),
-        mock(:join => "OR", :to_lucene_query => "QUERY3"),
-        mock(:join => "AND", :to_lucene_query => "QUERY4"),
-        mock(:join => "AND", :to_lucene_query => "QUERY5")
+        double(:join => "", :to_lucene_query => "QUERY1"), 
+        double(:join => "AND", :to_lucene_query => "QUERY2"),
+        double(:join => "OR", :to_lucene_query => "QUERY3"),
+        double(:join => "AND", :to_lucene_query => "QUERY4"),
+        double(:join => "AND", :to_lucene_query => "QUERY5")
       ]
       SearchCriteria.lucene_query(criteria_list).should == "(QUERY1 AND QUERY2) OR ((QUERY3 AND QUERY4) AND QUERY5)"
   end
 
   it "should build query for criteria without query" do
     criteria_list = [
-      mock(:join => "", :to_lucene_query => ""), 
-      mock(:join => "AND", :to_lucene_query => "CRITERIA")
+      double(:join => "", :to_lucene_query => ""), 
+      double(:join => "AND", :to_lucene_query => "CRITERIA")
     ]
     SearchCriteria.lucene_query(criteria_list).should == "CRITERIA"
   end

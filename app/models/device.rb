@@ -1,15 +1,18 @@
-class Device < CouchRestRails::Document
+class Device < CouchRest::Model::Base
   use_database :device
-  
+
   include RapidFTR::Model
-  
+  include RapidFTR::CouchRestRailsBackward
+
   property :imei
-  property :blacklisted, :cast_as => :boolean
+  property :blacklisted, TrueClass
   property :user_name
 
   before_save :set_appropriate_data_type
 
-  def self.find_by_imei(imei)
+  #Don't change the name to find_by_imei this will
+  #conflict with the corresponding Dynamic finder.
+  def self.find_by_device_imei(imei)
     Device.by_imei(:key => imei)
   end
 
@@ -18,6 +21,8 @@ class Device < CouchRestRails::Document
     self.imei = self.imei.to_s
   end
 
-  view_by :imei
+  design do
+    view :by_imei
+  end
 
 end

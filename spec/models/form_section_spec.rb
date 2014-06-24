@@ -271,7 +271,7 @@ describe FormSection do
       FormSection.stub(:all).and_return([])
     end
     it "should create a new form section" do
-      FormSection.should_receive(:new).any_number_of_times
+      FormSection.should_receive(:new).at_least(:once)
       FormSection.new_with_order({:name => "basic"})
     end
 
@@ -286,7 +286,7 @@ describe FormSection do
     it "should validate name is filled in" do
       form_section = FormSection.new()
       form_section.should_not be_valid
-      form_section.errors.on(:name).should be_present
+      form_section.errors["name_#{I18n.default_locale}"].should be_present
     end
 
     it "should not allows empty form names in form base_language " do
@@ -301,19 +301,19 @@ describe FormSection do
     it "should validate name is alpha_num" do
       form_section = FormSection.new(:name=> "r@ndom name!")
       form_section.should_not be_valid
-      form_section.errors.on(:name).should be_present
+      form_section.errors[:name].should be_present
     end
 
-    it "should not allow name with white speces only" do
+    it "should not allow name with white spaces only" do
       form_section = FormSection.new(:name=> "     ")
       form_section.should_not be_valid
-      form_section.errors.on(:name).should be_present
+      form_section.errors[:name].should be_present
     end
 
     it "should allow arabic names" do
       form_section = FormSection.new(:name=>"العربية")
       form_section.should be_valid
-      form_section.errors.on(:name).should_not be_present
+      form_section.errors[:name].should_not be_present
     end
 
     it "should validate name is unique" do
@@ -322,14 +322,14 @@ describe FormSection do
       FormSection.create! valid_attributes.dup
       form_section = FormSection.new valid_attributes.dup
       form_section.should_not be_valid
-      form_section.errors.on(:name).should be_present
-      form_section.errors.on(:unique_id).should be_present
+      form_section.errors[:name].should be_present
+      form_section.errors[:unique_id].should be_present
     end
 
     it "should not occur error  about the name is not unique  when the name is not filled in" do
       form_section = FormSection.new(:name=>"")
       form_section.should_not be_valid
-      form_section.errors.on(:unique_id).should_not be_present
+      form_section.errors[:unique_id].should_not be_present
     end
 
     it "should not trip the unique name validation on self" do

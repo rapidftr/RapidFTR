@@ -1,15 +1,23 @@
-class Field < Hash
-  include CouchRest::CastedModel
-  include CouchRest::Validation
+class Field
+  include CouchRest::Model::CastedModel
   include RapidFTR::Model
   include PropertiesLocalization
 
+  #track down whether the instance is new or not.
+  #CouchRest::Model::Embeddable new? method rely
+  #on the new? of the parent object. This make not
+  #possible to know if the embedded item already
+  #exists or not in the database. The parent object
+  #is responsible to set the flag.
+  #document_saved nil or false consider the field as new.
+  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  attr_accessor :document_saved
 
   property :name
-  property :visible, :cast_as => 'boolean', :default => true
+  property :visible, TrueClass, :default => true
   property :type
-  property :highlight_information , :cast_as=> 'HighlightInformation'
-  property :editable, :cast_as => 'boolean', :default => true
+  property :highlight_information , HighlightInformation
+  property :editable, TrueClass, :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
   property :base_language, :default=>'en'
@@ -55,12 +63,12 @@ class Field < Hash
                         NUMERIC_FIELD    => ""}
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
-  validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :display_name, :method => :validate_unique_display_name
-  validates_with_method :option_strings, :method => :validate_has_2_options
-  validates_with_method :option_strings, :method => :validate_has_a_option
-  validates_with_method :display_name, :method => :validate_name_format
-  validates_with_method :display_name, :method => :valid_presence_of_base_language_name
+  validate :validate_unique_name
+  validate :validate_unique_display_name
+  validate :validate_has_2_options
+  validate :validate_has_a_option
+  validate :validate_name_format
+  validate :valid_presence_of_base_language_name
 
   def validate_name_format
     special_characters = /[*!@#%$\^]/
@@ -78,8 +86,17 @@ class Field < Hash
       self.base_language='en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+    if (base_lang_display_name.nil?||base_lang_display_name.empty?)
+      errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
+    end
   end
+
+  #Override new? method to not rely on the new? of the parent object.
+  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  def new?
+    !@document_saved
+  end
+  alias :new_record? :new?
 
   def form
     base_doc
@@ -209,29 +226,38 @@ class Field < Hash
 
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
-    return [false, I18n.t("errors.models.field.has_2_options")] if option_strings == nil || option_strings.length < 2
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings == nil || option_strings.length < 2
     true
   end
 
   def validate_has_a_option
     return true unless (type == CHECK_BOXES)
-    return [false, I18n.t("errors.models.field.has_1_option")] if option_strings == nil || option_strings.length < 1
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings == nil || option_strings.length < 1
     true
   end
 
   def validate_unique_name
-    return true unless new? && form
-    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.name == name})
+    #Does not make sense use new? for validity ?
+    #it is perfectly valid FormSection.new(...) then add several field then save and
+    #the validation should work rejecting the duplicate fields.
+    #Also with new? still possible duplicate things for example change the
+    #name/display_name for existing fields.
+    #What we really need is avoid check the field with itself.
+    #return true unless new? && form
+    return true unless form
+    #return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
     other_form = FormSection.get_form_containing_field name
-    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
     true
   end
 
   def validate_unique_display_name
-    return true unless new? && form
-    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
-    other_form = FormSection.get_form_containing_field display_name
-    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    #See comment at validate_unique_name.
+    #return true unless new? && form
+    return true unless form
+    #return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.display_name == display_name})
     true
   end
 

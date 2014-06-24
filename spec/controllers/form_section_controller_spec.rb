@@ -26,7 +26,7 @@ end
 describe FormSectionController do
   before do
     user = User.new(:user_name => 'manager_of_forms')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
+    user.stub(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
     fake_login user
   end
 
@@ -34,7 +34,7 @@ describe FormSectionController do
     it "populate the view with all the form sections in order ignoring enabled or disabled" do
       row1 = FormSection.new(:visible => false, :order => 1)
       row2 = FormSection.new(:visible => true, :order => 2)
-      FormSection.stub!(:all).and_return([row1, row2])
+      FormSection.stub(:all).and_return([row1, row2])
 
       get :index
 
@@ -85,7 +85,7 @@ describe FormSectionController do
       FormSection.get_by_unique_id(form_one.unique_id).order.should == 2
       FormSection.get_by_unique_id(form_two.unique_id).order.should == 3
       FormSection.get_by_unique_id(form_three.unique_id).order.should == 1
-      response.should render_template(:text => "OK")
+      response.should redirect_to(form_sections_path)
     end
   end
 

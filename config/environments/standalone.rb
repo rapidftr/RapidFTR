@@ -17,4 +17,6 @@ RapidFTR::Application.configure do
   config.assets.compress = true
   config.assets.compile = false
   config.assets.digest = true
+
+  config.eager_load = false
 end

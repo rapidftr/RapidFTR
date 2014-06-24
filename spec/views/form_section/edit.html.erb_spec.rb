@@ -40,9 +40,12 @@ describe "form_section/edit.html.erb" do
   end
 
   it "should have the options if the options strings text is not empty" do
-    fields = [{:option_strings_text=>"1"}]
-    form_section = FormSection.new :fields => fields, :unique_id=>"foo"
+    fields = [{:option_strings_text=>"1", :display_name => "Display Name"}]
+    form_section = FormSection.new :fields => fields, :unique_id=>"foo", :name => "Form Section"
     assign(:form_section, form_section)
+    #There is a test field.new? in the template,
+    #so correct thing is save the form section before render
+    form_section.save
     render
 
     document = Nokogiri::HTML(rendered)
@@ -66,7 +69,7 @@ describe "form_section/edit.html.erb" do
 
   it "should display forms in system language when user language is different" do
     I18n.default_locale = :fr
-    user = mock('user', :has_permission? => true, :user_name => 'name', :locale => :en)
+    user = double('user', :has_permission? => true, :user_name => 'name', :locale => :en)
     controller.stub(:current_user).and_return(user)
     # view.stub(:current_user).and_return(@user)
 

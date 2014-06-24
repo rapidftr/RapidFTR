@@ -11,7 +11,7 @@ describe Migration do
   end
 
   it 'should list pending migrations' do
-    Migration.stub! :applied_migrations => [ 1, 2, 3 ], :all_migrations => [ 3, 4, 5 ]
+    Migration.stub :applied_migrations => [ 1, 2, 3 ], :all_migrations => [ 3, 4, 5 ]
     Migration.pending_migrations.should == [ 4, 5 ]
   end
 
@@ -22,7 +22,7 @@ describe Migration do
   end
 
   it 'should apply only pending migrations' do
-    Migration.stub! :applied_migrations => [], :pending_migrations => [1, 2, 3], :puts => true
+    Migration.stub :applied_migrations => [], :pending_migrations => [1, 2, 3], :puts => true
     Migration.should_receive(:apply_migration).with(1).ordered
     Migration.should_receive(:apply_migration).with(2).ordered
     Migration.should_receive(:apply_migration).with(3).ordered

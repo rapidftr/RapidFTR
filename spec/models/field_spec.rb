@@ -4,6 +4,7 @@ require 'spec_helper'
 describe "Child record field view model" do
 
   before :each do
+    FormSection.all.each { |form| form.destroy }
     @field_name = "gender"
     @field = Field.new :name => "gender", :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
   end
@@ -57,7 +58,7 @@ describe "Child record field view model" do
     it "should not allow blank display name" do
       field = Field.new(:display_name => "")
       field.valid?
-      field.errors.on(:display_name).first.include? "Display name must not be blank"
+      field.errors[:display_name].first.include? "Display name must not be blank"
     end
 
     it "should not allows empty field display_name of field base language " do
@@ -72,7 +73,7 @@ describe "Child record field view model" do
     it "should not allow display name without alphabetic characters" do
       field = Field.new(:display_name => "!@£$@")
       field.valid?.should == false
-      field.errors.on(:display_name).should include("Display name must contain at least one alphabetic characters")
+      field.errors[:display_name].should include("Display name must contain at least one alphabetic characters")
     end
 
     it "should validate unique within form" do
@@ -81,29 +82,29 @@ describe "Child record field view model" do
       form.fields << field
 
       field.valid?
-      field.errors.on(:name).should ==  ["Field already exists on this form"]
-      field.errors.on(:display_name).should ==  ["Field already exists on this form"]
+      field.errors[:name].should ==  ["Field already exists on this form"]
+      field.errors[:display_name].should ==  ["Field already exists on this form"]
     end
 
     it "should validate radio button has at least 2 options" do
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::RADIO_BUTTON)
 
       field.valid?
-      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"]
+      field.errors[:option_strings].should ==  ["Field must have at least 2 options"]
     end
 
     it "should validate checkbox has at least 1 option to be checked" do
       field = Field.new(:display_name => "test", :option_strings => nil, :type => Field::CHECK_BOXES)
 
       field.valid?
-      field.errors.on(:option_strings).should ==  ["Checkbox must have at least 1 option"]
+      field.errors[:option_strings].should ==  ["Checkbox must have at least 1 option"]
     end
 
     it "should validate select box has at least 2 options" do
       field = Field.new(:display_name => "test", :option_strings => ["test"], :type => Field::SELECT_BOX)
 
       field.valid?
-      field.errors.on(:option_strings).should ==  ["Field must have at least 2 options"]
+      field.errors[:option_strings].should ==  ["Field must have at least 2 options"]
     end
 
     it "should validate unique within other forms" do
@@ -115,8 +116,7 @@ describe "Child record field view model" do
       form.fields << field
 
       field.valid?
-      field.errors.on(:name).should ==  ["Field already exists on form 'test form'"]
-      field.errors.on(:display_name).should ==  ["Field already exists on form 'test form'"]
+      field.errors[:name].should ==  ["Field already exists on form 'test form'"]
     end
   end
 
@@ -248,5 +248,76 @@ describe "Child record field view model" do
       field = Field.new :name => "test", :display_name_en => "test", :option_strings => ["Uganda", "Sudan"]
       field.option_strings_text.should == "Uganda\nSudan"
     end
+  end
+
+  it "should show that the field is new until the field is saved" do
+     form = FormSection.create! :name => 'test_form', :unique_id => 'test_form'
+     field = Field.new :name => "test_field", :display_name_en => "test_field", :type=>Field::TEXT_FIELD
+     expect(field.new?).to be_true
+     FormSection.add_field_to_formsection form, field
+     expect(field.new?).to be_false
+  end
+
+   it "should show that the field is new after the field fails validation" do
+     form =  FormSection.create! :name => 'test_form2', :unique_id => 'test_form'
+     field = Field.new :name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD
+     FormSection.add_field_to_formsection form, field
+     #Adding duplicate field.
+     field = Field.new :name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD
+     FormSection.add_field_to_formsection form, field
+     expect(field.errors.length).to be > 0
+     field.errors[:name].should == ["Field already exists on this form"]
+     expect(field.new?).to be_true
+   end
+
+  it "should fails save because fields are duplicated and fields remains as new" do
+    #Try to create a FormSection with duplicate fields. That will make fails the save.
+    fields = [Field.new(:name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD),
+              Field.new(:name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD)]
+    form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => fields
+    expect(fields.first.errors.length).to be > 0
+    fields.first.errors[:name].should == ["Field already exists on this form"]
+    expect(fields.last.errors.length).to be > 0
+    fields.last.errors[:name].should == ["Field already exists on this form"]
+    #Because it fails save, field remains new.
+    expect(fields.first.new?).to be_true
+    expect(fields.last.new?).to be_true
+  end
+
+  it "should fails save because fields changes make them duplicate" do
+    #Create the FormSection with two valid fields.
+    fields = [Field.new(:name => "test_field1", :display_name_en => "test_field1", :type=>Field::TEXT_FIELD),
+              Field.new(:name => "test_field2", :display_name_en => "test_field2", :type=>Field::TEXT_FIELD)]
+    form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => fields
+    expect(fields.first.errors.length).to be == 0
+    expect(fields.first.new?).to be_false
+    expect(fields.last.errors.length).to be == 0
+    expect(fields.last.new?).to be_false
+
+    #Update the first one to have the same name of the second,
+    #This make fails saving the FormSection.
+    fields.first.name = fields.last.name
+    form.save
+    expect(form.errors.length).to be > 0
+    expect(fields.first.errors.length).to be > 0
+    fields.first.errors[:name].should == ["Field already exists on this form"]
+
+    #because field already came from the database should remains false
+    expect(fields.first.new?).to be_false
+    expect(fields.last.new?).to be_false
+
+    #Fix the field and save again
+    fields.first.name ="Something else"
+    form.save
+    expect(form.errors.length).to be == 0
+  end
+
+  it "should fails save second form section because duplicate name in other form section" do
+    field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type=>Field::TEXT_FIELD)
+    form = FormSection.create :name => 'test_form1', :unique_id => 'test_form', :fields => [field]
+
+    field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type=>Field::TEXT_FIELD)
+    form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => [field]
+    field.errors[:name].should ==  ["Field already exists on form 'test_form1'"]
   end
 end

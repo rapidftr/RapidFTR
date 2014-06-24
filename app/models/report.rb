@@ -3,19 +3,28 @@
 # The actual report data should be attached as a document
 # If you want multiple attachments - better create multiple Report objects
 
-class Report < CouchRestRails::Document
+class Report < CouchRest::Model::Base
   use_database :report
   include RapidFTR::Model
-  include CouchRest::Validation
+  include RapidFTR::CouchRestRailsBackward
 
-  validates_with_method :must_have_attached_report
+  validate :must_have_attached_report
 
-  property :as_of_date, :cast_as => 'Date', :init_method => 'parse'
+  property :as_of_date, Date, :init_method => 'parse'
   property :report_type
 
   timestamps!
 
-  view_by :as_of_date
+  design do
+    view :by_as_of_date
+
+    view :all,
+      :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Report') {
+            emit(doc._id, null);
+          }
+        }"
+  end
 
   def file_name
     self['_attachments'].keys.first
@@ -35,6 +44,6 @@ class Report < CouchRestRails::Document
 
   def must_have_attached_report
     return true if self['_attachments'] && self['_attachments'].size == 1
-    [ false, 'No report file attached!' ] # No need to translate since this is a background activity, not a user-facing activity
+    errors.add(:must_have_attached_report, 'No report file attached!' ) # No need to translate since this is a background activity, not a user-facing activity
   end
 end

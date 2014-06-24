@@ -8,7 +8,7 @@ describe ContactInformation do
       contact_info = ContactInformation.get_or_create "ThisIsATest"
       contact_info.should_not be_nil
       contact_info.id.should == "ThisIsATest"
-      ContactInformation.all[0].id.should == "ThisIsATest"
+      ContactInformation.all.all[0].id.should == "ThisIsATest"
     end
   end
   describe "get_by_id" do
@@ -19,7 +19,7 @@ describe ContactInformation do
       contact_info.should == expected
     end
     it "should raise if contact info doesn't exist" do
-      lambda { 
+      lambda {
                ContactInformation.get_by_id "ThisIsATest"
             }.should raise_error( ErrorResponse )
     end

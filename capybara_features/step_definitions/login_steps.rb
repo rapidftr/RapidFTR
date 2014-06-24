@@ -51,7 +51,7 @@ def data_populator
 end
 
 def login_page
-  LoginPage.new(Capybara.current_session)
+  @_login_page ||= LoginPage.new(Capybara.current_session)
 end
 
 def ensure_a_user_exists

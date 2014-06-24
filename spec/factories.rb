@@ -32,7 +32,7 @@ FactoryGirl.define do
     remote_couch_config "target" => "http://couch:1234/replication_test"
 
     after_build do |replication|
-      replication.stub! :save_remote_couch_config => true
+      replication.stub :save_remote_couch_config => true
     end
   end
 

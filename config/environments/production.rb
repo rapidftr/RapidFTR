@@ -20,4 +20,5 @@ RapidFTR::Application.configure do
   # Asset pipeline
   config.assets.compile = true
 
+  config.eager_load = true
 end

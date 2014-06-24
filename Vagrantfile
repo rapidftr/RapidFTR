@@ -11,6 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dev.vm.box = 'hashicorp/precise32'
     dev.vm.network 'forwarded_port', guest: 3000, host: 3000
     dev.vm.network 'forwarded_port', guest: 5984, host: 5984
+    dev.ssh.forward_x11 = true
+    dev.ssh.forward_agent = true
     dev.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = 'infrastructure/site-cookbooks'
       chef.roles_path = 'infrastructure/roles'

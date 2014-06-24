@@ -1,12 +1,12 @@
-class Enquiry < CouchRestRails::Document
+class Enquiry < CouchRest::Model::Base
   use_database :enquiry
   include RapidFTR::Model
   include RecordHelper
-  include CouchRest::Validation
+
   before_save :find_matching_children
 
   property :enquirer_name
-  property :criteria
+  property :criteria, Hash
   property :potential_matches, :default => []
   property :match_updated_at, :default => ""
 
@@ -14,6 +14,14 @@ class Enquiry < CouchRestRails::Document
   validates_presence_of :enquirer_name, :message => I18n.t("errors.models.enquiry.presence_of_enquirer_name")
   validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
 
+  design do
+    view :all,
+      :map => "function(doc) {
+          if (doc['couchrest-type'] == 'Enquiry') {
+            emit(doc['_id'],1);
+          }
+        }"
+  end
 
   def self.new_with_user_name (user, *args)
     enquiry = new *args
@@ -22,13 +30,18 @@ class Enquiry < CouchRestRails::Document
   end
 
   def update_from(properties)
+    attributes_to_update = {}
     properties.each_pair do |name, value|
-      if value.instance_of? HashWithIndifferentAccess
-        self[name] = self[name].merge!(value)
+      if value.instance_of? HashWithIndifferentAccess or value.instance_of? ActionController::Parameters
+        attributes_to_update[name] = self[name] if attributes_to_update[name].nil?
+        #Don't change the code to use merge!
+        #It will break the access to dynamic attributes.
+        attributes_to_update[name] = attributes_to_update[name].merge(value)
       else
-        self[name] = value
+        attributes_to_update[name] = value
       end
     end
+    self.attributes = attributes_to_update unless attributes_to_update.empty?
   end
 
   def find_matching_children
@@ -43,7 +56,7 @@ class Enquiry < CouchRestRails::Document
   end
 
   def self.search_by_match_updated_since(timestamp)
-    Enquiry.all.keep_if { |e|
+    Enquiry.all.all.select { |e|
       !e['match_updated_at'].empty? and DateTime.parse(e['match_updated_at']) >= timestamp
     }
   end
