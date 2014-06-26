@@ -54,7 +54,7 @@ FactoryGirl.define do
     user_name { "user_name_#{counter}" }
     full_name 'full name'
     password 'password'
-    password_confirmation 'password'
+    password_confirmation { password }
     email 'email@ddress.net'
     organisation 'TW'
     disabled false

@@ -61,16 +61,6 @@ Feature: As an user, I should be able to log in.
 
     Then I should not see "Logged in as"
 
-  Scenario: I should see the Contact & Help page even when I'm not logged in
-	Given the following admin contact info:
-      | key | value |
-      | name | John Smith |
-      | id | administrator |
-    And I am on the login page
-	Then I should see "Contact & Help"
-	When I follow "Contact & Help"
-    Then I should be on the administrator contact page
-
   Scenario: I should be able to change my password
     Given a user "Harry" with a password "123"
     And I am logged in as "Harry"

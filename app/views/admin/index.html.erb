@@ -1,7 +1,6 @@
 <h1><%= t("header.system_settings") %></h1>
 
-  <% if can? :manage, ContactInformation %>
-    <br /><p><%= link_to t("admin.contact_info"), edit_contact_information_path(:administrator) %></p>
+  <% if can? :manage, SystemUsers %>
     <br /><p><%= link_to t("admin.system_logs"), system_logs_path %></p>
   <% end %>
 

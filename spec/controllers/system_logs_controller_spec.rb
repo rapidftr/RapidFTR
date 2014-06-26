@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SystemLogsController do
 
   before :each do
-    fake_login_as(Permission::SYSTEM[:contact_information])
+    fake_login_as(Permission::SYSTEM[:system_users])
   end
 
   it "should render index with correct page name" do
@@ -22,7 +22,7 @@ describe SystemLogsController do
   end
 
   it "should only allow access to users with system settings permission" do
-    @controller.current_ability.should_receive(:can?).with(:manage, ContactInformation).and_return(false)
+    @controller.current_ability.should_receive(:can?).with(:manage, SystemUsers).and_return(false)
 
     get :index
 

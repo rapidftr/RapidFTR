@@ -122,6 +122,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def contact
+    render :ok
+  end
+
   private
   def write_to_log comment
     File.open("/Users/ambhalla/Desktop/log.txt", "w+") do |f|

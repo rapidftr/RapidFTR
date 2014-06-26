@@ -22,6 +22,8 @@ class User < CouchRest::Model::Base
   property :time_zone, :default => "UTC"
   property :locale
 
+  property :share_contact_info, TrueClass, default: false
+
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]
 
@@ -68,6 +70,14 @@ class User < CouchRest::Model::Base
     view :by_unverified,
             :map => "function(doc) {
                 if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
+                 {
+                    emit(doc);
+                 }
+             }"
+
+    view :by_share_contact_info,
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
                  {
                     emit(doc);
                  }

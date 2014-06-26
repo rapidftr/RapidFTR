@@ -60,15 +60,6 @@ Given /^a user "(.+)" has logged in from a device$/ do |user_name|
   user.save!
 end
 
-Given /^the following admin contact info:$/ do |table|
-  contact_info = table.hashes.inject({}) do |result, current|
-    result[current['key']] = current['value']
-    result
-  end
-  contact_info[:id] = 'administrator'
-  ContactInformation.create contact_info
-end
-
 Given /^I have the following devices:$/ do |table|
   table.hashes.each do |row_hash|
     Device.create(row_hash)

@@ -11,9 +11,10 @@ RapidFTR::Application.routes.draw do
       get :change_password
       get :unverified
       post :update_password
+      post :register_unverified
+      get :contact
     end
   end
-  match '/users/register_unverified' => 'users#register_unverified', :as => :register_unverified_user, :via => :post
 
   resources :sessions, :except => :index
   match 'login' => 'sessions#new', :as => :login, :via => [:post, :get, :put, :delete]
@@ -23,8 +24,6 @@ RapidFTR::Application.routes.draw do
   resources :user_preferences
   resources :password_recovery_requests, :only => [:new, :create]
   match 'password_recovery_request/:password_recovery_request_id/hide' => 'password_recovery_requests#hide', :as => :hide_password_recovery_request, :via => :delete
-
-  resources :contact_information
 
   resources :devices
   match 'devices/update_blacklist' => 'devices#update_blacklist', :via => :post

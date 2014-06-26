@@ -11,7 +11,6 @@ describe FieldsController do
   describe "post create" do
     before :each do
       @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
-      SuggestedField.stub(:mark_as_used)
       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
       FormSection.stub(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end

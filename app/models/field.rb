@@ -22,26 +22,17 @@ class Field
   attr_reader :options
   property :base_language, :default=>'en'
 
-  TEXT_FIELD = "text_field"
-  TEXT_AREA = "textarea"
-  RADIO_BUTTON = "radio_button"
-  SELECT_BOX = "select_box"
-  CHECK_BOXES = "check_boxes"
-  NUMERIC_FIELD = "numeric_field"
-  PHOTO_UPLOAD_BOX = "photo_upload_box"
-  AUDIO_UPLOAD_BOX = "audio_upload_box"
-  DATE_FIELD = "date_field"
-
-  FIELD_DISPLAY_TYPES = {
-												TEXT_FIELD       => "basic",
-                        TEXT_AREA        => "basic",
-                        RADIO_BUTTON     => "basic",
-                        SELECT_BOX       => "basic",
-                        CHECK_BOXES      => "basic",
-                        PHOTO_UPLOAD_BOX => "photo",
-                        AUDIO_UPLOAD_BOX => "audio",
-                        DATE_FIELD       => "basic",
-                        NUMERIC_FIELD    => "basic"}
+  FIELD_TYPES = [
+    TEXT_FIELD = "text_field",
+    TEXT_AREA = "textarea",
+    RADIO_BUTTON = "radio_button",
+    SELECT_BOX = "select_box",
+    CHECK_BOXES = "check_boxes",
+    NUMERIC_FIELD = "numeric_field",
+    PHOTO_UPLOAD_BOX = "photo_upload_box",
+    AUDIO_UPLOAD_BOX = "audio_upload_box",
+    DATE_FIELD = "date_field"
+  ]
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
   validate :validate_unique_name
@@ -84,7 +75,11 @@ class Field
   end
 
 	def display_type
-		FIELD_DISPLAY_TYPES[type]
+    case type
+    when PHOTO_UPLOAD_BOX then 'photo'
+    when AUDIO_UPLOAD_BOX then 'audio'
+    else 'basic'
+    end
 	end
 
   def self.all_searchable_field_names

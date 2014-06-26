@@ -131,11 +131,6 @@ module NavigationHelpers
       when /system users page/
         system_users_path
 
-      when /the edit administrator contact information page/
-        edit_contact_information_path(:administrator)
-      when /(the )?administrator contact page/
-        contact_information_path(:administrator, options)
-
       when /all child Ids/
         child_ids_path
 

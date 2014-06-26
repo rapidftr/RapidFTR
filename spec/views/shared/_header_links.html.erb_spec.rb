@@ -16,7 +16,7 @@ describe 'shared/_header_links.html.erb' do
     it { should_not have_link('Logout') }
     it { should_not have_link('My Account') }
     it { should_not have_link('System settings') }
-    it { should have_link('Contact & Help', :href => contact_information_path("administrator")) }
+    it { should have_link('Contact & Help', :href => contact_users_path) }
   end
 
   describe 'when logged in' do
@@ -24,7 +24,7 @@ describe 'shared/_header_links.html.erb' do
     it { should have_link('Logout', :href => logout_path) }
     it { should have_link('My Account', :href => user_path(user.id)) }
     it { should_not have_link('System settings') }
-    it { should have_link('Contact & Help', :href => contact_information_path("administrator")) }
+    it { should have_link('Contact & Help', :href => contact_users_path) }
     it { should_not have_link('CHILDREN', :href => children_path)}
     it { should_not have_link('FORMS', :href => form_sections_path)}
     it { should_not have_link('USERS', :href => users_path)}
@@ -37,7 +37,7 @@ describe 'shared/_header_links.html.erb' do
   end
 
   describe 'with system settings permission' do
-    let(:permissions) { [Permission::SYSTEM[:contact_information]] }
+    let(:permissions) { [Permission::SYSTEM[:system_users]] }
     it { should have_link('System settings', :href => admin_path) }
   end
 
