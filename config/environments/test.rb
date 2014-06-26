@@ -6,6 +6,8 @@ RapidFTR::Application.configure do
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs.  Don't rely on the data there!
   config.cache_classes = true
+  config.eager_load = false
+  config.cache_store = :null_store
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -23,6 +25,4 @@ RapidFTR::Application.configure do
   # Asset pipeline
   config.serve_static_assets = true
   config.static_cache_control = "public, max-age=3600"
-
-  config.eager_load = false
 end

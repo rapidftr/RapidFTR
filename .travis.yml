@@ -4,8 +4,6 @@ rvm:
   - 2.1.1
 services:
   - couchdb
-addons:
-  firefox: "17.0"
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
 env:

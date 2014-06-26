@@ -3,22 +3,21 @@ source 'https://rubygems.org'
 gem 'rapidftr_addon', :git => 'https://github.com/rapidftr/rapidftr-addon.git', :branch => 'master'
 gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-cpims.git', :branch => 'master'
 
-gem 'couchrest_model', '~> 2.0.1'
-gem 'mime-types',      '1.16'
-gem 'mini_magick',     '1.3.2'
-gem 'prawn',           '0.8.4'
 gem 'rails',           '4.0.3'
+gem 'couchrest_model', '~> 2.0.1'
+gem 'mime-types',      '~> 1.16'
+gem 'mini_magick',     '~> 3.7.0'
+gem 'prawn',           '~> 0.8.4'
 gem 'uuidtools',       '~> 2.1.1'
-gem 'validatable',     '1.6.7'
+gem 'validatable',     '~> 1.6.7'
 gem 'dynamic_form',    '~> 1.1.4'
-gem 'sunspot',         '2.0.0'
-gem 'rake',            '0.9.3'
-gem 'jquery-rails',    '~> 2.2.2'
+gem 'sunspot',         '~> 2.0.0'
+gem 'rake',            '~> 0.9.3'
 gem 'cancancan',       '~> 1.7'
-gem 'highline',        '1.6.16'
+gem 'highline',        '~> 1.6.16'
 gem 'will_paginate',   '~> 3.0.5'
 gem 'os',              '~> 0.9.6'
-gem 'sunspot_solr',    '2.0.0'
+gem 'sunspot_solr',    '~> 2.0.0'
 gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
 
 gem 'rufus-scheduler', '~> 2.0.18', :require => false
@@ -51,4 +50,8 @@ group :test, :cucumber do
   gem 'hpricot',            '~> 0.8.6'
   gem 'json_spec',          '~> 1.1.1'
   gem 'pdf-inspector',      '~> 1.1.0'
+end
+
+group :development, :test, :cucumber do
+  gem 'quiet_assets',       '~> 1.0.3'
 end

@@ -1,6 +1,6 @@
 module MiniMagickConversions
   def to_thumbnail(size, path)
-    thumbnail = MiniMagick::Image.from_file(path)
+    thumbnail = MiniMagick::Image.read File.open path
     thumbnail.resize "#{size}x#{size}"
     thumbnail.instance_eval "def content_type; 'image/#{File.extname(path).gsub(/^\./, '').downcase}'; end"
 
@@ -12,6 +12,6 @@ module MiniMagickConversions
   end
 
   def to_image(blob)
-    MiniMagick::Image.from_blob(blob)
+    MiniMagick::Image.read(blob)
   end
 end
