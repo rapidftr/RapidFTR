@@ -55,6 +55,7 @@ group :test, :cucumber do
   gem 'hpricot',            '~> 0.8.6'
   gem "json_spec",          '~> 1.1.1'
   gem 'pdf-reader',         '~> 0.8.6'
+  gem 'coveralls', require: false
 end
 
 group :development, :test do
