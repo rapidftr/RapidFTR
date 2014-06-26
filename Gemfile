@@ -56,3 +56,9 @@ group :test, :cucumber do
   gem "json_spec",          '~> 1.1.1'
   gem 'pdf-reader',         '~> 0.8.6'
 end
+
+group :development, :test do
+  gem 'cane',       '~> 2.6.2'
+end
+
+
