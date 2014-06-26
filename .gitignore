@@ -220,3 +220,7 @@ capybara_features/resources/huge.mp3
 *.crt
 *.key
 *.csr
+.cane
+.rakeTasks
+.generators
+hashicorp
