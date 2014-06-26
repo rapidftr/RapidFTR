@@ -124,11 +124,7 @@ class FormSection < CouchRest::Model::Base
     end
   end
 
-  def add_text_field field_name
-    self["fields"] << Field.new_text_field(field_name)
-  end
-
-  def add_field field
+  def add_field(field)
     self["fields"] << Field.new(field)
   end
 

@@ -35,9 +35,9 @@ describe "children/show.html.erb" do
     end
 
     it "renders all fields found on the FormSection" do
-      @form_section.add_field Field.new_text_field("age", "Age")
-      @form_section.add_field Field.new_radio_button("gender", ["male", "female"], "Gender")
-      @form_section.add_field Field.new_select_box("date_of_separation", ["1-2 weeks ago", "More than"], "Date of separation")
+      @form_section.add_field build(:text_field, name: 'age', display_name: 'Age')
+      @form_section.add_field build(:radio_button_field, name: 'gender', option_strings: %w(male female))
+      @form_section.add_field build(:select_box_field, name: 'date_of_separation', option_strings: ["1-2 weeks ago", "More than"], display_name: 'Date of separation')
 
       render
 
@@ -133,9 +133,9 @@ describe "children/show.html.erb" do
       it "should show links to export when user has appropriate permissions" do
       link = child_path @child, :format => :csv, :per_page => :all
       @user.stub(:has_permission?).with(Permission::CHILDREN[:export_csv]).and_return(true)
-      
+
       render
-      
+
       rendered.should have_link "Export to CSV", link
       end
     end

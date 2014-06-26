@@ -32,15 +32,6 @@ class Field
   AUDIO_UPLOAD_BOX = "audio_upload_box"
   DATE_FIELD = "date_field"
 
-  FIELD_FORM_TYPES = {  TEXT_FIELD       => "basic",
-                        TEXT_AREA        => "basic",
-                        RADIO_BUTTON     => "multiple_choice",
-                        SELECT_BOX       => "multiple_choice",
-                        CHECK_BOXES      => "multiple_choice",
-                        PHOTO_UPLOAD_BOX => "basic",
-                        AUDIO_UPLOAD_BOX => "basic",
-                        DATE_FIELD       => "basic",
-                        NUMERIC_FIELD    => "basic"}
   FIELD_DISPLAY_TYPES = {
 												TEXT_FIELD       => "basic",
                         TEXT_AREA        => "basic",
@@ -100,10 +91,6 @@ class Field
 
   def form
     base_doc
-  end
-
-  def form_type
-    FIELD_FORM_TYPES[type]
   end
 
 	def display_type
@@ -177,40 +164,6 @@ class Field
 
   def unhighlight
     self.highlight_information = HighlightInformation.new
-  end
-
-
-  #TODO - remove this is just for testing
-  def self.new_field(type, name, options=[])
-    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :visible => true, :option_strings_text => options.join("\n")
-  end
-
-  def self.new_check_boxes_field field_name, display_name = nil, option_strings = []
-    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :visible => true, :option_strings_text => option_strings.join("\n")
-  end
-
-  def self.new_text_field field_name, display_name = nil
-    field = Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => TEXT_FIELD
-  end
-
-  def self.new_textarea field_name, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => TEXT_AREA
-  end
-
-  def self.new_photo_upload_box field_name, display_name  = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => PHOTO_UPLOAD_BOX
-  end
-
-  def self.new_audio_upload_box field_name, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => AUDIO_UPLOAD_BOX
-  end
-
-  def self.new_radio_button field_name, option_strings, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => RADIO_BUTTON, :option_strings_text => option_strings.join("\n")
-  end
-
-  def self.new_select_box field_name, option_strings, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings_text => option_strings.join("\n")
   end
 
   def self.find_by_name(name)

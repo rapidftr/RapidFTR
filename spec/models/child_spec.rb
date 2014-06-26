@@ -837,12 +837,13 @@ describe Child do
 
     before do
       fields = [
-          Field.new_text_field("last_known_location"),
-          Field.new_text_field("age"),
-          Field.new_text_field("origin"),
-          Field.new_radio_button("gender", ["male", "female"]),
-          Field.new_photo_upload_box("current_photo_key"),
-          Field.new_audio_upload_box("recorded_audio")]
+        build(:text_field, name: 'last_known_location'),
+        build(:text_field, name: 'age'),
+        build(:text_field, name: 'origin'),
+        build(:radio_button_field, name: 'gender', option_strings: %w(male female)),
+        build(:photo_field, name: 'current_photo_key'),
+        build(:audio_field, name: 'recorded_audio')
+      ]
       FormSection.stub(:all_visible_child_fields).and_return(fields)
       mock_user = double({:organisation => 'UNICEF'})
       User.stub(:find_by_user_name).with(anything).and_return(mock_user)

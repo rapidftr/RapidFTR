@@ -34,11 +34,6 @@ describe "Child record field view model" do
     @field.select_options.should == [["(Select...)", ""], ["option 1", "option 1"], ["option 2", "option 2"]]
   end
 
-  it "should have form type" do
-    @field.type.should == "radio_button"
-    @field.form_type.should == "multiple_choice"
-  end
-
   it "should create options from text" do
     field = Field.new :display_name => "something", :option_strings_text => "tim\nrob"
     field['option_strings_text'].should == nil

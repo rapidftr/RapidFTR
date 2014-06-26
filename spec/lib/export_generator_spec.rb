@@ -38,7 +38,7 @@ describe ExportGenerator do
       end
 
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
-        fields = Field.new_text_field("field_one"), Field.new_text_field("field_two")
+        fields = build(:text_field, name: 'field_one'), build(:text_field, name: 'field_two')
         FormSection.stub(:all_visible_child_fields).and_return fields
         csv_data =  CSV.parse subject.data
 
@@ -47,7 +47,7 @@ describe ExportGenerator do
       end
 
       it 'should render a row for each result, plus a header row' do
-        FormSection.stub(:all_visible_child_fields).and_return [Field.new_text_field("name")]
+        FormSection.stub(:all_visible_child_fields).and_return [build(:text_field)]
         csv_data = CSV.parse subject.data
         csv_data.length.should == 4
         csv_data[1][0].should == "xxxy"
@@ -66,7 +66,9 @@ describe ExportGenerator do
       end
 
       it 'should have a photo column with appropriate links' do
-        FormSection.stub(:all_visible_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("current_photo_key")]
+        FormSection.stub(:all_visible_child_fields).and_return [
+          build(:text_field, name: '_id'), build(:text_field, name: 'name'), build(:text_field, name: 'current_photo_key')
+        ]
         csv_data = CSV.parse subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-photo-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-photo-path/2"
@@ -75,7 +77,9 @@ describe ExportGenerator do
       end
 
       it 'should have an audio column with appropriate links' do
-        FormSection.stub(:all_visible_child_fields).and_return [Field.new_text_field('_id'), Field.new_text_field("name"), Field.new_text_field("some_audio")]
+        FormSection.stub(:all_visible_child_fields).and_return [
+          build(:text_field, name: '_id'), build(:text_field, name: 'name'), build(:text_field, name: 'some_audio')
+        ]
         csv_data = CSV.parse subject.data
         csv_data[1][4].should == "http://testmachine:3000/some-audio-path/1"
         csv_data[2][4].should == "http://testmachine:3000/some-audio-path/2"
@@ -98,12 +102,14 @@ describe ExportGenerator do
 
     describe "with a multi checkbox field" do
       subject do
-        FormSection.stub(:all_visible_child_fields).and_return [Field.new_check_boxes_field("multi")]
-        ExportGenerator.new( [
-                              Child.new( 'multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy" ),
-                              Child.new( 'multi' => nil, 'unique_identifier' => "xxxy" ),
-                              Child.new( 'multi' => ["Cats", "Fish"], 'unique_identifier' => "yyyx" )
-                             ]).to_csv
+        FormSection.stub(:all_visible_child_fields).and_return [
+          build(:check_boxes_field, name: 'multi')
+        ]
+        ExportGenerator.new([
+          Child.new( 'multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy" ),
+          Child.new( 'multi' => nil, 'unique_identifier' => "xxxy" ),
+          Child.new( 'multi' => ["Cats", "Fish"], 'unique_identifier' => "yyyx" )
+        ]).to_csv
       end
 
       it "should render multi checkbox fields as a comma separated list" do
@@ -117,7 +123,7 @@ describe ExportGenerator do
     describe "for just one record" do
       subject do
         ExportGenerator.new( [
-                            Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
+          Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
         ]).to_csv
       end
 

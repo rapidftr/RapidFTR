@@ -8,19 +8,6 @@ describe FormSection do
     @create_formsection = FormSection.new stubs
   end
 
-  def new_field(fields = {})
-    fields.reverse_merge!(:name=>random_string)
-    Field.new fields
-  end
-
-  def random_string(length=10)
-    #hmmm
-    chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-    password = ''
-    length.times { password << chars[rand(chars.size)] }
-    password
-  end
-
   def new_should_be_called_with (name, value)
     FormSection.should_receive(:new) { |form_section_hash|
       form_section_hash[name].should == value
@@ -122,29 +109,29 @@ describe FormSection do
   describe "add_field_to_formsection" do
 
     it "adds the field to the formsection" do
-      field = Field.new_text_field("name")
-      formsection = create_formsection :fields => [new_field(), new_field()], :save => true
+      field = build(:text_field)
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
     end
 
     it "adds base_language to fields in formsection" do
-      field = Field.new_textarea("name")
-      formsection = create_formsection :fields => [new_field(), new_field()], :save=>true
+      field = build :text_area_field, name: "name"
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save=>true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields[2].should have_key("base_language")
     end
 
     it "saves the formsection" do
-      field = Field.new_text_field("name")
+      field = build(:text_field)
       formsection = create_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
     end
 
     it "should raise an error if adding a field to a non editable form section" do
-      field = new_field :name=>'field_one'
+      field = build :field
       formsection = FormSection.new :editable => false
       lambda { FormSection.add_field_to_formsection formsection, field }.should raise_error
     end
@@ -155,15 +142,15 @@ describe FormSection do
   describe "add_textarea_field_to_formsection" do
 
     it "adds the textarea to the formsection" do
-      field = Field.new_textarea("name")
-      formsection = create_formsection :fields => [new_field(), new_field()], :save=>true
+      field = build :text_area_field, name: "name"
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save=>true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
     end
 
     it "saves the formsection with textarea field" do
-      field = Field.new_textarea("name")
+      field = build :text_area_field, name: "name"
       formsection = create_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
@@ -174,15 +161,15 @@ describe FormSection do
   describe "add_select_drop_down_field_to_formsection" do
 
     it "adds the select drop down to the formsection" do
-      field = Field.new_select_box("name", ["some", ""])
-      formsection = create_formsection :fields => [new_field(), new_field()], :save=>true
+      field = build(:select_box_field)
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save=>true
       FormSection.add_field_to_formsection formsection, field
       formsection.fields.length.should == 3
       formsection.fields[2].should == field
     end
 
     it "saves the formsection with select drop down field" do
-      field = Field.new_select_box("name", ["some", ""])
+      field = build(:select_box_field)
       formsection = create_formsection
       formsection.should_receive(:save)
       FormSection.add_field_to_formsection formsection, field
@@ -240,14 +227,14 @@ describe FormSection do
 
   describe "delete_field" do
     it "should delete editable fields" do
-      @field = new_field(:name=>"field3")
+      @field = build :field
       form_section = FormSection.new :fields=>[@field]
       form_section.delete_field(@field.name)
       form_section.fields.should be_empty
     end
 
     it "should not delete uneditable fields" do
-      @field = new_field(:name=>"field3", :editable => false)
+      @field = build(:field, editable: false)
       form_section = FormSection.new :fields=>[@field]
       lambda {form_section.delete_field(@field.name)}.should raise_error("Uneditable field cannot be deleted")
     end
@@ -255,9 +242,9 @@ describe FormSection do
 
   describe "save fields in given order" do
     it "should save the fields in the given field name order" do
-      @field_1 = new_field(:name => "orderfield1", :display_name => "orderfield1")
-      @field_2 = new_field(:name => "orderfield2", :display_name => "orderfield2")
-      @field_3 = new_field(:name => "orderfield3", :display_name => "orderfield3")
+      @field_1 = build :field, name: 'orderfield1'
+      @field_2 = build :field, name: 'orderfield2'
+      @field_3 = build :field, name: 'orderfield3'
       form_section = FormSection.create! :name => "some_name", :fields => [@field_1, @field_2, @field_3]
       form_section.order_fields([@field_2.name, @field_3.name, @field_1.name])
       form_section.fields.should == [@field_2, @field_3, @field_1]
