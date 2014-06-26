@@ -121,8 +121,9 @@ module RecordHelper
     (@original_data ||= Child.get(self.id) rescue nil) || self
   end
 
-  def is_filled_in? field
-    !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
+  # TODO: Refactor, move to Field class as "empty?"
+  def is_filled_in?(field)
+    (!(self[field.name].nil? || self[field.name].empty? || self[field.name].to_s.empty?)) rescue false
   end
 
   private

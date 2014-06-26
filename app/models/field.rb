@@ -43,16 +43,6 @@ class Field
                         DATE_FIELD       => "basic",
                         NUMERIC_FIELD    => "basic"}
 
-  DEFAULT_VALUES = {  TEXT_FIELD       => "",
-                        TEXT_AREA        => "",
-                        RADIO_BUTTON     => "",
-                        SELECT_BOX       => "",
-                        CHECK_BOXES       => [],
-                        PHOTO_UPLOAD_BOX => nil,
-                        AUDIO_UPLOAD_BOX => nil,
-                        DATE_FIELD       => "",
-                        NUMERIC_FIELD    => ""}
-
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
   validate :validate_unique_name
   validate :validate_unique_display_name
@@ -132,11 +122,6 @@ class Field
     return [] unless self.option_strings_text
     return self.option_strings_text if self.option_strings_text.is_a?(Array)
     self.option_strings_text.gsub(/\r\n?/, "\n").split("\n")
-  end
-
-  def default_value
-    raise I18n.t("errors.models.field.default_value") + type unless DEFAULT_VALUES.has_key? type
-    return DEFAULT_VALUES[type]
   end
 
   def tag_id
