@@ -20,9 +20,6 @@ module NavigationHelpers
       when /the new create_custom_field page/
         new_create_custom_field_path
 
-      when /the new add_suggested_field_to_form_section page/
-        new_add_suggested_field_to_form_section_path
-
       when /the new assign_unique_id_to_a_child page/
         new_assign_unique_id_to_a_child_path(options)
 

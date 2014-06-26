@@ -43,19 +43,6 @@ describe FieldsController do
       request.flash[:notice].should == "Field successfully added"
     end
 
-    it "should mark suggested field as used if one is supplied" do
-      FormSection.stub(:add_field_to_formsection)
-      suggested_field = "this_is_my_field"
-      SuggestedField.should_receive(:mark_as_used).with(suggested_field)
-      post :create, :form_section_id => @form_section.unique_id, :from_suggested_field => suggested_field, :field => JSON.parse(@field.to_json)
-    end
-
-    it "should not mark suggested field as used if there is not one supplied" do
-      FormSection.stub(:add_field_to_formsection)
-      SuggestedField.should_not_receive(:mark_as_used)
-      post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
-    end
-
     it "should use the display name to form the field name if no field name is supplied" do
       FormSection.should_receive(:add_field_to_formsection).with(anything(), hash_including("display_name_#{I18n.locale}" => "My brilliant new field"))
       post :create, :form_section_id => @form_section.unique_id, :field => {:display_name => "My brilliant new field"}
