@@ -19,7 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_role 'development'
       chef.verbose_logging = true
     end
-    dev.vm.synced_folder 'tmp/vagrant/gems', '/usr/local/rvm/gems/ruby-1.9.3-p392@rapidftr/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
+    dev.vm.synced_folder 'tmp/vagrant/gems', '/usr/local/rvm/gems/ruby-2.1.2@rapidftr/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
+    dev.vm.synced_folder 'tmp/vagrant/rubies', '/usr/local/rvm/archives', create: true, mount_options: ['dmode=777', 'fmode=666']
   end
 
   config.vm.define 'prod', autostart: false do |prod|
@@ -39,6 +40,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Sync apt and gem caches, so that they don't re-download everytime
   config.vm.synced_folder 'tmp/vagrant/apt', '/var/cache/apt/archives', create: true
-  config.vm.synced_folder 'tmp/vagrant/rubies', '/usr/local/rvm/archives', create: true
 
 end
