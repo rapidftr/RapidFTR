@@ -23,7 +23,7 @@ class EnquiriesController < ApplicationController
 
   # GET /enquiries/1
   def show
-    authorize! :show, @enquiry
+    authorize! :read, @enquiry
 
     @page_name = t("enquiry.view")
     @body_class = 'profile-page'
