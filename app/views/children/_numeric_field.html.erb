@@ -2,7 +2,7 @@
   <span class="tool-tip-label">
       <%= label_tag numeric_field.tag_name_attribute, t(numeric_field.name, :default => numeric_field.display_name) , :class=>'key'%>
   </span>
-  <% klass = @child.errors.on(numeric_field.name) == nil ? "" : "field-error"%>
+  <% klass = @child.errors[numeric_field.name] == nil ? "" : "field-error"%>
   <span class="<%= klass %>">
     <%= text_field_tag numeric_field.tag_name_attribute, @child[numeric_field.name] %>
   </span>

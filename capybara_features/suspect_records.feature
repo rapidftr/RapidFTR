@@ -2,9 +2,9 @@ Feature: Suspect Records
 
   As an admin
   I want to manage flagged records
-  
+
   Background:
-  
+
   Given I am logged in as an admin
   And the following children exist in the system:
      | name   | unique_id  | flag     | flag_message      | investigated |

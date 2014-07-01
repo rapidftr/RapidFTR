@@ -21,7 +21,7 @@ describe "shared/_pagination.html.erb" do
   end
 
   before :each do
-    Rails.application.routes.stub! :url_for => '#'
+    Rails.application.routes.stub :url_for => '#'
   end
 
   describe 'pagination info box' do

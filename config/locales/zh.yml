@@ -531,7 +531,6 @@ zh:
       field:
         display_name_presence: "名字不能为空"
         display_name_format: "名字应至少包含一个字母数字"
-        default_value: "找不到类型的默认值 "
         has_2_options: "字段至少需要两个选择项"
         has_1_option: "检查框至少需要一个选择项"
         unique_name_other: "表单已经存在'%{form_name}'字段"

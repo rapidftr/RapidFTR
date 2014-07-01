@@ -4,26 +4,25 @@ require 'spec_helper'
 describe FieldsController do
   before :each do
     user = User.new(:user_name => 'manager_of_forms')
-    user.stub!(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
+    user.stub(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
     fake_login user
   end
 
   describe "post create" do
     before :each do
       @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
-      SuggestedField.stub(:mark_as_used)
       @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
-      FormSection.stub!(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
+      FormSection.stub(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end
 
     it "should add the new field to the formsection" do
       FormSection.should_receive(:add_field_to_formsection).with(@form_section, @field)
-      post :create, :form_section_id =>@form_section.unique_id, :field => @field
+      post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
     end
 
     it "should redirect back to the fields page" do
       FormSection.stub(:add_field_to_formsection)
-      post :create, :form_section_id => @form_section.unique_id, :field => @field
+      post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
       response.should redirect_to(edit_form_section_path(@form_section.unique_id))
     end
 
@@ -31,29 +30,16 @@ describe FieldsController do
       FormSection.stub(:add_field_to_formsection)
       Field.should_receive(:new).and_return(@field)
       @field.should_receive(:errors).and_return(["errors"])
-      post :create, :form_section_id => @form_section.unique_id, :field => @field
-      assigns[:show_add_field].should == {"show_add_field" => true}
+      post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
+      assigns[:show_add_field].should == {:show_add_field => true}
       response.should be_success
       response.should render_template("form_section/edit")
     end
 
     it "should show a flash message" do
       FormSection.stub(:add_field_to_formsection)
-      post :create, :form_section_id => @form_section.unique_id, :field => @field
+      post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
       request.flash[:notice].should == "Field successfully added"
-    end
-
-    it "should mark suggested field as used if one is supplied" do
-      FormSection.stub(:add_field_to_formsection)
-      suggested_field = "this_is_my_field"
-      SuggestedField.should_receive(:mark_as_used).with(suggested_field)
-      post :create, :form_section_id => @form_section.unique_id, :from_suggested_field => suggested_field, :field => @field
-    end
-
-    it "should not mark suggested field as used if there is not one supplied" do
-      FormSection.stub(:add_field_to_formsection)
-      SuggestedField.should_not_receive(:mark_as_used)
-      post :create, :form_section_id => @form_section.unique_id, :field => @field
     end
 
     it "should use the display name to form the field name if no field name is supplied" do
@@ -66,13 +52,13 @@ describe FieldsController do
   describe "edit" do
     it "should render form_section/edit template" do
       @form_section = FormSection.new
-      field = mock('field', :name => 'field1')
-      @form_section.stub!(:fields).and_return([field])
-      FormSection.stub!(:get_by_unique_id).with('unique_id').and_return(@form_section)
+      field = double('field', :name => 'field1')
+      @form_section.stub(:fields).and_return([field])
+      FormSection.stub(:get_by_unique_id).with('unique_id').and_return(@form_section)
       get :edit, :form_section_id => "unique_id", :id => 'field1'
       assigns[:body_class].should == "forms-page"
       assigns[:field].should == field
-      assigns[:show_add_field].should == {"show_add_field" => true}
+      assigns[:show_add_field].should == {:show_add_field => true}
       response.should render_template('form_section/edit')
     end
   end
@@ -82,7 +68,7 @@ describe FieldsController do
       @form_section_id = "fred"
       @field_name = "barney"
       @form_section = FormSection.new
-      FormSection.stub!(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
+      FormSection.stub(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
     end
 
     it "should save the given field in the same order as given" do
@@ -98,18 +84,18 @@ describe FieldsController do
     before :each do
       @form_section_id = "fred"
       @form_section = FormSection.new
-      FormSection.stub!(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
+      FormSection.stub(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
     end
 
     it "should toggle the given field" do
-      fields = [mock(:field, :name => 'bla', :visible => true)]
+      fields = [double(:field, :name => 'bla', :visible => true)]
 
       @form_section.should_receive(:fields).and_return(fields)
       fields.first.should_receive(:visible=).with(false)
       @form_section.should_receive(:save)
 
       post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla'
-      response.should render_template :text => "OK"
+      response.body.should == "OK"
     end
 
   end
@@ -133,13 +119,13 @@ describe FieldsController do
     end
 
     it "should display errors if field could not be saved" do
-      field_with_error = mock("field", :name => "field", :attributes= => [], :errors => ["error"])
-      FormSection.stub(:get_by_unique_id).and_return(mock("form_section", :fields => [field_with_error], :save => false))
+      field_with_error = double("field", :name => "field", :attributes= => [], :errors => ["error"])
+      FormSection.stub(:get_by_unique_id).and_return(double("form_section", :fields => [field_with_error], :save => false))
 
       put :update, :id => "field", :form_section_id => "unique_id",
           :field => {:display_name => "What Country Are You From", :visible => false, :help_text => "new help text"}
 
-      assigns[:show_add_field].should == {"show_add_field" => true}
+      assigns[:show_add_field].should == {:show_add_field => true}
       response.should render_template("form_section/edit")
     end
 

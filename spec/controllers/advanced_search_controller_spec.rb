@@ -7,17 +7,17 @@ describe AdvancedSearchController do
   end
 
   def inject_export_generator( fake_export_generator, child_data )
-    ExportGenerator.stub!(:new).with(child_data).and_return( fake_export_generator )
+    ExportGenerator.stub(:new).with(child_data).and_return( fake_export_generator )
   end
 
-  def stub_out_child_get(mock_child = mock(Child))
+  def stub_out_child_get(mock_child = double(Child))
     Child.stub(:get).and_return( mock_child )
     mock_child
   end
 
   def stub_out_export_generator child_data = []
     inject_export_generator( stub_export_generator = stub(ExportGenerator) , child_data)
-    stub_export_generator.stub!(:child_photos).and_return('')
+    stub_export_generator.stub(:child_photos).and_return('')
     stub_export_generator
   end
 
@@ -58,8 +58,8 @@ describe AdvancedSearchController do
 
     it "should perform a search using the parameters passed to it for admin users" do
       fake_admin_login
-      search = mock("search_criteria")
-      SearchCriteria.stub!(:build_from_params).and_return([search])
+      search = double("search_criteria")
+      SearchCriteria.stub(:build_from_params).and_return([search])
       fake_results = [:fake_child, :fake_child]
       fake_full_results = [:fake_child, :fake_child, :fake_child, :fake_child]
       SearchService.should_receive(:search).with(2, [search]).and_return([fake_results, fake_full_results])
@@ -70,11 +70,11 @@ describe AdvancedSearchController do
     end
 
     it "should append created_by as self for limited users" do
-      search = mock("search_criteria")
-      SearchCriteria.stub!(:build_from_params).and_return([search])
+      search = double("search_criteria")
+      SearchCriteria.stub(:build_from_params).and_return([search])
       fake_full_results = [:fake_child, :fake_child, :fake_child, :fake_child]
       stub_results = [:created_by, :created_by_value, :disable_create]
-      created_by = mock("created_by")
+      created_by = double("created_by")
       SearchFilter.should_receive(:new).with({:value=>"fakeuser", :join=>"AND", :field=>"created_by", :index=>1, :field2=>"created_by_full_name"}).and_return(created_by)
       SearchService.should_receive(:search).with(1, [search,created_by]).and_return([stub_results, fake_full_results])
 
@@ -92,7 +92,7 @@ describe AdvancedSearchController do
 
     it "should construct criteria objects for advanced child search for limited access users" do
       SearchCriteria.stub(:build_from_params).and_return(["criteria_list"])
-      created_by_mock = mock("Created_by")
+      created_by_mock = double("Created_by")
       SearchFilter.should_receive(:new).with({:value=>"fakeuser", :join=>"AND", :field=>"created_by", :index=>1, :field2=>"created_by_full_name"}).and_return(created_by_mock)
       get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
       assigns[:criteria_list].should include "criteria_list"
@@ -158,7 +158,7 @@ describe AdvancedSearchController do
     before :each do
       @child1 = build :child
       @child2 = build :child
-      controller.stub! :authorize! => true, :render => true
+      controller.stub :authorize! => true, :render => true
     end
 
     it "should handle full PDF" do
@@ -179,7 +179,7 @@ describe AdvancedSearchController do
     it "should handle custom export addon" do
       mock_addon = double()
       mock_addon_class = double(:new => mock_addon, :id => "mock")
-      RapidftrAddon::ExportTask.stub! :active => [ mock_addon_class ]
+      RapidftrAddon::ExportTask.stub :active => [ mock_addon_class ]
       controller.stub(:t).with("addons.export_task.mock.selected").and_return("Export Selected to Mock")
       mock_addon.should_receive(:export).with([ @child1, @child2 ]).and_return('data')
       post :export_data, { :selections => { '0' => @child1.id, '1' => @child2.id }, :commit => "Export Selected to Mock" }
@@ -193,12 +193,12 @@ describe AdvancedSearchController do
     end
 
     it "should generate filename based on child ID and addon ID when there is only one child" do
-      @child1.stub! :short_id => 'test_short_id'
+      @child1.stub :short_id => 'test_short_id'
       controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask).should == "test_short_id_photowall.zip"
     end
 
     it "should generate filename based on username and addon ID when there are multiple children" do
-      controller.stub! :current_user_name => 'test_user'
+      controller.stub :current_user_name => 'test_user'
       controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask).should == "test_user_pdf.zip"
     end
   end

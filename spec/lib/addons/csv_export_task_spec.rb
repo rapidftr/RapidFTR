@@ -3,7 +3,7 @@ require 'spec_helper'
 module Addons
   describe CsvExportTask do
     before :each do
-      CsvExportTask.stub! :enabled? => true
+      CsvExportTask.stub :enabled? => true
       @task = CsvExportTask.new
     end
 

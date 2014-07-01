@@ -214,12 +214,14 @@ vendor/cache/
 vendor/ruby/
 capybara_features/resources/huge.jpg
 capybara_features/resources/huge.mp3
-.ruby-version
 
 *.pem
 *.crt
 *.key
 *.csr
+<Solr_data_dir>
+.project
+.buildpath
 .cane
 .rakeTasks
 .generators

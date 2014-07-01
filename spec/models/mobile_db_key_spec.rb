@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe MobileDbKey do
+  before :each do
+    MobileDbKey.all.each {|mdb| mdb.destroy}
+  end
 
   it "should fetch the MobileDBKey for given imei if present" do
     mobile_db_key = MobileDbKey.create(:imei => "1234312", :db_key => "SOME_KEY")

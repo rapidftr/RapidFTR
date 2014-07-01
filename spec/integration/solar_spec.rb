@@ -36,7 +36,7 @@ describe "Solar" do
   end
 
   before :each do
-    User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+    User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
   end
 
   before :each do
@@ -122,7 +122,7 @@ describe "Enquiry Mapping" do
   end
 
   before :each do
-    User.stub!(:find_by_user_name).and_return(mock(:organisation => "stc"))
+    User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
   end
 
   before :each do

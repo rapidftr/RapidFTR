@@ -4,7 +4,7 @@ describe PropertiesLocalization do
 
   before :each do
     RapidFTR::Application.stub :locales => [ "a", "b" ]
-    @klass = Class.new(CouchRestRails::Document) do
+    @klass = Class.new(CouchRest::Model::Base) do
       include PropertiesLocalization
     end
     @klass.localize_properties [ :name ]
@@ -17,7 +17,7 @@ describe PropertiesLocalization do
   end
 
   it "should create default property which sets system default locale" do
-    I18n.stub! :default_locale => :b
+    I18n.stub :default_locale => :b
     @object.name = "test"
     @object.name_b.should == "test"
     @object.name_a.should == nil
@@ -30,7 +30,7 @@ describe PropertiesLocalization do
   end
 
   it "should use constructor for default property" do
-    I18n.stub! :default_locale => :b
+    I18n.stub :default_locale => :b
     @object = @klass.new "name" => "test"
     @object.name_b.should == "test"
     @object.name_a.should == nil

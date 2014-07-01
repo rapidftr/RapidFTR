@@ -1,66 +1,46 @@
-class Field < Hash
-  include CouchRest::CastedModel
-  include CouchRest::Validation
+class Field
+  include CouchRest::Model::CastedModel
   include RapidFTR::Model
   include PropertiesLocalization
 
+  #track down whether the instance is new or not.
+  #CouchRest::Model::Embeddable new? method rely
+  #on the new? of the parent object. This make not
+  #possible to know if the embedded item already
+  #exists or not in the database. The parent object
+  #is responsible to set the flag.
+  #document_saved nil or false consider the field as new.
+  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  attr_accessor :document_saved
 
   property :name
-  property :visible, :cast_as => 'boolean', :default => true
+  property :visible, TrueClass, :default => true
   property :type
-  property :highlight_information , :cast_as=> 'HighlightInformation'
-  property :editable, :cast_as => 'boolean', :default => true
+  property :highlight_information , HighlightInformation
+  property :editable, TrueClass, :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
   property :base_language, :default=>'en'
 
-  TEXT_FIELD = "text_field"
-  TEXT_AREA = "textarea"
-  RADIO_BUTTON = "radio_button"
-  SELECT_BOX = "select_box"
-  CHECK_BOXES = "check_boxes"
-  NUMERIC_FIELD = "numeric_field"
-  PHOTO_UPLOAD_BOX = "photo_upload_box"
-  AUDIO_UPLOAD_BOX = "audio_upload_box"
-  DATE_FIELD = "date_field"
-
-  FIELD_FORM_TYPES = {  TEXT_FIELD       => "basic",
-                        TEXT_AREA        => "basic",
-                        RADIO_BUTTON     => "multiple_choice",
-                        SELECT_BOX       => "multiple_choice",
-                        CHECK_BOXES      => "multiple_choice",
-                        PHOTO_UPLOAD_BOX => "basic",
-                        AUDIO_UPLOAD_BOX => "basic",
-                        DATE_FIELD       => "basic",
-                        NUMERIC_FIELD    => "basic"}
-  FIELD_DISPLAY_TYPES = {
-												TEXT_FIELD       => "basic",
-                        TEXT_AREA        => "basic",
-                        RADIO_BUTTON     => "basic",
-                        SELECT_BOX       => "basic",
-                        CHECK_BOXES      => "basic",
-                        PHOTO_UPLOAD_BOX => "photo",
-                        AUDIO_UPLOAD_BOX => "audio",
-                        DATE_FIELD       => "basic",
-                        NUMERIC_FIELD    => "basic"}
-
-  DEFAULT_VALUES = {  TEXT_FIELD       => "",
-                        TEXT_AREA        => "",
-                        RADIO_BUTTON     => "",
-                        SELECT_BOX       => "",
-                        CHECK_BOXES       => [],
-                        PHOTO_UPLOAD_BOX => nil,
-                        AUDIO_UPLOAD_BOX => nil,
-                        DATE_FIELD       => "",
-                        NUMERIC_FIELD    => ""}
+  FIELD_TYPES = [
+    TEXT_FIELD = "text_field",
+    TEXT_AREA = "textarea",
+    RADIO_BUTTON = "radio_button",
+    SELECT_BOX = "select_box",
+    CHECK_BOXES = "check_boxes",
+    NUMERIC_FIELD = "numeric_field",
+    PHOTO_UPLOAD_BOX = "photo_upload_box",
+    AUDIO_UPLOAD_BOX = "audio_upload_box",
+    DATE_FIELD = "date_field"
+  ]
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
-  validates_with_method :name, :method => :validate_unique_name
-  validates_with_method :display_name, :method => :validate_unique_display_name
-  validates_with_method :option_strings, :method => :validate_has_2_options
-  validates_with_method :option_strings, :method => :validate_has_a_option
-  validates_with_method :display_name, :method => :validate_name_format
-  validates_with_method :display_name, :method => :valid_presence_of_base_language_name
+  validate :validate_unique_name
+  validate :validate_unique_display_name
+  validate :validate_has_2_options
+  validate :validate_has_a_option
+  validate :validate_name_format
+  validate :valid_presence_of_base_language_name
 
   def validate_name_format
     special_characters = /[*!@#%$\^]/
@@ -78,19 +58,28 @@ class Field < Hash
       self.base_language='en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    [!(base_lang_display_name.nil?||base_lang_display_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+    if (base_lang_display_name.nil?||base_lang_display_name.empty?)
+      errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
+    end
   end
+
+  #Override new? method to not rely on the new? of the parent object.
+  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  def new?
+    !@document_saved
+  end
+  alias :new_record? :new?
 
   def form
     base_doc
   end
 
-  def form_type
-    FIELD_FORM_TYPES[type]
-  end
-
 	def display_type
-		FIELD_DISPLAY_TYPES[type]
+    case type
+    when PHOTO_UPLOAD_BOX then 'photo'
+    when AUDIO_UPLOAD_BOX then 'audio'
+    else 'basic'
+    end
 	end
 
   def self.all_searchable_field_names
@@ -130,11 +119,6 @@ class Field < Hash
     self.option_strings_text.gsub(/\r\n?/, "\n").split("\n")
   end
 
-  def default_value
-    raise I18n.t("errors.models.field.default_value") + type unless DEFAULT_VALUES.has_key? type
-    return DEFAULT_VALUES[type]
-  end
-
   def tag_id
     "child_#{name}"
   end
@@ -162,40 +146,6 @@ class Field < Hash
     self.highlight_information = HighlightInformation.new
   end
 
-
-  #TODO - remove this is just for testing
-  def self.new_field(type, name, options=[])
-    Field.new :type => type, :name => name.dehumanize, :display_name => name.humanize, :visible => true, :option_strings_text => options.join("\n")
-  end
-
-  def self.new_check_boxes_field field_name, display_name = nil, option_strings = []
-    Field.new :name => field_name, :display_name=>display_name, :type => CHECK_BOXES, :visible => true, :option_strings_text => option_strings.join("\n")
-  end
-
-  def self.new_text_field field_name, display_name = nil
-    field = Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => TEXT_FIELD
-  end
-
-  def self.new_textarea field_name, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => TEXT_AREA
-  end
-
-  def self.new_photo_upload_box field_name, display_name  = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => PHOTO_UPLOAD_BOX
-  end
-
-  def self.new_audio_upload_box field_name, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => AUDIO_UPLOAD_BOX
-  end
-
-  def self.new_radio_button field_name, option_strings, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => RADIO_BUTTON, :option_strings_text => option_strings.join("\n")
-  end
-
-  def self.new_select_box field_name, option_strings, display_name = nil
-    Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings_text => option_strings.join("\n")
-  end
-
   def self.find_by_name(name)
     Field.by_name(:key => name.downcase).first
   end
@@ -209,29 +159,38 @@ class Field < Hash
 
   def validate_has_2_options
     return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
-    return [false, I18n.t("errors.models.field.has_2_options")] if option_strings == nil || option_strings.length < 2
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings == nil || option_strings.length < 2
     true
   end
 
   def validate_has_a_option
     return true unless (type == CHECK_BOXES)
-    return [false, I18n.t("errors.models.field.has_1_option")] if option_strings == nil || option_strings.length < 1
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings == nil || option_strings.length < 1
     true
   end
 
   def validate_unique_name
-    return true unless new? && form
-    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.name == name})
+    #Does not make sense use new? for validity ?
+    #it is perfectly valid FormSection.new(...) then add several field then save and
+    #the validation should work rejecting the duplicate fields.
+    #Also with new? still possible duplicate things for example change the
+    #name/display_name for existing fields.
+    #What we really need is avoid check the field with itself.
+    #return true unless new? && form
+    return true unless form
+    #return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
     other_form = FormSection.get_form_containing_field name
-    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
     true
   end
 
   def validate_unique_display_name
-    return true unless new? && form
-    return [false, I18n.t("errors.models.field.unique_name_this")] if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
-    other_form = FormSection.get_form_containing_field display_name
-    return [false, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)] if other_form  != nil
+    #See comment at validate_unique_name.
+    #return true unless new? && form
+    return true unless form
+    #return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
+    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.display_name == display_name})
     true
   end
 

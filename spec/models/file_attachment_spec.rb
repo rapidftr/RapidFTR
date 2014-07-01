@@ -20,18 +20,18 @@ describe "FileAttachment" do
 
   describe ".from_file" do
     before(:each) do
-      @file = stub!("File")
-      File.stub!(:binread).with(@file).and_return("Data")
+      @file = double("File")
+      File.stub(:binread).with(@file).and_return("Data")
     end
 
     it "should create an instance with a name from current date and default prefix" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       attachment = FileAttachment.from_file(@file, "")
       attachment.name.should == 'file-2010-01-17T140532'
     end
 
     it "should create an instance with a name from current date and prefix and postfix" do
-      Clock.stub!(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       attachment = FileAttachment.from_file(@file, "", "pre", "post")
       attachment.name.should == 'pre-2010-01-17T140532-post'
     end
@@ -42,7 +42,7 @@ describe "FileAttachment" do
     end
 
     it "should create an instance with data from given file" do
-      File.stub!(:binread).with(@file).and_return("file_contents")
+      File.stub(:binread).with(@file).and_return("file_contents")
       attachment = FileAttachment.from_file(@file, '')
       attachment.data.read.should == 'file_contents'
     end
@@ -51,12 +51,12 @@ describe "FileAttachment" do
   describe '#resize' do
     before :each do
       @child = stub_model Child
-      @data = mock()
+      @data = double()
       @attachment = FileAttachment.new "test", "image/jpg", @data, @child
     end
 
     it 'should create and save new thumbnail' do
-      new_data = mock()
+      new_data = double()
       StringIO.stub :new => new_data
 
       @child.should_receive(:has_attachment?).with('test_160').and_return(false)
@@ -72,7 +72,7 @@ describe "FileAttachment" do
     end
 
     it 'should return existing thumbnail' do
-      media = mock()
+      media = double()
       @child.should_receive(:has_attachment?).with('test_160').and_return(true)
       @child.should_receive(:media_for_key).with('test_160').and_return(media)
       @attachment.should_not_receive(:resized_blob)

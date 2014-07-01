@@ -70,8 +70,12 @@ Then /^the view_and_download_reports checkbox should be assignable$/ do
   form_section_page.should_have_view_and_download_reports_section_selected
 end
 
+When /^I fill the following options into "([^"]*)":$/ do |label, string|
+  fill_in(label, :with => string)
+end
+
 private
 
 def form_section_page
-  FormSectionPage.new(Capybara.current_session)
+  @_form_section_page ||= FormSectionPage.new(Capybara.current_session)
 end

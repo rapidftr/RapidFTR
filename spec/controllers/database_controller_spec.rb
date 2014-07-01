@@ -15,7 +15,7 @@ describe DatabaseController do
   end
 
   it "should delete all child models in non-production environments" do
-    User.stub!(:find_by_user_name).with("me").and_return(mock(:organisation => "stc"))
+    User.stub(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
     Child.create('last_known_location' => "London", :created_by => "me")
     Child.create('last_known_location' => "India", :created_by => "me")
 
@@ -25,7 +25,7 @@ describe DatabaseController do
   end
 
   it "should delete all enquiry models in non-production environments" do
-    User.stub!(:find_by_user_name).with("me").and_return(mock(:organisation => "stc"))
+    User.stub(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
     Enquiry.create({:enquirer_name => 'Someone', :criteria => {'name' => 'child name'}})
     Enquiry.create({:enquirer_name => 'Someone Else', :criteria => {'name' => 'child name'}})
 

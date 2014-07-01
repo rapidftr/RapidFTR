@@ -52,13 +52,13 @@ describe DuplicatesController do
       before :each do
         fake_admin_login
         @child = Child.new
-        @child.stub!(:save)
+        @child.stub(:save)
       end
 
       it "should mark the child as duplicate" do
         fake_admin_login
 
-        Child.stub!(:get).with("1234").and_return(@child)
+        Child.stub(:get).with("1234").and_return(@child)
 
         @child.should_receive(:mark_as_duplicate).with("5678")
 
@@ -67,9 +67,9 @@ describe DuplicatesController do
 
       it "should redirect to the duplicated child view" do
 
-        Child.stub!(:get).and_return(@child)
-        @child.stub!(:mark_as_duplicate)
-        @child.stub!(:save).and_return(true)
+        Child.stub(:get).and_return(@child)
+        @child.stub(:mark_as_duplicate)
+        @child.stub(:save).and_return(true)
 
         post :create, :child_id => "1234", :parent_id => "5678"
 

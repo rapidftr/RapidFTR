@@ -219,7 +219,7 @@ Feature:
   Scenario: create child with numeric custom field
     Given the following form sections exist in the system:
       | name          | unique_id     | editable  | order | visible |
-      | Basic details | basic_details | false     | 1     | true    |
+      | Basic details | basic_details | true     | 1     | true    |
     And the "basic_details" form section has the field "Height" with field type "numeric_field"
     And I am on new child page
     When I fill in "Height" with "very tall"

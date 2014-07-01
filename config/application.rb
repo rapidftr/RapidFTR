@@ -1,13 +1,9 @@
 # encoding: utf-8
 
-begin
-  require File.expand_path('../../bundle/bundler/setup', __FILE__)
-rescue LoadError
-  require File.expand_path('../boot', __FILE__)
-end
+require File.expand_path('../boot', __FILE__)
 
 require "action_controller/railtie"
-Bundler.require *Rails.groups(:assets => %w(development test)) if defined? Bundler
+Bundler.require(:default, Rails.env) if defined? Bundler
 
 module RapidFTR
   class Application < Rails::Application
@@ -24,9 +20,6 @@ module RapidFTR
       #{config.root}/app/presenters
     )
 
-    # I18n deprecation
-    config.i18n.enforce_available_locales = false
-
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
@@ -36,9 +29,15 @@ module RapidFTR
     # Delete unnecessary ETag middleware
     config.middleware.delete Rack::ETag
 
+    # i18n-js
+    config.i18n.enforce_available_locales = false
+    config.i18n.fallbacks = true
+
     # Asset pipeline
     config.assets.enabled = true
     config.assets.version = '1.0'
+    config.assets.initialize_on_precompile = true
+    config.assets.js_compressor = :uglify
 
     LOCALES = ['en','fr','ar','zh','es','ru']
     LOCALES_WITH_DESCRIPTION = [['-', nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]

@@ -27,5 +27,5 @@ def search
 end
 
 def search_results
-  SearchResults.new(Capybara.current_session)
+  @_search_results ||= SearchResults.new(Capybara.current_session)
 end

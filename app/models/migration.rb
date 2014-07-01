@@ -1,4 +1,4 @@
-class Migration < CouchRestRails::Document
+class Migration < CouchRest::Model::Base
   use_database :migration
 
   MIGRATIONS_DIR = "db/migration"

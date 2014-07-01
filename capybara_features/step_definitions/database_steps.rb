@@ -41,14 +41,14 @@ Then /^user "(.+)" should not be disabled$/ do |username|
 end
 
 Then /^device "(.+)" should be blacklisted/ do |imei|
-  devices = Device.find_by_imei(imei)
+  devices = Device.find_by_device_imei(imei)
   devices.each do |device|
     device[:blacklisted].should be_true
   end
 end
 
 Then /^device "(.+)" should not be blacklisted/ do |imei|
-  devices = Device.find_by_imei(imei)
+  devices = Device.find_by_device_imei(imei)
   devices.each do |device|
     device[:blacklisted].should be_false
   end
@@ -58,15 +58,6 @@ Given /^a user "(.+)" has logged in from a device$/ do |user_name|
   user = User.find_by_user_name(user_name)
   user.mobile_login_history << MobileLoginEvent.new(:imei => '45345', :mobile_number => '244534', :timestamp => '2012-12-17 09:53:51 UTC')
   user.save!
-end
-
-Given /^the following admin contact info:$/ do |table|
-  contact_info = table.hashes.inject({}) do |result, current|
-    result[current['key']] = current['value']
-    result
-  end
-  contact_info[:id] = 'administrator'
-  ContactInformation.create contact_info
 end
 
 Given /^I have the following devices:$/ do |table|

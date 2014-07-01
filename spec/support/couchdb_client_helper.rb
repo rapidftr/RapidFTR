@@ -17,6 +17,6 @@ module CouchdbClientHelper
 
     def database_url dbname
         full_db_name = [COUCHDB_CONFIG[:db_prefix], dbname, COUCHDB_CONFIG[:db_suffix]].join
-        [COUCHDB_CONFIG[:host_path], '/', full_db_name].join
+        [COUCHDB_CONFIG[:host_path], '/', full_db_name].join('_')
     end
 end

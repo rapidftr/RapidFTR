@@ -40,8 +40,8 @@ describe WeeklyReport do
 
   it "should create document with weekly report data" do
     report = stub_model(Report)
-    WeeklyReport.stub! :data => 'stub data'
-    Report.stub!(:new).with(:as_of_date => Date.today, :report_type => 'weekly_report').and_return(report)
+    WeeklyReport.stub :data => 'stub data'
+    Report.stub(:new).with(:as_of_date => Date.today, :report_type => 'weekly_report').and_return(report)
     report.should_receive(:create_attachment).with(:name => Date.today.strftime("weekly-report-%Y-%m-%d.csv"), :file => 'stub data', :content_type => 'text/csv').and_return(nil)
     report.should_receive(:save!).and_return(nil)
 

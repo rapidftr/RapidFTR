@@ -48,8 +48,8 @@ describe Ability do
     describe '#edit my account' do
       let(:permissions) { [] }
       it { should_not authorize_any [:update, :show], User, User.new, User.new(:user_name => 'some_other_user') }
-      it { should authorize :update, stub_model(User, :user_name => user.user_name) }
-      it { should authorize :show, stub_model(User, :user_name => user.user_name) }
+      it { should authorize :update, stub_model(User, :user_name => user.user_name, :id => user.id) }
+      it { should authorize :show, stub_model(User, :user_name => user.user_name, :id => user.id) }
     end
   end
 
@@ -57,7 +57,7 @@ describe Ability do
     describe '#create enquiry' do
       let(:permissions) { [Permission::ENQUIRIES[:create]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Child }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
       it { should authorize :create, Enquiry }
       it { should_not authorize :update, Enquiry.new }
     end
@@ -65,7 +65,7 @@ describe Ability do
     describe '#update enquiry' do
       let(:permissions) { [Permission::ENQUIRIES[:update]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Child }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
       it { should authorize :update, Enquiry.new }
       it { should_not authorize :create, Enquiry }
     end
@@ -75,7 +75,7 @@ describe Ability do
     describe '#view,search all data and edit' do
       let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
       it { should authorize :index, Child }
       it { should authorize :view_and_search, Child }
@@ -87,7 +87,7 @@ describe Ability do
     describe '#register child' do
       let(:permissions) { [Permission::CHILDREN[:register]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, Report }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, Report }
 
       it { should authorize :index, Child }
       it { should authorize :create, Child }
@@ -99,7 +99,7 @@ describe Ability do
     describe '#edit child' do
       let(:permissions) { [Permission::CHILDREN[:edit]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
       it { should authorize :index, Child }
       it { should_not authorize :read, Child.new }
@@ -111,7 +111,7 @@ describe Ability do
     describe "export children to photowall" do
       let(:permissions) { [Permission::CHILDREN[:export_photowall]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
       it { should authorize :export_photowall, Child }
       it { should_not authorize :index, Child }
@@ -125,7 +125,7 @@ describe Ability do
     describe "export children to csv" do
       let(:permissions) { [Permission::CHILDREN[:export_csv]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
       it { should authorize :export_csv, Child }
       it { should_not authorize :index, Child }
@@ -139,7 +139,7 @@ describe Ability do
     describe "export children to pdf" do
       let(:permissions) { [Permission::CHILDREN[:export_pdf]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
       it { should authorize :export_pdf, Child }
       it { should_not authorize :index, Child }
@@ -153,7 +153,7 @@ describe Ability do
     describe "export children to cpims" do
       let(:permissions) { [Permission::CHILDREN[:export_cpims]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { should_not authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
       it { should authorize :export_cpims, Child }
       it { should_not authorize :index, Child }
@@ -212,7 +212,7 @@ describe Ability do
     describe "blacklist" do
       let(:permissions) { [Permission::DEVICES[:black_list]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, Replication, SystemUsers, Report }
+      it { should_not authorize_any CRUD, Child, FormSection, Session, User, Role, Replication, SystemUsers, Report }
 
       it { should authorize :update, Device }
       it { should authorize :index, Device }
@@ -222,7 +222,7 @@ describe Ability do
     describe "replication" do
       let(:permissions) { [Permission::DEVICES[:replications]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, SystemUsers, Report }
+      it { should_not authorize_any CRUD, Child, FormSection, Session, User, Role, SystemUsers, Report }
 
       it { should authorize :update, Replication }
       it { should_not authorize :read, User.new }
@@ -253,7 +253,7 @@ describe Ability do
     describe "manage forms" do
       let(:permissions) { [Permission::FORMS[:manage]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, SystemUsers, Report }
+      it { should_not authorize_any CRUD, Child, Device, Session, User, Role, SystemUsers, Report }
 
       it { should authorize :manage, FormSection.new }
       it { should authorize :manage, Field.new }
@@ -262,33 +262,27 @@ describe Ability do
 
     describe "highlight fields" do
       let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
-      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers, Report }
+      it { should_not authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Report }
       it { should authorize :highlight, Field }
     end
   end
 
   describe "replications" do
     let(:permissions) { [Permission::DEVICES[:replications]] }
-    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers, Report }
+    it { should_not authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Report }
     it { should authorize :manage, Replication }
   end
 
   describe 'reports' do
     let(:permissions) { [Permission::REPORTS[:view]] }
-    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers, Replication }
+    it { should_not authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Replication }
     it { should authorize :manage, Report }
   end
 
   context 'other' do
-    describe "contact information" do
-      let(:permissions) { [Permission::SYSTEM[:contact_information]] }
-      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers }
-      it { should authorize :manage, ContactInformation }
-    end
-
     describe "system users for synchronisation" do
       let(:permissions) { [Permission::SYSTEM[:system_users]] }
-      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, ContactInformation }
+      it { should_not authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field }
       it { should authorize :manage, SystemUsers }
     end
 

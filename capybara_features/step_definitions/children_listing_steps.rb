@@ -29,5 +29,5 @@ end
 private
 
 def child_list_page
-  ChildListPage.new(Capybara.current_session)
+  @_child_list_page ||= ChildListPage.new(Capybara.current_session)
 end

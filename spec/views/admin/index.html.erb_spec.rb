@@ -16,11 +16,6 @@ describe 'admin/index.html.erb' do
     it { should_not have_tag 'a' }
   end
 
-  describe 'with system settings permission' do
-    let(:permissions) { [Permission::SYSTEM[:contact_information]] }
-    it { should have_link 'Admin Contact Information', :href => edit_contact_information_path(:administrator) }
-  end
-
   describe 'with manage forms permisssion' do
     let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
     it { should have_link 'Highlight Fields', :href => highlight_fields_path }

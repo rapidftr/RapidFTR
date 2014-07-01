@@ -6,11 +6,11 @@
     <%= link_with_confirm t("header.logout"), logout_path %> |
     <%= link_with_confirm t("header.my_account"), user_path(current_user.id) %> |
 
-    <% if can?(:manage, ContactInformation) or can?(:highlight, Field) %>
+    <% if can?(:manage, SystemUsers) or can?(:highlight, Field) %>
       <%= link_to t("header.system_settings"), admin_path %> |
     <% end %>
   <% end %>
 
-  <%= link_with_confirm t("header.contact"), contact_information_path("administrator") %>
+  <%= link_with_confirm t("header.contact"), contact_users_path %>
 
 </div>

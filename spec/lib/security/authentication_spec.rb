@@ -57,8 +57,8 @@ module Security
     xit "should raise ErrorResponse if device blacklisted" do
       lambda {
         mock_session = Session.new
-        mock_session.stub! :device_blacklisted? => true
-        @controller.stub! :current_session => mock_session
+        mock_session.stub :device_blacklisted? => true
+        @controller.stub :current_session => mock_session
         @controller.send :check_authentication
       }.should raise_error(ErrorResponse)
     end

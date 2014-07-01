@@ -6,7 +6,7 @@ describe HighlightFieldsController do
     it "should have no highlight fields" do
       FormSection.stub(:highlighted_fields).and_return([])
       user = User.new(:user_name => 'manager_of_forms')
-      user.stub!(:roles).and_return([Role.new(:permissions => [Permission::SYSTEM[:highlight_fields]])])
+      user.stub(:roles).and_return([Role.new(:permissions => [Permission::SYSTEM[:highlight_fields]])])
       fake_login user
       get :index
       assigns[:highlighted_fields].should be_empty
@@ -30,9 +30,9 @@ describe HighlightFieldsController do
       fake_admin_login
       get :index
       assigns[:highlighted_fields].size.should == 3
-      assigns[:highlighted_fields].should == [  { "field_name" => "field1", "display_name" => "field1_display" , "order" => "1", "form_name" => "Form1", "form_id" => "form1" },
-                                                { "field_name" => "field2", "display_name" => "field2_display" , "order" => "2", "form_name" => "Form2", "form_id" => "form2" },
-                                                { "field_name" => "field3", "display_name" => "field3_display" , "order" => "3", "form_name" => "Form3", "form_id" => "form3" } ]
+      assigns[:highlighted_fields].should == [  { :field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Form1", :form_id => "form1" },
+                                                { :field_name => "field2", :display_name => "field2_display" , :order => "2", :form_name => "Form2", :form_id => "form2" },
+                                                { :field_name => "field3", :display_name => "field3_display" , :order => "3", :form_name => "Form3", :form_id => "form3" } ]
     end
 
   end
