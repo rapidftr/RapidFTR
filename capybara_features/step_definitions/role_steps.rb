@@ -1,7 +1,7 @@
 When /^I enter the following role details$/ do |role_table|
   role_table.hashes.each do |role_row|
-    fill_in("role_name",:with => role_row['name'])
-    fill_in("role_description",:with => role_row['description'])
+    fill_in('role_name',:with => role_row['name'])
+    fill_in('role_description',:with => role_row['description'])
     [ role_row['permissions'] ].flatten.each do |permission|
       check(permission)
     end
@@ -13,12 +13,11 @@ And /^I should see the following roles$/ do |role_table|
     page.should have_content(role_row['name'].titleize)
     page.should have_content(role_row['description'])
   end
-
 end
 
 Then /^I should see error messages$/ do
-  page.should have_content("Please select at least one permission")
-  page.should have_content("Name must not be blank")
+  page.should have_content('Please select at least one permission')
+  page.should have_content('Name must not be blank')
 end
 
 Then /^I should see message "([^"]*)"$/ do |error_message|

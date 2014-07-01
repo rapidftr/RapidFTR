@@ -26,16 +26,16 @@ end
 
 Then /^I should receive a CSV file with (\d+) lines?$/ do |num_lines|
   num_lines = num_lines.to_i
-  page.response_headers['Content-Type'].should == "text/csv"
+  page.response_headers['Content-Type'].should == 'text/csv'
   page.text.chomp.split("\n").length.should == num_lines
 end
 
 Then /^the CSV data should be:$/ do |expected_csv|
   downloaded_csv = CSV.parse(page.text)
-  index_of_name_column = downloaded_csv[0].index "Name"
+  index_of_name_column = downloaded_csv[0].index 'Name'
   expected_csv.hashes.each do |expected_line|
     matching_line = downloaded_csv.find do |line|
-      line[index_of_name_column] == expected_line["name"]
+      line[index_of_name_column] == expected_line['name']
     end
     matching_line.should_not be_nil
     expected_line.each_key do |key|
@@ -45,5 +45,5 @@ Then /^the CSV data should be:$/ do |expected_csv|
 end
 
 Then /^the response filename should be "(.+)"$/ do |filename|
-   page.response_headers["content-disposition"].should == "attachment; filename=\"#{filename}\""
+   page.response_headers['content-disposition'].should == "attachment; filename=\"#{filename}\""
 end

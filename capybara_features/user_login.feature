@@ -11,12 +11,6 @@ Feature: As an user, I should be able to log in.
     Then I should see "Hello harry"
     And I should be on the home page
 
-  Scenario: To check that a logged in user doesn't see the login page
-    Given I am logged in
-    When I am on the login page
-    Then I should see "View child listing"
-    And I should not see "Hello mary"
-
   Scenario: User does not exist
     Given I am on the login page
     When I fill in "User Name" with "Harry"
@@ -95,3 +89,9 @@ Feature: As an user, I should be able to log in.
     And I fill in "Password" with "456"
     And I press "Log in"
     And I should be on the home page
+
+  Scenario: My session should timeout after 20 minutes
+    Given I am logged in
+    And I expire my session
+    And I am on the home page
+    Then I should be on the login page

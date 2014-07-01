@@ -71,10 +71,10 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     Then I should find the form section with following attributes:
       | Name          |
       | Name          |
-      | Second Name   |
       | Nick Name     |
-      | characteristic|
-      | nationality   |
+      | Second Name   |
+      | Characteristic|
+      | Nationality   |
 
   @run
   Scenario: User creates a new form and it is added to the bottom of the list of forms
@@ -124,7 +124,6 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
       | Other hidden section |
       | Other visible section|
 
-
   Scenario: Can create a form section disabled
 
     Given I am on form section page
@@ -170,13 +169,13 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
   Scenario: A hidden highlighted field must not be visible in Child Summary
     And I am on the form section page
     And I follow "Basic Identity"
-    And I hide "fields_nationality" from "Basic Identity"
+    And I hide the Nationality field
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"
     And I click text "add"
     When I select menu "Basic Identity"
-    Then I should not see "Nationality" in Child Summary
+    Then I should not see "Nationality"
 
   Scenario: Admins should be able to delete a field from a form section
     When I am on the form section page

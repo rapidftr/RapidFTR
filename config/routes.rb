@@ -77,7 +77,8 @@ RapidFTR::Application.routes.draw do
 #######################
 
   namespace :api do
-    controller :device do
+    controller :device, :defaults => { :format => :json} do
+      get 'is_blacklisted', :action => 'is_blacklisted'
       get 'is_blacklisted/:imei', :action => 'is_blacklisted'
     end
 
@@ -91,7 +92,6 @@ RapidFTR::Application.routes.draw do
 
     resources :children do
       collection do
-        delete "/destroy_all" => 'children#destroy_all'
         get :ids, :defaults => {:format => :json}
         post :unverified, :defaults => {:format => :json}
       end
@@ -106,11 +106,8 @@ RapidFTR::Application.routes.draw do
 
     # ENQUIRIES
 
-    resources :enquiries, :defaults => {:format => :json} do
-      collection do
-        delete "/destroy_all" => 'enquiries#destroy_all'
-      end
-    end
+    resources :enquiries, :defaults => {:format => :json}
+
   end
 
 #######################
@@ -186,6 +183,9 @@ RapidFTR::Application.routes.draw do
 #######################
 # TESTING URLS
 #######################
-  match 'database/delete_children' => 'database#delete_children', :via => :delete
+  if (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
+    match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
+    match 'database/reset_fieldworker' => 'database#reset_fieldworker', :as => :reset_fieldworker, :via => :delete
+  end
 
 end

@@ -6,11 +6,12 @@ class Api::SessionsController < Api::ApiController
     @login = Login.new(params)
     @current_session = @login.authenticate_user
 
-    raise ErrorResponse.unauthorized(t("session.invalid_credentials")) unless @current_session
+    raise ErrorResponse.unauthorized("session.invalid_credentials") unless @current_session
     check_device_blacklisted
 
     @current_session.save!
     session[:rftr_session_id] = @current_session.id
+    session[:last_access_time] = Clock.now.rfc2822
     render_session_as_json @current_session
   end
 

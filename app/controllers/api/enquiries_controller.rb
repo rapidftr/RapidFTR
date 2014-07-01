@@ -2,12 +2,6 @@ class Api::EnquiriesController < Api::ApiController
 
   before_filter :sanitise_params
 
-  def destroy_all
-    authorize! :create, Enquiry
-    Enquiry.all.each{|c| c.destroy}
-    render :json => ""
-  end
-
   def create
     authorize! :create, Enquiry
 

@@ -8,12 +8,6 @@ class Api::ChildrenController < Api::ApiController
 		render :json => Child.all
   end
 
-  def destroy_all
-    authorize! :create, Child
-    Child.all.each{|c| c.destroy}
-    render :json => ""
-  end
-
 	def show
     authorize! :show, Child
     child = Child.get params[:id]

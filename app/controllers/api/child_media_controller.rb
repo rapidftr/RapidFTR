@@ -34,6 +34,7 @@ class Api::ChildMediaController < Api::ApiController
 
       begin
         @attachment = params[:photo_id] == '_missing_' ? no_photo_attachment : @child.media_for_key(params[:photo_id])
+        @attachment = @attachment.resize params[:size] if params[:size]
       rescue => e
         logger.warn "Error getting photo"
         logger.warn e.inspect

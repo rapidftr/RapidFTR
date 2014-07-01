@@ -51,10 +51,6 @@ $(".profile-tools .investigated a").click( function(){
 <%= render :partial => "show_child_toolbar", :locals => { :child => @child } %>
 
 <div class="clearfix"></div>
-    <% content_for :stylesheet do %>
-      <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
-    <% end %>
-
     <% if @child.reunited? %>
       <div class="reunited-message"><%= reunited_message %></div>
     <% end %>

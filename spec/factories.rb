@@ -9,6 +9,11 @@ FactoryGirl.define do
     _id { "id-#{counter}" }
   end
 
+  factory :session, traits: [:model] do
+    user_name { FactoryGirl.create(:user).user_name }
+    imei "123456789"
+  end
+
   factory :child, :traits => [ :model ] do
     unique_identifier { counter.to_s }
     name { "Test Child #{counter}" }

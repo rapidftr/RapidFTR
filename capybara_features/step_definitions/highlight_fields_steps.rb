@@ -1,19 +1,13 @@
 Given /^I select menu "(.+)"$/ do |text_value|
-  page.find('//li', :text => text_value).click
+  highlight_fields_page.select_menu_with_text(text_value)
 end
 
-And /^I select dropdown option "(.+)"$/ do |option|
-  page.find('//option', :text => option).click
+And /^I remove highlight "(.+)"$/ do |field_name|
+  highlight_fields_page.remove_field_with_name(field_name)
 end
 
-And /^I remove highlight "(.+)"$/ do |highlight_field|
-  page.find('//td', :text => highlight_field).find('..').click_link('remove')
-end
+private
 
-When /^I hide "([^"]*)" from "([^"]*)"$/ do |highlight_field, arg2|
-  check highlight_field
-end
-
-Then /^I should not see "([^"]*)" in Child Summary$/ do |text|
-  page.should have_no_content(text)
+def highlight_fields_page
+  HighlightFieldsPage.new(Capybara.current_session)
 end

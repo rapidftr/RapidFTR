@@ -30,12 +30,11 @@ describe Api::SessionsController do
   end
 
   it 'should set session lifetime to 1 week' do
-    stub_cookie_jar = HashWithIndifferentAccess.new
-    controller.stub :cookies => stub_cookie_jar
-
+    last_access_time = DateTime.now
+    Clock.stub(:now).and_return(last_access_time)
     post :login, :user_name => @user.user_name, :password => "test_password", :imei => 'TEST_IMEI'
+    controller.session[:last_access_time].should == last_access_time.rfc2822
     response.should be_success
-    request.env[Rack::Session::Abstract::ENV_SESSION_OPTIONS_KEY][:expire_after].should == 1.week
   end
 
   describe "#register" do

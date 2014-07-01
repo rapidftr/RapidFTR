@@ -18,8 +18,6 @@ RapidFTR::Application.configure do
   config.active_support.deprecation = :notify
 
   # Asset pipeline
-  config.assets.compress = true
-  config.assets.compile = false
-  config.assets.digest = true
+  config.assets.compile = true
 
 end

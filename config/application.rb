@@ -1,9 +1,13 @@
 # encoding: utf-8
 
-require File.expand_path('../boot', __FILE__)
+begin
+  require File.expand_path('../../bundle/bundler/setup', __FILE__)
+rescue LoadError
+  require File.expand_path('../boot', __FILE__)
+end
 
 require "action_controller/railtie"
-Bundler.require *Rails.groups(:assets => %w(development test))
+Bundler.require *Rails.groups(:assets => %w(development test)) if defined? Bundler
 
 module RapidFTR
   class Application < Rails::Application
@@ -28,6 +32,9 @@ module RapidFTR
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # Delete unnecessary ETag middleware
+    config.middleware.delete Rack::ETag
 
     # Asset pipeline
     config.assets.enabled = true

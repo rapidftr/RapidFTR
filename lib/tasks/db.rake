@@ -37,10 +37,10 @@ namespace :db do
     Rake::Task["db:create_couchdb_yml"].invoke(user_name, password)
   end
 
-  desc "Create/Copy couchdb.yml from cocuhdb.yml.example"
+  desc "Create/Copy couchdb.yml from couchdb.yml.example"
   task :create_couchdb_yml, :user_name, :password  do |t, args|
     default_env = ENV['RAILS_ENV'] || "development"
-    environments = ["development", "test", "cucumber", "production", "uat", "standalone", "android", default_env].uniq
+    environments = ["development", "test", "assets", "cucumber", "production", "uat", "standalone", "android", default_env].uniq
     user_name = ENV['couchdb_user_name'] || args[:user_name] || ""
     password = ENV['couchdb_password'] || args[:password] || ""
 

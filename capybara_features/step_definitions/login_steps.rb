@@ -37,11 +37,11 @@ Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
 end
 
 Given /^I logout as "([^"]*)"$/ do |arg|
-  click_link(I18n.t("header.logout"))
+  click_link(I18n.t('header.logout'))
 end
 
 When /^I logout$/ do
-  click_link(I18n.t("header.logout"))
+  click_link(I18n.t('header.logout'))
 end
 
 private

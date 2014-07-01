@@ -1,21 +1,42 @@
-# This file is for running the RapidFTR Rails development virtual machine.
-# For instructions, see
-# https://github.com/rapidftr/RapidFTR/wiki/Using-a-VM-for-development
-# For documentation on this file format, see
-# http://vagrantup.com/docs/vagrantfile.html
-Vagrant::Config.run do |config|
-  config.vm.box = "rapidftr"
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-  
-  config.vm.forward_port 3000, 3000
-  config.vm.forward_port 5984, 5984
-  
-  config.vm.provision :chef_solo do |chef|
-    chef.add_recipe "core"
-    chef.add_recipe "couchdb"
-    chef.add_recipe "rvm"
-    chef.add_recipe "ruby"
-    chef.add_recipe "xvfb"
-    chef.add_recipe "firefox"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = '2'
+
+# Make sure you have run "git submodule init && git submodule update" to pull the infrastructure code
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.define 'dev', primary: true do |dev|
+    dev.vm.box = 'hashicorp/precise32'
+    dev.vm.network 'forwarded_port', guest: 3000, host: 3000
+    dev.vm.network 'forwarded_port', guest: 5984, host: 5984
+    dev.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = 'infrastructure/site-cookbooks'
+      chef.roles_path = 'infrastructure/roles'
+      chef.add_role 'development'
+      chef.verbose_logging = true
+    end
+    dev.vm.synced_folder 'tmp/vagrant/gems', '/usr/local/rvm/gems/ruby-1.9.3-p392@rapidftr/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
   end
+
+  config.vm.define 'prod', autostart: false do |prod|
+    prod.vm.box = 'hashicorp/precise64'
+    prod.vm.network 'forwarded_port', guest: 80, host: 8080
+    prod.vm.network 'forwarded_port', guest: 443, host: 8443
+    prod.vm.network 'forwarded_port', guest: 5984, host: 5984
+    prod.vm.network 'forwarded_port', guest: 6984, host: 6984
+    prod.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = 'infrastructure/site-cookbooks'
+      chef.roles_path = 'infrastructure/roles'
+      chef.add_role 'production'
+      chef.verbose_logging = true
+    end
+    config.vm.synced_folder 'tmp/vagrant/gems', '/srv/rapidftr/localhost/shared/gems/ruby/1.9.1/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
+  end
+
+  # Sync apt and gem caches, so that they don't re-download everytime
+  config.vm.synced_folder 'tmp/vagrant/apt', '/var/cache/apt/archives', create: true
+  config.vm.synced_folder 'tmp/vagrant/rubies', '/usr/local/rvm/archives', create: true
+
 end

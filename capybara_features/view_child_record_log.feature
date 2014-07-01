@@ -4,6 +4,7 @@ Feature:
   I want to ...
   So that changes to the child record are kept for historical purposed and can be viewed
 
+  @no_expire
   Scenario: Creates a child record and checks the log
 
     Given "Harry" logs in with "Register Child" permission
@@ -21,6 +22,7 @@ Feature:
 
     Then I should see "2010-03-19 13:05:00 UTC Record created by harry"
 
+  @no_expire
   Scenario:  I log in as a different user, upload a new photo and view the record log
 
     Given the date/time is "July 19 2010 13:05:32"
@@ -44,6 +46,7 @@ Feature:
     #When I follow photo with timestamp "2010-03-01T175933"
     #Then I should see the photo corresponding to "capybara_features/resources/jeff.png"
 
+  @no_expire
   Scenario:  I log in as a different user, edit and view the record log
 
     Given the date/time is "July 19 2010 13:05:15 UTC"
@@ -85,6 +88,7 @@ Feature:
 
     Then I should be on the child record page for "Bob"
 
+  @no_expire
   Scenario:  The change log page displays date-times in my local timezone
 
     Given the date/time is "July 19 2010 13:05:15UTC"
@@ -113,6 +117,7 @@ Feature:
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
 
 
+  @no_expire
   Scenario: As an admin view history of changes made by a user
 
   As a System admin

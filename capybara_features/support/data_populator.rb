@@ -4,7 +4,7 @@ class DataPopulator
     create_user('default_username', 'default_password', permission)
   end
 
-  def create_user(username, password, permission)
+  def create_user(username, password='radpiftr', permission=nil)
     user_type = 'user'
     create_account(user_type, username, password, permission)
   end
@@ -22,6 +22,14 @@ class DataPopulator
   def create_registration_worker(username, password, permission)
     user_type = 'registration worker'
     create_account(user_type, username, password, permission)
+  end
+
+  def ensure_user_exists(user_name)
+    user = User.find_by_user_name(user_name)
+    if user.nil?
+      user = create_user(user_name)
+    end
+    user
   end
 
 private
@@ -53,5 +61,6 @@ private
       )
       @user.save!
     end
+    @user
   end
 end

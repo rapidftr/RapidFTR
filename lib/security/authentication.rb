@@ -25,12 +25,21 @@ module Security
       session[:rftr_session_id] rescue nil
     end
 
-    def logged_in?
-      request && current_session && current_user
+    def session_expiry_timeout
+      Rails.application.config.session_options[:rapidftr][:web_expire_after]
     end
 
+    def session_expired?
+      (session_expiry_timeout.ago(Clock.now) > DateTime.parse(session[:last_access_time])) rescue true
+    end
+
+    def logged_in?
+      request && !session_expired? && current_session && current_user
+    end
+
+    # TODO: Rename to check_expiry or logged_in! something
     def check_authentication
-      raise AuthenticationFailure.new(I18n.t("session.has_expired")) unless logged_in?
+      logged_in? || raise(ErrorResponse.unauthorized("session.has_expired"))
     end
 
   end

@@ -21,11 +21,11 @@ And /^I set the user language to "(.*)"-"(.*)"$/ do |language, locale|
 end
 
 Then /^I should see "(.*?)" translated$/ do |text|
-  text.should == I18n.t("xxxx")
+  text.should == I18n.t('xxxx')
 end
 
 def store(translation)
-  I18n.backend.store_translations translation["locale"], { translation["key"] => translation["value"] }
+  I18n.backend.store_translations translation['locale'], { translation['key'] => translation['value'] }
 end
 Then /^I should see my system language as "([^"]*)"-"([^"]*)"$/ do |language, locale|
   assert page.has_xpath?("//div[@class='page-content']/h2")
