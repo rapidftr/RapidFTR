@@ -222,3 +222,7 @@ capybara_features/resources/huge.mp3
 <Solr_data_dir>
 .project
 .buildpath
+.cane
+.rakeTasks
+.generators
+hashicorp

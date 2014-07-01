@@ -50,8 +50,13 @@ group :test, :cucumber do
   gem 'hpricot',            '~> 0.8.6'
   gem 'json_spec',          '~> 1.1.1'
   gem 'pdf-inspector',      '~> 1.1.0'
+  gem 'coveralls', require: false
 end
 
 group :development, :test, :cucumber do
   gem 'quiet_assets',       '~> 1.0.3'
+end
+
+group :development, :test do
+  gem 'cane',               '~> 2.6.2'
 end
