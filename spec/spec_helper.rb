@@ -21,11 +21,11 @@ Mime::Type.register 'application/zip', :mock
 
 module VerifyAndResetHelpers
   def verify(object)
-    RSpec::Mocks.proxy_for(object).verify
+    RSpec::Mocks.space.proxy_for(object).verify
   end
 
   def reset(object)
-    RSpec::Mocks.proxy_for(object).reset
+    RSpec::Mocks.space.proxy_for(object).reset
   end
 end
 

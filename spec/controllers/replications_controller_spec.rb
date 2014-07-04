@@ -2,14 +2,10 @@ require 'spec_helper'
 
 describe ReplicationsController, :type => :controller do
 
-  describe :new do
-
-    it "should show page name" do
-      fake_login_as
-      get :new
-      expect(assigns[:page_name]).to eq("Configure a Server")
-    end
-
+  it "should show page name on new page" do
+    fake_login_as
+    get :new
+    expect(assigns[:page_name]).to eq("Configure a Server")
   end
 
   it "should authenticate configuration request through internal _users database of couchdb" do
