@@ -8,30 +8,30 @@ module Addons
     end
 
     it 'should be an ExportTask addon' do
-      RapidftrAddon::ExportTask.active.should include CsvExportTask
+      expect(RapidftrAddon::ExportTask.active).to include CsvExportTask
     end
 
     it 'should have proper id' do
-      RapidftrAddon::ExportTask.find_by_id(:csv).should == CsvExportTask
+      expect(RapidftrAddon::ExportTask.find_by_id(:csv)).to eq(CsvExportTask)
     end
 
     it 'should delegate to ExportGenerator' do
       children, generator, result = double, double, double
-      ExportGenerator.should_receive(:new).with(children).and_return(generator)
-      generator.should_receive(:to_csv).and_return(result)
-      result.should_receive(:data).and_return('dummy data')
+      expect(ExportGenerator).to receive(:new).with(children).and_return(generator)
+      expect(generator).to receive(:to_csv).and_return(result)
+      expect(result).to receive(:data).and_return('dummy data')
 
-      @task.generate_data(children).should == 'dummy data'
+      expect(@task.generate_data(children)).to eq('dummy data')
     end
 
     it 'should generate filename for one child' do
       child = build :child, :unique_identifier => "test-id"
-      @task.generate_filename([ child ]).should == 'test-id.csv'
+      expect(@task.generate_filename([ child ])).to eq('test-id.csv')
     end
 
     it 'should generate filename for multiple children' do
       child = build :child, :unique_identifier => "test-id"
-      @task.generate_filename([child, child]).should == 'full_data.csv'
+      expect(@task.generate_filename([child, child])).to eq('full_data.csv')
     end
   end
 end

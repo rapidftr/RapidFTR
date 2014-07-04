@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserHistoriesController do
+describe UserHistoriesController, :type => :controller do
 
   before do
     fake_admin_login
@@ -14,34 +14,34 @@ describe UserHistoriesController do
   it "should pass ordered histories, child name and id for user to view" do
     history1 = {"user_name" => "some user", "datetime" => 1.day.ago.to_s}
     history2 = {"user_name" => "some user", "datetime" => 1.week.ago.to_s}
-    User.should_receive(:get).with("1").and_return(double(:user_name => (user_name = "some user")))
-    Child.should_receive(:all_connected_with).with(user_name).and_return([
+    expect(User).to receive(:get).with("1").and_return(double(:user_name => (user_name = "some user")))
+    expect(Child).to receive(:all_connected_with).with(user_name).and_return([
           double(:id => "other_id", :name => "other_name", :histories => [history2]),
           double(:id => "another_id", :name => "another_name", :histories => [history1])
     ])
 
     get :index, :id => "1"
 
-    assigns(:histories).should == [history1.merge(:child_id => "another_id", :child_name => "another_name"), history2.merge(:child_id => "other_id", :child_name => "other_name")]
+    expect(assigns(:histories)).to eq([history1.merge(:child_id => "another_id", :child_name => "another_name"), history2.merge(:child_id => "other_id", :child_name => "other_name")])
   end
 
   it "should remove history entries for other users" do
-    User.should_receive(:get).with("1").and_return(double(:user_name => (user_name = "some user")))
+    expect(User).to receive(:get).with("1").and_return(double(:user_name => (user_name = "some user")))
     history1 = {"user_name" => "some user", "datetime" => 1.day.ago.to_s}
     history2 = {"user_name" => "some other user", "datetime" => 1.week.ago.to_s}
-    Child.should_receive(:all_connected_with).with(user_name).and_return([
+    expect(Child).to receive(:all_connected_with).with(user_name).and_return([
           double(:id => "other_id", :name => "other_name", :histories => [history2]),
           double(:id => "another_id", :name => "another_name", :histories => [history1])
     ])
 
     get :index, :id => "1"
 
-    assigns(:histories).should == [history1.merge(:child_id => "another_id", :child_name => "another_name")]
+    expect(assigns(:histories)).to eq([history1.merge(:child_id => "another_id", :child_name => "another_name")])
   end
 
   it "should set the page name to the user" do
-    User.stub(:get).and_return(double(:user_name => "some_user"))
+    allow(User).to receive(:get).and_return(double(:user_name => "some_user"))
     get :index, :id => "some_id"
-    assigns(:page_name).should == "History of some_user"
+    expect(assigns(:page_name)).to eq("History of some_user")
   end
 end

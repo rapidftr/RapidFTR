@@ -39,70 +39,70 @@ describe ExportGenerator do
 
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
         fields = build(:text_field, name: 'field_one'), build(:text_field, name: 'field_two')
-        FormSection.stub(:all_visible_child_fields).and_return fields
+        allow(FormSection).to receive(:all_visible_child_fields).and_return fields
         csv_data =  CSV.parse subject.data
 
         headers = csv_data[0]
-        headers.should == ["Unique identifier", "Short", "Field one", "Field two", "Suspect status", "Reunited status", "Created by", "Created organisation", "Posted at", "Last updated by full name", "Last updated at"]
+        expect(headers).to eq(["Unique identifier", "Short", "Field one", "Field two", "Suspect status", "Reunited status", "Created by", "Created organisation", "Posted at", "Last updated by full name", "Last updated at"])
       end
 
       it 'should render a row for each result, plus a header row' do
-        FormSection.stub(:all_visible_child_fields).and_return [build(:text_field)]
+        allow(FormSection).to receive(:all_visible_child_fields).and_return [build(:text_field)]
         csv_data = CSV.parse subject.data
-        csv_data.length.should == 4
-        csv_data[1][0].should == "xxxy"
-        csv_data[1][2].should == "Dave"
-        csv_data[2][0].should == "yyyx"
-        csv_data[3][0].should == "yxyy"
+        expect(csv_data.length).to eq(4)
+        expect(csv_data[1][0]).to eq("xxxy")
+        expect(csv_data[1][2]).to eq("Dave")
+        expect(csv_data[2][0]).to eq("yyyx")
+        expect(csv_data[3][0]).to eq("yxyy")
       end
 
       it "should add the correct mime type" do
-        subject.options[:type].should == "text/csv"
+        expect(subject.options[:type]).to eq("text/csv")
       end
 
       it "should add the correct filename" do
-        Clock.stub(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
-        subject.options[:filename].should == "rapidftr-full-details-20000101.csv"
+        allow(Clock).to receive(:now).and_return(Time.utc(2000, 1, 1, 20, 15))
+        expect(subject.options[:filename]).to eq("rapidftr-full-details-20000101.csv")
       end
 
       it 'should have a photo column with appropriate links' do
-        FormSection.stub(:all_visible_child_fields).and_return [
+        allow(FormSection).to receive(:all_visible_child_fields).and_return [
           build(:text_field, name: '_id'), build(:text_field, name: 'name'), build(:text_field, name: 'current_photo_key')
         ]
         csv_data = CSV.parse subject.data
-        csv_data[1][4].should == "http://testmachine:3000/some-photo-path/1"
-        csv_data[2][4].should == "http://testmachine:3000/some-photo-path/2"
-        csv_data[3][4].should == "http://testmachine:3000/some-photo-path/3"
-        csv_data.length.should == 4
+        expect(csv_data[1][4]).to eq("http://testmachine:3000/some-photo-path/1")
+        expect(csv_data[2][4]).to eq("http://testmachine:3000/some-photo-path/2")
+        expect(csv_data[3][4]).to eq("http://testmachine:3000/some-photo-path/3")
+        expect(csv_data.length).to eq(4)
       end
 
       it 'should have an audio column with appropriate links' do
-        FormSection.stub(:all_visible_child_fields).and_return [
+        allow(FormSection).to receive(:all_visible_child_fields).and_return [
           build(:text_field, name: '_id'), build(:text_field, name: 'name'), build(:text_field, name: 'some_audio')
         ]
         csv_data = CSV.parse subject.data
-        csv_data[1][4].should == "http://testmachine:3000/some-audio-path/1"
-        csv_data[2][4].should == "http://testmachine:3000/some-audio-path/2"
-        csv_data.length.should == 4
+        expect(csv_data[1][4]).to eq("http://testmachine:3000/some-audio-path/1")
+        expect(csv_data[2][4]).to eq("http://testmachine:3000/some-audio-path/2")
+        expect(csv_data.length).to eq(4)
       end
 
       it "should add metadata of children at the end" do
         csv_data = CSV.parse subject.data
         index = csv_data[0].index "Created by"
-        csv_data[1][index].should == 'user'
-        csv_data[1][index+1].should == 'UNICEF'
+        expect(csv_data[1][index]).to eq('user')
+        expect(csv_data[1][index+1]).to eq('UNICEF')
       end
 
       it "should not have updated_by info for child that was not edited" do
         csv_data = CSV.parse subject.data
-        csv_data[1][7].should == ''
+        expect(csv_data[1][7]).to eq('')
       end
 
     end
 
     describe "with a multi checkbox field" do
       subject do
-        FormSection.stub(:all_visible_child_fields).and_return [
+        allow(FormSection).to receive(:all_visible_child_fields).and_return [
           build(:check_boxes_field, name: 'multi')
         ]
         ExportGenerator.new([
@@ -114,9 +114,9 @@ describe ExportGenerator do
 
       it "should render multi checkbox fields as a comma separated list" do
         csv_data = CSV.parse subject.data
-        csv_data[1][2].should == "Dogs, Cats"
-        csv_data[2][2].should == ""
-        csv_data[3][2].should == "Cats, Fish"
+        expect(csv_data[1][2]).to eq("Dogs, Cats")
+        expect(csv_data[2][2]).to eq("")
+        expect(csv_data[3][2]).to eq("Cats, Fish")
       end
     end
 
@@ -128,7 +128,7 @@ describe ExportGenerator do
       end
 
       it "should add the unique id to the filename" do
-        subject.options[:filename].should include "yyyx"
+        expect(subject.options[:filename]).to include "yyyx"
       end
     end
   end

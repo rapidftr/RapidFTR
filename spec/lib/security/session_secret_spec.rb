@@ -8,35 +8,35 @@ module Security
 
     it 'should generate and save secret when not present in database' do
       SessionSecret.stub :fetch => nil, :create => "some_secret"
-      SessionSecret.secret_token.should == "some_secret"
+      expect(SessionSecret.secret_token).to eq("some_secret")
     end
 
     it 'should return saved secret if present in database' do
       SessionSecret.stub :fetch => "some_secret", :create => "some_other_secret"
-      SessionSecret.should_not_receive(:create)
-      SessionSecret.secret_token.should == "some_secret"
+      expect(SessionSecret).not_to receive(:create)
+      expect(SessionSecret.secret_token).to eq("some_secret")
     end
 
     it 'fetch should return saved secret from CouchDB' do
       SessionSecret.stub :database => SessionSecret.database
-      SessionSecret.database.should_receive(:get).with("session_secret").and_return("value" => "random_secret_2")
-      SessionSecret.fetch.should == "random_secret_2"
+      expect(SessionSecret.database).to receive(:get).with("session_secret").and_return("value" => "random_secret_2")
+      expect(SessionSecret.fetch).to eq("random_secret_2")
     end
 
     it 'save should save secret to CouchDB' do
       SessionSecret.stub :generate => "random_secret_1", :database => SessionSecret.database
-      SessionSecret.database.should_receive(:save_doc).with("_id" => "session_secret", "value" => "random_secret_1").and_return(true)
-      SessionSecret.create.should == "random_secret_1"
+      expect(SessionSecret.database).to receive(:save_doc).with("_id" => "session_secret", "value" => "random_secret_1").and_return(true)
+      expect(SessionSecret.create).to eq("random_secret_1")
     end
 
     it 'should return current rails env' do
       RSpec::Mocks.proxy_for(SessionSecret).reset
-      SessionSecret.env.should == Rails.env
+      expect(SessionSecret.env).to eq(Rails.env)
     end
 
     it 'database name should have rails env' do
       SessionSecret.stub :env => "random"
-      SessionSecret.database.name.should == "rapidftr_session_secret_random"
+      expect(SessionSecret.database.name).to eq("rapidftr_session_secret_random")
     end
 
     after :each do

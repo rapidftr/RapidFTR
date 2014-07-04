@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'support/couchdb_client_helper'
 
-describe Child do
+describe Child, :type => :request do
   include CouchdbClientHelper
   it "should save a child in the database" do
     photo = uploadable_photo
@@ -10,7 +10,7 @@ describe Child do
         "age" => "28",
         "last_known_location" => "London",
         "photo" => photo})
-    child.save.should be_true
+    expect(child.save).to be_truthy
   end
 
   it "should load an existing child record from the database" do
@@ -23,20 +23,20 @@ describe Child do
 
     child_from_db = Child.get(child.id)
 
-    child_from_db['name'].should == "Paul"
-    child_from_db['age'].should == "10"
-    child_from_db['last_known_location'].should == "New York"
-    child_from_db.primary_photo.should match_photo uploadable_photo
+    expect(child_from_db['name']).to eq("Paul")
+    expect(child_from_db['age']).to eq("10")
+    expect(child_from_db['last_known_location']).to eq("New York")
+    expect(child_from_db.primary_photo).to match_photo uploadable_photo
   end
 
   it "should persist multiple photo attachments" do
     mock_user = double({:organisation => 'UNICEF'})
-    User.stub(:find_by_user_name).with(anything).and_return(mock_user)
-    Clock.stub(:now).and_return(Time.parse("Jan 20 2010 12:04:15"))
+    allow(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
+    allow(Clock).to receive(:now).and_return(Time.parse("Jan 20 2010 12:04:15"))
     child = Child.create('last_known_location' => "New York", 'photo' => uploadable_photo_jeff)
 
     created_child = Child.get(child.id)
-    Clock.stub(:now).and_return(Time.parse("Feb 20 2010 12:04:15"))
+    allow(Clock).to receive(:now).and_return(Time.parse("Feb 20 2010 12:04:15"))
 
     created_child.update_attributes :photo => uploadable_photo
 
@@ -54,8 +54,8 @@ def build_child(created_by, options = {})
 end
 
 def verify_attachment(attachment, uploadable_file)
-  attachment.content_type.should == uploadable_file.content_type
-  attachment.data.size.should == uploadable_file.data.size
+  expect(attachment.content_type).to eq(uploadable_file.content_type)
+  expect(attachment.data.size).to eq(uploadable_file.data.size)
 end
 
 def display_child_errors(errors)

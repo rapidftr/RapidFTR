@@ -23,10 +23,10 @@ class MockFormSection
   end
 end
 
-describe FormSectionController do
+describe FormSectionController, :type => :controller do
   before do
     user = User.new(:user_name => 'manager_of_forms')
-    user.stub(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
+    allow(user).to receive(:roles).and_return([Role.new(:permissions => [Permission::FORMS[:manage]])])
     fake_login user
   end
 
@@ -34,11 +34,11 @@ describe FormSectionController do
     it "populate the view with all the form sections in order ignoring enabled or disabled" do
       row1 = FormSection.new(:visible => false, :order => 1)
       row2 = FormSection.new(:visible => true, :order => 2)
-      FormSection.stub(:all).and_return([row1, row2])
+      allow(FormSection).to receive(:all).and_return([row1, row2])
 
       get :index
 
-      assigns[:form_sections].should == [row1, row2]
+      expect(assigns[:form_sections]).to eq([row1, row2])
     end
   end
   describe "post create" do
@@ -46,31 +46,31 @@ describe FormSectionController do
       existing_count = FormSection.count
       form_section = {:name=>"name", :description=>"desc", :help_text=>"help text", :visible=>true}
       post :create, :form_section => form_section
-      FormSection.count.should == existing_count + 1
+      expect(FormSection.count).to eq(existing_count + 1)
     end
 
     it "sets flash notice if form section is valid and redirect_to edit page with a flash message" do
-      FormSection.stub(:new_with_order).and_return(MockFormSection.new)
+      allow(FormSection).to receive(:new_with_order).and_return(MockFormSection.new)
       form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
       post :create, :form_section =>form_section
-      request.flash[:notice].should == "Form section successfully added"
-      response.should redirect_to(edit_form_section_path("unique_id"))
+      expect(request.flash[:notice]).to eq("Form section successfully added")
+      expect(response).to redirect_to(edit_form_section_path("unique_id"))
     end
 
     it "does not set flash notice if form section is valid and render new" do
-      FormSection.stub(:new_with_order).and_return(MockFormSection.new(false))
+      allow(FormSection).to receive(:new_with_order).and_return(MockFormSection.new(false))
       form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
       post :create, :form_section =>form_section
-      request.flash[:notice].should be_nil
-      response.should render_template("new")
+      expect(request.flash[:notice]).to be_nil
+      expect(response).to render_template("new")
     end
 
     it "should assign view data if form section was not valid" do
       expected_form_section = MockFormSection.new(false)
-      FormSection.stub(:new_with_order).and_return expected_form_section
+      allow(FormSection).to receive(:new_with_order).and_return expected_form_section
       form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
       post :create, :form_section =>form_section
-      assigns[:form_section].should == expected_form_section
+      expect(assigns[:form_section]).to eq(expected_form_section)
     end
   end
 
@@ -82,10 +82,10 @@ describe FormSectionController do
       form_two = FormSection.create(:unique_id => "second_form", :name => "second form", :order => 2)
       form_three = FormSection.create(:unique_id => "third_form", :name => "third form", :order => 3)
       post :save_order, :ids => [form_three.unique_id, form_one.unique_id, form_two.unique_id]
-      FormSection.get_by_unique_id(form_one.unique_id).order.should == 2
-      FormSection.get_by_unique_id(form_two.unique_id).order.should == 3
-      FormSection.get_by_unique_id(form_three.unique_id).order.should == 1
-      response.should redirect_to(form_sections_path)
+      expect(FormSection.get_by_unique_id(form_one.unique_id).order).to eq(2)
+      expect(FormSection.get_by_unique_id(form_two.unique_id).order).to eq(3)
+      expect(FormSection.get_by_unique_id(form_three.unique_id).order).to eq(1)
+      expect(response).to redirect_to(form_sections_path)
     end
   end
 
@@ -93,23 +93,23 @@ describe FormSectionController do
     it "should save update if valid" do
       form_section = FormSection.new
       params = {"some" => "params"}
-      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section)
-      form_section.should_receive(:properties=).with(params)
-      form_section.should_receive(:valid?).and_return(true)
-      form_section.should_receive(:save!)
+      expect(FormSection).to receive(:get_by_unique_id).with("form_1").and_return(form_section)
+      expect(form_section).to receive(:properties=).with(params)
+      expect(form_section).to receive(:valid?).and_return(true)
+      expect(form_section).to receive(:save!)
       post :update, :form_section => params, :id => "form_1"
-      response.should redirect_to(edit_form_section_path(form_section.unique_id))
+      expect(response).to redirect_to(edit_form_section_path(form_section.unique_id))
     end
 
     it "should show errors if invalid" do
       form_section = FormSection.new
       params = {"some" => "params"}
-      FormSection.should_receive(:get_by_unique_id).with("form_1").and_return(form_section)
-      form_section.should_receive(:properties=).with(params)
-      form_section.should_receive(:valid?).and_return(false)
+      expect(FormSection).to receive(:get_by_unique_id).with("form_1").and_return(form_section)
+      expect(form_section).to receive(:properties=).with(params)
+      expect(form_section).to receive(:valid?).and_return(false)
       post :update, :form_section => params, :id => "form_1"
-      response.should_not redirect_to(form_sections_path)
-      response.should render_template("edit")
+      expect(response).not_to redirect_to(form_sections_path)
+      expect(response).to render_template("edit")
     end
   end
 
@@ -118,26 +118,26 @@ describe FormSectionController do
       form_section1 = FormSection.create!({:name=>"name1", :description=>"desc", :visible=>"true", :unique_id=>"form_1"})
       form_section2 = FormSection.create!({:name=>"name2", :description=>"desc", :visible=>"false", :unique_id=>"form_2"})
       post :toggle, :id => "form_1"
-      FormSection.get_by_unique_id(form_section1.unique_id).visible.should be_false
+      expect(FormSection.get_by_unique_id(form_section1.unique_id).visible).to be false
       post :toggle, :id => "form_2"
-      FormSection.get_by_unique_id(form_section2.unique_id).visible.should be_true
+      expect(FormSection.get_by_unique_id(form_section2.unique_id).visible).to be true
     end
   end
 
   it "should only retrieve fields on a form that are visible" do
-    FormSection.should_receive(:enabled_by_order_without_hidden_fields).and_return({})
+    expect(FormSection).to receive(:enabled_by_order_without_hidden_fields).and_return({})
     get :published
   end
 
   it "should publish form section documents as json" do
     form_sections = [FormSection.new(:name => 'Some Name', :description => 'Some description')]
-    FormSection.stub(:enabled_by_order_without_hidden_fields).and_return(form_sections)
+    allow(FormSection).to receive(:enabled_by_order_without_hidden_fields).and_return(form_sections)
 
     get :published
 
     returned_form_section = JSON.parse(response.body).first
-    returned_form_section["name"][I18n.locale.to_s].should == 'Some Name'
-    returned_form_section["description"][I18n.locale.to_s].should == 'Some description'
+    expect(returned_form_section["name"][I18n.locale.to_s]).to eq('Some Name')
+    expect(returned_form_section["description"][I18n.locale.to_s]).to eq('Some description')
   end
 
 end

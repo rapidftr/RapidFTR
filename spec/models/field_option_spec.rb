@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "FieldOption" do
+describe "FieldOption", :type => :model do
 
   describe "HTML tag generation" do
 
@@ -11,11 +11,11 @@ describe "FieldOption" do
 
     end
     it "converts field and option names to a HTML tag names" do
-      @field_option.tag_name_attribute.should == "child[#{@field_name}][#{@option_name}]"
+      expect(@field_option.tag_name_attribute).to eq("child[#{@field_name}][#{@option_name}]")
     end
 
     it "converts field and option names to a HTML tag IDs" do
-      @field_option.tag_id.should == "child_#{@field_name}_#{@option_name.downcase}"
+      expect(@field_option.tag_id).to eq("child_#{@field_name}_#{@option_name.downcase}")
     end
 
   end
@@ -28,8 +28,8 @@ describe "FieldOption" do
 
       field_options = FieldOption.create_field_options(field_name, options)
 
-      field_options[0].tag_name_attribute.should == "child[gender][male]"
-      field_options[1].tag_name_attribute.should == "child[gender][female]"
+      expect(field_options[0].tag_name_attribute).to eq("child[gender][male]")
+      expect(field_options[1].tag_name_attribute).to eq("child[gender][female]")
     end
 
   end
