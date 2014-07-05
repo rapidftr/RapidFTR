@@ -1,0 +1,12 @@
+.git/*
+tmp/*
+capybara_features/*
+spec/*
+doc/*
+log/*
+.idea/*
+.vagrant/*
+jmeter/*
+coverage/*
+infrastructure/*
+*.DS_Store
