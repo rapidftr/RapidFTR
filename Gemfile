@@ -36,7 +36,7 @@ group :development do
 end
 
 group :test, :cucumber do
-  gem 'factory_girl',       '~> 2.6'
+  gem 'factory_girl',       '~> 4.4.0'
 
   gem 'rspec',              '~> 2.99'
   gem 'rspec-rails',        '~> 2.99'

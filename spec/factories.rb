@@ -19,7 +19,9 @@ FactoryGirl.define do
     name { "Test Child #{counter}" }
     created_by { "test_user" }
 
-    after_build do |child, factory|
+    initialize_with { new(attributes) }
+
+    after(:build) do |child, factory|
       Child.stub(:get).with(child.id).and_return(child)
     end
   end
@@ -31,7 +33,7 @@ FactoryGirl.define do
     password 'test_password'
     remote_couch_config "target" => "http://couch:1234/replication_test"
 
-    after_build do |replication|
+    after(:build) do |replication|
       replication.stub :save_remote_couch_config => true
     end
   end
@@ -78,7 +80,7 @@ FactoryGirl.define do
     report_type { "weekly_report" }
     as_of_date { Date.today }
 
-    after_build do |report, builder|
+    after(:build) do |report, builder|
       report.create_attachment :name => builder.filename, :file => StringIO.new(builder.data), :content_type => builder.content_type if builder.data
     end
   end
