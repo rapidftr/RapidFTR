@@ -63,7 +63,7 @@ end
 Then /^an unverified user "(.+)" should be created$/ do |user_name|
   user = User.by_user_name(:key => user_name).first
   user.should_not be_nil
-  user.verified.should be_false
+  user.verified.should be false
 end
 
 # This is used by the json_spec gem for testing JSON responses

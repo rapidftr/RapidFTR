@@ -20,10 +20,10 @@ class NewChildPage
   end
 
   def section_should_not_be_visible(section_name)
-    @session.has_no_link?(section_name).should be_true
+    @session.has_no_link?(section_name).should be true
   end
 
   def section_should_be_visible(section_name)
-    @session.has_link?(section_name).should be_true
+    @session.has_link?(section_name).should be true
   end
 end

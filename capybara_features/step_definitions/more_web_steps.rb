@@ -15,7 +15,7 @@ When /^I click text "([^"]*)"(?: within "([^\"]*)")?$/ do |text_value, selector|
 end
 
 Then /^the "([^\"]*)" field should be disabled$/ do |label|
-  field_labeled(label, :disabled => true)[:disabled].should be_true
+  field_labeled(label, :disabled => true)[:disabled].should be_truthy
 end
 
 Given /^devices exist$/ do |devices|

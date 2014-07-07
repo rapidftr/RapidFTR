@@ -10,5 +10,5 @@ def check_link_presence(div, li_class_name, link_text)
     rescue Capybara::ElementNotFound
     end
   end
-  found.should_not be_false
+  found.should_not be false
 end

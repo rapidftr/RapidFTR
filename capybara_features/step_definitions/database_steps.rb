@@ -43,14 +43,14 @@ end
 Then /^device "(.+)" should be blacklisted/ do |imei|
   devices = Device.find_by_device_imei(imei)
   devices.each do |device|
-    device[:blacklisted].should be_true
+    device[:blacklisted].should be true
   end
 end
 
 Then /^device "(.+)" should not be blacklisted/ do |imei|
   devices = Device.find_by_device_imei(imei)
   devices.each do |device|
-    device[:blacklisted].should be_false
+    device[:blacklisted].should be false
   end
 end
 
