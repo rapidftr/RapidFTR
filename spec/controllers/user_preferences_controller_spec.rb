@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserPreferencesController do
+describe UserPreferencesController, :type => :controller do
 
   before :each do
     fake_field_worker_login
@@ -13,8 +13,8 @@ describe UserPreferencesController do
   it "should save the given local in user" do
     mock_user = double("user", :user_name => "UserName", :locale => 'en')
     user_params = {"locale" => "fr"}
-    User.should_receive(:find_by_user_name).at_least(:once).and_return(mock_user)
-    mock_user.should_receive(:update_attributes).with(user_params)
+    expect(User).to receive(:find_by_user_name).at_least(:once).and_return(mock_user)
+    expect(mock_user).to receive(:update_attributes).with(user_params)
     put :update, {:id => 'user_id', :user => user_params}
     assert_redirected_to root_path
   end
@@ -22,10 +22,10 @@ describe UserPreferencesController do
   it "should flash a update message when the system language is changed" do
     mock_user = double("user", :user_name => "UserName", :locale => 'en')
     user_params = {"locale" => "zh"}
-    User.should_receive(:find_by_user_name).at_least(:once).and_return(mock_user)
-    mock_user.should_receive(:update_attributes).with(user_params).and_return(true)
+    expect(User).to receive(:find_by_user_name).at_least(:once).and_return(mock_user)
+    expect(mock_user).to receive(:update_attributes).with(user_params).and_return(true)
     put :update, {:id => 'user_id',:user =>{"locale" => "zh"}}
-    flash[:notice].should =="The change was successfully updated."
+    expect(flash[:notice]).to eq("The change was successfully updated.")
   end
 
 end

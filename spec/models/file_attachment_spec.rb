@@ -1,18 +1,18 @@
 require "spec_helper"
 
-describe "FileAttachment" do
+describe "FileAttachment", :type => :model do
 
   describe ".from_uploadable_file" do
     it "should extract content type from uploaded_file" do
       uploaded_file = uploadable_audio
-      uploaded_file.should_receive(:content_type)
+      expect(uploaded_file).to receive(:content_type)
       FileAttachment.from_uploadable_file(uploaded_file);
 
     end
 
     it "should call .from_file with all parameters and content_type extracted from uploaded_file" do
       uploaded_audio = uploadable_audio
-      FileAttachment.should_receive(:from_file).with(uploaded_audio, uploaded_audio.content_type, "prefix", "postfix", nil)
+      expect(FileAttachment).to receive(:from_file).with(uploaded_audio, uploaded_audio.content_type, "prefix", "postfix", nil)
       FileAttachment.from_uploadable_file(uploaded_audio, "prefix", "postfix")
     end
 
@@ -21,30 +21,30 @@ describe "FileAttachment" do
   describe ".from_file" do
     before(:each) do
       @file = double("File")
-      File.stub(:binread).with(@file).and_return("Data")
+      allow(File).to receive(:binread).with(@file).and_return("Data")
     end
 
     it "should create an instance with a name from current date and default prefix" do
-      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      allow(Clock).to receive(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       attachment = FileAttachment.from_file(@file, "")
-      attachment.name.should == 'file-2010-01-17T140532'
+      expect(attachment.name).to eq('file-2010-01-17T140532')
     end
 
     it "should create an instance with a name from current date and prefix and postfix" do
-      Clock.stub(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
+      allow(Clock).to receive(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       attachment = FileAttachment.from_file(@file, "", "pre", "post")
-      attachment.name.should == 'pre-2010-01-17T140532-post'
+      expect(attachment.name).to eq('pre-2010-01-17T140532-post')
     end
 
     it "should create an instance with content type from given file" do
       attachment = FileAttachment.from_file(@file, 'image/jpg')
-      attachment.content_type.should == 'image/jpg'
+      expect(attachment.content_type).to eq('image/jpg')
     end
 
     it "should create an instance with data from given file" do
-      File.stub(:binread).with(@file).and_return("file_contents")
+      allow(File).to receive(:binread).with(@file).and_return("file_contents")
       attachment = FileAttachment.from_file(@file, '')
-      attachment.data.read.should == 'file_contents'
+      expect(attachment.data.read).to eq('file_contents')
     end
   end
 
@@ -59,25 +59,25 @@ describe "FileAttachment" do
       new_data = double()
       StringIO.stub :new => new_data
 
-      @child.should_receive(:has_attachment?).with('test_160').and_return(false)
-      @child.should_receive(:attach).and_return(false)
-      @child.should_receive(:save).and_return(false)
-      @attachment.should_receive(:resized_blob).and_return(new_data)
+      expect(@child).to receive(:has_attachment?).with('test_160').and_return(false)
+      expect(@child).to receive(:attach).and_return(false)
+      expect(@child).to receive(:save).and_return(false)
+      expect(@attachment).to receive(:resized_blob).and_return(new_data)
 
       actual = @attachment.resize("160")
-      actual.data.should == new_data
-      actual.name.should == 'test_160'
-      actual.content_type.should == 'image/jpg'
-      actual.child.should == @child
+      expect(actual.data).to eq(new_data)
+      expect(actual.name).to eq('test_160')
+      expect(actual.content_type).to eq('image/jpg')
+      expect(actual.child).to eq(@child)
     end
 
     it 'should return existing thumbnail' do
       media = double()
-      @child.should_receive(:has_attachment?).with('test_160').and_return(true)
-      @child.should_receive(:media_for_key).with('test_160').and_return(media)
-      @attachment.should_not_receive(:resized_blob)
+      expect(@child).to receive(:has_attachment?).with('test_160').and_return(true)
+      expect(@child).to receive(:media_for_key).with('test_160').and_return(media)
+      expect(@attachment).not_to receive(:resized_blob)
 
-      @attachment.resize("160").should == media
+      expect(@attachment.resize("160")).to eq(media)
     end
   end
 

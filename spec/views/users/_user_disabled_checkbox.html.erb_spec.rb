@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "users/_user_disabled_checkbox.html.erb" do
+describe "users/_user_disabled_checkbox.html.erb", :type => :view do
   describe "Viewing users disabled status as a checkbox" do
 
     describe "when current user is the same" do
@@ -11,7 +11,7 @@ describe "users/_user_disabled_checkbox.html.erb" do
 
         render :partial => 'users/user_disabled_checkbox', :locals => {:current_user_name => "someusername", :user => user}, :formats => [:html], :handlers => [:erb]
 
-        rendered.should_not =~ /checkbox/
+        expect(rendered).not_to match(/checkbox/)
       end
     end
 
@@ -29,8 +29,8 @@ describe "users/_user_disabled_checkbox.html.erb" do
           :user => @user
         }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should =~ /checkbox/
-        rendered.should_not =~ /checked/
+        expect(rendered).to match(/checkbox/)
+        expect(rendered).not_to match(/checked/)
       end
 
       it "should show checkbox as checked for disabled user" do
@@ -41,8 +41,8 @@ describe "users/_user_disabled_checkbox.html.erb" do
           :user => @user
         }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should =~ /checkbox/
-        rendered.should =~ /checked/
+        expect(rendered).to match(/checkbox/)
+        expect(rendered).to match(/checked/)
       end
     end
 

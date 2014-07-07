@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sunspot' # In the real world we should probably vendor this.
 require 'spec_helper'
 
-describe "Solar" do
+describe "Solar", :type => :request do
 
   class ChildInstanceAccessor < Sunspot::Adapters::InstanceAdapter
 
@@ -36,7 +36,7 @@ describe "Solar" do
   end
 
   before :each do
-    User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
+    allow(User).to receive(:find_by_user_name).and_return(double(:organisation => "stc"))
   end
 
   before :each do
@@ -51,39 +51,39 @@ describe "Solar" do
 
   it "should match on the first part of a child's first name" do
     search = search_with_string("Muha")
-    search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"]
+    expect(search.results.map(&:name).sort).to eq(["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"])
   end
 
   it "should match on the first part of a child's last name" do
     search = search_with_string("Bro")
-    search.results.map(&:name).sort.should == ["Ammad Brown", "Muhammad Brown"]
+    expect(search.results.map(&:name).sort).to eq(["Ammad Brown", "Muhammad Brown"])
   end
 
   it "should match on approximate spelling of a child's entire first name" do
     search = search_with_string("Mohamed")
-    search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"]
+    expect(search.results.map(&:name).sort).to eq(["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"])
   end
 
   it "should support partial reindexing" do
     search = search_with_string("Mohamed")
-    search.results.map(&:name).sort.should == ["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"]
+    expect(search.results.map(&:name).sort).to eq(["Mohammed Smith", "Muhammad Brown", "Muhammed Jones"])
   end
 
   it "should load child instance" do
     child = Child.create('last_known_location' => "New York")
     accessor = ChildInstanceAccessor.new child
-    accessor.id.should == child.id
+    expect(accessor.id).to eq(child.id)
   end
 
   it "should load_all child instances" do
     child = Child.create('last_known_location' => "New York")
     accessor = ChildDataAccessor.new Child
-    accessor.load(child.id).should == Child.get(child.id)
+    expect(accessor.load(child.id)).to eq(Child.get(child.id))
   end
 
 end
 
-describe "Enquiry Mapping" do
+describe "Enquiry Mapping", :type => :request do
 
   class EnquiryInstanceAccessor < Sunspot::Adapters::InstanceAdapter
 
@@ -122,7 +122,7 @@ describe "Enquiry Mapping" do
   end
 
   before :each do
-    User.stub(:find_by_user_name).and_return(double(:organisation => "stc"))
+    allow(User).to receive(:find_by_user_name).and_return(double(:organisation => "stc"))
   end
 
   before :each do
@@ -138,8 +138,8 @@ describe "Enquiry Mapping" do
 
   it "should match enquiry with child record" do
     matches = match(@enquiry["criteria"])
-    matches.results.map(&:name).sort.should == ["Ammad Brown"]
-    matches.results.map(&:name).sort.should_not include("Muhammad Brown")
+    expect(matches.results.map(&:name).sort).to eq(["Ammad Brown"])
+    expect(matches.results.map(&:name).sort).not_to include("Muhammad Brown")
   end
 
 end

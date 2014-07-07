@@ -1,30 +1,30 @@
 require 'spec_helper'
 
-describe RolesController do
+describe RolesController, :type => :controller do
 
   describe "GET index" do
 
     it "should show page name" do
       fake_login_as(Permission::ROLES[:view])
       mock = double()
-      Role.should_receive(:by_name).and_return([mock])
+      expect(Role).to receive(:by_name).and_return([mock])
       get :index
-      assigns[:page_name].should == "Roles"
+      expect(assigns[:page_name]).to eq("Roles")
     end
 
     it "should allow user to view the roles" do
       fake_login_as(Permission::ROLES[:view])
       mock = double()
-      Role.should_receive(:by_name).and_return([mock])
+      expect(Role).to receive(:by_name).and_return([mock])
       get :index
-      response.should_not be_forbidden
-      assigns(:roles).should == [mock]
+      expect(response).not_to be_forbidden
+      expect(assigns(:roles)).to eq([mock])
     end
 
     it "should not allow user without view permission to view roles" do
       fake_login_as(Permission::USERS[:view])
       get :index
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
   end
 
@@ -33,17 +33,17 @@ describe RolesController do
     it "should allow user to edit roles " do
       fake_login_as(Permission::ROLES[:create_and_edit])
       mock = stub_model Role, :id => "10"
-      Role.should_receive(:get).with(mock.id).and_return(mock)
+      expect(Role).to receive(:get).with(mock.id).and_return(mock)
       get :edit, :id => mock.id
-      response.should_not be_forbidden
-      assigns(:role).should == mock
+      expect(response).not_to be_forbidden
+      expect(assigns(:role)).to eq(mock)
     end
 
     it "should not allow user without permission to edit roles" do
       fake_login_as(Permission::USERS[:view])
       Role.stub :get => stub_model(Role)
       get :edit, :id => "10"
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
 
   end
@@ -53,16 +53,16 @@ describe RolesController do
     it "should allow user to view roles " do
       fake_login_as(Permission::ROLES[:create_and_edit])
       mock = stub_model Role, :id => "10"
-      Role.should_receive(:get).with(mock.id).and_return(mock)
+      expect(Role).to receive(:get).with(mock.id).and_return(mock)
       get :show, :id => mock.id
-      assigns(:role).should == mock
+      expect(assigns(:role)).to eq(mock)
     end
 
     it "should not allow user without permission to edit roles" do
       fake_login_as(Permission::USERS[:view])
       Role.stub :get => stub_model(Role)
       get :show, :id => "10"
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
 
   end
@@ -71,17 +71,17 @@ describe RolesController do
     it "should allow valid user to create roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])
       mock = stub_model Role
-      Role.should_receive(:new).and_return(mock)
+      expect(Role).to receive(:new).and_return(mock)
       post :new
-      response.should_not be_forbidden
-      assigns(:role).should == mock
+      expect(response).not_to be_forbidden
+      expect(assigns(:role)).to eq(mock)
     end
 
     it "should not allow user without permission to create new roles" do
       fake_login_as(Permission::USERS[:view])
-      Role.should_not_receive(:new)
+      expect(Role).not_to receive(:new)
       post :new
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
   end
 
@@ -91,12 +91,12 @@ describe RolesController do
       mock = stub_model Role, :id => "1"
       role_mock = { "mock" => "mock" }
 
-      mock.should_receive(:update_attributes).with(role_mock).and_return(true)
-      Role.should_receive(:get).with(mock.id).and_return(mock)
+      expect(mock).to receive(:update_attributes).with(role_mock).and_return(true)
+      expect(Role).to receive(:get).with(mock.id).and_return(mock)
       post :update, :id => mock.id, :role => role_mock
-      response.should_not be_forbidden
-      assigns(:role).should == mock
-      flash[:notice].should == "Role details are successfully updated."
+      expect(response).not_to be_forbidden
+      expect(assigns(:role)).to eq(mock)
+      expect(flash[:notice]).to eq("Role details are successfully updated.")
     end
 
     it "should return error if update attributes is not invoked " do
@@ -104,21 +104,21 @@ describe RolesController do
       mock = stub_model Role, :id => "1"
       role_mock = { "mock" => "mock" }
 
-      mock.should_receive(:update_attributes).with(role_mock).and_return(false)
-      Role.should_receive(:get).with(mock.id).and_return(mock)
+      expect(mock).to receive(:update_attributes).with(role_mock).and_return(false)
+      expect(Role).to receive(:get).with(mock.id).and_return(mock)
       post :update, :id => mock.id, :role => role_mock
-      response.should_not be_forbidden
-      assigns(:role).should == mock
-      flash[:error].should == "Error in updating the Role details."
+      expect(response).not_to be_forbidden
+      expect(assigns(:role)).to eq(mock)
+      expect(flash[:error]).to eq("Error in updating the Role details.")
     end
 
     it "should not allow invalid user to update roles" do
       fake_login_as(Permission::ROLES[:view])
       mock = stub_model Role, :id => "1"
-      mock.should_not_receive(:update_attributes).with(anything)
-      Role.should_receive(:get).with(mock.id).and_return(mock)
+      expect(mock).not_to receive(:update_attributes).with(anything)
+      expect(Role).to receive(:get).with(mock.id).and_return(mock)
       post :update, :id => mock.id, :role => {}
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
   end
 
@@ -126,29 +126,29 @@ describe RolesController do
     it "should not allow invalid user to create roles" do
       fake_login_as(Permission::ROLES[:view])
       role_mock = double()
-      Role.should_not_receive(:new).with(anything)
+      expect(Role).not_to receive(:new).with(anything)
       post :create, :role => role_mock
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
 
     it "should allow valid user to create roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])
       role_mock = { "mock" => "mock" }
-      role_mock.should_receive(:save).and_return(true)
-      Role.should_receive(:new).with(role_mock).and_return(role_mock)
+      expect(role_mock).to receive(:save).and_return(true)
+      expect(Role).to receive(:new).with(role_mock).and_return(role_mock)
       post :create, :role => role_mock
-      response.should redirect_to(roles_path)
-      response.should_not be_forbidden
+      expect(response).to redirect_to(roles_path)
+      expect(response).not_to be_forbidden
     end
 
     it "should take back to new page if save failed" do
       fake_login_as(Permission::ROLES[:create_and_edit])
       role_mock = double()
-      role_mock.should_receive(:save).and_return(false)
-      Role.should_receive(:new).with(anything).and_return(role_mock)
+      expect(role_mock).to receive(:save).and_return(false)
+      expect(Role).to receive(:new).with(anything).and_return(role_mock)
       post :create, :role => role_mock
-      response.should render_template(:new)
-      response.should_not be_forbidden
+      expect(response).to render_template(:new)
+      expect(response).not_to be_forbidden
     end
 
   end

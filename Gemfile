@@ -38,8 +38,8 @@ end
 group :test, :cucumber do
   gem 'factory_girl',       '~> 2.6'
 
-  gem 'rspec',              '~> 2.14.1'
-  gem 'rspec-rails',        '~> 2.14.1'
+  gem 'rspec',              '~> 2.99'
+  gem 'rspec-rails',        '~> 2.99'
   gem 'rspec-instafail',    '~> 0.2.4'
   gem 'jasmine',            '~> 1.3.2'
 

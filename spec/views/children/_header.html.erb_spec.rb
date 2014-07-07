@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe "children/_header.html.erb" do
+describe "children/_header.html.erb", :type => :view do
   before :each do
     @user = User.new
-    controller.stub(:current_user).and_return(@user)
-    view.stub(:current_user).and_return(@user)
+    allow(controller).to receive(:current_user).and_return(@user)
+    allow(view).to receive(:current_user).and_return(@user)
   end
 
   shared_examples_for "show links" do |permissions|
     it do
       @user.stub(:permissions => permissions)
       render :partial => "children/header"
-      rendered.should have_tag("a[href='#{@url}']")
+      expect(rendered).to have_tag("a[href='#{@url}']")
     end
   end
 
@@ -19,7 +19,7 @@ describe "children/_header.html.erb" do
     it do
       @user.stub(:permissions => permissions)
       render :partial => "children/header"
-      rendered.should_not have_tag("a[href='#{@url}']")
+      expect(rendered).not_to have_tag("a[href='#{@url}']")
     end
   end
 
@@ -27,7 +27,7 @@ describe "children/_header.html.erb" do
     it do
       @user.stub(:permissions => permissions)
       render :partial => "children/header"
-      rendered.should have_tag("a[href='#{@url}?per_page=all']")
+      expect(rendered).to have_tag("a[href='#{@url}?per_page=all']")
     end
   end
 
@@ -35,7 +35,7 @@ describe "children/_header.html.erb" do
     it do
       @user.stub(:permissions => permissions)
       render :partial => "children/header"
-      rendered.should_not have_tag("a[href='#{@url}?per_page=all']")
+      expect(rendered).not_to have_tag("a[href='#{@url}?per_page=all']")
     end
   end
 

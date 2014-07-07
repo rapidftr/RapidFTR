@@ -1,27 +1,27 @@
 require 'spec_helper'
 
-describe ReportsController do
+describe ReportsController, :type => :controller do
   before :each do
     fake_login_as [ Permission::REPORTS[:view] ]
   end
 
   it "should fetch reports" do
-    Report.should_receive(:paginate).with(hash_including(:design_doc => "Report")).and_return([])
+    expect(Report).to receive(:paginate).with(hash_including(:design_doc => "Report")).and_return([])
     get :index
   end
 
   it "should sort descending by date" do
-    Report.should_receive(:paginate).with(hash_including(:view_name => "by_as_of_date", :descending => true)).and_return([])
+    expect(Report).to receive(:paginate).with(hash_including(:view_name => "by_as_of_date", :descending => true)).and_return([])
     get :index
   end
 
   it "should set default page parameters" do
-    Report.should_receive(:paginate).with(hash_including(:per_page => 30, :page => 1)).and_return([])
+    expect(Report).to receive(:paginate).with(hash_including(:per_page => 30, :page => 1)).and_return([])
     get :index
   end
 
   it "should set page number from request" do
-    Report.should_receive(:paginate).with(hash_including(:page => 5)).and_return([ Report.new ])
+    expect(Report).to receive(:paginate).with(hash_including(:page => 5)).and_return([ Report.new ])
     get :index, :page => 5
   end
 
@@ -30,9 +30,9 @@ describe ReportsController do
     sleep 1
     get :show, :id => report.id
 
-    response.content_type.should == report.content_type
-    response.headers['Content-Disposition'].should be_include 'filename="test_report.csv"'
-    response.body.should == 'test data'
+    expect(response.content_type).to eq(report.content_type)
+    expect(response.headers['Content-Disposition']).to be_include 'filename="test_report.csv"'
+    expect(response.body).to eq('test data')
   end
 
   describe '#permissions' do
@@ -42,14 +42,14 @@ describe ReportsController do
 
     it "should not list reports" do
       get :index
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
 
     it "should not download report" do
       report = create :report
       sleep 1
       get :show, :id => report.id
-      response.should be_forbidden
+      expect(response).to be_forbidden
     end
   end
 end

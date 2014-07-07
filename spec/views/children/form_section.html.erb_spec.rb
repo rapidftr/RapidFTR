@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "children/_form_section.html.erb" do
+describe "children/_form_section.html.erb", :type => :view do
 
   before :each do
     @form_section = FormSection.new "unique_id" => "translated", "name" => "displayed_form_name"
@@ -12,13 +12,13 @@ describe "children/_form_section.html.erb" do
       I18n.locale = :fr
       I18n.backend.store_translations("fr", @form_section.unique_id => translated_name)
       render :partial => 'children/tabs' , :object => [@form_section], :formats => [:html], :handlers => [:erb]
-      rendered.should be_include(translated_name)
-      rendered.should_not be_include(@form_section.name)
+      expect(rendered).to be_include(translated_name)
+      expect(rendered).not_to be_include(@form_section.name)
     end
     it "should not be shown with translated name" do
       I18n.backend.store_translations("fr", @form_section.unique_id => nil)
       render :partial => 'children/tabs', :object => [@form_section], :formats => [:html], :handlers => [:erb]
-      rendered.should be_include(@form_section.name)
+      expect(rendered).to be_include(@form_section.name)
     end
   end
 
@@ -31,8 +31,8 @@ describe "children/_form_section.html.erb" do
 
       render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
 
-      rendered.should be_include(translated_name)
-      rendered.should_not be_include(@form_section.name)
+      expect(rendered).to be_include(translated_name)
+      expect(rendered).not_to be_include(@form_section.name)
     end
 
       it "should not be shown with translated heading" do
@@ -54,8 +54,8 @@ describe "children/_form_section.html.erb" do
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
         @form_section.fields.each do |field|
-          rendered.should be_include("<label class=\"key\" for=\"#{field.tag_id}\">")
-          rendered.should be_include("<input id=\"#{field.tag_id}\" name=\"#{field.tag_name_attribute}\" type=\"text\" />")
+          expect(rendered).to be_include("<label class=\"key\" for=\"#{field.tag_id}\">")
+          expect(rendered).to be_include("<input id=\"#{field.tag_id}\" name=\"#{field.tag_name_attribute}\" type=\"text\" />")
         end
       end
     end
@@ -68,7 +68,7 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should be_include("<input id=\"child_name\" name=\"child[name]\" type=\"text\" value=\"Jessica\" />")
+        expect(rendered).to be_include("<input id=\"child_name\" name=\"child[name]\" type=\"text\" value=\"Jessica\" />")
       end
     end
   end
@@ -83,8 +83,8 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should be_include("<input id=\"child_is_age_exact_exact\" name=\"child[is_age_exact]\" type=\"radio\" value=\"exact\" />")
-        rendered.should be_include("<input id=\"child_is_age_exact_approximate\" name=\"child[is_age_exact]\" type=\"radio\" value=\"approximate\" />")
+        expect(rendered).to be_include("<input id=\"child_is_age_exact_exact\" name=\"child[is_age_exact]\" type=\"radio\" value=\"exact\" />")
+        expect(rendered).to be_include("<input id=\"child_is_age_exact_approximate\" name=\"child[is_age_exact]\" type=\"radio\" value=\"approximate\" />")
       end
     end
 
@@ -97,8 +97,8 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should be_include("<input id=\"child_is_age_exact_exact\" name=\"child[is_age_exact]\" type=\"radio\" value=\"exact\" />")
-        rendered.should be_include("<input checked=\"checked\" id=\"child_is_age_exact_approximate\" name=\"child[is_age_exact]\" type=\"radio\" value=\"approximate\" />")
+        expect(rendered).to be_include("<input id=\"child_is_age_exact_exact\" name=\"child[is_age_exact]\" type=\"radio\" value=\"exact\" />")
+        expect(rendered).to be_include("<input checked=\"checked\" id=\"child_is_age_exact_approximate\" name=\"child[is_age_exact]\" type=\"radio\" value=\"approximate\" />")
       end
     end
   end
@@ -113,8 +113,8 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should be_include("<label class=\"key\" for=\"child_date_of_separation\">")
-        rendered.should be_include("<select id=\"child_date_of_separation\" name=\"child[date_of_separation]\"><option selected=\"selected\" value=\"\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
+        expect(rendered).to be_include("<label class=\"key\" for=\"child_date_of_separation\">")
+        expect(rendered).to be_include("<select id=\"child_date_of_separation\" name=\"child[date_of_separation]\"><option selected=\"selected\" value=\"\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
       end
     end
   end
@@ -127,7 +127,7 @@ describe "children/_form_section.html.erb" do
 
       render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
-      rendered.should have_tag 'select[id="child_date_of_separation"][name="child[date_of_separation]"]' do
+      expect(rendered).to have_tag 'select[id="child_date_of_separation"][name="child[date_of_separation]"]' do
         with_tag 'option[value=""]', text: '(Select...)'
         with_tag 'option[value="1-2 weeks ago"][selected="true"]', text: '1-2 weeks ago'
         with_tag 'option[value="More than a year ago"]', text: 'More than a year ago'
@@ -145,8 +145,8 @@ describe "children/_form_section.html.erb" do
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
-        rendered.should have_tag 'input[checked="checked"][id="child_relatives_sister"][name="child[relatives][]"][type="checkbox"][value="Sister"]'
-        rendered.should have_tag 'input[checked="checked"][id="child_relatives_brother"][name="child[relatives][]"][type="checkbox"][value="Brother"]'
+        expect(rendered).to have_tag 'input[checked="checked"][id="child_relatives_sister"][name="child[relatives][]"][type="checkbox"][value="Sister"]'
+        expect(rendered).to have_tag 'input[checked="checked"][id="child_relatives_brother"][name="child[relatives][]"][type="checkbox"][value="Brother"]'
       end
 
     end

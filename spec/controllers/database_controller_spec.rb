@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DatabaseController do
+describe DatabaseController, :type => :controller do
   before do
     fake_admin_login
   end
@@ -15,28 +15,28 @@ describe DatabaseController do
   end
 
   it "should delete all child models in non-production environments" do
-    User.stub(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
+    allow(User).to receive(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
     Child.create('last_known_location' => "London", :created_by => "me")
     Child.create('last_known_location' => "India", :created_by => "me")
 
     delete :delete_data, :data_type => "child"
 
-    Child.all.should be_empty
+    expect(Child.all).to be_empty
   end
 
   it "should delete all enquiry models in non-production environments" do
-    User.stub(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
+    allow(User).to receive(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
     Enquiry.create({:enquirer_name => 'Someone', :criteria => {'name' => 'child name'}})
     Enquiry.create({:enquirer_name => 'Someone Else', :criteria => {'name' => 'child name'}})
 
     delete :delete_data, :data_type => "enquiry"
 
-    Enquiry.all.should be_empty
+    expect(Enquiry.all).to be_empty
   end
 
   it "should not delete any models in production environments" do
     Rails.env = "production"
     delete :delete_data, :data_type => "enquiry"
-    response.response_code.should == 403
+    expect(response.response_code).to eq(403)
   end
 end

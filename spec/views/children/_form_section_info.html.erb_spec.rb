@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "children/_form_section_info.html.erb" do
+describe "children/_form_section_info.html.erb", :type => :view do
     before { FormSection.all.each &:destroy }
 
     it "should show form section description and help text" do
@@ -11,8 +11,8 @@ describe "children/_form_section_info.html.erb" do
 
       render :partial => 'children/form_section_info', :locals => { :form_section => form_section }, :formats => [:html], :handlers => [:erb]
 
-      rendered.should be_include("form-section-description")
-      rendered.should be_include("form-section-help-text")
+      expect(rendered).to be_include("form-section-description")
+      expect(rendered).to be_include("form-section-help-text")
     end
 
     it "should show form section description but no help text" do
@@ -21,8 +21,8 @@ describe "children/_form_section_info.html.erb" do
 
       render :partial => 'children/form_section_info', :locals => { :form_section => form_section }, :formats => [:html], :handlers => [:erb]
 
-      rendered.should be_include("form-section-description")
-      rendered.should_not be_include("form-section-help-text")
+      expect(rendered).to be_include("form-section-description")
+      expect(rendered).not_to be_include("form-section-help-text")
     end
 
     it "should show help text but no form section description" do
@@ -31,8 +31,8 @@ describe "children/_form_section_info.html.erb" do
 
       render :partial => 'children/form_section_info', :locals => { :form_section => form_section }, :formats => [:html], :handlers => [:erb]
 
-      rendered.should_not be_include("form-section-description")
-      rendered.should be_include("form-section-help-text")
+      expect(rendered).not_to be_include("form-section-description")
+      expect(rendered).to be_include("form-section-help-text")
     end
 
     it "should show neither" do
@@ -41,8 +41,8 @@ describe "children/_form_section_info.html.erb" do
 
       render :partial => 'children/form_section_info', :locals => { :form_section => form_section }, :formats => [:html], :handlers => [:erb]
 
-      rendered.should_not be_include("form-section-description")
-      rendered.should_not be_include("form-section-help-text")
+      expect(rendered).not_to be_include("form-section-description")
+      expect(rendered).not_to be_include("form-section-help-text")
     end
 
 end

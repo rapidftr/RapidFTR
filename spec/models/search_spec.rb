@@ -1,38 +1,38 @@
 require 'spec_helper'
 
-describe Search do
+describe Search, :type => :model do
 
   it "should be valid if search contains special characters" do
     search = Search.new("r*")
-    search.valid?.should be_true
-    search.errors.on(:query).should be nil
+    expect(search.valid?).to be_truthy
+    expect(search.errors.on(:query)).to be nil
   end
 
   it "should not be valid if search has no query" do
     search = Search.new("")
-    search.valid?.should be_false
-    search.errors.on(:query).should == "can't be empty"
+    expect(search.valid?).to be_falsey
+    expect(search.errors.on(:query)).to eq("can't be empty")
 
     search = Search.new("child")
-    search.valid?.should be_true
+    expect(search.valid?).to be_truthy
   end
 
   it "should not be valid if it has more than 150 chars" do
     search = Search.new("A"*151)
-    search.valid?.should be_false
-    search.errors.on(:query).should == "is invalid"
+    expect(search.valid?).to be_falsey
+    expect(search.errors.on(:query)).to eq("is invalid")
   end
 
   it "should strip spaces" do
      search = Search.new(" roger ")
-     search.query.should == "roger"
+     expect(search.query).to eq("roger")
   end
 
   it "should validate empty without special characters" do
     search = Search.new("@")
-    search.query.should == ""
-    search.valid?.should be_false
-    search.errors.on(:query).should == "can't be empty"
+    expect(search.query).to eq("")
+    expect(search.valid?).to be_falsey
+    expect(search.errors.on(:query)).to eq("can't be empty")
   end
 
 end

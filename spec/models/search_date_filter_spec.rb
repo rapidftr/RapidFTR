@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe SearchDateFilter do
+describe SearchDateFilter, :type => :model do
 
   let(:search_date_filter) {{:field => 'date', :from_value => 'from_value',  :to_value => 'to_value', :index => '1'}}
 
@@ -8,17 +8,17 @@ describe SearchDateFilter do
 
     it 'should offset the index of OFFSET_INDEX' do
       range = SearchDateFilter.new(search_date_filter)
-      range.index.should==(SearchDateFilter::OFFSET_INDEX+1).to_s
+      expect(range.index).to eq((SearchDateFilter::OFFSET_INDEX+1).to_s)
     end
 
     it 'should set the from_value as provided in params' do
       range = SearchDateFilter.new(search_date_filter)
-      range.from_value.should==search_date_filter[:from_value]
+      expect(range.from_value).to eq(search_date_filter[:from_value])
     end
 
     it 'should set the to_value as provided in params' do
       range = SearchDateFilter.new(search_date_filter)
-      range.to_value.should==search_date_filter[:to_value]
+      expect(range.to_value).to eq(search_date_filter[:to_value])
     end
 
   end
@@ -29,7 +29,7 @@ describe SearchDateFilter do
 
     it 'should return the correct lucene query' do
       range = SearchDateFilter.new(search_date_filter)
-      range.to_lucene_query.should==lucene_query
+      expect(range.to_lucene_query).to eq(lucene_query)
     end
 
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'children/' do
+describe 'children/', :type => :view do
   before :all do
     @old_backend = I18n.backend
     I18n.backend = I18nBackendCouch.new
@@ -11,7 +11,7 @@ describe 'children/' do
   end
 
   before :each do
-    I18n.backend.class.should == I18nBackendCouch
+    expect(I18n.backend.class).to eq(I18nBackendCouch)
     @child = Child.new("_id" => "id12345", "name" => "First Last", "new field" => "")
     assigns[:child] = @child
   end
@@ -21,14 +21,14 @@ describe 'children/' do
       translated_name = "XYZ"
       I18n.backend.store_translations("en", @field.name => translated_name)
       render :partial => "children/#{@field.type}", :object => @field
-      rendered.should be_include(translated_name)
-      rendered.should_not be_include(@field.display_name)
+      expect(rendered).to be_include(translated_name)
+      expect(rendered).not_to be_include(@field.display_name)
     end
 
     it "should not be shown" do
       I18n.backend.store_translations("en", @field.name => nil)
       render :partial => "children/#{@field.type}", :object => @field
-      rendered.should be_include(@field.display_name)
+      expect(rendered).to be_include(@field.display_name)
     end
   end
 

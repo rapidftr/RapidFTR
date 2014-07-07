@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PasswordRecoveryRequest do
+describe PasswordRecoveryRequest, :type => :model do
   context 'a new request' do
 
     it "should display requests that were not hidden" do
@@ -8,19 +8,19 @@ describe PasswordRecoveryRequest do
 
       PasswordRecoveryRequest.create! :user_name => "goodduck", :hidden => true
 
-      PasswordRecoveryRequest.to_display.map(&:user_name).should include("evilduck")
-      PasswordRecoveryRequest.to_display.map(&:user_name).should_not   include("goodduck")
+      expect(PasswordRecoveryRequest.to_display.map(&:user_name)).to include("evilduck")
+      expect(PasswordRecoveryRequest.to_display.map(&:user_name)).not_to   include("goodduck")
     end
 
     it "should raise error if username is empty" do
-      lambda {PasswordRecoveryRequest.create! :user_name => ""}.should raise_error
+      expect {PasswordRecoveryRequest.create! :user_name => ""}.to raise_error
     end
 
     it "should hide password requests" do
       request = PasswordRecoveryRequest.create! :user_name => "moderateduck"
       request.hide!
 
-      PasswordRecoveryRequest.to_display.map(&:user_name).should_not include("moderateduck")
+      expect(PasswordRecoveryRequest.to_display.map(&:user_name)).not_to include("moderateduck")
     end
   end
 end

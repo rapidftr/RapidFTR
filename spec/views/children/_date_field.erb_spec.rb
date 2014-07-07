@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "children/_date_field.html.erb" do
+describe "children/_date_field.html.erb", :type => :view do
   before :each do
     @child = Child.new("_id" => "id12345", "name" => "First Last", "new field" => "")
     assigns[:child] = @child
@@ -13,7 +13,7 @@ describe "children/_date_field.html.erb" do
     :help_text => "This is my help text"
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
-    rendered.should have_tag("img.vtip")
+    expect(rendered).to have_tag("img.vtip")
   end
 
   it "should not include image for tooltip when help text not exists" do
@@ -22,7 +22,7 @@ describe "children/_date_field.html.erb" do
     :type => 'date_field'
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
-    rendered.should_not have_tag("img.vtip")
+    expect(rendered).not_to have_tag("img.vtip")
   end
 
   it "should configure the date picker date format" do
@@ -33,7 +33,7 @@ describe "children/_date_field.html.erb" do
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
 
-    rendered.should be_include("dateFormat: 'dd/mm/yy'")
+    expect(rendered).to be_include("dateFormat: 'dd/mm/yy'")
 
   end
 end

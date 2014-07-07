@@ -1,41 +1,41 @@
 require 'spec_helper'
 
-describe ChildrenController do
+describe ChildrenController, :type => :routing do
   describe "routing" do
     it "recognizes and generates #index" do
-      { :get => "/children" }.should route_to(:controller => "children", :action => "index")
+      expect({ :get => "/children" }).to route_to(:controller => "children", :action => "index")
     end
 
     it "recognizes and generates #new" do
-      { :get => "/children/new" }.should route_to(:controller => "children", :action => "new")
+      expect({ :get => "/children/new" }).to route_to(:controller => "children", :action => "new")
     end
 
     it "recognizes and generates #show" do
-      { :get => "/children/1" }.should route_to(:controller => "children", :action => "show", :id => "1")
+      expect({ :get => "/children/1" }).to route_to(:controller => "children", :action => "show", :id => "1")
     end
 
     it "recognizes and generates #edit" do
-      { :get => "/children/1/edit" }.should route_to(:controller => "children", :action => "edit", :id => "1")
+      expect({ :get => "/children/1/edit" }).to route_to(:controller => "children", :action => "edit", :id => "1")
     end
 
     it "recognizes and generates #create" do
-      { :post => "/children" }.should route_to(:controller => "children", :action => "create") 
+      expect({ :post => "/children" }).to route_to(:controller => "children", :action => "create") 
     end
 
     it "recognizes and generates #update" do
-      { :put => "/children/1" }.should route_to(:controller => "children", :action => "update", :id => "1") 
+      expect({ :put => "/children/1" }).to route_to(:controller => "children", :action => "update", :id => "1") 
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/children/1" }.should route_to(:controller => "children", :action => "destroy", :id => "1") 
+      expect({ :delete => "/children/1" }).to route_to(:controller => "children", :action => "destroy", :id => "1") 
     end
 
     it "recognizes and generates #search" do
-      { :get => '/children/search' }.should route_to(:controller => 'children', :action => 'search')
+      expect({ :get => '/children/search' }).to route_to(:controller => 'children', :action => 'search')
     end
 
     it 'handles a multi-child export request' do
-      { :post => 'advanced_search/export_data' }.should route_to( :controller => 'advanced_search', :action => 'export_data' )
+      expect({ :post => 'advanced_search/export_data' }).to route_to( :controller => 'advanced_search', :action => 'export_data' )
     end
   end
 end
