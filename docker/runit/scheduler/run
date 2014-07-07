@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export RAILS_ENV=production
+exec chpst -u www-data:www-data /etc/service/scheduler/scheduler-rake.sh
