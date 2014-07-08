@@ -2,6 +2,7 @@ module RecordHelper
   include RapidFTR::Model
   include RapidFTR::Clock
 
+  # TODO: #40: Refactor created_at & posted_at to use CouchREST timestamps!
   def set_creation_fields_for(user)
     self['created_by'] = user.try(:user_name)
     self['created_organisation'] = user.try(:organisation)

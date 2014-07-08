@@ -20,8 +20,6 @@ class Child < CouchRest::Model::Base
   before_save :update_photo_keys
   before_save :add_creation_history, :if => :new?
 
-  property :nickname
-  property :name
   property :short_id
   property :unique_identifier
   property :created_organisation
@@ -31,7 +29,6 @@ class Child < CouchRest::Model::Base
   property :duplicate, TrueClass
   property :investigated, TrueClass
   property :verified, TrueClass
-  property :verified
 
   validate :validate_photos_size
   validate :validate_photos
@@ -61,24 +58,13 @@ class Child < CouchRest::Model::Base
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
     child.create_unique_id
-    child['short_id'] = child.short_id
-    child['name'] = fields['name'] || child.name || ''
+    child['short_id'] = child.short_id # TODO: Move this into create_unique_id
     child.set_creation_fields_for user
     child
   end
 
   design do
       view :by_protection_status_and_gender_and_ftr_status
-
-      view :by_name,
-              :map => "function(doc) {
-                  if (doc['couchrest-type'] == 'Child')
-                 {
-                    if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
-                      emit(doc['name'], doc);
-                    }
-                 }
-              }"
 
       ['created_at', 'name', 'flag_at', 'reunited_at'].each do |field|
         view "by_all_view_with_created_by_#{field}",
@@ -327,14 +313,6 @@ class Child < CouchRest::Model::Base
 
   def method_missing(m, *args, &block)
     self[m]
-  end
-
-  def to_s
-    if self['name'].present?
-      "#{self['name']} (#{self['unique_identifier']})"
-    else
-      self['unique_identifier']
-    end
   end
 
   def self.all
