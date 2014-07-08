@@ -13,12 +13,15 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
   end
-  rescue_from CanCan::AccessDenied do |exception|
+  rescue_from CanCan::AccessDenied do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.forbidden "session.forbidden"
   end
   rescue_from(ErrorResponse) do |e|
+    ErrorResponse.log e
     render_error_response e
   end
 

@@ -62,26 +62,6 @@ describe ChildrenHelper, :type => :helper do
     end
   end
 
-  describe "#text_to_identify_child" do
-    it "should show the child short id if name is not present" do
-      identifier = "00001234567"
-      child = Child.new(:unique_identifier => identifier)
-      expect(helper.text_to_identify_child(child)).to eq("1234567")
-    end
-
-    it "should show the name if it is present" do
-      name = "Ygor"
-      child = Child.new(:name => name,:unique_identifier => '123412341234')
-      expect(helper.text_to_identify_child(child)).to eq('Ygor: 2341234')
-    end
-
-    it "should show the child unique id if name is empty" do
-      unique_identifier = "AnID"
-      child = Child.new(:name => "", :unique_identifier => unique_identifier)
-      expect(helper.text_to_identify_child(child)).to eq(unique_identifier)
-    end
-  end
-
   describe "#flag_summary_for_child" do
     it "should show the flag summary for the child" do
       @current_user = stub_model(User)
