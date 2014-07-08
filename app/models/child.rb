@@ -3,7 +3,6 @@ class Child < CouchRest::Model::Base
 
   require "uuidtools"
   include RecordHelper
-  include RapidFTR::Model
   include RapidFTR::CouchRestRailsBackward
   include Extensions::CustomValidator::CustomFieldsValidator
   include AttachmentHelper
@@ -256,7 +255,7 @@ class Child < CouchRest::Model::Base
   def validate_has_at_least_one_field_value
     return true if field_definitions.any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
-    return true if deprecated_fields && deprecated_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
+    return true if unknown_fields && unknown_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
     errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
   end
 
@@ -384,7 +383,7 @@ class Child < CouchRest::Model::Base
 
   private
 
-  def deprecated_fields
+  def unknown_fields
     system_fields = ["created_at",
                      "last_updated_at",
                      "last_updated_by",
@@ -393,15 +392,14 @@ class Child < CouchRest::Model::Base
                      "posted_from",
                      "_rev",
                      "_id",
+                     "_attachments",
                      "short_id",
                      "created_by",
                      "created_by_full_name",
                      "couchrest-type",
                      "histories",
                      "unique_identifier",
-                     "current_photo_key",
-                     "created_organisation",
-                     "photo_keys"]
+                     "created_organisation"]
     existing_fields = system_fields + field_definitions.map { |x| x.name }
     self.reject { |k, v| existing_fields.include? k }
   end

@@ -1,5 +1,7 @@
 module RecordHelper
   include RapidFTR::Model
+
+  # TODO: #40: Remove this, Clock should be used static
   include RapidFTR::Clock
 
   # TODO: #40: Refactor created_at & posted_at to use CouchREST timestamps!
@@ -62,6 +64,7 @@ module RecordHelper
 
   def update_properties_with_user_name(user_name, new_photo, photo_names, new_audio, properties)
     update_properties(properties, user_name)
+    # TODO: #40: Refactor delete_photos & update_photo_keys
     self.delete_photos(photo_names)
     self.update_photo_keys
     self.photo = new_photo

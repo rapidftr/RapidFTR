@@ -537,7 +537,7 @@ describe Child, :type => :model do
       photo = uploadable_large_photo
       child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.photo = photo
-      expect(child.save).to eq(false)
+      expect(child.valid?).to eq(false)
     end
 
     it "should not save with an audio file larger than 10 megabytes" do
@@ -989,7 +989,7 @@ describe Child, :type => :model do
         @child.save
         @child.delete_photos([@child.photos.first.name])
         @child.save
-        changes = @child['histories'].first['changes']
+        changes = @child['histories'][1]['changes']
         expect(changes['photo_keys']['deleted'].size).to eq(1)
         expect(changes['photo_keys']['added']).to be_nil
       end
@@ -1078,7 +1078,7 @@ describe Child, :type => :model do
         @child.save
         @child.delete_photos([@child.photos.first.name])
         @child.save
-        changes = @child['histories'].first['changes']
+        changes = @child['histories'][1]['changes']
         expect(changes['photo_keys']['deleted'].size).to eq(1)
         expect(changes['photo_keys']['added']).to be_nil
       end
