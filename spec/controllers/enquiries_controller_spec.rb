@@ -36,7 +36,7 @@ describe EnquiriesController do
     describe 'member' do
       before :each do
         User.stub!(:find_by_user_name).with("uname").and_return(user = mock('user', :user_name => 'uname', :organisation => 'org'))
-        @enquiry = Enquiry.create({:enquirer_name => 'Someone', :criteria => {'name' => 'child name'}})
+        @enquiry = Enquiry.create(:enquirer_name => 'Someone', :criteria => {'name' => 'child name'})
         @enquiry_arg = hash_including("_id" => @enquiry.id)
       end
 
