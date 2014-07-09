@@ -12,7 +12,7 @@ class ChildSearch
 
   def ordered(field, direction)
     search.build do
-      order_by Child.sortable_field_name(field), direction
+      order_by Child.sortable_field_name(field), direction if field
     end
     self
   end
@@ -28,7 +28,7 @@ class ChildSearch
 
   def marked_as field_to_filter
     search.build do
-      with(field_to_filter.to_sym, true) if field_to_filter
+      with(field_to_filter.to_sym, true) if field_to_filter and !field_to_filter.empty?
     end
    self
   end

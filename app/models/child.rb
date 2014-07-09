@@ -233,14 +233,32 @@ class Child < CouchRest::Model::Base
     [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
   end
 
+   def self.sortable_field_name(field)
+     "#{field}_sort".to_sym
+   end
+
   def self.build_solar_schema
     text_fields = build_text_fields_for_solar
     date_fields = build_date_fields_for_solar
+
     Sunspot.setup(Child) do
-      text *text_fields
-      date *date_fields
-      date_fields.each { |date_field| date date_field }
+      text_fields.each do |field_name|
+        string sortable_field_name(field_name) do
+          self[field_name]
+        end
+        text field_name
+      end
+      date_fields.each do |field_name|
+        time field_name
+        # TODO: Not needed but for compatibility with sortable_field_name
+        time sortable_field_name(field_name) do
+          self[field_name]
+        end
+      end
       boolean :duplicate
+      boolean(:active) {|c| !c.duplicate}
+      boolean :reunited
+      boolean :flagged
     end
   end
 
@@ -312,10 +330,6 @@ class Child < CouchRest::Model::Base
 
   def method_missing(m, *args, &block)
     self[m]
-  end
-
-  def self.all
-    view('by_name', {})
   end
 
   def self.all_by_creator(created_by)

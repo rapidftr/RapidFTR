@@ -1,4 +1,5 @@
 module FakeLogin
+  # TODO #40 - Use FactoryGirl to create Users
   def fake_login user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
     session = Session.new :user_name => user.user_name
   	session.save
@@ -11,6 +12,14 @@ module FakeLogin
 
     allow(Role).to receive(:get).with("abcd").and_return(Role.new(:name => "default", :permissions => [Permission::CHILDREN[:register]]))
     allow(User).to receive(:find_by_user_name).with(user.user_name).and_return(user)
+    session
+  end
+
+  def setup_session user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
+    session = Session.new :user_name => user.user_name
+  	session.save
+    allow(@controller).to receive(:current_session).and_return(session)
+    @controller.session[:last_access_time] = Clock.now.rfc2822
     session
   end
 

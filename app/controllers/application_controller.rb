@@ -30,16 +30,17 @@ class ApplicationController < ActionController::Base
   end
 
   def render_error_response(e)
+    puts e, e.backtrace
     respond_to do |format|
-      format.html do
+      format.json do
+        render status: e.status_code, text: e.message
+      end
+      format.any do
         if e.status_code == 401
           redirect_to :login
         else
-          render :template => "shared/error_response",:status => e.status_code, :locals => { :exception => e }
+          render :formats => [:html], :template => "shared/error_response",:status => e.status_code, :locals => { :exception => e }
         end
-      end
-      format.json do
-        render status: e.status_code, text: e.message
       end
     end
   end
