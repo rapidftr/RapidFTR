@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe SystemUsersController do
+describe SystemUsersController, :type => :controller do
 
   it "should list all system users" do
     fake_login_as Permission::SYSTEM[:system_users]
-    SystemUsers.should_receive(:all)
+    expect(SystemUsers).to receive(:all)
     get :index
   end
 
   it "should show page name" do
     fake_login_as
     get :new
-    assigns[:page_name].should == "Create a System User"
+    expect(assigns[:page_name]).to eq("Create a System User")
   end
 
   describe "create system users" do
@@ -19,8 +19,8 @@ describe SystemUsersController do
       fake_login_as Permission::SYSTEM[:system_users]
       params = {:system_users => {:name => "test_user", :password => "test_password"}}
       mock_system_users = SystemUsers.new
-      SystemUsers.should_receive(:new).and_return(mock_system_users)
-      mock_system_users.should_receive(:save).and_return(true)
+      expect(SystemUsers).to receive(:new).and_return(mock_system_users)
+      expect(mock_system_users).to receive(:save).and_return(true)
       post :create, params
     end
 
@@ -28,37 +28,37 @@ describe SystemUsersController do
       fake_login_as Permission::SYSTEM[:system_users]
       params = {:system_users => {:name => "test_user", :password => "test_password"}}
       mock_system_users = SystemUsers.new
-      SystemUsers.should_receive(:new).and_return(mock_system_users)
-      mock_system_users.should_receive(:save).and_return(false)
+      expect(SystemUsers).to receive(:new).and_return(mock_system_users)
+      expect(mock_system_users).to receive(:save).and_return(false)
       post :create, params
-      response.should render_template :new
+      expect(response).to render_template :new
     end
   end
 
   it "should edit system users" do
     fake_login_as Permission::SYSTEM[:system_users]
-    SystemUsers.should_receive(:get).with("org.couchdb.user:abcd").and_return(SystemUsers.new)
+    expect(SystemUsers).to receive(:get).with("org.couchdb.user:abcd").and_return(SystemUsers.new)
     get :edit, {:id => "abcd"}
-    response.should render_template :edit
+    expect(response).to render_template :edit
   end
 
   describe "update user" do
     it "should update system user" do
       fake_login_as Permission::SYSTEM[:system_users]
       mock_user = SystemUsers.new({:name => "test_user", :password => "test_password" })
-      SystemUsers.should_receive(:get).with("org.couchdb.user:test_user").and_return(mock_user)
-      mock_user.should_receive(:update_attributes).and_return(true)
+      expect(SystemUsers).to receive(:get).with("org.couchdb.user:test_user").and_return(mock_user)
+      expect(mock_user).to receive(:update_attributes).and_return(true)
       put :update, {:id =>"test_user",:system_users => {:name => "test_user", :password => "test_password"}}
-      response.should redirect_to(:action => :index)
+      expect(response).to redirect_to(:action => :index)
     end
 
     it "should not update system user if username is changed" do
       fake_login_as Permission::SYSTEM[:system_users]
       mock_user = SystemUsers.new({:name => "test_user", :password => "test_password" })
-      SystemUsers.should_receive(:get).with("org.couchdb.user:abcd").and_return(mock_user)
-      mock_user.should_not_receive(:update_attributes)
+      expect(SystemUsers).to receive(:get).with("org.couchdb.user:abcd").and_return(mock_user)
+      expect(mock_user).not_to receive(:update_attributes)
       put :update, {:id =>"abcd",:system_users => {:name => "abcd", :password => "test_password"}}
-      response.should redirect_to(:action => :edit)
+      expect(response).to redirect_to(:action => :edit)
     end
 
   end
@@ -66,10 +66,10 @@ describe SystemUsersController do
   it "should destroy the user" do
     fake_login_as Permission::SYSTEM[:system_users]
     mock_user = SystemUsers.new
-    SystemUsers.should_receive(:get).with("org.couchdb.user:test_user").and_return(mock_user)
-    mock_user.should_receive(:destroy)
+    expect(SystemUsers).to receive(:get).with("org.couchdb.user:test_user").and_return(mock_user)
+    expect(mock_user).to receive(:destroy)
     delete :destroy, {:id => "test_user"}
-    response.should redirect_to(:action => :index)
+    expect(response).to redirect_to(:action => :index)
   end
 
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "children/_check_boxes.html.erb" do
+describe "children/_check_boxes.html.erb", :type => :view do
   before :each do
     @child = Child.new("_id" => "id12345", "name" => "First Last", "new field" => "Yes")
     assigns[:child] = @child
@@ -15,7 +15,7 @@ describe "children/_check_boxes.html.erb" do
 
     render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
 
-    rendered.should have_tag("img.vtip")
+    expect(rendered).to have_tag("img.vtip")
   end
 
 	it "should not include image for tooltip when help text does not exist" do
@@ -26,7 +26,7 @@ describe "children/_check_boxes.html.erb" do
 
     render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
 
-    rendered.should_not have_tag("img.vtip")
+    expect(rendered).not_to have_tag("img.vtip")
   end
 
 end

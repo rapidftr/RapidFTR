@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'nokogiri'
 
-describe "advanced_search/index.html.erb" do
+describe "advanced_search/index.html.erb", :type => :view do
   it "should not show hidden fields" do
     fields = [Field.new(:name => 'my_field', :display_name => 'My Field', :visible => true, :type => Field::TEXT_FIELD),
               Field.new(:name => 'my_hidden_field', :display_name => 'My Hidden Field', :visible=> false, :type => Field::TEXT_FIELD)]
@@ -10,7 +10,7 @@ describe "advanced_search/index.html.erb" do
     assign(:criteria_list, [])
     render
     document = Nokogiri::HTML(rendered)
-    document.css(".field").count.should == 1
+    expect(document.css(".field").count).to eq(1)
   end
 
   it "show navigation links for logged in user" do
@@ -19,28 +19,28 @@ describe "advanced_search/index.html.erb" do
     assign(:forms, form_sections)
     assign(:criteria_list, [])
 
-    view.stub!(:current_user).and_return(user)
-    controller.stub!(:current_user).and_return(user)
-    view.stub!(:current_user_name).and_return(user.user_name)
+    allow(view).to receive(:current_user).and_return(user)
+    allow(controller).to receive(:current_user).and_return(user)
+    allow(view).to receive(:current_user_name).and_return(user.user_name)
 
-    controller.stub!(:logged_in?).and_return(true)
-    view.stub!(:logged_in?).and_return(true)
+    allow(controller).to receive(:logged_in?).and_return(true)
+    allow(view).to receive(:logged_in?).and_return(true)
 
     render :template => "advanced_search/index", :layout => "layouts/application"
 
-    rendered.should have_tag("nav")
-    rendered.should have_link "CHILDREN", :href => children_path
+    expect(rendered).to have_tag("nav")
+    expect(rendered).to have_link "CHILDREN", :href => children_path
   end
 
   it "show not navigation links when no user logged in" do
     form_sections = [FormSection.new("name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => [])]
-    view.stub!(:current_user).and_return(nil)
-    view.stub!(:logged_in?).and_return(false)
+    allow(view).to receive(:current_user).and_return(nil)
+    allow(view).to receive(:logged_in?).and_return(false)
     assign(:forms, form_sections)
     assign(:criteria_list, [])
     render :template => "advanced_search/index", :layout => "layouts/application"
 
-    rendered.should_not have_tag("nav")
-    rendered.should_not have_link "CHILDREN", :href => children_path
+    expect(rendered).not_to have_tag("nav")
+    expect(rendered).not_to have_link "CHILDREN", :href => children_path
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DuplicatesController do
+describe DuplicatesController, :type => :controller do
   include FakeLogin
 
   describe "GET new" do
@@ -15,15 +15,15 @@ describe DuplicatesController do
       end
 
       it "should be successful" do
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should fetch and assign the child" do
-        assigns[:child].should equal(@child)
+        expect(assigns[:child]).to equal(@child)
       end
 
       it "should assign the page name" do
-        assigns[:page_name].should == "Mark 1234 as Duplicate"
+        expect(assigns[:page_name]).to eq("Mark 1234 as Duplicate")
       end
     end
 
@@ -34,7 +34,7 @@ describe DuplicatesController do
       end
 
       it "should get forbidden response" do
-        response.response_code.should == 403
+        expect(response.response_code).to eq(403)
       end
     end
 
@@ -42,7 +42,7 @@ describe DuplicatesController do
       it "should redirect to flagged children page" do
         fake_admin_login
         get :new, :child_id => "not_a_valid_child_id"
-        response.should be_forbidden
+        expect(response).to be_forbidden
       end
     end
   end
@@ -52,28 +52,28 @@ describe DuplicatesController do
       before :each do
         fake_admin_login
         @child = Child.new
-        @child.stub!(:save)
+        allow(@child).to receive(:save)
       end
 
       it "should mark the child as duplicate" do
         fake_admin_login
 
-        Child.stub!(:get).with("1234").and_return(@child)
+        allow(Child).to receive(:get).with("1234").and_return(@child)
 
-        @child.should_receive(:mark_as_duplicate).with("5678")
+        expect(@child).to receive(:mark_as_duplicate).with("5678")
 
         post :create, :child_id => "1234", :parent_id => "5678"
       end
 
       it "should redirect to the duplicated child view" do
 
-        Child.stub!(:get).and_return(@child)
-        @child.stub!(:mark_as_duplicate)
-        @child.stub!(:save).and_return(true)
+        allow(Child).to receive(:get).and_return(@child)
+        allow(@child).to receive(:mark_as_duplicate)
+        allow(@child).to receive(:save).and_return(true)
 
         post :create, :child_id => "1234", :parent_id => "5678"
 
-        response.response_code.should == 302
+        expect(response.response_code).to eq(302)
       end
     end
   end

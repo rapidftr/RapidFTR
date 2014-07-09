@@ -1,26 +1,34 @@
-class Replication < CouchRestRails::Document
+class Replication < CouchRest::Model::Base
   MODELS_TO_SYNC = [ Role, Child, User, MobileDbKey, Device ]
   STABLE_WAIT_TIME = 2.minutes
 
-  include CouchRest::Validation
   include RapidFTR::Model
 
   use_database :replication_config
 
   property :remote_app_url
-  property :remote_couch_config, :cast_as => 'Hash', :default => {}
+  property :remote_couch_config, Hash, :default => {}
 
   property :description
   property :username
   property :password
-  property :needs_reindexing, :cast_as => :boolean, :default => true
+  property :needs_reindexing, TrueClass, :default => true
+
+  design do
+    view :all,
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'Replication') {
+                    emit(doc['_id'],1);
+                }
+            }"
+  end
 
   validates_presence_of :remote_app_url
   validates_presence_of :description
   validates_presence_of :username
   validates_presence_of :password
-  validates_with_method :remote_app_url, :method => :validate_remote_app_url
-  validates_with_method :save_remote_couch_config
+  validate :validate_remote_app_url
+  validate :save_remote_couch_config
 
   before_save   :normalize_remote_app_url
   before_save   :mark_for_reindexing
@@ -179,7 +187,7 @@ class Replication < CouchRestRails::Document
       raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
       true
     rescue
-      [false, I18n.t("errors.models.replication.remote_app_url")]
+      errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
     end
   end
 
@@ -197,7 +205,7 @@ class Replication < CouchRestRails::Document
       self.remote_couch_config = JSON.parse response.body
       true
     rescue => e
-      [false, I18n.t("errors.models.replication.save_remote_couch_config")]
+      errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
     end
   end
 

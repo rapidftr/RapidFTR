@@ -80,4 +80,9 @@ namespace :sunspot do
   desc "ensure solr is cleanly started"
   task :clean_start => %w( sunspot:stop sunspot:clean sunspot:start sunspot:reindex )
 
+  desc "start solr in the foreground"
+  task :run do
+    solr_server.run
+  end
+
 end

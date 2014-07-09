@@ -3,7 +3,25 @@ require 'fileutils'
 require 'erb'
 require 'readline'
 
+
+def databases_for_env
+    COUCHDB_SERVER.databases
+                  .select { |db| db =~ /_#{Rails.env}$/ }
+                  .map { |name| COUCHDB_SERVER.database(name) }
+end
+
 namespace :db do
+
+    namespace :test do
+    task :prepare do
+      # do nothing - work around
+      # cucumber is calling this
+      # but does not exist anymore
+      # in rails 4
+    end
+  end
+
+
   desc "Seed with data (task manually created during the 3.0 upgrade, as it went missing)"
   task :seed => :environment do
     load(Rails.root.join("db", "seeds.rb"))
@@ -48,7 +66,7 @@ namespace :db do
       "host" => "localhost",
       "port" => 5984,
       "https_port" => 6984,
-      "database_prefix" => "rapidftr_",
+      "prefix" => "rapidftr",
       "username" => user_name,
       "password" => password,
       "ssl" => false
@@ -56,10 +74,16 @@ namespace :db do
 
     couchdb_config = {}
     environments.each do |env|
-      couchdb_config[env] = default_config.merge("database_suffix" => "_#{env}")
+      couchdb_config[env] = default_config.merge("suffix" => "#{env}")
     end
 
     write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
+  end
+
+  task :delete => :environment do
+    databases_for_env.each do |db|
+      db.delete!
+    end
   end
 end
 

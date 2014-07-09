@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe SearchFilter do
+describe SearchFilter, :type => :model do
 
   describe 'initialize' do
 
@@ -8,12 +8,12 @@ describe SearchFilter do
 
     it 'should offset the index of OFFSET_INDEX' do
       filter = SearchFilter.new(search_filter)
-      filter.index.should==(SearchFilter::OFFSET_INDEX+1).to_s
+      expect(filter.index).to eq((SearchFilter::OFFSET_INDEX+1).to_s)
     end
 
     it 'should set the field2 value if provided in params' do
       filter = SearchFilter.new(search_filter)
-      filter.field2.should==search_filter[:field2]
+      expect(filter.field2).to eq(search_filter[:field2])
     end
 
   end
@@ -27,7 +27,7 @@ describe SearchFilter do
 
       it 'should return the correct lucene query' do
         filter = SearchFilter.new(search_filter)
-        filter.to_lucene_query.should==lucene_query
+        expect(filter.to_lucene_query).to eq(lucene_query)
       end
 
     end
@@ -42,7 +42,7 @@ describe SearchFilter do
 
       it 'should return the correct lucene query' do
         filter = SearchFilter.new(search_filter)
-        filter.to_lucene_query.should==lucene_query
+        expect(filter.to_lucene_query).to eq(lucene_query)
       end
 
     end
@@ -59,7 +59,7 @@ describe SearchFilter do
 
       it 'should return the correct lucene query' do
         filter = SearchFilter.new(search_filter)
-        filter.to_lucene_query.should==lucene_query
+        expect(filter.to_lucene_query).to eq(lucene_query)
       end
 
     end

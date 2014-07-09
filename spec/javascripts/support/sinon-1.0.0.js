@@ -651,7 +651,7 @@ if (typeof module == "object" && typeof require == "function") {
         return;
     }
 
-    function mock(object) {
+    function double(object) {
         if (!object) {
             return sinon.expectation.create("Anonymous mock");
         }
@@ -1029,7 +1029,7 @@ if (typeof module == "object" && typeof require == "function") {
             return this.add(sinon.stub.apply(sinon, arguments));
         },
 
-        mock: function mock() {
+        mock: function double() {
             return this.add(sinon.mock.apply(sinon, arguments));
         },
 

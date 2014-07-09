@@ -549,7 +549,6 @@ en:
       field:
         display_name_presence: "Display name must not be blank"
         display_name_format: "Display name must contain at least one alphabetic characters"
-        default_value: "Cannot find default value for type "
         has_2_options: "Field must have at least 2 options"
         has_1_option: "Checkbox must have at least 1 option"
         unique_name_other: "Field already exists on form '%{form_name}'"

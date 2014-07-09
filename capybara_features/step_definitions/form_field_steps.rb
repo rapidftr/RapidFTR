@@ -13,7 +13,7 @@ end
 private
 
 def form_section_edit_page
-  FormSectionEditPage.new(Capybara.current_session)
+  @_form_section_edit_page ||= FormSectionEditPage.new(Capybara.current_session)
 end
 
 Then /^(?:|I )move field "([^"]*)" to form "([^"]*)"$/ do |field_name, form_name|

@@ -6,5 +6,5 @@ end
 private
 
 def manage_users_page
-  ManageUsersPage.new(Capybara.current_session)
+  @_manage_users_page ||= ManageUsersPage.new(Capybara.current_session)
 end

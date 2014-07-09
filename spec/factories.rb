@@ -32,7 +32,7 @@ FactoryGirl.define do
     remote_couch_config "target" => "http://couch:1234/replication_test"
 
     after_build do |replication|
-      replication.stub! :save_remote_couch_config => true
+      replication.stub :save_remote_couch_config => true
     end
   end
 
@@ -54,7 +54,7 @@ FactoryGirl.define do
     user_name { "user_name_#{counter}" }
     full_name 'full name'
     password 'password'
-    password_confirmation 'password'
+    password_confirmation { password }
     email 'email@ddress.net'
     organisation 'TW'
     disabled false
@@ -80,6 +80,47 @@ FactoryGirl.define do
 
     after_build do |report, builder|
       report.create_attachment :name => builder.filename, :file => StringIO.new(builder.data), :content_type => builder.content_type if builder.data
+    end
+  end
+
+  factory :field do
+    name 'name'
+    display_name { name.humanize }
+    display_name_en { display_name }
+    type Field::TEXT_FIELD
+    option_strings { [] }
+    editable true
+    visible true
+
+    factory :text_field do
+      type { Field::TEXT_FIELD }
+    end
+    factory :text_area_field do
+      type { Field::TEXT_AREA }
+    end
+    factory :radio_button_field do
+      type { Field::RADIO_BUTTON }
+      option_strings { ['one', 'two', 'three'] }
+    end
+    factory :select_box_field do
+      type { Field::SELECT_BOX }
+      option_strings { ['one', 'two', 'three'] }
+    end
+    factory :check_boxes_field do
+      type { Field::CHECK_BOXES }
+      option_strings { ['one', 'two', 'three'] }
+    end
+    factory :numeric_field do
+      type { Field::NUMERIC_FIELD }
+    end
+    factory :date_field do
+      type { Field::DATE_FIELD }
+    end
+    factory :photo_field do
+      type { Field::PHOTO_UPLOAD_BOX }
+    end
+    factory :audio_field do
+      type { Field::AUDIO_UPLOAD_BOX }
     end
   end
 end

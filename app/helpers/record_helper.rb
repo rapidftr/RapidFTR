@@ -95,7 +95,7 @@ module RecordHelper
         "duplicate", "duplicate_of"
     ]
     all_fields = field_names + other_fields
-    all_fields.select { |field_name| changed?(field_name) }
+    all_fields.select { |field_name| changed_field?(field_name) }
   end
 
   def changes_for(field_names)
@@ -107,7 +107,7 @@ module RecordHelper
     end
   end
 
-  def changed?(field_name)
+  def changed_field?(field_name)
     return false if self[field_name].blank? && original_data[field_name].blank?
     return true if original_data[field_name].blank?
     if self[field_name].respond_to? :strip
@@ -121,8 +121,9 @@ module RecordHelper
     (@original_data ||= Child.get(self.id) rescue nil) || self
   end
 
-  def is_filled_in? field
-    !(self[field.name].nil? || self[field.name] == field.default_value || self[field.name].to_s.empty?)
+  # TODO: Refactor, move to Field class as "empty?"
+  def is_filled_in?(field)
+    (!(self[field.name].nil? || self[field.name].empty? || self[field.name].to_s.empty?)) rescue false
   end
 
   private
@@ -131,15 +132,17 @@ module RecordHelper
     properties['histories'] = remove_newly_created_media_history(properties['histories'])
     should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
     if should_update
+      attributes_to_update = {}
       properties.each_pair do |name, value|
         if name == "histories"
           merge_histories(properties['histories'])
         else
-          self[name] = value unless value == nil
+          attributes_to_update[name] = value unless value == nil
         end
-        self["#{name}_at"] = RapidFTR::Clock.current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
+        attributes_to_update["#{name}_at"] = RapidFTR::Clock.current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
       end
       self.set_updated_fields_for user_name
+      self.attributes = attributes_to_update
     else
       merge_histories(properties['histories'])
     end

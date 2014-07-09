@@ -3,34 +3,34 @@ require 'spec_helper'
 module Addons
   describe PhotowallExportTask do
     before :each do
-      PhotowallExportTask.stub! :enabled? => true
+      PhotowallExportTask.stub :enabled? => true
       @task = PhotowallExportTask.new
     end
 
     it 'should be an ExportTask addon' do
-      RapidftrAddon::ExportTask.active.should include PhotowallExportTask
+      expect(RapidftrAddon::ExportTask.active).to include PhotowallExportTask
     end
 
     it 'should have proper id' do
-      RapidftrAddon::ExportTask.find_by_id(:photowall).should == PhotowallExportTask
+      expect(RapidftrAddon::ExportTask.find_by_id(:photowall)).to eq(PhotowallExportTask)
     end
 
     it 'should delegate to ExportGenerator' do
       children, generator = double, double
-      ExportGenerator.should_receive(:new).with(children).and_return(generator)
-      generator.should_receive(:to_photowall_pdf).and_return('dummy data')
+      expect(ExportGenerator).to receive(:new).with(children).and_return(generator)
+      expect(generator).to receive(:to_photowall_pdf).and_return('dummy data')
 
-      @task.generate_data(children).should == 'dummy data'
+      expect(@task.generate_data(children)).to eq('dummy data')
     end
 
     it 'should generate filename for one child' do
       child = build :child, :unique_identifier => "test-id"
-      @task.generate_filename([ child ]).should == 'test-id.pdf'
+      expect(@task.generate_filename([ child ])).to eq('test-id.pdf')
     end
 
     it 'should generate filename for multiple children' do
       child = build :child, :unique_identifier => "test-id"
-      @task.generate_filename([child, child]).should == 'photowall.pdf'
+      expect(@task.generate_filename([child, child])).to eq('photowall.pdf')
     end
   end
 end

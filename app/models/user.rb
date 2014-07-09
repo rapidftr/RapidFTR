@@ -1,12 +1,13 @@
 require 'digest/sha2'
-class User < CouchRestRails::Document
+class User < CouchRest::Model::Base
   use_database :user
-  include CouchRest::Validation
+
   include RapidFTR::Model
+  include RapidFTR::CouchRestRailsBackward
 
   property :full_name
   property :user_name
-  property :verified, :cast_as => :boolean, :default => true
+  property :verified, TrueClass, :default => true
   property :crypted_password
   property :salt
 
@@ -15,59 +16,73 @@ class User < CouchRestRails::Document
   property :organisation
   property :position
   property :location
-  property :disabled, :cast_as => :boolean, :default => false
-  property :mobile_login_history, :cast_as => ['MobileLoginEvent']
+  property :disabled, TrueClass, :default => false
+  property :mobile_login_history, [MobileLoginEvent]
   property :role_ids, :type => [String]
   property :time_zone, :default => "UTC"
   property :locale
+
+  property :share_contact_info, TrueClass, default: false
 
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]
 
   timestamps!
 
-  view_by :user_name,
-          :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+  design do
+
+    view :by_user_name,
+            :map => "function(doc) {
+                  if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+                  {
+                       emit(doc['user_name'],doc);
+                  }
+            }"
+
+    view :by_full_name,
+            :map => "function(doc) {
+                if ((doc['couchrest-type'] == 'User') && doc['full_name'])
                 {
-                     emit(doc['user_name'],doc);
+                  emit(doc['full_name'],doc);
                 }
-          }"
-  view_by :full_name,
-          :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && doc['full_name'])
-             {
-                emit(doc['full_name'],doc);
-             }
-          }"
+            }"
 
-  view_by :user_name_filter_view,
-          :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+    view :by_user_name_filter_view,
+            :map => "function(doc) {
+                  if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+                  {
+                      emit(['all',doc['user_name']],doc);
+                      if(doc['disabled'] == 'false' || doc['disabled'] == false)
+                        emit(['active',doc['user_name']],doc);
+                  }
+            }"
+    view :by_full_name_filter_view,
+            :map => "function(doc) {
+                if ((doc['couchrest-type'] == 'User') && doc['full_name'])
                 {
-                    emit(['all',doc['user_name']],doc);
-                    if(doc['disabled'] == 'false')
-                      emit(['active',doc['user_name']],doc);
+                  emit(['all',doc['full_name']],doc);
+                  if(doc['disabled'] == 'false' || doc['disabled'] == false)
+                    emit(['active',doc['full_name']],doc);
+
                 }
-          }"
-  view_by :full_name_filter_view,
-          :map => "function(doc) {
-              if ((doc['couchrest-type'] == 'User') && doc['full_name'])
-             {
-                emit(['all',doc['full_name']],doc);
-                if(doc['disabled'] == 'false')
-                  emit(['active',doc['full_name']],doc);
+            }"
 
-             }
-          }"
-
-  view_by :unverified,
-          :map => "function(doc) {
-              if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
-             {
-                emit(doc);
-             }
+    view :by_unverified,
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
+                 {
+                    emit(doc);
+                 }
              }"
+
+    view :by_share_contact_info,
+            :map => "function(doc) {
+                if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
+                 {
+                    emit(doc);
+                 }
+             }"
+  end
 
 
   before_save :make_user_name_lowercase, :encrypt_password
@@ -83,18 +98,31 @@ class User < CouchRestRails::Document
   validates_presence_of :role_ids, :message => I18n.t("errors.models.user.role_ids"), :if => Proc.new {|user| user.verified}
   validates_presence_of :organisation, :message => I18n.t("errors.models.user.organisation")
 
-  validates_format_of :user_name, :with => /^[^ ]+$/, :message => I18n.t("errors.models.user.user_name")
+  validates_format_of :user_name, :with => /\A[^ ]+\z/, :message => I18n.t("errors.models.user.user_name")
 
-  validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$/, :if => :email_entered?,
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$\z/, :if => :email_entered?,
                       :message => I18n.t("errors.models.user.email")
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?,
                             :message => I18n.t("errors.models.user.password_mismatch")
 
-  validates_with_method :user_name, :method => :is_user_name_unique
+  #FIXME 409s randomly...destroying user records before test as a temp
+  validate :is_user_name_unique
 
   before_save :generate_id
 
+  #In order to track changes on attributes declared as attr_accessor and
+  #trigger the callbacks we need to use attribute_will_change! method.
+  #check lib/couchrest/model/extended_attachments.rb in source code.
+  #So, override the method for password in order to track changes.
+  def password= value
+    attribute_will_change!("password") if use_dirty? && @password != value
+    @password = value
+  end
+
+  def password
+    @password
+  end
 
   def self.all_unverified
     User.by_unverified
@@ -104,9 +132,9 @@ class User < CouchRestRails::Document
     User.by_user_name(:key => user_name.downcase).first
   end
 
-  def initialize args={}
+  def initialize(args = {}, args1 = {})
     self["mobile_login_history"] = []
-    super args
+    super args, args1
   end
 
   def email_entered?
@@ -116,7 +144,7 @@ class User < CouchRestRails::Document
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
     return true if user.nil? or self.id == user.id
-    [false, I18n.t("errors.models.user.user_name_uniqueness")]
+    errors.add(:user_name, I18n.t("errors.models.user.user_name_uniqueness"))
   end
 
   def authenticate(check)
@@ -157,6 +185,8 @@ class User < CouchRestRails::Document
 
   def devices= device_hashes
     all_devices = Device.all
+    #attr_accessor devices field change.
+    attribute_will_change!("devices")
     @devices = device_hashes.map do |device_hash|
       device = all_devices.detect { |device| device.imei == device_hash["imei"] }
       device.blacklisted = device_hash["blacklisted"] == "true"

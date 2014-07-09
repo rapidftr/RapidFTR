@@ -124,7 +124,7 @@
 #
 #  xit "should call index instead of index! while creating the child in production env" do
 #    Sunspot.should_receive(:index).twice
-#    Rails.stub(:env).and_return(mock('env', :production? => true))
+#    Rails.stub(:env).and_return(double('env', :production? => true))
 #    Child.create(:name => "some name")
 #  end
 #

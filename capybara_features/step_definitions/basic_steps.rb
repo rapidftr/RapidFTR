@@ -57,15 +57,15 @@ end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
   current_time = Time.parse(datetime)
-  current_time.stub!(:getutc).and_return Time.parse(datetime)
-  Clock.stub!(:now).and_return current_time
+  current_time.stub(:getutc).and_return Time.parse(datetime)
+  Clock.stub(:now).and_return current_time
 end
 
 When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datetime, utcdatetime|
   current_time = Time.parse(datetime)
   current_time_in_utc = Time.parse(utcdatetime)
-  Clock.stub!(:now).and_return current_time
-  current_time.stub!(:getutc).and_return current_time_in_utc
+  Clock.stub(:now).and_return current_time
+  current_time.stub(:getutc).and_return current_time_in_utc
 end
 
 Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
@@ -76,7 +76,7 @@ Given /^a child record named "([^"]*)" exists with a audio file with the name "(
                "organisation" => "UNICEF",
                "email" => "rapidftr@rapidftr.com",
                "disabled" => "false",
-               "role_ids" => "ADMIN")
+               "role_ids" => ["ADMIN"])
   child = Child.new_with_user_name(user,{:name=>name})
   child.audio = uploadable_audio("capybara_features/resources/#{filename}")
   child.create!
@@ -256,6 +256,10 @@ end
 
 Then /^I should see errors$/ do
   page.should have_xpath '//div[@class="errorExplanation"]'
+end
+
+When /^I debug$/ do
+  binding.pry
 end
 
 private

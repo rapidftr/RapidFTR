@@ -1,7 +1,11 @@
 Before do
-  I18n.locale = I18n.default_locale = :en
+  Child.stub :index_record => true, :reindex! => true, :build_solar_schema => true
+  Sunspot.stub :index => true, :index! => true
+end
 
-  CouchRestRails::Document.descendants.each do |model|
+Before do
+  I18n.locale = I18n.default_locale = :en
+  CouchRest::Model::Base.descendants.each do |model|
     docs = model.database.documents["rows"].map { |doc|
       { "_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true } unless doc["id"].include? "_design"
     }.compact
@@ -10,17 +14,14 @@ Before do
 
   RapidFTR::FormSectionSetup.reset_definitions
 
-  Rails.application.config.rspec_reset
-  Clock.rspec_reset
-  I18n.rspec_reset
-
-  Child.stub! :index_record => true, :reindex! => true, :build_solar_schema => true
-  Sunspot.stub! :index => true, :index! => true
+  RSpec::Mocks.proxy_for(Rails.application.config).reset
+  RSpec::Mocks.proxy_for(Clock).reset
+  RSpec::Mocks.proxy_for(I18n).reset
 end
 
 Before('@search') do
-  Child.rspec_reset
-  Sunspot.rspec_reset
+  RSpec::Mocks.proxy_for(Child).reset
+  RSpec::Mocks.proxy_for(Sunspot).reset
   Sunspot.remove_all!(Child)
   Sunspot.remove_all!(Enquiry)
 end
@@ -33,7 +34,7 @@ end
 
 Before('@no_expire') do |scenario|
   Rails.application.config.stub(:session_options).and_return({
-    key: '_session',
+    key: '_rftr_session',
     expire_after: 99.years,
     rapidftr: {
       web_expire_after: 99.years,

@@ -30,9 +30,9 @@ end
 private
 
 def child_record_toolbar
-  ChildRecordToolbarWidget.new(Capybara.current_session)
+  @_child_record_toolbar_widget ||= ChildRecordToolbarWidget.new(Capybara.current_session)
 end
 
 def device_list_page
-  DeviceListPage.new(Capybara.current_session)
+  @_device_list_page ||= DeviceListPage.new(Capybara.current_session)
 end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'support/child_builder'
 
-describe ChildIdsController do
+describe ChildIdsController, :type => :controller do
 
   include ChildBuilder
 
@@ -11,25 +11,25 @@ describe ChildIdsController do
 
   describe "routing" do
     it "should have a route retrieving all child Id and Rev pairs" do
-      {:get => "/children-ids"}.should route_to(:controller => "child_ids", :action => "all")
+      expect({:get => "/children-ids"}).to route_to(:controller => "child_ids", :action => "all")
     end
   end
 
   describe "response" do
     it "should return Id and Rev for each child record" do
       given_a_child.with_id("child-id").with_rev("child-revision-id")
-      Child.should_receive(:fetch_all_ids_and_revs).and_return([{"_id" => "child-id", "_rev" => "child-revision-id"}])
+      expect(Child).to receive(:fetch_all_ids_and_revs).and_return([{"_id" => "child-id", "_rev" => "child-revision-id"}])
 
       get :all
 
-      response.headers['Content-Type'].should include("application/json")
+      expect(response.headers['Content-Type']).to include("application/json")
 
       child_ids = JSON.parse(response.body)
-      child_ids.length.should == 1
+      expect(child_ids.length).to eq(1)
 
       child_id = child_ids[0]
-      child_id['_id'].should == "child-id"
-      child_id['_rev'].should == "child-revision-id"
+      expect(child_id['_id']).to eq("child-id")
+      expect(child_id['_rev']).to eq("child-revision-id")
     end
   end
 end

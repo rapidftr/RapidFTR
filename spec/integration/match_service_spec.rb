@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe MatchService do
+describe MatchService, :type => :request do
 
   before :all do
     FormSection.all.each(&:destroy)
@@ -28,9 +28,9 @@ describe MatchService do
 
     children = MatchService.search_for_matching_children(enquiry["criteria"])
 
-    children.size.should == 2
-    children.first.name.should == "christine"
-    children.last.name.should == "john"
+    expect(children.size).to eq(2)
+    expect(children.first.name).to eq("christine")
+    expect(children.last.name).to eq("john")
   end
 
   it "should match records when criteria has a space" do
@@ -39,8 +39,8 @@ describe MatchService do
 
     children = MatchService.search_for_matching_children(enquiry["criteria"])
 
-    children.size.should == 1
-    children.first.name.should == "Christine"
+    expect(children.size).to eq(1)
+    expect(children.first.name).to eq("Christine")
   end
 
   it "should match multiple records given multiple criteria" do
@@ -51,7 +51,7 @@ describe MatchService do
 
     children = MatchService.search_for_matching_children(enquiry["criteria"])
 
-    children.size.should == 3
+    expect(children.size).to eq(3)
   end
 
 end

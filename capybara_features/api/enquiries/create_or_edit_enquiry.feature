@@ -46,22 +46,6 @@ Feature: Creating an enquiry using the API
     Then I should receive HTTP 422
 
   @search
-  Scenario: Create Enquiry with malformed criteria
-
-    When I send a POST request to "/api/enquiries" with JSON:
-    """
-      {
-        "enquiry": {
-          "enquirer_name" : "bob",
-          "criteria" : {
-             "name"
-          }
-        }
-      }
-    """
-    Then I should receive HTTP 422
-
-  @search
   Scenario: Two users editing the same field, the last made change should be visible
 
     Given the following enquiries exist in the system:

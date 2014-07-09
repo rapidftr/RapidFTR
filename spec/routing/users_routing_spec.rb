@@ -1,37 +1,37 @@
 require 'spec_helper'
 
-describe UsersController do
+describe UsersController, :type => :routing do
   describe "routing" do
     it "recognizes and generates #index" do
-      { :get => "/users" }.should route_to(:controller => "users", :action => "index")
+      expect({ :get => "/users" }).to route_to(:controller => "users", :action => "index")
     end
 
     it "recognizes and generates #new" do
-      { :get => "/users/new" }.should route_to(:controller => "users", :action => "new")
+      expect({ :get => "/users/new" }).to route_to(:controller => "users", :action => "new")
     end
 
     it "recognizes and generates #show" do
-      { :get => "/users/1" }.should route_to(:controller => "users", :action => "show", :id => "1")
+      expect({ :get => "/users/1" }).to route_to(:controller => "users", :action => "show", :id => "1")
     end
 
     it "recognizes and generates #edit" do
-      { :get => "/users/1/edit" }.should route_to(:controller => "users", :action => "edit", :id => "1")
+      expect({ :get => "/users/1/edit" }).to route_to(:controller => "users", :action => "edit", :id => "1")
     end
 
     it "recognizes and generates #create" do
-      { :post => "/users" }.should route_to(:controller => "users", :action => "create")
+      expect({ :post => "/users" }).to route_to(:controller => "users", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/users/1" }.should route_to(:controller => "users", :action => "update", :id => "1")
+      expect({ :put => "/users/1" }).to route_to(:controller => "users", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/users/1" }.should route_to(:controller => "users", :action => "destroy", :id => "1")
+      expect({ :delete => "/users/1" }).to route_to(:controller => "users", :action => "destroy", :id => "1")
     end
 
     it "recognizes and generates #index_unverified" do
-      { :get => "/users/unverified" }.should route_to(:controller => "users", :action => "unverified")
+      expect({ :get => "/users/unverified" }).to route_to(:controller => "users", :action => "unverified")
     end
   end
 end

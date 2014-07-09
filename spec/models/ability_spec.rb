@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Ability do
+describe Ability, :type => :model do
 
   CRUD = [:index, :create, :view, :edit, :update, :destroy]
 
@@ -28,9 +28,9 @@ describe Ability do
         ability
       }
 
-      it { should authorize :update, Child }
-      it { should authorize :update, Child.new(:name => 'test') }
-      it { should_not authorize :update, Child.new }
+      it { is_expected.to authorize :update, Child }
+      it { is_expected.to authorize :update, Child.new(:name => 'test') }
+      it { is_expected.not_to authorize :update, Child.new }
     end
 
     describe '#manage with exceptions patch' do
@@ -41,15 +41,15 @@ describe Ability do
         ability
       }
 
-      it { should authorize_all [:blah, :foo, :bar], User }
-      it { should_not authorize_any [:update, :disable], [User, User.new] }
+      it { is_expected.to authorize_all [:blah, :foo, :bar], User }
+      it { is_expected.not_to authorize_any [:update, :disable], [User, User.new] }
     end
 
     describe '#edit my account' do
       let(:permissions) { [] }
-      it { should_not authorize_any [:update, :show], User, User.new, User.new(:user_name => 'some_other_user') }
-      it { should authorize :update, stub_model(User, :user_name => user.user_name) }
-      it { should authorize :show, stub_model(User, :user_name => user.user_name) }
+      it { is_expected.not_to authorize_any [:update, :show], User, User.new, User.new(:user_name => 'some_other_user') }
+      it { is_expected.to authorize :update, stub_model(User, :user_name => user.user_name, :id => user.id) }
+      it { is_expected.to authorize :show, stub_model(User, :user_name => user.user_name, :id => user.id) }
     end
   end
 
@@ -57,17 +57,17 @@ describe Ability do
     describe '#create enquiry' do
       let(:permissions) { [Permission::ENQUIRIES[:create]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Child }
-      it { should authorize :create, Enquiry }
-      it { should_not authorize :update, Enquiry.new }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
+      it { is_expected.to authorize :create, Enquiry }
+      it { is_expected.not_to authorize :update, Enquiry.new }
     end
 
     describe '#update enquiry' do
       let(:permissions) { [Permission::ENQUIRIES[:update]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Child }
-      it { should authorize :update, Enquiry.new }
-      it { should_not authorize :create, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
+      it { is_expected.to authorize :update, Enquiry.new }
+      it { is_expected.not_to authorize :create, Enquiry }
     end
   end
 
@@ -75,101 +75,101 @@ describe Ability do
     describe '#view,search all data and edit' do
       let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
-      it { should authorize :index, Child }
-      it { should authorize :view_and_search, Child }
-      it { should_not authorize :create, Child }
-      it { should authorize :read, Child.new }
-      it { should authorize :update, Child.new }
+      it { is_expected.to authorize :index, Child }
+      it { is_expected.to authorize :view_and_search, Child }
+      it { is_expected.not_to authorize :create, Child }
+      it { is_expected.to authorize :read, Child.new }
+      it { is_expected.to authorize :update, Child.new }
     end
 
     describe '#register child' do
       let(:permissions) { [Permission::CHILDREN[:register]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, Report }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, Report }
 
-      it { should authorize :index, Child }
-      it { should authorize :create, Child }
-      it { should_not authorize :read, Child.new }
-      it { should_not authorize :update, Child.new }
-      it { should authorize :read, Child.new(:created_by => 'test') }
+      it { is_expected.to authorize :index, Child }
+      it { is_expected.to authorize :create, Child }
+      it { is_expected.not_to authorize :read, Child.new }
+      it { is_expected.not_to authorize :update, Child.new }
+      it { is_expected.to authorize :read, Child.new(:created_by => 'test') }
     end
 
     describe '#edit child' do
       let(:permissions) { [Permission::CHILDREN[:edit]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
-      it { should authorize :index, Child }
-      it { should_not authorize :read, Child.new }
-      it { should_not authorize :update, Child.new }
-      it { should authorize :read, Child.new(:created_by => 'test') }
-      it { should authorize :update, Child.new(:created_by => 'test') }
+      it { is_expected.to authorize :index, Child }
+      it { is_expected.not_to authorize :read, Child.new }
+      it { is_expected.not_to authorize :update, Child.new }
+      it { is_expected.to authorize :read, Child.new(:created_by => 'test') }
+      it { is_expected.to authorize :update, Child.new(:created_by => 'test') }
     end
 
     describe "export children to photowall" do
       let(:permissions) { [Permission::CHILDREN[:export_photowall]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
-      it { should authorize :export_photowall, Child }
-      it { should_not authorize :index, Child }
-      it { should_not authorize :read, Child.new }
-      it { should_not authorize :update, Child.new }
-      it { should_not authorize :export_pdf, Child.new }
-      it { should_not authorize :export_cpims, Child.new }
-      it { should_not authorize :export_csv, Child.new }
+      it { is_expected.to authorize :export_photowall, Child }
+      it { is_expected.not_to authorize :index, Child }
+      it { is_expected.not_to authorize :read, Child.new }
+      it { is_expected.not_to authorize :update, Child.new }
+      it { is_expected.not_to authorize :export_pdf, Child.new }
+      it { is_expected.not_to authorize :export_cpims, Child.new }
+      it { is_expected.not_to authorize :export_csv, Child.new }
     end
 
     describe "export children to csv" do
       let(:permissions) { [Permission::CHILDREN[:export_csv]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
-      it { should authorize :export_csv, Child }
-      it { should_not authorize :index, Child }
-      it { should_not authorize :read, Child.new }
-      it { should_not authorize :update, Child.new }
-      it { should_not authorize :export_pdf, Child.new }
-      it { should_not authorize :export_cpims, Child.new }
-      it { should_not authorize :export_photowall, Child.new }
+      it { is_expected.to authorize :export_csv, Child }
+      it { is_expected.not_to authorize :index, Child }
+      it { is_expected.not_to authorize :read, Child.new }
+      it { is_expected.not_to authorize :update, Child.new }
+      it { is_expected.not_to authorize :export_pdf, Child.new }
+      it { is_expected.not_to authorize :export_cpims, Child.new }
+      it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
     describe "export children to pdf" do
       let(:permissions) { [Permission::CHILDREN[:export_pdf]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
-      it { should authorize :export_pdf, Child }
-      it { should_not authorize :index, Child }
-      it { should_not authorize :read, Child.new }
-      it { should_not authorize :update, Child.new }
-      it { should_not authorize :export_cpims, Child.new }
-      it { should_not authorize :export_csv, Child.new }
-      it { should_not authorize :export_photowall, Child.new }
+      it { is_expected.to authorize :export_pdf, Child }
+      it { is_expected.not_to authorize :index, Child }
+      it { is_expected.not_to authorize :read, Child.new }
+      it { is_expected.not_to authorize :update, Child.new }
+      it { is_expected.not_to authorize :export_cpims, Child.new }
+      it { is_expected.not_to authorize :export_csv, Child.new }
+      it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
     describe "export children to cpims" do
       let(:permissions) { [Permission::CHILDREN[:export_cpims]] }
 
-      it { should_not authorize_any CRUD, ContactInformation, Device, FormSection, Field, Session, SuggestedField, User, Role, SystemUsers, Report, Enquiry }
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
 
-      it { should authorize :export_cpims, Child }
-      it { should_not authorize :index, Child }
-      it { should_not authorize :read, Child.new }
-      it { should_not authorize :update, Child.new }
-      it { should_not authorize :export_pdf, Child.new }
-      it { should_not authorize :export_csv, Child.new }
-      it { should_not authorize :export_photowall, Child.new }
+      it { is_expected.to authorize :export_cpims, Child }
+      it { is_expected.not_to authorize :index, Child }
+      it { is_expected.not_to authorize :read, Child.new }
+      it { is_expected.not_to authorize :update, Child.new }
+      it { is_expected.not_to authorize :export_pdf, Child.new }
+      it { is_expected.not_to authorize :export_csv, Child.new }
+      it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
     describe "view and search child records" do
       let(:permissions) { [Permission::CHILDREN[:view_and_search]] }
 
-      it { should authorize :index, Child.new }
-      it { should authorize :read, Child.new }
-      it { should authorize :view_all, Child }
+      it { is_expected.to authorize :index, Child.new }
+      it { is_expected.to authorize :read, Child.new }
+      it { is_expected.to authorize :view_all, Child }
     end
   end
 
@@ -177,56 +177,56 @@ describe Ability do
     describe '#view users' do
       let(:permissions) { [Permission::USERS[:view]] }
 
-      it { should authorize :list, User }
-      it { should authorize :read, User.new }
-      it { should_not authorize :update, User.new }
-      it { should_not authorize :create, User.new }
+      it { is_expected.to authorize :list, User }
+      it { is_expected.to authorize :read, User.new }
+      it { is_expected.not_to authorize :update, User.new }
+      it { is_expected.not_to authorize :create, User.new }
     end
 
     describe '#create and edit users' do
       let(:permissions) { [Permission::USERS[:create_and_edit]] }
 
-      it { should authorize :create, User.new }
-      it { should authorize :update, User.new }
-      it { should authorize :edit, User.new }
-      it { should_not authorize :destroy, User.new }
-      it { should authorize :read, User.new }
+      it { is_expected.to authorize :create, User.new }
+      it { is_expected.to authorize :update, User.new }
+      it { is_expected.to authorize :edit, User.new }
+      it { is_expected.not_to authorize :destroy, User.new }
+      it { is_expected.to authorize :read, User.new }
     end
 
     describe "destroy users" do
       let(:permissions) { [Permission::USERS[:destroy]] }
 
-      it { should authorize :destroy, User.new }
-      it { should authorize :read, User.new }
-      it { should_not authorize :edit, User.new }
+      it { is_expected.to authorize :destroy, User.new }
+      it { is_expected.to authorize :read, User.new }
+      it { is_expected.not_to authorize :edit, User.new }
     end
 
     describe "disable users" do
       let(:permissions) { [Permission::USERS[:disable]] }
 
-      it { should_not authorize_any [:create, :update], User.new }
-      it { should authorize :disable, User.new }
-      it { should authorize :read, User.new }
+      it { is_expected.not_to authorize_any [:create, :update], User.new }
+      it { is_expected.to authorize :disable, User.new }
+      it { is_expected.to authorize :read, User.new }
     end
 
     describe "blacklist" do
       let(:permissions) { [Permission::DEVICES[:black_list]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, Replication, SystemUsers, Report }
+      it { is_expected.not_to authorize_any CRUD, Child, FormSection, Session, User, Role, Replication, SystemUsers, Report }
 
-      it { should authorize :update, Device }
-      it { should authorize :index, Device }
-      it { should_not authorize :read, User.new }
+      it { is_expected.to authorize :update, Device }
+      it { is_expected.to authorize :index, Device }
+      it { is_expected.not_to authorize :read, User.new }
     end
 
     describe "replication" do
       let(:permissions) { [Permission::DEVICES[:replications]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, FormSection, Session, SuggestedField, User, Role, SystemUsers, Report }
+      it { is_expected.not_to authorize_any CRUD, Child, FormSection, Session, User, Role, SystemUsers, Report }
 
-      it { should authorize :update, Replication }
-      it { should_not authorize :read, User.new }
-      it { should_not authorize :manage, Device }
+      it { is_expected.to authorize :update, Replication }
+      it { is_expected.not_to authorize :read, User.new }
+      it { is_expected.not_to authorize :manage, Device }
     end
   end
 
@@ -234,18 +234,18 @@ describe Ability do
     describe "view roles permission" do
       let(:permissions) { [Permission::ROLES[:view]] }
 
-      it { should authorize :list, Role.new }
-      it { should authorize :view, Role.new }
-      it { should_not authorize :create, Role.new }
-      it { should_not authorize :update, Role.new }
+      it { is_expected.to authorize :list, Role.new }
+      it { is_expected.to authorize :view, Role.new }
+      it { is_expected.not_to authorize :create, Role.new }
+      it { is_expected.not_to authorize :update, Role.new }
     end
 
     describe "create and edit roles permission" do
       let(:permissions) { [Permission::ROLES[:create_and_edit]] }
 
-      it { should authorize :list, Role.new }
-      it { should authorize :create, Role.new }
-      it { should authorize :update, Role.new }
+      it { is_expected.to authorize :list, Role.new }
+      it { is_expected.to authorize :create, Role.new }
+      it { is_expected.to authorize :update, Role.new }
     end
   end
 
@@ -253,43 +253,37 @@ describe Ability do
     describe "manage forms" do
       let(:permissions) { [Permission::FORMS[:manage]] }
 
-      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, SystemUsers, Report }
+      it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, SystemUsers, Report }
 
-      it { should authorize :manage, FormSection.new }
-      it { should authorize :manage, Field.new }
-      it { should_not authorize :highlight, Field }
+      it { is_expected.to authorize :manage, FormSection.new }
+      it { is_expected.to authorize :manage, Field.new }
+      it { is_expected.not_to authorize :highlight, Field }
     end
 
     describe "highlight fields" do
       let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
-      it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers, Report }
-      it { should authorize :highlight, Field }
+      it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Report }
+      it { is_expected.to authorize :highlight, Field }
     end
   end
 
   describe "replications" do
     let(:permissions) { [Permission::DEVICES[:replications]] }
-    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers, Report }
-    it { should authorize :manage, Replication }
+    it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Report }
+    it { is_expected.to authorize :manage, Replication }
   end
 
   describe 'reports' do
     let(:permissions) { [Permission::REPORTS[:view]] }
-    it { should_not authorize_any CRUD, Child, ContactInformation, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers, Replication }
-    it { should authorize :manage, Report }
+    it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Replication }
+    it { is_expected.to authorize :manage, Report }
   end
 
   context 'other' do
-    describe "contact information" do
-      let(:permissions) { [Permission::SYSTEM[:contact_information]] }
-      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, SystemUsers }
-      it { should authorize :manage, ContactInformation }
-    end
-
     describe "system users for synchronisation" do
       let(:permissions) { [Permission::SYSTEM[:system_users]] }
-      it { should_not authorize_any CRUD, Child, Device, Session, SuggestedField, User, Role, FormSection, Field, ContactInformation }
-      it { should authorize :manage, SystemUsers }
+      it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field }
+      it { is_expected.to authorize :manage, SystemUsers }
     end
 
   end

@@ -12,7 +12,7 @@ module WeeklyReport
       protection_statuses.each do |protection_status|
         genders.each do |gender|
           ftr_statuses.each do |ftr_status|
-            csv << [protection_status, gender, ftr_status, Child.by_protection_status_and_gender_and_ftr_status(:key => [protection_status, gender, ftr_status]).size]
+            csv << [protection_status, gender, ftr_status, Child.by_protection_status_and_gender_and_ftr_status(:key => [protection_status, gender, ftr_status]).all.size]
           end
         end
       end

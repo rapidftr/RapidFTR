@@ -50,7 +50,7 @@ def get_user_row_element(full_name)
 end
 
 Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
-  get_user_row_element(full_name).should_not raise_error(Capybara::ElementNotFound)
+  get_user_row_element(full_name).should_not raise_error
 end
 
 Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
@@ -72,7 +72,7 @@ def get_element_for_edit_user_link(full_name, link)
 end
 
 Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
-  get_element_for_edit_user_link(full_name, link).should_not raise_error(Capybara::ElementNotFound)
+  get_element_for_edit_user_link(full_name, link).should_not raise_error
 end
 
 Then /^I should not see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
@@ -88,7 +88,7 @@ def get_link_for_page(page_name)
 end
 
 Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
-  get_link_for_page(page_name).should_not raise_error(Capybara::ElementNotFound)
+  get_link_for_page(page_name).should_not raise_error
 end
 
 Then /^I should not be able to see (.+)$/ do |page_name|

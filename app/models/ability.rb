@@ -125,11 +125,6 @@ class Ability
     #
     # SYSTEM SETTINGS
     #
-    # CONTACT INFORMATION
-    if user.has_permission?(Permission::SYSTEM[:contact_information])
-      can [:manage], ContactInformation
-    end
-
     # SYNCHRONISATION USERS
     if user.has_permission?(Permission::SYSTEM[:system_users])
       can [:manage], SystemUsers

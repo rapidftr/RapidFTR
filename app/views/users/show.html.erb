@@ -55,7 +55,7 @@
 
       <p>
         <label class="key"><%= t("status") %>:</label>
-        <%= h @user.disabled=="true" ? t("user.disabled") : t("enabled") %>
+        <%= h @user.disabled ? t("user.disabled") : t("enabled") %>
       </p>
 
       <p>

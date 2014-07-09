@@ -26,8 +26,7 @@ class Permission
   DEVICES = Permission.to_ordered_hash({:black_list => "BlackList Devices", :replications => "Manage Replications"})
   REPORTS = Permission.to_ordered_hash({:view => 'View and Download Reports'})
   ROLES = Permission.to_ordered_hash({:create_and_edit => "Create and Edit Roles"}, {:view => "View roles"})
-  SYSTEM = Permission.to_ordered_hash({:contact_information => "System Settings",
-                                       :highlight_fields => "Highlight Fields",
+  SYSTEM = Permission.to_ordered_hash({:highlight_fields => "Highlight Fields",
                                        :system_users => "Users for synchronisation"})
 
   def self.all

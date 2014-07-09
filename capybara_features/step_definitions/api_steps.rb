@@ -45,7 +45,7 @@ When /^I request the creation of the following unverified user:$/ do |table|
     header 'Accept', 'application/json'
     header 'Content-Type', 'application/json'
 
-    post(register_unverified_user_path,
+    post(register_unverified_users_path,
          {:user =>
               {:user_name => hash['user_name'],
                :full_name => hash['full_name'],

@@ -26,31 +26,31 @@ describe WeeklyReport do
       data = WeeklyReport.data
       report = CSV.parse data
 
-      report[0].should == ["protection status", "gender", "ftr status", "total"]
-      report.size.should == 33
+      expect(report[0]).to eq(["protection status", "gender", "ftr status", "total"])
+      expect(report.size).to eq(33)
       number_of_rows_with_one_child = report.select{|row| row[3] == "1" }.size
       number_of_blank_rows = report.select{|row| row[3] == "0" }.size
-      number_of_rows_with_one_child.should be 3
-      number_of_blank_rows.should be 29
-      report.should include ["Unaccompanied", "Male", "Identified", "1"]
-      report.should include ["Separated", "Male", "Tracing On-Going", "1"]
-      report.should include ["Separated", "Male", "Reunited", "0"]
+      expect(number_of_rows_with_one_child).to be 3
+      expect(number_of_blank_rows).to be 29
+      expect(report).to include ["Unaccompanied", "Male", "Identified", "1"]
+      expect(report).to include ["Separated", "Male", "Tracing On-Going", "1"]
+      expect(report).to include ["Separated", "Male", "Reunited", "0"]
     end
   end
 
   it "should create document with weekly report data" do
     report = stub_model(Report)
-    WeeklyReport.stub! :data => 'stub data'
-    Report.stub!(:new).with(:as_of_date => Date.today, :report_type => 'weekly_report').and_return(report)
-    report.should_receive(:create_attachment).with(:name => Date.today.strftime("weekly-report-%Y-%m-%d.csv"), :file => 'stub data', :content_type => 'text/csv').and_return(nil)
-    report.should_receive(:save!).and_return(nil)
+    WeeklyReport.stub :data => 'stub data'
+    allow(Report).to receive(:new).with(:as_of_date => Date.today, :report_type => 'weekly_report').and_return(report)
+    expect(report).to receive(:create_attachment).with(:name => Date.today.strftime("weekly-report-%Y-%m-%d.csv"), :file => 'stub data', :content_type => 'text/csv').and_return(nil)
+    expect(report).to receive(:save!).and_return(nil)
 
-    WeeklyReport.generate!.should == report
+    expect(WeeklyReport.generate!).to eq(report)
   end
 
   it "should schedule every monday" do
     scheduler = double()
-    scheduler.should_receive(:cron).with("1 0 * * MON").and_return(true)
+    expect(scheduler).to receive(:cron).with("1 0 * * MON").and_return(true)
 
     WeeklyReport.schedule scheduler
   end

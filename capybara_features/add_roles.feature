@@ -6,13 +6,13 @@ Feature: Add new role
     And I am on create role page
     When I enter the following role details
       | name        | description              | permissions       |
-      | super admin | like an admin, but super | system_settings   |
+      | super admin | like an admin, but super | highlight_fields  |
 
     And I submit the form
     Then I should be on roles index page
     And I should see the following roles
       | name        | description              | permissions       |
-      | super admin | like an admin, but super | system_settings   |
+      | super admin | like an admin, but super | highlight_fields  |
 
   Scenario: Filtering by role
     Given I am logged in as a user with "Admin" permission
@@ -94,8 +94,8 @@ Feature: Add new role
     Given I am logged in as a user with "Admin" permission
     And I am on create role page
     And I enter the following role details
-      | name           | description              | permissions       |
-      | Auto Admin | can edit child           | system_settings        |
+      | name           | description              | permissions               |
+      | Auto Admin     | can edit child           | users_for_synchronisation |
     And I submit the form
     When I edit the role Auto Admin
     And I enter the following permission details

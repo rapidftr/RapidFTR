@@ -9,5 +9,5 @@ end
 private
 
 def highlight_fields_page
-  HighlightFieldsPage.new(Capybara.current_session)
+  @_highlight_fields_page ||= HighlightFieldsPage.new(Capybara.current_session)
 end

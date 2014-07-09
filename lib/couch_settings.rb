@@ -48,11 +48,11 @@ class CouchSettings
   end
 
   def db_prefix
-    @config['database_prefix'] || "rapidftr_"
+    @config['prefix'] || "rapidftr"
   end
 
   def db_suffix
-    @config['database_suffix'] || "_#{env.to_s}"
+    @config['suffix'] || "#{env.to_s}"
   end
 
   def ssl_enabled_for_rapidftr?
