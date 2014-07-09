@@ -57,14 +57,6 @@ class FormSectionController < ApplicationController
     redirect_to form_sections_path
   end
 
-  def published
-    json_content = FormSection.enabled_by_order_without_hidden_fields.map(&:formatted_hash).to_json
-    respond_to do |format|
-      format.html {render :inline => json_content }
-      format.json { render :json => json_content }
-    end
-  end
-
   def new
     authorize! :create, FormSection
     @page_name = t("form_section.create")

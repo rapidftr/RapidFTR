@@ -2,19 +2,15 @@ require "spec_helper"
 
 describe MatchService, :type => :request do
 
-  before :all do
-    FormSection.all.each(&:destroy)
-    form = FormSection.new(:name => "test_form")
-    form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-    form.fields << Field.new(:name => "nationality", :type => Field::TEXT_FIELD, :display_name => "nationality")
-    form.fields << Field.new(:name => "country", :type => Field::TEXT_FIELD, :display_name => "country")
-    form.fields << Field.new(:name => "birthplace", :type => Field::TEXT_FIELD, :display_name => "birthplace")
-    form.fields << Field.new(:name => "languages", :type => Field::TEXT_FIELD, :display_name => "languages")
-    form.save!
-  end
-
-  after :all do
-    FormSection.all.each{|form| form.destroy}
+  before :each do
+    reset_test_db!
+    create :form_section, name: 'test_form', fields: [
+      build(:text_field, name: 'name'),
+      build(:text_field, name: 'nationality'),
+      build(:text_field, name: 'country'),
+      build(:text_field, name: 'birthplace'),
+      build(:text_field, name: 'languages')
+    ]
   end
 
   before :each do

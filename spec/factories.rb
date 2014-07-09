@@ -85,14 +85,33 @@ FactoryGirl.define do
     end
   end
 
+  factory :form_section, :traits => [ :model ] do
+    unique_id { "form_#{counter}" }
+    name_all { "Form #{counter}" }
+    description_all { "This is Form Section #{counter}" }
+    fields { [build(:text_field)] }
+    perm_enabled true
+    visible true
+    editable true
+    order { counter }
+
+    initialize_with { new(attributes) }
+  end
+
   factory :field do
-    name 'name'
+    ignore do
+      sequence(:counter, 1000000)
+    end
+
+    name { "name_#{counter}" }
     display_name { name.humanize }
     display_name_en { display_name }
     type Field::TEXT_FIELD
     option_strings { [] }
     editable true
     visible true
+
+    initialize_with { new(attributes) }
 
     factory :text_field do
       type { Field::TEXT_FIELD }
