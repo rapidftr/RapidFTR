@@ -85,7 +85,7 @@ describe ChildSearch do
     context "active" do
       before :each do
         @child1 = create :child
-        @child2 = create :child, duplicate: true
+        @child2 = create :child, duplicate: true, duplicate_of: @child1.id
       end
 
       it "should filter children by active" do

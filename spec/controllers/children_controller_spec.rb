@@ -601,6 +601,8 @@ describe ChildrenController, :type => :controller do
       role = create :role, permissions: Permission.all_permissions
       @user = create :user, role_ids: [role.id]
       setup_session @user
+      allow(controller).to receive(:authorize!).with(:export_mock, Child).and_return(Child)
+      allow(controller).to receive(:authorize!).with(:index, Child).and_return(Child)
     end
     it 'should use #respond_to_export' do
       child1 = create :child, created_by: @user.user_name

@@ -1172,34 +1172,6 @@ describe Child, :type => :model do
 
   end
 
-  describe "when fetching children" do
-
-    before do
-      allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
-      Child.all.each { |child| child.destroy }
-    end
-
-    it "should return list of children ordered by name" do
-      allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      childrens = Child.all
-      expect(childrens.first['name']).to eq('Abu')
-    end
-
-    it "should order children with blank names first" do
-      allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
-      childrens = Child.all
-      expect(childrens.first['name']).to eq('')
-      expect(Child.all.size).to eq(3)
-    end
-
-  end
-
-
   describe ".photo" do
 
     it "should return nil if the record has no attached photo" do
@@ -1288,9 +1260,8 @@ describe Child, :type => :model do
         all = Child.all
 
         expect(duplicates.size).to be 1
-        expect(all.size).to be 1
+        expect(all.count).to be 2
         expect(duplicates.first.id).to eq(record_duplicate.id)
-        expect(all.first.id).to eq(record_active.id)
       end
 
       it "should return duplicate from a record" do
