@@ -4,12 +4,12 @@ Feature:
   Background:
     Given I am logged in as a user with "Register Child,Edit Child,View And Search Child" permission
     And the following children exist in the system:
-      | name     | last_known_location | reporter | unique_id    | reunited | flag  | duplicate | created_at             |flagged_at                   | reunited_at                  |
-      | andreas  | London              | zubair   | zubairlon123 | true     | false | true      | 2004-02-03 04:05:06UTC | DateTime.new(2001,2,3,4,5,6)| DateTime.new(2001,2,3,4,5,6) |
-      | zak      | London              | zubair   | zubairlon456 | false    | true  | false     | 2003-02-03 04:05:06UTC | DateTime.new(2004,2,3,4,5,6)| DateTime.new(2004,2,3,4,5,6) |
-      | jaco     | NYC                 | james    | james456     | true     | true  | false     | 2002-02-03 04:05:06UTC |DateTime.new(2002,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
-      | meredith | Austin              | james    | james123     | false    | false | false     | 2001-02-03 04:05:06UTC |DateTime.new(2003,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) |
-      | jane     | Eyre                | james    | james153     | false    | false | true      | 2001-02-02 04:05:06UTC | DateTime.new(2008,2,3,4,5,6)| DateTime.new(2008,2,3,4,5,6) |
+      | name     | last_known_location | reporter | unique_id    | reunited | flag  | duplicate | created_at             |flagged_at                   | reunited_at                  | last_updated_at        |
+      | andreas  | London              | zubair   | zubairlon123 | true     | false | true      | 2004-02-03 04:05:06UTC | DateTime.new(2001,2,3,4,5,6)| DateTime.new(2001,2,3,4,5,6) | 2004-02-03 04:10:00UTC |
+      | zak      | London              | zubair   | zubairlon456 | false    | true  | false     | 2003-02-03 04:05:06UTC | DateTime.new(2004,2,3,4,5,6)| DateTime.new(2004,2,3,4,5,6) | 2003-02-03 04:06:00UTC |
+      | jaco     | NYC                 | james    | james456     | true     | true  | false     | 2002-02-03 04:05:06UTC |DateTime.new(2002,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) | 2002-02-03 04:07:00UTC |
+      | meredith | Austin              | james    | james123     | false    | false | false     | 2001-02-03 04:05:06UTC |DateTime.new(2003,2,3,4,5,6) | DateTime.new(2002,2,3,4,5,6) | 2001-02-03 04:08:00UTC |
+      | jane     | Eyre                | james    | james153     | false    | false | true      | 2001-02-02 04:05:06UTC | DateTime.new(2008,2,3,4,5,6)| DateTime.new(2008,2,3,4,5,6) | 2001-02-02 04:09:00UTC |
     And I am on the children listing page
 
   Scenario: Checking filter by All returns all the children in the system
@@ -29,22 +29,14 @@ Feature:
     And I should not see "jaco"
     And I should not see "jane"
 
-  Scenario: Checking filter by All should by default show all children in alphabetical order
-    Then I should see the order andreas,jaco,jane,meredith,zak
-
   Scenario: Checking filter by All shows the Order by options
     Then I should see "Order by"
     And I should see "Most recently created"
 
   @javascript
-  Scenario: Checking filter by All and then ordering by most recently added returns all the children in order of most recently added
+  Scenario: Checking filter by All and then ordering by most recently created returns all the children in order of most recently created
     When I select "Most recently created" from "order_by"
-    Then I should see the order andreas,zak,jaco,meredith,jane
-
-  Scenario: Checking filter by All sand then ordering by Name should return all the children in alphabetical order
-    When I select dropdown option "Most recently created"
-    And I select dropdown option "Name"
-    Then I should see the order andreas,jaco,jane,meredith,zak
+    Then I should see the order zak,jaco,meredith,jane,andreas
 
   @javascript
   Scenario: Checking filter by Reunited returns all the reunited children in the system
@@ -59,7 +51,7 @@ Feature:
     And I should see "Most recently reunited"
 
   @javascript
-  Scenario: Checking filter by Reunited should by default show the records ordered alphabetically
+  Scenario: Checking filter by Reunited should by default show the records ordered by most recently created
     When I select "Reunited" from "filter"
     Then I should see the order andreas,jaco
 
@@ -69,13 +61,6 @@ Feature:
     When I select "Reunited" from "filter"
     And I select "Most recently reunited" from "order_by"
     Then I should see the order jaco,andreas
-
-  @javascript
-  Scenario: Checking filter by Reunited by name should show records in alphabetical order
-    And I select "Reunited" from "filter"
-    And I select "Most recently reunited" from "order_by"
-    And I select "Name" from "order_by"
-    Then I should see the order andreas,jaco
 
   @javascript
   Scenario: Checking filter by Flagged returns all the flagged children in the system
@@ -120,11 +105,6 @@ Feature:
   Scenario: Checking filter by Active and then ordering by most recently created returns the children in the order of most recently created
     When I select "Most recently created" from "order_by"
     Then I should see the order zak,jaco,meredith,jane
-
-  Scenario: Checking filter by Active and order by name should return the children in alphabetical order
-    When I select "Most recently created" from "order_by"
-    And I select "Name" from "order_by"
-    Then I should see the order jaco,jane,meredith,zak
 
   Scenario: Viewing a child record with audio attached - mp3
     Given a child record named "Fred" exists with a audio file with the name "sample.mp3"

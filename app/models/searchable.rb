@@ -9,17 +9,21 @@ module Searchable
     def load(id)
       Child.get(id)
     end
-  end
+  end 
 
   def self.included(klass)
     klass.extend ClassMethods
     klass.class_eval do
+      include Sunspot::Rails::Searchable
+      Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, klass)
+      Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, klass)
       after_create :index_record
       after_update :index_record
       after_save :index_record
 
       def index_record
         begin
+        # TODO #40 Do we need to build solar schema EVERY time?
           Child.build_solar_schema
           Sunspot.index!(self)
         rescue

@@ -16,5 +16,4 @@ RapidFTR::Application.configure do
 
     # Force single threaded mode
     config.middleware.insert_after ActionDispatch::Static, Rack::Lock
-
 end

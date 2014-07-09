@@ -47,6 +47,11 @@ describe ChildSearch do
       expect(results).to eq [@child4, @child3, @child2, @child1]
     end
 
+    it "should default to ascending" do
+      results = ChildSearch.new.ordered(:created_by).results
+      expect(results).to eq [@child1, @child2, @child3, @child4]
+    end
+
     describe "by time" do
       it "should order ascending" do
         results = ChildSearch.new.ordered(:last_updated_at, :asc).results

@@ -7,11 +7,11 @@ Feature: Suspect Records
 
   Given I am logged in as an admin
   And the following children exist in the system:
-     | name   | unique_id  | flag     | flag_message      | investigated |
-     | Steve  | steve_uid  | true     | steve is dodgy    | false        |
-     | Bob    | bob_uid    | true     | bob is dodgy      | false        |
-     | Dave   | dave_uid   | true     | dave is dodgy     | true         |
-     | George | george_uid | false    | nil               | false        |
+     | name   | unique_id  | flag    | flag_message      | investigated | short_id |
+     | Steve  | steve_uid  | true    | steve is dodgy    | false        | eve_uid  |
+     | Bob    | bob_uid    | true    | bob is dodgy      | false        | bob_uid  |
+     | Dave   | dave_uid   | true    | dave is dodgy     | true         | ave_uid  |
+     | George | george_uid | false   | nil               | false        | rge_uid  |
 
   Scenario: Admin user should see a link on the home page with the details of how many suspect records need attention
   When I am on the home page
@@ -19,20 +19,20 @@ Feature: Suspect Records
 
   Scenario: Admin user should only see flagged children which have not been investigated
   When I am on the child listing filtered by flag
-  Then I should see "Steve"
-  And I should see "Bob"
-  And I should see "Dave"
-  And I should not see "George"
+  Then I should see "eve_uid"
+  And I should see "bob_uid"
+  And I should see "ave_uid"
+  And I should not see "rge_uid"
 
   Scenario: Admin should be able to mark suspect record as investigated
   When I am on the child listing filtered by flag
-  And I follow "Steve"
+  And I follow "eve_uid"
   Then I should see "Mark as Investigated"
 
   @javascript
   Scenario: When an admin user marks a flagged record as investigated it should no longer appear on the suspect record page
   When I am on the child listing filtered by flag
-  And I follow "Steve"
+  And I follow "eve_uid"
   And I mark as investigated with the following details:
     """
     I wouldn't worry about this guy
@@ -41,7 +41,7 @@ Feature: Suspect Records
 
   Scenario: Admin should be able to mark investigated record as not investigated
   When I am on the children listing page
-  And I follow "Dave"
+  And I follow "ave_uid"
   Then I should see "Mark as Not Investigated"
 
   Scenario: When a record is not flagged admin should not be able to mark as investigated or not investigated
@@ -53,7 +53,7 @@ Feature: Suspect Records
   @javascript
   Scenario: When I mark a record as investigated the change log should display a single entry for the change
   When I am on the child listing filtered by flag
-  And I follow "Steve"
+  And I follow "eve_uid"
   And I mark as investigated with the following details:
     """
     I wouldn't worry about this guy

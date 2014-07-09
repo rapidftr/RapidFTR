@@ -179,7 +179,7 @@ Then /^the child listing page filtered by flagged should show the following chil
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|
-  visit(children_path+"/#{Child.all[0].id}/history")
+  visit(children_path+"/#{Child.first.id}/history")
   page.should have_content(field)
 end
 

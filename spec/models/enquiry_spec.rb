@@ -69,6 +69,11 @@ describe Enquiry, :type => :model do
     describe "potential_matches" do
 
       before :each do
+        Sunspot.setup(Child) do
+            text :location
+            text :name
+            text :gender
+        end
         FormSection.all.each(&:destroy)
         form = FormSection.new(:name => "test_form")
         form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")

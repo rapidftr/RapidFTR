@@ -1,4 +1,7 @@
 class ChildSearch
+  # TODO #40 - Obviously this won't be sustainable, need to figure
+  # out how to not use this but still have passing specs.
+
   def results
     search.execute.results
   end
@@ -10,9 +13,9 @@ class ChildSearch
     self
   end
 
-  def ordered(field, direction)
+  def ordered(field, direction = :asc)
     search.build do
-      order_by Child.sortable_field_name(field), direction if field
+      order_by(Child.sortable_field_name(field), direction) if !field.nil?
     end
     self
   end
@@ -34,7 +37,6 @@ class ChildSearch
   end
 
   private
-
   def search
     @search ||= Sunspot.new_search(Child)
   end

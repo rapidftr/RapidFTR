@@ -216,8 +216,8 @@ describe ChildrenController, :type => :controller do
         before {
           @field_worker = create :user
           create(:child, created_by: @field_worker.user_name)
-          @expected_children = [create(:child, created_by: @field_worker.user_name, flagged: true)]
-          @filter = "flagged"
+          @expected_children = [create(:child, created_by: @field_worker.user_name, flag: true)]
+          @filter = "flag"
         }
         it_should_behave_like "viewing children by user with access to all data"
       end
@@ -225,8 +225,8 @@ describe ChildrenController, :type => :controller do
         before {
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
-          @expected_children = [create(:child, created_by: @session.user_name, flagged: true)]
-          @filter = "flagged" }
+          @expected_children = [create(:child, created_by: @session.user_name, flag: true)]
+          @filter = "flag" }
         it_should_behave_like "viewing children as a field worker"
       end
     end
