@@ -124,20 +124,4 @@ describe FormSectionController, :type => :controller do
     end
   end
 
-  it "should only retrieve fields on a form that are visible" do
-    expect(FormSection).to receive(:enabled_by_order_without_hidden_fields).and_return({})
-    get :published
-  end
-
-  it "should publish form section documents as json" do
-    form_sections = [FormSection.new(:name => 'Some Name', :description => 'Some description')]
-    allow(FormSection).to receive(:enabled_by_order_without_hidden_fields).and_return(form_sections)
-
-    get :published
-
-    returned_form_section = JSON.parse(response.body).first
-    expect(returned_form_section["name"][I18n.locale.to_s]).to eq('Some Name')
-    expect(returned_form_section["description"][I18n.locale.to_s]).to eq('Some description')
-  end
-
 end

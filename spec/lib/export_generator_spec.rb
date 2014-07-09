@@ -47,7 +47,7 @@ describe ExportGenerator do
       end
 
       it 'should render a row for each result, plus a header row' do
-        allow(FormSection).to receive(:all_visible_child_fields).and_return [build(:text_field)]
+        allow(FormSection).to receive(:all_visible_child_fields).and_return [build(:text_field, name: 'name')]
         csv_data = CSV.parse subject.data
         expect(csv_data.length).to eq(4)
         expect(csv_data[1][0]).to eq("xxxy")
