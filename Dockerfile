@@ -18,6 +18,7 @@ RUN bundle install --without development test cucumber --jobs 4 --path vendor/
 ADD docker/config/couchdb.ini /etc/couchdb/local.d/rapidftr.ini
 ADD docker/runit/couchdb/ /etc/service/couchdb/
 EXPOSE 5984
+EXPOSE 6984
 
 # RapidFTR
 ENV RAILS_ENV production
@@ -29,7 +30,8 @@ RUN rm -f /etc/service/nginx/down
 EXPOSE 80
 
 # Services
-# ADD docker/runit/solr/ /etc/service/solr/
-# ADD docker/runit/scheduler/ /etc/service/scheduler/
+ADD docker/runit/solr/ /etc/service/solr/
+ADD docker/runit/scheduler/ /etc/service/scheduler/
 
-ADD docker/login.sh /etc/my_init.d/00_setup_rapidftr.sh
+# First Run Script
+ADD docker/login.sh /etc/my_init.d/000_setup_rapidftr.sh
