@@ -1,6 +1,6 @@
 def check_link_presence(div, li_class_name, link_text)
   lis = div.all :xpath, "//li[@class=\"#{li_class_name}\"]"
-  lis.size.should >= 1
+  expect(lis.size).to be >= 1
   found = false
   lis.each do |li|
     begin
@@ -10,5 +10,5 @@ def check_link_presence(div, li_class_name, link_text)
     rescue Capybara::ElementNotFound
     end
   end
-  found.should_not be false
+  expect(found).not_to be false
 end

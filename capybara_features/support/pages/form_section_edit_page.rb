@@ -8,11 +8,11 @@ class FormSectionEditPage
   end
 
   def should_not_be_able_to_edit_field(field_name)
-    @session.should_not(have_selector(:xpath, field_selector(field_name)))
+    expect(@session).not_to have_selector(:xpath, field_selector(field_name))
   end
 
   def should_be_able_to_edit_field(field_name)
-    @session.should(have_selector(:xpath, field_selector(field_name)))
+    expect(@session).to have_selector(:xpath, field_selector(field_name))
   end
 
   def mark_nationality_field_as_hidden

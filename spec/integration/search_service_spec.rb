@@ -22,7 +22,7 @@
 #    criteria = SearchCriteria.new(:field => "name", :value => "tim")
 #
 #    result = SearchService.search(1, [criteria])
-#    result.should == [child]
+#    expect(result).to eq([child])
 #  end
 #
 #  xit "Should be able to search by fields ANDed" do
@@ -32,7 +32,7 @@
 #    criteria2 = SearchCriteria.new(:field => "company", :value => "consultant", :join => "AND")
 #
 #    result = SearchService.search(1, [criteria1, criteria2])
-#    result.should == [child1]
+#    expect(result).to eq([child1])
 #  end
 #
 #  xit "Should be able to search by fields criteria with space" do
@@ -40,7 +40,7 @@
 #    criteria1 = SearchCriteria.new(:field => "company", :value => "developer consultant")
 #
 #    result = SearchService.search(1, [criteria1])
-#    result.should == [child1]
+#    expect(result).to eq([child1])
 #  end
 #
 #  xit "Should be able to search by fields ORed" do
@@ -75,7 +75,7 @@
 #    criteria2 = SearchCriteria.new(:field => "company", :value => "firoman", :join => "AND")
 #
 #    result = SearchService.search(1, [criteria1, criteria2])
-#    result.should == [child1]
+#    expect(result).to eq([child1])
 #  end
 #
 #  xit "Should be able to starts with search by fields ANDed" do
@@ -86,7 +86,7 @@
 #    criteria2 = SearchCriteria.new(:field => "company", :value => "fir", :join => "AND")
 #
 #    result = SearchService.search(1, [criteria1, criteria2])
-#    result.should == [child1]
+#    expect(result).to eq([child1])
 #  end
 #
 #  xit "Should be able to starts with search by fields Ored" do
@@ -119,11 +119,11 @@
 #    criteria2 = SearchCriteria.new(:field => "created_by", :value => "jill", :join => "AND")
 #
 #    result = SearchService.search(1, [criteria1, criteria2])
-#    result.should == [child2, child3]
+#    expect(result).to eq([child2, child3])
 #  end
 #
 #  xit "should call index instead of index! while creating the child in production env" do
-#    Sunspot.should_receive(:index).twice
+#    allow(Sunspot).to receive(:index).twice
 #    Rails.stub(:env).and_return(double('env', :production? => true))
 #    Child.create(:name => "some name")
 #  end

@@ -21,7 +21,7 @@ And /^I set the user language to "(.*)"-"(.*)"$/ do |language, locale|
 end
 
 Then /^I should see "(.*?)" translated$/ do |text|
-  text.should == I18n.t('xxxx')
+  expect(text).to eq(I18n.t('xxxx'))
 end
 
 def store(translation)

@@ -53,8 +53,8 @@ When /^I cannot follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   rescue Exception=>e
     exception=e
   end
-  exception.should_not be_nil
-  exception.class.should==Capybara::ElementNotFound
+  expect(exception).not_to be_nil
+  expect(exception.class).to eq(Capybara::ElementNotFound)
 end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
@@ -113,16 +113,16 @@ end
 Then /^(?:|I )should see \/([^\/]*)\/$/ do |regexp|
   regexp = Regexp.new(regexp)
   if defined?(Spec::Rails::Matchers)
-    page.should have_content(regexp)
+    expect(page).to have_content(regexp)
   else
-    page.text.should match(regexp)
+    expect(page.text).to match(regexp)
   end
 end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
-      page.should have_content(text)
+      expect(page).to have_content(text)
     else
       assert page.has_content?(text)
     end
@@ -132,7 +132,7 @@ end
 Then /^(?:|I )should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
-      page.should have_no_content(text)
+      expect(page).to have_no_content(text)
     else
       assert page.has_no_content?(text)
     end
@@ -143,7 +143,7 @@ Then /^(?:|I )should not see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, s
   regexp = Regexp.new(regexp)
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
-      page.should have_no_xpath('//*', :text => regexp)
+      expect(page).to have_no_xpath('//*', :text => regexp)
     else
       assert page.has_no_xpath?('//*', :text => regexp)
     end
@@ -153,7 +153,7 @@ end
 Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should contain "([^\"]*)"$/ do |field, selector, value|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
-      find_field(field).value.should =~ /#{value}/
+      expect(find_field(field).value).to match(/#{value}/)
     else
       assert_match(/#{value}/, field_labeled(field).value)
     end
@@ -163,7 +163,7 @@ end
 Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should not contain "([^\"]*)"$/ do |field, selector, value|
   with_scope(selector) do
     if defined?(Spec::Rails::Matchers)
-      find_field(field).value.should_not =~ /#{value}/
+      expect(find_field(field).value).not_to =~ /#{value}/
     else
       assert_no_match(/#{value}/, find_field(field).value)
     end
@@ -174,7 +174,7 @@ Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      ["true", "checked", true].should include field_checked
+      expect(["true", "checked", true]).to include field_checked
     else
       field_checked
     end
@@ -185,7 +185,7 @@ Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should not be checked$/ 
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      field_checked.should == nil
+      expect(field_checked).to eq(nil)
     else
       !field_checked
     end
@@ -196,7 +196,7 @@ Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |labe
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      ["true", true].should include field_checked
+      expect(["true", true]).to include field_checked
     else
       field_checked
     end
@@ -207,7 +207,7 @@ Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should not be checked$/ do |
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      [nil, false].should include field_checked
+      expect([nil, false]).to include field_checked
     else
       !field_checked
     end
@@ -216,7 +216,7 @@ end
 
 Then /^(?:|I )should be on (.+)$/ do |page_name|
   if defined?(Spec::Rails::Matchers)
-    URI.parse(current_url).path.should == path_to(page_name)
+    expect(URI.parse(current_url).path).to eq(path_to(page_name))
   else
     assert_equal path_to(page_name), URI.parse(current_url).path
   end
@@ -227,7 +227,7 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   expected_params = Hash[expected_pairs.rows_hash.map{|k,v| [k,[v]]}]
 
   if defined?(Spec::Rails::Matchers)
-    actual_params.should == expected_params
+    expect(actual_params).to eq(expected_params)
   else
     assert_equal expected_params, actual_params
   end
@@ -283,12 +283,12 @@ Then /^I should see next records in the search results$/ do
 end
 
 Then /^I should see link to "(.*?)"$/ do |text|
-  page.should have_xpath("//span[@class='"+text+"']")
+  expect(page).to have_xpath("//span[@class='"+text+"']")
 end
 
 Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
   tab_element = page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
-  tab_element.should == !not_visible
+  expect(tab_element).to eq(!not_visible)
 end
 
 When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
@@ -302,7 +302,7 @@ When /^I go and press "([^"]*)"$/ do |arg|
 end
 
 Then /^"([^"]*)" option should be unavailable to me$/ do |element|
-  page.should have_no_xpath("//span[@class='"+element+"']")
+  expect(page).to have_no_xpath("//span[@class='"+element+"']")
 end
 
 Then /^password prompt should be enabled$/ do

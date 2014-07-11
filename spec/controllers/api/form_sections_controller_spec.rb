@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::FormSectionsController do
+describe Api::FormSectionsController, :type => :controller do
 
   before :each do
     fake_admin_login

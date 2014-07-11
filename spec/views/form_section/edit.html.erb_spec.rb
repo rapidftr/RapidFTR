@@ -85,7 +85,7 @@ describe "form_section/edit.html.erb", :type => :view do
     expect(page.css("#form_section_description").first["value"]).to eq("Blah blah French")
     expect(page.css("#form_section_help_text").first["value"]).to eq("help me French")
 
-    # Hpricot(rendered).at(".results-count").at("p").inner_html.should == "1 record found"
+    # expect(Hpricot(rendered).at(".results-count").at("p").inner_html).to eq("1 record found")
   end
 
 end
