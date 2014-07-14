@@ -69,27 +69,18 @@ describe Enquiry, :type => :model do
     describe "potential_matches" do
 
       before :each do
+        reset_couchdb!
         Sunspot.setup(Child) do
             text :location
             text :name
             text :gender
         end
-        FormSection.all.each(&:destroy)
-        form = FormSection.new(:name => "test_form")
-        form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-        form.fields << Field.new(:name => "location", :type => Field::TEXT_FIELD, :display_name => "location")
-        form.fields << Field.new(:name => "gender", :type => Field::TEXT_FIELD, :display_name => "gender")
-        form.save!
+        create :form_section, name: 'test_form', fields: [
+            build(:text_field, name: 'name'),
+            build(:text_field, name: 'location'),
+            build(:text_field, name: 'gender')
+        ]
       end
-
-      after :each do
-        FormSection.all.each(&:destroy)
-      end
-
-      before :each do
-        Child.all.each { |c| c.destroy }
-      end
-
 
       it "should be an empty array when enquiry is created" do
         enquiry = Enquiry.new(:criteria => {"name" => "Stephen"})

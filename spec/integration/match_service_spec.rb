@@ -3,7 +3,7 @@ require "spec_helper"
 describe MatchService, :type => :request do
 
   before :each do
-    reset_test_db!
+    reset_couchdb!
     create :form_section, name: 'test_form', fields: [
       build(:text_field, name: 'name'),
       build(:text_field, name: 'nationality'),

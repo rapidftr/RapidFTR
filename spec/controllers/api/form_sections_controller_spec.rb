@@ -8,7 +8,7 @@ describe Api::FormSectionsController, :type => :controller do
 
   describe "index" do
     before :each do
-      reset_test_db!
+      reset_couchdb!
 
       @form1 = create :form_section, order: 10
       @form2 = create :form_section, visible: false

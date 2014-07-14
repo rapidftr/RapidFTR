@@ -19,6 +19,11 @@ Dir[Rails.root.join("lib/**/*.rb")].each {|f| require f}
 FactoryGirl.find_definitions
 Mime::Type.register 'application/zip', :mock
 
+
+#This work if we keep in the suffix the same as the RAILS_ENV.
+TEST_DATABASES = COUCHDB_SERVER.databases.select {|db| db =~ /#{ENV["RAILS_ENV"]}$/}
+
+
 module VerifyAndResetHelpers
   def verify(object)
     RSpec::Mocks.space.proxy_for(object).verify
@@ -66,7 +71,12 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.before(:all) do
-    reset_test_db!
+    reset_couchdb!
+  end
+
+  #Delete db if needed.
+  config.after(:all) do
+      reset_couchdb!
   end
 
   config.before(:each) { I18n.locale = I18n.default_locale = :en }
