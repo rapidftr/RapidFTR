@@ -4,7 +4,7 @@ module FakeLogin
     session = Session.new :user_name => user.user_name
   	session.save
 
-    user.stub(:id => "1234") unless user.try(:id)
+    allow(user).to receive(:id).and_return("1234") unless user.try(:id)
     allow(User).to receive(:get).with(user.id).and_return(user)
 
     allow(@controller).to receive(:current_session).and_return(session)

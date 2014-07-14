@@ -39,7 +39,7 @@ end
 
 Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table|
   form_section = FormSection.get_by_unique_id(form_section_name)
-  form_section.should_not be_nil
+  expect(form_section).not_to be_nil
   form_section.fields = []
   table.hashes.each do |field_hash|
     field_hash.reverse_merge!(
@@ -52,7 +52,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
 end
 
 Then /^there should be (\d+) child records in the database$/ do |number_of_records|
-  Child.all.length.should == number_of_records.to_i
+  expect(Child.all.length).to eq(number_of_records.to_i)
 end
 
 When /^the date\/time is "([^\"]*)"$/ do |datetime|
@@ -125,19 +125,19 @@ end
 
 Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|
   divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
-  divs.size.should == quantity.to_i
+  expect(divs.size).to eq(quantity.to_i)
 end
 
 Then /^I should see (\d*) divs with text "(.*)" for class "(.*)"$/ do |quantity, div_text, div_class_name|
   divs = page.all :xpath, "//div[@class=\"#{div_class_name}\"]"
-  divs.size.should == quantity.to_i
+  expect(divs.size).to eq(quantity.to_i)
   divs.each do |div|
-    div.text.should == div_text
+    expect(div.text).to eq(div_text)
   end
 end
 
 Then /^the "([^\"]*)" button presents a confirmation message$/ do |button_name|
-  page.find("//a[@class='link_#{button_name.downcase}']")['data-confirm'].should_not be_nil
+  expect(page.find("//a[@class='link_#{button_name.downcase}']")['data-confirm']).not_to be_nil
 end
 
 Given /^I flag "([^\"]*)" as suspect$/ do  |name|
@@ -167,20 +167,20 @@ end
 Then /^the (view|edit) record page should show the record is flagged$/ do |page_type|
   path = children_path+"/#{Child.all[0].id}"
   (page_type == 'edit') ? visit(path + '/edit') : visit(path)
-  page.should have_content('Flagged as suspect record by')
+  expect(page).to have_content('Flagged as suspect record by')
 end
 
 Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
   visit child_filter_path(:filter => 'flag')
   expected_child_names.each do |name|
-    page.should have_xpath "//h2//a[contains(., '#{name}')]"
+    expect(page).to have_xpath "//h2//a[contains(., '#{name}')]"
   end
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|
   visit(children_path+"/#{Child.first.id}/history")
-  page.should have_content(field)
+  expect(page).to have_content(field)
 end
 
 Then /^I should (not )?see the "([^\"]*)" tab$/ do |do_not_want, tab_name|
@@ -205,16 +205,16 @@ Given /"([^\"]*)" is the user/ do |user_name|
 end
 
 Then /^I should not see any errors$/ do
-  page.should_not have_xpath '//div[class="errorExplanation"]'
+  expect(page).not_to have_xpath '//div[class="errorExplanation"]'
 end
 
 Then /^I should see the error "([^\"]*)"$/ do |error_message|
-  page.should have_xpath "//div[@class=errorExplanation and contains(., '#{error_message}')]"
+  expect(page).to have_xpath "//div[@class=errorExplanation and contains(., '#{error_message}')]"
 end
 
 Then /^the "([^\"]*)" result should have a "([^\"]*)" image$/ do |name, flag|
   child_name = find_child_by_name name
-  page.should have_css "#child_#{child_name.id} .#{flag}"
+  expect(page).to have_css "#child_#{child_name.id} .#{flag}"
 end
 
 Given /I am logged out/ do
@@ -222,15 +222,15 @@ Given /I am logged out/ do
 end
 
 Then /^the "([^"]*)" dropdown should have "([^"]*)" selected$/ do |dropdown_label, selected_text|
-  field_labeled(dropdown_label).value.should == selected_text
+  expect(field_labeled(dropdown_label).value).to eq(selected_text)
 end
 
 And /^I should see "([^\"]*)" in the list of fields$/ do |field_name|
-  page.should have_xpath("//table[@id='form_sections']//tr[@class='rowEnabled' and contains(., '#{field_name}')]")
+  expect(page).to have_xpath("//table[@id='form_sections']//tr[@class='rowEnabled' and contains(., '#{field_name}')]")
 end
 
 And /^I should see "([^\"]*)" in the list of fields and disabled$/ do |field_name|
-  page.should have_xpath("//table[@id='form_sections']//tr[@class='rowDisabled' and contains(., '#{field_name}')]")
+  expect(page).to have_xpath("//table[@id='form_sections']//tr[@class='rowDisabled' and contains(., '#{field_name}')]")
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
@@ -242,10 +242,10 @@ end
 Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
   # This selector is no longer working, need to find some other selector for searching field
   field = page.find "//div[@id='#{field_name}Row']"
-  field.should_not be_nil
+  expect(field).not_to be_nil
 
   enabled_icon = field.enabled_icon
-  enabled_icon.inner_html.strip.should == expected_text
+  expect(enabled_icon.inner_html.strip).to eq(expected_text)
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" hidden$/ do |form_section, field_name |
@@ -255,7 +255,7 @@ Given /^the "([^\"]*)" form section has the field "([^\"]*)" hidden$/ do |form_s
 end
 
 Then /^I should see errors$/ do
-  page.should have_xpath '//div[@class="errorExplanation"]'
+  expect(page).to have_xpath '//div[@class="errorExplanation"]'
 end
 
 When /^I debug$/ do

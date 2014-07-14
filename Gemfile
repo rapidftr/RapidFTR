@@ -39,12 +39,13 @@ end
 group :test, :cucumber do
   gem 'factory_girl',       '~> 4.4.0'
 
-  gem 'rspec',              '~> 2.99'
-  gem 'rspec-rails',        '~> 2.99'
+  gem 'rspec',              '~> 3.0'
+  gem 'rspec-rails',        '~> 3.0'
+  gem 'rspec-activemodel-mocks', '~> 1.0.1'
   gem 'rspec-instafail',    '~> 0.2.4'
   gem 'jasmine',            '~> 1.3.2'
 
-  gem 'capybara',           '~> 2.2.1'
+  gem 'capybara',           '~> 2.3'
   gem 'cucumber',           '~> 1.3.11'
   gem 'cucumber-rails',     '~> 1.4.0', :require => false
   gem 'selenium-webdriver', '~> 2.42.0'

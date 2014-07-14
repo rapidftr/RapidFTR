@@ -69,6 +69,10 @@ RapidFTR::Application.routes.draw do
 #######################
 
   namespace :api do
+    controller :form_sections, :defaults => { :format => :json } do
+      get 'form_sections', :action => :index
+    end
+
     controller :device, :defaults => { :format => :json} do
       get 'is_blacklisted', :action => 'is_blacklisted'
       get 'is_blacklisted/:imei', :action => 'is_blacklisted'
@@ -102,6 +106,9 @@ RapidFTR::Application.routes.draw do
 
   end
 
+  # Backwards compatibility with 1.2
+  match '/published_form_sections', :to => 'api/form_sections#index', :via => [:post, :get, :put, :delete]
+
 #######################
 # FORM SECTION URLS
 #######################
@@ -110,7 +117,6 @@ RapidFTR::Application.routes.draw do
     collection do
       match 'save_order', :via => [:post, :get, :put, :delete]
       match 'toggle', :via => [:post, :get, :put, :delete]
-      match 'published', :via => [:post, :get, :put, :delete]
     end
 
     resources :fields, :controller => 'fields' do
@@ -128,8 +134,6 @@ RapidFTR::Application.routes.draw do
       post :remove
     end
   end
-
-  match '/published_form_sections', :to => 'form_section#published', :via => [:post, :get, :put, :delete]
 
 
 #######################

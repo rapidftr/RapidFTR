@@ -10,7 +10,7 @@ describe Api::EnquiriesController, :type => :controller do
   describe "#authorizations" do
     it "should fail to POST create when unauthorized" do
       expect(@controller.current_ability).to receive(:can?).with(:create, Enquiry).and_return(false)
-      post :create 
+      post :create
       expect(response).to be_forbidden
     end
 
@@ -92,14 +92,14 @@ describe Api::EnquiriesController, :type => :controller do
   describe "PUT update" do
 
 
-    before :all do
-      form = FormSection.new(:name => "test_form")
-      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-      form.fields << Field.new(:name => "sex", :type => Field::TEXT_FIELD, :display_name => "sex")
-      form.save!
+    before :each do
+      create :form_section, name: 'test_form', fields: [
+        build(:text_field, name: 'name'),
+        build(:text_field, name: 'sex')
+      ]
     end
 
-    after :all do
+    after :each do
       FormSection.all.each { |form| form.destroy }
     end
 
@@ -212,12 +212,12 @@ describe Api::EnquiriesController, :type => :controller do
       allow(controller).to receive(:authorize!)
       enquiry = Enquiry.create({:enquirer_name => "old name", :reporter_details => {"location" => "kampala"}, :criteria => {:name => "child name"}})
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :criteria => {:name => "child new name"}} 
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :criteria => {:name => "child new name"}}
 
       enquiry = Enquiry.get(enquiry.id)
       expect(enquiry.criteria).to eq({"name" => "child new name"})
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => "Kampala", :reporter_details => {"age" => "100"}, :criteria => {:sex => "female"}} 
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => "Kampala", :reporter_details => {"age" => "100"}, :criteria => {:sex => "female"}}
 
       enquiry = Enquiry.get(enquiry.id)
 
@@ -270,7 +270,7 @@ describe Api::EnquiriesController, :type => :controller do
       enquiry = Enquiry.new({:_id => "123"})
       expect(Enquiry).to receive(:all).and_return([enquiry])
 
-      get :index 
+      get :index
       expect(response.response_code).to eq(200)
       expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json)
     end
@@ -281,7 +281,7 @@ describe Api::EnquiriesController, :type => :controller do
       enquiry = Enquiry.new({:_id => "123"})
       expect(Enquiry).to receive(:search_by_match_updated_since).with('2013-09-18 06:42:12UTC').and_return([enquiry])
 
-      get :index, :updated_after => '2013-09-18 06:42:12UTC' 
+      get :index, :updated_after => '2013-09-18 06:42:12UTC'
 
       expect(response.response_code).to eq(200)
       expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json)
@@ -290,7 +290,7 @@ describe Api::EnquiriesController, :type => :controller do
     it "should return 422 if query parameter with last update timestamp is not a valid timestamp" do
       allow(controller).to receive(:authorize!)
       bypass_rescue
-      get :index, :updated_after => 'adsflkj' 
+      get :index, :updated_after => 'adsflkj'
 
       expect(response.response_code).to eq(422)
     end
@@ -303,7 +303,7 @@ describe Api::EnquiriesController, :type => :controller do
 
       expect(Enquiry).to receive(:get).with("123").and_return(double(:to_json => "an enquiry record"))
 
-      get :show, :id => "123" 
+      get :show, :id => "123"
       expect(response.response_code).to eq(200)
       expect(response.body).to eq("an enquiry record")
     end
@@ -313,7 +313,7 @@ describe Api::EnquiriesController, :type => :controller do
 
       expect(Enquiry).to receive(:get).with("123").and_return(nil)
 
-      get :show, :id => "123" 
+      get :show, :id => "123"
 
       expect(response.body).to eq("")
       expect(response.response_code).to eq(404)

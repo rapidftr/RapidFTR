@@ -18,14 +18,14 @@ end
 Then /^I should see the following reports:$/ do |reports_table|
   expected_order = reports_table.hashes.collect { |report| report['as_of_date'] }
   actual_order=page.all(:xpath, "//td[@class='as_of_date']").collect(&:text)
-  actual_order.should == expected_order
+  expect(actual_order).to eq(expected_order)
 end
 
 Then /^a "(.+)" file named "(.+)" should be downloaded$/ do |content_type, file_name|
-  page.response_headers['Content-Type'].should == content_type
-  page.response_headers['Content-Disposition'].should == "attachment; filename=\"#{file_name}\""
+  expect(page.response_headers['Content-Type']).to eq(content_type)
+  expect(page.response_headers['Content-Disposition']).to eq("attachment; filename=\"#{file_name}\"")
 end
 
 Then /^the downloaded file should have content:$/ do |content|
-  page.source.chomp.should == content.chomp
+  expect(page.source.chomp).to eq(content.chomp)
 end

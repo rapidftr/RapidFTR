@@ -64,7 +64,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
       it "prepopulates the text field with the existing value" do
         @child = Child.new :name => "Jessica"
-        @form_section.add_field build(:text_field)
+        @form_section.add_field build(:text_field, name: 'name')
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 

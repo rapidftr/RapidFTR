@@ -23,7 +23,7 @@ Feature: Only authorized API clients should be allowed to access the system
   Scenario: API should timeout the session
     When I login as tim with password 123 and imei 10003
     And I expire my session
-    And I send a GET request to "/published_form_sections"
+    And I send a GET request to "/api/form_sections"
     Then I should receive HTTP 401
 
   Scenario: API user successful login

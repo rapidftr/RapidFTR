@@ -33,24 +33,24 @@ Given /^user "(.+)" is disabled$/ do |username|
 end
 
 Then /^user "(.+)" should be disabled$/ do |username|
-  User.find_by_user_name(username).should be_disabled
+  expect(User.find_by_user_name(username)).to be_disabled
 end
 
 Then /^user "(.+)" should not be disabled$/ do |username|
-  User.find_by_user_name(username).should_not be_disabled
+  expect(User.find_by_user_name(username)).not_to be_disabled
 end
 
 Then /^device "(.+)" should be blacklisted/ do |imei|
   devices = Device.find_by_device_imei(imei)
   devices.each do |device|
-    device[:blacklisted].should be_true
+    expect(device[:blacklisted]).to be true
   end
 end
 
 Then /^device "(.+)" should not be blacklisted/ do |imei|
   devices = Device.find_by_device_imei(imei)
   devices.each do |device|
-    device[:blacklisted].should be_false
+    expect(device[:blacklisted]).to be false
   end
 end
 
@@ -74,10 +74,10 @@ end
 
 Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*)"$/ do |field_name, child_name, field_value|
   children = Child.by_name(:key=>child_name)
-  children.should_not be_nil
-  children.should_not be_empty
+  expect(children).not_to be_nil
+  expect(children).not_to be_empty
   child = children.first
-  child[field_name.to_s].should == field_value
+  expect(child[field_name.to_s]).to eq(field_value)
 end
 
 Given /^a password recovery request for (.+)$/ do |username|

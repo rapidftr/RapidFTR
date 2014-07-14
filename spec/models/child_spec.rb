@@ -118,14 +118,10 @@ describe Child, :type => :model do
       Sunspot.remove_all(Child)
     end
 
-    before :all do
-      form = FormSection.new(:name => "test_form")
-      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-      form.save!
-    end
-
-    after :all do
-      FormSection.all.each { |form| form.destroy }
+    before :each do
+      create :form_section, name: 'test_form', fields: [
+        build(:text_field, name: 'name')
+      ]
     end
 
 
