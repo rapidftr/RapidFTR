@@ -20,5 +20,6 @@ script:
   - "RAILS_ENV=test bundle exec rake cane:quality"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:headless"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:browser"
+  - "bundle exec rubocop -R"
 notifications:
   - email: false
