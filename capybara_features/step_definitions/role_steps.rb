@@ -10,18 +10,18 @@ end
 
 And /^I should see the following roles$/ do |role_table|
   role_table.hashes.each do |role_row|
-    page.should have_content(role_row['name'].titleize)
-    page.should have_content(role_row['description'])
+    expect(page).to have_content(role_row['name'].titleize)
+    expect(page).to have_content(role_row['description'])
   end
 end
 
 Then /^I should see error messages$/ do
-  page.should have_content('Please select at least one permission')
-  page.should have_content('Name must not be blank')
+  expect(page).to have_content('Please select at least one permission')
+  expect(page).to have_content('Name must not be blank')
 end
 
 Then /^I should see message "([^"]*)"$/ do |error_message|
-  page.should have_content(error_message)
+  expect(page).to have_content(error_message)
 end
 
 When /^I try to filter user roles by permission "([^"]*)"$/ do |permission|
@@ -36,7 +36,7 @@ end
 
 Then /^I should see the following roles sorted:$/ do |table|
   expected_order = table.hashes.collect { |role| role['name'] }
-  actual_order_against(expected_order).should == expected_order
+  expect(actual_order_against(expected_order)).to eq(expected_order)
 end
 
 When /^I edit the role (.+)$/ do  |role_name|

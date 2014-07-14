@@ -7,29 +7,29 @@ class ChildListPage
   end
 
   def should_not_be_paged
-    @session.should have_no_selector(:css, 'nav.pagination')
+    expect(@session).to have_no_selector(:css, 'nav.pagination')
   end
 
   def should_be_showing_first_page
-    @session.should have_selector(:css, PAGINATION_SELECTOR)
-    @session.should have_selector(:css, NEXT_PAGE_LINK_SELECTOR)
-    @session.should have_selector(:css, PREV_PAGE_DISABLED_LINK_SELECTOR)
-    @session.find(:css, CURRENT_PAGE_INDICATOR_SELECTOR).should have_content('1')
+    expect(@session).to have_selector(:css, PAGINATION_SELECTOR)
+    expect(@session).to have_selector(:css, NEXT_PAGE_LINK_SELECTOR)
+    expect(@session).to have_selector(:css, PREV_PAGE_DISABLED_LINK_SELECTOR)
+    expect(@session.find(:css, CURRENT_PAGE_INDICATOR_SELECTOR)).to have_content('1')
   end
 
   def should_be_showing_last_page
-    @session.should have_selector(:css, PAGINATION_SELECTOR)
-    @session.should have_selector(:css, PREV_PAGE_LINK_SELECTOR)
-    @session.should have_selector(:css, NEXT_PAGE_DISABLED_LINK_SELECTOR)
-    @session.find(:css, CURRENT_PAGE_INDICATOR_SELECTOR).should have_content('2')
+    expect(@session).to have_selector(:css, PAGINATION_SELECTOR)
+    expect(@session).to have_selector(:css, PREV_PAGE_LINK_SELECTOR)
+    expect(@session).to have_selector(:css, NEXT_PAGE_DISABLED_LINK_SELECTOR)
+    expect(@session.find(:css, CURRENT_PAGE_INDICATOR_SELECTOR)).to have_content('2')
   end
 
   def should_be_showing(child_count)
-    @session.all(:css, CHILD_SUMMARY_PANEL_SELECTOR).count.should eq child_count
+    expect(@session.all(:css, CHILD_SUMMARY_PANEL_SELECTOR).count).to eq child_count
   end
 
   def should_be_on_page(page_number)
-    page.find(:css, CURRENT_PAGE_INDICATOR_SELECTOR).should have_content(page_number)
+    expect(page.find(:css, CURRENT_PAGE_INDICATOR_SELECTOR)).to have_content(page_number)
   end
 
   def go_to_page(page_number)
