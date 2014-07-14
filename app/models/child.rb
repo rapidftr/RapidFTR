@@ -71,8 +71,6 @@ class Child < CouchRest::Model::Base
   end
 
   searchable do
-      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      puts "SEARCHABLE Code is running!"
     text_fields = self.build_text_fields_for_solar
     date_fields = self.build_date_fields_for_solar
 
@@ -264,33 +262,6 @@ class Child < CouchRest::Model::Base
       row_count = send("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
       per_page = row_count if per_page == "all"
       [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
-  end
-
-  def self.build_solar_schema
-  #    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  #    puts "BUILD_SOLAR_SCHEMA Code is running!"
-  #    text_fields = build_text_fields_for_solar
-  #    date_fields = build_date_fields_for_solar
-
-  #    Sunspot.setup(Child) do
-  #        text_fields.each do |field_name|
-  #            string sortable_field_name(field_name) do
-  #                self[field_name]
-  #            end
-  #            text field_name
-  #        end
-  #        date_fields.each do |field_name|
-  #            time field_name
-  #            # TODO: Not needed but for compatibility with sortable_field_name
-  #            time sortable_field_name(field_name) do
-  #                self[field_name]
-  #            end
-  #        end
-  #        boolean :duplicate
-  #        boolean(:active) {|c| !c.duplicate}
-  #        boolean :reunited
-  #        boolean :flag
-  #    end
   end
 
   def validate_has_at_least_one_field_value

@@ -19,7 +19,6 @@ describe ChildrenController, :type => :controller do
 
   before :each do
     Sunspot.remove_all!
-    Child.build_solar_schema
   end
 
   def mock_child(stubs={})

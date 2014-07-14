@@ -3,7 +3,6 @@ require 'spec_helper'
 describe ChildSearch do
   before :each do
     Sunspot.remove_all!
-    Child.build_solar_schema
   end
 
   describe "pagination" do

@@ -23,8 +23,6 @@ module Searchable
 
       def index_record
         begin
-        # TODO #40 Do we need to build solar schema EVERY time?
-          Child.build_solar_schema
           Sunspot.index!(self)
         rescue
           Rails.logger.error "***Problem indexing record for searching, is SOLR running?"
@@ -36,8 +34,6 @@ module Searchable
 
   module ClassMethods
     def sunspot_search(page_number, query = "")
-      Child.build_solar_schema
-
       begin
         return paginated_and_full_results(page_number, query)
       rescue
@@ -57,7 +53,6 @@ module Searchable
     end
 
     def reindex!
-      Child.build_solar_schema
       Sunspot.remove_all(self)
       self.all.each { |record| Sunspot.index!(record) }
     end
@@ -81,8 +76,6 @@ module Searchable
 
 
     def sunspot_matches(query = "")
-      Child.build_solar_schema
-
       begin
         return get_matches(query).results
       rescue

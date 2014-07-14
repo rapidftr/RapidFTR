@@ -2,34 +2,6 @@ require 'spec_helper'
 
 describe Child, :type => :model do
 
-  describe 'build solar schema' do
-
-    it "should build with free text search fields" do
-      allow(Field).to receive(:all_searchable_field_names).and_return []
-      expect(Child.build_text_fields_for_solar).to eq(["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name","created_organisation"])
-    end
-
-    it "should build with date search fields" do
-      expect(Child.build_date_fields_for_solar).to eq(["created_at", "last_updated_at"])
-    end
-
-    it "fields build with all fields in form sections" do
-      form = FormSection.new(:name => "test_form")
-      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-      form.save!
-      expect(Child.build_text_fields_for_solar).to include("name")
-      FormSection.all.each { |form_section| form_section.destroy }
-    end
-
-    it "should call Sunspot with all fields" do
-      expect(Sunspot).to receive(:setup)
-      expect(Child).to receive(:build_text_fields_for_solar)
-      expect(Child).to receive(:build_date_fields_for_solar)
-      Child.build_solar_schema
-    end
-
-  end
-
   describe ".search" do
 
     before :each do
