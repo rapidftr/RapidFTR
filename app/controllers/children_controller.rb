@@ -18,8 +18,7 @@ class ChildrenController < ApplicationController
 
     @page_name = t("home.view_records")
     @aside = 'shared/sidebar_links'
-    # TODO #40 - Get rid of this status param, it's probably not used by anything now
-    @filter = params[:filter] || params[:status] || nil
+    @filter = params[:filter] || nil
     @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
     per_page = per_page.to_i unless per_page == 'all'
