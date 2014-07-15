@@ -28,7 +28,7 @@ module PhotoHelper
 
     @deleted_photo_keys ||= []
     @deleted_photo_keys.concat(photo_names)
-    update_photo_keys #TODO #40 : Clean up how we update keys when setting or deleting photos.
+    update_photo_keys
   end
 
   def photo=(new_photos)
@@ -53,7 +53,7 @@ module PhotoHelper
     end
   end
 
-  # TODO: #40: Why two methods - delete_photos & update_photo_keys - Refactor this
+  # TODO: #40: Why two methods - delete_photos (above) & update_photo_keys - Refactor this
   def update_photo_keys
     return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys

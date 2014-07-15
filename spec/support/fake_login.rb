@@ -1,5 +1,4 @@
 module FakeLogin
-  # TODO #40 - Use FactoryGirl to create Users
   def fake_login user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
     session = Session.new :user_name => user.user_name
   	session.save
