@@ -17,9 +17,8 @@ before_script:
   - "RAILS_ENV=cucumber bundle exec rake assets:precompile"
 script:
   - "RAILS_ENV=test bundle exec rake spec"
-  - "RAILS_ENV=test bundle exec rake cane:quality"
+  - "RAILS_ENV=test bundle exec rake quality:all"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:headless"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:browser"
-  - "bundle exec rubocop -R"
 notifications:
   - email: false
