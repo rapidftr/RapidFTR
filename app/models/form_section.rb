@@ -27,6 +27,13 @@ class FormSection < CouchRest::Model::Base
   validate :validate_fixed_order
   validate :validate_perm_visible
 
+  after_create :update_child_indices
+  after_update :update_child_indices
+
+  def update_child_indices
+    Child.update_solr_indices
+  end
+
   def valid_presence_of_base_language_name
     if base_language==nil
       self.base_language='en'

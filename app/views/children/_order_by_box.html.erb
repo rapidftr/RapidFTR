@@ -5,10 +5,12 @@
   <ul>
     <span>
       <li class="first">
-      <%= select_tag :order_by, 
-options_for_select([[t("children.order_by.most_recently")+" "+ t("children.filter_by.#{(@filter == 'all' || @filter.nil?) ? 'created' : @filter}").downcase, ChildrenHelper::ORDER_BY[@filter]]],
-                                          @order), 
-                     { :onchange => "this.form.submit();"} %>
+      <% no_filter = @filter == 'all' || @filter.nil?
+         order_by_options = [[t("children.order_by.most_recently") + " " + t("children.filter_by.#{no_filter ? 'created' : @filter}").downcase,
+                              ChildrenHelper::ORDER_BY[@filter]]]
+         order_by_options << [t("children.order_by.most_recently") + " " + t('children.order_by.created').downcase, "created_at"] unless no_filter
+       %>
+      <%= select_tag :order_by, options_for_select(order_by_options, @order), { :onchange => "this.form.submit();"} %>
       </li>
   </span>
 	</ul>

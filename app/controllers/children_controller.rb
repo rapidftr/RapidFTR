@@ -20,14 +20,14 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     # TODO #40 - Get rid of this status param, it's probably not used by anything now
     @filter = params[:filter] || params[:status] || nil
-    @order = params[:order_by] || 'last_updated_at'
+    @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
     search = ChildSearch.new
                         .paginated(page, per_page)
-                        .ordered(@order, :asc)
+                        .ordered(@order, :desc)
                         .marked_as(@filter)
     search.created_by(current_user) unless can?(:view_all, Child)
     results = search.results

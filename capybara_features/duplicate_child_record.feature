@@ -16,13 +16,13 @@ Feature: Merge Child Records
 
   @javascript
   Scenario: Should see the "Mark as Duplicate" link on the Suspect Records Page
-    When I am on the child listing filtered by flagged
+    When I am on the child listing filtered by flag
     And I select dropdown option "Flagged"
     Then I should see "Mark as Duplicate"
 
   @javascript
   Scenario: Should see duplicate page when I click on "Mark as Duplicate"
-    When I am on the child listing filtered by flagged
+    When I am on the child listing filtered by flag
     And I select dropdown option "Flagged"
     And I click mark as duplicate for "Steve"
     Then I am on duplicate child page for "Steve"

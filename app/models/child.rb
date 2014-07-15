@@ -59,23 +59,24 @@ class Child < CouchRest::Model::Base
   end
 
   def self.build_text_fields_for_solar
-      ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name", "created_organisation"] + Field.all_searchable_field_names
+    searchable_fields = Field.all_searchable_field_names || []
+      ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name", "created_organisation"] + searchable_fields
   end
 
   def self.build_date_fields_for_solar
-      ["created_at", "last_updated_at"]
+      ["created_at", "last_updated_at", "reunited_at", "flag_at"]
   end
 
   def self.sortable_field_name(field)
       "#{field}_sort".to_sym
   end
 
-  searchable do
-    text_fields = self.build_text_fields_for_solar
-    date_fields = self.build_date_fields_for_solar
+  @set_up_solr_fields = Proc.new {
+    text_fields = Child.build_text_fields_for_solar
+    date_fields = Child.build_date_fields_for_solar
 
     text_fields.each do |field_name|
-      string self.sortable_field_name(field_name) do
+      string Child.sortable_field_name(field_name) do
         self[field_name]
       end
       text field_name
@@ -83,14 +84,20 @@ class Child < CouchRest::Model::Base
     date_fields.each do |field_name|
       time field_name
       # TODO: Not needed but for compatibility with sortable_field_name
-      time self.sortable_field_name(field_name) do
+      time Child.sortable_field_name(field_name) do
         self[field_name]
       end
     end
     boolean :duplicate
-    boolean(:active) {|c| !c.duplicate}
+    boolean(:active) {|c| !c.duplicate && !c.reunited}
     boolean :reunited
     boolean :flag
+  }
+
+  searchable &@set_up_solr_fields
+
+  def self.update_solr_indices
+    Sunspot.setup(Child, &@set_up_solr_fields)
   end
 
   design do
