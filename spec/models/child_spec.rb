@@ -118,14 +118,8 @@ describe Child, :type => :model do
       Sunspot.remove_all(Child)
     end
 
-    before :each do
-      create :form_section, name: 'test_form', fields: [
-        build(:text_field, name: 'name')
-      ]
-    end
-
-
     it "should return all results" do
+      create :form_section, name: 'test_form', fields: [build(:text_field, name: 'name')]                                                                                                                                                                         
       40.times do
         create_child("Exact")
       end
@@ -1323,6 +1317,17 @@ describe Child, :type => :model do
     end
   end
 
+  describe '.update_solr_indices' do
+    it 'should update Solr setup' do
+      expect(Sunspot).to receive :setup
+      Child.update_solr_indices
+    end
+
+    it 'should use all searchable fields' do
+      expect(Field).to receive :all_searchable_field_names
+      Child.update_solr_indices
+    end
+  end
   private
 
   def create_child(name, options={})
