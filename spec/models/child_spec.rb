@@ -1316,7 +1316,7 @@ describe Child, :type => :model do
     end
 
     it 'should use all searchable fields' do
-      expect(Field).to receive :all_searchable_field_names
+      expect(FormSection).to receive :all_searchable_field_names
       Child.update_solr_indices
     end
   end
