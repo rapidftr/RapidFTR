@@ -9,18 +9,20 @@ module Searchable
     def load(id)
       Child.get(id)
     end
-  end
+  end 
 
   def self.included(klass)
     klass.extend ClassMethods
     klass.class_eval do
+      include Sunspot::Rails::Searchable
+      Sunspot::Adapters::InstanceAdapter.register(DocumentInstanceAccessor, klass)
+      Sunspot::Adapters::DataAccessor.register(DocumentDataAccessor, klass)
       after_create :index_record
       after_update :index_record
       after_save :index_record
 
       def index_record
         begin
-          Child.build_solar_schema
           Sunspot.index!(self)
         rescue
           Rails.logger.error "***Problem indexing record for searching, is SOLR running?"
@@ -32,8 +34,6 @@ module Searchable
 
   module ClassMethods
     def sunspot_search(page_number, query = "")
-      Child.build_solar_schema
-
       begin
         return paginated_and_full_results(page_number, query)
       rescue
@@ -53,7 +53,7 @@ module Searchable
     end
 
     def reindex!
-      Child.build_solar_schema
+      Child.update_solr_indices
       Sunspot.remove_all(self)
       self.all.each { |record| Sunspot.index!(record) }
     end
@@ -77,8 +77,6 @@ module Searchable
 
 
     def sunspot_matches(query = "")
-      Child.build_solar_schema
-
       begin
         return get_matches(query).results
       rescue

@@ -1,5 +1,5 @@
 --color
---order default
+--order defined
 --backtrace
 --profile
 --require rspec/instafail

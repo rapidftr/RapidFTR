@@ -14,12 +14,12 @@ class SearchResults
   end
 
   def should_contain_result(result_text)
-    match = @session.find('//a', :text => result_text)
+    match = @session.find('//div[@class="child_summary_panel"]//div[@class="summary_item"]//div[@class="value"]', :text => result_text)
     raise Spec::Expectations::ExpectationNotMetError, "#{result_text} - This value could not be found in the search results." unless match
   end
 
   def should_not_contain_result(result_text)
-    lambda { @session.find('//a', :text => result_text)}.should raise_error(Capybara::ElementNotFound)
+    expect { @session.find('//a', :text => result_text) }.to raise_error(Capybara::ElementNotFound)
   end
 
   def child_should_not_be_reunited(child_id)

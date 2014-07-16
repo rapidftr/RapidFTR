@@ -156,8 +156,8 @@ describe AdvancedSearchController, :type => :controller do
 
   describe "export data" do
     before :each do
-      @child1 = build :child
-      @child2 = build :child
+      @child1 = create :child, created_by: controller.current_user_name
+      @child2 = create :child, created_by: controller.current_user_name
       controller.stub :authorize! => true, :render => true
     end
 

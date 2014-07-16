@@ -3,7 +3,7 @@ When /^I make a request for (.+)$/ do |resource|
 end
 
 Then /^I should receive HTTP (\d+)$/ do |status_code|
-  last_response.status.should == status_code.to_i
+  expect(last_response.status).to eq(status_code.to_i)
 end
 
 When /^I login as (.+) with password (.+) and imei (.+)$/ do |user, password, imei|
@@ -62,8 +62,8 @@ end
 
 Then /^an unverified user "(.+)" should be created$/ do |user_name|
   user = User.by_user_name(:key => user_name).first
-  user.should_not be_nil
-  user.verified.should be_false
+  expect(user).not_to be_nil
+  expect(user.verified).to be false
 end
 
 # This is used by the json_spec gem for testing JSON responses

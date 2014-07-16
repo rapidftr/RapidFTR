@@ -7,7 +7,7 @@ module RapidFTR
 
       basic_identity_fields = [
         Field.new({"name" => "name",
-                  "type" => "text_field", "editable" => false,
+                  "type" => "text_field",
                   "highlight_information"=>HighlightInformation.new("highlighted"=>true,"order"=>1),
                   "display_name_all" => "Name"
                   }),
@@ -86,7 +86,7 @@ module RapidFTR
       ]
       FormSection.create!({"visible"=>true,
                           :order=> 1, :unique_id=>"basic_identity", "editable"=>true,
-                          :fields => basic_identity_fields, :perm_enabled => true,
+                          :fields => basic_identity_fields,
                           "name_all" => "Basic Identity",
                           "description_all" => "Basic identity information about a separated or unaccompanied child."
                           }

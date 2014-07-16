@@ -1,15 +1,15 @@
 When /^I make sure that the Replication Configuration request succeeds$/ do
-  RSpec::Mocks.proxy_for(Net::HTTP).reset
-  Net::HTTP.should_receive(:post_form).any_number_of_times do |*args|
+  RSpec::Mocks.space.proxy_for(Net::HTTP).reset
+  allow(Net::HTTP).to receive(:post_form) do |*args|
     double :body => { "target" => "http://localhost:1234", "databases" => {} }.to_json
   end
 end
 
 When /^I make sure that the Replication Configuration request fails$/ do
-  RSpec::Mocks.proxy_for(Net::HTTP).reset
-  Net::HTTP.should_receive(:post_form).any_number_of_times.and_raise("some http error")
+  RSpec::Mocks.space.proxy_for(Net::HTTP).reset
+  allow(Net::HTTP).to receive(:post_form).and_raise("some http error")
 end
 
 When /^I clear the Replication Configuration expectations$/ do
-  RSpec::Mocks.proxy_for(Net::HTTP).reset
+  RSpec::Mocks.space.proxy_for(Net::HTTP).reset
 end

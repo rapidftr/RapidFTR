@@ -23,6 +23,18 @@ describe FormSection, :type => :model do
     expect(f.all_searchable_fields).to eq([text_field, text_area, select_box])
   end
 
+  it "udpates solr child index when created" do
+    form = FormSection.new()
+    expect(Child).to receive(:update_solr_indices)
+    form.run_callbacks(:create)
+  end
+  
+  it "updates solr child index when updated" do
+    form = FormSection.new()
+    expect(Child).to receive(:update_solr_indices)
+    form.run_callbacks(:update)
+  end
+  
   describe '#unique_id' do
     it "should be generated when not provided" do
       f = FormSection.new
@@ -93,7 +105,7 @@ describe FormSection, :type => :model do
       section = FormSection.new :name => 'somename', :unique_id => "someform"
       section.save!
 
-      section.fields = [Field.new(:name => "a field", :type => "text_field", :display_name => "A Field")]
+      section.fields = [Field.new(:name => "a_field", :type => "text_field", :display_name => "A Field")]
       section.save!
 
       field = section.fields.first

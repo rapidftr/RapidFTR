@@ -13,9 +13,9 @@ Feature: User should be able to list children
     When I am on the children listing page
     Then I should not see "view"
 
-    When I click text "andreas"
+    When I click text "rlon456"
     Then I should see "Basic Identity"
-    And I should see "andreas"
+    And I should see "rlon456"
 
   Scenario: Pagination links are not available for less than 20 records
     When I am on the children listing page

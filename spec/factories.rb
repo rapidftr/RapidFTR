@@ -19,9 +19,7 @@ FactoryGirl.define do
     name { "Test Child #{counter}" }
     created_by { "test_user" }
 
-    after_build do |child, factory|
-      Child.stub(:get).with(child.id).and_return(child)
-    end
+    initialize_with { new(attributes) }
   end
 
   factory :replication, :traits => [ :model ] do
@@ -31,7 +29,7 @@ FactoryGirl.define do
     password 'test_password'
     remote_couch_config "target" => "http://couch:1234/replication_test"
 
-    after_build do |replication|
+    after(:build) do |replication|
       replication.stub :save_remote_couch_config => true
     end
   end
@@ -78,19 +76,38 @@ FactoryGirl.define do
     report_type { "weekly_report" }
     as_of_date { Date.today }
 
-    after_build do |report, builder|
+    after(:build) do |report, builder|
       report.create_attachment :name => builder.filename, :file => StringIO.new(builder.data), :content_type => builder.content_type if builder.data
     end
   end
 
+  factory :form_section, :traits => [ :model ] do
+    unique_id { "form_#{counter}" }
+    name_all { "Form #{counter}" }
+    description_all { "This is Form Section #{counter}" }
+    fields { [build(:text_field)] }
+    perm_enabled true
+    visible true
+    editable true
+    order { counter }
+
+    initialize_with { new(attributes) }
+  end
+
   factory :field do
-    name 'name'
+    ignore do
+      sequence(:counter, 1000000)
+    end
+
+    name { "name_#{counter}" }
     display_name { name.humanize }
     display_name_en { display_name }
     type Field::TEXT_FIELD
     option_strings { [] }
     editable true
     visible true
+
+    initialize_with { new(attributes) }
 
     factory :text_field do
       type { Field::TEXT_FIELD }

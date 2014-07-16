@@ -9,15 +9,15 @@ class FormSectionPage
 
   def should_list_the_following_sections(section_names)
     names_on_page = all(:css, "#form_sections tbody tr td a[@class='formSectionLink']").map(&:text)
-    names_on_page.should == section_names
+    expect(names_on_page).to eq(section_names)
   end
 
   def section_should_have_description(section_name, expected_description)
-    row_for(section_name).should have_xpath("//td[text()='#{expected_description}']")
+    expect(row_for(section_name)).to have_xpath("//td[text()='#{expected_description}']")
   end
 
   def should_not_see_the_manage_fields_link
-    @session.should_not have_xpath "//tr[@id=basic_details_row and contains(., 'Manage Fields')]"
+    expect(@session).not_to have_xpath "//tr[@id=basic_details_row and contains(., 'Manage Fields')]"
   end
 
   def toggle_section_visibility(section_name)
@@ -40,7 +40,7 @@ class FormSectionPage
   end
 
   def should_have_view_and_download_reports_section_selected
-    @session.find(:xpath,"//input[@id='view_and_download_reports']").should be_checked
+    expect(@session.find(:xpath,"//input[@id='view_and_download_reports']")).to be_checked
   end
 
   def cancel
@@ -49,34 +49,34 @@ class FormSectionPage
 
   def should_be_editing_section(section_name)
     id = FormSection.all.find { |f| f.name == section_name }.unique_id
-    URI.parse(@session.current_url).path.should eq "/form_section/#{id}/edit"
+    expect(URI.parse(@session.current_url).path).to eq "/form_section/#{id}/edit"
   end
 
   def should_show_fields_in_order(expected_field_order)
     actual_order = @session.all(:xpath, "//tr[@class='rowEnabled']/td[1]").collect(&:text)
-    actual_order.should == expected_field_order
+    expect(actual_order).to eq(expected_field_order)
   end
 
   def section_should_not_be_enabled(section_name)
-    row_for(section_name).should_not(have_css("input[id^='sections_'][type='checkbox']"))
+    expect(row_for(section_name)).not_to have_css("input[id^='sections_'][type='checkbox']")
   end
 
   def section_should_be_enabled(section_name)
-    row_for(section_name).should(have_css("input[id^='sections_'][type='checkbox']"))
+    expect(row_for(section_name)).to have_css("input[id^='sections_'][type='checkbox']")
   end
 
   def section_should_be_at_index(section_name, expected_index)
-    @session.should(have_xpath("//table[@id='form_sections']/tbody/tr[#{expected_index}]/td/a[text()='#{section_name}']"))
+    expect(@session).to have_xpath("//table[@id='form_sections']/tbody/tr[#{expected_index}]/td/a[text()='#{section_name}']")
   end
 
   def section_should_be_marked_as_visible(section_name)
     hide_section_checkbox = @session.find("//a[@class='formSectionLink' and contains(., '#{section_name}')]/ancestor::tr/td[3]/input[@class='field_hide_show']")
-    hide_section_checkbox.should_not(be_checked)
+    expect(hide_section_checkbox).not_to be_checked
   end
 
   def section_should_be_marked_as_hidden(section_name)
     hide_section_checkbox = @session.find("//a[@class='formSectionLink' and contains(., '#{section_name}')]/ancestor::tr/td[3]/input[@class='field_hide_show']")
-    hide_section_checkbox.should(be_checked)
+    expect(hide_section_checkbox).to be_checked
   end
 
   private

@@ -8,7 +8,21 @@ ENV['RAILS_ENV'] = 'cucumber'
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../..'))
 
 require 'cucumber/rails'
-require 'cucumber/rspec/doubles'
+
+require 'rspec/mocks'
+World(RSpec::Mocks::ExampleMethods)
+
+Before do
+  RSpec::Mocks.setup
+end
+
+After do
+  begin
+    RSpec::Mocks.verify
+  ensure
+    RSpec::Mocks.teardown
+  end
+end
 require 'spec/support/uploadable_files'
 require 'spec/support/child_finder'
 require 'json_spec/cucumber'

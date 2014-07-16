@@ -9,11 +9,10 @@ Feature:
     And I login as tim with password 123 and imei 10001
 
   Scenario: A logged in API user should be able to retrieve all published form sections
-    When I send a GET request to "/published_form_sections"
+    When I send a GET request to "/api/form_sections"
     Then the JSON should be an array
     Then the JSON at "0" should have the following:
       | order        | 1                |
-      | perm_enabled | true             |
       | editable     | true             |
       | visible      | true             |
       | unique_id    | "basic_identity" |

@@ -2,19 +2,15 @@ require "spec_helper"
 
 describe MatchService, :type => :request do
 
-  before :all do
-    FormSection.all.each(&:destroy)
-    form = FormSection.new(:name => "test_form")
-    form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-    form.fields << Field.new(:name => "nationality", :type => Field::TEXT_FIELD, :display_name => "nationality")
-    form.fields << Field.new(:name => "country", :type => Field::TEXT_FIELD, :display_name => "country")
-    form.fields << Field.new(:name => "birthplace", :type => Field::TEXT_FIELD, :display_name => "birthplace")
-    form.fields << Field.new(:name => "languages", :type => Field::TEXT_FIELD, :display_name => "languages")
-    form.save!
-  end
-
-  after :all do
-    FormSection.all.each{|form| form.destroy}
+  before :each do
+    reset_couchdb!
+    create :form_section, name: 'test_form', fields: [
+      build(:text_field, name: 'name'),
+      build(:text_field, name: 'nationality'),
+      build(:text_field, name: 'country'),
+      build(:text_field, name: 'birthplace'),
+      build(:text_field, name: 'languages')
+    ]
   end
 
   before :each do
@@ -22,6 +18,11 @@ describe MatchService, :type => :request do
   end
 
   it "should match children from a country given enquiry criteria with key different from child's country key " do
+    Sunspot.setup(Child) do
+        text :location
+        text :nationality
+        text :country
+    end
     Child.create!(:name => "christine", :created_by => "me", :country => "uganda", :created_organisation => "stc")
     Child.create!(:name => "john", :created_by => "not me", :nationality => "uganda", :created_organisation => "stc")
     enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
@@ -34,6 +35,9 @@ describe MatchService, :type => :request do
   end
 
   it "should match records when criteria has a space" do
+    Sunspot.setup(Child) do
+        text :country
+    end
     Child.create!(:name => "Christine", :created_by => "me", :country => "Republic of Uganda", :created_organisation => "stc")
     enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
 
@@ -44,6 +48,11 @@ describe MatchService, :type => :request do
   end
 
   it "should match multiple records given multiple criteria" do
+    Sunspot.setup(Child) do
+        text :location
+        text :birthplace
+        text :languages
+    end
     Child.create!(:name => "Christine", :created_by => "me", :country => "Republic of Uganda", :created_organisation => "stc")
     Child.create!(:name => "Man", :created_by => "me", :nationality => "Uganda", :gender => "Male", :created_organisation => "stc")
     Child.create!(:name => "dude", :created_by => "me", :birthplace => "Dodoma", :languages => "Swahili", :created_organisation => "stc")

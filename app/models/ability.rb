@@ -47,6 +47,9 @@ class Ability
     if  user.has_permission?(Permission::CHILDREN[:export_cpims])
       can [:export_cpims], Child
     end
+    if  user.has_permission?(Permission::CHILDREN[:export_mock])
+      can [:export_mock], Child
+    end
 
     #
     # ENQUIRIES

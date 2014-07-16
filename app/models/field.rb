@@ -83,10 +83,6 @@ class Field
     end
 	end
 
-  def self.all_searchable_field_names
-    FormSection.all.map { |form| form.all_searchable_fields.map(&:name) }.flatten
-  end
-
   def display_name_for_field_selector
     hidden_text = self.visible? ? "" : " (Hidden)"
     "#{display_name}#{hidden_text}"

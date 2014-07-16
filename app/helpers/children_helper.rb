@@ -68,11 +68,6 @@ module ChildrenHelper
     link_to(order_id.capitalize, child_filter_path(:filter => filter, :order_by => order))
   end
 
-  def text_to_identify_child child
-    child['name'].blank? ? child.short_id : child['name'] + ": #{child.short_id}"
-    # child['name'].blank? ? child.short_id : content_tag(:p, child['name'],  class: "strong") + content_tag(:span, "(#{child.short_id})",  class: "strong")
-  end
-
   def toolbar_for_child child
     if child.duplicate?
       link_to 'View the change log', child_history_path(child)

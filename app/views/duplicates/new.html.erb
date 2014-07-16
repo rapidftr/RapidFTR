@@ -1,20 +1,24 @@
-<h2><%= t("child.duplicate_header", :child_name => @child.name) %></h2>
+<h1><%= t("child.duplicate_header", :child_name => @child.short_id) %></h1>
 
-<div class="page-content-new">
-  <div class="side-tab-content full_width">
+<div class="child_list">
 
+  <br />
+
+  <div class="filter-bar">
     <%= error_messages_for @child %>
-    <%= render :partial => "children/summary_row", :object => @child, :as => :child, :locals => { :checkbox => false, :show_links => false, :highlighted_fields => FormSection.sorted_highlighted_fields } %>
 
     <%= form_tag child_duplicate_path(@child), :method => :post do %>
       <%= label_tag(:parent_id,t("child.id_of_record_this_duplicate_of")) %>
       <%= text_field_tag(:parent_id) %>
 
-      <br /><br />
+      <br />
       <div class="btn_panel">
         <%= link_to t("child.actions.cancel"), children_path %>
         <%= submit_tag(t("child.mark_as_duplicate"), :confirm => t("child.messages.confirm_duplicate")) %>
       </div>
     <% end %>
   </div>
+
+    <%= render :partial => "children/summary_row", :object => @child, :as => :child, :locals => { :checkbox => false, :show_links => false, :highlighted_fields => FormSection.sorted_highlighted_fields } %>
+
 </div>

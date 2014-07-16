@@ -1,4 +1,5 @@
 #!/bin/sh
 
+echo "Starting Scheduler in $RAILS_ENV mode..."
 cd /rapidftr
-RAILS_ENV=production bundle exec rake scheduler:run
+bundle exec rake scheduler:run

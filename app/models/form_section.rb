@@ -27,6 +27,13 @@ class FormSection < CouchRest::Model::Base
   validate :validate_fixed_order
   validate :validate_perm_visible
 
+  after_create :update_child_indices
+  after_update :update_child_indices
+
+  def update_child_indices
+    Child.update_solr_indices
+  end
+
   def valid_presence_of_base_language_name
     if base_language==nil
       self.base_language='en'
@@ -91,6 +98,10 @@ class FormSection < CouchRest::Model::Base
 
   def all_searchable_fields
     self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
+  end
+
+  def self.all_searchable_field_names
+    self.all.map { |form| form.all_searchable_fields.map(&:name) }.flatten
   end
 
   def self.get_by_unique_id unique_id

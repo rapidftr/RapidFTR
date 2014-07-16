@@ -18,7 +18,7 @@ end
 describe ChildrenController, :type => :controller do
 
   before :each do
-    fake_admin_login
+    Sunspot.remove_all!
   end
 
   def mock_child(stubs={})
@@ -32,6 +32,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe '#authorizations' do
+    before :each do
+      fake_admin_login
+    end
     describe 'collection' do
       it "GET index" do
         expect(@controller.current_ability).to receive(:can?).with(:index, Child).and_return(false);
@@ -109,21 +112,19 @@ describe ChildrenController, :type => :controller do
     shared_examples_for "viewing children by user with access to all data" do
       describe "when the signed in user has access all data" do
         before do
-          fake_field_admin_login
-          @options ||= {}
-          @stubs ||= {}
+          role = create :role, permissions: [Permission::CHILDREN[:view_and_search],
+                                             Permission::CHILDREN[:register],
+                                             Permission::CHILDREN[:edit]]
+          user = create :user, role_ids: [role.id]
+          @session = setup_session user
+          @params ||= {}
+          @params.merge!(:filter => @filter) if @filter
+          @expected_children ||= [create(:child, created_by: @session.user_name)]
         end
 
-        it "should assign all childrens as @childrens" do
-          page = @options.delete(:page)
-          per_page = @options.delete(:per_page)
-          children = [mock_child(@stubs)]
-          @status ||= "all"
-          allow(children).to receive(:paginate).and_return(children)
-          expect(Child).to receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
-
-          get :index, :status => @status
-          expect(assigns[:children]).to eq(children)
+        it "should assign all children as @children" do
+          get :index, @params
+          expect(assigns[:children]).to eq(@expected_children)
         end
       end
     end
@@ -131,98 +132,113 @@ describe ChildrenController, :type => :controller do
     shared_examples_for "viewing children as a field worker" do
       describe "when the signed in user is a field worker" do
         before do
-          @session = fake_field_worker_login
-          @stubs ||= {}
-          @options ||= {}
+          @session ||= fake_field_worker_login
           @params ||= {}
+          @params.merge!(:filter => @filter) if @filter
+          @expected_children ||= [create(:child, created_by: @session.user_name)]
         end
 
         it "should assign the children created by the user as @childrens" do
-          children = [mock_child(@stubs)]
-          page = @options.delete(:page)
-          per_page = @options.delete(:per_page)
-          @status ||= "all"
-          allow(children).to receive(:paginate).and_return(children)
-          expect(Child).to receive(:fetch_paginated).with(@options, page, per_page).and_return([1, children])
-          @params.merge!(:status => @status)
           get :index, @params
-          expect(assigns[:children]).to eq(children)
+          expect(assigns[:children]).to eq(@expected_children)
         end
       end
     end
 
     context "viewing all children" do
-      before { @stubs = { :reunited? => false } }
-      context "when status is passed for admin" do
-        before { @status = "all"}
-        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
+      context "when filter is passed for admin" do
+        before {
+          @field_worker = create :user
+          @expected_children = [create(:child, created_by: @field_worker.user_name)]
+          @filter = "active"
+        }
         it_should_behave_like "viewing children by user with access to all data"
       end
 
-      context "when status is passed for field worker" do
-        before { @status = "all"}
-        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
-
+      context "when filter is passed for field worker" do
+        before { @filter = "active"}
         it_should_behave_like "viewing children as a field worker"
       end
 
-      context "when status is not passed admin" do
-        before {@options = {:startkey=>["all"], :endkey=>["all", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
+      context "when filter is not passed admin" do
+        before {
+          @field_worker = create :user
+          @filter = ""
+          @expected_children = [create(:child, created_by: @field_worker.user_name)]
+        }
         it_should_behave_like "viewing children by user with access to all data"
       end
 
-      context "when status is not passed field_worker" do
-        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
+      context "when filter is not passed field_worker" do
         it_should_behave_like "viewing children as a field worker"
       end
 
-      context "when status is not passed field_worker and order is name" do
-        before {@options = {:startkey=>["all", "fakefieldworker"], :endkey=>["all","fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_name}}
-        before {@params = {:order_by => 'name'}}
+      context "when filter is not passed field_worker and order is last_updated_at" do
+        before {@params = {:order_by => 'last_updated_at'}}
         it_should_behave_like "viewing children as a field worker"
       end
 
-      context "when status is not passed field_worker, order is created_at and page is 2" do
-        before {@options = {:view_name=>:by_all_view_with_created_by_created_at, :startkey=>["all", "fakefieldworker", {}], :endkey=>["all", "fakefieldworker"], :descending=>true, :page=>2, :per_page=>20}}
-        before {@params = {:order_by => 'created_at', :page => 2}}
+      context "when status is not passed field_worker, order is last_updated_at and page is 2" do
+        before {@session = fake_field_worker_login }
+        before {
+          create(:child, created_by: @session.user_name)
+          second_page_child = create(:child, created_by: @session.user_name)
+          @expected_children = [second_page_child]
+        }
+        before {@params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1}}
         it_should_behave_like "viewing children as a field worker"
       end
     end
 
     context "viewing reunited children" do
-      before do
-        @status = "reunited"
-        @stubs = {:reunited? => true}
-      end
       context "admin" do
-        before { @options = {:startkey=>["reunited"], :endkey=>["reunited", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name} }
+        before {
+          @field_worker = create :user
+          create(:child, created_by: @field_worker.user_name)
+          @expected_children = [create(:child, created_by: @field_worker.user_name, reunited: true)]
+          @filter = "reunited"
+        }
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before { @options = {:startkey=>["reunited", "fakefieldworker"], :endkey=>["reunited", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
+        before {
+          @session = fake_field_worker_login
+          create(:child, created_by: @session.user_name)
+          @expected_children = [create(:child, created_by: @session.user_name, reunited: true)]
+          @filter = "reunited" }
         it_should_behave_like "viewing children as a field worker"
       end
     end
 
     context "viewing flagged children" do
-      before { @status = "flagged" }
       context "admin" do
-        before {@options = {:startkey=>["flagged"], :endkey=>["flagged", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
+        before {
+          @field_worker = create :user
+          create(:child, created_by: @field_worker.user_name)
+          @expected_children = [create(:child, created_by: @field_worker.user_name, flag: true)]
+          @filter = "flag"
+        }
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field_worker" do
-        before {@options = {:startkey=>["flagged", "fakefieldworker"], :endkey=>["flagged", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
+        before {
+          @session = fake_field_worker_login
+          create(:child, created_by: @session.user_name)
+          @expected_children = [create(:child, created_by: @session.user_name, flag: true)]
+          @filter = "flag" }
         it_should_behave_like "viewing children as a field worker"
       end
     end
 
     context "viewing active children" do
-      before do
-        @status = "active"
-        @stubs = {:reunited? => false}
-      end
       context "admin" do
-        before {@options = {:startkey=>["active"], :endkey=>["active", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_name}}
+        before {
+          @field_worker = create :user
+          child1 = create(:child, created_by: @field_worker.user_name)
+          create(:child, created_by: @field_worker.user_name, duplicate: true, duplicate_of: child1.id)
+          @expected_children = [child1]
+          @filter = "active"
+        }
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
@@ -247,8 +263,11 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "GET show" do
+    before :each do
+      fake_admin_login
+    end
     it 'does not assign child name in page name' do
-      child = build :child, :unique_identifier => "1234"
+      child = create :child, unique_identifier: '1234', created_by: 'fakeadmin'
       allow(controller).to receive :render
       get :show, :id => child.id
       expect(assigns[:page_name]).to eq("View Child 1234")
@@ -304,6 +323,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "GET new" do
+    before :each do
+      fake_admin_login
+    end
     it "assigns a new child as @child" do
       allow(Child).to receive(:new).and_return(mock_child)
       get :new
@@ -319,6 +341,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "GET edit" do
+    before :each do
+      fake_admin_login
+    end
     it "assigns the requested child as @child" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
       expect(FormSection).to receive(:enabled_by_order)
@@ -335,6 +360,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "DELETE destroy" do
+    before :each do
+      fake_admin_login
+    end
     it "destroys the requested child" do
       expect(Child).to receive(:get).with("37").and_return(mock_child)
       expect(mock_child).to receive(:destroy)
@@ -349,6 +377,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "PUT update" do
+    before :each do
+      fake_admin_login
+    end
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname", :created_at => "Jan 16 2010 14:05:32")
@@ -491,6 +522,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "GET search" do
+    before :each do
+      fake_admin_login
+    end
     it "should not render error by default" do
       get(:search, :format => 'html')
       expect(assigns[:search]).to be_nil
@@ -551,35 +585,41 @@ describe ChildrenController, :type => :controller do
     end
   end
 
-  it 'should export children using #respond_to_export' do
-    child1 = build :child
-    child2 = build :child
-    controller.stub :paginated_collection => [ child1, child2 ], :render => true
-    expect(controller).to receive(:YAY).and_return(true)
+  describe "exporting children" do
+    class MockExportTask < RapidftrAddon::ExportTask
+      def self.id
+        :mock
+      end
+      def export(children)
+        []
+      end
+    end
+    before :each do
+      MockExportTask.enable
+      Permission::CHILDREN.merge! :export_mock => "Export to Mock"
+      role = create :role, permissions: Permission.all_permissions
+      @user = create :user, role_ids: [role.id]
+      setup_session @user
+      allow(controller).to receive(:authorize!).with(:export_mock, Child).and_return(Child)
+      allow(controller).to receive(:authorize!).with(:index, Child).and_return(Child)
+    end
+    it 'should use #respond_to_export' do
+      child1 = create :child, created_by: @user.user_name
+      child2 = create :child, created_by: @user.user_name
+      expect_any_instance_of(MockExportTask).to receive(:export).with([child1, child2])
+      get :index, format: :mock
+    end
 
-    expect(controller).to receive(:respond_to_export) { |format, children|
-      format.mock { controller.send :YAY }
-      expect(children).to eq([ child1, child2 ])
-    }
-
-    get :index, :format => :mock
-  end
-
-  it 'should export child using #respond_to_export' do
-    child = build :child
-    controller.stub :render => true
-    expect(controller).to receive(:YAY).and_return(true)
-
-    expect(controller).to receive(:respond_to_export) { |format, children|
-      format.mock { controller.send :YAY }
-      expect(children).to eq([ child ])
-    }
-
-    get :show, :id => child.id, :format => :mock
+    it 'should use #respond_to_export' do
+      child = create :child, created_by: @user.user_name
+      expect_any_instance_of(MockExportTask).to receive(:export).with([child])
+      get :show, id: child.id, format: :mock
+    end
   end
 
   describe '#respond_to_export' do
     before :each do
+      fake_admin_login
       @child1 = build :child
       @child2 = build :child
       controller.stub :paginated_collection => [ @child1, @child2 ], :render => true
@@ -645,6 +685,7 @@ describe ChildrenController, :type => :controller do
 
   describe "PUT select_primary_photo" do
     before :each do
+      fake_admin_login
       @child = stub_model(Child, :id => "id")
       @photo_key = "key"
       allow(@child).to receive(:primary_photo_id=)
@@ -680,6 +721,7 @@ describe ChildrenController, :type => :controller do
 
   describe "PUT create" do
     it "should add the full user_name of the user who created the Child record" do
+      fake_admin_login
       expect(Child).to receive('new_with_user_name').and_return(child = Child.new)
       expect(controller).to receive('current_user_full_name').and_return('Bill Clinton')
       put :create, :child => {:name => 'Test Child' }
@@ -727,6 +769,9 @@ describe ChildrenController, :type => :controller do
   end
 
   describe "POST create" do
+    before :each do
+      fake_admin_login
+    end
     it "should update the child record instead of creating if record already exists" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'old name'})

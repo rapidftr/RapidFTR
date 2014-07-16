@@ -18,7 +18,7 @@ module CustomMatchers
           verify { @filename.nil? || has_filename?(@filename) }
     end
 
-    def failure_message_for_should
+    def failure_message
       "does not match expected attachment\n" + @failure_reasons.join('\n')
     end
 

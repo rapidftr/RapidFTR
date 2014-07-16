@@ -8,7 +8,7 @@ describe DuplicatesController, :type => :controller do
       before :each do
         fake_admin_login
 
-        @child = build :child, :name => "John", :unique_identifier => "1234"
+        @child = create :child, :name => "John", :unique_identifier => "1234", :created_by => controller.current_user_name
         @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
 
         get :new, :child_id => @child.id
@@ -19,7 +19,7 @@ describe DuplicatesController, :type => :controller do
       end
 
       it "should fetch and assign the child" do
-        expect(assigns[:child]).to equal(@child)
+        expect(assigns[:child]).to eq(@child)
       end
 
       it "should assign the page name" do

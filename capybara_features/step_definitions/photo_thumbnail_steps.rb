@@ -11,19 +11,19 @@ end
 
 Then /^I should see the thumbnail of "([^\"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|
   thumbnail = all("//img[@alt='#{name}' and contains(@src,'#{timestamp}')]").first
-  thumbnail.should_not be_nil
-  thumbnail['src'].should =~ /photo.*-#{timestamp}/
+  expect(thumbnail).not_to be_nil
+  expect(thumbnail['src']).to match(/photo.*-#{timestamp}/)
 end
 
 Then /^I should see "([^\"]*)" thumbnails$/ do |number|
   thumbnails = all(:css, '.thumbnail img')
-  thumbnails.collect{|element| element['src']}.uniq.size.should eql number.to_i
+  expect(thumbnails.collect{|element| element['src']}.uniq.size).to eql number.to_i
 end
 
 def check_link(response, child_name)
   child = find_child_by_name child_name
   image_link = yield(child)
-  page.body.should have_css("img[src^='#{image_link}']")
+  expect(page.body).to have_css("img[src^='#{image_link}']")
 end
 
 Then /^I should see the "([^"]*)" of image$/ do |selector|
