@@ -56,12 +56,13 @@ class EnquiriesController < ApplicationController
     # Skeleton based on child controller code
     authorize! :create, Enquiry
 
-    params[:enquiry] = params[:child]
-    params[:enquiry][:criteria] = params[:child]
-    create_or_update_enquiry(params[:enquiry])
-    @enquiry['created_by_full_name'] = current_user_full_name    
+    enquirer_name = params[:child].delete('enquirer_name')
+    create_enquiry({:enquirer_name => enquirer_name,
+      :criteria => params[:child]})
+    @enquiry['created_by_full_name'] = current_user_full_name
+
     respond_to do |format|    
-      if @enquiry.save!
+      if @enquiry.save
           format.html { redirect_to(@enquiry) }
           format.xml { render :xml => @enquiry, :status => :created, :location => @enquiry }
           format.json {
@@ -147,12 +148,8 @@ class EnquiriesController < ApplicationController
     end
   end
 
-  def create_or_update_enquiry(enquiry_params)
-    if @enquiry.nil?
-      @enquiry = Enquiry.new_with_user_name(current_user, enquiry_params)
-    else
-      @enquiry = update_from(params)
-    end    
+  def create_enquiry(enquiry_params)
+    @enquiry = Enquiry.new_with_user_name(current_user, enquiry_params)
   end
 
 end
