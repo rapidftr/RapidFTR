@@ -3,7 +3,7 @@ require "spec_helper"
 describe MatchService, :type => :request do
 
   before :each do
-    reset_test_db!
+    reset_couchdb!
     create :form_section, name: 'test_form', fields: [
       build(:text_field, name: 'name'),
       build(:text_field, name: 'nationality'),
@@ -18,6 +18,11 @@ describe MatchService, :type => :request do
   end
 
   it "should match children from a country given enquiry criteria with key different from child's country key " do
+    Sunspot.setup(Child) do
+        text :location
+        text :nationality
+        text :country
+    end
     Child.create!(:name => "christine", :created_by => "me", :country => "uganda", :created_organisation => "stc")
     Child.create!(:name => "john", :created_by => "not me", :nationality => "uganda", :created_organisation => "stc")
     enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
@@ -30,6 +35,9 @@ describe MatchService, :type => :request do
   end
 
   it "should match records when criteria has a space" do
+    Sunspot.setup(Child) do
+        text :country
+    end
     Child.create!(:name => "Christine", :created_by => "me", :country => "Republic of Uganda", :created_organisation => "stc")
     enquiry = Enquiry.create!(:enquirer_name => "Foo Bar", :reporter_details => {:gender => "male"}, :criteria => {:location => "uganda"})
 
@@ -40,6 +48,11 @@ describe MatchService, :type => :request do
   end
 
   it "should match multiple records given multiple criteria" do
+    Sunspot.setup(Child) do
+        text :location
+        text :birthplace
+        text :languages
+    end
     Child.create!(:name => "Christine", :created_by => "me", :country => "Republic of Uganda", :created_organisation => "stc")
     Child.create!(:name => "Man", :created_by => "me", :nationality => "Uganda", :gender => "Male", :created_organisation => "stc")
     Child.create!(:name => "dude", :created_by => "me", :birthplace => "Dodoma", :languages => "Swahili", :created_organisation => "stc")

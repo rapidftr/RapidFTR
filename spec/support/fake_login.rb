@@ -14,6 +14,14 @@ module FakeLogin
     session
   end
 
+  def setup_session user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
+    session = Session.new :user_name => user.user_name
+  	session.save
+    allow(@controller).to receive(:current_session).and_return(session)
+    @controller.session[:last_access_time] = Clock.now.rfc2822
+    session
+  end
+
   def fake_admin_login
     user = User.new(:user_name => 'fakeadmin')
     allow(user).to receive(:roles).and_return([Role.new(:permissions => Permission.all_permissions)])

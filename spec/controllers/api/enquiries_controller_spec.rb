@@ -230,6 +230,12 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it "should update existing enquiry with potential matches" do
+      Sunspot.setup(Child) do
+        text :sex
+        text :age
+        text :location
+        text :name
+      end
       allow(controller).to receive(:authorize!)
       child1 = Child.create('name' => "Clayton aquiles", 'created_by' => 'fakeadmin', 'created_organisation' => "stc")
       child2 = Child.create('name' => "Steven aquiles", 'sex' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => "stc")

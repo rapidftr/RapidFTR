@@ -2,34 +2,6 @@ require 'spec_helper'
 
 describe Child, :type => :model do
 
-  describe 'build solar schema' do
-
-    it "should build with free text search fields" do
-      allow(Field).to receive(:all_searchable_field_names).and_return []
-      expect(Child.build_text_fields_for_solar).to eq(["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name","created_organisation"])
-    end
-
-    it "should build with date search fields" do
-      expect(Child.build_date_fields_for_solar).to eq(["created_at", "last_updated_at"])
-    end
-
-    it "fields build with all fields in form sections" do
-      form = FormSection.new(:name => "test_form")
-      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-      form.save!
-      expect(Child.build_text_fields_for_solar).to include("name")
-      FormSection.all.each { |form_section| form_section.destroy }
-    end
-
-    it "should call Sunspot with all fields" do
-      expect(Sunspot).to receive(:setup)
-      expect(Child).to receive(:build_text_fields_for_solar)
-      expect(Child).to receive(:build_date_fields_for_solar)
-      Child.build_solar_schema
-    end
-
-  end
-
   describe ".search" do
 
     before :each do
@@ -146,14 +118,8 @@ describe Child, :type => :model do
       Sunspot.remove_all(Child)
     end
 
-    before :each do
-      create :form_section, name: 'test_form', fields: [
-        build(:text_field, name: 'name')
-      ]
-    end
-
-
     it "should return all results" do
+      create :form_section, name: 'test_form', fields: [build(:text_field, name: 'name')]                                                                                                                                                                         
       40.times do
         create_child("Exact")
       end
@@ -533,7 +499,7 @@ describe Child, :type => :model do
       photo = uploadable_large_photo
       child = Child.new('created_by' => "me", 'created_organisation' => "stc")
       child.photo = photo
-      expect(child.save).to eq(false)
+      expect(child.valid?).to eq(false)
     end
 
     it "should not save with an audio file larger than 10 megabytes" do
@@ -572,13 +538,6 @@ describe Child, :type => :model do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, "jan", 22, 14, 05, 0))
       child = create_child_with_created_by('some_user', 'some_field' => 'some_value')
       expect(child['posted_at']).to eq("2010-01-22 14:05:00UTC")
-    end
-
-    it "should assign name property as '' if name is not passed before saving child record" do
-      child = Child.new_with_user_name(double('user', :user_name => 'user', :organisation => 'org'), {'some_field' => 'some_value'})
-      child.save
-      child = Child.get(child.id)
-      expect(child.name).to eq('')
     end
 
     describe "when the created at field is not supplied" do
@@ -984,7 +943,7 @@ describe Child, :type => :model do
         @child.save
         @child.delete_photos([@child.photos.first.name])
         @child.save
-        changes = @child['histories'].first['changes']
+        changes = @child['histories'][1]['changes']
         expect(changes['photo_keys']['deleted'].size).to eq(1)
         expect(changes['photo_keys']['added']).to be_nil
       end
@@ -1073,7 +1032,7 @@ describe Child, :type => :model do
         @child.save
         @child.delete_photos([@child.photos.first.name])
         @child.save
-        changes = @child['histories'].first['changes']
+        changes = @child['histories'][1]['changes']
         expect(changes['photo_keys']['deleted'].size).to eq(1)
         expect(changes['photo_keys']['added']).to be_nil
       end
@@ -1167,34 +1126,6 @@ describe Child, :type => :model do
 
   end
 
-  describe "when fetching children" do
-
-    before do
-      allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
-      Child.all.each { |child| child.destroy }
-    end
-
-    it "should return list of children ordered by name" do
-      allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      childrens = Child.all
-      expect(childrens.first['name']).to eq('Abu')
-    end
-
-    it "should order children with blank names first" do
-      allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
-      Child.create('photo' => uploadable_photo, 'name' => 'Zbu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      Child.create('photo' => uploadable_photo, 'name' => 'Abu', 'last_known_location' => 'POA', 'created_by' => "me", 'created_organisation' => "stc")
-      Child.create('photo' => uploadable_photo, 'name' => '', 'last_known_location' => 'POA')
-      childrens = Child.all
-      expect(childrens.first['name']).to eq('')
-      expect(Child.all.size).to eq(3)
-    end
-
-  end
-
-
   describe ".photo" do
 
     it "should return nil if the record has no attached photo" do
@@ -1283,9 +1214,8 @@ describe Child, :type => :model do
         all = Child.all
 
         expect(duplicates.size).to be 1
-        expect(all.size).to be 1
+        expect(all.count).to be 2
         expect(duplicates.first.id).to eq(record_duplicate.id)
-        expect(all.first.id).to eq(record_active.id)
       end
 
       it "should return duplicate from a record" do
@@ -1379,6 +1309,17 @@ describe Child, :type => :model do
     end
   end
 
+  describe '.update_solr_indices' do
+    it 'should update Solr setup' do
+      expect(Sunspot).to receive :setup
+      Child.update_solr_indices
+    end
+
+    it 'should use all searchable fields' do
+      expect(FormSection).to receive :all_searchable_field_names
+      Child.update_solr_indices
+    end
+  end
   private
 
   def create_child(name, options={})

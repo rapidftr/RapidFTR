@@ -19,10 +19,9 @@ module CouchdbClientHelper
         full_db_name = [COUCHDB_CONFIG[:db_prefix], dbname, COUCHDB_CONFIG[:db_suffix]].join
         [COUCHDB_CONFIG[:host_path], '/', full_db_name].join('_')
     end
-
-    def reset_test_db!
-        test_databases = COUCHDB_SERVER.databases.select {|db| db =~ /#{ENV["RAILS_ENV"]}$/}
-        test_databases.each do |db|
+    
+    def reset_couchdb!
+        TEST_DATABASES.each do |db|
           COUCHDB_SERVER.database(db).recreate! rescue nil
           # Reset the Design Cache
           Thread.current[:couchrest_design_cache] = {}

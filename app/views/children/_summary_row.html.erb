@@ -11,7 +11,7 @@
     </p>
        <% end %>
 
-    <h2><%= link_to text_to_identify_child(child), child_path(child) %></h2>
+    <h2><%= link_to child.short_id, child_path(child) %></h2>
     <div class="clearfix"></div>
 
     <%= content_tag(:div, nil, :class => 'flag suspect') if child.flag? %>

@@ -18,12 +18,19 @@ class ChildrenController < ApplicationController
 
     @page_name = t("home.view_records")
     @aside = 'shared/sidebar_links'
-    @filter = params[:filter] || params[:status] || "all"
-    @order = params[:order_by] || 'name'
+    @filter = params[:filter] || nil
+    @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
     per_page = per_page.to_i unless per_page == 'all'
+    page = params[:page] || 1
 
-    filter_children per_page
+    search = ChildSearch.new
+                        .paginated(page, per_page)
+                        .ordered(@order, :desc)
+                        .marked_as(@filter)
+    search.created_by(current_user) unless can?(:view_all, Child)
+    results = search.results
+    @children = paginated_collection(results, results.total_count)
 
     respond_to do |format|
       format.html
@@ -271,26 +278,6 @@ class ChildrenController < ApplicationController
         end
       end
     end
-  end
-
-  def filter_children(per_page)
-    total_rows, children = children_by_user_access(@filter, per_page)
-    @children = paginated_collection children, total_rows
-  end
-
-  def children_by_user_access(filter_option, per_page)
-    keys = [filter_option]
-    options = {:view_name => "by_all_view_#{params[:order_by] || 'name'}".to_sym}
-    unless  can?(:view_all, Child)
-      keys = [filter_option, current_user_name]
-      options = {:view_name => "by_all_view_with_created_by_#{params[:order_by] || 'created_at'}".to_sym}
-    end
-    if ['created_at', 'reunited_at', 'flag_at'].include? params[:order_by]
-      options.merge!({:descending => true, :startkey => [keys, {}].flatten, :endkey => keys})
-    else
-      options.merge!({:startkey => keys, :endkey => [keys, {}].flatten})
-    end
-    Child.fetch_paginated(options, (params[:page] || 1).to_i, per_page)
   end
 
   def paginated_collection instances, total_rows

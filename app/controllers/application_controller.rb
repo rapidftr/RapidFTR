@@ -13,12 +13,15 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
   end
-  rescue_from CanCan::AccessDenied do |exception|
+  rescue_from CanCan::AccessDenied do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.forbidden "session.forbidden"
   end
   rescue_from(ErrorResponse) do |e|
+    ErrorResponse.log e
     render_error_response e
   end
 
@@ -28,15 +31,15 @@ class ApplicationController < ActionController::Base
 
   def render_error_response(e)
     respond_to do |format|
-      format.html do
+      format.json do
+        render status: e.status_code, text: e.message
+      end
+      format.any do
         if e.status_code == 401
           redirect_to :login
         else
-          render :template => "shared/error_response",:status => e.status_code, :locals => { :exception => e }
+          render :formats => [:html], :template => "shared/error_response",:status => e.status_code, :locals => { :exception => e }
         end
-      end
-      format.json do
-        render status: e.status_code, text: e.message
       end
     end
   end

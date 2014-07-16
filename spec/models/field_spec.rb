@@ -129,7 +129,7 @@ describe "Child record field view model", :type => :model do
   describe "highlight information" do
 
     it "should initialize with empty highlight information" do
-      field = Field.new(:name => "No highlight")
+      field = Field.new(:name => "No_highlight")
       expect(field.is_highlighted?).to be_falsey
     end
 
@@ -140,7 +140,7 @@ describe "Child record field view model", :type => :model do
     end
 
     it "should unhighlight a field" do
-      field = Field.new(:name => "new highlighted")
+      field = Field.new(:name => "new_highlighted")
       field.highlight_with_order 1
       field.unhighlight
       expect(field.is_highlighted?).to be_falsey
@@ -151,7 +151,7 @@ describe "Child record field view model", :type => :model do
 
     it "should set the value of system language for the given field" do
       I18n.default_locale = "fr"
-      field = Field.new(:name => "first name", :display_name => "first name in french",
+      field = Field.new(:name => "first_name", :display_name => "first name in french",
                         :help_text => "help text in french",
                         :option_strings_text => "option string in french")
       expect(field.display_name_fr).to eq("first name in french")
@@ -162,7 +162,7 @@ describe "Child record field view model", :type => :model do
 
     it "should get the value of system language for the given field" do
       I18n.locale = "fr"
-      field = Field.new(:name => "first name", :display_name_fr => "first name in french", :display_name_en => "first name in english",
+      field = Field.new(:name => "first_name", :display_name_fr => "first name in french", :display_name_en => "first name in english",
                         :help_text_en => "help text in english", :help_text_fr => "help text in french",
                         :option_strings_text_en => "option string in english", :option_strings_text_fr => "option string in french")
       expect(field.display_name).to eq(field.display_name_fr)
@@ -172,7 +172,7 @@ describe "Child record field view model", :type => :model do
 
     it "should fetch the default locale's value if translation is not available for given locale" do
       I18n.locale = "fr"
-      field = Field.new(:name => "first name", :display_name_en => "first name in english",
+      field = Field.new(:name => "first_name", :display_name_en => "first name in english",
                         :help_text_en => "help text in english", :help_text_fr => "help text in french",
                         :option_strings_text_en => "option string in english", :option_strings_text_fr => "option string in french")
       expect(field.display_name).to eq(field.display_name_en)
@@ -184,7 +184,7 @@ describe "Child record field view model", :type => :model do
   describe "formatted hash" do
 
     it "should combine the field_name_translation into hash" do
-      field = Field.new(:name => "first name", :display_name_en => "first name in english",
+      field = Field.new(:name => "first_name", :display_name_en => "first name in english",
                         :help_text_en => "help text in english", :help_text_fr => "help text in french")
       field_hash = field.formatted_hash
       expect(field_hash["display_name"]).to eq({"en" => "first name in english"})
@@ -278,7 +278,7 @@ describe "Child record field view model", :type => :model do
     expect(fields.last.new?).to be_falsey
 
     #Fix the field and save again
-    fields.first.name ="Something else"
+    fields.first.name ="Something_else"
     form.save
     expect(form.errors.length).to be == 0
   end

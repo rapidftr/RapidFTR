@@ -1,9 +1,4 @@
 Before do
-  Child.stub :index_record => true, :reindex! => true, :build_solar_schema => true
-  Sunspot.stub :index => true, :index! => true
-end
-
-Before do
   I18n.locale = I18n.default_locale = :en
   CouchRest::Model::Base.descendants.each do |model|
     docs = model.database.documents["rows"].map { |doc|
@@ -17,6 +12,7 @@ Before do
   RSpec::Mocks.space.proxy_for(Rails.application.config).reset
   RSpec::Mocks.space.proxy_for(Clock).reset
   RSpec::Mocks.space.proxy_for(I18n).reset
+  Sunspot.remove_all!(Child)
 end
 
 Before('@search') do
@@ -42,3 +38,4 @@ Before('@no_expire') do |scenario|
     }
   })
 end
+

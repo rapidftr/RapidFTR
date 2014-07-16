@@ -6,13 +6,13 @@ describe ChildHistoriesController, :type => :controller do
   end
 
   it "should create child variable for view" do
-    child = build :child
+    child = create :child, created_by: controller.current_user_name
     get :index, :id => child.id
     expect(assigns(:child)).to eq(child)
   end
 
   it "should set the page name to the child short ID" do
-    child = build :child, :unique_identifier => "1234"
+    child = create :child, :unique_identifier => "1234", created_by: controller.current_user_name
     get :index, :id => child.id
     expect(assigns(:page_name)).to eq("History of 1234")
   end
