@@ -1,7 +1,4 @@
 class ChildSearch
-  # TODO #40 - Obviously this won't be sustainable, need to figure
-  # out how to not use this but still have passing specs.
-
   def results
     search.execute.results
   end

@@ -165,12 +165,12 @@ When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
 end
 
 Then /^the (view|edit) record page should show the record is flagged$/ do |page_type|
-  path = children_path+"/#{Child.all[0].id}"
+  path = children_path+"/#{Child.first.id}"
   (page_type == 'edit') ? visit(path + '/edit') : visit(path)
   expect(page).to have_content('Flagged as suspect record by')
 end
 
-Then /^the child listing page filtered by flagged should show the following children:$/ do |table|
+Then /^the child listing page filtered by flag should show the following children:$/ do |table|
   expected_child_names = table.raw.flatten
   visit child_filter_path(:filter => 'flag')
   expected_child_names.each do |name|
@@ -259,6 +259,7 @@ Then /^I should see errors$/ do
 end
 
 When /^I debug$/ do
+  require 'pry'
   binding.pry
 end
 

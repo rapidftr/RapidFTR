@@ -101,6 +101,7 @@ en:
       most_recently: "Most recently"
       label: "Order by"
       name: "Name"
+      created: "Created"
     flag_summary: "Flag summary"
 
     filer_by:

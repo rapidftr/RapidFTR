@@ -7,6 +7,13 @@ VAGRANTFILE_API_VERSION = '2'
 # Make sure you have run "git submodule init && git submodule update" to pull the infrastructure code
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
+  if ENV['EXTRA_POWER'] == 'true'
+    config.vm.provider 'virtualbox' do |vbox|
+      vbox.memory = 1024
+      vbox.cpus = 2
+    end
+  end
+
   config.vm.define 'dev', primary: true do |dev|
     dev.vm.box = 'hashicorp/precise32'
     dev.vm.network 'forwarded_port', guest: 3000, host: 3000
@@ -38,9 +45,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.verbose_logging = true
     end
     prod.vm.synced_folder 'tmp/vagrant/prod/apt', '/var/cache/apt/archives', create: true
-    #prod.vm.synced_folder 'tmp/vagrant/prod/gems1.9.1', '/srv/rapidftr/localhost/shared/gems/ruby/1.9.1/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
-    #prod.vm.synced_folder 'tmp/vagrant/prod/gems2.1.0', '/srv/rapidftr/localhost/shared/gems/ruby/2.1.0/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
-    #prod.vm.synced_folder 'tmp/vagrant/prod/gems2.1.2', '/srv/rapidftr/localhost/shared/gems/ruby/2.1.2/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
+    prod.vm.synced_folder 'tmp/vagrant/prod/gems2.1.0', '/srv/rapidftr/localhost/shared/gems/ruby/2.1.0/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
+    prod.vm.synced_folder 'tmp/vagrant/prod/gems2.1.2', '/srv/rapidftr/localhost/shared/gems/ruby/2.1.2/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
   end
 
 end

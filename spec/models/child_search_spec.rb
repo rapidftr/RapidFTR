@@ -89,10 +89,17 @@ describe ChildSearch do
     context "active" do
       before :each do
         @child1 = create :child
-        @child2 = create :child, duplicate: true, duplicate_of: @child1.id
       end
 
-      it "should filter children by active" do
+      it "should not include duplicate children" do
+        create :child, duplicate: true, duplicate_of: @child1.id
+        results = ChildSearch.new.marked_as('active').results
+        expect(results.count).to eq(1)
+        expect(results.first).to eq(@child1)
+      end
+
+      it "should not include reunited children" do
+        create :child, reunited: true
         results = ChildSearch.new.marked_as('active').results
         expect(results.count).to eq(1)
         expect(results.first).to eq(@child1)

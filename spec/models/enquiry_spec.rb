@@ -4,6 +4,7 @@ describe Enquiry, :type => :model do
 
   before :each do
     Enquiry.all.each { |e| e.destroy }
+    Sunspot.remove_all!(Child)
   end
 
   describe 'validation' do

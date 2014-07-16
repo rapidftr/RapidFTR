@@ -36,7 +36,7 @@ Feature:
   @javascript
   Scenario: Checking filter by All and then ordering by most recently created returns all the children in order of most recently created
     When I select "Most recently created" from "order_by"
-    Then I should see the order zak,jaco,meredith,jane,andreas
+    Then I should see the order andreas,zak,jaco,meredith,jane
 
   @javascript
   Scenario: Checking filter by Reunited returns all the reunited children in the system
@@ -78,24 +78,23 @@ Feature:
   Scenario: Checking filter by Flagged returns all the flagged children in the system by order of most recently flagged
     When I select "Flagged" from "filter"
     And I select "Most recently flagged" from "order_by"
-    Then show me the page
     Then I should see the order zak,jaco
 
   @javascript
-  Scenario: Checking filter by Flagged and then ordering by name returns the flagged children in alphabetical order
+  Scenario: Checking filter by Flagged and then ordering by created at returns the flagged children in order of created at
     Given I select "Flagged" from "filter"
-    And I select "Name" from "order_by"
-    Then I should see the order jaco,zak
+    And I select "Most recently created" from "order_by"
+    Then I should see the order zak,jaco
 
   @javascript
   Scenario: Checking filter by Flagged and ordering by most recently flagged returns the children in most recently flagged order
     When I select "Flagged" from "filter"
-    And I select "Name" from "order_by"
+    And I select "Most recently created" from "order_by"
     And I select "Most recently flagged" from "order_by"
     Then I should see the order zak,jaco
 
-  Scenario: Checking filter by Active should by default show the records ordered alphabetically
-    Then I should see the order jane,meredith,zak
+  Scenario: Checking filter by Active should by default show the records ordered by created at
+    Then I should see the order zak,meredith,jane
 
   Scenario: Checking filter by Active shows the Order by options
     Then I should see "Order by"

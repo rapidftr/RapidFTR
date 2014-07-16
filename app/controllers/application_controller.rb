@@ -30,7 +30,6 @@ class ApplicationController < ActionController::Base
   end
 
   def render_error_response(e)
-    puts e, e.backtrace
     respond_to do |format|
       format.json do
         render status: e.status_code, text: e.message

@@ -20,7 +20,7 @@ Feature:
     Then the view record page should show the record is flagged
     And the edit record page should show the record is flagged
     And the record history should log "Record was flagged by praful belonging to UNICEF because: He is a bad guy."
-    And the child listing page filtered by flagged should show the following children:
+    And the child listing page filtered by flag should show the following children:
       | id_1 |
     When I am on the children listing page
     Then I should see "Flagged By"
@@ -59,5 +59,5 @@ Feature:
       """
     Then I should see "Flagged By" for record "Peter"
     And the record history should log "Record was flagged by praful belonging to UNICEF because: He is a bad guy."
-    And the child listing page filtered by flagged should show the following children:
+    And the child listing page filtered by flag should show the following children:
       | id_1 |

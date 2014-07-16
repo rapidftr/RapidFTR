@@ -540,14 +540,6 @@ describe Child, :type => :model do
       expect(child['posted_at']).to eq("2010-01-22 14:05:00UTC")
     end
 
-    # TODO: #40: Make sure this test is not required
-    xit "should assign name property as '' if name is not passed before saving child record" do
-      child = Child.new_with_user_name(double('user', :user_name => 'user', :organisation => 'org'), {'some_field' => 'some_value'})
-      child.save
-      child = Child.get(child.id)
-      expect(child.name).to eq('')
-    end
-
     describe "when the created at field is not supplied" do
 
       it "should create a created_at field with time of creation" do
@@ -1324,7 +1316,7 @@ describe Child, :type => :model do
     end
 
     it 'should use all searchable fields' do
-      expect(Field).to receive :all_searchable_field_names
+      expect(FormSection).to receive :all_searchable_field_names
       Child.update_solr_indices
     end
   end
