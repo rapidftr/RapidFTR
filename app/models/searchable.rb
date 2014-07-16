@@ -53,6 +53,7 @@ module Searchable
     end
 
     def reindex!
+      Child.update_solr_indices
       Sunspot.remove_all(self)
       self.all.each { |record| Sunspot.index!(record) }
     end
