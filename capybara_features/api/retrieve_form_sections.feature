@@ -13,7 +13,6 @@ Feature:
     Then the JSON should be an array
     Then the JSON at "0" should have the following:
       | order        | 1                |
-      | perm_enabled | true             |
       | editable     | true             |
       | visible      | true             |
       | unique_id    | "basic_identity" |
