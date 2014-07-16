@@ -1,7 +1,7 @@
 require 'tmpdir'
 require 'os'
 
-namespace :sunspot do
+namespace :search do
 
   ## Whenever we are using Windows, the recommended way to use Solr is:
   ##   start rake sunspot:solr:run
@@ -70,7 +70,7 @@ namespace :sunspot do
   end
 
   desc "restart solr"
-  task :restart => %w( sunspot:stop sunspot:start )
+  task :restart => %w( search:stop search:start )
 
   desc "clean solr data directory"
   task :clean do
@@ -78,7 +78,7 @@ namespace :sunspot do
   end
 
   desc "ensure solr is cleanly started"
-  task :clean_start => %w( sunspot:stop sunspot:clean sunspot:start sunspot:reindex )
+  task :clean_start => %w( search:stop search:clean search:start search:reindex )
 
   desc "start solr in the foreground"
   task :run do
