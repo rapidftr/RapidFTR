@@ -176,12 +176,6 @@ class Child < CouchRest::Model::Base
       ids_and_revs
   end
 
-  def self.fetch_paginated(options, page, per_page)
-      row_count = send("#{options[:view_name]}_count", options.merge(:include_docs => false))['rows'].size
-      per_page = row_count if per_page == "all"
-      [row_count, self.paginate(options.merge(:design_doc => 'Child', :page => page, :per_page => per_page, :include_docs => true))]
-  end
-
   def validate_has_at_least_one_field_value
       return true if field_definitions.any? { |field| is_filled_in?(field) }
       return true if !@file_name.nil? || !@audio_file_name.nil?
