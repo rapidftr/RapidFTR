@@ -1,0 +1,23 @@
+<h1 class="float_left no_border"><%= link_to t("enquiries.label"), enquiries_path %> &gt; <%= text_to_identify_enquiry(@enquiry) %></h1>
+
+<% if can? :update, @enquiry %>
+    <%= link_to content_tag(:span, t("buttons.edit"), :class => 'edit'), edit_enquiry_path(@enquiry), :class=>'btn' %>
+<% end %>
+
+<div class="clearfix"></div>
+    <% content_for :stylesheet do %>
+      <%= stylesheet_link_tag "jquery.lightbox-0.5" %>
+    <% end %>
+
+<div class="page-content-new">
+
+  <div class="side-tab">
+    <%= render :partial => "tabs", :object => @form_sections %>
+  </div>
+
+  <div class="side-tab-content">
+    <div class="clearfix"></div>
+    <%= render :partial => "show_form_section" %>
+  </div>
+
+</div>

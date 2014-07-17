@@ -1,0 +1,10 @@
+<%= render :partial => "enquiries/header" %>
+<div class="clearfix"></div>
+
+<div class="child_list">
+  <%= render :partial => "enquiries/summary_row", :collection => @enquiries, :as => :enquiry %>
+
+    <%= render :partial => 'shared/pagination', :locals => { :results => @enquiries } %>
+</div>
+
+<br/>

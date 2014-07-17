@@ -1,0 +1,22 @@
+<p>
+  Photos should be no larger than 10mb. Audio files should be no larger than 10mb. The smaller the better.
+</p>
+<% ChildrenHelper::EditView::ONETIME_PHOTOS_UPLOAD_LIMIT.times do |i|%>
+<p class="file">
+  <span class="tool-tip-label">
+      <%= label_tag "enquiry[photo]#{i}", "Add Photo", :class=>'key' %>
+
+  </span>
+  <%= file_field_tag "enquiry[photo]#{i}" %>
+
+  <%= image_tag "new/icon_help.png", title: photo_upload_box.help_text, class: 'tool-tip-icon vtip' if photo_upload_box.help_text.present? %>
+</p>
+<% end %>
+
+<% @enquiry.photos.each do |photo| %>
+    <p class="thumbnail">
+      <%= label_tag "delete_enquiry_photo[#{photo.name}]", t("enquiry.actions.delete_photo") %>
+      <%= check_box_tag("delete_enquiry_photo[#{photo.name}]") %>
+      <%= thumbnail_tag(@enquiry, photo.name) %>
+    </p>
+<% end %>

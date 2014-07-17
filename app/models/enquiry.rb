@@ -1,7 +1,8 @@
 class Enquiry < CouchRest::Model::Base
   use_database :enquiry
-  include RecordHelper
 
+  include RecordHelper
+  include RapidFTR::CouchRestRailsBackward
   before_save :find_matching_children
 
   property :enquirer_name
@@ -49,7 +50,7 @@ class Enquiry < CouchRest::Model::Base
     self.potential_matches = children.map { |child| child.id }
     verify_format_of(previous_matches)
 
-    unless previous_matches.eql?(self.potential_matches)
+    if previous_matches.empty? or not previous_matches.eql?(self.potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
   end

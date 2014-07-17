@@ -1,0 +1,15 @@
+<ul class="tab-handles">
+  <% is_first_tab = true %>
+  <% tabs.each do |form_section| %>
+      <% unless @exclude_tabs.include?(form_section.unique_id) %>
+        <% if is_first_tab %>
+            <li class="current">
+        <% else %>
+            <li>
+        <% end %>
+            <a href="#tab_<%= form_section.section_name %>"><%= t(form_section.unique_id, :default => form_section.name) %></a>
+        </li>
+        <% is_first_tab = false %>
+      <% end %>
+  <% end %>
+</ul>

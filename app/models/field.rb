@@ -31,7 +31,8 @@ class Field
     NUMERIC_FIELD = "numeric_field",
     PHOTO_UPLOAD_BOX = "photo_upload_box",
     AUDIO_UPLOAD_BOX = "audio_upload_box",
-    DATE_FIELD = "date_field"
+    DATE_FIELD = "date_field",
+    LIST_RECORD_FIELD = "list_record_field"
   ]
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
