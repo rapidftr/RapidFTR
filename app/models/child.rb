@@ -10,6 +10,8 @@ class Child < CouchRest::Model::Base
   include PhotoHelper
   include Searchable
 
+  after_initialize :create_unique_id
+
   before_save :update_history, :unless => :new?
   before_save :update_organisation
   before_save :update_photo_keys
@@ -52,8 +54,6 @@ class Child < CouchRest::Model::Base
 
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
-    child.create_unique_id
-    child['short_id'] = child.short_id # TODO: Move this into create_unique_id
     child.set_creation_fields_for user
     child
   end
@@ -113,21 +113,8 @@ class Child < CouchRest::Model::Base
                 }
             }"
 
-          view :by_unique_identifier,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('unique_identifier'))
-            {
-                emit(doc['unique_identifier'],doc);
-            }
-        }"
-
-          view :by_short_id,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('short_id'))
-            {
-                emit(doc['short_id'],doc);
-            }
-        }"
+          view :by_unique_identifier
+          view :by_short_id
 
           view :by_duplicate,
           :map => "function(doc) {
@@ -273,15 +260,8 @@ class Child < CouchRest::Model::Base
   end
 
   def create_unique_id
-      self['unique_identifier'] ||= UUIDTools::UUID.random_create.to_s
-  end
-
-  def short_id
-      (self['unique_identifier'] || "").last 7
-  end
-
-  def unique_identifier
-      self['unique_identifier']
+      self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
+      self.short_id          ||= unique_identifier.last 7
   end
 
   def has_one_interviewer?

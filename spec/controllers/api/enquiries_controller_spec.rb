@@ -229,7 +229,7 @@ describe Api::EnquiriesController, :type => :controller do
       expect(JSON.parse(response.body)).to eq(JSON.parse(enquiry.to_json))
     end
 
-    it "should update existing enquiry with potential matches" do
+    it "should update existing enquiry with potential matches", solr: true do
       Sunspot.setup(Child) do
         text :sex
         text :age

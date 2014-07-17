@@ -1,3 +1,4 @@
+@search
 Feature: User should be able to list children
 
   Background:

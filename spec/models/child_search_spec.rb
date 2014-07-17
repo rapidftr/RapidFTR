@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChildSearch do
+describe ChildSearch, solr: true do
   before :each do
     Sunspot.remove_all!
   end

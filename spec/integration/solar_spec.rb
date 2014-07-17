@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sunspot' # In the real world we should probably vendor this.
 require 'spec_helper'
 
-describe "Solar", :type => :request do
+describe "Solar", type: :request, solr: true do
 
   class ChildInstanceAccessor < Sunspot::Adapters::InstanceAdapter
 
@@ -83,7 +83,7 @@ describe "Solar", :type => :request do
 
 end
 
-describe "Enquiry Mapping", :type => :request do
+describe "Enquiry Mapping", type: :request, solr: true do
 
   class EnquiryInstanceAccessor < Sunspot::Adapters::InstanceAdapter
 

@@ -16,8 +16,8 @@ before_script:
   - "bundle exec rake search:start"
   - "RAILS_ENV=cucumber bundle exec rake assets:precompile"
 script:
-  - "RAILS_ENV=test bundle exec rake spec"
   - "RAILS_ENV=test bundle exec rake quality:all"
+  - "RAILS_ENV=test bundle exec rake spec"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:headless"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:browser"
 notifications:

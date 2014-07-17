@@ -62,14 +62,10 @@ def create_child(child_hash)
   flag, flag_message = child_hash.delete('flag').to_s == 'true', child_hash.delete('flag_message')
 
   photo = uploadable_photo(child_hash.delete('photo_path')) if child_hash['photo_path'] != ''
-  unique_id = child_hash.delete('unique_id')
-  short_id = child_hash.delete('short_id')
+  child_hash['unique_identifier'] = child_hash.delete('unique_id') if child_hash['unique_id']
+  child_hash['_id'] = child_hash['unique_identifier'] if child_hash['unique_identifier']
   child = Child.new_with_user_name(user, child_hash)
   child.photo = photo
-  child['unique_identifier'] = unique_id if unique_id
-  child['_id'] = unique_id if unique_id
-  child['short_id'] = short_id if short_id
-  child['histories'] ||= []
   child['histories'] << {'datetime' => child_hash['flag_at'], 'changes' => {'flag' => 'anything'}}
   child['histories'] << {'datetime' => child_hash['reunited_at'], 'changes' => {'reunited' => {'from' => nil, 'to' => 'true'}, 'reunited_message' => {'from' => nil, 'to' => 'some message'}}}
 

@@ -107,7 +107,7 @@ describe ChildrenController, :type => :controller do
     end
   end
 
-  describe "GET index" do
+  describe "GET index", solr: true do
 
     shared_examples_for "viewing children by user with access to all data" do
       describe "when the signed in user has access all data" do
@@ -603,7 +603,7 @@ describe ChildrenController, :type => :controller do
       allow(controller).to receive(:authorize!).with(:export_mock, Child).and_return(Child)
       allow(controller).to receive(:authorize!).with(:index, Child).and_return(Child)
     end
-    it 'should use #respond_to_export' do
+    it 'should use #respond_to_export', solr: true do
       child1 = create :child, created_by: @user.user_name
       child2 = create :child, created_by: @user.user_name
       expect_any_instance_of(MockExportTask).to receive(:export).with([child1, child2])

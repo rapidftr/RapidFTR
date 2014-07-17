@@ -1,3 +1,4 @@
+@search
 Feature:
 
   As an Admin
