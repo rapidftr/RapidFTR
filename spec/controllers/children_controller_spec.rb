@@ -316,7 +316,7 @@ describe ChildrenController, :type => :controller do
     it "should include duplicate records in the response" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
       duplicates = [Child.new(:name => "duplicated")]
-      expect(Child).to receive(:duplicates_of).with("37").and_return(duplicates)
+      expect(Child).to receive(:by_duplicate_of).with(key: "37").and_return(duplicates)
       get :show, :id => "37"
       expect(assigns[:duplicates]).to eq(duplicates)
     end

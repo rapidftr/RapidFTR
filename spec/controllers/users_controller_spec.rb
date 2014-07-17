@@ -271,7 +271,7 @@ describe UsersController, :type => :controller do
       expect(child1).to receive(:save)
       expect(child2).to receive(:verified=).with(true)
       expect(child2).to receive(:save)
-      expect(Child).to receive(:all_by_creator).with("user").and_return([child1,child2])
+      expect(Child).to receive(:by_created_by).with(key: "user").and_return([child1,child2])
       post :update, {:id => "unique_id", :user => {:verified => true}}
     end
 
@@ -279,7 +279,7 @@ describe UsersController, :type => :controller do
       mock_user = User.new(:user_name => "user", :verified => true)
       allow(mock_user).to receive(:update_attributes).and_return(true)
       expect(User).to receive(:get).with("unique_id").and_return(mock_user)
-      expect(Child).not_to receive(:all_by_creator)
+      expect(Child).not_to receive(:by_created_by)
       post :update, {:id => "unique_id", :user => {:verified => true}}
     end
   end

@@ -102,6 +102,10 @@ class Child < CouchRest::Model::Base
 
   design do
       view :by_protection_status_and_gender_and_ftr_status
+      view :by_unique_identifier
+      view :by_short_id
+      view :by_created_by
+      view :by_duplicate_of
 
       view :by_flag,
           :map => "function(doc) {
@@ -113,43 +117,25 @@ class Child < CouchRest::Model::Base
                 }
             }"
 
-          view :by_unique_identifier
-          view :by_short_id
 
-          view :by_duplicate,
-          :map => "function(doc) {
-        if (doc.hasOwnProperty('duplicate')) {
-            emit(doc['duplicate'], doc);
+      view :by_user_name,
+      :map => "function(doc) {
+        if (doc.hasOwnProperty('histories')){
+            for(var index=0; index<doc['histories'].length; index++){
+                emit(doc['histories'][index]['user_name'], doc)
+            }
         }
         }"
 
-          view :by_duplicates_of,
+      # TODO: Use Child.database.documents['rows'] and map that instead
+      #   (unless this map function needs to do further filtering by duplicate/etc)
+      #   Firstly, do we even need to sync duplicate records?
+      view :by_ids_and_revs,
           :map => "function(doc) {
-        if (doc.hasOwnProperty('duplicate_of')) {
-            emit(doc['duplicate_of'], doc);
+        if (doc['couchrest-type'] == 'Child'){
+        emit(doc._id, {_id: doc._id, _rev: doc._rev});
         }
-        }"
-
-          view :by_user_name,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('histories')){
-                for(var index=0; index<doc['histories'].length; index++){
-                    emit(doc['histories'][index]['user_name'], doc)
-                }
-            }
-            }"
-
-          view :by_created_by
-
-          # TODO: Use Child.database.documents['rows'] and map that instead
-          #   (unless this map function needs to do further filtering by duplicate/etc)
-          #   Firstly, do we even need to sync duplicate records?
-          view :by_ids_and_revs,
-              :map => "function(doc) {
-            if (doc['couchrest-type'] == 'Child'){
-            emit(doc._id, {_id: doc._id, _rev: doc._rev});
-            }
-        }"
+      }"
   end
 
   def compact
@@ -228,19 +214,6 @@ class Child < CouchRest::Model::Base
       self[m]
   end
 
-  def self.all_by_creator(created_by)
-      self.by_created_by :key => created_by
-  end
-
-  # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg
-  def self.duplicates
-      by_duplicate(:key => true)
-  end
-
-  def self.duplicates_of(id)
-      by_duplicates_of(:key => id).all
-  end
-
   def self.search_by_created_user(search, created_by, page_number = 1)
       created_by_criteria = [SearchCriteria.new(:field => "created_by", :value => created_by, :join => "AND")]
       search(search, page_number, created_by_criteria, created_by)
@@ -259,12 +232,12 @@ class Child < CouchRest::Model::Base
 
   def self.all_connected_with(user_name)
       #TODO Investigate why the hash of the objects got different.
-      (by_user_name(:key => user_name).all + all_by_creator(user_name).all).uniq {|child| child.unique_identifier}
+      (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq {|child| child.unique_identifier}
   end
 
   def create_unique_id
       self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
-      self.short_id          ||= unique_identifier.last 7
+      self.short_id = unique_identifier.last 7
   end
 
   def has_one_interviewer?

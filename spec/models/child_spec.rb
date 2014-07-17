@@ -1161,7 +1161,6 @@ describe Child, :type => :model do
   context "duplicate" do
     before do
       Child.all.each { |child| child.destroy }
-      Child.duplicates.each { |child| child.destroy }
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
     end
 
@@ -1193,11 +1192,11 @@ describe Child, :type => :model do
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.duplicates_of(record_active.id)
+        duplicates = Child.by_duplicate_of(key: record_active.id)
         all = Child.all
 
-        expect(duplicates.size).to be 1
-        expect(all.count).to be 2
+        expect(duplicates.count).to eq(1)
+        expect(all.count).to eq(2)
         expect(duplicates.first.id).to eq(record_duplicate.id)
       end
 
@@ -1205,8 +1204,8 @@ describe Child, :type => :model do
         record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
         record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.duplicates_of(record_active.id)
-        expect(duplicates.size).to be 1
+        duplicates = Child.by_duplicate_of(key: record_active.id)
+        expect(duplicates.count).to eq(1)
         expect(duplicates.first.id).to eq(record_duplicate.id)
       end
 
