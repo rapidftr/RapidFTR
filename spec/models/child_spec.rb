@@ -2,20 +2,14 @@ require 'spec_helper'
 
 describe Child, :type => :model do
 
-  describe ".search" do
+  describe ".search", solr: true do
 
     before :each do
       Sunspot.remove_all(Child)
     end
 
     before :all do
-      form = FormSection.new(:name => "test_form")
-      form.fields << Field.new(:name => "name", :type => Field::TEXT_FIELD, :display_name => "name")
-      form.save!
-    end
-
-    after :all do
-      FormSection.all.each { |form| form.destroy }
+      create :form_section, name: 'test_form', fields: [build(:text_field, name: 'name')]
     end
 
     it "should return empty array if search is not valid" do
@@ -110,16 +104,7 @@ describe Child, :type => :model do
       expect(Child.search_by_created_user(search, "rajagopalan", 1).first.map(&:name)).to match_array([])
     end
 
-
-  end
-
-  describe ".sunspot_search" do
-    before :each do
-      Sunspot.remove_all(Child)
-    end
-
     it "should return all results" do
-      create :form_section, name: 'test_form', fields: [build(:text_field, name: 'name')]                                                                                                                                                                         
       40.times do
         create_child("Exact")
       end
@@ -559,17 +544,15 @@ describe Child, :type => :model do
     end
   end
 
-  it "should create a unique id" do
-    child = Child.new
+  it "should automatically create a unique id" do
     allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
-    child.create_unique_id
+    child = Child.new
     expect(child["unique_identifier"]).to eq("12345")
   end
 
   it "should return last 7 characters of unique id as short id" do
-    child = Child.new
     allow(UUIDTools::UUID).to receive("random_create").and_return(1212127654321)
-    child.create_unique_id
+    child = Child.new
     expect(child.short_id).to eq("7654321")
   end
 
@@ -1247,6 +1230,18 @@ describe Child, :type => :model do
   end
 
   describe "views" do
+    describe "by id" do
+      it "should return children by unique identifier" do
+        child = create :child, unique_identifier: "abcd"
+        expect(Child.find_by_unique_identifier("abcd")).to eq(child)
+      end
+
+      it "should return children by short id" do
+        child = create :child, unique_identifier: "abcd1234567"
+        expect(Child.find_by_short_id("1234567")).to eq(child)
+      end
+    end
+
     describe "user action log" do
       it "should return all children updated by a user" do
         child = Child.create!("created_by" => "some_other_user", "last_updated_by" => "a_third_user", "name" => "abc", "histories" => [{"user_name" => "brucewayne", "changes" => {"sex" => {"to" => "male", "from" => "female"}}}])

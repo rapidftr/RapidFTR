@@ -1,3 +1,4 @@
+@search
 Feature: Suspect Records
 
   As an admin

@@ -6,9 +6,9 @@ Scenario: Should be restricted to 200 characters in a text field
   Given I am logged in as a user with "Register Child" permission
   And I am on children listing page
   And I follow "Register New Child"
-  When I fill in a 201 character long string for "Name" 
-  And I press "Save" 
-  Then I should see "Name cannot be more than 200 characters long"	
+  When I fill in a 201 character long string for "Name"
+  And I press "Save"
+  Then I should see "Name cannot be more than 200 characters long"
   And there should be 0 child records in the database
 
 Scenario: Should be restricted to 400,000 characters in a text area
@@ -21,15 +21,15 @@ Scenario: Should be restricted to 400,000 characters in a text area
   Given I am logged in as a user with "Register Child" permission
 	And I am on children listing page
 	And I follow "Register New Child"
-	When I fill in a 400001 character long string for "my text area" 
-	And I press "Save" 
+	When I fill in a 400001 character long string for "my text area"
+	And I press "Save"
 	Then I should see "my text area cannot be more than 400000 characters long"
   	And there should be 0 child records in the database
-    
+
 Scenario: Should be prevented from saving a record that has no data filled in
   Given I am logged in as a user with "Register Child" permission
 	And I am on children listing page
 	And I follow "Register New Child"
-	And I press "Save" 
+	And I press "Save"
 	Then I should see "Please fill in at least one field or upload a file"
   And there should be 0 child records in the database
