@@ -1,7 +1,7 @@
 module FakeLogin
   def fake_login user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
     session = Session.new :user_name => user.user_name
-  	session.save
+    session.save
 
     allow(user).to receive(:id).and_return("1234") unless user.try(:id)
     allow(User).to receive(:get).with(user.id).and_return(user)
@@ -16,7 +16,7 @@ module FakeLogin
 
   def setup_session user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
     session = Session.new :user_name => user.user_name
-  	session.save
+    session.save
     allow(@controller).to receive(:current_session).and_return(session)
     @controller.session[:last_access_time] = Clock.now.rfc2822
     session

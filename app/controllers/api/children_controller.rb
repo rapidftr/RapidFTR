@@ -4,11 +4,11 @@ class Api::ChildrenController < Api::ApiController
   before_filter :sanitize_params, :only => [:update, :create, :unverified]
 
   def index
-		authorize! :index, Child
-		render :json => Child.all
+    authorize! :index, Child
+    render :json => Child.all
   end
 
-	def show
+  def show
     authorize! :show, Child
     child = Child.get params[:id]
 
@@ -17,19 +17,19 @@ class Api::ChildrenController < Api::ApiController
     else
       render :json => "", :status => 404
     end
-	end
+  end
 
   def create
-	 	authorize! :create, Child
-		create_or_update_child(params)
-		@child['created_by_full_name'] = current_user_full_name
+     authorize! :create, Child
+    create_or_update_child(params)
+    @child['created_by_full_name'] = current_user_full_name
 
-  	@child.save!
+    @child.save!
     render :json => @child.compact
-	end
+  end
 
   def update
-		authorize! :update, Child
+    authorize! :update, Child
 
     child = update_child_from params
 
