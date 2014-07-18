@@ -416,4 +416,24 @@ describe FormSection, :type => :model do
       end
     end
   end
+
+  describe "#field_by_id" do
+
+    it 'should find field by id' do
+      expected_field = Field.new(:name => "a_field", :type => "text_field", :display_name => "A Field")
+      form_section = FormSection.new :name => 'form_section', :unique_id => "unique_id", :fields => [expected_field]
+      form_section.save!
+
+      retrieved_field = form_section.get_field_by_name("a_field")
+      expect(expected_field).to eq(retrieved_field)
+    end
+
+    it 'should return nothing when field name does not match' do
+      form_section = FormSection.new :name => 'new_form_section', :unique_id => "new_unique_id"
+      form_section.save!
+
+      expected_field = form_section.get_field_by_name("some_other_field")
+      expect(expected_field).to eq(nil)
+    end
+  end
 end
