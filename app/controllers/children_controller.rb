@@ -53,7 +53,7 @@ class ChildrenController < ApplicationController
     @form_sections = get_form_sections
     @page_name = t "child.view", :short_id => @child.short_id
     @body_class = 'profile-page'
-    @duplicates = Child.duplicates_of(params[:id])
+    @duplicates = Child.by_duplicate_of(key: params[:id])
 
     respond_to do |format|
       format.html
