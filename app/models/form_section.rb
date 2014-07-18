@@ -200,6 +200,10 @@ class FormSection < CouchRest::Model::Base
     self.save
   end
 
+  def get_field_by_name field_name
+    self.fields.select { |field| field.name == field_name }.first
+  end
+
   protected
 
   def validate_name_format
