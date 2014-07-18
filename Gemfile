@@ -21,8 +21,9 @@ gem 'os',              '~> 0.9.6'
 gem 'sunspot_solr',    '~> 2.0.0'
 gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
 
-gem 'rufus-scheduler', '~> 2.0.18', :require => false
-gem 'daemons',         '~> 1.1.9',  :require => false
+gem 'rufus-scheduler',  '~> 2.0.18', :require => false
+gem 'daemons',          '~> 1.1.9',  :require => false
+gem 'ruby-progressbar', '~> 1.5.1',  :require => false
 
 gem 'sass-rails',    '~> 4.0.1'
 gem 'uglifier',      '~> 2.0.1'
@@ -61,5 +62,5 @@ end
 
 group :development, :test do
   gem 'cane',               '~> 2.6.2'
-  gem 'rubocop',            '~> 0.24.1' 
+  gem 'rubocop',            '~> 0.24.1'
 end

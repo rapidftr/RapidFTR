@@ -336,6 +336,7 @@ DEPENDENCIES
   rspec-instafail (~> 0.2.4)
   rspec-rails (~> 3.0)
   rubocop (~> 0.24.1)
+  ruby-progressbar (~> 1.5.1)
   rufus-scheduler (~> 2.0.18)
   sass-rails (~> 4.0.1)
   selenium-webdriver (~> 2.42.0)

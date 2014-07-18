@@ -141,6 +141,9 @@ class Child < CouchRest::Model::Base
 
           view :by_created_by
 
+          # TODO: Use Child.database.documents['rows'] and map that instead
+          #   (unless this map function needs to do further filtering by duplicate/etc)
+          #   Firstly, do we even need to sync duplicate records?
           view :by_ids_and_revs,
               :map => "function(doc) {
             if (doc['couchrest-type'] == 'Child'){

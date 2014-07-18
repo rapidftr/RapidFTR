@@ -15,7 +15,6 @@ RapidFTR::Application.configure do
   config.i18n.fallbacks = true
 
   # Asset pipeline
-  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.assets.compile = false
   config.assets.digest = true
   config.assets.compress = true
