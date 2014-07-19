@@ -93,7 +93,7 @@
         <%= text_field_tag(:updated_at_before_value, params[:updated_at_before_value], :size => 12, :class => "datepicker") %>
       </p>
 
-      <%= @criteria_list.map { |criteria| generate_html(criteria, @all_fields) }.join("").html_safe %>
+      <%= @search_form.criteria.map { |criteria| generate_html(criteria, @all_fields) }.join("").html_safe %>
     </div>
 
     <a class='add-criteria'><%= t("advanced_search.select_a_criteria") %></a>

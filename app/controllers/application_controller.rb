@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
+    raise e if Rails.env.development?
     ErrorResponse.log e
     render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
   end

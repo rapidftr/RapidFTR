@@ -31,7 +31,6 @@ gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
 
 group :development do
-  gem 'rails-dev-tweaks',  '~> 1.1',   platforms: :ruby
   gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
   gem 'better_errors',     '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'

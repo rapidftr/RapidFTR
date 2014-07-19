@@ -58,12 +58,26 @@ FactoryGirl.define do
     disabled false
     verified true
     role_ids ['random_role_id']
+
+    factory :field_worker_user do
+      role_ids { [ FactoryGirl.create(:field_worker_role).id ] }
+    end
+    factory :field_admin_user do
+      role_ids { [ FactoryGirl.create(:field_admin_role).id ] }
+    end
   end
 
   factory :role, :traits => [ :model ] do
     name { "test_role_#{counter}" }
     description "test description"
     permissions { Permission.all_permissions }
+
+    factory :field_worker_role do
+      permissions { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]] }
+    end
+    factory :field_admin_role do
+      permissions { [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:view], Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]] }
+    end
   end
 
   factory :report, :traits => [ :model ] do
@@ -117,15 +131,15 @@ FactoryGirl.define do
     end
     factory :radio_button_field do
       type { Field::RADIO_BUTTON }
-      option_strings { ['one', 'two', 'three'] }
+      option_strings { ['radio_1', 'radio_2', 'radio_3'] }
     end
     factory :select_box_field do
       type { Field::SELECT_BOX }
-      option_strings { ['one', 'two', 'three'] }
+      option_strings { ['select_1', 'select_2', 'select_3'] }
     end
     factory :check_boxes_field do
       type { Field::CHECK_BOXES }
-      option_strings { ['one', 'two', 'three'] }
+      option_strings { ['check_1', 'check_2', 'check_3'] }
     end
     factory :numeric_field do
       type { Field::NUMERIC_FIELD }
