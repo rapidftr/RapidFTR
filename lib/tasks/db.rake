@@ -12,16 +12,6 @@ end
 
 namespace :db do
 
-    namespace :test do
-    task :prepare do
-      # do nothing - work around
-      # cucumber is calling this
-      # but does not exist anymore
-      # in rails 4
-    end
-  end
-
-
   desc "Seed with data (task manually created during the 3.0 upgrade, as it went missing)"
   task :seed => :environment do
     load(Rails.root.join("db", "seeds.rb"))
