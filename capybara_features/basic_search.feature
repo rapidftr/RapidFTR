@@ -43,7 +43,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   	|
       | Willis	|
       | Will	|
-    When I search using a name of "W"
+    When I search using a name of "Will"
     Then I should see a link to the saved record page for child with name "Willis"
     And I should see a link to the saved record page for child with name "Will"
 
@@ -52,7 +52,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | name   	|
       | Willis	|
       | Will	|
-    When I fill in "query" with "W"
+    When I fill in "query" with "Will"
     And I press "Go"
     Then I should see the thumbnail of "Willis"
     And I should see the thumbnail of "Will"

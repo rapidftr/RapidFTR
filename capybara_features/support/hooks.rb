@@ -10,8 +10,7 @@ Before do
   RapidFTR::FormSectionSetup.reset_definitions
   RSpec::Mocks.space.proxy_for(Clock).reset
 
-  Sunspot.remove_all!(Child)
-  Sunspot.remove_all!(Enquiry)
+  Sunspot.remove_all!(Child, Enquiry)
 end
 
 Before('@roles') do |scenario|

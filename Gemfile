@@ -50,7 +50,7 @@ group :test, :cucumber do
   gem 'cucumber-rails',     '~> 1.4.0', :require => false
   gem 'selenium-webdriver', '~> 2.42.0'
   gem 'hpricot',            '~> 0.8.6'
-  gem 'json_spec',          '~> 1.1.1'
+  gem 'json_spec',          '~> 1.1.2'
   gem 'pdf-inspector',      '~> 1.1.0'
   gem 'coveralls', require: false
 end

@@ -198,9 +198,6 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def new_search
-  end
-
 # DELETE /children/1
 # DELETE /children/1.xml
   def destroy

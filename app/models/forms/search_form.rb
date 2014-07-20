@@ -1,12 +1,13 @@
 module Forms
   class SearchForm
     PER_PAGE = 20
+    SYSTEM_CRITERIA = [:created_by_organisation_value, :created_by_value, :updated_by_value, :created_at_before_value, :created_at_after_value, :updated_at_before_value, :updated_at_after_value]
 
     include ActiveModel::Model
     include ActiveModel::Validations::Callbacks
 
     attr_accessor :ability, :params
-    attr_reader   :criteria, :query, :results
+    attr_reader   :criteria, :system_criteria, :query, :results
 
     before_validation :parse_params
     validate :has_criteria?
@@ -26,11 +27,13 @@ module Forms
         (criterion[:value].present? && criterion[:field].present?) rescue false
       end
 
+      @system_criteria = params.slice(*SYSTEM_CRITERIA).select { |k,v| v.present? }
+
       @query = params[:query]
     end
 
     def has_criteria?
-      errors.add(:criteria, I18n.t("messages.valid_search_criteria")) unless @criteria.present? || @query.present?
+      errors.add(:criteria, I18n.t("messages.valid_search_criteria")) unless @criteria.present? || @system_criteria.present? || @query.present?
     end
 
     def execute_search
@@ -49,7 +52,8 @@ module Forms
       search.less_than    :last_updated_at, params[:updated_at_before_value]
       search.greater_than :last_updated_at, params[:updated_at_after_value]
 
-      search.fulltext_by FormSection.highlighted_fields.collect(&:name), params[:query] if params[:query]
+      search.fulltext_by FormSection.highlighted_fields.collect(&:name) + [:unique_identifier, :short_id], params[:query] if params[:query]
+
       search.created_by ability.user unless ability.can? :view_all, Child
       search.paginated (params[:page] || 1).to_i, (params[:per_page] || PER_PAGE).to_i
 

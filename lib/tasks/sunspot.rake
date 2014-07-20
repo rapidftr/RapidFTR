@@ -7,6 +7,7 @@ class Sunspot::Rails::Server
   #   [x] tmp/pids must survive deploys
   #   [ ] solr/solr.xml must be replaced for prod to avoid unnecessary cores
   #   [ ] solr/data must survive deploys
+  #   [ ] Change Chef & Docker scripts
   def pid_file
     'sunspot.pid'
   end
