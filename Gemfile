@@ -42,8 +42,6 @@ group :test, :cucumber do
   gem 'rspec',              '~> 3.0'
   gem 'rspec-rails',        '~> 3.0'
   gem 'rspec-activemodel-mocks', '~> 1.0.1'
-  gem 'rspec-instafail',    '~> 0.2.4'
-  gem 'jasmine',            '~> 1.3.2'
 
   gem 'capybara',           '~> 2.3'
   gem 'cucumber',           '~> 1.3.11'
