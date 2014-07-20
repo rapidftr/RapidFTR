@@ -204,7 +204,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I fill in "updated_at_before_value" with "2012-05-24"
     And I search
     And I wait for the page to load
-   Then I should not see "Willis" in the search results
+    Then I should not see "Willis" in the search results
     And I should not see "Wilbert" in the search results
     And I should not see "James" in the search results
     And I should see "William" in the search results

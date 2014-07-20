@@ -6,6 +6,7 @@ services:
   - couchdb
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - "bundle config build.nokogiri --use-system-libraries"
 env:
   global:
     - DISPLAY=":99.0"

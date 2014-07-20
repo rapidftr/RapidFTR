@@ -42,7 +42,12 @@ module Forms
 
       search.fulltext_by [:created_organisation], params[:created_by_organisation_value]
       search.fulltext_by [:created_by, :created_by_full_name], params[:created_by_value]
-      search.fulltext_by [:updated_by, :updated_by_full_name], params[:updated_by_value]
+      search.fulltext_by [:last_updated_by, :last_updated_by_full_name], params[:updated_by_value]
+
+      search.less_than    :created_at, params[:created_at_before_value]
+      search.greater_than :created_at, params[:created_at_after_value]
+      search.less_than    :last_updated_at, params[:updated_at_before_value]
+      search.greater_than :last_updated_at, params[:updated_at_after_value]
 
       search.fulltext_by FormSection.highlighted_fields.collect(&:name), params[:query] if params[:query]
       search.created_by ability.user unless ability.can? :view_all, Child
