@@ -60,7 +60,7 @@ class Child < CouchRest::Model::Base
 
   def self.build_text_fields_for_solar
     searchable_fields = FormSection.all_searchable_field_names || []
-      ["unique_identifier", "short_id", "created_by_full_name", "last_updated_by_full_name", "created_organisation"] + searchable_fields
+      ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name", "created_organisation"] + searchable_fields
   end
 
   def self.build_date_fields_for_solar
@@ -88,9 +88,6 @@ class Child < CouchRest::Model::Base
         self[field_name]
       end
     end
-
-    string :created_by
-    string :last_updated_by
 
     boolean :duplicate
     boolean(:active) {|c| !c.duplicate && !c.reunited}

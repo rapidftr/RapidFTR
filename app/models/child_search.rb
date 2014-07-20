@@ -19,7 +19,7 @@ class ChildSearch
 
   def created_by(user)
     search.build do
-      with :created_by, user.user_name
+      fulltext user.user_name, [ :created_by ]
     end
     self
   end

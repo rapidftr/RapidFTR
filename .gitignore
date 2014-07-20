@@ -226,3 +226,6 @@ capybara_features/resources/huge.mp3
 .rakeTasks
 .generators
 hashicorp
+
+solr/data
+solr/pids

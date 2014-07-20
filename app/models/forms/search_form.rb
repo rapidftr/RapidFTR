@@ -41,8 +41,8 @@ module Forms
       end if criteria.count > 0
 
       search.fulltext_by [:created_organisation], params[:created_by_organisation_value]
-      search.filter_by [:created_by], params[:created_by_value]
-      search.filter_by [:updated_by], params[:updated_by_value]
+      search.fulltext_by [:created_by, :created_by_full_name], params[:created_by_value]
+      search.fulltext_by [:updated_by, :updated_by_full_name], params[:updated_by_value]
 
       search.fulltext_by FormSection.highlighted_fields.collect(&:name), params[:query] if params[:query]
       search.created_by ability.user unless ability.can? :view_all, Child

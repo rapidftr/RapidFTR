@@ -12,18 +12,18 @@ gem 'uuidtools',       '~> 2.1.1'
 gem 'validatable',     '~> 1.6.7'
 gem 'dynamic_form',    '~> 1.1.4'
 gem 'sunspot',         '~> 2.1.0'
-gem 'sunspot_rails',         '~> 2.1.0'
+gem 'sunspot_rails',   '~> 2.1.0'
+gem 'sunspot_solr',    '~> 2.1.0'
 gem 'rake',            '~> 0.9.3'
 gem 'cancancan',       '~> 1.7'
 gem 'highline',        '~> 1.6.16'
 gem 'will_paginate',   '~> 3.0.5'
 gem 'os',              '~> 0.9.6'
-gem 'sunspot_solr',    '~> 2.0.0'
 gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
 
 gem 'rufus-scheduler',  '~> 2.0.18', :require => false
 gem 'daemons',          '~> 1.1.9',  :require => false
-gem 'ruby-progressbar', '~> 1.5.1',  :require => false
+gem 'progress_bar',     '~> 1.0.2',  :require => false
 
 gem 'sass-rails',    '~> 4.0.1'
 gem 'uglifier',      '~> 2.0.1'
