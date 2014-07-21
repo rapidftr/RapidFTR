@@ -104,6 +104,10 @@ class FormSection < CouchRest::Model::Base
     self.all.map { |form| form.all_searchable_fields.map(&:name) }.flatten
   end
 
+  def self.all_searchable_fields
+    self.all.map { |form| form.all_searchable_fields }.flatten
+  end
+
   def self.get_by_unique_id unique_id
     by_unique_id(:key => unique_id).first
   end

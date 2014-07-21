@@ -260,6 +260,31 @@ describe ChildrenController, :type => :controller do
         expect(flash[:notice]).to eq("No Records Available!")
       end
     end
+
+    describe "order" do
+      it "should assign system fields for order by drop down" do
+        fake_field_worker_login
+        get :index
+        expect(assigns[:system_fields]).to include(*Child.default_child_fields)
+        expect(assigns[:system_fields]).to include(*Child.build_date_fields_for_solar)
+      end
+
+      it "should assign form fields for order by drop down" do
+        field = build :field
+        form = create :form_section, fields: [field]
+        fake_field_worker_login
+        get :index
+        expect(assigns[:forms]).to include(form)
+      end
+
+      # it "should use all searchable fields" do
+      #   field = build :field
+      #   create :form_section, fields: [field]
+      #   fake_field_worker_login
+      #   expect(Child).to receive(:build_text_fields_for_solar)
+      #   get :index
+      # end
+    end
   end
 
   describe "GET show" do

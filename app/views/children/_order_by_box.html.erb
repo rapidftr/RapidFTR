@@ -1,17 +1,16 @@
 <form  class="orderby_panel">
-
   <input type="hidden" name="filter" value="<%= @filter %>"/>
 	<%= t("children.order_by.label") %>:
-  <ul>
+  <ul class="orderby_list">
     <span>
       <li class="first">
-      <% no_filter = @filter == 'all' || @filter.nil?
-         order_by_options = [[t("children.order_by.most_recently") + " " + t("children.filter_by.#{no_filter ? 'created' : @filter}").downcase,
-                              ChildrenHelper::ORDER_BY[@filter]]]
-         order_by_options << [t("children.order_by.most_recently") + " " + t('children.order_by.created').downcase, "created_at"] unless no_filter
-       %>
-      <%= select_tag :order_by, options_for_select(order_by_options, @order), { :onchange => "this.form.submit();"} %>
+      <% options = order_options_array_from(@system_fields, @forms) %>
+      <%= select_tag :order_by, grouped_options_for_select(options, @order), { :style => "width: 100%;", :onchange => "this.form.submit();"} %>
       </li>
   </span>
 	</ul>
 </form>
+
+<script>
+  $(document).ready(function() { $("#order_by").select2(); });
+</script>

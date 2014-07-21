@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 gem 'rapidftr_addon', :git => 'https://github.com/rapidftr/rapidftr-addon.git', :branch => 'master'
 gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-cpims.git', :branch => 'master'
@@ -28,6 +29,8 @@ gem 'sass-rails',    '~> 4.0.1'
 gem 'uglifier',      '~> 2.0.1'
 gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
+
+gem 'rails-assets-select2', '~> 3.5.0'
 
 group :development do
   gem 'rails-dev-tweaks',  '~> 1.1',   platforms: :ruby

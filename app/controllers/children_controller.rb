@@ -32,6 +32,9 @@ class ChildrenController < ApplicationController
     results = search.results
     @children = paginated_collection(results, results.total_count)
 
+    @forms = FormSection.all
+    @system_fields = Child.default_child_fields + Child.build_date_fields_for_solar
+
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
