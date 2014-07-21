@@ -19,7 +19,7 @@ class ChildSearch
 
   def created_by(user)
     search.build do
-      fulltext user.user_name, [ :created_by ]
+      with Child.sortable_field_name(:created_by), user.user_name
     end
     self
   end
@@ -34,13 +34,6 @@ class ChildSearch
   def fulltext_by(field_names=[], value=nil)
     search.build do
       fulltext value, fields: field_names.map(&:to_sym)
-    end if value.present?
-    self
-  end
-
-  def filter_by(field_name, value)
-    search.build do
-      with field_name.to_sym, value
     end if value.present?
     self
   end

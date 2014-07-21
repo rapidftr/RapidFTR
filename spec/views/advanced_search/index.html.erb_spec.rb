@@ -3,21 +3,28 @@ require 'nokogiri'
 
 describe "advanced_search/index.html.erb", :type => :view do
   it "should not show hidden fields" do
-    fields = [Field.new(:name => 'my_field', :display_name => 'My Field', :visible => true, :type => Field::TEXT_FIELD),
-              Field.new(:name => 'my_hidden_field', :display_name => 'My Hidden Field', :visible=> false, :type => Field::TEXT_FIELD)]
-    form_sections = [FormSection.new("name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => fields)]
-    assign(:forms, form_sections)
-    assign(:criteria_list, [])
+    form_section = build :form_section, fields: [
+      build(:text_field),
+      build(:text_field, visible: false)
+    ]
+    search_form = Forms::SearchForm.new(ability: nil, params: {})
+    search_form.send :parse_params
+
+    assign(:forms, [ form_section ])
+    assign(:search_form, search_form)
     render
     document = Nokogiri::HTML(rendered)
     expect(document.css(".field").count).to eq(1)
   end
 
   it "show navigation links for logged in user" do
-    user = stub_model(User, :user_name => "bob", :has_permission? => true)
-    form_sections = [FormSection.new("name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => [])]
-    assign(:forms, form_sections)
-    assign(:criteria_list, [])
+    form_section = build :form_section, fields: []
+    search_form = Forms::SearchForm.new(ability: nil, params: {})
+    search_form.send :parse_params
+    user = build :super_user
+
+    assign(:forms, [ form_section ])
+    assign(:search_form, search_form)
 
     allow(view).to receive(:current_user).and_return(user)
     allow(controller).to receive(:current_user).and_return(user)
@@ -33,11 +40,14 @@ describe "advanced_search/index.html.erb", :type => :view do
   end
 
   it "show not navigation links when no user logged in" do
-    form_sections = [FormSection.new("name" => "Basic Details", "enabled"=> "true", "description"=>"Blah blah", "order"=>"10", "unique_id"=> "basic_details", :editable => "false", :fields => [])]
+    form_section = build :form_section, fields: []
+    search_form = Forms::SearchForm.new(ability: nil, params: {})
+    search_form.send :parse_params
+
     allow(view).to receive(:current_user).and_return(nil)
     allow(view).to receive(:logged_in?).and_return(false)
-    assign(:forms, form_sections)
-    assign(:criteria_list, [])
+    assign(:forms, [ form_section ])
+    assign(:search_form, search_form)
     render :template => "advanced_search/index", :layout => "layouts/application"
 
     expect(rendered).not_to have_tag("nav")

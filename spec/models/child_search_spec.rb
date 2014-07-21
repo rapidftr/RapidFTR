@@ -119,4 +119,13 @@ describe ChildSearch, solr: true do
       end
     end
   end
+
+  describe 'fulltext' do
+  end
+
+  describe 'less_than' do
+  end
+
+  describe 'greater_than' do
+  end
 end

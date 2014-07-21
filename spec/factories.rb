@@ -65,6 +65,9 @@ FactoryGirl.define do
     factory :field_admin_user do
       role_ids { [ FactoryGirl.create(:field_admin_role).id ] }
     end
+    factory :super_user do
+      role_ids { [ FactoryGirl.create(:super_role).id ] }
+    end
   end
 
   factory :role, :traits => [ :model ] do
@@ -77,6 +80,9 @@ FactoryGirl.define do
     end
     factory :field_admin_role do
       permissions { [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:view], Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]] }
+    end
+    factory :super_role do
+      permissions { Permission.all_permissions }
     end
   end
 
@@ -111,11 +117,13 @@ FactoryGirl.define do
   factory :field do
     ignore do
       sequence(:counter, 1000000)
+      highlighted false
     end
 
     name { "name_#{counter}" }
     display_name { name.humanize }
     display_name_en { display_name }
+    highlight_information { highlighted ? HighlightInformation.new(highlighted: true, order: counter) : nil }
     type Field::TEXT_FIELD
     option_strings { [] }
     editable true
