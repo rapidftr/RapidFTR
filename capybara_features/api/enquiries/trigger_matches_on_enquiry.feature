@@ -63,5 +63,4 @@ Feature: Check for matches after creating/editing an enquiry on the API
         }
       }
       """
-    Then the JSON at "potential_matches/1" should be "2"
-
+    Then the JSON at "potential_matches" should be ["2","1"]

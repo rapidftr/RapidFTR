@@ -1,4 +1,5 @@
-.git/*
+*~
+.git*
 tmp/*
 capybara_features/*
 spec/*
@@ -10,3 +11,6 @@ jmeter/*
 coverage/*
 infrastructure/*
 *.DS_Store
+vendor/windows/*
+public/assets/*
+config/couchdb.yml

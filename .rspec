@@ -2,5 +2,3 @@
 --order defined
 --backtrace
 --profile
---require rspec/instafail
---format RSpec::Instafail

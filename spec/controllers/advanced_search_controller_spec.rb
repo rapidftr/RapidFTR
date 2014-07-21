@@ -25,29 +25,15 @@ describe AdvancedSearchController, :type => :controller do
   describe 'collection' do
     it "GET export_data" do
       expect(controller.current_ability).to receive(:can?).with(:export_pdf, Child).and_return(false);
-
       get :export_data, :commit => "Export Selected to PDF"
-
       expect(response.status).to eq(403)
     end
   end
 
-  context 'new search' do
-
-    it "should construct empty criteria objects for new search" do
-      allow(SearchCriteria).to receive(:new).and_return("empty_criteria")
-      get :new
-      expect(response).to render_template('index')
-      expect(assigns[:criteria_list]).to eq(["empty_criteria"])
-    end
-
-  end
-
   context 'search' do
-
-    before do
-      allow(SearchService).to receive(:search).and_return([])
-      :criteria_list
+    it "should construct empty criteria objects for new search" do
+      get :index
+      expect(response).to render_template('index')
     end
 
     it "should show list of enabled forms" do
@@ -56,101 +42,14 @@ describe AdvancedSearchController, :type => :controller do
       expect(assigns[:forms]).to eq(:some_forms)
     end
 
-    it "should perform a search using the parameters passed to it for admin users" do
-      fake_admin_login
-      search = double("search_criteria")
-      allow(SearchCriteria).to receive(:build_from_params).and_return([search])
-      fake_results = [:fake_child, :fake_child]
-      fake_full_results = [:fake_child, :fake_child, :fake_child, :fake_child]
-      expect(SearchService).to receive(:search).with(2, [search]).and_return([fake_results, fake_full_results])
+    it "should create SearchForm with whatever params received" do
+      search_form = Forms::SearchForm.new
+      params = { a: 'a', b: 'b', c: 'c' }
 
-      get :index, :page => 2, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
+      expect(Forms::SearchForm).to receive(:new).with(ability: controller.current_ability, params: hash_including(params)).and_return(search_form)
+      expect(search_form).to receive(:execute)
 
-      expect(assigns[:results]).to eq(fake_results)
-    end
-
-    it "should append created_by as self for limited users" do
-      search = double("search_criteria")
-      allow(SearchCriteria).to receive(:build_from_params).and_return([search])
-      fake_full_results = [:fake_child, :fake_child, :fake_child, :fake_child]
-      stub_results = [:created_by, :created_by_value, :disable_create]
-      created_by = double("created_by")
-      expect(SearchFilter).to receive(:new).with({:value=>"fakeuser", :join=>"AND", :field=>"created_by", :index=>1, :field2=>"created_by_full_name"}).and_return(created_by)
-      expect(SearchService).to receive(:search).with(1, [search,created_by]).and_return([stub_results, fake_full_results])
-
-      get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
-
-      expect(assigns[:results]).to eq(stub_results)
-    end
-
-    it "should construct criteria objects for advanced child search for admin" do
-      fake_admin_login
-      allow(SearchCriteria).to receive(:build_from_params).and_return(["criteria_list"])
-      get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
-      expect(assigns[:criteria_list]).to eq(["criteria_list"])
-    end
-
-    it "should construct criteria objects for advanced child search for limited access users" do
-      allow(SearchCriteria).to receive(:build_from_params).and_return(["criteria_list"])
-      created_by_mock = double("Created_by")
-      expect(SearchFilter).to receive(:new).with({:value=>"fakeuser", :join=>"AND", :field=>"created_by", :index=>1, :field2=>"created_by_full_name"}).and_return(created_by_mock)
-      get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => nil
-      expect(assigns[:criteria_list]).to include "criteria_list"
-      expect(assigns[:criteria_list]).to include created_by_mock
-    end
-
-    context 'search filters' do
-
-      it "should append search filter 'created_by' to the list of search criteria for admin" do
-        fake_admin_login
-        allow(SearchCriteria).to receive(:build_from_params).and_return([])
-        expect(SearchFilter).to receive(:new).with({:field => "created_by", :field2 => "created_by_full_name", :value => "johnny_user", :join => 'AND', :index => 1}).and_return("created_by_filter")
-        get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_value => "johnny_user"
-        expect(assigns[:criteria_list]).to include("created_by_filter")
-      end
-
-      it "should append search filter 'updated_by' to the list of search criteria" do
-        allow(SearchCriteria).to receive(:build_from_params).and_return([])
-        expect(SearchFilter).to receive(:new).with({:value=>"fakeuser", :join=>"AND", :field=>"created_by", :index=>1, :field2=>"created_by_full_name"}).and_return("created_by")
-        expect(SearchFilter).to receive(:new).with({:field => "last_updated_by", :field2 => "last_updated_by_full_name", :value => "johnny_user", :join => 'AND', :index => 2}).and_return("updated_by_filter")
-        get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :updated_by_value => "johnny_user"
-        expect(assigns[:criteria_list]).to include("updated_by_filter")
-      end
-
-      it "should append search range 'created_at' to the list of search criteria" do
-        allow(SearchCriteria).to receive(:build_from_params).and_return(["criteria_list"])
-        expect(SearchDateFilter).to receive(:new).with({:field => "created_at", :from_value => "2012-04-23T00:00:00Z", :to_value => "2012-04-25T00:00:00Z", :join => 'AND', :index => 1}).and_return("created_at_range")
-        get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_at_after_value => "2012-04-23", :created_at_before_value => "2012-04-25"
-        expect(assigns[:criteria_list]).to include("created_at_range")
-      end
-
-      it "should append search range 'updated_at' to the list of search criteria" do
-        allow(SearchCriteria).to receive(:build_from_params).and_return(["criteria_list"])
-        expect(SearchDateFilter).to receive(:new).with({:field => "last_updated_at", :from_value => "2012-04-23T00:00:00Z", :to_value => "2012-04-25T00:00:00Z", :join => 'AND', :index => 2}).and_return("updated_at_range")
-        get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :updated_at_after_value => "2012-04-23", :updated_at_before_value => "2012-04-25"
-        expect(assigns[:criteria_list]).to include("updated_at_range")
-      end
-
-      it "should append search filter 'created_by_organisation' to the list of search criteria for admin" do
-        fake_admin_login
-        allow(SearchCriteria).to receive(:build_from_params).and_return([])
-        expect(SearchFilter).to receive(:new).with({:field => "created_organisation", :value => "STC", :join => 'AND', :index => 1}).and_return("created_by_organisation_filter")
-        get :index, :criteria_list => {"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}}, :created_by_organisation_value => "STC"
-        expect(assigns[:criteria_list]).to include("created_by_organisation_filter")
-      end
-    end
-
-  end
-
-  context 'constructor' do
-    let(:controller) { AdvancedSearchController.new }
-
-    it "should say child fields have been selected" do
-      expect(controller.child_fields_selected?({"0" => {"field" => "name_of_child", "value" => "joe joe", "index" => "0"}})).to eq(true)
-    end
-
-    it "should say child fields have NOT been selected" do
-      expect(controller.child_fields_selected?({"0" => {"field" => "", "value" => "", "index" => "0"}})).to eq(false)
+      get :index, params
     end
   end
 

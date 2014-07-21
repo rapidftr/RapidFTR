@@ -1,6 +1,8 @@
 module HistoriesHelper
 
   def history_entry_for history, field, change
+    @form_sections = FormSection.all
+
     if field == "photo_keys"
       return {:partial => "shared/histories/photo_history_change",
               :locals =>{
@@ -33,11 +35,20 @@ module HistoriesHelper
       # do nothing, because we are already displaying the duplicate_of as a part of duplicate change
     else
       return {:partial => "shared/histories/history_change",
-              :locals => default_locals_for(history, change).merge(:field => field.humanize)}
+              :locals => default_locals_for(history, change).merge(:field => get_field_display_name(field))}
     end
   end
 
   private
+
+  def get_field_display_name field_name
+    @form_sections.each do |form_section|
+      field = form_section.get_field_by_name(field_name)
+      return field.display_name.humanize unless field.nil?
+    end
+
+    field_name.humanize
+  end
 
   def default_locals_for history, change
     {

@@ -1,18 +1,18 @@
 require 'spec_helper'
 
 def inject_export_generator( fake_export_generator, child_data )
-	allow(ExportGenerator).to receive(:new).with(child_data).and_return( fake_export_generator )
+  allow(ExportGenerator).to receive(:new).with(child_data).and_return( fake_export_generator )
 end
 
 def stub_out_export_generator child_data = []
-	inject_export_generator( stub_export_generator = double(ExportGenerator) , child_data)
-	allow(stub_export_generator).to receive(:child_photos).and_return('')
-	stub_export_generator
+  inject_export_generator( stub_export_generator = double(ExportGenerator) , child_data)
+  allow(stub_export_generator).to receive(:child_photos).and_return('')
+  stub_export_generator
 end
 
 def stub_out_child_get(mock_child = double(Child))
-	allow(Child).to receive(:get).and_return( mock_child )
-	mock_child
+  allow(Child).to receive(:get).and_return( mock_child )
+  mock_child
 end
 
 describe ChildrenController, :type => :controller do
@@ -107,7 +107,7 @@ describe ChildrenController, :type => :controller do
     end
   end
 
-  describe "GET index" do
+  describe "GET index", solr: true do
 
     shared_examples_for "viewing children by user with access to all data" do
       describe "when the signed in user has access all data" do
@@ -316,7 +316,7 @@ describe ChildrenController, :type => :controller do
     it "should include duplicate records in the response" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
       duplicates = [Child.new(:name => "duplicated")]
-      expect(Child).to receive(:duplicates_of).with("37").and_return(duplicates)
+      expect(Child).to receive(:by_duplicate_of).with(key: "37").and_return(duplicates)
       get :show, :id => "37"
       expect(assigns[:duplicates]).to eq(duplicates)
     end
@@ -525,63 +525,19 @@ describe ChildrenController, :type => :controller do
     before :each do
       fake_admin_login
     end
-    it "should not render error by default" do
-      get(:search, :format => 'html')
-      expect(assigns[:search]).to be_nil
-    end
 
     it "should render error if search is invalid" do
-      get(:search, :format => 'html', :query => '2'*160)
-      search = assigns[:search]
+      get :search, :query => nil
+      search = assigns[:search_form]
       expect(search.errors).not_to be_empty
-    end
-
-    it "should stay in the page if search is invalid" do
-      get(:search, :format => 'html', :query => '1'*160)
       expect(response).to render_template("search")
     end
 
-    it "performs a search using the parameters passed to it" do
-      search = double("search", :query => 'the child name', :valid? => true, :page => 1)
-      allow(Search).to receive(:new).and_return(search)
-
-      fake_results = ["fake_child","fake_child"]
-      fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
-      expect(Child).to receive(:search).with(search, 1).and_return([fake_results, fake_full_results])
-      get(:search, :format => 'html', :query => 'the child name')
-      expect(assigns[:results]).to eq(fake_results)
-    end
-
-    describe "with no results" do
-      before do
-        get(:search, :query => 'blah')
-      end
-
-      it 'asks view to not show csv export link if there are no results' do
-        expect(assigns[:results].size).to eq(0)
-      end
-
-      it 'asks view to display a "No results found" message if there are no results' do
-        expect(assigns[:results].size).to eq(0)
-      end
-
-    end
-  end
-
-  describe "searching as field worker" do
-    before :each do
-      @session = fake_field_worker_login
-    end
-    it "should only list the children which the user has registered" do
-      search = double("search", :query => 'some_name', :valid? => true, :page => 1)
-      allow(Search).to receive(:new).and_return(search)
-
-      fake_results = [:fake_child,:fake_child]
-      fake_full_results =  [:fake_child,:fake_child, :fake_child, :fake_child]
-      expect(Child).to receive(:search_by_created_user).with(search, @session.user_name, 1).and_return([fake_results, fake_full_results])
-
-      get(:search, :query => 'some_name')
-      expect(assigns[:results]).to eq(fake_results)
+    it "should create SearchForm with whatever params received" do
+      params = { query: 'test' }
+      expect(Forms::SearchForm).to receive(:new).with(ability: controller.current_ability, params: hash_including(params)).and_call_original
+      expect_any_instance_of(Forms::SearchForm).to receive(:execute)
+      get :search, params
     end
   end
 
@@ -603,7 +559,7 @@ describe ChildrenController, :type => :controller do
       allow(controller).to receive(:authorize!).with(:export_mock, Child).and_return(Child)
       allow(controller).to receive(:authorize!).with(:index, Child).and_return(Child)
     end
-    it 'should use #respond_to_export' do
+    it 'should use #respond_to_export', solr: true do
       child1 = create :child, created_by: @user.user_name
       child2 = create :child, created_by: @user.user_name
       expect_any_instance_of(MockExportTask).to receive(:export).with([child1, child2])
@@ -622,7 +578,8 @@ describe ChildrenController, :type => :controller do
       fake_admin_login
       @child1 = build :child
       @child2 = build :child
-      controller.stub :paginated_collection => [ @child1, @child2 ], :render => true
+      results = [ @child1, @child2 ]
+      allow_any_instance_of(ChildSearch).to receive(:results).and_return(results)
     end
 
     it "should handle full PDF" do

@@ -6,6 +6,7 @@ services:
   - couchdb
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - "bundle config build.nokogiri --use-system-libraries"
 env:
   global:
     - DISPLAY=":99.0"
@@ -13,12 +14,10 @@ env:
 before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr]"
-  - "bundle exec rake sunspot:start"
+  - "bundle exec rake sunspot:solr:start"
   - "RAILS_ENV=cucumber bundle exec rake assets:precompile"
 script:
-  - "RAILS_ENV=test bundle exec rake spec"
-  - "RAILS_ENV=test bundle exec rake quality:all"
-  - "RAILS_ENV=cucumber bundle exec rake cucumber:headless"
-  - "RAILS_ENV=cucumber bundle exec rake cucumber:browser"
+  - "RAILS_ENV=test bundle exec rake quality:all spec"
+  - "RAILS_ENV=cucumber bundle exec rake cucumber:all"
 notifications:
   - email: false

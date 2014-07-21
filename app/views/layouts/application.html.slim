@@ -1,0 +1,72 @@
+doctype html
+html[xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"]
+  head
+    meta[http-equiv="content-type" content="text/html;charset=UTF-8"]
+    title
+      = @page_name
+    link[rel="shortcut icon" href="/favicon.ico"]
+    = stylesheet_link_tag "application"
+    = yield :stylesheet
+    = javascript_include_tag "application"
+    = csrf_meta_tag
+    = yield :javascript
+    = javascript_tag do
+      |  I18n.defaultLocale = "#{I18n.default_locale}";
+      |  I18n.locale = "#{I18n.locale}";
+      |  I18n.fallbacks = true;
+  body class = @body_class
+    .page_container
+      header
+        = link_to 'RapidFTR logo', root_path, :class => 'logo'
+        = render :partial => "shared/header_links"
+      .main_bar
+        - if logged_in?
+          nav
+            ul
+              - if can? :read, Child
+                li
+                  = link_to t("navigation.children"), children_path
+              - if current_user_name==nil or can? :manage, FormSection
+                li
+                  = link_to t("navigation.forms"), form_sections_path
+              - if can? :read, User or can? :show, Role
+                li
+                  = link_to t("navigation.users"), users_path
+              - if can?(:read, Device) or can?(:read, Replication)
+                li
+                  = link_to t("navigation.devices"), devices_path
+              - if can? :read, Report
+                li
+                  = link_to t("navigation.reports"), reports_path
+          - if can? :view_and_search, Child
+              = form_tag search_children_path, :method => :get, :id => "search_form" do
+                .search
+                  = link_to t("navigation.advanced_search"), advanced_search_index_path
+                  = text_field_tag 'query', params[:query]
+                  = submit_tag t("navigation.go"), :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();"
+      .page-content
+        - if flash[:notice].present?
+          .flash
+            p.notice
+              = flash[:notice]
+        - if flash[:error].present?
+          .flash
+            p.error
+              = flash[:error]
+
+        = yield
+
+      #dialog title=t("session.about_to_expire")
+        p
+          = t('messages.logoff_warning_prefix')
+          span#dialog-countdown
+          = t("messages.logoff_warning_suffix")
+        p
+          = t("messages.logoff_confirmation")
+      #password-prompt-dialog title=t("encrypt.password_title")
+        .flash.hide
+          p.error
+        p
+          label for="password-prompt-field"
+            = t("encrypt.password_label")
+          input#password-prompt-field[type="password"]

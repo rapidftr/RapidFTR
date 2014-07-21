@@ -22,7 +22,7 @@ describe WeeklyReport do
       User.all.each{|user| user.destroy}
     end
 
-  	it "should provide data for weekly report" do
+    it "should provide data for weekly report" do
       data = WeeklyReport.data
       report = CSV.parse data
 

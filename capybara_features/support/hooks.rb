@@ -8,18 +8,9 @@ Before do
   end
 
   RapidFTR::FormSectionSetup.reset_definitions
-
-  RSpec::Mocks.space.proxy_for(Rails.application.config).reset
   RSpec::Mocks.space.proxy_for(Clock).reset
-  RSpec::Mocks.space.proxy_for(I18n).reset
-  Sunspot.remove_all!(Child)
-end
 
-Before('@search') do
-  RSpec::Mocks.space.proxy_for(Child).reset
-  RSpec::Mocks.space.proxy_for(Sunspot).reset
-  Sunspot.remove_all!(Child)
-  Sunspot.remove_all!(Enquiry)
+  Sunspot.remove_all!(Child, Enquiry)
 end
 
 Before('@roles') do |scenario|
@@ -39,3 +30,6 @@ Before('@no_expire') do |scenario|
   })
 end
 
+After('@no_expire') do
+  RSpec::Mocks.space.proxy_for(Rails.application.config).reset
+end

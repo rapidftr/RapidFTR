@@ -74,13 +74,13 @@ class Field
     base_doc
   end
 
-	def display_type
+  def display_type
     case type
     when PHOTO_UPLOAD_BOX then 'photo'
     when AUDIO_UPLOAD_BOX then 'audio'
     else 'basic'
     end
-	end
+  end
 
   def display_name_for_field_selector
     hidden_text = self.visible? ? "" : " (Hidden)"

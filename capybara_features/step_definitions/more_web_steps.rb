@@ -146,18 +146,18 @@ end
 Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbox_name, table|
   checkbox_label = page.find "//label[contains(., '#{checkbox_name}')]"
   checkbox_id = checkbox_label['for'].split('_').last
-	checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_id}][]']")
+  checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_id}][]']")
 
-	checkboxes = checkbox_elements.inject({}) do | result,  element |
-		result[element['value']] = !!element[:checked]
-		result
+  checkboxes = checkbox_elements.inject({}) do | result,  element |
+    result[element['value']] = !!element[:checked]
+    result
   end
 
   table.hashes.each do |expected_checkbox|
     expected_value = expected_checkbox['value']
     should_be_checked = (expected_checkbox['checked?'] == 'yes')
     expect(checkboxes).to have_key expected_value
-		expect(checkboxes[expected_value]).to eq(should_be_checked)
+    expect(checkboxes[expected_value]).to eq(should_be_checked)
 
   end
 end
@@ -165,7 +165,7 @@ end
 When /^I check "([^"]*)" for "([^"]*)"$/ do |value, checkbox_name|
   label = page.find '//label', :text => checkbox_name
   checkbox_id = label['for'].split('_').last
-	page.check("child_#{checkbox_id}_#{value.dehumanize}")
+  page.check("child_#{checkbox_id}_#{value.dehumanize}")
 end
 
 When /^I click the "(.*)" button$/ do |button_value|

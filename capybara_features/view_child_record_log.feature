@@ -1,3 +1,4 @@
+@search
 Feature:
 
   As an Admin
@@ -46,7 +47,7 @@ Feature:
     #When I follow photo with timestamp "2010-03-01T175933"
     #Then I should see the photo corresponding to "capybara_features/resources/jeff.png"
 
-  @no_expire
+  @no_expire @javascript
   Scenario:  I log in as a different user, edit and view the record log
 
     Given the date/time is "July 19 2010 13:05:15 UTC"
@@ -71,9 +72,9 @@ Feature:
 
     Then I should see "2010-10-29 14:12:15 UTC Birthplace changed from Haiti to Zambia by bobby"
     And I should see "2010-10-29 14:12:15 UTC Nationality initially set to Bombay by bobby"
-    And I should see "2010-10-29 14:12:15 UTC Date of birth changed from 12/12/2000 to 12/12/1999 by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Date of birth (dd/mm/yyyy) changed from 12/12/2000 to 12/12/1999 by bobby"
     And I should see "2010-10-29 14:12:15 UTC Name changed from Jorge Just to George Harrison by bobby"
-    And I should see "2010-10-29 14:12:15 UTC Gender changed from Male to Female by bobby"
+    And I should see "2010-10-29 14:12:15 UTC Sex changed from Male to Female by bobby"
     # Order tested at the moment in the show.html.erb_spec.rb view test for histories
 
   Scenario: Clicking back from the change log

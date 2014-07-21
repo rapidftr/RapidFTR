@@ -8,7 +8,7 @@ namespace :app do
     #Rake::Task['couchdb:create'].invoke
     Rake::Task['db:seed'].invoke
     Rake::Task['db:migrate'].invoke
-    Rake::Task['sunspot:clean_start'].invoke
+    Rake::Task['search:clean_start'].invoke
   end
 
   task :confirm_data_loss => :environment do

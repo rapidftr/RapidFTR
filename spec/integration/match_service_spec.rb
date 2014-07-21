@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe MatchService, :type => :request do
+describe MatchService, type: :request, solr: true do
 
   before :each do
     reset_couchdb!

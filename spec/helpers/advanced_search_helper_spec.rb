@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AdvancedSearchHelper, :type => :helper do
   it "should generate the appropriate html for given text field criteria" do
     field = Field.new(:name => "name", :display_name => "Name", :type => Field::TEXT_FIELD)
-    criteria = SearchCriteria.new({:join => "", :display_name => "Name", :index => "0", :field => "name", :value => "test"})
+    criteria = {:join => "", :display_name => "Name", :index => "0", :field => "name", :value => "test"}
     expect(helper.generate_html(criteria, [field]).gsub("\n", '')).to eq(%Q{<p class='criterion-selected'><a class="select-criteria">Name</a>
 <input class="criteria-field" type="hidden" value="name" name="criteria_list[0][field]">
 <input class="criteria-index" type="hidden" value="0" name="criteria_list[0][index]">
@@ -14,7 +14,7 @@ describe AdvancedSearchHelper, :type => :helper do
 
   it "should generate the appropriate html for given select box criteria" do
     field = Field.new(:name => "protection_status", :display_name => "Protection Status", :type => Field::SELECT_BOX, :option_strings_text => "\nUnaccompanied\nSeparated")
-    criteria = SearchCriteria.new({:join => "AND", :display_name => "Protection Status", :index => "1", :field => "protection_status", :value => "Separated"})
+    criteria = {:join => "AND", :display_name => "Protection Status", :index => "1", :field => "protection_status", :value => "Separated"}
     expect(helper.generate_html(criteria, [field]).gsub("\n", '')).to eq(%Q{<p class='criterion-selected'>
 <input id="criteria_join_and" type="radio" value="AND" checked='' name="criteria_list[1][join]">
 <label for="criteria_join_and">And</label>
@@ -33,7 +33,7 @@ describe AdvancedSearchHelper, :type => :helper do
 </p>}.gsub("\n", ""))
   end
 
-  it "should return '' string if criteria's display_name is empty" do
-    expect(helper.generate_html(SearchCriteria.new(:name => "some_name", :field => "some_field", :display_name => ""), [])).to eq("")
+  it "should return '' string if criteria's field is not found'" do
+    expect(helper.generate_html({ :name => "some_name", :field => "some_field" }, [])).to eq("")
   end
 end

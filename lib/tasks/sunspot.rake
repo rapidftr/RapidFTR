@@ -1,88 +1,22 @@
-require 'tmpdir'
-require 'os'
+require 'sunspot/rails/tasks'
+
+class Sunspot::Rails::Server
+  # Use the same PID file for different rails envs
+  # Because now, in the same Solr, we can have multiple cores (one each for every rails env)
+  def pid_file
+    'sunspot.pid'
+  end
+end
 
 namespace :sunspot do
 
-  ## Whenever we are using Windows, the recommended way to use Solr is:
-  ##   start rake sunspot:solr:run
-  ## This will start Solr in the foreground in a new terminal
-
-  def tmpdir
-    temp_dir = ENV['SOLR_TMPDIR'] || Dir.tmpdir
-    dir = File.join temp_dir, (ENV['SOLR_PORT'] || '8983')
-    FileUtils.mkdir_p dir
-    dir
-  end
-
-  def solr_server
-    server = Sunspot::Solr::Server.new
-    server.port = ENV['SOLR_PORT'] || '8983'
-    server.pid_file = "sunspot_#{server.port}.pid"
-    server.pid_dir = ENV['SOLR_PID_LOCATION'] || tmpdir
-    server.solr_data_dir = ENV['SOLR_DATA_DIR'] || tmpdir
-    server
-  end
-
-  def copy_solr_config
-    puts "Copying config"
-    solr_config_location = "#{Gem.loaded_specs['sunspot_solr'].full_gem_path}/solr/solr/conf/solrconfig.xml"
-    FileUtils.cp( "#{Rails.root}/config/solrconfig.xml" ,solr_config_location)
-    puts "Done: Copying config"
-  end
-
-  desc "start solr"
-  task :start => :environment do
-    puts 'Starting Solr...'
-    copy_solr_config
-    solr_server.start
-  end
-
-  desc "stop solr"
-  task :stop => :environment do
-    begin
-      puts 'Stopping Solr...'
-      solr_server.stop
-    rescue => e; end
-  end
-
-  desc "wait for solr to start"
-  task :wait, [ :timeout ] => :environment do |t, args|
-    connected = false
-    seconds = args[:timeout] ? args[:timeout].to_i : 60
-    timeout(seconds) do
-      until connected do
-        begin
-          puts 'Waiting for Solr to start...'
-          connected = RSolr.connect(:url => Sunspot.config.solr.url).get "admin/ping"
-        rescue => e
-          sleep 1
-        end
-      end
-    end
-
-    raise "Solr is not responding" unless connected
-  end
+  Rake::Task["sunspot:reindex"].clear
 
   desc "re-index child records"
-  task :reindex => :wait do
+  task :reindex => :environment do
     puts 'Reindexing Solr...'
     Child.reindex!
   end
 
-  desc "restart solr"
-  task :restart => %w( sunspot:stop sunspot:start )
-
-  desc "clean solr data directory"
-  task :clean do
-    FileUtils.rm_rf solr_server.solr_data_dir
-  end
-
-  desc "ensure solr is cleanly started"
-  task :clean_start => %w( sunspot:stop sunspot:clean sunspot:start sunspot:reindex )
-
-  desc "start solr in the foreground"
-  task :run do
-    solr_server.run
-  end
-
+  # TODO: Need some extra tasks like :clean, :wait
 end
