@@ -59,8 +59,8 @@ class Child < CouchRest::Model::Base
   end
 
   def self.build_text_fields_for_solar
-    searchable_fields = FormSection.all_searchable_field_names || []
-    self.default_child_fields + searchable_fields
+    sortable_fields = FormSection.all_sortable_field_names || []
+    self.default_child_fields + sortable_fields
   end
 
   def self.default_child_fields

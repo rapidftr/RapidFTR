@@ -10,8 +10,8 @@
 
 	</ul>
   <ol id="sort_order">
-    <li class="ui-state-default <%= "ui-selected" if @sort_order == 'asc'%>" data-sort-order="asc">&uarr;</li>
-    <li class="ui-state-default <%= "ui-selected" if @sort_order == 'desc'%>" data-sort-order="desc">&darr;</li>
+    <li class="ui-state-default <%= "ui-selected" if @sort_order.to_s == 'asc'%>" data-sort-order="asc">&uarr;</li>
+    <li class="ui-state-default <%= "ui-selected" if @sort_order.to_s == 'desc'%>" data-sort-order="desc">&darr;</li>
   </ol>
   <input id="sort-order-input" type="hidden" name="sort_order" value="<%= @sort_order %>"/>
 </form>

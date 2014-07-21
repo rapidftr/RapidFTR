@@ -188,9 +188,6 @@ GEM
     rails-assets-jquery (2.1.1)
     rails-assets-select2 (3.5.0)
       rails-assets-jquery (>= 1.7.1)
-    rails-dev-tweaks (1.1.0)
-      actionpack (>= 3.1)
-      railties (>= 3.1)
     railties (4.0.3)
       actionpack (= 4.0.3)
       activesupport (= 4.0.3)
@@ -331,6 +328,7 @@ DEPENDENCIES
   pry-rails (~> 0.3.2)
   quiet_assets (~> 1.0.3)
   rails (= 4.0.3)
+  rails-assets-select2 (~> 3.5.0)
   rake (~> 0.9.3)
   rapidftr_addon!
   rapidftr_addon_cpims!

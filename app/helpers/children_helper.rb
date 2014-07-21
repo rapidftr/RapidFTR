@@ -82,7 +82,7 @@ module ChildrenHelper
     options = {}
     options[t("children.order_by.system_fields")] = system_fields.map {|f| [t("children.order_by.#{f}"), f] }
     form_sections.each do |form_section|
-      options_for_form = form_section.all_searchable_fields.map {|f| [f.display_name, f.name]}
+      options_for_form = form_section.all_sortable_fields.map {|f| [f.display_name, f.name]}
       options[form_section.name] = options_for_form
     end
     return options
