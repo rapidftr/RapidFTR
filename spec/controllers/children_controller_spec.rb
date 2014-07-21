@@ -277,13 +277,27 @@ describe ChildrenController, :type => :controller do
         expect(assigns[:forms]).to include(form)
       end
 
-      # it "should use all searchable fields" do
-      #   field = build :field
-      #   create :form_section, fields: [field]
-      #   fake_field_worker_login
-      #   expect(Child).to receive(:build_text_fields_for_solar)
-      #   get :index
-      # end
+      it "should use the ascending sort order param" do
+        fake_field_worker_login
+        child_search = ChildSearch.new;
+        expect(child_search).to receive(:ordered).with(anything(), :asc).and_return(child_search)
+        expect(ChildSearch).to receive(:new).and_return(child_search)
+        get :index, sort_order: 'asc'
+      end
+
+      it "should use the descending sort order param" do
+        fake_field_worker_login
+        child_search = ChildSearch.new;
+        expect(child_search).to receive(:ordered).with(anything(), :desc).and_return(child_search)
+        expect(ChildSearch).to receive(:new).and_return(child_search)
+        get :index, sort_order: 'desc'
+      end
+
+      it "should assign the sort order" do
+        fake_field_worker_login
+        get :index, sort_order: 'desc'
+        expect(assigns[:sort_order]).to eq('desc')
+      end
     end
   end
 

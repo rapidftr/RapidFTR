@@ -1,0 +1,24 @@
+.orderby_list {
+  li {
+    width: 300px;
+  }
+}
+
+#sort_order {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+
+	.ui-selected {
+		background: #F39814;
+		color: white;
+	}
+
+	li {
+		margin: 3px;
+		padding: 3px 5px 3px 5px;
+		float: right;
+		text-align: center;
+       
+	}
+}

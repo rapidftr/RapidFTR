@@ -329,6 +329,10 @@ Then /^I should be redirected to "([^"]*)" Page$/ do |page_name|
   assert page.has_content?("#{page_name}")
 end
 
+Then /^I should see option group "(.*)"$/ do |group|
+  expect(page).to have_xpath("//optgroup[@label='#{group}']")
+end
+
 When /^I select the "([^"]*)"$/ do |element|
   find("//div[@class='"+element+"']").click
 end
