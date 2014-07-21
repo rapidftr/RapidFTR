@@ -34,28 +34,10 @@ module Searchable
 
   module ClassMethods
     def reindex!
-      Child.update_solr_indices
+      self.update_solr_indices
       Sunspot.remove_all(self)
-      self.all.each { |record| Sunspot.index!(record) }
-    end
-
-    def sunspot_matches(query = "")
-      begin
-        return get_matches(query).results
-      rescue
-        self.reindex!
-        Sunspot.commit
-        return get_matches(query).results
-      end
-    end
-
-    def get_matches(criteria)
-      Sunspot.search(self) do
-        fulltext(criteria, :minimum_match => 1)
-        adjust_solr_params do |params|
-          params[:defType] = "dismax"
-        end
-      end
+      self.all.rows.each { |row| Sunspot.index row.doc }
+      Sunspot.commit!
     end
   end
 
