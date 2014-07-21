@@ -30,7 +30,7 @@ describe Migration, :type => :model do
   end
 
   it 'should save migration name in database after applying' do
-    expect(Kernel).to receive(:load).with(Migration.migration_dir.join "one").and_return(false)
+    expect(Kernel).to receive(:load).with(Migration.migration_dir.join("one"), true).and_return(false)
     expect(Migration.database).to receive(:save_doc).with(:name => "one")
     Migration.apply_migration("one")
   end

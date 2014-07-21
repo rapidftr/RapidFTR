@@ -37,8 +37,8 @@ class Migration < CouchRest::Model::Base
 
   def self.apply_migration(file)
     lambda do
-      Kernel.load migration_dir.join file
-    end
+      Kernel.load migration_dir.join(file), true
+    end.call
     database.save_doc :name => file
   end
 end

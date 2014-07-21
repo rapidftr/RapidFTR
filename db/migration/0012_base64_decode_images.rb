@@ -1,10 +1,8 @@
-rows = Child.database.all_docs['rows']
-return if rows.count == 0
-
 require 'progress_bar'
 require 'base64'
 
-progressbar = ProgressBar.new rows.count
+rows = Child.database.all_docs['rows']
+progressbar = ProgressBar.new rows.count if rows.count > 0
 errors = []
 
 rows.each do |row|
