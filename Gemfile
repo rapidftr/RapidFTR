@@ -29,6 +29,7 @@ gem 'sass-rails',    '~> 4.0.1'
 gem 'uglifier',      '~> 2.0.1'
 gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
+gem 'slim',          '~> 2.0.3'
 
 group :development do
   gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
