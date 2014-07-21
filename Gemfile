@@ -12,18 +12,18 @@ gem 'uuidtools',       '~> 2.1.1'
 gem 'validatable',     '~> 1.6.7'
 gem 'dynamic_form',    '~> 1.1.4'
 gem 'sunspot',         '~> 2.1.0'
-gem 'sunspot_rails',         '~> 2.1.0'
+gem 'sunspot_rails',   '~> 2.1.0'
+gem 'sunspot_solr',    '~> 2.1.0'
 gem 'rake',            '~> 0.9.3'
 gem 'cancancan',       '~> 1.7'
 gem 'highline',        '~> 1.6.16'
 gem 'will_paginate',   '~> 3.0.5'
 gem 'os',              '~> 0.9.6'
-gem 'sunspot_solr',    '~> 2.0.0'
 gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
 
 gem 'rufus-scheduler',  '~> 2.0.18', :require => false
 gem 'daemons',          '~> 1.1.9',  :require => false
-gem 'ruby-progressbar', '~> 1.5.1',  :require => false
+gem 'progress_bar',     '~> 1.0.2',  :require => false
 
 gem 'sass-rails',    '~> 4.0.1'
 gem 'uglifier',      '~> 2.0.1'
@@ -32,7 +32,6 @@ gem 'i18n-js',       '~> 2.1.2'
 gem 'slim',          '~> 2.0.3'
 
 group :development do
-  gem 'rails-dev-tweaks',  '~> 1.1',   platforms: :ruby
   gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
   gem 'better_errors',     '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
@@ -44,15 +43,13 @@ group :test, :cucumber do
   gem 'rspec',              '~> 3.0'
   gem 'rspec-rails',        '~> 3.0'
   gem 'rspec-activemodel-mocks', '~> 1.0.1'
-  gem 'rspec-instafail',    '~> 0.2.4'
-  gem 'jasmine',            '~> 1.3.2'
 
   gem 'capybara',           '~> 2.3'
   gem 'cucumber',           '~> 1.3.11'
   gem 'cucumber-rails',     '~> 1.4.0', :require => false
   gem 'selenium-webdriver', '~> 2.42.0'
   gem 'hpricot',            '~> 0.8.6'
-  gem 'json_spec',          '~> 1.1.1'
+  gem 'json_spec',          '~> 1.1.2'
   gem 'pdf-inspector',      '~> 1.1.0'
   gem 'coveralls', require: false
 end

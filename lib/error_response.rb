@@ -22,8 +22,7 @@ class ErrorResponse < StandardError
   end
 
   def self.log(exception)
-    logger = Rails.logger
-    return unless logger
+    return unless (logger = Rails.logger)
 
     message = "\n#{exception.class} (#{exception.message}):\n"
     message << exception.annoted_source_code.to_s if exception.respond_to?(:annoted_source_code)

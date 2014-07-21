@@ -23,7 +23,7 @@
 </script>
 
 <% has_results = (@results && @results.size > 0) %>
-<%= form_tag export_data_children_path, :method => :post do %>
+<%= form_tag export_data_children_path(search_params: params), method: :post do %>
   <br />
   <div class="profiles-list child_list">
     <% if @results %>

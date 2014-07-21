@@ -25,12 +25,11 @@ class ChildrenController < ApplicationController
     page = params[:page] || 1
 
     search = ChildSearch.new
-                        .paginated(page, per_page)
-                        .ordered(@order, :desc)
-                        .marked_as(@filter)
+      .paginated(page, per_page)
+      .ordered(@order, :desc)
+      .marked_as(@filter)
     search.created_by(current_user) unless can?(:view_all, Child)
-    results = search.results
-    @children = paginated_collection(results, results.total_count)
+    @children = search.results
 
     respond_to do |format|
       format.html
@@ -199,9 +198,6 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def new_search
-  end
-
 # DELETE /children/1
 # DELETE /children/1.xml
   def destroy
@@ -217,17 +213,15 @@ class ChildrenController < ApplicationController
 
   def search
     authorize! :index, Child
-
     @page_name = t("search")
-    if (params[:query])
-      @search = Search.new(params[:query])
-      if @search.valid?
-        search_by_user_access(params[:page] || 1)
-      else
-        render :search
-      end
+    @search_form = Forms::SearchForm.new ability: current_ability, params: params
+
+    if @search_form.valid?
+      @results = @search_form.execute.results
+      default_search_respond_to
+    else
+      render :search
     end
-    default_search_respond_to
   end
 
   private
@@ -277,21 +271,6 @@ class ChildrenController < ApplicationController
           redirect_to :action => :index and return
         end
       end
-    end
-  end
-
-  def paginated_collection instances, total_rows
-    page = params[:page] || 1
-    WillPaginate::Collection.create(page, ChildrenHelper::View::PER_PAGE, total_rows) do |pager|
-      pager.replace(instances)
-    end
-  end
-
-  def search_by_user_access(page_number = 1)
-    if can? :view_all, Child
-      @results, @full_results = Child.search(@search, page_number)
-    else
-      @results, @full_results = Child.search_by_created_user(@search, current_user_name, page_number)
     end
   end
 

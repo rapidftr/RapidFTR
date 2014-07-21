@@ -41,7 +41,7 @@ html[xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"]
           - if can? :view_and_search, Child
               = form_tag search_children_path, :method => :get, :id => "search_form" do
                 .search
-                  = link_to t("navigation.advanced_search"), new_advanced_search_path
+                  = link_to t("navigation.advanced_search"), advanced_search_index_path
                   = text_field_tag 'query', params[:query]
                   = submit_tag t("navigation.go"), :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();"
       .page-content

@@ -43,10 +43,10 @@ Feature:
   @javascript @search
   Scenario: Seeing Flagged Child in Search Results
     Given the following children exist in the system:
-        | name   | flag |
-        | Paul   | false|
+        | name   | flag  |
+        | Peggy  | false |
     And I flag "Peter" as suspect
-    When I search using a name of "P"
+    When I search using a name of "Pe"
     Then the "Peter" result should have a "suspect" image
 
   @javascript

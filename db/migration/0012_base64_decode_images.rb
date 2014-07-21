@@ -1,8 +1,8 @@
-require 'ruby-progressbar'
+require 'progress_bar'
 require 'base64'
 
 rows = Child.database.all_docs['rows']
-progressbar = ProgressBar.create title: 'Base64', total: rows.count, smoothing: 0.6
+progressbar = ProgressBar.new rows.count
 errors = []
 
 rows.each do |row|
@@ -24,21 +24,20 @@ rows.each do |row|
     end if doc['_attachments']
   rescue => e
     if errors.count == 0
-      progressbar.log "Logging the first error, further errors will be suppressed"
-      progressbar.log e.message
-      progressbar.log e.backtrace
+      puts
+      puts "Logging the first error, further errors will be suppressed"
+      puts e.message
+      puts e.backtrace
     end
 
     errors << row['id']
-    progressbar.title = "Base64 (x#{errors.count}x)"
   end
 
-  progressbar.increment
+  progressbar.increment!
 end
 
-progressbar.finish
-
 if errors.count > 0
+  puts
   puts "Failed to migrate images for following records:"
   puts errors
   raise "Migration failed" unless ENV['IGNORE_0012'] == 'true'
