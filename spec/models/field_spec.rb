@@ -291,4 +291,7 @@ describe "Child record field view model", :type => :model do
     form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => [field]
     expect(field.errors[:name]).to eq(["Field already exists on form 'test_form1'"])
   end
+
+
+
 end

@@ -499,10 +499,6 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   Enabled: false
 
-# Offense count: 81
-Style/Tab:
-  Enabled: false
-
 # Offense count: 51
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

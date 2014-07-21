@@ -6,7 +6,7 @@ describe "children/_check_boxes.html.erb", :type => :view do
     assigns[:child] = @child
   end
 
-	it "should include image for tooltip when help text exists" do
+  it "should include image for tooltip when help text exists" do
     check_boxes = Field.new :name => "new field",
     :display_name => "field name",
     :type => Field::CHECK_BOXES,
@@ -18,11 +18,11 @@ describe "children/_check_boxes.html.erb", :type => :view do
     expect(rendered).to have_tag("img.vtip")
   end
 
-	it "should not include image for tooltip when help text does not exist" do
+  it "should not include image for tooltip when help text does not exist" do
     check_boxes = Field.new :name => "new field",
     :display_name => "field name",
     :type => Field::CHECK_BOXES,
-		:option_strings => ["FOO", "BAR"]
+    :option_strings => ["FOO", "BAR"]
 
     render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
 

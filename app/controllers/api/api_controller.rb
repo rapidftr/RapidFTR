@@ -10,15 +10,19 @@ class Api::ApiController < ActionController::Base
   private
 
   rescue_from(Exception) do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
   end
   rescue_from(CanCan::AccessDenied) do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.forbidden "session.forbidden"
   end
   rescue_from(ErrorResponse) do |e|
+    ErrorResponse.log e
     render_error_response e
   end
   rescue_from(ActiveSupport::JSON.parse_error) do |e|
+    ErrorResponse.log e
     render_error_response ErrorResponse.new 422, "session.invalid_request"
   end
 

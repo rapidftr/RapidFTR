@@ -9,7 +9,7 @@ module Searchable
     def load(id)
       Child.get(id)
     end
-  end 
+  end
 
   def self.included(klass)
     klass.extend ClassMethods
@@ -33,66 +33,11 @@ module Searchable
   end
 
   module ClassMethods
-    def sunspot_search(page_number, query = "")
-      begin
-        return paginated_and_full_results(page_number, query)
-      rescue
-        self.reindex!
-        Sunspot.commit
-        return paginated_and_full_results(page_number, query)
-      end
-
-    end
-
-    def paginated_and_full_results(page_number, query)
-      full_result = []
-      get_search(nil, query).hits.each do |hit|
-        full_result.push hit.to_param
-      end
-      return get_search(page_number, query).results, full_result
-    end
-
     def reindex!
-      Child.update_solr_indices
+      self.update_solr_indices
       Sunspot.remove_all(self)
-      self.all.each { |record| Sunspot.index!(record) }
-    end
-
-    def get_search(page_number, query)
-      response = Sunspot.search(self) do |q|
-        q.fulltext(query)
-        q.without(:duplicate, true)
-        if page_number
-          q.paginate :page => page_number, :per_page => ::ChildrenHelper::View::PER_PAGE
-        else
-          q.paginate :per_page => ::ChildrenHelper::View::MAX_PER_PAGE
-        end
-        q.adjust_solr_params do |params|
-          params[:defType] = "lucene"
-          params[:qf] = nil
-        end
-      end
-      response
-    end
-
-
-    def sunspot_matches(query = "")
-      begin
-        return get_matches(query).results
-      rescue
-        self.reindex!
-        Sunspot.commit
-        return get_matches(query).results
-      end
-    end
-
-    def get_matches(criteria)
-      Sunspot.search(self) do
-        fulltext(criteria, :minimum_match => 1)
-        adjust_solr_params do |params|
-          params[:defType] = "dismax"
-        end
-      end
+      self.all.rows.each { |row| Sunspot.index row.doc }
+      Sunspot.commit
     end
   end
 

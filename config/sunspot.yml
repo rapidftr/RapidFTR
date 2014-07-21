@@ -1,0 +1,28 @@
+base: &base
+  hostname: localhost
+  port: 8983
+  log_level: WARNING
+  pid_dir: tmp/pids
+  # read_timeout: 2
+  # open_timeout: 0.5
+
+production:
+  solr:
+    <<: *base
+    path: /solr/production
+
+development:
+  solr:
+    <<: *base
+    log_level: INFO
+    path: /solr/development
+
+test:
+  solr:
+    <<: *base
+    path: /solr/test
+
+cucumber:
+  solr:
+    <<: *base
+    path: /solr/cucumber

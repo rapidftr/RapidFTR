@@ -140,7 +140,6 @@ RapidFTR::Application.routes.draw do
 # ADVANCED SEARCH URLS
 #######################
 
-  resources :advanced_search, :only => [:index, :new]
   match 'advanced_search/index', :to => 'advanced_search#index', :via => [:post, :get, :put, :delete]
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
 

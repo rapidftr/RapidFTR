@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChildSearch do
+describe ChildSearch, solr: true do
   before :each do
     Sunspot.remove_all!
   end
@@ -118,5 +118,14 @@ describe ChildSearch do
         expect(results.first).to eq(@child1)
       end
     end
+  end
+
+  describe 'fulltext' do
+  end
+
+  describe 'less_than' do
+  end
+
+  describe 'greater_than' do
   end
 end

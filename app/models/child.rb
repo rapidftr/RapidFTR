@@ -10,6 +10,8 @@ class Child < CouchRest::Model::Base
   include PhotoHelper
   include Searchable
 
+  after_initialize :create_unique_id
+
   before_save :update_history, :unless => :new?
   before_save :update_organisation
   before_save :update_photo_keys
@@ -52,8 +54,6 @@ class Child < CouchRest::Model::Base
 
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
-    child.create_unique_id
-    child['short_id'] = child.short_id # TODO: Move this into create_unique_id
     child.set_creation_fields_for user
     child
   end
@@ -92,6 +92,7 @@ class Child < CouchRest::Model::Base
         self[field_name]
       end
     end
+
     boolean :duplicate
     boolean(:active) {|c| !c.duplicate && !c.reunited}
     boolean :reunited
@@ -106,6 +107,10 @@ class Child < CouchRest::Model::Base
 
   design do
       view :by_protection_status_and_gender_and_ftr_status
+      view :by_unique_identifier
+      view :by_short_id
+      view :by_created_by
+      view :by_duplicate_of
 
       view :by_flag,
           :map => "function(doc) {
@@ -117,53 +122,25 @@ class Child < CouchRest::Model::Base
                 }
             }"
 
-          view :by_unique_identifier,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('unique_identifier'))
-            {
-                emit(doc['unique_identifier'],doc);
-            }
-        }"
 
-          view :by_short_id,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('short_id'))
-            {
-                emit(doc['short_id'],doc);
+      view :by_user_name,
+      :map => "function(doc) {
+        if (doc.hasOwnProperty('histories')){
+            for(var index=0; index<doc['histories'].length; index++){
+                emit(doc['histories'][index]['user_name'], doc)
             }
-        }"
-
-          view :by_duplicate,
-          :map => "function(doc) {
-        if (doc.hasOwnProperty('duplicate')) {
-            emit(doc['duplicate'], doc);
         }
         }"
 
-          view :by_duplicates_of,
+      # TODO: Use Child.database.documents['rows'] and map that instead
+      #   (unless this map function needs to do further filtering by duplicate/etc)
+      #   Firstly, do we even need to sync duplicate records?
+      view :by_ids_and_revs,
           :map => "function(doc) {
-        if (doc.hasOwnProperty('duplicate_of')) {
-            emit(doc['duplicate_of'], doc);
+        if (doc['couchrest-type'] == 'Child'){
+        emit(doc._id, {_id: doc._id, _rev: doc._rev});
         }
-        }"
-
-          view :by_user_name,
-          :map => "function(doc) {
-            if (doc.hasOwnProperty('histories')){
-                for(var index=0; index<doc['histories'].length; index++){
-                    emit(doc['histories'][index]['user_name'], doc)
-                }
-            }
-            }"
-
-          view :by_created_by
-
-          view :by_ids_and_revs,
-              :map => "function(doc) {
-            if (doc['couchrest-type'] == 'Child'){
-            emit(doc._id, {_id: doc._id, _rev: doc._rev});
-            }
-        }"
+      }"
   end
 
   def compact
@@ -242,50 +219,18 @@ class Child < CouchRest::Model::Base
       self[m]
   end
 
-  def self.all_by_creator(created_by)
-      self.by_created_by :key => created_by
-  end
-
-  # this is a helper to see the duplicates for test purposes ... needs some more thought. - cg
-  def self.duplicates
-      by_duplicate(:key => true)
-  end
-
-  def self.duplicates_of(id)
-      by_duplicates_of(:key => id).all
-  end
-
-  def self.search_by_created_user(search, created_by, page_number = 1)
-      created_by_criteria = [SearchCriteria.new(:field => "created_by", :value => created_by, :join => "AND")]
-      search(search, page_number, created_by_criteria, created_by)
-  end
-
-  def self.search(search, page_number = 1, criteria = [], created_by = "")
-      return [] unless search.valid?
-      search_criteria = [SearchCriteria.new(:field => "short_id", :value => search.query)]
-      search_criteria.concat([SearchCriteria.new(:field => "name", :value => search.query, :join => "OR")]).concat(criteria)
-      SearchService.search page_number, search_criteria
-  end
-
   def self.flagged
       by_flag(:key => true)
   end
 
   def self.all_connected_with(user_name)
       #TODO Investigate why the hash of the objects got different.
-      (by_user_name(:key => user_name).all + all_by_creator(user_name).all).uniq {|child| child.unique_identifier}
+      (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq {|child| child.unique_identifier}
   end
 
   def create_unique_id
-      self['unique_identifier'] ||= UUIDTools::UUID.random_create.to_s
-  end
-
-  def short_id
-      (self['unique_identifier'] || "").last 7
-  end
-
-  def unique_identifier
-      self['unique_identifier']
+      self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
+      self.short_id = unique_identifier.last 7
   end
 
   def has_one_interviewer?

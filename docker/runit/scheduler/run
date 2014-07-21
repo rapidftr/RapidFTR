@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec setuser www-data /etc/service/scheduler/scheduler-rake.sh
