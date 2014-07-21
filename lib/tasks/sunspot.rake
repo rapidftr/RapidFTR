@@ -9,6 +9,14 @@ class Sunspot::Rails::Server
 end
 
 namespace :sunspot do
-  # Any extra tasks, like :wait, :reindex, etc
-  # For now, :reindex is in app.rake, so nothing here for now
+
+  Rake::Task["sunspot:reindex"].clear
+
+  desc "re-index child records"
+  task :reindex => :environment do
+    puts 'Reindexing Solr...'
+    Child.reindex!
+  end
+
+  # TODO: Need some extra tasks like :clean, :wait
 end

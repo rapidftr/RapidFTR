@@ -19,10 +19,4 @@ namespace :app do
     end
   end
 
-  desc "re-index child records"
-  task :reindex => :environment do
-    puts 'Reindexing Solr...'
-    Child.reindex!
-  end
-
 end

@@ -37,7 +37,7 @@ module Searchable
       self.update_solr_indices
       Sunspot.remove_all(self)
       self.all.rows.each { |row| Sunspot.index row.doc }
-      Sunspot.commit!
+      Sunspot.commit
     end
   end
 
