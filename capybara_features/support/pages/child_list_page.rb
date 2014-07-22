@@ -36,6 +36,15 @@ class ChildListPage
     page.find(:css, PAGINATION_SELECTOR).click_link(page_number)
   end
 
+  def sort(sort_order)
+    case sort_order
+      when 'ascending'
+        page.execute_script('$("#sort_order li[data-sort-order=\'asc\']").click()')
+      when 'descending'
+        page.execute_script('$("#sort_order li[data-sort-order=\'desc\']").click()')
+    end
+  end
+
 private
   PAGINATION_SELECTOR = 'div.pagination'
   PREV_PAGE_LINK_SELECTOR =  "#{PAGINATION_SELECTOR} a.previous_page"
