@@ -159,6 +159,8 @@ module NavigationHelpers
       when /reports page/
         reports_path
 
+      when /forms page/
+        forms_path
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

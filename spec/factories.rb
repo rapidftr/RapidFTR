@@ -162,4 +162,8 @@ FactoryGirl.define do
       type { Field::AUDIO_UPLOAD_BOX }
     end
   end
+
+  factory :form do
+
+  end
 end

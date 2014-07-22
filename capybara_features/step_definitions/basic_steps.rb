@@ -16,6 +16,16 @@ When /^I attach the following photos:$/ do |table|
   end
 end
 
+Given /^the following forms exist in the system:$/ do |forms_table|
+  Form.all.each {|u| u.destroy }
+
+  forms_table.hashes.each do |form_hash|
+    form_hash.reverse_merge!('unique_id'=> form_hash['name'].gsub(/\s/, '_').downcase)
+    form = Form.new(form_hash)
+    form.save!
+  end
+end
+
 Given /^the following form sections exist in the system:$/ do |form_sections_table|
   FormSection.all.each {|u| u.destroy }
 
