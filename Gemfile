@@ -33,7 +33,6 @@ gem 'i18n-js',       '~> 2.1.2'
 gem 'slim',          '~> 2.0.3'
 
 gem 'rails-assets-select2', '~> 3.5.0'
-gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
 
 group :development do
   gem 'better_errors',     '~> 1.1.0'
@@ -58,6 +57,7 @@ group :test, :cucumber do
 end
 
 group :development, :test, :cucumber do
+  gem 'pry-rails',          '~> 0.3.2', platforms: :ruby
   gem 'quiet_assets',       '~> 1.0.3'
 end
 

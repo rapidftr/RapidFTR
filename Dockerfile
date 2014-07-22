@@ -27,6 +27,7 @@ EXPOSE 443
 # Services
 ADD docker/runit/solr/ /etc/service/solr/
 ADD docker/runit/scheduler/ /etc/service/scheduler/
+EXPOSE 8983
 
 # Enable first boot script
 ADD docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
@@ -47,3 +48,4 @@ ADD config/ /rapidftr/config/
 ADD db/ /rapidftr/db/
 ADD lib/ /rapidftr/lib/
 ADD app/ /rapidftr/app/
+ADD solr/ /rapidftr/solr/
