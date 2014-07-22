@@ -2,7 +2,7 @@ require 'progress_bar'
 require 'base64'
 
 rows = Child.database.all_docs['rows']
-progressbar = ProgressBar.new rows.count
+progressbar = ProgressBar.new rows.count if rows.count > 0
 errors = []
 
 rows.each do |row|
