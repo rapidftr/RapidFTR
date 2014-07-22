@@ -20,16 +20,20 @@ class ChildrenController < ApplicationController
     @aside = 'shared/sidebar_links'
     @filter = params[:filter] || nil
     @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
+    @sort_order = (params[:sort_order].nil? || params[:sort_order].empty?) ? :asc : params[:sort_order]
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
     search = ChildSearch.new
       .paginated(page, per_page)
-      .ordered(@order, :desc)
+      .ordered(@order, @sort_order.to_sym)
       .marked_as(@filter)
     search.created_by(current_user) unless can?(:view_all, Child)
     @children = search.results
+
+    @forms = FormSection.all
+    @system_fields = Child.default_child_fields + Child.build_date_fields_for_solar
 
     respond_to do |format|
       format.html

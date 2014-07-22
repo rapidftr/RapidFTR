@@ -26,6 +26,10 @@ And /^I select dropdown option "(.+)"$/ do |option|
   page.find('//option', :text => option).click
 end
 
+When /^I sort descending$/ do
+  page.execute_script('$("#sort_order li[data-sort-order=\'desc\']").click()')
+end
+
 private
 
 def child_list_page
