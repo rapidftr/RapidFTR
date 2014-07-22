@@ -1,17 +1,38 @@
 <form  class="orderby_panel">
-
   <input type="hidden" name="filter" value="<%= @filter %>"/>
 	<%= t("children.order_by.label") %>:
-  <ul>
-    <span>
+  <ul class="orderby_list">
+
       <li class="first">
-      <% no_filter = @filter == 'all' || @filter.nil?
-         order_by_options = [[t("children.order_by.most_recently") + " " + t("children.filter_by.#{no_filter ? 'created' : @filter}").downcase,
-                              ChildrenHelper::ORDER_BY[@filter]]]
-         order_by_options << [t("children.order_by.most_recently") + " " + t('children.order_by.created').downcase, "created_at"] unless no_filter
-       %>
-      <%= select_tag :order_by, options_for_select(order_by_options, @order), { :onchange => "this.form.submit();"} %>
+      <% options = order_options_array_from(@system_fields, @forms) %>
+      <%= select_tag :order_by, grouped_options_for_select(options, @order), { :style => "width: 100%;"} %>
       </li>
-  </span>
+
 	</ul>
+  <ol id="sort_order">
+    <li class="ui-state-default <%= "ui-selected" if @sort_order.to_s == 'asc'%>" data-sort-order="asc">&uarr;</li>
+    <li class="ui-state-default <%= "ui-selected" if @sort_order.to_s == 'desc'%>" data-sort-order="desc">&darr;</li>
+  </ol>
+  <input id="sort-order-input" type="hidden" name="sort_order" value="<%= @sort_order %>"/>
 </form>
+
+<script>
+  $(document).ready(function() {
+
+    function submitForm() {
+      var selectedSortOrder = $("#sort_order .ui-selected").data("sort-order");
+      $("#sort-order-input").val(selectedSortOrder);
+      $(".orderby_panel").submit();
+    }
+
+    $("#order_by").select2(); 
+    $("#order_by").change(submitForm); 
+    $("#sort_order li").click(function() {
+      if(this.className.indexOf("ui-selected") === -1) {
+        $(".ui-selected").removeClass("ui-selected");
+        $(this).addClass("ui-selected");
+        submitForm();
+      }
+    });
+  });
+</script>
