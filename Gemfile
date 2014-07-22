@@ -33,9 +33,9 @@ gem 'i18n-js',       '~> 2.1.2'
 gem 'slim',          '~> 2.0.3'
 
 gem 'rails-assets-select2', '~> 3.5.0'
+gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
 
 group :development do
-  gem 'pry-rails',         '~> 0.3.2', platforms: :ruby
   gem 'better_errors',     '~> 1.1.0'
   gem 'binding_of_caller', '~> 0.7.2'
 end
