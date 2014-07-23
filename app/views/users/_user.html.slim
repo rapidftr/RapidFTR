@@ -1,0 +1,15 @@
+tr id="user-row-#{user.user_name}" 
+  td.full_name= h user.full_name
+  td.user-name= h user.user_name
+  - if can?(:disable, user)
+    td.user-status
+      = render :partial => 'user_disabled_checkbox', :locals => {:user => user}
+  - if can? :show, User
+    td= link_to t("users.actions.show"), user
+  - if can? :edit, User
+    td= link_to t("buttons.edit"), edit_user_path(user)
+  - if can? :destroy, User
+    td
+      - if current_user_name != user.user_name
+        = link_to t("user.actions.delete"), user, method: :delete, data: { confirm: t("user.messages.confirmation") }
+
