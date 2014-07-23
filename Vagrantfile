@@ -4,6 +4,13 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = '2'
 
+['vagrant-librarian-chef', 'vagrant-omnibus'].each do |plugin|
+  if !Vagrant.has_plugin?(plugin)
+    puts "The #{plugin} plugin is required. Please install it with:\n$ vagrant plugin install #{plugin}"
+    exit
+  end
+end
+
 # Make sure you have run "git submodule init && git submodule update" to pull the infrastructure code
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
@@ -13,6 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.librarian_chef.cheffile_dir = "infrastructure"
+  config.omnibus.chef_version = "11.12.8"
 
   config.vm.define 'dev', primary: true do |dev|
     dev.vm.box = 'hashicorp/precise32'
@@ -22,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     dev.ssh.forward_x11 = true
     dev.ssh.forward_agent = true
     dev.vm.provision :chef_solo do |chef|
-      chef.cookbooks_path = 'infrastructure/site-cookbooks'
+      chef.cookbooks_path = [ 'infrastructure/cookbooks', 'infrastructure/site-cookbooks' ]
       chef.roles_path = 'infrastructure/roles'
       chef.add_role 'development'
       chef.verbose_logging = true
