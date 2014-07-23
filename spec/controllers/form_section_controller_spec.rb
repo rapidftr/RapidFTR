@@ -32,15 +32,39 @@ describe FormSectionController, :type => :controller do
 
   describe "get index" do
     it "populate the view with all the form sections in order ignoring enabled or disabled" do
-      row1 = FormSection.new(:visible => false, :order => 1)
-      row2 = FormSection.new(:visible => true, :order => 2)
-      allow(FormSection).to receive(:all).and_return([row1, row2])
+      form_section1 = create :form_section, :visible => false, :order => 1
+      form_section2 = create :form_section, :visible => true, :order => 2
+      form = create :form, form_sections: [form_section1, form_section2]
 
-      get :index
+      get :index, :form_id => form.id
 
-      expect(assigns[:form_sections]).to eq([row1, row2])
+      expect(assigns[:form_sections]).to eq([form_section1, form_section2])
+    end
+
+    it "populate the view with only the specific forms fields" do
+      form_section1 = create :form_section
+      form_section2 = create :form_section
+      form_section3 = create :form_section
+      form1 = create :form, form_sections: [form_section1, form_section2]
+      form2 = create :form, form_sections: [form_section3]
+
+      get :index, :form_id => form1.id
+
+      expect(assigns[:form_sections]).to eq([form_section1, form_section2])
+    end
+
+    it "respect order" do
+      form_section1 = create :form_section, order: 2
+      form_section2 = create :form_section, order: 3
+      form_section3 = create :form_section, order: 1
+      form1 = create :form, form_sections: [form_section1, form_section2, form_section3]
+
+      get :index, :form_id => form1.id
+
+      expect(assigns[:form_sections]).to eq([form_section3, form_section1, form_section2])
     end
   end
+
   describe "post create" do
     it "should new form_section with order" do
       existing_count = FormSection.count

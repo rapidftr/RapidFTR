@@ -18,7 +18,7 @@ describe 'Form Section routing', :type => :routing do
   end
 
   it 'has route for form sections index page' do
-    expect({:get => '/form_section'}).to route_to(:controller => 'form_section', :action=>'index')
+    expect({:get => 'forms/foo/form_section'}).to route_to(:controller => 'form_section', :action=>'index', :form_id => 'foo')
     expect(form_sections_path).to eq('/form_section')
   end
 

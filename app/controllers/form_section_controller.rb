@@ -3,7 +3,11 @@ class FormSectionController < ApplicationController
   def index
     authorize! :index, FormSection
     @page_name = t("form_section.manage")
-    @form_sections = FormSection.all.sort_by(&:order)
+    if params[:form_id]
+      @form_sections = Form.find(params[:form_id]).form_sections.sort_by(&:order)
+    else
+      @form_sections = FormSection.all.sort_by(&:order)
+    end
   end
 
   def create

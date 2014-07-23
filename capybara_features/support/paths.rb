@@ -162,6 +162,9 @@ module NavigationHelpers
       when /forms page/
         forms_path
 
+      when /the form sections page for "(.*)"/
+          form_form_sections_path(Form.by_name.key($1).first)
+
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:
       #
