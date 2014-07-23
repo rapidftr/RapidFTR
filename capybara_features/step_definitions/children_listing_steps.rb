@@ -26,7 +26,7 @@ And /^I select dropdown option "(.+)"$/ do |option|
   page.find('//option', :text => option).click
 end
 
-When(/^I sort "(.*?)"$/) do |sort_order|
+When /^I sort "(.*?)"$/  do |sort_order|
   child_list_page.sort(sort_order)
 end
 
