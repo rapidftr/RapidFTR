@@ -7,7 +7,7 @@ Feature: So that admin can see Manage Form page, Customize Forms
       | Children     |
       | Enquiries    |
     And I am on forms page
-    Then I should see "Enquiries Form"
-    And I should see "Children Form"
-    When I click the "Enquiries Form" link
+    Then I should see "Enquiries"
+    And I should see "Children"
+    When I click the "Enquiries" link
     Then I should be on the form sections page for "Enquiries"

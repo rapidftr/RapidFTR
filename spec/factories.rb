@@ -110,6 +110,7 @@ FactoryGirl.define do
     visible true
     editable true
     order { counter }
+    form
 
     initialize_with { new(attributes) }
   end
@@ -164,6 +165,9 @@ FactoryGirl.define do
   end
 
   factory :form do
-
+    ignore do
+      sequence(:counter, 1000000)
+    end
+    name { "name_#{counter}" }
   end
 end

@@ -231,12 +231,15 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it "should update existing enquiry with potential matches", solr: true do
-      Sunspot.setup(Child) do
-        text :sex
-        text :age
-        text :location
-        text :name
-      end
+      reset_couchdb!
+      create :form_section, fields: [
+          build(:text_field, name: 'name'),
+          build(:text_field, name: 'age'),
+          build(:text_field, name: 'location'),
+          build(:text_field, name: 'sex'),
+      ]
+      Child.reindex!
+
       allow(controller).to receive(:authorize!)
       child1 = Child.create('name' => "Clayton aquiles", 'created_by' => 'fakeadmin', 'created_organisation' => "stc")
       child2 = Child.create('name' => "Steven aquiles", 'sex' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => "stc")

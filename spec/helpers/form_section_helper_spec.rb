@@ -14,11 +14,13 @@ describe FormSectionHelper, :type => :helper do
   end
 
   it "should return create url if form_section is new" do
-    expect(helper.url_for_form_section(FormSection.new)).to eq(form_sections_path)
+    form = Form.new :id => "foo"
+    form_section = FormSection.new :form => form
+    expect(helper.url_for_form_section(form_section, form)).to eq(form_form_sections_path(form.id))
     end
 
   it "should return edit url if form_section exists" do
     form_section = double(:new? => false, :unique_id => "unique_id")
-    expect(helper.url_for_form_section(form_section)).to eq(form_section_path(form_section.unique_id))
+    expect(helper.url_for_form_section(form_section, nil)).to eq(form_section_path(form_section.unique_id))
   end
 end

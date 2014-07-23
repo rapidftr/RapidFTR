@@ -77,9 +77,6 @@ module NavigationHelpers
       when /child advanced search results page/
         advanced_search_index_path(options)
 
-      when /create form section page/
-        new_form_section_path(options)
-
       when /edit form section page for "(.+)"$/
         edit_form_section_path(:id => $1)
 

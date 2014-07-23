@@ -28,7 +28,7 @@ html[xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"]
                   = link_to t("navigation.children"), children_path
               - if current_user_name==nil or can? :manage, FormSection
                 li
-                  = link_to t("navigation.forms"), form_sections_path
+                  = link_to t("navigation.forms"), forms_path
               - if can? :read, User or can? :show, Role
                 li
                   = link_to t("navigation.users"), users_path

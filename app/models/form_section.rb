@@ -30,6 +30,8 @@ class FormSection < CouchRest::Model::Base
   after_create :update_child_indices
   after_update :update_child_indices
 
+  belongs_to :form
+
   def update_child_indices
     Child.update_solr_indices
   end

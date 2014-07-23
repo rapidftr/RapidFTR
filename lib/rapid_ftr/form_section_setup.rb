@@ -4,7 +4,9 @@ module RapidFTR
 
     def self.reset_definitions
       FormSection.all.each { |f| f.destroy }
-      form_sections = []
+      Form.all.each { |f| f.destroy }
+      form = Form.create({name: "Children"})
+
       basic_identity_fields = [
           Field.new({"name" => "name",
                      "type" => "text_field",
@@ -84,13 +86,13 @@ module RapidFTR
                      "display_name_all" => "Documents carried by the child"
                     }),
       ]
-      basic_identity_form_section = FormSection.create!({"visible" => true,
-                                                         :order => 1, :unique_id => "basic_identity", "editable" => true,
-                                                         :fields => basic_identity_fields,
-                                                         "name_all" => "Basic Identity",
-                                                         "description_all" => "Basic identity information about a separated or unaccompanied child."
-                                                        })
-      form_sections << basic_identity_form_section
+      FormSection.create!({"visible" => true,
+                           :order => 1, :unique_id => "basic_identity", "editable" => true,
+                           :fields => basic_identity_fields,
+                           "name_all" => "Basic Identity",
+                           "description_all" => "Basic identity information about a separated or unaccompanied child.",
+                           :form => form
+                          })
 
       photo_audio_fields = [
           Field.new({"name" => "current_photo_key",
@@ -102,13 +104,13 @@ module RapidFTR
                      "display_name_all" => "Recorded Audio"
                     }),
       ]
-      photo_audio_form_section = FormSection.create!({"visible" => true,
-                                                      :order => 10, :unique_id => "photos_and_audio", :fields => photo_audio_fields,
-                                                      :perm_visible => true, "editable" => false,
-                                                      "name_all" => "Photos and Audio",
-                                                      "description_all" => "All Photo and Audio Files Associated with a Child Record",
-                                                     })
-      form_sections << photo_audio_form_section
+      FormSection.create!({"visible" => true,
+                           :order => 10, :unique_id => "photos_and_audio", :fields => photo_audio_fields,
+                           :perm_visible => true, "editable" => false,
+                           "name_all" => "Photos and Audio",
+                           "description_all" => "All Photo and Audio Files Associated with a Child Record",
+                           :form => form
+                          })
 
       unless Rails.env.test? or Rails.env.cucumber?
         family_details_fields = [
@@ -237,13 +239,13 @@ module RapidFTR
                                                        :order => 2, :unique_id => "family_details", :fields => family_details_fields,
                                                        "name_all" => "Family details",
                                                        "description_all" => "Information about a child's known family",
+                                                       :form => form
                                                       })
         #father_death_details and mother_death_details violate validation "Display name".
         #Skip validation because this fields.
         #The validation shows now because the field validation does not rely on the new? method.
         #should fix the data or change the validation?
         family_details_form_section.create({:validate => false})
-        form_sections << family_details_form_section
 
         current_arrangements_fields = [
             Field.new({"name" => "care_arrangements",
@@ -289,12 +291,12 @@ module RapidFTR
                        "display_name_all" => "Convoy No"
                       })
         ]
-        care_arrangements_form_section = FormSection.create!({"visible" => true,
-                                                              :order => 3, :unique_id => "care_arrangements", :fields => current_arrangements_fields,
-                                                              "name_all" => "Care Arrangements",
-                                                              "description_all" => "Information about the child's current caregiver",
-                                                             })
-        form_sections << care_arrangements_form_section
+        FormSection.create!({"visible" => true,
+                             :order => 3, :unique_id => "care_arrangements", :fields => current_arrangements_fields,
+                             "name_all" => "Care Arrangements",
+                             "description_all" => "Information about the child's current caregiver",
+                             :form => form
+                            })
 
         separation_history_fields = [
             Field.new("name" => "separation_place",
@@ -323,12 +325,12 @@ module RapidFTR
                       "display_name_all" => "Arrival Date",
                       "type" => "text_field"),
         ]
-        separation_history_form_section = FormSection.create!({"visible" => true,
-                                                               :order => 4, :unique_id => "separation_history", :fields => separation_history_fields,
-                                                               "name_all" => "Separation History",
-                                                               "description_all" => "The child's separation and evacuation history.",
-                                                              })
-        form_sections << separation_history_form_section
+        FormSection.create!({"visible" => true,
+                             :order => 4, :unique_id => "separation_history", :fields => separation_history_fields,
+                             "name_all" => "Separation History",
+                             "description_all" => "The child's separation and evacuation history.",
+                             :form => form
+                            })
 
         protection_concerns_fields = [
             Field.new({"name" => "concerns_chh",
@@ -379,12 +381,12 @@ module RapidFTR
                        "display_name_all" => "Please specify follow-up needs."
                       }),
         ]
-        protection_concerns_form_section = FormSection.create!({"visible" => true, :order => 5,
-                                                                :unique_id => "protection_concerns", :fields => protection_concerns_fields,
-                                                                "name_all" => "Protection Concerns",
-                                                                "description_all" => ""
-                                                               })
-        form_sections << protection_concerns_form_section
+        FormSection.create!({"visible" => true, :order => 5,
+                             :unique_id => "protection_concerns", :fields => protection_concerns_fields,
+                             "name_all" => "Protection Concerns",
+                             "description_all" => "",
+                             :form => form
+                            })
 
         child_wishes_fields = [
             Field.new({"name" => "wishes_name_1",
@@ -445,14 +447,14 @@ module RapidFTR
         child_wishes_form_section = FormSection.new({"visible" => true, :order => 6,
                                                      :unique_id => "childs_wishes", :fields => child_wishes_fields,
                                                      "name_all" => "Child's Wishes",
-                                                     "description_all" => ""
+                                                     "description_all" => "",
+                                                     :form => form
                                                     })
         #other_child_1, other_child_2 and other_child_1 violate validation "Display Name".
         #Skip validation because this fields.
         #The validation shows now because the field validation does not rely on the new? method.
         #should fix the data or change the validation?
         child_wishes_form_section.create({:validate => false})
-        form_sections << child_wishes_form_section
 
         other_interviews_fields = [
             Field.new({"name" => "other_org_interview_status",
@@ -481,12 +483,12 @@ module RapidFTR
                        "display_name_all" => "Reference No. given to child by other organization"
                       }),
         ]
-        other_interviews_form_section = FormSection.create!({"visible" => true, :order => 7,
-                                                             :unique_id => "other_interviews", :fields => other_interviews_fields,
-                                                             "name_all" => "Other Interviews",
-                                                             "description_all" => ""
-                                                            })
-        form_sections << other_interviews_form_section
+        FormSection.create!({"visible" => true, :order => 7,
+                             :unique_id => "other_interviews", :fields => other_interviews_fields,
+                             "name_all" => "Other Interviews",
+                             "description_all" => "",
+                             :form => form
+                            })
 
         other_tracing_info_fields = [
             Field.new({"name" => "additional_tracing_info",
@@ -495,12 +497,12 @@ module RapidFTR
                        "help_text_all" => "Such as key persons/location in the life of the child who/which might provide information about the location of the sought family -- e.g. names of religious leader, market place, etc. Please ask the child where he/she thinks relatives and siblings might be, and if the child is in contact with any family friends. Include any useful information the caregiver provides.",
                       }),
         ]
-        other_tracing_info_form_section = FormSection.create!({"visible" => true, :order => 8,
-                                                               :unique_id => "other_tracing_info", :fields => other_tracing_info_fields,
-                                                               "name_all" => "Other Tracing Info",
-                                                               "description_all" => ""
-                                                              })
-        form_sections << other_tracing_info_form_section
+        FormSection.create!({"visible" => true, :order => 8,
+                             :unique_id => "other_tracing_info", :fields => other_tracing_info_fields,
+                             "name_all" => "Other Tracing Info",
+                             "description_all" => "",
+                             :form => form
+                            })
 
         interview_details_fields = [
             Field.new({"name" => "disclosure_public_name",
@@ -562,12 +564,12 @@ module RapidFTR
                        "display_name_all" => "Organization in charge of tracing child's family"
                       }),
         ]
-        interview_details_form_section = FormSection.create!({"visible" => true, :order => 9,
-                                                              :unique_id => "interview_details", :fields => interview_details_fields,
-                                                              "name_all" => "Interview Details",
-                                                              "description_all" => ""
-                                                             })
-        form_sections << interview_details_form_section
+        FormSection.create!({"visible" => true, :order => 9,
+                             :unique_id => "interview_details", :fields => interview_details_fields,
+                             "name_all" => "Interview Details",
+                             "description_all" => "",
+                             :form => form
+                            })
 
       end
 
@@ -602,15 +604,13 @@ module RapidFTR
                       })
 
         ]
-        automation_form_form_section = FormSection.create!({"visible" => true, :order => 11,
-                                                            :fields => automation_form_fields,
-                                                            "name_all" => "Automation Form",
-                                                            "description_all" => "Automation Form",
-                                                           })
-        form_sections << automation_form_form_section
+        FormSection.create!({"visible" => true, :order => 11,
+                             :fields => automation_form_fields,
+                             "name_all" => "Automation Form",
+                             "description_all" => "Automation Form",
+                             :form => form
+                            })
       end
-
-      Form.create({name: "Children", form_sections: form_sections})
       return true
     end
 

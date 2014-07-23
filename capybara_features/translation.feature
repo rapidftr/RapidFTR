@@ -49,7 +49,7 @@ Feature: Ensure translations
 
     When I set the system language to "العربية"-"ar"
     And I set the user language to "English"-"en"
-    And I am on the form section page
+    And I am on the form sections page for "Children"
     And I follow "Basic Identity"
 
     Then I should see "الإسم "

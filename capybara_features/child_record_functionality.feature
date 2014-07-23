@@ -48,7 +48,9 @@ Feature:
   @javascript
   Scenario: Checking filter by All, ordering by most recently created, and changing the sort order returns correct order
     When I select "Created at" from "order_by"
+    When I debug
     And I sort "descending"
+    When I debug
     Then I should see the order andreas,zak,jaco,meredith,jane
     When I sort "ascending"
     Then I should see the order jane,meredith,jaco,zak,andreas
@@ -211,7 +213,7 @@ Feature:
     Then I should see "Child record successfully created."
 
   Scenario: create child with numeric custom field
-    Given the following form sections exist in the system:
+    Given the following form sections exist in the system on the "Children" form:
       | name          | unique_id     | editable  | order | visible |
       | Basic details | basic_details | true     | 1     | true    |
     And the "basic_details" form section has the field "Height" with field type "numeric_field"

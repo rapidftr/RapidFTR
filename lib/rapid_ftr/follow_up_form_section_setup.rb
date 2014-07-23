@@ -4,64 +4,63 @@ module RapidFTR
 
     def self.reset_definitions
       form_sections = []
-
+      form = Form.find_by_name("Children")
       outcome_of_follow_up_visit_fields = [
-        Field.new({"name" => "was_child_seen",
-                   "type" => "select_box",
-                   "option_strings_text" => "Yes\nNo",
-                   "display_name_all" => "Was the child seen during the visit?"
-                  }),
-            Field.new({"name" => "reason_why",
-                       "type" => "check_boxes",
-                       "option_strings_text_all" => "Abducted\nAt School\nChild in Detention\nMoved onto street/Market\nMoved to live with another caregiver\nVisiting Friends/Relatives\nWorking /At work ",
-                       "display_name_all" => "If not, why?"
-                      })
+          Field.new({"name" => "was_child_seen",
+                     "type" => "select_box",
+                     "option_strings_text" => "Yes\nNo",
+                     "display_name_all" => "Was the child seen during the visit?"
+                    }),
+          Field.new({"name" => "reason_why",
+                     "type" => "check_boxes",
+                     "option_strings_text_all" => "Abducted\nAt School\nChild in Detention\nMoved onto street/Market\nMoved to live with another caregiver\nVisiting Friends/Relatives\nWorking /At work ",
+                     "display_name_all" => "If not, why?"
+                    })
       ]
 
-      outcome_of_follow_up_visit_form_section = FormSection.create!({"visible"=>false,
-                           :order => 11, :unique_id=>"outcome_of_follow_up_visit", "editable"=>true,
+      FormSection.create!({"visible" => false,
+                           :order => 11, :unique_id => "outcome_of_follow_up_visit", "editable" => true,
                            :fields => outcome_of_follow_up_visit_fields,
                            "name_all" => "Outcome of Follow Up Visit",
-                           "description_all" => "Information to be added"
+                           "description_all" => "Information to be added",
+                           :form => form
                           })
-
-      form_sections << outcome_of_follow_up_visit_form_section
 
       current_care_arrangements_fields = [
           Field.new({"name" => "child_living_with_same_caregiver",
-                      "type" => "select_box",
-                      "option_strings_text" => "Yes\nNo",
-                      "display_name_all" => "Is the child still living with the same caregiver?"
+                     "type" => "select_box",
+                     "option_strings_text" => "Yes\nNo",
+                     "display_name_all" => "Is the child still living with the same caregiver?"
                     }),
           Field.new({"name" => "reasons_for_change",
-                      "type" => "select_box",
-                      "option_strings_text" => "Abuse Exploitation\nDeath of caregiver\nEducation\nIll health of caregiver\nOther\nPoverty\nRelationship Breakdown",
-                      "display_name_all" => "If not, give reasons for change"
+                     "type" => "select_box",
+                     "option_strings_text" => "Abuse Exploitation\nDeath of caregiver\nEducation\nIll health of caregiver\nOther\nPoverty\nRelationship Breakdown",
+                     "display_name_all" => "If not, give reasons for change"
                     }),
           Field.new({"name" => "type_of_current_arrangements",
-                      "type" => "select_box",
-                      "option_strings_text" => "Child Headed Household \nFoster Family\nInterim care center\nInterim care center\nOrphanage\nTemporary Care Center\nStreet\nOther",
-                      "display_name_all" => "If not, give the type of current care arrangements?"
+                     "type" => "select_box",
+                     "option_strings_text" => "Child Headed Household \nFoster Family\nInterim care center\nInterim care center\nOrphanage\nTemporary Care Center\nStreet\nOther",
+                     "display_name_all" => "If not, give the type of current care arrangements?"
                     }),
           Field.new({"name" => "first_name_of_caregiver",
-                      "type" => "text_field",
-                      "display_name_all" => "If not, give the first name of the caregiver"
+                     "type" => "text_field",
+                     "display_name_all" => "If not, give the first name of the caregiver"
                     }),
           Field.new({"name" => "middle_name_of_caregiver",
-                      "type" => "text_field",
-                      "display_name_all" => "Middle name of the caregiver"
+                     "type" => "text_field",
+                     "display_name_all" => "Middle name of the caregiver"
                     }),
           Field.new({"name" => "last_name_of_caregiver",
-                      "type" => "text_field",
-                      "display_name_all" => "Last name of the caregiver"
+                     "type" => "text_field",
+                     "display_name_all" => "Last name of the caregiver"
                     }),
           Field.new({"name" => "location_of_new_caregiver",
-                      "type" => "text_field",
-                      "display_name_all" => "Location of new caregiver"
+                     "type" => "text_field",
+                     "display_name_all" => "Location of new caregiver"
                     }),
           Field.new({"name" => "address_of_caregiver",
-                      "type" => "textarea",
-                      "display_name_all" => "Address of caregiver"
+                     "type" => "textarea",
+                     "display_name_all" => "Address of caregiver"
                     }),
           Field.new({"name" => "telephone_contact_of_caregiver",
                      "type" => "text_field",
@@ -78,14 +77,13 @@ module RapidFTR
                     }),
       ]
 
-      current_care_arrangements_form_section = FormSection.create!({"visible"=>false,
-                           :order=> 12, :unique_id=>"current_care_arrangement", "editable"=>true,
+      FormSection.create!({"visible" => false,
+                           :order => 12, :unique_id => "current_care_arrangement", "editable" => true,
                            :fields => current_care_arrangements_fields,
                            "name_all" => "Current Care Arrangements",
-                           "description_all" => "Information to be added"
+                           "description_all" => "Information to be added",
+                           :form => form
                           })
-
-      form_sections << current_care_arrangements_form_section
 
       activities_fields = [
           Field.new({"name" => "is_child_in_school_or_training",
@@ -127,13 +125,13 @@ module RapidFTR
                     }),
       ]
 
-      activities_form_section = FormSection.create!({"visible"=>false,
-                           :order=> 13, :unique_id=>"activities", "editable"=>true,
+      FormSection.create!({"visible" => false,
+                           :order => 13, :unique_id => "activities", "editable" => true,
                            :fields => activities_fields,
                            "name_all" => "Activities",
-                           "description_all" => "Information to be added"
+                           "description_all" => "Information to be added",
+                           :form => form
                           })
-      form_sections << activities_form_section
 
       care_assessment_fields = [
           Field.new({"name" => "personal_assessment",
@@ -168,13 +166,13 @@ module RapidFTR
                     }),
       ]
 
-      care_assessment_form_section = FormSection.create!({"visible"=>false,
-                           :order=> 14, :unique_id=>"care_assessment", "editable"=>true,
+      FormSection.create!({"visible" => false,
+                           :order => 14, :unique_id => "care_assessment", "editable" => true,
                            :fields => care_assessment_fields,
                            "name_all" => "Care Assessment",
-                           "description_all" => "Information to be added"
+                           "description_all" => "Information to be added",
+                           :form => form
                           })
-      form_sections << care_assessment_form_section
 
       further_action_fields = [
           Field.new({"name" => "any_need_for_follow_up_visit",
@@ -197,13 +195,13 @@ module RapidFTR
                     })
       ]
 
-      further_action_form_section = FormSection.create!({"visible"=>false,
-                           :order=> 15, :unique_id=>"further_action", "editable"=>true,
+      FormSection.create!({"visible" => false,
+                           :order => 15, :unique_id => "further_action", "editable" => true,
                            :fields => further_action_fields,
                            "name_all" => "Further Action",
-                           "description_all" => "Information to be added"
+                           "description_all" => "Information to be added",
+                           :form => form
                           })
-      form_sections << further_action_form_section
 
       additional_family_details_fields = [
           Field.new({"name" => "size_of_family",
@@ -217,20 +215,13 @@ module RapidFTR
                     })
       ]
 
-      additional_family_details_form_section = FormSection.create!({"visible"=>false,
-                           :order=> 15, :unique_id=>"additional_family_details", "editable"=>true,
+      FormSection.create!({"visible" => false,
+                           :order => 15, :unique_id => "additional_family_details", "editable" => true,
                            :fields => additional_family_details_fields,
                            "name_all" => "Additional Family Details",
-                           "description_all" => "Information to be added"
+                           "description_all" => "Information to be added",
+                           :form => form
                           })
-
-      form_sections << additional_family_details_form_section
-
-      form = Form.find_by_name("Children")
-      if not form.nil?
-        form_sections.each do |form_section| form.form_sections << form_section end
-        form.save
-      end
       return true
     end
   end
