@@ -39,9 +39,9 @@ class ChildListPage
   def sort(sort_order)
     case sort_order
       when 'ascending'
-        page.execute_script('$("#sort_order li[data-sort-order=\'asc\']").click()')
+        page.find(:css, "li#sort_ascending_arrow").click
       when 'descending'
-        page.execute_script('$("#sort_order li[data-sort-order=\'desc\']").click()')
+        page.find(:css, "li#sort_descending_arrow").click
     end
   end
 
