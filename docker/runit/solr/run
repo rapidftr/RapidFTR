@@ -1,3 +1,4 @@
 #!/bin/sh
 
+chown -R www-data:www-data /rapidftr
 exec /sbin/setuser www-data /etc/service/solr/solr-rake.sh
