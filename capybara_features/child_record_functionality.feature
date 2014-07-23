@@ -35,6 +35,10 @@ Feature:
     And I should see option group "System Fields"
     And I should see "Created at"
     And I should see "Unique id"
+    And I should see "Short id"
+    And I should see "Created by"
+    And I should see "Created by (full name)"
+    And I should see "Last updated by"
 
   @javascript
   Scenario: Checking filter by All and then ordering by most recently created returns all the children in order of most recently created
@@ -44,8 +48,10 @@ Feature:
   @javascript
   Scenario: Checking filter by All, ordering by most recently created, and changing the sort order returns correct order
     When I select "Created at" from "order_by"
-    And I sort descending
+    And I sort "descending"
     Then I should see the order andreas,zak,jaco,meredith,jane
+    When I sort "ascending"
+    Then I should see the order jane,meredith,jaco,zak,andreas
 
   @javascript
   Scenario: Checking filter by Reunited returns all the reunited children in the system
