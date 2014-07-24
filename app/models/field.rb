@@ -165,15 +165,7 @@ class Field
   end
 
   def validate_unique_name
-    #Does not make sense use new? for validity ?
-    #it is perfectly valid FormSection.new(...) then add several field then save and
-    #the validation should work rejecting the duplicate fields.
-    #Also with new? still possible duplicate things for example change the
-    #name/display_name for existing fields.
-    #What we really need is avoid check the field with itself.
-    #return true unless new? && form
-    return true unless form
-    #return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
+    return unless form
     return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
     other_form = FormSection.get_form_containing_field name
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
