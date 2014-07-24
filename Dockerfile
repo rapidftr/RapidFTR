@@ -45,9 +45,10 @@ ADD Rakefile /rapidftr/
 ADD LICENSE /rapidftr/
 ADD script/ /rapidftr/script/
 ADD vendor/ /rapidftr/vendor/
+ADD solr/ /rapidftr/solr/
+ADD docker/config/solr.xml /rapidftr/solr/solr.xml
 ADD public/ /rapidftr/public/
 ADD config/ /rapidftr/config/
 ADD db/ /rapidftr/db/
 ADD lib/ /rapidftr/lib/
 ADD app/ /rapidftr/app/
-ADD solr/ /rapidftr/solr/
