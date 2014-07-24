@@ -5,6 +5,7 @@ describe Api::EnquiriesController, :type => :controller do
   before :each do
     Enquiry.all.each{|enquiry| enquiry.destroy}
     fake_admin_login
+    Sunspot.remove_all!
   end
 
   describe "#authorizations" do
