@@ -21,7 +21,6 @@ describe AdvancedSearchController, :type => :controller do
     stub_export_generator
   end
 
-
   describe 'collection' do
     it "GET export_data" do
       expect(controller.current_ability).to receive(:can?).with(:export_pdf, Child).and_return(false);
@@ -36,10 +35,16 @@ describe AdvancedSearchController, :type => :controller do
       expect(response).to render_template('index')
     end
 
-    it "should show list of enabled forms" do
-      allow(FormSection).to receive(:by_order).and_return :some_forms
+    it "should show list of enabled children forms" do
+      form1 = build :form
+      form2 = build :form
+      form_section1 = build :form_section, form: form1
+      form_section2 = build :form_section, form: form2
+      form_sections = [form_section1, form_section2]
+      allow(Form).to receive(:find_by_name).and_return form1
+      allow(FormSection).to receive(:by_order).and_return form_sections
       get :index
-      expect(assigns[:forms]).to eq(:some_forms)
+      expect(assigns[:form_sections]).to eq([form_section1])
     end
 
     it "should create SearchForm with whatever params received" do

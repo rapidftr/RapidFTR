@@ -460,4 +460,37 @@ describe FormSection, :type => :model do
       expect(FormSection.all_sortable_field_names).to eq(["visible_text_field"])
     end
   end
+
+
+  describe "#enabled_by_order_for_form" do
+    after :each do
+      FormSection.all.each &:destroy
+      Form.all.each &:destroy
+    end
+
+    it "should only return visible form sections" do
+      form = create :form, name: "Form Name"
+      section1 = create :form_section, form: form
+      section2 = create :form_section, form: form, visible: false
+
+      expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section1])
+    end
+
+    it "should only return form sections for the form" do
+      form = create :form, name: "Form Name"
+      other_form = create :form, name: "Other Name"
+      section1 = create :form_section, form: form
+      section2 = create :form_section, form: other_form
+
+      expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section1])
+    end
+
+    it "should only order form sections" do
+      form = create :form, name: "Form Name"
+      section1 = create :form_section, form: form, order: 2
+      section2 = create :form_section, form: form, order: 1
+
+      expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section2, section1])
+    end
+  end
 end

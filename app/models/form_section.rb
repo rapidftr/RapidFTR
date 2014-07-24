@@ -12,7 +12,7 @@ class FormSection < CouchRest::Model::Base
   property :perm_visible, TrueClass, :default => false
   property :perm_enabled, TrueClass
   property :validations, [String]
-  property :base_language, :default=>'en'
+  property :base_language, :default => 'en'
 
   design do
     view :by_unique_id
@@ -68,6 +68,10 @@ class FormSection < CouchRest::Model::Base
   class << self
     def enabled_by_order
       by_order.select(&:visible?)
+    end
+
+    def enabled_by_order_for_form form_name
+      by_order.select { |fs| fs.visible? && fs.form.name == form_name }
     end
 
     def all_child_field_names
@@ -257,8 +261,8 @@ class FormSection < CouchRest::Model::Base
   end
 
   def validate_unique_name
-  unique = FormSection.all.all? { |f| id == f.id || name == nil || name.empty? || name!= f.name }
-  unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
+    unique = FormSection.all.all? { |f| id == f.id || name == nil || name.empty? || name!= f.name }
+    unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
   end
 
   def create_unique_id

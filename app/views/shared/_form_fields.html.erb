@@ -3,7 +3,7 @@
   <a class='close-link'><%= image_tag("dialog-close.png") %></a>
   <div class='box-shadow content'>
 
-      <% @forms.each do|form|%>
+      <% @form_sections.each do|form|%>
         <ul id="fields-for-form-<%= form.id%>" class="fields" data-id="<%= form.unique_id %>">
           <% form.fields.each do |field| %>
               <% if field.visible? %>
@@ -15,7 +15,7 @@
       <%end%>
 
     <ul class="forms">
-        <% @forms.each do|form| %>
+        <% @form_sections.each do|form| %>
           <li id="form-<%= form.id%>" class="form">
             <%= form.name %>
           </li>

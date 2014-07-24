@@ -48,9 +48,7 @@ Feature:
   @javascript
   Scenario: Checking filter by All, ordering by most recently created, and changing the sort order returns correct order
     When I select "Created at" from "order_by"
-    When I debug
     And I sort "descending"
-    When I debug
     Then I should see the order andreas,zak,jaco,meredith,jane
     When I sort "ascending"
     Then I should see the order jane,meredith,jaco,zak,andreas

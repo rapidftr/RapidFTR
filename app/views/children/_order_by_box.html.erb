@@ -4,7 +4,7 @@
   <ul class="orderby_list">
 
       <li class="first">
-      <% options = order_options_array_from(@system_fields, @forms) %>
+      <% options = order_options_array_from(@system_fields, @form_sections) %>
       <%= select_tag :order_by, grouped_options_for_select(options, @order), { :style => "width: 100%;"} %>
       </li>
 

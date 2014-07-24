@@ -4,7 +4,7 @@ class HighlightFieldsController < ApplicationController
 
   def index
     @page_name = I18n.t("admin.highlight_fields")
-    @forms = FormSection.enabled_by_order
+    @form_sections = FormSection.enabled_by_order
     @highlighted_fields = FormSection.sorted_highlighted_fields.map do |field|
       { :field_name => field.name,
         :display_name => field.display_name,

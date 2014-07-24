@@ -16,7 +16,7 @@ describe HighlightFieldsController, :type => :controller do
       allow(FormSection).to receive(:enabled_by_order).and_return([FormSection.new(:name => "Form1"), FormSection.new(:name => "Form2")])
       fake_admin_login
       get :index
-      expect(assigns[:forms].size).to eq(2)
+      expect(assigns[:form_sections].size).to eq(2)
     end
 
     it "should have highlighted fields assigned" do

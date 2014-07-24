@@ -39,6 +39,8 @@ class Child < CouchRest::Model::Base
   validate :validate_has_at_least_one_field_value
   validate :validate_last_updated_at
 
+  FORM_NAME = "Children"
+
   def initialize *args
     self['photo_keys'] ||= []
     arguments = args.first

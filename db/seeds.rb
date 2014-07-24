@@ -57,6 +57,7 @@ if should_seed? User
 end
 
 if should_seed? FormSection
-  RapidFTR::FormSectionSetup.reset_definitions
+  RapidFTR::ChildrenFormSectionSetup.reset_definitions
+  RapidFTR::EnquiriesFormSectionSetup.reset_definitions
   RapidFTR::I18nSetup.reset_definitions
 end

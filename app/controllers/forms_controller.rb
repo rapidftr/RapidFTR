@@ -1,6 +1,6 @@
 class FormsController < ApplicationController
   def index
-    @forms = Form.all
+    @form_sections = Form.all
 
   end
 end

@@ -7,7 +7,8 @@ Before do
     RestClient.post "#{model.database.root}/_bulk_docs", { :docs => docs }.to_json, { "Content-type" => "application/json" } unless docs.empty?
   end
 
-  RapidFTR::FormSectionSetup.reset_definitions
+  RapidFTR::ChildrenFormSectionSetup.reset_definitions
+  RapidFTR::EnquiriesFormSectionSetup.reset_definitions
   RSpec::Mocks.space.proxy_for(Clock).reset
 
   Sunspot.remove_all!(Child, Enquiry)

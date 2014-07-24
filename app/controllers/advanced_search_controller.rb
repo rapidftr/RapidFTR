@@ -2,7 +2,8 @@ class AdvancedSearchController < ApplicationController
 
   def index
     @page_name = t("navigation.advanced_search")
-    @forms = FormSection.by_order
+    form = Form.find_by_name(Child::FORM_NAME)
+    @form_sections = FormSection.by_order.select {|fs| fs.form == form }
     @search_form = Forms::SearchForm.new(ability: current_ability, params: params).execute
     @results = @search_form.results
   end

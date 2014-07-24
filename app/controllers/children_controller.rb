@@ -2,7 +2,7 @@ class ChildrenController < ApplicationController
   skip_before_filter :verify_authenticity_token
   skip_before_filter :check_authentication, :only => [:reindex]
 
-  before_filter :load_child_or_redirect, :only => [ :show, :edit, :destroy, :edit_photo, :update_photo ]
+  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
   before_filter :current_user, :except => [:reindex]
   before_filter :sanitize_params, :only => [:update, :sync_unverified]
 
@@ -26,13 +26,13 @@ class ChildrenController < ApplicationController
     page = params[:page] || 1
 
     search = ChildSearch.new
-      .paginated(page, per_page)
-      .ordered(@order, @sort_order.to_sym)
-      .marked_as(@filter)
+    .paginated(page, per_page)
+    .ordered(@order, @sort_order.to_sym)
+    .marked_as(@filter)
     search.created_by(current_user) unless can?(:view_all, Child)
     @children = search.results
 
-    @forms = FormSection.all
+    @form_sections = get_form_sections
     @system_fields = Child.default_child_fields + Child.build_date_fields_for_solar
 
     respond_to do |format|
@@ -63,7 +63,7 @@ class ChildrenController < ApplicationController
       format.xml { render :xml => @child }
       format.json { render :json => @child.compact.to_json }
 
-      respond_to_export format, [ @child ]
+      respond_to_export format, [@child]
     end
   end
 
@@ -249,7 +249,7 @@ class ChildrenController < ApplicationController
   end
 
   def get_form_sections
-    FormSection.enabled_by_order
+    FormSection.enabled_by_order_for_form(Child::FORM_NAME)
   end
 
   def default_search_respond_to
