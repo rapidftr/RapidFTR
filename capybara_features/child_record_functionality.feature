@@ -32,12 +32,26 @@ Feature:
 
   Scenario: Checking filter by All shows the Order by options
     Then I should see "Order by"
-    And I should see "Most recently created"
+    And I should see option group "System Fields"
+    And I should see "Created at"
+    And I should see "Unique id"
+    And I should see "Short id"
+    And I should see "Created by"
+    And I should see "Created by (full name)"
+    And I should see "Last updated by"
 
   @javascript
   Scenario: Checking filter by All and then ordering by most recently created returns all the children in order of most recently created
-    When I select "Most recently created" from "order_by"
+    When I select "Created at" from "order_by"
+    Then I should see the order jane,meredith,jaco,zak,andreas
+
+  @javascript
+  Scenario: Checking filter by All, ordering by most recently created, and changing the sort order returns correct order
+    When I select "Created at" from "order_by"
+    And I sort "descending"
     Then I should see the order andreas,zak,jaco,meredith,jane
+    When I sort "ascending"
+    Then I should see the order jane,meredith,jaco,zak,andreas
 
   @javascript
   Scenario: Checking filter by Reunited returns all the reunited children in the system
@@ -49,19 +63,19 @@ Feature:
   Scenario: Checking filter by Reunited shows the Order by options
     When I select "Reunited" from "filter"
     Then I should see "Order by"
-    And I should see "Most recently reunited"
+    And I should see "Reunited at"
 
   @javascript
   Scenario: Checking filter by Reunited should by default show the records ordered by most recently created
     When I select "Reunited" from "filter"
-    Then I should see the order andreas,jaco
+    Then I should see the order jaco,andreas
 
 
   @javascript
   Scenario: Checking filter by Reunited and then selecting order by most recently reunited children returns the children in the order of most recently reunited
     When I select "Reunited" from "filter"
-    And I select "Most recently reunited" from "order_by"
-    Then I should see the order jaco,andreas
+    And I select "Reunited at" from "order_by"
+    Then I should see the order andreas,jaco
 
   @javascript
   Scenario: Checking filter by Flagged returns all the flagged children in the system
@@ -73,38 +87,38 @@ Feature:
   Scenario: Checking filter by Flagged shows the Order by options
     When I select "Flagged" from "filter"
     Then I should see "Order by"
-    And I should see "Most recently flagged"
+    And I should see "Flagged at"
 
   @javascript
   Scenario: Checking filter by Flagged returns all the flagged children in the system by order of most recently flagged
     When I select "Flagged" from "filter"
-    And I select "Most recently flagged" from "order_by"
-    Then I should see the order zak,jaco
+    And I select "Flagged at" from "order_by"
+    Then I should see the order jaco,zak
 
   @javascript
   Scenario: Checking filter by Flagged and then ordering by created at returns the flagged children in order of created at
     Given I select "Flagged" from "filter"
-    And I select "Most recently created" from "order_by"
-    Then I should see the order zak,jaco
+    And I select "Created at" from "order_by"
+    Then I should see the order jaco,zak
 
   @javascript
   Scenario: Checking filter by Flagged and ordering by most recently flagged returns the children in most recently flagged order
     When I select "Flagged" from "filter"
-    And I select "Most recently created" from "order_by"
-    And I select "Most recently flagged" from "order_by"
-    Then I should see the order zak,jaco
+    And I select "Created at" from "order_by"
+    And I select "Flagged at" from "order_by"
+    Then I should see the order jaco,zak
 
   Scenario: Checking filter by Active should by default show the records ordered by created at
-    Then I should see the order zak,meredith,jane
+    Then I should see the order jane,meredith,zak
 
   Scenario: Checking filter by Active shows the Order by options
     Then I should see "Order by"
-    And I should see "Most recently created"
+    And I should see "Created at"
 
   @javascript
   Scenario: Checking filter by Active and then ordering by most recently created returns the children in the order of most recently created
-    When I select "Most recently created" from "order_by"
-    Then I should see the order zak,jaco,meredith,jane
+    When I select "Created at" from "order_by"
+    Then I should see the order jane,meredith,jaco,zak
 
   Scenario: Viewing a child record with audio attached - mp3
     Given a child record named "Fred" exists with a audio file with the name "sample.mp3"

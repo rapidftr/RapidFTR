@@ -436,4 +436,28 @@ describe FormSection, :type => :model do
       expect(expected_field).to eq(nil)
     end
   end
+
+  describe ".all_sortable_field_names" do
+    before :each do
+      reset_couchdb!
+    end
+
+    it "should return searchable fields" do
+      text_field = build :text_field, :name => "text_field", :display_name => "Text Field"
+      text_area = build :text_area_field, :name => "text_area", :display_name => "Text Area"
+      select_box = build :select_box_field, :name => "select_box", :display_name => "Select Box"
+      numeric_field = build :numeric_field, :name => "numeric_field", :display_name => "Numeric Field"
+      form_section = create :form_section, :name => 'sortable_form_section', :unique_id => "unique_id", :fields => [text_field, text_area, select_box, numeric_field]
+
+      expect(FormSection.all_sortable_field_names).to eq(["text_field","text_area","select_box"])
+    end
+
+    it "should not return hidden fields" do
+      text_field = Field.new(:name => "visible_text_field", :type => "text_field", :display_name => "Visible Text Field")
+      hidden_text_field = Field.new(:name => "hidden_text_field", :type => "text_field", :display_name => "Hidden Text Field", :visible => false)
+      form_section = FormSection.create :name => 'form_section', :unique_id => "unique_id", :fields => [text_field, hidden_text_field]
+
+      expect(FormSection.all_sortable_field_names).to eq(["visible_text_field"])
+    end
+  end
 end

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-export HOME=/var/lib/couchdb
-mkdir -p /var/run/couchdb
-chown -R couchdb:couchdb /var/run/couchdb
-chown -R couchdb:couchdb /etc/couchdb/local.d/*.ini
-exec chpst -u couchdb /usr/bin/couchdb
+mkdir -p /var/run/couchdb /data/couchdb
+chown -R couchdb:couchdb /var/run/couchdb /etc/couchdb /data/couchdb
+exec setuser couchdb /usr/bin/couchdb

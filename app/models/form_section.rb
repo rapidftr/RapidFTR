@@ -100,8 +100,16 @@ class FormSection < CouchRest::Model::Base
     self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
   end
 
-  def self.all_searchable_field_names
-    self.all.map { |form| form.all_searchable_fields.map(&:name) }.flatten
+  def all_sortable_fields
+    all_searchable_fields.select(&:visible)
+  end
+
+  def self.all_sortable_field_names
+    self.all.map { |form| form.all_sortable_fields.map(&:name) }.flatten
+  end
+
+  def self.all_searchable_fields
+    self.all.map { |form| form.all_searchable_fields }.flatten
   end
 
   def self.get_by_unique_id unique_id

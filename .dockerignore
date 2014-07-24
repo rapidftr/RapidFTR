@@ -14,3 +14,4 @@ infrastructure/*
 vendor/windows/*
 public/assets/*
 config/couchdb.yml
+solr/data/*

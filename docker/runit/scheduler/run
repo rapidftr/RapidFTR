@@ -1,3 +1,4 @@
 #!/bin/sh
 
+chown -R www-data:www-data /rapidftr
 exec setuser www-data /etc/service/scheduler/scheduler-rake.sh

@@ -98,10 +98,22 @@ en:
       flag: "Flagged"
       created: "Created"
     order_by:
+      system_fields: "System Fields"
       most_recently: "Most recently"
       label: "Order by"
       name: "Name"
       created: "Created"
+      unique_identifier: "Unique id"
+      short_id: "Short id"
+      created_by: "Created by"
+      created_by_full_name: "Created by (full name)"
+      last_updated_by: "Last updated by"
+      last_updated_by_full_name: "Last updated by (full name)"
+      created_organisation: "Creatd organisation"
+      created_at: "Created at"
+      last_updated_at: "Last updated at"
+      reunited_at: "Reunited at"
+      flag_at: "Flagged at"
     flag_summary: "Flag summary"
 
     filer_by:

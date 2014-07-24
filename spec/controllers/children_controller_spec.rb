@@ -260,6 +260,45 @@ describe ChildrenController, :type => :controller do
         expect(flash[:notice]).to eq("No Records Available!")
       end
     end
+
+    describe "order" do
+      it "should assign system fields for order by drop down" do
+        fake_field_worker_login
+        get :index
+        expect(assigns[:system_fields]).to include(*Child.default_child_fields)
+        expect(assigns[:system_fields]).to include(*Child.build_date_fields_for_solar)
+      end
+
+      it "should assign form fields for order by drop down" do
+        field = build :field
+        form = create :form_section, fields: [field]
+        fake_field_worker_login
+        get :index
+        expect(assigns[:forms]).to include(form)
+      end
+
+      it "should use the ascending sort order param" do
+        fake_field_worker_login
+        child_search = ChildSearch.new;
+        expect(child_search).to receive(:ordered).with(anything(), :asc).and_return(child_search)
+        expect(ChildSearch).to receive(:new).and_return(child_search)
+        get :index, sort_order: 'asc'
+      end
+
+      it "should use the descending sort order param" do
+        fake_field_worker_login
+        child_search = ChildSearch.new;
+        expect(child_search).to receive(:ordered).with(anything(), :desc).and_return(child_search)
+        expect(ChildSearch).to receive(:new).and_return(child_search)
+        get :index, sort_order: 'desc'
+      end
+
+      it "should assign the sort order" do
+        fake_field_worker_login
+        get :index, sort_order: 'desc'
+        expect(assigns[:sort_order]).to eq('desc')
+      end
+    end
   end
 
   describe "GET show" do
