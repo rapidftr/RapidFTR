@@ -46,6 +46,8 @@ begin
       t.cucumber_opts = cucumber_opts
     end
 
+    Rake::Task['cucumber:browser'].enhance ['assets:precompile']
+
     desc 'Run all features in headless and browser modes'
     task :all => [:headless, :browser]
   end
