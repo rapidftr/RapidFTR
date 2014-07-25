@@ -1,0 +1,13 @@
+h1.no_border= t("users.manage")
+.page-content-new
+  = render :partial => 'shared/side_tab', :locals => {:highlight_page => 'users'}
+  .side-tab-content
+    div
+      h2
+        = link_to I18n.t("users.label"), users_path
+        |  &gt; #{@user.user_name}
+    = link_to content_tag(:span, t("user.user_action_history") , :class => 'log'), user_history_path(@user), :class=>'btn'
+    .clearfix
+    = render :partial => "editable_user", :object => @user
+    = render :partial => "mobile_login_history", :object => @user
+

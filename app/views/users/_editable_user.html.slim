@@ -1,0 +1,81 @@
+script charset="utf-8" type="text/javascript" 
+  | function confirmBlacklisted() {
+  | $(".devices :checkbox").each(function () {
+  | if (this.checked && !this.defaultChecked)
+  | return confirm(I18n.t("devices.message.disable"));
+  | });
+  | return true;
+  | }
+  
+  | function confirmDisable() {
+  | var checkbox = $("#user_disabled")[0];
+  | if (checkbox.checked && !checkbox.defaultChecked) {
+  | return confirm(I18n.t("users.messages.disable"));
+  | }
+  | return true;
+  | }
+  
+  | $(document).ready(function () {
+  | $("form").submit(function () {
+  | return (confirmDisable() && confirmBlacklisted());
+  | });
+  | });
+- if flash[:verify]
+  .flash
+    p.notice= flash[:verify]
+= form_for editable_user, :html => {:class => ''} do |f|
+  = f.error_messages :header_tag => :h3
+  - trying_to_edit_ourself = editing_ourself?(editable_user)
+  .mandate_panel
+    span *
+    = t("mandatory_field")
+  .clearfix
+  fieldset
+    p
+      = f.label :full_name, t("user.full_name"), :class=>'key'
+      = f.text_field :full_name, :autocomplete => "off"
+      | *
+    p
+      = f.label  :user_name, t("login.username"), :class=>'key'
+      = f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off"
+      | *
+      span.footnote= t("user.no_blank")
+    p
+      = f.label :password, t('login.password.label'), :class=>'key'
+      = f.password_field :password, :autocomplete => "off"
+      | *
+    p
+      = f.label :password_confirmation,t("login.password.re_enter"), :class=>'key'
+      = f.password_field :password_confirmation, :autocomplete => "off"
+      | *
+    - if !trying_to_edit_ourself
+      p
+        label.key= t("roles.label")
+        - @roles.each do |role|
+          = f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, ""
+          = f.label role.name
+    p
+      = f.label :phone, t("phone"), :class=>'key'
+      = f.text_field :phone
+    p
+      = f.label :email, t("email"), :class=>'key'
+      = f.text_field :email
+    p
+      = f.label :organisation, t("organisation"), :class=>'key'
+      = f.text_field :organisation
+      | *
+    p
+      = f.label :position, t("position"), :class=>'key'
+      = f.text_field :position
+    p
+      = f.label :location, t("location"), :class=>'key'
+      = f.text_field :location
+    - if !trying_to_edit_ourself && can?(:disable, @user)
+      p
+        = f.label :disabled, t("user.disabled"), :class=>'key'
+        = f.check_box :disabled, {}, "true", "false"
+    = f.hidden_field :verified, :value => true
+  .btn_panel
+    /! TODO: After we got the user object in the session replace the DB query with User object
+    = cancel_button(users_path)
+    = submit_button(editable_user.new_record? ? t("user.create") : (params[:verify] ? t('user.verify') : t('user.update')))

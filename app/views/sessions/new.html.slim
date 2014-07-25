@@ -1,0 +1,14 @@
+.login_page
+  = form_tag sessions_path, :class => 'default-form' do
+    = error_messages_for :session
+    .login_panel
+      h3= t("login.details")
+      p
+        = label_tag "user_name", t("login.username")
+        = text_field_tag "user_name"
+      p
+        = label_tag "password", t('login.password.label')
+        = password_field_tag "password"
+      .btn_panel
+        = submit_button t("buttons.login")
+    = link_to t("login.password.reset"), :controller => "password_recovery_requests", :action => "new"

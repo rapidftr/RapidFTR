@@ -1,0 +1,72 @@
+h1.no_border= t("users.account_details")
+.page-content-new
+  = render :partial => 'shared/side_tab', :locals => {:highlight_page => ''}
+  .side-tab-content
+    h2.float_left.no_border
+      = link_to(I18n.t("users.label"), users_path) + " > " if can?(:read, User)
+      = @user.user_name
+      - if can? :edit, User
+        = link_to '('+I18n.t("buttons.edit")+')', edit_user_path(@user), :class => 'edit_crumb'
+      - else
+        = link_to "(" + I18n.t("buttons.change_password") +")", change_password_users_path
+    = link_to content_tag(:span, t("user.user_action_history") , :class => 'log'), user_history_path(@user), :class=>'btn'
+    .clearfix
+    fieldset
+      p
+        label.key
+          = t("name")
+          | :
+        = h @user.full_name
+      p
+        label.key
+          = t("login.username")
+          | :
+        = h @user.user_name
+      p
+        label.key= t("permissions.label")
+        = @user.roles.map(&:name).join(",")
+      p
+        label.key
+          = t("contact.field.phone")
+          | :
+        = h @user.phone
+      p
+        label.key
+          = t("email")
+          | :
+        = h @user.email
+      p
+        label.key
+          = t("organisation")
+          | :
+        = h @user.organisation
+      p
+        label.key
+          = t("position")
+          | :
+        = h @user.position
+      p
+        label.key
+          = t("location")
+          | :
+        = h @user.location
+      p
+        label.key
+          = t("status")
+          | :
+        = h @user.disabled ? t("user.disabled") : t("enabled")
+      p
+        label
+          = t("devices")
+          | :
+        br/
+        - @user.devices.each do |device|
+          - if device.blacklisted?
+            span.device-blacklisted
+              = device.imei
+              | (blacklisted)
+            br/
+          - else
+            = device.imei
+            br/
+    = render :partial => "mobile_login_history", :object => @user

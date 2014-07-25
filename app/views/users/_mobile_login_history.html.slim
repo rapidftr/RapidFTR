@@ -1,0 +1,12 @@
+.device-information
+  h3= I18n.t("device.information")
+  table
+    tr
+      th= I18n.t("device.timestamp")
+      th= I18n.t("imei")
+      th= I18n.t("device.mobile_number")
+    - @user.mobile_login_history.reverse.each do |event|
+      tr
+        td= event[:timestamp].in_time_zone(@user.time_zone)
+        td= event[:imei]
+        td= event[:mobile_number]

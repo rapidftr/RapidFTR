@@ -1,0 +1,20 @@
+h1= t("users.unverified")
+.page-content-new
+  = render :partial => 'shared/side_tab', :locals => {:highlight_page => 'unverified'}
+  .side-tab-content
+    table#users.list_table
+      thead
+        thead
+          tr
+            th= t("user.full_name")
+            th= t("login.username")
+            th= t("organisation")
+            th
+        tbody
+          - @users.each do |user|
+            tr
+              td= user.full_name
+              td= user.user_name
+              td= user.organisation
+              td= link_to t("user.verify"), edit_user_path(user,  verify=true )
+

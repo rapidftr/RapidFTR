@@ -1,0 +1,11 @@
+tr
+  th= t("user.full_name")
+  th= t("login.username")
+  - if can?(:disable, User)
+    th= t("user.disabled")
+  - if can? :show, User
+    th
+  - if can? :edit, User
+    th
+  - if can? :destroy, User
+    th

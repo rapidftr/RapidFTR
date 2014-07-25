@@ -1,0 +1,17 @@
+fieldset
+  h3 Devices
+  table.devices
+    thead
+      tr
+        th IMEI
+        th Blacklisted?
+    tbody
+      - devices.each do |device|
+        tr id="device-imei-#{device.imei}" 
+          td
+            = device.imei
+          td
+            = hidden_field_tag "user[devices][][imei]", device.imei
+            = hidden_field_tag "user[devices][][user_name]", device.user_name
+            = check_box_tag "user[devices][][blacklisted]", true, device.blacklisted?, :class => "blacklisted-checkbox-#{device.imei}"
+

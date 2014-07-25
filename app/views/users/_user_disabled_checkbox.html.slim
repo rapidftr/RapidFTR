@@ -1,0 +1,6 @@
+- if current_user_name != user.user_name
+  | <input type="checkbox" class="user-disabled-status"
+  | #{user.disabled ? "checked='checked'" : ""}
+
+- else
+  = h t("enabled")

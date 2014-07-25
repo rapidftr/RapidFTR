@@ -1,8 +1,0 @@
-<h1 class="no_border"><%= t("users.label") %></h1>
-<div class="page-content-new">
-  <%= render :partial => 'shared/side_tab', :locals => {:highlight_page => 'users'} %>
-  <div class="side-tab-content">
-    <h2><%= link_to t("users.label"), users_path %>&gt; <%= t("users.create") %></h2>
-    <%= render :partial => "editable_user", :object => @user %>
-  </div>
-</div>
