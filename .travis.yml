@@ -15,7 +15,6 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr]"
   - "bundle exec rake sunspot:solr:start"
-  - "RAILS_ENV=cucumber bundle exec rake assets:precompile"
 script:
   - "RAILS_ENV=test bundle exec rake quality:all spec"
   - "RAILS_ENV=cucumber bundle exec rake cucumber:all"
