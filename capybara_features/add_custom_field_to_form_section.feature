@@ -96,6 +96,16 @@ Feature: So that admin can customize fields in a form section
 
     Then I should see "Radio button name"
 
+  @javascript
+  Scenario: Should be able to add two fields with the same name in a form section
+    Given I am on the form section page
+    And I am on the edit form section page for "family_details"
+
+    When I add a new text field with "My field" and "Description"
+    And I add a new text field with "My field" and "Description 2"
+
+    Then I should see "Field successfully added"
+
   # modal dialogue
   @javascript
   @wip
