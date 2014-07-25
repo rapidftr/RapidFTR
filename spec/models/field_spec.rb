@@ -78,7 +78,6 @@ describe "Child record field view model", :type => :model do
 
       field.valid?
       expect(field.errors[:name]).to eq(["Field already exists on this form"])
-      expect(field.errors[:display_name]).to eq(["Field already exists on this form"])
     end
 
     it "should validate radio button has at least 2 options" do

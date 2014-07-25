@@ -121,6 +121,37 @@ describe ChildSearch, solr: true do
   end
 
   describe 'fulltext' do
+    
+    it 'should return words with accented characters when searching for normal english words' do
+      Sunspot.setup(Child) do
+        text :name
+      end
+
+      child1 = create :child, :name => "Céçillé"
+      child2 = create :child, :name => "Cecille"
+      
+      results = ChildSearch.new.fulltext_by(["name"], "Cecille").results
+
+      expect(results.count).to eq(2)
+      expect(results).to include(child1)
+      expect(results).to include(child2)
+    end
+
+    it 'should return normal english words when searching for words with accented characters' do
+      Sunspot.setup(Child) do
+        text :name
+      end
+
+      child1 = create :child, :name => "Céçillé"
+      child2 = create :child, :name => "Cecille"
+      
+      results = ChildSearch.new.fulltext_by(["name"], "Céçillé").results
+
+      expect(results.count).to eq(2)
+      expect(results).to include(child1)
+      expect(results).to include(child2)
+    end
+
   end
 
   describe 'less_than' do

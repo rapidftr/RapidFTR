@@ -36,7 +36,6 @@ class Field
 
   validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
   validate :validate_unique_name
-  validate :validate_unique_display_name
   validate :validate_has_2_options
   validate :validate_has_a_option
   validate :validate_name_format
@@ -166,29 +165,11 @@ class Field
   end
 
   def validate_unique_name
-    #Does not make sense use new? for validity ?
-    #it is perfectly valid FormSection.new(...) then add several field then save and
-    #the validation should work rejecting the duplicate fields.
-    #Also with new? still possible duplicate things for example change the
-    #name/display_name for existing fields.
-    #What we really need is avoid check the field with itself.
-    #return true unless new? && form
-    return true unless form
-    #return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.name == name})
+    return unless form
     return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
     other_form = FormSection.get_form_containing_field name
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
     true
   end
-
-  def validate_unique_display_name
-    #See comment at validate_unique_name.
-    #return true unless new? && form
-    return true unless form
-    #return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.new? && field.display_name == display_name})
-    return errors.add(:display_name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.display_name == display_name})
-    true
-  end
-
 
 end
