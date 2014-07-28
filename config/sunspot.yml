@@ -20,9 +20,11 @@ development:
 test:
   solr:
     <<: *base
+    log_level: OFF
     path: /solr/test
 
 cucumber:
   solr:
     <<: *base
+    log_level: OFF
     path: /solr/cucumber
