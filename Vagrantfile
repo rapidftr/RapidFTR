@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = "11.12.8"
 
   config.vm.define 'dev', primary: true do |dev|
-    dev.vm.box = 'hashicorp/precise32'
+    dev.vm.box = 'ubuntu/trusty64'
     dev.vm.network 'forwarded_port', guest: 3000, host: 3000
     dev.vm.network 'forwarded_port', guest: 5984, host: 5984
     dev.vm.network 'forwarded_port', guest: 8983, host: 8983
