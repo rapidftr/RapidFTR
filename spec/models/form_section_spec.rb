@@ -282,6 +282,7 @@ describe FormSection, :type => :model do
   end
 
   describe "valid?" do
+    before { FormSection.all.each &:destroy }
     it "should validate name is filled in" do
       form_section = FormSection.new()
       expect(form_section).not_to be_valid
@@ -323,6 +324,19 @@ describe FormSection, :type => :model do
       expect(form_section).not_to be_valid
       expect(form_section.errors[:name]).to be_present
       expect(form_section.errors[:unique_id]).to be_present
+    end
+
+    it "should validate name is unique only within parent form" do
+      same_name = 'Same Name'
+      form = build :form
+      other_form = build :form
+      valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :visible => true, :order => 0, :form => form}
+      FormSection.create! valid_attributes.dup
+
+      valid_attributes[:form] = other_form
+      valid_attributes[:unique_id] = "some_other_id"
+      form_section = FormSection.new valid_attributes
+      expect(form_section).to be_valid
     end
 
     it "should not occur error  about the name is not unique  when the name is not filled in" do
