@@ -149,7 +149,7 @@ class Field
   private
 
   def create_unique_id
-    self.name = UUIDTools::UUID.timestamp_create.to_s.split('-').first if self.name.nil?
+    self.name = UUIDTools::UUID.random_create.to_s.split('-').first if self.name.nil?
   end
 
   def validate_has_2_options

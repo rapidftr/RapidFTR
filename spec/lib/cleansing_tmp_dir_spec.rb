@@ -26,7 +26,7 @@ describe CleansingTmpDir do
 
   it 'should generate temporary file name' do
     CleansingTmpDir.stub :dir => 'test_dir'
-    UUIDTools::UUID.stub :timestamp_create => 'test_filename'
+    UUIDTools::UUID.stub :random_create => 'test_filename'
     expect(CleansingTmpDir.temp_file_name).to eq('test_dir/test_filename')
   end
 end
