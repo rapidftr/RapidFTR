@@ -35,7 +35,7 @@ class ExportGenerator
   end
 
   def to_csv
-    fields = metadata_fields([], CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields
+    fields = metadata_fields([], CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields_for_form(Child::FORM_NAME)
     field_names = fields.map { |field| field.display_name }
     csv_data = CSV.generate do |rows|
       rows << field_names + CHILD_STATUS + metadata_fields([], CHILD_METADATA).map { |field| field.display_name }

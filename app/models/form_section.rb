@@ -71,7 +71,7 @@ class FormSection < CouchRest::Model::Base
     end
 
     def enabled_by_order_for_form form_name
-      by_order.select { |fs| fs.visible? && fs.form.name == form_name }
+      by_order.select { |fs| fs.visible? && fs.form.name == form_name } || []
     end
 
     def all_form_sections_for form_name
@@ -82,8 +82,8 @@ class FormSection < CouchRest::Model::Base
       all_child_fields.map { |field| field["name"] }
     end
 
-    def all_visible_child_fields
-      enabled_by_order.map do |form_section|
+    def all_visible_child_fields_for_form form_name
+      enabled_by_order_for_form(form_name).map do |form_section|
         form_section.fields.find_all(&:visible)
       end.flatten
     end
