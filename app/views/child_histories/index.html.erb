@@ -2,7 +2,7 @@
   <ul class="history-details">
     <% @child.ordered_histories.each do |history| %>
       <% history['changes'].each_pair do |field, change| %>
-        <% history_entry = history_entry_for(history, field, change) %>
+        <% history_entry = history_entry_for_chidlren_field (history, field, change) %>
         <% unless history_entry.empty? %>
           <li>
             <div>
