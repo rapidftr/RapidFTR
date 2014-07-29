@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
-gem 'rapidftr_addon', :git => 'https://github.com/rapidftr/rapidftr-addon.git', :branch => 'master'
-gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-cpims.git', :branch => 'master'
+gem 'rapidftr_addon', git: 'https://github.com/rapidftr/rapidftr-addon.git', branch: 'master'
+gem 'rapidftr_addon_cpims', git: 'https://github.com/rapidftr/rapidftr-addon-cpims.git', branch: 'master'
 
 gem 'rails',           '4.0.3'
 gem 'couchrest_model', '~> 2.0.1'
@@ -20,11 +20,11 @@ gem 'cancancan',       '~> 1.7'
 gem 'highline',        '~> 1.6.16'
 gem 'will_paginate',   '~> 3.0.5'
 gem 'os',              '~> 0.9.6'
-gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
+gem 'zipruby-compat', require: 'zipruby', git: "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", tag: "v0.3.7"
 
-gem 'rufus-scheduler',  '~> 2.0.18', :require => false
-gem 'daemons',          '~> 1.1.9',  :require => false
-gem 'progress_bar',     '~> 1.0.2',  :require => false
+gem 'rufus-scheduler',  '~> 3.0.8', require: false
+gem 'daemons',          '~> 1.1.9', require: false
+gem 'progress_bar',     '~> 1.0.2', require: false
 
 gem 'sass-rails',    '~> 4.0.1'
 gem 'uglifier',      '~> 2.0.1'
@@ -47,7 +47,7 @@ group :test, :cucumber do
 
   gem 'capybara',           '~> 2.3'
   gem 'cucumber',           '~> 1.3.11'
-  gem 'cucumber-rails',     '~> 1.4.0', :require => false
+  gem 'cucumber-rails',     '~> 1.4.0', require: false
   gem 'selenium-webdriver', '~> 2.42.0'
   gem 'hpricot',            '~> 0.8.6'
   gem 'json_spec',          '~> 1.1.2'
