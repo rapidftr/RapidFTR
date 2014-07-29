@@ -36,7 +36,6 @@ gem 'rails-assets-select2', '~> 3.5.0'
 
 group :development do
   gem 'better_errors',     '~> 1.1.0'
-  gem 'binding_of_caller', '~> 0.7.2'
 end
 
 group :test, :cucumber do
