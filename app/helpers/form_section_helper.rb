@@ -3,8 +3,8 @@ module FormSectionHelper
     FormSection.sorted_highlighted_fields
   end
 
-  def forms_for_display
-    FormSection.all.sort_by{ |form| form.name || "" }.map{ |form| [form.name, form.unique_id] }
+  def form_sections_for_display form
+    FormSection.all_form_sections_for(form.name).sort_by{ |form_section| form_section.name || "" }.map{ |form_section| [form_section.name, form_section.unique_id] }
   end
 
   def url_for_form_section_field(form_section_id, field)

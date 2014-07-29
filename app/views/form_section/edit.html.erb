@@ -56,7 +56,7 @@
                           <input type='hidden' name='id' value='<%= field.name %>' style="display:none;"/>
                           <input type='hidden' class="destination_form_id" name='destination_form_id' style="display:none;"/>
                         <% end %>
-                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(forms_for_display, @form_section.unique_id), :class => "field_location"%>
+                        <%= select_tag "#{field.name}_destination_form_id", options_for_select(form_sections_for_display(@form), @form_section.unique_id), :class => "field_location"%>
                       </div>
                   <% end %>
                 </td>

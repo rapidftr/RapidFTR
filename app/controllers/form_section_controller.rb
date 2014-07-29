@@ -4,12 +4,7 @@ class FormSectionController < ApplicationController
     authorize! :index, FormSection
     @page_name = t("form_section.manage")
     @form_id = params[:form_id]
-    #TODO #55 Get rid of this conditional
-    if params[:form_id]
-      @form_sections = FormSection.all.select { |f| f.form_id == @form_id }.sort_by(&:order)
-    else
-      @form_sections = FormSection.all.sort_by(&:order)
-    end
+    @form_sections = FormSection.all.select { |f| f.form_id == @form_id }.sort_by(&:order)
   end
 
   def create

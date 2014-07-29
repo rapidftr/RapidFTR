@@ -74,6 +74,10 @@ class FormSection < CouchRest::Model::Base
       by_order.select { |fs| fs.visible? && fs.form.name == form_name }
     end
 
+    def all_form_sections_for form_name
+      all.select { |fs| fs.form.name == form_name }
+    end
+
     def all_child_field_names
       all_child_fields.map { |field| field["name"] }
     end
