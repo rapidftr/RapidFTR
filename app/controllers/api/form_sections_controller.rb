@@ -11,4 +11,8 @@ class Api::FormSectionsController < Api::ApiController
     render json: forms_json
   end
 
+  def children
+    form_sections = FormSection.enabled_by_order_for_form(Child::FORM_NAME)
+    render json: form_sections
+  end
 end

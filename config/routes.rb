@@ -107,7 +107,7 @@ RapidFTR::Application.routes.draw do
   end
 
   # Backwards compatibility with 1.2
-  match '/published_form_sections', :to => 'api/form_sections#index', :via => [:post, :get, :put, :delete]
+  match '/published_form_sections', :to => 'api/form_sections#children', :via => [:post, :get, :put, :delete]
 
 #######################
 # FORM SECTION URLS

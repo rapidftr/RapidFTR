@@ -7,8 +7,11 @@ class CustomFieldsValidator
   end
 
   def retrieve_field_definitions(target, form)
-    return target.field_definitions_for(form.name) if (target.respond_to? :field_definitions_for) && !target.field_definitions_for(form.name).nil?
-    return FormSection.all_visible_child_fields_for_form form.name
+    if !form.nil? && form.respond_to?(:name) && !form.name.nil?
+      return target.field_definitions_for(form.name) if (target.respond_to? :field_definitions_for) && !target.field_definitions_for(form.name).nil?
+      return FormSection.all_visible_child_fields_for_form form.name
+    end
+    return []
   end
 
   def validate_fields(fields, target)

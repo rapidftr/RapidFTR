@@ -32,7 +32,7 @@ describe 'Form Section routing', :type => :routing do
   end
 
   it "redirects /published_form_sections to the new API controller" do
-    expect({ :get => '/published_form_sections' }).to route_to(:controller => 'api/form_sections', :action => 'index')
-    expect({ :get => '/published_form_sections.json' }).to route_to(:controller => 'api/form_sections', :action => 'index', :format => 'json')
+    expect({ :get => '/published_form_sections' }).to route_to(:controller => 'api/form_sections', :action => 'children')
+    expect({ :get => '/published_form_sections.json' }).to route_to(:controller => 'api/form_sections', :action => 'children', :format => 'json')
   end
 end

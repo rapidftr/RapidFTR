@@ -146,6 +146,9 @@ describe Child, :type => :model do
   end
 
   describe "validation" do
+    before :each do
+      create :form, :name => Child::FORM_NAME
+    end
     context "child with only a photo registered" do
       before :each do
         allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
