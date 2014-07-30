@@ -238,6 +238,7 @@ describe Api::EnquiriesController, :type => :controller do
           build(:text_field, name: 'location'),
           build(:text_field, name: 'sex'),
       ]
+
       Child.reindex!
 
       allow(controller).to receive(:authorize!)
@@ -247,13 +248,11 @@ describe Api::EnquiriesController, :type => :controller do
       enquiry_json = "{\"enquirer_name\": \"Godwin\",\"criteria\": {\"sex\": \"male\",\"age\": \"10\",\"location\": \"Kampala\"  }}"
       enquiry = Enquiry.new(JSON.parse(enquiry_json))
       enquiry.save!
-
       expect(Enquiry.get(enquiry.id)['potential_matches']).to include(*[child2.id])
 
       updated_enquiry = "{\"criteria\": {\"name\": \"aquiles\", \"age\": \"10\", \"location\": \"Kampala\"}}"
 
       put :update, :id => enquiry.id, :enquiry => updated_enquiry
-
       expect(response.response_code).to eq(200)
 
       enquiry_after_update = Enquiry.get(enquiry.id)
