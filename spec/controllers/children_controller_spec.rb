@@ -270,11 +270,13 @@ describe ChildrenController, :type => :controller do
       end
 
       it "should assign form fields for order by drop down" do
-        field = build :field
-        form = create :form_section, fields: [field]
         fake_field_worker_login
+        field = build :field
+        form_section = build :form_section, fields: [field]
+        expect(FormSection).to receive(:enabled_by_order_for_form).and_return([form_section])
+
         get :index
-        expect(assigns[:forms]).to include(form)
+        expect(assigns[:form_sections]).to include(form_section)
       end
 
       it "should use the ascending sort order param" do
@@ -340,7 +342,7 @@ describe ChildrenController, :type => :controller do
 
     it "orders and assigns the forms" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
-      expect(FormSection).to receive(:enabled_by_order).and_return([:the_form_sections])
+      expect(FormSection).to receive(:enabled_by_order_for_form).and_return([:the_form_sections])
       get :show, :id => "37"
       expect(assigns[:form_sections]).to eq([:the_form_sections])
     end
@@ -373,7 +375,7 @@ describe ChildrenController, :type => :controller do
 
     it "orders and assigns the forms" do
       allow(Child).to receive(:new).and_return(mock_child)
-      expect(FormSection).to receive(:enabled_by_order).and_return([:the_form_sections])
+      expect(FormSection).to receive(:enabled_by_order_for_form).and_return([:the_form_sections])
       get :new
       expect(assigns[:form_sections]).to eq([:the_form_sections])
     end
@@ -385,14 +387,14 @@ describe ChildrenController, :type => :controller do
     end
     it "assigns the requested child as @child" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
-      expect(FormSection).to receive(:enabled_by_order)
+      expect(FormSection).to receive(:enabled_by_order_for_form)
       get :edit, :id => "37"
       expect(assigns[:child]).to equal(mock_child)
     end
 
     it "orders and assigns the forms" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
-      expect(FormSection).to receive(:enabled_by_order).and_return([:the_form_sections])
+      expect(FormSection).to receive(:enabled_by_order_for_form).and_return([:the_form_sections])
       get :edit, :id => "37"
       expect(assigns[:form_sections]).to eq([:the_form_sections])
     end

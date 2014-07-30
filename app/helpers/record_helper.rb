@@ -67,8 +67,8 @@ module RecordHelper
     self.audio = new_audio
   end
 
-  def field_definitions
-    @field_definitions ||= FormSection.all_visible_child_fields
+  def field_definitions_for form_name
+    @field_definitions ||= FormSection.all_visible_child_fields_for_form(form_name)
   end
 
   protected
@@ -87,7 +87,7 @@ module RecordHelper
   end
 
   def field_name_changes
-    field_names = field_definitions.map { |f| f.name }
+    field_names = field_definitions_for(form_name).map { |f| f.name }
     other_fields = [
         "flag", "flag_message",
         "reunited", "reunited_message",

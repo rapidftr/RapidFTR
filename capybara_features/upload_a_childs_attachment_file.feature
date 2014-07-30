@@ -96,7 +96,7 @@ Feature:
   Scenario: Photos and Audio field should always be visible
     Given I logout as "bob"
     And I am logged in as an admin
-    When I am on the form section page
+    When I am on the form sections page for "Children"
     Then the form section "Photos and Audio" should be listed as visible
 
     When I select the form section "photos_and_audio" to toggle visibility

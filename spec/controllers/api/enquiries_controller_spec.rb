@@ -231,12 +231,16 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it "should update existing enquiry with potential matches", solr: true do
-      Sunspot.setup(Child) do
-        text :sex
-        text :age
-        text :location
-        text :name
-      end
+      reset_couchdb!
+      create :form_section, fields: [
+          build(:text_field, name: 'name'),
+          build(:text_field, name: 'age'),
+          build(:text_field, name: 'location'),
+          build(:text_field, name: 'sex'),
+      ]
+
+      Child.reindex!
+
       allow(controller).to receive(:authorize!)
       child1 = Child.create('name' => "Clayton aquiles", 'created_by' => 'fakeadmin', 'created_organisation' => "stc")
       child2 = Child.create('name' => "Steven aquiles", 'sex' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => "stc")
@@ -244,13 +248,11 @@ describe Api::EnquiriesController, :type => :controller do
       enquiry_json = "{\"enquirer_name\": \"Godwin\",\"criteria\": {\"sex\": \"male\",\"age\": \"10\",\"location\": \"Kampala\"  }}"
       enquiry = Enquiry.new(JSON.parse(enquiry_json))
       enquiry.save!
-
-      expect(Enquiry.get(enquiry.id)['potential_matches']).to eq([child2.id])
+      expect(Enquiry.get(enquiry.id)['potential_matches']).to include(*[child2.id])
 
       updated_enquiry = "{\"criteria\": {\"name\": \"aquiles\", \"age\": \"10\", \"location\": \"Kampala\"}}"
 
       put :update, :id => enquiry.id, :enquiry => updated_enquiry
-
       expect(response.response_code).to eq(200)
 
       enquiry_after_update = Enquiry.get(enquiry.id)

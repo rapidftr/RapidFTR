@@ -39,6 +39,8 @@ class Child < CouchRest::Model::Base
   validate :validate_has_at_least_one_field_value
   validate :validate_last_updated_at
 
+  FORM_NAME = "Children"
+
   def initialize *args
     self['photo_keys'] ||= []
     arguments = args.first
@@ -157,8 +159,16 @@ class Child < CouchRest::Model::Base
       ids_and_revs
   end
 
+  def form
+    return Form.find_by_name(form_name)
+  end
+
+  def form_name
+    Child::FORM_NAME
+  end
+
   def validate_has_at_least_one_field_value
-      return true if field_definitions.any? { |field| is_filled_in?(field) }
+      return true if field_definitions_for(Child::FORM_NAME).any? { |field| is_filled_in?(field) }
       return true if !@file_name.nil? || !@audio_file_name.nil?
       return true if unknown_fields && unknown_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
       errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
@@ -269,7 +279,7 @@ class Child < CouchRest::Model::Base
                        "histories",
                        "unique_identifier",
                        "created_organisation"]
-      existing_fields = system_fields + field_definitions.map { |x| x.name }
+      existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
       self.reject { |k, v| existing_fields.include? k }
   end
 

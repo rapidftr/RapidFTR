@@ -4,7 +4,7 @@ Feature: Editing Custom Form Fields
   
 
   Background:
-    Given the following form sections exist in the system:
+    Given the following form sections exist in the system on the "Children" form:
       | name | unique_id | editable | order | visible |
       | Basic details | basic_details | false | 1 | true |
       | Family details | family_details | true | 2 | true |

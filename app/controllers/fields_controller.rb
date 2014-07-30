@@ -2,11 +2,16 @@ class FieldsController < ApplicationController
 
   before_filter { authorize! :manage, Field }
   before_filter :read_form_section
+  before_filter :set_form
 
   FIELD_TYPES = %w{ text_field textarea check_box select_box radio_button numeric_field date_field }
 
   def read_form_section
     @form_section = FormSection.get_by_unique_id(params[:form_section_id])
+  end
+
+  def set_form
+    @form = @form_section.form
   end
 
   def create
@@ -43,16 +48,16 @@ class FieldsController < ApplicationController
     @field = fetch_field params[:id]
     @field.attributes = params[:field] unless params[:field].nil?
     @form_section.save
+    @show_add_field = {:show_add_field => true}
     if (@field.errors.length == 0)
       flash[:notice] = t("fields.updated")
       message = {"status" => "ok"}
       if (request.xhr?)
         render :json => message
       else
-        render :template => "form_section/edit"
+        render :template => "form_section/edit", :locals => @show_add_field
       end
     else
-      @show_add_field = {:show_add_field => true}
       render :template => "form_section/edit",  :locals => @show_add_field
     end
   end

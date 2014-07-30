@@ -92,9 +92,6 @@ module NavigationHelpers
       when /child advanced search results page/
         advanced_search_index_path(options)
 
-      when /create form section page/
-        new_form_section_path(options)
-
       when /edit form section page for "(.+)"$/
         edit_form_section_path(:id => $1)
 
@@ -153,12 +150,14 @@ module NavigationHelpers
       when /replications page/
         replications_path
 
-      when /create form page/
-        new_form_section_path
-
       when /reports page/
         reports_path
 
+      when /forms page/
+        forms_path
+
+      when /the form sections page for "(.*)"/
+          form_form_sections_path(Form.by_name.key($1).first)
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

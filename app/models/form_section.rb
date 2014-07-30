@@ -12,7 +12,7 @@ class FormSection < CouchRest::Model::Base
   property :perm_visible, TrueClass, :default => false
   property :perm_enabled, TrueClass
   property :validations, [String]
-  property :base_language, :default=>'en'
+  property :base_language, :default => 'en'
 
   design do
     view :by_unique_id
@@ -29,6 +29,8 @@ class FormSection < CouchRest::Model::Base
 
   after_create :update_child_indices
   after_update :update_child_indices
+
+  belongs_to :form
 
   def update_child_indices
     Child.update_solr_indices
@@ -68,12 +70,20 @@ class FormSection < CouchRest::Model::Base
       by_order.select(&:visible?)
     end
 
+    def enabled_by_order_for_form form_name
+      by_order.select { |fs| fs.visible? && fs.form.name == form_name } || []
+    end
+
+    def all_form_sections_for form_name
+      all.select { |fs| fs.form.name == form_name }
+    end
+
     def all_child_field_names
       all_child_fields.map { |field| field["name"] }
     end
 
-    def all_visible_child_fields
-      enabled_by_order.map do |form_section|
+    def all_visible_child_fields_for_form form_name
+      enabled_by_order_for_form(form_name).map do |form_section|
         form_section.fields.find_all(&:visible)
       end.flatten
     end
@@ -255,8 +265,8 @@ class FormSection < CouchRest::Model::Base
   end
 
   def validate_unique_name
-  unique = FormSection.all.all? { |f| id == f.id || name == nil || name.empty? || name!= f.name }
-  unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
+    unique = FormSection.all.select {|fs| fs.form == form } .all? { |fs| id == fs.id || name == nil || name.empty? || name!= fs.name }
+    unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
   end
 
   def create_unique_id

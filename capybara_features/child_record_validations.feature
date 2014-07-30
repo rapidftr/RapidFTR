@@ -12,7 +12,7 @@ Scenario: Should be restricted to 200 characters in a text field
   And there should be 0 child records in the database
 
 Scenario: Should be restricted to 400,000 characters in a text area
-	Given the following form sections exist in the system:
+	Given the following form sections exist in the system on the "Children" form:
       | name | unique_id | editable | order |
       | Basic details | basic_details | true | 1 |
 	Given the following fields exists on "basic_details":

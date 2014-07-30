@@ -345,6 +345,7 @@ en:
       "View and Download Reports": "View and Download Reports"
   forms:
     label: "Forms"
+    manage: "Manage Forms"
     save: "Save Form"
     save_details: "Save Details"
     messages:

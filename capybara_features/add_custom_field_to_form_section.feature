@@ -2,7 +2,7 @@
 Feature: So that admin can customize fields in a form section
 
   Background:
-    Given the following form sections exist in the system:
+    Given the following form sections exist in the system on the "Children" form:
       | name           | unique_id      | editable | order | visible | perm_enabled |
       | Basic details  | basic_details  | false    | 1     | true    | true         |
       | Family details | family_details | true     | 2     | true    | false        |
@@ -98,23 +98,21 @@ Feature: So that admin can customize fields in a form section
 
   @javascript
   Scenario: Should be able to add two fields with the same name in a form section
-    Given I am on the form section page
+    Given I am on the form sections page for "Children"
     And I am on the edit form section page for "family_details"
-
     When I add a new text field with "My field" and "Description"
     And I add a new text field with "My field" and "Description 2"
-
     Then I should see "Field successfully added"
 
   # modal dialogue
   @javascript
   @wip
   Scenario: Should provide navigation links
-    Given I am on the form section page
+    Given I am on the form sections page for "Children"
     And I am on the edit form section page for "family_details"
 
     And I follow "Cancel"
-    Then I am on the form section page
+    Then I am on the form sections page for "Children"
 
 
   @javascript

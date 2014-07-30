@@ -110,6 +110,7 @@ FactoryGirl.define do
     visible true
     editable true
     order { counter }
+    form
 
     initialize_with { new(attributes) }
   end
@@ -161,5 +162,12 @@ FactoryGirl.define do
     factory :audio_field do
       type { Field::AUDIO_UPLOAD_BOX }
     end
+  end
+
+  factory :form do
+    ignore do
+      sequence(:counter, 1000000)
+    end
+    name { "name_#{counter}" }
   end
 end

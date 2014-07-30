@@ -18,13 +18,13 @@ describe 'Form Section routing', :type => :routing do
   end
 
   it 'has route for form sections index page' do
-    expect({:get => '/form_section'}).to route_to(:controller => 'form_section', :action=>'index')
-    expect(form_sections_path).to eq('/form_section')
+    expect({:get => 'forms/foo/form_section'}).to route_to(:controller => 'form_section', :action=>'index', :form_id => 'foo')
+    expect(form_form_sections_path('foo')).to eq('/forms/foo/form_section')
   end
 
   it 'has route for form sections new page' do
-    expect({:get => '/form_section/new'}).to route_to(:controller => 'form_section', :action=>'new')
-    expect(new_form_section_path).to eq('/form_section/new')
+    expect({:get => 'forms/foo/form_section/new'}).to route_to(:controller => 'form_section', :action=>'new', :form_id => 'foo')
+    expect(new_form_form_section_path('foo')).to eq('/forms/foo/form_section/new')
   end
 
   it "has route for update field page" do
@@ -32,7 +32,7 @@ describe 'Form Section routing', :type => :routing do
   end
 
   it "redirects /published_form_sections to the new API controller" do
-    expect({ :get => '/published_form_sections' }).to route_to(:controller => 'api/form_sections', :action => 'index')
-    expect({ :get => '/published_form_sections.json' }).to route_to(:controller => 'api/form_sections', :action => 'index', :format => 'json')
+    expect({ :get => '/published_form_sections' }).to route_to(:controller => 'api/form_sections', :action => 'children')
+    expect({ :get => '/published_form_sections.json' }).to route_to(:controller => 'api/form_sections', :action => 'children', :format => 'json')
   end
 end

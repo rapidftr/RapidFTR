@@ -1,0 +1,15 @@
+<h1><%= t("forms.label") %></h1>
+<table class="highlight-fields list_table">
+  <thead>
+  <tr>
+    <th><%= t("fields.form_name") %></th>
+  </tr>
+  </thead>
+  <tbody id="highlighted-fields">
+  <% @form_sections.each do |f| %>
+      <tr class="add-field-section">
+        <td><%= link_to "#{f.name}", form_form_sections_path(f) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -16,13 +16,26 @@ When /^I attach the following photos:$/ do |table|
   end
 end
 
-Given /^the following form sections exist in the system:$/ do |form_sections_table|
-  FormSection.all.each {|u| u.destroy }
+Given /^the following forms exist in the system:$/ do |forms_table|
+  Form.all.each {|u| u.destroy }
 
+  forms_table.hashes.each do |form_hash|
+    form_hash.reverse_merge!('unique_id'=> form_hash['name'].gsub(/\s/, '_').downcase)
+    form = Form.new(form_hash)
+    form.save!
+  end
+end
+
+Given /^the following form sections exist in the system on the "(.*)" form:$/ do |form_name, form_sections_table|
+  FormSection.all.each {|u| u.destroy }
+  Form.all.each {|f| f.destroy }
+
+  form = Form.create(name: form_name)
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id'=> form_section_hash['name'].gsub(/\s/, '_').downcase,
-      'fields'=> Array.new
+      'fields'=> Array.new,
+      'form' => form
     )
 
     form_section_hash['order'] = form_section_hash['order'].to_i

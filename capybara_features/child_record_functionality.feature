@@ -211,7 +211,7 @@ Feature:
     Then I should see "Child record successfully created."
 
   Scenario: create child with numeric custom field
-    Given the following form sections exist in the system:
+    Given the following form sections exist in the system on the "Children" form:
       | name          | unique_id     | editable  | order | visible |
       | Basic details | basic_details | true     | 1     | true    |
     And the "basic_details" form section has the field "Height" with field type "numeric_field"

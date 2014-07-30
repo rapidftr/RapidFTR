@@ -7,7 +7,7 @@ Feature: View Child Record Toolbar
 
   Background:
     Given I am logged in as a user with "Register Child,Edit Child,View And Search Child,Export to Photowall/CSV/PDF" permission
-    And someone has entered a child with the name "Fred"
+    Given someone has entered a child with the name "Fred"
     When I am on the child record page for "Fred"
 
   Scenario: Top and bottom toolbar sections contain the expected links

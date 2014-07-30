@@ -1,13 +1,17 @@
 class CustomFieldsValidator
   def initialize(target, options)
-    fields = retrieve_field_definitions(target)
+    form = target.form
+    fields = retrieve_field_definitions(target, form)
     validated_fields = fields.select { |field| field.type == options[:type] }
     validate_fields(validated_fields, target)
   end
 
-  def retrieve_field_definitions(target)
-    return target.field_definitions if (target.respond_to? :field_definitions) && !target.field_definitions.nil?
-    return FormSection.all_enabled_child_fields
+  def retrieve_field_definitions(target, form)
+    if !form.nil? && form.respond_to?(:name) && !form.name.nil?
+      return target.field_definitions_for(form.name) if (target.respond_to? :field_definitions_for) && !target.field_definitions_for(form.name).nil?
+      return FormSection.all_visible_child_fields_for_form form.name
+    end
+    return []
   end
 
   def validate_fields(fields, target)

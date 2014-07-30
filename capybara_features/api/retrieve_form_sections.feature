@@ -10,8 +10,10 @@ Feature:
 
   Scenario: A logged in API user should be able to retrieve all published form sections
     When I send a GET request to "/api/form_sections"
-    Then the JSON should be an array
-    Then the JSON at "0" should have the following:
+    Then the JSON response should have "Enquiries"
+    And the JSON response should have "Children"
+    And the JSON at "Children" should be an array
+    And the JSON at "Children/0" should have the following:
       | order        | 1                |
       | editable     | true             |
       | visible      | true             |

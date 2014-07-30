@@ -146,6 +146,9 @@ describe Child, :type => :model do
   end
 
   describe "validation" do
+    before :each do
+      create :form, :name => Child::FORM_NAME
+    end
     context "child with only a photo registered" do
       before :each do
         allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
@@ -182,7 +185,7 @@ describe Child, :type => :model do
       fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"})]
       child = Child.new
       child[:height] = "very tall"
-      allow(FormSection).to receive(:all_visible_child_fields).and_return(fields)
+      allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
 
       expect(child).not_to be_valid
       expect(child.errors[:height]).to eq(["height must be a valid number"])
@@ -194,7 +197,7 @@ describe Child, :type => :model do
         child = Child.new
         child[:height] = "very tall"
         child[:new_age] = "very old"
-        allow(FormSection).to receive(:all_visible_child_fields).and_return(fields)
+        allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
 
         expect(child).not_to be_valid
         expect(child.errors[:height]).to eq(["height must be a valid number"])
@@ -202,7 +205,7 @@ describe Child, :type => :model do
     end
 
     it "should disallow text field values to be more than 200 chars" do
-      FormSection.stub(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
                          Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
                         child = Child.new :name => ('a' * 201)
@@ -211,7 +214,7 @@ describe Child, :type => :model do
     end
 
     it "should disallow text area values to be more than 400,000 chars" do
-      FormSection.stub(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
                         child = Child.new :a_textfield => ('a' * 400_001)
                         expect(child).not_to be_valid
@@ -219,21 +222,21 @@ describe Child, :type => :model do
     end
 
     it "should allow text area values to be 400,000 chars" do
-      FormSection.stub(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
                         child = Child.new :a_textfield => ('a' * 400_000)
                         expect(child).to be_valid
     end
 
     it "should allow date fields formatted as dd M yy" do
-      FormSection.stub(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
                         child = Child.new :a_datefield => ('27 Feb 2010')
                         expect(child).to be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
-      FormSection.stub(:all_visible_child_fields =>
+      FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
                         expect(Child.new(:height => "10.2")).to be_valid
     end
@@ -429,6 +432,14 @@ describe Child, :type => :model do
         child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => '2010-01-14 14:05:00UTC')
         expect(child['created_at']).to eq("2010-01-14 14:05:00UTC")
       end
+    end
+
+  end
+
+  describe ".form" do
+    it "should return any form named Children" do
+      form = create :form, name: "Children"
+      expect(Child.new.form).to eq(form)
     end
   end
 
@@ -670,7 +681,7 @@ describe Child, :type => :model do
         build(:photo_field, name: 'current_photo_key'),
         build(:audio_field, name: 'recorded_audio')
       ]
-      allow(FormSection).to receive(:all_visible_child_fields).and_return(fields)
+      allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
       mock_user = double({:organisation => 'UNICEF'})
       allow(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
     end

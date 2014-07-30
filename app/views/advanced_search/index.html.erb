@@ -11,7 +11,7 @@
       <div class='box-shadow content'>
 
         <% @all_fields = [] %>
-        <% @forms.each do |form| %>
+        <% @form_sections.each do |form| %>
             <ul id="<%= form.unique_id %>_form_fields" class="fields">
 
               <% form.all_searchable_fields.each do |field| %>
@@ -31,7 +31,7 @@
         <% end %>
 
         <ul class='forms'>
-          <% @forms.each do |form| %>
+          <% @form_sections.each do |form| %>
               <li id="<%= form.unique_id %>_form"><%= form.name %> <%= form.visible? ? "" : "(Disabled)" %></li>
           <% end %>
         </ul>
