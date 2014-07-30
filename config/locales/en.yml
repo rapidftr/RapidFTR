@@ -63,7 +63,7 @@ en:
     welcome: "Welcome"
     logout: "Logout"
     my_account: "My Account"
-    system_settings: "System settings"
+    system_settings: "System Settings"
 
   navigation:
      children: "CHILDREN"

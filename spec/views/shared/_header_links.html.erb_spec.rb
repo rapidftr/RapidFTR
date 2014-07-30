@@ -16,7 +16,7 @@ describe 'shared/_header_links.html.erb', :type => :view do
     it { is_expected.not_to have_content('Welcome') }
     it { is_expected.not_to have_link('Logout') }
     it { is_expected.not_to have_link('My Account') }
-    it { is_expected.not_to have_link('System settings') }
+    it { is_expected.not_to have_link('System Settings') }
     it { is_expected.to have_link('Contact & Help', :href => contact_users_path) }
   end
 
@@ -24,7 +24,7 @@ describe 'shared/_header_links.html.erb', :type => :view do
     it { is_expected.to have_content('Welcome test_user') }
     it { is_expected.to have_link('Logout', :href => logout_path) }
     it { is_expected.to have_link('My Account', :href => user_path(user.id)) }
-    it { is_expected.not_to have_link('System settings') }
+    it { is_expected.not_to have_link('System Settings') }
     it { is_expected.to have_link('Contact & Help', :href => contact_users_path) }
     it { is_expected.not_to have_link('CHILDREN', :href => children_path)}
     it { is_expected.not_to have_link('FORMS', :href => form_form_sections_path(form.id))}
@@ -34,17 +34,17 @@ describe 'shared/_header_links.html.erb', :type => :view do
 
   describe 'with all permission' do
     let(:permissions) { Permission.all_permissions }
-    it { is_expected.to have_link('System settings', :href => admin_path) }
+    it { is_expected.to have_link('System Settings', :href => admin_path) }
   end
 
   describe 'with system settings permission' do
     let(:permissions) { [Permission::SYSTEM[:system_users]] }
-    it { is_expected.to have_link('System settings', :href => admin_path) }
+    it { is_expected.to have_link('System Settings', :href => admin_path) }
   end
 
   describe 'with manage forms permisssion' do
     let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
-    it { is_expected.to have_link('System settings', :href => admin_path) }
+    it { is_expected.to have_link('System Settings', :href => admin_path) }
   end
 
 end
