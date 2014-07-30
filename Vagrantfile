@@ -38,22 +38,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     cpus = 1
     mem = 768
-
     begin
-      # Give VM 1/4 system memory & access to all cpu cores on the host
       if host =~ /darwin/
         cpus = `sysctl -n hw.ncpu`.to_i
-        mem = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 4
+        mem = `sysctl -n hw.memsize`.to_i / 1024 / 1024
       elsif host =~ /linux/
         cpus = `nproc`.to_i
-        mem = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 4
+        mem = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024
       end
+
+      # Give VM 1/4 system memory & access to half of cpu cores on the host
+      cpus = cpus / 2 if cpus > 1
+      mem  = mem / 4  if mem > 2048
     rescue
       puts "Unable to detect system memory/CPU, please edit vagrant config or set VAGRANT_SAFE_MODE=true"
     end
 
     vbox.memory = mem
     vbox.cpus = cpus
-  end unless ENV['VAGRANT_SAFE_MODE'] = 'true'
+  end unless ENV['VAGRANT_SAFE_MODE'] == 'true'
 
 end
