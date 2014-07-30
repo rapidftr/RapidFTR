@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe FormsController, :type => :controller do
+  before :each do
+    reset_couchdb!
+  end
+
   describe ".index" do
     it "should assign all Forms for use in the view" do
       enquiry_form = create :form, name: Enquiry::FORM_NAME

@@ -248,7 +248,7 @@ describe Api::EnquiriesController, :type => :controller do
       enquiry = Enquiry.new(JSON.parse(enquiry_json))
       enquiry.save!
 
-      expect(Enquiry.get(enquiry.id)['potential_matches']).to eq([child2.id])
+      expect(Enquiry.get(enquiry.id)['potential_matches']).to include(*[child2.id])
 
       updated_enquiry = "{\"criteria\": {\"name\": \"aquiles\", \"age\": \"10\", \"location\": \"Kampala\"}}"
 
