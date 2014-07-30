@@ -3,7 +3,6 @@
 #
 
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
 
   helper :all
   helper_method :current_user_name, :current_user, :current_user_full_name, :current_session, :logged_in?
