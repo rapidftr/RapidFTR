@@ -134,7 +134,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.10.1)
     multi_test (0.1.1)
-    nokogiri (1.6.2.1)
+    nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     options (2.3.2)
     os (0.9.6)
