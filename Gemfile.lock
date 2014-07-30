@@ -315,7 +315,6 @@ DEPENDENCIES
   hpricot (~> 0.8.6)
   i18n-js (~> 2.1.2)
   json_spec (~> 1.1.2)
-  mime-types (~> 1.16)
   mini_magick (~> 3.7.0)
   os (~> 0.9.6)
   pdf-inspector (~> 1.1.0)
