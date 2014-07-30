@@ -1,4 +1,4 @@
-Feature:As an admin, I should be able to Create Users,Edit and Manage existing users .
+Feature: As an admin, I should be able to Create Users, Edit and Manage existing users.
 
 #Story: Changing user disabled status from user list page
 
@@ -249,4 +249,3 @@ Feature:As an admin, I should be able to Create Users,Edit and Manage existing u
       | bbob       | Billy Bob   | save the children | 12345       |
 
     Then an unverified user "bbob" should be created
-

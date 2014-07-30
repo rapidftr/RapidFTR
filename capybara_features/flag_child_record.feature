@@ -1,5 +1,4 @@
 Feature:
-
   As a user
   I want to go to flag a child's record
   So that I can identify suspect and duplicate records to admin

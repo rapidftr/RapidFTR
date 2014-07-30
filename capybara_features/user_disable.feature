@@ -1,5 +1,4 @@
 Feature:
-
   As an Admin
   I want to disable and later re-enable user accounts via the web interface
   So that only those who should have access are able to access the system,
@@ -25,7 +24,7 @@ Feature:
     And I am on the manage users page
     When the user "pooja" checkbox is marked as "enabled"
     And I wait for the page to load
-    
+
     Then user "pooja" should not be disabled
     And the user "pooja" should be marked as enabled
 

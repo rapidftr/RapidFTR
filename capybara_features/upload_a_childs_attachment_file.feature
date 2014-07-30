@@ -1,5 +1,4 @@
 Feature:
-
   So that all child records contains an attachment for that child, including photo and audio
   As a field agent using the website
   I want to upload an attachment for the child record that I'm adding

@@ -55,4 +55,3 @@ Feature: Ensure translations
     Then I should see "الإسم "
     And I should see "الوصف "
     And I should see "نص للمساعدة "
-

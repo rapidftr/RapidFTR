@@ -1,4 +1,3 @@
-
 Feature: Hide Child Record Form Fields
 
   As an admin user
@@ -51,4 +50,3 @@ Feature: Hide Child Record Form Fields
      And I should receive a PDF file
      And the PDF file should contain the string "Visible Field"
      And the PDF file should not contain the string "Hidden Field"
-

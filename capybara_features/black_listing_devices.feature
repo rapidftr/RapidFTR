@@ -1,4 +1,4 @@
-Feature:As a device manager, i should be able to blacklist or un blacklist a device
+Feature: As a device manager, I should be able to blacklist or un blacklist a device
 
   @javascript
   Scenario: Should able to blacklist a device
