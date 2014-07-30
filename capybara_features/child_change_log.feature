@@ -1,5 +1,4 @@
-Feature:
-  Test weather each child has a proper change log attached to it.
+Feature: Test weather each child has a proper change log attached to it.
 
   @javascript
   Scenario: Validate child creating and initial setting of field

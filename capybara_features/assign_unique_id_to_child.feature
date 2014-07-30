@@ -1,4 +1,4 @@
-Feature:As a user ,when I login with my credentials,my username should be used to create a unique child id
+Feature: As a user, when I login with my credentials, my username should be used to create a unique child id
 
   Scenario: The unique Id of child should use the logged-in user's username
 

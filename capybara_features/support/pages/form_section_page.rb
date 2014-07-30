@@ -32,7 +32,7 @@ class FormSectionPage
 
   def create_text_field(display_name, help_text)
     @session.click_link('Add Field')
-    @session.has_content?('field_display_name_en', :visible => true)
+    @session.has_content?('field_display_name_en')
     @session.click_link('Text Field')
     @session.fill_in('field_display_name_en', :with => display_name)
     @session.fill_in('Help text', :with => help_text)
