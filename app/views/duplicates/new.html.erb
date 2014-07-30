@@ -14,7 +14,7 @@
       <br />
       <div class="btn_panel">
         <%= link_to t("child.actions.cancel"), children_path %>
-        <%= submit_tag(t("child.mark_as_duplicate"), :confirm => t("child.messages.confirm_duplicate")) %>
+        <%= submit_tag(t("child.mark_as_duplicate"), data: { confirm: t("child.messages.confirm_duplicate") }) %>
       </div>
     <% end %>
   </div>
