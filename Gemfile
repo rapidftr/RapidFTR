@@ -26,7 +26,7 @@ gem 'daemons',          '~> 1.1.9',  :require => false
 gem 'progress_bar',     '~> 1.0.2',  :require => false
 
 gem 'sass-rails',    '~> 4.0.1'
-gem 'uglifier',      '~> 2.0.1'
+gem 'uglifier',      '~> 2.5'
 gem 'execjs',        '~> 2.2.0'
 gem 'i18n-js',       '~> 2.1.2'
 gem 'slim',          '~> 2.0.3'
