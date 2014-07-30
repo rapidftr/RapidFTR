@@ -14,7 +14,7 @@ module CleansingTmpDir
     end
 
     def temp_file_name
-      filename = File.join dir, UUIDTools::UUID.timestamp_create.to_s
+      filename = File.join dir, UUIDTools::UUID.random_create.to_s
     end
 
     def schedule(scheduler)
@@ -36,7 +36,7 @@ module CleansingTmpDir
         end
       end
     end
-    
+
   end
 
 end

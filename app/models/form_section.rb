@@ -270,7 +270,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def create_unique_id
-    self.unique_id = UUIDTools::UUID.timestamp_create.to_s.split('-').first if self.unique_id.nil?
+    self.unique_id = UUIDTools::UUID.random_create.to_s.split('-').first if self.unique_id.nil?
   end
 
   private
