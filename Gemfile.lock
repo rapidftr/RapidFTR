@@ -183,7 +183,7 @@ GEM
       railties (= 4.0.3)
       sprockets-rails (~> 2.0.0)
     rails-assets-jquery (2.1.1)
-    rails-assets-select2 (3.5.0)
+    rails-assets-select2 (3.5.1)
       rails-assets-jquery (>= 1.7.1)
     railties (4.0.3)
       actionpack (= 4.0.3)
