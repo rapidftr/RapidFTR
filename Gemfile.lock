@@ -191,7 +191,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
-    rake (0.9.6)
+    rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
     rest-client (1.6.8)
@@ -324,7 +324,7 @@ DEPENDENCIES
   quiet_assets (~> 1.0.3)
   rails (= 4.0.3)
   rails-assets-select2 (~> 3.5.0)
-  rake (~> 0.9.3)
+  rake (~> 10.3)
   rapidftr_addon!
   rapidftr_addon_cpims!
   rspec (~> 3.0)
