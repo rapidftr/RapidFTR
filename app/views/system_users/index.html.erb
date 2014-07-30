@@ -20,7 +20,7 @@
                 <td>
                   <%= link_to t("buttons.edit"), edit_system_user_path(user.name) %>
                   &nbsp;
-                  <%= link_to t("buttons.delete"), system_user_path(user.name), :confirm => t("user.messages.confirmation"), :method => :delete %>
+                  <%= link_to t("buttons.delete"), system_user_path(user.name), data: { confirm: t("user.messages.confirmation") }, method: :delete %>
                 </td>
                 </td>
               </tr>

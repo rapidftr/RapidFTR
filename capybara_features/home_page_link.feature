@@ -27,4 +27,3 @@ Feature: So that a user can get back to their initial start page from anywhere w
     Given I am logged in
     And I am on the home page
     And I should see "Records need Attention"
-

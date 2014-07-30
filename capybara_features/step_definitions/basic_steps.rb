@@ -133,7 +133,7 @@ When 'I wait for the page to load' do
 end
 
 When /^I wait until "([^"]*)" is visible$/ do |selector|
-  page.has_content?(selector, :visible => true)
+  page.has_content?(selector)
 end
 
 Then /^I should see (\d*) divs of class "(.*)"$/ do |quantity, div_class_name|

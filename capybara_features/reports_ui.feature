@@ -69,5 +69,3 @@ Feature: Reports UI
     And I press "Log in"
     When I follow "REPORTS"
     Then the message "No entries found" should be displayed to me
-
-

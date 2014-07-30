@@ -35,7 +35,7 @@
               &nbsp;
               <%= link_to t("buttons.edit"), edit_replication_path(rep) %>
               &nbsp;
-              <%= link_to t("buttons.delete"), replication_path(rep), :confirm => t("replication.confirm_delete"), :method => :delete %>
+              <%= link_to t("buttons.delete"), replication_path(rep), data: { confirm: t("replication.confirm_delete") }, :method => :delete %>
             </td>
             </td>
           </tr>

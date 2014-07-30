@@ -1,7 +1,5 @@
-
 Feature: Editing Custom Form Fields
   So that we can edit a text field
-  
 
   Background:
     Given the following form sections exist in the system on the "Children" form:
