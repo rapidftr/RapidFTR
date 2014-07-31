@@ -12,7 +12,7 @@ if [ ! -f /data/ssl/certificate.crt ]; then
   echo "***    PLEASE USE A PROPER CERTIFICATE   ***"
   echo "********************************************"
   echo "********************************************"
-  openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=XX/ST=FIXME/L=FIXME/O=FIXME/CN=FIXME" -keyout /data/ssl/certificate.key -out /data/ssl/certificate.crt
+  openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=XX/ST=FIXME/L=FIXME/O=FIXME/CN=FIXME" -keyout /data/ssl/certificate.key -out /data/ssl/certificate.crt
 fi
 chown -R root:root /data/ssl
 chmod 0700 /data/ssl
