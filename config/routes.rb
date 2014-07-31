@@ -112,7 +112,8 @@ RapidFTR::Application.routes.draw do
 #######################
 # FORM SECTION URLS
 #######################
-
+  
+  resources :standard_forms
   resources :forms do
     resources :form_sections, :path => 'form_section', :controller => 'form_section', :only => [:index, :new, :create]
   end
