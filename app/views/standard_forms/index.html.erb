@@ -1,1 +1,26 @@
-Form Sections
+<%= form_tag standard_forms_path%>
+<p><h1>Enquiries Form</h1></p>
+<% @forms[:enquiry].each do |fs|%>
+  <p><h2><%= fs.name %></h2></p> <br/>
+  <ul>
+  <% fs.fields.each do |field| %>
+    <li>
+    <%= check_box_tag("enquiry[#{fs.unique_id}][]", field.name.downcase.gsub("  ","_")) %> 
+    <%= label_tag(field.display_name) %> 
+    </li>
+  <% end %>
+  </ul>
+<% end %>
+
+<p><h1>Children Form</h1></p>
+<% @forms[:child].each do |fs|%>
+  <p><h2><%= fs.name %></h2></p> <br/>
+  <ul>
+  <% fs.fields.each do |field| %>
+    <li>
+    <%= check_box_tag("child[#{fs.name}][]", field.display_name) %> 
+    <%= label_tag(field.display_name) %> 
+    </li>
+  <% end %>
+  </ul>
+<% end %>

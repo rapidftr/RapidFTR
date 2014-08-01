@@ -2,19 +2,18 @@ module RapidFTR
 
   module ChildrenFormSectionSetup
 
-    def self.form_sections
+    def self.build_form_sections
       form_sections = []
-      form_sections << create_basic_identity_section
-      form_sections << create_automation_section
-      form_sections << create_interview_details_section
-      form_sections << create_other_interviews_section
-      form_sections << create_other_tracing_info_section
-      form_sections << create_child_wishes_section
-      form_sections << create_protection_concerns_section
-      form_sections << create_separation_history_section
-      form_sections << create_current_arrangements_section
-      form_sections << create_family_details_section
-      form_sections << create_photo_audio_section 
+      form_sections << build_basic_identity_section
+      form_sections << build_interview_details_section
+      form_sections << build_other_interviews_section
+      form_sections << build_other_tracing_info_section
+      form_sections << build_child_wishes_section
+      form_sections << build_protection_concerns_section
+      form_sections << build_separation_history_section
+      form_sections << build_current_arrangements_section
+      form_sections << build_family_details_section
+      form_sections << build_photo_audio_section 
     end
 
     def self.reset_definitions
@@ -22,52 +21,18 @@ module RapidFTR
       Form.all.each { |f| f.destroy  if f.name == Child::FORM_NAME }
       form = Form.create({ name: Child::FORM_NAME })
 
-      if Rails.env.android?
-        create_automation_section(form)
-      end
+      basic_identify_section = build_basic_identity_section
+      basic_identify_section.form = form
+      basic_identify_section.save
+      
+      photo_audio_section = build_photo_audio_section
+      photo_audio_section.form = form
+      photo_audio_section.save
+
       return true
     end
 
-    def self.create_automation_section
-      automation_form_fields =[
-          Field.new({"type" => "text_field",
-                     "display_name_all" => "Automation TextField"
-                    }),
-          Field.new({"type" => "textarea",
-                     "display_name_all" => "Automation TextArea"
-                    }),
-          Field.new({"type" => "check_boxes",
-                     "display_name_all" => "Automation CheckBoxes",
-                     "option_strings_text_all" => "Check 1\nCheck 2\nCheck 3",
-                    }),
-          Field.new({"type" => "select_box",
-                     "display_name_all" => "Automation Select",
-                     "option_strings_text_all" => "Select 1\nSelect 2\nSelect 3",
-                    }),
-          Field.new({"type" => "radio_button",
-                     "display_name_all" => "Automation Radio",
-                     "option_strings_text_all" => "Radio 1\nRadio 2\nRadio 3",
-                    }),
-          Field.new({"type" => "numeric_field",
-                     "display_name_all" => "Automation Number"
-                    }),
-          Field.new({"type" => "date_field",
-                     "display_name_all" => "Automation Date"
-                    }),
-          Field.new({"type" => "text_field", "visible" => false,
-                     "display_name_all" => "Hidden TextField"
-                    })
-
-      ]
-      
-      FormSection.new({"visible" => true, :order => 11,
-                       :fields => automation_form_fields,
-                       "name_all" => "Automation Form",
-                       "description_all" => "Automation Form"
-      })
-    end
-
-    def self.create_interview_details_section
+    def self.build_interview_details_section
       interview_details_fields = [
           Field.new({"name" => "disclosure_public_name",
                      "type" => "select_box",
@@ -135,7 +100,7 @@ module RapidFTR
       })
     end
 
-    def self.create_other_tracing_info_section
+    def self.build_other_tracing_info_section
       other_tracing_info_fields = [
           Field.new({"name" => "additional_tracing_info",
                      "type" => "textarea",
@@ -151,7 +116,7 @@ module RapidFTR
       })
     end
 
-    def self.create_other_interviews_section
+    def self.build_other_interviews_section
       other_interviews_fields = [
           Field.new({"name" => "other_org_interview_status",
                      "type" => "select_box",
@@ -186,7 +151,7 @@ module RapidFTR
       })
     end
 
-    def self.create_child_wishes_section
+    def self.build_child_wishes_section
       child_wishes_fields = [
           Field.new({"name" => "wishes_name_1",
                      "type" => "text_field",
@@ -251,7 +216,7 @@ module RapidFTR
       })
     end
 
-    def self.create_protection_concerns_section
+    def self.build_protection_concerns_section
       protection_concerns_fields = [
           Field.new({"name" => "concerns_chh",
                      "type" => "select_box",
@@ -309,7 +274,7 @@ module RapidFTR
       })
     end
 
-    def self.create_separation_history_section
+    def self.build_separation_history_section
       separation_history_fields = [
           Field.new("name" => "separation_place",
                     "display_name_all" => "Place of Separation.",
@@ -344,7 +309,7 @@ module RapidFTR
                           })
     end
 
-    def self.create_current_arrangements_section
+    def self.build_current_arrangements_section
       current_arrangements_fields = [
           Field.new({"name" => "care_arrangements",
                      "type" => "select_box",
@@ -396,7 +361,7 @@ module RapidFTR
       })
     end
 
-    def self.create_family_details_section
+    def self.build_family_details_section
       family_details_fields = [  
           Field.new({"name" => "fathers_name",
                      "type" => "text_field",
@@ -527,7 +492,7 @@ module RapidFTR
       })
     end
 
-    def self.create_photo_audio_section
+    def self.build_photo_audio_section
       photo_audio_fields = [
           Field.new({"name" => "current_photo_key",
                      "type" => "photo_upload_box", "editable" => false,
@@ -547,7 +512,7 @@ module RapidFTR
       })
     end
 
-    def self.create_basic_identity_section
+    def self.build_basic_identity_section
       basic_identity_fields = [
           Field.new({"name" => "name",
                      "type" => "text_field",
