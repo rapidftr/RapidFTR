@@ -112,8 +112,9 @@ RapidFTR::Application.routes.draw do
 #######################
 # FORM SECTION URLS
 #######################
-  
-  resources :standard_forms
+
+  resources :standard_forms, :only => :index
+  match '/standard_forms', :to => "forms#bulk_update", :via => [:put, :post]
   resources :forms do
     resources :form_sections, :path => 'form_section', :controller => 'form_section', :only => [:index, :new, :create]
   end
