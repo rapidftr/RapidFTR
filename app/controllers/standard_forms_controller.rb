@@ -5,4 +5,8 @@ class StandardFormsController < ApplicationController
       enquiry: RapidFTR::EnquiriesFormSectionSetup.build_form_sections
     }
   end
+
+  def create
+    puts params
+  end
 end

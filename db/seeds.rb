@@ -9,6 +9,10 @@ def should_seed? model
   empty
 end
 
+def should_seed_env_data?
+  Rails.env.development? || Rails.env.test?
+end
+
 if should_seed? User
   registration_worker = Role.create!(:name => "registration worker", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]])
   registration_officer = Role.create!(:name => "registration officer", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]])
@@ -57,5 +61,9 @@ if should_seed? User
 end
 
 if should_seed? FormSection 
+  if should_seed_env_data?
+    RapidFTR::ChildrenFormSectionSetup.reset_definitions
+    RapidFTR::EnquiriesFormSectionSetup.reset_definitions
+  end
   RapidFTR::I18nSetup.reset_definitions
 end

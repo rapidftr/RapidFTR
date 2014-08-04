@@ -21,14 +21,10 @@ module RapidFTR
       Form.all.each { |f| f.destroy  if f.name == Child::FORM_NAME }
       form = Form.create({ name: Child::FORM_NAME })
 
-      basic_identify_section = build_basic_identity_section
-      basic_identify_section.form = form
-      basic_identify_section.save
-      
-      photo_audio_section = build_photo_audio_section
-      photo_audio_section.form = form
-      photo_audio_section.save
-
+      build_form_sections.each do |fs|
+        fs.form = form
+        fs.save
+      end
       return true
     end
 
