@@ -47,8 +47,8 @@ describe Api::FormSectionsController, :type => :controller do
     end
 
     it "should return by order" do
-      expect(@json[0]["name_en"]).to eq(@form_section3.name_en)
-      expect(@json[1]["name_en"]).to eq(@form_section1.name_en)
+      expect(@json[0]["name"]["en"]).to eq(@form_section3.name_en)
+      expect(@json[1]["name"]["en"]).to eq(@form_section1.name_en)
     end
   end
 end
