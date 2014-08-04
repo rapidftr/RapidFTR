@@ -13,6 +13,7 @@ class Api::FormSectionsController < Api::ApiController
 
   def children
     form_sections = FormSection.enabled_by_order_for_form(Child::FORM_NAME)
-    render json: form_sections
+    render json: form_sections.map(&:formatted_hash)
   end
 end
+
