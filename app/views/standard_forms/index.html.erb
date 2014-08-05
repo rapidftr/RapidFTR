@@ -5,7 +5,7 @@
     <h1><%= check_box_tag("enquiries_form") %>
     <%= label_tag("Enquiries Form") %><h1>
         <ul>
-          <% @forms[:enquiry].each do |fs| %>
+          <% @forms[:enquiry][:sections].each do |fs| %>
             <li>
           <h2><%= check_box_tag("enquiry_form_sections[]",fs.unique_id) %>
           <%= label_tag(fs.name.strip) %></h2>
@@ -26,7 +26,7 @@
         <h1><%= check_box_tag("child_form") %>
         <%= label_tag("Children Form") %><h1>
             <ul>
-              <% @forms[:child].each do |fs| %>
+              <% @forms[:child][:sections].each do |fs| %>
                 <li>
               <h2><%= check_box_tag("child_form_sections[]",fs.unique_id) %>
               <%= label_tag(fs.name.strip) %></h2>
