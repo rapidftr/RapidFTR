@@ -24,3 +24,5 @@
 //= require session_timeout
 //= require flag_children
 //= require select2
+//= require jquery-bonsai
+//= require jquery-qubit

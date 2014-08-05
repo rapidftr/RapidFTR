@@ -1,32 +1,69 @@
 <%= form_tag standard_forms_path %>
-  <p><h1>Enquiries Form</h1></p>
-  <% @forms[:enquiry].each do |fs|%>
-    <p><h2>
-      <%= check_box_tag("enquiry_form_sections[]",fs.unique_id) %>
-      <%= label_tag(fs.name.strip) %>
-    </h2></p> <br/>
-    <ul>
-    <% fs.fields.each do |field| %>
-      <li>
-      <%= check_box_tag("#{fs.unique_id}[]",field.name) %>
-      <%= label_tag(field.display_name.strip) %>
-      </li>
-    <% end %>
-    </ul>
-  <% end %>
+  <ul id="form-checkboxes">
+    
+    <li>
+    <h1><%= check_box_tag("enquiries_form") %>
+    <%= label_tag("Enquiries Form") %><h1>
+        <ul>
+          <% @forms[:enquiry].each do |fs| %>
+            <li>
+          <h2><%= check_box_tag("enquiry_form_sections[]",fs.unique_id) %>
+          <%= label_tag(fs.name.strip) %></h2>
+          <ul>
+            <% fs.fields.each do |field| %>
+              <li>
+            <%= check_box_tag("#{fs.unique_id}[]",field.name) %>
+            <%= label_tag(field.display_name.strip) %>
+            </li>
+          <% end %>
+          </ul>
+          </li>
+        <% end %>
+        </ul>
+        </li>
 
-  <p><h1>Children Form</h1></p>
-  <% @forms[:child].each do |fs|%>
-    <p><h2>
-      <%= check_box_tag("child_form_sections[]",fs.unique_id) %>
-      <%= label_tag(fs.name.strip) %>
-    </h2></p> <br/>
-    <ul>
-    <% fs.fields.each do |field| %>
-      <li>
-      <%= check_box_tag("#{fs.unique_id}[]", field.name) %>
-      <%= label_tag(field.display_name.strip) %>
-      </li>
-    <% end %>
-    </ul>
-  <% end %>
+        <li>
+        <h1><%= check_box_tag("child_form") %>
+        <%= label_tag("Children Form") %><h1>
+            <ul>
+              <% @forms[:child].each do |fs| %>
+                <li>
+              <h2><%= check_box_tag("child_form_sections[]",fs.unique_id) %>
+              <%= label_tag(fs.name.strip) %></h2>
+              <ul>
+                <% fs.fields.each do |field| %>
+                  <li>
+                <%= check_box_tag("#{fs.unique_id}[]",field.name) %>
+                <%= label_tag(field.display_name.strip) %>
+                </li>
+              <% end %>
+              </ul>
+              </li>
+            <% end %>
+            </ul>
+            </li>
+          </ul>
+
+          <%= submit_tag t('buttons.save') %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    $('#form-checkboxes').bonsai({
+      expandAll: true,
+      checkboxes: true
+    });
+
+    $('input[type="checkbox"]').each(function(index, el) {
+      $(el).click(function() {
+        var parentListElements = $(this).parents('li:first').parents('li');
+        parentListElements.each(function (index, listElement) {
+          var parentCheckBox = $($(listElement).find('input:first'));
+          if(parentCheckBox && !parentCheckBox.prop('checked')) {
+            parentCheckBox.prop('checked', true);
+          }
+        });
+      });
+    });
+  });
+<% end %>
+
