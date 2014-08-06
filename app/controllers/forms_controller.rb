@@ -4,6 +4,8 @@ class FormsController < ApplicationController
   end
 
   def bulk_update
+    require 'pry'
+    binding.pry
     if !params[:enquiry_form_sections].nil?
       form = Form.find_or_create_by_name Enquiry::FORM_NAME
       create_form_sections(form, params[:enquiry_form_sections], RapidFTR::EnquiriesFormSectionSetup.build_form_sections, params)

@@ -1,50 +1,41 @@
-<%= form_tag standard_forms_path %>
+<%= form_for(:default_forms, url: standard_forms_path) do |f|%>
   <ul id="form-checkboxes">
-    
-    <li>
-    <h1><%= check_box_tag("enquiries_form") %>
-    <%= label_tag("Enquiries Form") %><h1>
-        <ul>
-          <% @forms[:enquiry][:sections].each do |fs| %>
-            <li>
-          <h2><%= check_box_tag("enquiry_form_sections[]",fs.unique_id) %>
-          <%= label_tag(fs.name.strip) %></h2>
-          <ul>
-            <% fs.fields.each do |field| %>
-              <li>
-            <%= check_box_tag("#{fs.unique_id}[]",field.name) %>
-            <%= label_tag(field.display_name.strip) %>
-            </li>
-          <% end %>
-          </ul>
-          </li>
-        <% end %>
-        </ul>
-        </li>
-
+    <% #@default_forms.forms.each do |form| %>
+      <%= f.fields_for :forms do |ff| %>
         <li>
-        <h1><%= check_box_tag("child_form") %>
-        <%= label_tag("Children Form") %><h1>
-            <ul>
-              <% @forms[:child][:sections].each do |fs| %>
+          <h1>
+            <%= ff.check_box :id, { checked: form.disabled } %>
+            <%= ff.label :name %>
+          <h1>
+          <ul>
+            <% #form.sections.each do |section| %>
+              <%= ff.fields_for :sections do |ffs| %>
                 <li>
-              <h2><%= check_box_tag("child_form_sections[]",fs.unique_id) %>
-              <%= label_tag(fs.name.strip) %></h2>
-              <ul>
-                <% fs.fields.each do |field| %>
-                  <li>
-                <%= check_box_tag("#{fs.unique_id}[]",field.name) %>
-                <%= label_tag(field.display_name.strip) %>
+                  <h2>
+                    <%= ffs.check_box :id, { checked: section.disabled } %>
+                    <%= ffs.label :name %>
+                  <h2>
+                  <ul>
+                    <% #section.fields.each do |field| %>
+                      <%= ffs.fields_for :fields do |ffsf| %>
+                        <li>
+                          <%= ffsf.check_box :id, { checked: field.disabled } %>
+                          <%= ffsf.label :name %>
+                        </li>
+                      <% end %>
+                    <% #end %>
+                  </ul>
                 </li>
               <% end %>
-              </ul>
-              </li>
-            <% end %>
-            </ul>
-            </li>
+            <% #end %>
           </ul>
+        </li>
+      <% end %>
+    <% #end %>
+  <ul>
 
-          <%= submit_tag t('buttons.save') %>
+  <%= f.submit t('buttons.save') %>
+<% end %>
 
 <%= javascript_tag do %>
   $(document).ready(function() {
