@@ -1,8 +1,7 @@
 <%= form_for(:default_forms, url: standard_forms_path) do |f| %>
   <ul id="form-checkboxes">
     <% @default_forms.forms.each do |form_data| %>
-      <%= f.fields_for :forms, form_data, { index: form_data.id } do |ff| %>
-        <% require 'pry'; binding.pry %>
+      <%= f.fields_for "[forms]", form_data, {index: form_data.id} do |ff| %>
         <li>
           <h1>
             <%= ff.check_box :user_selected, { checked: form_data.disabled, disabled: form_data.disabled } %>
@@ -11,7 +10,7 @@
           <h1>
           <ul>
             <% form_data.sections.each do |section| %>
-              <%= ff.fields_for :sections, section do |ffs| %>
+              <%= ff.fields_for "[sections]", section, {index: section.id} do |ffs| %>
                 <li>
                   <h2>
                     <%= ffs.check_box  :user_selected, { checked: section.disabled, disabled: section.disabled } %>
@@ -20,7 +19,7 @@
                   <h2>
                   <ul>
                     <% section.fields.each do |field| %>
-                      <%= ffs.fields_for :fields, field do |ffsf| %>
+                      <%= ffs.fields_for "[fields]", field, {index: field.id} do |ffsf| %>
                         <li>
                           <%= ffsf.check_box :user_selected, { checked: field.disabled, disabled: field.disabled } %>
                           <%= ffsf.hidden_field :id %>

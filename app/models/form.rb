@@ -4,12 +4,27 @@ class Form < CouchRest::Model::Base
 
   property :name
 
+  attr_accessor :sections
+
   design do
     view :by_name
   end
 
   def self.find_or_create_by_name name
-    form = Form.by_name.key(name).first
+    form = self.find_by_name(name)
     form.nil? ? Form.create(name: name) : form
+  end
+
+  def self.find_by_name name
+    Form.by_name.key(name).first
+  end
+
+  def sections
+    @sections ||= FormSection.all.all.select {|fs| fs.form == self }
+  end
+
+  def sections=(sections)
+    sections.each {|s| s.form = self}
+    @sections = sections
   end
 end
