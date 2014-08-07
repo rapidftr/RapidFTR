@@ -29,7 +29,7 @@ class Api::EnquiriesController < Api::ApiController
 
     @enquiry.update_from(enquiry_json)
 
-    unless @enquiry.valid? && !enquiry_json['criteria'].nil? && !enquiry_json['criteria'].empty?
+    unless @enquiry.valid? && !@enquiry['criteria'].nil? && !@enquiry['criteria'].empty?
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422
       return
     end
@@ -81,9 +81,6 @@ class Api::EnquiriesController < Api::ApiController
       enquiry = JSON.parse(params['enquiry'])
     else
       enquiry = params['enquiry']
-      if enquiry['criteria'].is_a?(String)
-         enquiry['criteria']=JSON.parse(enquiry['criteria'])
-      end
     end
     enquiry
   end

@@ -4,6 +4,19 @@ Feature: Sync one/all enquiries on the API
     Given devices exist
       | imei  | blacklisted | user_name |
       | 10001 | false       | tim       |
+    And the following forms exist in the system:
+      | name         |
+      | Enquiries    |
+    And the following form sections exist in the system on the "Enquiries" form:
+      | name           | unique_id      | editable | order | visible | perm_enabled |
+      | Basic details  | basic_details  | false    | 1     | true    | true         |
+    And the following fields exists on "basic_details":
+      | name           | type       | display_name | editable |
+      | name           | text_field | Name         | false    |
+      | location       | text_field | Location     | true     |
+      | enquirer_name  | text_field | Enquirer Name  | true     |
+      | characteristic | text_field | Characteristic  | true     |
+      | nationality    | text_field | Nationality  | true     |
     Given a registration worker "tim" with a password "123"
     And I login as tim with password 123 and imei 10001
 
