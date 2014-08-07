@@ -1,37 +1,41 @@
-<%= form_for(:default_forms, url: standard_forms_path) do |f|%>
+<%= form_for(:default_forms, url: standard_forms_path) do |f| %>
   <ul id="form-checkboxes">
-    <% #@default_forms.forms.each do |form| %>
-      <%= f.fields_for :forms do |ff| %>
+    <% @default_forms.forms.each do |form_data| %>
+      <%= f.fields_for :forms, form_data, { index: form_data.id } do |ff| %>
+        <% require 'pry'; binding.pry %>
         <li>
           <h1>
-            <%= ff.check_box :id, { checked: form.disabled } %>
-            <%= ff.label :name %>
+            <%= ff.check_box :user_selected, { checked: form_data.disabled, disabled: form_data.disabled } %>
+            <%= ff.hidden_field :id %>
+            <%= ff.label form_data.name %>
           <h1>
           <ul>
-            <% #form.sections.each do |section| %>
-              <%= ff.fields_for :sections do |ffs| %>
+            <% form_data.sections.each do |section| %>
+              <%= ff.fields_for :sections, section do |ffs| %>
                 <li>
                   <h2>
-                    <%= ffs.check_box :id, { checked: section.disabled } %>
-                    <%= ffs.label :name %>
+                    <%= ffs.check_box  :user_selected, { checked: section.disabled, disabled: section.disabled } %>
+                    <%= ffs.hidden_field :id %>
+                    <%= ffs.label section.name %>
                   <h2>
                   <ul>
-                    <% #section.fields.each do |field| %>
-                      <%= ffs.fields_for :fields do |ffsf| %>
+                    <% section.fields.each do |field| %>
+                      <%= ffs.fields_for :fields, field do |ffsf| %>
                         <li>
-                          <%= ffsf.check_box :id, { checked: field.disabled } %>
-                          <%= ffsf.label :name %>
+                          <%= ffsf.check_box :user_selected, { checked: field.disabled, disabled: field.disabled } %>
+                          <%= ffsf.hidden_field :id %>
+                          <%= ffsf.label field.name %>
                         </li>
                       <% end %>
-                    <% #end %>
+                    <% end %>
                   </ul>
                 </li>
               <% end %>
-            <% #end %>
+            <% end %>
           </ul>
         </li>
       <% end %>
-    <% #end %>
+    <% end %>
   <ul>
 
   <%= f.submit t('buttons.save') %>

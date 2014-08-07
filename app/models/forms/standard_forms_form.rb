@@ -3,6 +3,10 @@ module Forms
     include ActiveModel::Model
     attr_accessor :forms
 
+    def forms_attributes=(attributes)
+      #Need this for the fields_for in the UI
+    end
+
     def self.build_from_seed_data
       child_form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
       child_form = StandardFormsData::FormData.build(Form.new(name: Child::FORM_NAME), child_form_sections)
@@ -19,7 +23,11 @@ module Forms
   module StandardFormsData
     class FormData
       include ActiveModel::Model
-      attr_accessor :id, :name, :disabled, :sections
+      attr_accessor :id, :name, :disabled, :sections, :user_selected
+
+      def user_selected
+        @user_selected ||= false
+      end
 
       def sections_attributes=(attributes)
         #Need this for the fields_for in the UI
@@ -40,7 +48,11 @@ module Forms
 
     class SectionData
       include ActiveModel::Model
-      attr_accessor :id, :name, :fields, :disabled
+      attr_accessor :id, :name, :fields, :disabled, :user_selected
+
+      def user_selected
+        @user_selected ||= false
+      end
 
       def fields_attributes=(attributes)
         #Need this for the fields_for in the UI
@@ -61,7 +73,11 @@ module Forms
 
     class FieldData
       include ActiveModel::Model
-      attr_accessor :id, :name, :disabled
+      attr_accessor :id, :name, :disabled, :user_selected
+
+      def user_selected
+        @user_selected ||= false
+      end
 
       def self.build field, existing_section
         id = field.name
