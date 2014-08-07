@@ -14,7 +14,7 @@ describe "Solar", type: :request, solr: true do
     Sunspot.remove_all(Child)
 
     create :form_section, fields: [
-      build(:text_field, name: 'name')
+        build(:text_field, name: 'name')
     ]
 
     @child1 = create(:child, 'last_known_location' => "New York", "name" => "Mohammed Smith")
@@ -49,16 +49,19 @@ describe "Enquiry Mapping", type: :request, solr: true do
 
   before :all do
     Sunspot.remove_all(Child)
+    reset_couchdb!
+
+    form = create :form, name: Enquiry::FORM_NAME
 
     create :form_section, fields: [
-      build(:text_field, name: 'name')
-    ]
+        build(:text_field, name: 'name')
+    ], form: form
 
     @child1 = create(:child, 'last_known_location' => "New York", "name" => "Mohammed Smith")
     @child2 = create(:child, 'last_known_location' => "New York", "name" => "Muhammed Jones")
     @child3 = create(:child, 'last_known_location' => "New York", "name" => "Muhammad Brown")
     @child4 = create(:child, 'last_known_location' => "New York", "name" => "Ammad Brown")
-    @enquiry = Enquiry.create("enquirer_name" => "Kavitha", "criteria" => {"name" => "Ammad"}, "reporter_details" => {"location" => "Kyangwali"})
+    @enquiry = Enquiry.create("enquirer_name" => "Kavitha", "name" => "Ammad", "location" => "Kyangwali")
   end
 
   def match(criteria)
