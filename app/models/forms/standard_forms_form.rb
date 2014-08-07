@@ -3,10 +3,6 @@ module Forms
     include ActiveModel::Model
     attr_accessor :forms
 
-    def forms_attributes=(attributes)
-      #Need this for the fields_for in the UI
-    end
-
     def self.build_from_seed_data
       child_form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
       child_form = StandardFormsData::FormData.build(Form.new(name: Child::FORM_NAME), child_form_sections)
@@ -27,10 +23,6 @@ module Forms
 
       def user_selected
         @user_selected ||= false
-      end
-
-      def sections_attributes=(attributes)
-        #Need this for the fields_for in the UI
       end
 
       def self.build form, sections
@@ -54,8 +46,9 @@ module Forms
         @user_selected ||= false
       end
 
-      def fields_attributes=(attributes)
-        #Need this for the fields_for in the UI
+      def self.persist attributes_hash, form
+        if(attributes_hash["user_selected"])
+        end
       end
 
       def self.build section, existing_form
