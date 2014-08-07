@@ -1,8 +1,5 @@
 class StandardFormsController < ApplicationController
   def index
-    @forms = {
-      child: RapidFTR::ChildrenFormSectionSetup.build_form_sections,
-      enquiry: RapidFTR::EnquiriesFormSectionSetup.build_form_sections
-    }
+    @default_forms = Forms::StandardFormsForm.build_from_seed_data
   end
 end

@@ -19,17 +19,22 @@ module RapidFTR
 
     def self.build_enquiry_section
       enquiry_fields =[
-          Field.new({"type" => "text_field",
-                     "display_name_all" => "Enquirer Name"
-                    }),
-          Field.new({"type" => "textarea",
-                     "display_name_all" => "Criteria"
-                    })]
+        Field.new({
+          "name" => "enquirer_name",
+          "type" => "text_field",
+          "display_name_all" => "Enquirer Name"
+        }),
+        Field.new({
+          "name" => "criteria",
+          "type" => "textarea",
+          "display_name_all" => "Criteria"
+        })]
 
       FormSection.new({"visible" => true, :order => 1,
+                       "unique_id" => "enquiry_criteria",
                        :fields => enquiry_fields,
-                       "name_all" => "Enquiry Criteria Form",
-                       "description_all" => "Enquiry Criteria Form"
+                       "name_all" => "Enquiry Criteria",
+                       "description_all" => "Enquiry Criteria"
       })
     end
   end
