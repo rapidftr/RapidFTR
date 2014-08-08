@@ -44,7 +44,7 @@ describe StandardFormsService do
     end
 
     describe "saving form sections" do
-      it "should persist selected form sections" do
+      it "should persist new form with new form sections" do
         attributes = { "forms" => {
           "children" => { "user_selected" => "1", "id" => "children",
             "sections" => {
@@ -52,13 +52,16 @@ describe StandardFormsService do
                 "user_selected" => "1",
                 "id" => "basic_identity" }
           } } } }
+      
         StandardFormsService.persist(attributes)
+        
+        expect(Form.count).to eq 1
         expect(FormSection.count).to eq 1
         expect(FormSection.all.first.unique_id).to eq("basic_identity")
         expect(FormSection.all.first.name).to eq("Basic Identity")
       end
 
-      it "should persist selected form sections on existing forms" do
+      it "should persist new form sections on existing forms with no form sections" do
         create :form, name: Child::FORM_NAME
         attributes = { "forms" => {
           "children" => { "user_selected" => "0", "id" => "children",
@@ -70,7 +73,25 @@ describe StandardFormsService do
         
         expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 1
-        expect(FormSection.all.first.name).to eq("basic_identity")
+        expect(FormSection.all.first.name).to eq("Basic Identity")
+        expect(FormSection.all.first.unique_id).to eq("basic_identity")
+      end
+    
+      it "should persist new form sections on existing forms with form sections" do
+        form = create :form, name: Child::FORM_NAME
+        create :form_section, form: form, unique_id: "basic_identity", name: "Basic Identity"
+        
+        attributes = { "forms" => {
+          "children" => { "user_selected" => "0", "id" => "children",
+            "sections" => {
+              "interview_details" => {
+                "user_selected" => "1",
+                "id" => "interview_details" }
+          } } } }
+        
+        expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
+        expect(FormSection.count).to eq 2
+        expect(FormSection.by_unique_id.key("interview_details").first).to_not be_nil
       end
     end
   end
