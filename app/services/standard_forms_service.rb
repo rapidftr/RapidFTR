@@ -9,6 +9,12 @@ class StandardFormsService
     end
   end
 
+  def self.default_fields_for section
+    sections = default_form_sections_for section.form.name
+    default_section = sections.find {|s| s.unique_id == section.unique_id}
+    default_section.nil? ? [] : default_section.fields
+  end
+
   def self.default_forms
     child_form = Form.new(name: Child::FORM_NAME)
     child_form.sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
@@ -53,11 +59,11 @@ class StandardFormsService
       section_attr = sections_attributes.nil? ? {} : sections_attributes[section.unique_id]
       if !section_attr.nil? && !section_attr.empty?
         fields = section_attr["fields"] || {}
-        selected_fields = selected_fields(fields, section.fields)
+        new_fields = selected_fields(fields, default_fields_for(section))
         if section_attr["user_selected"] == "1"
-          section.fields = selected_fields
+          section.fields = new_fields
         else
-          section.merge_fields! selected_fields
+          section.merge_fields! new_fields
         end
         section.save
       end
@@ -65,7 +71,8 @@ class StandardFormsService
   end
 
   def self.selected_fields fields_attributes={}, default_fields=[]
-    user_selected_field_ids = fields_attributes.select { |field| field["user_selected"] == "1"} .collect(&:id)
+    user_selected_fields = fields_attributes.select { |key,field| field["user_selected"] == "1"} 
+    user_selected_field_ids = user_selected_fields.collect {|key,field| field["id"]}
     default_fields.select {|field| user_selected_field_ids.include? field.name }
   end
 end
