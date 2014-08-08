@@ -23,6 +23,10 @@ class Form < CouchRest::Model::Base
     @sections ||= FormSection.all.all.select {|fs| fs.form == self }
   end
 
+  def reload_sections!
+    @sections = FormSection.all.all.select {|fs| fs.form == self }
+  end
+
   def sections=(sections)
     sections.each {|s| s.form = self}
     @sections = sections
