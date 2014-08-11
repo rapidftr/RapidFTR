@@ -5,5 +5,6 @@ class FormsController < ApplicationController
 
   def bulk_update
     StandardFormsService.persist params[:default_forms]
+    redirect_to forms_path
   end
 end

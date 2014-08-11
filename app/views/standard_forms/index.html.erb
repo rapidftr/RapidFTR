@@ -7,16 +7,17 @@
             <%= ff.check_box :user_selected, { checked: form_data.disabled, disabled: form_data.disabled } %>
             <%= ff.hidden_field :id %>
             <%= ff.label form_data.name %>
-          <h1>
+          </h1>
           <ul>
             <% form_data.sections.each do |section| %>
               <%= ff.fields_for "[sections]", section, {index: section.id} do |ffs| %>
                 <li>
+                  <br>
                   <h2>
                     <%= ffs.check_box  :user_selected, { checked: section.disabled, disabled: section.disabled } %>
                     <%= ffs.hidden_field :id %>
                     <%= ffs.label section.name %>
-                  <h2>
+                  </h2>
                   <ul>
                     <% section.fields.each do |field| %>
                       <%= ffs.fields_for "[fields]", field, {index: field.id} do |ffsf| %>
@@ -33,6 +34,7 @@
             <% end %>
           </ul>
         </li>
+        <br>
       <% end %>
     <% end %>
   <ul>
@@ -51,7 +53,7 @@
       $(el).click(function() {
         var parentListElements = $(this).parents('li:first').parents('li');
         parentListElements.each(function (index, listElement) {
-          var parentCheckBox = $($(listElement).find('input:first'));
+          var parentCheckBox = $($(listElement).find('input[type=checkbox]:first'));
           if(parentCheckBox && !parentCheckBox.prop('checked')) {
             parentCheckBox.prop('checked', true);
           }
