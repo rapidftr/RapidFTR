@@ -16,6 +16,11 @@ When /^I attach the following photos:$/ do |table|
   end
 end
 
+Given /^no forms exist in the system$/ do
+  FormSection.all.each {|u| u.destroy }
+  Form.all.each {|f| f.destroy }
+end
+
 Given /^the following forms exist in the system:$/ do |forms_table|
   Form.all.each {|u| u.destroy }
 
