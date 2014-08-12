@@ -64,6 +64,9 @@ if should_seed? FormSection
   if should_seed_env_data?
     RapidFTR::ChildrenFormSectionSetup.reset_definitions
     RapidFTR::EnquiriesFormSectionSetup.reset_definitions
+  else
+    RapidFTR::ChildrenFormSectionSetup.reset_form
+    RapidFTR::EnquiriesFormSectionSetup.reset_form
   end
   RapidFTR::I18nSetup.reset_definitions
 end

@@ -16,11 +16,14 @@ module RapidFTR
       form_sections << build_photo_audio_section 
     end
 
-    def self.reset_definitions
+    def self.reset_form
       FormSection.all.each { |f| f.destroy  if f.form.name == Child::FORM_NAME }
       Form.all.each { |f| f.destroy  if f.name == Child::FORM_NAME }
-      form = Form.create({ name: Child::FORM_NAME })
+      Form.create({ name: Child::FORM_NAME })
+    end
 
+    def self.reset_definitions
+      form = reset_form
       build_form_sections.each do |fs|
         fs.form = form
         fs.save

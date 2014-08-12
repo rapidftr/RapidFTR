@@ -6,11 +6,14 @@ module RapidFTR
       return [build_enquiry_section]
     end
 
-    def self.reset_definitions
+    def self.reset_form
       FormSection.all.each { |f| f.destroy  if f.form.name == Enquiry::FORM_NAME  }
       Form.all.each { |f| f.destroy if f.name == Enquiry::FORM_NAME }
+      Form.create({name: Enquiry::FORM_NAME})
+    end
 
-      form = Form.create({name: Enquiry::FORM_NAME})
+    def self.reset_definitions
+      form = reset_form
       enquiry_form_section = build_enquiry_section
       enquiry_form_section.form = form
       enquiry_form_section.save
