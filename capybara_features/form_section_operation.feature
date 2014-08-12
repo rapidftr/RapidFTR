@@ -1,5 +1,5 @@
 Feature: So that admin can see Manage Form Sections Page, customize form section details, Create new forms，Disable and enable forms,
-         delete fields from a form section
+         delete fields from a form section, delete form sections
 
   Background:
     Given I am logged in as an admin
@@ -183,3 +183,16 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I follow "Basic Identity"
     And I follow "characteristic_Delete"
     Then I should not see "characteristic"
+  
+  @wip
+  Scenario: Admins should be able to delete form sections
+    When I am on the form sections page for "Children"
+    And I follow "Basic Identity"
+    And I follow "BasicIdentity_Section_Delete"
+    When I am on the form sections page for "Children"
+    Then I should see the following form sections in this order:
+      | Family Details      |
+      | Care Arrangements   |
+      |Other hidden section |
+      |Other visible section|
+      | New Form 1          |    
