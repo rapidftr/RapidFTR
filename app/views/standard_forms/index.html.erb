@@ -1,5 +1,5 @@
 <%= form_for(:default_forms, url: standard_forms_path) do |f| %>
-  <ul id="form-checkboxes">
+  <ul class="standard_form_checkboxes">
     <% @default_forms.forms.each do |form_data| %>
       <%= f.fields_for "[forms]", form_data, {index: form_data.id} do |ff| %>
         <li>
@@ -44,20 +44,29 @@
 
 <%= javascript_tag do %>
   $(document).ready(function() {
-    $('#form-checkboxes').bonsai({
-      expandAll: true,
-      checkboxes: true
-    });
+    function checkAllChildrenBoxes(element) {
+      var newValue = $(element).prop('checked');
+      var childrenInputs = $(element).parents('li:first').find("ul input[type=checkbox]");
+      childrenInputs.each(function (index, inputElement) {
+        var jqInput = $(inputElement);
+        jqInput.prop('checked', newValue);
+      });
+    }
+
+    function checkAllParentBoxes(element) {
+      var parentListElements = $(element).parents('li:first').parents('li');
+      parentListElements.each(function (index, listElement) {
+        var parentCheckBox = $($(listElement).find('input[type=checkbox]:first'));
+        if(parentCheckBox && !parentCheckBox.prop('checked')) {
+          parentCheckBox.prop('checked', true);
+        }
+      });
+    }
 
     $('input[type="checkbox"]').each(function(index, el) {
       $(el).click(function() {
-        var parentListElements = $(this).parents('li:first').parents('li');
-        parentListElements.each(function (index, listElement) {
-          var parentCheckBox = $($(listElement).find('input[type=checkbox]:first'));
-          if(parentCheckBox && !parentCheckBox.prop('checked')) {
-            parentCheckBox.prop('checked', true);
-          }
-        });
+        checkAllParentBoxes(this);
+        checkAllChildrenBoxes(this);
       });
     });
   });
