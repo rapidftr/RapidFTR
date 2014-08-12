@@ -36,7 +36,7 @@ end
 
 When /^(?:|I )(?:can )?click "([^\"]*)"(?: within "([^\"]*)")?$/ do |selector, within|
   with_scope(within) do
-    Page.find(selector).click
+    page.find(selector).click
   end
 end
 

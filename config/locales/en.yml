@@ -352,6 +352,7 @@ en:
       use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
     initial_language: "Initial Language"
     cannot_be_edited: "Fields on this form cannot be edited."
+    add_standard_forms: "Add Standard Forms"
 
   form_section:
     create: "Create New Form Section"

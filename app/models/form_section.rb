@@ -222,6 +222,12 @@ class FormSection < CouchRest::Model::Base
     self.fields.select { |field| field.name == field_name }.first
   end
 
+  def merge_fields! fields_to_merge
+    current_field_names = fields.collect(&:name)
+    fields_to_merge.reject! {|field| current_field_names.include? field.name }
+    fields_to_merge.each {|new_field| fields << new_field}
+  end
+
   protected
 
   def validate_name_format
