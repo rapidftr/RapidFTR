@@ -46,11 +46,6 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.persist attributes_hash, form
-        if(attributes_hash["user_selected"])
-        end
-      end
-
       def self.build section, existing_form
         id = section.unique_id
         name = section.name
