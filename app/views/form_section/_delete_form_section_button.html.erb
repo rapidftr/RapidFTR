@@ -1,0 +1,4 @@
+<a id="<%=@form_section.unique_id%>_Section_Delete" href="#" class="form_section_delete"><%= I18n.t("user.actions.delete") + " " + @form_section.name%>&nbsp;</a>	
+<%= form_for @form_section.unique_id, :url => path, :html => {:id => @form_section.unique_id,:method => :delete} do |f|%>
+    <input type='submit' id='formSectionDeleteSubmit' style='display:none;'/>
+<% end %>
