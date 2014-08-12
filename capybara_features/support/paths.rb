@@ -5,10 +5,12 @@ module NavigationHelpers
   #
   # step definition in web_steps.rb
 
-  def register_regexes
-    if @regex_to_path_map.nil?
+  @@regex_to_path_map = {}
+
+  def path_map
+    if @@regex_to_path_map.empty?
       self.class.send :include, Rails.application.routes.url_helpers
-      @regex_to_path_map = {
+      @@regex_to_path_map = {
         /the home\s?page/                              => Proc.new {|options,matches| '/' },
         /the new create_custom_field page/             => Proc.new {|options,matches| new_create_custom_field_path },
         /the new assign_unique_id_to_a_child page/     => Proc.new {|options,matches| new_assign_unique_id_to_a_child_path(options) },
@@ -53,17 +55,17 @@ module NavigationHelpers
         /standard form page/                           => Proc.new {|options,matches| standard_forms_path }
       }
     end
+    @@regex_to_path_map
   end
 
   def path_to(page_name, options = {})
-    register_regexes
     format = page_name[/^(?:|the )(\w+) formatted/, 1]
     options.reverse_merge!(:format => format)
     path_for_cuke_string(page_name, options) || raise("Can't find mapping from \"#{page_name}\" to a path.\nNow, go and add a mapping in #{__FILE__}")
   end
 
   def path_for_cuke_string string_to_match, options={}
-    our_key, our_proc = @regex_to_path_map.find {|key,value| key.match(string_to_match) } 
+    our_key, our_proc = path_map.find {|key,value| key.match(string_to_match) } 
     return our_proc.call options, our_key.match(string_to_match)
   end
 end
