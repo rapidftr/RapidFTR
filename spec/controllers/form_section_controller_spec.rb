@@ -21,6 +21,9 @@ class MockFormSection
   def unique_id
     "unique_id"
   end
+
+  def destroy
+  end
 end
 
 describe FormSectionController, :type => :controller do
@@ -192,5 +195,25 @@ describe FormSectionController, :type => :controller do
       expect(assigns[:form_section]).to eq(form_section)
     end
   end
+
+  describe "delete" do
+    
+    it "destroys the requested form section" do
+      mock_form_section = MockFormSection.new
+      allow(FormSection).to receive(:get_by_unique_id).with("37").and_return(mock_form_section)
+      expect(mock_form_section).to receive(:destroy)
+      delete :destroy, :id => "37"
+    end
+
+    it "redirects to the form section list" do
+      form = create :form
+      form_section = FormSection.new :form => form
+      allow(FormSection).to receive(:get_by_unique_id).with("1").and_return(form_section)
+      expect(form_section).to receive(:destroy)
+      delete :destroy, :id => "1"
+      expect(response).to redirect_to(form_form_sections_path(form))
+    end
+  end
+
 
 end

@@ -21,6 +21,7 @@ en:
   clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
+    delete_form_section: "Warning: If you continue, any data associated with this form section will be lost.\nIf you're uncertain, disable the form section instead.\nClick Cancel to go back. Click OK to Delete the form section."
     move_item: "You are about to move this field to another form section ({{selection_key}}). Is this OK?"
     enter_valid_date: "Please enter a valid 'After' and/or 'Before' Date Created (format yyyy-mm-dd)."
     enter_valid_field_value: "Please enter a valid field value."
