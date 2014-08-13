@@ -1,70 +1,15 @@
-  <h1><%= t("admin.highlight_fields") %></h1>
-  <table class="highlight-fields list_table">
-    <thead>
-      <tr>
-        <th><%= t("fields.field_name") %></th>
-        <th><%= t("fields.form_name") %></th>
-        <th><%= t("fields.action") %></th>
-      </tr>
-    </thead>
-    <tbody id="highlighted-fields">
-      <tr class="add-field-section">
-        <td><a href="javascript:void(0)" class="add_field"><%= t("add") %></a></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-
-<%= form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
-  <div id="add-field">
-  </div>
-<% end %>
-
-<%= form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
-  <div id="remove-field">
-  </div>
-<% end %>
-
-
-
-<script id="highlight-field-template" type="text/x-jquery-tmpl">
+<h1><%= t("admin.highlight_fields") %></h1>
+<table class="highlight-fields list_table">
+  <thead>
   <tr>
-    <td>${display_name}</td>
-    <td>${form_name}</td>
-    <td>
-      <a href="javascript:void(0)" class="remove_field"><%= t("fields.remove") %></a>
-      <input type="hidden" name="field_name" class="highlighted-field" value="${field_name}"/>
-      <input type="hidden" name="form_id" class="highlighted-form" value="${form_id}"/>
-    </td>
+    <th><%= t("fields.form_name") %></th>
   </tr>
-</script>
-
-<script id="form-template" type="text/x-jquery-tmpl">
-    <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
-    <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
-</script>
-
-<script>
-
-var updateWithSelectedItem = function(selectedElement) {
-  $("#add-field").append($("#form-template").tmpl(selectedElement));
-  $("#add-form").submit();
-}
-
-$(".remove_field").live("click", function(){
-  var removeElement = { "field_name" : $(this).siblings(".highlighted-field").val(),
-                        "form_id" : $(this).siblings(".highlighted-form").val()}
-  $("#remove-field").append($("#form-template").tmpl(removeElement));
-  $("#remove-form").submit();
-});
-
-<% if @highlighted_fields %>
-  $(".add-field-section").before($("#highlight-field-template").tmpl(<%=raw @highlighted_fields.to_json %>));
-<% end %>
-
-</script>
-
-<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" ,
-                                                          :on_item_select => "updateWithSelectedItem",
-                                                          :prev_selected_field_selector => ".highlighted-field"} %>
+  </thead>
+  <tbody id="highlighted-fields">
+  <% @forms.each do |f| %>
+      <tr class="add-field-section">
+        <td><%= link_to "#{f.name}", highlight_field_path(f) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

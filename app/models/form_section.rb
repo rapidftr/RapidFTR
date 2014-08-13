@@ -175,8 +175,8 @@ class FormSection < CouchRest::Model::Base
   end
 
   def self.highlighted_fields
-    all.map do |form|
-      form.fields.select { |field| field.is_highlighted? }
+    all.map do |form_section|
+      form_section.fields.select { |field| field.is_highlighted? }
     end.flatten
   end
 
@@ -220,6 +220,12 @@ class FormSection < CouchRest::Model::Base
 
   def get_field_by_name field_name
     self.fields.select { |field| field.name == field_name }.first
+  end
+
+  def merge_fields! fields_to_merge
+    current_field_names = fields.collect(&:name)
+    fields_to_merge.reject! {|field| current_field_names.include? field.name }
+    fields_to_merge.each {|new_field| fields << new_field}
   end
 
   protected

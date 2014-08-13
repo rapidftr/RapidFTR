@@ -11,7 +11,16 @@ describe FormsController, :type => :controller do
       children_form = create :form, name: Child::FORM_NAME
       fake_admin_login
       get :index
-      expect(assigns[:form_sections]).to contain_exactly(enquiry_form, children_form)
+      expect(assigns[:forms]).to contain_exactly(enquiry_form, children_form)
+    end
+  end
+
+  describe ".bulk_update" do
+    it "should use the StandardFormsService to persist data" do
+      fake_admin_login
+      params = {:default_forms => "some_forms"}
+      expect(StandardFormsService).to receive(:persist).with("some_forms")
+      post :bulk_update, params
     end
   end
 end

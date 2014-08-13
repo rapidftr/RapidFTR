@@ -20,6 +20,16 @@ module CouchRest
         set_a_value key, value
       end
       #TODO: what about overriding the delete method?
+
+      # Another monkey patch to get the old "save_without_callbacks" behavior
+      def save_without_callbacks
+        if valid?
+          result = database.save_doc(self)
+          ret = result["ok"] == true
+          @changed_attributes.clear if ret && @changed_attributes
+          ret
+        end
+      end
     end
   end
 end

@@ -2,30 +2,43 @@ module RapidFTR
 
   module EnquiriesFormSectionSetup
 
-    def self.reset_definitions
+    def self.build_form_sections
+      return [build_enquiry_section]
+    end
+
+    def self.reset_form
       FormSection.all.each { |f| f.destroy  if f.form.name == Enquiry::FORM_NAME  }
       Form.all.each { |f| f.destroy if f.name == Enquiry::FORM_NAME }
-      form = Form.create({ name: Enquiry::FORM_NAME })
+      Form.create({name: Enquiry::FORM_NAME})
+    end
 
-      create_enquiry_section(form)
+    def self.reset_definitions
+      form = reset_form
+      enquiry_form_section = build_enquiry_section
+      enquiry_form_section.form = form
+      enquiry_form_section.save
       return true
     end
 
-    def self.create_enquiry_section(form)
+    def self.build_enquiry_section
       enquiry_fields =[
-          Field.new({"type" => "text_field",
-                     "display_name_all" => "Enquirer Name"
-                    }),
-          Field.new({"type" => "textarea",
-                     "display_name_all" => "Criteria"
-                    })]
+        Field.new({
+          "name" => "enquirer_name",
+          "type" => "text_field",
+          "display_name_all" => "Enquirer Name"
+        }),
+        Field.new({
+          "name" => "criteria",
+          "type" => "textarea",
+          "display_name_all" => "Criteria"
+        })]
 
-      FormSection.create!({"visible" => true, :order => 1,
-                           :fields => enquiry_fields,
-                           "name_all" => "Enquiry Criteria Form",
-                           "description_all" => "Enquiry Criteria Form",
-                           :form => form
-                          })
+      FormSection.new({"visible" => true, :order => 1,
+                       "unique_id" => "enquiry_criteria",
+                       :fields => enquiry_fields,
+                       "name_all" => "Enquiry Criteria",
+                       "description_all" => "Enquiry Criteria"
+      })
     end
   end
 end

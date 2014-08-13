@@ -1,0 +1,74 @@
+<%= form_for(:default_forms, url: standard_forms_path) do |f| %>
+  <ul class="standard_form_checkboxes">
+    <% @default_forms.forms.each do |form_data| %>
+      <%= f.fields_for "[forms]", form_data, {index: form_data.id} do |ff| %>
+        <li>
+          <h1>
+            <%= ff.check_box :user_selected, { checked: form_data.disabled, disabled: form_data.disabled } %>
+            <%= ff.hidden_field :id %>
+            <%= ff.label form_data.name %>
+          </h1>
+          <ul>
+            <% form_data.sections.each do |section| %>
+              <%= ff.fields_for "[sections]", section, {index: section.id} do |ffs| %>
+                <li>
+                  <br>
+                  <h2>
+                    <%= ffs.check_box  :user_selected, { checked: section.disabled, disabled: section.disabled } %>
+                    <%= ffs.hidden_field :id %>
+                    <%= ffs.label section.name %>
+                  </h2>
+                  <ul>
+                    <% section.fields.each do |field| %>
+                      <%= ffs.fields_for "[fields]", field, {index: field.id} do |ffsf| %>
+                        <li>
+                          <%= ffsf.check_box :user_selected, { checked: field.disabled, disabled: field.disabled } %>
+                          <%= ffsf.hidden_field :id %>
+                          <%= ffsf.label field.name %>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+        <br>
+      <% end %>
+    <% end %>
+  <ul>
+
+  <%= f.submit t('buttons.save'), {class: 'btn_submit'} %>
+<% end %>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    function checkAllChildrenBoxes(element) {
+      var newValue = $(element).prop('checked');
+      var childrenInputs = $(element).parents('li:first').find("ul input[type=checkbox]");
+      childrenInputs.each(function (index, inputElement) {
+        var jqInput = $(inputElement);
+        jqInput.prop('checked', newValue);
+      });
+    }
+
+    function checkAllParentBoxes(element) {
+      var parentListElements = $(element).parents('li:first').parents('li');
+      parentListElements.each(function (index, listElement) {
+        var parentCheckBox = $($(listElement).find('input[type=checkbox]:first'));
+        if(parentCheckBox && !parentCheckBox.prop('checked')) {
+          parentCheckBox.prop('checked', true);
+        }
+      });
+    }
+
+    $('input[type="checkbox"]').each(function(index, el) {
+      $(el).click(function() {
+        checkAllParentBoxes(this);
+        checkAllChildrenBoxes(this);
+      });
+    });
+  });
+<% end %>
+
