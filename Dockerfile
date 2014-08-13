@@ -53,4 +53,3 @@ ADD db/ /rapidftr/db/
 ADD lib/ /rapidftr/lib/
 ADD app/ /rapidftr/app/
 ADD https://www.dropbox.com/sh/y9cjomps39deqb6/AAB2ieXvhcohg_4J0BC3j2GXa/Android/RapidFTR-dev.apk?dl=1 /rapidftr/public/RapidFTR.apk
-

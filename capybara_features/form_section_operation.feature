@@ -155,9 +155,10 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     Then the form section "Other visible section" should be hidden
 
   @javascript
-  Scenario: Adding a highlight field
+  Scenario: Adding a highlight field to children form
     Given I am on the admin page
     When I follow "Highlight Fields"
+    And I follow "Children"
     And I click text "add"
     And I select menu "Basic Identity"
     And I select menu "Nationality"
@@ -167,6 +168,30 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     Then I should not see "Nationality" within "#highlighted-fields"
 
   @javascript
+  Scenario: Adding a highlight field to enquiry form
+    Given the following forms exist in the system:
+      | name         |
+      | Enquiries    |
+      | Children     |
+    And the following form sections exist in the system on the "Enquiries" form:
+      | name              | unique_id         | editable | order | visible | perm_enabled |
+      | Enquiry Criteria  | enquiry_criteria  | false    | 1     | true    | true         |
+    And the following fields exists on "enquiry_criteria":
+      | name           | type       | display_name     | editable |
+      | criteria       | text_field | Criteria         | false    |
+    And I am on the admin page
+    When I follow "Highlight Fields"
+    And I follow "Enquiries"
+    And I click text "add"
+    And I select menu "Enquiry Criteria"
+    And I select menu "Criteria"
+    Then I should see "Criteria" within "#highlighted-fields"
+
+    When I remove highlight "Criteria"
+    Then I should not see "Criteria" within "#highlighted-fields"
+
+
+  @javascript
   Scenario: A hidden highlighted field must not be visible in Child Summary
     And I am on the form sections page for "Children"
     And I follow "Basic Identity"
@@ -174,6 +199,7 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"
+    And I follow "Children"
     And I click text "add"
     When I select menu "Basic Identity"
     Then I should not see "Nationality"

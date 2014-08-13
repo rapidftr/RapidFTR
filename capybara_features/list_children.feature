@@ -12,8 +12,6 @@ Feature: User should be able to list children
 
   Scenario: View link is not available on children listing page
     When I am on the children listing page
-    Then I should not see "view"
-
     When I click text "rlon456"
     Then I should see "Basic Identity"
     And I should see "rlon456"
