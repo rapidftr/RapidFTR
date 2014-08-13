@@ -216,6 +216,7 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I follow "Basic Identity"
     And I follow "Delete Basic Identity"
     And I click OK in the browser popup
+    And I wait for the page to load
     Then I should see the following form sections in this order:
       | Family Details      |
       | Care Arrangements   |
