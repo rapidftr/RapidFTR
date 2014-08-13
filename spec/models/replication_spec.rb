@@ -324,6 +324,13 @@ describe Replication, :type => :model do
     end
   end
 
+  it 'save_without_callbacks should not trigger any callbacks' do
+    r = build :replication
+    r.save_without_callbacks
+
+    expect(Replication.get(r.id)).to eq(r)
+  end
+
   def all_docs(db)
     db.documents["rows"].map { |doc| db.get doc["id"] unless doc["id"].include? "_design" }.compact
   end
