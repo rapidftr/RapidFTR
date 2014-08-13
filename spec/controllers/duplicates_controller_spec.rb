@@ -86,7 +86,7 @@ describe DuplicatesController, :type => :controller do
 
         it "should fetch sorted highlighted fields from the form" do 
           allow(Child).to receive(:get).and_return(@child)
-	        allow(@child).to receive(:mark_as_duplicate)
+          allow(@child).to receive(:mark_as_duplicate)
           allow(@child).to receive(:save).and_return(true)
             
           post :create, :child_id => "1234", :parent_id => "5678"
