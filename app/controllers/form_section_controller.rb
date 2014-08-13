@@ -81,6 +81,7 @@ class FormSectionController < ApplicationController
     @form_section.destroy
     form = @form_section.form
 
+    flash[:notice] = t("form_section.messages.deleted", :display_name => @form_section.name)
     redirect_to form_form_sections_path form
   end
 

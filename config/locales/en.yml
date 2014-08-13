@@ -372,6 +372,7 @@ en:
       hide_confirmation: "Are you sure you want to hide fields?"
       show_confirmation: "Are you sure you want to show fields?"
       drag_drop_help_text: You can click on the fields to drag &amp; drop on the required order.
+      deleted: "Form section %{display_name} has been deleted."
 
       updated: "Form section successfully added"
     hide: "Hide"
