@@ -159,7 +159,7 @@ class FormSection < CouchRest::Model::Base
 
   def update_field_as_highlighted field_name
     field = fields.find { |field| field.name == field_name }
-    existing_max_order = FormSection.highlighted_fields.
+    existing_max_order = form.highlighted_fields.
         map(&:highlight_information).
         map(&:order).
         max
@@ -173,17 +173,7 @@ class FormSection < CouchRest::Model::Base
     field.unhighlight
     save
   end
-
-  def self.highlighted_fields
-    all.map do |form_section|
-      form_section.fields.select { |field| field.is_highlighted? }
-    end.flatten
-  end
-
-  def self.sorted_highlighted_fields
-    highlighted_fields.sort { |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
-  end
-
+  
   def section_name
     unique_id
   end

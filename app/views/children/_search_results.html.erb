@@ -36,7 +36,7 @@
     <%= check_box_tag 'all', 'Select all records' %>
     <%= label_tag 'all',t("select_all") %>
     <% end %>
-    <%= render :partial => "children/summary_row", :collection => @results, :as => :child, :locals => { :checkbox => true, :highlighted_fields => sorted_highlighted_fields } %>
+    <%= render :partial => "children/summary_row", :collection => @results, :as => :child, :locals => { :checkbox => true, :highlighted_fields => child_sorted_highlighted_fields } %>
 
     <%= render :partial => 'shared/pagination', :locals => { :results => @results } %>
 
