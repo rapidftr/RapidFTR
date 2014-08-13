@@ -79,13 +79,13 @@ $(".profile-tools .investigated a").click( function(){
 <div class="page-content-new">
 
   <div class="side-tab">
-    <%= render :partial => "tabs", :object => @form_sections %>
+    <%= render :partial => "shared/tabs", :object => @form_sections %>
   </div>
 
   <div class="side-tab-content">
     <div class="clearfix"></div>
     <%= render :partial => 'shared/sidebar' %>
-    <%= render :partial => "show_form_section" %>
+    <%= render :partial => "shared/show_form_section", :locals => {:model => @child }%>
   </div>
 
 </div>

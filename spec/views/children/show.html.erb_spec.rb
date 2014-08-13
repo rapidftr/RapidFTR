@@ -5,7 +5,7 @@ end
 
 describe 'children/show.html.erb', :type => :view do
 
-  describe "displaying a child's details"  do
+  describe "displaying a child's details" do
     before :each do
       @user = double('user', :has_permission? => true, :user_name => 'name', :id => 'test-user-id')
       allow(controller).to receive(:current_user).and_return(@user)
@@ -25,7 +25,6 @@ describe 'children/show.html.erb', :type => :view do
 
     it "displays the child's photo" do
       assign(:aside, 'picture')
-
       render :template => 'children/show', :layout => 'layouts/application'
 
       expect(rendered).to have_tag('.profile-image') do
@@ -98,7 +97,7 @@ describe 'children/show.html.erb', :type => :view do
 
       it 'should always show the posted at details when the record has been posted from a mobile client' do
         child = Child.create(:posted_at => '2007-01-01 14:04UTC', :posted_from => 'Mobile', :unique_id => 'bob',
-        :_id => '123123', :created_by => 'jsmith', :created_at => 'July 19 2010 13:05:32UTC')
+                             :_id => '123123', :created_by => 'jsmith', :created_at => 'July 19 2010 13:05:32UTC')
         allow(child).to receive(:has_one_interviewer?).and_return(true)
         allow(child).to receive(:short_id).and_return('2341234')
 

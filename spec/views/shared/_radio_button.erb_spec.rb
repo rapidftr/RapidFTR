@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'children/_radio_button.html.erb', :type => :view do
+describe 'shared/_radio_button.html.erb', :type => :view do
   before :each do
     @child = Child.new('_id' => 'id12345', 'name' => 'First Last', 'new field' => 'radio button group name')
     assigns[:child] = @child
@@ -13,7 +13,7 @@ describe 'children/_radio_button.html.erb', :type => :view do
                              :option_strings => Array['M', 'F'],
                              :help_text => 'This is my help text'
 
-    render :partial => 'children/radio_button', :locals => {:radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'shared/radio_button', :locals => {:radio_button => radio_button, :model => @child}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag('img.vtip')
   end
 
@@ -23,7 +23,7 @@ describe 'children/_radio_button.html.erb', :type => :view do
                              :type => 'radio_button',
                              :option_strings => Array['M', 'F']
 
-    render :partial => 'children/radio_button', :locals => {:radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'shared/radio_button', :locals => {:radio_button => radio_button, :model => @child}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag('img.vtip')
   end
 

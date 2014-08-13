@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'children/', :type => :view do
+describe 'shared/', :type => :view do
   before :all do
     @old_backend = I18n.backend
     I18n.backend = I18nBackendCouch.new
@@ -20,14 +20,14 @@ describe 'children/', :type => :view do
     it 'should be shown' do
       translated_name = 'XYZ'
       I18n.backend.store_translations('en', @field.name => translated_name)
-      render :partial => "children/#{@field.type}", :object => @field
+      render :partial => "shared/#{@field.type}", :object => @field, :locals => {:model => Child.new}
       expect(rendered).to be_include(translated_name)
       expect(rendered).not_to be_include(@field.display_name)
     end
 
     it 'should not be shown' do
       I18n.backend.store_translations('en', @field.name => nil)
-      render :partial => "children/#{@field.type}", :object => @field
+      render :partial => "shared/#{@field.type}", :object => @field, :locals => {:model => Child.new}
       expect(rendered).to be_include(@field.display_name)
     end
   end

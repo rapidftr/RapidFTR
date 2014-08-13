@@ -1,17 +1,17 @@
-<% if child && child.has_valid_audio? %>
-    <% if child.audio %>
+<% if model && model.has_valid_audio? %>
+    <% if model.audio %>
         <div class="audio">
             <li>
               <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
-              <%= link_to "download", child_audio_url(child), {:id => "audio_link"} %></li>
-            <% if is_playable_in_browser(child.audio) %>
+              <%= link_to "download", child_audio_url(model), {:id => "audio_link"} %></li>
+            <% if is_playable_in_browser(model.audio) %>
                 <li>
                   <audio controls="controls" id="audio_player">
-                    <source src="<%= child_audio_url(child) %>"/>
+                    <source src="<%= child_audio_url(model) %>"/>
                     Your browser is unable to play this audio file. You can download the file using the link above.
                   </audio>
 
-                  <%= render :partial => "audio_player" %>
+                  <%= render :partial => "shared/audio_player" %>
 
                 </li>
             <% end %>

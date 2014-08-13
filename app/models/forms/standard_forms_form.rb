@@ -7,8 +7,8 @@ module Forms
       child_form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
       child_form = StandardFormsData::FormData.build(Form.new(:name => Child::FORM_NAME), child_form_sections)
 
-      enquiry_form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
-      enquiry_form = StandardFormsData::FormData.build(Form.new(:name => Enquiry::FORM_NAME), enquiry_form_sections)
+      form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
+      enquiry_form = StandardFormsData::FormData.build(Form.new(:name => Enquiry::FORM_NAME), form_sections)
 
       form = new
       form.forms = [child_form, enquiry_form]

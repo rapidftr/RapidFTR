@@ -1,0 +1,10 @@
+<p>
+  <span class="tool-tip-label">
+      <%= label_tag date_field.tag_name_attribute(model), t(date_field.name, :default => date_field.display_name), :class=>'key' %>
+
+  </span>
+  <%= text_field_tag date_field.tag_name_attribute(model), model[date_field.name] %>
+  <%= javascript_tag "$(document).ready(function(){ $(\"##{date_field.tag_id(model)}\").datepicker({ dateFormat: 'dd/mm/yy' }); });" %>
+
+  <%= image_tag "new/icon_help.png", class: 'tool-tip-icon vtip', title: date_field.help_text if date_field.help_text.present? %>
+</p>

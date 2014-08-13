@@ -22,5 +22,12 @@
   <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flag") %>
 <% end %>
 
+<p>
+  <br/>
+  <% if can? :create, Enquiry %>
+      <%= link_to t("enquiry.register_new_enquiry"), new_enquiry_path %> <br/><br/>
+  <% end %>
+</p>
+
 <br/>
 <br/>

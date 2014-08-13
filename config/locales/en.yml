@@ -123,7 +123,15 @@ en:
       reunited: "Reunited"
       flagged: "Flagged"
 
-
+  enquiry:
+    label: "Enquiries"
+    flagged_by: "Flagged By"
+    last_updated: "Last updated"
+    registered_by: "Registered by"
+    posted_from_mobile: "Posted from the mobile client at:"
+    register_new_enquiry: "Register New Enquiry"
+    messages:
+      creation_success: "Enquiry record successfully created."
   child:
     flagged_by: "Flagged By"
     last_updated: "Last updated"
@@ -577,6 +585,7 @@ en:
         at_least_one_field: "Please fill in at lease one field or upload a file"
         not_found: "Not found"
         malformed_query: "Invalid request"
+
 
       role:
         permission_presence: "Please select at least one permission"

@@ -1,0 +1,19 @@
+<%= form_tag enquiries_path, :multipart => true do %>
+
+    <div class="page-content-new">
+      <%= error_messages_for :enquiry %>
+      <div class="side-tab">
+        <%= render :partial => "shared/tabs", :object => @form_sections %>
+      </div>
+
+      <div class="side-tab-content">
+        <div class="clearfix"></div>
+        <%= render :partial => "shared/form_section", :locals => {:model => @enquiry}, :collection => @form_sections %>
+        <div class="btn_panel">
+          <%= discard_button :back %>
+          <%= submit_button %>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+<% end %>

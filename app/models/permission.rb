@@ -17,7 +17,8 @@ class Permission
                                         {:export_cpims => 'Export to CPIMS'}
   )
   ENQUIRIES = Permission.to_ordered_hash({:create => 'Create Enquiry'},
-                                         {:update => 'Update Enquiry'}
+                                         {:update => 'Update Enquiry'},
+                                         {:view => 'View Enquiries'}
   )
   FORMS = Permission.to_ordered_hash(:manage => 'Manage Forms')
   USERS = Permission.to_ordered_hash({:create_and_edit => 'Create and Edit Users'}, {:view => 'View Users'},

@@ -4,6 +4,8 @@ class Enquiry < CouchRest::Model::Base
 
   before_validation :create_criteria, :on => [:create, :update]
   before_save :find_matching_children
+  before_save :update_history, :unless => :new?
+  before_save :add_creation_history, :if => :new?
 
   property :criteria, Hash
   property :potential_matches, :default => []
@@ -14,13 +16,17 @@ class Enquiry < CouchRest::Model::Base
 
   FORM_NAME = 'Enquiries'
 
+  def initialize(*args)
+    self['histories'] = []
+    super(*args)
+  end
+
   design do
-    view :all,
-         :map => "function(doc) {
-          if (doc['couchrest-type'] == 'Enquiry') {
-            emit(doc['_id'],1);
-          }
-        }"
+    view :all, :map => "function(doc) {
+                 if (doc['couchrest-type'] == 'Enquiry') {
+                   emit(doc['_id'],1);
+                 }
+              }"
   end
 
   def validate_has_at_least_one_field_value

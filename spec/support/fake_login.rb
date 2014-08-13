@@ -8,9 +8,8 @@ module FakeLogin
 
     allow(@controller).to receive(:current_session).and_return(session)
     @controller.session[:last_access_time] = Clock.now.rfc2822
-
     allow(Role).to receive(:get).with('abcd').and_return(Role.new(:name => 'default', :permissions => [Permission::CHILDREN[:register]]))
-    allow(User).to receive(:find_by_user_name).with(user.user_name).and_return(user)
+    allow(User).to receive(:find_by_user_name).and_return(user)
     session
   end
 
@@ -36,8 +35,8 @@ module FakeLogin
   end
 
   def fake_field_worker_login
-    user = User.new(:user_name => 'fakefieldworker')
-    allow(user).to receive(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:register]])])
+    user = User.new(:user_name => 'fakefieldworker', :organisation => 'org')
+    allow(user).to receive(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:register], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:view]])])
     fake_login user
   end
 

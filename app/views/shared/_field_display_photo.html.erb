@@ -17,8 +17,8 @@ $(function() {
 
 <div class="clearfix"></div>
 <div class="thumbnails photos">
-  <% @child.photos.each do |photo| %>
-      <div class="thumbnail"><%= link_to thumbnail_tag(@child, photo.name), child_resized_photo_path(@child, photo.name || @child.current_photo_key, 328, :ts => @child.last_updated_at) %></div>
+  <% model.photos.each do |photo| %>
+      <div class="thumbnail"><%= link_to thumbnail_tag(model, photo.name), child_resized_photo_path(model, photo.name || model.current_photo_key, 328, :ts => model.last_updated_at) %></div>
   <% end %>
 </div>
 <div class="clearfix"></div>
