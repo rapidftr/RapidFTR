@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Forms::SearchForm do
 
   before :all do
-    create :form_section, fields: [
+    form = create :form, name: Child::FORM_NAME
+    create :form_section, form: form, fields: [
       build(:text_field, name: 'ftextfield', highlighted: true),
       build(:text_area_field, name: 'ftextarea', highlighted: true),
       build(:numeric_field, name: 'fnumeric'),

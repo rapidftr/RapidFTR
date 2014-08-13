@@ -173,13 +173,7 @@ class FormSection < CouchRest::Model::Base
     field.unhighlight
     save
   end
-
-  def self.highlighted_fields
-    all.map do |form_section|
-      form_section.fields.select { |field| field.is_highlighted? }
-    end.flatten
-  end
-
+  
   def section_name
     unique_id
   end
