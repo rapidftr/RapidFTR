@@ -169,7 +169,17 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
 
   @javascript
   Scenario: Adding a highlight field to enquiry form
-    Given I am on the admin page
+    Given the following forms exist in the system:
+      | name         |
+      | Enquiries    |
+      | Children     |
+    And the following form sections exist in the system on the "Enquiries" form:
+      | name              | unique_id         | editable | order | visible | perm_enabled |
+      | Enquiry Criteria  | enquiry_criteria  | false    | 1     | true    | true         |
+    And the following fields exists on "enquiry_criteria":
+      | name           | type       | display_name     | editable |
+      | criteria       | text_field | Criteria         | false    |
+    And I am on the admin page
     When I follow "Highlight Fields"
     And I follow "Enquiries"
     And I click text "add"
@@ -189,6 +199,7 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I press "Save"
     And I am on the admin page
     And I follow "Highlight Fields"
+    And I follow "Children"
     And I click text "add"
     When I select menu "Basic Identity"
     Then I should not see "Nationality"
