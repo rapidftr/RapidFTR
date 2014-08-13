@@ -155,9 +155,10 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     Then the form section "Other visible section" should be hidden
 
   @javascript
-  Scenario: Adding a highlight field
+  Scenario: Adding a highlight field to children form
     Given I am on the admin page
     When I follow "Highlight Fields"
+    And I follow "Children"
     And I click text "add"
     And I select menu "Basic Identity"
     And I select menu "Nationality"
@@ -165,6 +166,20 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
 
     When I remove highlight "Nationality"
     Then I should not see "Nationality" within "#highlighted-fields"
+
+  @javascript
+  Scenario: Adding a highlight field to enquiry form
+    Given I am on the admin page
+    When I follow "Highlight Fields"
+    And I follow "Enquiries"
+    And I click text "add"
+    And I select menu "Enquiry Criteria"
+    And I select menu "Criteria"
+    Then I should see "Criteria" within "#highlighted-fields"
+
+    When I remove highlight "Criteria"
+    Then I should not see "Criteria" within "#highlighted-fields"
+
 
   @javascript
   Scenario: A hidden highlighted field must not be visible in Child Summary

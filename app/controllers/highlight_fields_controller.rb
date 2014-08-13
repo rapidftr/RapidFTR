@@ -8,9 +8,9 @@ class HighlightFieldsController < ApplicationController
 
   def show
     @page_name = I18n.t("admin.highlight_fields")
-    form = Form.find params[:id]
-    @form_sections = form.sections
-    @highlighted_fields = form.sorted_highlighted_fields.map do |field|
+    @form = Form.find params[:id]
+    @form_sections = @form.sections
+    @highlighted_fields = @form.sorted_highlighted_fields.map do |field|
       { :field_name => field.name,
         :display_name => field.display_name,
         :order => field.highlight_information.order ,
@@ -21,14 +21,14 @@ class HighlightFieldsController < ApplicationController
   end
 
   def create
-    form = FormSection.get_by_unique_id(params[:form_id])
-    form.update_field_as_highlighted params[:field_name]
-    redirect_to highlight_fields_url
+    form_section = FormSection.get_by_unique_id(params[:form_id])
+    form_section.update_field_as_highlighted params[:field_name]
+    redirect_to highlight_field_url(form_section.form)
   end
 
   def remove
-    form = FormSection.get_by_unique_id(params[:form_id])
-    form.remove_field_as_highlighted params[:field_name]
-    redirect_to highlight_fields_url
+    form_section = FormSection.get_by_unique_id(params[:form_id])
+    form_section.remove_field_as_highlighted params[:field_name]
+    redirect_to highlight_field_url(form_section.form)
   end
 end
