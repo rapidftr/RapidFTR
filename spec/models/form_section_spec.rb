@@ -384,11 +384,14 @@ describe FormSection, :type => :model do
       it "should update field as highlighted" do
         attrs = { :field_name => "h1", :form_id => "highlight_form" }
         existing_field = Field.new :name => attrs[:field_name]
-        form = FormSection.new(:name => "Some Form",
+        form = build :form
+        form_section = FormSection.new(:name => "Some Form",
                                :unique_id => attrs[:form_id],
-                               :fields => [existing_field])
-        allow(FormSection).to receive(:all).and_return([form])
-        form.update_field_as_highlighted attrs[:field_name]
+                               :fields => [existing_field],
+                               :form => form)
+        allow(form).to receive(:highlighted_fields).and_return([])
+        allow(FormSection).to receive(:all).and_return([form_section])
+        form_section.update_field_as_highlighted attrs[:field_name]
         expect(existing_field.highlight_information.order).to eq(1)
         expect(existing_field.is_highlighted?).to be_truthy
       end
@@ -398,11 +401,14 @@ describe FormSection, :type => :model do
         existing_field = Field.new :name => attrs[:field_name]
         existing_highlighted_field = Field.new :name => "highlighted_field"
         existing_highlighted_field.highlight_with_order 3
-        form = FormSection.new(:name => "Some Form",
+        form = build :form
+        form_section = FormSection.new(:name => "Some Form",
                                :unique_id => attrs[:form_id],
-                               :fields => [existing_field, existing_highlighted_field])
-        allow(FormSection).to receive(:all).and_return([form])
-        form.update_field_as_highlighted attrs[:field_name]
+                               :fields => [existing_field, existing_highlighted_field],
+                               :form => form)
+        allow(form).to receive(:highlighted_fields).and_return([existing_highlighted_field])
+        allow(FormSection).to receive(:all).and_return([form_section])
+        form_section.update_field_as_highlighted attrs[:field_name]
         expect(existing_field.is_highlighted?).to be_truthy
         expect(existing_field.highlight_information.order).to eq(4)
       end
