@@ -370,13 +370,6 @@ describe FormSection, :type => :model do
         expect(highlighted_fields.map { |field| field.highlight_information }).
           to match_array(@high_fields.map { |field| field.highlight_information })
       end
-
-      it "should sort the highlighted fields by highlight order" do
-        sorted_highlighted_fields = FormSection.sorted_highlighted_fields
-        expect(sorted_highlighted_fields.map { |field| field.highlight_information.order }).to eq(
-          @high_fields.map { |field| field.highlight_information.order }
-        )
-      end
     end
 
     describe "highlighted fields" do

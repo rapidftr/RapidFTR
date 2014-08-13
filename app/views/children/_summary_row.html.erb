@@ -17,7 +17,7 @@
     <%= content_tag(:div, nil, :class => 'flag suspect') if child.flag? %>
     <%= content_tag(:div, nil, :class => 'flag reunited') if child.reunited? %>
 
-      <% sorted_highlighted_fields.each do |relevant_field| %>
+      <% child_sorted_highlighted_fields.each do |relevant_field| %>
         <% if relevant_field.visible? %>
         <div class="summary_item">
           <div class="key"><%= t(relevant_field.display_name) %>:</div>

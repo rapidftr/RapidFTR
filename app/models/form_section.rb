@@ -180,11 +180,6 @@ class FormSection < CouchRest::Model::Base
     end.flatten
   end
 
-  #Remove me!
-  def self.sorted_highlighted_fields
-    highlighted_fields.sort { |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
-  end
-
   def section_name
     unique_id
   end
