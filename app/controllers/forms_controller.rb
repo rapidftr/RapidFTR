@@ -1,6 +1,6 @@
 class FormsController < ApplicationController
   def index
-    @form_sections = Form.all
+    @forms = Form.all
   end
 
   def bulk_update
