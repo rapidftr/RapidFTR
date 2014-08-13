@@ -48,7 +48,7 @@ describe StandardFormsService do
         attributes = { "forms" => {
           "children" => { "user_selected" => "1", "id" => "children",
                           "sections" => {
-            "basic_identity" => {
+            "Basic Identity" => {
               "user_selected" => "1",
               "id" => "basic_identity" }
           } } } }
@@ -66,7 +66,7 @@ describe StandardFormsService do
                                     {"user_selected"=>"1",
                                      "id"=>"enquiries",
                                      "sections"=>
-                                       {"enquiry_criteria"=>
+                                       {"Enquiry Criteria"=>
                                          {"user_selected"=>"1",
                                           "id"=>"enquiry_criteria",
                                           "fields"=>{"enquirer_name"=>{"user_selected"=>"1", "id"=>"enquirer_name"}, "criteria"=>{"user_selected"=>"1", "id"=>"criteria"}}}}}}}
@@ -86,7 +86,7 @@ describe StandardFormsService do
         attributes = { "forms" => {
           "children" => { "user_selected" => "0", "id" => "children",
                           "sections" => {
-            "basic_identity" => {
+            "Basic Identity" => {
               "user_selected" => "1",
               "id" => "basic_identity" }
           } } } }
@@ -107,7 +107,7 @@ describe StandardFormsService do
               "user_selected" => "0",
               "id" => "children",
               "sections" => {
-                "photos_and_audio" => {
+                "Photos and Audio" => {
                   "user_selected" => "1",
                   "id" => "photos_and_audio"
                 }
@@ -120,6 +120,26 @@ describe StandardFormsService do
         expect(FormSection.count).to eq 2
         expect(FormSection.by_unique_id.key("photos_and_audio").first).to_not be_nil
       end
+
+      it "should persist new form sections on existing forms with existing form sections that have the same name" do
+        form = create :form, name: Child::FORM_NAME
+        create :form_section, form: form, unique_id: "basic_identity", name: "Basic Identity"
+
+        attributes = {
+          "forms" => {
+            "children" => {
+              "user_selected" => "0",
+              "id" => "children",
+              "sections" => {
+                "Basic Identity" => {
+                  "user_selected" => "1",
+                  "id" => "basic_identity"
+                } } } } }
+
+        expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
+        expect(FormSection.count).to eq 1
+        expect(FormSection.by_unique_id.key("basic_identity").first).to_not be_nil
+      end
     end
 
     describe "saving fields" do
@@ -129,7 +149,7 @@ describe StandardFormsService do
             "user_selected" => "1",
             "id" => "children",
             "sections" => {
-              "basic_identity" => {
+              "Basic Identity" => {
                 "user_selected" => "1",
                 "id" => "basic_identity",
                 "fields" => {
@@ -156,7 +176,7 @@ describe StandardFormsService do
             "user_selected" => "0",
             "id" => "children",
             "sections" => {
-              "basic_identity" => {
+              "Basic Identity" => {
                 "user_selected" => "1",
                 "id" => "basic_identity",
                 "fields" => {
@@ -184,7 +204,7 @@ describe StandardFormsService do
             "user_selected" => "0",
             "id" => "children",
             "sections" => {
-              "basic_identity" => {
+              "Basic Identity" => {
                 "user_selected" => "0",
                 "id" => "basic_identity",
                 "fields" => {
@@ -204,16 +224,17 @@ describe StandardFormsService do
         expect(section.fields.first.name).to eq("name")
       end
 
-      it "should persist existing form with existing form sections with new fields" do
+      it "should persist existing form with existing form sections with new fields based on section name" do
         form = create :form, name: Child::FORM_NAME
-        create :form_section, name: "Basic Identity", unique_id: "basic_identity", form: form
+        field = build :field
+        create :form_section, name: "Basic Identity", form: form, fields: [field]
         attributes = { "forms" => {
           "children" => {
             "user_selected" => "0",
             "id" => "children",
             "sections" => {
-              "basic_identity" => {
-                "user_selected" => "0",
+              "Basic Identity" => {
+                "user_selected" => "1",
                 "id" => "basic_identity",
                 "fields" => {
                   "name" => {
@@ -226,7 +247,6 @@ describe StandardFormsService do
         section = FormSection.first
         expect(Form.count).to eq 1
         expect(FormSection.count).to eq 1
-        expect(section.unique_id).to eq("basic_identity")
         expect(section.name).to eq("Basic Identity")
         expect(section.fields.length).to eq 2
         expect(section.fields.last.name).to eq("name")
@@ -245,7 +265,7 @@ describe StandardFormsService do
             "user_selected" => "0",
             "id" => "children",
             "sections" => {
-              "basic_identity" => {
+              "Basic Identity" => {
                 "user_selected" => "0",
                 "id" => "basic_identity",
                 "fields" => {
@@ -259,7 +279,7 @@ describe StandardFormsService do
         expect(section.fields.length).to eq 1
         expect(section.fields.last.name).to eq("name")
       end
-end
+    end
   end
 end
 
