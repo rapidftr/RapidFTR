@@ -11,7 +11,7 @@ describe FormsController, :type => :controller do
       children_form = create :form, name: Child::FORM_NAME
       fake_admin_login
       get :index
-      expect(assigns[:form_sections]).to contain_exactly(enquiry_form, children_form)
+      expect(assigns[:forms]).to contain_exactly(enquiry_form, children_form)
     end
   end
 

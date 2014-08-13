@@ -7,7 +7,7 @@
   </tr>
   </thead>
   <tbody id="highlighted-fields">
-  <% @form_sections.each do |f| %>
+  <% @forms.each do |f| %>
       <tr class="add-field-section">
         <td><%= link_to "#{f.name}", form_form_sections_path(f) %></td>
       </tr>

@@ -175,8 +175,8 @@ class FormSection < CouchRest::Model::Base
   end
 
   def self.highlighted_fields
-    all.map do |form|
-      form.fields.select { |field| field.is_highlighted? }
+    all.map do |form_section|
+      form_section.fields.select { |field| field.is_highlighted? }
     end.flatten
   end
 
