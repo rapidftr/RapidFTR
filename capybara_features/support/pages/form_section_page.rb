@@ -8,7 +8,7 @@ class FormSectionPage
   end
 
   def should_list_the_following_sections(section_names)
-    names_on_page = all(:css, "#form_sections tbody tr td a[@class='formSectionLink']").map(&:text)
+    names_on_page = all(:css, "#form_sections a.formSectionLink").map(&:text)
     expect(names_on_page).to eq(section_names)
   end
 

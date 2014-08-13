@@ -2,6 +2,7 @@
   <span id='sectionId'><%= @form_section.name %></span></h1>
 <div class="page-content-new form_page">
 <div class="side-tab-content full_width">
+  <%= link_to I18n.t("user.actions.delete") + " " + @form_section.name, form_section_path(@form_section), { method: :delete, data: { confirm: I18n.t("messages.delete_form_section") }} %>
   <%= render :partial => "form_section/form_section" %>
   <% if @form_section.editable? %>
     <h3><%= t("fields.label") %><%= link_to t("fields.add"), "javascript:void(0)", :class => "add_field" %></h3>
