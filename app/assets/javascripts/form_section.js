@@ -3,7 +3,6 @@ $(document).ready(function() {
       return;
     }
 
-    $(".form_section_delete").click(deleteFormSection);
     $("a.delete").click(deleteItem);
     $("a.add_field").click(toggleFieldPanel);
     $("ul.field_types a").click(showFieldDetails);
@@ -100,12 +99,6 @@ $(document).ready(function() {
         $('#deleteFieldName').val(fieldName);
         if (confirm(I18n.t("messages.delete_item"))) {
             $('#'+fieldName+'deleteSubmit').click();
-        }
-    }
-
-    function deleteFormSection() {
-        if (confirm(I18n.t("messages.delete_form_section"))) {
-            $('#formSectionDeleteSubmit').click();
         }
     }
 });
