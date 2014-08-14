@@ -61,7 +61,7 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
     builder (3.1.4)
-    cancancan (1.9.1)
+    cancancan (1.9.2)
     cane (2.6.2)
       parallel
     capybara (2.4.1)
