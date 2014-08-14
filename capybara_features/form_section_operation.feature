@@ -204,11 +204,13 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     When I select menu "Basic Identity"
     Then I should not see "Nationality"
 
+  @javascript
   Scenario: Admins should be able to delete a field from a form section
     When I am on the form sections page for "Children"
     And I follow "Basic Identity"
     And I follow "characteristic_Delete"
-    Then I should not see "characteristic"
+    When I click OK in the browser popup
+    Then I should not see "Characteristic field" with id "fields_characteristic"
   
   @javascript
   Scenario: Admins should be able to delete form sections
@@ -222,4 +224,4 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
       | Family Details      |
       | Care Arrangements   |
       |Other hidden section |
-      |Other visible section| 
+      |Other visible section|
