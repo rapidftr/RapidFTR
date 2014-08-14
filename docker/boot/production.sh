@@ -18,7 +18,7 @@ chown -R root:root /data/ssl
 chmod 0700 /data/ssl
 chmod 0600 /data/ssl/*
 
-# Generate random username/password for CouchDB
+echo "Securing CouchDB..."
 cd /rapidftr
 if [ ! -f config/couchdb.yml ]; then
   password=$(uuidgen | tr -d '-')
@@ -27,17 +27,20 @@ if [ ! -f config/couchdb.yml ]; then
   bundle exec rake db:create_couchdb_yml[$username,$password]
 fi
 
-# Precompile assets
+echo "Compiling assets..."
 bundle exec rake assets:clobber assets:precompile
 
-# Seed database
+echo "Seeding and migrating database..."
 runsv /etc/service/couchdb &
+sleep 5
+bundle exec rake db:seed db:migrate
+
+echo "Reindexing search..."
 runsv /etc/service/solr &
 sleep 5
-
-bundle exec rake db:seed db:migrate
 bundle exec rake sunspot:reindex
 
+echo "Normal system boot will now start..."
 sv shutdown couchdb
 sv shutdown solr
 sleep 5

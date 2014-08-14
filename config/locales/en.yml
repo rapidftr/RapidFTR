@@ -352,7 +352,7 @@ en:
       use_existing: "We encourage you to use the existing forms as this makes data sharing and data merging between institutions easier."
     initial_language: "Initial Language"
     cannot_be_edited: "Fields on this form cannot be edited."
-    add_standard_form_sections: "Add Standard Form Sections"
+    add_standard_forms: "Add Standard Forms"
 
   form_section:
     create: "Create New Form Section"
@@ -572,6 +572,7 @@ en:
         presence_of_enquirer_name: "Please add enquirer name to your enquiry"
         presence_of_reporter_details: "Please add reporter details to your enquiry"
         create_forbidden: "Forbidden"
+        at_least_one_field: "Please fill in at lease one field or upload a file"
         not_found: "Not found"
         malformed_query: "Invalid request"
 

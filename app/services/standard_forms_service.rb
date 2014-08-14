@@ -1,78 +1,65 @@
 class StandardFormsService
-  require "pry"
 
-  def self.default_form_sections_for model_name
-    if model_name == Child::FORM_NAME
-      form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
-    elsif model_name == Enquiry::FORM_NAME
-      form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
-    end
-  end
-
-  def self.default_fields_for section
-    sections = default_form_sections_for section.form.name
-    default_section = sections.find {|s| s.unique_id == section.unique_id}
-    default_section.nil? ? [] : default_section.fields
-  end
-
-  def self.default_forms
-    child_form = Form.new(name: Child::FORM_NAME)
-    child_form.sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
-    enquiry_form = Form.new(name: Enquiry::FORM_NAME)
-    enquiry_form.sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
-    [child_form, enquiry_form]
-  end
+  FORMS_KEY = "forms"
+  SECTIONS_KEY = "sections"
+  FIELDS_KEY = "fields"
+  USER_SELECTED_KEY = "user_selected"
+  USER_SELECTED = "1"
 
   def self.persist attributes_hash
-    default_forms.each do |form|
-      form_attributes = attributes_hash["forms"][form.name.downcase]
-      if !form_attributes.nil? && form_attributes["user_selected"] == "1"
-        form.sections = []
-        form.save
-      else
-        form = Form.find_by_name(form.name)
-      end
-      persist_sections(form, form_attributes) if !form.nil?
-    end
-  end
+    RapidFTR::FormSetup.default_forms.each do |form|
+      form_attr = attributes_hash.fetch(FORMS_KEY,{}).fetch(form.name.downcase,{})
+      saved_form = persist_form(form, form_attr)
 
-  def self.persist_sections form, form_attributes
-    form.reload_sections!
-    sections_attributes = form_attributes["sections"] || {}
-    form_sections = default_form_sections_for(form.name)
-    selected_section_ids = sections_attributes
-      .select {|key,attr| attr["user_selected"] == "1"}
-      .collect {|key,attr| attr["id"]}
-    form_sections.each do |section| 
-      if selected_section_ids.include? section.unique_id
-        section.form = form
-        section.save
-      end
-    end
-    form.reload_sections!
-    persist_fields form, sections_attributes
-  end
-
-  def self.persist_fields form, sections_attributes
-    form.reload_sections!
-    form.sections.each do |section|
-      section_attr = sections_attributes.nil? ? {} : sections_attributes[section.unique_id]
-      if !section_attr.nil? && !section_attr.empty?
-        fields = section_attr["fields"] || {}
-        new_fields = selected_fields(fields, default_fields_for(section))
-        if section_attr["user_selected"] == "1"
-          section.fields = new_fields
-        else
-          section.merge_fields! new_fields
+      if !saved_form.nil?
+        sections_attr = form_attr.fetch(SECTIONS_KEY,{})
+        saved_sections = persist_sections(saved_form, sections_attr)
+        
+        saved_sections.each do |s|
+          fields_attr = sections_attr.fetch(s.name,{}).fetch(FIELDS_KEY,{})
+          persist_fields(s, fields_attr)
         end
-        section.save
       end
     end
   end
 
-  def self.selected_fields fields_attributes={}, default_fields=[]
-    user_selected_fields = fields_attributes.select { |key,field| field["user_selected"] == "1"} 
-    user_selected_field_ids = user_selected_fields.collect {|key,field| field["id"]}
-    default_fields.select {|field| user_selected_field_ids.include? field.name }
+  def self.persist_form form, attributes
+    form.save if selected_by_user(attributes)
+    Form.find_by_name(form.name)
+  end
+
+  def self.persist_sections form, sections_attributes
+    sections_to_persist(form, sections_attributes).each do |section|
+      section.form = form
+      section.fields = []
+      section.save
+    end
+    form.reload_sections!
+    form.sections
+  end
+
+  def self.persist_fields section, fields_attributes
+    section.merge_fields! fields_to_persist(section, fields_attributes)
+    section.save
+  end
+
+  private
+
+  def self.selected_by_user(attr)
+    !attr.nil? && attr[USER_SELECTED_KEY] == USER_SELECTED
+  end
+
+  def self.fields_to_persist section, fields_attributes={}
+    RapidFTR::FormSetup.default_fields_for(section).select do |field|
+      fields_attributes[field.name] &&
+        selected_by_user(fields_attributes[field.name])
+    end
+  end
+
+  def self.sections_to_persist form, sections_attributes
+    RapidFTR::FormSetup.default_sections_for(form.name).select do |section|
+      sections_attributes[section.name] &&
+        selected_by_user(sections_attributes[section.name])
+    end
   end
 end

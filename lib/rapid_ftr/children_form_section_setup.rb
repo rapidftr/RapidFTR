@@ -5,22 +5,27 @@ module RapidFTR
     def self.build_form_sections
       form_sections = []
       form_sections << build_basic_identity_section
-      form_sections << build_interview_details_section
-      form_sections << build_other_interviews_section
-      form_sections << build_other_tracing_info_section
-      form_sections << build_child_wishes_section
-      form_sections << build_protection_concerns_section
-      form_sections << build_separation_history_section
-      form_sections << build_current_arrangements_section
-      form_sections << build_family_details_section
-      form_sections << build_photo_audio_section 
+      unless Rails.env.test? or Rails.env.cucumber?
+        form_sections << build_interview_details_section
+        form_sections << build_other_interviews_section
+        form_sections << build_other_tracing_info_section
+        form_sections << build_child_wishes_section
+        form_sections << build_protection_concerns_section
+        form_sections << build_separation_history_section
+        form_sections << build_current_arrangements_section
+        form_sections << build_family_details_section
+      end
+      form_sections << build_photo_audio_section
+    end
+
+    def self.reset_form
+      FormSection.all.each { |f| f.destroy  if f.form.name == Child::FORM_NAME }
+      Form.all.each { |f| f.destroy  if f.name == Child::FORM_NAME }
+      Form.create({ name: Child::FORM_NAME })
     end
 
     def self.reset_definitions
-      FormSection.all.each { |f| f.destroy  if f.form.name == Child::FORM_NAME }
-      Form.all.each { |f| f.destroy  if f.name == Child::FORM_NAME }
-      form = Form.create({ name: Child::FORM_NAME })
-
+      form = reset_form
       build_form_sections.each do |fs|
         fs.form = form
         fs.save
@@ -104,7 +109,7 @@ module RapidFTR
                      "help_text_all" => "Such as key persons/location in the life of the child who/which might provide information about the location of the sought family -- e.g. names of religious leader, market place, etc. Please ask the child where he/she thinks relatives and siblings might be, and if the child is in contact with any family friends. Include any useful information the caregiver provides.",
                     }),
       ]
-      
+
       FormSection.new({"visible" => true, :order => 8,
                        :unique_id => "other_tracing_info", :fields => other_tracing_info_fields,
                        "name_all" => "Other Tracing Info",
@@ -204,7 +209,7 @@ module RapidFTR
                      "display_name_all" => "Please explain why"
                     }),
       ]
-      
+
       FormSection.new({"visible" => true, :order => 6,
                        :unique_id => "childs_wishes", :fields => child_wishes_fields,
                        "name_all" => "Child's Wishes",
@@ -262,7 +267,7 @@ module RapidFTR
                      "display_name_all" => "Please specify follow-up needs."
                     }),
       ]
-      
+
       FormSection.new({"visible" => true, :order => 5,
                        :unique_id => "protection_concerns", :fields => protection_concerns_fields,
                        "name_all" => "Protection Concerns",
@@ -358,7 +363,7 @@ module RapidFTR
     end
 
     def self.build_family_details_section
-      family_details_fields = [  
+      family_details_fields = [
           Field.new({"name" => "fathers_name",
                      "type" => "text_field",
                      "display_name_all" => "Father's Name"

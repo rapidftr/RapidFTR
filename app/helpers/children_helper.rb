@@ -87,4 +87,8 @@ module ChildrenHelper
     end
     return options
   end
+
+  def child_sorted_highlighted_fields
+    Form.find_by_name(Child::FORM_NAME).sorted_highlighted_fields
+  end
 end

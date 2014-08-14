@@ -1,5 +1,9 @@
 <%= form_for(:default_forms, url: standard_forms_path) do |f| %>
+<<<<<<< HEAD
   <ul id="form-checkboxes">
+=======
+  <ul class="standard_form_checkboxes">
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
     <% @default_forms.forms.each do |form_data| %>
       <%= f.fields_for "[forms]", form_data, {index: form_data.id} do |ff| %>
         <li>
@@ -7,16 +11,28 @@
             <%= ff.check_box :user_selected, { checked: form_data.disabled, disabled: form_data.disabled } %>
             <%= ff.hidden_field :id %>
             <%= ff.label form_data.name %>
+<<<<<<< HEAD
           <h1>
+=======
+          </h1>
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
           <ul>
             <% form_data.sections.each do |section| %>
               <%= ff.fields_for "[sections]", section, {index: section.id} do |ffs| %>
                 <li>
+<<<<<<< HEAD
+=======
+                  <br>
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
                   <h2>
                     <%= ffs.check_box  :user_selected, { checked: section.disabled, disabled: section.disabled } %>
                     <%= ffs.hidden_field :id %>
                     <%= ffs.label section.name %>
+<<<<<<< HEAD
                   <h2>
+=======
+                  </h2>
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
                   <ul>
                     <% section.fields.each do |field| %>
                       <%= ffs.fields_for "[fields]", field, {index: field.id} do |ffsf| %>
@@ -33,15 +49,24 @@
             <% end %>
           </ul>
         </li>
+<<<<<<< HEAD
+=======
+        <br>
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
       <% end %>
     <% end %>
   <ul>
 
+<<<<<<< HEAD
   <%= f.submit t('buttons.save') %>
+=======
+  <%= f.submit t('buttons.save'), {class: 'btn_submit'} %>
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
 <% end %>
 
 <%= javascript_tag do %>
   $(document).ready(function() {
+<<<<<<< HEAD
     $('#form-checkboxes').bonsai({
       expandAll: true,
       checkboxes: true
@@ -56,6 +81,31 @@
             parentCheckBox.prop('checked', true);
           }
         });
+=======
+    function checkAllChildrenBoxes(element) {
+      var newValue = $(element).prop('checked');
+      var childrenInputs = $(element).parents('li:first').find("ul input[type=checkbox]");
+      childrenInputs.each(function (index, inputElement) {
+        var jqInput = $(inputElement);
+        jqInput.prop('checked', newValue);
+      });
+    }
+
+    function checkAllParentBoxes(element) {
+      var parentListElements = $(element).parents('li:first').parents('li');
+      parentListElements.each(function (index, listElement) {
+        var parentCheckBox = $($(listElement).find('input[type=checkbox]:first'));
+        if(parentCheckBox && !parentCheckBox.prop('checked')) {
+          parentCheckBox.prop('checked', true);
+        }
+      });
+    }
+
+    $('input[type="checkbox"]').each(function(index, el) {
+      $(el).click(function() {
+        checkAllParentBoxes(this);
+        checkAllChildrenBoxes(this);
+>>>>>>> f74e633b1d180b3d0a555cf379cab3b67346c793
       });
     });
   });

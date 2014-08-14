@@ -2,26 +2,38 @@ class Enquiry < CouchRest::Model::Base
   use_database :enquiry
   include RecordHelper
 
+  before_validation :create_criteria, on: [:create, :update]
   before_save :find_matching_children
 
-  property :enquirer_name
   property :criteria, Hash
   property :potential_matches, :default => []
   property :match_updated_at, :default => ""
 
 
-  validates_presence_of :enquirer_name, :message => I18n.t("errors.models.enquiry.presence_of_enquirer_name")
   validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
+  validate :validate_has_at_least_one_field_value
 
   FORM_NAME = "Enquiries"
 
   design do
     view :all,
-      :map => "function(doc) {
+         :map => "function(doc) {
           if (doc['couchrest-type'] == 'Enquiry') {
             emit(doc['_id'],1);
           }
         }"
+  end
+
+  def validate_has_at_least_one_field_value
+    return true if field_definitions_for(Enquiry::FORM_NAME).any? { |field| is_filled_in?(field) }
+    errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.enquiry.at_least_one_field"))
+  end
+
+  def method_missing(m, *args)
+    if m.to_s.match(/=$/)
+      return self[m.to_s[0..-2]] = args[0]
+    end
+    self[m]
   end
 
   def self.new_with_user_name (user, *args)
@@ -63,6 +75,14 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
+
+  def create_criteria
+    self.criteria = {}
+    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| is_filled_in?(field) };
+    fields.each do |field|
+      self.criteria.store(field.name, self[field.name])
+    end
+  end
 
   def verify_format_of(previous_matches)
     unless previous_matches.is_a?(Array)

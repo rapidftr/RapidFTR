@@ -46,15 +46,10 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.persist attributes_hash, form
-        if(attributes_hash["user_selected"])
-        end
-      end
-
-      def self.build section, existing_form
-        id = section.unique_id
+     def self.build section, existing_form
+        id = section.name
         name = section.name
-        existing_section = FormSection.all.all.find {|fs| !existing_form.nil? && fs.form == existing_form && fs.unique_id == section.unique_id}
+        existing_section = FormSection.all.all.find {|fs| !existing_form.nil? && fs.form == existing_form && fs.name == section.name }
         disabled = !existing_section.nil?
         data_fields = []
         section.fields.each do |field|

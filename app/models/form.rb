@@ -3,7 +3,6 @@ class Form < CouchRest::Model::Base
   use_database :form
 
   property :name
-
   attr_accessor :sections
 
   design do
@@ -30,5 +29,15 @@ class Form < CouchRest::Model::Base
   def sections=(sections)
     sections.each {|s| s.form = self}
     @sections = sections
+  end
+
+  def highlighted_fields
+    sections.map do |form_section|
+      form_section.fields.select { |field| field.is_highlighted? }
+    end.flatten
+  end
+
+  def sorted_highlighted_fields
+    highlighted_fields.sort { |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
   end
 end
