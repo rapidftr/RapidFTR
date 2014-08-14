@@ -2,8 +2,8 @@
                         :header_tag => :h3,
                         :header_message => t("form_section.messages.cannot_create"),
                         :message => t('form_section.messages.correct_errors') %>
-  <%= form_for @form_section, :url => url_for_form_section(@form_section, @form), :html => {:class => ""} do |f| %>
-    <div class="form_details_panel">
+  <div class="form_details_panel">
+    <%= form_for @form_section, :url => url_for_form_section(@form_section, @form), :html => {:class => ""} do |f| %>
       <div class="default_lang_panel">
         <div class="lang_title">
           <%= t("forms.initial_language") %> : <span><%= t("home.#{I18n.default_locale}") %></span>
@@ -45,5 +45,5 @@
         <%= cancel_button(form_form_sections_path(@form.id)) %>
         <%= submit_button t("forms.save_details") %>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>

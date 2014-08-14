@@ -597,6 +597,14 @@ body {
 }
 
 .form_page{
+  .form_delete {
+    position: absolute;
+    margin-top: -36px;
+    padding: 0 0 0 15px;
+    text-decoration: underline;
+    color: red;
+  }
+
   .form_details_panel{
     background: #eee;
     border:1px solid #ddd;
