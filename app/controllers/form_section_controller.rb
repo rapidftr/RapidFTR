@@ -74,4 +74,15 @@ class FormSectionController < ApplicationController
     @form_section = FormSection.new(params[:form_section])
   end
 
+  def destroy
+    authorize! :update, FormSection
+
+    @form_section = FormSection.get_by_unique_id(params[:id])
+    @form_section.destroy
+    form = @form_section.form
+
+    flash[:notice] = t("form_section.messages.deleted", :display_name => @form_section.name)
+    redirect_to form_form_sections_path form
+  end
+
 end
