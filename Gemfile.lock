@@ -160,7 +160,7 @@ GEM
     prawn-core (0.8.4)
     prawn-layout (0.8.4)
     prawn-security (0.8.4)
-    progress_bar (1.0.2)
+    progress_bar (1.0.3)
       highline (~> 1.6.1)
       options (~> 2.3.0)
     pry (0.10.0)
