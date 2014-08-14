@@ -287,7 +287,7 @@ GEM
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    uuidtools (2.1.4)
+    uuidtools (2.1.5)
     validatable (1.6.7)
     websocket (1.0.7)
     will_paginate (3.0.7)
