@@ -4,12 +4,17 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = '2'
 
-if !Vagrant.has_plugin?('vagrant-omnibus')
-  puts "The vagrant-omnibus plugin is required. Please install it with:"
-  puts "$ vagrant plugin install vagrant-omnibus"
-  exit
-end
+# Check required plugins
+REQUIRED_PLUGINS = %w(vagrant-omnibus vagrant-faster)
+exit unless REQUIRED_PLUGINS.all?{ |plugin|
+  Vagrant.has_plugin?(plugin) || (
+    puts "The #{plugin} plugin is required. Please install it with:"
+    puts "$ vagrant plugin install #{plugin}"
+    false
+  )
+}
 
+# Update infrastructure
 if !Dir['infrastructure/site-cookbooks']
   system('git submodule update --init')
 end
