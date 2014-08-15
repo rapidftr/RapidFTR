@@ -47,7 +47,7 @@ namespace :scheduler do
     require 'rufus/scheduler'
     logger = Rails.logger = Logger.new(STDOUT, Rails.logger.level)
 
-    scheduler = Rufus::Scheduler.start_new
+    scheduler = Rufus::Scheduler.new
 
     Replication.schedule scheduler
     WeeklyReport.schedule scheduler
