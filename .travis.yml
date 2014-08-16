@@ -15,6 +15,6 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr] sunspot:solr:start"
 script:
-  - "bundle exec rake quality spec cucumber coveralls:push"
+  - "bundle exec rake spec:all coveralls:push"
 notifications:
   - email: false
