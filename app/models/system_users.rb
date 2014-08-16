@@ -17,11 +17,11 @@ class SystemUsers < CouchRest::Model::Base
 
   design do
     view :all,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'SystemUsers') {
-                    emit(doc['_id'],1);
-                }
-            }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'SystemUsers') {
+                 emit(doc['_id'],1);
+             }
+         }"
   end
 
   private

@@ -256,10 +256,10 @@ describe StandardFormsService do
         form = create :form, name: Child::FORM_NAME
         field = build :field, name: "name"
         create :form_section,
-          name: "Basic Identity",
-          unique_id: "basic_identity",
-          form: form,
-          fields: [field]
+               name: "Basic Identity",
+               unique_id: "basic_identity",
+               form: form,
+               fields: [field]
         attributes = { "forms" => {
           "children" => {
             "user_selected" => "0",

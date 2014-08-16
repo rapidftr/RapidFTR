@@ -10,12 +10,12 @@ class LogEntry < CouchRest::Model::Base
 
   design do
     view :by_created_at,
-          :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'LogEntry') && doc['created_at'])
-                {
-                     emit(doc['created_at'],doc);
-                }
-          }"
+         :map => "function(doc) {
+               if ((doc['couchrest-type'] == 'LogEntry') && doc['created_at'])
+               {
+                    emit(doc['created_at'],doc);
+               }
+         }"
   end
 
 end

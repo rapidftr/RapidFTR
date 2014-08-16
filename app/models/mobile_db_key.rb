@@ -8,12 +8,12 @@ class MobileDbKey < CouchRest::Model::Base
 
   design do
     view :by_imei,
-            :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'MobileDbKey') && doc['imei'])
-               {
-                  emit(doc['imei'],doc);
-               }
-            }"
+         :map => "function(doc) {
+             if ((doc['couchrest-type'] == 'MobileDbKey') && doc['imei'])
+            {
+               emit(doc['imei'],doc);
+            }
+         }"
   end
 
   def self.find_or_create_by_imei(imei)

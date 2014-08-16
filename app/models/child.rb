@@ -115,34 +115,34 @@ class Child < CouchRest::Model::Base
       view :by_duplicate_of
 
       view :by_flag,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('flag'))
-                {
-                    if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
-                    emit(doc['flag'],doc);
-                    }
-                }
-            }"
+           :map => "function(doc) {
+                 if (doc.hasOwnProperty('flag'))
+                 {
+                     if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                     emit(doc['flag'],doc);
+                     }
+                 }
+             }"
 
 
       view :by_user_name,
-      :map => "function(doc) {
-        if (doc.hasOwnProperty('histories')){
-            for(var index=0; index<doc['histories'].length; index++){
-                emit(doc['histories'][index]['user_name'], doc)
-            }
-        }
-        }"
+           :map => "function(doc) {
+             if (doc.hasOwnProperty('histories')){
+                 for(var index=0; index<doc['histories'].length; index++){
+                     emit(doc['histories'][index]['user_name'], doc)
+                 }
+             }
+             }"
 
       # TODO: Use Child.database.documents['rows'] and map that instead
       #   (unless this map function needs to do further filtering by duplicate/etc)
       #   Firstly, do we even need to sync duplicate records?
       view :by_ids_and_revs,
-          :map => "function(doc) {
-        if (doc['couchrest-type'] == 'Child'){
-        emit(doc._id, {_id: doc._id, _rev: doc._rev});
-        }
-      }"
+           :map => "function(doc) {
+         if (doc['couchrest-type'] == 'Child'){
+         emit(doc._id, {_id: doc._id, _rev: doc._rev});
+         }
+       }"
   end
 
   def compact

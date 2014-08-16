@@ -108,12 +108,6 @@ Rails/Validation:
 Style/AccessorMethodName:
   Enabled: false
 
-# Offense count: 23
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/AlignParameters:
-  Enabled: false
-
 # Offense count: 43
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

@@ -32,56 +32,56 @@ class User < CouchRest::Model::Base
   design do
 
     view :by_user_name,
-            :map => "function(doc) {
-                  if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-                  {
-                       emit(doc['user_name'],doc);
-                  }
-            }"
+         :map => "function(doc) {
+               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+               {
+                    emit(doc['user_name'],doc);
+               }
+         }"
 
     view :by_full_name,
-            :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'User') && doc['full_name'])
-                {
-                  emit(doc['full_name'],doc);
-                }
-            }"
+         :map => "function(doc) {
+             if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+             {
+               emit(doc['full_name'],doc);
+             }
+         }"
 
     view :by_user_name_filter_view,
-            :map => "function(doc) {
-                  if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-                  {
-                      emit(['all',doc['user_name']],doc);
-                      if(doc['disabled'] == 'false' || doc['disabled'] == false)
-                        emit(['active',doc['user_name']],doc);
-                  }
-            }"
+         :map => "function(doc) {
+               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+               {
+                   emit(['all',doc['user_name']],doc);
+                   if(doc['disabled'] == 'false' || doc['disabled'] == false)
+                     emit(['active',doc['user_name']],doc);
+               }
+         }"
     view :by_full_name_filter_view,
-            :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'User') && doc['full_name'])
-                {
-                  emit(['all',doc['full_name']],doc);
-                  if(doc['disabled'] == 'false' || doc['disabled'] == false)
-                    emit(['active',doc['full_name']],doc);
+         :map => "function(doc) {
+             if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+             {
+               emit(['all',doc['full_name']],doc);
+               if(doc['disabled'] == 'false' || doc['disabled'] == false)
+                 emit(['active',doc['full_name']],doc);
 
-                }
-            }"
+             }
+         }"
 
     view :by_unverified,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
-                 {
-                    emit(doc);
-                 }
-             }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
+              {
+                 emit(doc);
+              }
+          }"
 
     view :by_share_contact_info,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
-                 {
-                    emit(doc);
-                 }
-             }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
+              {
+                 emit(doc);
+              }
+          }"
   end
 
 
