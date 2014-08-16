@@ -8,7 +8,7 @@ describe FormSection, :type => :model do
     @create_formsection = FormSection.new stubs
   end
 
-  def new_should_be_called_with (name, value)
+  def new_should_be_called_with(name, value)
     expect(FormSection).to receive(:new) { |form_section_hash|
       expect(form_section_hash[name]).to eq(value)
     }

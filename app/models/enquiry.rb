@@ -35,7 +35,7 @@ class Enquiry < CouchRest::Model::Base
     self[m]
   end
 
-  def self.new_with_user_name (user, *args)
+  def self.new_with_user_name(user, *args)
     enquiry = new *args
     enquiry.set_creation_fields_for(user)
     enquiry

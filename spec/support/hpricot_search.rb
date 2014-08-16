@@ -39,7 +39,7 @@ module HpricotSearch
     search("#form_sections tr")
   end
 
-  def form_section_row_for (form_section_id)
+  def form_section_row_for(form_section_id)
     at("##{form_section_id}_row")
   end
 
@@ -63,15 +63,15 @@ module HpricotSearch
     at("#formFields")
   end
 
-  def form_field_for (field_id)
+  def form_field_for(field_id)
     at("##{field_id}Row")
   end
 
-  def link_for (link_title)
+  def link_for(link_title)
     search("a[text()=\"#{link_title}\"]")
   end
 
-  def submit_for (submit_text)
+  def submit_for(submit_text)
     search("input[@value='#{submit_text}']")
   end
 end
