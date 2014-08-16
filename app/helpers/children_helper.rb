@@ -49,7 +49,7 @@ module ChildrenHelper
   end
 
   def duplicate_message
-    raw ("This record has been marked as a duplicate and is no longer active. To see the Active record click #{link_to 'here', child_path(@child.duplicate_of)}.")
+    raw("This record has been marked as a duplicate and is no longer active. To see the Active record click #{link_to 'here', child_path(@child.duplicate_of)}.")
   end
 
   def field_value_for_display(field_value)

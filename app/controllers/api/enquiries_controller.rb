@@ -52,7 +52,7 @@ class Api::EnquiriesController < Api::ApiController
 
   def show
     authorize! :show, Enquiry
-    enquiry = Enquiry.get (params[:id])
+    enquiry = Enquiry.get(params[:id])
     if !enquiry.nil?
       render :json => enquiry
     else

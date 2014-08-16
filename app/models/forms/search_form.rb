@@ -43,19 +43,19 @@ module Forms
         search.fulltext_by [criterion[:field]], criterion[:value]
       end if criteria.count > 0
 
-      search.fulltext_by [:created_organisation], @system_criteria[:created_by_organisation_value] if @system_criteria[:created_by_organisation_value].present?
-      search.fulltext_by [:created_by, :created_by_full_name], @system_criteria[:created_by_value] if @system_criteria[:created_by_value].present?
-      search.fulltext_by [:last_updated_by, :last_updated_by_full_name], @system_criteria[:updated_by_value] if @system_criteria[:updated_by_value].present?
+      search.fulltext_by([:created_organisation], @system_criteria[:created_by_organisation_value]) if @system_criteria[:created_by_organisation_value].present?
+      search.fulltext_by([:created_by, :created_by_full_name], @system_criteria[:created_by_value]) if @system_criteria[:created_by_value].present?
+      search.fulltext_by([:last_updated_by, :last_updated_by_full_name], @system_criteria[:updated_by_value]) if @system_criteria[:updated_by_value].present?
 
-      search.less_than :created_at, @system_criteria[:created_at_before_value] if @system_criteria[:created_at_before_value].present?
-      search.greater_than :created_at, @system_criteria[:created_at_after_value] if @system_criteria[:created_at_after_value].present?
-      search.less_than :last_updated_at, @system_criteria[:updated_at_before_value] if @system_criteria[:updated_at_before_value].present?
-      search.greater_than :last_updated_at, @system_criteria[:updated_at_after_value] if @system_criteria[:updated_at_after_value].present?
+      search.less_than(:created_at, @system_criteria[:created_at_before_value]) if @system_criteria[:created_at_before_value].present?
+      search.greater_than(:created_at, @system_criteria[:created_at_after_value]) if @system_criteria[:created_at_after_value].present?
+      search.less_than(:last_updated_at, @system_criteria[:updated_at_before_value]) if @system_criteria[:updated_at_before_value].present?
+      search.greater_than(:last_updated_at, @system_criteria[:updated_at_after_value]) if @system_criteria[:updated_at_after_value].present?
 
-      search.fulltext_by (Form.find_by_name(Child::FORM_NAME).highlighted_fields.collect(&:name)) + [:unique_identifier, :short_id], @query if @query.present?
+      search.fulltext_by((Form.find_by_name(Child::FORM_NAME).highlighted_fields.collect(&:name)) + [:unique_identifier, :short_id], @query) if @query.present?
 
-      search.created_by ability.user unless ability.can? :view_all, Child
-      search.paginated (params[:page] || 1).to_i, (params[:per_page] || PER_PAGE).to_i
+      search.created_by(ability.user) unless ability.can?(:view_all, Child)
+      search.paginated((params[:page] || 1).to_i, (params[:per_page] || PER_PAGE).to_i)
 
       @results = search.results
     end

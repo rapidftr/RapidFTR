@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'shared/_header_links.html.erb', :type => :view do
   let(:permissions) { [] }
-  let (:form) { create :form }
+  let(:form) { create :form }
   let(:user) { stub_model User, :id => 'test_id', :user_name => 'test_user', :permissions => permissions }
 
   subject do
