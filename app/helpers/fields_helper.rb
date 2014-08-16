@@ -1,7 +1,7 @@
 module FieldsHelper
 
   def display_options field
-    field.option_strings.collect { |f| '"'+f+'"' }.join(", ")
+    field.option_strings.collect { |f| '"' + f + '"' }.join(", ")
   end
 
   def form_sections_for_display form

@@ -353,11 +353,6 @@ Style/SpaceAfterMethodName:
 Style/SpaceAroundEqualsInParameterDefault:
   Enabled: false
 
-# Offense count: 311
-# Cop supports --auto-correct.
-Style/SpaceAroundOperators:
-  Enabled: false
-
 # Offense count: 969
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.

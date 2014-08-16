@@ -11,7 +11,7 @@ module ChildrenHelper
   ORDER_BY = {'active' => 'created_at', 'all' => 'created_at', 'reunited' => 'reunited_at', 'flag' => 'flag_at'}
 
   def thumbnail_tag(child, key = nil)
-    image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt=> child['name'])
+    image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt => child['name'])
   end
 
   def link_to_photo_with_key(key)
@@ -36,12 +36,12 @@ module ChildrenHelper
   def flag_message
     user = @child.histories.select { |h| h["changes"]["flag"] }.first["user_name"]
     message = (@child.flag_message.blank? && "") || ": \"#{@child.flag_message}\""
-    I18n.t("child.flagged_as_suspected")+" #{user}#{message}"
+    I18n.t("child.flagged_as_suspected") + " #{user}#{message}"
   end
 
   def flag_summary_for_child(child)
     flag_history = child["histories"].select { |h| h["changes"].keys.include?("flag") }.first
-    "<b>"+ I18n.t("child.flagged_by")+" </b>"+ flag_history["user_name"] +"<b> "+I18n.t("preposition.on_label")+"</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> "+I18n.t("preposition.because")+"</b> "+ child["flag_message"]
+    "<b>" + I18n.t("child.flagged_by") + " </b>" + flag_history["user_name"] + "<b> " + I18n.t("preposition.on_label") + "</b> " + current_user.localize_date(flag_history["datetime"]) + "<b> " + I18n.t("preposition.because") + "</b> " + child["flag_message"]
   end
 
   def reunited_message

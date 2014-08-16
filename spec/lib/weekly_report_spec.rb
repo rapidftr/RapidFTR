@@ -8,7 +8,7 @@ describe WeeklyReport do
         Field.new("name" => "ftr_status", "display_name" => "FTR Status", "type" => "select_box", "option_strings_text" => "Identified\nVerified\nTracing On-Going\nFamily Located-Cross-Border FR Pending\nFamily Located- Inter-Camp FR Pending\nReunited\nExported to CPIMS\nRecord Invalid"),
         Field.new("name" => "gender", "display_name" => "Sex", "type" => "select_box", "option_strings_text" => "Male\nFemale"),
       ]
-      create :form_section, "name" =>"Basic Identity", "visible"=>true, :order=> 1, :unique_id=>"basic_identity", "editable"=>true, :fields => basic_identity_fields, :perm_enabled => true
+      create :form_section, "name" => "Basic Identity", "visible" => true, :order => 1, :unique_id => "basic_identity", "editable" => true, :fields => basic_identity_fields, :perm_enabled => true
 
       @user = User.new(:user_name => "faris")
       @child1 = Child.new_with_user_name(@user, {:name => "childOne", :protection_status => "Unaccompanied", :gender => "Male", :ftr_status => "Identified"}).save!

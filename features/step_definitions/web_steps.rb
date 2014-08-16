@@ -238,7 +238,7 @@ Then /^show me the page$/ do
 end
 
 When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
-  fill_in field, :with=>("x" * length.to_i)
+  fill_in field, :with => ("x" * length.to_i)
 end
 
 Then /^I should see the order (.+)$/ do |input|
@@ -273,7 +273,7 @@ Then /^I should see first (\d+) records in the search results$/ do |arg1|
 end
 
 When /^I goto the "(.*?)"$/ do |text|
-  find(:xpath,"//a[@class='"+text+"']").click
+  find(:xpath,"//a[@class='" + text + "']").click
 end
 
 Then /^I should see next records in the search results$/ do
@@ -281,11 +281,11 @@ Then /^I should see next records in the search results$/ do
 end
 
 Then /^I should see link to "(.*?)"$/ do |text|
-  expect(page).to have_xpath("//span[@class='"+text+"']")
+  expect(page).to have_xpath("//span[@class='" + text + "']")
 end
 
 Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
-  tab_element = page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='"+tab_name+"']")
+  tab_element = page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='" + tab_name + "']")
   expect(tab_element).to eq(!not_visible)
 end
 
@@ -300,7 +300,7 @@ When /^I go and press "([^"]*)"$/ do |arg|
 end
 
 Then /^"([^"]*)" option should be unavailable to me$/ do |element|
-  expect(page).to have_no_xpath("//span[@class='"+element+"']")
+  expect(page).to have_no_xpath("//span[@class='" + element + "']")
 end
 
 Then /^password prompt should be enabled$/ do
@@ -332,11 +332,11 @@ Then /^I should see option group "(.*)"$/ do |group|
 end
 
 When /^I select the "([^"]*)"$/ do |element|
-  find("//div[@class='"+element+"']").click
+  find("//div[@class='" + element + "']").click
 end
 
 When /^I can download the "([^"]*)"$/ do |item|
-  find("//a[@id='"+item+"']").click
+  find("//a[@id='" + item + "']").click
 end
 
 When /^I click OK in the browser popup$/ do

@@ -4,7 +4,7 @@ require 'spec_helper'
 describe FormSection, :type => :model do
 
   def create_formsection(stubs={})
-    stubs.reverse_merge!(:fields=>[], :save => true, :editable => true, :base_language => "en")
+    stubs.reverse_merge!(:fields => [], :save => true, :editable => true, :base_language => "en")
     @create_formsection = FormSection.new stubs
   end
 
@@ -97,7 +97,7 @@ describe FormSection, :type => :model do
     it "should retrieve formsection by unique id" do
       expected = FormSection.new
       unique_id = "fred"
-      allow(FormSection).to receive(:by_unique_id).with(:key=>unique_id).and_return([expected])
+      allow(FormSection).to receive(:by_unique_id).with(:key => unique_id).and_return([expected])
       expect(FormSection.get_by_unique_id(unique_id)).to eq(expected)
     end
 
@@ -130,7 +130,7 @@ describe FormSection, :type => :model do
 
     it "adds base_language to fields in formsection" do
       field = build :text_area_field, name: "name"
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save=>true
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields[2]).to have_key("base_language")
     end
@@ -154,7 +154,7 @@ describe FormSection, :type => :model do
 
     it "adds the textarea to the formsection" do
       field = build :text_area_field, name: "name"
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save=>true
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields.length).to eq(3)
       expect(formsection.fields[2]).to eq(field)
@@ -173,7 +173,7 @@ describe FormSection, :type => :model do
 
     it "adds the select drop down to the formsection" do
       field = build(:select_box_field)
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save=>true
+      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields.length).to eq(3)
       expect(formsection.fields[2]).to eq(field)
@@ -239,14 +239,14 @@ describe FormSection, :type => :model do
   describe "delete_field" do
     it "should delete editable fields" do
       @field = build :field
-      form_section = FormSection.new :fields=>[@field]
+      form_section = FormSection.new :fields => [@field]
       form_section.delete_field(@field.name)
       expect(form_section.fields).to be_empty
     end
 
     it "should not delete uneditable fields" do
       @field = build(:field, editable: false)
-      form_section = FormSection.new :fields=>[@field]
+      form_section = FormSection.new :fields => [@field]
       expect { form_section.delete_field(@field.name) }.to raise_error("Uneditable field cannot be deleted")
     end
   end
@@ -274,7 +274,7 @@ describe FormSection, :type => :model do
     end
 
     it "should set the order to one plus maximum order value" do
-      allow(FormSection).to receive(:by_order).and_return([FormSection.new(:order=>20), FormSection.new(:order=>10), FormSection.new(:order=>40)])
+      allow(FormSection).to receive(:by_order).and_return([FormSection.new(:order => 20), FormSection.new(:order => 10), FormSection.new(:order => 40)])
       new_should_be_called_with :order, 41
       FormSection.new_with_order({:name => "basic"})
     end
@@ -289,28 +289,28 @@ describe FormSection, :type => :model do
     end
 
     it "should not allows empty form names in form base_language " do
-      form_section = FormSection.new(:name_en => 'English', :name_zh=>'Chinese')
-      I18n.default_locale='zh'
+      form_section = FormSection.new(:name_en => 'English', :name_zh => 'Chinese')
+      I18n.default_locale = 'zh'
       expect {
-        form_section[:name_en]=''
+        form_section[:name_en] = ''
         form_section.save!
       }.to raise_error
     end
 
     it "should validate name is alpha_num" do
-      form_section = FormSection.new(:name=> "r@ndom name!")
+      form_section = FormSection.new(:name => "r@ndom name!")
       expect(form_section).not_to be_valid
       expect(form_section.errors[:name]).to be_present
     end
 
     it "should not allow name with white spaces only" do
-      form_section = FormSection.new(:name=> "     ")
+      form_section = FormSection.new(:name => "     ")
       expect(form_section).not_to be_valid
       expect(form_section.errors[:name]).to be_present
     end
 
     it "should allow arabic names" do
-      form_section = FormSection.new(:name=>"العربية")
+      form_section = FormSection.new(:name => "العربية")
       expect(form_section).to be_valid
       expect(form_section.errors[:name]).not_to be_present
     end
@@ -339,7 +339,7 @@ describe FormSection, :type => :model do
     end
 
     it "should not occur error  about the name is not unique  when the name is not filled in" do
-      form_section = FormSection.new(:name=>"")
+      form_section = FormSection.new(:name => "")
       expect(form_section).not_to be_valid
       expect(form_section.errors[:unique_id]).not_to be_present
     end

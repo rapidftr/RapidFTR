@@ -10,8 +10,8 @@ describe FieldsController, :type => :controller do
 
   describe "post create" do
     before :each do
-      @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
-      @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
+      @field = Field.new :name => "my_new_field", :type => "TEXT", :display_name => "My New Field"
+      @form_section = FormSection.new :name => "Form section 1", :unique_id => 'form_section_1'
       allow(FormSection).to receive(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end
 

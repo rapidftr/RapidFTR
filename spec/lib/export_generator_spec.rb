@@ -6,9 +6,9 @@ describe ExportGenerator do
 
       before(:each) do
         @user = User.new(
-            :user_name=>'user',
-            :full_name=>'name',
-            :organisation=>"UNICEF"
+            :user_name => 'user',
+            :full_name => 'name',
+            :organisation => "UNICEF"
         )
 
         @child1 = Child.new_with_user_name(@user,
@@ -90,7 +90,7 @@ describe ExportGenerator do
         csv_data = CSV.parse subject.data
         index = csv_data[0].index "Created by"
         expect(csv_data[1][index]).to eq('user')
-        expect(csv_data[1][index+1]).to eq('UNICEF')
+        expect(csv_data[1][index + 1]).to eq('UNICEF')
       end
 
       it "should not have updated_by info for child that was not edited" do

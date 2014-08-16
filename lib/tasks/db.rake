@@ -37,7 +37,7 @@ namespace :db do
       puts "Administrator account #{user_name} is already existing and verified"
     rescue RestClient::Request::Unauthorized
       full_host = "#{url}/_config/admins/#{user_name}"
-      RestClient.put full_host, "\""+password+"\"", {:content_type => :json}
+      RestClient.put full_host, "\"" + password + "\"", {:content_type => :json}
       puts "Administrator account #{user_name} has been created"
     end
 
@@ -66,7 +66,7 @@ namespace :db do
       couchdb_config[env] = default_config.merge("suffix" => "#{env}")
     end
 
-    write_file Rails.root.to_s+"/config/couchdb.yml", couchdb_config.to_yaml
+    write_file Rails.root.to_s + "/config/couchdb.yml", couchdb_config.to_yaml
   end
 
   task :delete => :environment do

@@ -51,13 +51,13 @@ class DataPopulator
 
     if @user.nil?
       @user = User.new(
-          :user_name=>username,
-          :password=>password,
-          :password_confirmation=>password,
-          :full_name=>username,
-          :organisation=>"UNICEF",
+          :user_name => username,
+          :password => password,
+          :password_confirmation => password,
+          :full_name => username,
+          :organisation => "UNICEF",
           :disabled => "false",
-          :email=>"#{username}@test.com",
+          :email => "#{username}@test.com",
           :role_ids => [role.id]
       )
       @user.save!

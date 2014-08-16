@@ -20,7 +20,7 @@ class Field
   property :editable, TrueClass, :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
-  property :base_language, :default=>'en'
+  property :base_language, :default => 'en'
 
   FIELD_TYPES = [
     TEXT_FIELD = "text_field",
@@ -34,7 +34,7 @@ class Field
     DATE_FIELD = "date_field"
   ]
 
-  validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
+  validates_presence_of "display_name_#{I18n.default_locale}", :message => I18n.t("errors.models.field.display_name_presence")
   validate :validate_unique_name
   validate :validate_has_2_options
   validate :validate_has_a_option
@@ -53,11 +53,11 @@ class Field
   end
 
   def valid_presence_of_base_language_name
-    if base_language==nil
-      self.base_language='en'
+    if base_language == nil
+      self.base_language = 'en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    if (base_lang_display_name.nil?||base_lang_display_name.empty?)
+    if (base_lang_display_name.nil? || base_lang_display_name.empty?)
       errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
     end
   end

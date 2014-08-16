@@ -244,7 +244,7 @@ describe ChildrenController, :type => :controller do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before { @options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at} }
+        before { @options = {:startkey => ["active", "fakefieldworker"], :endkey => ["active", "fakefieldworker", {}], :page => 1, :per_page => 20, :view_name => :by_all_view_with_created_by_created_at} }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -351,7 +351,7 @@ describe ChildrenController, :type => :controller do
 
     it "should flash an error and go to listing page if the resource is not found" do
       allow(Child).to receive(:get).with("invalid record").and_return(nil)
-      get :show, :id=> "invalid record"
+      get :show, :id => "invalid record"
       expect(flash[:error]).to eq("Child with the given id is not found")
       expect(response).to redirect_to(:action => :index)
     end

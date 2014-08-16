@@ -117,7 +117,7 @@ RapidFTR::Application.routes.draw do
     resources :form_sections, :path => 'form_section', :controller => 'form_section', :only => [:index, :new, :create]
   end
 
-  resources :form_sections, :path => 'form_section', :controller => 'form_section', :except =>[:index, :new, :create] do
+  resources :form_sections, :path => 'form_section', :controller => 'form_section', :except => [:index, :new, :create] do
 
     collection do
       match 'save_order', :via => [:post, :get, :put, :delete]

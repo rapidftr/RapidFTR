@@ -97,8 +97,8 @@ describe "children/show.html.erb", :type => :view do
       end
 
       it "should always show the posted at details when the record has been posted from a mobile client" do
-        child = Child.create(:posted_at=> "2007-01-01 14:04UTC", :posted_from=>"Mobile", :unique_id=>"bob",
-        :_id=>"123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
+        child = Child.create(:posted_at => "2007-01-01 14:04UTC", :posted_from => "Mobile", :unique_id => "bob",
+        :_id => "123123", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC")
         allow(child).to receive(:has_one_interviewer?).and_return(true)
         allow(child).to receive(:short_id).and_return('2341234')
 

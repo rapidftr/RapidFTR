@@ -57,10 +57,10 @@ describe "Child record field view model", :type => :model do
     end
 
     it "should not allows empty field display_name of field base language " do
-      field = Field.new(:display_name_en => 'English', :display_name_zh=>'Chinese')
-      I18n.default_locale='zh'
+      field = Field.new(:display_name_en => 'English', :display_name_zh => 'Chinese')
+      I18n.default_locale = 'zh'
       expect {
-        field[:display_name_en]=''
+        field[:display_name_en] = ''
         field.save!
       }.to raise_error
     end
@@ -221,7 +221,7 @@ describe "Child record field view model", :type => :model do
 
   it "should show that the field is new until the field is saved" do
     form = FormSection.create! :name => 'test_form', :unique_id => 'test_form'
-    field = Field.new :name => "test_field", :display_name_en => "test_field", :type=>Field::TEXT_FIELD
+    field = Field.new :name => "test_field", :display_name_en => "test_field", :type => Field::TEXT_FIELD
     expect(field.new?).to be_truthy
     FormSection.add_field_to_formsection form, field
     expect(field.new?).to be_falsey
@@ -229,10 +229,10 @@ describe "Child record field view model", :type => :model do
 
   it "should show that the field is new after the field fails validation" do
     form =  FormSection.create! :name => 'test_form2', :unique_id => 'test_form'
-    field = Field.new :name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD
+    field = Field.new :name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD
     FormSection.add_field_to_formsection form, field
     #Adding duplicate field.
-    field = Field.new :name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD
+    field = Field.new :name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD
     FormSection.add_field_to_formsection form, field
     expect(field.errors.length).to be > 0
     expect(field.errors[:name]).to eq(["Field already exists on this form"])
@@ -241,8 +241,8 @@ describe "Child record field view model", :type => :model do
 
   it "should fails save because fields are duplicated and fields remains as new" do
     #Try to create a FormSection with duplicate fields. That will make fails the save.
-    fields = [Field.new(:name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD),
-              Field.new(:name => "test_field2", :display_name_en => "test_field", :type=>Field::TEXT_FIELD)]
+    fields = [Field.new(:name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD),
+              Field.new(:name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD)]
     form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => fields
     expect(fields.first.errors.length).to be > 0
     expect(fields.first.errors[:name]).to eq(["Field already exists on this form"])
@@ -255,8 +255,8 @@ describe "Child record field view model", :type => :model do
 
   it "should fails save because fields changes make them duplicate" do
     #Create the FormSection with two valid fields.
-    fields = [Field.new(:name => "test_field1", :display_name_en => "test_field1", :type=>Field::TEXT_FIELD),
-              Field.new(:name => "test_field2", :display_name_en => "test_field2", :type=>Field::TEXT_FIELD)]
+    fields = [Field.new(:name => "test_field1", :display_name_en => "test_field1", :type => Field::TEXT_FIELD),
+              Field.new(:name => "test_field2", :display_name_en => "test_field2", :type => Field::TEXT_FIELD)]
     form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => fields
     expect(fields.first.errors.length).to be == 0
     expect(fields.first.new?).to be_falsey
@@ -276,16 +276,16 @@ describe "Child record field view model", :type => :model do
     expect(fields.last.new?).to be_falsey
 
     #Fix the field and save again
-    fields.first.name ="Something_else"
+    fields.first.name = "Something_else"
     form.save
     expect(form.errors.length).to be == 0
   end
 
   it "should fails save second form section because duplicate name in other form section" do
-    field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type=>Field::TEXT_FIELD)
+    field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type => Field::TEXT_FIELD)
     form = FormSection.create :name => 'test_form1', :unique_id => 'test_form', :fields => [field]
 
-    field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type=>Field::TEXT_FIELD)
+    field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type => Field::TEXT_FIELD)
     form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => [field]
     expect(field.errors[:name]).to eq(["Field already exists on form 'test_form1'"])
   end

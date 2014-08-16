@@ -17,7 +17,7 @@ end
 
 Then /^I should see the following reports:$/ do |reports_table|
   expected_order = reports_table.hashes.collect { |report| report['as_of_date'] }
-  actual_order=page.all(:xpath, "//td[@class='as_of_date']").collect(&:text)
+  actual_order = page.all(:xpath, "//td[@class='as_of_date']").collect(&:text)
   expect(actual_order).to eq(expected_order)
 end
 

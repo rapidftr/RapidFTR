@@ -78,7 +78,7 @@ describe FormSectionController, :type => :controller do
     it "should new form_section with order" do
       existing_count = FormSection.count
       form = create :form
-      form_section = {:name=>"name", :description=>"desc", :help_text=>"help text", :visible=>true}
+      form_section = {:name => "name", :description => "desc", :help_text => "help text", :visible => true}
       post :create, :form_section => form_section, :form_id => form.id
       expect(FormSection.count).to eq(existing_count + 1)
     end
@@ -86,8 +86,8 @@ describe FormSectionController, :type => :controller do
     it "sets flash notice if form section is valid and redirect_to edit page with a flash message" do
       allow(FormSection).to receive(:new_with_order).and_return(MockFormSection.new)
       form = create :form
-      form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
-      post :create, :form_section =>form_section, :form_id => form.id
+      form_section = {:name => "name", :description => "desc", :visible => "true"}
+      post :create, :form_section => form_section, :form_id => form.id
       expect(request.flash[:notice]).to eq("Form section successfully added")
       expect(response).to redirect_to(edit_form_section_path("unique_id"))
     end
@@ -95,8 +95,8 @@ describe FormSectionController, :type => :controller do
     it "does not set flash notice if form section is valid and render new" do
       allow(FormSection).to receive(:new_with_order).and_return(MockFormSection.new(false))
       form = create :form
-      form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
-      post :create, :form_section =>form_section, :form_id => form.id
+      form_section = {:name => "name", :description => "desc", :visible => "true"}
+      post :create, :form_section => form_section, :form_id => form.id
       expect(request.flash[:notice]).to be_nil
       expect(response).to render_template("new")
     end
@@ -105,14 +105,14 @@ describe FormSectionController, :type => :controller do
       expected_form_section = MockFormSection.new(false)
       allow(FormSection).to receive(:new_with_order).and_return expected_form_section
       form = create :form
-      form_section = {:name=>"name", :description=>"desc", :visible=>"true"}
-      post :create, :form_section =>form_section, :form_id => form.id
+      form_section = {:name => "name", :description => "desc", :visible => "true"}
+      post :create, :form_section => form_section, :form_id => form.id
       expect(assigns[:form_section]).to eq(expected_form_section)
     end
 
     it "should assign the form to the new form section" do
       form = create :form
-      form_section_params = {:name=>"name", :description=>"desc", :help_text=>"help text", :visible=>true}
+      form_section_params = {:name => "name", :description => "desc", :help_text => "help text", :visible => true}
       expect(FormSection).to receive(:new_with_order).with(include(:form => form))
       post :create, :form_section => form_section_params, :form_id => form.id
     end
@@ -161,8 +161,8 @@ describe FormSectionController, :type => :controller do
 
   describe "post enable" do
     it "should toggle the given form_section to hide/show" do
-      form_section1 = FormSection.create!({:name=>"name1", :description=>"desc", :visible=>"true", :unique_id=>"form_1"})
-      form_section2 = FormSection.create!({:name=>"name2", :description=>"desc", :visible=>"false", :unique_id=>"form_2"})
+      form_section1 = FormSection.create!({:name => "name1", :description => "desc", :visible => "true", :unique_id => "form_1"})
+      form_section2 = FormSection.create!({:name => "name2", :description => "desc", :visible => "false", :unique_id => "form_2"})
       post :toggle, :id => "form_1"
       expect(FormSection.get_by_unique_id(form_section1.unique_id).visible).to be false
       post :toggle, :id => "form_2"

@@ -1,9 +1,9 @@
 photos_and_audio_fs = FormSection.by_unique_id(:key => "photos_and_audio").first
 
 unless photos_and_audio_fs
-  photos_and_audio_fs = FormSection.new({"visible"=>true,
-                          :order=> 10, :unique_id=>"photos_and_audio",
-                          :perm_visible => true, "editable"=>false,
+  photos_and_audio_fs = FormSection.new({"visible" => true,
+                          :order => 10, :unique_id => "photos_and_audio",
+                          :perm_visible => true, "editable" => false,
                           "name_all" => "Photos and Audio",
                           "description_all" => "All Photo and Audio Files Associated with a Child Record",
                         })

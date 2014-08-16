@@ -69,7 +69,7 @@ describe ChildrenHelper, :type => :helper do
 
       child = Child.new(:name => "Flagged Child",
                         :flag_message => "Fake entity",
-                        :histories => [{"datetime"=>"2012-09-19 18:39:05UTC", "changes"=>{"flag"=>{"to"=>"true"}}, "user_name"=>"Admin user 1"}])
+                        :histories => [{"datetime" => "2012-09-19 18:39:05UTC", "changes" => {"flag" => {"to" => "true"}}, "user_name" => "Admin user 1"}])
 
       helper.stub(:current_user => @current_user)
       expect(helper.strip_tags(helper.flag_summary_for_child(child))).to eq("Flagged By Admin user 1 on 19 September 2012 at 18:39 (UTC) Because Fake entity")

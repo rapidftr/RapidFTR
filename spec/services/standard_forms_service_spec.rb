@@ -62,14 +62,11 @@ describe StandardFormsService do
       end
 
       it "should persist new enquiry form with new enquiry criteria form sections" do
-        attributes =  {"forms" => {"enquiries"=>
-                                    {"user_selected"=>"1",
-                                     "id"=>"enquiries",
-                                     "sections"=>
-                                       {"Enquiry Criteria"=>
-                                         {"user_selected"=>"1",
-                                          "id"=>"enquiry_criteria",
-                                          "fields"=>{"enquirer_name"=>{"user_selected"=>"1", "id"=>"enquirer_name"}, "criteria"=>{"user_selected"=>"1", "id"=>"criteria"}}}}}}}
+        attributes =  {"forms" => {"enquiries" =>                                     {"user_selected" => "1",
+                                                                                       "id" => "enquiries",
+                                                                                       "sections" =>                                        {"Enquiry Criteria" =>                                          {"user_selected" => "1",
+                                                                                                                                                                                                             "id" => "enquiry_criteria",
+                                                                                                                                                                                                             "fields" => {"enquirer_name" => {"user_selected" => "1", "id" => "enquirer_name"}, "criteria" => {"user_selected" => "1", "id" => "criteria"}}}}}}}
 
         StandardFormsService.persist(attributes)
 

@@ -3,7 +3,7 @@
   describe "children/edit.html.erb", :type => :view do
 
     before :each do
-      @form_section = FormSection.new :unique_id => "section_name", :visible=>"true"
+      @form_section = FormSection.new :unique_id => "section_name", :visible => "true"
       assign(:form_sections, [@form_section])
       allow(User).to receive(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
       @child = Child.create(:name => "name", :unique_identifier => '12341234123', :created_by => "me")
