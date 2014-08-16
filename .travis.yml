@@ -13,10 +13,9 @@ env:
     - COVERALLS="true"
 before_script:
   - "sh -e /etc/init.d/xvfb start"
-  - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr]"
-  - "bundle exec rake sunspot:solr:start"
+  - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr] sunspot:solr:start"
 script:
-  - "RAILS_ENV=test bundle exec rake quality:all spec"
-  - "RAILS_ENV=cucumber bundle exec rake cucumber:all"
+  - "bundle exec rake quality:all spec"
+  - "bundle exec rake cucumber:all"
 notifications:
   - email: false

@@ -35,6 +35,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.verbose_logging = true
   end
 
+  config.vm.provision :shell, run: 'always', privileged: false, inline: <<-SCRIPT
+    cd /vagrant && bundle exec rake sunspot:solr:start
+  SCRIPT
+
   config.vm.synced_folder 'tmp/vagrant/dev/apt', '/var/cache/apt/archives', create: true
   config.vm.synced_folder 'tmp/vagrant/dev/gems', '/var/lib/gems/2.1.0/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
 
