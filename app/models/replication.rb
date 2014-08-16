@@ -138,9 +138,8 @@ class Replication < CouchRest::Model::Base
 
     {
       :target => uri.to_s,
-      :databases => models_to_sync.inject({}) { |result, model|
+      :databases => models_to_sync.each_with_object({}) { |model, result|
         result[model.to_s] = model.database.name
-        result
       }
     }
   end

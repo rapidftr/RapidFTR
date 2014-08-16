@@ -148,9 +148,8 @@ Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbo
   checkbox_id = checkbox_label['for'].split('_').last
   checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_id}][]']")
 
-  checkboxes = checkbox_elements.inject({}) do | result,  element |
+  checkboxes = checkbox_elements.each_with_object({}) do |element, result|
     result[element['value']] = !!element[:checked]
-    result
   end
 
   table.hashes.each do |expected_checkbox|

@@ -154,10 +154,6 @@ Style/DotPosition:
 Style/DoubleNegation:
   Enabled: false
 
-# Offense count: 3
-Style/EachWithObject:
-  Enabled: false
-
 # Offense count: 120
 # Cop supports --auto-correct.
 Style/EmptyLinesAroundBody:
