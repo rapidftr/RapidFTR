@@ -127,6 +127,7 @@ class UsersController < ApplicationController
   end
 
   private
+
   def write_to_log comment
     File.open("/Users/ambhalla/Desktop/log.txt", "w+") do |f|
       f.write comment
@@ -140,6 +141,7 @@ class UsersController < ApplicationController
       child.save
     end
   end
+
   def load_user
     @user = User.get(params[:id])
     if @user.nil?
@@ -155,9 +157,9 @@ class UsersController < ApplicationController
   def users_details
     @users.map do |user|
       {
-          :user_url => user_url(:id => user),
-          :user_name => user.user_name,
-          :token => form_authenticity_token
+        :user_url => user_url(:id => user),
+        :user_name => user.user_name,
+        :token => form_authenticity_token
       }
     end
   end

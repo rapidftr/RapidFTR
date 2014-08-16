@@ -16,11 +16,11 @@ module HistoriesHelper
     if field == "photo_keys"
       return {:partial => "shared/histories/photo_history_change",
               :locals => {
-                  :new_photos => change['added'],
-                  :deleted_photos => change['deleted'],
-                  :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
-                  :user_name => history['user_name'],
-                  :organisation => history['user_organisation']}}
+                :new_photos => change['added'],
+                :deleted_photos => change['deleted'],
+                :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
+                :user_name => history['user_name'],
+                :organisation => history['user_organisation']}}
 
     elsif field == 'recorded_audio'
       return {:partial => "shared/histories/audio_history_change",
@@ -62,11 +62,11 @@ module HistoriesHelper
 
   def default_locals_for history, change
     {
-        :from_value => change['from'],
-        :to_value => change['to'],
-        :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
-        :user_name => history['user_name'],
-        :organisation => history['user_organisation']
+      :from_value => change['from'],
+      :to_value => change['to'],
+      :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z"),
+      :user_name => history['user_name'],
+      :organisation => history['user_organisation']
     }
   end
 end

@@ -76,8 +76,8 @@ describe Forms::ChangePasswordForm, :type => :model do
   describe "Execute" do
     it "should set user password to new password if all valid" do
       password_form = build :change_password_form, :old_password => "password",
-                            :new_password => "new_password",
-                            :new_password_confirmation => "new_password"
+                                                   :new_password => "new_password",
+                                                   :new_password_confirmation => "new_password"
       password_before_execution = password_form.user.crypted_password
       password_form.execute
       password_after_execution = password_form.user.crypted_password
@@ -87,8 +87,8 @@ describe Forms::ChangePasswordForm, :type => :model do
 
     it "should not set new password when not valid" do
       password_form = build :change_password_form, :old_password => "password",
-                            :new_password => "new_password",
-                            :new_password_confirmation => "wrong_new_password"
+                                                   :new_password => "new_password",
+                                                   :new_password_confirmation => "wrong_new_password"
       password_before_execution = password_form.user.crypted_password
       password_form.execute
       password_after_execution = password_form.user.crypted_password
@@ -97,8 +97,8 @@ describe Forms::ChangePasswordForm, :type => :model do
 
     it "should reset all fields when not valid" do
       password_form = build :change_password_form, :old_password => "password",
-                            :new_password => "new_password",
-                            :new_password_confirmation => "wrong_new_password"
+                                                   :new_password => "new_password",
+                                                   :new_password_confirmation => "wrong_new_password"
       password_form.execute
       expect(password_form.old_password).to eq('')
       expect(password_form.new_password).to eq('')
@@ -107,8 +107,8 @@ describe Forms::ChangePasswordForm, :type => :model do
 
     it "should return false when not valid" do
       password_form = build :change_password_form, :old_password => "password",
-                            :new_password => "new_password",
-                            :new_password_confirmation => "wrong_new_password"
+                                                   :new_password => "new_password",
+                                                   :new_password_confirmation => "wrong_new_password"
 
       expect(password_form.execute).to be false
     end

@@ -45,13 +45,13 @@ When /^I follow "(.+)" span$/ do |locator|
 end
 
 When /^I cannot follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
-  exception=nil
+  exception = nil
   begin
     with_scope(selector) do
       click_link(link)
     end
-  rescue Exception=>e
-    exception=e
+  rescue => e
+    exception = e
   end
   expect(exception).not_to be_nil
   expect(exception.class).to eq(Capybara::ElementNotFound)
@@ -260,7 +260,6 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
   end
 end
 
-
 And /^I submit the form$/ do
   click_button('Save')
 end
@@ -276,7 +275,6 @@ end
 When /^I goto the "(.*?)"$/ do |text|
   find(:xpath,"//a[@class='"+text+"']").click
 end
-
 
 Then /^I should see next records in the search results$/ do
   assert page.has_content?("Displaying children 21 - 25 ")

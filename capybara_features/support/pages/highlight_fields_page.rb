@@ -16,4 +16,5 @@ class HighlightFieldsPage
   end
 
   private
+
 end

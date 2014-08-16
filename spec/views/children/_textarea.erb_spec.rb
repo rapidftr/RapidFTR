@@ -8,9 +8,9 @@ describe "children/_textarea.html.erb", :type => :view do
 
   it "should include image for tooltip when help text exists" do
     textarea = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'textarea',
-    :help_text => "This is my help text"
+                         :display_name => "field name",
+                         :type => 'textarea',
+                         :help_text => "This is my help text"
 
     render :partial => 'children/textarea', :locals => { :textarea => textarea}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
@@ -18,8 +18,8 @@ describe "children/_textarea.html.erb", :type => :view do
 
   it "should not include image for tooltip when help text not exists" do
     textarea = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'textarea'
+                         :display_name => "field name",
+                         :type => 'textarea'
 
     render :partial => 'children/textarea', :locals => { :textarea => textarea}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")

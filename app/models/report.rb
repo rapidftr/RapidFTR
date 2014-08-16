@@ -19,11 +19,11 @@ class Report < CouchRest::Model::Base
     view :by_as_of_date
 
     view :all,
-      :map => "function(doc) {
-          if (doc['couchrest-type'] == 'Report') {
-            emit(doc._id, null);
-          }
-        }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'Report') {
+               emit(doc._id, null);
+             }
+           }"
   end
 
   def file_name

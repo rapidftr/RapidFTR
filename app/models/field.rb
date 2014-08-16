@@ -67,7 +67,7 @@ class Field
   def new?
     !@document_saved
   end
-  alias :new_record? :new?
+  alias_method :new_record?, :new?
 
   def form
     base_doc
@@ -129,12 +129,12 @@ class Field
   end
 
   def is_highlighted?
-      highlight_information[:highlighted]
+    highlight_information[:highlighted]
   end
 
   def highlight_with_order order
-      highlight_information[:highlighted] = true
-      highlight_information[:order] = order
+    highlight_information[:highlighted] = true
+    highlight_information[:order] = order
   end
 
   def unhighlight
@@ -144,7 +144,6 @@ class Field
   def self.find_by_name(name)
     Field.by_name(:key => name.downcase).first
   end
-
 
   private
 

@@ -12,7 +12,7 @@ class LoginPage
     login
   end
 
-private
+  private
 
   def visit_page
     @session.visit path_to('login page')

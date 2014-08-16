@@ -8,10 +8,10 @@ describe "children/_select_box.html.erb", :type => :view do
 
   it "should include image for tooltip when help text exists" do
     select_box = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'select_box',
-    :option_strings => Array['M', 'F'],
-    :help_text => "This is my help text"
+                           :display_name => "field name",
+                           :type => 'select_box',
+                           :option_strings => Array['M', 'F'],
+                           :help_text => "This is my help text"
 
     render :partial => 'children/select_box', :locals => { :select_box => select_box}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
@@ -19,9 +19,9 @@ describe "children/_select_box.html.erb", :type => :view do
 
   it "should not include image for tooltip when help text not exists" do
     select_box = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'select_box',
-    :option_strings => Array['M', 'F']
+                           :display_name => "field name",
+                           :type => 'select_box',
+                           :option_strings => Array['M', 'F']
 
     render :partial => 'children/select_box', :locals => { :select_box => select_box}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")

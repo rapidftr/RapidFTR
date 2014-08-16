@@ -14,7 +14,7 @@ describe "Solar", type: :request, solr: true do
     Sunspot.remove_all(Child)
 
     create :form_section, fields: [
-        build(:text_field, name: 'name')
+      build(:text_field, name: 'name')
     ]
 
     @child1 = create(:child, 'last_known_location' => "New York", "name" => "Mohammed Smith")
@@ -54,7 +54,7 @@ describe "Enquiry Mapping", type: :request, solr: true do
     form = create :form, name: Enquiry::FORM_NAME
 
     create :form_section, fields: [
-        build(:text_field, name: 'name')
+      build(:text_field, name: 'name')
     ], form: form
 
     @child1 = create(:child, 'last_known_location' => "New York", "name" => "Mohammed Smith")

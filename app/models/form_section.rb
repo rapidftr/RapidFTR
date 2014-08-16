@@ -63,7 +63,7 @@ class FormSection < CouchRest::Model::Base
     end
   end
 
-  alias to_param unique_id
+  alias_method :to_param, :unique_id
 
   class << self
     def enabled_by_order

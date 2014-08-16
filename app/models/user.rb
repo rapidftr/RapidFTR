@@ -32,62 +32,60 @@ class User < CouchRest::Model::Base
   design do
 
     view :by_user_name,
-            :map => "function(doc) {
-                  if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-                  {
-                       emit(doc['user_name'],doc);
-                  }
-            }"
+         :map => "function(doc) {
+               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+               {
+                    emit(doc['user_name'],doc);
+               }
+         }"
 
     view :by_full_name,
-            :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'User') && doc['full_name'])
-                {
-                  emit(doc['full_name'],doc);
-                }
-            }"
+         :map => "function(doc) {
+             if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+             {
+               emit(doc['full_name'],doc);
+             }
+         }"
 
     view :by_user_name_filter_view,
-            :map => "function(doc) {
-                  if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-                  {
-                      emit(['all',doc['user_name']],doc);
-                      if(doc['disabled'] == 'false' || doc['disabled'] == false)
-                        emit(['active',doc['user_name']],doc);
-                  }
-            }"
+         :map => "function(doc) {
+               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
+               {
+                   emit(['all',doc['user_name']],doc);
+                   if(doc['disabled'] == 'false' || doc['disabled'] == false)
+                     emit(['active',doc['user_name']],doc);
+               }
+         }"
     view :by_full_name_filter_view,
-            :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'User') && doc['full_name'])
-                {
-                  emit(['all',doc['full_name']],doc);
-                  if(doc['disabled'] == 'false' || doc['disabled'] == false)
-                    emit(['active',doc['full_name']],doc);
+         :map => "function(doc) {
+             if ((doc['couchrest-type'] == 'User') && doc['full_name'])
+             {
+               emit(['all',doc['full_name']],doc);
+               if(doc['disabled'] == 'false' || doc['disabled'] == false)
+                 emit(['active',doc['full_name']],doc);
 
-                }
-            }"
+             }
+         }"
 
     view :by_unverified,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
-                 {
-                    emit(doc);
-                 }
-             }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'User' && (doc['verified'] == false || doc['verified'] == 'false'))
+              {
+                 emit(doc);
+              }
+          }"
 
     view :by_share_contact_info,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
-                 {
-                    emit(doc);
-                 }
-             }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
+              {
+                 emit(doc);
+              }
+          }"
   end
-
 
   before_save :make_user_name_lowercase, :encrypt_password
   after_save :save_devices
-
 
   before_update :if => :disabled? do |user|
     Session.delete_for user
@@ -104,7 +102,7 @@ class User < CouchRest::Model::Base
                       :message => I18n.t("errors.models.user.email")
 
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?,
-                            :message => I18n.t("errors.models.user.password_mismatch")
+                                       :message => I18n.t("errors.models.user.password_mismatch")
 
   #FIXME 409s randomly...destroying user records before test as a temp
   validate :is_user_name_unique
@@ -211,7 +209,7 @@ class User < CouchRest::Model::Base
 
   def encrypt_password
     return if password.blank?
-    self.salt = Digest::SHA1.hexdigest("--#{Clock.now.to_s}--#{self.user_name}--") if new_record?
+    self.salt = Digest::SHA1.hexdigest("--#{Clock.now}--#{self.user_name}--") if new_record?
     self.crypted_password = self.class.encrypt(password, salt)
   end
 

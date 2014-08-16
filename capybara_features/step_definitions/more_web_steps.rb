@@ -124,16 +124,16 @@ When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
 end
 
 Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
-   radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(' ', '')}")
-   expect(radio).not_to be_nil
-   table.raw.each { |row| expect(radio.css('label').map(&:text)).to include row.first }
+  radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(' ', '')}")
+  expect(radio).not_to be_nil
+  table.raw.each { |row| expect(radio.css('label').map(&:text)).to include row.first }
 
 end
 
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
   options = table.hashes
   page.has_select?(dropdown_label, :options => options.collect{|element| element['label']},
-                   :selected => options.collect{|element| element['label'] if element['selected?'] == 'yes'}.compact!)
+                                   :selected => options.collect{|element| element['label'] if element['selected?'] == 'yes'}.compact!)
 end
 
 Then /^I should find the following links:$/ do |table|

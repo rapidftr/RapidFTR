@@ -1,11 +1,11 @@
 module AdvancedSearchHelper
 
-  AND_OR = %Q{<input id="criteria_join_and" type="radio" value="AND" #AND_CHECKED name="criteria_list[#INDEX][join]">
+  AND_OR = %{<input id="criteria_join_and" type="radio" value="AND" #AND_CHECKED name="criteria_list[#INDEX][join]">
 <label for="criteria_join_and">And</label>
 <input id="criteria_join_or" type="radio" value="OR" #OR_CHECKED name="criteria_list[#INDEX][join]">
 <label for="criteria_join_or">Or</label>}
-  DISPLAY_LABEL = %Q{<a class="select-criteria">#DISPLAY_NAME</a>}
-  FIELD_INDEX = %Q{<input class="criteria-field" type="hidden" value="#FIELD" name="criteria_list[#INDEX][field]">
+  DISPLAY_LABEL = %{<a class="select-criteria">#DISPLAY_NAME</a>}
+  FIELD_INDEX = %{<input class="criteria-field" type="hidden" value="#FIELD" name="criteria_list[#INDEX][field]">
 <input class="criteria-index" type="hidden" value="#INDEX" name="criteria_list[#INDEX][index]">}
   REMOVE_LINK = "<a class=\"remove-criteria\">remove</a>"
 
@@ -30,14 +30,15 @@ module AdvancedSearchHelper
   end
 
   private
+
   def select_box_criteria(criteria, field)
-    html = %Q{<span class="criteria-values"/><select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">}
+    html = %{<span class="criteria-values"/><select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">}
     field.option_strings.each{|option| html += "<option #{criteria[:value] == option ? "selected=\"selected\"" : ""} value=\"#{option}\">#{option}</option>"}
     html += "</select>"
   end
 
   def text_field_criteria(criteria, field)
-    %Q{<span class="criteria-values"/><input class="criteria-value-text" type="text" value="#{criteria[:value]}" name="criteria_list[#INDEX][value]" style="">}
+    %{<span class="criteria-values"/><input class="criteria-value-text" type="text" value="#{criteria[:value]}" name="criteria_list[#INDEX][value]" style="">}
   end
 
   def textarea_criteria(criteria, field)

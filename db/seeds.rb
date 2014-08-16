@@ -22,31 +22,31 @@ if should_seed? User
   system_admin = Role.create!(:name => "system admin", :permissions => [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:create_and_edit], Permission::ROLES[:view], Permission::REPORTS[:view], Permission::FORMS[:manage], Permission::SYSTEM[:highlight_fields], Permission::SYSTEM[:system_users], Permission::DEVICES[:blacklist], Permission::DEVICES[:replications]])
 
   User.create!("user_name" => "rapidftr",
-              "password" => "rapidftr",
-              "password_confirmation" => "rapidftr",
-              "full_name" => "System Administrator",
-              "email" => "rapidftr@rapidftr.com",
-              "disabled" => "false",
-              "organisation" => "N/A",
-              "role_ids" => [system_admin.id])
+               "password" => "rapidftr",
+               "password_confirmation" => "rapidftr",
+               "full_name" => "System Administrator",
+               "email" => "rapidftr@rapidftr.com",
+               "disabled" => "false",
+               "organisation" => "N/A",
+               "role_ids" => [system_admin.id])
 
   User.create!("user_name" => "field_worker",
-              "password" => "field_worker",
-              "password_confirmation" => "field_worker",
-              "full_name" => "Field Worker",
-              "email" => "field_worker@rapidftr.com",
-              "disabled" => "false",
-              "organisation" => "N/A",
-              "role_ids" => [registration_worker.id])
+               "password" => "field_worker",
+               "password_confirmation" => "field_worker",
+               "full_name" => "Field Worker",
+               "email" => "field_worker@rapidftr.com",
+               "disabled" => "false",
+               "organisation" => "N/A",
+               "role_ids" => [registration_worker.id])
 
   User.create!("user_name" => "field_admin",
-              "password" => "field_admin",
-              "password_confirmation" => "field_admin",
-              "full_name" => "Field Administrator",
-              "email" => "field_admin@rapidftr.com",
-              "disabled" => "false",
-              "organisation" => "N/A",
-              "role_ids" => [field_level_admin.id])
+               "password" => "field_admin",
+               "password_confirmation" => "field_admin",
+               "full_name" => "Field Administrator",
+               "email" => "field_admin@rapidftr.com",
+               "disabled" => "false",
+               "organisation" => "N/A",
+               "role_ids" => [field_level_admin.id])
 
   if Rails.env.android?
     User.create!("user_name" => "admin",
@@ -56,7 +56,7 @@ if should_seed? User
                  "email" => "admin@rapidftr.com",
                  "disabled" => "false",
                  "organisation" => "Unicef",
-                "role_ids"=>[registration_worker.id,system_admin.id,field_level_admin.id])
+                 "role_ids"=>[registration_worker.id,system_admin.id,field_level_admin.id])
   end
 end
 

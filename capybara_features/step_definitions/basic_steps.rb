@@ -3,16 +3,16 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
-    step %Q{I attach the file "#{photo_path}" to "child_photo0"}
+  step %{I attach the file "#{photo_path}" to "child_photo0"}
 end
 
 When /^I attach an audio file "([^"]*)"$/ do |audio_path|
-    step %Q{I attach the file "#{audio_path}" to "child[audio]"}
+  step %{I attach the file "#{audio_path}" to "child[audio]"}
 end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    step %Q{I attach the file "#{photo.first}" to "child[photo]#{i}"}
+    step %{I attach the file "#{photo.first}" to "child[photo]#{i}"}
   end
 end
 
@@ -88,13 +88,13 @@ end
 
 Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
   user = User.create!("user_name" => "bob_creator",
-               "password" => "rapidftr",
-               "password_confirmation" => "rapidftr",
-               "full_name" => "Bob Creator",
-               "organisation" => "UNICEF",
-               "email" => "rapidftr@rapidftr.com",
-               "disabled" => "false",
-               "role_ids" => ["ADMIN"])
+                      "password" => "rapidftr",
+                      "password_confirmation" => "rapidftr",
+                      "full_name" => "Bob Creator",
+                      "organisation" => "UNICEF",
+                      "email" => "rapidftr@rapidftr.com",
+                      "disabled" => "false",
+                      "role_ids" => ["ADMIN"])
   child = Child.new_with_user_name(user,{:name=>name})
   child.audio = uploadable_audio("capybara_features/resources/#{filename}")
   child.create!

@@ -1,14 +1,14 @@
 Child.class_eval do
   design do
     view :by_name,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'Child')
-               {
-                  if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
-                    emit(doc['name'], doc);
-                  }
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'Child')
+            {
+               if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                 emit(doc['name'], doc);
                }
-            }"
+            }
+         }"
   end
 end
 

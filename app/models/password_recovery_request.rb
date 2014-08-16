@@ -10,11 +10,11 @@ class PasswordRecoveryRequest < CouchRest::Model::Base
 
   design do
     view :all,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'PasswordRecoveryRequest') {
-                    emit(doc['_id'],1);
-                }
-            }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'PasswordRecoveryRequest') {
+                 emit(doc['_id'],1);
+             }
+         }"
   end
 
   validates_presence_of :user_name, :message => I18n.t("errors.models.password_recovery_request.user_name_mandatory")

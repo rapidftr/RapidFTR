@@ -16,9 +16,9 @@ module ChildrenHelper
 
   def link_to_photo_with_key(key)
     link_to thumbnail_tag(@child, key),
-      child_photo_path(@child, key, :ts => @child.last_updated_at),
-      :id => key,
-      :target => '_blank'
+            child_photo_path(@child, key, :ts => @child.last_updated_at),
+            :id => key,
+            :target => '_blank'
   end
 
   def link_to_download_audio_with_key(key)
@@ -41,7 +41,7 @@ module ChildrenHelper
 
   def flag_summary_for_child(child)
     flag_history = child["histories"].select{|h| h["changes"].keys.include?("flag") }.first
-     "<b>"+ I18n.t("child.flagged_by")+" </b>"+ flag_history["user_name"] +"<b> "+I18n.t("preposition.on_label")+"</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> "+I18n.t("preposition.because")+"</b> "+ child["flag_message"]
+    "<b>"+ I18n.t("child.flagged_by")+" </b>"+ flag_history["user_name"] +"<b> "+I18n.t("preposition.on_label")+"</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> "+I18n.t("preposition.because")+"</b> "+ child["flag_message"]
   end
 
   def reunited_message

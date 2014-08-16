@@ -6,17 +6,17 @@ describe Child, :type => :request do
   it "should save a child in the database" do
     photo = uploadable_photo
     child = build_child("jdoe", {
-        "name" => "Dave",
-        "age" => "28",
-        "last_known_location" => "London",
-        "photo" => photo})
+                          "name" => "Dave",
+                          "age" => "28",
+                          "last_known_location" => "London",
+                          "photo" => photo})
     expect(child.save).to be_truthy
   end
 
   it "should load an existing child record from the database" do
     photo = uploadable_photo
     child = build_child("jdoe", {
-        "name" => "Paul",
+                          "name" => "Paul",
         "age" => "10",
         "last_known_location" => "New York", "photo" => photo})
     child.save
@@ -48,6 +48,7 @@ describe Child, :type => :request do
 end
 
 private
+
 def build_child(created_by, options = {})
   user = User.new(:user_name => created_by)
   Child.new_with_user_name user, options

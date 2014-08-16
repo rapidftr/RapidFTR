@@ -4,9 +4,9 @@ describe ExportGenerator, :type => :request do
 
   it "should generate a PDF file for a single child record" do
     child = build_child("jdoe", {
-        "name" => "Dave",
-        "age" => "28",
-        "last_known_location" => "London"})
+                          "name" => "Dave",
+                          "age" => "28",
+                          "last_known_location" => "London"})
     pdf_generator = ExportGenerator.new child
     pdf_generator.to_full_pdf
     pdf_generator.to_photowall_pdf

@@ -3,7 +3,6 @@ require 'hpricot'
 
 include HpricotSearch
 
-
 describe "children/search.html.erb", :type => :view do
   describe "rendering search results" do
     before :each do

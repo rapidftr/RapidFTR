@@ -9,11 +9,11 @@ class Role < CouchRest::Model::Base
 
   design do
     view :by_name,
-            :map => "function(doc) {
-                if ((doc['couchrest-type'] == 'Role') && doc['name']) {
-                  emit(doc['name'], doc);
-                }
-            }"
+         :map => "function(doc) {
+             if ((doc['couchrest-type'] == 'Role') && doc['name']) {
+               emit(doc['name'], doc);
+             }
+         }"
   end
 
   validates_presence_of :name, :message => "Name must not be blank"

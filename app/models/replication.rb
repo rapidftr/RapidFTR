@@ -16,11 +16,11 @@ class Replication < CouchRest::Model::Base
 
   design do
     view :all,
-            :map => "function(doc) {
-                if (doc['couchrest-type'] == 'Replication') {
-                    emit(doc['_id'],1);
-                }
-            }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'Replication') {
+                 emit(doc['_id'],1);
+             }
+         }"
   end
 
   validates_presence_of :remote_app_url

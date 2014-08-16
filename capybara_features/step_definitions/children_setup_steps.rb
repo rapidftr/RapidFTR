@@ -29,15 +29,15 @@ private
 
 def child_defaults
   {
-      'birthplace' => 'Cairo',
-      'photo_path' => 'capybara_features/resources/jorge.jpg',
-      'reporter' => 'zubair',
-      'created_by' => 'Billy',
-      'created_organisation' => 'UNICEF',
-      'age_is' => 'Approximate',
-      'flag_message' => 'Reason for flagging',
-      'flagged_at' => DateTime.new(2001, 2, 3, 4, 5, 6),
-      'reunited_at' => DateTime.new(2012, 2, 3, 4, 5, 6)
+    'birthplace' => 'Cairo',
+    'photo_path' => 'capybara_features/resources/jorge.jpg',
+    'reporter' => 'zubair',
+    'created_by' => 'Billy',
+    'created_organisation' => 'UNICEF',
+    'age_is' => 'Approximate',
+    'flag_message' => 'Reason for flagging',
+    'flagged_at' => DateTime.new(2001, 2, 3, 4, 5, 6),
+    'reunited_at' => DateTime.new(2012, 2, 3, 4, 5, 6)
   }
 end
 

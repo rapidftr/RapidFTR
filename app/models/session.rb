@@ -34,9 +34,7 @@ class Session < CouchRest::Model::Base
     self.id
   end
 
-  def full_name
-    user.full_name
-  end
+  delegate :full_name, to: :user
 
   def device_blacklisted?
     if (imei)

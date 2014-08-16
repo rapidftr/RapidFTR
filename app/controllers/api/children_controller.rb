@@ -20,7 +20,7 @@ class Api::ChildrenController < Api::ApiController
   end
 
   def create
-     authorize! :create, Child
+    authorize! :create, Child
     create_or_update_child(params)
     @child['created_by_full_name'] = current_user_full_name
 

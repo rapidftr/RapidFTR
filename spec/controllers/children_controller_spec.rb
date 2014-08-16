@@ -71,8 +71,8 @@ describe ChildrenController, :type => :controller do
 
       it "GET show" do
         expect(@controller.current_ability).to receive(:can?).with(:read, @child_arg).and_return(false);
-         get :show, :id => @child.id
-         expect(response.status).to eq(403)
+        get :show, :id => @child.id
+        expect(response.status).to eq(403)
       end
 
       it "PUT update" do
@@ -205,7 +205,8 @@ describe ChildrenController, :type => :controller do
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
           @expected_children = [create(:child, created_by: @session.user_name, reunited: true)]
-          @filter = "reunited" }
+          @filter = "reunited" 
+        }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -225,7 +226,8 @@ describe ChildrenController, :type => :controller do
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
           @expected_children = [create(:child, created_by: @session.user_name, flag: true)]
-          @filter = "flag" }
+          @filter = "flag" 
+        }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -430,12 +432,12 @@ describe ChildrenController, :type => :controller do
       allow(Clock).to receive(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       histories = "[{\"datetime\":\"2013-02-01 04:49:29UTC\",\"user_name\":\"rapidftr\",\"changes\":{\"photo_keys\":{\"added\":[\"photo-671592136-2013-02-01T101929\"],\"deleted\":null}},\"user_organisation\":\"N\\/A\"}]"
       put :update, :id => child.id,
-           :child => {
-               :last_known_location => "Manchester",
-               :histories => histories
-           }
+                   :child => {
+                     :last_known_location => "Manchester",
+                     :histories => histories
+                   }
 
-     expect(assigns[:child]['histories']).to eq(JSON.parse(histories))
+      expect(assigns[:child]['histories']).to eq(JSON.parse(histories))
     end
 
     it "should update child on a field and photo update" do
@@ -444,9 +446,9 @@ describe ChildrenController, :type => :controller do
 
       allow(Clock).to receive(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
       put :update, :id => child.id,
-        :child => {
-          :last_known_location => "Manchester",
-          :photo => Rack::Test::UploadedFile.new(uploadable_photo_jeff) }
+                   :child => {
+                     :last_known_location => "Manchester",
+                     :photo => Rack::Test::UploadedFile.new(uploadable_photo_jeff) }
 
       expect(assigns[:child]['last_known_location']).to eq("Manchester")
       expect(assigns[:child]['_attachments'].size).to eq(2)
@@ -459,9 +461,9 @@ describe ChildrenController, :type => :controller do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
 
       put :update, :id => child.id,
-        :child => {
-          :last_known_location => "Manchester",
-          :age => '7'}
+                   :child => {
+                     :last_known_location => "Manchester",
+                     :age => '7'}
 
       expect(assigns[:child]['last_known_location']).to eq("Manchester")
       expect(assigns[:child]['age']).to eq("7")
@@ -479,12 +481,12 @@ describe ChildrenController, :type => :controller do
     it "should allow a records ID to be specified to create a new record with a known id" do
       new_uuid = UUIDTools::UUID.random_create()
       put :update, :id => new_uuid.to_s,
-        :child => {
-            :id => new_uuid.to_s,
-            :_id => new_uuid.to_s,
-            :last_known_location => "London",
-            :age => "7"
-        }
+                   :child => {
+                     :id => new_uuid.to_s,
+                     :_id => new_uuid.to_s,
+                     :last_known_location => "London",
+                     :age => "7"
+                   }
       expect(Child.get(new_uuid.to_s)[:unique_identifier]).not_to be_nil
     end
 
@@ -492,10 +494,10 @@ describe ChildrenController, :type => :controller do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
       put :update, :id => child.id,
-        :child => {
-          :flag => true,
-          :flag_message => "Possible Duplicate"
-        }
+                   :child => {
+                     :flag => true,
+                     :flag_message => "Possible Duplicate"
+                   }
       expect(assigns[:child]['flag']).to be_truthy
       expect(assigns[:child]['flag_message']).to eq("Possible Duplicate")
     end
@@ -534,8 +536,7 @@ describe ChildrenController, :type => :controller do
       expect(child).to receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
       allow(Child).to receive(:get).and_return(child)
       put :update, :id => '1', :child => params_child
-      end
-
+    end
 
     it "should redirect to redirect_url if it is present in params" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))

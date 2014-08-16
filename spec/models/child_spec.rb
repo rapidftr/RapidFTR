@@ -86,7 +86,6 @@ describe Child, :type => :model do
       expect(child['last_updated_by']).to eq('jdoe')
     end
 
-
     it "should assign histories order by datetime of history" do
       child = Child.new()
       first_history = double("history", :[] => "2010-01-01 01:01:02UTC")
@@ -142,7 +141,6 @@ describe Child, :type => :model do
       expect(child.reunited_at).to eq("2010-01-17 19:05:00UTC")
     end
 
-
   end
 
   describe "validation" do
@@ -177,8 +175,8 @@ describe Child, :type => :model do
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
         Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
-        expect(child).not_to be_valid
-        expect(child.errors[:validate_has_at_least_one_field_value]).to eq(["Please fill in at least one field or upload a file"])
+      expect(child).not_to be_valid
+      expect(child.errors[:validate_has_at_least_one_field_value]).to eq(["Please fill in at least one field or upload a file"])
     end
 
     it "should validate numeric types" do
@@ -194,51 +192,51 @@ describe Child, :type => :model do
     it "should validate multiple numeric types" do
       fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"}),
                 Field.new({:type => 'numeric_field', :name => 'new_age', :display_name => "new age"})]
-        child = Child.new
-        child[:height] = "very tall"
-        child[:new_age] = "very old"
-        allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
+      child = Child.new
+      child[:height] = "very tall"
+      child[:new_age] = "very old"
+      allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
 
-        expect(child).not_to be_valid
-        expect(child.errors[:height]).to eq(["height must be a valid number"])
-        expect(child.errors[:new_age]).to eq(["new age must be a valid number"])
+      expect(child).not_to be_valid
+      expect(child.errors[:height]).to eq(["height must be a valid number"])
+      expect(child.errors[:new_age]).to eq(["new age must be a valid number"])
     end
 
     it "should disallow text field values to be more than 200 chars" do
       FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::TEXT_FIELD, :name => "name", :display_name => "Name"),
                          Field.new(:type => Field::CHECK_BOXES, :name => "not_name")])
-                        child = Child.new :name => ('a' * 201)
-                        expect(child).not_to be_valid
-                        expect(child.errors[:name]).to eq(["Name cannot be more than 200 characters long"])
+      child = Child.new :name => ('a' * 201)
+      expect(child).not_to be_valid
+      expect(child.errors[:name]).to eq(["Name cannot be more than 200 characters long"])
     end
 
     it "should disallow text area values to be more than 400,000 chars" do
       FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-                        child = Child.new :a_textfield => ('a' * 400_001)
-                        expect(child).not_to be_valid
-                        expect(child.errors[:a_textfield]).to eq(["A textfield cannot be more than 400000 characters long"])
+      child = Child.new :a_textfield => ('a' * 400_001)
+      expect(child).not_to be_valid
+      expect(child.errors[:a_textfield]).to eq(["A textfield cannot be more than 400000 characters long"])
     end
 
     it "should allow text area values to be 400,000 chars" do
       FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::TEXT_AREA, :name => "a_textfield", :display_name => "A textfield")])
-                        child = Child.new :a_textfield => ('a' * 400_000)
-                        expect(child).to be_valid
+      child = Child.new :a_textfield => ('a' * 400_000)
+      expect(child).to be_valid
     end
 
     it "should allow date fields formatted as dd M yy" do
       FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::DATE_FIELD, :name => "a_datefield", :display_name => "A datefield")])
-                        child = Child.new :a_datefield => ('27 Feb 2010')
-                        expect(child).to be_valid
+      child = Child.new :a_datefield => ('27 Feb 2010')
+      expect(child).to be_valid
     end
 
     it "should pass numeric fields that are valid numbers to 1 dp" do
       FormSection.stub(:all_visible_child_fields_for_form =>
                         [Field.new(:type => Field::NUMERIC_FIELD, :name => "height")])
-                        expect(Child.new(:height => "10.2")).to be_valid
+      expect(Child.new(:height => "10.2")).to be_valid
     end
 
     it "should disallow file formats that are not photo formats" do
@@ -319,7 +317,6 @@ describe Child, :type => :model do
       end
     end
   end
-
 
   describe 'save' do
 
@@ -648,7 +645,6 @@ describe Child, :type => :model do
 
   end
 
-
   describe "audio attachment" do
     before :each do
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => "stc"))
@@ -848,7 +844,6 @@ describe Child, :type => :model do
         expect(@child.primary_photo.name).to start_with("photo-")
       end
 
-
       it "should not log anything if no photo changes have been made" do
         @child["last_known_location"] = "Moscow"
         @child.save
@@ -972,14 +967,14 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
                                          "age"=>{"from"=>"1", "to"=>"15"}},
-                                         "user_name"=>"john",
-                                         "datetime"=>"03/02/2011 21:48"},
-                                         {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                          "datetime"=>"03/02/2011 21:34",
-                                          "user_name"=>"john"},
-                                          {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                           "user_name"=>"john",
-                                           "datetime"=>"03/02/2011 21:33"}]
+                             "user_name"=>"john",
+                             "datetime"=>"03/02/2011 21:48"},
+                            {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "datetime"=>"03/02/2011 21:34",
+                             "user_name"=>"john"},
+                            {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "user_name"=>"john",
+                             "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'john'
       expect(child.has_one_interviewer?).to be_truthy
     end
@@ -988,14 +983,14 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
                                          "age"=>{"from"=>"1", "to"=>"15"}},
-                                         "user_name"=>"jane",
-                                         "datetime"=>"03/02/2011 21:48"},
-                                         {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                          "datetime"=>"03/02/2011 21:34",
-                                          "user_name"=>"john"},
-                                          {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                           "user_name"=>"john",
-                                           "datetime"=>"03/02/2011 21:33"}]
+                             "user_name"=>"jane",
+                             "datetime"=>"03/02/2011 21:48"},
+                            {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "datetime"=>"03/02/2011 21:34",
+                             "user_name"=>"john"},
+                            {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "user_name"=>"john",
+                             "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'jane'
       expect(child.has_one_interviewer?).to be false
     end
@@ -1087,26 +1082,26 @@ describe Child, :type => :model do
       end
     end
 
-      it "should return all duplicate records" do
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
-        record_duplicate = create_duplicate(record_active)
+    it "should return all duplicate records" do
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
+      record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.by_duplicate_of(key: record_active.id)
-        all = Child.all
+      duplicates = Child.by_duplicate_of(key: record_active.id)
+      all = Child.all
 
-        expect(duplicates.count).to eq(1)
-        expect(all.count).to eq(2)
-        expect(duplicates.first.id).to eq(record_duplicate.id)
-      end
+      expect(duplicates.count).to eq(1)
+      expect(all.count).to eq(2)
+      expect(duplicates.first.id).to eq(record_duplicate.id)
+    end
 
-      it "should return duplicate from a record" do
-        record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
-        record_duplicate = create_duplicate(record_active)
+    it "should return duplicate from a record" do
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
+      record_duplicate = create_duplicate(record_active)
 
-        duplicates = Child.by_duplicate_of(key: record_active.id)
-        expect(duplicates.count).to eq(1)
-        expect(duplicates.first.id).to eq(record_duplicate.id)
-      end
+      duplicates = Child.by_duplicate_of(key: record_active.id)
+      expect(duplicates.count).to eq(1)
+      expect(duplicates.first.id).to eq(record_duplicate.id)
+    end
 
   end
 
@@ -1192,7 +1187,6 @@ describe Child, :type => :model do
     end
   end
 
-
   describe 'reindex' do
     it 'should reindex every 24 hours' do
       scheduler = double()
@@ -1213,6 +1207,7 @@ describe Child, :type => :model do
       Child.update_solr_indices
     end
   end
+
   private
 
   def create_child(name, options={})

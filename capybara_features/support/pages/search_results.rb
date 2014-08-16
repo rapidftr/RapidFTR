@@ -30,7 +30,8 @@ class SearchResults
     @session.assert_selector(:css, reunited_child_css_selector(child_id))
   end
 
-private
+  private
+
   def reunited_child_css_selector(child_id)
     "#child_#{child_id} .summary_panel .reunited"
   end

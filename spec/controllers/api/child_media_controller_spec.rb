@@ -56,8 +56,8 @@ describe Api::ChildMediaController, :type => :controller do
     it "should return requested child's photo" do
       given_a_child.
               with_id("1")
-              with_photo(uploadable_photo, "current").
-              with_photo(uploadable_photo_jeff, "other", false)
+      with_photo(uploadable_photo, "current").
+      with_photo(uploadable_photo_jeff, "other", false)
 
       get :show_photo, :id => "1", :photo_id => "other"
       expect(response).to represent_inline_attachment(uploadable_photo_jeff)
@@ -75,19 +75,19 @@ describe Api::ChildMediaController, :type => :controller do
 
   describe "download audio" do
     it "should return an amr audio file associated with a child" do
-        given_a_child.
-                with_id('1').
-                with_unique_identifier('child123').
-                with_audio(uploadable_audio_amr)
+      given_a_child.
+              with_id('1').
+              with_unique_identifier('child123').
+              with_audio(uploadable_audio_amr)
 
-       get :download_audio, :id => '1'
-       expect(response).to represent_attachment(uploadable_audio_amr, "audio_child123.amr")
+      get :download_audio, :id => '1'
+      expect(response).to represent_attachment(uploadable_audio_amr, "audio_child123.amr")
     end
     it "should return an mp3 audio file associated with a child" do
-       given_a_child.
-               with_id('1').
-               with_unique_identifier('child123').
-               with_audio(uploadable_audio_mp3, "other")
+      given_a_child.
+              with_id('1').
+              with_unique_identifier('child123').
+              with_audio(uploadable_audio_mp3, "other")
 
       get :download_audio, :id => '1', :audio_id => "other"
       expect(response).to represent_attachment(uploadable_audio_mp3, "audio_child123.mp3")

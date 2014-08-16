@@ -12,24 +12,24 @@ describe ExportGenerator do
         )
 
         @child1 = Child.new_with_user_name(@user,
-          '_id' => '3-123451', 'name' => 'Dave', 'unique_identifier' => "xxxy",
-          'photo_url' => 'http://testmachine:3000/some-photo-path/1',
-          'audio_url' => 'http://testmachine:3000/some-audio-path/1',
-          'current_photo_key' => "photo-some-id-1", 'some_audio' => 'audio-some-id-1')
+                                           '_id' => '3-123451', 'name' => 'Dave', 'unique_identifier' => "xxxy",
+                                           'photo_url' => 'http://testmachine:3000/some-photo-path/1',
+                                           'audio_url' => 'http://testmachine:3000/some-audio-path/1',
+                                           'current_photo_key' => "photo-some-id-1", 'some_audio' => 'audio-some-id-1')
         @child1.create_unique_id
 
         @child2 = Child.new_with_user_name(@user,
-          '_id' => '4-153213', 'name' => 'Mary', 'unique_identifier' => "yyyx",
-          'photo_url' => 'http://testmachine:3000/some-photo-path/2',
-          'audio_url' => 'http://testmachine:3000/some-audio-path/2',
-          'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
+                                           '_id' => '4-153213', 'name' => 'Mary', 'unique_identifier' => "yyyx",
+                                           'photo_url' => 'http://testmachine:3000/some-photo-path/2',
+                                           'audio_url' => 'http://testmachine:3000/some-audio-path/2',
+                                           'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
         @child2.create_unique_id
 
         @child3 = Child.new_with_user_name(@user,
-                                          '_id' => '5-188888', 'name' => 'Jane', 'unique_identifier' => "yxyy",
-                                          'photo_url' => 'http://testmachine:3000/some-photo-path/3',
-                                          'audio_url' => 'http://testmachine:3000/some-audio-path/3',
-                                          'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
+                                           '_id' => '5-188888', 'name' => 'Jane', 'unique_identifier' => "yxyy",
+                                           'photo_url' => 'http://testmachine:3000/some-photo-path/3',
+                                           'audio_url' => 'http://testmachine:3000/some-audio-path/3',
+                                           'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
         @child3.create_unique_id
       end
 

@@ -12,7 +12,7 @@ class CouchSettings
     def new_with_defaults
       path   = ::Rails.root.join "config", "couchdb.yml"
       env    = ::Rails.env.to_s
-      config = YAML::load(ERB.new(File.read(path)).result)[env] rescue {}
+      config = YAML.load(ERB.new(File.read(path)).result)[env] rescue {}
       CouchSettings.new(path, env, config)
     end
   end
@@ -52,7 +52,7 @@ class CouchSettings
   end
 
   def db_suffix
-    @config['suffix'] || "#{env.to_s}"
+    @config['suffix'] || "#{env}"
   end
 
   def ssl_enabled_for_rapidftr?
@@ -85,7 +85,7 @@ class CouchSettings
   end
 
   def authenticate(username, password)
-    RestClient.post "#{uri.to_s}/_session", "name=#{username}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
+    RestClient.post "#{uri}/_session", "name=#{username}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
     true
   end
 

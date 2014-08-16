@@ -4,7 +4,6 @@ class Form < CouchRest::Model::Base
 
   property :name
 
-
   attr_accessor :sections
 
   design do

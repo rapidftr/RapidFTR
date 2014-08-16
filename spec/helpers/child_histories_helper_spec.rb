@@ -22,8 +22,8 @@ describe ChildHistoriesHelper, :type => :helper do
   describe "#new_value_for" do
 
     it "should get the flag change message from the history" do
-        history = {'changes' => {'flag_message' => {'to' => 'message'}}}
-        expect(@view.new_value_for(history, 'flag_message')).to eq('message')
+      history = {'changes' => {'flag_message' => {'to' => 'message'}}}
+      expect(@view.new_value_for(history, 'flag_message')).to eq('message')
     end
 
     it "should return an empty string if no changes have been made" do

@@ -45,6 +45,7 @@ class SystemUsersController < ApplicationController
   end
 
   private
+
   def load_user
     @user = SystemUsers.get("org.couchdb.user:"+params[:id])
     if @user.nil? || params[:system_users].nil? ? false : @user.name != params[:system_users][:name]

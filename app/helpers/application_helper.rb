@@ -10,15 +10,15 @@ module ApplicationHelper
   end
 
   def submit_button(name = t("buttons.save"))
-      submit_tag(name, :class => 'btn_submit')
+    submit_tag(name, :class => 'btn_submit')
   end
 
   def cancel_button(path)
-      link_to t('cancel'), path, :class => "link_cancel", data: { confirm: t('messages.cancel_confirmation') }
+    link_to t('cancel'), path, :class => "link_cancel", data: { confirm: t('messages.cancel_confirmation') }
   end
 
   def discard_button(path)
-      link_to t('discard'), path, :class => 'link_discard', data: { confirm: t('messages.confirmation_message') }
+    link_to t('discard'), path, :class => 'link_discard', data: { confirm: t('messages.confirmation_message') }
   end
 
   def link_with_confirm(link_to, anchor, link_options = {})
@@ -29,7 +29,7 @@ module ApplicationHelper
     elsif /user/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
       msg = confirm_message % 'Users Page'
     elsif /form_section/.match(controller.controller_name) and /index/.match(controller.action_name)
-       msg = confirm_message % 'Manage Form Sections'
+      msg = confirm_message % 'Manage Form Sections'
     end
 
     link_options.merge data: { confirm: msg } if msg
@@ -39,10 +39,10 @@ module ApplicationHelper
   def translated_permissions
     permissions = Permission.hashed_values.map do |group, permissions|
       [
-          I18n.t(group, :scope => "permissions.group"),
-          permissions.map do |permission|
-            [ I18n.t(permission, :scope => 'permissions.permission'), permission ]
-          end
+        I18n.t(group, :scope => "permissions.group"),
+        permissions.map do |permission|
+          [ I18n.t(permission, :scope => 'permissions.permission'), permission ]
+        end
       ]
     end
   end

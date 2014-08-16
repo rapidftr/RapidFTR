@@ -188,7 +188,7 @@ class ChildrenController < ApplicationController
     redirect_to(@child)
   end
 
-# POST
+  # POST
   def select_primary_photo
     @child = Child.get(params[:child_id])
     authorize! :update, @child
@@ -202,8 +202,8 @@ class ChildrenController < ApplicationController
     end
   end
 
-# DELETE /children/1
-# DELETE /children/1.xml
+  # DELETE /children/1
+  # DELETE /children/1.xml
   def destroy
     authorize! :destroy, @child
     @child.destroy

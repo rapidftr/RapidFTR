@@ -5,8 +5,8 @@ describe LogEntry, :type => :model do
   it "should save with creation timestamp" do
     allow(RapidFTR::Clock).to receive(:current_formatted_time).and_return("this is now")
 
-                # changed :format to :export_format because format is a reserved word
-                # Searched through code and could not see anywhere other than in the specs where :format was being used
+    # changed :format to :export_format because format is a reserved word
+    # Searched through code and could not see anywhere other than in the specs where :format was being used
     log_entry = LogEntry.create! :type => LogEntry::TYPE[:cpims], :username => "rapidftr", :organisation => "urc", :export_format => "cpims", :number_or_records => "123"
 
     expect(log_entry[:created_at]).to eq("this is now")

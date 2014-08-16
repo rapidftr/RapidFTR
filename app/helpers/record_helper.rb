@@ -30,7 +30,6 @@ module RecordHelper
     self['last_updated_at'] || self['created_at']
   end
 
-
   def update_history
     if field_name_changes.any?
       changes = changes_for(field_name_changes)
@@ -44,10 +43,10 @@ module RecordHelper
 
   def add_creation_history
     self['histories'].unshift({
-                                  'user_name' => created_by,
-                                  'user_organisation' => organisation_of(created_by),
-                                  'datetime' => created_at,
-                                  'changes' => {'child' => {:created => created_at}}
+                                'user_name' => created_by,
+                                'user_organisation' => organisation_of(created_by),
+                                'datetime' => created_at,
+                                'changes' => {'child' => {:created => created_at}}
                               })
   end
 
@@ -76,10 +75,10 @@ module RecordHelper
   def add_to_history(changes)
     last_updated_user_name = last_updated_by
     self['histories'].unshift({
-                                  'user_name' => last_updated_user_name,
-                                  'user_organisation' => organisation_of(last_updated_user_name),
-                                  'datetime' => last_updated_at,
-                                  'changes' => changes})
+                                'user_name' => last_updated_user_name,
+                                'user_organisation' => organisation_of(last_updated_user_name),
+                                'datetime' => last_updated_at,
+                                'changes' => changes})
   end
 
   def organisation_of(user_name)
@@ -89,10 +88,10 @@ module RecordHelper
   def field_name_changes
     field_names = field_definitions_for(form_name).map { |f| f.name }
     other_fields = [
-        "flag", "flag_message",
-        "reunited", "reunited_message",
-        "investigated", "investigated_message",
-        "duplicate", "duplicate_of"
+      "flag", "flag_message",
+      "reunited", "reunited_message",
+      "investigated", "investigated_message",
+      "duplicate", "duplicate_of"
     ]
     all_fields = field_names + other_fields
     all_fields.select { |field_name| changed_field?(field_name) }
@@ -101,9 +100,9 @@ module RecordHelper
   def changes_for(field_names)
     field_names.inject({}) do |changes, field_name|
       changes.merge(field_name => {
-          'from' => original_data[field_name],
-          'to' => self[field_name]
-      })
+                      'from' => original_data[field_name],
+                      'to' => self[field_name]
+                    })
     end
   end
 

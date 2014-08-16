@@ -89,8 +89,8 @@ module PhotoHelper
     return [] if self['photo_keys'].blank?
     self['photo_keys'].collect do |key|
       {
-          :photo_uri => child_photo_url(self, key),
-          :thumbnail_uri => child_photo_url(self, key)
+        :photo_uri => child_photo_url(self, key),
+        :thumbnail_uri => child_photo_url(self, key)
       }
     end
   end

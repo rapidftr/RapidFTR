@@ -108,55 +108,54 @@ class Child < CouchRest::Model::Base
   end
 
   design do
-      view :by_protection_status_and_gender_and_ftr_status
-      view :by_unique_identifier
-      view :by_short_id
-      view :by_created_by
-      view :by_duplicate_of
+    view :by_protection_status_and_gender_and_ftr_status
+    view :by_unique_identifier
+    view :by_short_id
+    view :by_created_by
+    view :by_duplicate_of
 
-      view :by_flag,
-          :map => "function(doc) {
-                if (doc.hasOwnProperty('flag'))
-                {
-                    if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
-                    emit(doc['flag'],doc);
-                    }
-                }
-            }"
+    view :by_flag,
+         :map => "function(doc) {
+               if (doc.hasOwnProperty('flag'))
+               {
+                   if (!doc.hasOwnProperty('duplicate') || !doc['duplicate']) {
+                   emit(doc['flag'],doc);
+                   }
+               }
+           }"
 
+    view :by_user_name,
+         :map => "function(doc) {
+           if (doc.hasOwnProperty('histories')){
+               for(var index=0; index<doc['histories'].length; index++){
+                   emit(doc['histories'][index]['user_name'], doc)
+               }
+           }
+           }"
 
-      view :by_user_name,
-      :map => "function(doc) {
-        if (doc.hasOwnProperty('histories')){
-            for(var index=0; index<doc['histories'].length; index++){
-                emit(doc['histories'][index]['user_name'], doc)
-            }
-        }
-        }"
-
-      # TODO: Use Child.database.documents['rows'] and map that instead
-      #   (unless this map function needs to do further filtering by duplicate/etc)
-      #   Firstly, do we even need to sync duplicate records?
-      view :by_ids_and_revs,
-          :map => "function(doc) {
-        if (doc['couchrest-type'] == 'Child'){
-        emit(doc._id, {_id: doc._id, _rev: doc._rev});
-        }
-      }"
+    # TODO: Use Child.database.documents['rows'] and map that instead
+    #   (unless this map function needs to do further filtering by duplicate/etc)
+    #   Firstly, do we even need to sync duplicate records?
+    view :by_ids_and_revs,
+         :map => "function(doc) {
+       if (doc['couchrest-type'] == 'Child'){
+       emit(doc._id, {_id: doc._id, _rev: doc._rev});
+       }
+     }"
   end
 
   def compact
-      self['current_photo_key'] = '' if self['current_photo_key'].nil?
-      self
+    self['current_photo_key'] = '' if self['current_photo_key'].nil?
+    self
   end
 
   def self.fetch_all_ids_and_revs
-      ids_and_revs = []
-      all_rows = self.by_ids_and_revs({:include_docs => false})["rows"]
-      all_rows.each do |row|
-          ids_and_revs << row["value"]
-      end
-      ids_and_revs
+    ids_and_revs = []
+    all_rows = self.by_ids_and_revs({:include_docs => false})["rows"]
+    all_rows.each do |row|
+      ids_and_revs << row["value"]
+    end
+    ids_and_revs
   end
 
   def form
@@ -168,126 +167,126 @@ class Child < CouchRest::Model::Base
   end
 
   def validate_has_at_least_one_field_value
-      return true if field_definitions_for(Child::FORM_NAME).any? { |field| is_filled_in?(field) }
-      return true if !@file_name.nil? || !@audio_file_name.nil?
-      return true if unknown_fields && unknown_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
-      errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
+    return true if field_definitions_for(Child::FORM_NAME).any? { |field| is_filled_in?(field) }
+    return true if !@file_name.nil? || !@audio_file_name.nil?
+    return true if unknown_fields && unknown_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
+    errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
   end
 
   def validate_age
-      return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-      errors.add(:age, I18n.t("errors.models.child.age"))
+    return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
+    errors.add(:age, I18n.t("errors.models.child.age"))
   end
 
   def validate_photos
-      return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-      errors.add(:photo, I18n.t("errors.models.child.photo_format"))
+    return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
+    errors.add(:photo, I18n.t("errors.models.child.photo_format"))
   end
 
   def validate_photos_size
-      return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-      errors.add(:photo, I18n.t("errors.models.child.photo_size"))
+    return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
+    errors.add(:photo, I18n.t("errors.models.child.photo_size"))
   end
 
   def validate_audio_size
-      return true if @audio.blank? || @audio.size < 10.megabytes
-      errors.add(:audio, I18n.t("errors.models.child.audio_size"))
+    return true if @audio.blank? || @audio.size < 10.megabytes
+    errors.add(:audio, I18n.t("errors.models.child.audio_size"))
   end
 
   def validate_audio_file_name
-      return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
-      errors.add(:audio, "Please upload a valid audio file (amr or mp3) for this child record")
+    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
+    errors.add(:audio, "Please upload a valid audio file (amr or mp3) for this child record")
   end
 
   def has_valid_audio?
-      validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
+    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
   end
 
   def validate_created_at
-      begin
-          if self['created_at']
-              DateTime.parse self['created_at']
-          end
-          true
-      rescue
-          errors.add(:created_at, '')
+    begin
+      if self['created_at']
+        DateTime.parse self['created_at']
       end
+      true
+  rescue
+    errors.add(:created_at, '')
+    end
   end
 
   def validate_last_updated_at
-      begin
-          if self['last_updated_at']
-              DateTime.parse self['last_updated_at']
-          end
-          true
-      rescue
-          errors.add(:last_updated_at, '')
+    begin
+      if self['last_updated_at']
+        DateTime.parse self['last_updated_at']
       end
+      true
+  rescue
+    errors.add(:last_updated_at, '')
+    end
   end
 
   def method_missing(m, *args, &block)
-      self[m]
+    self[m]
   end
 
   def self.flagged
-      by_flag(:key => true)
+    by_flag(:key => true)
   end
 
   def self.all_connected_with(user_name)
-      #TODO Investigate why the hash of the objects got different.
-      (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq {|child| child.unique_identifier}
+    #TODO Investigate why the hash of the objects got different.
+    (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq {|child| child.unique_identifier}
   end
 
   def create_unique_id
-      self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
-      self.short_id = unique_identifier.last 7
+    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
+    self.short_id = unique_identifier.last 7
   end
 
   def has_one_interviewer?
-      user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
-      user_names_after_deletion.delete(self['created_by'])
-      self['last_updated_by'].blank? || user_names_after_deletion.blank?
+    user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
+    user_names_after_deletion.delete(self['created_by'])
+    self['last_updated_by'].blank? || user_names_after_deletion.blank?
   end
 
   def mark_as_duplicate(parent_id)
-      self['duplicate'] = true
-      self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
+    self['duplicate'] = true
+    self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
   end
 
   def self.schedule(scheduler)
-      scheduler.every("24h") do
-          Child.reindex!
-      end
+    scheduler.every("24h") do
+      Child.reindex!
+    end
   end
 
   private
 
   def unknown_fields
-      system_fields = ["created_at",
-                       "last_updated_at",
-                       "last_updated_by",
-                       "last_updated_by_full_name",
-                       "posted_at",
-                       "posted_from",
-                       "_rev",
-                       "_id",
-                       "_attachments",
-                       "short_id",
-                       "created_by",
-                       "created_by_full_name",
-                       "couchrest-type",
-                       "histories",
-                       "unique_identifier",
-                       "created_organisation"]
-      existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
-      self.reject { |k, v| existing_fields.include? k }
+    system_fields = ["created_at",
+                     "last_updated_at",
+                     "last_updated_by",
+                     "last_updated_by_full_name",
+                     "posted_at",
+                     "posted_from",
+                     "_rev",
+                     "_id",
+                     "_attachments",
+                     "short_id",
+                     "created_by",
+                     "created_by_full_name",
+                     "couchrest-type",
+                     "histories",
+                     "unique_identifier",
+                     "created_organisation"]
+    existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
+    self.reject { |k, v| existing_fields.include? k }
   end
 
   def key_for_content_type(content_type)
-      Mime::Type.lookup(content_type).to_sym.to_s
+    Mime::Type.lookup(content_type).to_sym.to_s
   end
 
   def validate_duplicate_of
-      return errors.add(:duplicate, I18n.t("errors.models.child.validate_duplicate")) if self["duplicate"] && self["duplicate_of"].blank?
+    return errors.add(:duplicate, I18n.t("errors.models.child.validate_duplicate")) if self["duplicate"] && self["duplicate_of"].blank?
   end
 end

@@ -4,11 +4,11 @@ RSpec::Matchers.define :authorize do |action, object|
   end
 
   failure_message do |ability|
-    "Expected Permissions #{ability.user.permissions.inspect} To Authorize #{action.to_s} On #{object.inspect}"
+    "Expected Permissions #{ability.user.permissions.inspect} To Authorize #{action} On #{object.inspect}"
   end
 
   failure_message_when_negated do |ability|
-    "Did not expect User #{ability.user.inspect} To Authorize #{action.to_s} On #{object.inspect}"
+    "Did not expect User #{ability.user.inspect} To Authorize #{action} On #{object.inspect}"
   end
 end
 
@@ -21,11 +21,11 @@ RSpec::Matchers.define :authorize_all do |actions, *objects|
   end
 
   failure_message do |ability|
-    "Expected User #{ability.user.inspect} To Authorize #{@action.to_s} On #{@object.inspect}"
+    "Expected User #{ability.user.inspect} To Authorize #{@action} On #{@object.inspect}"
   end
 
   failure_message_when_negated do |ability|
-    "Did not expect User #{ability.user.inspect} To Authorize #{@action.to_s} On #{@object.inspect}"
+    "Did not expect User #{ability.user.inspect} To Authorize #{@action} On #{@object.inspect}"
   end
 end
 

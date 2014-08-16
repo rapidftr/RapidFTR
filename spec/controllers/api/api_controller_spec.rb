@@ -59,8 +59,8 @@ describe TestController, :type => :controller do
   end
 
   it "should override session expiry timeout from configuration" do
-      allow(Rails.application.config.session_options[:rapidftr]).to receive(:[]).with(:mobile_expire_after).and_return(100.minutes)
-      expect(controller.send(:session_expiry_timeout)).to eq(100.minutes)
+    allow(Rails.application.config.session_options[:rapidftr]).to receive(:[]).with(:mobile_expire_after).and_return(100.minutes)
+    expect(controller.send(:session_expiry_timeout)).to eq(100.minutes)
   end
 
   it "should extend session lifetime" do

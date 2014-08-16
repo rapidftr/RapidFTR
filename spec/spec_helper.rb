@@ -82,7 +82,7 @@ RSpec.configure do |config|
 
   #Delete db if needed.
   config.after(:all) do
-      reset_couchdb!
+    reset_couchdb!
   end
 
   config.before(:each) { I18n.locale = I18n.default_locale = :en }

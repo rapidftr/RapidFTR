@@ -8,9 +8,9 @@ describe "children/_numeric_field.html.erb", :type => :view do
 
   it "should include image for tooltip when help text when exists" do
     numeric_field = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'numeric_field',
-    :help_text => "This is my help text"
+                              :display_name => "field name",
+                              :type => 'numeric_field',
+                              :help_text => "This is my help text"
 
     render :partial => 'children/numeric_field', :locals => { :numeric_field => numeric_field }, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
@@ -18,8 +18,8 @@ describe "children/_numeric_field.html.erb", :type => :view do
 
   it "should not include image for tooltip when help text not exists" do
     numeric_field = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'numeric_field'
+                              :display_name => "field name",
+                              :type => 'numeric_field'
 
     render :partial => 'children/numeric_field', :locals => { :numeric_field => numeric_field }, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")
