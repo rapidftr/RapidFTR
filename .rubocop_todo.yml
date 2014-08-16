@@ -137,11 +137,6 @@ Style/AndOr:
 Style/BarePercentLiterals:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/BlockEndNewline:
-  Enabled: false
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/Blocks:
