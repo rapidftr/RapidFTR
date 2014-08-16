@@ -22,4 +22,3 @@ describe AdminController, :type => :controller do
     expect(response).to redirect_to(admin_path)
   end
 end
-

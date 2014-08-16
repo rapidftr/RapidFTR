@@ -85,4 +85,3 @@ end
 def new_child_page
   @_new_child_page ||= NewChildPage.new(Capybara.current_session)
 end
-

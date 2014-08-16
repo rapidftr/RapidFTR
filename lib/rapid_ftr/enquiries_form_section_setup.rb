@@ -42,4 +42,3 @@ module RapidFTR
     end
   end
 end
-

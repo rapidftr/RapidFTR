@@ -603,4 +603,3 @@ module RapidFTR
 
   end
 end
-

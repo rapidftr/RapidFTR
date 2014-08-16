@@ -73,4 +73,3 @@ describe SystemUsersController, :type => :controller do
   end
 
 end
-

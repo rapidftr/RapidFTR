@@ -35,4 +35,3 @@ describe "FieldOption", :type => :model do
   end
 
 end
-

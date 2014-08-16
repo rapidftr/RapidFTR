@@ -86,4 +86,3 @@ end
 def get prompt
   Readline.readline prompt
 end
-
