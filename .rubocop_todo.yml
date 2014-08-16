@@ -34,10 +34,6 @@ Lint/ParenthesesAsGroupedExpression:
 Lint/ShadowingOuterLocalVariable:
   Enabled: false
 
-# Offense count: 1
-Lint/SpaceBeforeFirstArg:
-  Enabled: false
-
 # Offense count: 81
 # Cop supports --auto-correct.
 Lint/UnusedBlockArgument:
