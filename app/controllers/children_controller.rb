@@ -118,7 +118,12 @@ class ChildrenController < ApplicationController
   def sync_unverified
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
+    if params[:child][:_id]
+      child = Child.get(params[:child][:_id])
+      child = update_child_with_attachments child, params
+      child.save
+      render :json => child.compact.to_json
+    else
       respond_to do |format|
         format.json do
 
@@ -130,11 +135,6 @@ class ChildrenController < ApplicationController
           end
         end
       end
-    else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact.to_json
     end
   end
 

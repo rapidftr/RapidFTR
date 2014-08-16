@@ -39,7 +39,12 @@ class Api::ChildrenController < Api::ApiController
 
   def unverified
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
+    if params[:child][:_id]
+      child = Child.get(params[:child][:_id])
+      child = update_child_with_attachments child, params
+      child.save
+      render :json => child.compact
+    else
       params[:child].merge!(:verified => current_user.verified?)
       child = create_or_update_child(params)
 
@@ -47,11 +52,6 @@ class Api::ChildrenController < Api::ApiController
       if child.save
         render :json => child.compact
       end
-    else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact
     end
   end
 
@@ -66,7 +66,6 @@ class Api::ChildrenController < Api::ApiController
     params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) # histories might come as string from the mobile client.
   rescue JSON::ParserError
     render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
-
   end
 
   def create_or_update_child(params)
