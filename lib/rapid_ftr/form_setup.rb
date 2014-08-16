@@ -21,7 +21,7 @@ module RapidFTR
 
     def self.default_fields_for section
       sections = default_sections_for section.form.name
-      default_section = sections.find {|s| s.name == section.name}
+      default_section = sections.find { |s| s.name == section.name }
       default_section.nil? ? [] : default_section.fields
     end
   end

@@ -13,7 +13,7 @@ describe PasswordRecoveryRequest, :type => :model do
     end
 
     it "should raise error if username is empty" do
-      expect {PasswordRecoveryRequest.create! :user_name => ""}.to raise_error
+      expect { PasswordRecoveryRequest.create! :user_name => "" }.to raise_error
     end
 
     it "should hide password requests" do

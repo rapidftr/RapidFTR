@@ -15,10 +15,10 @@ class PasswordRecoveryRequestsController < ApplicationController
           flash[:notice] = success_notice
           redirect_to login_path
         end
-        format.json { render :json => password_recovery_json(success_notice) , :status => :ok}
+        format.json { render :json => password_recovery_json(success_notice) , :status => :ok }
       else
         format.html { render :new }
-        format.json { render :json => password_recovery_json(@password_recovery_request.errors.full_messages.join('. ')), :status => :ok}
+        format.json { render :json => password_recovery_json(@password_recovery_request.errors.full_messages.join('. ')), :status => :ok }
       end
     end
   end

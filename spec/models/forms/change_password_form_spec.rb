@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Forms::ChangePasswordForm, :type => :model do
 
   before :all do
-    User.all.each {|u| u.destroy}
+    User.all.each { |u| u.destroy }
   end
 
   describe "Validation" do

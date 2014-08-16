@@ -20,15 +20,15 @@ class Form < CouchRest::Model::Base
   end
 
   def sections
-    @sections ||= FormSection.all.all.select {|fs| fs.form == self }
+    @sections ||= FormSection.all.all.select { |fs| fs.form == self }
   end
 
   def reload_sections!
-    @sections = FormSection.all.all.select {|fs| fs.form == self }
+    @sections = FormSection.all.all.select { |fs| fs.form == self }
   end
 
   def sections=(sections)
-    sections.each {|s| s.form = self}
+    sections.each { |s| s.form = self }
     @sections = sections
   end
 

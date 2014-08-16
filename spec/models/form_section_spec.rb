@@ -247,7 +247,7 @@ describe FormSection, :type => :model do
     it "should not delete uneditable fields" do
       @field = build(:field, editable: false)
       form_section = FormSection.new :fields=>[@field]
-      expect {form_section.delete_field(@field.name)}.to raise_error("Uneditable field cannot be deleted")
+      expect { form_section.delete_field(@field.name) }.to raise_error("Uneditable field cannot be deleted")
     end
   end
 

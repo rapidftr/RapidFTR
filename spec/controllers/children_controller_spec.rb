@@ -156,7 +156,7 @@ describe ChildrenController, :type => :controller do
       end
 
       context "when filter is passed for field worker" do
-        before { @filter = "active"}
+        before { @filter = "active" }
         it_should_behave_like "viewing children as a field worker"
       end
 
@@ -174,18 +174,18 @@ describe ChildrenController, :type => :controller do
       end
 
       context "when filter is not passed field_worker and order is last_updated_at" do
-        before {@params = {:order_by => 'last_updated_at'}}
+        before { @params = {:order_by => 'last_updated_at'} }
         it_should_behave_like "viewing children as a field worker"
       end
 
       context "when status is not passed field_worker, order is last_updated_at and page is 2" do
-        before {@session = fake_field_worker_login }
+        before { @session = fake_field_worker_login }
         before {
           create(:child, created_by: @session.user_name)
           second_page_child = create(:child, created_by: @session.user_name)
           @expected_children = [second_page_child]
         }
-        before {@params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1}}
+        before { @params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1} }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -244,7 +244,7 @@ describe ChildrenController, :type => :controller do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before {@options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
+        before { @options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at} }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -452,7 +452,7 @@ describe ChildrenController, :type => :controller do
 
       expect(assigns[:child]['last_known_location']).to eq("Manchester")
       expect(assigns[:child]['_attachments'].size).to eq(2)
-      updated_photo_key = assigns[:child]['_attachments'].keys.select {|key| key =~ /photo.*?-2010-01-17T140532/}.first
+      updated_photo_key = assigns[:child]['_attachments'].keys.select { |key| key =~ /photo.*?-2010-01-17T140532/ }.first
       expect(assigns[:child]['_attachments'][updated_photo_key]['data']).not_to be_blank
     end
 
@@ -475,7 +475,7 @@ describe ChildrenController, :type => :controller do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
       expect(Child.get(child.id)["histories"].size).to be 1
 
-      expect{put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"})}.to_not change{Child.get(child.id)["histories"].size}
+      expect{ put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"}) }.to_not change{ Child.get(child.id)["histories"].size }
     end
 
     it "should allow a records ID to be specified to create a new record with a known id" do

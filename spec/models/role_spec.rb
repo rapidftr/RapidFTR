@@ -44,7 +44,7 @@ describe Role, :type => :model do
   end
 
   it "should generate id" do
-    Role.all.each {|role| role.destroy}
+    Role.all.each { |role| role.destroy }
     role = create :role, :name => 'test role 1234', :_id => nil
     expect(role.id).to eq("role-test-role-1234")
   end

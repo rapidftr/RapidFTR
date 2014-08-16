@@ -3,9 +3,9 @@ module WeeklyReport
 
   def self.data
     fields = FormSection.by_unique_id(:key => "basic_identity").first.fields
-    protection_statuses = fields.find{|field| field[:name] == "protection_status"}.option_strings
-    genders = fields.find{|field| field[:name] == "gender"}.option_strings
-    ftr_statuses = fields.find{|field| field[:name] == "ftr_status"}.option_strings
+    protection_statuses = fields.find{ |field| field[:name] == "protection_status" }.option_strings
+    genders = fields.find{ |field| field[:name] == "gender" }.option_strings
+    ftr_statuses = fields.find{ |field| field[:name] == "ftr_status" }.option_strings
 
     csv_str = CSV.generate do |csv|
       csv << ["protection status", "gender", "ftr status", "total"]

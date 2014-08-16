@@ -17,12 +17,12 @@ When /^I attach the following photos:$/ do |table|
 end
 
 Given /^no forms exist in the system$/ do
-  FormSection.all.each {|u| u.destroy }
-  Form.all.each {|f| f.destroy }
+  FormSection.all.each { |u| u.destroy }
+  Form.all.each { |f| f.destroy }
 end
 
 Given /^the following forms exist in the system:$/ do |forms_table|
-  Form.all.each {|u| u.destroy }
+  Form.all.each { |u| u.destroy }
 
   forms_table.hashes.each do |form_hash|
     form_hash.reverse_merge!('unique_id'=> form_hash['name'].gsub(/\s/, '_').downcase)
@@ -32,8 +32,8 @@ Given /^the following forms exist in the system:$/ do |forms_table|
 end
 
 Given /^the following form sections exist in the system on the "(.*)" form:$/ do |form_name, form_sections_table|
-  FormSection.all.each {|u| u.destroy }
-  Form.all.each {|f| f.destroy }
+  FormSection.all.each { |u| u.destroy }
+  Form.all.each { |f| f.destroy }
 
   form = Form.create(name: form_name)
   form_sections_table.hashes.each do |form_section_hash|

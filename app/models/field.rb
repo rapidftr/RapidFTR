@@ -104,7 +104,7 @@ class Field
   def option_strings= value
     if value
       value = value.gsub(/\r\n?/, "\n").split("\n") if value.is_a?(String)
-      self.option_strings_text = value.select {|x| not "#{x}".strip.empty? }.map(&:rstrip).join("\n")
+      self.option_strings_text = value.select { |x| not "#{x}".strip.empty? }.map(&:rstrip).join("\n")
     end
   end
 
@@ -165,7 +165,7 @@ class Field
 
   def validate_unique_name
     return unless form
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? { |field| !field.equal?(self) && field.name == name })
     other_form = FormSection.get_form_containing_field name
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
     true

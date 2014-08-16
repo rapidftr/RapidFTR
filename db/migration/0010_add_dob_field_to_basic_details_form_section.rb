@@ -6,7 +6,7 @@ unless basic_identity_fs.fields.any?{ |f| f.name == 'date_of_birth' }
   basic_identity_fs.fields << dob_field
   basic_identity_fs.save!
 
-  children_docs = Child.database.documents["rows"].select{|row| !row["id"].include?("_design")}
+  children_docs = Child.database.documents["rows"].select{ |row| !row["id"].include?("_design") }
   children_docs.each do |child_doc|
     child = Child.database.get child_doc["id"]
 

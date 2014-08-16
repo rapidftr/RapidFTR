@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'shared/_header_links.html.erb', :type => :view do
   let(:permissions) { [] }
-  let (:form) { create :form}
+  let (:form) { create :form }
   let(:user) { stub_model User, :id => 'test_id', :user_name => 'test_user', :permissions => permissions }
 
   subject do
@@ -26,10 +26,10 @@ describe 'shared/_header_links.html.erb', :type => :view do
     it { is_expected.to have_link('My Account', :href => user_path(user.id)) }
     it { is_expected.not_to have_link('System Settings') }
     it { is_expected.to have_link('Contact & Help', :href => contact_users_path) }
-    it { is_expected.not_to have_link('CHILDREN', :href => children_path)}
-    it { is_expected.not_to have_link('FORMS', :href => form_form_sections_path(form.id))}
-    it { is_expected.not_to have_link('USERS', :href => users_path)}
-    it { is_expected.not_to have_link('DEVICES', :href => devices_path)}
+    it { is_expected.not_to have_link('CHILDREN', :href => children_path) }
+    it { is_expected.not_to have_link('FORMS', :href => form_form_sections_path(form.id)) }
+    it { is_expected.not_to have_link('USERS', :href => users_path) }
+    it { is_expected.not_to have_link('DEVICES', :href => devices_path) }
   end
 
   describe 'with all permission' do

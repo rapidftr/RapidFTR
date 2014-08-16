@@ -214,8 +214,8 @@ class FormSection < CouchRest::Model::Base
 
   def merge_fields! fields_to_merge
     current_field_names = fields.collect(&:name)
-    fields_to_merge.reject! {|field| current_field_names.include? field.name }
-    fields_to_merge.each {|new_field| fields << new_field}
+    fields_to_merge.reject! { |field| current_field_names.include? field.name }
+    fields_to_merge.each { |new_field| fields << new_field }
   end
 
   protected
@@ -261,7 +261,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def validate_unique_name
-    unique = FormSection.all.select {|fs| fs.form == form } .all? { |fs| id == fs.id || name == nil || name.empty? || name!= fs.name }
+    unique = FormSection.all.select { |fs| fs.form == form } .all? { |fs| id == fs.id || name == nil || name.empty? || name!= fs.name }
     unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
   end
 

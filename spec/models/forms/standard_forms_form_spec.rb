@@ -73,7 +73,7 @@ describe Forms::StandardFormsForm do
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
       child_form_sections = forms[CHILD_FORM_INDEX].sections
       child_form_sections.each do |section|
-        section.fields.each {|field| expect(field.disabled).to be_falsey}
+        section.fields.each { |field| expect(field.disabled).to be_falsey }
       end
     end
 
@@ -81,7 +81,7 @@ describe Forms::StandardFormsForm do
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
       enquiry_form_sections = forms[ENQUIRY_FORM_INDEX].sections
       enquiry_form_sections.each do |section|
-        section.fields.each {|field| expect(field.disabled).to be_falsey}
+        section.fields.each { |field| expect(field.disabled).to be_falsey }
       end
     end
 

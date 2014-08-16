@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MobileDbKey, :type => :model do
   before :each do
-    MobileDbKey.all.each {|mdb| mdb.destroy}
+    MobileDbKey.all.each { |mdb| mdb.destroy }
   end
 
   it "should fetch the MobileDBKey for given imei if present" do

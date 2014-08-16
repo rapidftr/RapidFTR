@@ -132,8 +132,8 @@ end
 
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
   options = table.hashes
-  page.has_select?(dropdown_label, :options => options.collect{|element| element['label']},
-                                   :selected => options.collect{|element| element['label'] if element['selected?'] == 'yes'}.compact!)
+  page.has_select?(dropdown_label, :options => options.collect{ |element| element['label'] },
+                                   :selected => options.collect{ |element| element['label'] if element['selected?'] == 'yes' }.compact!)
 end
 
 Then /^I should find the following links:$/ do |table|

@@ -5,7 +5,7 @@ describe DuplicatesController, :type => :controller do
 
   describe "GET new" do
     context "An admin user with a valid non-duplicate child id" do
-      let(:form) { double("Form", sorted_highlighted_fields: [])}
+      let(:form) { double("Form", sorted_highlighted_fields: []) }
 
       before :each do
         fake_admin_login
@@ -62,7 +62,7 @@ describe DuplicatesController, :type => :controller do
 
   describe "POST create" do
     context "An admin user with a valid non-duplicate child id" do
-      let(:form) { double("Form", sorted_highlighted_fields: [])}
+      let(:form) { double("Form", sorted_highlighted_fields: []) }
 
       before :each do
         fake_admin_login

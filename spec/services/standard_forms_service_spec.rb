@@ -39,7 +39,7 @@ describe StandardFormsService do
         attributes = { "forms" => {
           "children" => { "user_selected" => "0", "id" => "children",
                           "sections" => { "basic_identity" => { "user_selected" => "1", "id" => "basic_identity" } } } } }
-        expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
+        expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
       end
     end
 
@@ -91,7 +91,7 @@ describe StandardFormsService do
                               "id" => "basic_identity" }
                           } } } }
 
-        expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
+        expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 1
         expect(FormSection.all.first.name).to eq("Basic Identity")
         expect(FormSection.all.first.unique_id).to eq("basic_identity")
@@ -116,7 +116,7 @@ describe StandardFormsService do
           }
         }
 
-        expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
+        expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 2
         expect(FormSection.by_unique_id.key("photos_and_audio").first).to_not be_nil
       end
@@ -136,7 +136,7 @@ describe StandardFormsService do
                   "id" => "basic_identity"
                 } } } } }
 
-        expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
+        expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 1
         expect(FormSection.by_unique_id.key("basic_identity").first).to_not be_nil
       end

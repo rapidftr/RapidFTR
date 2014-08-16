@@ -1,5 +1,5 @@
 database = FormSection.database
-form_sections = database.documents["rows"].select{|row| !row["id"].include?("_design")}
+form_sections = database.documents["rows"].select{ |row| !row["id"].include?("_design") }
 
 def rename_attributes(obj, hash)
   hash.each do |from, to|

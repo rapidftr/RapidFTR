@@ -45,7 +45,7 @@ describe User, :type => :model do
   end
 
   it 'should validate uniqueness of username for new users' do
-    User.all.each {|user| user.destroy}
+    User.all.each { |user| user.destroy }
     user = build :user, :user_name => 'the_user_name'
     expect(user).to be_valid
     user.create!
