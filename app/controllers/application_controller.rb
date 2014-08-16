@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
 
   include Security::Authentication
 
-  before_filter :check_authentication
-  before_filter :extend_session_lifetime
-  before_filter :set_locale
+  before_action :check_authentication
+  before_action :extend_session_lifetime
+  before_action :set_locale
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
     raise e if Rails.env.development?

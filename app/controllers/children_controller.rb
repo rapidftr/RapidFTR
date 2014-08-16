@@ -1,10 +1,10 @@
 class ChildrenController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-  skip_before_filter :check_authentication, :only => [:reindex]
+  skip_before_action :verify_authenticity_token
+  skip_before_action :check_authentication, :only => [:reindex]
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
-  before_filter :current_user, :except => [:reindex]
-  before_filter :sanitize_params, :only => [:update, :sync_unverified]
+  before_action :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
+  before_action :current_user, :except => [:reindex]
+  before_action :sanitize_params, :only => [:update, :sync_unverified]
 
   def reindex
     Child.reindex!

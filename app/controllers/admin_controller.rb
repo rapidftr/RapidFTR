@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_filter {
+  before_action {
     authorize!(false, false) if cannot?(:highlight, Field) and cannot?(:manage, SystemUsers)
   }
 

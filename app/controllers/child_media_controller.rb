@@ -1,7 +1,7 @@
 class ChildMediaController < ApplicationController
   helper :children
-  before_filter :find_child
-  before_filter :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
+  before_action :find_child
+  before_action :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
 
   def index
     render :json => photos_details

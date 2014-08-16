@@ -1,6 +1,6 @@
 class HighlightFieldsController < ApplicationController
 
-  before_filter { authorize! :highlight, Field }
+  before_action { authorize! :highlight, Field }
 
   def index
     @forms = Form.all

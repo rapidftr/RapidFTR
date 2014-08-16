@@ -1,7 +1,7 @@
 class Api::DeviceController < Api::ApiController
 
-  skip_before_filter :check_device_blacklisted
-  skip_before_filter :check_authentication
+  skip_before_action :check_device_blacklisted
+  skip_before_action :check_authentication
 
   def is_blacklisted
     params[:imei] ||= request.headers["X-FTR-Imei"]

@@ -1,6 +1,6 @@
 class SystemUsersController < ApplicationController
 
-  before_filter :load_user, :only => [:edit, :update, :destroy]
+  before_action :load_user, :only => [:edit, :update, :destroy]
 
   def index
     authorize! :read, SystemUsers

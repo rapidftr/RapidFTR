@@ -1,5 +1,5 @@
 class Api::ChildMediaController < Api::ApiController
-  before_filter :find_child
+  before_action :find_child
 
   def show_photo
     params[:photo_id] = @child.current_photo_key || "_missing_" if params[:photo_id].blank?

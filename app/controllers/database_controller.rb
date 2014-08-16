@@ -1,6 +1,6 @@
 class DatabaseController < ApplicationController
 
-  before_filter :restrict_to_nonproduction
+  before_action :restrict_to_nonproduction
 
   def delete_data
     data_type   = params[:data_type]

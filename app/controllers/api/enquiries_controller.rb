@@ -1,6 +1,6 @@
 class Api::EnquiriesController < Api::ApiController
 
-  before_filter :sanitise_params
+  before_action :sanitise_params
 
   def create
     authorize! :create, Enquiry
