@@ -972,8 +972,8 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
                                          "age"=>{"from"=>"1", "to"=>"15"}},
-                                         "user_name"=>"john",
-                                         "datetime"=>"03/02/2011 21:48"},
+                             "user_name"=>"john",
+                             "datetime"=>"03/02/2011 21:48"},
                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
                              "datetime"=>"03/02/2011 21:34",
                              "user_name"=>"john"},
@@ -988,8 +988,8 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
                                          "age"=>{"from"=>"1", "to"=>"15"}},
-                                         "user_name"=>"jane",
-                                         "datetime"=>"03/02/2011 21:48"},
+                             "user_name"=>"jane",
+                             "datetime"=>"03/02/2011 21:48"},
                             {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
                              "datetime"=>"03/02/2011 21:34",
                              "user_name"=>"john"},

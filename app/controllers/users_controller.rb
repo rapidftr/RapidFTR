@@ -155,9 +155,9 @@ class UsersController < ApplicationController
   def users_details
     @users.map do |user|
       {
-          :user_url => user_url(:id => user),
-          :user_name => user.user_name,
-          :token => form_authenticity_token
+        :user_url => user_url(:id => user),
+        :user_name => user.user_name,
+        :token => form_authenticity_token
       }
     end
   end

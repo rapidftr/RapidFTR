@@ -108,12 +108,6 @@ Rails/Validation:
 Style/AccessorMethodName:
   Enabled: false
 
-# Offense count: 112
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle, SupportedLastArgumentHashStyles.
-Style/AlignHash:
-  Enabled: false
-
 # Offense count: 23
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -234,12 +228,6 @@ Style/HashSyntax:
 # Offense count: 18
 # Configuration parameters: MaxLineLength.
 Style/IfUnlessModifier:
-  Enabled: false
-
-# Offense count: 35
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/IndentHash:
   Enabled: false
 
 # Offense count: 63

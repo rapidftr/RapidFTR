@@ -19,13 +19,13 @@ class DatabaseController < ApplicationController
     user.destroy if user
     role = Role.find_by_name('Registration Worker')
     user = User.create!("user_name" => "field_worker",
-                 "password" => "field_worker",
-                 "password_confirmation" => "field_worker",
-                 "full_name" => "Field Worker",
-                 "email" => "field_worker@rapidftr.com",
-                 "disabled" => "false",
-                 "organisation" => "N/A",
-                 "role_ids" => [role.id])
+                        "password" => "field_worker",
+                        "password_confirmation" => "field_worker",
+                        "full_name" => "Field Worker",
+                        "email" => "field_worker@rapidftr.com",
+                        "disabled" => "false",
+                        "organisation" => "N/A",
+                        "role_ids" => [role.id])
 
     render text: "Field Worker Reset: #{user.user_name}"
   end

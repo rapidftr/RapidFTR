@@ -48,10 +48,10 @@ describe StandardFormsService do
         attributes = { "forms" => {
           "children" => { "user_selected" => "1", "id" => "children",
                           "sections" => {
-            "Basic Identity" => {
-              "user_selected" => "1",
-              "id" => "basic_identity" }
-          } } } }
+                            "Basic Identity" => {
+                              "user_selected" => "1",
+                              "id" => "basic_identity" }
+                          } } } }
 
           StandardFormsService.persist(attributes)
 
@@ -86,10 +86,10 @@ describe StandardFormsService do
         attributes = { "forms" => {
           "children" => { "user_selected" => "0", "id" => "children",
                           "sections" => {
-            "Basic Identity" => {
-              "user_selected" => "1",
-              "id" => "basic_identity" }
-          } } } }
+                            "Basic Identity" => {
+                              "user_selected" => "1",
+                              "id" => "basic_identity" }
+                          } } } }
 
         expect {StandardFormsService.persist(attributes)} .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 1
@@ -156,7 +156,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                } } } } } } }
+                  } } } } } } }
 
         StandardFormsService.persist(attributes)
 
@@ -183,7 +183,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                } } } } } } }
+                  } } } } } } }
 
         StandardFormsService.persist(attributes)
 

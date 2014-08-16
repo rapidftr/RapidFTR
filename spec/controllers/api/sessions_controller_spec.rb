@@ -14,11 +14,11 @@ describe Api::SessionsController, :type => :controller do
 
     expect(response).to be_success
     expect(JSON.parse(response.body)).to include({
-      "db_key" => 'TEST_DB_KEY',
-      "organisation" => @user.organisation,
-      "language" => "zz",
-      "verified" => @user.verified?
-    })
+                                                   "db_key" => 'TEST_DB_KEY',
+                                                   "organisation" => @user.organisation,
+                                                   "language" => "zz",
+                                                   "verified" => @user.verified?
+                                                 })
   end
 
   it 'should logout' do

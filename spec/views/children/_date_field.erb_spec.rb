@@ -8,9 +8,9 @@ describe "children/_date_field.html.erb", :type => :view do
 
   it "should include image for tooltip when help text exists" do
     date_field = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'date_field',
-    :help_text => "This is my help text"
+                           :display_name => "field name",
+                           :type => 'date_field',
+                           :help_text => "This is my help text"
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
@@ -18,8 +18,8 @@ describe "children/_date_field.html.erb", :type => :view do
 
   it "should not include image for tooltip when help text not exists" do
     date_field = Field.new :name => "new field",
-    :display_name => "field name",
-    :type => 'date_field'
+                           :display_name => "field name",
+                           :type => 'date_field'
 
     render :partial => 'children/date_field', :locals => { :date_field => date_field }, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")
