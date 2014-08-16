@@ -104,7 +104,7 @@ class Field
   def option_strings= value
     if value
       value = value.gsub(/\r\n?/, "\n").split("\n") if value.is_a?(String)
-      self.option_strings_text = value.select { |x| not "#{x}".strip.empty? }.map(&:rstrip).join("\n")
+      self.option_strings_text = value.select { |x| !"#{x}".strip.empty? }.map(&:rstrip).join("\n")
     end
   end
 

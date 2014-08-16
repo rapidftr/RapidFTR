@@ -246,11 +246,6 @@ Style/Next:
 Style/NonNilCheck:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/Not:
-  Enabled: false
-
 # Offense count: 11
 # Cop supports --auto-correct.
 Style/NumericLiterals:
