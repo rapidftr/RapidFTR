@@ -83,7 +83,7 @@ GEM
       couchrest (>= 1.2)
       mime-types (>= 1.16)
       tzinfo (>= 0.3.22)
-    coveralls (0.7.0)
+    coveralls (0.7.1)
       multi_json (~> 1.3)
       rest-client
       simplecov (>= 0.7)
