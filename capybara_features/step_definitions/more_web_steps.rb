@@ -124,9 +124,9 @@ When /^I visit the "([^"]*)" tab$/ do |name_of_tab|
 end
 
 Then /^the "([^"]*)" radio_button should have the following options:$/ do |radio_button, table|
-   radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(' ', '')}")
-   expect(radio).not_to be_nil
-   table.raw.each { |row| expect(radio.css('label').map(&:text)).to include row.first }
+  radio = Nokogiri::HTML(page.body).css("p##{radio_button.downcase.gsub(' ', '')}")
+  expect(radio).not_to be_nil
+  table.raw.each { |row| expect(radio.css('label').map(&:text)).to include row.first }
 
 end
 

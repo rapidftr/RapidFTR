@@ -129,12 +129,12 @@ class Field
   end
 
   def is_highlighted?
-      highlight_information[:highlighted]
+    highlight_information[:highlighted]
   end
 
   def highlight_with_order order
-      highlight_information[:highlighted] = true
-      highlight_information[:order] = order
+    highlight_information[:highlighted] = true
+    highlight_information[:order] = order
   end
 
   def unhighlight

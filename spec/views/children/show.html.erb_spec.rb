@@ -131,12 +131,12 @@ describe "children/show.html.erb", :type => :view do
       end
 
       it "should show links to export when user has appropriate permissions" do
-      link = child_path @child, :format => :csv, :per_page => :all
-      allow(@user).to receive(:has_permission?).with(Permission::CHILDREN[:export_csv]).and_return(true)
+        link = child_path @child, :format => :csv, :per_page => :all
+        allow(@user).to receive(:has_permission?).with(Permission::CHILDREN[:export_csv]).and_return(true)
 
-      render
+        render
 
-      expect(rendered).to have_link "Export to CSV", link
+        expect(rendered).to have_link "Export to CSV", link
       end
     end
 

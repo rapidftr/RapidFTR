@@ -23,41 +23,41 @@ describe UsersController, :type => :controller do
     end
 
     context "filter and sort users" do
-       before do
-         @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one",:disabled=>false,:full_name=>"XYZ"})
-         @active_user_two = mock_user({:merge => {}, :user_name => "active_user_two",:disabled=>false,:full_name=>"ABC"})
-         @inactive_user = mock_user({:merge => {}, :user_name => "inactive_user",:disabled=>true,:full_name=>"inactive_user"})
+      before do
+        @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one",:disabled=>false,:full_name=>"XYZ"})
+        @active_user_two = mock_user({:merge => {}, :user_name => "active_user_two",:disabled=>false,:full_name=>"ABC"})
+        @inactive_user = mock_user({:merge => {}, :user_name => "inactive_user",:disabled=>true,:full_name=>"inactive_user"})
 
-       end
-       it "should filter active users and sort them by full_name by default" do
-         expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
-         get :index
-         expect(assigns[:users]).to eq([@active_user_two,@active_user_one])
-       end
+      end
+      it "should filter active users and sort them by full_name by default" do
+        expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+        get :index
+        expect(assigns[:users]).to eq([@active_user_two,@active_user_one])
+      end
 
-       it "should filter all users and sort them by full_name" do
-         expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_two,@inactive_user,@active_user_one])
-         get :index, :sort => "full_name", :filter=>"all"
-         expect(assigns[:users]).to eq([@active_user_two,@inactive_user,@active_user_one])
-       end
+      it "should filter all users and sort them by full_name" do
+        expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_two,@inactive_user,@active_user_one])
+        get :index, :sort => "full_name", :filter=>"all"
+        expect(assigns[:users]).to eq([@active_user_two,@inactive_user,@active_user_one])
+      end
 
-       it "should filter all users and sort them by user_name" do
-         expect(User).to receive(:view).with("by_user_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_one,@active_user_two,@inactive_user])
-         get :index, :sort => "user_name",:filter=>"all"
-         expect(assigns[:users]).to eq([@active_user_one,@active_user_two,@inactive_user])
-       end
+      it "should filter all users and sort them by user_name" do
+        expect(User).to receive(:view).with("by_user_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_one,@active_user_two,@inactive_user])
+        get :index, :sort => "user_name",:filter=>"all"
+        expect(assigns[:users]).to eq([@active_user_one,@active_user_two,@inactive_user])
+      end
 
-       it "should filter active users and sort them by full_name" do
-         expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
-         get :index, :sort => "full_name", :filter=>"active"
-         expect(assigns[:users]).to eq([@active_user_two,@active_user_one])
-       end
+      it "should filter active users and sort them by full_name" do
+        expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+        get :index, :sort => "full_name", :filter=>"active"
+        expect(assigns[:users]).to eq([@active_user_two,@active_user_one])
+      end
 
-       it "should filter active users and sort them by user_name" do
-         expect(User).to receive(:view).with("by_user_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_one,@active_user_two])
-         get :index, :sort => "user_name", :filter=>"active"
-         expect(assigns[:users]).to eq([@active_user_one,@active_user_two])
-       end
+      it "should filter active users and sort them by user_name" do
+        expect(User).to receive(:view).with("by_user_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_one,@active_user_two])
+        get :index, :sort => "user_name", :filter=>"active"
+        expect(assigns[:users]).to eq([@active_user_one,@active_user_two])
+      end
     end
 
     it "assigns users_details for backbone" do

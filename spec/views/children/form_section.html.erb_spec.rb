@@ -35,11 +35,11 @@ describe "children/_form_section.html.erb", :type => :view do
       expect(rendered).not_to be_include(@form_section.name)
     end
 
-      it "should not be shown with translated heading" do
-        I18n.backend.store_translations("fr", @form_section.unique_id => nil)
-        @form_sections = [ @form_section ]
-        render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
-      end
+    it "should not be shown with translated heading" do
+      I18n.backend.store_translations("fr", @form_section.unique_id => nil)
+      @form_sections = [ @form_section ]
+      render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
+    end
   end
 
   describe "rendering text fields" do
@@ -156,32 +156,32 @@ describe "children/_form_section.html.erb", :type => :view do
 
   #describe "rendering date field" do
 
-    #context "new record" do
-    #  it "renders date field" do
-    #    @child = Child.new
-    #    @form_section.add_field build(:date_field, name: 'some_date')
-    #
-    #    render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
-    #    rendered.should be_include("label for=\"child_some_date\"")
-    #    rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" />")
-    #    rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script>")
-    #  end
-    #end
-    #
-    #context "existing record" do
-    #
-    #  it "renders date field with the previous date" do
-    #    @child = Child.new :some_date => "13/05/2004"
-    #    @form_section.add_field build(:date_field, name: 'some_date')
-    #
-    #    render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
-    #
-    #
-    #    rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" value=\"13/05/2004\" />")
-    #    rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script")
-    #  end
-    #
-    #end
+  #context "new record" do
+  #  it "renders date field" do
+  #    @child = Child.new
+  #    @form_section.add_field build(:date_field, name: 'some_date')
+  #
+  #    render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+  #    rendered.should be_include("label for=\"child_some_date\"")
+  #    rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" />")
+  #    rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script>")
+  #  end
+  #end
+  #
+  #context "existing record" do
+  #
+  #  it "renders date field with the previous date" do
+  #    @child = Child.new :some_date => "13/05/2004"
+  #    @form_section.add_field build(:date_field, name: 'some_date')
+  #
+  #    render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+  #
+  #
+  #    rendered.should be_include("<input id=\"child_some_date\" name=\"child[some_date]\" type=\"text\" value=\"13/05/2004\" />")
+  #    rendered.should be_include("<script type=\"text/javascript\">\n//<![CDATA[\n$(document).ready(function(){ $(\"#child_some_date\").datepicker({ dateFormat: 'dd M yy' }); });\n//]]>\n</script")
+  #  end
+  #
+  #end
   #end
 
 end

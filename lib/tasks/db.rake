@@ -4,9 +4,9 @@ require 'erb'
 require 'readline'
 
 def databases_for_env
-    COUCHDB_SERVER.databases
-                  .select { |db| db =~ /_#{Rails.env}$/ }
-                  .map { |name| COUCHDB_SERVER.database(name) }
+  COUCHDB_SERVER.databases
+                .select { |db| db =~ /_#{Rails.env}$/ }
+                .map { |name| COUCHDB_SERVER.database(name) }
 end
 
 namespace :db do

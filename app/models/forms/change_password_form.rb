@@ -20,12 +20,12 @@ module Forms
     end
 
     def check_old_password
-        if user.crypted_password != User.encrypt(old_password, user.salt)
-          errors[:old_password] = I18n.t("user.messages.passwords_do_not_match")
-          return false
-        else
-          return true
-        end
+      if user.crypted_password != User.encrypt(old_password, user.salt)
+        errors[:old_password] = I18n.t("user.messages.passwords_do_not_match")
+        return false
+      else
+        return true
+      end
     end
 
     def reset
@@ -35,14 +35,14 @@ module Forms
     end
 
     def execute
-        if valid?
-          user.password = new_password
-          user.password_confirmation = new_password_confirmation
-          user.save
-        else
-          reset
-          false
-        end
+      if valid?
+        user.password = new_password
+        user.password_confirmation = new_password_confirmation
+        user.save
+      else
+        reset
+        false
+      end
     end
 
     def persisted?

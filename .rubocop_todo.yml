@@ -150,11 +150,6 @@ Style/CollectionMethods:
 Style/CommentAnnotation:
   Enabled: false
 
-# Offense count: 16
-# Cop supports --auto-correct.
-Style/CommentIndentation:
-  Enabled: false
-
 # Offense count: 165
 Style/Documentation:
   Enabled: false
@@ -196,16 +191,6 @@ Style/HashSyntax:
 # Offense count: 18
 # Configuration parameters: MaxLineLength.
 Style/IfUnlessModifier:
-  Enabled: false
-
-# Offense count: 63
-# Cop supports --auto-correct.
-Style/IndentationConsistency:
-  Enabled: false
-
-# Offense count: 65
-# Cop supports --auto-correct.
-Style/IndentationWidth:
   Enabled: false
 
 # Offense count: 3

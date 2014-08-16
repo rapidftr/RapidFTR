@@ -45,5 +45,5 @@ Then /^the CSV data should be:$/ do |expected_csv|
 end
 
 Then /^the response filename should be "(.+)"$/ do |filename|
-   expect(page.response_headers['content-disposition']).to eq("attachment; filename=\"#{filename}\"")
+  expect(page.response_headers['content-disposition']).to eq("attachment; filename=\"#{filename}\"")
 end

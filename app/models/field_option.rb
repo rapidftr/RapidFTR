@@ -2,13 +2,13 @@ class FieldOption
 
   attr_reader :option_name
 
- def self.create_field_options field_name, options
+  def self.create_field_options field_name, options
     field_options = []
     options.each do |option|
       field_options << FieldOption.new(field_name, option)
     end
     return field_options
-  end
+   end
 
   def initialize field_name, option
     @field_name = field_name

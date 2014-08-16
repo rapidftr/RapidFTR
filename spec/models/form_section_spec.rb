@@ -289,12 +289,12 @@ describe FormSection, :type => :model do
     end
 
     it "should not allows empty form names in form base_language " do
-     form_section = FormSection.new(:name_en => 'English', :name_zh=>'Chinese')
-     I18n.default_locale='zh'
-     expect {
-       form_section[:name_en]=''
-       form_section.save!
-     }.to raise_error
+      form_section = FormSection.new(:name_en => 'English', :name_zh=>'Chinese')
+      I18n.default_locale='zh'
+      expect {
+        form_section[:name_en]=''
+        form_section.save!
+      }.to raise_error
     end
 
     it "should validate name is alpha_num" do

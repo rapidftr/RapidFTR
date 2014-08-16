@@ -53,12 +53,12 @@ describe StandardFormsService do
                               "id" => "basic_identity" }
                           } } } }
 
-          StandardFormsService.persist(attributes)
+        StandardFormsService.persist(attributes)
 
-          expect(Form.count).to eq 1
-          expect(FormSection.count).to eq 1
-          expect(FormSection.all.first.unique_id).to eq("basic_identity")
-          expect(FormSection.all.first.name).to eq("Basic Identity")
+        expect(Form.count).to eq 1
+        expect(FormSection.count).to eq 1
+        expect(FormSection.all.first.unique_id).to eq("basic_identity")
+        expect(FormSection.all.first.name).to eq("Basic Identity")
       end
 
       it "should persist new enquiry form with new enquiry criteria form sections" do
@@ -71,14 +71,14 @@ describe StandardFormsService do
                                           "id"=>"enquiry_criteria",
                                           "fields"=>{"enquirer_name"=>{"user_selected"=>"1", "id"=>"enquirer_name"}, "criteria"=>{"user_selected"=>"1", "id"=>"criteria"}}}}}}}
 
-          StandardFormsService.persist(attributes)
+        StandardFormsService.persist(attributes)
 
-          expect(Form.count).to eq 1
-          expect(Form.first.sections.length).to eq 1
-          expect(FormSection.count).to eq 1
-          expect(FormSection.all.first.unique_id).to eq("enquiry_criteria")
-          expect(FormSection.all.first.form).to_not be_nil
-          expect(FormSection.all.first.name).to eq("Enquiry Criteria")
+        expect(Form.count).to eq 1
+        expect(Form.first.sections.length).to eq 1
+        expect(FormSection.count).to eq 1
+        expect(FormSection.all.first.unique_id).to eq("enquiry_criteria")
+        expect(FormSection.all.first.form).to_not be_nil
+        expect(FormSection.all.first.name).to eq("Enquiry Criteria")
       end
 
       it "should persist new form sections on existing forms with no form sections" do

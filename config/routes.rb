@@ -2,9 +2,9 @@ RapidFTR::Application.routes.draw do
 
   match '/' => 'home#index', :as => :root, :via => :get
 
-#######################
-# USER URLS
-#######################
+  #######################
+  # USER URLS
+  #######################
 
   resources :users do
     collection do
@@ -32,10 +32,9 @@ RapidFTR::Application.routes.draw do
   match 'admin' => 'admin#index', :as => :admin, :via => [:post, :get, :put, :delete]
   match 'admin/update' => 'admin#update', :as => :admin_update, :via => [:post, :get, :put, :delete]
 
-
-#######################
-# CHILD URLS
-#######################
+  #######################
+  # CHILD URLS
+  #######################
 
   resources :children do
     collection do
@@ -63,9 +62,9 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put, :delete]
   match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
 
-#######################
-# API URLS
-#######################
+  #######################
+  # API URLS
+  #######################
 
   namespace :api do
     controller :form_sections, :defaults => { :format => :json } do
@@ -108,9 +107,9 @@ RapidFTR::Application.routes.draw do
   # Backwards compatibility with 1.2
   match '/published_form_sections', :to => 'api/form_sections#children', :via => [:post, :get, :put, :delete]
 
-#######################
-# FORM SECTION URLS
-#######################
+  #######################
+  # FORM SECTION URLS
+  #######################
 
   resources :standard_forms, :only => :index
   match '/standard_forms', :to => "forms#bulk_update", :via => [:put, :post]
@@ -141,24 +140,24 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-#######################
-# ADVANCED SEARCH URLS
-#######################
+  #######################
+  # ADVANCED SEARCH URLS
+  #######################
 
   match 'advanced_search/index', :to => 'advanced_search#index', :via => [:post, :get, :put, :delete]
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
 
-#######################
-# LOGGING URLS
-#######################
+  #######################
+  # LOGGING URLS
+  #######################
 
   resources :system_logs, :only => :index
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
   match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
 
-#######################
-# REPLICATION URLS
-#######################
+  #######################
+  # REPLICATION URLS
+  #######################
 
   resources :replications, :path => "/devices/replications" do
     collection do
@@ -173,14 +172,14 @@ RapidFTR::Application.routes.draw do
 
   resources :system_users, :path => "/admin/system_users"
 
-#######################
-# REPORTING URLS
-#######################
+  #######################
+  # REPORTING URLS
+  #######################
   resources :reports, :only => [:index, :show]
 
-#######################
-# TESTING URLS
-#######################
+  #######################
+  # TESTING URLS
+  #######################
   if (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
     match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
     match 'database/reset_fieldworker' => 'database#reset_fieldworker', :as => :reset_fieldworker, :via => :delete

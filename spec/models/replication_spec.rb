@@ -47,9 +47,9 @@ describe Replication, :type => :model do
     end
 
     it 'should have user name' do
-       r = build :replication, :password => nil
-       expect(r).not_to be_valid
-       expect(r.errors[:password]).not_to be_empty
+      r = build :replication, :password => nil
+      expect(r).not_to be_valid
+      expect(r.errors[:password]).not_to be_empty
     end
 
     it 'should have user name' do

@@ -9,9 +9,9 @@ class SystemUsers < CouchRest::Model::Base
   property :roles
   property :_id
 
-#  validates_presence_of :name, :password
-#
-#  validates_with_method :name, :method => :is_user_name_unique
+  #  validates_presence_of :name, :password
+  #
+  #  validates_with_method :name, :method => :is_user_name_unique
 
   before_save :generate_id, :assign_admin_role
 

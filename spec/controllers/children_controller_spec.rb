@@ -71,8 +71,8 @@ describe ChildrenController, :type => :controller do
 
       it "GET show" do
         expect(@controller.current_ability).to receive(:can?).with(:read, @child_arg).and_return(false);
-         get :show, :id => @child.id
-         expect(response.status).to eq(403)
+        get :show, :id => @child.id
+        expect(response.status).to eq(403)
       end
 
       it "PUT update" do
@@ -437,7 +437,7 @@ describe ChildrenController, :type => :controller do
                      :histories => histories
                    }
 
-     expect(assigns[:child]['histories']).to eq(JSON.parse(histories))
+      expect(assigns[:child]['histories']).to eq(JSON.parse(histories))
     end
 
     it "should update child on a field and photo update" do
