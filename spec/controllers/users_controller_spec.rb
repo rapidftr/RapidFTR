@@ -8,7 +8,7 @@ describe UsersController, :type => :controller do
     allow(Session).to receive(:get).and_return(fake_session)
   end
 
-  def mock_user(stubs={})
+  def mock_user(stubs = {})
     @mock_user ||= stub_model(User, stubs)
   end
 

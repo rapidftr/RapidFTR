@@ -49,7 +49,7 @@ class StandardFormsService
     !attr.nil? && attr[USER_SELECTED_KEY] == USER_SELECTED
   end
 
-  def self.fields_to_persist section, fields_attributes={}
+  def self.fields_to_persist section, fields_attributes = {}
     RapidFTR::FormSetup.default_fields_for(section).select do |field|
       fields_attributes[field.name] &&
         selected_by_user(fields_attributes[field.name])

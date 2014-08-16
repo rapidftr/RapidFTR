@@ -339,7 +339,7 @@ describe Replication, :type => :model do
     all_docs(db).each { |doc| db.delete_doc doc rescue nil }
   end
 
-  def wait_for_doc(db, prop, value, present=true, seconds=60)
+  def wait_for_doc(db, prop, value, present = true, seconds = 60)
     Timeout.timeout(seconds) do
       until present == all_docs(db).any? { |doc| doc[prop] == value }
         sleep 0.1

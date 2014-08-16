@@ -3,7 +3,7 @@
 # But the correct way to start this in production environments is script/scheduler-daemon.rb
 
 namespace :scheduler do
-  def daemon(argv="status")
+  def daemon(argv = "status")
     require 'daemons'
 
     daemon_options = {

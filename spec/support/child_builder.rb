@@ -27,7 +27,7 @@ module ChildBuilder
     self
   end
 
-  def with_audio(audio, audio_id ="audio", current = true)
+  def with_audio(audio, audio_id = "audio", current = true)
     audio = double(FileAttachment, {:content_type => audio.content_type, :mime_type => audio.mime_type, :data => StringIO.new(audio.data) })
     allow(@child).to receive(:media_for_key).with(audio_id).and_return audio
     allow(@child).to receive(:audio).and_return audio if current

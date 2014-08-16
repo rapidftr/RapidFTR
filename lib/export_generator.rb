@@ -78,7 +78,7 @@ class ExportGenerator
 
   private
 
-  def format_field_for_export field, value, child=nil
+  def format_field_for_export field, value, child = nil
     return "" if value.blank?
     return value.join(", ") if field.type == Field::CHECK_BOXES
     if child

@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe FormSection, :type => :model do
 
-  def create_formsection(stubs={})
+  def create_formsection(stubs = {})
     stubs.reverse_merge!(:fields => [], :save => true, :editable => true, :base_language => "en")
     @create_formsection = FormSection.new stubs
   end

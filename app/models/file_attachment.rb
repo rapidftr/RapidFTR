@@ -2,7 +2,7 @@ class FileAttachment
   include RapidFTR::Model
   attr_reader :name, :content_type, :child
 
-  def initialize(name, content_type, data, child=nil)
+  def initialize(name, content_type, data, child = nil)
     @name = name
     @content_type = content_type
     @data = data
@@ -13,11 +13,11 @@ class FileAttachment
     StringIO.new @data
   end
 
-  def self.from_uploadable_file(file, name_prefix="file", name_suffix ="", child=nil)
+  def self.from_uploadable_file(file, name_prefix = "file", name_suffix = "", child = nil)
     from_file(file, file.content_type, name_prefix, name_suffix, child)
   end
 
-  def self.from_file(file, content_type, name_prefix="file", name_suffix ="", child=nil)
+  def self.from_file(file, content_type, name_prefix = "file", name_suffix = "", child = nil)
     file = file.tempfile if file.respond_to?(:tempfile)
     new generate_name(name_prefix, name_suffix), content_type, File.binread(file), child
   end

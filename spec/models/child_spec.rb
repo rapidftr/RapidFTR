@@ -1210,7 +1210,7 @@ describe Child, :type => :model do
 
   private
 
-  def create_child(name, options={})
+  def create_child(name, options = {})
     options.merge!("name" => name, "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
     Child.create(options)
   end

@@ -64,7 +64,7 @@ module NavigationHelpers
     path_for_cuke_string(page_name, options) || raise("Can't find mapping from \"#{page_name}\" to a path.\nNow, go and add a mapping in #{__FILE__}")
   end
 
-  def path_for_cuke_string string_to_match, options={}
+  def path_for_cuke_string string_to_match, options = {}
     our_key, our_proc = path_map.find { |key,value| key.match(string_to_match) }
     return our_proc.call options, our_key.match(string_to_match)
   end

@@ -51,7 +51,7 @@ class FormSection < CouchRest::Model::Base
     flag_saved_embedded_properties
   end
 
-  def initialize(properties={}, options={})
+  def initialize(properties = {}, options = {})
     self["fields"] = []
     super properties, options
     create_unique_id

@@ -21,7 +21,7 @@ describe ChildrenController, :type => :controller do
     Sunspot.remove_all!
   end
 
-  def mock_child(stubs={})
+  def mock_child(stubs = {})
     @mock_child ||= mock_model(Child, stubs).as_null_object
   end
 

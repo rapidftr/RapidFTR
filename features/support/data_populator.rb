@@ -4,7 +4,7 @@ class DataPopulator
     create_user('default_username', 'default_password', permission)
   end
 
-  def create_user(username, password='radpiftr', permission=nil)
+  def create_user(username, password = 'radpiftr', permission = nil)
     user_type = 'user'
     create_account(user_type, username, password, permission)
   end

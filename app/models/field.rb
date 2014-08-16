@@ -86,7 +86,7 @@ class Field
     "#{display_name}#{hidden_text}"
   end
 
-  def initialize properties={}
+  def initialize properties = {}
     self.visible = true if properties["visible"].nil?
     self.highlight_information = HighlightInformation.new
     self.editable = true if properties["editable"].nil?

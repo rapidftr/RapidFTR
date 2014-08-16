@@ -31,7 +31,7 @@ class ChildSearch
     self
   end
 
-  def fulltext_by(field_names=[], value=nil)
+  def fulltext_by(field_names = [], value = nil)
     search.build do
       fulltext value, fields: field_names.map(&:to_sym)
     end if value.present?
