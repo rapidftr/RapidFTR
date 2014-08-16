@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
       :per_page => (params[:per_page] || PER_PAGE).to_i,
       :page => (params[:page] || 1).to_i,
       :include_docs => true,
-      :descending => true,
+      :descending => true
     }
 
     WillPaginate::Collection.create(pagination_options[:page], pagination_options[:per_page], Report.count) do |pager|

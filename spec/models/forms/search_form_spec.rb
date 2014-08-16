@@ -8,7 +8,7 @@ describe Forms::SearchForm do
       build(:text_field, name: 'ftextfield', highlighted: true),
       build(:text_area_field, name: 'ftextarea', highlighted: true),
       build(:numeric_field, name: 'fnumeric'),
-      build(:select_box_field, name: 'fselectbox', option_strings: ['select 1', 'select 2', 'select 3']),
+      build(:select_box_field, name: 'fselectbox', option_strings: ['select 1', 'select 2', 'select 3'])
     ]
 
     @limited_user = create :user, role_ids: [

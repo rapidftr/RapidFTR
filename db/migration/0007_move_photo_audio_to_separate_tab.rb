@@ -5,7 +5,7 @@ unless photos_and_audio_fs
                           :order => 10, :unique_id => "photos_and_audio",
                           :perm_visible => true, "editable" => false,
                           "name_all" => "Photos and Audio",
-                          "description_all" => "All Photo and Audio Files Associated with a Child Record",
+                          "description_all" => "All Photo and Audio Files Associated with a Child Record"
                         })
   basic_identity_fs = FormSection.by_unique_id(:key => "basic_identity").first
 

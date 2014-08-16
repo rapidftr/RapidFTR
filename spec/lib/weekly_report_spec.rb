@@ -6,7 +6,7 @@ describe WeeklyReport do
       basic_identity_fields = [
         Field.new("name" => "protection_status", "display_name" => "Protection Status", "type" => "select_box", "option_strings_text" => "Unaccompanied\nSeparated"),
         Field.new("name" => "ftr_status", "display_name" => "FTR Status", "type" => "select_box", "option_strings_text" => "Identified\nVerified\nTracing On-Going\nFamily Located-Cross-Border FR Pending\nFamily Located- Inter-Camp FR Pending\nReunited\nExported to CPIMS\nRecord Invalid"),
-        Field.new("name" => "gender", "display_name" => "Sex", "type" => "select_box", "option_strings_text" => "Male\nFemale"),
+        Field.new("name" => "gender", "display_name" => "Sex", "type" => "select_box", "option_strings_text" => "Male\nFemale")
       ]
       create :form_section, "name" => "Basic Identity", "visible" => true, :order => 1, :unique_id => "basic_identity", "editable" => true, :fields => basic_identity_fields, :perm_enabled => true
 

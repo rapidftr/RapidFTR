@@ -214,7 +214,7 @@ describe Api::EnquiriesController, :type => :controller do
         build(:text_field, name: 'name'),
         build(:text_field, name: 'age'),
         build(:text_field, name: 'location'),
-        build(:text_field, name: 'sex'),
+        build(:text_field, name: 'sex')
       ], form: form
 
       Child.reindex!
