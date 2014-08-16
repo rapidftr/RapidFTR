@@ -209,7 +209,7 @@ describe User, :type => :model do
     end
 
     describe 'permissions' do
-      subject { stub_model User, :permissions => [ 1, 2, 3, 4 ] }
+      subject { stub_model User, :permissions => [1, 2, 3, 4] }
 
       it { is_expected.to have_permission 1 }
       it { is_expected.not_to have_permission 5 }

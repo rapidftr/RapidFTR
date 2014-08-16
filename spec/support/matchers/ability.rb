@@ -15,7 +15,7 @@ end
 RSpec::Matchers.define :authorize_all do |actions, *objects|
   match do |ability|
     actions.product(objects).all? do |(action, object)|
-      @action, @object = [ action, object ]
+      @action, @object = [action, object]
       ability.can? action, object
     end
   end
@@ -32,7 +32,7 @@ end
 RSpec::Matchers.define :authorize_any do |actions, *objects|
   match do |ability|
     actions.product(objects).any? do |(action, object)|
-      @action, @object = [ action, object ]
+      @action, @object = [action, object]
       ability.can? action, object
     end
   end

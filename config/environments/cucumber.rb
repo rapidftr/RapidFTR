@@ -24,7 +24,7 @@ RapidFTR::Application.configure do
   if ENV['CI'] == 'true'
     config.log_level = :error
     config.logger = config.assets.logger = Logger.new('/dev/null')
-    [ Rails::Rack::Logger, ActionDispatch::RemoteIp, ActionDispatch::RequestId, ActionDispatch::ShowExceptions, ActionDispatch::DebugExceptions ].each do |m|
+    [Rails::Rack::Logger, ActionDispatch::RemoteIp, ActionDispatch::RequestId, ActionDispatch::ShowExceptions, ActionDispatch::DebugExceptions].each do |m|
       config.middleware.delete m
     end
   end

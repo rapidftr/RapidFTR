@@ -12,7 +12,7 @@ describe Forms::SearchForm do
     ]
 
     @limited_user = create :user, role_ids: [
-      create(:role, permissions: [ Permission::CHILDREN[:register], Permission::CHILDREN[:edit] ]).id
+      create(:role, permissions: [Permission::CHILDREN[:register], Permission::CHILDREN[:edit]]).id
     ]
     @field_worker = create :field_worker_user
   end

@@ -2,7 +2,7 @@ When /^I enter the following role details$/ do |role_table|
   role_table.hashes.each do |role_row|
     fill_in('role_name',:with => role_row['name'])
     fill_in('role_description',:with => role_row['description'])
-    [ role_row['permissions'] ].flatten.each do |permission|
+    [role_row['permissions']].flatten.each do |permission|
       check(permission)
     end
   end
@@ -49,7 +49,7 @@ end
 
 When /^I enter the following permission details$/ do |role_table|
   role_table.hashes.each do |role_row|
-    [ role_row['permissions'] ].flatten.each do |permission|
+    [role_row['permissions']].flatten.each do |permission|
       check(permission)
     end
   end

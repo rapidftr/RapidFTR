@@ -26,7 +26,7 @@ module Addons
 
     it 'should generate filename for one child' do
       child = build :child, :unique_identifier => "test-id"
-      expect(@task.generate_filename([ child ])).to eq('test-id.csv')
+      expect(@task.generate_filename([child])).to eq('test-id.csv')
     end
 
     it 'should generate filename for multiple children' do

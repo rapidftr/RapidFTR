@@ -11,7 +11,7 @@ describe DuplicatesController, :type => :controller do
         fake_admin_login
 
         @child = create :child, :name => "John", :unique_identifier => "1234", :created_by => controller.current_user_name
-        @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
+        @form_sections = [mock_model(FormSection), mock_model(FormSection), mock_model(FormSection)]
         allow(Form).to receive(:find_by_name).and_return(form)
       end
 

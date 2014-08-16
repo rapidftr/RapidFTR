@@ -77,7 +77,7 @@ class Ability
     end
 
     if user.has_permission?(Permission::USERS[:create_and_edit])
-      can [:manage], User, :except => [ :disable, :destroy ]
+      can [:manage], User, :except => [:disable, :destroy]
     end
 
     if user.has_permission?(Permission::USERS[:destroy])

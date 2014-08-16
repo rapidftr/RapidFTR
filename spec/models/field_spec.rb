@@ -200,12 +200,12 @@ describe "Child record field view model", :type => :model do
   describe "normalize line endings" do
     it "should convert \\r\\n to \\n" do
       field = Field.new :name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\r\nSudan"
-      expect(field.option_strings).to eq([ "Uganda", "Sudan" ])
+      expect(field.option_strings).to eq(["Uganda", "Sudan"])
     end
 
     it "should use \\n as it is" do
       field = Field.new :name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\nSudan"
-      expect(field.option_strings).to eq([ "Uganda", "Sudan" ])
+      expect(field.option_strings).to eq(["Uganda", "Sudan"])
     end
 
     it "should convert option_strings to option_strings_text" do

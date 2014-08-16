@@ -4,7 +4,7 @@ describe Api::SessionsController, :type => :controller do
 
   before :each do
     @admin_role = create :role
-    @user = create :user, :password => 'test_password', :password_confirmation => 'test_password', :role_ids => [ @admin_role.name ]
+    @user = create :user, :password => 'test_password', :password_confirmation => 'test_password', :role_ids => [@admin_role.name]
     controller.stub :mobile_db_key => 'TEST_DB_KEY'
   end
 

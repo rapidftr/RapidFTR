@@ -2,7 +2,7 @@ class ReplicationsController < ApplicationController
 
   before_filter :load_replication
 
-  skip_before_filter :verify_authenticity_token, :only => [ :configuration, :start, :stop ]
+  skip_before_filter :verify_authenticity_token, :only => [:configuration, :start, :stop]
   skip_before_filter :check_authentication, :only => :configuration
 
   def configuration

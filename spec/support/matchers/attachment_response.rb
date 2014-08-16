@@ -13,7 +13,7 @@ module CustomMatchers
           verify { [response.body == @data, "data is different"] } &&
           verify do
             result = response_has_specified_disposition? response
-            [ result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
+            [result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
           end &&
           verify { @filename.nil? || has_filename?(@filename) }
     end

@@ -1,6 +1,6 @@
 class Api::SessionsController < Api::ApiController
 
-  skip_before_filter :check_authentication, :check_device_blacklisted, :only => [ :login, :register ]
+  skip_before_filter :check_authentication, :check_device_blacklisted, :only => [:login, :register]
 
   def login
     @login = Login.new(params)

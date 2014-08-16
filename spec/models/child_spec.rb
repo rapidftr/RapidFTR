@@ -174,7 +174,7 @@ describe Child, :type => :model do
       allow(FormSection).to receive(:all_visible_child_fields).and_return [
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
-        Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
+        Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key')]
       expect(child).not_to be_valid
       expect(child.errors[:validate_has_at_least_one_field_value]).to eq(["Please fill in at least one field or upload a file"])
     end

@@ -13,7 +13,7 @@ namespace :scheduler do
       :dir_mode => :normal,
       :log_dir => File.join(Rails.root, 'log'),
       :log_output => true,
-      :ARGV => [ argv ].flatten
+      :ARGV => [argv].flatten
     }
 
     Daemons.run_proc('rapidftr-scheduler', daemon_options) do

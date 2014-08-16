@@ -41,7 +41,7 @@ module ApplicationHelper
       [
         I18n.t(group, :scope => "permissions.group"),
         permissions.map do |permission|
-          [ I18n.t(permission, :scope => 'permissions.permission'), permission ]
+          [I18n.t(permission, :scope => 'permissions.permission'), permission]
         end
       ]
     end

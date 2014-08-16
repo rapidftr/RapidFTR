@@ -620,37 +620,37 @@ describe ChildrenController, :type => :controller do
       fake_admin_login
       @child1 = build :child
       @child2 = build :child
-      results = [ @child1, @child2 ]
+      results = [@child1, @child2]
       allow_any_instance_of(ChildSearch).to receive(:results).and_return(results)
     end
 
     it "should handle full PDF" do
-      expect_any_instance_of(Addons::PdfExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::PdfExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :pdf
     end
 
     it "should handle Photowall PDF" do
-      expect_any_instance_of(Addons::PhotowallExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::PhotowallExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :photowall
     end
 
     it "should handle CSV" do
-      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :csv
     end
 
     it "should handle custom export addon" do
       mock_addon = double()
       mock_addon_class = double(:new => mock_addon, :id => "mock")
-      RapidftrAddon::ExportTask.stub :active => [ mock_addon_class ]
+      RapidftrAddon::ExportTask.stub :active => [mock_addon_class]
       allow(controller).to receive(:authorize!)
-      expect(mock_addon).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect(mock_addon).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :mock
     end
 
     it "should encrypt result" do
-      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
-      expect(controller).to receive(:export_filename).with([ @child1, @child2 ], Addons::CsvExportTask).and_return("test_filename")
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
+      expect(controller).to receive(:export_filename).with([@child1, @child2], Addons::CsvExportTask).and_return("test_filename")
       expect(controller).to receive(:encrypt_exported_files).with('data', 'test_filename').and_return(true)
       get :index, :format => :csv
     end
@@ -658,7 +658,7 @@ describe ChildrenController, :type => :controller do
     it "should create a log_entry when record is exported" do
       fake_login User.new(:user_name => 'fakeuser', :organisation => "STC", :role_ids => ["abcd"])
       allow(@controller).to receive(:authorize!)
-      expect_any_instance_of(RapidftrAddonCpims::ExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(RapidftrAddonCpims::ExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
 
       expect(LogEntry).to receive(:create!).with :type => LogEntry::TYPE[:cpims], :user_name => "fakeuser", :organisation => "STC", :child_ids => [@child1.id, @child2.id]
 
@@ -667,16 +667,16 @@ describe ChildrenController, :type => :controller do
 
     it "should generate filename based on child ID and addon ID when there is only one child" do
       @child1.stub :short_id => 'test_short_id'
-      expect(controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask)).to eq("test_short_id_photowall.zip")
+      expect(controller.send(:export_filename, [@child1], Addons::PhotowallExportTask)).to eq("test_short_id_photowall.zip")
     end
 
     it "should generate filename based on username and addon ID when there are multiple children" do
       controller.stub :current_user_name => 'test_user'
-      expect(controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask)).to eq("test_user_pdf.zip")
+      expect(controller.send(:export_filename, [@child1, @child2], Addons::PdfExportTask)).to eq("test_user_pdf.zip")
     end
 
     it "should handle CSV" do
-      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :csv
     end
 

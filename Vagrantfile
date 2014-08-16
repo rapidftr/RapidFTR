@@ -30,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.omnibus.chef_version = "11.12.8"
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = [ 'infrastructure/site-cookbooks' ]
+    chef.cookbooks_path = ['infrastructure/site-cookbooks']
     chef.add_recipe 'rapidftr-dev'
     chef.verbose_logging = true
   end

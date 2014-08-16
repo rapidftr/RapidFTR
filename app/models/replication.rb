@@ -1,5 +1,5 @@
 class Replication < CouchRest::Model::Base
-  MODELS_TO_SYNC = [ Role, Child, User, MobileDbKey, Device ]
+  MODELS_TO_SYNC = [Role, Child, User, MobileDbKey, Device]
   STABLE_WAIT_TIME = 2.minutes
 
   include RapidFTR::Model
@@ -83,7 +83,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def success?
-    statuses.uniq == [ "completed" ]
+    statuses.uniq == ["completed"]
   end
 
   def status
@@ -117,7 +117,7 @@ class Replication < CouchRest::Model::Base
 
   def build_configs
     self.class.models_to_sync.map do |model|
-      [ push_config(model), pull_config(model) ]
+      [push_config(model), pull_config(model)]
     end.flatten
   end
 

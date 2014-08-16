@@ -27,7 +27,7 @@ describe "children/_form_section.html.erb", :type => :view do
       translated_name = "translated_heading"
       I18n.locale = :fr
       I18n.backend.store_translations("fr", @form_section.unique_id => translated_name)
-      @form_sections = [ @form_section ]
+      @form_sections = [@form_section]
 
       render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
 
@@ -37,7 +37,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
     it "should not be shown with translated heading" do
       I18n.backend.store_translations("fr", @form_section.unique_id => nil)
-      @form_sections = [ @form_section ]
+      @form_sections = [@form_section]
       render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
     end
   end
