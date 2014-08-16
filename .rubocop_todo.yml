@@ -232,10 +232,6 @@ Style/PredicateName:
 Style/Proc:
   Enabled: false
 
-# Offense count: 2
-Style/RedundantException:
-  Enabled: false
-
 # Offense count: 19
 # Cop supports --auto-correct.
 # Configuration parameters: AllowMultipleReturnValues.
