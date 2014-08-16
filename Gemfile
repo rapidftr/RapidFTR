@@ -61,5 +61,5 @@ end
 
 group :development, :test do
   gem 'cane',               '~> 2.6.2'
-  gem 'rubocop',            '~> 0.24.1'
+  gem 'rubocop',            '~> 0.25.0'
 end
