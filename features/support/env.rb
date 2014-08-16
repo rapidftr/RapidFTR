@@ -8,26 +8,17 @@ ENV['RAILS_ENV'] = 'cucumber'
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../..'))
 
 require 'cucumber/rails'
-
 require 'rspec/mocks'
-World(RSpec::Mocks::ExampleMethods)
-
-Before do
-  RSpec::Mocks.setup
-end
-
-After do
-  begin
-    RSpec::Mocks.verify
-  ensure
-    RSpec::Mocks.teardown
-  end
-end
 require 'spec/support/uploadable_files'
 require 'spec/support/child_finder'
 require 'json_spec/cucumber'
 require 'rack/test'
 require 'selenium/webdriver'
+
+if ENV['COVERALLS']
+  require 'coveralls'
+  Coveralls.wear_merged!('rails')
+end
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
@@ -54,3 +45,16 @@ end
 
 World(UrlHelpers)
 World(UploadableFiles, ChildFinder)
+World(RSpec::Mocks::ExampleMethods)
+
+Before do
+  RSpec::Mocks.setup
+end
+
+After do
+  begin
+    RSpec::Mocks.verify
+  ensure
+    RSpec::Mocks.teardown
+  end
+end

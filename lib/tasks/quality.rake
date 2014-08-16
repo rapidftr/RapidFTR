@@ -24,6 +24,15 @@ begin
     desc 'Run all quality metrics'
     task :all => [:cane, :rubocop]
   end
+
+  desc 'Alias for quality:all'
+  task :quality => 'quality:all'
+
 rescue LoadError
   # Cane tasks not available
+end
+
+if ENV['COVERALLS']
+  require 'coveralls/rake/task'
+  Coveralls::RakeTask.new
 end
