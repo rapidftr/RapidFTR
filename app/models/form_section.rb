@@ -173,7 +173,7 @@ class FormSection < CouchRest::Model::Base
     field.unhighlight
     save
   end
-  
+
   def section_name
     unique_id
   end

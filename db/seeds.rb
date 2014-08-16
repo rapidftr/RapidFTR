@@ -60,7 +60,7 @@ if should_seed? User
   end
 end
 
-if should_seed? FormSection 
+if should_seed? FormSection
   if should_seed_env_data?
     RapidFTR::ChildrenFormSectionSetup.reset_definitions
     RapidFTR::EnquiriesFormSectionSetup.reset_definitions

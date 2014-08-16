@@ -9,7 +9,7 @@ unless basic_identity_fs.fields.any?{ |f| f.name == 'date_of_birth' }
   children_docs = Child.database.documents["rows"].select{|row| !row["id"].include?("_design")}
   children_docs.each do |child_doc|
     child = Child.database.get child_doc["id"]
-  
+
     begin
       dob_or_age = child[:dob_or_age]
       dob = Chronic.parse(dob_or_age)

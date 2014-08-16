@@ -22,7 +22,7 @@ describe Form, :type => :model do
       expect(highlighted_fields.map { |field| field.highlight_information }).
         to match_array(@highlighted_fields.map { |field| field.highlight_information })
     end
-    
+
     it "should sort the highlighted fields by highlight order" do
       sorted_highlighted_fields = @form.sorted_highlighted_fields
 

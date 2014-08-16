@@ -14,7 +14,7 @@ class StandardFormsService
       if !saved_form.nil?
         sections_attr = form_attr.fetch(SECTIONS_KEY,{})
         saved_sections = persist_sections(saved_form, sections_attr)
-        
+
         saved_sections.each do |s|
           fields_attr = sections_attr.fetch(s.name,{}).fetch(FIELDS_KEY,{})
           persist_fields(s, fields_attr)

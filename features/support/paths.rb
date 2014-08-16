@@ -65,7 +65,7 @@ module NavigationHelpers
   end
 
   def path_for_cuke_string string_to_match, options={}
-    our_key, our_proc = path_map.find {|key,value| key.match(string_to_match) } 
+    our_key, our_proc = path_map.find {|key,value| key.match(string_to_match) }
     return our_proc.call options, our_key.match(string_to_match)
   end
 end

@@ -28,13 +28,13 @@ describe FormSection, :type => :model do
     expect(Child).to receive(:update_solr_indices)
     form.run_callbacks(:create)
   end
-  
+
   it "updates solr child index when updated" do
     form = FormSection.new()
     expect(Child).to receive(:update_solr_indices)
     form.run_callbacks(:update)
   end
-  
+
   describe '#unique_id' do
     it "should be generated when not provided" do
       f = FormSection.new

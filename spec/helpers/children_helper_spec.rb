@@ -100,7 +100,7 @@ describe ChildrenHelper, :type => :helper do
       expect(options["Form to group"].flatten).to include(a_string_matching(/id_name/))
       expect(options["Form to group"].flatten).to include(a_string_matching(/display_name/))
       expect(options["Form to group"]).to include(["display_name","id_name"])
-    end     
+    end
 
     it "should map multiple forms fields by display name and name" do
       field1 = build :field, name: "id_name1", display_name: "display_name1"
@@ -114,8 +114,8 @@ describe ChildrenHelper, :type => :helper do
       expect(options["First"]).to include(["display_name1","id_name1"])
       expect(options["Second"]).to include(["display_name2","id_name2"],["display_name3","id_name3"])
 
-    end     
-    
+    end
+
     it "should combine form fields and system fields" do
       system_fields = ["created_at"]
       field = build :field, name: "id_name", display_name: "display_name"

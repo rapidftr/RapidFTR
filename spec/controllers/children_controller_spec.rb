@@ -205,7 +205,7 @@ describe ChildrenController, :type => :controller do
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
           @expected_children = [create(:child, created_by: @session.user_name, reunited: true)]
-          @filter = "reunited" 
+          @filter = "reunited"
         }
         it_should_behave_like "viewing children as a field worker"
       end
@@ -226,7 +226,7 @@ describe ChildrenController, :type => :controller do
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
           @expected_children = [create(:child, created_by: @session.user_name, flag: true)]
-          @filter = "flag" 
+          @filter = "flag"
         }
         it_should_behave_like "viewing children as a field worker"
       end

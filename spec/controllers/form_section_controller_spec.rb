@@ -197,7 +197,7 @@ describe FormSectionController, :type => :controller do
   end
 
   describe "delete" do
-    
+
     it "destroys the requested form section" do
       mock_form_section = MockFormSection.new
       allow(FormSection).to receive(:get_by_unique_id).with("37").and_return(mock_form_section)
