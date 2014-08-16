@@ -37,7 +37,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def valid_presence_of_base_language_name
-    if base_language == nil
+    if base_language.nil?
       self.base_language = 'en'
     end
     base_lang_name = self.send("name_#{base_language}")
@@ -149,7 +149,7 @@ class FormSection < CouchRest::Model::Base
 
   def properties= properties
     properties.each_pair do |name, value|
-      self.send("#{name}=", value) unless value == nil
+      self.send("#{name}=", value) unless value.nil?
     end
   end
 
@@ -261,7 +261,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def validate_unique_name
-    unique = FormSection.all.select { |fs| fs.form == form } .all? { |fs| id == fs.id || name == nil || name.empty? || name != fs.name }
+    unique = FormSection.all.select { |fs| fs.form == form } .all? { |fs| id == fs.id || name.nil? || name.empty? || name != fs.name }
     unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
   end
 

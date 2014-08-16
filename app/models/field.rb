@@ -53,7 +53,7 @@ class Field
   end
 
   def valid_presence_of_base_language_name
-    if base_language == nil
+    if base_language.nil?
       self.base_language = 'en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
@@ -153,13 +153,13 @@ class Field
 
   def validate_has_2_options
     return true unless type == RADIO_BUTTON || type == SELECT_BOX
-    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings == nil || option_strings.length < 2
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings.nil? || option_strings.length < 2
     true
   end
 
   def validate_has_a_option
     return true unless (type == CHECK_BOXES)
-    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings == nil || option_strings.length < 1
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings.nil? || option_strings.length < 1
     true
   end
 

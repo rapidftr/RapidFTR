@@ -136,7 +136,7 @@ module RecordHelper
         if name == "histories"
           merge_histories(properties['histories'])
         else
-          attributes_to_update[name] = value unless value == nil
+          attributes_to_update[name] = value unless value.nil?
         end
         attributes_to_update["#{name}_at"] = RapidFTR::Clock.current_formatted_time if [:flag, :reunited].include?(name.to_sym) && value.to_s == 'true'
       end
