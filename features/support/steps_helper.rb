@@ -4,7 +4,7 @@ def check_link_presence(div, li_class_name, link_text)
   found = false
   lis.each do |li|
     begin
-      li.find('a', :text => link_text) != nil
+      li.find('a', :text => link_text)
       found = true
       break
     rescue Capybara::ElementNotFound

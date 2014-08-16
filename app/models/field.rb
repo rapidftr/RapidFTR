@@ -167,7 +167,7 @@ class Field
     return unless form
     return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if form.fields.any? { |field| !field.equal?(self) && field.name == name }
     other_form = FormSection.get_form_containing_field name
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if !other_form.nil? && form.id != other_form.id
     true
   end
 
