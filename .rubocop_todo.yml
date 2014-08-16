@@ -288,11 +288,6 @@ Style/PredicateName:
 Style/Proc:
   Enabled: false
 
-# Offense count: 11
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Enabled: false
-
 # Offense count: 2
 Style/RedundantException:
   Enabled: false

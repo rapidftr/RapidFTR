@@ -67,13 +67,11 @@ class Api::EnquiriesController < Api::ApiController
   end
 
   def sanitise_params
-    begin
-      unless (params[:updated_after]).nil?
-        DateTime.parse params[:updated_after]
-      end
-    rescue
-      render :json => "Invalid request", :status => 422
+    unless (params[:updated_after]).nil?
+      DateTime.parse params[:updated_after]
     end
+  rescue
+    render :json => "Invalid request", :status => 422
   end
 
   def enquiry_json

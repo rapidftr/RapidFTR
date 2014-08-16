@@ -183,12 +183,10 @@ class Replication < CouchRest::Model::Base
   end
 
   def validate_remote_app_url
-    begin
-      raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
-      true
-    rescue
-      errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
-    end
+    raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
+    true
+  rescue
+    errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
   end
 
   def normalize_remote_app_url
@@ -196,17 +194,14 @@ class Replication < CouchRest::Model::Base
   end
 
   def save_remote_couch_config
-    begin
-      uri = remote_app_uri
-      uri.path = Rails.application.routes.url_helpers.configuration_replications_path
-      post_params = {:user_name => self.username, :password => self.password}
-
-      response = post_uri uri, post_params
-      self.remote_couch_config = JSON.parse response.body
-      true
-    rescue => e
-      errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
-    end
+    uri = remote_app_uri
+    uri.path = Rails.application.routes.url_helpers.configuration_replications_path
+    post_params = {:user_name => self.username, :password => self.password}
+    response = post_uri uri, post_params
+    self.remote_couch_config = JSON.parse response.body
+    true
+  rescue => e
+    errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
   end
 
   def replicator

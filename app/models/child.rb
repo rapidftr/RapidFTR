@@ -203,25 +203,21 @@ class Child < CouchRest::Model::Base
   end
 
   def validate_created_at
-    begin
-      if self['created_at']
-        DateTime.parse self['created_at']
-      end
-      true
-  rescue
-    errors.add(:created_at, '')
+    if self['created_at']
+      DateTime.parse self['created_at']
     end
+    true
+rescue
+  errors.add(:created_at, '')
   end
 
   def validate_last_updated_at
-    begin
-      if self['last_updated_at']
-        DateTime.parse self['last_updated_at']
-      end
-      true
-  rescue
-    errors.add(:last_updated_at, '')
+    if self['last_updated_at']
+      DateTime.parse self['last_updated_at']
     end
+    true
+rescue
+  errors.add(:last_updated_at, '')
   end
 
   def method_missing(m, *args, &block)

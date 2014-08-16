@@ -20,11 +20,9 @@ class Api::ChildMediaController < Api::ApiController
   end
 
   def find_audio_attachment
-    begin
-      @attachment = params[:audio_id] ? @child.media_for_key(params[:audio_id]) : @child.audio
-    rescue => e
-      p e.inspect
-    end
+    @attachment = params[:audio_id] ? @child.media_for_key(params[:audio_id]) : @child.audio
+  rescue => e
+    p e.inspect
   end
 
   def find_photo_attachment

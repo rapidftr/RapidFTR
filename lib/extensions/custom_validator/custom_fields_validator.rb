@@ -63,12 +63,10 @@ end
 class DateFieldsValidator < CustomFieldsValidator
   # Blackberry client can only parse specific date formats
   def is_not_valid value
-    begin
-      Date.strptime(value, '%d %b %Y')
-      false
-    rescue
-      true
-    end
+    Date.strptime(value, '%d %b %Y')
+    false
+  rescue
+    true
   end
 
   def validation_message_for field
