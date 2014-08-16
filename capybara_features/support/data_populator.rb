@@ -32,7 +32,7 @@ class DataPopulator
     user
   end
 
-private
+  private
   def create_account(user_type, username, password, permission)
     permissions = []
     permissions.push(Permission.all_permissions) if user_type.downcase == "admin" and permission.nil?

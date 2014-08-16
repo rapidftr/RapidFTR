@@ -10,6 +10,6 @@ class SearchWidget
     @session.click_button('Go')
   end
 
-private
+  private
 
 end

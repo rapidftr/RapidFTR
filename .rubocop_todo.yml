@@ -104,12 +104,6 @@ Rails/Output:
 Rails/Validation:
   Enabled: false
 
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/AccessModifierIndentation:
-  Enabled: false
-
 # Offense count: 3
 Style/AccessorMethodName:
   Enabled: false

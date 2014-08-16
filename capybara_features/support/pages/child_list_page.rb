@@ -45,7 +45,7 @@ class ChildListPage
     end
   end
 
-private
+  private
   PAGINATION_SELECTOR = 'div.pagination'
   PREV_PAGE_LINK_SELECTOR =  "#{PAGINATION_SELECTOR} a.previous_page"
   NEXT_PAGE_LINK_SELECTOR = "#{PAGINATION_SELECTOR} a.next_page"

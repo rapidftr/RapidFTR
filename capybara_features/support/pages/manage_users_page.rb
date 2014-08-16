@@ -9,7 +9,7 @@ class ManageUsersPage
     expect(actual_user_names).to eq(expected_user_names)
   end
 
-private
+  private
 
   def actual_user_names
     @session.all(:xpath, "//td[@class='full_name']").collect(&:text)
