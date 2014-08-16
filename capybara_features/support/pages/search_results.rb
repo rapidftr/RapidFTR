@@ -31,6 +31,7 @@ class SearchResults
   end
 
   private
+
   def reunited_child_css_selector(child_id)
     "#child_#{child_id} .summary_panel .reunited"
   end

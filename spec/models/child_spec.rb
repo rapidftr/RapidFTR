@@ -1207,6 +1207,7 @@ describe Child, :type => :model do
       Child.update_solr_indices
     end
   end
+
   private
 
   def create_child(name, options={})

@@ -30,6 +30,7 @@ module AdvancedSearchHelper
   end
 
   private
+
   def select_box_criteria(criteria, field)
     html = %{<span class="criteria-values"/><select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">}
     field.option_strings.each{|option| html += "<option #{criteria[:value] == option ? "selected=\"selected\"" : ""} value=\"#{option}\">#{option}</option>"}

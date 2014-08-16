@@ -8,6 +8,7 @@ module I18n
         end
         return true
       end
+
       protected
 
       def init_translations

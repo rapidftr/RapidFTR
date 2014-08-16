@@ -48,6 +48,7 @@ describe Child, :type => :request do
 end
 
 private
+
 def build_child(created_by, options = {})
   user = User.new(:user_name => created_by)
   Child.new_with_user_name user, options

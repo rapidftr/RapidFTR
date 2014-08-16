@@ -31,6 +31,7 @@ module AudioHelper
   end
 
   private
+
   def setup_mime_specific_audio(file_attachment)
     audio_attachments = (self['audio_attachments'] ||= {})
     content_type_for_key = file_attachment.mime_type.to_sym.to_s
