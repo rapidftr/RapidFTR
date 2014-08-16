@@ -30,7 +30,7 @@ private
 def child_defaults
   {
     'birthplace' => 'Cairo',
-    'photo_path' => 'capybara_features/resources/jorge.jpg',
+    'photo_path' => 'features/resources/jorge.jpg',
     'reporter' => 'zubair',
     'created_by' => 'Billy',
     'created_organisation' => 'UNICEF',

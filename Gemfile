@@ -37,7 +37,7 @@ group :development do
   gem 'better_errors',     '~> 1.1.0'
 end
 
-group :test, :cucumber do
+group :development, :test, :cucumber do
   gem 'factory_girl',       '~> 4.4.0'
 
   gem 'rspec',              '~> 3.0'
@@ -52,14 +52,10 @@ group :test, :cucumber do
   gem 'json_spec',          '~> 1.1.2'
   gem 'pdf-inspector',      '~> 1.1.0'
   gem 'coveralls', require: false
-end
 
-group :development, :test, :cucumber do
   gem 'pry-rails',          '~> 0.3.2', platforms: :ruby
   gem 'quiet_assets',       '~> 1.0.3'
-end
 
-group :development, :test do
   gem 'cane',               '~> 2.6.2'
   gem 'rubocop',            '~> 0.25.0'
 end

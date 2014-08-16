@@ -10,7 +10,7 @@ Feature:
 
     And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
     Then I should see "Child record successfully created"

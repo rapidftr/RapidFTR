@@ -1024,8 +1024,8 @@ describe Child, :type => :model do
   describe "primary_photo =" do
 
     before :each do
-      @photo1 = uploadable_photo("capybara_features/resources/jorge.jpg")
-      @photo2 = uploadable_photo("capybara_features/resources/jeff.png")
+      @photo1 = uploadable_photo("features/resources/jorge.jpg")
+      @photo2 = uploadable_photo("features/resources/jeff.png")
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
       @child = Child.new("name" => "Tom", 'created_by' => "me")
       @child.photo= {0 => @photo1, 1 => @photo2}

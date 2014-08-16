@@ -9,8 +9,8 @@ Feature:
   Scenario: Uploading a standard mp3 file and a standard JPG image to new child record
     Given I am on the new child page
     When I fill in "Name" with "John"
-    And I attach an audio file "capybara_features/resources/sample.mp3"
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach an audio file "features/resources/sample.mp3"
+    And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
     Then I should see "Child record successfully created"
 
@@ -23,8 +23,8 @@ Feature:
     Given I am on the new child page
     When I fill in "Name" with "John"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/textfile.txt"
-    And I attach an audio file "capybara_features/resources/textfile.txt"
+    And I attach a photo "features/resources/textfile.txt"
+    And I attach an audio file "features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
     And I should see "Please upload a valid audio file (amr or mp3) for this child record"
@@ -34,8 +34,8 @@ Feature:
     When I fill in "Name" with "John"
     And I click the "Photos and Audio" link
     And I attach the following photos:
-      |capybara_features/resources/jorge.jpg|
-      |capybara_features/resources/jeff.png |
+      |features/resources/jorge.jpg|
+      |features/resources/jeff.png |
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
@@ -49,7 +49,7 @@ Feature:
   Scenario: Changing the photo field on an existing child record
     Given I am editing an existing child record
     When I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/textfile.txt"
+    And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
 
@@ -61,7 +61,7 @@ Feature:
 
     When I am editing the child with name "Harry"
     And I click the "Photos and Audio" link
-    And I attach an audio file "capybara_features/resources/sample.mp3"
+    And I attach an audio file "features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child was successfully updated"
 
@@ -72,7 +72,7 @@ Feature:
 
     When I am editing the child with name "Harry"
     And I click the "Photos and Audio" link
-    And I attach an audio file "capybara_features/resources/sample.mp3"
+    And I attach an audio file "features/resources/sample.mp3"
     And I press "Save"
     Then I should see "Child was successfully updated"
 
@@ -85,7 +85,7 @@ Feature:
     Given I am on the new child page
     And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
-    And I attach an audio file "capybara_features/resources/sample.mp3"
+    And I attach an audio file "features/resources/sample.mp3"
     And I press "Save"
 
     When I click the "Photos and Audio" link
@@ -107,7 +107,7 @@ Feature:
     Given I am on the new child page
     And I fill in "Name" with "Harry"
     And I click the "Photos and Audio" link
-    And I attach an audio file "capybara_features/resources/sample.mp3"
+    And I attach an audio file "features/resources/sample.mp3"
     And I press "Save"
 
     When I am editing the child with name "Harry"
@@ -119,8 +119,8 @@ Feature:
     And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
     And I attach the following photos:
-      |capybara_features/resources/jorge.jpg|
-      |capybara_features/resources/jeff.png |
+      |features/resources/jorge.jpg|
+      |features/resources/jeff.png |
     And I press "Save"
     Then I should see "Child record successfully created"
     And I should see the photo of "John"
@@ -144,7 +144,7 @@ Feature:
     Given I am on the new child page
     And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
     When I goto the "edit_photo"
@@ -163,7 +163,7 @@ Feature:
     Given I am on the new child page
     And I fill in "Name" with "John"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
     When I click the "Photos and Audio" link
