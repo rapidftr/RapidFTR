@@ -48,7 +48,7 @@ describe RolesController, :type => :controller do
 
   end
 
-    describe "GET show" do
+  describe "GET show" do
 
     it "should allow user to view roles " do
       fake_login_as(Permission::ROLES[:create_and_edit])

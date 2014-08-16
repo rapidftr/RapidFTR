@@ -31,7 +31,7 @@ describe User, :type => :model do
       user = build :user, :organisation => nil
       expect(user).not_to be_valid
       expect(user.errors[:organisation]).to eq(["Please enter the user's organisation name"])
-      end
+    end
 
     it "should default disabled to false" do
       user = User.new :disabled => nil

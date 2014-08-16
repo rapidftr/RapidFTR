@@ -50,7 +50,7 @@ describe Replication, :type => :model do
        r = build :replication, :password => nil
        expect(r).not_to be_valid
        expect(r.errors[:password]).not_to be_empty
-     end
+    end
 
     it 'should have user name' do
       r = build :replication, :username => nil

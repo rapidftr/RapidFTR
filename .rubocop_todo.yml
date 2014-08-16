@@ -18,11 +18,6 @@ Lint/AmbiguousRegexpLiteral:
 Lint/AssignmentInCondition:
   Enabled: false
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Lint/BlockAlignment:
-  Enabled: false
-
 # Offense count: 1
 Lint/Debugger:
   Enabled: false

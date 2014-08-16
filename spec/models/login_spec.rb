@@ -46,7 +46,7 @@ describe Login, :type => :model do
       params = {}
       login = Login.new(params)
       login.authenticate_user
-      end
+    end
 
     it "should not allow unverified users to login" do
       user = double(User).as_null_object

@@ -534,7 +534,7 @@ describe ChildrenController, :type => :controller do
       expect(child).to receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
       allow(Child).to receive(:get).and_return(child)
       put :update, :id => '1', :child => params_child
-      end
+    end
 
 
     it "should redirect to redirect_url if it is present in params" do
