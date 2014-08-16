@@ -46,7 +46,7 @@ class ExportGenerator
           child_data << (child.reunited? ? "Reunited" : "")
           metadata = metadata_fields([], CHILD_METADATA)
           metadata_value = map_field_with_value(child, metadata)
-          child_data = child_data + metadata_value
+          child_data += metadata_value
           rows << child_data
         rescue => e
           Rails.logger.error e
