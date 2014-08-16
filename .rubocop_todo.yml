@@ -43,11 +43,6 @@ Lint/ShadowingOuterLocalVariable:
 Lint/SpaceBeforeFirstArg:
   Enabled: false
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Lint/StringConversionInInterpolation:
-  Enabled: false
-
 # Offense count: 81
 # Cop supports --auto-correct.
 Lint/UnusedBlockArgument:

@@ -211,7 +211,7 @@ class User < CouchRest::Model::Base
 
   def encrypt_password
     return if password.blank?
-    self.salt = Digest::SHA1.hexdigest("--#{Clock.now.to_s}--#{self.user_name}--") if new_record?
+    self.salt = Digest::SHA1.hexdigest("--#{Clock.now}--#{self.user_name}--") if new_record?
     self.crypted_password = self.class.encrypt(password, salt)
   end
 
