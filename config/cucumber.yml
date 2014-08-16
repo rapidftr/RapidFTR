@@ -1,5 +1,5 @@
 ---
-<% default_opts = "--format pretty --require capybara_features --strict --backtrace capybara_features" %>
+<% default_opts = "--format pretty --strict --backtrace features" %>
 <% std_opts = "--tags ~@wip #{default_opts}" %>
 default: <%= std_opts %>
 browser: --tags @javascript <%= std_opts %>

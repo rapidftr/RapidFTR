@@ -212,8 +212,8 @@ tags
 /bundle/
 vendor/cache/
 vendor/ruby/
-capybara_features/resources/huge.jpg
-capybara_features/resources/huge.mp3
+features/resources/huge.jpg
+features/resources/huge.mp3
 
 *.pem
 *.crt
