@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
     @login = Login.new(params)
     @session = @login.authenticate_user
 
-    if !@session
+    unless @session
       respond_to do |format|
         handle_login_error(t("session.invalid_credentials"), format)
       end

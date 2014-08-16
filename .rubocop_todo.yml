@@ -226,11 +226,6 @@ Style/MultilineBlockChain:
 Style/MultilineIfThen:
   Enabled: false
 
-# Offense count: 9
-# Cop supports --auto-correct.
-Style/NegatedIf:
-  Enabled: false
-
 # Offense count: 4
 Style/NestedTernaryOperator:
   Enabled: false

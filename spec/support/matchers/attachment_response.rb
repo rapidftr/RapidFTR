@@ -26,7 +26,7 @@ module CustomMatchers
 
     def verify
       result, failure = yield
-      @failure_reasons << "#{failure}" if !result
+      @failure_reasons << "#{failure}" unless result
       result
     end
 

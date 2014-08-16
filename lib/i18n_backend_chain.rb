@@ -4,7 +4,7 @@ module I18n
       #According to the github post https://github.com/fnando/i18n-js/issues/59
       def initialized?
         backends.each do |backend|
-          return false if !backend.initialized?
+          return false unless backend.initialized?
         end
         return true
       end

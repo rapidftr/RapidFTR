@@ -15,7 +15,7 @@ exit unless REQUIRED_PLUGINS.all? { |plugin|
 }
 
 # Update infrastructure
-if !Dir['infrastructure/site-cookbooks']
+unless Dir['infrastructure/site-cookbooks']
   system('git submodule update --init')
 end
 

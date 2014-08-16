@@ -141,7 +141,7 @@ class ExportGenerator
   end
 
   def render_pdf(field_pair)
-    if !field_pair.empty?
+    unless field_pair.empty?
       @pdf.table field_pair,
                  :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
                  :width => 500, :column_widths => {0 => 200, 1 => 300},
