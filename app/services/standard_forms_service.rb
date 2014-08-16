@@ -43,8 +43,6 @@ class StandardFormsService
     section.save
   end
 
-  private
-
   def self.selected_by_user(attr)
     !attr.nil? && attr[USER_SELECTED_KEY] == USER_SELECTED
   end

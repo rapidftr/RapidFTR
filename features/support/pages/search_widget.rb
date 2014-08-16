@@ -9,7 +9,4 @@ class SearchWidget
     @session.fill_in('query', :with => search_term)
     @session.click_button('Go')
   end
-
-  private
-
 end
