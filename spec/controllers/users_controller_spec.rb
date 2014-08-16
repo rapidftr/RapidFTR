@@ -60,7 +60,6 @@ describe UsersController, :type => :controller do
        end
     end
 
-
     it "assigns users_details for backbone" do
       allow(User).to receive(:view).and_return([@user])
       get :index
@@ -164,7 +163,6 @@ describe UsersController, :type => :controller do
       expect(response.status).not_to eq(403)
     end
   end
-
 
   describe "DELETE destroy" do
     it "destroys the requested user" do

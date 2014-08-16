@@ -124,7 +124,6 @@ class Child < CouchRest::Model::Base
                  }
              }"
 
-
       view :by_user_name,
            :map => "function(doc) {
              if (doc.hasOwnProperty('histories')){

@@ -145,7 +145,6 @@ class Field
     Field.by_name(:key => name.downcase).first
   end
 
-
   private
 
   def create_unique_id

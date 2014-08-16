@@ -30,7 +30,6 @@ module RecordHelper
     self['last_updated_at'] || self['created_at']
   end
 
-
   def update_history
     if field_name_changes.any?
       changes = changes_for(field_name_changes)

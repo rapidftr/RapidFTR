@@ -9,7 +9,6 @@ describe Api::EnquiriesController, :type => :controller do
     fake_admin_login
     Sunspot.remove_all!
 
-
     form = create :form, name: Enquiry::FORM_NAME
 
     create :form_section, name: 'test_form', fields: [
@@ -114,7 +113,6 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(422)
     end
 
-
     it "should trigger the match functionality every time a record is created" do
       criteria = {"name" => "old name"}
       enquiry = Enquiry.create({:enquirer_name => "Machaba", :reporter_details => {"location" => "kampala"}, :criteria => criteria})
@@ -162,7 +160,6 @@ describe Api::EnquiriesController, :type => :controller do
       expect(JSON.parse(response.body)["error"]).to be_nil
     end
 
-
     it "should update record if it exists and return the updated record" do
       allow(controller).to receive(:authorize!)
       criteria = {:name => "name"}
@@ -203,8 +200,7 @@ describe Api::EnquiriesController, :type => :controller do
 
       enquiry = Enquiry.get(enquiry.id)
 
-
-      expect(enquiry.criteria).to eq({"name" => "child new name", "gender" => "female", "enquirer_name" => "old name", "location" => "Kampala", "age" => "100"})
+      expect(enquiry.criteria).to eq("name" => "child new name", "gender" => "female", "enquirer_name" => "old name", "location" => "Kampala", "age" => "100")
       expect(enquiry["age"]).to eq("100")
       expect(enquiry["location"]).to eq("Kampala")
       expect(response.response_code).to eq(200)

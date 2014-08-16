@@ -36,7 +36,6 @@ module UploadableFiles
     uploadable_photo "capybara_features/resources/jorge.jpg"
   end
 
-
   def uploadable_photo_gif
     uploadable_photo "capybara_features/resources/small.gif"
   end

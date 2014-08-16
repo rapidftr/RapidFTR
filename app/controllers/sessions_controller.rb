@@ -56,7 +56,6 @@ class SessionsController < ApplicationController
   # PUT /sessions/1
   # PUT /sessions/1.xml
 
-
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
   def destroy

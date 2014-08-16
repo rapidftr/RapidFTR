@@ -86,7 +86,6 @@ describe Child, :type => :model do
       expect(child['last_updated_by']).to eq('jdoe')
     end
 
-
     it "should assign histories order by datetime of history" do
       child = Child.new()
       first_history = double("history", :[] => "2010-01-01 01:01:02UTC")
@@ -141,7 +140,6 @@ describe Child, :type => :model do
       child.update_properties_with_user_name 'some user name', nil, nil, nil, {:reunited => true}
       expect(child.reunited_at).to eq("2010-01-17 19:05:00UTC")
     end
-
 
   end
 
@@ -319,7 +317,6 @@ describe Child, :type => :model do
       end
     end
   end
-
 
   describe 'save' do
 
@@ -648,7 +645,6 @@ describe Child, :type => :model do
 
   end
 
-
   describe "audio attachment" do
     before :each do
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => "stc"))
@@ -847,7 +843,6 @@ describe Child, :type => :model do
         expect(@child.primary_photo.name).to eq(@child.photos.first.name)
         expect(@child.primary_photo.name).to start_with("photo-")
       end
-
 
       it "should not log anything if no photo changes have been made" do
         @child["last_known_location"] = "Moscow"
@@ -1191,7 +1186,6 @@ describe Child, :type => :model do
       end
     end
   end
-
 
   describe 'reindex' do
     it 'should reindex every 24 hours' do

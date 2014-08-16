@@ -260,7 +260,6 @@ When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do 
   end
 end
 
-
 And /^I submit the form$/ do
   click_button('Save')
 end
@@ -276,7 +275,6 @@ end
 When /^I goto the "(.*?)"$/ do |text|
   find(:xpath,"//a[@class='"+text+"']").click
 end
-
 
 Then /^I should see next records in the search results$/ do
   assert page.has_content?("Displaying children 21 - 25 ")

@@ -3,7 +3,6 @@ require 'fileutils'
 require 'erb'
 require 'readline'
 
-
 def databases_for_env
     COUCHDB_SERVER.databases
                   .select { |db| db =~ /_#{Rails.env}$/ }

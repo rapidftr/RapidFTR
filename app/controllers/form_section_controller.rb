@@ -52,7 +52,6 @@ class FormSectionController < ApplicationController
     render :text => "OK"
   end
 
-
   def save_order
     authorize! :update, FormSection
 

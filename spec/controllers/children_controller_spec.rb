@@ -538,7 +538,6 @@ describe ChildrenController, :type => :controller do
       put :update, :id => '1', :child => params_child
     end
 
-
     it "should redirect to redirect_url if it is present in params" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.new_with_user_name(user, {:name => 'some name'})

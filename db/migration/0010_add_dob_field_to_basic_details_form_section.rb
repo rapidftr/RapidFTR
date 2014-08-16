@@ -6,7 +6,6 @@ dob_field = Field.new({"name" => "date_of_birth", "type" => "date_field", "displ
 basic_identity_fs.fields << dob_field
 basic_identity_fs.save!
 
-
 children_docs = Child.database.documents["rows"].select{|row| !row["id"].include?("_design")}
 children_docs.each do |child_doc|
   child = Child.database.get child_doc["id"]

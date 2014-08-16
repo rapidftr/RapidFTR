@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe DevicesController, :type => :controller do
 
-
   describe "GET index" do
     it "fetches all the blacklisted devices but not the replication details if user have only black listed permission" do
       fake_login_as(Permission::DEVICES[:black_list])

@@ -11,7 +11,6 @@ describe AdvancedSearchHelper, :type => :helper do
 <input class="criteria-value-text" type="text" value="test" name="criteria_list[0][value]" style=""><a class=\"remove-criteria\">remove</a></p>}.gsub("\n", ''))
   end
 
-
   it "should generate the appropriate html for given select box criteria" do
     field = Field.new(:name => "protection_status", :display_name => "Protection Status", :type => Field::SELECT_BOX, :option_strings_text => "\nUnaccompanied\nSeparated")
     criteria = {:join => "AND", :display_name => "Protection Status", :index => "1", :field => "protection_status", :value => "Separated"}

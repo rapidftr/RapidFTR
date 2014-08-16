@@ -283,12 +283,10 @@ describe StandardFormsService do
   end
 end
 
-
-
-  # No form in DB, adding it with sections
-  #
-  #
-  # Form in DB
-  # # Section not in DB, not selected by user
-  # # Section not in DB, selected by user
-  # # Section already exists, adding fields
+# No form in DB, adding it with sections
+#
+#
+# Form in DB
+# # Section not in DB, not selected by user
+# # Section not in DB, selected by user
+# # Section already exists, adding fields

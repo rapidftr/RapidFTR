@@ -172,11 +172,6 @@ Style/DoubleNegation:
 Style/EachWithObject:
   Enabled: false
 
-# Offense count: 47
-# Cop supports --auto-correct.
-Style/EmptyLines:
-  Enabled: false
-
 # Offense count: 12
 # Cop supports --auto-correct.
 Style/EmptyLinesAroundAccessModifier:

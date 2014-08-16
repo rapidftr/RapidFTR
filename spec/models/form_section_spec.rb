@@ -150,7 +150,6 @@ describe FormSection, :type => :model do
 
   end
 
-
   describe "add_textarea_field_to_formsection" do
 
     it "adds the textarea to the formsection" do
@@ -450,7 +449,6 @@ describe FormSection, :type => :model do
       expect(FormSection.all_sortable_field_names).to eq(["visible_text_field"])
     end
   end
-
 
   describe "#enabled_by_order_for_form" do
     after :each do

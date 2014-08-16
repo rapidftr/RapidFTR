@@ -63,7 +63,6 @@ RapidFTR::Application.routes.draw do
   match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put, :delete]
   match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
 
-
 #######################
 # API URLS
 #######################
@@ -142,14 +141,12 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-
 #######################
 # ADVANCED SEARCH URLS
 #######################
 
   match 'advanced_search/index', :to => 'advanced_search#index', :via => [:post, :get, :put, :delete]
   match 'advanced_search/export_data' => 'advanced_search#export_data', :as => :export_data_children, :via => :post
-
 
 #######################
 # LOGGING URLS
@@ -158,7 +155,6 @@ RapidFTR::Application.routes.draw do
   resources :system_logs, :only => :index
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
   match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
-
 
 #######################
 # REPLICATION URLS

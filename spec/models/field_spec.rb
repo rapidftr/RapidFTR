@@ -158,7 +158,6 @@ describe "Child record field view model", :type => :model do
       expect(field.option_strings_text_fr).to eq("option string in french")
     end
 
-
     it "should get the value of system language for the given field" do
       I18n.locale = "fr"
       field = Field.new(:name => "first_name", :display_name_fr => "first name in french", :display_name_en => "first name in english",
@@ -290,7 +289,5 @@ describe "Child record field view model", :type => :model do
     form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => [field]
     expect(field.errors[:name]).to eq(["Field already exists on form 'test_form1'"])
   end
-
-
 
 end

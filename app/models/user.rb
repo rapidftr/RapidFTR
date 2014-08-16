@@ -84,10 +84,8 @@ class User < CouchRest::Model::Base
           }"
   end
 
-
   before_save :make_user_name_lowercase, :encrypt_password
   after_save :save_devices
-
 
   before_update :if => :disabled? do |user|
     Session.delete_for user
