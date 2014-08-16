@@ -170,7 +170,7 @@ describe Child, :type => :model do
     end
 
     it "should fail to validate if all fields on child record are the default values" do
-      child = Child.new({:height => "",:reunite_with_mother => ""})
+      child = Child.new({:height => "", :reunite_with_mother => ""})
       allow(FormSection).to receive(:all_visible_child_fields).and_return [
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
@@ -1060,7 +1060,7 @@ describe Child, :type => :model do
 
     describe "mark_as_duplicate" do
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde', 'short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
         child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id' => 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
         child_duplicate.mark_as_duplicate child_active['short_id']
         expect(child_duplicate.duplicate?).to be_truthy
@@ -1074,8 +1074,8 @@ describe Child, :type => :model do
       end
 
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique','short_id' => 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde', 'short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id' => 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
         child_duplicate.mark_as_duplicate child_active['short_id']
         expect(child_duplicate.duplicate?).to be_truthy
         expect(child_duplicate.duplicate_of).to eq(child_active.id)
@@ -1083,7 +1083,7 @@ describe Child, :type => :model do
     end
 
     it "should return all duplicate records" do
-      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids", 'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
       record_duplicate = create_duplicate(record_active)
 
       duplicates = Child.by_duplicate_of(key: record_active.id)
@@ -1095,7 +1095,7 @@ describe Child, :type => :model do
     end
 
     it "should return duplicate from a record" do
-      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids", 'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
       record_duplicate = create_duplicate(record_active)
 
       duplicates = Child.by_duplicate_of(key: record_active.id)
@@ -1222,7 +1222,7 @@ describe Child, :type => :model do
     duplicate
   end
 
-  def create_child_with_created_by(created_by,options = {})
+  def create_child_with_created_by(created_by, options = {})
     user = User.new({:user_name => created_by, :organisation => "UNICEF"})
     Child.new_with_user_name user, options
   end

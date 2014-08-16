@@ -99,7 +99,7 @@ describe ChildrenHelper, :type => :helper do
       options = helper.order_options_array_from nil, [form]
       expect(options["Form to group"].flatten).to include(a_string_matching(/id_name/))
       expect(options["Form to group"].flatten).to include(a_string_matching(/display_name/))
-      expect(options["Form to group"]).to include(["display_name","id_name"])
+      expect(options["Form to group"]).to include(["display_name", "id_name"])
     end
 
     it "should map multiple forms fields by display name and name" do
@@ -108,11 +108,11 @@ describe ChildrenHelper, :type => :helper do
 
       field2 = build :field, name: "id_name2", display_name: "display_name2"
       field3 = build :field, name: "id_name3", display_name: "display_name3"
-      form2 = create :form_section, name: "Second", fields: [field2,field3]
+      form2 = create :form_section, name: "Second", fields: [field2, field3]
 
-      options = helper.order_options_array_from nil, [form1,form2]
-      expect(options["First"]).to include(["display_name1","id_name1"])
-      expect(options["Second"]).to include(["display_name2","id_name2"],["display_name3","id_name3"])
+      options = helper.order_options_array_from nil, [form1, form2]
+      expect(options["First"]).to include(["display_name1", "id_name1"])
+      expect(options["Second"]).to include(["display_name2", "id_name2"], ["display_name3", "id_name3"])
 
     end
 
@@ -124,7 +124,7 @@ describe ChildrenHelper, :type => :helper do
 
       options = helper.order_options_array_from system_fields, form_fields
 
-      expect(options).to eq({t("children.order_by.system_fields") => [["Created at", "created_at"]], "First" => [["display_name","id_name"]]})
+      expect(options).to eq({t("children.order_by.system_fields") => [["Created at", "created_at"]], "First" => [["display_name", "id_name"]]})
     end
   end
 end

@@ -2,7 +2,7 @@ Then /^I should receive a PDF file$/ do
   Tempfile.open('rapidftr_cuke_tests') do |temp_file|
     temp_file.write(page.source)
     temp_file.close
-    mimetype = `file --brief --mime #{temp_file.path}`.gsub(/\n/,"")
+    mimetype = `file --brief --mime #{temp_file.path}`.gsub(/\n/, "")
     expect(mimetype).to match(/application\/pdf/)
   end
 end

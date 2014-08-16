@@ -6,7 +6,7 @@ Then /^I should see change log for initially setting the field "(.*?)" to value 
   expect(page).to have_content("#{field} initially set to #{value} by #{user_name} belonging to #{User.find_by_user_name(user_name).organisation}")
 end
 
-Then /^I should see change log for changing value of field "(.*?)" from "(.*?)" to value "(.*?)" by "(.*?)"$/ do |field,from,to, user_name|
+Then /^I should see change log for changing value of field "(.*?)" from "(.*?)" to value "(.*?)" by "(.*?)"$/ do |field, from, to, user_name|
   expect(page).to have_content("#{field} changed from #{from} to #{to} by #{user_name} belonging to #{User.find_by_user_name(user_name).organisation}")
 end
 

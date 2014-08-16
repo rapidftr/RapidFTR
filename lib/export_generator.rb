@@ -110,7 +110,7 @@ class ExportGenerator
       render_image(@attachment.data)
     end
     @pdf.move_down 25
-    @pdf.text child.short_id,:size => 40,:align => :center, :style => :bold if with_full_id
+    @pdf.text child.short_id, :size => 40, :align => :center, :style => :bold if with_full_id
 
     @pdf.y -= 3.mm
   end

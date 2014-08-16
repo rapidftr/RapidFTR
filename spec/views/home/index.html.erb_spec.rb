@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "home/index.html.erb", :type => :view do
   it "should display time for notifications in yyyy/mm/dd format for users who do not already exist" do
     mock_password_recovery_request = double("PasswordRecoveryRequest", :user_name => 'mjhasson', :created_at => Time.parse("Jan 31 2011"), :to_param => '123')
-    assign(:notifications,[mock_password_recovery_request])
+    assign(:notifications, [mock_password_recovery_request])
 
     allow(view).to receive(:can?).with(:update, User).and_return(true)
 

@@ -79,7 +79,7 @@ describe "children/search.html.erb", :type => :view do
 
       select_check_boxes = Hpricot(rendered).checkboxes
       expect(select_check_boxes.length).to eq(@results.length)
-      select_check_boxes.each_with_index do |check_box,i|
+      select_check_boxes.each_with_index do |check_box, i|
         expect(check_box['name']).to eq("selections[#{i}]")
         expect(check_box['value']).to eq(@results[i]['_id'])
       end

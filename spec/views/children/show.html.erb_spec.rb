@@ -17,14 +17,14 @@ describe "children/show.html.erb", :type => :view do
       allow(@child).to receive(:has_one_interviewer?).and_return(true)
       allow(@child).to receive(:short_id).and_return('2341234')
 
-      assign(:form_sections,[@form_section])
+      assign(:form_sections, [@form_section])
       assign(:child, @child)
       assign(:current_user, User.new)
       assign(:duplicates, Array.new)
     end
 
     it "displays the child's photo" do
-      assign(:aside,'picture')
+      assign(:aside, 'picture')
 
       render :template => 'children/show', :layout => 'layouts/application'
 
@@ -76,7 +76,7 @@ describe "children/show.html.erb", :type => :view do
         child = Child.create(:age => "27", :unique_identifier => "georgelon12345", :_id => "id12345", :created_by => 'jsmith', :created_at => "July 19 2010 13:05:32UTC", :last_updated_by => "jdoe", :last_updated_at => "July 20 2010 14:15:59UTC")
         allow(child).to receive(:has_one_interviewer?).and_return(false)
 
-        assign(:child,child)
+        assign(:child, child)
 
         render
 
@@ -104,8 +104,8 @@ describe "children/show.html.erb", :type => :view do
 
         user = User.new 'time_zone' => TZInfo::Timezone.get("US/Samoa")
 
-        assign(:child,child)
-        assign(:user,user)
+        assign(:child, child)
+        assign(:user, user)
 
         render
 
@@ -127,7 +127,7 @@ describe "children/show.html.erb", :type => :view do
       it "should not show links to export when user doesn't have appropriate permissions" do
         allow(@user).to receive(:has_permission?).and_return(false)
         render
-        expect(rendered).not_to have_tag("a[href='#{child_path(@child,:format => :csv)}']")
+        expect(rendered).not_to have_tag("a[href='#{child_path(@child, :format => :csv)}']")
       end
 
       it "should show links to export when user has appropriate permissions" do

@@ -32,7 +32,7 @@ Given /^there is a admin$/ do
   data_populator.create_admin('admin', '123', 'Admin')
 end
 
-Then /^I am logged in as user (.+) with password as (.+)/ do|user_name,password|
+Then /^I am logged in as user (.+) with password as (.+)/ do|user_name, password|
   login_page.login_as(user_name, password)
 end
 

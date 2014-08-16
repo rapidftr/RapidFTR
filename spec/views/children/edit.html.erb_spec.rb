@@ -21,7 +21,7 @@
     xit "renders the children/form_section partial" do
       # This should be a controller spec
       render
-      expect(rendered).to render_template(:partial =>  "_form_section",:collection => [@form_section])
+      expect(rendered).to render_template(:partial =>  "_form_section", :collection => [@form_section])
     end
 
     it "renders a form whose discard button links to the child listing page" do

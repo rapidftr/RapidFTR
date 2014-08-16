@@ -56,7 +56,7 @@ if should_seed? User
                  "email" => "admin@rapidftr.com",
                  "disabled" => "false",
                  "organisation" => "Unicef",
-                 "role_ids" => [registration_worker.id,system_admin.id,field_level_admin.id])
+                 "role_ids" => [registration_worker.id, system_admin.id, field_level_admin.id])
   end
 end
 

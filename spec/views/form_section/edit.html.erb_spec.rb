@@ -20,7 +20,7 @@ describe "form_section/edit.html.erb", :type => :view do
   end
 
   it "should not have Down or Up UI elements for uneditable field" do
-    fields = [{:name => "topfield"}, {:name => "field", :editable => false},{:name => "bottomfield"}]
+    fields = [{:name => "topfield"}, {:name => "field", :editable => false}, {:name => "bottomfield"}]
     form_section = build :form_section, :fields => fields, :unique_id => "foo"
 
     assign(:form_section, form_section)
@@ -58,7 +58,7 @@ describe "form_section/edit.html.erb", :type => :view do
   end
 
   it "should not have edit or delete or enable UI elements for uneditable fields" do
-    fields = [{:name => "topfield"}, {:name => "field", :editable => false},{:name => "bottomfield"}]
+    fields = [{:name => "topfield"}, {:name => "field", :editable => false}, {:name => "bottomfield"}]
     form_section = build :form_section, :fields => fields, :unique_id => "foo"
 
     assign(:form_section, form_section)

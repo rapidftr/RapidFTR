@@ -46,7 +46,7 @@ class SessionsController < ApplicationController
         flash[:notice] = t("hello") + " " + @session.user_name
         format.html { redirect_to(root_path) }
         format.xml  { render :action => "show", :status => :created, :location => @session }
-        format.json { render_session_as_json(@session,:status => :created, :location => @session) }
+        format.json { render_session_as_json(@session, :status => :created, :location => @session) }
       else
         handle_login_error(t("session.login_error"), format)
       end
@@ -84,7 +84,7 @@ class SessionsController < ApplicationController
     format.json { head :unauthorized }
   end
 
-  def render_session_as_json(session,options = {})
+  def render_session_as_json(session, options = {})
     user = User.find_by_user_name(session.user_name)
     json = {
       :session => {

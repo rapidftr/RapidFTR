@@ -224,7 +224,7 @@ end
 
 Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   actual_params   = CGI.parse(URI.parse(current_url).query)
-  expected_params = Hash[expected_pairs.rows_hash.map { |k,v| [k,[v]] }]
+  expected_params = Hash[expected_pairs.rows_hash.map { |k, v| [k, [v]] }]
 
   if defined?(Spec::Rails::Matchers)
     expect(actual_params).to eq(expected_params)
@@ -273,7 +273,7 @@ Then /^I should see first (\d+) records in the search results$/ do |arg1|
 end
 
 When /^I goto the "(.*?)"$/ do |text|
-  find(:xpath,"//a[@class='" + text + "']").click
+  find(:xpath, "//a[@class='" + text + "']").click
 end
 
 Then /^I should see next records in the search results$/ do
@@ -284,7 +284,7 @@ Then /^I should see link to "(.*?)"$/ do |text|
   expect(page).to have_xpath("//span[@class='" + text + "']")
 end
 
-Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible,tab_name|
+Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible, tab_name|
   tab_element = page.has_xpath?("//div[@class='main_bar']//ul/li/a[text()='" + tab_name + "']")
   expect(tab_element).to eq(!not_visible)
 end

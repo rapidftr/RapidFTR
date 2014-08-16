@@ -215,7 +215,7 @@ describe User, :type => :model do
       it { is_expected.not_to have_permission 5 }
 
       it { is_expected.to have_any_permission 1 }
-      it { is_expected.to have_any_permission 1,2,3,4 }
+      it { is_expected.to have_any_permission 1, 2, 3, 4 }
       it { is_expected.not_to have_any_permission 5 }
     end
   end

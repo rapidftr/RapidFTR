@@ -8,15 +8,15 @@ class StandardFormsService
 
   def self.persist attributes_hash
     RapidFTR::FormSetup.default_forms.each do |form|
-      form_attr = attributes_hash.fetch(FORMS_KEY,{}).fetch(form.name.downcase,{})
+      form_attr = attributes_hash.fetch(FORMS_KEY, {}).fetch(form.name.downcase, {})
       saved_form = persist_form(form, form_attr)
 
       if !saved_form.nil?
-        sections_attr = form_attr.fetch(SECTIONS_KEY,{})
+        sections_attr = form_attr.fetch(SECTIONS_KEY, {})
         saved_sections = persist_sections(saved_form, sections_attr)
 
         saved_sections.each do |s|
-          fields_attr = sections_attr.fetch(s.name,{}).fetch(FIELDS_KEY,{})
+          fields_attr = sections_attr.fetch(s.name, {}).fetch(FIELDS_KEY, {})
           persist_fields(s, fields_attr)
         end
       end

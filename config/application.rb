@@ -40,8 +40,8 @@ module RapidFTR
     config.assets.initialize_on_precompile = true
     config.assets.js_compressor = :uglify
 
-    LOCALES = ['en','fr','ar','zh','es','ru']
-    LOCALES_WITH_DESCRIPTION = [['-', nil],['العربية','ar'],['中文','zh'],['English', 'en'],['Français', 'fr'],['Русский', 'ru'],['Español', 'es']]
+    LOCALES = ['en', 'fr', 'ar', 'zh', 'es', 'ru']
+    LOCALES_WITH_DESCRIPTION = [['-', nil], ['العربية', 'ar'], ['中文', 'zh'], ['English', 'en'], ['Français', 'fr'], ['Русский', 'ru'], ['Español', 'es']]
 
     def locales
       LOCALES

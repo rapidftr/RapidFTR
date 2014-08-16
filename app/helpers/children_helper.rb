@@ -22,7 +22,7 @@ module ChildrenHelper
   end
 
   def link_to_download_audio_with_key(key)
-    link_to key.humanize, child_audio_url(@child.id,key),:id => key, :target => '_blank'
+    link_to key.humanize, child_audio_url(@child.id, key), :id => key, :target => '_blank'
   end
 
   def is_playable_in_browser audio

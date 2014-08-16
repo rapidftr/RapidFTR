@@ -1,7 +1,7 @@
 When /^I enter the following role details$/ do |role_table|
   role_table.hashes.each do |role_row|
-    fill_in('role_name',:with => role_row['name'])
-    fill_in('role_description',:with => role_row['description'])
+    fill_in('role_name', :with => role_row['name'])
+    fill_in('role_description', :with => role_row['description'])
     [role_row['permissions']].flatten.each do |permission|
       check(permission)
     end
@@ -40,7 +40,7 @@ Then /^I should see the following roles sorted:$/ do |table|
 end
 
 When /^I edit the role (.+)$/ do  |role_name|
-  find(:xpath,"//table[@class='list_table']//tr/td[text()='" + role_name + "']/following-sibling::td/a[text()='Edit']").click()
+  find(:xpath, "//table[@class='list_table']//tr/td[text()='" + role_name + "']/following-sibling::td/a[text()='Edit']").click()
 end
 
 When /^I update the form$/ do
