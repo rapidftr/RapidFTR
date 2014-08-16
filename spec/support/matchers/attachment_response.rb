@@ -31,7 +31,7 @@ module CustomMatchers
     end
 
     def response_has_specified_disposition?(response)
-      response.headers.has_key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
+      response.headers.key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
     end
 
     def has_filename?(filename)
