@@ -8,7 +8,7 @@ class FieldOption
       field_options << FieldOption.new(field_name, option)
     end
     return field_options
-   end
+  end
 
   def initialize(field_name, option)
     @field_name = field_name

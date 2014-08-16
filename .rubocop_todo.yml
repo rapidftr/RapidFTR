@@ -22,11 +22,6 @@ Lint/AssignmentInCondition:
 Lint/Debugger:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: AlignWith, SupportedStyles.
-Lint/DefEndAlignment:
-  Enabled: false
-
 # Offense count: 2
 Lint/HandleExceptions:
   Enabled: false
