@@ -50,7 +50,7 @@ if should_seed? User
 
   if Rails.env.android?
     User.create!("user_name" => "admin",
-                 "password" => "admin" ,
+                 "password" => "admin",
                  "password_confirmation" => "admin",
                  "full_name" => "admin user",
                  "email" => "admin@rapidftr.com",

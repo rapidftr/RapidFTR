@@ -11,7 +11,7 @@ describe "children/_form_section.html.erb", :type => :view do
       translated_name = "translated_form_name"
       I18n.locale = :fr
       I18n.backend.store_translations("fr", @form_section.unique_id => translated_name)
-      render :partial => 'children/tabs' , :object => [@form_section], :formats => [:html], :handlers => [:erb]
+      render :partial => 'children/tabs', :object => [@form_section], :formats => [:html], :handlers => [:erb]
       expect(rendered).to be_include(translated_name)
       expect(rendered).not_to be_include(@form_section.name)
     end

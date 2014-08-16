@@ -16,7 +16,7 @@ class Field
   property :name
   property :visible, TrueClass, :default => true
   property :type
-  property :highlight_information , HighlightInformation
+  property :highlight_information, HighlightInformation
   property :editable, TrueClass, :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options

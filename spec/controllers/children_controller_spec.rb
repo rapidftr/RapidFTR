@@ -5,7 +5,7 @@ def inject_export_generator(fake_export_generator, child_data)
 end
 
 def stub_out_export_generator child_data = []
-  inject_export_generator(stub_export_generator = double(ExportGenerator) , child_data)
+  inject_export_generator(stub_export_generator = double(ExportGenerator), child_data)
   allow(stub_export_generator).to receive(:child_photos).and_return('')
   stub_export_generator
 end
