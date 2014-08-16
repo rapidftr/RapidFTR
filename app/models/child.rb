@@ -41,7 +41,7 @@ class Child < CouchRest::Model::Base
 
   FORM_NAME = "Children"
 
-  def initialize *args
+  def initialize(*args)
     self['photo_keys'] ||= []
     arguments = args.first
 

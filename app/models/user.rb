@@ -113,7 +113,7 @@ class User < CouchRest::Model::Base
   #trigger the callbacks we need to use attribute_will_change! method.
   #check lib/couchrest/model/extended_attachments.rb in source code.
   #So, override the method for password in order to track changes.
-  def password= value
+  def password=(value)
     attribute_will_change!("password") if use_dirty? && @password != value
     @password = value
   end
@@ -168,7 +168,7 @@ class User < CouchRest::Model::Base
     roles.compact.collect(&:permissions).flatten
   end
 
-  def add_mobile_login_event imei, mobile_number
+  def add_mobile_login_event(imei, mobile_number)
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
 
     if Device.all.none? { |device| device.imei == imei }
@@ -181,7 +181,7 @@ class User < CouchRest::Model::Base
     Device.all.select { |device| device.user_name == self.user_name }
   end
 
-  def devices= device_hashes
+  def devices=(device_hashes)
     all_devices = Device.all
     #attr_accessor devices field change.
     attribute_will_change!("devices")

@@ -5,7 +5,7 @@ class MobileLoginEvent
   property :mobile_number
   property :timestamp, Time, :init_method => 'parse'
 
-  def initialize properties
+  def initialize(properties)
     super(properties)
     self[:timestamp] ||= Clock.now
   end

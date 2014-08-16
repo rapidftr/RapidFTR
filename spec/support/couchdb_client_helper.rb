@@ -15,7 +15,7 @@ module CouchdbClientHelper
     return JSON.parse(response)["id"]
   end
 
-  def database_url dbname
+  def database_url(dbname)
     full_db_name = [COUCHDB_CONFIG[:db_prefix], dbname, COUCHDB_CONFIG[:db_suffix]].join
     [COUCHDB_CONFIG[:host_path], '/', full_db_name].join('_')
   end

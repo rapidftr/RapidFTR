@@ -76,13 +76,13 @@ namespace :db do
   end
 end
 
-def write_file name, content
+def write_file(name, content)
   puts "Writing #{name}..."
   File.open(name, 'w') do |file|
     file.write content
   end
 end
 
-def get prompt
+def get(prompt)
   Readline.readline prompt
 end

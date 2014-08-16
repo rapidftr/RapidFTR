@@ -3,7 +3,7 @@
 
 # Please keep the seeding idempotent, as it may be used as a migration if upgrading a production
 # instance is necessary and the target version has introduced any new types requiring seeds.
-def should_seed? model
+def should_seed?(model)
   empty = model.database.documents["rows"].count == 0
   puts(empty ? "Seeding #{model}." : "Not seeding #{model}. Already populated.")
   empty

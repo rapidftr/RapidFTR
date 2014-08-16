@@ -86,7 +86,7 @@ class Field
     "#{display_name}#{hidden_text}"
   end
 
-  def initialize properties = {}
+  def initialize(properties = {})
     self.visible = true if properties["visible"].nil?
     self.highlight_information = HighlightInformation.new
     self.editable = true if properties["editable"].nil?
@@ -94,14 +94,14 @@ class Field
     create_unique_id
   end
 
-  def attributes= properties
+  def attributes=(properties)
     super properties
     if option_strings
       @options = FieldOption.create_field_options(name, option_strings)
     end
   end
 
-  def option_strings= value
+  def option_strings=(value)
     if value
       value = value.gsub(/\r\n?/, "\n").split("\n") if value.is_a?(String)
       self.option_strings_text = value.select { |x| !"#{x}".strip.empty? }.map(&:rstrip).join("\n")
@@ -132,7 +132,7 @@ class Field
     highlight_information[:highlighted]
   end
 
-  def highlight_with_order order
+  def highlight_with_order(order)
     highlight_information[:highlighted] = true
     highlight_information[:order] = order
   end

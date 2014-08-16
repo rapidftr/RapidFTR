@@ -10,13 +10,13 @@ class ExportGenerator
   class Export
     attr_accessor :data, :options
 
-    def initialize data, options
+    def initialize(data, options)
       @data = data
       @options = options
     end
   end
 
-  def initialize *child_data
+  def initialize(*child_data)
     @child_data = child_data.flatten
     @pdf = Prawn::Document.new
     @image_bounds = [@pdf.bounds.width, @pdf.bounds.width]
@@ -78,7 +78,7 @@ class ExportGenerator
 
   private
 
-  def format_field_for_export field, value, child = nil
+  def format_field_for_export(field, value, child = nil)
     return "" if value.blank?
     return value.join(", ") if field.type == Field::CHECK_BOXES
     if child
@@ -92,7 +92,7 @@ class ExportGenerator
     value
   end
 
-  def filename export_type, extension
+  def filename(export_type, extension)
     return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
     return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
   end

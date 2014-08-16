@@ -1,6 +1,6 @@
 class Permission
 
-  def self.to_ordered_hash *hashes
+  def self.to_ordered_hash(*hashes)
     ordered = ActiveSupport::OrderedHash.new
 
     hashes.each do |hash|

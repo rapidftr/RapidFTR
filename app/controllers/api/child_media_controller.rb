@@ -43,7 +43,7 @@ class Api::ChildMediaController < Api::ApiController
     FileAttachment.new("no_photo", "image/jpg", @@no_photo_clip)
   end
 
-  def audio_filename attachment
+  def audio_filename(attachment)
     "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 

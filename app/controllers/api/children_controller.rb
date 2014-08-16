@@ -78,11 +78,11 @@ class Api::ChildrenController < Api::ApiController
     end
   end
 
-  def child_short_id params
+  def child_short_id(params)
     params[:child][:short_id] || params[:child][:unique_identifier].last(7)
   end
 
-  def update_child_from params
+  def update_child_from(params)
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     child.update_with_attachments(params, current_user)
     child

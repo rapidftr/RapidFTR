@@ -87,7 +87,7 @@ class FieldsController < ApplicationController
 
   private
 
-  def fetch_field field_name
+  def fetch_field(field_name)
     @form_section.fields.detect { |field| field.name == field_name }
   end
 end

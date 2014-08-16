@@ -1,5 +1,5 @@
 module FakeLogin
-  def fake_login user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
+  def fake_login(user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"]))
     session = Session.new :user_name => user.user_name
     session.save
 
@@ -14,7 +14,7 @@ module FakeLogin
     session
   end
 
-  def setup_session user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"])
+  def setup_session(user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"]))
     session = Session.new :user_name => user.user_name
     session.save
     allow(@controller).to receive(:current_session).and_return(session)

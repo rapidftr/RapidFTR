@@ -10,12 +10,12 @@ class Form < CouchRest::Model::Base
     view :by_name
   end
 
-  def self.find_or_create_by_name name
+  def self.find_or_create_by_name(name)
     form = self.find_by_name(name)
     form.nil? ? Form.create(name: name) : form
   end
 
-  def self.find_by_name name
+  def self.find_by_name(name)
     Form.by_name.key(name).first
   end
 

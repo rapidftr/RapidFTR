@@ -128,7 +128,7 @@ class UsersController < ApplicationController
 
   private
 
-  def write_to_log comment
+  def write_to_log(comment)
     File.open("/Users/ambhalla/Desktop/log.txt", "w+") do |f|
       f.write comment
     end

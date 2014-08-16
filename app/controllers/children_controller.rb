@@ -230,7 +230,7 @@ class ChildrenController < ApplicationController
 
   private
 
-  def child_short_id child_params
+  def child_short_id(child_params)
     child_params[:short_id] || child_params[:unique_identifier].last(7)
   end
 
@@ -278,7 +278,7 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def update_child_from params
+  def update_child_from(params)
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     authorize! :update, child
     update_child_with_attachments(child, params)

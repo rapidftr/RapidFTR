@@ -2,11 +2,11 @@ require 'spec_helper'
 
 class MockFormSection
 
-  def initialize is_valid = true
+  def initialize(is_valid = true)
     @is_valid = is_valid
   end
 
-  def base_language= base_language
+  def base_language=(base_language)
     @base_language = base_language
   end
 

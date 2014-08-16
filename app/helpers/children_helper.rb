@@ -25,7 +25,7 @@ module ChildrenHelper
     link_to key.humanize, child_audio_url(@child.id, key), :id => key, :target => '_blank'
   end
 
-  def is_playable_in_browser audio
+  def is_playable_in_browser(audio)
     AudioMimeTypes.browser_playable? audio.mime_type
   end
 
@@ -52,23 +52,23 @@ module ChildrenHelper
     raw ("This record has been marked as a duplicate and is no longer active. To see the Active record click #{link_to 'here', child_path(@child.duplicate_of)}.")
   end
 
-  def field_value_for_display field_value
+  def field_value_for_display(field_value)
     return "" if field_value.nil? || field_value.length == 0
     return field_value.join ", " if field_value.instance_of? Array
     return field_value
   end
 
-  def link_for_filter filter, selected_filter
+  def link_for_filter(filter, selected_filter)
     return filter.capitalize if filter == selected_filter
     link_to(filter.capitalize, child_filter_path(filter))
   end
 
-  def link_for_order_by filter, order, order_id, selected_order
+  def link_for_order_by(filter, order, order_id, selected_order)
     return order_id.capitalize if order == selected_order
     link_to(order_id.capitalize, child_filter_path(:filter => filter, :order_by => order))
   end
 
-  def toolbar_for_child child
+  def toolbar_for_child(child)
     if child.duplicate?
       link_to 'View the change log', child_history_path(child)
     else
@@ -76,7 +76,7 @@ module ChildrenHelper
     end
   end
 
-  def order_options_array_from system_fields, form_sections
+  def order_options_array_from(system_fields, form_sections)
     system_fields ||= []
     form_sections ||= []
     options = {}
