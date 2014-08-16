@@ -119,7 +119,7 @@ describe FormSectionController, :type => :controller do
   end
 
   describe "post save_order" do
-    after { FormSection.all.each &:destroy }
+    after { FormSection.all.each(&:destroy) }
 
     it "should save the order of the forms" do
       form = create :form

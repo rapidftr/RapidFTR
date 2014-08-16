@@ -78,6 +78,6 @@ class ChildMediaController < ApplicationController
 
   def send_photo_data(*args)
     expires_in 1.year, :public => true if params[:ts]
-    send_data *args
+    send_data(*args)
   end
 end

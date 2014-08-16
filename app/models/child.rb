@@ -51,7 +51,7 @@ class Child < CouchRest::Model::Base
     end
 
     self['histories'] = []
-    super *args
+    super(*args)
   end
 
   def self.new_with_user_name(user, fields = {})
@@ -101,7 +101,7 @@ class Child < CouchRest::Model::Base
     boolean :flag
   }
 
-  searchable &@set_up_solr_fields
+  searchable(&@set_up_solr_fields)
 
   def self.update_solr_indices
     Sunspot.setup(Child, &@set_up_solr_fields)

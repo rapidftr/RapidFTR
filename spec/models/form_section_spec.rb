@@ -60,7 +60,7 @@ describe FormSection, :type => :model do
   end
 
   describe "repository methods" do
-    before { FormSection.all.each &:destroy }
+    before { FormSection.all.each(&:destroy) }
 
     describe "enabled_by_order" do
       it "should bring back sections in order" do
@@ -281,7 +281,7 @@ describe FormSection, :type => :model do
   end
 
   describe "valid?" do
-    before { FormSection.all.each &:destroy }
+    before { FormSection.all.each(&:destroy) }
     it "should validate name is filled in" do
       form_section = FormSection.new()
       expect(form_section).not_to be_valid
@@ -452,8 +452,8 @@ describe FormSection, :type => :model do
 
   describe "#enabled_by_order_for_form" do
     after :each do
-      FormSection.all.each &:destroy
-      Form.all.each &:destroy
+      FormSection.all.each(&:destroy)
+      Form.all.each(&:destroy)
     end
 
     it "should only return visible form sections" do
