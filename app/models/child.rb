@@ -77,7 +77,7 @@ class Child < CouchRest::Model::Base
     "#{field}_sort".to_sym
   end
 
-  @set_up_solr_fields = Proc.new {
+  @set_up_solr_fields = proc {
     text_fields = Child.build_text_fields_for_solar
     date_fields = Child.build_date_fields_for_solar
 
