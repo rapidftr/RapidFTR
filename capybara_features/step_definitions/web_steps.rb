@@ -45,13 +45,13 @@ When /^I follow "(.+)" span$/ do |locator|
 end
 
 When /^I cannot follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
-  exception=nil
+  exception = nil
   begin
     with_scope(selector) do
       click_link(link)
     end
-  rescue Exception=>e
-    exception=e
+  rescue => e
+    exception = e
   end
   expect(exception).not_to be_nil
   expect(exception.class).to eq(Capybara::ElementNotFound)
