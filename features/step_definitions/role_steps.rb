@@ -40,7 +40,7 @@ Then /^I should see the following roles sorted:$/ do |table|
 end
 
 When /^I edit the role (.+)$/ do  |role_name|
-  find(:xpath, "//table[@class='list_table']//tr/td[text()='" + role_name + "']/following-sibling::td/a[text()='Edit']").click()
+  find(:xpath, "//table[@class='list_table']//tr/td[text()='" + role_name + "']/following-sibling::td/a[text()='Edit']").click
 end
 
 When /^I update the form$/ do

@@ -24,13 +24,13 @@ describe FormSection, :type => :model do
   end
 
   it "udpates solr child index when created" do
-    form = FormSection.new()
+    form = FormSection.new
     expect(Child).to receive(:update_solr_indices)
     form.run_callbacks(:create)
   end
 
   it "updates solr child index when updated" do
-    form = FormSection.new()
+    form = FormSection.new
     expect(Child).to receive(:update_solr_indices)
     form.run_callbacks(:update)
   end
@@ -283,7 +283,7 @@ describe FormSection, :type => :model do
   describe "valid?" do
     before { FormSection.all.each(&:destroy) }
     it "should validate name is filled in" do
-      form_section = FormSection.new()
+      form_section = FormSection.new
       expect(form_section).not_to be_valid
       expect(form_section.errors["name_#{I18n.default_locale}"]).to be_present
     end

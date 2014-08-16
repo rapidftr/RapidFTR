@@ -192,7 +192,7 @@ class FormSection < CouchRest::Model::Base
     if field
       field_index = fields.index(field)
       fields.delete_at(field_index)
-      save()
+      save
     end
   end
 

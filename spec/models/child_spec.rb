@@ -87,7 +87,7 @@ describe Child, :type => :model do
     end
 
     it "should assign histories order by datetime of history" do
-      child = Child.new()
+      child = Child.new
       first_history = double("history", :[] => "2010-01-01 01:01:02UTC")
       second_history = double("history", :[] => "2010-01-02 01:01:02UTC")
       third_history = double("history", :[] => "2010-01-02 01:01:03UTC")
@@ -575,20 +575,20 @@ describe Child, :type => :model do
     end
 
     it "should use Mime::Type.lookup to create file name postfix" do
-      child = Child.new()
+      child = Child.new
       expect(Mime::Type).to receive(:lookup).exactly(2).times.with("audio/mpeg").and_return("abc".to_sym)
       child.add_audio_file(@file, "audio/mpeg")
     end
 
     it "should create a file attachment for the file with 'audio' prefix, mime mediatype as postfix" do
-      child = Child.new()
+      child = Child.new
       allow(Mime::Type).to receive(:lookup).and_return("abc".to_sym)
       expect(FileAttachment).to receive(:from_file).with(@file, "audio/mpeg", "audio", "abc").and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
     end
 
     it "should add attachments key attachment to the audio hash using the content's media type as key" do
-      child = Child.new()
+      child = Child.new
       allow(FileAttachment).to receive(:from_file).and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
       expect(child['audio_attachments']['mp3']).to eq("attachment_file_name")
@@ -1189,8 +1189,8 @@ describe Child, :type => :model do
 
   describe 'reindex' do
     it 'should reindex every 24 hours' do
-      scheduler = double()
-      expect(scheduler).to receive(:every).with('24h').and_yield()
+      scheduler = double
+      expect(scheduler).to receive(:every).with('24h').and_yield
       expect(Child).to receive(:reindex!).once.and_return(nil)
       Child.schedule scheduler
     end

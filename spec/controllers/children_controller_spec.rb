@@ -284,7 +284,7 @@ describe ChildrenController, :type => :controller do
       it "should use the ascending sort order param" do
         fake_field_worker_login
         child_search = ChildSearch.new;
-        expect(child_search).to receive(:ordered).with(anything(), :asc).and_return(child_search)
+        expect(child_search).to receive(:ordered).with(anything, :asc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
         get :index, sort_order: 'asc'
       end
@@ -292,7 +292,7 @@ describe ChildrenController, :type => :controller do
       it "should use the descending sort order param" do
         fake_field_worker_login
         child_search = ChildSearch.new;
-        expect(child_search).to receive(:ordered).with(anything(), :desc).and_return(child_search)
+        expect(child_search).to receive(:ordered).with(anything, :desc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
         get :index, sort_order: 'desc'
       end
@@ -479,7 +479,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should allow a records ID to be specified to create a new record with a known id" do
-      new_uuid = UUIDTools::UUID.random_create()
+      new_uuid = UUIDTools::UUID.random_create
       put :update, :id => new_uuid.to_s,
                    :child => {
                      :id => new_uuid.to_s,
@@ -640,7 +640,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should handle custom export addon" do
-      mock_addon = double()
+      mock_addon = double
       mock_addon_class = double(:new => mock_addon, :id => "mock")
       RapidftrAddon::ExportTask.stub :active => [mock_addon_class]
       allow(controller).to receive(:authorize!)

@@ -21,7 +21,7 @@ describe Enquiry, :type => :model do
     end
 
     it "should fail to validate if all fields are nil" do
-      enquiry = Enquiry.new()
+      enquiry = Enquiry.new
       allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
       expect(enquiry).not_to be_valid
       expect(enquiry.errors[:validate_has_at_least_one_field_value]).to eq(["Please fill in at lease one field or upload a file"])
@@ -87,7 +87,7 @@ describe Enquiry, :type => :model do
       end
 
       it "should contain potential matches given one matching child" do
-        enquiry = Enquiry.new()
+        enquiry = Enquiry.new
         child = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
         enquiry = Enquiry.create!(:enquirer_name => "Kisitu", :name => "eduardo")
 

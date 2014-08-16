@@ -32,8 +32,8 @@ describe "children/search.html.erb", :type => :view do
     it "should show only the highlighted fields for a child" do
       child = Child.create(
       "_id" => "some_id", "created_by" => "dave",
-      "last_updated_at" => time_now(),
-      "created_at" => time_now(),
+      "last_updated_at" => time_now,
+      "created_at" => time_now,
       "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4",
       "current_photo_key" => "some-photo-id")
       allow(child).to receive(:has_one_interviewer?).and_return(true)

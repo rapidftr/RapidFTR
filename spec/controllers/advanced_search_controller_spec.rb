@@ -81,7 +81,7 @@ describe AdvancedSearchController, :type => :controller do
     end
 
     it "should handle custom export addon" do
-      mock_addon = double()
+      mock_addon = double
       mock_addon_class = double(:new => mock_addon, :id => "mock")
       RapidftrAddon::ExportTask.stub :active => [mock_addon_class]
       allow(controller).to receive(:t).with("addons.export_task.mock.selected").and_return("Export Selected to Mock")

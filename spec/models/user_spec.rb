@@ -141,7 +141,7 @@ describe User, :type => :model do
     user.add_mobile_login_event("a imei", "a mobile")
     user.add_mobile_login_event("b imei", "a mobile")
     user.add_mobile_login_event("a imei", "a mobile")
-    expect(Device.all.map(&:imei).sort()).to eq(["a imei", "b imei"])
+    expect(Device.all.map(&:imei).sort).to eq(["a imei", "b imei"])
   end
 
   it "should create devices as not blacklisted" do

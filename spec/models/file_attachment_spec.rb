@@ -51,12 +51,12 @@ describe "FileAttachment", :type => :model do
   describe '#resize' do
     before :each do
       @child = stub_model Child
-      @data = double()
+      @data = double
       @attachment = FileAttachment.new "test", "image/jpg", @data, @child
     end
 
     it 'should create and save new thumbnail' do
-      new_data = double()
+      new_data = double
       StringIO.stub :new => new_data
 
       expect(@child).to receive(:has_attachment?).with('test_160').and_return(false)
@@ -72,7 +72,7 @@ describe "FileAttachment", :type => :model do
     end
 
     it 'should return existing thumbnail' do
-      media = double()
+      media = double
       expect(@child).to receive(:has_attachment?).with('test_160').and_return(true)
       expect(@child).to receive(:media_for_key).with('test_160').and_return(media)
       expect(@attachment).not_to receive(:resized_blob)

@@ -169,7 +169,7 @@ describe Replication, :type => :model do
     end
 
     it 'should start replication' do
-      configuration = double()
+      configuration = double
       @rep.stub :build_configs => [configuration, configuration, configuration]
       @rep.stub :save_without_callbacks => nil
 
@@ -178,7 +178,7 @@ describe Replication, :type => :model do
     end
 
     it 'should stop replication and invalidate fetch config' do
-      configuration = double()
+      configuration = double
       @rep.stub :fetch_configs => [configuration, configuration, configuration]
       @rep.stub :save_without_callbacks => nil
 
@@ -313,7 +313,7 @@ describe Replication, :type => :model do
     end
 
     it 'should schedule reindexing every 5m' do
-      scheduler = double()
+      scheduler = double
       expect(scheduler).to receive(:every).with('5m').and_yield
 
       replication = build :replication

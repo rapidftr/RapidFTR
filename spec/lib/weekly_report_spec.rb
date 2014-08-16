@@ -49,7 +49,7 @@ describe WeeklyReport do
   end
 
   it "should schedule every monday" do
-    scheduler = double()
+    scheduler = double
     expect(scheduler).to receive(:cron).with("1 0 * * MON").and_return(true)
 
     WeeklyReport.schedule scheduler

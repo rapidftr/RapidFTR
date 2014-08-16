@@ -3,8 +3,8 @@ require 'spec_helper'
 describe UsersController, :type => :controller do
   before do
     fake_admin_login
-    fake_session = Session.new()
-    allow(fake_session).to receive(:admin?).with(no_args()).and_return(true)
+    fake_session = Session.new
+    allow(fake_session).to receive(:admin?).with(no_args).and_return(true)
     allow(Session).to receive(:get).and_return(fake_session)
   end
 
@@ -285,7 +285,7 @@ describe UsersController, :type => :controller do
   describe "GET change_password" do
     before :each do
       @user = User.new(:user_name => 'fakeuser')
-      @mock_change_form = double()
+      @mock_change_form = double
       fake_login @user
       @mock_params = { "mock" => "mock" }
       allow(Forms::ChangePasswordForm).to receive(:new).with(@mock_params).and_return(@mock_change_form)

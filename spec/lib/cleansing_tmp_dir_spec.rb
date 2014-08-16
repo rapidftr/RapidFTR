@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe CleansingTmpDir do
   it 'should cleanup every 30 minutes' do
-    scheduler = double()
-    expect(scheduler).to receive(:every).with("30m").and_yield()
+    scheduler = double
+    expect(scheduler).to receive(:every).with("30m").and_yield
 
     expect(CleansingTmpDir).to receive(:cleanup!).and_return(true)
     CleansingTmpDir.schedule scheduler

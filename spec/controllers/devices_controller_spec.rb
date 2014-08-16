@@ -29,7 +29,7 @@ describe DevicesController, :type => :controller do
   describe "POST update_blacklist" do
     it "should update the blacklist flag" do
       fake_login_as(Permission::DEVICES[:black_list])
-      device = double()
+      device = double
       expect(Device).to receive(:find_by_device_imei).with("123").and_call_original
       expect(Device).to receive(:by_imei).with(:key => "123").and_return([device])
       expect(device).to receive(:update_attributes).with({:blacklisted => true}).and_return(true)
@@ -39,7 +39,7 @@ describe DevicesController, :type => :controller do
 
     it "should return failure if blacklist fails" do
       fake_login_as(Permission::DEVICES[:black_list])
-      device = double()
+      device = double
       expect(Device).to receive(:find_by_device_imei).with("123").and_call_original
       expect(Device).to receive(:by_imei).with(:key => "123").and_return([device])
       expect(device).to receive(:update_attributes).with({:blacklisted => true}).and_return(false)
