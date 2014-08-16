@@ -96,7 +96,7 @@ Given /^a child record named "([^"]*)" exists with a audio file with the name "(
                       "disabled" => "false",
                       "role_ids" => ["ADMIN"])
   child = Child.new_with_user_name(user,{:name=>name})
-  child.audio = uploadable_audio("capybara_features/resources/#{filename}")
+  child.audio = uploadable_audio("features/resources/#{filename}")
   child.create!
 end
 

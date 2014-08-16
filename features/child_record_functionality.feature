@@ -157,7 +157,7 @@ Feature:
     And I fill in "Nationality" with "London"
     And I fill in "Birthplace" with "Haiti"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach a photo "features/resources/jorge.jpg"
     And I press "Save"
 
     Then I follow "Edit"
@@ -167,7 +167,7 @@ Feature:
     And I fill in "Nationality" with "Bombay"
     And I fill in "Birthplace" with "Zambia"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/jeff.png"
+    And I attach a photo "features/resources/jeff.png"
     And I press "Save"
 
     Then I should see "George Harrison"
@@ -181,7 +181,7 @@ Feature:
 
     Then I follow "Edit"
     And I click the "Photos and Audio" link
-    And I attach a photo "capybara_features/resources/textfile.txt"
+    And I attach a photo "features/resources/textfile.txt"
     And I press "Save"
     Then I should see "Please upload a valid photo file (jpg or png) for this child record"
 
@@ -233,13 +233,13 @@ Feature:
   Scenario: Child record must not display the edit and manage photos links
     Given the following children exist in the system:
       | name    | gender  | photo                                    |
-      | John    | Male    | "capybara_features/resources/jorge.jpg"  |
+      | John    | Male    | "features/resources/jorge.jpg"  |
 
     And I am on the child record page for "John"
     Then I should not see "Edit Photo"
     And I should not see "Manage Photo"
 
   Scenario: Seeing thumbnail when editing a child record
-    Given an existing child with name "John" and a photo from "capybara_features/resources/jorge.jpg"
+    Given an existing child with name "John" and a photo from "features/resources/jorge.jpg"
     When I am editing the child with name "John"
     Then I should see the thumbnail of "John"

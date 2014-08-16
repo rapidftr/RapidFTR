@@ -52,5 +52,5 @@ Feature: Test weather each child has a proper change log attached to it.
     When I follow "Edit"
     And I follow "Photos and Audio"
 #    And I wait for 5 seconds
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach a photo "features/resources/jorge.jpg"
     And I submit the form

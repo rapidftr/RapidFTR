@@ -16,7 +16,7 @@ Feature:
     And I fill in "Date of Birth (dd/mm/yyyy)" with "27"
     And I select "Male" from "Sex"
     And I fill in "Birthplace" with "Haiti"
-    And I attach a photo "capybara_features/resources/jorge.jpg"
+    And I attach a photo "features/resources/jorge.jpg"
     And the local date/time is "March 19 2010 13:05" and UTC time is "March 19 2010 13:05UTC"
     And I press "Save"
     And I follow "Change Log"
@@ -35,7 +35,7 @@ Feature:
     And I am on the children listing page
 
     When I follow "Edit"
-    And I attach a photo "capybara_features/resources/jeff.png"
+    And I attach a photo "features/resources/jeff.png"
     And I press "Save"
     And I follow "Change Log"
 
@@ -45,7 +45,7 @@ Feature:
 
     #These two steps were in the Webrat feature and I have not found a way to replicate in Capybara - Mark
     #When I follow photo with timestamp "2010-03-01T175933"
-    #Then I should see the photo corresponding to "capybara_features/resources/jeff.png"
+    #Then I should see the photo corresponding to "features/resources/jeff.png"
 
   @no_expire @javascript
   Scenario:  I log in as a different user, edit and view the record log
@@ -103,8 +103,8 @@ Feature:
     When I follow "Edit"
 
     Then I fill in "Name" with "George Harrison"
-    And I attach a photo "capybara_features/resources/jorge.jpg"
-    And I attach the file "capybara_features/resources/sample.mp3" to "Recorded Audio"
+    And I attach a photo "features/resources/jorge.jpg"
+    And I attach the file "features/resources/sample.mp3" to "Recorded Audio"
     And the date/time is "Oct 29 2010 14:12:15UTC"
     And I press "Save"
 
