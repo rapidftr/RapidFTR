@@ -197,10 +197,6 @@ Style/MethodCallParentheses:
 Style/MultilineBlockChain:
   Enabled: false
 
-# Offense count: 2
-Style/MultilineIfThen:
-  Enabled: false
-
 # Offense count: 4
 Style/NestedTernaryOperator:
   Enabled: false
