@@ -34,13 +34,13 @@ module ChildrenHelper
   end
 
   def flag_message
-    user = @child.histories.select{ |h| h["changes"]["flag"] }.first["user_name"]
+    user = @child.histories.select { |h| h["changes"]["flag"] }.first["user_name"]
     message = (@child.flag_message.blank? && "") || ": \"#{@child.flag_message}\""
     I18n.t("child.flagged_as_suspected")+" #{user}#{message}"
   end
 
   def flag_summary_for_child(child)
-    flag_history = child["histories"].select{ |h| h["changes"].keys.include?("flag") }.first
+    flag_history = child["histories"].select { |h| h["changes"].keys.include?("flag") }.first
     "<b>"+ I18n.t("child.flagged_by")+" </b>"+ flag_history["user_name"] +"<b> "+I18n.t("preposition.on_label")+"</b> " + current_user.localize_date(flag_history["datetime"]) +"<b> "+I18n.t("preposition.because")+"</b> "+ child["flag_message"]
   end
 

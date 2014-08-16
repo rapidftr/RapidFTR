@@ -224,7 +224,7 @@ end
 
 Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   actual_params   = CGI.parse(URI.parse(current_url).query)
-  expected_params = Hash[expected_pairs.rows_hash.map{ |k,v| [k,[v]] }]
+  expected_params = Hash[expected_pairs.rows_hash.map { |k,v| [k,[v]] }]
 
   if defined?(Spec::Rails::Matchers)
     expect(actual_params).to eq(expected_params)

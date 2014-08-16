@@ -475,7 +475,7 @@ describe ChildrenController, :type => :controller do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
       expect(Child.get(child.id)["histories"].size).to be 1
 
-      expect{ put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"}) }.to_not change{ Child.get(child.id)["histories"].size }
+      expect { put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"}) }.to_not change { Child.get(child.id)["histories"].size }
     end
 
     it "should allow a records ID to be specified to create a new record with a known id" do

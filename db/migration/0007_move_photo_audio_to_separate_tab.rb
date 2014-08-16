@@ -9,7 +9,7 @@ unless photos_and_audio_fs
                         })
   basic_identity_fs = FormSection.by_unique_id(:key => "basic_identity").first
 
-  media_fields = basic_identity_fs.fields.select{ |ff| ff.type == "photo_upload_box" || ff.type == "audio_upload_box" }
+  media_fields = basic_identity_fs.fields.select { |ff| ff.type == "photo_upload_box" || ff.type == "audio_upload_box" }
   media_fields.each do |ff|
     photos_and_audio_fs.fields << ff
     basic_identity_fs.fields.delete ff

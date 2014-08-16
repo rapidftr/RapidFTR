@@ -131,7 +131,7 @@ class Replication < CouchRest::Model::Base
 
   def self.couch_config
     settings = CouchSettings.instance
-    uri = settings.ssl_enabled_for_couch? ? settings.with_ssl{ settings.uri } : settings.uri
+    uri = settings.ssl_enabled_for_couch? ? settings.with_ssl { settings.uri } : settings.uri
     uri.user = nil
     uri.password = nil
     uri.path = '/'

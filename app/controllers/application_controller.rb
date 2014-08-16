@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clean_params(param)
-    param.reject{ |value| value.blank? }
+    param.reject { |value| value.blank? }
   end
 
   def encrypt_exported_files(results, zip_filename)

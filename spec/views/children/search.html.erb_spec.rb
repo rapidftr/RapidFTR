@@ -13,7 +13,7 @@ describe "children/search.html.erb", :type => :view do
       allow(controller).to receive(:current_user).and_return(@user)
       allow(view).to receive(:current_user).and_return(@user)
 
-      @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
+      @results = Array.new(4) { |i| random_child_summary("some_id_#{i}") }
       @results.stub :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [

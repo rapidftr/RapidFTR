@@ -17,7 +17,7 @@ end
 
 Then /^I should see "([^\"]*)" thumbnails$/ do |number|
   thumbnails = all(:css, '.thumbnail img')
-  expect(thumbnails.collect{ |element| element['src'] }.uniq.size).to eql number.to_i
+  expect(thumbnails.collect { |element| element['src'] }.uniq.size).to eql number.to_i
 end
 
 def check_link(response, child_name)
