@@ -13,7 +13,7 @@ end
 module CouchRest
   module Model
     class Base
-      alias :set_a_value :[]=
+      alias_method :set_a_value, :[]=
       def []=(key, value)
         prev_value = self[key]
         changed_attributes[key] = prev_value

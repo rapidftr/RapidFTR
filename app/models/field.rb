@@ -67,7 +67,7 @@ class Field
   def new?
     !@document_saved
   end
-  alias :new_record? :new?
+  alias_method :new_record?, :new?
 
   def form
     base_doc

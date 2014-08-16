@@ -108,11 +108,6 @@ Rails/Validation:
 Style/AccessorMethodName:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/Alias:
-  Enabled: false
-
 # Offense count: 10
 # Cop supports --auto-correct.
 Style/AlignArray:
