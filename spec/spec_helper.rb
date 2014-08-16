@@ -68,12 +68,12 @@ RSpec.configure do |config|
 
   config.before(:each) do |example|
     Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) unless
-      (example.metadata[:solr] || Sunspot.session.respond_to?(:original_session))
+      example.metadata[:solr] || Sunspot.session.respond_to?(:original_session)
   end
 
   config.after(:each) do |example|
     Sunspot.session = Sunspot.session.original_session unless
-      (example.metadata[:solr] || !Sunspot.session.respond_to?(:original_session))
+      example.metadata[:solr] || !Sunspot.session.respond_to?(:original_session)
   end
 
   config.before(:all) do

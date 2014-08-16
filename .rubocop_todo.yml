@@ -261,12 +261,6 @@ Style/Not:
 Style/NumericLiterals:
   MinDigits: 14
 
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: AllowSafeAssignment.
-Style/ParenthesesAroundCondition:
-  Enabled: false
-
 # Offense count: 17
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.

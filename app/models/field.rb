@@ -57,7 +57,7 @@ class Field
       self.base_language = 'en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    if (base_lang_display_name.nil? || base_lang_display_name.empty?)
+    if base_lang_display_name.nil? || base_lang_display_name.empty?
       errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
     end
   end
@@ -96,7 +96,7 @@ class Field
 
   def attributes= properties
     super properties
-    if (option_strings)
+    if option_strings
       @options = FieldOption.create_field_options(name, option_strings)
     end
   end
@@ -152,7 +152,7 @@ class Field
   end
 
   def validate_has_2_options
-    return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
+    return true unless type == RADIO_BUTTON || type == SELECT_BOX
     return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings == nil || option_strings.length < 2
     true
   end
@@ -165,7 +165,7 @@ class Field
 
   def validate_unique_name
     return unless form
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? { |field| !field.equal?(self) && field.name == name })
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if form.fields.any? { |field| !field.equal?(self) && field.name == name }
     other_form = FormSection.get_form_containing_field name
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
     true

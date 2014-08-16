@@ -52,7 +52,7 @@ class FieldsController < ApplicationController
     if (@field.errors.length == 0)
       flash[:notice] = t("fields.updated")
       message = {"status" => "ok"}
-      if (request.xhr?)
+      if request.xhr?
         render :json => message
       else
         render :template => "form_section/edit", :locals => @show_add_field

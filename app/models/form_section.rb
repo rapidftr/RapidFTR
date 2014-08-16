@@ -189,7 +189,7 @@ class FormSection < CouchRest::Model::Base
   def delete_field field_to_delete
     field = fields.find { |field| field.name == field_to_delete }
     raise I18n.t("errors.models.form_section.delete_field") if !field.editable?
-    if (field)
+    if field
       field_index = fields.index(field)
       fields.delete_at(field_index)
       save()

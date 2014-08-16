@@ -13,7 +13,7 @@ class Login
 
   def authenticate_user
     user = User.find_by_user_name(@user_name)
-    if (user and user.authenticate(@password))
+    if user and user.authenticate(@password)
       mobile_login_history = user.mobile_login_history.first
       imei = mobile_login_history.nil? ? "" : mobile_login_history['imei']
       session = user.verified ? Session.for_user(user, @imei) : ((imei == @imei) || (imei == "") ? Session.for_user(user, @imei) : nil)

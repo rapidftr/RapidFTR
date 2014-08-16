@@ -14,7 +14,7 @@ class FormSectionController < ApplicationController
     section_attributes.merge!(:form => form)
     form_section = FormSection.new_with_order section_attributes
     form_section.base_language = I18n.default_locale
-    if (form_section.valid?)
+    if form_section.valid?
       form_section.create
       flash[:notice] = t("form_section.messages.updated")
       redirect_to edit_form_section_path(form_section.unique_id)
@@ -36,7 +36,7 @@ class FormSectionController < ApplicationController
     authorize! :update, FormSection
     @form_section = FormSection.get_by_unique_id(params[:id])
     @form_section.properties = params[:form_section]
-    if (@form_section.valid?)
+    if @form_section.valid?
       @form_section.save!
       redirect_to edit_form_section_path(@form_section.unique_id)
     else

@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     authorize! :update, @user  if params[:user].except(:disabled).present?
     params[:verify] = !@user.verified?
 
-    if (@user.update_attributes(params[:user]))
+    if @user.update_attributes(params[:user])
       verify_children if params[:verify]
       if request.xhr?
         render :text => "OK"

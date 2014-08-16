@@ -171,7 +171,7 @@ class User < CouchRest::Model::Base
   def add_mobile_login_event imei, mobile_number
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
 
-    if (Device.all.none? { |device| device.imei == imei })
+    if Device.all.none? { |device| device.imei == imei }
       device = Device.new(:imei => imei, :blacklisted => false, :user_name => self.user_name)
       device.save!
     end

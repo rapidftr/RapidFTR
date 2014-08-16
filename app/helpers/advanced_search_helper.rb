@@ -10,7 +10,7 @@ module AdvancedSearchHelper
   REMOVE_LINK = "<a class=\"remove-criteria\">remove</a>"
 
   def empty_lines(fields)
-    if (@form_sections.size > fields.size)
+    if @form_sections.size > fields.size
       @form_sections.size - fields.size
     else
       0
