@@ -7,10 +7,10 @@ begin
     Cane::RakeTask.new(:cane) do |cane|
       cane.abc_max = 144
 
-      #TODO: clean up whitespaces and long lines of code
+      # TODO: clean up whitespaces and long lines of code
       cane.no_style = true
-      #cane.no_style = false
-      #cane.style_measure = 110 #max line length
+      # cane.no_style = false
+      # cane.style_measure = 110 #max line length
 
       cane.no_doc = true
 

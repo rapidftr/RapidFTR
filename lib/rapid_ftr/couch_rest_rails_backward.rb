@@ -1,6 +1,6 @@
 # CouchRestRails::Document provide this method, this is not longer support by CouchRest::Model::Base.
 # Seems the application use in several classes adding this method as a workaround.
-#require 'date'
+# require 'date'
 
 module RapidFTR
   module CouchRestRailsBackward

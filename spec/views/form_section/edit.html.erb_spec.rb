@@ -47,8 +47,8 @@ describe "form_section/edit.html.erb", :type => :view do
     fields = [{:option_strings_text => "1", :display_name => "Display Name"}]
     form_section = build :form_section, :fields => fields, :unique_id => "foo", :name => "Form Section"
     assign(:form_section, form_section)
-    #There is a test field.new? in the template,
-    #so correct thing is save the form section before render
+    # There is a test field.new? in the template,
+    # so correct thing is save the form section before render
     form_section.save
     render
 

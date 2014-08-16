@@ -14,7 +14,7 @@ describe Role, :type => :model do
   end
 
   it "should sanitize and check for permissions" do
-    role = Role.new(:name => "Name", :permissions => [""]) #Need empty array, can't use %w here.
+    role = Role.new(:name => "Name", :permissions => [""]) # Need empty array, can't use %w here.
     expect(role).not_to be_valid
     expect(role.errors[:permissions]).to eq(["Please select at least one permission"])
   end

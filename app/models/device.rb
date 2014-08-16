@@ -10,8 +10,8 @@ class Device < CouchRest::Model::Base
 
   before_save :set_appropriate_data_type
 
-  #Don't change the name to find_by_imei this will
-  #conflict with the corresponding Dynamic finder.
+  # Don't change the name to find_by_imei this will
+  # conflict with the corresponding Dynamic finder.
   def self.find_by_device_imei(imei)
     Device.by_imei(:key => imei)
   end

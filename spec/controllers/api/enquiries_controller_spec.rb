@@ -237,7 +237,7 @@ describe Api::EnquiriesController, :type => :controller do
       expect(enquiry_after_update['potential_matches'].size).to eq(2)
       expect(enquiry_after_update['potential_matches'].include?(child1.id)).to eq(true)
       expect(enquiry_after_update['potential_matches'].include?(child2.id)).to eq(true)
-      #enquiry_after_update['potential_matches'].size.should == [child2.id,child1.id]
+      # enquiry_after_update['potential_matches'].size.should == [child2.id,child1.id]
       expect(enquiry_after_update['criteria']).to eq({"name" => "aquiles", "age" => "10", "location" => "Kampala", "sex" => "male"})
     end
 

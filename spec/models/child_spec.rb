@@ -516,7 +516,7 @@ describe Child, :type => :model do
         existing_photo = @child.primary_photo
         @child.rotate_photo(180)
         @child.save
-        #TODO: should be a better way to check rotation other than stubbing Minimagic ?
+        # TODO: should be a better way to check rotation other than stubbing Minimagic ?
         expect(@child.primary_photo).not_to match_photo existing_photo
       end
 
@@ -804,7 +804,7 @@ describe Child, :type => :model do
         @child.photo = uploadable_photo_jeff
         @child.save
         changes = @child['histories'].first['changes']
-        #TODO: this should be instead child.photo_history.first.to or something like that
+        # TODO: this should be instead child.photo_history.first.to or something like that
         expect(changes['photo_keys']['added'].first).to match(/photo.*?-2010-02-20T120424/)
       end
 
@@ -892,7 +892,7 @@ describe Child, :type => :model do
         @child.photo = uploadable_photo_jeff
         @child.save
         changes = @child['histories'].first['changes']
-        #TODO: this should be instead child.photo_history.first.to or something like that
+        # TODO: this should be instead child.photo_history.first.to or something like that
         expect(changes['photo_keys']['added'].first).to match(/photo.*?-2010-02-20T120424/)
       end
 

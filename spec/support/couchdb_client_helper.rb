@@ -21,7 +21,7 @@ module CouchdbClientHelper
   end
 
   def reset_couchdb!
-    #This work if we keep in the suffix the same as the RAILS_ENV.
+    # This work if we keep in the suffix the same as the RAILS_ENV.
     COUCHDB_SERVER.databases.select { |db| db =~ /#{ENV["RAILS_ENV"]}$/ }.each do |db|
       COUCHDB_SERVER.database(db).recreate! rescue nil
       # Reset the Design Cache

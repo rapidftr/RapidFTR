@@ -63,7 +63,7 @@ class Api::ChildrenController < Api::ApiController
 
   def sanitize_params
     super :child
-    params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) #histories might come as string from the mobile client.
+    params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) # histories might come as string from the mobile client.
   rescue JSON::ParserError
     render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
 

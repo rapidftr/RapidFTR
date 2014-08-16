@@ -16,8 +16,8 @@ And /^I set the user language to "(.*)"-"(.*)"$/ do |language, locale|
   select(language, :from => 'user_locale')
   click_button(I18n.t('buttons.save'))
   I18n.locale = locale
-  #I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
-  #I18n.fallbacks.map(I18n.locale => I18n.default_locale)
+  # I18n.backend.class.send(:include, I18n::Backend::Fallbacks)
+  # I18n.fallbacks.map(I18n.locale => I18n.default_locale)
 end
 
 Then /^I should see "(.*?)" translated$/ do |text|

@@ -45,7 +45,7 @@ describe "children/search.html.erb", :type => :view do
       render
 
       fields = Hpricot(rendered).search(".summary_panel")
-      expect(fields.search(".summary_item").size).to eq(@highlighted_fields.size + 2) #including the registered by and last_updated_by keys
+      expect(fields.search(".summary_item").size).to eq(@highlighted_fields.size + 2) # including the registered by and last_updated_by keys
 
       expect(fields.search(".key").first.inner_text).to eq("Field Display 2:")
       expect(fields.search(".value").first.inner_text).to eq("field 2")

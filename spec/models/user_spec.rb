@@ -80,7 +80,7 @@ describe User, :type => :model do
   it "doesn't use id for equality" do
     user = create :user
     reloaded_user = User.get(user.id)
-    #Now couchrest_model use the id for equality.
+    # Now couchrest_model use the id for equality.
     expect(reloaded_user).to eq(user)
     expect(reloaded_user).to eql(user)
     expect(reloaded_user).not_to equal(user)

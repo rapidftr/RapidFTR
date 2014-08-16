@@ -1,6 +1,6 @@
-#require "spec_helper"
+# require "spec_helper"
 #
-#describe "SearchService" do
+# describe "SearchService" do
 #
 #  before :each do
 #    Sunspot.remove_all(Child)
@@ -128,4 +128,4 @@
 #    Child.create(:name => "some name")
 #  end
 #
-#end
+# end
