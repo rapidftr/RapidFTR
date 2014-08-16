@@ -30,10 +30,10 @@ class Replication < CouchRest::Model::Base
   validate :validate_remote_app_url
   validate :save_remote_couch_config
 
-  before_save   :normalize_remote_app_url
-  before_save   :mark_for_reindexing
+  before_save :normalize_remote_app_url
+  before_save :mark_for_reindexing
 
-  after_save    :start_replication
+  after_save :start_replication
   before_destroy :stop_replication
 
   def start_replication

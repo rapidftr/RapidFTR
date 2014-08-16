@@ -7,7 +7,7 @@ module Forms
     include ActiveModel::Validations::Callbacks
 
     attr_accessor :ability, :params
-    attr_reader   :criteria, :system_criteria, :query, :results
+    attr_reader :criteria, :system_criteria, :query, :results
 
     before_validation :parse_params
     validate :has_criteria?
@@ -47,9 +47,9 @@ module Forms
       search.fulltext_by [:created_by, :created_by_full_name], @system_criteria[:created_by_value] if @system_criteria[:created_by_value].present?
       search.fulltext_by [:last_updated_by, :last_updated_by_full_name], @system_criteria[:updated_by_value] if @system_criteria[:updated_by_value].present?
 
-      search.less_than    :created_at, @system_criteria[:created_at_before_value] if @system_criteria[:created_at_before_value].present?
+      search.less_than :created_at, @system_criteria[:created_at_before_value] if @system_criteria[:created_at_before_value].present?
       search.greater_than :created_at, @system_criteria[:created_at_after_value] if @system_criteria[:created_at_after_value].present?
-      search.less_than    :last_updated_at, @system_criteria[:updated_at_before_value] if @system_criteria[:updated_at_before_value].present?
+      search.less_than :last_updated_at, @system_criteria[:updated_at_before_value] if @system_criteria[:updated_at_before_value].present?
       search.greater_than :last_updated_at, @system_criteria[:updated_at_after_value] if @system_criteria[:updated_at_after_value].present?
 
       search.fulltext_by (Form.find_by_name(Child::FORM_NAME).highlighted_fields.collect(&:name)) + [:unique_identifier, :short_id], @query if @query.present?

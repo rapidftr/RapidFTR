@@ -107,7 +107,7 @@ describe HighlightFieldsController, :type => :controller do
   end
 
   describe "remove" do
-    it  "should unhighlight a field"  do
+    it "should unhighlight a field"  do
       field1 = Field.new(:name => "newfield1", :display_name => "new_field1_display", :highlight_information => { :order => "1", :highlighted => true })
       form_section = FormSection.new(:name => "another form section", :unique_id => "unique_form_section1", :fields => [field1])
       form = double("Form", id: :id)

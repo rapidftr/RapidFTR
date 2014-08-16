@@ -9,7 +9,7 @@ describe PasswordRecoveryRequest, :type => :model do
       PasswordRecoveryRequest.create! :user_name => "goodduck", :hidden => true
 
       expect(PasswordRecoveryRequest.to_display.map(&:user_name)).to include("evilduck")
-      expect(PasswordRecoveryRequest.to_display.map(&:user_name)).not_to   include("goodduck")
+      expect(PasswordRecoveryRequest.to_display.map(&:user_name)).not_to include("goodduck")
     end
 
     it "should raise error if username is empty" do

@@ -332,11 +332,6 @@ Style/Semicolon:
 Style/SignalException:
   Enabled: false
 
-# Offense count: 8
-# Cop supports --auto-correct.
-Style/SingleSpaceBeforeFirstArg:
-  Enabled: false
-
 # Offense count: 165
 # Cop supports --auto-correct.
 Style/SpaceAfterComma:
