@@ -341,9 +341,7 @@ describe Replication, :type => :model do
 
   def wait_for_doc(db, prop, value, present = true, seconds = 60)
     Timeout.timeout(seconds) do
-      until present == all_docs(db).any? { |doc| doc[prop] == value }
-        sleep 0.1
-      end
+      sleep 0.1 until present == all_docs(db).any? { |doc| doc[prop] == value }
     end
   end
 
