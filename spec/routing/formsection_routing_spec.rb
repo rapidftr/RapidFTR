@@ -4,11 +4,11 @@ describe 'Form Section routing', :type => :routing do
 
   it 'routes /form_section/foo/fields correctly' do
     expect({:get => '/form_section/foo/fields'}).to route_to(
-      :controller => 'fields', :action => 'index', :form_section_id => 'foo' )
+      :controller => 'fields', :action => 'index', :form_section_id => 'foo')
   end
 
   it 'has route to post a new field' do
-    expect({:post => '/form_section/foo/fields' }).to route_to(:controller => 'fields', :action => 'create', :form_section_id => 'foo' )
+    expect({:post => '/form_section/foo/fields' }).to route_to(:controller => 'fields', :action => 'create', :form_section_id => 'foo')
     expect(form_section_fields_path('some_formsection')).to eq('/form_section/some_formsection/fields')
   end
 

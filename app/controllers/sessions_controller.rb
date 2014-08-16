@@ -99,7 +99,7 @@ class SessionsController < ApplicationController
       :language => I18n.default_locale,
       :verified => user.verified?
     }
-    render( options.merge( :json => json ) )
+    render(options.merge(:json => json))
   end
 
 end

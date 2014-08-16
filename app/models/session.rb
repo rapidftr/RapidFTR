@@ -10,7 +10,7 @@ class Session < CouchRest::Model::Base
     view :by_user_name
   end
 
-  def self.for_user( user, imei)
+  def self.for_user(user, imei)
     Session.new(
       :user_name => user.user_name,
       :imei => imei

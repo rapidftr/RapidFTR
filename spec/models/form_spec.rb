@@ -10,8 +10,8 @@ describe Form, :type => :model do
                               Field.new(:name => "h2", highlighted: true, :highlight_information => high_attr[1]),
                               Field.new(:name => "h3", highlighted: true, :highlight_information => high_attr[2]) ]
       field = Field.new :name => "regular_field"
-      form_section1 = FormSection.new( :name => "Highlight Form1", :fields => [@highlighted_fields[0], @highlighted_fields[2], field] )
-      form_section2 = FormSection.new( :name => "Highlight Form2", :fields => [@highlighted_fields[1]] )
+      form_section1 = FormSection.new(:name => "Highlight Form1", :fields => [@highlighted_fields[0], @highlighted_fields[2], field])
+      form_section2 = FormSection.new(:name => "Highlight Form2", :fields => [@highlighted_fields[1]])
       @form = build :form
       @form.sections = [form_section1, form_section2]
     end

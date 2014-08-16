@@ -30,7 +30,7 @@ class ErrorResponse < StandardError
     logger.fatal("#{message}\n\n")
   end
 
-  def initialize( status_code, message )
+  def initialize(status_code, message)
     @status_code = status_code
     super(I18n.t(message))
   end

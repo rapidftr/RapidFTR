@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-def inject_export_generator( fake_export_generator, child_data )
-  allow(ExportGenerator).to receive(:new).with(child_data).and_return( fake_export_generator )
+def inject_export_generator(fake_export_generator, child_data)
+  allow(ExportGenerator).to receive(:new).with(child_data).and_return(fake_export_generator)
 end
 
 def stub_out_export_generator child_data = []
-  inject_export_generator( stub_export_generator = double(ExportGenerator) , child_data)
+  inject_export_generator(stub_export_generator = double(ExportGenerator) , child_data)
   allow(stub_export_generator).to receive(:child_photos).and_return('')
   stub_export_generator
 end
 
 def stub_out_child_get(mock_child = double(Child))
-  allow(Child).to receive(:get).and_return( mock_child )
+  allow(Child).to receive(:get).and_return(mock_child)
   mock_child
 end
 

@@ -35,7 +35,7 @@ describe ChildrenController, :type => :routing do
     end
 
     it 'handles a multi-child export request' do
-      expect({ :post => 'advanced_search/export_data' }).to route_to( :controller => 'advanced_search', :action => 'export_data' )
+      expect({ :post => 'advanced_search/export_data' }).to route_to(:controller => 'advanced_search', :action => 'export_data')
     end
   end
 end

@@ -1,6 +1,6 @@
 module CustomMatchers
   class AttachmentResponse
-    def initialize(file, disposition = 'attachment', filename = nil )
+    def initialize(file, disposition = 'attachment', filename = nil)
       @data = file.data
       @content_type = file.content_type
       @disposition = disposition

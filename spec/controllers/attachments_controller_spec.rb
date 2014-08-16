@@ -10,8 +10,8 @@ describe AttachmentsController, :type => :controller do
   end
 
   it "should have restful route for GET" do
-    assert_routing( {:method => 'get', :path => '/children/1/attachments/3'},
-                    {:controller => "attachments", :action => "show", :child_id => "1", :id => "3"})
+    assert_routing({:method => 'get', :path => '/children/1/attachments/3'},
+                   {:controller => "attachments", :action => "show", :child_id => "1", :id => "3"})
   end
 
   it "should return correct response corresponding to created photo" do

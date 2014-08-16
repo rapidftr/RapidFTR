@@ -22,19 +22,19 @@ describe ExportGenerator do
                                            '_id' => '4-153213', 'name' => 'Mary', 'unique_identifier' => "yyyx",
                                            'photo_url' => 'http://testmachine:3000/some-photo-path/2',
                                            'audio_url' => 'http://testmachine:3000/some-audio-path/2',
-                                           'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
+                                           'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2')
         @child2.create_unique_id
 
         @child3 = Child.new_with_user_name(@user,
                                            '_id' => '5-188888', 'name' => 'Jane', 'unique_identifier' => "yxyy",
                                            'photo_url' => 'http://testmachine:3000/some-photo-path/3',
                                            'audio_url' => 'http://testmachine:3000/some-audio-path/3',
-                                           'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2' )
+                                           'current_photo_key' => "photo-some-id-2", 'some_audio' => 'audio-some-id-2')
         @child3.create_unique_id
       end
 
       subject do
-        ExportGenerator.new( [@child1, @child2, @child3]).to_csv
+        ExportGenerator.new([@child1, @child2, @child3]).to_csv
       end
 
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
@@ -106,9 +106,9 @@ describe ExportGenerator do
           build(:check_boxes_field, name: 'multi')
         ]
         ExportGenerator.new([
-          Child.new( 'multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy" ),
-          Child.new( 'multi' => nil, 'unique_identifier' => "xxxy" ),
-          Child.new( 'multi' => ["Cats", "Fish"], 'unique_identifier' => "yyyx" )
+          Child.new('multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy"),
+          Child.new('multi' => nil, 'unique_identifier' => "xxxy"),
+          Child.new('multi' => ["Cats", "Fish"], 'unique_identifier' => "yyyx")
         ]).to_csv
       end
 
@@ -122,8 +122,8 @@ describe ExportGenerator do
 
     describe "for just one record" do
       subject do
-        ExportGenerator.new( [
-          Child.new( 'name' => 'Mary', 'unique_identifier' => "yyyx" )
+        ExportGenerator.new([
+          Child.new('name' => 'Mary', 'unique_identifier' => "yyyx")
         ]).to_csv
       end
 

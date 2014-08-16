@@ -112,7 +112,7 @@ Given /^I am editing an existing child record$/ do
 end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
-  child = Child.new( :name => name, :birthplace => 'unknown', :created_by => 'mary')
+  child = Child.new(:name => name, :birthplace => 'unknown', :created_by => 'mary')
   child.photo = uploadable_photo(photo_file_path)
   child.create
 end

@@ -23,8 +23,8 @@ class ChildMediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
-    send_data( @attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type )
+    redirect_to(:controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
+    send_data(@attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type)
   end
 
   def manage_photos

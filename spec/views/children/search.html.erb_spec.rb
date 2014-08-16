@@ -17,8 +17,8 @@ describe "children/search.html.erb", :type => :view do
       @results.stub :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [
-        Field.new(:name => "field_2", :display_name => "field display 2", :visible => true ),
-        Field.new(:name => "field_4", :display_name => "field display 4", :visible => true ) ]
+        Field.new(:name => "field_2", :display_name => "field display 2", :visible => true),
+        Field.new(:name => "field_4", :display_name => "field display 4", :visible => true) ]
       allow(Form).to receive(:find_by_name).and_return(double("Form", :sorted_highlighted_fields => @highlighted_fields))
       assign(:current_user, @user)
       assign(:results, @results)

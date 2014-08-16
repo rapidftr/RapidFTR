@@ -72,7 +72,7 @@ describe "Child record field view model", :type => :model do
     end
 
     it "should validate unique within form" do
-      form = FormSection.new(:fields => [Field.new(:name => "other", :display_name => "other")] )
+      form = FormSection.new(:fields => [Field.new(:name => "other", :display_name => "other")])
       field = Field.new(:display_name => "other", :name => "other")
       form.fields << field
 
@@ -102,7 +102,7 @@ describe "Child record field view model", :type => :model do
     end
 
     it "should validate unique within other forms" do
-      other_form = FormSection.new(:name => "test form", :fields => [Field.new(:name => "other_test", :display_name => "other test")] )
+      other_form = FormSection.new(:name => "test form", :fields => [Field.new(:name => "other_test", :display_name => "other test")])
       other_form.save!
 
       form = FormSection.new
