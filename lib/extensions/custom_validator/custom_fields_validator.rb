@@ -33,6 +33,7 @@ class CustomNumericFieldsValidator < CustomFieldsValidator
   def is_not_valid value
     !value.is_number?
   end
+
   def validation_message_for field
     "#{field.display_name} must be a valid number"
   end
@@ -42,6 +43,7 @@ class CustomTextFieldsValidator < CustomFieldsValidator
   def is_not_valid value
     value.length > 200
   end
+
   def validation_message_for field
     "#{field.display_name} cannot be more than 200 characters long"
   end
@@ -52,6 +54,7 @@ class CustomTextAreasValidator < CustomFieldsValidator
   def is_not_valid value
     value.length > MAX_LENGTH
   end
+
   def validation_message_for field
     "#{field.display_name} cannot be more than #{MAX_LENGTH} characters long"
   end
@@ -67,6 +70,7 @@ class DateFieldsValidator < CustomFieldsValidator
       true
     end
   end
+
   def validation_message_for field
     "#{field.display_name} must follow this format: 4 Feb 2010"
   end

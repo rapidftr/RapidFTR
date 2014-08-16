@@ -140,6 +140,7 @@ class UsersController < ApplicationController
       child.save
     end
   end
+
   def load_user
     @user = User.get(params[:id])
     if @user.nil?
