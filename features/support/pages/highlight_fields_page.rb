@@ -14,7 +14,4 @@ class HighlightFieldsPage
   def remove_field_with_name(field_name)
     @session.find('//td', :text => field_name).find('..').click_link('remove')
   end
-
-  private
-
 end

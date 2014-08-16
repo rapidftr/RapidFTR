@@ -1,10 +1,10 @@
 module UploadableFiles
 
-  def uploadable_photo( photo_path = "features/resources/jorge.jpg" )
+  def uploadable_photo(photo_path = "features/resources/jorge.jpg")
     photo = File.new(photo_path)
 
     def photo.content_type
-      "image/#{File.extname( self.path ).gsub( /^\./, '' ).downcase}"
+      "image/#{File.extname(self.path).gsub(/^\./, '').downcase}"
     end
 
     def photo.size

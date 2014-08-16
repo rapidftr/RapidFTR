@@ -93,7 +93,7 @@ class User < CouchRest::Model::Base
 
   validates_presence_of :full_name, :message => I18n.t("errors.models.user.full_name")
   validates_presence_of :password_confirmation, :message => I18n.t("errors.models.user.password_confirmation"), :if => :password_required?
-  validates_presence_of :role_ids, :message => I18n.t("errors.models.user.role_ids"), :if => Proc.new {|user| user.verified}
+  validates_presence_of :role_ids, :message => I18n.t("errors.models.user.role_ids"), :if => proc { |user| user.verified }
   validates_presence_of :organisation, :message => I18n.t("errors.models.user.organisation")
 
   validates_format_of :user_name, :with => /\A[^ ]+\z/, :message => I18n.t("errors.models.user.user_name")
@@ -104,16 +104,16 @@ class User < CouchRest::Model::Base
   validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?,
                                        :message => I18n.t("errors.models.user.password_mismatch")
 
-  #FIXME 409s randomly...destroying user records before test as a temp
+  # FIXME 409s randomly...destroying user records before test as a temp
   validate :is_user_name_unique
 
   before_save :generate_id
 
-  #In order to track changes on attributes declared as attr_accessor and
-  #trigger the callbacks we need to use attribute_will_change! method.
-  #check lib/couchrest/model/extended_attachments.rb in source code.
-  #So, override the method for password in order to track changes.
-  def password= value
+  # In order to track changes on attributes declared as attr_accessor and
+  # trigger the callbacks we need to use attribute_will_change! method.
+  # check lib/couchrest/model/extended_attachments.rb in source code.
+  # So, override the method for password in order to track changes.
+  def password=(value)
     attribute_will_change!("password") if use_dirty? && @password != value
     @password = value
   end
@@ -168,10 +168,10 @@ class User < CouchRest::Model::Base
     roles.compact.collect(&:permissions).flatten
   end
 
-  def add_mobile_login_event imei, mobile_number
+  def add_mobile_login_event(imei, mobile_number)
     self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
 
-    if (Device.all.none? { |device| device.imei == imei })
+    if Device.all.none? { |device| device.imei == imei }
       device = Device.new(:imei => imei, :blacklisted => false, :user_name => self.user_name)
       device.save!
     end
@@ -181,9 +181,9 @@ class User < CouchRest::Model::Base
     Device.all.select { |device| device.user_name == self.user_name }
   end
 
-  def devices= device_hashes
+  def devices=(device_hashes)
     all_devices = Device.all
-    #attr_accessor devices field change.
+    # attr_accessor devices field change.
     attribute_will_change!("devices")
     @devices = device_hashes.map do |device_hash|
       device = all_devices.detect { |device| device.imei == device_hash["imei"] }

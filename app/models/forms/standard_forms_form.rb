@@ -25,7 +25,7 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.build form, sections
+      def self.build(form, sections)
         id = form.name.downcase
         name = form.name
         existing_form = Form.by_name.key(form.name).first
@@ -46,10 +46,10 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.build section, existing_form
+      def self.build(section, existing_form)
         id = section.name
         name = section.name
-        existing_section = FormSection.all.all.find {|fs| !existing_form.nil? && fs.form == existing_form && fs.name == section.name }
+        existing_section = FormSection.all.all.find { |fs| !existing_form.nil? && fs.form == existing_form && fs.name == section.name }
         disabled = !existing_section.nil?
         data_fields = []
         section.fields.each do |field|
@@ -67,7 +67,7 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.build field, existing_section
+      def self.build(field, existing_section)
         id = field.name
         name = field.display_name
         disabled = existing_section.nil? ? false : existing_section.fields.collect(&:name).include?(field.name)

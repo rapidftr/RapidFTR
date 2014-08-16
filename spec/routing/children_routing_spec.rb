@@ -19,15 +19,15 @@ describe ChildrenController, :type => :routing do
     end
 
     it "recognizes and generates #create" do
-      expect({ :post => "/children" }).to route_to(:controller => "children", :action => "create") 
+      expect({ :post => "/children" }).to route_to(:controller => "children", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      expect({ :put => "/children/1" }).to route_to(:controller => "children", :action => "update", :id => "1") 
+      expect({ :put => "/children/1" }).to route_to(:controller => "children", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      expect({ :delete => "/children/1" }).to route_to(:controller => "children", :action => "destroy", :id => "1") 
+      expect({ :delete => "/children/1" }).to route_to(:controller => "children", :action => "destroy", :id => "1")
     end
 
     it "recognizes and generates #search" do
@@ -35,7 +35,7 @@ describe ChildrenController, :type => :routing do
     end
 
     it 'handles a multi-child export request' do
-      expect({ :post => 'advanced_search/export_data' }).to route_to( :controller => 'advanced_search', :action => 'export_data' )
+      expect({ :post => 'advanced_search/export_data' }).to route_to(:controller => 'advanced_search', :action => 'export_data')
     end
   end
 end

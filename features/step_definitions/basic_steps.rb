@@ -17,29 +17,29 @@ When /^I attach the following photos:$/ do |table|
 end
 
 Given /^no forms exist in the system$/ do
-  FormSection.all.each {|u| u.destroy }
-  Form.all.each {|f| f.destroy }
+  FormSection.all.each { |u| u.destroy }
+  Form.all.each { |f| f.destroy }
 end
 
 Given /^the following forms exist in the system:$/ do |forms_table|
-  Form.all.each {|u| u.destroy }
+  Form.all.each { |u| u.destroy }
 
   forms_table.hashes.each do |form_hash|
-    form_hash.reverse_merge!('unique_id'=> form_hash['name'].gsub(/\s/, '_').downcase)
+    form_hash.reverse_merge!('unique_id' => form_hash['name'].gsub(/\s/, '_').downcase)
     form = Form.new(form_hash)
     form.save!
   end
 end
 
 Given /^the following form sections exist in the system on the "(.*)" form:$/ do |form_name, form_sections_table|
-  FormSection.all.each {|u| u.destroy }
-  Form.all.each {|f| f.destroy }
+  FormSection.all.each { |u| u.destroy }
+  Form.all.each { |f| f.destroy }
 
   form = Form.create(name: form_name)
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
-      'unique_id'=> form_section_hash['name'].gsub(/\s/, '_').downcase,
-      'fields'=> Array.new,
+      'unique_id' => form_section_hash['name'].gsub(/\s/, '_').downcase,
+      'fields' => Array.new,
       'form' => form
     )
 
@@ -62,7 +62,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
   table.hashes.each do |field_hash|
     field_hash.reverse_merge!(
       'visible' => true,
-      'type'=> Field::TEXT_FIELD
+      'type' => Field::TEXT_FIELD
     )
     form_section.fields.push Field.new(field_hash)
   end
@@ -95,7 +95,7 @@ Given /^a child record named "([^"]*)" exists with a audio file with the name "(
                       "email" => "rapidftr@rapidftr.com",
                       "disabled" => "false",
                       "role_ids" => ["ADMIN"])
-  child = Child.new_with_user_name(user,{:name=>name})
+  child = Child.new_with_user_name(user, {:name => name})
   child.audio = uploadable_audio("features/resources/#{filename}")
   child.create!
 end
@@ -108,18 +108,18 @@ Given /^I am editing an existing child record$/ do
   child['unique_identifier'] = 'UNIQUE_IDENTIFIER'
   raise 'Failed to save a valid child record' unless child.save
 
-  visit children_path+"/#{child.id}/edit"
+  visit children_path + "/#{child.id}/edit"
 end
 
 Given /^an existing child with name "([^\"]*)" and a photo from "([^\"]*)"$/ do |name, photo_file_path|
-  child = Child.new( :name => name, :birthplace => 'unknown', :created_by => 'mary')
+  child = Child.new(:name => name, :birthplace => 'unknown', :created_by => 'mary')
   child.photo = uploadable_photo(photo_file_path)
   child.create
 end
 
 When /^I am editing the child with name "([^\"]*)"$/ do |name|
   child = find_child_by_name name
-  visit children_path+"/#{child.id}/edit"
+  visit children_path + "/#{child.id}/edit"
 end
 
 When /^I wait for (\d+) seconds$/ do |seconds|
@@ -183,7 +183,7 @@ When /^I unflag "([^\"]*)" with the following reason:$/ do |name, reason|
 end
 
 Then /^the (view|edit) record page should show the record is flagged$/ do |page_type|
-  path = children_path+"/#{Child.first.id}"
+  path = children_path + "/#{Child.first.id}"
   (page_type == 'edit') ? visit(path + '/edit') : visit(path)
   expect(page).to have_content('Flagged as suspect record by')
 end
@@ -197,7 +197,7 @@ Then /^the child listing page filtered by flag should show the following childre
 end
 
 When /^the record history should log "([^\"]*)"$/ do |field|
-  visit(children_path+"/#{Child.first.id}/history")
+  visit(children_path + "/#{Child.first.id}/history")
   expect(page).to have_content(field)
 end
 
@@ -285,6 +285,6 @@ private
 
 def click_flag_as_suspect_record_link_for(name)
   child = find_child_by_name name
-  visit children_path+"/#{child.id}"
+  visit children_path + "/#{child.id}"
   find(:css, '.btn_flag').click
 end

@@ -14,7 +14,7 @@ FactoryGirl.define do
     imei "123456789"
   end
 
-  factory :child, :traits => [ :model ] do
+  factory :child, :traits => [:model] do
     unique_identifier { counter.to_s }
     name { "Test Child #{counter}" }
     created_by { "test_user" }
@@ -22,7 +22,7 @@ FactoryGirl.define do
     initialize_with { new(attributes) }
   end
 
-  factory :replication, :traits => [ :model ] do
+  factory :replication, :traits => [:model] do
     description 'Sample Replication'
     remote_app_url 'app:1234'
     username 'test_user'
@@ -48,7 +48,7 @@ FactoryGirl.define do
     new_password_confirmation "confirm_new_password"
   end
 
-  factory :user, :traits => [ :model ] do
+  factory :user, :traits => [:model] do
     user_name { "user_name_#{counter}" }
     full_name 'full name'
     password 'password'
@@ -60,17 +60,17 @@ FactoryGirl.define do
     role_ids ['random_role_id']
 
     factory :field_worker_user do
-      role_ids { [ FactoryGirl.create(:field_worker_role).id ] }
+      role_ids { [FactoryGirl.create(:field_worker_role).id] }
     end
     factory :field_admin_user do
-      role_ids { [ FactoryGirl.create(:field_admin_role).id ] }
+      role_ids { [FactoryGirl.create(:field_admin_role).id] }
     end
     factory :super_user do
-      role_ids { [ FactoryGirl.create(:super_role).id ] }
+      role_ids { [FactoryGirl.create(:super_role).id] }
     end
   end
 
-  factory :role, :traits => [ :model ] do
+  factory :role, :traits => [:model] do
     name { "test_role_#{counter}" }
     description "test description"
     permissions { Permission.all_permissions }
@@ -86,7 +86,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :report, :traits => [ :model ] do
+  factory :report, :traits => [:model] do
     ignore do
       filename "test_report.csv"
       content_type "text/csv"
@@ -101,7 +101,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :form_section, :traits => [ :model ] do
+  factory :form_section, :traits => [:model] do
     unique_id { "form_#{counter}" }
     name_all { "Form #{counter}" }
     description_all { "This is Form Section #{counter}" }

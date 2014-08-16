@@ -12,11 +12,11 @@ describe SessionsController, :type => :routing do
     end
 
     it "recognizes and generates #create" do
-      expect({ :post => "/sessions" }).to route_to(:controller => "sessions", :action => "create") 
+      expect({ :post => "/sessions" }).to route_to(:controller => "sessions", :action => "create")
     end
 
     it "recognizes and generates #destroy" do
-      expect({ :delete => "/sessions/1" }).to route_to(:controller => "sessions", :action => "destroy", :id => "1") 
+      expect({ :delete => "/sessions/1" }).to route_to(:controller => "sessions", :action => "destroy", :id => "1")
     end
 
     it "recognizes and generates #active" do

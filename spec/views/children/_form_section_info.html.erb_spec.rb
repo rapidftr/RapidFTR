@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "children/_form_section_info.html.erb", :type => :view do
-  before { FormSection.all.each &:destroy }
+  before { FormSection.all.each(&:destroy) }
 
   it "should show form section description and help text" do
     form_section = FormSection.new_with_order({:new => "Basic Form",

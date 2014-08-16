@@ -10,7 +10,7 @@ module AdvancedSearchHelper
   REMOVE_LINK = "<a class=\"remove-criteria\">remove</a>"
 
   def empty_lines(fields)
-    if (@form_sections.size > fields.size )
+    if @form_sections.size > fields.size
       @form_sections.size - fields.size
     else
       0
@@ -18,7 +18,7 @@ module AdvancedSearchHelper
   end
 
   def generate_html(criteria, all_fields)
-    field = all_fields.find{ |field| field.name == criteria[:field] }
+    field = all_fields.find { |field| field.name == criteria[:field] }
     return "" unless field.present?
 
     html = criteria[:index].to_i > 0 ? AND_OR.gsub("#AND_CHECKED", criteria[:join] == "AND" ?  "checked=''" : "").gsub("#OR_CHECKED", criteria[:join] == "OR" ?  "checked=''" : "") : ""
@@ -33,7 +33,7 @@ module AdvancedSearchHelper
 
   def select_box_criteria(criteria, field)
     html = %{<span class="criteria-values"/><select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">}
-    field.option_strings.each{|option| html += "<option #{criteria[:value] == option ? "selected=\"selected\"" : ""} value=\"#{option}\">#{option}</option>"}
+    field.option_strings.each { |option| html += "<option #{criteria[:value] == option ? "selected=\"selected\"" : ""} value=\"#{option}\">#{option}</option>" }
     html += "</select>"
   end
 

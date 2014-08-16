@@ -41,7 +41,7 @@ class Child < CouchRest::Model::Base
 
   FORM_NAME = "Children"
 
-  def initialize *args
+  def initialize(*args)
     self['photo_keys'] ||= []
     arguments = args.first
 
@@ -51,7 +51,7 @@ class Child < CouchRest::Model::Base
     end
 
     self['histories'] = []
-    super *args
+    super(*args)
   end
 
   def self.new_with_user_name(user, fields = {})
@@ -77,7 +77,7 @@ class Child < CouchRest::Model::Base
     "#{field}_sort".to_sym
   end
 
-  @set_up_solr_fields = Proc.new {
+  @set_up_solr_fields = proc {
     text_fields = Child.build_text_fields_for_solar
     date_fields = Child.build_date_fields_for_solar
 
@@ -96,12 +96,12 @@ class Child < CouchRest::Model::Base
     end
 
     boolean :duplicate
-    boolean(:active) {|c| !c.duplicate && !c.reunited}
+    boolean(:active) { |c| !c.duplicate && !c.reunited }
     boolean :reunited
     boolean :flag
   }
 
-  searchable &@set_up_solr_fields
+  searchable(&@set_up_solr_fields)
 
   def self.update_solr_indices
     Sunspot.setup(Child, &@set_up_solr_fields)
@@ -194,7 +194,7 @@ class Child < CouchRest::Model::Base
   end
 
   def validate_audio_file_name
-    return true if @audio_file_name == nil || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
+    return true if @audio_file_name.nil? || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
     errors.add(:audio, "Please upload a valid audio file (amr or mp3) for this child record")
   end
 
@@ -203,25 +203,21 @@ class Child < CouchRest::Model::Base
   end
 
   def validate_created_at
-    begin
-      if self['created_at']
-        DateTime.parse self['created_at']
-      end
-      true
-  rescue
-    errors.add(:created_at, '')
+    if self['created_at']
+      DateTime.parse self['created_at']
     end
+    true
+rescue
+  errors.add(:created_at, '')
   end
 
   def validate_last_updated_at
-    begin
-      if self['last_updated_at']
-        DateTime.parse self['last_updated_at']
-      end
-      true
-  rescue
-    errors.add(:last_updated_at, '')
+    if self['last_updated_at']
+      DateTime.parse self['last_updated_at']
     end
+    true
+rescue
+  errors.add(:last_updated_at, '')
   end
 
   def method_missing(m, *args, &block)
@@ -233,8 +229,8 @@ class Child < CouchRest::Model::Base
   end
 
   def self.all_connected_with(user_name)
-    #TODO Investigate why the hash of the objects got different.
-    (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq {|child| child.unique_identifier}
+    # TODO Investigate why the hash of the objects got different.
+    (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq { |child| child.unique_identifier }
   end
 
   def create_unique_id

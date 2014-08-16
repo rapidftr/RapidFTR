@@ -33,7 +33,7 @@ module RecordHelper
   def update_history
     if field_name_changes.any?
       changes = changes_for(field_name_changes)
-      (add_to_history(changes) unless (!self['histories'].empty? && (self['histories'].last["changes"].to_s.include? changes.to_s)))
+      (add_to_history(changes) unless !self['histories'].empty? && (self['histories'].last["changes"].to_s.include? changes.to_s))
     end
   end
 
@@ -66,7 +66,7 @@ module RecordHelper
     self.audio = new_audio
   end
 
-  def field_definitions_for form_name
+  def field_definitions_for(form_name)
     @field_definitions ||= FormSection.all_visible_child_fields_for_form(form_name)
   end
 
@@ -136,9 +136,9 @@ module RecordHelper
         if name == "histories"
           merge_histories(properties['histories'])
         else
-          attributes_to_update[name] = value unless value == nil
+          attributes_to_update[name] = value unless value.nil?
         end
-        attributes_to_update["#{name}_at"] = RapidFTR::Clock.current_formatted_time if ([:flag, :reunited].include?(name.to_sym) && value.to_s == 'true')
+        attributes_to_update["#{name}_at"] = RapidFTR::Clock.current_formatted_time if [:flag, :reunited].include?(name.to_sym) && value.to_s == 'true'
       end
       self.set_updated_fields_for user_name
       self.attributes = attributes_to_update

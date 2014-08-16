@@ -1,17 +1,17 @@
 class Api::EnquiriesController < Api::ApiController
 
-  before_filter :sanitise_params
+  before_action :sanitise_params
 
   def create
     authorize! :create, Enquiry
 
-    unless Enquiry.get(enquiry_json()['id']).nil? then
+    unless Enquiry.get(enquiry_json['id']).nil?
       render_error("errors.models.enquiry.create_forbidden", 403) and return
     end
 
-    @enquiry = Enquiry.new_with_user_name(current_user, enquiry_json())
+    @enquiry = Enquiry.new_with_user_name(current_user, enquiry_json)
 
-    unless @enquiry.valid? then
+    unless @enquiry.valid?
       render :json => {:error => @enquiry.errors.full_messages}, :status => 422 and return
     end
 
@@ -52,7 +52,7 @@ class Api::EnquiriesController < Api::ApiController
 
   def show
     authorize! :show, Enquiry
-    enquiry = Enquiry.get (params[:id])
+    enquiry = Enquiry.get(params[:id])
     if !enquiry.nil?
       render :json => enquiry
     else
@@ -67,13 +67,11 @@ class Api::EnquiriesController < Api::ApiController
   end
 
   def sanitise_params
-    begin
-      unless (params[:updated_after]).nil?
-        DateTime.parse params[:updated_after]
-      end
-    rescue
-      render :json => "Invalid request", :status => 422
+    unless (params[:updated_after]).nil?
+      DateTime.parse params[:updated_after]
     end
+  rescue
+    render :json => "Invalid request", :status => 422
   end
 
   def enquiry_json

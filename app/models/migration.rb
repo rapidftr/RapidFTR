@@ -19,12 +19,12 @@ class Migration < CouchRest::Model::Base
   end
 
   def self.all_migrations
-    Dir[migration_dir.join "*.rb"].map{ |path| File.basename path }.sort
+    Dir[migration_dir.join "*.rb"].map { |path| File.basename path }.sort
   end
 
   def self.applied_migrations
-    migration_ids = database.documents["rows"].select{|row| !row["id"].include?("_design")}.map{|row| row["id"]}
-    migration_names = migration_ids.map{|id| database.get(id)[:name]}.sort
+    migration_ids = database.documents["rows"].select { |row| !row["id"].include?("_design") }.map { |row| row["id"] }
+    migration_names = migration_ids.map { |id| database.get(id)[:name] }.sort
   end
 
   def self.pending_migrations

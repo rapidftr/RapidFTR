@@ -30,48 +30,46 @@ class CustomFieldsValidator
 end
 
 class CustomNumericFieldsValidator < CustomFieldsValidator
-  def is_not_valid value
+  def is_not_valid(value)
     !value.is_number?
   end
 
-  def validation_message_for field
+  def validation_message_for(field)
     "#{field.display_name} must be a valid number"
   end
 end
 
 class CustomTextFieldsValidator < CustomFieldsValidator
-  def is_not_valid value
+  def is_not_valid(value)
     value.length > 200
   end
 
-  def validation_message_for field
+  def validation_message_for(field)
     "#{field.display_name} cannot be more than 200 characters long"
   end
 end
 
 class CustomTextAreasValidator < CustomFieldsValidator
   MAX_LENGTH = 400_000
-  def is_not_valid value
+  def is_not_valid(value)
     value.length > MAX_LENGTH
   end
 
-  def validation_message_for field
+  def validation_message_for(field)
     "#{field.display_name} cannot be more than #{MAX_LENGTH} characters long"
   end
 end
 
 class DateFieldsValidator < CustomFieldsValidator
   # Blackberry client can only parse specific date formats
-  def is_not_valid value
-    begin
-      Date.strptime(value, '%d %b %Y')
-      false
-    rescue
-      true
-    end
+  def is_not_valid(value)
+    Date.strptime(value, '%d %b %Y')
+    false
+  rescue
+    true
   end
 
-  def validation_message_for field
+  def validation_message_for(field)
     "#{field.display_name} must follow this format: 4 Feb 2010"
   end
 end
@@ -99,4 +97,3 @@ module Extensions
     end
   end
 end
-

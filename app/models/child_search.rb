@@ -12,7 +12,7 @@ class ChildSearch
 
   def ordered(field, direction = :asc)
     search.build do
-      order_by(Child.sortable_field_name(field), direction) if !field.nil?
+      order_by(Child.sortable_field_name(field), direction) unless field.nil?
     end
     self
   end
@@ -31,7 +31,7 @@ class ChildSearch
     self
   end
 
-  def fulltext_by(field_names=[], value=nil)
+  def fulltext_by(field_names = [], value = nil)
     search.build do
       fulltext value, fields: field_names.map(&:to_sym)
     end if value.present?

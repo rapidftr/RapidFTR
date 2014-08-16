@@ -1,8 +1,8 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def current_url_with_format_of( format )
-    url_for( params.merge( :format => format ) )
+  def current_url_with_format_of(format)
+    url_for(params.merge(:format => format))
   end
 
   def session
@@ -41,7 +41,7 @@ module ApplicationHelper
       [
         I18n.t(group, :scope => "permissions.group"),
         permissions.map do |permission|
-          [ I18n.t(permission, :scope => 'permissions.permission'), permission ]
+          [I18n.t(permission, :scope => 'permissions.permission'), permission]
         end
       ]
     end

@@ -74,7 +74,7 @@ module RapidFTR
         Field.new({"name" => "date_new_arrangement_started",
                    "type" => "text_field",
                    "display_name_all" => "Date new care arrangement started"
-                  }),
+                  })
       ]
 
       FormSection.create!({"visible" => false,
@@ -122,7 +122,7 @@ module RapidFTR
         Field.new({"name" => "duration_of_training",
                    "type" => "text_field",
                    "display_name_all" => "Duration of Training"
-                  }),
+                  })
       ]
 
       FormSection.create!({"visible" => false,
@@ -163,7 +163,7 @@ module RapidFTR
                    "type" => "select_box",
                    "option_strings_text_all" => "No Further Action Needed\nOngoing Monitoring\nUrgent Intervention",
                    "display_name_all" => "Economical assessment?"
-                  }),
+                  })
       ]
 
       FormSection.create!({"visible" => false,

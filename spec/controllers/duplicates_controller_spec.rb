@@ -5,13 +5,13 @@ describe DuplicatesController, :type => :controller do
 
   describe "GET new" do
     context "An admin user with a valid non-duplicate child id" do
-      let(:form) { double("Form", sorted_highlighted_fields: [])}
-      
+      let(:form) { double("Form", sorted_highlighted_fields: []) }
+
       before :each do
         fake_admin_login
 
         @child = create :child, :name => "John", :unique_identifier => "1234", :created_by => controller.current_user_name
-        @form_sections = [ mock_model(FormSection), mock_model(FormSection), mock_model(FormSection) ]
+        @form_sections = [mock_model(FormSection), mock_model(FormSection), mock_model(FormSection)]
         allow(Form).to receive(:find_by_name).and_return(form)
       end
 
@@ -62,11 +62,11 @@ describe DuplicatesController, :type => :controller do
 
   describe "POST create" do
     context "An admin user with a valid non-duplicate child id" do
-      let(:form) { double("Form", sorted_highlighted_fields: [])}
+      let(:form) { double("Form", sorted_highlighted_fields: []) }
 
       before :each do
         fake_admin_login
-        @child = Child.new 
+        @child = Child.new
         allow(@child).to receive(:save)
         allow(Form).to receive(:find_by_name).and_return(form)
       end
@@ -84,11 +84,11 @@ describe DuplicatesController, :type => :controller do
       context "with highlighted fields" do
         let(:form) { double("Form", sorted_highlighted_fields: :highlighted_fields) }
 
-        it "should fetch sorted highlighted fields from the form" do 
+        it "should fetch sorted highlighted fields from the form" do
           allow(Child).to receive(:get).and_return(@child)
           allow(@child).to receive(:mark_as_duplicate)
           allow(@child).to receive(:save).and_return(true)
-            
+
           post :create, :child_id => "1234", :parent_id => "5678"
           expect(assigns[:sorted_highlighted_fields]).to eq(:highlighted_fields)
         end

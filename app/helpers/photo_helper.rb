@@ -33,7 +33,7 @@ module PhotoHelper
 
   def photo=(new_photos)
     return unless new_photos
-    #basically to support any client passing a single photo param, only used by child_spec AFAIK
+    # basically to support any client passing a single photo param, only used by child_spec AFAIK
     if new_photos.is_a? Hash
       photos = new_photos.to_a.sort.map { |k, v| v }
     else

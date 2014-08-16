@@ -35,8 +35,8 @@ class Enquiry < CouchRest::Model::Base
     self[m]
   end
 
-  def self.new_with_user_name (user, *args)
-    enquiry = new *args
+  def self.new_with_user_name(user, *args)
+    enquiry = new(*args)
     enquiry.set_creation_fields_for(user)
     enquiry
   end
@@ -46,8 +46,8 @@ class Enquiry < CouchRest::Model::Base
     properties.each_pair do |name, value|
       if value.instance_of? HashWithIndifferentAccess or value.instance_of? ActionController::Parameters
         attributes_to_update[name] = self[name] if attributes_to_update[name].nil?
-        #Don't change the code to use merge!
-        #It will break the access to dynamic attributes.
+        # Don't change the code to use merge!
+        # It will break the access to dynamic attributes.
         attributes_to_update[name] = attributes_to_update[name].merge(value)
       else
         attributes_to_update[name] = value

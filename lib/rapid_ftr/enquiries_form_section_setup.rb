@@ -21,7 +21,7 @@ module RapidFTR
     end
 
     def self.build_enquiry_section
-      enquiry_fields =[
+      enquiry_fields = [
         Field.new({
                     "name" => "enquirer_name",
                     "type" => "text_field",
@@ -42,4 +42,3 @@ module RapidFTR
     end
   end
 end
-

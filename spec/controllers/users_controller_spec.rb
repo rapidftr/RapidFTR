@@ -3,12 +3,12 @@ require 'spec_helper'
 describe UsersController, :type => :controller do
   before do
     fake_admin_login
-    fake_session = Session.new()
-    allow(fake_session).to receive(:admin?).with(no_args()).and_return(true)
+    fake_session = Session.new
+    allow(fake_session).to receive(:admin?).with(no_args).and_return(true)
     allow(Session).to receive(:get).and_return(fake_session)
   end
 
-  def mock_user(stubs={})
+  def mock_user(stubs = {})
     @mock_user ||= stub_model(User, stubs)
   end
 
@@ -24,39 +24,39 @@ describe UsersController, :type => :controller do
 
     context "filter and sort users" do
       before do
-        @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one",:disabled=>false,:full_name=>"XYZ"})
-        @active_user_two = mock_user({:merge => {}, :user_name => "active_user_two",:disabled=>false,:full_name=>"ABC"})
-        @inactive_user = mock_user({:merge => {}, :user_name => "inactive_user",:disabled=>true,:full_name=>"inactive_user"})
+        @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one", :disabled => false, :full_name => "XYZ"})
+        @active_user_two = mock_user({:merge => {}, :user_name => "active_user_two", :disabled => false, :full_name => "ABC"})
+        @inactive_user = mock_user({:merge => {}, :user_name => "inactive_user", :disabled => true, :full_name => "inactive_user"})
 
       end
       it "should filter active users and sort them by full_name by default" do
-        expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
+        expect(User).to receive(:view).with("by_full_name_filter_view", {:startkey => ["active"], :endkey => ["active", {}]}).and_return([@active_user_two, @active_user_one])
         get :index
-        expect(assigns[:users]).to eq([@active_user_two,@active_user_one])
+        expect(assigns[:users]).to eq([@active_user_two, @active_user_one])
       end
 
       it "should filter all users and sort them by full_name" do
-        expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_two,@inactive_user,@active_user_one])
-        get :index, :sort => "full_name", :filter=>"all"
-        expect(assigns[:users]).to eq([@active_user_two,@inactive_user,@active_user_one])
+        expect(User).to receive(:view).with("by_full_name_filter_view", {:startkey => ["all"], :endkey => ["all", {}]}).and_return([@active_user_two, @inactive_user, @active_user_one])
+        get :index, :sort => "full_name", :filter => "all"
+        expect(assigns[:users]).to eq([@active_user_two, @inactive_user, @active_user_one])
       end
 
       it "should filter all users and sort them by user_name" do
-        expect(User).to receive(:view).with("by_user_name_filter_view",{:startkey=>["all"],:endkey=>["all",{}]}).and_return([@active_user_one,@active_user_two,@inactive_user])
-        get :index, :sort => "user_name",:filter=>"all"
-        expect(assigns[:users]).to eq([@active_user_one,@active_user_two,@inactive_user])
+        expect(User).to receive(:view).with("by_user_name_filter_view", {:startkey => ["all"], :endkey => ["all", {}]}).and_return([@active_user_one, @active_user_two, @inactive_user])
+        get :index, :sort => "user_name", :filter => "all"
+        expect(assigns[:users]).to eq([@active_user_one, @active_user_two, @inactive_user])
       end
 
       it "should filter active users and sort them by full_name" do
-        expect(User).to receive(:view).with("by_full_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_two,@active_user_one])
-        get :index, :sort => "full_name", :filter=>"active"
-        expect(assigns[:users]).to eq([@active_user_two,@active_user_one])
+        expect(User).to receive(:view).with("by_full_name_filter_view", {:startkey => ["active"], :endkey => ["active", {}]}).and_return([@active_user_two, @active_user_one])
+        get :index, :sort => "full_name", :filter => "active"
+        expect(assigns[:users]).to eq([@active_user_two, @active_user_one])
       end
 
       it "should filter active users and sort them by user_name" do
-        expect(User).to receive(:view).with("by_user_name_filter_view",{:startkey=>["active"],:endkey=>["active",{}]}).and_return([@active_user_one,@active_user_two])
-        get :index, :sort => "user_name", :filter=>"active"
-        expect(assigns[:users]).to eq([@active_user_one,@active_user_two])
+        expect(User).to receive(:view).with("by_user_name_filter_view", {:startkey => ["active"], :endkey => ["active", {}]}).and_return([@active_user_one, @active_user_two])
+        get :index, :sort => "user_name", :filter => "active"
+        expect(assigns[:users]).to eq([@active_user_one, @active_user_two])
       end
     end
 
@@ -269,7 +269,7 @@ describe UsersController, :type => :controller do
       expect(child1).to receive(:save)
       expect(child2).to receive(:verified=).with(true)
       expect(child2).to receive(:save)
-      expect(Child).to receive(:by_created_by).with(key: "user").and_return([child1,child2])
+      expect(Child).to receive(:by_created_by).with(key: "user").and_return([child1, child2])
       post :update, {:id => "unique_id", :user => {:verified => true}}
     end
 
@@ -285,7 +285,7 @@ describe UsersController, :type => :controller do
   describe "GET change_password" do
     before :each do
       @user = User.new(:user_name => 'fakeuser')
-      @mock_change_form = double()
+      @mock_change_form = double
       fake_login @user
       @mock_params = { "mock" => "mock" }
       allow(Forms::ChangePasswordForm).to receive(:new).with(@mock_params).and_return(@mock_change_form)

@@ -27,7 +27,7 @@ describe Login, :type => :model do
       allow(User).to receive(:find_by_user_name).and_return(user)
       allow(user).to receive(:authenticate).and_return false
       allow(user).to receive(:devices).and_return([])
-      
+
       expect(user).not_to receive(:add_mobile_login_event).with(imei, mobile_number)
 
       params = {:imei => imei, :mobile_number => mobile_number}
@@ -40,7 +40,7 @@ describe Login, :type => :model do
       allow(User).to receive(:find_by_user_name).and_return(user)
       allow(user).to receive(:authenticate).and_return true
       allow(user).to receive(:devices).and_return([])
-      
+
       expect(user).not_to receive(:add_mobile_login_event)
 
       params = {}
@@ -61,6 +61,6 @@ describe Login, :type => :model do
       login = Login.new(params)
       login.authenticate_user
     end
-      
+
   end
 end

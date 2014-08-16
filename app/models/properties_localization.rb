@@ -30,7 +30,7 @@ module PropertiesLocalization
     end
   end
 
-  def self.included klass
+  def self.included(klass)
     klass.extend ClassMethods
   end
 
@@ -38,7 +38,7 @@ module PropertiesLocalization
     properties_hash = {}
     self.properties.map(&:name).each do |property|
       locale = property[-2..-1]
-      property_name = property[0..property.length-4]
+      property_name = property[0..property.length - 4]
       property_value = self.get_property_value(property)
       property_value.collect! { |value| value.formatted_hash } if property_value.is_a?(CouchRest::Model::CastedArray)
       property_value.map! { |value| value.is_a?(String) ? value.gsub(/\r\n?/, "\n").rstrip : value } if property_value.is_a?(Array)

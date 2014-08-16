@@ -3,24 +3,24 @@ class Field
   include RapidFTR::Model
   include PropertiesLocalization
 
-  #track down whether the instance is new or not.
-  #CouchRest::Model::Embeddable new? method rely
-  #on the new? of the parent object. This make not
-  #possible to know if the embedded item already
-  #exists or not in the database. The parent object
-  #is responsible to set the flag.
-  #document_saved nil or false consider the field as new.
-  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  # track down whether the instance is new or not.
+  # CouchRest::Model::Embeddable new? method rely
+  # on the new? of the parent object. This make not
+  # possible to know if the embedded item already
+  # exists or not in the database. The parent object
+  # is responsible to set the flag.
+  # document_saved nil or false consider the field as new.
+  # TODO move to a monkey patch for CouchRest::Model::Embeddable
   attr_accessor :document_saved
 
   property :name
   property :visible, TrueClass, :default => true
   property :type
-  property :highlight_information , HighlightInformation
+  property :highlight_information, HighlightInformation
   property :editable, TrueClass, :default => true
   localize_properties [:display_name, :help_text, :option_strings_text]
   attr_reader :options
-  property :base_language, :default=>'en'
+  property :base_language, :default => 'en'
 
   FIELD_TYPES = [
     TEXT_FIELD = "text_field",
@@ -34,7 +34,7 @@ class Field
     DATE_FIELD = "date_field"
   ]
 
-  validates_presence_of "display_name_#{I18n.default_locale}", :message=> I18n.t("errors.models.field.display_name_presence")
+  validates_presence_of "display_name_#{I18n.default_locale}", :message => I18n.t("errors.models.field.display_name_presence")
   validate :validate_unique_name
   validate :validate_has_2_options
   validate :validate_has_a_option
@@ -53,17 +53,17 @@ class Field
   end
 
   def valid_presence_of_base_language_name
-    if base_language==nil
-      self.base_language='en'
+    if base_language.nil?
+      self.base_language = 'en'
     end
     base_lang_display_name = self.send("display_name_#{base_language}")
-    if (base_lang_display_name.nil?||base_lang_display_name.empty?)
+    if base_lang_display_name.nil? || base_lang_display_name.empty?
       errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
     end
   end
 
-  #Override new? method to not rely on the new? of the parent object.
-  #TODO move to a monkey patch for CouchRest::Model::Embeddable
+  # Override new? method to not rely on the new? of the parent object.
+  # TODO move to a monkey patch for CouchRest::Model::Embeddable
   def new?
     !@document_saved
   end
@@ -86,7 +86,7 @@ class Field
     "#{display_name}#{hidden_text}"
   end
 
-  def initialize properties={}
+  def initialize(properties = {})
     self.visible = true if properties["visible"].nil?
     self.highlight_information = HighlightInformation.new
     self.editable = true if properties["editable"].nil?
@@ -94,17 +94,17 @@ class Field
     create_unique_id
   end
 
-  def attributes= properties
+  def attributes=(properties)
     super properties
-    if (option_strings)
+    if option_strings
       @options = FieldOption.create_field_options(name, option_strings)
     end
   end
 
-  def option_strings= value
+  def option_strings=(value)
     if value
       value = value.gsub(/\r\n?/, "\n").split("\n") if value.is_a?(String)
-      self.option_strings_text = value.select {|x| not "#{x}".strip.empty? }.map(&:rstrip).join("\n")
+      self.option_strings_text = value.select { |x| !"#{x}".strip.empty? }.map(&:rstrip).join("\n")
     end
   end
 
@@ -132,7 +132,7 @@ class Field
     highlight_information[:highlighted]
   end
 
-  def highlight_with_order order
+  def highlight_with_order(order)
     highlight_information[:highlighted] = true
     highlight_information[:order] = order
   end
@@ -152,22 +152,22 @@ class Field
   end
 
   def validate_has_2_options
-    return true unless (type == RADIO_BUTTON || type == SELECT_BOX)
-    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings == nil || option_strings.length < 2
+    return true unless type == RADIO_BUTTON || type == SELECT_BOX
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_2_options")) if option_strings.nil? || option_strings.length < 2
     true
   end
 
   def validate_has_a_option
     return true unless (type == CHECK_BOXES)
-    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings == nil || option_strings.length < 1
+    return errors.add(:option_strings, I18n.t("errors.models.field.has_1_option")) if option_strings.nil? || option_strings.length < 1
     true
   end
 
   def validate_unique_name
     return unless form
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if (form.fields.any? {|field| !field.equal?(self) && field.name == name})
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_this")) if form.fields.any? { |field| !field.equal?(self) && field.name == name }
     other_form = FormSection.get_form_containing_field name
-    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if other_form != nil && form.id != other_form.id
+    return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if !other_form.nil? && form.id != other_form.id
     true
   end
 

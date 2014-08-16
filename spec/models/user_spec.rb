@@ -45,7 +45,7 @@ describe User, :type => :model do
   end
 
   it 'should validate uniqueness of username for new users' do
-    User.all.each {|user| user.destroy}
+    User.all.each { |user| user.destroy }
     user = build :user, :user_name => 'the_user_name'
     expect(user).to be_valid
     user.create!
@@ -80,7 +80,7 @@ describe User, :type => :model do
   it "doesn't use id for equality" do
     user = create :user
     reloaded_user = User.get(user.id)
-    #Now couchrest_model use the id for equality.
+    # Now couchrest_model use the id for equality.
     expect(reloaded_user).to eq(user)
     expect(reloaded_user).to eql(user)
     expect(reloaded_user).not_to equal(user)
@@ -141,7 +141,7 @@ describe User, :type => :model do
     user.add_mobile_login_event("a imei", "a mobile")
     user.add_mobile_login_event("b imei", "a mobile")
     user.add_mobile_login_event("a imei", "a mobile")
-    expect(Device.all.map(&:imei).sort()).to eq(["a imei", "b imei"])
+    expect(Device.all.map(&:imei).sort).to eq(["a imei", "b imei"])
   end
 
   it "should create devices as not blacklisted" do
@@ -209,13 +209,13 @@ describe User, :type => :model do
     end
 
     describe 'permissions' do
-      subject { stub_model User, :permissions => [ 1, 2, 3, 4 ] }
+      subject { stub_model User, :permissions => [1, 2, 3, 4] }
 
       it { is_expected.to have_permission 1 }
       it { is_expected.not_to have_permission 5 }
 
       it { is_expected.to have_any_permission 1 }
-      it { is_expected.to have_any_permission 1,2,3,4 }
+      it { is_expected.to have_any_permission 1, 2, 3, 4 }
       it { is_expected.not_to have_any_permission 5 }
     end
   end

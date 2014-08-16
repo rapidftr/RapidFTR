@@ -72,9 +72,8 @@ class I18nBackendCouch < I18n::Backend::Simple
 
   # Converts all symbol hash keys into Strings for merging and saving in CouchDB
   def deep_stringify_keys(data)
-    data.inject({}) do |result, (key, value)|
+    data.each_with_object({}) do |(key, value), result|
       result[key.to_s] = value.is_a?(Hash) ? deep_stringify_keys(value) : value
-      result
     end
   end
 

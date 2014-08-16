@@ -75,13 +75,11 @@ class CouchSettings
   end
 
   def with_ssl
-    begin
-      @old_ssl = @config['ssl']
-      @config['ssl'] = true
-      yield
-    ensure
-      @config['ssl'] = @old_ssl
-    end
+    @old_ssl = @config['ssl']
+    @config['ssl'] = true
+    yield
+  ensure
+    @config['ssl'] = @old_ssl
   end
 
   def authenticate(username, password)

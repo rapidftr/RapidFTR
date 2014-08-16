@@ -1,7 +1,7 @@
 class Api::ChildrenController < Api::ApiController
 
-  before_filter :check_device_blacklisted, :only => :show
-  before_filter :sanitize_params, :only => [:update, :create, :unverified]
+  before_action :check_device_blacklisted, :only => :show
+  before_action :sanitize_params, :only => [:update, :create, :unverified]
 
   def index
     authorize! :index, Child
@@ -39,7 +39,12 @@ class Api::ChildrenController < Api::ApiController
 
   def unverified
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
+    if params[:child][:_id]
+      child = Child.get(params[:child][:_id])
+      child = update_child_with_attachments child, params
+      child.save
+      render :json => child.compact
+    else
       params[:child].merge!(:verified => current_user.verified?)
       child = create_or_update_child(params)
 
@@ -47,11 +52,6 @@ class Api::ChildrenController < Api::ApiController
       if child.save
         render :json => child.compact
       end
-    else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact
     end
   end
 
@@ -62,13 +62,10 @@ class Api::ChildrenController < Api::ApiController
   private
 
   def sanitize_params
-    begin
-      super :child
-      params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) #histories might come as string from the mobile client.
-    rescue JSON::ParserError
-      render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
-    end
-
+    super :child
+    params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] and params["child"]['histories'].is_a?(String) # histories might come as string from the mobile client.
+  rescue JSON::ParserError
+    render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
   end
 
   def create_or_update_child(params)
@@ -80,11 +77,11 @@ class Api::ChildrenController < Api::ApiController
     end
   end
 
-  def child_short_id params
+  def child_short_id(params)
     params[:child][:short_id] || params[:child][:unique_identifier].last(7)
   end
 
-  def update_child_from params
+  def update_child_from(params)
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     child.update_with_attachments(params, current_user)
     child

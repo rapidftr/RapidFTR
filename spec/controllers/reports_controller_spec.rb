@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ReportsController, :type => :controller do
   before :each do
-    fake_login_as [ Permission::REPORTS[:view] ]
+    fake_login_as [Permission::REPORTS[:view]]
   end
 
   it "should fetch reports" do
@@ -21,7 +21,7 @@ describe ReportsController, :type => :controller do
   end
 
   it "should set page number from request" do
-    expect(Report).to receive(:paginate).with(hash_including(:page => 5)).and_return([ Report.new ])
+    expect(Report).to receive(:paginate).with(hash_including(:page => 5)).and_return([Report.new])
     get :index, :page => 5
   end
 

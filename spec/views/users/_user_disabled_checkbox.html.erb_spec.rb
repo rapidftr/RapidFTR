@@ -5,7 +5,7 @@ describe "users/_user_disabled_checkbox.html.erb", :type => :view do
 
     describe "when current user is the same" do
       it "should not show checkbox" do
-        user = User.new()
+        user = User.new
         user.disabled = false
         user.user_name = "someusername"
 
@@ -17,7 +17,7 @@ describe "users/_user_disabled_checkbox.html.erb", :type => :view do
 
     describe "when current user is not the same" do
       before :each do
-        @user = User.new()
+        @user = User.new
         @user.user_name = "someusername"
       end
 

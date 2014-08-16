@@ -48,7 +48,7 @@ describe SystemUsersController, :type => :controller do
       mock_user = SystemUsers.new({:name => "test_user", :password => "test_password" })
       expect(SystemUsers).to receive(:get).with("org.couchdb.user:test_user").and_return(mock_user)
       expect(mock_user).to receive(:update_attributes).and_return(true)
-      put :update, {:id =>"test_user",:system_users => {:name => "test_user", :password => "test_password"}}
+      put :update, {:id => "test_user", :system_users => {:name => "test_user", :password => "test_password"}}
       expect(response).to redirect_to(:action => :index)
     end
 
@@ -57,7 +57,7 @@ describe SystemUsersController, :type => :controller do
       mock_user = SystemUsers.new({:name => "test_user", :password => "test_password" })
       expect(SystemUsers).to receive(:get).with("org.couchdb.user:abcd").and_return(mock_user)
       expect(mock_user).not_to receive(:update_attributes)
-      put :update, {:id =>"abcd",:system_users => {:name => "abcd", :password => "test_password"}}
+      put :update, {:id => "abcd", :system_users => {:name => "abcd", :password => "test_password"}}
       expect(response).to redirect_to(:action => :edit)
     end
 
@@ -73,4 +73,3 @@ describe SystemUsersController, :type => :controller do
   end
 
 end
-

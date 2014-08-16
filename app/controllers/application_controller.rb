@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
 
   include Security::Authentication
 
-  before_filter :check_authentication
-  before_filter :extend_session_lifetime
-  before_filter :set_locale
+  before_action :check_authentication
+  before_action :extend_session_lifetime
+  before_action :set_locale
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
     raise e if Rails.env.development?
@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
         if e.status_code == 401
           redirect_to :login
         else
-          render :formats => [:html], :template => "shared/error_response",:status => e.status_code, :locals => { :exception => e }
+          render :formats => [:html], :template => "shared/error_response", :status => e.status_code, :locals => { :exception => e }
         end
       end
     end
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clean_params(param)
-    param.reject{|value| value.blank?}
+    param.reject { |value| value.blank? }
   end
 
   def encrypt_exported_files(results, zip_filename)
@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+  ActionView::Base.field_error_proc = proc do |html_tag, instance|
     %(<span class="field-error">) + html_tag + %(</span>)
   end
 

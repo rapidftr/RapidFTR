@@ -17,7 +17,7 @@ describe HighlightFieldsController, :type => :controller do
       children_form = create :form, name: Child::FORM_NAME
       enquiry_form = create :form, name: Enquiry::FORM_NAME
       fake_admin_login
-      
+
       get :show, {id: enquiry_form.id}
 
       expect(assigns[:form]).to eq(enquiry_form)
@@ -29,7 +29,7 @@ describe HighlightFieldsController, :type => :controller do
       enquiry_form = create :form, name: Enquiry::FORM_NAME
       enquiry_section = create :form_section, form: enquiry_form
       fake_admin_login
-      
+
       get :show, {id: enquiry_form.id}
 
       expect(assigns[:form_sections]).to contain_exactly(enquiry_section)
@@ -42,7 +42,7 @@ describe HighlightFieldsController, :type => :controller do
       field = build :field, highlighted: true
       enquiry_section = create :form_section, form: enquiry_form, fields: [field]
       fake_admin_login
-      
+
       get :show, {id: enquiry_form.id}
 
       highlighted_fields = assigns[:highlighted_fields]
@@ -59,9 +59,9 @@ describe HighlightFieldsController, :type => :controller do
     end
 
     it "should have highlighted fields assigned" do
-      field1 = Field.new(:name => "field1", :display_name => "field1_display" , :highlight_information => { :order => "1", :highlighted => true })
-      field2 = Field.new(:name => "field2", :display_name => "field2_display" , :highlight_information => { :order => "2", :highlighted => true })
-      field3 = Field.new(:name => "field3", :display_name => "field3_display" , :highlight_information => { :order => "3", :highlighted => true })
+      field1 = Field.new(:name => "field1", :display_name => "field1_display", :highlight_information => { :order => "1", :highlighted => true })
+      field2 = Field.new(:name => "field2", :display_name => "field2_display", :highlight_information => { :order => "2", :highlighted => true })
+      field3 = Field.new(:name => "field3", :display_name => "field3_display", :highlight_information => { :order => "3", :highlighted => true })
       section1 = FormSection.new(:name => "Section1", :unique_id => "section1", :fields => [field1])
       section2 = FormSection.new(:name => "Section2", :unique_id => "section2", :fields => [field2])
       section3 = FormSection.new(:name => "Section3", :unique_id => "section3", :fields => [field3])
@@ -72,17 +72,17 @@ describe HighlightFieldsController, :type => :controller do
       fake_admin_login
       get :show, :id => 0
       expect(assigns[:highlighted_fields].size).to eq(3)
-      expect(assigns[:highlighted_fields]).to eq([  { :field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Section1", :form_id => "section1" },
-                                                    { :field_name => "field2", :display_name => "field2_display" , :order => "2", :form_name => "Section2", :form_id => "section2" },
-                                                    { :field_name => "field3", :display_name => "field3_display" , :order => "3", :form_name => "Section3", :form_id => "section3" } ])
+      expect(assigns[:highlighted_fields]).to eq([{ :field_name => "field1", :display_name => "field1_display", :order => "1", :form_name => "Section1", :form_id => "section1" },
+                                                  { :field_name => "field2", :display_name => "field2_display", :order => "2", :form_name => "Section2", :form_id => "section2" },
+                                                  { :field_name => "field3", :display_name => "field3_display", :order => "3", :form_name => "Section3", :form_id => "section3" }])
     end
 
   end
 
   describe "create" do
     it "should update field as highlighted" do
-      field1 = Field.new(:name => "field1", :display_name => "field1_display" , :highlight_information => { :order => "1", :highlighted => true })
-      field2 = Field.new(:name => "field2", :display_name => "field2_display" , :highlight_information => { :order => "2", :highlighted => true })
+      field1 = Field.new(:name => "field1", :display_name => "field1_display", :highlight_information => { :order => "1", :highlighted => true })
+      field2 = Field.new(:name => "field2", :display_name => "field2_display", :highlight_information => { :order => "2", :highlighted => true })
       field3 = Field.new(:name => "field3", :display_name => "field3_display")
       form_section = FormSection.new(:name => "Form1", :unique_id => "form1", :fields => [field1, field2, field3])
       form = double("Form", id: :id)
@@ -107,8 +107,8 @@ describe HighlightFieldsController, :type => :controller do
   end
 
   describe "remove" do
-    it  "should unhighlight a field"  do
-      field1 = Field.new(:name => "newfield1", :display_name => "new_field1_display" , :highlight_information => { :order => "1", :highlighted => true })
+    it "should unhighlight a field"  do
+      field1 = Field.new(:name => "newfield1", :display_name => "new_field1_display", :highlight_information => { :order => "1", :highlighted => true })
       form_section = FormSection.new(:name => "another form section", :unique_id => "unique_form_section1", :fields => [field1])
       form = double("Form", id: :id)
       allow(FormSection).to receive(:get_by_unique_id).and_return(form_section)

@@ -12,14 +12,14 @@ describe "children/search.html.erb", :type => :view do
       allow(@user).to receive(:has_permission?).and_return(true)
       allow(controller).to receive(:current_user).and_return(@user)
       allow(view).to receive(:current_user).and_return(@user)
-      
-      @results = Array.new(4){ |i| random_child_summary("some_id_#{i}") }
+
+      @results = Array.new(4) { |i| random_child_summary("some_id_#{i}") }
       @results.stub :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [
-        Field.new(:name => "field_2", :display_name => "field display 2", :visible => true ),
-        Field.new(:name => "field_4", :display_name => "field display 4", :visible => true ) ]
-      allow(Form).to receive(:find_by_name).and_return(double("Form", :sorted_highlighted_fields => @highlighted_fields))  
+        Field.new(:name => "field_2", :display_name => "field display 2", :visible => true),
+        Field.new(:name => "field_4", :display_name => "field display 4", :visible => true)]
+      allow(Form).to receive(:find_by_name).and_return(double("Form", :sorted_highlighted_fields => @highlighted_fields))
       assign(:current_user, @user)
       assign(:results, @results)
     end
@@ -32,8 +32,8 @@ describe "children/search.html.erb", :type => :view do
     it "should show only the highlighted fields for a child" do
       child = Child.create(
       "_id" => "some_id", "created_by" => "dave",
-      "last_updated_at" => time_now(),
-      "created_at" => time_now(),
+      "last_updated_at" => time_now,
+      "created_at" => time_now,
       "field_1" => "field 1", "field_2" => "field 2", "field_3" => "field 3", "field_4" => "field 4",
       "current_photo_key" => "some-photo-id")
       allow(child).to receive(:has_one_interviewer?).and_return(true)
@@ -45,7 +45,7 @@ describe "children/search.html.erb", :type => :view do
       render
 
       fields = Hpricot(rendered).search(".summary_panel")
-      expect(fields.search(".summary_item").size).to eq(@highlighted_fields.size + 2) #including the registered by and last_updated_by keys
+      expect(fields.search(".summary_item").size).to eq(@highlighted_fields.size + 2) # including the registered by and last_updated_by keys
 
       expect(fields.search(".key").first.inner_text).to eq("Field Display 2:")
       expect(fields.search(".value").first.inner_text).to eq("field 2")
@@ -79,7 +79,7 @@ describe "children/search.html.erb", :type => :view do
 
       select_check_boxes = Hpricot(rendered).checkboxes
       expect(select_check_boxes.length).to eq(@results.length)
-      select_check_boxes.each_with_index do |check_box,i|
+      select_check_boxes.each_with_index do |check_box, i|
         expect(check_box['name']).to eq("selections[#{i}]")
         expect(check_box['value']).to eq(@results[i]['_id'])
       end

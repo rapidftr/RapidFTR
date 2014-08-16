@@ -1,7 +1,7 @@
 class ChildMediaController < ApplicationController
   helper :children
-  before_filter :find_child
-  before_filter :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
+  before_action :find_child
+  before_action :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
 
   def index
     render :json => photos_details
@@ -23,8 +23,8 @@ class ChildMediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    redirect_to( :controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
-    send_data( @attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type )
+    redirect_to(:controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
+    send_data(@attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type)
   end
 
   def manage_photos
@@ -38,11 +38,9 @@ class ChildMediaController < ApplicationController
   end
 
   def find_audio_attachment
-    begin
-      @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.audio
-    rescue => e
-      p e.inspect
-    end
+    @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.audio
+  rescue => e
+    p e.inspect
   end
 
   def find_photo_attachment
@@ -64,7 +62,7 @@ class ChildMediaController < ApplicationController
     FileAttachment.new "no_photo", "image/jpg", @@no_photo_clip
   end
 
-  def audio_filename attachment
+  def audio_filename(attachment)
     "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 
@@ -80,6 +78,6 @@ class ChildMediaController < ApplicationController
 
   def send_photo_data(*args)
     expires_in 1.year, :public => true if params[:ts]
-    send_data *args
+    send_data(*args)
   end
 end

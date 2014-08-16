@@ -73,7 +73,7 @@ Given /^the user's time zone is "([^"]*)"$/ do |timezone|
 end
 
 Then /^the field "([^"]*)" of child record with name "([^"]*)" should be "([^"]*)"$/ do |field_name, child_name, field_value|
-  children = Child.by_name(:key=>child_name)
+  children = Child.by_name(:key => child_name)
   expect(children).not_to be_nil
   expect(children).not_to be_empty
   child = children.first

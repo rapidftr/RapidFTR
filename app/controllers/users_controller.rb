@@ -1,18 +1,18 @@
 class UsersController < ApplicationController
 
-  before_filter :clean_role_ids, :only => [:update, :create]
-  before_filter :load_user, :only => [:show, :edit, :update, :destroy]
+  before_action :clean_role_ids, :only => [:update, :create]
+  before_action :load_user, :only => [:show, :edit, :update, :destroy]
 
-  skip_before_filter :check_authentication, :set_locale, :only => :register_unverified
+  skip_before_action :check_authentication, :set_locale, :only => :register_unverified
 
   def index
     authorize! :read, User
 
     @page_name = t("home.users")
     sort_option = params[:sort] || "full_name"
-    filter_option=params[:filter] || "active"
+    filter_option = params[:filter] || "active"
 
-    @users=User.view("by_#{sort_option}_filter_view", {:startkey => [filter_option], :endkey => [filter_option, {}]})
+    @users = User.view("by_#{sort_option}_filter_view", {:startkey => [filter_option], :endkey => [filter_option, {}]})
     @users_details = users_details
 
     if params[:ajax] == "true"
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
   def edit
     authorize! :update, @user
-    @page_name = t("account")+": #{@user.full_name}"
+    @page_name = t("account") + ": #{@user.full_name}"
     @roles = Role.all
   end
 
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     authorize! :update, @user  if params[:user].except(:disabled).present?
     params[:verify] = !@user.verified?
 
-    if (@user.update_attributes(params[:user]))
+    if @user.update_attributes(params[:user])
       verify_children if params[:verify]
       if request.xhr?
         render :text => "OK"
@@ -128,7 +128,7 @@ class UsersController < ApplicationController
 
   private
 
-  def write_to_log comment
+  def write_to_log(comment)
     File.open("/Users/ambhalla/Desktop/log.txt", "w+") do |f|
       f.write comment
     end

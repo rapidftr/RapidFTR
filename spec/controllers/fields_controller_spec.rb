@@ -10,8 +10,8 @@ describe FieldsController, :type => :controller do
 
   describe "post create" do
     before :each do
-      @field = Field.new :name => "my_new_field", :type=>"TEXT", :display_name => "My New Field"
-      @form_section = FormSection.new :name => "Form section 1", :unique_id=>'form_section_1'
+      @field = Field.new :name => "my_new_field", :type => "TEXT", :display_name => "My New Field"
+      @form_section = FormSection.new :name => "Form section 1", :unique_id => 'form_section_1'
       allow(FormSection).to receive(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end
 
@@ -43,7 +43,7 @@ describe FieldsController, :type => :controller do
     end
 
     it "should use the display name to form the field name if no field name is supplied" do
-      expect(FormSection).to receive(:add_field_to_formsection).with(anything(), hash_including("display_name_#{I18n.locale}" => "My brilliant new field"))
+      expect(FormSection).to receive(:add_field_to_formsection).with(anything, hash_including("display_name_#{I18n.locale}" => "My brilliant new field"))
       post :create, :form_section_id => @form_section.unique_id, :field => {:display_name => "My brilliant new field"}
     end
 
@@ -101,7 +101,7 @@ describe FieldsController, :type => :controller do
   end
 
   describe "post update" do
-    before { FormSection.all.each &:destroy }
+    before { FormSection.all.each(&:destroy) }
 
     it "should update all attributes on field at once and render edit form sections page" do
       field_to_change = Field.new(:name => "country_of_origin", :display_name => "Origin Country", :visible => true,
@@ -137,8 +137,8 @@ describe FieldsController, :type => :controller do
 
       put :change_form, :id => mothers_name_field.name, :form_section_id => family_details_form.unique_id, :destination_form_id => mother_details_form.unique_id
 
-      expect(FormSection.get(family_details_form.id).fields.find {|field| field.name == "mothers_name"}).to be_nil
-      updated_field = FormSection.get(mother_details_form.id).fields.find {|field| field.name == "mothers_name"}
+      expect(FormSection.get(family_details_form.id).fields.find { |field| field.name == "mothers_name" }).to be_nil
+      updated_field = FormSection.get(mother_details_form.id).fields.find { |field| field.name == "mothers_name" }
       expect(request.flash[:notice]).to eq("Mother's Name moved from Family Details to Mother Details")
       expect(response).to redirect_to(edit_form_section_path(family_details_form.unique_id))
     end

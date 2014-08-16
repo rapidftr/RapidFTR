@@ -10,13 +10,13 @@ class ExportGenerator
   class Export
     attr_accessor :data, :options
 
-    def initialize data, options
+    def initialize(data, options)
       @data = data
       @options = options
     end
   end
 
-  def initialize *child_data
+  def initialize(*child_data)
     @child_data = child_data.flatten
     @pdf = Prawn::Document.new
     @image_bounds = [@pdf.bounds.width, @pdf.bounds.width]
@@ -46,7 +46,7 @@ class ExportGenerator
           child_data << (child.reunited? ? "Reunited" : "")
           metadata = metadata_fields([], CHILD_METADATA)
           metadata_value = map_field_with_value(child, metadata)
-          child_data = child_data + metadata_value
+          child_data += metadata_value
           rows << child_data
         rescue => e
           Rails.logger.error e
@@ -78,7 +78,7 @@ class ExportGenerator
 
   private
 
-  def format_field_for_export field, value, child=nil
+  def format_field_for_export(field, value, child = nil)
     return "" if value.blank?
     return value.join(", ") if field.type == Field::CHECK_BOXES
     if child
@@ -92,7 +92,7 @@ class ExportGenerator
     value
   end
 
-  def filename export_type, extension
+  def filename(export_type, extension)
     return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
     return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
   end
@@ -110,7 +110,7 @@ class ExportGenerator
       render_image(@attachment.data)
     end
     @pdf.move_down 25
-    @pdf.text child.short_id,:size => 40,:align => :center, :style => :bold if with_full_id
+    @pdf.text child.short_id, :size => 40, :align => :center, :style => :bold if with_full_id
 
     @pdf.y -= 3.mm
   end
@@ -141,7 +141,7 @@ class ExportGenerator
   end
 
   def render_pdf(field_pair)
-    if !field_pair.empty?
+    unless field_pair.empty?
       @pdf.table field_pair,
                  :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
                  :width => 500, :column_widths => {0 => 200, 1 => 300},

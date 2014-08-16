@@ -1,5 +1,5 @@
 class Replication < CouchRest::Model::Base
-  MODELS_TO_SYNC = [ Role, Child, User, MobileDbKey, Device ]
+  MODELS_TO_SYNC = [Role, Child, User, MobileDbKey, Device]
   STABLE_WAIT_TIME = 2.minutes
 
   include RapidFTR::Model
@@ -30,10 +30,10 @@ class Replication < CouchRest::Model::Base
   validate :validate_remote_app_url
   validate :save_remote_couch_config
 
-  before_save   :normalize_remote_app_url
-  before_save   :mark_for_reindexing
+  before_save :normalize_remote_app_url
+  before_save :mark_for_reindexing
 
-  after_save    :start_replication
+  after_save :start_replication
   before_destroy :stop_replication
 
   def start_replication
@@ -83,7 +83,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def success?
-    statuses.uniq == [ "completed" ]
+    statuses.uniq == ["completed"]
   end
 
   def status
@@ -117,7 +117,7 @@ class Replication < CouchRest::Model::Base
 
   def build_configs
     self.class.models_to_sync.map do |model|
-      [ push_config(model), pull_config(model) ]
+      [push_config(model), pull_config(model)]
     end.flatten
   end
 
@@ -131,16 +131,15 @@ class Replication < CouchRest::Model::Base
 
   def self.couch_config
     settings = CouchSettings.instance
-    uri = settings.ssl_enabled_for_couch? ? settings.with_ssl{ settings.uri } : settings.uri
+    uri = settings.ssl_enabled_for_couch? ? settings.with_ssl { settings.uri } : settings.uri
     uri.user = nil
     uri.password = nil
     uri.path = '/'
 
     {
       :target => uri.to_s,
-      :databases => models_to_sync.inject({}) { |result, model|
+      :databases => models_to_sync.each_with_object({}) { |model, result|
         result[model.to_s] = model.database.name
-        result
       }
     }
   end
@@ -183,12 +182,10 @@ class Replication < CouchRest::Model::Base
   end
 
   def validate_remote_app_url
-    begin
-      raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
-      true
-    rescue
-      errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
-    end
+    raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
+    true
+  rescue
+    errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
   end
 
   def normalize_remote_app_url
@@ -196,17 +193,14 @@ class Replication < CouchRest::Model::Base
   end
 
   def save_remote_couch_config
-    begin
-      uri = remote_app_uri
-      uri.path = Rails.application.routes.url_helpers.configuration_replications_path
-      post_params = {:user_name => self.username, :password => self.password}
-
-      response = post_uri uri, post_params
-      self.remote_couch_config = JSON.parse response.body
-      true
-    rescue => e
-      errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
-    end
+    uri = remote_app_uri
+    uri.path = Rails.application.routes.url_helpers.configuration_replications_path
+    post_params = {:user_name => self.username, :password => self.password}
+    response = post_uri uri, post_params
+    self.remote_couch_config = JSON.parse response.body
+    true
+  rescue => e
+    errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
   end
 
   def replicator

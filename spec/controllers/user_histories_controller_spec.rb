@@ -7,8 +7,8 @@ describe UserHistoriesController, :type => :controller do
   end
 
   it "should have restful route for GET" do
-    assert_routing( {:method => 'get', :path => '/users/1/history'},
-                    {:controller => "user_histories", :action => "index", :id => "1"})
+    assert_routing({:method => 'get', :path => '/users/1/history'},
+                   {:controller => "user_histories", :action => "index", :id => "1"})
   end
 
   it "should pass ordered histories and child id for user to view" do

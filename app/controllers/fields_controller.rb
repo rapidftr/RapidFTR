@@ -1,8 +1,8 @@
 class FieldsController < ApplicationController
 
-  before_filter { authorize! :manage, Field }
-  before_filter :read_form_section
-  before_filter :set_form
+  before_action { authorize! :manage, Field }
+  before_action :read_form_section
+  before_action :set_form
 
   FIELD_TYPES = %w{ text_field textarea check_box select_box radio_button numeric_field date_field }
 
@@ -52,7 +52,7 @@ class FieldsController < ApplicationController
     if (@field.errors.length == 0)
       flash[:notice] = t("fields.updated")
       message = {"status" => "ok"}
-      if (request.xhr?)
+      if request.xhr?
         render :json => message
       else
         render :template => "form_section/edit", :locals => @show_add_field
@@ -87,7 +87,7 @@ class FieldsController < ApplicationController
 
   private
 
-  def fetch_field field_name
+  def fetch_field(field_name)
     @form_section.fields.detect { |field| field.name == field_name }
   end
 end

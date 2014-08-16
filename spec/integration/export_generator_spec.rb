@@ -120,7 +120,7 @@ describe ExportGenerator, :type => :request do
 
   private
 
-  def build_child(created_by,options = {})
+  def build_child(created_by, options = {})
     user = User.new(:user_name => created_by)
     Child.new_with_user_name user, options
   end

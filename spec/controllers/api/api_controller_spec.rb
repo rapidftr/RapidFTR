@@ -15,7 +15,7 @@ describe TestController, :type => :controller do
     Rails.application.routes.draw do
       # add the route that you need in order to test
       get '/' => "test#index"
-      get'/forbidden' => 'test#forbidden'
+      get '/forbidden' => 'test#forbidden'
     end
   end
 

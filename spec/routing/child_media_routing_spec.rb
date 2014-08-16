@@ -14,4 +14,3 @@ describe ChildMediaController, :type => :routing do
     end
   end
 end
-

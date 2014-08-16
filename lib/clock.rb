@@ -5,4 +5,3 @@ class Clock
     Time.now
   end
 end
-

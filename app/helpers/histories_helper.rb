@@ -1,12 +1,12 @@
 module HistoriesHelper
 
-  def history_entry_for_chidlren_field history, field, change
-    @form_sections = FormSection.all.select {|fs| fs.form.name == Child::FORM_NAME}
+  def history_entry_for_chidlren_field(history, field, change)
+    @form_sections = FormSection.all.select { |fs| fs.form.name == Child::FORM_NAME }
 
     return return_partial_hash(change, field, history)
   end
 
-  def history_entry_for history, field, change
+  def history_entry_for(history, field, change)
     @form_sections = FormSection.all
 
     return return_partial_hash(change, field, history)
@@ -51,7 +51,7 @@ module HistoriesHelper
 
   private
 
-  def get_field_display_name field_name
+  def get_field_display_name(field_name)
     @form_sections.each do |form_section|
       field = form_section.get_field_by_name(field_name)
       return field.display_name.humanize unless field.nil?
@@ -60,7 +60,7 @@ module HistoriesHelper
     field_name.humanize
   end
 
-  def default_locals_for history, change
+  def default_locals_for(history, change)
     {
       :from_value => change['from'],
       :to_value => change['to'],

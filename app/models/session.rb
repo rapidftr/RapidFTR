@@ -10,7 +10,7 @@ class Session < CouchRest::Model::Base
     view :by_user_name
   end
 
-  def self.for_user( user, imei)
+  def self.for_user(user, imei)
     Session.new(
       :user_name => user.user_name,
       :imei => imei
@@ -27,7 +27,7 @@ class Session < CouchRest::Model::Base
   end
 
   def self.delete_for(user)
-    by_user_name(:key => user.user_name).each {|s| s.destroy }
+    by_user_name(:key => user.user_name).each { |s| s.destroy }
   end
 
   def token
@@ -37,8 +37,8 @@ class Session < CouchRest::Model::Base
   delegate :full_name, to: :user
 
   def device_blacklisted?
-    if (imei)
-      return true if Device.all.any? {|device| device.imei == imei && device.blacklisted? }
+    if imei
+      return true if Device.all.any? { |device| device.imei == imei && device.blacklisted? }
     end
     false
   end

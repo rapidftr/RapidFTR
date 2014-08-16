@@ -1,10 +1,10 @@
 class ChildrenController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-  skip_before_filter :check_authentication, :only => [:reindex]
+  skip_before_action :verify_authenticity_token
+  skip_before_action :check_authentication, :only => [:reindex]
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
-  before_filter :current_user, :except => [:reindex]
-  before_filter :sanitize_params, :only => [:update, :sync_unverified]
+  before_action :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
+  before_action :current_user, :except => [:reindex]
+  before_action :sanitize_params, :only => [:update, :sync_unverified]
 
   def reindex
     Child.reindex!
@@ -118,7 +118,12 @@ class ChildrenController < ApplicationController
   def sync_unverified
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
+    if params[:child][:_id]
+      child = Child.get(params[:child][:_id])
+      child = update_child_with_attachments child, params
+      child.save
+      render :json => child.compact.to_json
+    else
       respond_to do |format|
         format.json do
 
@@ -130,11 +135,6 @@ class ChildrenController < ApplicationController
           end
         end
       end
-    else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact.to_json
     end
   end
 
@@ -230,7 +230,7 @@ class ChildrenController < ApplicationController
 
   private
 
-  def child_short_id child_params
+  def child_short_id(child_params)
     child_params[:short_id] || child_params[:unique_identifier].last(7)
   end
 
@@ -245,7 +245,7 @@ class ChildrenController < ApplicationController
 
   def sanitize_params
     child_params = params['child']
-    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
+    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) # histories might come as string from the mobile client.
   end
 
   def get_form_sections
@@ -278,7 +278,7 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def update_child_from params
+  def update_child_from(params)
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     authorize! :update, child
     update_child_with_attachments(child, params)

@@ -1,16 +1,16 @@
 class FakeRecordWithHistory
   attr_reader :id
 
-  def initialize user = "Bob", created = "2010/12/31 22:06:00 +0000"
+  def initialize(user = "Bob", created = "2010/12/31 22:06:00 +0000")
     @id = "ChildId"
     @fields = {
-      "histories"=> [],
+      "histories" => [],
       "created_at" => created,
       "created_by" => user
     }
   end
 
-  def add_history history
+  def add_history(history)
     @fields["histories"].unshift(history)
   end
 
@@ -18,7 +18,7 @@ class FakeRecordWithHistory
     @fields["histories"]
   end
 
-  def add_photo_change username, date, *new_photos
+  def add_photo_change(username, date, *new_photos)
     self.add_history({
                        "changes" => {
                          "photo_keys" => {
@@ -30,7 +30,7 @@ class FakeRecordWithHistory
                      })
   end
 
-  def add_single_change username, date, field, from, to
+  def add_single_change(username, date, field, from, to)
     self.add_history({
                        "changes" => {
                          field => {

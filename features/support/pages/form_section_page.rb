@@ -40,7 +40,7 @@ class FormSectionPage
   end
 
   def should_have_view_and_download_reports_section_selected
-    expect(@session.find(:xpath,"//input[@id='view_and_download_reports']")).to be_checked
+    expect(@session.find(:xpath, "//input[@id='view_and_download_reports']")).to be_checked
   end
 
   def cancel

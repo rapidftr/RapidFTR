@@ -16,4 +16,3 @@ class Api::FormSectionsController < Api::ApiController
     render json: form_sections.map(&:formatted_hash)
   end
 end
-

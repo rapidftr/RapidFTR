@@ -38,7 +38,7 @@ describe "child_histories/index.html.erb", :type => :view do
 
     describe "rendering the history of a flagged child record" do
       before do
-        #Set up a child record and then flag it as suspect
+        # Set up a child record and then flag it as suspect
         @user = double(:user)
         allow(@user).to receive(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
         allow(@user).to receive(:localize_date).and_return "2010-12-31 09:55:00 SST"
@@ -245,7 +245,7 @@ describe "child_histories/index.html.erb", :type => :view do
 
     describe "rendering the history of a reunited child record" do
       before do
-        #Set up a child record and then flag it as suspect
+        # Set up a child record and then flag it as suspect
         @user = double(:user)
         allow(@user).to receive(:time_zone).and_return TZInfo::Timezone.get("US/Samoa")
         allow(@user).to receive(:localize_date).and_return "2010-12-31 09:55:00 SST"

@@ -2,10 +2,10 @@ class Api::ApiController < ActionController::Base
 
   include Security::Authentication
 
-  before_filter :check_authentication
-  before_filter :check_device_blacklisted
-  before_filter :extend_session_lifetime
-  before_filter :current_user
+  before_action :check_authentication
+  before_action :check_device_blacklisted
+  before_action :extend_session_lifetime
+  before_action :current_user
 
   private
 

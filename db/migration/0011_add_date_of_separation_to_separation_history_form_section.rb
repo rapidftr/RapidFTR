@@ -4,7 +4,7 @@ separation_history_fs = FormSection.by_unique_id(:key => "separation_history").f
 separation_history_fs.fields << date_of_separation
 separation_history_fs.save!
 
-children_docs = Child.database.documents["rows"].select{|row| !row["id"].include?("_design")}
+children_docs = Child.database.documents["rows"].select { |row| !row["id"].include?("_design") }
 children_docs.each do |child_doc|
   child = Child.database.get child_doc["id"]
 

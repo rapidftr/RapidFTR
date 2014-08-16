@@ -14,7 +14,7 @@ describe Role, :type => :model do
   end
 
   it "should sanitize and check for permissions" do
-    role = Role.new(:name => "Name", :permissions => [""]) #Need empty array, can't use %w here.
+    role = Role.new(:name => "Name", :permissions => [""]) # Need empty array, can't use %w here.
     expect(role).not_to be_valid
     expect(role.errors[:permissions]).to eq(["Please select at least one permission"])
   end
@@ -44,7 +44,7 @@ describe Role, :type => :model do
   end
 
   it "should generate id" do
-    Role.all.each {|role| role.destroy}
+    Role.all.each { |role| role.destroy }
     role = create :role, :name => 'test role 1234', :_id => nil
     expect(role.id).to eq("role-test-role-1234")
   end

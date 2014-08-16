@@ -3,7 +3,7 @@
 
 # Please keep the seeding idempotent, as it may be used as a migration if upgrading a production
 # instance is necessary and the target version has introduced any new types requiring seeds.
-def should_seed? model
+def should_seed?(model)
   empty = model.database.documents["rows"].count == 0
   puts(empty ? "Seeding #{model}." : "Not seeding #{model}. Already populated.")
   empty
@@ -50,17 +50,17 @@ if should_seed? User
 
   if Rails.env.android?
     User.create!("user_name" => "admin",
-                 "password" => "admin" ,
+                 "password" => "admin",
                  "password_confirmation" => "admin",
                  "full_name" => "admin user",
                  "email" => "admin@rapidftr.com",
                  "disabled" => "false",
                  "organisation" => "Unicef",
-                 "role_ids"=>[registration_worker.id,system_admin.id,field_level_admin.id])
+                 "role_ids" => [registration_worker.id, system_admin.id, field_level_admin.id])
   end
 end
 
-if should_seed? FormSection 
+if should_seed? FormSection
   if should_seed_env_data?
     RapidFTR::ChildrenFormSectionSetup.reset_definitions
     RapidFTR::EnquiriesFormSectionSetup.reset_definitions

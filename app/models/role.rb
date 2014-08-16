@@ -51,4 +51,3 @@ class Role < CouchRest::Model::Base
   end
 
 end
-

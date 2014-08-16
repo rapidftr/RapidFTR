@@ -38,27 +38,27 @@ module RapidFTR
         Field.new({"name" => "disclosure_public_name",
                    "type" => "select_box",
                    "display_name_all" => "Does Child/Caregiver agree to share name on posters/radio/Internet?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "disclosure_public_photo",
                    "type" => "select_box",
                    "display_name_all" => "Photo?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "disclosure_public_relatives",
                    "type" => "select_box",
                    "display_name_all" => "Names of Relatives?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "disclosure_other_orgs",
                    "type" => "select_box",
                    "display_name_all" => "Does Child/Caregiver agree to share collected information with other organizations?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "disclosure_authorities",
                    "type" => "select_box",
                    "display_name_all" => "The authorities?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "disclosure_deny_details",
                    "type" => "textarea",
@@ -75,7 +75,7 @@ module RapidFTR
         Field.new({"name" => "interview_subject",
                    "type" => "select_box",
                    "display_name_all" => "Information Obtained From",
-                   "option_strings_text_all" => "the child\ncaregiver\nother",
+                   "option_strings_text_all" => "the child\ncaregiver\nother"
                   }),
         Field.new({"name" => "interview_subject_details",
                    "type" => "text_field",
@@ -92,7 +92,7 @@ module RapidFTR
         Field.new({"name" => "governing_org",
                    "type" => "text_field",
                    "display_name_all" => "Organization in charge of tracing child's family"
-                  }),
+                  })
       ]
       FormSection.new({"visible" => true, :order => 9,
                        :unique_id => "interview_details", :fields => interview_details_fields,
@@ -106,8 +106,8 @@ module RapidFTR
         Field.new({"name" => "additional_tracing_info",
                    "type" => "textarea",
                    "display_name_all" => "Additional Info That Could Help In Tracing?",
-                   "help_text_all" => "Such as key persons/location in the life of the child who/which might provide information about the location of the sought family -- e.g. names of religious leader, market place, etc. Please ask the child where he/she thinks relatives and siblings might be, and if the child is in contact with any family friends. Include any useful information the caregiver provides.",
-                  }),
+                   "help_text_all" => "Such as key persons/location in the life of the child who/which might provide information about the location of the sought family -- e.g. names of religious leader, market place, etc. Please ask the child where he/she thinks relatives and siblings might be, and if the child is in contact with any family friends. Include any useful information the caregiver provides."
+                  })
       ]
 
       FormSection.new({"visible" => true, :order => 8,
@@ -122,7 +122,7 @@ module RapidFTR
         Field.new({"name" => "other_org_interview_status",
                    "type" => "select_box",
                    "display_name_all" => "Has the child been interviewed by another organization?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "other_org_name",
                    "type" => "text_field",
@@ -143,7 +143,7 @@ module RapidFTR
         Field.new({"name" => "orther_org_reference_no",
                    "type" => "text_field",
                    "display_name_all" => "Reference No. given to child by other organization"
-                  }),
+                  })
       ]
       FormSection.new({"visible" => true, :order => 7,
                            :unique_id => "other_interviews", :fields => other_interviews_fields,
@@ -193,7 +193,7 @@ module RapidFTR
         Field.new({"name" => "wishes_contacted",
                    "type" => "select_box",
                    "display_name_all" => "Has the child heard from / been in contact with any relatives?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "wishes_contacted_details",
                    "type" => "textarea",
@@ -202,12 +202,12 @@ module RapidFTR
         Field.new({"name" => "wishes_wants_contact",
                    "type" => "select_box",
                    "display_name_all" => "Does child want to be reunited with family?",
-                   "option_strings_text_all" => "Yes as soon as possible\nYes later\nNo",
+                   "option_strings_text_all" => "Yes as soon as possible\nYes later\nNo"
                   }),
         Field.new({"name" => "wishes_wants_contact_details",
                    "type" => "textarea",
                    "display_name_all" => "Please explain why"
-                  }),
+                  })
       ]
 
       FormSection.new({"visible" => true, :order => 6,
@@ -222,32 +222,32 @@ module RapidFTR
         Field.new({"name" => "concerns_chh",
                    "type" => "select_box",
                    "display_name_all" => "Child Headed Household",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_disabled",
                    "type" => "select_box",
                    "display_name_all" => "Disabled Child",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_medical_case",
                    "type" => "select_box",
                    "display_name_all" => "Medical Case",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_street_child",
                    "type" => "select_box",
                    "display_name_all" => "Street Child",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_girl_mother",
                    "type" => "select_box",
                    "display_name_all" => "Girl Mother",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_vulnerable_person",
                    "type" => "select_box",
                    "display_name_all" => "Living with Vulnerable Person",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_other",
                    "type" => "text_field",
@@ -260,12 +260,12 @@ module RapidFTR
         Field.new({"name" => "concerns_needs_followup",
                    "type" => "select_box",
                    "display_name_all" => "Specific Follow-up Required?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "concerns_followup_details",
                    "type" => "textarea",
                    "display_name_all" => "Please specify follow-up needs."
-                  }),
+                  })
       ]
 
       FormSection.new({"visible" => true, :order => 5,
@@ -301,7 +301,7 @@ module RapidFTR
                   "type" => "text_field"),
         Field.new("name" => "separation_care_arrangements_arrival_date",
                   "display_name_all" => "Arrival Date",
-                  "type" => "text_field"),
+                  "type" => "text_field")
       ]
       FormSection.new({"visible" => true,
                            :order => 4, :unique_id => "separation_history", :fields => separation_history_fields,
@@ -315,7 +315,7 @@ module RapidFTR
         Field.new({"name" => "care_arrangements",
                    "type" => "select_box",
                    "display_name_all" => "Current Care Arrangements",
-                   "option_strings_text_all" => "Children's Center\nOther Family Member(s)\nFoster Family\nAlone\nOther",
+                   "option_strings_text_all" => "Children's Center\nOther Family Member(s)\nFoster Family\nAlone\nOther"
                   }),
         Field.new({"name" => "care_arrangements_other",
                    "type" => "text_field",
@@ -332,7 +332,7 @@ module RapidFTR
         Field.new({"name" => "care_arrangements_knowsfamily",
                    "type" => "select_box",
                    "display_name_all" => "Does the caregiver know the family of the child?",
-                   "option_strings_text_all" => "Yes\nNo",
+                   "option_strings_text_all" => "Yes\nNo"
                   }),
         Field.new({"name" => "care_arrangements_familyinfo",
                    "type" => "textarea",
@@ -371,7 +371,7 @@ module RapidFTR
         Field.new({"name" => "is_father_alive",
                    "type" => "select_box",
                    "display_name_all" => "Is Father Alive?",
-                   "option_strings_text_all" => "Unknown\nAlive\nDead",
+                   "option_strings_text_all" => "Unknown\nAlive\nDead"
                   }),
         Field.new({"name" => "father_death_details",
                    "type" => "text_field",
@@ -384,7 +384,7 @@ module RapidFTR
         Field.new({"name" => "is_mother_alive",
                    "type" => "select_box",
                    "display_name_all" => "Is Mother Alive?",
-                   "option_strings_text_all" => "Unknown\nAlive\nDead",
+                   "option_strings_text_all" => "Unknown\nAlive\nDead"
                   }),
         Field.new({"name" => "mother_death_details",
                    "type" => "text_field",
@@ -397,7 +397,7 @@ module RapidFTR
         Field.new({"name" => "address",
                    "type" => "textarea",
                    "display_name_all" => "Address of child before separation (and person with whom he/she lived)",
-                   "help_text_all" => "If the child does not remember his/her address, please note other relevant information, such as descriptions of mosques, churches, schools and other landmarks.",
+                   "help_text_all" => "If the child does not remember his/her address, please note other relevant information, such as descriptions of mosques, churches, schools and other landmarks."
                   }),
         Field.new({"name" => "telephone",
                    "type" => "text_field",
@@ -410,7 +410,7 @@ module RapidFTR
         Field.new({"name" => "is_caregiver_alive",
                    "type" => "select_box",
                    "display_name_all" => "Is Caregiver Alive?",
-                   "option_strings_text_all" => "Unknown\nAlive\nDead",
+                   "option_strings_text_all" => "Unknown\nAlive\nDead"
                   }),
         Field.new({"name" => "other_child_1",
                    "type" => "text_field",
@@ -483,7 +483,7 @@ module RapidFTR
         Field.new({"name" => "other_child_3_telephone",
                    "type" => "text_field",
                    "display_name_all" => "Telephone"
-                  }),
+                  })
       ]
 
       FormSection.new({"visible" => true,
@@ -502,14 +502,14 @@ module RapidFTR
         Field.new({"name" => "recorded_audio",
                    "type" => "audio_upload_box", "editable" => false,
                    "display_name_all" => "Recorded Audio"
-                  }),
+                  })
       ]
 
       FormSection.new({"visible" => true,
                        :order => 10, :unique_id => "photos_and_audio", :fields => photo_audio_fields,
                        :perm_visible => true, "editable" => false,
                        "name_all" => "Photos and Audio",
-                       "description_all" => "All Photo and Audio Files Associated with a Child Record",
+                       "description_all" => "All Photo and Audio Files Associated with a Child Record"
       })
     end
 
@@ -525,7 +525,7 @@ module RapidFTR
                    "option_strings_text_all" => "Unaccompanied\nSeparated",
                    "highlight_information" => HighlightInformation.new("highlighted" => true, "order" => 3),
                    "display_name_all" => "Protection Status",
-                   "help_text_all" => "A separated child is any person under the age of 18, separated from both parents or from his/her previous legal or customary primary care giver, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives.",
+                   "help_text_all" => "A separated child is any person under the age of 18, separated from both parents or from his/her previous legal or customary primary care giver, but not necessarily from other relatives. An unaccompanied child is any person who meets those criteria but is ALSO separated from his/her relatives."
                   }),
         Field.new({"name" => "ftr_status",
                    "type" => "select_box",
@@ -591,7 +591,7 @@ module RapidFTR
         Field.new({"name" => "documents",
                    "type" => "text_field",
                    "display_name_all" => "Documents carried by the child"
-                  }),
+                  })
       ]
       FormSection.new({"visible" => true,
                        :order => 1, :unique_id => "basic_identity", "editable" => true,
@@ -603,4 +603,3 @@ module RapidFTR
 
   end
 end
-

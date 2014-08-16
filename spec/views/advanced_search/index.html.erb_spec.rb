@@ -10,7 +10,7 @@ describe "advanced_search/index.html.erb", :type => :view do
     search_form = Forms::SearchForm.new(ability: nil, params: {})
     search_form.send :parse_params
 
-    assign(:form_sections, [ form_section ])
+    assign(:form_sections, [form_section])
     assign(:search_form, search_form)
     render
     document = Nokogiri::HTML(rendered)
@@ -23,7 +23,7 @@ describe "advanced_search/index.html.erb", :type => :view do
     search_form.send :parse_params
     user = build :super_user
 
-    assign(:form_sections, [ form_section ])
+    assign(:form_sections, [form_section])
     assign(:search_form, search_form)
 
     allow(view).to receive(:current_user).and_return(user)
@@ -46,7 +46,7 @@ describe "advanced_search/index.html.erb", :type => :view do
 
     allow(view).to receive(:current_user).and_return(nil)
     allow(view).to receive(:logged_in?).and_return(false)
-    assign(:form_sections, [ form_section ])
+    assign(:form_sections, [form_section])
     assign(:search_form, search_form)
     render :template => "advanced_search/index", :layout => "layouts/application"
 

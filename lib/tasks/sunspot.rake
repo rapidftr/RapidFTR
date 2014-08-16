@@ -19,7 +19,7 @@ namespace :sunspot do
     puts "Waiting #{seconds} seconds for Solr to start..."
 
     timeout(seconds) do
-      until connected do
+      until connected
         begin
           connected = RSolr.connect(:url => Sunspot.config.solr.url).get "admin/ping"
         rescue => e

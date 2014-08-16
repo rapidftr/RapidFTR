@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = '2'
 
 # Check required plugins
 REQUIRED_PLUGINS = %w(vagrant-omnibus vagrant-faster)
-exit unless REQUIRED_PLUGINS.all?{ |plugin|
+exit unless REQUIRED_PLUGINS.all? { |plugin|
   Vagrant.has_plugin?(plugin) || (
     puts "The #{plugin} plugin is required. Please install it with:"
     puts "$ vagrant plugin install #{plugin}"
@@ -15,7 +15,7 @@ exit unless REQUIRED_PLUGINS.all?{ |plugin|
 }
 
 # Update infrastructure
-if !Dir['infrastructure/site-cookbooks']
+unless Dir['infrastructure/site-cookbooks']
   system('git submodule update --init')
 end
 
@@ -30,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.omnibus.chef_version = "11.12.8"
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = [ 'infrastructure/site-cookbooks' ]
+    chef.cookbooks_path = ['infrastructure/site-cookbooks']
     chef.add_recipe 'rapidftr-dev'
     chef.verbose_logging = true
   end

@@ -117,7 +117,7 @@ RapidFTR::Application.routes.draw do
     resources :form_sections, :path => 'form_section', :controller => 'form_section', :only => [:index, :new, :create]
   end
 
-  resources :form_sections, :path => 'form_section', :controller => 'form_section', :except =>[:index, :new, :create] do
+  resources :form_sections, :path => 'form_section', :controller => 'form_section', :except => [:index, :new, :create] do
 
     collection do
       match 'save_order', :via => [:post, :get, :put, :delete]
@@ -180,7 +180,7 @@ RapidFTR::Application.routes.draw do
   #######################
   # TESTING URLS
   #######################
-  if (Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?)
+  if Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?
     match 'database/delete_data/:data_type' => 'database#delete_data', :as => :reset_data, :via => :delete
     match 'database/reset_fieldworker' => 'database#reset_fieldworker', :as => :reset_fieldworker, :via => :delete
   end

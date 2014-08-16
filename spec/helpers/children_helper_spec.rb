@@ -29,7 +29,7 @@ describe ChildrenHelper, :type => :helper do
     end
   end
 
-  #Delete this example and add some real ones or delete this file
+  # Delete this example and add some real ones or delete this file
   it "is included in the helper object" do
     included_modules = (class << helper; self; end).send :included_modules
     expect(included_modules).to include(ChildrenHelper)
@@ -69,7 +69,7 @@ describe ChildrenHelper, :type => :helper do
 
       child = Child.new(:name => "Flagged Child",
                         :flag_message => "Fake entity",
-                        :histories => [{"datetime"=>"2012-09-19 18:39:05UTC", "changes"=>{"flag"=>{"to"=>"true"}}, "user_name"=>"Admin user 1"}])
+                        :histories => [{"datetime" => "2012-09-19 18:39:05UTC", "changes" => {"flag" => {"to" => "true"}}, "user_name" => "Admin user 1"}])
 
       helper.stub(:current_user => @current_user)
       expect(helper.strip_tags(helper.flag_summary_for_child(child))).to eq("Flagged By Admin user 1 on 19 September 2012 at 18:39 (UTC) Because Fake entity")
@@ -99,8 +99,8 @@ describe ChildrenHelper, :type => :helper do
       options = helper.order_options_array_from nil, [form]
       expect(options["Form to group"].flatten).to include(a_string_matching(/id_name/))
       expect(options["Form to group"].flatten).to include(a_string_matching(/display_name/))
-      expect(options["Form to group"]).to include(["display_name","id_name"])
-    end     
+      expect(options["Form to group"]).to include(["display_name", "id_name"])
+    end
 
     it "should map multiple forms fields by display name and name" do
       field1 = build :field, name: "id_name1", display_name: "display_name1"
@@ -108,14 +108,14 @@ describe ChildrenHelper, :type => :helper do
 
       field2 = build :field, name: "id_name2", display_name: "display_name2"
       field3 = build :field, name: "id_name3", display_name: "display_name3"
-      form2 = create :form_section, name: "Second", fields: [field2,field3]
+      form2 = create :form_section, name: "Second", fields: [field2, field3]
 
-      options = helper.order_options_array_from nil, [form1,form2]
-      expect(options["First"]).to include(["display_name1","id_name1"])
-      expect(options["Second"]).to include(["display_name2","id_name2"],["display_name3","id_name3"])
+      options = helper.order_options_array_from nil, [form1, form2]
+      expect(options["First"]).to include(["display_name1", "id_name1"])
+      expect(options["Second"]).to include(["display_name2", "id_name2"], ["display_name3", "id_name3"])
 
-    end     
-    
+    end
+
     it "should combine form fields and system fields" do
       system_fields = ["created_at"]
       field = build :field, name: "id_name", display_name: "display_name"
@@ -124,7 +124,7 @@ describe ChildrenHelper, :type => :helper do
 
       options = helper.order_options_array_from system_fields, form_fields
 
-      expect(options).to eq({t("children.order_by.system_fields") => [["Created at", "created_at"]], "First" => [["display_name","id_name"]]})
+      expect(options).to eq({t("children.order_by.system_fields") => [["Created at", "created_at"]], "First" => [["display_name", "id_name"]]})
     end
   end
 end

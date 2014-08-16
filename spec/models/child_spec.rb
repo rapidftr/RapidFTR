@@ -87,7 +87,7 @@ describe Child, :type => :model do
     end
 
     it "should assign histories order by datetime of history" do
-      child = Child.new()
+      child = Child.new
       first_history = double("history", :[] => "2010-01-01 01:01:02UTC")
       second_history = double("history", :[] => "2010-01-02 01:01:02UTC")
       third_history = double("history", :[] => "2010-01-02 01:01:03UTC")
@@ -170,11 +170,11 @@ describe Child, :type => :model do
     end
 
     it "should fail to validate if all fields on child record are the default values" do
-      child = Child.new({:height=>"",:reunite_with_mother=>""})
+      child = Child.new({:height => "", :reunite_with_mother => ""})
       allow(FormSection).to receive(:all_visible_child_fields).and_return [
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
-        Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key') ]
+        Field.new(:type => Field::PHOTO_UPLOAD_BOX, :name => 'current_photo_key')]
       expect(child).not_to be_valid
       expect(child.errors[:validate_has_at_least_one_field_value]).to eq(["Please fill in at least one field or upload a file"])
     end
@@ -292,14 +292,14 @@ describe Child, :type => :model do
     it "created_at should be a be a valid ISO date" do
       child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'created_at' => 'I am not a date')
       expect(child).not_to be_valid
-      child['created_at']='2010-01-14 14:05:00UTC'
+      child['created_at'] = '2010-01-14 14:05:00UTC'
       expect(child).to be_valid
     end
 
     it "last_updated_at should be a be a valid ISO date" do
       child = create_child_with_created_by('some_user', 'some_field' => 'some_value', 'last_updated_at' => 'I am not a date')
       expect(child).not_to be_valid
-      child['last_updated_at']='2010-01-14 14:05:00UTC'
+      child['last_updated_at'] = '2010-01-14 14:05:00UTC'
       expect(child).to be_valid
     end
 
@@ -516,7 +516,7 @@ describe Child, :type => :model do
         existing_photo = @child.primary_photo
         @child.rotate_photo(180)
         @child.save
-        #TODO: should be a better way to check rotation other than stubbing Minimagic ?
+        # TODO: should be a better way to check rotation other than stubbing Minimagic ?
         expect(@child.primary_photo).not_to match_photo existing_photo
       end
 
@@ -542,25 +542,25 @@ describe Child, :type => :model do
     end
 
     it "should create an 'original' key in the audio hash" do
-      @child.audio= uploadable_audio
+      @child.audio = uploadable_audio
       expect(@child['audio_attachments']).to have_key('original')
     end
 
     it "should create a FileAttachment with uploaded file and prefix 'audio'" do
       uploaded_file = uploadable_audio
       expect(FileAttachment).to receive(:from_uploadable_file).with(uploaded_file, "audio").and_return(@file_attachment)
-      @child.audio= uploaded_file
+      @child.audio = uploaded_file
     end
 
     it "should store the audio attachment key with the 'original' key in the audio hash" do
       allow(FileAttachment).to receive(:from_uploadable_file).and_return(@file_attachment)
-      @child.audio= uploadable_audio
+      @child.audio = uploadable_audio
       expect(@child['audio_attachments']['original']).to eq('some name')
     end
 
     it "should store the audio attachment key with the 'mime-type' key in the audio hash" do
       allow(FileAttachment).to receive(:from_uploadable_file).and_return(@file_attachment)
-      @child.audio= uploadable_audio
+      @child.audio = uploadable_audio
       expect(@child['audio_attachments']['mp3']).to eq('some name')
     end
 
@@ -575,20 +575,20 @@ describe Child, :type => :model do
     end
 
     it "should use Mime::Type.lookup to create file name postfix" do
-      child = Child.new()
+      child = Child.new
       expect(Mime::Type).to receive(:lookup).exactly(2).times.with("audio/mpeg").and_return("abc".to_sym)
       child.add_audio_file(@file, "audio/mpeg")
     end
 
     it "should create a file attachment for the file with 'audio' prefix, mime mediatype as postfix" do
-      child = Child.new()
+      child = Child.new
       allow(Mime::Type).to receive(:lookup).and_return("abc".to_sym)
       expect(FileAttachment).to receive(:from_file).with(@file, "audio/mpeg", "audio", "abc").and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
     end
 
     it "should add attachments key attachment to the audio hash using the content's media type as key" do
-      child = Child.new()
+      child = Child.new
       allow(FileAttachment).to receive(:from_file).and_return(@file_attachment)
       child.add_audio_file(@file, "audio/mpeg")
       expect(child['audio_attachments']['mp3']).to eq("attachment_file_name")
@@ -685,7 +685,7 @@ describe Child, :type => :model do
     it "should add a history entry when a record is created" do
       child = Child.create('last_known_location' => 'New York', 'created_by' => "me")
       expect(child['histories'].size).to be 1
-      expect(child["histories"][0]).to eq({"changes"=>{"child"=>{:created=>nil}}, "datetime"=>nil, "user_name"=>"me", "user_organisation"=>"UNICEF"})
+      expect(child["histories"][0]).to eq({"changes" => {"child" => {:created => nil}}, "datetime" => nil, "user_name" => "me", "user_organisation" => "UNICEF"})
     end
 
     it "should update history with 'from' value on last_known_location update" do
@@ -804,7 +804,7 @@ describe Child, :type => :model do
         @child.photo = uploadable_photo_jeff
         @child.save
         changes = @child['histories'].first['changes']
-        #TODO: this should be instead child.photo_history.first.to or something like that
+        # TODO: this should be instead child.photo_history.first.to or something like that
         expect(changes['photo_keys']['added'].first).to match(/photo.*?-2010-02-20T120424/)
       end
 
@@ -892,7 +892,7 @@ describe Child, :type => :model do
         @child.photo = uploadable_photo_jeff
         @child.save
         changes = @child['histories'].first['changes']
-        #TODO: this should be instead child.photo_history.first.to or something like that
+        # TODO: this should be instead child.photo_history.first.to or something like that
         expect(changes['photo_keys']['added'].first).to match(/photo.*?-2010-02-20T120424/)
       end
 
@@ -938,8 +938,8 @@ describe Child, :type => :model do
         child.save
 
         photo_key = child.photos[0].name
-        uploadable_photo_328 = FileAttachment.new(photo_key+"_328", "image/jpg", "data")
-        uploadable_photo_160x160 = FileAttachment.new(photo_key+"_160x160", "image/jpg", "data")
+        uploadable_photo_328 = FileAttachment.new(photo_key + "_328", "image/jpg", "data")
+        uploadable_photo_160x160 = FileAttachment.new(photo_key + "_160x160", "image/jpg", "data")
         child.attach(uploadable_photo_328)
         child.attach(uploadable_photo_160x160)
         child.save
@@ -965,32 +965,32 @@ describe Child, :type => :model do
 
     it "should be true if was created and updated by the same person" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
-                                         "age"=>{"from"=>"1", "to"=>"15"}},
-                             "user_name"=>"john",
-                             "datetime"=>"03/02/2011 21:48"},
-                            {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                             "datetime"=>"03/02/2011 21:34",
-                             "user_name"=>"john"},
-                            {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                             "user_name"=>"john",
-                             "datetime"=>"03/02/2011 21:33"}]
+      child['histories'] = [{"changes" => {"gender" => {"from" => nil, "to" => "Male"},
+                                           "age" => {"from" => "1", "to" => "15"}},
+                             "user_name" => "john",
+                             "datetime" => "03/02/2011 21:48"},
+                            {"changes" => {"last_known_location" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "datetime" => "03/02/2011 21:34",
+                             "user_name" => "john"},
+                            {"changes" => {"origin" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "user_name" => "john",
+                             "datetime" => "03/02/2011 21:33"}]
       child['last_updated_by'] = 'john'
       expect(child.has_one_interviewer?).to be_truthy
     end
 
     it "should be false if created by one person and updated by another" do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      child['histories'] = [{"changes"=>{"gender"=>{"from"=>nil, "to"=>"Male"},
-                                         "age"=>{"from"=>"1", "to"=>"15"}},
-                             "user_name"=>"jane",
-                             "datetime"=>"03/02/2011 21:48"},
-                            {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                             "datetime"=>"03/02/2011 21:34",
-                             "user_name"=>"john"},
-                            {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                             "user_name"=>"john",
-                             "datetime"=>"03/02/2011 21:33"}]
+      child['histories'] = [{"changes" => {"gender" => {"from" => nil, "to" => "Male"},
+                                           "age" => {"from" => "1", "to" => "15"}},
+                             "user_name" => "jane",
+                             "datetime" => "03/02/2011 21:48"},
+                            {"changes" => {"last_known_location" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "datetime" => "03/02/2011 21:34",
+                             "user_name" => "john"},
+                            {"changes" => {"origin" => {"from" => "Rio", "to" => "Rio De Janeiro"}},
+                             "user_name" => "john",
+                             "datetime" => "03/02/2011 21:33"}]
       child['last_updated_by'] = 'jane'
       expect(child.has_one_interviewer?).to be false
     end
@@ -1028,7 +1028,7 @@ describe Child, :type => :model do
       @photo2 = uploadable_photo("features/resources/jeff.png")
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'UNICEF'))
       @child = Child.new("name" => "Tom", 'created_by' => "me")
-      @child.photo= {0 => @photo1, 1 => @photo2}
+      @child.photo = {0 => @photo1, 1 => @photo2}
       @child.save
     end
 
@@ -1045,7 +1045,7 @@ describe Child, :type => :model do
     context "when selected photo id doesn't exist" do
 
       it "should show an error" do
-        expect { @child.primary_photo_id="non-existant-id" }.to raise_error "Failed trying to set 'non-existant-id' to primary photo: no such photo key"
+        expect { @child.primary_photo_id = "non-existant-id" }.to raise_error "Failed trying to set 'non-existant-id' to primary photo: no such photo key"
       end
 
     end
@@ -1060,8 +1060,8 @@ describe Child, :type => :model do
 
     describe "mark_as_duplicate" do
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id'=> 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde', 'short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id' => 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
         child_duplicate.mark_as_duplicate child_active['short_id']
         expect(child_duplicate.duplicate?).to be_truthy
         expect(child_duplicate.duplicate_of).to eq(child_active.id)
@@ -1074,8 +1074,8 @@ describe Child, :type => :model do
       end
 
       it "should set the duplicate field" do
-        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde','short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
-        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique','short_id'=> 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
+        child_duplicate = Child.create('name' => "Jaco", 'unique_identifier' => 'jacoxxabcde', 'short_id' => "abcde12", 'created_by' => "me", 'created_organisation' => "stc")
+        child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id' => 'nique12', 'created_by' => "me", 'created_organisation' => "stc")
         child_duplicate.mark_as_duplicate child_active['short_id']
         expect(child_duplicate.duplicate?).to be_truthy
         expect(child_duplicate.duplicate_of).to eq(child_active.id)
@@ -1083,7 +1083,7 @@ describe Child, :type => :model do
     end
 
     it "should return all duplicate records" do
-      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids", 'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
       record_duplicate = create_duplicate(record_active)
 
       duplicates = Child.by_duplicate_of(key: record_active.id)
@@ -1095,7 +1095,7 @@ describe Child, :type => :model do
     end
 
     it "should return duplicate from a record" do
-      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids",'short_id'=> 'someids', 'created_by' => "me", 'created_organisation' => "stc")
+      record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids", 'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
       record_duplicate = create_duplicate(record_active)
 
       duplicates = Child.by_duplicate_of(key: record_active.id)
@@ -1189,8 +1189,8 @@ describe Child, :type => :model do
 
   describe 'reindex' do
     it 'should reindex every 24 hours' do
-      scheduler = double()
-      expect(scheduler).to receive(:every).with('24h').and_yield()
+      scheduler = double
+      expect(scheduler).to receive(:every).with('24h').and_yield
       expect(Child).to receive(:reindex!).once.and_return(nil)
       Child.schedule scheduler
     end
@@ -1210,7 +1210,7 @@ describe Child, :type => :model do
 
   private
 
-  def create_child(name, options={})
+  def create_child(name, options = {})
     options.merge!("name" => name, "last_known_location" => "new york", 'created_by' => "me", 'created_organisation' => "stc")
     Child.create(options)
   end
@@ -1222,8 +1222,8 @@ describe Child, :type => :model do
     duplicate
   end
 
-  def create_child_with_created_by(created_by,options = {})
-    user = User.new({:user_name => created_by, :organisation=> "UNICEF"})
+  def create_child_with_created_by(created_by, options = {})
+    user = User.new({:user_name => created_by, :organisation => "UNICEF"})
     Child.new_with_user_name user, options
   end
 end

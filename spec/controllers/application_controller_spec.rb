@@ -72,7 +72,7 @@ describe ApplicationController, :type => :controller do
     end
 
     it 'should send encrypted zip with one file' do
-      files = [ RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1") ]
+      files = [RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1")]
 
       expect(controller).to receive(:send_file) do |file, opts|
         ZipRuby::Archive.open(file) do |ar|
@@ -88,7 +88,7 @@ describe ApplicationController, :type => :controller do
     end
 
     it 'should send encrypted zip with multiple files' do
-      files = [ RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1"), RapidftrAddon::ExportTask::Result.new("file_2.xls", "content 2") ]
+      files = [RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1"), RapidftrAddon::ExportTask::Result.new("file_2.xls", "content 2")]
 
       expect(controller).to receive(:send_file) do |file, opts|
         ZipRuby::Archive.open(file) do |ar|

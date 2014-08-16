@@ -1,6 +1,6 @@
 class SystemUsersController < ApplicationController
 
-  before_filter :load_user, :only => [:edit, :update, :destroy]
+  before_action :load_user, :only => [:edit, :update, :destroy]
 
   def index
     authorize! :read, SystemUsers
@@ -47,7 +47,7 @@ class SystemUsersController < ApplicationController
   private
 
   def load_user
-    @user = SystemUsers.get("org.couchdb.user:"+params[:id])
+    @user = SystemUsers.get("org.couchdb.user:" + params[:id])
     if @user.nil? || params[:system_users].nil? ? false : @user.name != params[:system_users][:name]
       flash[:error] = t("user.messages.not_found")
       redirect_to :action => :edit and return

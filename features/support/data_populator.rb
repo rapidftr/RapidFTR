@@ -4,7 +4,7 @@ class DataPopulator
     create_user('default_username', 'default_password', permission)
   end
 
-  def create_user(username, password='radpiftr', permission=nil)
+  def create_user(username, password = 'radpiftr', permission = nil)
     user_type = 'user'
     create_account(user_type, username, password, permission)
   end
@@ -51,13 +51,13 @@ class DataPopulator
 
     if @user.nil?
       @user = User.new(
-          :user_name=>username,
-          :password=>password,
-          :password_confirmation=>password,
-          :full_name=>username,
-          :organisation=>"UNICEF",
+          :user_name => username,
+          :password => password,
+          :password_confirmation => password,
+          :full_name => username,
+          :organisation => "UNICEF",
           :disabled => "false",
-          :email=>"#{username}@test.com",
+          :email => "#{username}@test.com",
           :role_ids => [role.id]
       )
       @user.save!

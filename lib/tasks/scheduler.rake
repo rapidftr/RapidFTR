@@ -3,7 +3,7 @@
 # But the correct way to start this in production environments is script/scheduler-daemon.rb
 
 namespace :scheduler do
-  def daemon(argv="status")
+  def daemon(argv = "status")
     require 'daemons'
 
     daemon_options = {
@@ -13,7 +13,7 @@ namespace :scheduler do
       :dir_mode => :normal,
       :log_dir => File.join(Rails.root, 'log'),
       :log_output => true,
-      :ARGV => [ argv ].flatten
+      :ARGV => [argv].flatten
     }
 
     Daemons.run_proc('rapidftr-scheduler', daemon_options) do

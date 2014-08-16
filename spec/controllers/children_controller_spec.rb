@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-def inject_export_generator( fake_export_generator, child_data )
-  allow(ExportGenerator).to receive(:new).with(child_data).and_return( fake_export_generator )
+def inject_export_generator(fake_export_generator, child_data)
+  allow(ExportGenerator).to receive(:new).with(child_data).and_return(fake_export_generator)
 end
 
-def stub_out_export_generator child_data = []
-  inject_export_generator( stub_export_generator = double(ExportGenerator) , child_data)
+def stub_out_export_generator(child_data = [])
+  inject_export_generator(stub_export_generator = double(ExportGenerator), child_data)
   allow(stub_export_generator).to receive(:child_photos).and_return('')
   stub_export_generator
 end
 
 def stub_out_child_get(mock_child = double(Child))
-  allow(Child).to receive(:get).and_return( mock_child )
+  allow(Child).to receive(:get).and_return(mock_child)
   mock_child
 end
 
@@ -21,7 +21,7 @@ describe ChildrenController, :type => :controller do
     Sunspot.remove_all!
   end
 
-  def mock_child(stubs={})
+  def mock_child(stubs = {})
     @mock_child ||= mock_model(Child, stubs).as_null_object
   end
 
@@ -156,7 +156,7 @@ describe ChildrenController, :type => :controller do
       end
 
       context "when filter is passed for field worker" do
-        before { @filter = "active"}
+        before { @filter = "active" }
         it_should_behave_like "viewing children as a field worker"
       end
 
@@ -174,18 +174,18 @@ describe ChildrenController, :type => :controller do
       end
 
       context "when filter is not passed field_worker and order is last_updated_at" do
-        before {@params = {:order_by => 'last_updated_at'}}
+        before { @params = {:order_by => 'last_updated_at'} }
         it_should_behave_like "viewing children as a field worker"
       end
 
       context "when status is not passed field_worker, order is last_updated_at and page is 2" do
-        before {@session = fake_field_worker_login }
+        before { @session = fake_field_worker_login }
         before {
           create(:child, created_by: @session.user_name)
           second_page_child = create(:child, created_by: @session.user_name)
           @expected_children = [second_page_child]
         }
-        before {@params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1}}
+        before { @params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1} }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -205,7 +205,7 @@ describe ChildrenController, :type => :controller do
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
           @expected_children = [create(:child, created_by: @session.user_name, reunited: true)]
-          @filter = "reunited" 
+          @filter = "reunited"
         }
         it_should_behave_like "viewing children as a field worker"
       end
@@ -226,7 +226,7 @@ describe ChildrenController, :type => :controller do
           @session = fake_field_worker_login
           create(:child, created_by: @session.user_name)
           @expected_children = [create(:child, created_by: @session.user_name, flag: true)]
-          @filter = "flag" 
+          @filter = "flag"
         }
         it_should_behave_like "viewing children as a field worker"
       end
@@ -244,7 +244,7 @@ describe ChildrenController, :type => :controller do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before {@options = {:startkey=>["active", "fakefieldworker"], :endkey=>["active", "fakefieldworker", {}], :page=>1, :per_page=>20, :view_name=>:by_all_view_with_created_by_created_at}}
+        before { @options = {:startkey => ["active", "fakefieldworker"], :endkey => ["active", "fakefieldworker", {}], :page => 1, :per_page => 20, :view_name => :by_all_view_with_created_by_created_at} }
         it_should_behave_like "viewing children as a field worker"
       end
     end
@@ -284,7 +284,7 @@ describe ChildrenController, :type => :controller do
       it "should use the ascending sort order param" do
         fake_field_worker_login
         child_search = ChildSearch.new;
-        expect(child_search).to receive(:ordered).with(anything(), :asc).and_return(child_search)
+        expect(child_search).to receive(:ordered).with(anything, :asc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
         get :index, sort_order: 'asc'
       end
@@ -292,7 +292,7 @@ describe ChildrenController, :type => :controller do
       it "should use the descending sort order param" do
         fake_field_worker_login
         child_search = ChildSearch.new;
-        expect(child_search).to receive(:ordered).with(anything(), :desc).and_return(child_search)
+        expect(child_search).to receive(:ordered).with(anything, :desc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
         get :index, sort_order: 'desc'
       end
@@ -351,7 +351,7 @@ describe ChildrenController, :type => :controller do
 
     it "should flash an error and go to listing page if the resource is not found" do
       allow(Child).to receive(:get).with("invalid record").and_return(nil)
-      get :show, :id=> "invalid record"
+      get :show, :id => "invalid record"
       expect(flash[:error]).to eq("Child with the given id is not found")
       expect(response).to redirect_to(:action => :index)
     end
@@ -452,7 +452,7 @@ describe ChildrenController, :type => :controller do
 
       expect(assigns[:child]['last_known_location']).to eq("Manchester")
       expect(assigns[:child]['_attachments'].size).to eq(2)
-      updated_photo_key = assigns[:child]['_attachments'].keys.select {|key| key =~ /photo.*?-2010-01-17T140532/}.first
+      updated_photo_key = assigns[:child]['_attachments'].keys.select { |key| key =~ /photo.*?-2010-01-17T140532/ }.first
       expect(assigns[:child]['_attachments'][updated_photo_key]['data']).not_to be_blank
     end
 
@@ -475,11 +475,11 @@ describe ChildrenController, :type => :controller do
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
       expect(Child.get(child.id)["histories"].size).to be 1
 
-      expect{put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"})}.to_not change{Child.get(child.id)["histories"].size}
+      expect { put(:update_photo, :id => child.id, :child => {:photo_orientation => "-180"}) }.to_not change { Child.get(child.id)["histories"].size }
     end
 
     it "should allow a records ID to be specified to create a new record with a known id" do
-      new_uuid = UUIDTools::UUID.random_create()
+      new_uuid = UUIDTools::UUID.random_create
       put :update, :id => new_uuid.to_s,
                    :child => {
                      :id => new_uuid.to_s,
@@ -620,37 +620,37 @@ describe ChildrenController, :type => :controller do
       fake_admin_login
       @child1 = build :child
       @child2 = build :child
-      results = [ @child1, @child2 ]
+      results = [@child1, @child2]
       allow_any_instance_of(ChildSearch).to receive(:results).and_return(results)
     end
 
     it "should handle full PDF" do
-      expect_any_instance_of(Addons::PdfExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::PdfExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :pdf
     end
 
     it "should handle Photowall PDF" do
-      expect_any_instance_of(Addons::PhotowallExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::PhotowallExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :photowall
     end
 
     it "should handle CSV" do
-      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :csv
     end
 
     it "should handle custom export addon" do
-      mock_addon = double()
+      mock_addon = double
       mock_addon_class = double(:new => mock_addon, :id => "mock")
-      RapidftrAddon::ExportTask.stub :active => [ mock_addon_class ]
+      RapidftrAddon::ExportTask.stub :active => [mock_addon_class]
       allow(controller).to receive(:authorize!)
-      expect(mock_addon).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect(mock_addon).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :mock
     end
 
     it "should encrypt result" do
-      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
-      expect(controller).to receive(:export_filename).with([ @child1, @child2 ], Addons::CsvExportTask).and_return("test_filename")
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
+      expect(controller).to receive(:export_filename).with([@child1, @child2], Addons::CsvExportTask).and_return("test_filename")
       expect(controller).to receive(:encrypt_exported_files).with('data', 'test_filename').and_return(true)
       get :index, :format => :csv
     end
@@ -658,7 +658,7 @@ describe ChildrenController, :type => :controller do
     it "should create a log_entry when record is exported" do
       fake_login User.new(:user_name => 'fakeuser', :organisation => "STC", :role_ids => ["abcd"])
       allow(@controller).to receive(:authorize!)
-      expect_any_instance_of(RapidftrAddonCpims::ExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(RapidftrAddonCpims::ExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
 
       expect(LogEntry).to receive(:create!).with :type => LogEntry::TYPE[:cpims], :user_name => "fakeuser", :organisation => "STC", :child_ids => [@child1.id, @child2.id]
 
@@ -667,16 +667,16 @@ describe ChildrenController, :type => :controller do
 
     it "should generate filename based on child ID and addon ID when there is only one child" do
       @child1.stub :short_id => 'test_short_id'
-      expect(controller.send(:export_filename, [ @child1 ], Addons::PhotowallExportTask)).to eq("test_short_id_photowall.zip")
+      expect(controller.send(:export_filename, [@child1], Addons::PhotowallExportTask)).to eq("test_short_id_photowall.zip")
     end
 
     it "should generate filename based on username and addon ID when there are multiple children" do
       controller.stub :current_user_name => 'test_user'
-      expect(controller.send(:export_filename, [ @child1, @child2 ], Addons::PdfExportTask)).to eq("test_user_pdf.zip")
+      expect(controller.send(:export_filename, [@child1, @child2], Addons::PdfExportTask)).to eq("test_user_pdf.zip")
     end
 
     it "should handle CSV" do
-      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([ @child1, @child2 ]).and_return('data')
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
       get :index, :format => :csv
     end
 

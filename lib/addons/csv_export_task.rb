@@ -6,7 +6,7 @@ module Addons
     end
 
     def export(children)
-      [ Result.new(generate_filename(children), generate_data(children)) ]
+      [Result.new(generate_filename(children), generate_data(children))]
     end
 
     def generate_data(children)
