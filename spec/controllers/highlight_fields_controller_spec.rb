@@ -73,8 +73,8 @@ describe HighlightFieldsController, :type => :controller do
       get :show, :id => 0
       expect(assigns[:highlighted_fields].size).to eq(3)
       expect(assigns[:highlighted_fields]).to eq([  { :field_name => "field1", :display_name => "field1_display" , :order => "1", :form_name => "Section1", :form_id => "section1" },
-                                                { :field_name => "field2", :display_name => "field2_display" , :order => "2", :form_name => "Section2", :form_id => "section2" },
-                                                { :field_name => "field3", :display_name => "field3_display" , :order => "3", :form_name => "Section3", :form_id => "section3" } ])
+                                                    { :field_name => "field2", :display_name => "field2_display" , :order => "2", :form_name => "Section2", :form_id => "section2" },
+                                                    { :field_name => "field3", :display_name => "field3_display" , :order => "3", :form_name => "Section3", :form_id => "section3" } ])
     end
 
   end

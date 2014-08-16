@@ -13,12 +13,12 @@ describe Api::EnquiriesController, :type => :controller do
     form = create :form, name: Enquiry::FORM_NAME
 
     create :form_section, name: 'test_form', fields: [
-        build(:text_field, name: 'name'),
-        build(:text_field, name: 'location'),
-        build(:text_field, name: 'nationality'),
-        build(:text_field, name: 'enquirer_name'),
-        build(:numeric_field, name: 'age'),
-        build(:text_field, name: 'gender')
+      build(:text_field, name: 'name'),
+      build(:text_field, name: 'location'),
+      build(:text_field, name: 'nationality'),
+      build(:text_field, name: 'enquirer_name'),
+      build(:numeric_field, name: 'age'),
+      build(:text_field, name: 'gender')
     ], form: form
 
   end
@@ -215,10 +215,10 @@ describe Api::EnquiriesController, :type => :controller do
       reset_couchdb!
       form = create :form, name: Enquiry::FORM_NAME
       create :form_section, fields: [
-          build(:text_field, name: 'name'),
-          build(:text_field, name: 'age'),
-          build(:text_field, name: 'location'),
-          build(:text_field, name: 'sex'),
+        build(:text_field, name: 'name'),
+        build(:text_field, name: 'age'),
+        build(:text_field, name: 'location'),
+        build(:text_field, name: 'sex'),
       ], form: form
 
       Child.reindex!

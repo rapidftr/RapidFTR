@@ -16,8 +16,8 @@ describe UserHistoriesController, :type => :controller do
     history2 = {"user_name" => "some user", "datetime" => 1.week.ago.to_s}
     expect(User).to receive(:get).with("1").and_return(double(:user_name => (user_name = "some user")))
     expect(Child).to receive(:all_connected_with).with(user_name).and_return([
-          double(:id => "other_id", :name => "other_name", :histories => [history2]),
-          double(:id => "another_id", :name => "another_name", :histories => [history1])
+      double(:id => "other_id", :name => "other_name", :histories => [history2]),
+      double(:id => "another_id", :name => "another_name", :histories => [history1])
     ])
 
     get :index, :id => "1"
@@ -30,8 +30,8 @@ describe UserHistoriesController, :type => :controller do
     history1 = {"user_name" => "some user", "datetime" => 1.day.ago.to_s}
     history2 = {"user_name" => "some other user", "datetime" => 1.week.ago.to_s}
     expect(Child).to receive(:all_connected_with).with(user_name).and_return([
-          double(:id => "other_id", :name => "other_name", :histories => [history2]),
-          double(:id => "another_id", :name => "another_name", :histories => [history1])
+      double(:id => "other_id", :name => "other_name", :histories => [history2]),
+      double(:id => "another_id", :name => "another_name", :histories => [history1])
     ])
 
     get :index, :id => "1"

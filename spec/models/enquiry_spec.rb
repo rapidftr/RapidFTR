@@ -74,10 +74,10 @@ describe Enquiry, :type => :model do
         form = create :form, name: Enquiry::FORM_NAME
 
         create :form_section, name: 'test_form', fields: [
-            build(:text_field, name: 'name'),
-            build(:text_field, name: 'location'),
-            build(:text_field, name: 'gender'),
-            build(:text_field, name: 'enquirer_name')
+          build(:text_field, name: 'name'),
+          build(:text_field, name: 'location'),
+          build(:text_field, name: 'gender'),
+          build(:text_field, name: 'enquirer_name')
         ], form: form
       end
 
@@ -248,11 +248,11 @@ describe Enquiry, :type => :model do
         form = create :form, name: Enquiry::FORM_NAME
 
         create :form_section, name: 'test_form', fields: [
-            build(:text_field, name: 'name'),
-            build(:text_field, name: 'location'),
-            build(:text_field, name: 'nationality'),
-            build(:text_field, name: 'enquirer_name'),
-            build(:numeric_field, name: 'age')
+          build(:text_field, name: 'name'),
+          build(:text_field, name: 'location'),
+          build(:text_field, name: 'nationality'),
+          build(:text_field, name: 'enquirer_name'),
+          build(:numeric_field, name: 'age')
         ], form: form
       end
 

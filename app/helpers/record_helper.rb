@@ -89,10 +89,10 @@ module RecordHelper
   def field_name_changes
     field_names = field_definitions_for(form_name).map { |f| f.name }
     other_fields = [
-        "flag", "flag_message",
-        "reunited", "reunited_message",
-        "investigated", "investigated_message",
-        "duplicate", "duplicate_of"
+      "flag", "flag_message",
+      "reunited", "reunited_message",
+      "investigated", "investigated_message",
+      "duplicate", "duplicate_of"
     ]
     all_fields = field_names + other_fields
     all_fields.select { |field_name| changed_field?(field_name) }

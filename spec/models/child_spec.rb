@@ -974,12 +974,12 @@ describe Child, :type => :model do
                                          "age"=>{"from"=>"1", "to"=>"15"}},
                                          "user_name"=>"john",
                                          "datetime"=>"03/02/2011 21:48"},
-                                         {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                          "datetime"=>"03/02/2011 21:34",
-                                          "user_name"=>"john"},
-                                          {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                           "user_name"=>"john",
-                                           "datetime"=>"03/02/2011 21:33"}]
+                            {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "datetime"=>"03/02/2011 21:34",
+                             "user_name"=>"john"},
+                            {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "user_name"=>"john",
+                             "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'john'
       expect(child.has_one_interviewer?).to be_truthy
     end
@@ -990,12 +990,12 @@ describe Child, :type => :model do
                                          "age"=>{"from"=>"1", "to"=>"15"}},
                                          "user_name"=>"jane",
                                          "datetime"=>"03/02/2011 21:48"},
-                                         {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                          "datetime"=>"03/02/2011 21:34",
-                                          "user_name"=>"john"},
-                                          {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
-                                           "user_name"=>"john",
-                                           "datetime"=>"03/02/2011 21:33"}]
+                            {"changes"=>{"last_known_location"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "datetime"=>"03/02/2011 21:34",
+                             "user_name"=>"john"},
+                            {"changes"=>{"origin"=>{"from"=>"Rio", "to"=>"Rio De Janeiro"}},
+                             "user_name"=>"john",
+                             "datetime"=>"03/02/2011 21:33"}]
       child['last_updated_by'] = 'jane'
       expect(child.has_one_interviewer?).to be false
     end

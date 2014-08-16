@@ -31,7 +31,7 @@ module FakeLogin
   def fake_field_admin_login
     user = User.new(:user_name => 'fakefieldadmin')
     allow(user).to receive(:roles).and_return([Role.new(:permissions => [Permission::CHILDREN[:view_and_search],
-                                                             Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])])
+                                                                         Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])])
     fake_login user
   end
 

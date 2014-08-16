@@ -8,11 +8,11 @@ describe MatchService, type: :request, solr: true do
     form = create :form, name: Enquiry::FORM_NAME
 
     create :form_section, name: 'test_form', fields: [
-        build(:text_field, name: 'name'),
-        build(:text_field, name: 'nationality'),
-        build(:text_field, name: 'country'),
-        build(:text_field, name: 'birthplace'),
-        build(:text_field, name: 'languages')
+      build(:text_field, name: 'name'),
+      build(:text_field, name: 'nationality'),
+      build(:text_field, name: 'country'),
+      build(:text_field, name: 'birthplace'),
+      build(:text_field, name: 'languages')
     ], form: form
   end
 
