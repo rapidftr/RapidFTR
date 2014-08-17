@@ -19,7 +19,6 @@
 #    ruby -Itest test/lib/i18n_backend_couch_test.rb
 #
 class I18nBackendCouch < I18n::Backend::Simple
-
   def load_translations
     locales = db.documents["rows"].map { |row| row["id"] }
     locales.each do |locale|
@@ -76,5 +75,4 @@ class I18nBackendCouch < I18n::Backend::Simple
       result[key.to_s] = value.is_a?(Hash) ? deep_stringify_keys(value) : value
     end
   end
-
 end

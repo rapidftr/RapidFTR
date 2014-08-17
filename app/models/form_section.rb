@@ -286,5 +286,4 @@ class FormSection < CouchRest::Model::Base
       end
     end
   end
-
 end

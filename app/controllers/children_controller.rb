@@ -307,5 +307,4 @@ class ChildrenController < ApplicationController
   def export_filename(children, export_task)
     (children.length == 1 ? children.first.short_id : current_user_name) + '_' + export_task.id.to_s + '.zip'
   end
-
 end

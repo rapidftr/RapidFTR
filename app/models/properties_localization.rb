@@ -1,5 +1,4 @@
 module PropertiesLocalization
-
   module ClassMethods
     def localize_properties(properties)
       RapidFTR::Application.locales.each do |locale|
@@ -58,5 +57,4 @@ module PropertiesLocalization
     value = send(property)
     property.include?("option_strings_text") ? value.split("\n") : value if value
   end
-
 end

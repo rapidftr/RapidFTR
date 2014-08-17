@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 class MockFormSection
-
   def initialize(is_valid = true)
     @is_valid = is_valid
   end

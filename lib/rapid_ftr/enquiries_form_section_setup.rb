@@ -1,7 +1,5 @@
 module RapidFTR
-
   module EnquiriesFormSectionSetup
-
     def self.build_form_sections
       [build_enquiry_section]
     end

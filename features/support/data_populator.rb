@@ -1,5 +1,4 @@
 class DataPopulator
-
   def create_user_with_permission(permission)
     create_user('default_username', 'default_password', permission)
   end

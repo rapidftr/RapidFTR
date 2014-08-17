@@ -1,7 +1,6 @@
 module Security
   module SessionSecret
     class << self
-
       def secret_token
         fetch || create
       end
@@ -27,7 +26,6 @@ module Security
       def env
         Rails.env
       end
-
     end
   end
 end

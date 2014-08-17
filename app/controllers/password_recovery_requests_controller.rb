@@ -1,5 +1,4 @@
 class PasswordRecoveryRequestsController < ApplicationController
-
   skip_before_action :check_authentication
 
   def new
@@ -36,5 +35,4 @@ class PasswordRecoveryRequestsController < ApplicationController
       :response => notice
     }
   end
-
 end

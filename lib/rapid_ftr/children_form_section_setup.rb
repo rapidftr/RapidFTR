@@ -1,7 +1,5 @@
 module RapidFTR
-
   module ChildrenFormSectionSetup
-
     def self.build_form_sections
       form_sections = []
       form_sections << build_basic_identity_section
@@ -600,6 +598,5 @@ module RapidFTR
                        "description_all" => "Basic identity information about a separated or unaccompanied child."
       )
     end
-
   end
 end

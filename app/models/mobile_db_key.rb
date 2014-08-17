@@ -20,5 +20,4 @@ class MobileDbKey < CouchRest::Model::Base
     mobile_db_key = MobileDbKey.by_imei(:key => imei).first
     mobile_db_key.nil? ? MobileDbKey.create(:imei => imei, :db_key => SecureRandom.hex(8)) : mobile_db_key
   end
-
 end

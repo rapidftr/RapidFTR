@@ -223,5 +223,4 @@ class Replication < CouchRest::Model::Base
       http.start { |req| req.request(request) }
     end
   end
-
 end

@@ -1,5 +1,4 @@
 class ReplicationsController < ApplicationController
-
   before_action :load_replication
 
   skip_before_action :verify_authenticity_token, :only => [:configuration, :start, :stop]
@@ -74,5 +73,4 @@ class ReplicationsController < ApplicationController
   def load_replication
     @replication = Replication.get params[:id] if params[:id]
   end
-
 end

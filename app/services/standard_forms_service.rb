@@ -1,5 +1,4 @@
 class StandardFormsService
-
   FORMS_KEY = "forms"
   SECTIONS_KEY = "sections"
   FIELDS_KEY = "fields"

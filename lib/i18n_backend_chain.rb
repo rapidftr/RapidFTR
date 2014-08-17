@@ -28,7 +28,6 @@ module I18n
         end
         trans
       end
-
     end
   end
 end

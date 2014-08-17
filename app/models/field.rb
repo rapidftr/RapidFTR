@@ -170,5 +170,4 @@ class Field
     return errors.add(:name, I18n.t("errors.models.field.unique_name_other", :form_name => other_form.name)) if !other_form.nil? && form.id != other_form.id
     true
   end
-
 end

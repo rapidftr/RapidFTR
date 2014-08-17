@@ -46,5 +46,4 @@ module FakeLogin
     allow(user).to receive(:roles).and_return([Role.new(:permissions => [permission].flatten)])
     fake_login user
   end
-
 end

@@ -1,5 +1,4 @@
 module Forms
-
   class ChangePasswordForm
     extend ActiveModel::Naming
     include ActiveModel::Conversion
@@ -49,5 +48,4 @@ module Forms
       false
     end
   end
-
 end

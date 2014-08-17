@@ -1,9 +1,7 @@
 module CleansingTmpDir
-
   CLEANUP_TIME = 10.minutes
 
   class << self
-
     def dir_name
       File.join Rails.root, 'tmp', 'cleanup'
     end
@@ -36,7 +34,5 @@ module CleansingTmpDir
         end
       end
     end
-
   end
-
 end

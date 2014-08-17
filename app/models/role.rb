@@ -49,5 +49,4 @@ class Role < CouchRest::Model::Base
   def generate_id
     self["_id"] ||= "role-#{name}".parameterize.dasherize
   end
-
 end

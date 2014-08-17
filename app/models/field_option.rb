@@ -1,5 +1,4 @@
 class FieldOption
-
   attr_reader :option_name
 
   def self.create_field_options(field_name, options)
@@ -22,5 +21,4 @@ class FieldOption
   def tag_id
     "child_#{@field_name}_#{@option_name.dehumanize}"
   end
-
 end

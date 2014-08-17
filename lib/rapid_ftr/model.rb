@@ -3,7 +3,6 @@ require 'active_model'
 
 module RapidFTR
   module Model
-
     def self.included(base)
       base.extend ActiveModel::Naming
     end

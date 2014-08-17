@@ -1,5 +1,4 @@
 module FieldsHelper
-
   def display_options(field)
     field.option_strings.map { |f| '"' + f + '"' }.join(", ")
   end

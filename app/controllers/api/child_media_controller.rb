@@ -51,5 +51,4 @@ class Api::ChildMediaController < Api::ApiController
     expires_in 1.year, :public => true if params[:ts]
     send_data(*args)
   end
-
 end

@@ -59,6 +59,5 @@ module Forms
 
       @results = search.results
     end
-
   end
 end

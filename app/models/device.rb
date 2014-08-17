@@ -24,5 +24,4 @@ class Device < CouchRest::Model::Base
   design do
     view :by_imei
   end
-
 end

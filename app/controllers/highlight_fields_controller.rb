@@ -1,5 +1,4 @@
 class HighlightFieldsController < ApplicationController
-
   before_action { authorize! :highlight, Field }
 
   def index

@@ -1,5 +1,4 @@
 module AttachmentHelper
-
   def attach(attachment)
     create_attachment :name => attachment.name,
                       :content_type => attachment.content_type,
@@ -25,5 +24,4 @@ module AttachmentHelper
   def related_keys(for_key)
     self['_attachments'].keys.select { |check_key| check_key.starts_with? for_key }
   end
-
 end

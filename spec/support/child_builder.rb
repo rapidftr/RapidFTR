@@ -1,5 +1,4 @@
 module ChildBuilder
-
   def given_a_child
     @child = double(:child)
     self
@@ -51,5 +50,4 @@ module ChildBuilder
     end
     self
   end
-
 end

@@ -54,5 +54,4 @@ class FileAttachment
     image.resize new_size
     image.to_blob
   end
-
 end

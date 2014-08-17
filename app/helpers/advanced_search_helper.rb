@@ -1,5 +1,4 @@
 module AdvancedSearchHelper
-
   AND_OR = %{<input id="criteria_join_and" type="radio" value="AND" #AND_CHECKED name="criteria_list[#INDEX][join]">
 <label for="criteria_join_and">And</label>
 <input id="criteria_join_or" type="radio" value="OR" #OR_CHECKED name="criteria_list[#INDEX][join]">

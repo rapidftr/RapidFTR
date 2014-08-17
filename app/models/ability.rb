@@ -142,7 +142,6 @@ class Ability
     if user.has_permission?(Permission::REPORTS[:view])
       can [:manage], Report
     end
-
   end
 
   def can(action = nil, subject = nil, conditions = nil, &block)
@@ -152,5 +151,4 @@ class Ability
   def cannot(action = nil, subject = nil, conditions = nil, &block)
     rules << CanCan::CustomRule.new(false, action, subject, conditions, block)
   end
-
 end

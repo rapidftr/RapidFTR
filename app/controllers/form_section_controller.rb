@@ -1,5 +1,4 @@
 class FormSectionController < ApplicationController
-
   def index
     authorize! :index, FormSection
     @page_name = t("form_section.manage")
@@ -83,5 +82,4 @@ class FormSectionController < ApplicationController
     flash[:notice] = t("form_section.messages.deleted", :display_name => @form_section.name)
     redirect_to form_form_sections_path form
   end
-
 end

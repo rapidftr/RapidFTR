@@ -1,5 +1,4 @@
 class AdminController < ApplicationController
-
   before_action do
     authorize!(false, false) if cannot?(:highlight, Field) && cannot?(:manage, SystemUsers)
   end
@@ -14,5 +13,4 @@ class AdminController < ApplicationController
     flash[:notice] = I18n.translate("user.messages.time_zone_updated")
     redirect_to admin_path
   end
-
 end

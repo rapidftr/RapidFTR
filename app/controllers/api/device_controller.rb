@@ -1,5 +1,4 @@
 class Api::DeviceController < Api::ApiController
-
   skip_before_action :check_device_blacklisted
   skip_before_action :check_authentication
 

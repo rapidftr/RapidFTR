@@ -161,5 +161,4 @@ module RecordHelper
     end
     given_histories
   end
-
 end

@@ -17,5 +17,4 @@ class LogEntry < CouchRest::Model::Base
                }
          }"
   end
-
 end

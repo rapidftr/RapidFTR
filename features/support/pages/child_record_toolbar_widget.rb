@@ -1,5 +1,4 @@
 class ChildRecordToolbarWidget
-
   def initialize(session)
     @session = session
   end

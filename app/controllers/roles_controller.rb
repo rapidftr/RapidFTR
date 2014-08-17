@@ -1,5 +1,4 @@
 class RolesController < ApplicationController
-
   def index
     authorize! :index, Role
     @page_name = t("roles.label")

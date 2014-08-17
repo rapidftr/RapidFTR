@@ -1,5 +1,4 @@
 class Permission
-
   def self.to_ordered_hash(*hashes)
     ordered = ActiveSupport::OrderedHash.new
 
@@ -40,5 +39,4 @@ class Permission
   def self.hashed_values
     {"Children" => CHILDREN.values, "Forms" => FORMS.values, "Users" => USERS.values, "Devices" => DEVICES.values, "Reports" => REPORTS.values, "Roles" => ROLES.values, "System" => SYSTEM.values, "Enquiries" => ENQUIRIES.values}
   end
-
 end

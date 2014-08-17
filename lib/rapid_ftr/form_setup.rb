@@ -1,6 +1,5 @@
 module RapidFTR
   module FormSetup
-
     def self.default_forms
       [default_form_for(Child::FORM_NAME), default_form_for(Enquiry::FORM_NAME)]
     end

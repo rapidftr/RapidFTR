@@ -1,5 +1,4 @@
 class Api::FormSectionsController < Api::ApiController
-
   def index
     forms_json = {}
     form_sections = FormSection.enabled_by_order_without_hidden_fields

@@ -42,5 +42,4 @@ class Session < CouchRest::Model::Base
     end
     false
   end
-
 end

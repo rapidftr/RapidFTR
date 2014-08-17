@@ -1,5 +1,4 @@
 class Api::ApiController < ActionController::Base
-
   include Security::Authentication
 
   before_action :check_authentication
@@ -45,5 +44,4 @@ class Api::ApiController < ActionController::Base
   def sanitize_params(object)
     params[object.to_sym] = JSON.parse(params[object.to_sym]) if params[object.to_sym].is_a?(String)
   end
-
 end

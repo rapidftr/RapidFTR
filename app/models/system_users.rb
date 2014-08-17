@@ -1,5 +1,4 @@
 class SystemUsers < CouchRest::Model::Base
-
   include RapidFTR::Model
   self.database = COUCHDB_SERVER.database("_users")
 
@@ -36,5 +35,4 @@ class SystemUsers < CouchRest::Model::Base
     self.roles = ["admin"]
     self.type = "user"
   end
-
 end

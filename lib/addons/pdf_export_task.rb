@@ -1,6 +1,5 @@
 module Addons
   class PdfExportTask < RapidftrAddon::ExportTask
-
     def self.id
       :pdf
     end
@@ -16,6 +15,5 @@ module Addons
     def generate_filename(children)
       ((children && children.length == 1) ? (children[0]['unique_identifier']) : 'full_data') + '.pdf'
     end
-
   end
 end

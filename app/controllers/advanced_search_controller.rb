@@ -1,5 +1,4 @@
 class AdvancedSearchController < ApplicationController
-
   def index
     @page_name = t("navigation.advanced_search")
     form = Form.find_by_name(Child::FORM_NAME)
@@ -42,5 +41,4 @@ class AdvancedSearchController < ApplicationController
   def export_filename(children, export_task)
     (children.length == 1 ? children.first.short_id : current_user_name) + '_' + export_task.id.to_s + '.zip'
   end
-
 end

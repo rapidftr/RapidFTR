@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-
   def index
     @page_name = t("home.label")
     @user = User.find_by_user_name(current_user_name)

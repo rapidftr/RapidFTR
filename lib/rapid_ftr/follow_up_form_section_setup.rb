@@ -1,7 +1,5 @@
 module RapidFTR
-
   module FollowUpFormSectionSetup
-
     def self.reset_definitions
       form_sections = []
       form = Form.find_by_name(Child::FORM_NAME)

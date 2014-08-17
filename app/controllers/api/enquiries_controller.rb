@@ -1,5 +1,4 @@
 class Api::EnquiriesController < Api::ApiController
-
   before_action :sanitise_params
 
   def create

@@ -1,5 +1,4 @@
 class DatabaseController < ApplicationController
-
   before_action :restrict_to_nonproduction
 
   def delete_data
@@ -35,5 +34,4 @@ class DatabaseController < ApplicationController
   def restrict_to_nonproduction
     raise CanCan::AccessDenied unless Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?
   end
-
 end

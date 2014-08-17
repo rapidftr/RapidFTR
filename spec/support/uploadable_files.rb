@@ -1,5 +1,4 @@
 module UploadableFiles
-
   def uploadable_photo(photo_path = "features/resources/jorge.jpg")
     photo = File.new(photo_path)
 
@@ -71,7 +70,6 @@ module UploadableFiles
   end
 
   def uploadable_audio(audio_path = "features/resources/sample.amr")
-
     audio = File.new(audio_path)
 
     def audio.content_type

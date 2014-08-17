@@ -40,5 +40,4 @@ module Searchable
       Sunspot.commit
     end
   end
-
 end

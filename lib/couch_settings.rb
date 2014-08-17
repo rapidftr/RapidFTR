@@ -1,5 +1,4 @@
 class CouchSettings
-
   attr_accessor :path
   attr_accessor :env
   attr_accessor :config
@@ -94,5 +93,4 @@ class CouchSettings
       COUCHDB_SERVER.database(name)
     end
   end
-
 end

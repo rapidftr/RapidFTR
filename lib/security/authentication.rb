@@ -1,6 +1,5 @@
 module Security
   module Authentication
-
     def current_session
       @current_session ||= Session.get current_token rescue nil
     end
@@ -41,6 +40,5 @@ module Security
     def check_authentication
       logged_in? || raise(ErrorResponse.unauthorized("session.has_expired"))
     end
-
   end
 end

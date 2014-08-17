@@ -1,5 +1,4 @@
 class FieldsController < ApplicationController
-
   before_action { authorize! :manage, Field }
   before_action :read_form_section
   before_action :set_form

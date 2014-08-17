@@ -89,5 +89,4 @@ class Enquiry < CouchRest::Model::Base
     end
     previous_matches
   end
-
 end

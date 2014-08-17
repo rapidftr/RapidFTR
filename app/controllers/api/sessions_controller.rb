@@ -1,5 +1,4 @@
 class Api::SessionsController < Api::ApiController
-
   skip_before_action :check_authentication, :check_device_blacklisted, :only => [:login, :register]
 
   def login
@@ -52,5 +51,4 @@ class Api::SessionsController < Api::ApiController
   def mobile_db_key(imei)
     MobileDbKey.find_or_create_by_imei(imei).db_key
   end
-
 end

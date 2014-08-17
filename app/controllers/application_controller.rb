@@ -3,7 +3,6 @@
 #
 
 class ApplicationController < ActionController::Base
-
   helper :all
   helper_method :current_user_name, :current_user, :current_user_full_name, :current_session, :logged_in?
 
@@ -79,5 +78,4 @@ class ApplicationController < ActionController::Base
   ActionView::Base.field_error_proc = proc do |html_tag, instance|
     %(<span class="field-error">) + html_tag + %(</span>)
   end
-
 end

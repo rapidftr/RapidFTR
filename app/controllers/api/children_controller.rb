@@ -1,5 +1,4 @@
 class Api::ChildrenController < Api::ApiController
-
   before_action :check_device_blacklisted, :only => :show
   before_action :sanitize_params, :only => [:update, :create, :unverified]
 
