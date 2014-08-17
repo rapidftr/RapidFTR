@@ -512,7 +512,7 @@ en:
   couchrest:
     fields:
       Name: "Name"
-      Username: "Username"
+      "User name": "Username"
       Password: "Password"
       Description: "Description"
       "Remote app url": "Remote app url"
