@@ -392,7 +392,7 @@ describe Child, :type => :model do
     end
 
     it "should create a unique id" do
-      allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
+      allow(UUIDTools::UUID).to receive("random_create").and_return(12_345)
       child = create_child_with_created_by('jdoe', 'last_known_location' => 'London')
       expect(child['unique_identifier']).to eq("12345")
     end
@@ -441,13 +441,13 @@ describe Child, :type => :model do
   end
 
   it "should automatically create a unique id" do
-    allow(UUIDTools::UUID).to receive("random_create").and_return(12345)
+    allow(UUIDTools::UUID).to receive("random_create").and_return(12_345)
     child = Child.new
     expect(child["unique_identifier"]).to eq("12345")
   end
 
   it "should return last 7 characters of unique id as short id" do
-    allow(UUIDTools::UUID).to receive("random_create").and_return(1212127654321)
+    allow(UUIDTools::UUID).to receive("random_create").and_return(1_212_127_654_321)
     child = Child.new
     expect(child.short_id).to eq("7654321")
   end

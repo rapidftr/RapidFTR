@@ -24,7 +24,7 @@ module UploadableFiles
 
   def uploadable_large_photo
     large_photo = "features/resources/huge.jpg"
-    File.binwrite large_photo, "hello", 50000 * 1024 unless File.exist? large_photo
+    File.binwrite large_photo, "hello", 50_000 * 1024 unless File.exist? large_photo
     uploadable_photo large_photo
   end
 
@@ -107,7 +107,7 @@ module UploadableFiles
 
   def uploadable_large_audio
     large_audio = "features/resources/huge.mp3"
-    File.binwrite large_audio, "hello", 50000 * 1024 unless File.exist? large_audio
+    File.binwrite large_audio, "hello", 50_000 * 1024 unless File.exist? large_audio
     uploadable_audio large_audio
   end
 

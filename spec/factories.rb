@@ -3,7 +3,7 @@ require 'factory_girl'
 FactoryGirl.define do
   trait :model do
     ignore do
-      sequence(:counter, 1000000)
+      sequence(:counter, 1_000_000)
     end
 
     _id { "id-#{counter}" }
@@ -117,7 +117,7 @@ FactoryGirl.define do
 
   factory :field do
     ignore do
-      sequence(:counter, 1000000)
+      sequence(:counter, 1_000_000)
       highlighted false
     end
 
@@ -166,7 +166,7 @@ FactoryGirl.define do
 
   factory :form do
     ignore do
-      sequence(:counter, 1000000)
+      sequence(:counter, 1_000_000)
     end
     name { "name_#{counter}" }
   end

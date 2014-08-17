@@ -145,11 +145,6 @@ Style/NestedTernaryOperator:
 Style/Next:
   Enabled: false
 
-# Offense count: 11
-# Cop supports --auto-correct.
-Style/NumericLiterals:
-  MinDigits: 14
-
 # Offense count: 17
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.
