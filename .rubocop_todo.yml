@@ -104,11 +104,6 @@ Style/NestedTernaryOperator:
 Style/Next:
   Enabled: false
 
-# Offense count: 13
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Enabled: false
-
 # Offense count: 23
 # Configuration parameters: NamePrefixBlacklist.
 Style/PredicateName:

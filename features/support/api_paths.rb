@@ -32,19 +32,19 @@ module NavigationHelpers
         api_children_path(options)
 
       when /saved record page for child with name "(.+)"/
-        child_name = $1
+        child_name = Regexp.last_match[1]
         child = Child.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil? || child.empty?
         child_path(child.first, options)
 
       when /child record page for "(.+)"/
-        child_name = $1
+        child_name = Regexp.last_match[1]
         child = Child.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil? || child.empty?
         child_path(child.first, options)
 
       when /change log page for "(.+)"/
-        child_name = $1
+        child_name = Regexp.last_match[1]
         child = Child.by_name(:key => child_name)
         raise "no child named '#{child_name}'" if child.nil? || child.empty?
         child_history_path(child.first, options)
@@ -56,7 +56,7 @@ module NavigationHelpers
         users_path(options)
 
       when /edit user page for "(.+)"/
-        user = User.find_by_user_name($1)
+        user = User.find_by_user_name(Regexp.last_match[1])
         edit_user_path(user, options)
 
       when /child search page/
@@ -78,10 +78,10 @@ module NavigationHelpers
         advanced_search_index_path(options)
 
       when /edit form section page for "(.+)"$/
-        edit_form_section_path(:id => $1)
+        edit_form_section_path(:id => Regexp.last_match[1])
 
       when /edit field page for "(.+)" on "(.+)" form$/
-        edit_form_section_field_path(:form_section_id => $2, :id => $1)
+        edit_form_section_field_path(:form_section_id => Regexp.last_match[2], :id => Regexp.last_match[1])
 
       when /form section page/
         form_sections_path(options)
@@ -91,16 +91,16 @@ module NavigationHelpers
         new_form_section_field_path(arbitrary_form_section, options)
 
       when /the edit user page for "(.+)"$/
-        user = User.by_user_name(:key => $1)
-        raise "no user named #{$1}" if user.nil?
+        user = User.by_user_name(:key => Regexp.last_match[1])
+        raise "no user named #{Regexp.last_match[1]}" if user.nil?
         edit_user_path(user)
 
       when /new field page for "(.+)"/
-        field_type = $1
+        field_type = Regexp.last_match[1]
         new_form_section_field_path(:type => field_type)
 
       when /the edit form section page for "(.+)"/
-        form_section = $1
+        form_section = Regexp.last_match[1]
         form_section_fields_path(form_section)
 
       when /the admin page/
@@ -110,10 +110,10 @@ module NavigationHelpers
         child_ids_path
 
       when /the child listing filtered by (.+)/
-        child_filter_path $1
+        child_filter_path Regexp.last_match[1]
 
       when /duplicate child page for "(.+)"$/
-        child = Child.by_name(:key => $1).first
+        child = Child.by_name(:key => Regexp.last_match[1]).first
         new_child_duplicate_path(child)
 
       # Add more mappings here.
