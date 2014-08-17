@@ -13,12 +13,12 @@ describe Api::SessionsController, :type => :controller do
     post :login, :user_name => @user.user_name, :password => 'test_password', :imei => 'TEST_IMEI'
 
     expect(response).to be_success
-    expect(JSON.parse(response.body)).to include({
+    expect(JSON.parse(response.body)).to include(
                                                    "db_key" => 'TEST_DB_KEY',
                                                    "organisation" => @user.organisation,
                                                    "language" => "zz",
                                                    "verified" => @user.verified?
-                                                 })
+                                                 )
   end
 
   it 'should logout' do
@@ -43,7 +43,7 @@ describe Api::SessionsController, :type => :controller do
       expect(User).to receive(:new).with("user_name" => "salvador", "verified" => false, "password" => "password", "password_confirmation" => "password").and_return(user = "some_user")
       expect(user).to receive :save!
 
-      post :register, {:format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}}
+      post :register, :format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}
 
       expect(response).to be_ok
     end
@@ -52,7 +52,7 @@ describe Api::SessionsController, :type => :controller do
       expect(User).to receive(:find_by_user_name).and_return("something that is not nil")
       expect(User).not_to receive(:new)
 
-      post :register, {:format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}}
+      post :register, :format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}
       expect(response).to be_ok
     end
   end

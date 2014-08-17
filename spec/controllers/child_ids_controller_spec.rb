@@ -11,7 +11,7 @@ describe ChildIdsController, :type => :controller do
 
   describe "routing" do
     it "should have a route retrieving all child Id and Rev pairs" do
-      expect({:get => "/children-ids"}).to route_to(:controller => "child_ids", :action => "all")
+      expect(:get => "/children-ids").to route_to(:controller => "child_ids", :action => "all")
     end
   end
 

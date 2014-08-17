@@ -18,7 +18,7 @@ describe HighlightFieldsController, :type => :controller do
       enquiry_form = create :form, :name => Enquiry::FORM_NAME
       fake_admin_login
 
-      get :show, {:id => enquiry_form.id}
+      get :show, :id => enquiry_form.id
 
       expect(assigns[:form]).to eq(enquiry_form)
     end
@@ -30,7 +30,7 @@ describe HighlightFieldsController, :type => :controller do
       enquiry_section = create :form_section, :form => enquiry_form
       fake_admin_login
 
-      get :show, {:id => enquiry_form.id}
+      get :show, :id => enquiry_form.id
 
       expect(assigns[:form_sections]).to contain_exactly(enquiry_section)
     end
@@ -43,7 +43,7 @@ describe HighlightFieldsController, :type => :controller do
       enquiry_section = create :form_section, :form => enquiry_form, :fields => [field]
       fake_admin_login
 
-      get :show, {:id => enquiry_form.id}
+      get :show, :id => enquiry_form.id
 
       highlighted_fields = assigns[:highlighted_fields]
       expect(highlighted_fields.size).to be(1)

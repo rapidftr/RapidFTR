@@ -11,7 +11,7 @@ describe SessionsController, :type => :controller do
 
   it "should return the required fields when the user is authenticated successfully via a mobile device" do
     expect(MobileDbKey).to receive(:find_or_create_by_imei).with("IMEI_NUMBER").and_return(double(:db_key => "unique_key"))
-    mock_user = double({:organisation => "TW", :verified? => true})
+    mock_user = double(:organisation => "TW", :verified? => true)
     expect(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
     allow(Login).to receive(:new).and_return(double(:authenticate_user =>
                               mock_model(Session, :authenticate_user => true, :device_blacklisted? => false, :imei => "IMEI_NUMBER",

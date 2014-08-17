@@ -185,8 +185,8 @@ describe "Child record field view model", :type => :model do
       field = Field.new(:name => "first_name", :display_name_en => "first name in english",
                         :help_text_en => "help text in english", :help_text_fr => "help text in french")
       field_hash = field.formatted_hash
-      expect(field_hash["display_name"]).to eq({"en" => "first name in english"})
-      expect(field_hash["help_text"]).to eq({"en" => "help text in english", "fr" => "help text in french"})
+      expect(field_hash["display_name"]).to eq("en" => "first name in english")
+      expect(field_hash["help_text"]).to eq("en" => "help text in english", "fr" => "help text in french")
     end
 
     it "should return array for option_strings_text " do

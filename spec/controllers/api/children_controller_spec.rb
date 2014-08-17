@@ -61,7 +61,7 @@ describe Api::ChildrenController, :type => :controller do
   describe "POST create" do
     it "should update the child record instead of creating if record already exists" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.new_with_user_name(user, {:name => 'old name'})
+      child = Child.new_with_user_name(user, :name => 'old name')
       child.save!
       allow(controller).to receive(:authorize!)
 
@@ -90,10 +90,10 @@ describe Api::ChildrenController, :type => :controller do
 
     it "should mark all children created as verified/unverifid based on the user" do
       @user.verified = true
-      expect(Child).to receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
+      expect(Child).to receive(:new_with_user_name).with(@user, "name" => "timmy", "verified" => @user.verified?).and_return(child = Child.new)
       expect(child).to receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy"}}
+      post :unverified, :child => {:name => "timmy"}
 
       @user.verified = true
     end
@@ -102,7 +102,7 @@ describe Api::ChildrenController, :type => :controller do
       expect(Child).to receive(:new_with_user_name).and_return(child = Child.new)
       expect(child).to receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy"}}
+      post :unverified, :child => {:name => "timmy"}
 
       expect(child['created_by_full_name']).to eq @user.full_name
     end
@@ -115,7 +115,7 @@ describe Api::ChildrenController, :type => :controller do
       expect(controller).to receive(:update_child_from).and_return(child)
       expect(child).to receive(:save).and_return true
 
-      post :unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'}}
+      post :unverified, :child => {:name => "timmy", :unique_identifier => '12345671234567'}
 
       expect(child['created_by_full_name']).to eq @user.full_name
     end

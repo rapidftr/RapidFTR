@@ -12,27 +12,27 @@ describe ChildMediaController, :type => :controller do
 
   describe "routing" do
     it "should have a route for a child current photo" do
-      expect({:get => "/children/1/photo"}).to route_to(:controller => "child_media", :action => "show_photo", :child_id => "1")
+      expect(:get => "/children/1/photo").to route_to(:controller => "child_media", :action => "show_photo", :child_id => "1")
     end
 
     it "should have a route for a child current recorded audio" do
-      expect({:get => "/children/1/audio"}).to route_to(:controller => "child_media", :action => "download_audio", :child_id => "1")
+      expect(:get => "/children/1/audio").to route_to(:controller => "child_media", :action => "download_audio", :child_id => "1")
     end
 
     it "should have a route for a child specific photo" do
-      expect({:get => "/children/c1/photo/p1"}).to route_to(:controller => "child_media", :action => "show_photo", :child_id => "c1", :photo_id => "p1")
+      expect(:get => "/children/c1/photo/p1").to route_to(:controller => "child_media", :action => "show_photo", :child_id => "c1", :photo_id => "p1")
     end
 
     it "should have a route for a child specific recorded audio" do
-      expect({:get => "/children/c1/audio"}).to route_to(:controller => "child_media", :action => "download_audio", :child_id => "c1")
+      expect(:get => "/children/c1/audio").to route_to(:controller => "child_media", :action => "download_audio", :child_id => "c1")
     end
 
     it "should have a route for requesting a resized version of the current photo" do
-      expect({:get => '/children/c1/resized_photo/100'}).to route_to(:controller => "child_media", :action => "show_resized_photo", :child_id => "c1", :size => "100")
+      expect(:get => '/children/c1/resized_photo/100').to route_to(:controller => "child_media", :action => "show_resized_photo", :child_id => "c1", :size => "100")
     end
 
     it "should have a route for a child specific thumbnail" do
-      expect({:get => "/children/c1/thumbnail/t1"}).to route_to(:controller => "child_media", :action => "show_thumbnail", :child_id => "c1", :photo_id => "t1")
+      expect(:get => "/children/c1/thumbnail/t1").to route_to(:controller => "child_media", :action => "show_thumbnail", :child_id => "c1", :photo_id => "t1")
     end
   end
 

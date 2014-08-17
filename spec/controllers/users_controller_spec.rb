@@ -14,7 +14,7 @@ describe UsersController, :type => :controller do
 
   describe "GET index" do
     before do
-      @user = mock_user({:merge => {}, :user_name => "someone"})
+      @user = mock_user(:merge => {}, :user_name => "someone")
     end
 
     it "shows the page name" do
@@ -24,37 +24,37 @@ describe UsersController, :type => :controller do
 
     context "filter and sort users" do
       before do
-        @active_user_one = mock_user({:merge => {}, :user_name => "active_user_one", :disabled => false, :full_name => "XYZ"})
-        @active_user_two = mock_user({:merge => {}, :user_name => "active_user_two", :disabled => false, :full_name => "ABC"})
-        @inactive_user = mock_user({:merge => {}, :user_name => "inactive_user", :disabled => true, :full_name => "inactive_user"})
+        @active_user_one = mock_user(:merge => {}, :user_name => "active_user_one", :disabled => false, :full_name => "XYZ")
+        @active_user_two = mock_user(:merge => {}, :user_name => "active_user_two", :disabled => false, :full_name => "ABC")
+        @inactive_user = mock_user(:merge => {}, :user_name => "inactive_user", :disabled => true, :full_name => "inactive_user")
 
       end
       it "should filter active users and sort them by full_name by default" do
-        expect(User).to receive(:view).with("by_full_name_filter_view", {:startkey => ["active"], :endkey => ["active", {}]}).and_return([@active_user_two, @active_user_one])
+        expect(User).to receive(:view).with("by_full_name_filter_view", :startkey => ["active"], :endkey => ["active", {}]).and_return([@active_user_two, @active_user_one])
         get :index
         expect(assigns[:users]).to eq([@active_user_two, @active_user_one])
       end
 
       it "should filter all users and sort them by full_name" do
-        expect(User).to receive(:view).with("by_full_name_filter_view", {:startkey => ["all"], :endkey => ["all", {}]}).and_return([@active_user_two, @inactive_user, @active_user_one])
+        expect(User).to receive(:view).with("by_full_name_filter_view", :startkey => ["all"], :endkey => ["all", {}]).and_return([@active_user_two, @inactive_user, @active_user_one])
         get :index, :sort => "full_name", :filter => "all"
         expect(assigns[:users]).to eq([@active_user_two, @inactive_user, @active_user_one])
       end
 
       it "should filter all users and sort them by user_name" do
-        expect(User).to receive(:view).with("by_user_name_filter_view", {:startkey => ["all"], :endkey => ["all", {}]}).and_return([@active_user_one, @active_user_two, @inactive_user])
+        expect(User).to receive(:view).with("by_user_name_filter_view", :startkey => ["all"], :endkey => ["all", {}]).and_return([@active_user_one, @active_user_two, @inactive_user])
         get :index, :sort => "user_name", :filter => "all"
         expect(assigns[:users]).to eq([@active_user_one, @active_user_two, @inactive_user])
       end
 
       it "should filter active users and sort them by full_name" do
-        expect(User).to receive(:view).with("by_full_name_filter_view", {:startkey => ["active"], :endkey => ["active", {}]}).and_return([@active_user_two, @active_user_one])
+        expect(User).to receive(:view).with("by_full_name_filter_view", :startkey => ["active"], :endkey => ["active", {}]).and_return([@active_user_two, @active_user_one])
         get :index, :sort => "full_name", :filter => "active"
         expect(assigns[:users]).to eq([@active_user_two, @active_user_one])
       end
 
       it "should filter active users and sort them by user_name" do
-        expect(User).to receive(:view).with("by_user_name_filter_view", {:startkey => ["active"], :endkey => ["active", {}]}).and_return([@active_user_one, @active_user_two])
+        expect(User).to receive(:view).with("by_user_name_filter_view", :startkey => ["active"], :endkey => ["active", {}]).and_return([@active_user_one, @active_user_two])
         get :index, :sort => "user_name", :filter => "active"
         expect(assigns[:users]).to eq([@active_user_one, @active_user_two])
       end
@@ -109,7 +109,7 @@ describe UsersController, :type => :controller do
 
     it "should not show non-self user for non-admin" do
       fake_login
-      mock_user = double({:user_name => 'some_random'})
+      mock_user = double(:user_name => 'some_random')
       allow(User).to receive(:get).with("37").and_return(mock_user)
       get :show, :id => "37"
       expect(response.status).to eq(403)
@@ -198,11 +198,11 @@ describe UsersController, :type => :controller do
     context "when not admin user" do
       it "should not allow to edit admin specific fields" do
         fake_login
-        mock_user = double({:user_name => "User_name"})
+        mock_user = double(:user_name => "User_name")
         allow(User).to receive(:get).with("24").and_return(mock_user)
         allow(controller).to receive(:current_user_name).and_return("test_user")
         allow(mock_user).to receive(:has_role_ids?).and_return(false)
-        post :update, {:id => "24", :user => {:user_type => "Administrator"}}
+        post :update, :id => "24", :user => {:user_type => "Administrator"}
         expect(response.status).to eq(403)
       end
     end
@@ -232,9 +232,9 @@ describe UsersController, :type => :controller do
       it "should create admin user if the admin user type is specified" do
         fake_login_as(Permission::USERS[:create_and_edit])
         mock_user = User.new
-        expect(User).to receive(:new).with({"role_ids" => %w(abcd)}).and_return(mock_user)
+        expect(User).to receive(:new).with("role_ids" => %w(abcd)).and_return(mock_user)
         expect(mock_user).to receive(:save).and_return(true)
-        post :create, {"user" => {"role_ids" => %w(abcd)}}
+        post :create, "user" => {"role_ids" => %w(abcd)}
       end
 
       it "should render new if the given user is invalid and assign user,roles" do
@@ -242,7 +242,7 @@ describe UsersController, :type => :controller do
         allow(Role).to receive(:all).and_return("some roles")
         expect(User).to receive(:new).and_return(mock_user)
         expect(mock_user).to receive(:save).and_return(false)
-        put :create, {:user => {:role_ids => ["wxyz"]}}
+        put :create, :user => {:role_ids => ["wxyz"]}
         expect(response).to render_template :new
         expect(assigns[:user]).to eq(mock_user)
         expect(assigns[:roles]).to eq("some roles")
@@ -254,7 +254,7 @@ describe UsersController, :type => :controller do
     it "should set verify to true, if user is invalid" do
       allow(controller).to receive(:authorize!).and_return(true)
       expect(User).to receive(:get).with("unique_id").and_return(double("user", :update_attributes => false, :verified? => false))
-      post :update, {:id => "unique_id", :user => {:verified => true}}
+      post :update, :id => "unique_id", :user => {:verified => true}
       expect(controller.params[:verify]).to be_truthy
     end
 
@@ -270,7 +270,7 @@ describe UsersController, :type => :controller do
       expect(child2).to receive(:verified=).with(true)
       expect(child2).to receive(:save)
       expect(Child).to receive(:by_created_by).with(:key => "user").and_return([child1, child2])
-      post :update, {:id => "unique_id", :user => {:verified => true}}
+      post :update, :id => "unique_id", :user => {:verified => true}
     end
 
     it "should call verify_children only for recently verified users" do
@@ -278,7 +278,7 @@ describe UsersController, :type => :controller do
       allow(mock_user).to receive(:update_attributes).and_return(true)
       expect(User).to receive(:get).with("unique_id").and_return(mock_user)
       expect(Child).not_to receive(:by_created_by)
-      post :update, {:id => "unique_id", :user => {:verified => true}}
+      post :update, :id => "unique_id", :user => {:verified => true}
     end
   end
 
@@ -302,7 +302,7 @@ describe UsersController, :type => :controller do
       expect(@mock_change_form).to receive(:user=).with(@user).and_return(nil)
       expect(@mock_change_form).to receive(:execute).and_return(true)
 
-      post :update_password, {:forms_change_password_form => @mock_params}
+      post :update_password, :forms_change_password_form => @mock_params
       expect(flash[:notice]).to eq("Password changed successfully")
       expect(response).to redirect_to :action => :show, :id => @user.id
     end
@@ -311,7 +311,7 @@ describe UsersController, :type => :controller do
       expect(@mock_change_form).to receive(:user=).with(@user).and_return(nil)
       expect(@mock_change_form).to receive(:execute).and_return(false)
 
-      post :update_password, {:forms_change_password_form => @mock_params}
+      post :update_password, :forms_change_password_form => @mock_params
       expect(response).to render_template :change_password
     end
   end
@@ -322,7 +322,7 @@ describe UsersController, :type => :controller do
       expect(User).to receive(:new).with("user_name" => "salvador", "verified" => false, "password" => "password", "password_confirmation" => "password").and_return(user = "some_user")
       expect(user).to receive :save!
 
-      post :register_unverified, {:format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}}
+      post :register_unverified, :format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}
 
       expect(response).to be_ok
     end
@@ -331,7 +331,7 @@ describe UsersController, :type => :controller do
       expect(User).to receive(:find_by_user_name).and_return("something that is not nil")
       expect(User).not_to receive(:new)
 
-      post :register_unverified, {:format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}}
+      post :register_unverified, :format => :json, :user => {:user_name => "salvador", "unauthenticated_password" => "password"}
       expect(response).to be_ok
     end
   end

@@ -20,8 +20,8 @@ describe Role, :type => :model do
   end
 
   it "should not be valid if a role name has been taken already" do
-    Role.create({:name => "Unique", :permissions => Permission.all_permissions})
-    role = Role.new({:name => "Unique", :permissions => Permission.all_permissions})
+    Role.create(:name => "Unique", :permissions => Permission.all_permissions)
+    role = Role.new(:name => "Unique", :permissions => Permission.all_permissions)
     expect(role).not_to be_valid
     expect(role.errors[:name]).to eq(["A role with that name already exists, please enter a different name"])
   end

@@ -128,7 +128,7 @@ class FormSection < CouchRest::Model::Base
 
   def self.add_field_to_formsection(formsection, field)
     raise I18n.t("errors.models.form_section.add_field_to_form_section") unless formsection.editable
-    field.merge!({'base_language' => formsection['base_language']})
+    field.merge!('base_language' => formsection['base_language'])
     formsection.fields.push(field)
     formsection.save
   end

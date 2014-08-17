@@ -161,8 +161,8 @@ describe FormSectionController, :type => :controller do
 
   describe "post enable" do
     it "should toggle the given form_section to hide/show" do
-      form_section1 = FormSection.create!({:name => "name1", :description => "desc", :visible => "true", :unique_id => "form_1"})
-      form_section2 = FormSection.create!({:name => "name2", :description => "desc", :visible => "false", :unique_id => "form_2"})
+      form_section1 = FormSection.create!(:name => "name1", :description => "desc", :visible => "true", :unique_id => "form_1")
+      form_section2 = FormSection.create!(:name => "name2", :description => "desc", :visible => "false", :unique_id => "form_2")
       post :toggle, :id => "form_1"
       expect(FormSection.get_by_unique_id(form_section1.unique_id).visible).to be false
       post :toggle, :id => "form_2"

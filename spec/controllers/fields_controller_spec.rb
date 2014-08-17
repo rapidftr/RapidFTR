@@ -31,7 +31,7 @@ describe FieldsController, :type => :controller do
       expect(Field).to receive(:new).and_return(@field)
       expect(@field).to receive(:errors).and_return(["errors"])
       post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
-      expect(assigns[:show_add_field]).to eq({:show_add_field => true})
+      expect(assigns[:show_add_field]).to eq(:show_add_field => true)
       expect(response).to be_success
       expect(response).to render_template("form_section/edit")
     end
@@ -58,7 +58,7 @@ describe FieldsController, :type => :controller do
       get :edit, :form_section_id => "unique_id", :id => 'field1'
       expect(assigns[:body_class]).to eq("forms-page")
       expect(assigns[:field]).to eq(field)
-      expect(assigns[:show_add_field]).to eq({:show_add_field => true})
+      expect(assigns[:show_add_field]).to eq(:show_add_field => true)
       expect(response).to render_template('form_section/edit')
     end
   end
@@ -125,7 +125,7 @@ describe FieldsController, :type => :controller do
       put :update, :id => "field", :form_section_id => "unique_id",
           :field => {:display_name => "What Country Are You From", :visible => false, :help_text => "new help text"}
 
-      expect(assigns[:show_add_field]).to eq({:show_add_field => true})
+      expect(assigns[:show_add_field]).to eq(:show_add_field => true)
       expect(response).to render_template("form_section/edit")
     end
 

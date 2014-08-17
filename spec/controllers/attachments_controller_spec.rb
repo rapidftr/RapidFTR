@@ -4,7 +4,7 @@ describe AttachmentsController, :type => :controller do
 
   before do
     fake_login
-    mock_user = double({:organisation => 'UNICEF'})
+    mock_user = double(:organisation => 'UNICEF')
     allow(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
     allow(controller).to receive(:set_locale)
   end

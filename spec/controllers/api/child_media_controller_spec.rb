@@ -11,19 +11,19 @@ describe Api::ChildMediaController, :type => :controller do
 
   describe "routing" do
     it "should have a route for a child current photo" do
-      expect({:get => "/api/children/1/photo"}).to route_to(:controller => "api/child_media", :action => "show_photo", :id => "1")
+      expect(:get => "/api/children/1/photo").to route_to(:controller => "api/child_media", :action => "show_photo", :id => "1")
     end
 
     it "should have a route for a child current recorded audio" do
-      expect({:get => "api/children/1/audio"}).to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1")
+      expect(:get => "api/children/1/audio").to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1")
     end
 
     it "should have a route for a child current recorded audio" do
-      expect({:get => "api/children/1/audio/a1"}).to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1", :audio_id => "a1")
+      expect(:get => "api/children/1/audio/a1").to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1", :audio_id => "a1")
     end
 
     it "should have a route for a child specific photo" do
-      expect({:get => "api/children/c1/photo/p1"}).to route_to(:controller => "api/child_media", :action => "show_photo", :id => "c1", :photo_id => "p1")
+      expect(:get => "api/children/c1/photo/p1").to route_to(:controller => "api/child_media", :action => "show_photo", :id => "c1", :photo_id => "p1")
     end
   end
 

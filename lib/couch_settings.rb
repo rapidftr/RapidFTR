@@ -79,7 +79,7 @@ class CouchSettings
   end
 
   def authenticate(username, password)
-    RestClient.post "#{uri}/_session", "name=#{username}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
+    RestClient.post "#{uri}/_session", "name=#{username}&password=#{password}", :content_type => 'application/x-www-form-urlencoded'
     true
   end
 

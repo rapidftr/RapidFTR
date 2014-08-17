@@ -9,7 +9,7 @@ module RapidFTR
     def self.reset_form
       FormSection.all.each { |f| f.destroy  if f.form.name == Enquiry::FORM_NAME  }
       Form.all.each { |f| f.destroy if f.name == Enquiry::FORM_NAME }
-      Form.create({:name => Enquiry::FORM_NAME})
+      Form.create(:name => Enquiry::FORM_NAME)
     end
 
     def self.reset_definitions
@@ -22,23 +22,23 @@ module RapidFTR
 
     def self.build_enquiry_section
       enquiry_fields = [
-        Field.new({
+        Field.new(
                     "name" => "enquirer_name",
                     "type" => "text_field",
                     "display_name_all" => "Enquirer Name"
-                  }),
-        Field.new({
+                  ),
+        Field.new(
                     "name" => "criteria",
                     "type" => "textarea",
                     "display_name_all" => "Criteria"
-                  })]
+                  )]
 
-      FormSection.new({"visible" => true, :order => 1,
+      FormSection.new("visible" => true, :order => 1,
                        "unique_id" => "enquiry_criteria",
                        :fields => enquiry_fields,
                        "name_all" => "Enquiry Criteria",
                        "description_all" => "Enquiry Criteria"
-      })
+      )
     end
   end
 end

@@ -9,13 +9,13 @@ describe Enquiry, :type => :model do
 
   describe 'validation' do
     it 'should not create enquiry without criteria' do
-      enquiry = create_enquiry_with_created_by('user name', {:enquirer_name => 'Vivek'})
+      enquiry = create_enquiry_with_created_by('user name', :enquirer_name => 'Vivek')
       expect(enquiry).not_to be_valid
       expect(enquiry.errors[:criteria]).to eq(["Please add criteria to your enquiry"])
     end
 
     it "should not create enquiry with empty criteria" do
-      enquiry = create_enquiry_with_created_by('user name', {:enquirer_name => 'Vivek', :criteria => {}})
+      enquiry = create_enquiry_with_created_by('user name', :enquirer_name => 'Vivek', :criteria => {})
       expect(enquiry).not_to be_valid
       expect(enquiry.errors[:criteria]).to eq(["Please add criteria to your enquiry"])
     end
@@ -29,7 +29,7 @@ describe Enquiry, :type => :model do
 
     describe '#update_from_properties' do
       it "should update the enquiry" do
-        enquiry = create_enquiry_with_created_by("jdoe", {:enquirer_name => 'Vivek', :place => 'Kampala'})
+        enquiry = create_enquiry_with_created_by("jdoe", :enquirer_name => 'Vivek', :place => 'Kampala')
         properties = {:enquirer_name => 'DJ', :place => 'Kampala'}
 
         enquiry.update_from(properties)
@@ -276,7 +276,7 @@ describe Enquiry, :type => :model do
     private
 
     def create_enquiry_with_created_by(created_by, options = {}, organisation = "UNICEF")
-      user = User.new({:user_name => created_by, :organisation => organisation})
+      user = User.new(:user_name => created_by, :organisation => organisation)
       Enquiry.new_with_user_name(user, options)
     end
 

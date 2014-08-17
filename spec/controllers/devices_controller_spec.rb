@@ -5,7 +5,7 @@ describe DevicesController, :type => :controller do
   describe "GET index" do
     it "fetches all the blacklisted devices but not the replication details if user have only black listed permission" do
       fake_login_as(Permission::DEVICES[:black_list])
-      device = double({:user_name => "someone"})
+      device = double(:user_name => "someone")
       expect(Device).to receive(:view).with("by_imei").and_return([device])
       expect(Replication).not_to receive(:all)
       get :index
@@ -32,8 +32,8 @@ describe DevicesController, :type => :controller do
       device = double
       expect(Device).to receive(:find_by_device_imei).with("123").and_call_original
       expect(Device).to receive(:by_imei).with(:key => "123").and_return([device])
-      expect(device).to receive(:update_attributes).with({:blacklisted => true}).and_return(true)
-      post :update_blacklist, {:imei => "123", :blacklisted => "true"}
+      expect(device).to receive(:update_attributes).with(:blacklisted => true).and_return(true)
+      post :update_blacklist, :imei => "123", :blacklisted => "true"
       expect(response.body).to eq("{\"status\":\"ok\"}")
     end
 
@@ -42,15 +42,15 @@ describe DevicesController, :type => :controller do
       device = double
       expect(Device).to receive(:find_by_device_imei).with("123").and_call_original
       expect(Device).to receive(:by_imei).with(:key => "123").and_return([device])
-      expect(device).to receive(:update_attributes).with({:blacklisted => true}).and_return(false)
-      post :update_blacklist, {:imei => "123", :blacklisted => "true"}
+      expect(device).to receive(:update_attributes).with(:blacklisted => true).and_return(false)
+      post :update_blacklist, :imei => "123", :blacklisted => "true"
       expect(response.body).to eq("{\"status\":\"error\"}")
     end
 
     it "should not update the device by user without blacklist permission" do
       fake_login_as(Permission::USERS[:create_and_edit])
       expect(Device).not_to receive(:view).with("by_imei")
-      post :update_blacklist, {:imei => "123", :blacklisted => "true"}
+      post :update_blacklist, :imei => "123", :blacklisted => "true"
       expect(response.status).to eq(403)
     end
   end

@@ -26,8 +26,8 @@ describe DatabaseController, :type => :controller do
 
   it "should delete all enquiry models in non-production environments" do
     allow(User).to receive(:find_by_user_name).with("me").and_return(double(:organisation => "stc"))
-    Enquiry.create({:enquirer_name => 'Someone', :criteria => {'name' => 'child name'}})
-    Enquiry.create({:enquirer_name => 'Someone Else', :criteria => {'name' => 'child name'}})
+    Enquiry.create(:enquirer_name => 'Someone', :criteria => {'name' => 'child name'})
+    Enquiry.create(:enquirer_name => 'Someone Else', :criteria => {'name' => 'child name'})
 
     delete :delete_data, :data_type => "enquiry"
 

@@ -42,12 +42,12 @@ module RecordHelper
   end
 
   def add_creation_history
-    self['histories'].unshift({
+    self['histories'].unshift(
                                 'user_name' => created_by,
                                 'user_organisation' => organisation_of(created_by),
                                 'datetime' => created_at,
                                 'changes' => {'child' => {:created => created_at}}
-                              })
+                              )
   end
 
   def update_with_attachments(params, user)
@@ -74,11 +74,11 @@ module RecordHelper
 
   def add_to_history(changes)
     last_updated_user_name = last_updated_by
-    self['histories'].unshift({
+    self['histories'].unshift(
                                 'user_name' => last_updated_user_name,
                                 'user_organisation' => organisation_of(last_updated_user_name),
                                 'datetime' => last_updated_at,
-                                'changes' => changes})
+                                'changes' => changes)
   end
 
   def organisation_of(user_name)

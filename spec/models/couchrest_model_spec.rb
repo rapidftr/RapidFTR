@@ -15,7 +15,7 @@ describe "couchrest_model", :type => :model do
 
     it "marks attributes set via set_attributes as changed" do
       child = Child.create('foo_attribute' => 'Value A', 'created_by' => 'me')
-      child.set_attributes({'foo_attribute' => 'Value B'})
+      child.set_attributes('foo_attribute' => 'Value B')
 
       expect(child.changed?).to be_truthy
       expect(child.changed_attributes.keys.include?('foo_attribute')).to be_truthy
@@ -24,11 +24,11 @@ describe "couchrest_model", :type => :model do
 
     it "marks nested attributes set via set_attributes as changed" do
       child = Child.create('foo_attribute' => {'bar_attribute' => 'Value A'}, 'created_by' => 'me')
-      child.set_attributes({'foo_attribute' => {'bar_attribute' => 'Value B'}})
+      child.set_attributes('foo_attribute' => {'bar_attribute' => 'Value B'})
 
       expect(child.changed?).to be_truthy
       expect(child.changed_attributes.keys.include?('foo_attribute')).to be_truthy
-      expect(child.changed_attributes['foo_attribute']).to eql({'bar_attribute' => 'Value A'})
+      expect(child.changed_attributes['foo_attribute']).to eql('bar_attribute' => 'Value A')
     end
 
   end

@@ -270,13 +270,13 @@ describe FormSection, :type => :model do
     end
     it "should create a new form section" do
       expect(FormSection).to receive(:new).at_least(:once)
-      FormSection.new_with_order({:name => "basic"})
+      FormSection.new_with_order(:name => "basic")
     end
 
     it "should set the order to one plus maximum order value" do
       allow(FormSection).to receive(:by_order).and_return([FormSection.new(:order => 20), FormSection.new(:order => 10), FormSection.new(:order => 40)])
       new_should_be_called_with :order, 41
-      FormSection.new_with_order({:name => "basic"})
+      FormSection.new_with_order(:name => "basic")
     end
   end
 
@@ -398,9 +398,9 @@ describe FormSection, :type => :model do
         fs = FormSection.new(:name_en => "english name", :name_fr => "french name", :unique_id => "unique id",
                              :fields => [Field.new(:display_name_en => "dn in english", :display_name_zh => "dn in chinese", :name => "name")])
         form_section = fs.formatted_hash
-        expect(form_section["name"]).to eq({"en" => "english name", "fr" => "french name"})
+        expect(form_section["name"]).to eq("en" => "english name", "fr" => "french name")
         expect(form_section["unique_id"]).to eq("unique id")
-        expect(form_section["fields"].first["display_name"]).to eq({"en" => "dn in english", "zh" => "dn in chinese"})
+        expect(form_section["fields"].first["display_name"]).to eq("en" => "dn in english", "zh" => "dn in chinese")
         expect(form_section["fields"].first["name"]).to eq("name")
       end
     end

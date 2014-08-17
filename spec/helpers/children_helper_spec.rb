@@ -124,7 +124,7 @@ describe ChildrenHelper, :type => :helper do
 
       options = helper.order_options_array_from system_fields, form_fields
 
-      expect(options).to eq({t("children.order_by.system_fields") => [["Created at", "created_at"]], "First" => [%w(display_name id_name)]})
+      expect(options).to eq(t("children.order_by.system_fields") => [["Created at", "created_at"]], "First" => [%w(display_name id_name)])
     end
   end
 end

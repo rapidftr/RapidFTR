@@ -12,7 +12,7 @@ describe ReplicationsController, :type => :controller do
     config = {"a" => "a", "b" => "b", "c" => "c"}
     expect(CouchSettings.instance).to receive(:authenticate).with("rapidftr", "rapidftr").and_return(true)
     expect(Replication).to receive(:couch_config).and_return(config)
-    post :configuration, {:user_name => "rapidftr", :password => "rapidftr"}
+    post :configuration, :user_name => "rapidftr", :password => "rapidftr"
     target_json = JSON.parse(response.body)
     expect(target_json).to eq(config)
   end

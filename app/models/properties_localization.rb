@@ -46,7 +46,7 @@ module PropertiesLocalization
 
       next if property_value.nil?
       if RapidFTR::Application.locales.include? locale.to_s
-        properties_hash[property_name] = properties_hash[property_name].nil? ? {locale => property_value} : properties_hash[property_name].merge!({locale => property_value})
+        properties_hash[property_name] = properties_hash[property_name].nil? ? {locale => property_value} : properties_hash[property_name].merge!(locale => property_value)
       else
         properties_hash[property] = property_value
       end

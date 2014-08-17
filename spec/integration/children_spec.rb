@@ -5,20 +5,20 @@ describe Child, :type => :request do
   include CouchdbClientHelper
   it "should save a child in the database" do
     photo = uploadable_photo
-    child = build_child("jdoe", {
-                          "name" => "Dave",
-                          "age" => "28",
-                          "last_known_location" => "London",
-                          "photo" => photo})
+    child = build_child("jdoe",
+                        "name" => "Dave",
+                        "age" => "28",
+                        "last_known_location" => "London",
+                        "photo" => photo)
     expect(child.save).to be_truthy
   end
 
   it "should load an existing child record from the database" do
     photo = uploadable_photo
-    child = build_child("jdoe", {
-                          "name" => "Paul",
-        "age" => "10",
-        "last_known_location" => "New York", "photo" => photo})
+    child = build_child("jdoe",
+                        "name" => "Paul",
+      "age" => "10",
+      "last_known_location" => "New York", "photo" => photo)
     child.save
 
     child_from_db = Child.get(child.id)
@@ -30,7 +30,7 @@ describe Child, :type => :request do
   end
 
   it "should persist multiple photo attachments" do
-    mock_user = double({:organisation => 'UNICEF'})
+    mock_user = double(:organisation => 'UNICEF')
     allow(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
     allow(Clock).to receive(:now).and_return(Time.parse("Jan 20 2010 12:04:15"))
     child = Child.create('last_known_location' => "New York", 'photo' => uploadable_photo_jeff)

@@ -11,9 +11,9 @@ describe WeeklyReport do
       create :form_section, "name" => "Basic Identity", "visible" => true, :order => 1, :unique_id => "basic_identity", "editable" => true, :fields => basic_identity_fields, :perm_enabled => true
 
       @user = User.new(:user_name => "faris")
-      @child1 = Child.new_with_user_name(@user, {:name => "childOne", :protection_status => "Unaccompanied", :gender => "Male", :ftr_status => "Identified"}).save!
-      @child2 = Child.new_with_user_name(@user, {:name => "childTwo", :protection_status => "Separated", :gender => "Male", :ftr_status => "Tracing On-Going"}).save!
-      @child3 = Child.new_with_user_name(@user, {:name => "childThree", :protection_status => "Separated", :gender => "Female", :ftr_status => "Family Located- Inter-Camp FR Pending"}).save!
+      @child1 = Child.new_with_user_name(@user, :name => "childOne", :protection_status => "Unaccompanied", :gender => "Male", :ftr_status => "Identified").save!
+      @child2 = Child.new_with_user_name(@user, :name => "childTwo", :protection_status => "Separated", :gender => "Male", :ftr_status => "Tracing On-Going").save!
+      @child3 = Child.new_with_user_name(@user, :name => "childThree", :protection_status => "Separated", :gender => "Female", :ftr_status => "Family Located- Inter-Camp FR Pending").save!
     end
 
     after :all do

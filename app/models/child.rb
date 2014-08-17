@@ -151,7 +151,7 @@ class Child < CouchRest::Model::Base
 
   def self.fetch_all_ids_and_revs
     ids_and_revs = []
-    all_rows = by_ids_and_revs({:include_docs => false})["rows"]
+    all_rows = by_ids_and_revs(:include_docs => false)["rows"]
     all_rows.each do |row|
       ids_and_revs << row["value"]
     end

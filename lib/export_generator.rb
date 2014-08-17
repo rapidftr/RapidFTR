@@ -54,7 +54,7 @@ class ExportGenerator
       end
     end
 
-    Export.new csv_data, {:type => 'text/csv', :filename => filename("full-details", "csv")}
+    Export.new csv_data, :type => 'text/csv', :filename => filename("full-details", "csv")
   end
 
   def map_field_with_value(child, fields)

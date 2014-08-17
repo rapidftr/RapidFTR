@@ -519,7 +519,7 @@ describe ChildrenController, :type => :controller do
 
     it "should update the last_updated_by_full_name field with the logged in user full name" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.new_with_user_name(user, {:name => 'existing child'})
+      child = Child.new_with_user_name(user, :name => 'existing child')
       allow(Child).to receive(:get).with("123").and_return(child)
       expect(subject).to receive('current_user_full_name').and_return('Bill Clinton')
 
@@ -530,7 +530,7 @@ describe ChildrenController, :type => :controller do
 
     it "should not set photo if photo is not passed" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.new_with_user_name(user, {:name => 'some name'})
+      child = Child.new_with_user_name(user, :name => 'some name')
       params_child = {"name" => 'update'}
       allow(controller).to receive(:current_user_name).and_return("user_name")
       expect(child).to receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
@@ -540,7 +540,7 @@ describe ChildrenController, :type => :controller do
 
     it "should redirect to redirect_url if it is present in params" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.new_with_user_name(user, {:name => 'some name'})
+      child = Child.new_with_user_name(user, :name => 'some name')
       params_child = {"name" => 'update'}
       allow(controller).to receive(:current_user_name).and_return("user_name")
       expect(child).to receive(:update_properties_with_user_name).with("user_name", "", nil, nil, params_child)
@@ -551,7 +551,7 @@ describe ChildrenController, :type => :controller do
 
     it "should redirect to child page if redirect_url is not present in params" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.new_with_user_name(user, {:name => 'some name'})
+      child = Child.new_with_user_name(user, :name => 'some name')
 
       params_child = {"name" => 'update'}
       allow(controller).to receive(:current_user_name).and_return("user_name")
@@ -736,10 +736,10 @@ describe ChildrenController, :type => :controller do
 
     it "should mark all children created as verified/unverifid based on the user" do
       @user.verified = true
-      expect(Child).to receive(:new_with_user_name).with(@user, {"name" => "timmy", "verified" => @user.verified?}).and_return(child = Child.new)
+      expect(Child).to receive(:new_with_user_name).with(@user, "name" => "timmy", "verified" => @user.verified?).and_return(child = Child.new)
       expect(child).to receive(:save).and_return true
 
-      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
+      post :sync_unverified, :child => {:name => "timmy"}, :format => :json
 
       @user.verified = true
     end
@@ -748,7 +748,7 @@ describe ChildrenController, :type => :controller do
       expect(Child).to receive(:new_with_user_name).and_return(child = Child.new)
       expect(child).to receive(:save).and_return true
 
-      post :sync_unverified, {:child => {:name => "timmy"}, :format => :json}
+      post :sync_unverified, :child => {:name => "timmy"}, :format => :json
 
       expect(child['created_by_full_name']).to eq @user.full_name
     end
@@ -761,7 +761,7 @@ describe ChildrenController, :type => :controller do
       expect(controller).to receive(:update_child_from).and_return(child)
       expect(child).to receive(:save).and_return true
 
-      post :sync_unverified, {:child => {:name => "timmy", :unique_identifier => '12345671234567'}, :format => :json}
+      post :sync_unverified, :child => {:name => "timmy", :unique_identifier => '12345671234567'}, :format => :json
 
       expect(child['created_by_full_name']).to eq @user.full_name
     end
@@ -773,7 +773,7 @@ describe ChildrenController, :type => :controller do
     end
     it "should update the child record instead of creating if record already exists" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
-      child = Child.new_with_user_name(user, {:name => 'old name'})
+      child = Child.new_with_user_name(user, :name => 'old name')
       child.save
       fake_admin_login
       allow(controller).to receive(:authorize!)

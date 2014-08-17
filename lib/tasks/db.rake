@@ -16,7 +16,7 @@ namespace :db do
 
     begin
       full_host = "#{url}/_config/admins/#{user_name}"
-      RestClient.put full_host, "\"" + password + "\"", {:content_type => :json}
+      RestClient.put full_host, "\"" + password + "\"", :content_type => :json
       puts "Administrator account #{user_name} has been created"
     rescue
       puts "Administrator account #{user_name} is already existing"

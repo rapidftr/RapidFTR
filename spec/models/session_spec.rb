@@ -5,7 +5,7 @@ describe Session, :type => :model do
     it "should not allow blacklisted imei to login" do
       imei = "1335"
       user = double(User).as_null_object
-      allow(Device).to receive(:all).and_return([Device.new({:imei => "1335", :blacklisted => true})])
+      allow(Device).to receive(:all).and_return([Device.new(:imei => "1335", :blacklisted => true)])
 
       session = Session.for_user(user, imei)
       expect(session.device_blacklisted?).to eq(true)
@@ -14,7 +14,7 @@ describe Session, :type => :model do
     it "should allow non blacklisted imei to login" do
       imei = "1335"
       user = double(User).as_null_object
-      allow(Device).to receive(:all).and_return([Device.new({:imei => "1335", :blacklisted => false})])
+      allow(Device).to receive(:all).and_return([Device.new(:imei => "1335", :blacklisted => false)])
 
       session = Session.for_user(user, imei)
       expect(session.device_blacklisted?).to eq(false)

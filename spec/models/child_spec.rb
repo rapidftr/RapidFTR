@@ -130,14 +130,14 @@ describe Child, :type => :model do
     it "should set flagged_at if the record has been flagged" do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = create_child("timothy cochran")
-      child.update_properties_with_user_name 'some user name', nil, nil, nil, {:flag => true}
+      child.update_properties_with_user_name 'some user name', nil, nil, nil, :flag => true
       expect(child.flag_at).to eq("2010-01-17 19:05:00UTC")
     end
 
     it "should set reunited_at if the record has been reunited" do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, "jan", 17, 19, 5, 0))
       child = create_child("timothy cochran")
-      child.update_properties_with_user_name 'some user name', nil, nil, nil, {:reunited => true}
+      child.update_properties_with_user_name 'some user name', nil, nil, nil, :reunited => true
       expect(child.reunited_at).to eq("2010-01-17 19:05:00UTC")
     end
 
@@ -170,7 +170,7 @@ describe Child, :type => :model do
     end
 
     it "should fail to validate if all fields on child record are the default values" do
-      child = Child.new({:height => "", :reunite_with_mother => ""})
+      child = Child.new(:height => "", :reunite_with_mother => "")
       allow(FormSection).to receive(:all_visible_child_fields).and_return [
         Field.new(:type => Field::NUMERIC_FIELD, :name => 'height'),
         Field.new(:type => Field::RADIO_BUTTON, :name => 'reunite_with_mother'),
@@ -180,7 +180,7 @@ describe Child, :type => :model do
     end
 
     it "should validate numeric types" do
-      fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"})]
+      fields = [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height")]
       child = Child.new
       child[:height] = "very tall"
       allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
@@ -190,8 +190,8 @@ describe Child, :type => :model do
     end
 
     it "should validate multiple numeric types" do
-      fields = [Field.new({:type => 'numeric_field', :name => 'height', :display_name => "height"}),
-                Field.new({:type => 'numeric_field', :name => 'new_age', :display_name => "new age"})]
+      fields = [Field.new(:type => 'numeric_field', :name => 'height', :display_name => "height"),
+                Field.new(:type => 'numeric_field', :name => 'new_age', :display_name => "new age")]
       child = Child.new
       child[:height] = "very tall"
       child[:new_age] = "very old"
@@ -262,7 +262,7 @@ describe Child, :type => :model do
     end
 
     it "should allow blank age" do
-      child = Child.new({:age => "", :another_field => "blah"})
+      child = Child.new(:age => "", :another_field => "blah")
       expect(child).to be_valid
       child = Child.new :foo => "bar"
       expect(child).to be_valid
@@ -678,14 +678,14 @@ describe Child, :type => :model do
         build(:audio_field, :name => 'recorded_audio')
       ]
       allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
-      mock_user = double({:organisation => 'UNICEF'})
+      mock_user = double(:organisation => 'UNICEF')
       allow(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
     end
 
     it "should add a history entry when a record is created" do
       child = Child.create('last_known_location' => 'New York', 'created_by' => "me")
       expect(child['histories'].size).to be 1
-      expect(child["histories"][0]).to eq({"changes" => {"child" => {:created => nil}}, "datetime" => nil, "user_name" => "me", "user_organisation" => "UNICEF"})
+      expect(child["histories"][0]).to eq("changes" => {"child" => {:created => nil}}, "datetime" => nil, "user_name" => "me", "user_organisation" => "UNICEF")
     end
 
     it "should update history with 'from' value on last_known_location update" do
@@ -1223,7 +1223,7 @@ describe Child, :type => :model do
   end
 
   def create_child_with_created_by(created_by, options = {})
-    user = User.new({:user_name => created_by, :organisation => "UNICEF"})
+    user = User.new(:user_name => created_by, :organisation => "UNICEF")
     Child.new_with_user_name user, options
   end
 end
