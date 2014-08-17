@@ -5,10 +5,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 250
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
 # Offense count: 2
 Lint/HandleExceptions:
   Enabled: false
@@ -171,10 +167,6 @@ Style/RedundantReturn:
 # Cop supports --auto-correct.
 Style/RedundantSelf:
   Enabled: false
-
-# Offense count: 2
-Style/RegexpLiteral:
-  MaxSlashes: 3
 
 # Offense count: 13
 Style/RescueModifier:

@@ -6,8 +6,16 @@ AllCops:
     - 'infrastructure/**/*'
     - 'vendor/**/*'
 
+Lint/AmbiguousRegexpLiteral:
+  Exclude:
+    - 'features/step_definitions/*.rb'
+
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
 Style/Lambda:
   Enabled: false
+
+Style/RegexpLiteral:
+  Exclude:
+    - 'features/step_definitions/*.rb'
