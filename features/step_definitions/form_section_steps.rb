@@ -46,7 +46,7 @@ When /^I demote field "([^"]*)"$/ do |field|
 end
 
 Then /^I should find the form section with following attributes:$/ do |form_section_fields|
-  expected_order = form_section_fields.hashes.collect { |section_field| section_field['Name'] }
+  expected_order = form_section_fields.hashes.map { |section_field| section_field['Name'] }
   form_section_page.should_show_fields_in_order(expected_order)
 end
 

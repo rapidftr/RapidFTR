@@ -31,7 +31,7 @@ describe StandardFormsService do
           "enquiries" => {"user_selected" => "1", "id" => "enquiries"}}}
         StandardFormsService.persist(attributes)
         expect(Form.all.all.length).to eq 2
-        expect(Form.all.collect(&:name)).to include(Child::FORM_NAME, Enquiry::FORM_NAME)
+        expect(Form.all.map(&:name)).to include(Child::FORM_NAME, Enquiry::FORM_NAME)
       end
 
       it "should not add already existing forms" do

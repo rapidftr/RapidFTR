@@ -67,7 +67,7 @@ class ChildMediaController < ApplicationController
   end
 
   def photos_details
-    @child['photo_keys'].collect do |photo_key|
+    @child['photo_keys'].map do |photo_key|
       {
         :photo_url => child_photo_url(@child, photo_key),
         :thumbnail_url => child_thumbnail_url(@child, photo_key),

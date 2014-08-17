@@ -29,13 +29,13 @@ class FieldsController < ApplicationController
 
   def edit
     @body_class = 'forms-page'
-    @field = @form_section.fields.detect { |field| field.name == params[:id] }
+    @field = @form_section.fields.find { |field| field.name == params[:id] }
     @show_add_field = {:show_add_field => true}
     render :template => "form_section/edit", :locals => @show_add_field
   end
 
   def change_form
-    @field = @form_section.fields.detect { |field| field.name == params[:id] }
+    @field = @form_section.fields.find { |field| field.name == params[:id] }
     @form_section.delete_field @field.name
     destination_form = FormSection.get_by_unique_id(params[:destination_form_id])
     destination_form.add_field @field
@@ -88,6 +88,6 @@ class FieldsController < ApplicationController
   private
 
   def fetch_field(field_name)
-    @form_section.fields.detect { |field| field.name == field_name }
+    @form_section.fields.find { |field| field.name == field_name }
   end
 end

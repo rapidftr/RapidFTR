@@ -161,7 +161,7 @@ describe User, :type => :model do
     user.devices = [{"imei" => "1234", "blacklisted" => "true", :user_name => "timothy"}]
     user.save!
 
-    blacklisted_device = user.devices.detect { |device| device.imei == "1234" }
+    blacklisted_device = user.devices.find { |device| device.imei == "1234" }
     expect(blacklisted_device.blacklisted).to eq(true)
 
   end

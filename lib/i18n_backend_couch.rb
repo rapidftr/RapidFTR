@@ -21,7 +21,7 @@
 class I18nBackendCouch < I18n::Backend::Simple
 
   def load_translations
-    locales = db.documents["rows"].collect { |row| row["id"] }
+    locales = db.documents["rows"].map { |row| row["id"] }
     locales.each do |locale|
       translations[locale.to_sym] = db.get(locale).deep_symbolize_keys
     end

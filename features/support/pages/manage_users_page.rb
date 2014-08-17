@@ -12,6 +12,6 @@ class ManageUsersPage
   private
 
   def actual_user_names
-    @session.all(:xpath, "//td[@class='full_name']").collect(&:text)
+    @session.all(:xpath, "//td[@class='full_name']").map(&:text)
   end
 end

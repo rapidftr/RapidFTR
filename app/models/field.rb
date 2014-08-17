@@ -125,7 +125,7 @@ class Field
   def select_options
     select_options = []
     select_options << ['(Select...)', '']
-    select_options += @options.collect { |option| [option.option_name, option.option_name] }
+    select_options += @options.map { |option| [option.option_name, option.option_name] }
   end
 
   def is_highlighted?

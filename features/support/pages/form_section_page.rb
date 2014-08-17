@@ -53,7 +53,7 @@ class FormSectionPage
   end
 
   def should_show_fields_in_order(expected_field_order)
-    actual_order = @session.all(:xpath, "//tr[@class='rowEnabled']/td[1]").collect(&:text)
+    actual_order = @session.all(:xpath, "//tr[@class='rowEnabled']/td[1]").map(&:text)
     expect(actual_order).to eq(expected_field_order)
   end
 

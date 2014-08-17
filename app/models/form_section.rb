@@ -84,7 +84,7 @@ class FormSection < CouchRest::Model::Base
 
     def all_visible_child_fields_for_form(form_name)
       enabled_by_order_for_form(form_name).map do |form_section|
-        form_section.fields.find_all(&:visible)
+        form_section.fields.select(&:visible)
       end.flatten
     end
 
@@ -213,7 +213,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def merge_fields!(fields_to_merge)
-    current_field_names = fields.collect(&:name)
+    current_field_names = fields.map(&:name)
     fields_to_merge.reject! { |field| current_field_names.include? field.name }
     fields_to_merge.each { |new_field| fields << new_field }
   end

@@ -40,7 +40,7 @@ module PropertiesLocalization
       locale = property[-2..-1]
       property_name = property[0..property.length - 4]
       property_value = get_property_value(property)
-      property_value.collect! { |value| value.formatted_hash } if property_value.is_a?(CouchRest::Model::CastedArray)
+      property_value.map! { |value| value.formatted_hash } if property_value.is_a?(CouchRest::Model::CastedArray)
       property_value.map! { |value| value.is_a?(String) ? value.gsub(/\r\n?/, "\n").rstrip : value } if property_value.is_a?(Array)
       property_value = property_value.gsub(/\r\n?/, "\n").rstrip if property_value.is_a?(String)
 

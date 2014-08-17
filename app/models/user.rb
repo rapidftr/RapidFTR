@@ -154,7 +154,7 @@ class User < CouchRest::Model::Base
   end
 
   def roles
-    @roles ||= role_ids.collect { |id| Role.get(id) }.flatten
+    @roles ||= role_ids.map { |id| Role.get(id) }.flatten
   end
 
   def has_permission?(permission)
@@ -166,7 +166,7 @@ class User < CouchRest::Model::Base
   end
 
   def permissions
-    roles.compact.collect(&:permissions).flatten
+    roles.compact.map(&:permissions).flatten
   end
 
   def add_mobile_login_event(imei, mobile_number)
@@ -187,7 +187,7 @@ class User < CouchRest::Model::Base
     # attr_accessor devices field change.
     attribute_will_change!("devices")
     @devices = device_hashes.map do |device_hash|
-      device = all_devices.detect { |device| device.imei == device_hash["imei"] }
+      device = all_devices.find { |device| device.imei == device_hash["imei"] }
       device.blacklisted = device_hash["blacklisted"] == "true"
       device
     end

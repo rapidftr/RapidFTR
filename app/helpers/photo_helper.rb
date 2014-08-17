@@ -44,7 +44,7 @@ module PhotoHelper
 
   def photos=(new_photos)
     @photos = []
-    @new_photo_keys = new_photos.select { |photo| photo.respond_to? :content_type }.collect do |photo|
+    @new_photo_keys = new_photos.select { |photo| photo.respond_to? :content_type }.map do |photo|
       @photos << photo
       attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
       attach(attachment)
@@ -75,7 +75,7 @@ module PhotoHelper
     return [] if self['photo_keys'].blank?
     self["photo_keys"].sort_by do |key|
       key == self["current_photo_key"] ? "" : key
-    end.collect do |key|
+    end.map do |key|
       attachment(key)
     end
   end
@@ -87,7 +87,7 @@ module PhotoHelper
 
   def photos_index
     return [] if self['photo_keys'].blank?
-    self['photo_keys'].collect do |key|
+    self['photo_keys'].map do |key|
       {
         :photo_uri => child_photo_url(self, key),
         :thumbnail_uri => child_photo_url(self, key)

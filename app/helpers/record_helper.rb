@@ -93,7 +93,7 @@ module RecordHelper
   end
 
   def changes_for(field_names)
-    field_names.inject({}) do |changes, field_name|
+    field_names.reduce({}) do |changes, field_name|
       changes.merge(field_name => {
                       'from' => original_data[field_name],
                       'to' => self[field_name]

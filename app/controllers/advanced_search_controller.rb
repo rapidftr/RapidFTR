@@ -27,7 +27,7 @@ class AdvancedSearchController < ApplicationController
       search_params = params[:search_params].merge(:page => 1, :per_page => 1000)
       @search_form = Forms::SearchForm.new(:ability => current_ability, :params => search_params).execute
       children = @search_form.results
-      record_ids = @search_form.results.collect(&:id)
+      record_ids = @search_form.results.map(&:id)
     else
       record_ids = Hash[params["selections"].sort].values rescue []
       children = record_ids.map { |id| Child.get id }
