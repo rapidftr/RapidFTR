@@ -3,7 +3,7 @@ class FieldsController < ApplicationController
   before_action :read_form_section
   before_action :set_form
 
-  FIELD_TYPES = %w{ text_field textarea check_box select_box radio_button numeric_field date_field }
+  FIELD_TYPES = %w(text_field textarea check_box select_box radio_button numeric_field date_field)
 
   def read_form_section
     @form_section = FormSection.get_by_unique_id(params[:form_section_id])

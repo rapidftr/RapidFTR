@@ -68,7 +68,7 @@ end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|
   step 'I am on the home page'
-  step %|I select "#{timezone}" from "Current time zone"|
+  step %(I select "#{timezone}" from "Current time zone")
   step 'I press "Save"'
 end
 

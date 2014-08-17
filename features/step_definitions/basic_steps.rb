@@ -3,16 +3,16 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
-  step %{I attach the file "#{photo_path}" to "child_photo0"}
+  step %(I attach the file "#{photo_path}" to "child_photo0")
 end
 
 When /^I attach an audio file "([^"]*)"$/ do |audio_path|
-  step %{I attach the file "#{audio_path}" to "child[audio]"}
+  step %(I attach the file "#{audio_path}" to "child[audio]")
 end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    step %{I attach the file "#{photo.first}" to "child[photo]#{i}"}
+    step %(I attach the file "#{photo.first}" to "child[photo]#{i}")
   end
 end
 
