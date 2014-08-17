@@ -59,12 +59,12 @@ end
 
 Then /^I should not see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
   child_summary_panel = page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*")
-  expect(child_summary_panel).not_to have_content(text);
+  expect(child_summary_panel).not_to have_content(text)
 end
 
 Then /^I should see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
   child_summary_panel = page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*")
-  expect(child_summary_panel).to have_content(text);
+  expect(child_summary_panel).to have_content(text)
 end
 
 def get_element_for_edit_user_link(full_name, link)

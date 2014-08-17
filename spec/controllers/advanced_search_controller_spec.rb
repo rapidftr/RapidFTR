@@ -23,7 +23,7 @@ describe AdvancedSearchController, :type => :controller do
 
   describe 'collection' do
     it "GET export_data" do
-      expect(controller.current_ability).to receive(:can?).with(:export_pdf, Child).and_return(false);
+      expect(controller.current_ability).to receive(:can?).with(:export_pdf, Child).and_return(false)
       get :export_data, :commit => "Export Selected to PDF"
       expect(response.status).to eq(403)
     end

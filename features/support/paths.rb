@@ -18,33 +18,76 @@ module NavigationHelpers
         /new child page/                               => proc { |options, matches| new_child_path(options) },
         /children listing page/                        => proc { |options, matches| children_path(options) },
         /children display page/                        => proc { |options, matches| },
-        /saved record page for child with name "(.+)"/ => proc { |options, matches| child_name = matches[1]; child = Child.by_name(:key                                                                                              => child_name); raise "no child named '#{child_name}'" if child.nil? || child.empty?; child_path(child.first, options) },
-        /child record page for "(.+)"/                 => proc { |options, matches| child_name = matches[1]; child = Child.by_name(:key                                                                                              => child_name); raise "no child named '#{child_name}'" if child.nil? || child.empty?; child_path(child.first, options) },
-        /child record page for unique id "(.+)"/       => proc { |options, matches| unique_id = matches[1]; child = Child.get unique_id; rails "no child with unique id '#{unique_id}'" if child.nil?; child_path(child, options) },
-        /change log page for "(.+)"/                   => proc { |options, matches| child_name = matches[1]; child = Child.by_name(:key                                                                                              => child_name); raise "no child named '#{child_name}'" if child.nil? || child.empty?; child_history_path(child.first, options) },
+        /saved record page for child with name "(.+)"/ => proc { |options, matches|
+                                                            child_name = matches[1]
+                                                            child = Child.by_name(:key => child_name)
+                                                            raise "no child named '#{child_name}'" if child.nil? || child.empty?
+                                                            child_path(child.first, options)
+                                                          },
+        /child record page for "(.+)"/                 => proc { |options, matches|
+                                                            child_name = matches[1]
+                                                            child = Child.by_name(:key => child_name)
+                                                            raise "no child named '#{child_name}'" if child.nil? || child.empty?
+                                                            child_path(child.first, options)
+                                                          },
+        /child record page for unique id "(.+)"/       => proc { |options, matches|
+                                                            unique_id = matches[1]
+                                                            child = Child.get unique_id
+                                                            raise "no child with unique id '#{unique_id}'" if child.nil?
+                                                            child_path(child, options)
+                                                          },
+        /change log page for "(.+)"/                   => proc { |options, matches|
+                                                            child_name = matches[1]
+                                                            child = Child.by_name(:key => child_name)
+                                                            raise "no child named '#{child_name}'" if child.nil? || child.empty?
+                                                            child_history_path(child.first, options)
+                                                          },
         /new user page/                                => proc { |options, matches| new_user_path(options) },
         /manage users page/                            => proc { |options, matches| users_path(options) },
-        /edit user page for "(.+)"/                    => proc { |options, matches| user = User.find_by_user_name(matches[1]); edit_user_path(user, options) },
-        /user details page for "(.+)"/                 => proc { |options, matches| user = User.find_by_user_name(matches[1]); user_path(user, options) },
+        /edit user page for "(.+)"/                    => proc { |options, matches|
+                                                            user = User.find_by_user_name(matches[1])
+                                                            edit_user_path(user, options)
+                                                          },
+        /user details page for "(.+)"/                 => proc { |options, matches|
+                                                            user = User.find_by_user_name(matches[1])
+                                                            user_path(user, options)
+                                                          },
         /child search page/                            => proc { |options, matches| search_children_path(options) },
         /child advanced search page/                   => proc { |options, matches| advanced_search_index_path(options) },
         /login page/                                   => proc { |options, matches| login_path(options) },
         /logout page/                                  => proc { |options, matches| logout_path(options) },
         /child search results page/                    => proc { |options, matches| search_children_path(options) },
         /child advanced search results page/           => proc { |options, matches| advanced_search_index_path(options) },
-        /edit form section page for "(.+)"$/           => proc { |options, matches| edit_form_section_path(:id                                                                                                                       => matches[1]) },
-        /edit field page for "(.+)" on "(.+)" form$/   => proc { |options, matches| edit_form_section_field_path(:form_section_id                                                                                                    => matches[2], :id                                                                                                                => matches[1]) },
+        /edit form section page for "(.+)"$/           => proc { |options, matches| edit_form_section_path(:id => matches[1]) },
+        /edit field page for "(.+)" on "(.+)" form$/   => proc { |options, matches| edit_form_section_field_path(:form_section_id => matches[2], :id => matches[1]) },
         /form section page/                            => proc { |options, matches| form_sections_path(options) },
-        /choose field type page/                       => proc { |options, matches| arbitrary_form_section = FormSection.new; new_form_section_field_path(arbitrary_form_section, options) },
-        /the edit user page for "(.+)"$/               => proc { |options, matches| user = User.by_user_name(:key                                                                                                                    => matches[1]); raise "no user named #{matches[1]}" if user.nil?; edit_user_path(user) },
-        /new field page for "(.+)" for form "(.+)"/    => proc { |options, matches| field_type = matches[1]; form_section_id = matches[2]; new_form_section_field_path(:form_section_id                                              => form_section_id,  :type                                                                                                        => field_type) },
-        /the edit form section page for "(.+)"/        => proc { |options, matches| form_section = matches[1]; form_section_fields_path(form_section) },
+        /choose field type page/                       => proc { |options, matches|
+                                                            arbitrary_form_section = FormSection.new
+                                                            new_form_section_field_path(arbitrary_form_section, options)
+                                                          },
+        /the edit user page for "(.+)"$/               => proc { |options, matches|
+                                                            user = User.by_user_name(:key => matches[1])
+                                                            raise "no user named #{matches[1]}" if user.nil?
+                                                            edit_user_path(user)
+                                                          },
+        /new field page for "(.+)" for form "(.+)"/    => proc { |options, matches|
+                                                            field_type = matches[1]
+                                                            form_section_id = matches[2]
+                                                            new_form_section_field_path(:form_section_id => form_section_id, :type => field_type)
+                                                          },
+        /the edit form section page for "(.+)"/        => proc { |options, matches|
+                                                            form_section = matches[1]
+                                                            form_section_fields_path(form_section)
+                                                          },
         /the admin page/                               => proc { |options, matches| admin_path(options) },
         /system settings page/                         => proc { |options, matches| admin_path(options) },
         /system users page/                            => proc { |options, matches| system_users_path },
         /all child Ids/                                => proc { |options, matches| child_ids_path },
-        /the child listing filtered by (.+)/           => proc { |options, matches| child_filter_path(:filter                                                                                                                        => matches[1]) },
-        /duplicate child page for "(.+)"$/             => proc { |options, matches| child = Child.by_name(:key                                                                                                                       => matches[1]).first; new_child_duplicate_path(child) },
+        /the child listing filtered by (.+)/           => proc { |options, matches| child_filter_path(:filter => matches[1]) },
+        /duplicate child page for "(.+)"$/             => proc { |options, matches|
+                                                            child = Child.by_name(:key => matches[1]).first
+                                                            new_child_duplicate_path(child)
+                                                          },
         /create role page/                             => proc { |options, matches| new_role_path },
         /roles index page/                             => proc { |options, matches| roles_path },
         /devices listing page/                         => proc { |options, matches| devices_path },

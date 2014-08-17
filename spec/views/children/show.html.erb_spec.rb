@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class Schema;
+class Schema
 end
 
 describe "children/show.html.erb", :type => :view do

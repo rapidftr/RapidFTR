@@ -37,25 +37,25 @@ describe ChildrenController, :type => :controller do
     end
     describe 'collection' do
       it "GET index" do
-        expect(@controller.current_ability).to receive(:can?).with(:index, Child).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:index, Child).and_return(false)
         get :index
         expect(response.status).to eq(403)
       end
 
       it "GET search" do
-        expect(@controller.current_ability).to receive(:can?).with(:index, Child).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:index, Child).and_return(false)
         get :search
         expect(response.status).to eq(403)
       end
 
       it "GET new" do
-        expect(@controller.current_ability).to receive(:can?).with(:create, Child).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:create, Child).and_return(false)
         get :new
         expect(response.status).to eq(403)
       end
 
       it "POST create" do
-        expect(@controller.current_ability).to receive(:can?).with(:create, Child).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:create, Child).and_return(false)
         post :create
         expect(response.status).to eq(403)
       end
@@ -70,37 +70,37 @@ describe ChildrenController, :type => :controller do
       end
 
       it "GET show" do
-        expect(@controller.current_ability).to receive(:can?).with(:read, @child_arg).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:read, @child_arg).and_return(false)
         get :show, :id => @child.id
         expect(response.status).to eq(403)
       end
 
       it "PUT update" do
-        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false)
         put :update, :id => @child.id
         expect(response.status).to eq(403)
       end
 
       it "PUT edit_photo" do
-        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false)
         put :edit_photo, :id => @child.id
         expect(response.status).to eq(403)
       end
 
       it "PUT update_photo" do
-        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false)
         put :update_photo, :id => @child.id
         expect(response.status).to eq(403)
       end
 
       it "PUT select_primary_photo" do
-        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:update, @child_arg).and_return(false)
         put :select_primary_photo, :child_id => @child.id, :photo_id => 0
         expect(response.status).to eq(403)
       end
 
       it "DELETE destroy" do
-        expect(@controller.current_ability).to receive(:can?).with(:destroy, @child_arg).and_return(false);
+        expect(@controller.current_ability).to receive(:can?).with(:destroy, @child_arg).and_return(false)
         delete :destroy, :id => @child.id
         expect(response.status).to eq(403)
       end
@@ -283,7 +283,7 @@ describe ChildrenController, :type => :controller do
 
       it "should use the ascending sort order param" do
         fake_field_worker_login
-        child_search = ChildSearch.new;
+        child_search = ChildSearch.new
         expect(child_search).to receive(:ordered).with(anything, :asc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
         get :index, :sort_order => 'asc'
@@ -291,7 +291,7 @@ describe ChildrenController, :type => :controller do
 
       it "should use the descending sort order param" do
         fake_field_worker_login
-        child_search = ChildSearch.new;
+        child_search = ChildSearch.new
         expect(child_search).to receive(:ordered).with(anything, :desc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
         get :index, :sort_order => 'desc'

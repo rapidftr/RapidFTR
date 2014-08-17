@@ -6,8 +6,7 @@ describe "FileAttachment", :type => :model do
     it "should extract content type from uploaded_file" do
       uploaded_file = uploadable_audio
       expect(uploaded_file).to receive(:content_type)
-      FileAttachment.from_uploadable_file(uploaded_file);
-
+      FileAttachment.from_uploadable_file(uploaded_file)
     end
 
     it "should call .from_file with all parameters and content_type extracted from uploaded_file" do
