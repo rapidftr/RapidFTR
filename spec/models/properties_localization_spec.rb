@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PropertiesLocalization, :type => :model do
 
   before :each do
-    RapidFTR::Application.stub :locales => ["a", "b"]
+    RapidFTR::Application.stub :locales => %w(a b)
     @klass = Class.new(CouchRest::Model::Base) do
       include PropertiesLocalization
     end

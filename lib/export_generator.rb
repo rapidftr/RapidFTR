@@ -2,8 +2,8 @@ require 'csv'
 require 'prawn/measurement_extensions'
 require 'prawn/layout'
 
-CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
-CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
+CHILD_IDENTIFIERS = %w(unique_identifier short_id)
+CHILD_METADATA = %w(created_by created_organisation posted_at last_updated_by_full_name last_updated_at)
 CHILD_STATUS = ["Suspect status", "Reunited status"]
 
 class ExportGenerator

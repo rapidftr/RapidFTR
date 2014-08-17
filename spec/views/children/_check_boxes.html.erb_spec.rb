@@ -11,7 +11,7 @@ describe "children/_check_boxes.html.erb", :type => :view do
                             :display_name => "field name",
                             :type => Field::CHECK_BOXES,
                             :help_text => "This is my help text",
-                            :option_strings => ["FOO", "BAR"]
+                            :option_strings => %w(FOO BAR)
 
     render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
 
@@ -22,7 +22,7 @@ describe "children/_check_boxes.html.erb", :type => :view do
     check_boxes = Field.new :name => "new field",
                             :display_name => "field name",
                             :type => Field::CHECK_BOXES,
-                            :option_strings => ["FOO", "BAR"]
+                            :option_strings => %w(FOO BAR)
 
     render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
 

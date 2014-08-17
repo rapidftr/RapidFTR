@@ -106,9 +106,9 @@ describe ExportGenerator do
           build(:check_boxes_field, :name => 'multi')
         ]
         ExportGenerator.new([
-          Child.new('multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy"),
+          Child.new('multi' => %w(Dogs Cats), 'unique_identifier' => "xxxy"),
           Child.new('multi' => nil, 'unique_identifier' => "xxxy"),
-          Child.new('multi' => ["Cats", "Fish"], 'unique_identifier' => "yyyx")
+          Child.new('multi' => %w(Cats Fish), 'unique_identifier' => "yyyx")
         ]).to_csv
       end
 

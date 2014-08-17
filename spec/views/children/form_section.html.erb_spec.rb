@@ -140,7 +140,7 @@ describe "children/_form_section.html.erb", :type => :view do
     context "existing record" do
 
       it "renders checkboxes as checked if the underlying field is set to Yes" do
-        @child = Child.new :relatives => ["Brother", "Sister"]
+        @child = Child.new :relatives => %w(Brother Sister)
         @form_section.add_field build(:check_boxes_field, :name => 'relatives', :option_strings => %w(Sister Brother Cousin))
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]

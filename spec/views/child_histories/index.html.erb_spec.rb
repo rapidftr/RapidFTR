@@ -5,7 +5,7 @@ describe "child_histories/index.html.erb", :type => :view do
 
   describe "child history" do
     before do
-      allow(FormSection).to receive(:all_child_field_names).and_return(["age", "last_known_location", "current_photo_key"])
+      allow(FormSection).to receive(:all_child_field_names).and_return(%w(age last_known_location current_photo_key))
       @user = double(:user)
     end
 

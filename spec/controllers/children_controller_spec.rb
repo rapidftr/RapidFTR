@@ -244,7 +244,7 @@ describe ChildrenController, :type => :controller do
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before { @options = {:startkey => ["active", "fakefieldworker"], :endkey => ["active", "fakefieldworker", {}], :page => 1, :per_page => 20, :view_name => :by_all_view_with_created_by_created_at} }
+        before { @options = {:startkey => %w(active fakefieldworker), :endkey => ["active", "fakefieldworker", {}], :page => 1, :per_page => 20, :view_name => :by_all_view_with_created_by_created_at} }
         it_should_behave_like "viewing children as a field worker"
       end
     end

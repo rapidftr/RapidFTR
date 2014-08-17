@@ -37,7 +37,7 @@ describe "Child record field view model", :type => :model do
   it "should create options from text" do
     field = Field.new :display_name => "something", :option_strings_text => "tim\nrob"
     expect(field['option_strings_text']).to eq(nil)
-    expect(field.option_strings).to eq(["tim", "rob"])
+    expect(field.option_strings).to eq(%w(tim rob))
   end
 
   it "should have display name with hidden text if not visible" do
@@ -192,7 +192,7 @@ describe "Child record field view model", :type => :model do
     it "should return array for option_strings_text " do
       field = Field.new(:name => "f_name", :option_strings_text_en => "Yes\nNo")
       field_hash = field.formatted_hash
-      field_hash["option_strings_text"] == {"en" => ["Yes", "No"]}
+      field_hash["option_strings_text"] == {"en" => %w(Yes No)}
     end
 
   end
@@ -200,12 +200,12 @@ describe "Child record field view model", :type => :model do
   describe "normalize line endings" do
     it "should convert \\r\\n to \\n" do
       field = Field.new :name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\r\nSudan"
-      expect(field.option_strings).to eq(["Uganda", "Sudan"])
+      expect(field.option_strings).to eq(%w(Uganda Sudan))
     end
 
     it "should use \\n as it is" do
       field = Field.new :name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\nSudan"
-      expect(field.option_strings).to eq(["Uganda", "Sudan"])
+      expect(field.option_strings).to eq(%w(Uganda Sudan))
     end
 
     it "should convert option_strings to option_strings_text" do
@@ -214,7 +214,7 @@ describe "Child record field view model", :type => :model do
     end
 
     it "should convert option_strings to option_strings_text" do
-      field = Field.new :name => "test", :display_name_en => "test", :option_strings => ["Uganda", "Sudan"]
+      field = Field.new :name => "test", :display_name_en => "test", :option_strings => %w(Uganda Sudan)
       expect(field.option_strings_text).to eq("Uganda\nSudan")
     end
   end

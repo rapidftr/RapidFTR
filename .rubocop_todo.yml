@@ -209,8 +209,3 @@ Style/StringLiterals:
 # Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, Whitelist.
 Style/TrivialAccessors:
   Enabled: false
-
-# Offense count: 51
-# Cop supports --auto-correct.
-Style/WordArray:
-  MinSize: 8

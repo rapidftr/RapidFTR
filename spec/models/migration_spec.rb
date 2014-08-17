@@ -18,7 +18,7 @@ describe Migration, :type => :model do
   it 'should list applied migrations' do
     Migration.database.save_doc :name => '2_test'
     Migration.database.save_doc :name => '1_test'
-    expect(Migration.applied_migrations).to eq(["1_test", "2_test"])
+    expect(Migration.applied_migrations).to eq(%w(1_test 2_test))
   end
 
   it 'should apply only pending migrations' do

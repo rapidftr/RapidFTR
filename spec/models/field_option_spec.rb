@@ -24,7 +24,7 @@ describe "FieldOption", :type => :model do
 
     it "has a factory method for creating all FieldOption objects for a given Field" do
       field_name = "gender"
-      options = ["male", "female"]
+      options = %w(male female)
 
       field_options = FieldOption.create_field_options(field_name, options)
 

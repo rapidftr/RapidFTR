@@ -40,7 +40,7 @@ module HistoriesHelper
     elsif field == 'child'
       return {:partial => "shared/histories/record_created",
               :locals => {:organisation => history['user_organisation'], :user_name => history['user_name'], :datetime => @user.localize_date(history['datetime'], "%Y-%m-%d %H:%M:%S %Z")}}
-    elsif ['flag_message', 'reunited_message', 'investigated_message', 'duplicate_of'].include? field
+    elsif %w(flag_message reunited_message investigated_message duplicate_of).include? field
       return {}
       # do nothing, because we are already displaying the duplicate_of as a part of duplicate change
     else

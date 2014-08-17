@@ -72,8 +72,8 @@ describe FieldsController, :type => :controller do
     end
 
     it "should save the given field in the same order as given" do
-      expect(@form_section).to receive(:order_fields).with(["field_one", "field_two"])
-      post :save_order, :form_section_id => @form_section_id, :ids => ["field_one", "field_two"]
+      expect(@form_section).to receive(:order_fields).with(%w(field_one field_two))
+      post :save_order, :form_section_id => @form_section_id, :ids => %w(field_one field_two)
       expect(response).to redirect_to(edit_form_section_path(@form_section_id))
     end
 

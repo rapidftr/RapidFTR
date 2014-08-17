@@ -139,7 +139,7 @@ describe Replication, :type => :model do
       Replication.stub :models_to_sync => [User, User, User]
       expect(@rep).to receive(:push_config).exactly(3).times.with(User).and_return("a")
       expect(@rep).to receive(:pull_config).exactly(3).times.with(User).and_return("b")
-      expect(@rep.build_configs).to eq(["a", "b", "a", "b", "a", "b"])
+      expect(@rep.build_configs).to eq(%w(a b a b a b))
     end
 
     it 'should return all replication documents' do
@@ -221,14 +221,14 @@ describe Replication, :type => :model do
         @default_config.merge("_replication_state" => 'a'), @default_config.merge("_replication_state" => 'b'),
         @default_config.merge("_replication_state" => 'c'), @default_config.merge("_replication_state" => 'd')
       ]
-      expect(@rep.statuses).to eq(['a', 'b', 'c', 'd'])
+      expect(@rep.statuses).to eq(%w(a b c d))
     end
 
     it 'statuses should substitute triggered if status is empty' do
       @rep.stub :fetch_configs => [
         @default_config.merge("_replication_state" => nil), @default_config.merge("_replication_state" => 'd')
       ]
-      expect(@rep.statuses).to eq(['triggered', 'd'])
+      expect(@rep.statuses).to eq(%w(triggered d))
     end
 
     it 'active should be false if no replication was configured' do
@@ -237,32 +237,32 @@ describe Replication, :type => :model do
     end
 
     it 'active should be false if no operations have status as "triggered"' do
-      @rep.stub :statuses => ["abcd", "abcd"]
+      @rep.stub :statuses => %w(abcd abcd)
       expect(@rep).not_to be_active
     end
 
     it 'active should be true if any operation has status as "triggered"' do
-      @rep.stub :statuses => ["triggered", "abcd"]
+      @rep.stub :statuses => %w(triggered abcd)
       expect(@rep).to be_active
     end
 
     it 'active should be true if the replications completed less than 2 mins ago' do
-      @rep.stub :statuses => ["completed", "error"], :timestamp => 1.minute.ago
+      @rep.stub :statuses => %w(completed error), :timestamp => 1.minute.ago
       expect(@rep).to be_active
     end
 
     it 'active should be false if the replications completed more than 2 mins ago' do
-      @rep.stub :statuses => ["completed", "error"], :timestamp => 3.minutes.ago
+      @rep.stub :statuses => %w(completed error), :timestamp => 3.minutes.ago
       expect(@rep).not_to be_active
     end
 
     it 'success should be true if all operations have status as "completed"' do
-      @rep.stub :statuses => ["completed", "completed"]
+      @rep.stub :statuses => %w(completed completed)
       expect(@rep).to be_success
     end
 
     it 'success should be false if any operation doesnt have status as "completed"' do
-      @rep.stub :statuses => ["completed", "abcd"]
+      @rep.stub :statuses => %w(completed abcd)
       expect(@rep).not_to be_success
     end
   end

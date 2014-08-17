@@ -32,9 +32,9 @@ describe WeeklyReport do
       number_of_blank_rows = report.select { |row| row[3] == "0" }.size
       expect(number_of_rows_with_one_child).to be 3
       expect(number_of_blank_rows).to be 29
-      expect(report).to include ["Unaccompanied", "Male", "Identified", "1"]
+      expect(report).to include %w(Unaccompanied Male Identified 1)
       expect(report).to include ["Separated", "Male", "Tracing On-Going", "1"]
-      expect(report).to include ["Separated", "Male", "Reunited", "0"]
+      expect(report).to include %w(Separated Male Reunited 0)
     end
   end
 

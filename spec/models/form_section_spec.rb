@@ -438,7 +438,7 @@ describe FormSection, :type => :model do
       numeric_field = build :numeric_field, :name => "numeric_field", :display_name => "Numeric Field"
       form_section = create :form_section, :name => 'sortable_form_section', :unique_id => "unique_id", :fields => [text_field, text_area, select_box, numeric_field]
 
-      expect(FormSection.all_sortable_field_names).to eq(["text_field", "text_area", "select_box"])
+      expect(FormSection.all_sortable_field_names).to eq(%w(text_field text_area select_box))
     end
 
     it "should not return hidden fields" do

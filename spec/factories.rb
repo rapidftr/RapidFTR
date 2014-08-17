@@ -140,15 +140,15 @@ FactoryGirl.define do
     end
     factory :radio_button_field do
       type { Field::RADIO_BUTTON }
-      option_strings { ['radio_1', 'radio_2', 'radio_3'] }
+      option_strings { %w(radio_1 radio_2 radio_3) }
     end
     factory :select_box_field do
       type { Field::SELECT_BOX }
-      option_strings { ['select_1', 'select_2', 'select_3'] }
+      option_strings { %w(select_1 select_2 select_3) }
     end
     factory :check_boxes_field do
       type { Field::CHECK_BOXES }
-      option_strings { ['check_1', 'check_2', 'check_3'] }
+      option_strings { %w(check_1 check_2 check_3) }
     end
     factory :numeric_field do
       type { Field::NUMERIC_FIELD }
