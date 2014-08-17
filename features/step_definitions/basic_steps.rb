@@ -278,7 +278,7 @@ end
 
 When /^I debug$/ do
   require 'pry'
-  binding.pry
+  binding.pry # rubocop:disable Debugger
 end
 
 private

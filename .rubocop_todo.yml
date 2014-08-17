@@ -14,10 +14,6 @@ Lint/AmbiguousRegexpLiteral:
 Lint/AssignmentInCondition:
   Enabled: false
 
-# Offense count: 1
-Lint/Debugger:
-  Enabled: false
-
 # Offense count: 2
 Lint/HandleExceptions:
   Enabled: false
