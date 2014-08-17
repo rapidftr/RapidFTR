@@ -1,15 +1,7 @@
 namespace :app do
 
   desc "Drop and recreate all databases, the solr index, and restart the app if you're running with passenger."
-  task :reset do
-    Rake::Task['app:confirm_data_loss'].invoke
-    Rake::Task['db:delete'].invoke
-    Rake::Task['db:seed'].invoke
-    Rake::Task['db:migrate'].invoke
-
-    # TODO: Equivalent sunspot task
-    # Rake::Task['search:clean_start'].invoke
-  end
+  task :reset => %w(app:confirm_data_loss db:delete db:seed db:migrate sunspot:reindex)
 
   task :confirm_data_loss => :environment do
     require 'readline'
