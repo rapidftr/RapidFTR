@@ -17,9 +17,9 @@ unless photos_and_audio_fs
 
   basic_identity_fs.fields.each do |ff|
     unless ff.valid?
-      puts ff.inspect
-      puts ff.errors.inspect
-      puts "*" * 25
+      logger.error(ff.inspect)
+      logger.error(ff.errors.inspect)
+      logger.error("*" * 25)
     end
   end
 

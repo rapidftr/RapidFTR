@@ -63,11 +63,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 26
 
-# Offense count: 13
-# Configuration parameters: Include.
-Rails/Output:
-  Enabled: false
-
 # Offense count: 3
 Style/AccessorMethodName:
   Enabled: false

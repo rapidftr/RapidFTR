@@ -5,7 +5,7 @@
 # instance is necessary and the target version has introduced any new types requiring seeds.
 def should_seed?(model)
   empty = model.database.documents["rows"].count == 0
-  puts(empty ? "Seeding #{model}." : "Not seeding #{model}. Already populated.")
+  logger.info(empty ? "Seeding #{model}." : "Not seeding #{model}. Already populated.")
   empty
 end
 

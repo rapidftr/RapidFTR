@@ -9,11 +9,11 @@ class Migration < CouchRest::Model::Base
 
   def self.migrate
     applied_migrations.each do |file|
-      puts "skipping migration: #{file} - already applied"
+      puts "skipping migration: #{file} - already applied" # rubocop:disable Output
     end
 
     pending_migrations.each do |file|
-      puts "Applying migration: #{file}"
+      puts "Applying migration: #{file}" # rubocop:disable Output
       apply_migration file
     end
   end

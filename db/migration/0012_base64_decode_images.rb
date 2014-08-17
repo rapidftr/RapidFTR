@@ -24,10 +24,9 @@ rows.each do |row|
     end if doc['_attachments']
   rescue => e
     if errors.count == 0
-      puts
-      puts "Logging the first error, further errors will be suppressed"
-      puts e.message
-      puts e.backtrace
+      logger.error("Logging the first error, further errors will be suppressed")
+      logger.error(e.message)
+      logger.error(e.backtrace)
     end
 
     errors << row['id']
@@ -37,8 +36,7 @@ rows.each do |row|
 end
 
 if errors.count > 0
-  puts
-  puts "Failed to migrate images for following records:"
-  puts errors
+  logger.error("Failed to migrate images for following records:")
+  logger.error(errors)
   raise "Migration failed" unless ENV['IGNORE_0012'] == 'true'
 end

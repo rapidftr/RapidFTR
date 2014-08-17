@@ -40,7 +40,7 @@ class ChildMediaController < ApplicationController
   def find_audio_attachment
     @attachment = params[:id] ? @child.media_for_key(params[:id]) : @child.audio
   rescue => e
-    p e.inspect
+    logger.error(e.inspect)
   end
 
   def find_photo_attachment
