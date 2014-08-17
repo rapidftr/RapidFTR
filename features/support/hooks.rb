@@ -22,11 +22,11 @@ end
 
 Before('@no_expire') do |scenario|
   Rails.application.config.stub(:session_options).and_return({
-                                                               key: '_rftr_session',
-                                                               expire_after: 99.years,
-                                                               rapidftr: {
-                                                                 web_expire_after: 99.years,
-                                                                 mobile_expire_after: 99.years
+                                                               :key => '_rftr_session',
+                                                               :expire_after => 99.years,
+                                                               :rapidftr => {
+                                                                 :web_expire_after => 99.years,
+                                                                 :mobile_expire_after => 99.years
                                                                }
                                                              })
 end

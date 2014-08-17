@@ -35,7 +35,7 @@ Given /^the following form sections exist in the system on the "(.*)" form:$/ do
   FormSection.all.each { |u| u.destroy }
   Form.all.each { |f| f.destroy }
 
-  form = Form.create(name: form_name)
+  form = Form.create(:name => form_name)
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id' => form_section_hash['name'].gsub(/\s/, '_').downcase,

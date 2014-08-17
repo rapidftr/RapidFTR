@@ -5,3 +5,6 @@ AllCops:
     - 'bin/*'
     - 'infrastructure/**/*'
     - 'vendor/**/*'
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets

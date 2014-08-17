@@ -135,7 +135,7 @@ class UsersController < ApplicationController
   end
 
   def verify_children
-    children = Child.by_created_by key: @user.user_name
+    children = Child.by_created_by :key => @user.user_name
     children.each do |child|
       child.verified = true
       child.save

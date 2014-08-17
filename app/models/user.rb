@@ -22,7 +22,7 @@ class User < CouchRest::Model::Base
   property :time_zone, :default => "UTC"
   property :locale
 
-  property :share_contact_info, TrueClass, default: false
+  property :share_contact_info, TrueClass, :default => false
 
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]

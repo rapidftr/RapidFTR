@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   def render_error_response(e)
     respond_to do |format|
       format.json do
-        render status: e.status_code, text: e.message
+        render :status => e.status_code, :text => e.message
       end
       format.any do
         if e.status_code == 401

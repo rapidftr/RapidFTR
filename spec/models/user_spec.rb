@@ -65,7 +65,7 @@ describe User, :type => :model do
   end
 
   it "should reject saving a changed password if the confirmation doesn't match" do
-    user = build :user, password: 'foo', password_confirmation: 'not foo'
+    user = build :user, :password => 'foo', :password_confirmation => 'not foo'
     expect(user).not_to be_valid
     expect(user.errors[:password_confirmation]).to include(I18n.t("errors.models.user.password_mismatch"))
   end
@@ -234,11 +234,11 @@ describe User, :type => :model do
 
   describe "share_contact_info" do
     it "should get all users who share contact info" do
-      user1 = create :user, share_contact_info: true
-      user2 = create :user, share_contact_info: true, verified: false
-      user3 = create :user, share_contact_info: true, disabled: true
-      user4 = create :user, share_contact_info: false
-      user5 = create :user, share_contact_info: true, verified: true, disabled: false
+      user1 = create :user, :share_contact_info => true
+      user2 = create :user, :share_contact_info => true, :verified => false
+      user3 = create :user, :share_contact_info => true, :disabled => true
+      user4 = create :user, :share_contact_info => false
+      user5 = create :user, :share_contact_info => true, :verified => true, :disabled => false
 
       share_contact_info_users = User.by_share_contact_info
       ids = share_contact_info_users.map(&:id)

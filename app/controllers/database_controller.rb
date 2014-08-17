@@ -11,7 +11,7 @@ class DatabaseController < ApplicationController
     }.compact
     RestClient.post "#{model_class.database.root}/_bulk_docs", { :docs => docs }.to_json, { "Content-type" => "application/json" } unless docs.empty?
 
-    render text: "Deleted all #{data_type} documents"
+    render :text => "Deleted all #{data_type} documents"
   end
 
   def reset_fieldworker
@@ -27,7 +27,7 @@ class DatabaseController < ApplicationController
                         "organisation" => "N/A",
                         "role_ids" => [role.id])
 
-    render text: "Field Worker Reset: #{user.user_name}"
+    render :text => "Field Worker Reset: #{user.user_name}"
   end
 
   private

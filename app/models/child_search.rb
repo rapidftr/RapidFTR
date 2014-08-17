@@ -5,7 +5,7 @@ class ChildSearch
 
   def paginated(page, per_page)
     search.build do
-      paginate page: page, per_page: per_page
+      paginate :page => page, :per_page => per_page
     end
     self
   end
@@ -33,7 +33,7 @@ class ChildSearch
 
   def fulltext_by(field_names = [], value = nil)
     search.build do
-      fulltext value, fields: field_names.map(&:to_sym)
+      fulltext value, :fields => field_names.map(&:to_sym)
     end if value.present?
     self
   end

@@ -43,12 +43,12 @@ describe PropertiesLocalization, :type => :model do
   end
 
   it "should provide formatted hash of locale data" do
-    @object = @klass.new name_a: "test a", name_b: "test b"
+    @object = @klass.new :name_a => "test a", :name_b => "test b"
     expect(@object.formatted_hash).to eq({ "name_a" => "test a", "name_b" => "test b" })
   end
 
   it "should normalize line encoding in formatted hash" do
-    @object = @klass.new name_a: "test a\r\ntest a", name_b: "test b\r\ntest b"
+    @object = @klass.new :name_a => "test a\r\ntest a", :name_b => "test b\r\ntest b"
     expect(@object.formatted_hash).to eq({ "name_a" => "test a\ntest a", "name_b" => "test b\ntest b" })
   end
 

@@ -2,7 +2,7 @@ class Enquiry < CouchRest::Model::Base
   use_database :enquiry
   include RecordHelper
 
-  before_validation :create_criteria, on: [:create, :update]
+  before_validation :create_criteria, :on => [:create, :update]
   before_save :find_matching_children
 
   property :criteria, Hash

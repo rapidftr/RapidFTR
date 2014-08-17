@@ -107,19 +107,19 @@ describe ChildrenController, :type => :controller do
     end
   end
 
-  describe "GET index", solr: true do
+  describe "GET index", :solr => true do
 
     shared_examples_for "viewing children by user with access to all data" do
       describe "when the signed in user has access all data" do
         before do
-          role = create :role, permissions: [Permission::CHILDREN[:view_and_search],
-                                             Permission::CHILDREN[:register],
-                                             Permission::CHILDREN[:edit]]
-          user = create :user, role_ids: [role.id]
+          role = create :role, :permissions => [Permission::CHILDREN[:view_and_search],
+                                                Permission::CHILDREN[:register],
+                                                Permission::CHILDREN[:edit]]
+          user = create :user, :role_ids => [role.id]
           @session = setup_session user
           @params ||= {}
           @params.merge!(:filter => @filter) if @filter
-          @expected_children ||= [create(:child, created_by: @session.user_name)]
+          @expected_children ||= [create(:child, :created_by => @session.user_name)]
         end
 
         it "should assign all children as @children" do
@@ -135,7 +135,7 @@ describe ChildrenController, :type => :controller do
           @session ||= fake_field_worker_login
           @params ||= {}
           @params.merge!(:filter => @filter) if @filter
-          @expected_children ||= [create(:child, created_by: @session.user_name)]
+          @expected_children ||= [create(:child, :created_by => @session.user_name)]
         end
 
         it "should assign the children created by the user as @childrens" do
@@ -149,7 +149,7 @@ describe ChildrenController, :type => :controller do
       context "when filter is passed for admin" do
         before {
           @field_worker = create :user
-          @expected_children = [create(:child, created_by: @field_worker.user_name)]
+          @expected_children = [create(:child, :created_by => @field_worker.user_name)]
           @filter = "active"
         }
         it_should_behave_like "viewing children by user with access to all data"
@@ -164,7 +164,7 @@ describe ChildrenController, :type => :controller do
         before {
           @field_worker = create :user
           @filter = ""
-          @expected_children = [create(:child, created_by: @field_worker.user_name)]
+          @expected_children = [create(:child, :created_by => @field_worker.user_name)]
         }
         it_should_behave_like "viewing children by user with access to all data"
       end
@@ -181,8 +181,8 @@ describe ChildrenController, :type => :controller do
       context "when status is not passed field_worker, order is last_updated_at and page is 2" do
         before { @session = fake_field_worker_login }
         before {
-          create(:child, created_by: @session.user_name)
-          second_page_child = create(:child, created_by: @session.user_name)
+          create(:child, :created_by => @session.user_name)
+          second_page_child = create(:child, :created_by => @session.user_name)
           @expected_children = [second_page_child]
         }
         before { @params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1} }
@@ -194,8 +194,8 @@ describe ChildrenController, :type => :controller do
       context "admin" do
         before {
           @field_worker = create :user
-          create(:child, created_by: @field_worker.user_name)
-          @expected_children = [create(:child, created_by: @field_worker.user_name, reunited: true)]
+          create(:child, :created_by => @field_worker.user_name)
+          @expected_children = [create(:child, :created_by => @field_worker.user_name, :reunited => true)]
           @filter = "reunited"
         }
         it_should_behave_like "viewing children by user with access to all data"
@@ -203,8 +203,8 @@ describe ChildrenController, :type => :controller do
       context "field worker" do
         before {
           @session = fake_field_worker_login
-          create(:child, created_by: @session.user_name)
-          @expected_children = [create(:child, created_by: @session.user_name, reunited: true)]
+          create(:child, :created_by => @session.user_name)
+          @expected_children = [create(:child, :created_by => @session.user_name, :reunited => true)]
           @filter = "reunited"
         }
         it_should_behave_like "viewing children as a field worker"
@@ -215,8 +215,8 @@ describe ChildrenController, :type => :controller do
       context "admin" do
         before {
           @field_worker = create :user
-          create(:child, created_by: @field_worker.user_name)
-          @expected_children = [create(:child, created_by: @field_worker.user_name, flag: true)]
+          create(:child, :created_by => @field_worker.user_name)
+          @expected_children = [create(:child, :created_by => @field_worker.user_name, :flag => true)]
           @filter = "flag"
         }
         it_should_behave_like "viewing children by user with access to all data"
@@ -224,8 +224,8 @@ describe ChildrenController, :type => :controller do
       context "field_worker" do
         before {
           @session = fake_field_worker_login
-          create(:child, created_by: @session.user_name)
-          @expected_children = [create(:child, created_by: @session.user_name, flag: true)]
+          create(:child, :created_by => @session.user_name)
+          @expected_children = [create(:child, :created_by => @session.user_name, :flag => true)]
           @filter = "flag"
         }
         it_should_behave_like "viewing children as a field worker"
@@ -236,8 +236,8 @@ describe ChildrenController, :type => :controller do
       context "admin" do
         before {
           @field_worker = create :user
-          child1 = create(:child, created_by: @field_worker.user_name)
-          create(:child, created_by: @field_worker.user_name, duplicate: true, duplicate_of: child1.id)
+          child1 = create(:child, :created_by => @field_worker.user_name)
+          create(:child, :created_by => @field_worker.user_name, :duplicate => true, :duplicate_of => child1.id)
           @expected_children = [child1]
           @filter = "active"
         }
@@ -274,7 +274,7 @@ describe ChildrenController, :type => :controller do
       it "should assign form fields for order by drop down" do
         fake_field_worker_login
         field = build :field
-        form_section = build :form_section, fields: [field]
+        form_section = build :form_section, :fields => [field]
         expect(FormSection).to receive(:enabled_by_order_for_form).and_return([form_section])
 
         get :index
@@ -286,7 +286,7 @@ describe ChildrenController, :type => :controller do
         child_search = ChildSearch.new;
         expect(child_search).to receive(:ordered).with(anything, :asc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
-        get :index, sort_order: 'asc'
+        get :index, :sort_order => 'asc'
       end
 
       it "should use the descending sort order param" do
@@ -294,12 +294,12 @@ describe ChildrenController, :type => :controller do
         child_search = ChildSearch.new;
         expect(child_search).to receive(:ordered).with(anything, :desc).and_return(child_search)
         expect(ChildSearch).to receive(:new).and_return(child_search)
-        get :index, sort_order: 'desc'
+        get :index, :sort_order => 'desc'
       end
 
       it "should assign the sort order" do
         fake_field_worker_login
-        get :index, sort_order: 'desc'
+        get :index, :sort_order => 'desc'
         expect(assigns[:sort_order]).to eq('desc')
       end
     end
@@ -310,7 +310,7 @@ describe ChildrenController, :type => :controller do
       fake_admin_login
     end
     it 'does not assign child name in page name' do
-      child = create :child, unique_identifier: '1234', created_by: 'fakeadmin'
+      child = create :child, :unique_identifier => '1234', :created_by => 'fakeadmin'
       allow(controller).to receive :render
       get :show, :id => child.id
       expect(assigns[:page_name]).to eq("View Child 1234")
@@ -359,7 +359,7 @@ describe ChildrenController, :type => :controller do
     it "should include duplicate records in the response" do
       allow(Child).to receive(:get).with("37").and_return(mock_child)
       duplicates = [Child.new(:name => "duplicated")]
-      expect(Child).to receive(:by_duplicate_of).with(key: "37").and_return(duplicates)
+      expect(Child).to receive(:by_duplicate_of).with(:key => "37").and_return(duplicates)
       get :show, :id => "37"
       expect(assigns[:duplicates]).to eq(duplicates)
     end
@@ -576,8 +576,8 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should create SearchForm with whatever params received" do
-      params = { query: 'test' }
-      expect(Forms::SearchForm).to receive(:new).with(ability: controller.current_ability, params: hash_including(params)).and_call_original
+      params = { :query => 'test' }
+      expect(Forms::SearchForm).to receive(:new).with(:ability => controller.current_ability, :params => hash_including(params)).and_call_original
       expect_any_instance_of(Forms::SearchForm).to receive(:execute)
       get :search, params
     end
@@ -595,23 +595,23 @@ describe ChildrenController, :type => :controller do
     before :each do
       MockExportTask.enable
       Permission::CHILDREN.merge! :export_mock => "Export to Mock"
-      role = create :role, permissions: Permission.all_permissions
-      @user = create :user, role_ids: [role.id]
+      role = create :role, :permissions => Permission.all_permissions
+      @user = create :user, :role_ids => [role.id]
       setup_session @user
       allow(controller).to receive(:authorize!).with(:export_mock, Child).and_return(Child)
       allow(controller).to receive(:authorize!).with(:index, Child).and_return(Child)
     end
-    it 'should use #respond_to_export', solr: true do
-      child1 = create :child, created_by: @user.user_name
-      child2 = create :child, created_by: @user.user_name
+    it 'should use #respond_to_export', :solr => true do
+      child1 = create :child, :created_by => @user.user_name
+      child2 = create :child, :created_by => @user.user_name
       expect_any_instance_of(MockExportTask).to receive(:export).with([child1, child2])
-      get :index, format: :mock
+      get :index, :format => :mock
     end
 
     it 'should use #respond_to_export' do
-      child = create :child, created_by: @user.user_name
+      child = create :child, :created_by => @user.user_name
       expect_any_instance_of(MockExportTask).to receive(:export).with([child])
-      get :show, id: child.id, format: :mock
+      get :show, :id => child.id, :format => :mock
     end
   end
 

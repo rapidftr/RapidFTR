@@ -63,7 +63,7 @@ class ExportGenerator
 
   def metadata_fields(fields, extras)
     extras.each do |extra|
-      fields.push Field.new(name: extra, display_name: extra.humanize)
+      fields.push Field.new(:name => extra, :display_name => extra.humanize)
     end
     fields
   end

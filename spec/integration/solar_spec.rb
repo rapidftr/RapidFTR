@@ -2,19 +2,19 @@ require 'rubygems'
 require 'sunspot' # In the real world we should probably vendor this.
 require 'spec_helper'
 
-describe "Solar", type: :request, solr: true do
+describe "Solar", :type => :request, :solr => true do
 
   def fuzzy_search(input)
     Sunspot.search(Child) do
-      fulltext input, fields: [:name]
+      fulltext input, :fields => [:name]
     end
   end
 
   before :all do
     Sunspot.remove_all(Child)
 
-    create :form_section, fields: [
-      build(:text_field, name: 'name')
+    create :form_section, :fields => [
+      build(:text_field, :name => 'name')
     ]
 
     @child1 = create(:child, 'last_known_location' => "New York", "name" => "Mohammed Smith")
@@ -45,17 +45,17 @@ describe "Solar", type: :request, solr: true do
 
 end
 
-describe "Enquiry Mapping", type: :request, solr: true do
+describe "Enquiry Mapping", :type => :request, :solr => true do
 
   before :all do
     Sunspot.remove_all(Child)
     reset_couchdb!
 
-    form = create :form, name: Enquiry::FORM_NAME
+    form = create :form, :name => Enquiry::FORM_NAME
 
-    create :form_section, fields: [
-      build(:text_field, name: 'name')
-    ], form: form
+    create :form_section, :fields => [
+      build(:text_field, :name => 'name')
+    ], :form => form
 
     @child1 = create(:child, 'last_known_location' => "New York", "name" => "Mohammed Smith")
     @child2 = create(:child, 'last_known_location' => "New York", "name" => "Muhammed Jones")

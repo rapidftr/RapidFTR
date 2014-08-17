@@ -435,7 +435,7 @@ describe Child, :type => :model do
 
   describe ".form" do
     it "should return any form named Children" do
-      form = create :form, name: "Children"
+      form = create :form, :name => "Children"
       expect(Child.new.form).to eq(form)
     end
   end
@@ -670,12 +670,12 @@ describe Child, :type => :model do
 
     before do
       fields = [
-        build(:text_field, name: 'last_known_location'),
-        build(:text_field, name: 'age'),
-        build(:text_field, name: 'origin'),
-        build(:radio_button_field, name: 'gender', option_strings: %w(male female)),
-        build(:photo_field, name: 'current_photo_key'),
-        build(:audio_field, name: 'recorded_audio')
+        build(:text_field, :name => 'last_known_location'),
+        build(:text_field, :name => 'age'),
+        build(:text_field, :name => 'origin'),
+        build(:radio_button_field, :name => 'gender', :option_strings => %w(male female)),
+        build(:photo_field, :name => 'current_photo_key'),
+        build(:audio_field, :name => 'recorded_audio')
       ]
       allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
       mock_user = double({:organisation => 'UNICEF'})
@@ -1086,7 +1086,7 @@ describe Child, :type => :model do
       record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids", 'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
       record_duplicate = create_duplicate(record_active)
 
-      duplicates = Child.by_duplicate_of(key: record_active.id)
+      duplicates = Child.by_duplicate_of(:key => record_active.id)
       all = Child.all
 
       expect(duplicates.count).to eq(1)
@@ -1098,7 +1098,7 @@ describe Child, :type => :model do
       record_active = Child.create(:name => "not a dupe", :unique_identifier => "someids", 'short_id' => 'someids', 'created_by' => "me", 'created_organisation' => "stc")
       record_duplicate = create_duplicate(record_active)
 
-      duplicates = Child.by_duplicate_of(key: record_active.id)
+      duplicates = Child.by_duplicate_of(:key => record_active.id)
       expect(duplicates.count).to eq(1)
       expect(duplicates.first.id).to eq(record_duplicate.id)
     end
@@ -1125,12 +1125,12 @@ describe Child, :type => :model do
   describe "views" do
     describe "by id" do
       it "should return children by unique identifier" do
-        child = create :child, unique_identifier: "abcd"
+        child = create :child, :unique_identifier => "abcd"
         expect(Child.find_by_unique_identifier("abcd")).to eq(child)
       end
 
       it "should return children by short id" do
-        child = create :child, unique_identifier: "abcd1234567"
+        child = create :child, :unique_identifier => "abcd1234567"
         expect(Child.find_by_short_id("1234567")).to eq(child)
       end
     end

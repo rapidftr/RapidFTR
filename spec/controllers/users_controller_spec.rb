@@ -269,7 +269,7 @@ describe UsersController, :type => :controller do
       expect(child1).to receive(:save)
       expect(child2).to receive(:verified=).with(true)
       expect(child2).to receive(:save)
-      expect(Child).to receive(:by_created_by).with(key: "user").and_return([child1, child2])
+      expect(Child).to receive(:by_created_by).with(:key => "user").and_return([child1, child2])
       post :update, {:id => "unique_id", :user => {:verified => true}}
     end
 

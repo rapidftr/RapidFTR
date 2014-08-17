@@ -33,18 +33,18 @@ describe 'children/', :type => :view do
   end
 
   FIELDS = [
-    FactoryGirl.build(:numeric_field, name: 'new_field', display_name: 'This is a New Field'),
-    FactoryGirl.build(:text_field, name: 'new_field', display_name: 'This is a New Field'),
-    FactoryGirl.build(:text_area_field, name: 'new_field', display_name: 'This is a New Field'),
+    FactoryGirl.build(:numeric_field, :name => 'new_field', :display_name => 'This is a New Field'),
+    FactoryGirl.build(:text_field, :name => 'new_field', :display_name => 'This is a New Field'),
+    FactoryGirl.build(:text_area_field, :name => 'new_field', :display_name => 'This is a New Field'),
 
     # Audio upload and photo upload boxes are using Static labels instead of field.display_name
     # FactoryGirl.build(:audio_field, name: 'new_field', display_name: 'This is a New Field'),
     # FactoryGirl.build(:photo_field, name: 'new_field', display_name: 'This is a New Field'),
 
-    FactoryGirl.build(:date_field, name: 'new_field', display_name: 'This is a New Field'),
-    FactoryGirl.build(:radio_button_field, name: 'new_field', display_name: 'This is a New Field', option_strings: []),
-    FactoryGirl.build(:select_box_field, name: 'new_field', display_name: 'This is a New Field', option_strings: []),
-    FactoryGirl.build(:check_boxes_field, name: 'new_field', display_name: 'This is a New Field', option_strings: [])
+    FactoryGirl.build(:date_field, :name => 'new_field', :display_name => 'This is a New Field'),
+    FactoryGirl.build(:radio_button_field, :name => 'new_field', :display_name => 'This is a New Field', :option_strings => []),
+    FactoryGirl.build(:select_box_field, :name => 'new_field', :display_name => 'This is a New Field', :option_strings => []),
+    FactoryGirl.build(:check_boxes_field, :name => 'new_field', :display_name => 'This is a New Field', :option_strings => [])
   ]
 
   FIELDS.each do |field|

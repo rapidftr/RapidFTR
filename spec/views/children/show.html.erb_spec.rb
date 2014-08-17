@@ -35,9 +35,9 @@ describe "children/show.html.erb", :type => :view do
     end
 
     it "renders all fields found on the FormSection" do
-      @form_section.add_field build(:text_field, name: 'age', display_name: 'Age')
-      @form_section.add_field build(:radio_button_field, name: 'gender', option_strings: %w(male female))
-      @form_section.add_field build(:select_box_field, name: 'date_of_separation', option_strings: ["1-2 weeks ago", "More than"], display_name: 'Date of separation')
+      @form_section.add_field build(:text_field, :name => 'age', :display_name => 'Age')
+      @form_section.add_field build(:radio_button_field, :name => 'gender', :option_strings => %w(male female))
+      @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than"], :display_name => 'Date of separation')
 
       render
 

@@ -35,7 +35,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def render_error_response(e)
-    render status: e.status_code, text: e.message
+    render :status => e.status_code, :text => e.message
   end
 
   def extend_session_lifetime

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChildSearch, solr: true do
+describe ChildSearch, :solr => true do
   before :each do
     Sunspot.remove_all!
   end
@@ -29,10 +29,10 @@ describe ChildSearch, solr: true do
 
   describe "order results" do
     before :each do
-      @child1 = create :child, created_by: "Test 1", last_updated_at: 1.minute.ago.to_s
-      @child2 = create :child, created_by: "Test 2", last_updated_at: 1.hour.ago.to_s
-      @child3 = create :child, created_by: "Test 3", last_updated_at: 1.day.ago.to_s
-      @child4 = create :child, created_by: "Test 4", last_updated_at: 1.week.ago.to_s
+      @child1 = create :child, :created_by => "Test 1", :last_updated_at => 1.minute.ago.to_s
+      @child2 = create :child, :created_by => "Test 2", :last_updated_at => 1.hour.ago.to_s
+      @child3 = create :child, :created_by => "Test 3", :last_updated_at => 1.day.ago.to_s
+      @child4 = create :child, :created_by => "Test 4", :last_updated_at => 1.week.ago.to_s
     end
 
     it "should order results ascending" do
@@ -74,8 +74,8 @@ describe ChildSearch, solr: true do
     before :each do
       @user1 = create :user
       @user2 = create :user
-      @child1 = create :child, created_by: @user1.user_name
-      @child2 = create :child, created_by: @user2.user_name
+      @child1 = create :child, :created_by => @user1.user_name
+      @child2 = create :child, :created_by => @user2.user_name
     end
 
     it "should only return children created by the user" do
@@ -92,14 +92,14 @@ describe ChildSearch, solr: true do
       end
 
       it "should not include duplicate children" do
-        create :child, duplicate: true, duplicate_of: @child1.id
+        create :child, :duplicate => true, :duplicate_of => @child1.id
         results = ChildSearch.new.marked_as('active').results
         expect(results.count).to eq(1)
         expect(results.first).to eq(@child1)
       end
 
       it "should not include reunited children" do
-        create :child, reunited: true
+        create :child, :reunited => true
         results = ChildSearch.new.marked_as('active').results
         expect(results.count).to eq(1)
         expect(results.first).to eq(@child1)
@@ -108,8 +108,8 @@ describe ChildSearch, solr: true do
 
     context "reunited" do
       before :each do
-        @child1 = create :child, reunited: true
-        @child2 = create :child, reunited: false
+        @child1 = create :child, :reunited => true
+        @child2 = create :child, :reunited => false
       end
 
       it "should filter children by reunited" do

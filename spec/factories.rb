@@ -9,7 +9,7 @@ FactoryGirl.define do
     _id { "id-#{counter}" }
   end
 
-  factory :session, traits: [:model] do
+  factory :session, :traits => [:model] do
     user_name { FactoryGirl.create(:user).user_name }
     imei "123456789"
   end
@@ -124,7 +124,7 @@ FactoryGirl.define do
     name { "name_#{counter}" }
     display_name { name.humanize }
     display_name_en { display_name }
-    highlight_information { highlighted ? HighlightInformation.new(highlighted: true, order: counter) : nil }
+    highlight_information { highlighted ? HighlightInformation.new(:highlighted => true, :order => counter) : nil }
     type Field::TEXT_FIELD
     option_strings { [] }
     editable true

@@ -1,19 +1,19 @@
 require "spec_helper"
 
-describe MatchService, type: :request, solr: true do
+describe MatchService, :type => :request, :solr => true do
 
   before :each do
     reset_couchdb!
 
-    form = create :form, name: Enquiry::FORM_NAME
+    form = create :form, :name => Enquiry::FORM_NAME
 
-    create :form_section, name: 'test_form', fields: [
-      build(:text_field, name: 'name'),
-      build(:text_field, name: 'nationality'),
-      build(:text_field, name: 'country'),
-      build(:text_field, name: 'birthplace'),
-      build(:text_field, name: 'languages')
-    ], form: form
+    create :form_section, :name => 'test_form', :fields => [
+      build(:text_field, :name => 'name'),
+      build(:text_field, :name => 'nationality'),
+      build(:text_field, :name => 'country'),
+      build(:text_field, :name => 'birthplace'),
+      build(:text_field, :name => 'languages')
+    ], :form => form
   end
 
   before :each do

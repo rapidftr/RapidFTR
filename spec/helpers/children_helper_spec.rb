@@ -94,8 +94,8 @@ describe ChildrenHelper, :type => :helper do
     end
 
     it "should map form fields by display name and name" do
-      field = build :field, name: "id_name", display_name: "display_name"
-      form = create :form_section, name: "Form to group", fields: [field]
+      field = build :field, :name => "id_name", :display_name => "display_name"
+      form = create :form_section, :name => "Form to group", :fields => [field]
       options = helper.order_options_array_from nil, [form]
       expect(options["Form to group"].flatten).to include(a_string_matching(/id_name/))
       expect(options["Form to group"].flatten).to include(a_string_matching(/display_name/))
@@ -103,12 +103,12 @@ describe ChildrenHelper, :type => :helper do
     end
 
     it "should map multiple forms fields by display name and name" do
-      field1 = build :field, name: "id_name1", display_name: "display_name1"
-      form1 = create :form_section, name: "First", fields: [field1]
+      field1 = build :field, :name => "id_name1", :display_name => "display_name1"
+      form1 = create :form_section, :name => "First", :fields => [field1]
 
-      field2 = build :field, name: "id_name2", display_name: "display_name2"
-      field3 = build :field, name: "id_name3", display_name: "display_name3"
-      form2 = create :form_section, name: "Second", fields: [field2, field3]
+      field2 = build :field, :name => "id_name2", :display_name => "display_name2"
+      field3 = build :field, :name => "id_name3", :display_name => "display_name3"
+      form2 = create :form_section, :name => "Second", :fields => [field2, field3]
 
       options = helper.order_options_array_from nil, [form1, form2]
       expect(options["First"]).to include(["display_name1", "id_name1"])
@@ -118,8 +118,8 @@ describe ChildrenHelper, :type => :helper do
 
     it "should combine form fields and system fields" do
       system_fields = ["created_at"]
-      field = build :field, name: "id_name", display_name: "display_name"
-      form = create :form_section, name: "First", fields: [field]
+      field = build :field, :name => "id_name", :display_name => "display_name"
+      form = create :form_section, :name => "First", :fields => [field]
       form_fields = [form]
 
       options = helper.order_options_array_from system_fields, form_fields

@@ -35,7 +35,7 @@ describe StandardFormsService do
       end
 
       it "should not add already existing forms" do
-        create :form, name: Child::FORM_NAME
+        create :form, :name => Child::FORM_NAME
         attributes = { "forms" => {
           "children" => { "user_selected" => "0", "id" => "children",
                           "sections" => { "basic_identity" => { "user_selected" => "1", "id" => "basic_identity" } } } } }
@@ -79,7 +79,7 @@ describe StandardFormsService do
       end
 
       it "should persist new form sections on existing forms with no form sections" do
-        create :form, name: Child::FORM_NAME
+        create :form, :name => Child::FORM_NAME
         attributes = { "forms" => {
           "children" => { "user_selected" => "0", "id" => "children",
                           "sections" => {
@@ -95,8 +95,8 @@ describe StandardFormsService do
       end
 
       it "should persist new form sections on existing forms with form sections" do
-        form = create :form, name: Child::FORM_NAME
-        create :form_section, form: form, unique_id: "basic_identity", name: "Basic Identity"
+        form = create :form, :name => Child::FORM_NAME
+        create :form_section, :form => form, :unique_id => "basic_identity", :name => "Basic Identity"
 
         attributes = {
           "forms" => {
@@ -119,8 +119,8 @@ describe StandardFormsService do
       end
 
       it "should persist new form sections on existing forms with existing form sections that have the same name" do
-        form = create :form, name: Child::FORM_NAME
-        create :form_section, form: form, unique_id: "basic_identity", name: "Basic Identity"
+        form = create :form, :name => Child::FORM_NAME
+        create :form_section, :form => form, :unique_id => "basic_identity", :name => "Basic Identity"
 
         attributes = {
           "forms" => {
@@ -167,7 +167,7 @@ describe StandardFormsService do
       end
 
       it "should persist existing form with new form sections with new fields" do
-        create :form, name: Child::FORM_NAME
+        create :form, :name => Child::FORM_NAME
         attributes = { "forms" => {
           "children" => {
             "user_selected" => "0",
@@ -194,8 +194,8 @@ describe StandardFormsService do
       end
 
       it "should persist existing form with existing form sections with new fields" do
-        form = create :form, name: Child::FORM_NAME
-        create :form_section, name: "Basic Identity", unique_id: "basic_identity", form: form, fields: []
+        form = create :form, :name => Child::FORM_NAME
+        create :form_section, :name => "Basic Identity", :unique_id => "basic_identity", :form => form, :fields => []
         attributes = { "forms" => {
           "children" => {
             "user_selected" => "0",
@@ -222,9 +222,9 @@ describe StandardFormsService do
       end
 
       it "should persist existing form with existing form sections with new fields based on section name" do
-        form = create :form, name: Child::FORM_NAME
+        form = create :form, :name => Child::FORM_NAME
         field = build :field
-        create :form_section, name: "Basic Identity", form: form, fields: [field]
+        create :form_section, :name => "Basic Identity", :form => form, :fields => [field]
         attributes = { "forms" => {
           "children" => {
             "user_selected" => "0",
@@ -250,13 +250,13 @@ describe StandardFormsService do
       end
 
       it "should not persist new fields that match existing fields" do
-        form = create :form, name: Child::FORM_NAME
-        field = build :field, name: "name"
+        form = create :form, :name => Child::FORM_NAME
+        field = build :field, :name => "name"
         create :form_section,
-               name: "Basic Identity",
-               unique_id: "basic_identity",
-               form: form,
-               fields: [field]
+               :name => "Basic Identity",
+               :unique_id => "basic_identity",
+               :form => form,
+               :fields => [field]
         attributes = { "forms" => {
           "children" => {
             "user_selected" => "0",

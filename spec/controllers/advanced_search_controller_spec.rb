@@ -38,8 +38,8 @@ describe AdvancedSearchController, :type => :controller do
     it "should show list of enabled children forms" do
       form1 = build :form
       form2 = build :form
-      form_section1 = build :form_section, form: form1
-      form_section2 = build :form_section, form: form2
+      form_section1 = build :form_section, :form => form1
+      form_section2 = build :form_section, :form => form2
       form_sections = [form_section1, form_section2]
       allow(Form).to receive(:find_by_name).and_return form1
       allow(FormSection).to receive(:by_order).and_return form_sections
@@ -49,9 +49,9 @@ describe AdvancedSearchController, :type => :controller do
 
     it "should create SearchForm with whatever params received" do
       search_form = Forms::SearchForm.new
-      params = { a: 'a', b: 'b', c: 'c' }
+      params = { :a => 'a', :b => 'b', :c => 'c' }
 
-      expect(Forms::SearchForm).to receive(:new).with(ability: controller.current_ability, params: hash_including(params)).and_return(search_form)
+      expect(Forms::SearchForm).to receive(:new).with(:ability => controller.current_ability, :params => hash_including(params)).and_return(search_form)
       expect(search_form).to receive(:execute)
 
       get :index, params
@@ -60,8 +60,8 @@ describe AdvancedSearchController, :type => :controller do
 
   describe "export data" do
     before :each do
-      @child1 = create :child, created_by: controller.current_user_name
-      @child2 = create :child, created_by: controller.current_user_name
+      @child1 = create :child, :created_by => controller.current_user_name
+      @child2 = create :child, :created_by => controller.current_user_name
       controller.stub :authorize! => true, :render => true
     end
 

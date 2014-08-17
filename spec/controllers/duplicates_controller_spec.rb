@@ -5,7 +5,7 @@ describe DuplicatesController, :type => :controller do
 
   describe "GET new" do
     context "An admin user with a valid non-duplicate child id" do
-      let(:form) { double("Form", sorted_highlighted_fields: []) }
+      let(:form) { double("Form", :sorted_highlighted_fields => []) }
 
       before :each do
         fake_admin_login
@@ -16,7 +16,7 @@ describe DuplicatesController, :type => :controller do
       end
 
       context "with highlighted fields" do
-        let(:form) { double("Form", sorted_highlighted_fields: :highlighted_fields) }
+        let(:form) { double("Form", :sorted_highlighted_fields => :highlighted_fields) }
 
         it "should fetch sorted highlighted fields from the form" do
           get :new, :child_id => @child.id
@@ -62,7 +62,7 @@ describe DuplicatesController, :type => :controller do
 
   describe "POST create" do
     context "An admin user with a valid non-duplicate child id" do
-      let(:form) { double("Form", sorted_highlighted_fields: []) }
+      let(:form) { double("Form", :sorted_highlighted_fields => []) }
 
       before :each do
         fake_admin_login
@@ -82,7 +82,7 @@ describe DuplicatesController, :type => :controller do
       end
 
       context "with highlighted fields" do
-        let(:form) { double("Form", sorted_highlighted_fields: :highlighted_fields) }
+        let(:form) { double("Form", :sorted_highlighted_fields => :highlighted_fields) }
 
         it "should fetch sorted highlighted fields from the form" do
           allow(Child).to receive(:get).and_return(@child)

@@ -6,7 +6,7 @@ module RapidFTR
     end
 
     def self.default_form_for(form_name)
-      form = Form.new(name: form_name)
+      form = Form.new(:name => form_name)
       form.sections = default_sections_for form_name
       form
     end

@@ -38,7 +38,7 @@ describe ExportGenerator do
       end
 
       it 'should have a header for unique_identifier followed by all the user defined fields and metadata fields' do
-        fields = build(:text_field, name: 'field_one'), build(:text_field, name: 'field_two')
+        fields = build(:text_field, :name => 'field_one'), build(:text_field, :name => 'field_two')
         allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return fields
         csv_data =  CSV.parse subject.data
 
@@ -47,7 +47,7 @@ describe ExportGenerator do
       end
 
       it 'should render a row for each result, plus a header row' do
-        allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [build(:text_field, name: 'name')]
+        allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [build(:text_field, :name => 'name')]
         csv_data = CSV.parse subject.data
         expect(csv_data.length).to eq(4)
         expect(csv_data[1][0]).to eq("xxxy")
@@ -67,7 +67,7 @@ describe ExportGenerator do
 
       it 'should have a photo column with appropriate links' do
         allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [
-          build(:text_field, name: '_id'), build(:text_field, name: 'name'), build(:text_field, name: 'current_photo_key')
+          build(:text_field, :name => '_id'), build(:text_field, :name => 'name'), build(:text_field, :name => 'current_photo_key')
         ]
         csv_data = CSV.parse subject.data
         expect(csv_data[1][4]).to eq("http://testmachine:3000/some-photo-path/1")
@@ -78,7 +78,7 @@ describe ExportGenerator do
 
       it 'should have an audio column with appropriate links' do
         allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [
-          build(:text_field, name: '_id'), build(:text_field, name: 'name'), build(:text_field, name: 'some_audio')
+          build(:text_field, :name => '_id'), build(:text_field, :name => 'name'), build(:text_field, :name => 'some_audio')
         ]
         csv_data = CSV.parse subject.data
         expect(csv_data[1][4]).to eq("http://testmachine:3000/some-audio-path/1")
@@ -103,7 +103,7 @@ describe ExportGenerator do
     describe "with a multi checkbox field" do
       subject do
         allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [
-          build(:check_boxes_field, name: 'multi')
+          build(:check_boxes_field, :name => 'multi')
         ]
         ExportGenerator.new([
           Child.new('multi' => ["Dogs", "Cats"], 'unique_identifier' => "xxxy"),

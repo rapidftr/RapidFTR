@@ -3,11 +3,11 @@ require 'nokogiri'
 
 describe "advanced_search/index.html.erb", :type => :view do
   it "should not show hidden fields" do
-    form_section = build :form_section, fields: [
+    form_section = build :form_section, :fields => [
       build(:text_field),
-      build(:text_field, visible: false)
+      build(:text_field, :visible => false)
     ]
-    search_form = Forms::SearchForm.new(ability: nil, params: {})
+    search_form = Forms::SearchForm.new(:ability => nil, :params => {})
     search_form.send :parse_params
 
     assign(:form_sections, [form_section])
@@ -18,8 +18,8 @@ describe "advanced_search/index.html.erb", :type => :view do
   end
 
   it "show navigation links for logged in user" do
-    form_section = build :form_section, fields: []
-    search_form = Forms::SearchForm.new(ability: nil, params: {})
+    form_section = build :form_section, :fields => []
+    search_form = Forms::SearchForm.new(:ability => nil, :params => {})
     search_form.send :parse_params
     user = build :super_user
 
@@ -40,8 +40,8 @@ describe "advanced_search/index.html.erb", :type => :view do
   end
 
   it "show not navigation links when no user logged in" do
-    form_section = build :form_section, fields: []
-    search_form = Forms::SearchForm.new(ability: nil, params: {})
+    form_section = build :form_section, :fields => []
+    search_form = Forms::SearchForm.new(:ability => nil, :params => {})
     search_form.send :parse_params
 
     allow(view).to receive(:current_user).and_return(nil)

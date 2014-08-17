@@ -51,9 +51,9 @@ group :development, :test, :cucumber do
   gem 'hpricot',            '~> 0.8.6'
   gem 'json_spec',          '~> 1.1.2'
   gem 'pdf-inspector',      '~> 1.1.0'
-  gem 'coveralls', require: false
+  gem 'coveralls', :require => false
 
-  gem 'pry-rails',          '~> 0.3.2', platforms: :ruby
+  gem 'pry-rails',          '~> 0.3.2', :platforms => :ruby
   gem 'quiet_assets',       '~> 1.0.3'
 
   gem 'cane',               '~> 2.6.2'

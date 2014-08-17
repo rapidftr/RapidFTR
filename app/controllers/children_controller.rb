@@ -56,7 +56,7 @@ class ChildrenController < ApplicationController
     @form_sections = get_form_sections
     @page_name = t "child.view", :short_id => @child.short_id
     @body_class = 'profile-page'
-    @duplicates = Child.by_duplicate_of(key: params[:id])
+    @duplicates = Child.by_duplicate_of(:key => params[:id])
 
     respond_to do |format|
       format.html
@@ -218,7 +218,7 @@ class ChildrenController < ApplicationController
   def search
     authorize! :index, Child
     @page_name = t("search")
-    @search_form = Forms::SearchForm.new ability: current_ability, params: params
+    @search_form = Forms::SearchForm.new :ability => current_ability, :params => params
 
     if @search_form.valid?
       @results = @search_form.execute.results

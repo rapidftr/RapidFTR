@@ -62,7 +62,7 @@ describe Enquiry, :type => :model do
       end
     end
 
-    describe "potential_matches", solr: true do
+    describe "potential_matches", :solr => true do
 
       before :each do
         reset_couchdb!
@@ -71,14 +71,14 @@ describe Enquiry, :type => :model do
           text :name
           text :gender
         end
-        form = create :form, name: Enquiry::FORM_NAME
+        form = create :form, :name => Enquiry::FORM_NAME
 
-        create :form_section, name: 'test_form', fields: [
-          build(:text_field, name: 'name'),
-          build(:text_field, name: 'location'),
-          build(:text_field, name: 'gender'),
-          build(:text_field, name: 'enquirer_name')
-        ], form: form
+        create :form_section, :name => 'test_form', :fields => [
+          build(:text_field, :name => 'name'),
+          build(:text_field, :name => 'location'),
+          build(:text_field, :name => 'gender'),
+          build(:text_field, :name => 'enquirer_name')
+        ], :form => form
       end
 
       it "should be an empty array when enquiry is created" do
@@ -245,15 +245,15 @@ describe Enquiry, :type => :model do
       before :each do
         reset_couchdb!
 
-        form = create :form, name: Enquiry::FORM_NAME
+        form = create :form, :name => Enquiry::FORM_NAME
 
-        create :form_section, name: 'test_form', fields: [
-          build(:text_field, name: 'name'),
-          build(:text_field, name: 'location'),
-          build(:text_field, name: 'nationality'),
-          build(:text_field, name: 'enquirer_name'),
-          build(:numeric_field, name: 'age')
-        ], form: form
+        create :form_section, :name => 'test_form', :fields => [
+          build(:text_field, :name => 'name'),
+          build(:text_field, :name => 'location'),
+          build(:text_field, :name => 'nationality'),
+          build(:text_field, :name => 'enquirer_name'),
+          build(:numeric_field, :name => 'age')
+        ], :form => form
       end
 
       it "should generate criteria before saving" do

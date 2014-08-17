@@ -22,9 +22,9 @@ end
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = 'ubuntu/trusty32'
-  config.vm.network 'forwarded_port', guest: 3000, host: 3000
-  config.vm.network 'forwarded_port', guest: 5984, host: 5984
-  config.vm.network 'forwarded_port', guest: 8983, host: 8983
+  config.vm.network 'forwarded_port', :guest => 3000, :host => 3000
+  config.vm.network 'forwarded_port', :guest => 5984, :host => 5984
+  config.vm.network 'forwarded_port', :guest => 8983, :host => 8983
   config.ssh.forward_x11 = true
   config.ssh.forward_agent = true
 
@@ -35,11 +35,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.verbose_logging = true
   end
 
-  config.vm.provision :shell, run: 'always', privileged: false, inline: <<-SCRIPT
+  config.vm.provision :shell, :run => 'always', :privileged => false, :inline => <<-SCRIPT
     cd /vagrant && bundle exec rake sunspot:solr:start
   SCRIPT
 
-  config.vm.synced_folder 'tmp/vagrant/dev/apt', '/var/cache/apt/archives', create: true
-  config.vm.synced_folder 'tmp/vagrant/dev/gems', '/var/lib/gems/2.1.0/cache', create: true, mount_options: ['dmode=777', 'fmode=666']
+  config.vm.synced_folder 'tmp/vagrant/dev/apt', '/var/cache/apt/archives', :create => true
+  config.vm.synced_folder 'tmp/vagrant/dev/gems', '/var/lib/gems/2.1.0/cache', :create => true, :mount_options => ['dmode=777', 'fmode=666']
 
 end

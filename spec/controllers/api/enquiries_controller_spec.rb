@@ -9,16 +9,16 @@ describe Api::EnquiriesController, :type => :controller do
     fake_admin_login
     Sunspot.remove_all!
 
-    form = create :form, name: Enquiry::FORM_NAME
+    form = create :form, :name => Enquiry::FORM_NAME
 
-    create :form_section, name: 'test_form', fields: [
-      build(:text_field, name: 'name'),
-      build(:text_field, name: 'location'),
-      build(:text_field, name: 'nationality'),
-      build(:text_field, name: 'enquirer_name'),
-      build(:numeric_field, name: 'age'),
-      build(:text_field, name: 'gender')
-    ], form: form
+    create :form_section, :name => 'test_form', :fields => [
+      build(:text_field, :name => 'name'),
+      build(:text_field, :name => 'location'),
+      build(:text_field, :name => 'nationality'),
+      build(:text_field, :name => 'enquirer_name'),
+      build(:numeric_field, :name => 'age'),
+      build(:text_field, :name => 'gender')
+    ], :form => form
 
   end
 
@@ -207,15 +207,15 @@ describe Api::EnquiriesController, :type => :controller do
       expect(JSON.parse(response.body)).to eq(JSON.parse(enquiry.to_json))
     end
 
-    it "should update existing enquiry with potential matches", solr: true do
+    it "should update existing enquiry with potential matches", :solr => true do
       reset_couchdb!
-      form = create :form, name: Enquiry::FORM_NAME
-      create :form_section, fields: [
-        build(:text_field, name: 'name'),
-        build(:text_field, name: 'age'),
-        build(:text_field, name: 'location'),
-        build(:text_field, name: 'sex')
-      ], form: form
+      form = create :form, :name => Enquiry::FORM_NAME
+      create :form_section, :fields => [
+        build(:text_field, :name => 'name'),
+        build(:text_field, :name => 'age'),
+        build(:text_field, :name => 'location'),
+        build(:text_field, :name => 'sex')
+      ], :form => form
 
       Child.reindex!
 

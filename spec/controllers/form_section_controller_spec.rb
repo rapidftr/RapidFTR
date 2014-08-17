@@ -58,9 +58,9 @@ describe FormSectionController, :type => :controller do
 
     it "respect order" do
       form1 = create :form
-      form_section1 = create :form_section, order: 2, :form => form1
-      form_section2 = create :form_section, order: 3, :form => form1
-      form_section3 = create :form_section, order: 1, :form => form1
+      form_section1 = create :form_section, :order => 2, :form => form1
+      form_section2 = create :form_section, :order => 3, :form => form1
+      form_section3 = create :form_section, :order => 1, :form => form1
 
       get :index, :form_id => form1.id
 

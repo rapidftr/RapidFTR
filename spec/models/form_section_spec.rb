@@ -129,7 +129,7 @@ describe FormSection, :type => :model do
     end
 
     it "adds base_language to fields in formsection" do
-      field = build :text_area_field, name: "name"
+      field = build :text_area_field, :name => "name"
       formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields[2]).to have_key("base_language")
@@ -153,7 +153,7 @@ describe FormSection, :type => :model do
   describe "add_textarea_field_to_formsection" do
 
     it "adds the textarea to the formsection" do
-      field = build :text_area_field, name: "name"
+      field = build :text_area_field, :name => "name"
       formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields.length).to eq(3)
@@ -161,7 +161,7 @@ describe FormSection, :type => :model do
     end
 
     it "saves the formsection with textarea field" do
-      field = build :text_area_field, name: "name"
+      field = build :text_area_field, :name => "name"
       formsection = create_formsection
       expect(formsection).to receive(:save)
       FormSection.add_field_to_formsection formsection, field
@@ -245,7 +245,7 @@ describe FormSection, :type => :model do
     end
 
     it "should not delete uneditable fields" do
-      @field = build(:field, editable: false)
+      @field = build(:field, :editable => false)
       form_section = FormSection.new :fields => [@field]
       expect { form_section.delete_field(@field.name) }.to raise_error("Uneditable field cannot be deleted")
     end
@@ -253,9 +253,9 @@ describe FormSection, :type => :model do
 
   describe "save fields in given order" do
     it "should save the fields in the given field name order" do
-      @field_1 = build :field, name: 'orderfield1'
-      @field_2 = build :field, name: 'orderfield2'
-      @field_3 = build :field, name: 'orderfield3'
+      @field_1 = build :field, :name => 'orderfield1'
+      @field_2 = build :field, :name => 'orderfield2'
+      @field_3 = build :field, :name => 'orderfield3'
       form_section = FormSection.create! :name => "some_name", :fields => [@field_1, @field_2, @field_3]
       form_section.order_fields([@field_2.name, @field_3.name, @field_1.name])
       expect(form_section.fields).to eq([@field_2, @field_3, @field_1])
@@ -457,26 +457,26 @@ describe FormSection, :type => :model do
     end
 
     it "should only return visible form sections" do
-      form = create :form, name: "Form Name"
-      section1 = create :form_section, form: form
-      section2 = create :form_section, form: form, visible: false
+      form = create :form, :name => "Form Name"
+      section1 = create :form_section, :form => form
+      section2 = create :form_section, :form => form, :visible => false
 
       expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section1])
     end
 
     it "should only return form sections for the form" do
-      form = create :form, name: "Form Name"
-      other_form = create :form, name: "Other Name"
-      section1 = create :form_section, form: form
-      section2 = create :form_section, form: other_form
+      form = create :form, :name => "Form Name"
+      other_form = create :form, :name => "Other Name"
+      section1 = create :form_section, :form => form
+      section2 = create :form_section, :form => other_form
 
       expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section1])
     end
 
     it "should only order form sections" do
-      form = create :form, name: "Form Name"
-      section1 = create :form_section, form: form, order: 2
-      section2 = create :form_section, form: form, order: 1
+      form = create :form, :name => "Form Name"
+      section1 = create :form_section, :form => form, :order => 2
+      section2 = create :form_section, :form => form, :order => 1
 
       expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section2, section1])
     end

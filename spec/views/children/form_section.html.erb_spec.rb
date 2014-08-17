@@ -64,7 +64,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
       it "prepopulates the text field with the existing value" do
         @child = Child.new :name => "Jessica"
-        @form_section.add_field build(:text_field, name: 'name')
+        @form_section.add_field build(:text_field, :name => 'name')
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
@@ -79,7 +79,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
       it "renders radio button fields" do
         @child = Child.new
-        @form_section.add_field build(:radio_button_field, name: 'is_age_exact', option_strings: %w(exact approximate))
+        @form_section.add_field build(:radio_button_field, :name => 'is_age_exact', :option_strings => %w(exact approximate))
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
@@ -93,7 +93,7 @@ describe "children/_form_section.html.erb", :type => :view do
       it "renders a radio button with the current option selected" do
         @child = Child.new :is_age_exact => "approximate"
 
-        @form_section.add_field build(:radio_button_field, name: 'is_age_exact', option_strings: %w(exact approximate))
+        @form_section.add_field build(:radio_button_field, :name => 'is_age_exact', :option_strings => %w(exact approximate))
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
@@ -109,7 +109,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
       it "render select boxes" do
         @child = Child.new
-        @form_section.add_field build(:select_box_field, name: 'date_of_separation', option_strings: ["1-2 weeks ago", "More than a year ago"])
+        @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than a year ago"])
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
@@ -123,14 +123,14 @@ describe "children/_form_section.html.erb", :type => :view do
 
     it "renders a select box with the current value selected" do
       @child = Child.new :date_of_separation => "1-2 weeks ago"
-      @form_section.add_field build(:select_box_field, name: 'date_of_separation', option_strings: ["1-2 weeks ago", "More than a year ago"])
+      @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than a year ago"])
 
       render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
       expect(rendered).to have_tag 'select[id="child_date_of_separation"][name="child[date_of_separation]"]' do
-        with_tag 'option[value=""]', text: '(Select...)'
-        with_tag 'option[value="1-2 weeks ago"][selected="true"]', text: '1-2 weeks ago'
-        with_tag 'option[value="More than a year ago"]', text: 'More than a year ago'
+        with_tag 'option[value=""]', :text => '(Select...)'
+        with_tag 'option[value="1-2 weeks ago"][selected="true"]', :text => '1-2 weeks ago'
+        with_tag 'option[value="More than a year ago"]', :text => 'More than a year ago'
       end
     end
   end
@@ -141,7 +141,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
       it "renders checkboxes as checked if the underlying field is set to Yes" do
         @child = Child.new :relatives => ["Brother", "Sister"]
-        @form_section.add_field build(:check_boxes_field, name: 'relatives', option_strings: %w(Sister Brother Cousin))
+        @form_section.add_field build(:check_boxes_field, :name => 'relatives', :option_strings => %w(Sister Brother Cousin))
 
         render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
 
