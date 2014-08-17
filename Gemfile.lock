@@ -163,7 +163,7 @@ GEM
     progress_bar (1.0.3)
       highline (~> 1.6.1)
       options (~> 2.3.0)
-    pry (0.10.0)
+    pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
