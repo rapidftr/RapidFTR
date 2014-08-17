@@ -588,7 +588,7 @@ describe ChildrenController, :type => :controller do
       def self.id
         :mock
       end
-      def export(children)
+      def export(_children)
         []
       end
     end

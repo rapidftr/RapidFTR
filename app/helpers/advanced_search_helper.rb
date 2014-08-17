@@ -37,7 +37,7 @@ module AdvancedSearchHelper
     html += "</select>"
   end
 
-  def text_field_criteria(criteria, field)
+  def text_field_criteria(criteria, _field)
     %{<span class="criteria-values"/><input class="criteria-value-text" type="text" value="#{criteria[:value]}" name="criteria_list[#INDEX][value]" style="">}
   end
 

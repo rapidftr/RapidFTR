@@ -220,7 +220,7 @@ rescue
   errors.add(:last_updated_at, '')
   end
 
-  def method_missing(m, *args, &block)
+  def method_missing(m, *)
     self[m]
   end
 

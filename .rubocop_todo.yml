@@ -14,11 +14,6 @@ Lint/ShadowingOuterLocalVariable:
 Lint/UnusedBlockArgument:
   Enabled: false
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Lint/UnusedMethodArgument:
-  Enabled: false
-
 # Offense count: 45
 Lint/UselessAssignment:
   Enabled: false

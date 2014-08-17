@@ -13,7 +13,7 @@ describe "children/search.html.erb", :type => :view do
       allow(controller).to receive(:current_user).and_return(@user)
       allow(view).to receive(:current_user).and_return(@user)
 
-      @results = Array.new(4) { |i| random_child_summary("some_id_#{i}") }
+      @results = 4.times.collect { random_child_summary }
       @results.stub :total_entries => 100, :offset => 1, :total_pages => 10, :current_page => 1
 
       @highlighted_fields = [
@@ -99,7 +99,7 @@ describe "children/search.html.erb", :type => :view do
       expect(export_to_photo_wall.size).not_to eq(0)
     end
 
-    def random_child_summary(id = 'some_id')
+    def random_child_summary
       child = Child.create("age_is" => "Approx", "created_by" => "dave", "current_photo_key" => "photo-id")
       child.create_unique_id
       allow(child).to receive(:has_one_interviewer?).and_return(true)
