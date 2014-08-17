@@ -1,8 +1,8 @@
 class AdminController < ApplicationController
 
-  before_action {
+  before_action do
     authorize!(false, false) if cannot?(:highlight, Field) && cannot?(:manage, SystemUsers)
-  }
+  end
 
   def index
     @page_name = t("administration")

@@ -147,11 +147,11 @@ describe ChildrenController, :type => :controller do
 
     context "viewing all children" do
       context "when filter is passed for admin" do
-        before {
+        before do
           @field_worker = create :user
           @expected_children = [create(:child, :created_by => @field_worker.user_name)]
           @filter = "active"
-        }
+        end
         it_should_behave_like "viewing children by user with access to all data"
       end
 
@@ -161,11 +161,11 @@ describe ChildrenController, :type => :controller do
       end
 
       context "when filter is not passed admin" do
-        before {
+        before do
           @field_worker = create :user
           @filter = ""
           @expected_children = [create(:child, :created_by => @field_worker.user_name)]
-        }
+        end
         it_should_behave_like "viewing children by user with access to all data"
       end
 
@@ -180,11 +180,11 @@ describe ChildrenController, :type => :controller do
 
       context "when status is not passed field_worker, order is last_updated_at and page is 2" do
         before { @session = fake_field_worker_login }
-        before {
+        before do
           create(:child, :created_by => @session.user_name)
           second_page_child = create(:child, :created_by => @session.user_name)
           @expected_children = [second_page_child]
-        }
+        end
         before { @params = {:order_by => 'last_updated_at', :page => 2, :per_page => 1} }
         it_should_behave_like "viewing children as a field worker"
       end
@@ -192,55 +192,55 @@ describe ChildrenController, :type => :controller do
 
     context "viewing reunited children" do
       context "admin" do
-        before {
+        before do
           @field_worker = create :user
           create(:child, :created_by => @field_worker.user_name)
           @expected_children = [create(:child, :created_by => @field_worker.user_name, :reunited => true)]
           @filter = "reunited"
-        }
+        end
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do
-        before {
+        before do
           @session = fake_field_worker_login
           create(:child, :created_by => @session.user_name)
           @expected_children = [create(:child, :created_by => @session.user_name, :reunited => true)]
           @filter = "reunited"
-        }
+        end
         it_should_behave_like "viewing children as a field worker"
       end
     end
 
     context "viewing flagged children" do
       context "admin" do
-        before {
+        before do
           @field_worker = create :user
           create(:child, :created_by => @field_worker.user_name)
           @expected_children = [create(:child, :created_by => @field_worker.user_name, :flag => true)]
           @filter = "flag"
-        }
+        end
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field_worker" do
-        before {
+        before do
           @session = fake_field_worker_login
           create(:child, :created_by => @session.user_name)
           @expected_children = [create(:child, :created_by => @session.user_name, :flag => true)]
           @filter = "flag"
-        }
+        end
         it_should_behave_like "viewing children as a field worker"
       end
     end
 
     context "viewing active children" do
       context "admin" do
-        before {
+        before do
           @field_worker = create :user
           child1 = create(:child, :created_by => @field_worker.user_name)
           create(:child, :created_by => @field_worker.user_name, :duplicate => true, :duplicate_of => child1.id)
           @expected_children = [child1]
           @filter = "active"
-        }
+        end
         it_should_behave_like "viewing children by user with access to all data"
       end
       context "field worker" do

@@ -57,10 +57,10 @@ module PhotoHelper
   def update_photo_keys
     return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
-    @deleted_photo_keys.each { |p|
+    @deleted_photo_keys.each do |p|
       self['photo_keys'].delete p
       self['current_photo_key'] = self['photo_keys'].first if p == self['current_photo_key']
-    } if @deleted_photo_keys
+    end if @deleted_photo_keys
 
     self['current_photo_key'] ||= self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
 

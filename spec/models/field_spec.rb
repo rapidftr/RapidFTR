@@ -59,10 +59,10 @@ describe "Child record field view model", :type => :model do
     it "should not allows empty field display_name of field base language " do
       field = Field.new(:display_name_en => 'English', :display_name_zh => 'Chinese')
       I18n.default_locale = 'zh'
-      expect {
+      expect do
         field[:display_name_en] = ''
         field.save!
-      }.to raise_error
+      end.to raise_error
     end
 
     it "should not allow display name without alphabetic characters" do

@@ -49,13 +49,13 @@ describe FormSection, :type => :model do
     it "should not allow duplicate unique ids" do
       FormSection.new(:unique_id => "test", :name => "test").save!
 
-      expect {
+      expect do
         FormSection.new(:unique_id => "test").save!
-      }.to raise_error
+      end.to raise_error
 
-      expect {
+      expect do
         FormSection.get_by_unique_id("test").save!
-      }.to_not raise_error
+      end.to_not raise_error
     end
   end
 
@@ -291,10 +291,10 @@ describe FormSection, :type => :model do
     it "should not allows empty form names in form base_language " do
       form_section = FormSection.new(:name_en => 'English', :name_zh => 'Chinese')
       I18n.default_locale = 'zh'
-      expect {
+      expect do
         form_section[:name_en] = ''
         form_section.save!
-      }.to raise_error
+      end.to raise_error
     end
 
     it "should validate name is alpha_num" do

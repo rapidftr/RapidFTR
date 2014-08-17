@@ -1,9 +1,9 @@
 Before do
   I18n.locale = I18n.default_locale = :en
   CouchRest::Model::Base.descendants.each do |model|
-    docs = model.database.documents["rows"].map { |doc|
+    docs = model.database.documents["rows"].map do |doc|
       {"_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true} unless doc["id"].include? "_design"
-    }.compact
+    end.compact
     RestClient.post "#{model.database.root}/_bulk_docs", {:docs => docs}.to_json, {"Content-type" => "application/json"} unless docs.empty?
   end
 

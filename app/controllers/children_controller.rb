@@ -102,14 +102,14 @@ class ChildrenController < ApplicationController
         flash[:notice] = t('child.messages.creation_success')
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
-        format.json {
+        format.json do
           render :json => @child.compact.to_json
-        }
+        end
       else
-        format.html {
+        format.html do
           @form_sections = get_form_sections
           render :action => "new"
-        }
+        end
         format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end

@@ -88,11 +88,11 @@ class CouchSettings
   end
 
   def databases
-    COUCHDB_SERVER.databases.select { |db|
+    COUCHDB_SERVER.databases.select do |db|
       db.starts_with?(db_prefix + "_") && db.ends_with?("_" + db_suffix)
-    }.map { |name|
+    end.map do |name|
       COUCHDB_SERVER.database(name)
-    }
+    end
   end
 
 end

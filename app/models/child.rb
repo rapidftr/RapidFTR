@@ -77,7 +77,7 @@ class Child < CouchRest::Model::Base
     "#{field}_sort".to_sym
   end
 
-  @set_up_solr_fields = proc {
+  @set_up_solr_fields = proc do
     text_fields = Child.build_text_fields_for_solar
     date_fields = Child.build_date_fields_for_solar
 
@@ -99,7 +99,7 @@ class Child < CouchRest::Model::Base
     boolean(:active) { |c| !c.duplicate && !c.reunited }
     boolean :reunited
     boolean :flag
-  }
+  end
 
   searchable(&@set_up_solr_fields)
 

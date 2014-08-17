@@ -76,10 +76,10 @@ class SessionsController < ApplicationController
   private
 
   def handle_login_error(notice, format)
-    format.html {
+    format.html do
       flash[:error] = notice
       redirect_to :action => "new"
-    }
+    end
     format.xml  { render :xml => errors, :status => :unprocessable_entity }
     format.json { head :unauthorized }
   end

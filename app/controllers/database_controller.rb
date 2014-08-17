@@ -6,9 +6,9 @@ class DatabaseController < ApplicationController
     data_type   = params[:data_type]
     model_class = data_type.camelize.constantize
 
-    docs = model_class.database.documents["rows"].map { |doc|
+    docs = model_class.database.documents["rows"].map do |doc|
       {"_id" => doc["id"], "_rev" => doc["value"]["rev"], "_deleted" => true} unless doc["id"].include? "_design"
-    }.compact
+    end.compact
     RestClient.post "#{model_class.database.root}/_bulk_docs", {:docs => docs}.to_json, {"Content-type" => "application/json"} unless docs.empty?
 
     render :text => "Deleted all #{data_type} documents"

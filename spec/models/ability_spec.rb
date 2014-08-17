@@ -19,14 +19,14 @@ describe Ability, :type => :model do
     #   can? :update, User == true!!
     # It is messing up life a bit, so it is here as a test
     describe '#class and object assumptions' do
-      subject {
+      subject do
         ability = Object.new.extend CanCan::Ability
         ability.can :update, Child do |child|
           child.name == 'test'
         end
         ability.stub :user => user
         ability
-      }
+      end
 
       it { is_expected.to authorize :update, Child }
       it { is_expected.to authorize :update, Child.new(:name => 'test') }
@@ -34,12 +34,12 @@ describe Ability, :type => :model do
     end
 
     describe '#manage with exceptions patch' do
-      subject {
+      subject do
         ability = Object.new.extend CanCan::Ability
         ability.can :manage, User, :except => [:update, :disable]
         ability.stub :user => user
         ability
-      }
+      end
 
       it { is_expected.to authorize_all [:blah, :foo, :bar], User }
       it { is_expected.not_to authorize_any [:update, :disable], [User, User.new] }

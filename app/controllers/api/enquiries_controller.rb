@@ -45,9 +45,7 @@ class Api::EnquiriesController < Api::ApiController
     else
       enquiries = Enquiry.search_by_match_updated_since(params[:updated_after])
     end
-    render :json => enquiries.map { |enquiry|
-      {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"}
-    }
+    render(:json => enquiries.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} })
   end
 
   def show
