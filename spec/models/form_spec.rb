@@ -5,7 +5,7 @@ describe Form, :type => :model do
   describe "highlighted_fields" do
 
     before :each do
-      high_attr = [{ :order => "1", :highlighted => true }, { :order => "2", :highlighted => true }, { :order => "10", :highlighted => true }]
+      high_attr = [{:order => "1", :highlighted => true}, {:order => "2", :highlighted => true}, {:order => "10", :highlighted => true}]
       @highlighted_fields = [Field.new(:name => "h1", :highlighted => true, :highlight_information => high_attr[0]),
                              Field.new(:name => "h2", :highlighted => true, :highlight_information => high_attr[1]),
                              Field.new(:name => "h3", :highlighted => true, :highlight_information => high_attr[2])]

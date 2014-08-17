@@ -13,7 +13,7 @@ describe "children/_radio_button.html.erb", :type => :view do
                              :option_strings => Array['M', 'F'],
                              :help_text => "This is my help text"
 
-    render :partial => 'children/radio_button', :locals => { :radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/radio_button', :locals => {:radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
   end
 
@@ -23,7 +23,7 @@ describe "children/_radio_button.html.erb", :type => :view do
                              :type => 'radio_button',
                              :option_strings => Array['M', 'F']
 
-    render :partial => 'children/radio_button', :locals => { :radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/radio_button', :locals => {:radio_button => radio_button}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")
   end
 

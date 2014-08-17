@@ -51,7 +51,7 @@ describe "children/_form_section.html.erb", :type => :view do
         @form_section.add_field(field)
 
         @child = Child.new
-        render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+        render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
         @form_section.fields.each do |field|
           expect(rendered).to be_include("<label class=\"key\" for=\"#{field.tag_id}\">")
@@ -66,7 +66,7 @@ describe "children/_form_section.html.erb", :type => :view do
         @child = Child.new :name => "Jessica"
         @form_section.add_field build(:text_field, :name => 'name')
 
-        render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+        render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
         expect(rendered).to be_include("<input id=\"child_name\" name=\"child[name]\" type=\"text\" value=\"Jessica\" />")
       end
@@ -81,7 +81,7 @@ describe "children/_form_section.html.erb", :type => :view do
         @child = Child.new
         @form_section.add_field build(:radio_button_field, :name => 'is_age_exact', :option_strings => %w(exact approximate))
 
-        render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+        render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
         expect(rendered).to be_include("<input id=\"child_is_age_exact_exact\" name=\"child[is_age_exact]\" type=\"radio\" value=\"exact\" />")
         expect(rendered).to be_include("<input id=\"child_is_age_exact_approximate\" name=\"child[is_age_exact]\" type=\"radio\" value=\"approximate\" />")
@@ -95,7 +95,7 @@ describe "children/_form_section.html.erb", :type => :view do
 
         @form_section.add_field build(:radio_button_field, :name => 'is_age_exact', :option_strings => %w(exact approximate))
 
-        render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+        render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
         expect(rendered).to be_include("<input id=\"child_is_age_exact_exact\" name=\"child[is_age_exact]\" type=\"radio\" value=\"exact\" />")
         expect(rendered).to be_include("<input checked=\"checked\" id=\"child_is_age_exact_approximate\" name=\"child[is_age_exact]\" type=\"radio\" value=\"approximate\" />")
@@ -111,7 +111,7 @@ describe "children/_form_section.html.erb", :type => :view do
         @child = Child.new
         @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than a year ago"])
 
-        render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+        render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
         expect(rendered).to be_include("<label class=\"key\" for=\"child_date_of_separation\">")
         expect(rendered).to be_include("<select id=\"child_date_of_separation\" name=\"child[date_of_separation]\"><option selected=\"selected\" value=\"\">(Select...)</option>\n<option value=\"1-2 weeks ago\">1-2 weeks ago</option>\n<option value=\"More than a year ago\">More than a year ago</option></select>")
@@ -125,7 +125,7 @@ describe "children/_form_section.html.erb", :type => :view do
       @child = Child.new :date_of_separation => "1-2 weeks ago"
       @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than a year ago"])
 
-      render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+      render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
       expect(rendered).to have_tag 'select[id="child_date_of_separation"][name="child[date_of_separation]"]' do
         with_tag 'option[value=""]', :text => '(Select...)'
@@ -143,7 +143,7 @@ describe "children/_form_section.html.erb", :type => :view do
         @child = Child.new :relatives => %w(Brother Sister)
         @form_section.add_field build(:check_boxes_field, :name => 'relatives', :option_strings => %w(Sister Brother Cousin))
 
-        render :partial => 'children/form_section', :locals => { :form_section => @form_section }, :formats => [:html], :handlers => [:erb]
+        render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
         expect(rendered).to have_tag 'input[checked="checked"][id="child_relatives_sister"][name="child[relatives][]"][type="checkbox"][value="Sister"]'
         expect(rendered).to have_tag 'input[checked="checked"][id="child_relatives_brother"][name="child[relatives][]"][type="checkbox"][value="Brother"]'

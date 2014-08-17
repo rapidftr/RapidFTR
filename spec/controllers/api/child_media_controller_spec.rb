@@ -11,33 +11,33 @@ describe Api::ChildMediaController, :type => :controller do
 
   describe "routing" do
     it "should have a route for a child current photo" do
-      expect({ :get => "/api/children/1/photo" }).to route_to(:controller => "api/child_media", :action => "show_photo", :id => "1")
+      expect({:get => "/api/children/1/photo"}).to route_to(:controller => "api/child_media", :action => "show_photo", :id => "1")
     end
 
     it "should have a route for a child current recorded audio" do
-      expect({ :get => "api/children/1/audio" }).to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1")
+      expect({:get => "api/children/1/audio"}).to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1")
     end
 
     it "should have a route for a child current recorded audio" do
-      expect({ :get => "api/children/1/audio/a1" }).to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1", :audio_id => "a1")
+      expect({:get => "api/children/1/audio/a1"}).to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1", :audio_id => "a1")
     end
 
     it "should have a route for a child specific photo" do
-      expect({ :get => "api/children/c1/photo/p1" }).to route_to(:controller => "api/child_media", :action => "show_photo", :id => "c1", :photo_id => "p1")
+      expect({:get => "api/children/c1/photo/p1"}).to route_to(:controller => "api/child_media", :action => "show_photo", :id => "c1", :photo_id => "p1")
     end
   end
 
   describe '#send_photo_data' do
     it 'should add expires header if timestamp is supplied in query params' do
       controller.stub :send_data => nil
-      controller.stub :params => { :ts => 'test' }
+      controller.stub :params => {:ts => 'test'}
       expect(controller).to receive(:expires_in).with(1.year, :public => true)
       controller.send :send_photo_data
     end
 
     it 'should not add expires header for normal requests' do
       controller.stub :send_data => nil
-      controller.stub :params => { }
+      controller.stub :params => {}
       expect(controller).not_to receive(:expires_in)
       controller.send :send_photo_data
     end

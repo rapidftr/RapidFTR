@@ -12,7 +12,7 @@ describe "children/_textarea.html.erb", :type => :view do
                          :type => 'textarea',
                          :help_text => "This is my help text"
 
-    render :partial => 'children/textarea', :locals => { :textarea => textarea}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/textarea', :locals => {:textarea => textarea}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
   end
 
@@ -21,7 +21,7 @@ describe "children/_textarea.html.erb", :type => :view do
                          :display_name => "field name",
                          :type => 'textarea'
 
-    render :partial => 'children/textarea', :locals => { :textarea => textarea}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/textarea', :locals => {:textarea => textarea}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")
   end
 

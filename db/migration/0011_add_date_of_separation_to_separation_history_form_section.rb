@@ -1,4 +1,4 @@
-date_of_separation = Field.new({"name" => "date_of_separation", "type" => "date_field", "display_name_all" => "Date of Separation (dd/mm/yyyy)" })
+date_of_separation = Field.new({"name" => "date_of_separation", "type" => "date_field", "display_name_all" => "Date of Separation (dd/mm/yyyy)"})
 
 separation_history_fs = FormSection.by_unique_id(:key => "separation_history").first
 separation_history_fs.fields << date_of_separation

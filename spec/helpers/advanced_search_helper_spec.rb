@@ -33,6 +33,6 @@ describe AdvancedSearchHelper, :type => :helper do
   end
 
   it "should return '' string if criteria's field is not found'" do
-    expect(helper.generate_html({ :name => "some_name", :field => "some_field" }, [])).to eq("")
+    expect(helper.generate_html({:name => "some_name", :field => "some_field"}, [])).to eq("")
   end
 end

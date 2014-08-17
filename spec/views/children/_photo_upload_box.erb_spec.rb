@@ -12,7 +12,7 @@ describe "children/_photo_upload_box.html.erb", :type => :view do
                                  :type => 'photo_upload_box',
                                  :help_text => "This is my help text"
 
-    render :partial => 'children/photo_upload_box', :locals => { :photo_upload_box => photo_upload_box}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/photo_upload_box', :locals => {:photo_upload_box => photo_upload_box}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
   end
 
@@ -21,7 +21,7 @@ describe "children/_photo_upload_box.html.erb", :type => :view do
                                  :display_name => "field name",
                                  :type => 'photo_upload_box'
 
-    render :partial => 'children/photo_upload_box', :locals => { :photo_upload_box => photo_upload_box}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/photo_upload_box', :locals => {:photo_upload_box => photo_upload_box}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")
   end
 

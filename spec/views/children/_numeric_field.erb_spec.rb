@@ -12,7 +12,7 @@ describe "children/_numeric_field.html.erb", :type => :view do
                               :type => 'numeric_field',
                               :help_text => "This is my help text"
 
-    render :partial => 'children/numeric_field', :locals => { :numeric_field => numeric_field }, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/numeric_field', :locals => {:numeric_field => numeric_field}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag("img.vtip")
   end
 
@@ -21,7 +21,7 @@ describe "children/_numeric_field.html.erb", :type => :view do
                               :display_name => "field name",
                               :type => 'numeric_field'
 
-    render :partial => 'children/numeric_field', :locals => { :numeric_field => numeric_field }, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/numeric_field', :locals => {:numeric_field => numeric_field}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag("img.vtip")
   end
 

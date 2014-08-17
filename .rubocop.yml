@@ -19,3 +19,6 @@ Style/Lambda:
 Style/RegexpLiteral:
   Exclude:
     - 'features/step_definitions/*.rb'
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space

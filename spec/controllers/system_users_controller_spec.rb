@@ -45,7 +45,7 @@ describe SystemUsersController, :type => :controller do
   describe "update user" do
     it "should update system user" do
       fake_login_as Permission::SYSTEM[:system_users]
-      mock_user = SystemUsers.new({:name => "test_user", :password => "test_password" })
+      mock_user = SystemUsers.new({:name => "test_user", :password => "test_password"})
       expect(SystemUsers).to receive(:get).with("org.couchdb.user:test_user").and_return(mock_user)
       expect(mock_user).to receive(:update_attributes).and_return(true)
       put :update, {:id => "test_user", :system_users => {:name => "test_user", :password => "test_password"}}
@@ -54,7 +54,7 @@ describe SystemUsersController, :type => :controller do
 
     it "should not update system user if username is changed" do
       fake_login_as Permission::SYSTEM[:system_users]
-      mock_user = SystemUsers.new({:name => "test_user", :password => "test_password" })
+      mock_user = SystemUsers.new({:name => "test_user", :password => "test_password"})
       expect(SystemUsers).to receive(:get).with("org.couchdb.user:abcd").and_return(mock_user)
       expect(mock_user).not_to receive(:update_attributes)
       put :update, {:id => "abcd", :system_users => {:name => "abcd", :password => "test_password"}}

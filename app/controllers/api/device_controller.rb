@@ -7,9 +7,9 @@ class Api::DeviceController < Api::ApiController
     params[:imei] ||= request.headers["X-FTR-Imei"]
     device = Device.find_by_device_imei(params[:imei]).first
     if device
-      render :json => { :blacklisted => device.blacklisted }
+      render :json => {:blacklisted => device.blacklisted}
     else
-      render :json => { :error => "Not found" }, :status => 404
+      render :json => {:error => "Not found"}, :status => 404
     end
   end
 end

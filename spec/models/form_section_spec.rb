@@ -352,7 +352,7 @@ describe FormSection, :type => :model do
 
   describe "highlighted_fields" do
     it "should update field as highlighted" do
-      attrs = { :field_name => "h1", :form_id => "highlight_form" }
+      attrs = {:field_name => "h1", :form_id => "highlight_form"}
       existing_field = Field.new :name => attrs[:field_name]
       form = build :form
       form_section = FormSection.new(:name => "Some Form",
@@ -367,7 +367,7 @@ describe FormSection, :type => :model do
     end
 
     it "should increment order of the field to be highlighted" do
-      attrs = { :field_name => "existing_field", :form_id => "highlight_form"}
+      attrs = {:field_name => "existing_field", :form_id => "highlight_form"}
       existing_field = Field.new :name => attrs[:field_name]
       existing_highlighted_field = Field.new :name => "highlighted_field"
       existing_highlighted_field.highlight_with_order 3

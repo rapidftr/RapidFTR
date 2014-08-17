@@ -46,7 +46,7 @@ class I18nBackendCouch < I18n::Backend::Simple
   # Merge and save data into an existing document
   # Or create a new document
   def save_doc(locale)
-    data   = translations[locale] || { }
+    data   = translations[locale] || {}
     locale = locale.to_s
     data   = clean(deep_stringify_keys(data))
 

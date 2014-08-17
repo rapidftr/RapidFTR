@@ -11,11 +11,11 @@ class HighlightFieldsController < ApplicationController
     @form = Form.find params[:id]
     @form_sections = @form.sections
     @highlighted_fields = @form.sorted_highlighted_fields.map do |field|
-      { :field_name => field.name,
-        :display_name => field.display_name,
-        :order => field.highlight_information.order,
-        :form_name => field.form.name,
-        :form_id => field.form.unique_id
+      {:field_name => field.name,
+       :display_name => field.display_name,
+       :order => field.highlight_information.order,
+       :form_name => field.form.name,
+       :form_id => field.form.unique_id
       }
     end
   end

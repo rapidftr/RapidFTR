@@ -16,7 +16,7 @@ describe "shared/_pagination.html.erb", :type => :view do
       pager.replace @children
     end
 
-    render :partial => 'shared/pagination', :locals => { :results => @results }
+    render :partial => 'shared/pagination', :locals => {:results => @results}
     rendered
   end
 

@@ -13,7 +13,7 @@ describe "children/_check_boxes.html.erb", :type => :view do
                             :help_text => "This is my help text",
                             :option_strings => %w(FOO BAR)
 
-    render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/check_boxes', :locals => {:check_boxes => check_boxes, :child => @child}, :formats => [:html], :handlers => [:erb]
 
     expect(rendered).to have_tag("img.vtip")
   end
@@ -24,7 +24,7 @@ describe "children/_check_boxes.html.erb", :type => :view do
                             :type => Field::CHECK_BOXES,
                             :option_strings => %w(FOO BAR)
 
-    render :partial => 'children/check_boxes', :locals => { :check_boxes => check_boxes, :child => @child }, :formats => [:html], :handlers => [:erb]
+    render :partial => 'children/check_boxes', :locals => {:check_boxes => check_boxes, :child => @child}, :formats => [:html], :handlers => [:erb]
 
     expect(rendered).not_to have_tag("img.vtip")
   end

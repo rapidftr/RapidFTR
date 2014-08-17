@@ -67,11 +67,11 @@ RapidFTR::Application.routes.draw do
   #######################
 
   namespace :api do
-    controller :form_sections, :defaults => { :format => :json } do
+    controller :form_sections, :defaults => {:format => :json} do
       get 'form_sections', :action => :index
     end
 
-    controller :device, :defaults => { :format => :json} do
+    controller :device, :defaults => {:format => :json} do
       get 'is_blacklisted', :action => 'is_blacklisted'
       get 'is_blacklisted/:imei', :action => 'is_blacklisted'
     end

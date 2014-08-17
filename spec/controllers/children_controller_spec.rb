@@ -426,7 +426,7 @@ describe ChildrenController, :type => :controller do
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
       allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname", :created_at => "Jan 16 2010 14:05:32")
-      child.attributes = {'histories' => [] }
+      child.attributes = {'histories' => []}
       child.save!
 
       allow(Clock).to receive(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
@@ -448,7 +448,7 @@ describe ChildrenController, :type => :controller do
       put :update, :id => child.id,
                    :child => {
                      :last_known_location => "Manchester",
-                     :photo => Rack::Test::UploadedFile.new(uploadable_photo_jeff) }
+                     :photo => Rack::Test::UploadedFile.new(uploadable_photo_jeff)}
 
       expect(assigns[:child]['last_known_location']).to eq("Manchester")
       expect(assigns[:child]['_attachments'].size).to eq(2)
@@ -576,7 +576,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should create SearchForm with whatever params received" do
-      params = { :query => 'test' }
+      params = {:query => 'test'}
       expect(Forms::SearchForm).to receive(:new).with(:ability => controller.current_ability, :params => hash_including(params)).and_call_original
       expect_any_instance_of(Forms::SearchForm).to receive(:execute)
       get :search, params
@@ -723,7 +723,7 @@ describe ChildrenController, :type => :controller do
       fake_admin_login
       expect(Child).to receive('new_with_user_name').and_return(child = Child.new)
       expect(controller).to receive('current_user_full_name').and_return('Bill Clinton')
-      put :create, :child => {:name => 'Test Child' }
+      put :create, :child => {:name => 'Test Child'}
       expect(child['created_by_full_name']).to eq('Bill Clinton')
     end
   end

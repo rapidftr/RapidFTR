@@ -8,7 +8,7 @@ describe 'Form Section routing', :type => :routing do
   end
 
   it 'has route to post a new field' do
-    expect({:post => '/form_section/foo/fields' }).to route_to(:controller => 'fields', :action => 'create', :form_section_id => 'foo')
+    expect({:post => '/form_section/foo/fields'}).to route_to(:controller => 'fields', :action => 'create', :form_section_id => 'foo')
     expect(form_section_fields_path('some_formsection')).to eq('/form_section/some_formsection/fields')
   end
 
@@ -32,7 +32,7 @@ describe 'Form Section routing', :type => :routing do
   end
 
   it "redirects /published_form_sections to the new API controller" do
-    expect({ :get => '/published_form_sections' }).to route_to(:controller => 'api/form_sections', :action => 'children')
-    expect({ :get => '/published_form_sections.json' }).to route_to(:controller => 'api/form_sections', :action => 'children', :format => 'json')
+    expect({:get => '/published_form_sections'}).to route_to(:controller => 'api/form_sections', :action => 'children')
+    expect({:get => '/published_form_sections.json'}).to route_to(:controller => 'api/form_sections', :action => 'children', :format => 'json')
   end
 end

@@ -14,11 +14,11 @@ module ApplicationHelper
   end
 
   def cancel_button(path)
-    link_to t('cancel'), path, :class => "link_cancel", :data => { :confirm => t('messages.cancel_confirmation') }
+    link_to t('cancel'), path, :class => "link_cancel", :data => {:confirm => t('messages.cancel_confirmation')}
   end
 
   def discard_button(path)
-    link_to t('discard'), path, :class => 'link_discard', :data => { :confirm => t('messages.confirmation_message') }
+    link_to t('discard'), path, :class => 'link_discard', :data => {:confirm => t('messages.confirmation_message')}
   end
 
   def link_with_confirm(link_to, anchor, link_options = {})
@@ -32,7 +32,7 @@ module ApplicationHelper
       msg = confirm_message % 'Manage Form Sections'
     end
 
-    link_options.merge :data => { :confirm => msg } if msg
+    link_options.merge :data => {:confirm => msg} if msg
     link_to link_to, anchor, link_options
   end
 

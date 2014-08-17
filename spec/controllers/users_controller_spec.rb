@@ -211,7 +211,7 @@ describe UsersController, :type => :controller do
       it "should not allow to edit disable fields for non-disable users" do
         fake_login_as(Permission::USERS[:create_and_edit])
         user = stub_model User, :user_name => 'some name'
-        params = { :id => '24', :user => { :disabled => true } }
+        params = {:id => '24', :user => {:disabled => true}}
         User.stub :get => user
         post :update, params
         expect(response).to be_forbidden
@@ -220,7 +220,7 @@ describe UsersController, :type => :controller do
       it "should allow to edit disable fields for disable users" do
         fake_login_as(Permission::USERS[:disable])
         user = stub_model User, :user_name => 'some name'
-        params = { :id => '24', :user => { :disabled => true } }
+        params = {:id => '24', :user => {:disabled => true}}
         User.stub :get => user
         allow(User).to receive(:find_by_user_name).with(user.user_name).and_return(user)
         post :update, params
@@ -287,7 +287,7 @@ describe UsersController, :type => :controller do
       @user = User.new(:user_name => 'fakeuser')
       @mock_change_form = double
       fake_login @user
-      @mock_params = { "mock" => "mock" }
+      @mock_params = {"mock" => "mock"}
       allow(Forms::ChangePasswordForm).to receive(:new).with(@mock_params).and_return(@mock_change_form)
     end
 
@@ -302,7 +302,7 @@ describe UsersController, :type => :controller do
       expect(@mock_change_form).to receive(:user=).with(@user).and_return(nil)
       expect(@mock_change_form).to receive(:execute).and_return(true)
 
-      post :update_password, { :forms_change_password_form => @mock_params }
+      post :update_password, {:forms_change_password_form => @mock_params}
       expect(flash[:notice]).to eq("Password changed successfully")
       expect(response).to redirect_to :action => :show, :id => @user.id
     end
@@ -311,7 +311,7 @@ describe UsersController, :type => :controller do
       expect(@mock_change_form).to receive(:user=).with(@user).and_return(nil)
       expect(@mock_change_form).to receive(:execute).and_return(false)
 
-      post :update_password, { :forms_change_password_form => @mock_params }
+      post :update_password, {:forms_change_password_form => @mock_params}
       expect(response).to render_template :change_password
     end
   end

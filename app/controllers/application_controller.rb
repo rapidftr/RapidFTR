@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
         if e.status_code == 401
           redirect_to :login
         else
-          render :formats => [:html], :template => "shared/error_response", :status => e.status_code, :locals => { :exception => e }
+          render :formats => [:html], :template => "shared/error_response", :status => e.status_code, :locals => {:exception => e}
         end
       end
     end

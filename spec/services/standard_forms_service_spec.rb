@@ -8,27 +8,27 @@ describe StandardFormsService do
 
     describe "saving forms" do
       it "should persist enquiry form" do
-        attributes = { "forms" => {
-          "children" => { "user_selected" => "0", "id" => "children"},
-          "enquiries" => { "user_selected" => "1", "id" => "enquiries"} } }
+        attributes = {"forms" => {
+          "children" => {"user_selected" => "0", "id" => "children"},
+          "enquiries" => {"user_selected" => "1", "id" => "enquiries"}}}
         StandardFormsService.persist(attributes)
         expect(Form.all.all.length).to eq 1
         expect(Form.all.first.name).to eq Enquiry::FORM_NAME
       end
 
       it "should persist child form" do
-        attributes = { "forms" => {
-          "children" => { "user_selected" => "1", "id" => "children"},
-          "enquiries" => { "user_selected" => "0", "id" => "enquiries"} } }
+        attributes = {"forms" => {
+          "children" => {"user_selected" => "1", "id" => "children"},
+          "enquiries" => {"user_selected" => "0", "id" => "enquiries"}}}
         StandardFormsService.persist(attributes)
         expect(Form.all.all.length).to eq 1
         expect(Form.all.first.name).to eq Child::FORM_NAME
       end
 
       it "should save both forms "do
-        attributes = { "forms" => {
-          "children" => { "user_selected" => "1", "id" => "children"},
-          "enquiries" => { "user_selected" => "1", "id" => "enquiries"} } }
+        attributes = {"forms" => {
+          "children" => {"user_selected" => "1", "id" => "children"},
+          "enquiries" => {"user_selected" => "1", "id" => "enquiries"}}}
         StandardFormsService.persist(attributes)
         expect(Form.all.all.length).to eq 2
         expect(Form.all.collect(&:name)).to include(Child::FORM_NAME, Enquiry::FORM_NAME)
@@ -36,22 +36,22 @@ describe StandardFormsService do
 
       it "should not add already existing forms" do
         create :form, :name => Child::FORM_NAME
-        attributes = { "forms" => {
-          "children" => { "user_selected" => "0", "id" => "children",
-                          "sections" => { "basic_identity" => { "user_selected" => "1", "id" => "basic_identity" } } } } }
+        attributes = {"forms" => {
+          "children" => {"user_selected" => "0", "id" => "children",
+                          "sections" => {"basic_identity" => {"user_selected" => "1", "id" => "basic_identity"}}}}}
         expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
       end
     end
 
     describe "saving form sections" do
       it "should persist new form with new form sections" do
-        attributes = { "forms" => {
-          "children" => { "user_selected" => "1", "id" => "children",
+        attributes = {"forms" => {
+          "children" => {"user_selected" => "1", "id" => "children",
                           "sections" => {
                             "Basic Identity" => {
                               "user_selected" => "1",
-                              "id" => "basic_identity" }
-                          } } } }
+                              "id" => "basic_identity"}
+                          }}}}
 
         StandardFormsService.persist(attributes)
 
@@ -80,13 +80,13 @@ describe StandardFormsService do
 
       it "should persist new form sections on existing forms with no form sections" do
         create :form, :name => Child::FORM_NAME
-        attributes = { "forms" => {
-          "children" => { "user_selected" => "0", "id" => "children",
+        attributes = {"forms" => {
+          "children" => {"user_selected" => "0", "id" => "children",
                           "sections" => {
                             "Basic Identity" => {
                               "user_selected" => "1",
-                              "id" => "basic_identity" }
-                          } } } }
+                              "id" => "basic_identity"}
+                          }}}}
 
         expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 1
@@ -131,7 +131,7 @@ describe StandardFormsService do
                 "Basic Identity" => {
                   "user_selected" => "1",
                   "id" => "basic_identity"
-                } } } } }
+                }}}}}
 
         expect { StandardFormsService.persist(attributes) } .to_not change(Form, :count).from(1)
         expect(FormSection.count).to eq 1
@@ -141,7 +141,7 @@ describe StandardFormsService do
 
     describe "saving fields" do
       it "should persist new form with new form sections with new fields" do
-        attributes = { "forms" => {
+        attributes = {"forms" => {
           "children" => {
             "user_selected" => "1",
             "id" => "children",
@@ -153,7 +153,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                  } } } } } } }
+                  }}}}}}}
 
         StandardFormsService.persist(attributes)
 
@@ -168,7 +168,7 @@ describe StandardFormsService do
 
       it "should persist existing form with new form sections with new fields" do
         create :form, :name => Child::FORM_NAME
-        attributes = { "forms" => {
+        attributes = {"forms" => {
           "children" => {
             "user_selected" => "0",
             "id" => "children",
@@ -180,7 +180,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                  } } } } } } }
+                  }}}}}}}
 
         StandardFormsService.persist(attributes)
 
@@ -196,7 +196,7 @@ describe StandardFormsService do
       it "should persist existing form with existing form sections with new fields" do
         form = create :form, :name => Child::FORM_NAME
         create :form_section, :name => "Basic Identity", :unique_id => "basic_identity", :form => form, :fields => []
-        attributes = { "forms" => {
+        attributes = {"forms" => {
           "children" => {
             "user_selected" => "0",
             "id" => "children",
@@ -208,7 +208,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                  } } } } } } }
+                  }}}}}}}
 
         StandardFormsService.persist(attributes)
 
@@ -225,7 +225,7 @@ describe StandardFormsService do
         form = create :form, :name => Child::FORM_NAME
         field = build :field
         create :form_section, :name => "Basic Identity", :form => form, :fields => [field]
-        attributes = { "forms" => {
+        attributes = {"forms" => {
           "children" => {
             "user_selected" => "0",
             "id" => "children",
@@ -237,7 +237,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                  } } } } } } }
+                  }}}}}}}
 
         StandardFormsService.persist(attributes)
 
@@ -257,7 +257,7 @@ describe StandardFormsService do
                :unique_id => "basic_identity",
                :form => form,
                :fields => [field]
-        attributes = { "forms" => {
+        attributes = {"forms" => {
           "children" => {
             "user_selected" => "0",
             "id" => "children",
@@ -269,7 +269,7 @@ describe StandardFormsService do
                   "name" => {
                     "user_selected" => "1",
                     "id" => "name"
-                  } } } } } } }
+                  }}}}}}}
 
         StandardFormsService.persist(attributes)
         section = FormSection.first

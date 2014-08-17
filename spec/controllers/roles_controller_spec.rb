@@ -89,7 +89,7 @@ describe RolesController, :type => :controller do
     it "should allow valid user to update roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])
       mock = stub_model Role, :id => "1"
-      role_mock = { "mock" => "mock" }
+      role_mock = {"mock" => "mock"}
 
       expect(mock).to receive(:update_attributes).with(role_mock).and_return(true)
       expect(Role).to receive(:get).with(mock.id).and_return(mock)
@@ -102,7 +102,7 @@ describe RolesController, :type => :controller do
     it "should return error if update attributes is not invoked " do
       fake_login_as(Permission::ROLES[:create_and_edit])
       mock = stub_model Role, :id => "1"
-      role_mock = { "mock" => "mock" }
+      role_mock = {"mock" => "mock"}
 
       expect(mock).to receive(:update_attributes).with(role_mock).and_return(false)
       expect(Role).to receive(:get).with(mock.id).and_return(mock)
@@ -133,7 +133,7 @@ describe RolesController, :type => :controller do
 
     it "should allow valid user to create roles" do
       fake_login_as(Permission::ROLES[:create_and_edit])
-      role_mock = { "mock" => "mock" }
+      role_mock = {"mock" => "mock"}
       expect(role_mock).to receive(:save).and_return(true)
       expect(Role).to receive(:new).with(role_mock).and_return(role_mock)
       post :create, :role => role_mock

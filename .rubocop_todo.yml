@@ -175,12 +175,6 @@ Style/Semicolon:
 Style/SignalException:
   Enabled: false
 
-# Offense count: 965
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
-Style/SpaceInsideHashLiteralBraces:
-  Enabled: false
-
 # Offense count: 6413
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

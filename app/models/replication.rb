@@ -107,12 +107,12 @@ class Replication < CouchRest::Model::Base
 
   def push_config(model)
     target = remote_couch_uri remote_couch_config["databases"][model.to_s]
-    { "source" => model.database.name, "target" => target.to_s, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
+    {"source" => model.database.name, "target" => target.to_s, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env}
   end
 
   def pull_config(model)
     target = remote_couch_uri remote_couch_config["databases"][model.to_s]
-    { "source" => target.to_s, "target" => model.database.name, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
+    {"source" => target.to_s, "target" => model.database.name, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env}
   end
 
   def build_configs
