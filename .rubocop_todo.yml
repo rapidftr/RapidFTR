@@ -132,10 +132,6 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Enabled: false
 
-# Offense count: 3
-Style/Lambda:
-  Enabled: false
-
 # Offense count: 2
 Style/MultilineBlockChain:
   Enabled: false

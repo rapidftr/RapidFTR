@@ -8,3 +8,6 @@ AllCops:
 
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
+
+Style/Lambda:
+  Enabled: false

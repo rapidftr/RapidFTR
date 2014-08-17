@@ -46,7 +46,7 @@ And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
 end
 
 def get_user_row_element(full_name)
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }
+  page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]")
 end
 
 Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
@@ -54,7 +54,7 @@ Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
 end
 
 Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
-  expect(get_user_row_element(full_name)).to raise_error(Capybara::ElementNotFound)
+  expect { get_user_row_element(full_name) }.to raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should not see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
@@ -68,7 +68,7 @@ Then /^I should see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
 end
 
 def get_element_for_edit_user_link(full_name, link)
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }
+  page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]")
 end
 
 Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
@@ -76,7 +76,7 @@ Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
 end
 
 Then /^I should not see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
-  expect(get_element_for_edit_user_link(full_name, link)).to raise_error(Capybara::ElementNotFound)
+  expect { get_element_for_edit_user_link(full_name, link) }.to raise_error(Capybara::ElementNotFound)
 end
 
 Then /^the field "([^"]*)" should have the following options:$/ do |locator, table|
@@ -84,7 +84,7 @@ Then /^the field "([^"]*)" should have the following options:$/ do |locator, tab
 end
 
 def get_link_for_page(page_name)
-  lambda { page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ") }
+  page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ")
 end
 
 Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
