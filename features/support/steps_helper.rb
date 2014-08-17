@@ -8,6 +8,7 @@ def check_link_presence(div, li_class_name, link_text)
       found = true
       break
     rescue Capybara::ElementNotFound
+      next
     end
   end
   expect(found).not_to be false
