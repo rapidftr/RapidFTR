@@ -9,7 +9,7 @@ class Enquiry < CouchRest::Model::Base
   property :potential_matches, :default => []
   property :match_updated_at, :default => ""
 
-  validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
+  validates :criteria, :presence => {:message => I18n.t("errors.models.enquiry.presence_of_criteria")}
   validate :validate_has_at_least_one_field_value
 
   FORM_NAME = "Enquiries"

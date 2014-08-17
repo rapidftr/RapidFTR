@@ -23,10 +23,10 @@ class Replication < CouchRest::Model::Base
          }"
   end
 
-  validates_presence_of :remote_app_url
-  validates_presence_of :description
-  validates_presence_of :username
-  validates_presence_of :password
+  validates :remote_app_url, :presence => true
+  validates :description, :presence => true
+  validates :username, :presence => true
+  validates :password, :presence => true
   validate :validate_remote_app_url
   validate :save_remote_couch_config
 

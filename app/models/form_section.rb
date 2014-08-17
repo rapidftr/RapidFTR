@@ -18,7 +18,7 @@ class FormSection < CouchRest::Model::Base
     view :by_unique_id
     view :by_order
   end
-  validates_presence_of "name_#{I18n.default_locale}", :message => I18n.t("errors.models.form_section.presence_of_name")
+  validates "name_#{I18n.default_locale}", :presence => {:message => I18n.t("errors.models.form_section.presence_of_name")}
   validate :valid_presence_of_base_language_name
   validate :validate_name_format
   validate :validate_unique_id

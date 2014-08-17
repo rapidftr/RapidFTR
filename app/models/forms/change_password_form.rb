@@ -9,7 +9,7 @@ module Forms
 
     validates :user, :presence => true
     validates :old_password, :presence => true
-    validates :new_password, :presence => true, :confirmation =>  true
+    validates :new_password, :presence => true, :confirmation => true
     validates :new_password_confirmation, :presence => true
     validate :check_old_password
 

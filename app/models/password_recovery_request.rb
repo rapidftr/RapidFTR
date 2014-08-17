@@ -17,7 +17,7 @@ class PasswordRecoveryRequest < CouchRest::Model::Base
          }"
   end
 
-  validates_presence_of :user_name, :message => I18n.t("errors.models.password_recovery_request.user_name_mandatory")
+  validates :user_name, :presence => {:message => I18n.t("errors.models.password_recovery_request.user_name_mandatory")}
 
   def hide!
     self.hidden = true

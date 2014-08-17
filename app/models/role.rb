@@ -16,8 +16,8 @@ class Role < CouchRest::Model::Base
          }"
   end
 
-  validates_presence_of :name, :message => "Name must not be blank"
-  validates_presence_of :permissions, :message => I18n.t("errors.models.role.permission_presence")
+  validates :name, :presence => {:message => "Name must not be blank"}
+  validates :permissions, :presence => {:message => I18n.t("errors.models.role.permission_presence")}
   validate :is_name_unique, :if => :name
 
   before_save :generate_id

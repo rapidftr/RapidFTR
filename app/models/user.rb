@@ -91,18 +91,19 @@ class User < CouchRest::Model::Base
     Session.delete_for user
   end
 
-  validates_presence_of :full_name, :message => I18n.t("errors.models.user.full_name")
-  validates_presence_of :password_confirmation, :message => I18n.t("errors.models.user.password_confirmation"), :if => :password_required?
-  validates_presence_of :role_ids, :message => I18n.t("errors.models.user.role_ids"), :if => proc { |user| user.verified }
-  validates_presence_of :organisation, :message => I18n.t("errors.models.user.organisation")
+  validates :full_name, :presence => {:message => I18n.t("errors.models.user.full_name")}
+  validates :password_confirmation, :presence => {:message => I18n.t("errors.models.user.password_confirmation"), :if => :password_required?}
+  validates :role_ids, :presence => {:message => I18n.t("errors.models.user.role_ids"), :if => proc { |user| user.verified }}
+  validates :organisation, :presence => {:message => I18n.t("errors.models.user.organisation")}
 
-  validates_format_of :user_name, :with => /\A[^ ]+\z/, :message => I18n.t("errors.models.user.user_name")
+  validates :user_name, :format => {:with => /\A[^ ]+\z/, :message => I18n.t("errors.models.user.user_name")}
 
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$\z/, :if => :email_entered?,
-                      :message => I18n.t("errors.models.user.email")
+  validates :email, :format => {:with => /\A([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$\z/,
+                                :if => :email_entered?,
+                                :message => I18n.t("errors.models.user.email")}
 
-  validates_confirmation_of :password, :if => :password_required? && :password_confirmation_entered?,
-                                       :message => I18n.t("errors.models.user.password_mismatch")
+  validates :password, :confirmation => {:if => :password_required? && :password_confirmation_entered?,
+                                         :message => I18n.t("errors.models.user.password_mismatch")}
 
   # FIXME 409s randomly...destroying user records before test as a temp
   validate :is_user_name_unique

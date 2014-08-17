@@ -143,19 +143,19 @@ describe Replication, :type => :model do
     end
 
     it 'should return all replication documents' do
-      @rep.stub :replicator_docs =>  [{ "test" => "1" }, @default_config, { "test" => "2" }, @default_config]
+      @rep.stub :replicator_docs => [{ "test" => "1" }, @default_config, { "test" => "2" }, @default_config]
       expect(@rep.fetch_configs).to eq([@default_config, @default_config])
     end
 
     it 'should cache all replication documents' do
-      @rep.stub :replicator_docs =>  [{ "test" => "1" }, @default_config, { "test" => "2" }, @default_config]
+      @rep.stub :replicator_docs => [{ "test" => "1" }, @default_config, { "test" => "2" }, @default_config]
       expect(@rep.fetch_configs).to eq([@default_config, @default_config])
-      @rep.stub :replicator_docs =>  [{ "test" => "1" }, @default_config, @default_config, @default_config]
+      @rep.stub :replicator_docs => [{ "test" => "1" }, @default_config, @default_config, @default_config]
       expect(@rep.fetch_configs).to eq([@default_config, @default_config])
     end
 
     it 'should invalidate replication document cache' do
-      @rep.stub :replicator_docs =>  [{ "test" => "1" }, @default_config, { "test" => "2" }, @default_config]
+      @rep.stub :replicator_docs => [{ "test" => "1" }, @default_config, { "test" => "2" }, @default_config]
       expect(@rep.fetch_configs).to eq([@default_config, @default_config])
       @rep.send :invalidate_fetch_configs
       @rep.stub :replicator_docs => [{ "test" => "1" }, @default_config, @default_config, @default_config]

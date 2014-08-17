@@ -68,11 +68,6 @@ Metrics/PerceivedComplexity:
 Rails/Output:
   Enabled: false
 
-# Offense count: 17
-# Configuration parameters: Include.
-Rails/Validation:
-  Enabled: false
-
 # Offense count: 3
 Style/AccessorMethodName:
   Enabled: false
