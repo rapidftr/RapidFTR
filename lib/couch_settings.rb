@@ -35,10 +35,6 @@ class CouchSettings
     @config['https_port'] || '6984'
   end
 
-  def database
-    @config['database']
-  end
-
   def username
     @config['username']
   end
@@ -89,6 +85,14 @@ class CouchSettings
 
   def ssl_enabled_for_couch?
     @ssl_enabled_for_couch ||= with_ssl { authenticate username, password } rescue false
+  end
+
+  def databases
+    COUCHDB_SERVER.databases.select { |db|
+      db.starts_with?(db_prefix + "_") && db.ends_with?("_" + db_suffix)
+    }.map { |name|
+      COUCHDB_SERVER.database(name)
+    }
   end
 
 end

@@ -3,7 +3,7 @@ form_sections = database.documents["rows"].select { |row| !row["id"].include?("_
 
 def rename_attributes(obj, hash)
   hash.each do |from, to|
-    obj[to] = obj.delete from if obj.key? from
+    obj[to] = obj.delete(from) if obj[from]
   end
 end
 

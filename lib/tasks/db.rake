@@ -1,14 +1,3 @@
-require 'restclient'
-require 'fileutils'
-require 'erb'
-require 'readline'
-
-def databases_for_env
-  COUCHDB_SERVER.databases
-                .select { |db| db =~ /_#{Rails.env}$/ }
-                .map { |name| COUCHDB_SERVER.database(name) }
-end
-
 namespace :db do
 
   desc "Seed with data (task manually created during the 3.0 upgrade, as it went missing)"
@@ -20,25 +9,17 @@ namespace :db do
     Migration.migrate
   end
 
-  desc "Create system administrator for couchdb. This is needed only if you are interested to test out replications"
   task :create_couch_sysadmin, :user_name, :password do |t, args|
-    puts "
-      **************************************************************
-          Welcome to RapidFTR couchdb system administrator setup
-      **************************************************************
-    "
-
     url       = "http://localhost:5984"
-    user_name = args[:user_name] || get("Enter username for CouchDB: ")
-    password  = args[:password]  || get("Enter password for CouchDB: ")
+    user_name = args[:user_name]
+    password  = args[:password]
 
     begin
-      RestClient.post "#{url}/_session", "name=#{user_name}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
-      puts "Administrator account #{user_name} is already existing and verified"
-    rescue RestClient::Request::Unauthorized
       full_host = "#{url}/_config/admins/#{user_name}"
       RestClient.put full_host, "\"" + password + "\"", {:content_type => :json}
       puts "Administrator account #{user_name} has been created"
+    rescue
+      puts "Administrator account #{user_name} is already existing"
     end
 
     Rake::Task["db:create_couchdb_yml"].invoke(user_name, password)
@@ -66,23 +47,13 @@ namespace :db do
       couchdb_config[env] = default_config.merge("suffix" => "#{env}")
     end
 
-    write_file Rails.root.to_s + "/config/couchdb.yml", couchdb_config.to_yaml
+    File.write File.join(Rails.root, 'config', 'couchdb.yml'), couchdb_config.to_yaml
   end
 
+  desc "Drop all databases"
   task :delete => :environment do
-    databases_for_env.each do |db|
-      db.delete!
-    end
+    puts "Deleting all databases..."
+    CouchSettings.instance.databases.each(&:delete!)
   end
-end
 
-def write_file(name, content)
-  puts "Writing #{name}..."
-  File.open(name, 'w') do |file|
-    file.write content
-  end
-end
-
-def get(prompt)
-  Readline.readline prompt
 end
