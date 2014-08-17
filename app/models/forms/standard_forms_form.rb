@@ -10,7 +10,7 @@ module Forms
       enquiry_form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
       enquiry_form = StandardFormsData::FormData.build(Form.new(:name => Enquiry::FORM_NAME), enquiry_form_sections)
 
-      form = self.new
+      form = new
       form.forms = [child_form, enquiry_form]
       form
     end
@@ -34,7 +34,7 @@ module Forms
         sections.each do |section|
           data_sections << SectionData.build(section, existing_form)
         end
-        self.new :id => id, :name => name, :disabled => disabled, :sections => data_sections
+        new :id => id, :name => name, :disabled => disabled, :sections => data_sections
       end
     end
 
@@ -55,7 +55,7 @@ module Forms
         section.fields.each do |field|
           data_fields << FieldData.build(field, existing_section)
         end
-        self.new :id => id, :name => name, :disabled => disabled, :fields => data_fields
+        new :id => id, :name => name, :disabled => disabled, :fields => data_fields
       end
     end
 
@@ -71,7 +71,7 @@ module Forms
         id = field.name
         name = field.display_name
         disabled = existing_section.nil? ? false : existing_section.fields.collect(&:name).include?(field.name)
-        self.new :id => id, :name => name, :disabled => disabled
+        new :id => id, :name => name, :disabled => disabled
       end
     end
   end

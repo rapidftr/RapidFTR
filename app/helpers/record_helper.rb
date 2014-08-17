@@ -60,8 +60,8 @@ module RecordHelper
 
   def update_properties_with_user_name(user_name, new_photo, photo_names, new_audio, properties)
     update_properties(properties, user_name)
-    self.delete_photos(photo_names)
-    self.update_photo_keys
+    delete_photos(photo_names)
+    update_photo_keys
     self.photo = new_photo
     self.audio = new_audio
   end
@@ -112,7 +112,7 @@ module RecordHelper
   end
 
   def original_data
-    (@original_data ||= Child.get(self.id) rescue nil) || self
+    (@original_data ||= Child.get(id) rescue nil) || self
   end
 
   # TODO: Refactor, move to Field class as "empty?"
@@ -135,7 +135,7 @@ module RecordHelper
         end
         attributes_to_update["#{name}_at"] = RapidFTR::Clock.current_formatted_time if [:flag, :reunited].include?(name.to_sym) && value.to_s == 'true'
       end
-      self.set_updated_fields_for user_name
+      set_updated_fields_for user_name
       self.attributes = attributes_to_update
     else
       merge_histories(properties['histories'])

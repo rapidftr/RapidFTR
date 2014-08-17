@@ -57,12 +57,12 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def find_matching_children
-    previous_matches = self.potential_matches
-    children = MatchService.search_for_matching_children(self.criteria)
+    previous_matches = potential_matches
+    children = MatchService.search_for_matching_children(criteria)
     self.potential_matches = children.map { |child| child.id }
     verify_format_of(previous_matches)
 
-    unless previous_matches.eql?(self.potential_matches)
+    unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
   end
@@ -79,7 +79,7 @@ class Enquiry < CouchRest::Model::Base
     self.criteria = {}
     fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| is_filled_in?(field) }
     fields.each do |field|
-      self.criteria.store(field.name, self[field.name])
+      criteria.store(field.name, self[field.name])
     end
   end
 

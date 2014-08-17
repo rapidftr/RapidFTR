@@ -62,7 +62,7 @@ class Child < CouchRest::Model::Base
 
   def self.build_text_fields_for_solar
     sortable_fields = FormSection.all_sortable_field_names || []
-    self.default_child_fields + sortable_fields
+    default_child_fields + sortable_fields
   end
 
   def self.default_child_fields
@@ -151,7 +151,7 @@ class Child < CouchRest::Model::Base
 
   def self.fetch_all_ids_and_revs
     ids_and_revs = []
-    all_rows = self.by_ids_and_revs({:include_docs => false})["rows"]
+    all_rows = by_ids_and_revs({:include_docs => false})["rows"]
     all_rows.each do |row|
       ids_and_revs << row["value"]
     end
@@ -275,7 +275,7 @@ rescue
                      "unique_identifier",
                      "created_organisation"]
     existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
-    self.reject { |k, v| existing_fields.include? k }
+    reject { |k, v| existing_fields.include? k }
   end
 
   def key_for_content_type(content_type)

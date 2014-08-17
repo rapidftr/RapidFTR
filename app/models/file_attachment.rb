@@ -29,7 +29,7 @@ class FileAttachment
   end
 
   def mime_type
-    Mime::Type.lookup(self.content_type.downcase)
+    Mime::Type.lookup(content_type.downcase)
   end
 
   def resize(new_size)

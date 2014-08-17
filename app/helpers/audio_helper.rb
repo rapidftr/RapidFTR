@@ -21,7 +21,7 @@ module AudioHelper
   end
 
   def audio
-    return nil if self.id.nil? || self['audio_attachments'].nil?
+    return nil if id.nil? || self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']
     return nil unless has_attachment? attachment_key
 

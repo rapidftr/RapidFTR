@@ -34,7 +34,7 @@ class Permission
   end
 
   def self.all_permissions
-    self.all.values.map(&:values).flatten
+    all.values.map(&:values).flatten
   end
 
   def self.hashed_values

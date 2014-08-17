@@ -154,11 +154,6 @@ Style/PredicateName:
 Style/RedundantReturn:
   Enabled: false
 
-# Offense count: 89
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Enabled: false
-
 # Offense count: 13
 Style/RescueModifier:
   Enabled: false

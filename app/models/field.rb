@@ -56,7 +56,7 @@ class Field
     if base_language.nil?
       self.base_language = 'en'
     end
-    base_lang_display_name = self.send("display_name_#{base_language}")
+    base_lang_display_name = send("display_name_#{base_language}")
     if base_lang_display_name.nil? || base_lang_display_name.empty?
       errors.add(:display_name, I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language))
     end
@@ -109,9 +109,9 @@ class Field
   end
 
   def option_strings
-    return [] unless self.option_strings_text
-    return self.option_strings_text if self.option_strings_text.is_a?(Array)
-    self.option_strings_text.gsub(/\r\n?/, "\n").split("\n")
+    return [] unless option_strings_text
+    return option_strings_text if option_strings_text.is_a?(Array)
+    option_strings_text.gsub(/\r\n?/, "\n").split("\n")
   end
 
   def tag_id
@@ -148,7 +148,7 @@ class Field
   private
 
   def create_unique_id
-    self.name = UUIDTools::UUID.random_create.to_s.split('-').first if self.name.nil?
+    self.name = UUIDTools::UUID.random_create.to_s.split('-').first if name.nil?
   end
 
   def validate_has_2_options

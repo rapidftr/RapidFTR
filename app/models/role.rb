@@ -27,27 +27,27 @@ class Role < CouchRest::Model::Base
   end
 
   def has_permission(permission)
-    self.permissions.include? permission
+    permissions.include? permission
   end
 
   def sanitize_permissions
-    self.permissions.reject! { |permission| permission.blank? } if self.permissions
+    permissions.reject! { |permission| permission.blank? } if permissions
   end
 
   def is_name_unique
     role = Role.find_by_name(name)
-    return true if role.nil? or self.id == role.id
+    return true if role.nil? or id == role.id
     errors.add(:name, I18n.t("errors.models.role.unique_name"))
   end
 
   def valid?(context = :default)
-    self.name = self.name.try(:titleize)
+    self.name = name.try(:titleize)
     sanitize_permissions
     super(context)
   end
 
   def generate_id
-    self["_id"] ||= "role-#{self.name}".parameterize.dasherize
+    self["_id"] ||= "role-#{name}".parameterize.dasherize
   end
 
 end

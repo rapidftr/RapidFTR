@@ -4,19 +4,19 @@ module UploadableFiles
     photo = File.new(photo_path)
 
     def photo.content_type
-      "image/#{File.extname(self.path).gsub(/^\./, '').downcase}"
+      "image/#{File.extname(path).gsub(/^\./, '').downcase}"
     end
 
     def photo.size
-      File.size self.path
+      File.size path
     end
 
     def photo.original_filename
-      self.path
+      path
     end
 
     def photo.data
-      File.binread self.path
+      File.binread path
     end
 
     photo
@@ -60,11 +60,11 @@ module UploadableFiles
     end
 
     def file.size
-      File.size self.path
+      File.size path
     end
 
     def file.original_filename
-      self.path
+      path
     end
 
     file
@@ -75,11 +75,11 @@ module UploadableFiles
     audio = File.new(audio_path)
 
     def audio.content_type
-      if /amr$/.match self.path
+      if /amr$/.match path
         "audio/amr"
-      elsif /wav$/.match self.path
+      elsif /wav$/.match path
         "audio/wav"
-      elsif /ogg$/.match self.path
+      elsif /ogg$/.match path
         "audio/ogg"
       else
         "audio/mpeg"
@@ -87,19 +87,19 @@ module UploadableFiles
     end
 
     def audio.mime_type
-      Mime::Type.lookup self.content_type
+      Mime::Type.lookup content_type
     end
 
     def audio.size
-      File.size self.path
+      File.size path
     end
 
     def audio.original_filename
-      self.path
+      path
     end
 
     def audio.data
-      File.binread self.path
+      File.binread path
     end
 
     audio

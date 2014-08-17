@@ -11,7 +11,7 @@ class Form < CouchRest::Model::Base
   end
 
   def self.find_or_create_by_name(name)
-    form = self.find_by_name(name)
+    form = find_by_name(name)
     form.nil? ? Form.create(:name => name) : form
   end
 

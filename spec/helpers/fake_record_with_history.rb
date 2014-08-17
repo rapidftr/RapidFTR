@@ -19,28 +19,28 @@ class FakeRecordWithHistory
   end
 
   def add_photo_change(username, date, *new_photos)
-    self.add_history({
-                       "changes" => {
-                         "photo_keys" => {
-                           "added" => new_photos
-                         }
-                       },
-                       "user_name" => username,
-                       "datetime" => date
-                     })
+    add_history({
+                  "changes" => {
+                    "photo_keys" => {
+                      "added" => new_photos
+                    }
+                  },
+                  "user_name" => username,
+                  "datetime" => date
+                })
   end
 
   def add_single_change(username, date, field, from, to)
-    self.add_history({
-                       "changes" => {
-                         field => {
-                           "from" => from,
-                           "to" => to
-                         }
-                       },
-                       "user_name" => username,
-                       "datetime" => date
-                     })
+    add_history({
+                  "changes" => {
+                    field => {
+                      "from" => from,
+                      "to" => to
+                    }
+                  },
+                  "user_name" => username,
+                  "datetime" => date
+                })
   end
 
   def [](field)

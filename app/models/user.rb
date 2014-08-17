@@ -142,7 +142,7 @@ class User < CouchRest::Model::Base
 
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
-    return true if user.nil? or self.id == user.id
+    return true if user.nil? or id == user.id
     errors.add(:user_name, I18n.t("errors.models.user.user_name_uniqueness"))
   end
 
@@ -150,7 +150,7 @@ class User < CouchRest::Model::Base
     if new?
       raise Exception.new, I18n.t("errors.models.user.authenticate")
     end
-    !disabled? && crypted_password == self.class.encrypt(check, self.salt)
+    !disabled? && crypted_password == self.class.encrypt(check, salt)
   end
 
   def roles
@@ -170,16 +170,16 @@ class User < CouchRest::Model::Base
   end
 
   def add_mobile_login_event(imei, mobile_number)
-    self.mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
+    mobile_login_history << MobileLoginEvent.new(:imei => imei, :mobile_number => mobile_number)
 
     if Device.all.none? { |device| device.imei == imei }
-      device = Device.new(:imei => imei, :blacklisted => false, :user_name => self.user_name)
+      device = Device.new(:imei => imei, :blacklisted => false, :user_name => user_name)
       device.save!
     end
   end
 
   def devices
-    Device.all.select { |device| device.user_name == self.user_name }
+    Device.all.select { |device| device.user_name == user_name }
   end
 
   def devices=(device_hashes)
@@ -210,7 +210,7 @@ class User < CouchRest::Model::Base
 
   def encrypt_password
     return if password.blank?
-    self.salt = Digest::SHA1.hexdigest("--#{Clock.now}--#{self.user_name}--") if new_record?
+    self.salt = Digest::SHA1.hexdigest("--#{Clock.now}--#{user_name}--") if new_record?
     self.crypted_password = self.class.encrypt(password, salt)
   end
 
@@ -231,6 +231,6 @@ class User < CouchRest::Model::Base
   end
 
   def generate_id
-    self["_id"] ||= "user-#{self.user_name}".parameterize.dasherize
+    self["_id"] ||= "user-#{user_name}".parameterize.dasherize
   end
 end

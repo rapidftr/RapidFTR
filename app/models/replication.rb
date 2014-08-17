@@ -122,7 +122,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def fetch_configs
-    @fetch_configs ||= replicator_docs.select { |rep| rep["rapidftr_ref_id"] == self.id }
+    @fetch_configs ||= replicator_docs.select { |rep| rep["rapidftr_ref_id"] == id }
   end
 
   def self.models_to_sync
@@ -195,7 +195,7 @@ class Replication < CouchRest::Model::Base
   def save_remote_couch_config
     uri = remote_app_uri
     uri.path = Rails.application.routes.url_helpers.configuration_replications_path
-    post_params = {:user_name => self.username, :password => self.password}
+    post_params = {:user_name => username, :password => password}
     response = post_uri uri, post_params
     self.remote_couch_config = JSON.parse response.body
     true

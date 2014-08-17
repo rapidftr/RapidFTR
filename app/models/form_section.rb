@@ -40,7 +40,7 @@ class FormSection < CouchRest::Model::Base
     if base_language.nil?
       self.base_language = 'en'
     end
-    base_lang_name = self.send("name_#{base_language}")
+    base_lang_name = send("name_#{base_language}")
     [!(base_lang_name.nil? || base_lang_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
   end
 
@@ -103,11 +103,11 @@ class FormSection < CouchRest::Model::Base
   end
 
   def all_text_fields
-    self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
+    fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
   end
 
   def all_searchable_fields
-    self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
+    fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
   end
 
   def all_sortable_fields
@@ -115,11 +115,11 @@ class FormSection < CouchRest::Model::Base
   end
 
   def self.all_sortable_field_names
-    self.all.map { |form| form.all_sortable_fields.map(&:name) }.flatten
+    all.map { |form| form.all_sortable_fields.map(&:name) }.flatten
   end
 
   def self.all_searchable_fields
-    self.all.map { |form| form.all_searchable_fields }.flatten
+    all.map { |form| form.all_searchable_fields }.flatten
   end
 
   def self.get_by_unique_id(unique_id)
@@ -149,7 +149,7 @@ class FormSection < CouchRest::Model::Base
 
   def properties=(properties)
     properties.each_pair do |name, value|
-      self.send("#{name}=", value) unless value.nil?
+      send("#{name}=", value) unless value.nil?
     end
   end
 
@@ -205,11 +205,11 @@ class FormSection < CouchRest::Model::Base
     new_fields = []
     new_field_names.each { |name| new_fields << fields.find { |field| field.name == name } }
     self.fields = new_fields
-    self.save
+    save
   end
 
   def get_field_by_name(field_name)
-    self.fields.select { |field| field.name == field_name }.first
+    fields.select { |field| field.name == field_name }.first
   end
 
   def merge_fields!(fields_to_merge)
@@ -232,7 +232,7 @@ class FormSection < CouchRest::Model::Base
 
   def validate_visible_field
     self.visible = true if self.perm_visible?
-    if self.perm_visible? && self.visible == false
+    if self.perm_visible? && visible == false
       errors.add(:visible, I18n.t("errors.models.form_section.visible_method"))
     end
     true
@@ -240,7 +240,7 @@ class FormSection < CouchRest::Model::Base
 
   def validate_fixed_order
     self.fixed_order = true if self.perm_enabled?
-    if self.perm_enabled? && self.fixed_order == false
+    if self.perm_enabled? && fixed_order == false
       errors.add(:fixed_order, I18n.t("errors.models.form_section.fixed_order_method"))
     end
     true
@@ -248,15 +248,15 @@ class FormSection < CouchRest::Model::Base
 
   def validate_perm_visible
     self.perm_visible = true if self.perm_enabled?
-    if self.perm_enabled? && self.perm_visible == false
+    if self.perm_enabled? && perm_visible == false
       errors.add(:perm_visible, I18n.t("errors.models.form_section.perm_visible_method"))
     end
     true
   end
 
   def validate_unique_id
-    form_section = FormSection.get_by_unique_id(self.unique_id)
-    unique = form_section.nil? || form_section.id == self.id
+    form_section = FormSection.get_by_unique_id(unique_id)
+    unique = form_section.nil? || form_section.id == id
     unique || errors.add(:unique_id, I18n.t("errors.models.form_section.unique_id", :unique_id => unique_id))
   end
 
@@ -266,7 +266,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def create_unique_id
-    self.unique_id = UUIDTools::UUID.random_create.to_s.split('-').first if self.unique_id.nil?
+    self.unique_id = UUIDTools::UUID.random_create.to_s.split('-').first if unique_id.nil?
   end
 
   private
@@ -275,7 +275,7 @@ class FormSection < CouchRest::Model::Base
   # that items were saved or they were loaded from the database.
   # TODO move to a monkey patch for CouchRest::Model::Base
   def flag_saved_embedded_properties
-    casted_properties = self.properties_with_values.select { |property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
+    casted_properties = properties_with_values.select { |property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
     casted_properties.each do |property, value|
       if value.instance_of?(CouchRest::Model::CastedArray)
         value.each do |item|

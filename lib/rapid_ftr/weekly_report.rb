@@ -23,7 +23,7 @@ module WeeklyReport
 
   def self.generate!
     w = Report.new :as_of_date => Date.today, :report_type => REPORT_TYPE
-    w.create_attachment :name => Date.today.strftime("weekly-report-%Y-%m-%d.csv"), :file => self.data, :content_type => 'text/csv'
+    w.create_attachment :name => Date.today.strftime("weekly-report-%Y-%m-%d.csv"), :file => data, :content_type => 'text/csv'
     w.save!
     w
   end
