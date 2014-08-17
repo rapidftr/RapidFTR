@@ -142,7 +142,7 @@ class User < CouchRest::Model::Base
 
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
-    return true if user.nil? or id == user.id
+    return true if user.nil? || id == user.id
     errors.add(:user_name, I18n.t("errors.models.user.user_name_uniqueness"))
   end
 

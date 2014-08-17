@@ -26,7 +26,7 @@ class ChildSearch
 
   def marked_as(field_to_filter)
     search.build do
-      with(field_to_filter.to_sym, true) if field_to_filter and !field_to_filter.empty?
+      with(field_to_filter.to_sym, true) if field_to_filter && !field_to_filter.empty?
     end
     self
   end

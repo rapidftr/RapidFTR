@@ -12,7 +12,7 @@ class AdvancedSearchController < ApplicationController
     RapidftrAddon::ExportTask.active.each do |export_task|
       if params[:commit] == t("addons.export_task.#{export_task.id}.selected")
         authorize! "export_#{export_task.id}".to_sym, Child
-        process_export(export_task) and return
+        process_export(export_task) && return
       end
     end
   end

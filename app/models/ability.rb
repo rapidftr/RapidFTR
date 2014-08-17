@@ -31,7 +31,7 @@ class Ability
       can [:read, :view_all, :view_and_search], Child
     end
 
-    if user.has_permission?(Permission::CHILDREN[:view_and_search]) and user.has_permission?(Permission::CHILDREN[:edit])
+    if user.has_permission?(Permission::CHILDREN[:view_and_search]) && user.has_permission?(Permission::CHILDREN[:edit])
       can [:read, :update, :destroy], Child
     end
 

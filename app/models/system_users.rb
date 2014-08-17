@@ -28,7 +28,7 @@ class SystemUsers < CouchRest::Model::Base
 
   def is_user_name_unique
     user = SystemUsers.get(generate_id)
-    return true if user.nil? or _id == user._id
+    return true if user.nil? || _id == user._id
     [false, I18n.t("errors.models.system_users.username_unique")]
   end
 

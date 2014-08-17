@@ -5,7 +5,7 @@ module RapidFTR
     def self.build_form_sections
       form_sections = []
       form_sections << build_basic_identity_section
-      unless Rails.env.test? or Rails.env.cucumber?
+      unless Rails.env.test? || Rails.env.cucumber?
         form_sections << build_interview_details_section
         form_sections << build_other_interviews_section
         form_sections << build_other_tracing_info_section

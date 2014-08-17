@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
 
   before_action {
-    authorize!(false, false) if cannot?(:highlight, Field) and cannot?(:manage, SystemUsers)
+    authorize!(false, false) if cannot?(:highlight, Field) && cannot?(:manage, SystemUsers)
   }
 
   def index

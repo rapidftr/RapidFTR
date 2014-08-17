@@ -41,7 +41,7 @@ class ChildrenController < ApplicationController
       unless params[:format].nil?
         if @children.empty?
           flash[:notice] = t('child.export_error')
-          redirect_to :action => :index and return
+          redirect_to(:action => :index) && return
         end
       end
 
@@ -245,7 +245,7 @@ class ChildrenController < ApplicationController
 
   def sanitize_params
     child_params = params['child']
-    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) # histories might come as string from the mobile client.
+    child_params['histories'] = JSON.parse(child_params['histories']) if child_params && child_params['histories'].is_a?(String) # histories might come as string from the mobile client.
   end
 
   def get_form_sections
@@ -272,7 +272,7 @@ class ChildrenController < ApplicationController
         format.json { render :json => @child.to_json }
         format.html do
           flash[:error] = "Child with the given id is not found"
-          redirect_to :action => :index and return
+          redirect_to(:action => :index) && return
         end
       end
     end

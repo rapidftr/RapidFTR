@@ -24,11 +24,11 @@ module ApplicationHelper
   def link_with_confirm(link_to, anchor, link_options = {})
     msg = nil
     confirm_message = t('messages.confirmation_message')
-    if /children/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
+    if /children/.match(controller.controller_name) && /edit|new/.match(controller.action_name)
       msg = confirm_message % 'Child Record'
-    elsif /user/.match(controller.controller_name) and /edit|new/.match(controller.action_name)
+    elsif /user/.match(controller.controller_name) && /edit|new/.match(controller.action_name)
       msg = confirm_message % 'Users Page'
-    elsif /form_section/.match(controller.controller_name) and /index/.match(controller.action_name)
+    elsif /form_section/.match(controller.controller_name) && /index/.match(controller.action_name)
       msg = confirm_message % 'Manage Form Sections'
     end
 

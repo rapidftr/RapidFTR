@@ -23,7 +23,7 @@ class ChildMediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    redirect_to(:controller => 'children', :action => 'show', :id => @child.id) and return unless @attachment
+    redirect_to(:controller => 'children', :action => 'show', :id => @child.id) && return unless @attachment
     send_data(@attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type)
   end
 
@@ -44,8 +44,8 @@ class ChildMediaController < ApplicationController
   end
 
   def find_photo_attachment
-    redirect_to(:photo_id => @child.current_photo_key, :ts => @child.last_updated_at) and return if
-      params[:photo_id].to_s.empty? and @child.current_photo_key.present?
+    redirect_to(:photo_id => @child.current_photo_key, :ts => @child.last_updated_at) && return if
+      params[:photo_id].to_s.empty? && @child.current_photo_key.present?
 
     begin
       @attachment = params[:photo_id] == '_missing_' ? no_photo_attachment : @child.media_for_key(params[:photo_id])

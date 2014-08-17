@@ -36,7 +36,7 @@ class Role < CouchRest::Model::Base
 
   def is_name_unique
     role = Role.find_by_name(name)
-    return true if role.nil? or id == role.id
+    return true if role.nil? || id == role.id
     errors.add(:name, I18n.t("errors.models.role.unique_name"))
   end
 

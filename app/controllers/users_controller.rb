@@ -146,7 +146,7 @@ class UsersController < ApplicationController
     @user = User.get(params[:id])
     if @user.nil?
       flash[:error] = t("user.messages.not_found")
-      redirect_to :action => :index and return
+      redirect_to(:action => :index) && return
     end
   end
 

@@ -59,7 +59,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def check_status_and_reindex
-    if needs_reindexing? and !active?
+    if needs_reindexing? && !active?
       Rails.logger.info "Replication complete, triggering reindex"
       trigger_local_reindex
       trigger_remote_reindex
@@ -182,7 +182,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def validate_remote_app_url
-    raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
+    raise unless remote_app_uri.is_a?(URI::HTTP) || remote_app_uri.is_a?(URI::HTTPS)
     true
   rescue
     errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))

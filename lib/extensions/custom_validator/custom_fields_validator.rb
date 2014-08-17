@@ -20,7 +20,7 @@ class CustomFieldsValidator
       field_name = field[:name]
       value = target[field_name].nil? ? '' : target[field_name].strip
 
-      if value.present? and is_not_valid(value)
+      if value.present? && is_not_valid(value)
         target.errors.add(:"#{field[:name]}", validation_message_for(field))
         valid = false
       end

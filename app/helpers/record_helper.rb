@@ -156,8 +156,8 @@ module RecordHelper
 
   def remove_newly_created_media_history(given_histories)
     (given_histories || []).delete_if do |history|
-      (history["changes"]["current_photo_key"].present? and history["changes"]["current_photo_key"]["to"].present? and !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
-          (history["changes"]["recorded_audio"].present? and history["changes"]["recorded_audio"]["to"].present? and !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
+      (history["changes"]["current_photo_key"].present? && history["changes"]["current_photo_key"]["to"].present? && !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
+          (history["changes"]["recorded_audio"].present? && history["changes"]["recorded_audio"]["to"].present? && !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
     end
     given_histories
   end

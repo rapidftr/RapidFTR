@@ -52,7 +52,7 @@ class CouchSettings
   end
 
   def ssl_enabled_for_rapidftr?
-    !(@config["ssl"].blank? or @config["ssl"] == false)
+    !(@config["ssl"].blank? || @config["ssl"] == false)
   end
 
   def port

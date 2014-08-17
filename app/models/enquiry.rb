@@ -44,7 +44,7 @@ class Enquiry < CouchRest::Model::Base
   def update_from(properties)
     attributes_to_update = {}
     properties.each_pair do |name, value|
-      if value.instance_of? HashWithIndifferentAccess or value.instance_of? ActionController::Parameters
+      if value.instance_of?(HashWithIndifferentAccess) || value.instance_of?(ActionController::Parameters)
         attributes_to_update[name] = self[name] if attributes_to_update[name].nil?
         # Don't change the code to use merge!
         # It will break the access to dynamic attributes.
@@ -69,7 +69,7 @@ class Enquiry < CouchRest::Model::Base
 
   def self.search_by_match_updated_since(timestamp)
     Enquiry.all.all.select { |e|
-      !e['match_updated_at'].empty? and DateTime.parse(e['match_updated_at']) >= timestamp
+      !e['match_updated_at'].empty? && DateTime.parse(e['match_updated_at']) >= timestamp
     }
   end
 
