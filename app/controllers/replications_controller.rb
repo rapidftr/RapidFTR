@@ -1,9 +1,8 @@
 class ReplicationsController < ApplicationController
+  before_action :load_replication
 
-  before_filter :load_replication
-
-  skip_before_filter :verify_authenticity_token, :only => [ :configuration, :start, :stop ]
-  skip_before_filter :check_authentication, :only => :configuration
+  skip_before_action :verify_authenticity_token, :only => [:configuration, :start, :stop]
+  skip_before_action :check_authentication, :only => :configuration
 
   def configuration
     CouchSettings.instance.authenticate params[:user_name], params[:password]
@@ -17,7 +16,7 @@ class ReplicationsController < ApplicationController
 
   def new
     authorize! :create, Replication
-    @page_name = t("replication.create")
+    @page_name = t('replication.create')
     @replication = Replication.new
   end
 
@@ -74,5 +73,4 @@ class ReplicationsController < ApplicationController
   def load_replication
     @replication = Replication.get params[:id] if params[:id]
   end
-
 end

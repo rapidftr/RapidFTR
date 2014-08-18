@@ -1,17 +1,16 @@
 class SystemUsersController < ApplicationController
-
-  before_filter :load_user, :only => [:edit, :update, :destroy]
+  before_action :load_user, :only => [:edit, :update, :destroy]
 
   def index
     authorize! :read, SystemUsers
-    @page_name = t("home.manage_system_users")
+    @page_name = t('home.manage_system_users')
     @users = SystemUsers.all
   end
 
   def new
     authorize! :create, SystemUsers
 
-    @page_name = t("admin.create_system_user")
+    @page_name = t('admin.create_system_user')
     @user = SystemUsers.new
   end
 
@@ -45,11 +44,12 @@ class SystemUsersController < ApplicationController
   end
 
   private
+
   def load_user
-    @user = SystemUsers.get("org.couchdb.user:"+params[:id])
+    @user = SystemUsers.get('org.couchdb.user:' + params[:id])
     if @user.nil? || params[:system_users].nil? ? false : @user.name != params[:system_users][:name]
-      flash[:error] = t("user.messages.not_found")
-      redirect_to :action => :edit and return
+      flash[:error] = t('user.messages.not_found')
+      redirect_to(:action => :edit) && return
     end
   end
 end

@@ -1,6 +1,5 @@
 class PasswordRecoveryRequestsController < ApplicationController
-
-  skip_before_filter :check_authentication
+  skip_before_action :check_authentication
 
   def new
     @password_recovery_request = PasswordRecoveryRequest.new
@@ -10,15 +9,15 @@ class PasswordRecoveryRequestsController < ApplicationController
     @password_recovery_request = PasswordRecoveryRequest.new params[:password_recovery_request]
     respond_to do |format|
       if @password_recovery_request.save
-        success_notice = t("login.password.success_notice")
+        success_notice = t('login.password.success_notice')
         format.html do
           flash[:notice] = success_notice
           redirect_to login_path
         end
-        format.json { render :json => password_recovery_json(success_notice) , :status => :ok}
+        format.json { render :json => password_recovery_json(success_notice), :status => :ok }
       else
         format.html { render :new }
-        format.json { render :json => password_recovery_json(@password_recovery_request.errors.full_messages.join('. ')), :status => :ok}
+        format.json { render :json => password_recovery_json(@password_recovery_request.errors.full_messages.join('. ')), :status => :ok }
       end
     end
   end
@@ -36,5 +35,4 @@ class PasswordRecoveryRequestsController < ApplicationController
       :response => notice
     }
   end
-
 end

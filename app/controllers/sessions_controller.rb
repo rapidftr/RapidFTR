@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
-
-  skip_before_filter :check_authentication, only: %w{new create active}
-  skip_before_filter :extend_session_lifetime, only: %w{new create active}
+  skip_before_action :check_authentication, :only => %w(new create active)
+  skip_before_action :extend_session_lifetime, :only => %w(new create active)
 
   # GET /sessions/new
   # GET /sessions/new.xml
@@ -11,7 +10,7 @@ class SessionsController < ApplicationController
 
     @session = Session.new(params[:login])
 
-    @page_name = t("login.label")
+    @page_name = t('login.label')
 
     respond_to do |format|
       format.html # new.html.erb
@@ -25,9 +24,9 @@ class SessionsController < ApplicationController
     @login = Login.new(params)
     @session = @login.authenticate_user
 
-    if not @session
+    unless @session
       respond_to do |format|
-        handle_login_error(t("session.invalid_credentials"), format)
+        handle_login_error(t('session.invalid_credentials'), format)
       end
 
       return
@@ -43,19 +42,18 @@ class SessionsController < ApplicationController
         reset_session
         session[:rftr_session_id] = @session.id
         session[:last_access_time] = Clock.now.rfc2822
-        flash[:notice] = t("hello") + " " + @session.user_name
+        flash[:notice] = t('hello') + ' ' + @session.user_name
         format.html { redirect_to(root_path) }
-        format.xml  { render :action => "show", :status => :created, :location => @session }
-        format.json { render_session_as_json(@session,:status => :created, :location => @session) }
+        format.xml  { render :action => 'show', :status => :created, :location => @session }
+        format.json { render_session_as_json(@session, :status => :created, :location => @session) }
       else
-        handle_login_error(t("session.login_error"), format)
+        handle_login_error(t('session.login_error'), format)
       end
     end
   end
 
   # PUT /sessions/1
   # PUT /sessions/1.xml
-
 
   # DELETE /sessions/1
   # DELETE /sessions/1.xml
@@ -77,14 +75,15 @@ class SessionsController < ApplicationController
   private
 
   def handle_login_error(notice, format)
-    format.html {
+    format.html do
       flash[:error] = notice
-      redirect_to :action => "new" }
+      redirect_to :action => 'new'
+    end
     format.xml  { render :xml => errors, :status => :unprocessable_entity }
     format.json { head :unauthorized }
   end
 
-  def render_session_as_json(session,options = {})
+  def render_session_as_json(session, options = {})
     user = User.find_by_user_name(session.user_name)
     json = {
       :session => {
@@ -99,7 +98,6 @@ class SessionsController < ApplicationController
       :language => I18n.default_locale,
       :verified => user.verified?
     }
-    render( options.merge( :json => json ) )
+    render(options.merge(:json => json))
   end
-
 end

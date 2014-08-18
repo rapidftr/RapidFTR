@@ -3,31 +3,31 @@ require 'factory_girl'
 FactoryGirl.define do
   trait :model do
     ignore do
-      sequence(:counter, 1000000)
+      sequence(:counter, 1_000_000)
     end
 
     _id { "id-#{counter}" }
   end
 
-  factory :session, traits: [:model] do
+  factory :session, :traits => [:model] do
     user_name { FactoryGirl.create(:user).user_name }
-    imei "123456789"
+    imei '123456789'
   end
 
-  factory :child, :traits => [ :model ] do
+  factory :child, :traits => [:model] do
     unique_identifier { counter.to_s }
     name { "Test Child #{counter}" }
-    created_by { "test_user" }
+    created_by { 'test_user' }
 
     initialize_with { new(attributes) }
   end
 
-  factory :replication, :traits => [ :model ] do
+  factory :replication, :traits => [:model] do
     description 'Sample Replication'
     remote_app_url 'app:1234'
     username 'test_user'
     password 'test_password'
-    remote_couch_config "target" => "http://couch:1234/replication_test"
+    remote_couch_config 'target' => 'http://couch:1234/replication_test'
 
     after(:build) do |replication|
       replication.stub :save_remote_couch_config => true
@@ -38,17 +38,17 @@ FactoryGirl.define do
     name 'test_user'
     password 'test_password'
     type 'user'
-    roles ["admin"]
+    roles ['admin']
   end
 
   factory :change_password_form, :class => Forms::ChangePasswordForm do
     association :user
-    old_password "old_password"
-    new_password "new_password"
-    new_password_confirmation "confirm_new_password"
+    old_password 'old_password'
+    new_password 'new_password'
+    new_password_confirmation 'confirm_new_password'
   end
 
-  factory :user, :traits => [ :model ] do
+  factory :user, :traits => [:model] do
     user_name { "user_name_#{counter}" }
     full_name 'full name'
     password 'password'
@@ -60,19 +60,19 @@ FactoryGirl.define do
     role_ids ['random_role_id']
 
     factory :field_worker_user do
-      role_ids { [ FactoryGirl.create(:field_worker_role).id ] }
+      role_ids { [FactoryGirl.create(:field_worker_role).id] }
     end
     factory :field_admin_user do
-      role_ids { [ FactoryGirl.create(:field_admin_role).id ] }
+      role_ids { [FactoryGirl.create(:field_admin_role).id] }
     end
     factory :super_user do
-      role_ids { [ FactoryGirl.create(:super_role).id ] }
+      role_ids { [FactoryGirl.create(:super_role).id] }
     end
   end
 
-  factory :role, :traits => [ :model ] do
+  factory :role, :traits => [:model] do
     name { "test_role_#{counter}" }
-    description "test description"
+    description 'test description'
     permissions { Permission.all_permissions }
 
     factory :field_worker_role do
@@ -86,14 +86,14 @@ FactoryGirl.define do
     end
   end
 
-  factory :report, :traits => [ :model ] do
+  factory :report, :traits => [:model] do
     ignore do
-      filename "test_report.csv"
-      content_type "text/csv"
-      data "test report"
+      filename 'test_report.csv'
+      content_type 'text/csv'
+      data 'test report'
     end
 
-    report_type { "weekly_report" }
+    report_type { 'weekly_report' }
     as_of_date { Date.today }
 
     after(:build) do |report, builder|
@@ -101,7 +101,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :form_section, :traits => [ :model ] do
+  factory :form_section, :traits => [:model] do
     unique_id { "form_#{counter}" }
     name_all { "Form #{counter}" }
     description_all { "This is Form Section #{counter}" }
@@ -117,14 +117,14 @@ FactoryGirl.define do
 
   factory :field do
     ignore do
-      sequence(:counter, 1000000)
+      sequence(:counter, 1_000_000)
       highlighted false
     end
 
     name { "name_#{counter}" }
     display_name { name.humanize }
     display_name_en { display_name }
-    highlight_information { highlighted ? HighlightInformation.new(highlighted: true, order: counter) : nil }
+    highlight_information { highlighted ? HighlightInformation.new(:highlighted => true, :order => counter) : nil }
     type Field::TEXT_FIELD
     option_strings { [] }
     editable true
@@ -140,15 +140,15 @@ FactoryGirl.define do
     end
     factory :radio_button_field do
       type { Field::RADIO_BUTTON }
-      option_strings { ['radio_1', 'radio_2', 'radio_3'] }
+      option_strings { %w(radio_1 radio_2 radio_3) }
     end
     factory :select_box_field do
       type { Field::SELECT_BOX }
-      option_strings { ['select_1', 'select_2', 'select_3'] }
+      option_strings { %w(select_1 select_2 select_3) }
     end
     factory :check_boxes_field do
       type { Field::CHECK_BOXES }
-      option_strings { ['check_1', 'check_2', 'check_3'] }
+      option_strings { %w(check_1 check_2 check_3) }
     end
     factory :numeric_field do
       type { Field::NUMERIC_FIELD }
@@ -166,7 +166,7 @@ FactoryGirl.define do
 
   factory :form do
     ignore do
-      sequence(:counter, 1000000)
+      sequence(:counter, 1_000_000)
     end
     name { "name_#{counter}" }
   end

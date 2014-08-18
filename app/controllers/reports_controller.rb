@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
   def index
     authorize! :index, Report
     @reports = paginated_reports
-    @page_name = t("report.heading")
+    @page_name = t('report.heading')
   end
 
   def show
@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
       :per_page => (params[:per_page] || PER_PAGE).to_i,
       :page => (params[:page] || 1).to_i,
       :include_docs => true,
-      :descending => true,
+      :descending => true
     }
 
     WillPaginate::Collection.create(pagination_options[:page], pagination_options[:per_page], Report.count) do |pager|

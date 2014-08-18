@@ -1,7 +1,7 @@
 begin
 
   settings = CouchSettings.instance
-  
+
   COUCHDB_CONFIG = {
     :host_path => settings.uri.to_s,
     :db_prefix => settings.db_prefix,

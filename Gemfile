@@ -19,7 +19,7 @@ gem 'cancancan',       '~> 1.7'
 gem 'highline',        '~> 1.6.16'
 gem 'will_paginate',   '~> 3.0.5'
 gem 'os',              '~> 0.9.6'
-gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
+gem 'zipruby-compat', :require => 'zipruby', :git => 'https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git', :tag => 'v0.3.7'
 
 gem 'rufus-scheduler',  '~> 2.0.18', :require => false
 gem 'daemons',          '~> 1.1.9',  :require => false
@@ -39,7 +39,7 @@ group :development do
   gem 'better_errors',     '~> 1.1.0'
 end
 
-group :test, :cucumber do
+group :development, :test, :cucumber do
   gem 'factory_girl',       '~> 4.4.0'
 
   gem 'rspec',              '~> 3.0'
@@ -53,15 +53,11 @@ group :test, :cucumber do
   gem 'hpricot',            '~> 0.8.6'
   gem 'json_spec',          '~> 1.1.2'
   gem 'pdf-inspector',      '~> 1.1.0'
-  gem 'coveralls', require: false
-end
+  gem 'coveralls', :require => false
 
-group :development, :test, :cucumber do
-  gem 'pry-rails',          '~> 0.3.2', platforms: :ruby
+  gem 'pry-rails',          '~> 0.3.2', :platforms => :ruby
   gem 'quiet_assets',       '~> 1.0.3'
-end
 
-group :development, :test do
   gem 'cane',               '~> 2.6.2'
-  gem 'rubocop',            '~> 0.24.1'
+  gem 'rubocop',            '~> 0.25.0'
 end

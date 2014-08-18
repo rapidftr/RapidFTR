@@ -18,7 +18,7 @@ class FormSection < CouchRest::Model::Base
     view :by_unique_id
     view :by_order
   end
-  validates_presence_of "name_#{I18n.default_locale}", :message => I18n.t("errors.models.form_section.presence_of_name")
+  validates "name_#{I18n.default_locale}", :presence => {:message => I18n.t('errors.models.form_section.presence_of_name')}
   validate :valid_presence_of_base_language_name
   validate :validate_name_format
   validate :validate_unique_id
@@ -37,54 +37,54 @@ class FormSection < CouchRest::Model::Base
   end
 
   def valid_presence_of_base_language_name
-    if base_language==nil
-      self.base_language='en'
+    if base_language.nil?
+      self.base_language = 'en'
     end
-    base_lang_name = self.send("name_#{base_language}")
-    [!(base_lang_name.nil?||base_lang_name.empty?), I18n.t("errors.models.form_section.presence_of_base_language_name", :base_language => base_language)]
+    base_lang_name = send("name_#{base_language}")
+    [!(base_lang_name.nil? || base_lang_name.empty?), I18n.t('errors.models.form_section.presence_of_base_language_name', :base_language => base_language)]
   end
 
-  #If everything goes well when saving, CastedBy items
-  #should flag as saved.
-  #TODO move to a monkey patch for CouchRest::Model::Base
+  # If everything goes well when saving, CastedBy items
+  # should flag as saved.
+  # TODO: move to a monkey patch for CouchRest::Model::Base
   before_save do
     flag_saved_embedded_properties
   end
 
-  def initialize(properties={}, options={})
-    self["fields"] = []
+  def initialize(properties = {}, options = {})
+    self['fields'] = []
     super properties, options
     create_unique_id
     #:directly_set_attributes is set to true when the object is built from the database.
-    #flag as saved CastedArray and CastedHash fields.
-    #TODO move to a monkey patch for CouchRest::Model::Base
+    # flag as saved CastedArray and CastedHash fields.
+    # TODO: move to a monkey patch for CouchRest::Model::Base
     if options[:directly_set_attributes]
       flag_saved_embedded_properties
     end
   end
 
-  alias to_param unique_id
+  alias_method :to_param, :unique_id
 
   class << self
     def enabled_by_order
       by_order.select(&:visible?)
     end
 
-    def enabled_by_order_for_form form_name
+    def enabled_by_order_for_form(form_name)
       by_order.select { |fs| fs.visible? && fs.form.name == form_name } || []
     end
 
-    def all_form_sections_for form_name
+    def all_form_sections_for(form_name)
       all.select { |fs| fs.form.name == form_name }
     end
 
     def all_child_field_names
-      all_child_fields.map { |field| field["name"] }
+      all_child_fields.map { |field| field['name'] }
     end
 
-    def all_visible_child_fields_for_form form_name
+    def all_visible_child_fields_for_form(form_name)
       enabled_by_order_for_form(form_name).map do |form_section|
-        form_section.fields.find_all(&:visible)
+        form_section.fields.select(&:visible)
       end.flatten
     end
 
@@ -103,11 +103,11 @@ class FormSection < CouchRest::Model::Base
   end
 
   def all_text_fields
-    self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
+    fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
   end
 
   def all_searchable_fields
-    self.fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
+    fields.select { |field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA || field.type == Field::SELECT_BOX }
   end
 
   def all_sortable_fields
@@ -115,50 +115,50 @@ class FormSection < CouchRest::Model::Base
   end
 
   def self.all_sortable_field_names
-    self.all.map { |form| form.all_sortable_fields.map(&:name) }.flatten
+    all.map { |form| form.all_sortable_fields.map(&:name) }.flatten
   end
 
   def self.all_searchable_fields
-    self.all.map { |form| form.all_searchable_fields }.flatten
+    all.map { |form| form.all_searchable_fields }.flatten
   end
 
-  def self.get_by_unique_id unique_id
+  def self.get_by_unique_id(unique_id)
     by_unique_id(:key => unique_id).first
   end
 
-  def self.add_field_to_formsection formsection, field
-    raise I18n.t("errors.models.form_section.add_field_to_form_section") unless formsection.editable
-    field.merge!({'base_language' => formsection['base_language']})
+  def self.add_field_to_formsection(formsection, field)
+    fail I18n.t('errors.models.form_section.add_field_to_form_section') unless formsection.editable
+    field.merge!('base_language' => formsection['base_language'])
     formsection.fields.push(field)
     formsection.save
   end
 
-  def self.get_form_containing_field field_name
+  def self.get_form_containing_field(field_name)
     all.find { |form| form.fields.find { |field| field.name == field_name || field.display_name == field_name } }
   end
 
-  def self.new_with_order form_section
+  def self.new_with_order(form_section)
     form_section[:order] = by_order.last ? (by_order.last.order + 1) : 1
     FormSection.new(form_section)
   end
 
-  def self.change_form_section_state formsection, to_state
+  def self.change_form_section_state(formsection, to_state)
     formsection.enabled = to_state
     formsection.save
   end
 
-  def properties= properties
+  def properties=(properties)
     properties.each_pair do |name, value|
-      self.send("#{name}=", value) unless value == nil
+      send("#{name}=", value) unless value.nil?
     end
   end
 
   def add_field(field)
-    self["fields"] << Field.new(field)
+    self['fields'] << Field.new(field)
   end
 
-  def update_field_as_highlighted field_name
-    field = fields.find { |field| field.name == field_name }
+  def update_field_as_highlighted(field_name)
+    field = fields.find { |f| f.name == field_name }
     existing_max_order = form.highlighted_fields.
         map(&:highlight_information).
         map(&:order).
@@ -168,54 +168,54 @@ class FormSection < CouchRest::Model::Base
     save
   end
 
-  def remove_field_as_highlighted field_name
-    field = fields.find { |field| field.name == field_name }
+  def remove_field_as_highlighted(field_name)
+    field = fields.find { |f| f.name == field_name }
     field.unhighlight
     save
   end
-  
+
   def section_name
     unique_id
   end
 
-  def is_first field_to_check
+  def is_first(field_to_check)
     field_to_check == fields.at(0)
   end
 
-  def is_last field_to_check
-    field_to_check == fields.at(fields.length-1)
+  def is_last(field_to_check)
+    field_to_check == fields.at(fields.length - 1)
   end
 
-  def delete_field field_to_delete
-    field = fields.find { |field| field.name == field_to_delete }
-    raise I18n.t("errors.models.form_section.delete_field") if !field.editable?
-    if (field)
+  def delete_field(field_to_delete)
+    field = fields.find { |f| f.name == field_to_delete }
+    fail I18n.t('errors.models.form_section.delete_field') unless field.editable?
+    if field
       field_index = fields.index(field)
       fields.delete_at(field_index)
-      save()
+      save
     end
   end
 
-  def field_order field_name
+  def field_order(field_name)
     field_item = fields.find { |field| field.name == field_name }
-    return fields.index(field_item)
+    fields.index(field_item)
   end
 
-  def order_fields new_field_names
+  def order_fields(new_field_names)
     new_fields = []
     new_field_names.each { |name| new_fields << fields.find { |field| field.name == name } }
     self.fields = new_fields
-    self.save
+    save
   end
 
-  def get_field_by_name field_name
-    self.fields.select { |field| field.name == field_name }.first
+  def get_field_by_name(field_name)
+    fields.select { |field| field.name == field_name }.first
   end
 
-  def merge_fields! fields_to_merge
-    current_field_names = fields.collect(&:name)
-    fields_to_merge.reject! {|field| current_field_names.include? field.name }
-    fields_to_merge.each {|new_field| fields << new_field}
+  def merge_fields!(fields_to_merge)
+    current_field_names = fields.map(&:name)
+    fields_to_merge.reject! { |field| current_field_names.include? field.name }
+    fields_to_merge.each { |new_field| fields << new_field }
   end
 
   protected
@@ -224,7 +224,7 @@ class FormSection < CouchRest::Model::Base
     special_characters = /[*!@#%$\^]/
     white_spaces = /^(\s+)$/
     if (name =~ special_characters) || (name =~ white_spaces)
-      return errors.add(:name, I18n.t("errors.models.form_section.format_of_name"))
+      return errors.add(:name, I18n.t('errors.models.form_section.format_of_name'))
     else
       return true
     end
@@ -232,51 +232,51 @@ class FormSection < CouchRest::Model::Base
 
   def validate_visible_field
     self.visible = true if self.perm_visible?
-    if self.perm_visible? && self.visible == false
-      errors.add(:visible, I18n.t("errors.models.form_section.visible_method"))
+    if self.perm_visible? && visible == false
+      errors.add(:visible, I18n.t('errors.models.form_section.visible_method'))
     end
     true
   end
 
   def validate_fixed_order
     self.fixed_order = true if self.perm_enabled?
-    if self.perm_enabled? && self.fixed_order == false
-      errors.add(:fixed_order, I18n.t("errors.models.form_section.fixed_order_method"))
+    if self.perm_enabled? && fixed_order == false
+      errors.add(:fixed_order, I18n.t('errors.models.form_section.fixed_order_method'))
     end
     true
   end
 
   def validate_perm_visible
     self.perm_visible = true if self.perm_enabled?
-    if self.perm_enabled? && self.perm_visible == false
-      errors.add(:perm_visible, I18n.t("errors.models.form_section.perm_visible_method"))
+    if self.perm_enabled? && perm_visible == false
+      errors.add(:perm_visible, I18n.t('errors.models.form_section.perm_visible_method'))
     end
     true
   end
 
   def validate_unique_id
-    form_section = FormSection.get_by_unique_id(self.unique_id)
-    unique = form_section.nil? || form_section.id == self.id
-    unique || errors.add(:unique_id, I18n.t("errors.models.form_section.unique_id", :unique_id => unique_id))
+    form_section = FormSection.get_by_unique_id(unique_id)
+    unique = form_section.nil? || form_section.id == id
+    unique || errors.add(:unique_id, I18n.t('errors.models.form_section.unique_id', :unique_id => unique_id))
   end
 
   def validate_unique_name
-    unique = FormSection.all.select {|fs| fs.form == form } .all? { |fs| id == fs.id || name == nil || name.empty? || name!= fs.name }
-    unique || errors.add(:name, I18n.t("errors.models.form_section.unique_name", :name => name))
+    unique = FormSection.all.select { |fs| fs.form == form } .all? { |fs| id == fs.id || name.nil? || name.empty? || name != fs.name }
+    unique || errors.add(:name, I18n.t('errors.models.form_section.unique_name', :name => name))
   end
 
   def create_unique_id
-    self.unique_id = UUIDTools::UUID.random_create.to_s.split('-').first if self.unique_id.nil?
+    self.unique_id = UUIDTools::UUID.random_create.to_s.split('-').first if unique_id.nil?
   end
 
   private
 
-  #Flag saved CastedBy fields (:document_saved to true) in order to be aware
-  #that items were saved or they were loaded from the database.
-  #TODO move to a monkey patch for CouchRest::Model::Base
+  # Flag saved CastedBy fields (:document_saved to true) in order to be aware
+  # that items were saved or they were loaded from the database.
+  # TODO: move to a monkey patch for CouchRest::Model::Base
   def flag_saved_embedded_properties
-    casted_properties = self.properties_with_values.select { |property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
-    casted_properties.each do |property, value|
+    casted_properties = properties_with_values.select { |_property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
+    casted_properties.each do |_property, value|
       if value.instance_of?(CouchRest::Model::CastedArray)
         value.each do |item|
           item.document_saved = true if item.respond_to?(:document_saved)
@@ -286,5 +286,4 @@ class FormSection < CouchRest::Model::Base
       end
     end
   end
-
 end

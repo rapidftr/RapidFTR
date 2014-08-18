@@ -1,11 +1,11 @@
 class DevicesController < ApplicationController
   def index
-    @page_name = t("devices")
+    @page_name = t('devices')
     if can? :read, Replication
       @replications = Replication.all
     end
     if can? :read, Device
-      @devices = Device.view("by_imei")
+      @devices = Device.view('by_imei')
     end
   end
 
@@ -14,7 +14,7 @@ class DevicesController < ApplicationController
     status = :ok
     @devices = Device.find_by_device_imei(params[:imei])
     @devices.each do |device|
-      unless device.update_attributes({:blacklisted => params[:blacklisted] == "true"})
+      unless device.update_attributes(:blacklisted => params[:blacklisted] == 'true')
         status = :error
       end
     end

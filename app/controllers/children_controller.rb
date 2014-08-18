@@ -1,10 +1,10 @@
 class ChildrenController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-  skip_before_filter :check_authentication, :only => [:reindex]
+  skip_before_action :verify_authenticity_token
+  skip_before_action :check_authentication, :only => [:reindex]
 
-  before_filter :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
-  before_filter :current_user, :except => [:reindex]
-  before_filter :sanitize_params, :only => [:update, :sync_unverified]
+  before_action :load_child_or_redirect, :only => [:show, :edit, :destroy, :edit_photo, :update_photo]
+  before_action :current_user, :except => [:reindex]
+  before_action :sanitize_params, :only => [:update, :sync_unverified]
 
   def reindex
     Child.reindex!
@@ -16,7 +16,7 @@ class ChildrenController < ApplicationController
   def index
     authorize! :index, Child
 
-    @page_name = t("home.view_records")
+    @page_name = t('home.view_records')
     @aside = 'shared/sidebar_links'
     @filter = params[:filter] || nil
     @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
@@ -25,14 +25,14 @@ class ChildrenController < ApplicationController
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
-    search = ChildSearch.new
-    .paginated(page, per_page)
-    .ordered(@order, @sort_order.to_sym)
-    .marked_as(@filter)
+    search = ChildSearch.new.
+      paginated(page, per_page).
+      ordered(@order, @sort_order.to_sym).
+      marked_as(@filter)
     search.created_by(current_user) unless can?(:view_all, Child)
     @children = search.results
 
-    @form_sections = get_form_sections
+    @form_sections = form_sections
     @system_fields = Child.default_child_fields + Child.build_date_fields_for_solar
 
     respond_to do |format|
@@ -41,7 +41,7 @@ class ChildrenController < ApplicationController
       unless params[:format].nil?
         if @children.empty?
           flash[:notice] = t('child.export_error')
-          redirect_to :action => :index and return
+          redirect_to(:action => :index) && return
         end
       end
 
@@ -52,16 +52,16 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    authorize! :read, @child if @child["created_by"] != current_user_name
-    @form_sections = get_form_sections
-    @page_name = t "child.view", :short_id => @child.short_id
+    authorize! :read, @child if @child['created_by'] != current_user_name
+    @form_sections = form_sections
+    @page_name = t 'child.view', :short_id => @child.short_id
     @body_class = 'profile-page'
-    @duplicates = Child.by_duplicate_of(key: params[:id])
+    @duplicates = Child.by_duplicate_of(:key => params[:id])
 
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
-      format.json { render :json => @child.compact.to_json }
+      format.json { render :json => @child.compact }
 
       respond_to_export format, [@child]
     end
@@ -72,9 +72,9 @@ class ChildrenController < ApplicationController
   def new
     authorize! :create, Child
 
-    @page_name = t("children.register_new_child")
+    @page_name = t('children.register_new_child')
     @child = Child.new
-    @form_sections = get_form_sections
+    @form_sections = form_sections
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
@@ -85,8 +85,8 @@ class ChildrenController < ApplicationController
   def edit
     authorize! :update, @child
 
-    @page_name = t("child.edit")
-    @form_sections = get_form_sections
+    @page_name = t('child.edit')
+    @form_sections = form_sections
   end
 
   # POST /children
@@ -102,14 +102,14 @@ class ChildrenController < ApplicationController
         flash[:notice] = t('child.messages.creation_success')
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
-        format.json {
-          render :json => @child.compact.to_json
-        }
+        format.json do
+          render :json => @child.compact
+        end
       else
-        format.html {
-          @form_sections = get_form_sections
-          render :action => "new"
-        }
+        format.html do
+          @form_sections = form_sections
+          render :action => 'new'
+        end
         format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
     end
@@ -118,7 +118,12 @@ class ChildrenController < ApplicationController
   def sync_unverified
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
-    unless params[:child][:_id]
+    if params[:child][:_id]
+      child = Child.get(params[:child][:_id])
+      child = update_child_with_attachments child, params
+      child.save
+      render :json => child.compact
+    else
       respond_to do |format|
         format.json do
 
@@ -126,15 +131,10 @@ class ChildrenController < ApplicationController
 
           child['created_by_full_name'] = current_user.full_name
           if child.save
-            render :json => child.compact.to_json
+            render :json => child.compact
           end
         end
       end
-    else
-      child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
-      child.save
-      render :json => child.compact.to_json
     end
   end
 
@@ -144,18 +144,18 @@ class ChildrenController < ApplicationController
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
-        render :json => child.compact.to_json
+        render :json => child.compact
       end
 
       format.html do
         @child = update_child_from params
         if @child.save
-          flash[:notice] = I18n.t("child.messages.update_success")
+          flash[:notice] = I18n.t('child.messages.update_success')
           return redirect_to params[:redirect_url] if params[:redirect_url]
           redirect_to @child
         else
-          @form_sections = get_form_sections
-          render :action => "edit"
+          @form_sections = form_sections
+          render :action => 'edit'
         end
       end
 
@@ -173,7 +173,7 @@ class ChildrenController < ApplicationController
   def edit_photo
     authorize! :update, @child
 
-    @page_name = t("child.edit_photo")
+    @page_name = t('child.edit_photo')
   end
 
   def update_photo
@@ -182,13 +182,13 @@ class ChildrenController < ApplicationController
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
       @child.rotate_photo(orientation)
-      @child.set_updated_fields_for current_user_name
+      @child.updated_fields_for(current_user_name)
       @child.save
     end
     redirect_to(@child)
   end
 
-# POST
+  # POST
   def select_primary_photo
     @child = Child.get(params[:child_id])
     authorize! :update, @child
@@ -202,8 +202,8 @@ class ChildrenController < ApplicationController
     end
   end
 
-# DELETE /children/1
-# DELETE /children/1.xml
+  # DELETE /children/1
+  # DELETE /children/1.xml
   def destroy
     authorize! :destroy, @child
     @child.destroy
@@ -211,14 +211,14 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(children_url) }
       format.xml { head :ok }
-      format.json { render :json => {:response => "ok"}.to_json }
+      format.json { render :json => {:response => 'ok'} }
     end
   end
 
   def search
     authorize! :index, Child
-    @page_name = t("search")
-    @search_form = Forms::SearchForm.new ability: current_ability, params: params
+    @page_name = t('search')
+    @search_form = Forms::SearchForm.new :ability => current_ability, :params => params
 
     if @search_form.valid?
       @results = @search_form.execute.results
@@ -230,7 +230,7 @@ class ChildrenController < ApplicationController
 
   private
 
-  def child_short_id child_params
+  def child_short_id(child_params)
     child_params[:short_id] || child_params[:unique_identifier].last(7)
   end
 
@@ -245,10 +245,10 @@ class ChildrenController < ApplicationController
 
   def sanitize_params
     child_params = params['child']
-    child_params['histories'] = JSON.parse(child_params['histories']) if child_params and child_params['histories'].is_a?(String) #histories might come as string from the mobile client.
+    child_params['histories'] = JSON.parse(child_params['histories']) if child_params && child_params['histories'].is_a?(String) # histories might come as string from the mobile client.
   end
 
-  def get_form_sections
+  def form_sections
     FormSection.enabled_by_order_for_form(Child::FORM_NAME)
   end
 
@@ -266,19 +266,17 @@ class ChildrenController < ApplicationController
 
   def load_child_or_redirect
     @child = Child.get(params[:id])
-
-    if @child.nil?
-      respond_to do |format|
-        format.json { render :json => @child.to_json }
-        format.html do
-          flash[:error] = "Child with the given id is not found"
-          redirect_to :action => :index and return
-        end
+    return unless @child.nil?
+    respond_to do |format|
+      format.json { render :json => @child }
+      format.html do
+        flash[:error] = 'Child with the given id is not found'
+        redirect_to(:action => :index) && return
       end
     end
   end
 
-  def update_child_from params
+  def update_child_from(params)
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     authorize! :update, child
     update_child_with_attachments(child, params)
@@ -286,10 +284,10 @@ class ChildrenController < ApplicationController
 
   def update_child_with_attachments(child, params)
     child['last_updated_by_full_name'] = current_user_full_name
-    new_photo = params[:child].delete("photo")
-    new_photo = (params[:child][:photo] || "") if new_photo.nil?
-    new_audio = params[:child].delete("audio")
-    child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
+    new_photo = params[:child].delete('photo')
+    new_photo = (params[:child][:photo] || '') if new_photo.nil?
+    new_audio = params[:child].delete('audio')
+    child.update_properties_with_user_name(current_user_name, new_photo, params['delete_child_photo'], new_audio, params[:child])
     child
   end
 
@@ -297,7 +295,7 @@ class ChildrenController < ApplicationController
     RapidftrAddon::ExportTask.active.each do |export_task|
       format.any(export_task.id) do
         authorize! "export_#{export_task.id}".to_sym, Child
-        LogEntry.create! :type => LogEntry::TYPE[export_task.id], :user_name => current_user.user_name, :organisation => current_user.organisation, :child_ids => children.collect(&:id)
+        LogEntry.create! :type => LogEntry::TYPE[export_task.id], :user_name => current_user.user_name, :organisation => current_user.organisation, :child_ids => children.map(&:id)
         results = export_task.new.export(children)
         encrypt_exported_files results, export_filename(children, export_task)
       end
@@ -307,5 +305,4 @@ class ChildrenController < ApplicationController
   def export_filename(children, export_task)
     (children.length == 1 ? children.first.short_id : current_user_name) + '_' + export_task.id.to_s + '.zip'
   end
-
 end

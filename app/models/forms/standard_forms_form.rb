@@ -5,12 +5,12 @@ module Forms
 
     def self.build_from_seed_data
       child_form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
-      child_form = StandardFormsData::FormData.build(Form.new(name: Child::FORM_NAME), child_form_sections)
+      child_form = StandardFormsData::FormData.build(Form.new(:name => Child::FORM_NAME), child_form_sections)
 
       enquiry_form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
-      enquiry_form = StandardFormsData::FormData.build(Form.new(name: Enquiry::FORM_NAME), enquiry_form_sections)
+      enquiry_form = StandardFormsData::FormData.build(Form.new(:name => Enquiry::FORM_NAME), enquiry_form_sections)
 
-      form = self.new
+      form = new
       form.forms = [child_form, enquiry_form]
       form
     end
@@ -25,7 +25,7 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.build form, sections
+      def self.build(form, sections)
         id = form.name.downcase
         name = form.name
         existing_form = Form.by_name.key(form.name).first
@@ -34,7 +34,7 @@ module Forms
         sections.each do |section|
           data_sections << SectionData.build(section, existing_form)
         end
-        self.new id: id, name: name, disabled: disabled, sections: data_sections
+        new :id => id, :name => name, :disabled => disabled, :sections => data_sections
       end
     end
 
@@ -46,16 +46,16 @@ module Forms
         @user_selected ||= false
       end
 
-     def self.build section, existing_form
+      def self.build(section, existing_form)
         id = section.name
         name = section.name
-        existing_section = FormSection.all.all.find {|fs| !existing_form.nil? && fs.form == existing_form && fs.name == section.name }
+        existing_section = FormSection.all.all.find { |fs| !existing_form.nil? && fs.form == existing_form && fs.name == section.name }
         disabled = !existing_section.nil?
         data_fields = []
         section.fields.each do |field|
           data_fields << FieldData.build(field, existing_section)
         end
-        self.new id: id, name: name, disabled: disabled, fields: data_fields
+        new :id => id, :name => name, :disabled => disabled, :fields => data_fields
       end
     end
 
@@ -67,11 +67,11 @@ module Forms
         @user_selected ||= false
       end
 
-      def self.build field, existing_section
+      def self.build(field, existing_section)
         id = field.name
         name = field.display_name
-        disabled = existing_section.nil? ? false : existing_section.fields.collect(&:name).include?(field.name)
-        self.new id: id, name: name, disabled: disabled
+        disabled = existing_section.nil? ? false : existing_section.fields.map(&:name).include?(field.name)
+        new :id => id, :name => name, :disabled => disabled
       end
     end
   end

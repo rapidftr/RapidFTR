@@ -1,6 +1,6 @@
 module CustomMatchers
   class AttachmentResponse
-    def initialize(file, disposition = 'attachment', filename = nil )
+    def initialize(file, disposition = 'attachment', filename = nil)
       @data = file.data
       @content_type = file.content_type
       @disposition = disposition
@@ -10,10 +10,10 @@ module CustomMatchers
 
     def matches?(response)
       verify { [response.content_type == @content_type, "content type is #{response.content_type} instead of #{@content_type}"] } &&
-          verify { [response.body == @data, "data is different"] } &&
+          verify { [response.body == @data, 'data is different'] } &&
           verify do
             result = response_has_specified_disposition? response
-            [ result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
+            [result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]
           end &&
           verify { @filename.nil? || has_filename?(@filename) }
     end
@@ -26,12 +26,12 @@ module CustomMatchers
 
     def verify
       result, failure = yield
-      @failure_reasons << "#{failure}" if !result
+      @failure_reasons << "#{failure}" unless result
       result
     end
 
     def response_has_specified_disposition?(response)
-      response.headers.has_key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
+      response.headers.key?('Content-Disposition') && response.headers['Content-Disposition'].index(@disposition)
     end
 
     def has_filename?(filename)

@@ -1,13 +1,14 @@
 module I18n
   module Backend
     class CustomChain < I18n::Backend::Chain
-      #According to the github post https://github.com/fnando/i18n-js/issues/59
+      # According to the github post https://github.com/fnando/i18n-js/issues/59
       def initialized?
         backends.each do |backend|
-          return false if !backend.initialized?
+          return false unless backend.initialized?
         end
-        return true
+        true
       end
+
       protected
 
       def init_translations
@@ -25,9 +26,8 @@ module I18n
             trans.deep_merge!(translations)
           end
         end
-        return trans
+        trans
       end
-
     end
   end
 end

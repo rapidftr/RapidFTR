@@ -24,12 +24,12 @@ module Addons
     end
 
     it 'should generate filename for one child' do
-      child = build :child, :unique_identifier => "test-id"
-      expect(@task.generate_filename([ child ])).to eq('test-id.pdf')
+      child = build :child, :unique_identifier => 'test-id'
+      expect(@task.generate_filename([child])).to eq('test-id.pdf')
     end
 
     it 'should generate filename for multiple children' do
-      child = build :child, :unique_identifier => "test-id"
+      child = build :child, :unique_identifier => 'test-id'
       expect(@task.generate_filename([child, child])).to eq('photowall.pdf')
     end
   end

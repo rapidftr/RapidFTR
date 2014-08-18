@@ -1,16 +1,14 @@
 # CouchRestRails::Document provide this method, this is not longer support by CouchRest::Model::Base.
 # Seems the application use in several classes adding this method as a workaround.
-#require 'date'
+# require 'date'
 
 module RapidFTR
   module CouchRestRailsBackward
-
     def self.included(base)
-        base.extend(ClassMethods)
+      base.extend(ClassMethods)
     end
 
     module ClassMethods
-
       def paginate(pagination_options = {})
         options = pagination_options.clone
         paginates_per options.delete(:per_page)
@@ -22,7 +20,6 @@ module RapidFTR
       def view(view_name, options = {})
         send(view_name, options).all
       end
-
     end
   end
 end

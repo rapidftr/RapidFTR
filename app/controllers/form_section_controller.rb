@@ -1,8 +1,7 @@
 class FormSectionController < ApplicationController
-
   def index
     authorize! :index, FormSection
-    @page_name = t("form_section.manage")
+    @page_name = t('form_section.manage')
     @form_id = params[:form_id]
     @form_sections = FormSection.all.select { |f| f.form_id == @form_id }.sort_by(&:order)
   end
@@ -14,9 +13,9 @@ class FormSectionController < ApplicationController
     section_attributes.merge!(:form => form)
     form_section = FormSection.new_with_order section_attributes
     form_section.base_language = I18n.default_locale
-    if (form_section.valid?)
+    if form_section.valid?
       form_section.create
-      flash[:notice] = t("form_section.messages.updated")
+      flash[:notice] = t('form_section.messages.updated')
       redirect_to edit_form_section_path(form_section.unique_id)
     else
       @form_section = form_section
@@ -27,7 +26,7 @@ class FormSectionController < ApplicationController
 
   def edit
     authorize! :update, FormSection
-    @page_name = t("form_section.edit")
+    @page_name = t('form_section.edit')
     @form_section = FormSection.get_by_unique_id(params[:id])
     @form = @form_section.form
   end
@@ -36,7 +35,7 @@ class FormSectionController < ApplicationController
     authorize! :update, FormSection
     @form_section = FormSection.get_by_unique_id(params[:id])
     @form_section.properties = params[:form_section]
-    if (@form_section.valid?)
+    if @form_section.valid?
       @form_section.save!
       redirect_to edit_form_section_path(@form_section.unique_id)
     else
@@ -49,9 +48,8 @@ class FormSectionController < ApplicationController
     form = FormSection.get_by_unique_id(params[:id])
     form.visible = !form.visible?
     form.save!
-    render :text => "OK"
+    render :text => 'OK'
   end
-
 
   def save_order
     authorize! :update, FormSection
@@ -69,9 +67,19 @@ class FormSectionController < ApplicationController
 
   def new
     authorize! :create, FormSection
-    @page_name = t("form_section.create")
+    @page_name = t('form_section.create')
     @form = Form.find(params[:form_id])
     @form_section = FormSection.new(params[:form_section])
   end
 
+  def destroy
+    authorize! :update, FormSection
+
+    @form_section = FormSection.get_by_unique_id(params[:id])
+    @form_section.destroy
+    form = @form_section.form
+
+    flash[:notice] = t('form_section.messages.deleted', :display_name => @form_section.name)
+    redirect_to form_form_sections_path form
+  end
 end

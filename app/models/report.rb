@@ -19,11 +19,11 @@ class Report < CouchRest::Model::Base
     view :by_as_of_date
 
     view :all,
-      :map => "function(doc) {
-          if (doc['couchrest-type'] == 'Report') {
-            emit(doc._id, null);
-          }
-        }"
+         :map => "function(doc) {
+             if (doc['couchrest-type'] == 'Report') {
+               emit(doc._id, null);
+             }
+           }"
   end
 
   def file_name
@@ -35,7 +35,7 @@ class Report < CouchRest::Model::Base
   end
 
   def content_type
-    file_meta["content_type"]
+    file_meta['content_type']
   end
 
   def data
@@ -44,6 +44,6 @@ class Report < CouchRest::Model::Base
 
   def must_have_attached_report
     return true if self['_attachments'] && self['_attachments'].size == 1
-    errors.add(:must_have_attached_report, 'No report file attached!' ) # No need to translate since this is a background activity, not a user-facing activity
+    errors.add(:must_have_attached_report, 'No report file attached!') # No need to translate since this is a background activity, not a user-facing activity
   end
 end

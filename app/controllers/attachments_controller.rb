@@ -1,5 +1,4 @@
 class AttachmentsController < ApplicationController
-
   def show
     child = Child.get(params[:child_id])
     attachment = child.media_for_key(params[:id])

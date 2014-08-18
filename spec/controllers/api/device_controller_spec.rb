@@ -8,7 +8,7 @@ describe Api::DeviceController, :type => :controller do
     end
 
     it 'is true if device IMEI is blacklisted' do
-      device = Device.create({:imei => 123123, :blacklisted => "true",:user_name => "bob"})
+      device = Device.create(:imei => 123_123, :blacklisted => 'true', :user_name => 'bob')
       allow(Device).to receive(:find_by_device_imei).and_return([device])
 
       get :is_blacklisted, :imei => '123123'
@@ -16,7 +16,7 @@ describe Api::DeviceController, :type => :controller do
     end
 
     it 'is false if device IMEI is not blacklisted' do
-      device = Device.create({:imei => 123123, :blacklisted => "false",:user_name => "bob"})
+      device = Device.create(:imei => 123_123, :blacklisted => 'false', :user_name => 'bob')
       allow(Device).to receive(:find_by_device_imei).and_return([device])
 
       get :is_blacklisted, :imei => '123123'
@@ -28,7 +28,7 @@ describe Api::DeviceController, :type => :controller do
 
       get :is_blacklisted, :imei => '123123'
       expect(response.response_code).to eq(404)
-      expect(JSON.parse(response.body)["error"]).to eq("Not found")
+      expect(JSON.parse(response.body)['error']).to eq('Not found')
     end
   end
 

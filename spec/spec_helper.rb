@@ -2,19 +2,19 @@
 
 if ENV['COVERALLS']
   require 'coveralls'
-  Coveralls.wear!('rails')
+  Coveralls.wear_merged!('rails')
 end
 
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] = 'test'
+require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'csv'
 require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-Dir[Rails.root.join("lib/**/*.rb")].each {|f| require f}
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('lib/**/*.rb')].each { |f| require f }
 
 # This clears couchdb between tests.
 FactoryGirl.find_definitions
@@ -48,12 +48,12 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  #config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  #config.use_transactional_fixtures = true
+  # config.use_transactional_fixtures = true
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
@@ -64,25 +64,25 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = "random"
+  config.order = 'random'
 
   config.before(:each) do |example|
     Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) unless
-      (example.metadata[:solr] || Sunspot.session.respond_to?(:original_session))
+      example.metadata[:solr] || Sunspot.session.respond_to?(:original_session)
   end
 
   config.after(:each) do |example|
     Sunspot.session = Sunspot.session.original_session unless
-      (example.metadata[:solr] || !Sunspot.session.respond_to?(:original_session))
+      example.metadata[:solr] || !Sunspot.session.respond_to?(:original_session)
   end
 
   config.before(:all) do
     reset_couchdb!
   end
 
-  #Delete db if needed.
+  # Delete db if needed.
   config.after(:all) do
-      reset_couchdb!
+    reset_couchdb!
   end
 
   config.before(:each) { I18n.locale = I18n.default_locale = :en }
@@ -91,8 +91,8 @@ end
 
 def stub_env(new_env, &block)
   original_env = Rails.env
-  Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(new_env))
+  Rails.instance_variable_set('@_env', ActiveSupport::StringInquirer.new(new_env))
   block.call
 ensure
-  Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(original_env))
+  Rails.instance_variable_set('@_env', ActiveSupport::StringInquirer.new(original_env))
 end

@@ -10,7 +10,7 @@ class Session < CouchRest::Model::Base
     view :by_user_name
   end
 
-  def self.for_user( user, imei)
+  def self.for_user(user, imei)
     Session.new(
       :user_name => user.user_name,
       :imei => imei
@@ -23,26 +23,23 @@ class Session < CouchRest::Model::Base
 
   def self.get_from_cookies(cookies)
     session_id = cookies[COOKIE_KEY]
-    self.get(session_id)
+    get(session_id)
   end
 
   def self.delete_for(user)
-    by_user_name(:key => user.user_name).each {|s| s.destroy }
+    by_user_name(:key => user.user_name).each { |s| s.destroy }
   end
 
   def token
-    self.id
+    id
   end
 
-  def full_name
-    user.full_name
-  end
+  delegate :full_name, :to => :user
 
   def device_blacklisted?
-    if (imei)
-      return true if Device.all.any? {|device| device.imei == imei && device.blacklisted? }
+    if imei
+      return true if Device.all.any? { |device| device.imei == imei && device.blacklisted? }
     end
     false
   end
-
 end

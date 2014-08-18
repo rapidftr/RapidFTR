@@ -1,5 +1,4 @@
 module ChildHistoriesHelper
-
   def history_wording(from, to)
     formatted_to = field_value_for_display to
     formatted_from = field_value_for_display from
@@ -8,10 +7,8 @@ module ChildHistoriesHelper
   end
 
   def new_value_for(history, field_name)
-    begin
-      history['changes'][field_name]['to']
-    rescue
-      ''
-    end
+    history['changes'][field_name]['to']
+  rescue
+    ''
   end
 end

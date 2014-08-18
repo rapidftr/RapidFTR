@@ -1,7 +1,7 @@
 module CanCan
   class CustomRule < Rule
     def initialize(base_behavior, action, subject, conditions, block)
-      @except_actions = [ conditions.try(:delete, :except) ].flatten.compact
+      @except_actions = [conditions.try(:delete, :except)].flatten.compact
       super(base_behavior, action, subject, conditions, block)
     end
 
