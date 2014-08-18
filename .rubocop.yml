@@ -10,6 +10,9 @@ Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'features/step_definitions/*.rb'
 
+Style/DotPosition:
+  EnforcedStyle: trailing
+
 Style/GuardClause:
   MinBodyLength: 4
 

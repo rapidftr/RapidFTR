@@ -25,10 +25,10 @@ class ChildrenController < ApplicationController
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
-    search = ChildSearch.new
-    .paginated(page, per_page)
-    .ordered(@order, @sort_order.to_sym)
-    .marked_as(@filter)
+    search = ChildSearch.new.
+      paginated(page, per_page).
+      ordered(@order, @sort_order.to_sym).
+      marked_as(@filter)
     search.created_by(current_user) unless can?(:view_all, Child)
     @children = search.results
 
