@@ -45,10 +45,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 26
 
-# Offense count: 3
-Style/AccessorMethodName:
-  Enabled: false
-
 # Offense count: 39
 # Configuration parameters: IndentWhenRelativeTo, SupportedStyles, IndentOneStep.
 Style/CaseIndentation:

@@ -32,7 +32,7 @@ class ChildrenController < ApplicationController
     search.created_by(current_user) unless can?(:view_all, Child)
     @children = search.results
 
-    @form_sections = get_form_sections
+    @form_sections = form_sections
     @system_fields = Child.default_child_fields + Child.build_date_fields_for_solar
 
     respond_to do |format|
@@ -53,7 +53,7 @@ class ChildrenController < ApplicationController
   # GET /children/1.xml
   def show
     authorize! :read, @child if @child["created_by"] != current_user_name
-    @form_sections = get_form_sections
+    @form_sections = form_sections
     @page_name = t "child.view", :short_id => @child.short_id
     @body_class = 'profile-page'
     @duplicates = Child.by_duplicate_of(:key => params[:id])
@@ -74,7 +74,7 @@ class ChildrenController < ApplicationController
 
     @page_name = t("children.register_new_child")
     @child = Child.new
-    @form_sections = get_form_sections
+    @form_sections = form_sections
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
@@ -86,7 +86,7 @@ class ChildrenController < ApplicationController
     authorize! :update, @child
 
     @page_name = t("child.edit")
-    @form_sections = get_form_sections
+    @form_sections = form_sections
   end
 
   # POST /children
@@ -107,7 +107,7 @@ class ChildrenController < ApplicationController
         end
       else
         format.html do
-          @form_sections = get_form_sections
+          @form_sections = form_sections
           render :action => "new"
         end
         format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
@@ -154,7 +154,7 @@ class ChildrenController < ApplicationController
           return redirect_to params[:redirect_url] if params[:redirect_url]
           redirect_to @child
         else
-          @form_sections = get_form_sections
+          @form_sections = form_sections
           render :action => "edit"
         end
       end
@@ -182,7 +182,7 @@ class ChildrenController < ApplicationController
     orientation = params[:child].delete(:photo_orientation).to_i
     if orientation != 0
       @child.rotate_photo(orientation)
-      @child.set_updated_fields_for current_user_name
+      @child.updated_fields_for(current_user_name)
       @child.save
     end
     redirect_to(@child)
@@ -248,7 +248,7 @@ class ChildrenController < ApplicationController
     child_params['histories'] = JSON.parse(child_params['histories']) if child_params && child_params['histories'].is_a?(String) # histories might come as string from the mobile client.
   end
 
-  def get_form_sections
+  def form_sections
     FormSection.enabled_by_order_for_form(Child::FORM_NAME)
   end
 

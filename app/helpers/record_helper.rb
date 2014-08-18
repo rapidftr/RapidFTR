@@ -2,7 +2,7 @@ module RecordHelper
   include RapidFTR::Model
 
   # TODO: #40: Refactor created_at & posted_at to use CouchREST timestamps!
-  def set_creation_fields_for(user)
+  def creation_fields_for(user)
     self['created_by'] = user.try(:user_name)
     self['created_organisation'] = user.try(:organisation)
     self['created_at'] ||= RapidFTR::Clock.current_formatted_time
@@ -17,7 +17,7 @@ module RecordHelper
     User.find_by_user_name self['created_by'] unless self['created_by'].to_s.empty?
   end
 
-  def set_updated_fields_for(user_name)
+  def updated_fields_for(user_name)
     self['last_updated_by'] = user_name
     self['last_updated_at'] = RapidFTR::Clock.current_formatted_time
   end
@@ -135,7 +135,7 @@ module RecordHelper
         end
         attributes_to_update["#{name}_at"] = RapidFTR::Clock.current_formatted_time if [:flag, :reunited].include?(name.to_sym) && value.to_s == 'true'
       end
-      set_updated_fields_for user_name
+      updated_fields_for(user_name)
       self.attributes = attributes_to_update
     else
       merge_histories(properties['histories'])

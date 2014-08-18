@@ -56,7 +56,7 @@ class Child < CouchRest::Model::Base
 
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
-    child.set_creation_fields_for user
+    child.creation_fields_for(user)
     child
   end
 
