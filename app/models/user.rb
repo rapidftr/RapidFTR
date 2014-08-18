@@ -119,9 +119,7 @@ class User < CouchRest::Model::Base
     @password = value
   end
 
-  def password
-    @password
-  end
+  attr_reader :password
 
   def self.all_unverified
     User.by_unverified

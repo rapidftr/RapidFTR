@@ -5,11 +5,9 @@ class MockFormSection
     @is_valid = is_valid
   end
 
-  def base_language=(base_language)
-    @base_language = base_language
-  end
+  attr_writer :base_language
 
-  def valid?
+  def valid? # rubocop:disable TrivialAccessors
     @is_valid
   end
 

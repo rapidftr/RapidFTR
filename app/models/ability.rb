@@ -1,9 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def user
-    @user
-  end
+  attr_reader :user
 
   def initialize(user)
     alias_action :index, :view, :list, :to => :read
