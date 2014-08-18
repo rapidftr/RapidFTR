@@ -10,14 +10,17 @@
 #   inflect.uncountable %w( fish sheep )
 # end
 
-module ActiveSupport::Inflector
-  # does the opposite of humanize.... mostly. Basically does a
-  # space-substituting .underscore
-  def dehumanize(the_string)
-    result = the_string.to_s.dup
-    result.downcase.gsub(/[^0-9a-zA-Z ]/, '').gsub(/ +/, '_').strip
+module ActiveSupport
+  module Inflector
+    # does the opposite of humanize.... mostly. Basically does a
+    # space-substituting .underscore
+    def dehumanize(the_string)
+      result = the_string.to_s.dup
+      result.downcase.gsub(/[^0-9a-zA-Z ]/, '').gsub(/ +/, '_').strip
+    end
   end
 end
+
 class String
   def dehumanize
     ActiveSupport::Inflector.dehumanize(self)
