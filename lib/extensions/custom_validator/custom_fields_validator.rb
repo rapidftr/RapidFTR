@@ -80,16 +80,16 @@ module Extensions
       class FieldValidator  < ActiveModel::Validator
         def validate(record)
           case @options[:type]
-            when Field::NUMERIC_FIELD
-              validator = CustomNumericFieldsValidator
-            when Field::TEXT_FIELD
-              validator = CustomTextFieldsValidator
-            when Field::TEXT_AREA
-              validator = CustomTextAreasValidator
-            when Field::DATE_FIELD
-              validator = DateFieldsValidator
-            else
-              fail "Unrecognised field type " + field_type.to_s + " for validation"
+          when Field::NUMERIC_FIELD
+            validator = CustomNumericFieldsValidator
+          when Field::TEXT_FIELD
+            validator = CustomTextFieldsValidator
+          when Field::TEXT_AREA
+            validator = CustomTextAreasValidator
+          when Field::DATE_FIELD
+            validator = DateFieldsValidator
+          else
+            fail "Unrecognised field type " + field_type.to_s + " for validation"
           end
           validator.new(record, @options) if validator
         end
