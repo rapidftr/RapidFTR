@@ -198,7 +198,7 @@ class FormSection < CouchRest::Model::Base
 
   def field_order(field_name)
     field_item = fields.find { |field| field.name == field_name }
-    return fields.index(field_item)
+    fields.index(field_item)
   end
 
   def order_fields(new_field_names)

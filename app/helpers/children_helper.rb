@@ -55,7 +55,7 @@ module ChildrenHelper
   def field_value_for_display(field_value)
     return "" if field_value.nil? || field_value.length == 0
     return field_value.join ", " if field_value.instance_of? Array
-    return field_value
+    field_value
   end
 
   def link_for_filter(filter, selected_filter)
@@ -85,7 +85,7 @@ module ChildrenHelper
       options_for_form = form_section.all_sortable_fields.map { |f| [f.display_name, f.name] }
       options[form_section.name] = options_for_form
     end
-    return options
+    options
   end
 
   def child_sorted_highlighted_fields

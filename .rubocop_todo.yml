@@ -137,12 +137,6 @@ Style/PerlBackrefs:
 Style/PredicateName:
   Enabled: false
 
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Enabled: false
-
 # Offense count: 13
 Style/RescueModifier:
   Enabled: false

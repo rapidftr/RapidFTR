@@ -7,7 +7,7 @@ class FieldOption
     options.each do |option|
       field_options << FieldOption.new(field_name, option)
     end
-    return field_options
+    field_options
   end
 
   def initialize(field_name, option)

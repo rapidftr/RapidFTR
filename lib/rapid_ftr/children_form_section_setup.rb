@@ -30,7 +30,7 @@ module RapidFTR
         fs.form = form
         fs.save
       end
-      return true
+      true
     end
 
     def self.build_interview_details_section

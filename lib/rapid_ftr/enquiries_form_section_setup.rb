@@ -3,7 +3,7 @@ module RapidFTR
   module EnquiriesFormSectionSetup
 
     def self.build_form_sections
-      return [build_enquiry_section]
+      [build_enquiry_section]
     end
 
     def self.reset_form
@@ -17,7 +17,7 @@ module RapidFTR
       enquiry_form_section = build_enquiry_section
       enquiry_form_section.form = form
       enquiry_form_section.save
-      return true
+      true
     end
 
     def self.build_enquiry_section

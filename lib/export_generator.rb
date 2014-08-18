@@ -54,7 +54,7 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type => 'text/csv', :filename => filename("full-details", "csv")}
+    Export.new csv_data, {:type => 'text/csv', :filename => filename("full-details", "csv")}
   end
 
   def map_field_with_value(child, fields)
@@ -94,7 +94,7 @@ class ExportGenerator
 
   def filename(export_type, extension)
     return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
-    return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
+    "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
   end
 
   def filename_date_string

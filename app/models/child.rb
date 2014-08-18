@@ -159,7 +159,7 @@ class Child < CouchRest::Model::Base
   end
 
   def form
-    return Form.find_by_name(form_name)
+    Form.find_by_name(form_name)
   end
 
   def form_name

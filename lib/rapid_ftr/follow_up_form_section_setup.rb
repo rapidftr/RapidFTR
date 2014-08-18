@@ -222,7 +222,7 @@ module RapidFTR
                            "description_all" => "Information to be added",
                            :form => form
                           })
-      return true
+      true
     end
   end
 end

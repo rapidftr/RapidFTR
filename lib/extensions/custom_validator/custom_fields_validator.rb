@@ -11,7 +11,7 @@ class CustomFieldsValidator
       return target.field_definitions_for(form.name) if (target.respond_to? :field_definitions_for) && !target.field_definitions_for(form.name).nil?
       return FormSection.all_visible_child_fields_for_form form.name
     end
-    return []
+    []
   end
 
   def validate_fields(fields, target)
@@ -25,7 +25,7 @@ class CustomFieldsValidator
         valid = false
       end
     end
-    return valid
+    valid
   end
 end
 

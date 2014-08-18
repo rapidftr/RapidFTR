@@ -3,13 +3,13 @@ module HistoriesHelper
   def history_entry_for_chidlren_field(history, field, change)
     @form_sections = FormSection.all.select { |fs| fs.form.name == Child::FORM_NAME }
 
-    return return_partial_hash(change, field, history)
+    return_partial_hash(change, field, history)
   end
 
   def history_entry_for(history, field, change)
     @form_sections = FormSection.all
 
-    return return_partial_hash(change, field, history)
+    return_partial_hash(change, field, history)
   end
 
   def return_partial_hash(change, field, history)
