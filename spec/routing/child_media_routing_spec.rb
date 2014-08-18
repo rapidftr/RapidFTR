@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ChildMediaController, :type => :routing do
-  describe "routing" do
+  describe 'routing' do
 
     it 'recognizes child thumbnail path with photo_id' do
       expect(:get => 'children/1/thumbnail/321').to route_to(

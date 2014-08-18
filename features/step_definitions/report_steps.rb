@@ -10,7 +10,7 @@ Given /^(\d+) reports exist in the system starting from (.+)$/ do |num_reports, 
   start_date = Date.parse start_date_str
   (1 .. num_reports.to_i).to_a.each do |i|
     report = Report.new :report_type => 'text/csv', :as_of_date => (start_date + i.days)
-    report.create_attachment :name => "test_report_#{i}.csv", :file => StringIO.new("TEST DATA #{i}"), :content_type => "test/csv"
+    report.create_attachment :name => "test_report_#{i}.csv", :file => StringIO.new("TEST DATA #{i}"), :content_type => 'test/csv'
     report.save!
   end
 end

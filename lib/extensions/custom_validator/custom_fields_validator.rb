@@ -89,7 +89,7 @@ module Extensions
           when Field::DATE_FIELD
             validator = DateFieldsValidator
           else
-            fail "Unrecognised field type " + field_type.to_s + " for validation"
+            fail 'Unrecognised field type ' + field_type.to_s + ' for validation'
           end
           validator.new(record, @options) if validator
         end

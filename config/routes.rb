@@ -112,7 +112,7 @@ RapidFTR::Application.routes.draw do
   #######################
 
   resources :standard_forms, :only => :index
-  match '/standard_forms', :to => "forms#bulk_update", :via => [:put, :post]
+  match '/standard_forms', :to => 'forms#bulk_update', :via => [:put, :post]
   resources :forms do
     resources :form_sections, :path => 'form_section', :controller => 'form_section', :only => [:index, :new, :create]
   end
@@ -159,7 +159,7 @@ RapidFTR::Application.routes.draw do
   # REPLICATION URLS
   #######################
 
-  resources :replications, :path => "/devices/replications" do
+  resources :replications, :path => '/devices/replications' do
     collection do
       post :configuration
     end
@@ -170,7 +170,7 @@ RapidFTR::Application.routes.draw do
     end
   end
 
-  resources :system_users, :path => "/admin/system_users"
+  resources :system_users, :path => '/admin/system_users'
 
   #######################
   # REPORTING URLS

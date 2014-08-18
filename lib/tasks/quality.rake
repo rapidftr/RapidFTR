@@ -2,7 +2,7 @@ namespace :quality do
   require 'cane/rake_task'
   require 'rubocop/rake_task'
 
-  desc "Run cane to check quality metrics"
+  desc 'Run cane to check quality metrics'
   Cane::RakeTask.new(:cane) do |cane|
     cane.abc_max = 144
 

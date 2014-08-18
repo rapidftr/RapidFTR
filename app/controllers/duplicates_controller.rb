@@ -5,8 +5,8 @@ class DuplicatesController < ApplicationController
     form = Form.find_by_name(Child::FORM_NAME)
     @sorted_highlighted_fields = form.sorted_highlighted_fields
 
-    redirect_to(child_filter_path("flagged")) && return if @child.nil?
-    @page_name = t("child.mark_child_as_duplicate", :short_id => @child.short_id)
+    redirect_to(child_filter_path('flagged')) && return if @child.nil?
+    @page_name = t('child.mark_child_as_duplicate', :short_id => @child.short_id)
   end
 
   def create

@@ -5,8 +5,8 @@ describe FormsController, :type => :controller do
     reset_couchdb!
   end
 
-  describe ".index" do
-    it "should assign all Forms for use in the view" do
+  describe '.index' do
+    it 'should assign all Forms for use in the view' do
       enquiry_form = create :form, :name => Enquiry::FORM_NAME
       children_form = create :form, :name => Child::FORM_NAME
       fake_admin_login
@@ -15,11 +15,11 @@ describe FormsController, :type => :controller do
     end
   end
 
-  describe ".bulk_update" do
-    it "should use the StandardFormsService to persist data" do
+  describe '.bulk_update' do
+    it 'should use the StandardFormsService to persist data' do
       fake_admin_login
-      params = {:default_forms => "some_forms"}
-      expect(StandardFormsService).to receive(:persist).with("some_forms")
+      params = {:default_forms => 'some_forms'}
+      expect(StandardFormsService).to receive(:persist).with('some_forms')
       post :bulk_update, params
     end
   end

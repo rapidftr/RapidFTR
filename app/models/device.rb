@@ -17,7 +17,7 @@ class Device < CouchRest::Model::Base
   end
 
   def set_appropriate_data_type
-    self.blacklisted = blacklisted == "true" if blacklisted.is_a? String
+    self.blacklisted = blacklisted == 'true' if blacklisted.is_a? String
     self.imei = imei.to_s
   end
 

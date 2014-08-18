@@ -11,11 +11,11 @@ module Api
 
     rescue_from(Exception) do |e|
       ErrorResponse.log e
-      render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
+      render_error_response ErrorResponse.internal_server_error 'session.internal_server_error'
     end
     rescue_from(CanCan::AccessDenied) do |e|
       ErrorResponse.log e
-      render_error_response ErrorResponse.forbidden "session.forbidden"
+      render_error_response ErrorResponse.forbidden 'session.forbidden'
     end
     rescue_from(ErrorResponse) do |e|
       ErrorResponse.log e
@@ -23,7 +23,7 @@ module Api
     end
     rescue_from(ActiveSupport::JSON.parse_error) do |e|
       ErrorResponse.log e
-      render_error_response ErrorResponse.new 422, "session.invalid_request"
+      render_error_response ErrorResponse.new 422, 'session.invalid_request'
     end
 
     def session_expiry_timeout
@@ -31,7 +31,7 @@ module Api
     end
 
     def check_device_blacklisted
-      fail ErrorResponse.forbidden("session.device_blacklisted") if current_session && current_session.device_blacklisted?
+      fail ErrorResponse.forbidden('session.device_blacklisted') if current_session && current_session.device_blacklisted?
     end
 
     def render_error_response(e)

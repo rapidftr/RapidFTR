@@ -9,21 +9,21 @@ describe Api::ChildMediaController, :type => :controller do
     fake_login
   end
 
-  describe "routing" do
-    it "should have a route for a child current photo" do
-      expect(:get => "/api/children/1/photo").to route_to(:controller => "api/child_media", :action => "show_photo", :id => "1")
+  describe 'routing' do
+    it 'should have a route for a child current photo' do
+      expect(:get => '/api/children/1/photo').to route_to(:controller => 'api/child_media', :action => 'show_photo', :id => '1')
     end
 
-    it "should have a route for a child current recorded audio" do
-      expect(:get => "api/children/1/audio").to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1")
+    it 'should have a route for a child current recorded audio' do
+      expect(:get => 'api/children/1/audio').to route_to(:controller => 'api/child_media', :action => 'download_audio', :id => '1')
     end
 
-    it "should have a route for a child current recorded audio" do
-      expect(:get => "api/children/1/audio/a1").to route_to(:controller => "api/child_media", :action => "download_audio", :id => "1", :audio_id => "a1")
+    it 'should have a route for a child current recorded audio' do
+      expect(:get => 'api/children/1/audio/a1').to route_to(:controller => 'api/child_media', :action => 'download_audio', :id => '1', :audio_id => 'a1')
     end
 
-    it "should have a route for a child specific photo" do
-      expect(:get => "api/children/c1/photo/p1").to route_to(:controller => "api/child_media", :action => "show_photo", :id => "c1", :photo_id => "p1")
+    it 'should have a route for a child specific photo' do
+      expect(:get => 'api/children/c1/photo/p1').to route_to(:controller => 'api/child_media', :action => 'show_photo', :id => 'c1', :photo_id => 'p1')
     end
   end
 
@@ -43,54 +43,54 @@ describe Api::ChildMediaController, :type => :controller do
     end
   end
 
-  describe "response" do
+  describe 'response' do
     it "should return current child's photo" do
       given_a_child.
-              with_id("1").
+              with_id('1').
               with_photo(uploadable_photo, 'current')
 
-      get :show_photo, :id => "1"
+      get :show_photo, :id => '1'
       expect(response).to represent_inline_attachment(uploadable_photo)
     end
 
     it "should return requested child's photo" do
       given_a_child.
-              with_id("1")
-      with_photo(uploadable_photo, "current").
-      with_photo(uploadable_photo_jeff, "other", false)
+              with_id('1')
+      with_photo(uploadable_photo, 'current').
+      with_photo(uploadable_photo_jeff, 'other', false)
 
-      get :show_photo, :id => "1", :photo_id => "other"
+      get :show_photo, :id => '1', :photo_id => 'other'
       expect(response).to represent_inline_attachment(uploadable_photo_jeff)
     end
 
-    it "should return no photo available clip when no image is found" do
+    it 'should return no photo available clip when no image is found' do
       given_a_child.
-              with_id("1").
+              with_id('1').
               with_no_photos
 
-      get :show_photo, :id => "1", :photo_id => '_missing_'
+      get :show_photo, :id => '1', :photo_id => '_missing_'
       expect(response).to represent_inline_attachment(no_photo_clip)
     end
   end
 
-  describe "download audio" do
-    it "should return an amr audio file associated with a child" do
+  describe 'download audio' do
+    it 'should return an amr audio file associated with a child' do
       given_a_child.
               with_id('1').
               with_unique_identifier('child123').
               with_audio(uploadable_audio_amr)
 
       get :download_audio, :id => '1'
-      expect(response).to represent_attachment(uploadable_audio_amr, "audio_child123.amr")
+      expect(response).to represent_attachment(uploadable_audio_amr, 'audio_child123.amr')
     end
-    it "should return an mp3 audio file associated with a child" do
+    it 'should return an mp3 audio file associated with a child' do
       given_a_child.
               with_id('1').
               with_unique_identifier('child123').
-              with_audio(uploadable_audio_mp3, "other")
+              with_audio(uploadable_audio_mp3, 'other')
 
-      get :download_audio, :id => '1', :audio_id => "other"
-      expect(response).to represent_attachment(uploadable_audio_mp3, "audio_child123.mp3")
+      get :download_audio, :id => '1', :audio_id => 'other'
+      expect(response).to represent_attachment(uploadable_audio_mp3, 'audio_child123.mp3')
     end
   end
 end

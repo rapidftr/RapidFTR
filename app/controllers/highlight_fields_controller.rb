@@ -6,7 +6,7 @@ class HighlightFieldsController < ApplicationController
   end
 
   def show
-    @page_name = I18n.t("admin.highlight_fields")
+    @page_name = I18n.t('admin.highlight_fields')
     @form = Form.find params[:id]
     @form_sections = @form.sections
     @highlighted_fields = @form.sorted_highlighted_fields.map do |field|

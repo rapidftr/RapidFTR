@@ -20,7 +20,7 @@
 #
 class I18nBackendCouch < I18n::Backend::Simple
   def load_translations
-    locales = db.documents["rows"].map { |row| row["id"] }
+    locales = db.documents['rows'].map { |row| row['id'] }
     locales.each do |locale|
       translations[locale.to_sym] = db.get(locale).deep_symbolize_keys
     end
@@ -57,15 +57,15 @@ class I18nBackendCouch < I18n::Backend::Simple
       end
       doc.save
     rescue
-      data["_id"] = locale
+      data['_id'] = locale
       db.save_doc(data)
     end
   end
 
   # The presence of these two attributes frequently causes CouchRest Conflicts
   def clean(data)
-    data.delete "_id"
-    data.delete "_rev"
+    data.delete '_id'
+    data.delete '_rev'
     data
   end
 

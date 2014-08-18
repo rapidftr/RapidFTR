@@ -15,7 +15,7 @@ module Api
       if child
         render :json => child.compact
       else
-        render :json => "", :status => 404
+        render :json => '', :status => 404
       end
     end
 
@@ -63,9 +63,9 @@ module Api
 
     def sanitize_params
       super :child
-      params["child"]['histories'] = JSON.parse(params["child"]['histories']) if params["child"] && params["child"]['histories'].is_a?(String) # histories might come as string from the mobile client.
+      params['child']['histories'] = JSON.parse(params['child']['histories']) if params['child'] && params['child']['histories'].is_a?(String) # histories might come as string from the mobile client.
     rescue JSON::ParserError
-      render :json => {:error => I18n.t("errors.models.enquiry.malformed_query")}, :status => 422
+      render :json => {:error => I18n.t('errors.models.enquiry.malformed_query')}, :status => 422
     end
 
     def create_or_update_child(params)

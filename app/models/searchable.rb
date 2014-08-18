@@ -25,7 +25,7 @@ module Searchable
         begin
           Sunspot.index!(self)
         rescue
-          Rails.logger.error "***Problem indexing record for searching, is SOLR running?"
+          Rails.logger.error '***Problem indexing record for searching, is SOLR running?'
         end
         true
       end

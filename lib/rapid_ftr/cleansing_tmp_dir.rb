@@ -16,19 +16,19 @@ module CleansingTmpDir
     end
 
     def schedule(scheduler)
-      scheduler.every("30m") do
+      scheduler.every('30m') do
         begin
-          Rails.logger.info "Cleaning up temporary encrypted files..."
+          Rails.logger.info 'Cleaning up temporary encrypted files...'
           cleanup!
         rescue => e
-          Rails.logger.error "Error cleaning up temporary encrypted files"
+          Rails.logger.error 'Error cleaning up temporary encrypted files'
           e.backtrace.each { |line| Rails.logger.error line }
         end
       end
     end
 
     def cleanup!
-      Dir.glob(File.join(dir, "*")) do |zip_file|
+      Dir.glob(File.join(dir, '*')) do |zip_file|
         if File.mtime(zip_file) < CLEANUP_TIME.ago
           File.delete zip_file
         end

@@ -12,21 +12,21 @@ describe 'children/', :type => :view do
 
   before :each do
     expect(I18n.backend.class).to eq(I18nBackendCouch)
-    @child = Child.new("_id" => "id12345", "name" => "First Last", "new field" => "")
+    @child = Child.new('_id' => 'id12345', 'name' => 'First Last', 'new field' => '')
     assigns[:child] = @child
   end
 
-  shared_examples "label translation" do
-    it "should be shown" do
-      translated_name = "XYZ"
-      I18n.backend.store_translations("en", @field.name => translated_name)
+  shared_examples 'label translation' do
+    it 'should be shown' do
+      translated_name = 'XYZ'
+      I18n.backend.store_translations('en', @field.name => translated_name)
       render :partial => "children/#{@field.type}", :object => @field
       expect(rendered).to be_include(translated_name)
       expect(rendered).not_to be_include(@field.display_name)
     end
 
-    it "should not be shown" do
-      I18n.backend.store_translations("en", @field.name => nil)
+    it 'should not be shown' do
+      I18n.backend.store_translations('en', @field.name => nil)
       render :partial => "children/#{@field.type}", :object => @field
       expect(rendered).to be_include(@field.display_name)
     end
@@ -53,7 +53,7 @@ describe 'children/', :type => :view do
         @field = field
       end
 
-      it_should_behave_like "label translation"
+      it_should_behave_like 'label translation'
     end
   end
 

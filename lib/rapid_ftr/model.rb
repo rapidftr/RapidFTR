@@ -12,11 +12,11 @@ module RapidFTR
     end
 
     def _id=(new_id)
-      self["_id"] = new_id
+      self['_id'] = new_id
     end
 
     def _id
-      self["_id"]
+      self['_id']
     end
 
     def errors

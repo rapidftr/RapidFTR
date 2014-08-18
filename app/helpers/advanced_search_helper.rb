@@ -18,22 +18,22 @@ module AdvancedSearchHelper
 
   def generate_html(criteria, all_fields)
     field = all_fields.find { |f| f.name == criteria[:field] }
-    return "" unless field.present?
+    return '' unless field.present?
 
-    html = criteria[:index].to_i > 0 ? AND_OR.gsub("#AND_CHECKED", criteria[:join] == "AND" ?  "checked=''" : "").gsub("#OR_CHECKED", criteria[:join] == "OR" ?  "checked=''" : "") : ""
-    html += DISPLAY_LABEL.gsub("#DISPLAY_NAME", field.display_name)
-    html += FIELD_INDEX.gsub("#FIELD", field.name)
+    html = criteria[:index].to_i > 0 ? AND_OR.gsub('#AND_CHECKED', criteria[:join] == 'AND' ?  "checked=''" : '').gsub('#OR_CHECKED', criteria[:join] == 'OR' ?  "checked=''" : '') : ''
+    html += DISPLAY_LABEL.gsub('#DISPLAY_NAME', field.display_name)
+    html += FIELD_INDEX.gsub('#FIELD', field.name)
     html += send("#{field.type}_criteria", criteria, field)
     html += REMOVE_LINK
-    "<p class='criterion-selected'>#{html.gsub("#INDEX", criteria[:index])}</p>"
+    "<p class='criterion-selected'>#{html.gsub('#INDEX', criteria[:index])}</p>"
   end
 
   private
 
   def select_box_criteria(criteria, field)
     html = %(<span class="criteria-values"/><select class="criteria-value-select" value="" name="criteria_list[#INDEX][value]" style="">)
-    field.option_strings.each { |option| html += "<option #{criteria[:value] == option ? "selected=\"selected\"" : ""} value=\"#{option}\">#{option}</option>" }
-    html += "</select>"
+    field.option_strings.each { |option| html += "<option #{criteria[:value] == option ? "selected=\"selected\"" : ''} value=\"#{option}\">#{option}</option>" }
+    html += '</select>'
   end
 
   def text_field_criteria(criteria, _field)

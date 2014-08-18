@@ -6,7 +6,7 @@ module Api
       @login = Login.new(params)
       @current_session = @login.authenticate_user
 
-      fail ErrorResponse.unauthorized("session.invalid_credentials") unless @current_session
+      fail ErrorResponse.unauthorized('session.invalid_credentials') unless @current_session
       check_device_blacklisted
 
       @current_session.save!
@@ -24,15 +24,15 @@ module Api
       user = params[:user]
       user = JSON.parse user if user.is_a? String
 
-      if User.find_by_user_name(user["user_name"]).nil?
-        password = user["unauthenticated_password"]
+      if User.find_by_user_name(user['user_name']).nil?
+        password = user['unauthenticated_password']
         updated_params = user.merge(:verified => false, :password => password, :password_confirmation => password)
-        updated_params.delete("unauthenticated_password")
+        updated_params.delete('unauthenticated_password')
         user = User.new(updated_params)
         user.save!
       end
 
-      render :json => {:response => "ok"}
+      render :json => {:response => 'ok'}
     end
 
     private

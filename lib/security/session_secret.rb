@@ -6,7 +6,7 @@ module Security
       end
 
       def fetch
-        database.get("session_secret")["value"]   rescue nil
+        database.get('session_secret')['value']   rescue nil
       end
 
       def generate
@@ -15,7 +15,7 @@ module Security
 
       def create
         secret_value = generate
-        database.save_doc "_id" => "session_secret", "value" => secret_value
+        database.save_doc '_id' => 'session_secret', 'value' => secret_value
         secret_value
       end
 

@@ -1,32 +1,32 @@
 require 'spec_helper'
 
-describe "children/_form_section.html.erb", :type => :view do
+describe 'children/_form_section.html.erb', :type => :view do
 
   before :each do
-    @form_section = FormSection.new "unique_id" => "translated", "name" => "displayed_form_name"
+    @form_section = FormSection.new 'unique_id' => 'translated', 'name' => 'displayed_form_name'
   end
 
-  describe "translating form section name" do
-    it "should be shown with translated name" do
-      translated_name = "translated_form_name"
+  describe 'translating form section name' do
+    it 'should be shown with translated name' do
+      translated_name = 'translated_form_name'
       I18n.locale = :fr
-      I18n.backend.store_translations("fr", @form_section.unique_id => translated_name)
+      I18n.backend.store_translations('fr', @form_section.unique_id => translated_name)
       render :partial => 'children/tabs', :object => [@form_section], :formats => [:html], :handlers => [:erb]
       expect(rendered).to be_include(translated_name)
       expect(rendered).not_to be_include(@form_section.name)
     end
-    it "should not be shown with translated name" do
-      I18n.backend.store_translations("fr", @form_section.unique_id => nil)
+    it 'should not be shown with translated name' do
+      I18n.backend.store_translations('fr', @form_section.unique_id => nil)
       render :partial => 'children/tabs', :object => [@form_section], :formats => [:html], :handlers => [:erb]
       expect(rendered).to be_include(@form_section.name)
     end
   end
 
-  describe "translating form section heading" do
-    it "should be shown with translated heading" do
-      translated_name = "translated_heading"
+  describe 'translating form section heading' do
+    it 'should be shown with translated heading' do
+      translated_name = 'translated_heading'
       I18n.locale = :fr
-      I18n.backend.store_translations("fr", @form_section.unique_id => translated_name)
+      I18n.backend.store_translations('fr', @form_section.unique_id => translated_name)
       @form_sections = [@form_section]
 
       render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
@@ -35,18 +35,18 @@ describe "children/_form_section.html.erb", :type => :view do
       expect(rendered).not_to be_include(@form_section.name)
     end
 
-    it "should not be shown with translated heading" do
-      I18n.backend.store_translations("fr", @form_section.unique_id => nil)
+    it 'should not be shown with translated heading' do
+      I18n.backend.store_translations('fr', @form_section.unique_id => nil)
       @form_sections = [@form_section]
       render :partial => 'children/show_form_section', :formats => [:html], :handlers => [:erb]
     end
   end
 
-  describe "rendering text fields" do
+  describe 'rendering text fields' do
 
-    context "new record" do
+    context 'new record' do
 
-      it "renders text fields with a corresponding label" do
+      it 'renders text fields with a corresponding label' do
         field = build :text_field
         @form_section.add_field(field)
 
@@ -60,10 +60,10 @@ describe "children/_form_section.html.erb", :type => :view do
       end
     end
 
-    context "existing record" do
+    context 'existing record' do
 
-      it "prepopulates the text field with the existing value" do
-        @child = Child.new :name => "Jessica"
+      it 'prepopulates the text field with the existing value' do
+        @child = Child.new :name => 'Jessica'
         @form_section.add_field build(:text_field, :name => 'name')
 
         render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
@@ -73,11 +73,11 @@ describe "children/_form_section.html.erb", :type => :view do
     end
   end
 
-  describe "rendering radio buttons" do
+  describe 'rendering radio buttons' do
 
-    context "new record" do
+    context 'new record' do
 
-      it "renders radio button fields" do
+      it 'renders radio button fields' do
         @child = Child.new
         @form_section.add_field build(:radio_button_field, :name => 'is_age_exact', :option_strings => %w(exact approximate))
 
@@ -88,10 +88,10 @@ describe "children/_form_section.html.erb", :type => :view do
       end
     end
 
-    context "existing record" do
+    context 'existing record' do
 
-      it "renders a radio button with the current option selected" do
-        @child = Child.new :is_age_exact => "approximate"
+      it 'renders a radio button with the current option selected' do
+        @child = Child.new :is_age_exact => 'approximate'
 
         @form_section.add_field build(:radio_button_field, :name => 'is_age_exact', :option_strings => %w(exact approximate))
 
@@ -103,13 +103,13 @@ describe "children/_form_section.html.erb", :type => :view do
     end
   end
 
-  describe "rendering select boxes" do
+  describe 'rendering select boxes' do
 
-    context "new record" do
+    context 'new record' do
 
-      it "render select boxes" do
+      it 'render select boxes' do
         @child = Child.new
-        @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than a year ago"])
+        @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ['1-2 weeks ago', 'More than a year ago'])
 
         render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
@@ -119,11 +119,11 @@ describe "children/_form_section.html.erb", :type => :view do
     end
   end
 
-  context "existing record" do
+  context 'existing record' do
 
-    it "renders a select box with the current value selected" do
-      @child = Child.new :date_of_separation => "1-2 weeks ago"
-      @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ["1-2 weeks ago", "More than a year ago"])
+    it 'renders a select box with the current value selected' do
+      @child = Child.new :date_of_separation => '1-2 weeks ago'
+      @form_section.add_field build(:select_box_field, :name => 'date_of_separation', :option_strings => ['1-2 weeks ago', 'More than a year ago'])
 
       render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
@@ -135,11 +135,11 @@ describe "children/_form_section.html.erb", :type => :view do
     end
   end
 
-  describe "rendering check boxes" do
+  describe 'rendering check boxes' do
 
-    context "existing record" do
+    context 'existing record' do
 
-      it "renders checkboxes as checked if the underlying field is set to Yes" do
+      it 'renders checkboxes as checked if the underlying field is set to Yes' do
         @child = Child.new :relatives => %w(Brother Sister)
         @form_section.add_field build(:check_boxes_field, :name => 'relatives', :option_strings => %w(Sister Brother Cousin))
 

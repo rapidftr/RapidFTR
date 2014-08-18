@@ -1,6 +1,6 @@
 class SystemUsers < CouchRest::Model::Base
   include RapidFTR::Model
-  self.database = COUCHDB_SERVER.database("_users")
+  self.database = COUCHDB_SERVER.database('_users')
 
   property :name
   property :password
@@ -28,11 +28,11 @@ class SystemUsers < CouchRest::Model::Base
   def is_user_name_unique
     user = SystemUsers.get(generate_id)
     return true if user.nil? || _id == user._id
-    [false, I18n.t("errors.models.system_users.username_unique")]
+    [false, I18n.t('errors.models.system_users.username_unique')]
   end
 
   def assign_admin_role
-    self.roles = ["admin"]
-    self.type = "user"
+    self.roles = ['admin']
+    self.type = 'user'
   end
 end

@@ -19,7 +19,7 @@ gem 'cancancan',       '~> 1.7'
 gem 'highline',        '~> 1.6.16'
 gem 'will_paginate',   '~> 3.0.5'
 gem 'os',              '~> 0.9.6'
-gem 'zipruby-compat', :require => 'zipruby', :git => "https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git", :tag => "v0.3.7"
+gem 'zipruby-compat', :require => 'zipruby', :git => 'https://github.com/jawspeak/zipruby-compatibility-with-rubyzip-fork.git', :tag => 'v0.3.7'
 
 gem 'rufus-scheduler',  '~> 2.0.18', :require => false
 gem 'daemons',          '~> 1.1.9',  :require => false

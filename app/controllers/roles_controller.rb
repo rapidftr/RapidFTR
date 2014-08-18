@@ -1,10 +1,10 @@
 class RolesController < ApplicationController
   def index
     authorize! :index, Role
-    @page_name = t("roles.label")
+    @page_name = t('roles.label')
     sort_option = params[:sort_by_descending_order] || false
-    params[:show] ||= "All"
-    @roles = params[:show] == "All" ? Role.by_name(:descending => sort_option) : Role.by_name(:descending => sort_option).select { |role| role.has_permission(params[:show]) }
+    params[:show] ||= 'All'
+    @roles = params[:show] == 'All' ? Role.by_name(:descending => sort_option) : Role.by_name(:descending => sort_option).select { |role| role.has_permission(params[:show]) }
   end
 
   def show
@@ -22,11 +22,11 @@ class RolesController < ApplicationController
     authorize! :update, @role
 
     if @role.update_attributes(params[:role])
-      flash[:notice] = t("role.successfully_updated")
+      flash[:notice] = t('role.successfully_updated')
       redirect_to(roles_path)
     else
-      flash[:error] = t("role.error_in_updating")
-      render :action => "edit"
+      flash[:error] = t('role.error_in_updating')
+      render :action => 'edit'
     end
   end
 

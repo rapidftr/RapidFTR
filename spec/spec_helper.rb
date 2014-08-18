@@ -5,16 +5,16 @@ if ENV['COVERALLS']
   Coveralls.wear_merged!('rails')
 end
 
-ENV["RAILS_ENV"] = 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] = 'test'
+require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 require 'csv'
 require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
-Dir[Rails.root.join("lib/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('lib/**/*.rb')].each { |f| require f }
 
 # This clears couchdb between tests.
 FactoryGirl.find_definitions
@@ -64,7 +64,7 @@ RSpec.configure do |config|
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
   #     --seed 1234
-  config.order = "random"
+  config.order = 'random'
 
   config.before(:each) do |example|
     Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session) unless
@@ -91,8 +91,8 @@ end
 
 def stub_env(new_env, &block)
   original_env = Rails.env
-  Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(new_env))
+  Rails.instance_variable_set('@_env', ActiveSupport::StringInquirer.new(new_env))
   block.call
 ensure
-  Rails.instance_variable_set("@_env", ActiveSupport::StringInquirer.new(original_env))
+  Rails.instance_variable_set('@_env', ActiveSupport::StringInquirer.new(original_env))
 end

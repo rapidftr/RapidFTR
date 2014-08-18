@@ -17,7 +17,7 @@ class ChildMediaController < ApplicationController
   end
 
   def show_thumbnail
-    resized = @attachment.resize "160x160"
+    resized = @attachment.resize '160x160'
     send_photo_data(resized.data.read, :type => @attachment.content_type, :disposition => 'inline')
   end
 
@@ -50,7 +50,7 @@ class ChildMediaController < ApplicationController
     begin
       @attachment = params[:photo_id] == '_missing_' ? no_photo_attachment : @child.media_for_key(params[:photo_id])
     rescue => e
-      logger.warn "Error getting photo"
+      logger.warn 'Error getting photo'
       logger.warn e.inspect
     end
 
@@ -58,12 +58,12 @@ class ChildMediaController < ApplicationController
   end
 
   def no_photo_attachment
-    @@no_photo_clip ||= File.binread(File.join(Rails.root, "app/assets/images/no_photo_clip.jpg"))
-    FileAttachment.new "no_photo", "image/jpg", @@no_photo_clip
+    @@no_photo_clip ||= File.binread(File.join(Rails.root, 'app/assets/images/no_photo_clip.jpg'))
+    FileAttachment.new 'no_photo', 'image/jpg', @@no_photo_clip
   end
 
   def audio_filename(attachment)
-    "audio_" + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
+    'audio_' + @child.unique_identifier + AudioMimeTypes.to_file_extension(attachment.mime_type)
   end
 
   def photos_details

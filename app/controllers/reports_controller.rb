@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
   def index
     authorize! :index, Report
     @reports = paginated_reports
-    @page_name = t("report.heading")
+    @page_name = t('report.heading')
   end
 
   def show

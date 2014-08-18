@@ -8,12 +8,12 @@ module ApplicationHelper
     current_session
   end
 
-  def submit_button(name = t("buttons.save"))
+  def submit_button(name = t('buttons.save'))
     submit_tag(name, :class => 'btn_submit')
   end
 
   def cancel_button(path)
-    link_to t('cancel'), path, :class => "link_cancel", :data => {:confirm => t('messages.cancel_confirmation')}
+    link_to t('cancel'), path, :class => 'link_cancel', :data => {:confirm => t('messages.cancel_confirmation')}
   end
 
   def discard_button(path)
@@ -38,7 +38,7 @@ module ApplicationHelper
   def translated_permissions
     Permission.hashed_values.map do |group, permissions|
       [
-        I18n.t(group, :scope => "permissions.group"),
+        I18n.t(group, :scope => 'permissions.group'),
         permissions.map do |permission|
           [I18n.t(permission, :scope => 'permissions.permission'), permission]
         end

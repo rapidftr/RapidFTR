@@ -20,7 +20,7 @@ module Forms
 
     def check_old_password
       if user.crypted_password != User.encrypt(old_password, user.salt)
-        errors[:old_password] = I18n.t("user.messages.passwords_do_not_match")
+        errors[:old_password] = I18n.t('user.messages.passwords_do_not_match')
         return false
       else
         return true

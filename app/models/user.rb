@@ -19,7 +19,7 @@ class User < CouchRest::Model::Base
   property :disabled, TrueClass, :default => false
   property :mobile_login_history, [MobileLoginEvent]
   property :role_ids, :type => [String]
-  property :time_zone, :default => "UTC"
+  property :time_zone, :default => 'UTC'
   property :locale
 
   property :share_contact_info, TrueClass, :default => false
@@ -91,19 +91,19 @@ class User < CouchRest::Model::Base
     Session.delete_for user
   end
 
-  validates :full_name, :presence => {:message => I18n.t("errors.models.user.full_name")}
-  validates :password_confirmation, :presence => {:message => I18n.t("errors.models.user.password_confirmation"), :if => :password_required?}
-  validates :role_ids, :presence => {:message => I18n.t("errors.models.user.role_ids"), :if => proc { |user| user.verified }}
-  validates :organisation, :presence => {:message => I18n.t("errors.models.user.organisation")}
+  validates :full_name, :presence => {:message => I18n.t('errors.models.user.full_name')}
+  validates :password_confirmation, :presence => {:message => I18n.t('errors.models.user.password_confirmation'), :if => :password_required?}
+  validates :role_ids, :presence => {:message => I18n.t('errors.models.user.role_ids'), :if => proc { |user| user.verified }}
+  validates :organisation, :presence => {:message => I18n.t('errors.models.user.organisation')}
 
-  validates :user_name, :format => {:with => /\A[^ ]+\z/, :message => I18n.t("errors.models.user.user_name")}
+  validates :user_name, :format => {:with => /\A[^ ]+\z/, :message => I18n.t('errors.models.user.user_name')}
 
   validates :email, :format => {:with => /\A([^@\s]+)@((?:[-a-zA-Z0-9]+\.)+[a-zA-Z]{2,})$\z/,
                                 :if => :email_entered?,
-                                :message => I18n.t("errors.models.user.email")}
+                                :message => I18n.t('errors.models.user.email')}
 
   validates :password, :confirmation => {:if => :password_required? && :password_confirmation_entered?,
-                                         :message => I18n.t("errors.models.user.password_mismatch")}
+                                         :message => I18n.t('errors.models.user.password_mismatch')}
 
   # FIXME: 409s randomly...destroying user records before test as a temp
   validate :is_user_name_unique
@@ -115,7 +115,7 @@ class User < CouchRest::Model::Base
   # check lib/couchrest/model/extended_attachments.rb in source code.
   # So, override the method for password in order to track changes.
   def password=(value)
-    attribute_will_change!("password") if use_dirty? && @password != value
+    attribute_will_change!('password') if use_dirty? && @password != value
     @password = value
   end
 
@@ -130,7 +130,7 @@ class User < CouchRest::Model::Base
   end
 
   def initialize(args = {}, args1 = {})
-    self["mobile_login_history"] = []
+    self['mobile_login_history'] = []
     super args, args1
   end
 
@@ -141,12 +141,12 @@ class User < CouchRest::Model::Base
   def is_user_name_unique
     user = User.find_by_user_name(user_name)
     return true if user.nil? || id == user.id
-    errors.add(:user_name, I18n.t("errors.models.user.user_name_uniqueness"))
+    errors.add(:user_name, I18n.t('errors.models.user.user_name_uniqueness'))
   end
 
   def authenticate(check)
     if new?
-      fail Exception.new, I18n.t("errors.models.user.authenticate")
+      fail Exception.new, I18n.t('errors.models.user.authenticate')
     end
     !disabled? && crypted_password == self.class.encrypt(check, salt)
   end
@@ -183,15 +183,15 @@ class User < CouchRest::Model::Base
   def devices=(device_hashes)
     all_devices = Device.all
     # attr_accessor devices field change.
-    attribute_will_change!("devices")
+    attribute_will_change!('devices')
     @devices = device_hashes.map do |device_hash|
-      device = all_devices.find { |d| d.imei == device_hash["imei"] }
-      device.blacklisted = device_hash["blacklisted"] == "true"
+      device = all_devices.find { |d| d.imei == device_hash['imei'] }
+      device.blacklisted = device_hash['blacklisted'] == 'true'
       device
     end
   end
 
-  def localize_date(date_time, format = "%d %B %Y at %H:%M (%Z)")
+  def localize_date(date_time, format = '%d %B %Y at %H:%M (%Z)')
     DateTime.parse(date_time).in_time_zone(self[:time_zone]).strftime(format)
   end
 
@@ -229,6 +229,6 @@ class User < CouchRest::Model::Base
   end
 
   def generate_id
-    self["_id"] ||= "user-#{user_name}".parameterize.dasherize
+    self['_id'] ||= "user-#{user_name}".parameterize.dasherize
   end
 end

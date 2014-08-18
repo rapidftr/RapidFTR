@@ -5,7 +5,7 @@
 # files.
 
 require 'uri'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'support', 'paths'))
 
 module WithinHelpers
   def with_scope(locator)
@@ -174,7 +174,7 @@ Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      expect(["true", "checked", true]).to include field_checked
+      expect(['true', 'checked', true]).to include field_checked
     else
       field_checked
     end
@@ -196,7 +196,7 @@ Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |labe
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      expect(["true", true]).to include field_checked
+      expect(['true', true]).to include field_checked
     else
       field_checked
     end
@@ -238,7 +238,7 @@ Then /^show me the page$/ do
 end
 
 When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
-  fill_in field, :with => ("x" * length.to_i)
+  fill_in field, :with => ('x' * length.to_i)
 end
 
 Then /^I should see the order (.+)$/ do |input|
@@ -265,11 +265,11 @@ And /^I submit the form$/ do
 end
 
 When /^I clear the search results$/ do
-  click_button("reset")
+  click_button('reset')
 end
 
 Then /^I should see first (\d+) records in the search results$/ do |_arg1|
-  assert page.has_content?("Displaying children 1 - 20 ")
+  assert page.has_content?('Displaying children 1 - 20 ')
 end
 
 When /^I goto the "(.*?)"$/ do |text|
@@ -277,7 +277,7 @@ When /^I goto the "(.*?)"$/ do |text|
 end
 
 Then /^I should see next records in the search results$/ do
-  assert page.has_content?("Displaying children 21 - 25 ")
+  assert page.has_content?('Displaying children 21 - 25 ')
 end
 
 Then /^I should see link to "(.*?)"$/ do |text|
@@ -304,7 +304,7 @@ Then /^"([^"]*)" option should be unavailable to me$/ do |element|
 end
 
 Then /^password prompt should be enabled$/ do
-  assert page.has_content?("Password")
+  assert page.has_content?('Password')
 end
 
 When /^I fill in "([^"]*)" in the password prompt$/ do |_arg|
@@ -312,7 +312,7 @@ When /^I fill in "([^"]*)" in the password prompt$/ do |_arg|
 end
 
 Then /^Error message should be displayed$/ do
-  assert page.has_content?("Enter a valid password")
+  assert page.has_content?('Enter a valid password')
 end
 
 When /^I follow "([^"]*)" for child records$/ do |_arg|

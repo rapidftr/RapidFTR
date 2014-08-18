@@ -33,7 +33,7 @@ module Forms
     end
 
     def has_criteria?
-      errors.add(:criteria, I18n.t("messages.valid_search_criteria")) unless @criteria.present? || @system_criteria.present? || @query.present?
+      errors.add(:criteria, I18n.t('messages.valid_search_criteria')) unless @criteria.present? || @system_criteria.present? || @query.present?
     end
 
     def execute_search

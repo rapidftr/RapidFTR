@@ -11,13 +11,13 @@ FactoryGirl.define do
 
   factory :session, :traits => [:model] do
     user_name { FactoryGirl.create(:user).user_name }
-    imei "123456789"
+    imei '123456789'
   end
 
   factory :child, :traits => [:model] do
     unique_identifier { counter.to_s }
     name { "Test Child #{counter}" }
-    created_by { "test_user" }
+    created_by { 'test_user' }
 
     initialize_with { new(attributes) }
   end
@@ -27,7 +27,7 @@ FactoryGirl.define do
     remote_app_url 'app:1234'
     username 'test_user'
     password 'test_password'
-    remote_couch_config "target" => "http://couch:1234/replication_test"
+    remote_couch_config 'target' => 'http://couch:1234/replication_test'
 
     after(:build) do |replication|
       replication.stub :save_remote_couch_config => true
@@ -38,14 +38,14 @@ FactoryGirl.define do
     name 'test_user'
     password 'test_password'
     type 'user'
-    roles ["admin"]
+    roles ['admin']
   end
 
   factory :change_password_form, :class => Forms::ChangePasswordForm do
     association :user
-    old_password "old_password"
-    new_password "new_password"
-    new_password_confirmation "confirm_new_password"
+    old_password 'old_password'
+    new_password 'new_password'
+    new_password_confirmation 'confirm_new_password'
   end
 
   factory :user, :traits => [:model] do
@@ -72,7 +72,7 @@ FactoryGirl.define do
 
   factory :role, :traits => [:model] do
     name { "test_role_#{counter}" }
-    description "test description"
+    description 'test description'
     permissions { Permission.all_permissions }
 
     factory :field_worker_role do
@@ -88,12 +88,12 @@ FactoryGirl.define do
 
   factory :report, :traits => [:model] do
     ignore do
-      filename "test_report.csv"
-      content_type "text/csv"
-      data "test report"
+      filename 'test_report.csv'
+      content_type 'text/csv'
+      data 'test report'
     end
 
-    report_type { "weekly_report" }
+    report_type { 'weekly_report' }
     as_of_date { Date.today }
 
     after(:build) do |report, builder|

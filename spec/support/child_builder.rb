@@ -17,7 +17,7 @@ module ChildBuilder
     self
   end
 
-  def with_photo(image, image_id = "img", current = true)
+  def with_photo(image, image_id = 'img', current = true)
     photo = FileAttachment.new image_id, image.content_type, image.data
 
     allow(@child).to receive(:media_for_key).with(image_id).and_return photo
@@ -26,7 +26,7 @@ module ChildBuilder
     self
   end
 
-  def with_audio(audio, audio_id = "audio", current = true)
+  def with_audio(audio, audio_id = 'audio', current = true)
     audio = double(FileAttachment, :content_type => audio.content_type, :mime_type => audio.mime_type, :data => StringIO.new(audio.data))
     allow(@child).to receive(:media_for_key).with(audio_id).and_return audio
     allow(@child).to receive(:audio).and_return audio if current

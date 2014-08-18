@@ -16,7 +16,7 @@ class ChildrenController < ApplicationController
   def index
     authorize! :index, Child
 
-    @page_name = t("home.view_records")
+    @page_name = t('home.view_records')
     @aside = 'shared/sidebar_links'
     @filter = params[:filter] || nil
     @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
@@ -52,9 +52,9 @@ class ChildrenController < ApplicationController
   # GET /children/1
   # GET /children/1.xml
   def show
-    authorize! :read, @child if @child["created_by"] != current_user_name
+    authorize! :read, @child if @child['created_by'] != current_user_name
     @form_sections = form_sections
-    @page_name = t "child.view", :short_id => @child.short_id
+    @page_name = t 'child.view', :short_id => @child.short_id
     @body_class = 'profile-page'
     @duplicates = Child.by_duplicate_of(:key => params[:id])
 
@@ -72,7 +72,7 @@ class ChildrenController < ApplicationController
   def new
     authorize! :create, Child
 
-    @page_name = t("children.register_new_child")
+    @page_name = t('children.register_new_child')
     @child = Child.new
     @form_sections = form_sections
     respond_to do |format|
@@ -85,7 +85,7 @@ class ChildrenController < ApplicationController
   def edit
     authorize! :update, @child
 
-    @page_name = t("child.edit")
+    @page_name = t('child.edit')
     @form_sections = form_sections
   end
 
@@ -108,7 +108,7 @@ class ChildrenController < ApplicationController
       else
         format.html do
           @form_sections = form_sections
-          render :action => "new"
+          render :action => 'new'
         end
         format.xml { render :xml => @child.errors, :status => :unprocessable_entity }
       end
@@ -150,12 +150,12 @@ class ChildrenController < ApplicationController
       format.html do
         @child = update_child_from params
         if @child.save
-          flash[:notice] = I18n.t("child.messages.update_success")
+          flash[:notice] = I18n.t('child.messages.update_success')
           return redirect_to params[:redirect_url] if params[:redirect_url]
           redirect_to @child
         else
           @form_sections = form_sections
-          render :action => "edit"
+          render :action => 'edit'
         end
       end
 
@@ -173,7 +173,7 @@ class ChildrenController < ApplicationController
   def edit_photo
     authorize! :update, @child
 
-    @page_name = t("child.edit_photo")
+    @page_name = t('child.edit_photo')
   end
 
   def update_photo
@@ -211,13 +211,13 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(children_url) }
       format.xml { head :ok }
-      format.json { render :json => {:response => "ok"} }
+      format.json { render :json => {:response => 'ok'} }
     end
   end
 
   def search
     authorize! :index, Child
-    @page_name = t("search")
+    @page_name = t('search')
     @search_form = Forms::SearchForm.new :ability => current_ability, :params => params
 
     if @search_form.valid?
@@ -270,7 +270,7 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.json { render :json => @child }
       format.html do
-        flash[:error] = "Child with the given id is not found"
+        flash[:error] = 'Child with the given id is not found'
         redirect_to(:action => :index) && return
       end
     end
@@ -284,10 +284,10 @@ class ChildrenController < ApplicationController
 
   def update_child_with_attachments(child, params)
     child['last_updated_by_full_name'] = current_user_full_name
-    new_photo = params[:child].delete("photo")
-    new_photo = (params[:child][:photo] || "") if new_photo.nil?
-    new_audio = params[:child].delete("audio")
-    child.update_properties_with_user_name(current_user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
+    new_photo = params[:child].delete('photo')
+    new_photo = (params[:child][:photo] || '') if new_photo.nil?
+    new_audio = params[:child].delete('audio')
+    child.update_properties_with_user_name(current_user_name, new_photo, params['delete_child_photo'], new_audio, params[:child])
     child
   end
 

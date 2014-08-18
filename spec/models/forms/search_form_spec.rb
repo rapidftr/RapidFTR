@@ -30,7 +30,7 @@ describe Forms::SearchForm do
     end
 
     it 'should execute quick search query' do
-      highlighted_fields = ["ftextfield", "ftextarea", :unique_identifier, :short_id]
+      highlighted_fields = ['ftextfield', 'ftextarea', :unique_identifier, :short_id]
       f = Forms::SearchForm.new :ability => Ability.new(@limited_user), :params => {:query => 'test query'}
       expect(@child_search).to receive(:fulltext_by).with(highlighted_fields, 'test query')
       f.execute
@@ -80,14 +80,14 @@ describe Forms::SearchForm do
 
     it 'should parse dynamic criteria' do
       criteria_list = {
-        "0" => {:field => "", :value => "empty field"},
-        "1" => {:field => "empty value", :value => ""},
-        "2" => {:field => "ftextfield", :value => "search textfield"},
-        "3" => {:field => "ftextarea", :value => "search textarea"}
+        '0' => {:field => '', :value => 'empty field'},
+        '1' => {:field => 'empty value', :value => ''},
+        '2' => {:field => 'ftextfield', :value => 'search textfield'},
+        '3' => {:field => 'ftextarea', :value => 'search textarea'}
       }
       f = Forms::SearchForm.new :ability => Ability.new(@limited_user), :params => {:criteria_list => criteria_list}
-      expect(@child_search).to receive(:fulltext_by).with(["ftextfield"], 'search textfield')
-      expect(@child_search).to receive(:fulltext_by).with(["ftextarea"], 'search textarea')
+      expect(@child_search).to receive(:fulltext_by).with(['ftextfield'], 'search textfield')
+      expect(@child_search).to receive(:fulltext_by).with(['ftextarea'], 'search textarea')
       f.execute
     end
 

@@ -11,7 +11,7 @@ When /^I login as (.+) with password (.+) and imei (.+)$/ do |user, password, im
   header 'Accept', 'application/json'
   header 'Content-Type', 'application/json'
 
-  post(api_login_path, {:imei => imei, :user_name => user, :password => password, :mobile_number => "123456"}.to_json)
+  post(api_login_path, {:imei => imei, :user_name => user, :password => password, :mobile_number => '123456'}.to_json)
 end
 
 When /^I send a GET request to "([^\"]*)"$/ do |path|

@@ -33,12 +33,12 @@ module RecordHelper
   def update_history
     if field_name_changes.any?
       changes = changes_for(field_name_changes)
-      (add_to_history(changes) unless !self['histories'].empty? && (self['histories'].last["changes"].to_s.include? changes.to_s))
+      (add_to_history(changes) unless !self['histories'].empty? && (self['histories'].last['changes'].to_s.include? changes.to_s))
     end
   end
 
   def ordered_histories
-    (self["histories"] || []).sort { |that, this| DateTime.parse(this["datetime"]) <=> DateTime.parse(that["datetime"]) }
+    (self['histories'] || []).sort { |that, this| DateTime.parse(this['datetime']) <=> DateTime.parse(that['datetime']) }
   end
 
   def add_creation_history
@@ -52,10 +52,10 @@ module RecordHelper
 
   def update_with_attachments(params, user)
     self['last_updated_by_full_name'] = user.full_name
-    new_photo = params[:child].delete("photo")
-    new_photo = (params[:child][:photo] || "") if new_photo.nil?
-    new_audio = params[:child].delete("audio")
-    update_properties_with_user_name(user.user_name, new_photo, params["delete_child_photo"], new_audio, params[:child])
+    new_photo = params[:child].delete('photo')
+    new_photo = (params[:child][:photo] || '') if new_photo.nil?
+    new_audio = params[:child].delete('audio')
+    update_properties_with_user_name(user.user_name, new_photo, params['delete_child_photo'], new_audio, params[:child])
   end
 
   def update_properties_with_user_name(user_name, new_photo, photo_names, new_audio, properties)
@@ -124,11 +124,11 @@ module RecordHelper
 
   def update_properties(properties, user_name)
     properties['histories'] = remove_newly_created_media_history(properties['histories'])
-    should_update = self["last_updated_at"] && properties["last_updated_at"] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
+    should_update = self['last_updated_at'] && properties['last_updated_at'] ? (DateTime.parse(properties['last_updated_at']) > DateTime.parse(self['last_updated_at'])) : true
     if should_update
       attributes_to_update = {}
       properties.each_pair do |name, value|
-        if name == "histories"
+        if name == 'histories'
           merge_histories(properties['histories'])
         else
           attributes_to_update[name] = value unless value.nil?
@@ -147,17 +147,17 @@ module RecordHelper
     to_be_merged = []
     (given_histories || []).each do |history|
       matched = current_histories.find do |c_history|
-        c_history["user_name"] == history["user_name"] && c_history["datetime"] == history["datetime"] && c_history["changes"].keys == history["changes"].keys
+        c_history['user_name'] == history['user_name'] && c_history['datetime'] == history['datetime'] && c_history['changes'].keys == history['changes'].keys
       end
       to_be_merged.push(history) unless matched
     end
-    self["histories"] = current_histories.push(to_be_merged).flatten!
+    self['histories'] = current_histories.push(to_be_merged).flatten!
   end
 
   def remove_newly_created_media_history(given_histories)
     (given_histories || []).delete_if do |history|
-      (history["changes"]["current_photo_key"].present? && history["changes"]["current_photo_key"]["to"].present? && !history["changes"]["current_photo_key"]["to"].start_with?("photo-")) ||
-          (history["changes"]["recorded_audio"].present? && history["changes"]["recorded_audio"]["to"].present? && !history["changes"]["recorded_audio"]["to"].start_with?("audio-"))
+      (history['changes']['current_photo_key'].present? && history['changes']['current_photo_key']['to'].present? && !history['changes']['current_photo_key']['to'].start_with?('photo-')) ||
+          (history['changes']['recorded_audio'].present? && history['changes']['recorded_audio']['to'].present? && !history['changes']['recorded_audio']['to'].start_with?('audio-'))
     end
     given_histories
   end

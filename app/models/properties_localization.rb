@@ -55,6 +55,6 @@ module PropertiesLocalization
 
   def get_property_value(property)
     value = send(property)
-    property.include?("option_strings_text") ? value.split("\n") : value if value
+    property.include?('option_strings_text') ? value.split("\n") : value if value
   end
 end

@@ -7,12 +7,12 @@ class Enquiry < CouchRest::Model::Base
 
   property :criteria, Hash
   property :potential_matches, :default => []
-  property :match_updated_at, :default => ""
+  property :match_updated_at, :default => ''
 
-  validates :criteria, :presence => {:message => I18n.t("errors.models.enquiry.presence_of_criteria")}
+  validates :criteria, :presence => {:message => I18n.t('errors.models.enquiry.presence_of_criteria')}
   validate :validate_has_at_least_one_field_value
 
-  FORM_NAME = "Enquiries"
+  FORM_NAME = 'Enquiries'
 
   design do
     view :all,
@@ -25,7 +25,7 @@ class Enquiry < CouchRest::Model::Base
 
   def validate_has_at_least_one_field_value
     return true if field_definitions_for(Enquiry::FORM_NAME).any? { |field| is_filled_in?(field) }
-    errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.enquiry.at_least_one_field"))
+    errors.add(:validate_has_at_least_one_field_value, I18n.t('errors.models.enquiry.at_least_one_field'))
   end
 
   def method_missing(m, *args)

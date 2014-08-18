@@ -1,6 +1,6 @@
 class AdvancedSearchController < ApplicationController
   def index
-    @page_name = t("navigation.advanced_search")
+    @page_name = t('navigation.advanced_search')
     form = Form.find_by_name(Child::FORM_NAME)
     @form_sections = FormSection.by_order.select { |fs| fs.form == form }
     @search_form = Forms::SearchForm.new(:ability => current_ability, :params => params).execute
@@ -22,13 +22,13 @@ class AdvancedSearchController < ApplicationController
     record_ids = []
     children = []
 
-    if params["all"] == "Select all records"
+    if params['all'] == 'Select all records'
       search_params = params[:search_params].merge(:page => 1, :per_page => 1000)
       @search_form = Forms::SearchForm.new(:ability => current_ability, :params => search_params).execute
       children = @search_form.results
       record_ids = @search_form.results.map(&:id)
     else
-      record_ids = Hash[params["selections"].sort].values rescue []
+      record_ids = Hash[params['selections'].sort].values rescue []
       children = record_ids.map { |id| Child.get id }
     end
 

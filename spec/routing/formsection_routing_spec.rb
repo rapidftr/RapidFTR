@@ -27,11 +27,11 @@ describe 'Form Section routing', :type => :routing do
     expect(new_form_form_section_path('foo')).to eq('/forms/foo/form_section/new')
   end
 
-  it "has route for update field page" do
-    expect(:put => '/form_section/form_section_unique_id/fields/field_id').to route_to(:controller => 'fields', :action => "update", "form_section_id" => "form_section_unique_id", "id" => "field_id")
+  it 'has route for update field page' do
+    expect(:put => '/form_section/form_section_unique_id/fields/field_id').to route_to(:controller => 'fields', :action => 'update', 'form_section_id' => 'form_section_unique_id', 'id' => 'field_id')
   end
 
-  it "redirects /published_form_sections to the new API controller" do
+  it 'redirects /published_form_sections to the new API controller' do
     expect(:get => '/published_form_sections').to route_to(:controller => 'api/form_sections', :action => 'children')
     expect(:get => '/published_form_sections.json').to route_to(:controller => 'api/form_sections', :action => 'children', :format => 'json')
   end

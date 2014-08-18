@@ -14,7 +14,7 @@ end
 
 namespace :sunspot do
 
-  desc "wait for solr to be started"
+  desc 'wait for solr to be started'
   task :wait, [:timeout] => :environment do |_t, args|
     require 'rsolr'
 
@@ -25,18 +25,18 @@ namespace :sunspot do
     timeout(seconds) do
       until connected
         begin
-          connected = RSolr.connect(:url => Sunspot.config.solr.url).get "admin/ping"
+          connected = RSolr.connect(:url => Sunspot.config.solr.url).get 'admin/ping'
         rescue
           sleep 1
         end
       end
     end
 
-    fail "Solr is not responding" unless connected
+    fail 'Solr is not responding' unless connected
   end
 
-  Rake::Task["sunspot:reindex"].clear
-  desc "re-index child records"
+  Rake::Task['sunspot:reindex'].clear
+  desc 're-index child records'
   task :reindex => :wait do
     puts 'Reindexing Solr...'
     Child.reindex!

@@ -47,7 +47,7 @@ module PhotoHelper
       @photos << photo
       attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
       attach(attachment)
-      self["current_photo_key"] = attachment.name if photo.original_filename.include?(self["current_photo_key"].to_s)
+      self['current_photo_key'] = attachment.name if photo.original_filename.include?(self['current_photo_key'].to_s)
       attachment.name
     end
   end
@@ -72,8 +72,8 @@ module PhotoHelper
 
   def photos
     return [] if self['photo_keys'].blank?
-    self["photo_keys"].
-      sort_by { |key| key == self["current_photo_key"] ? "" : key }.
+    self['photo_keys'].
+      sort_by { |key| key == self['current_photo_key'] ? '' : key }.
       map { |key| attachment(key) }
   end
 
@@ -94,7 +94,7 @@ module PhotoHelper
 
   def primary_photo
     key = self['current_photo_key']
-    (key == "" || key.nil?) ? nil : attachment(key)
+    (key == '' || key.nil?) ? nil : attachment(key)
   end
 
   def primary_photo_id
@@ -103,7 +103,7 @@ module PhotoHelper
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      fail I18n.t("errors.models.child.primary_photo_id", :photo_id => photo_key)
+      fail I18n.t('errors.models.child.primary_photo_id', :photo_id => photo_key)
     end
     self['current_photo_key'] = photo_key
   end

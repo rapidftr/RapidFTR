@@ -6,7 +6,7 @@ module Api
       authorize! :create, Enquiry
 
       unless Enquiry.get(enquiry_json['id']).nil?
-        render_error("errors.models.enquiry.create_forbidden", 403) && return
+        render_error('errors.models.enquiry.create_forbidden', 403) && return
       end
 
       @enquiry = Enquiry.new_with_user_name(current_user, enquiry_json)
@@ -23,7 +23,7 @@ module Api
       authorize! :update, Enquiry
       @enquiry = Enquiry.get(params[:id])
       if @enquiry.nil?
-        render_error("errors.models.enquiry.not_found", 404)
+        render_error('errors.models.enquiry.not_found', 404)
         return
       end
 
@@ -54,7 +54,7 @@ module Api
       if !enquiry.nil?
         render :json => enquiry
       else
-        render :json => "", :status => 404
+        render :json => '', :status => 404
       end
     end
 
@@ -69,7 +69,7 @@ module Api
         DateTime.parse params[:updated_after]
       end
     rescue
-      render :json => "Invalid request", :status => 422
+      render :json => 'Invalid request', :status => 422
     end
 
     def enquiry_json

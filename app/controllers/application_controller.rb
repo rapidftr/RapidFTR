@@ -15,11 +15,11 @@ class ApplicationController < ActionController::Base
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
     fail e if Rails.env.development?
     ErrorResponse.log e
-    render_error_response ErrorResponse.internal_server_error "session.internal_server_error"
+    render_error_response ErrorResponse.internal_server_error 'session.internal_server_error'
   end
   rescue_from CanCan::AccessDenied do |e|
     ErrorResponse.log e
-    render_error_response ErrorResponse.forbidden "session.forbidden"
+    render_error_response ErrorResponse.forbidden 'session.forbidden'
   end
   rescue_from(ErrorResponse) do |e|
     ErrorResponse.log e
@@ -39,14 +39,14 @@ class ApplicationController < ActionController::Base
         if e.status_code == 401
           redirect_to :login
         else
-          render :formats => [:html], :template => "shared/error_response", :status => e.status_code, :locals => {:exception => e}
+          render :formats => [:html], :template => 'shared/error_response', :status => e.status_code, :locals => {:exception => e}
         end
       end
     end
   end
 
   def name
-    self.class.to_s.gsub("Controller", "")
+    self.class.to_s.gsub('Controller', '')
   end
 
   def set_locale
@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
       ar.encrypt params[:password]
     end
 
-    send_file enc_filename, :filename => zip_filename, :disposition => "inline", :type => 'application/zip'
+    send_file enc_filename, :filename => zip_filename, :disposition => 'inline', :type => 'application/zip'
   end
 
   ActionView::Base.field_error_proc = proc do |html_tag, _instance|

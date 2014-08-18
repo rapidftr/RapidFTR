@@ -1,9 +1,9 @@
 class StandardFormsService
-  FORMS_KEY = "forms"
-  SECTIONS_KEY = "sections"
-  FIELDS_KEY = "fields"
-  USER_SELECTED_KEY = "user_selected"
-  USER_SELECTED = "1"
+  FORMS_KEY = 'forms'
+  SECTIONS_KEY = 'sections'
+  FIELDS_KEY = 'fields'
+  USER_SELECTED_KEY = 'user_selected'
+  USER_SELECTED = '1'
 
   def self.persist(attributes_hash)
     RapidFTR::FormSetup.default_forms.each do |form|
