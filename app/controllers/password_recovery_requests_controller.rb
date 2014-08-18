@@ -1,5 +1,4 @@
 class PasswordRecoveryRequestsController < ApplicationController
-
   skip_before_action :check_authentication
 
   def new
@@ -10,7 +9,7 @@ class PasswordRecoveryRequestsController < ApplicationController
     @password_recovery_request = PasswordRecoveryRequest.new params[:password_recovery_request]
     respond_to do |format|
       if @password_recovery_request.save
-        success_notice = t("login.password.success_notice")
+        success_notice = t('login.password.success_notice')
         format.html do
           flash[:notice] = success_notice
           redirect_to login_path
@@ -36,5 +35,4 @@ class PasswordRecoveryRequestsController < ApplicationController
       :response => notice
     }
   end
-
 end

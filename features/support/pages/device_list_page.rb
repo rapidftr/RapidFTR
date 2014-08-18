@@ -1,5 +1,4 @@
 class DeviceListPage
-
   def initialize(session)
     @session = session
   end

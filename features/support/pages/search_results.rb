@@ -9,13 +9,13 @@ class SearchResults
 
   def select_result(index)
     checkbox = @session.all(:xpath, "//p[@class='checkbox']//input[@type='checkbox']")[index]
-    raise 'result row to select has not checkbox' if checkbox.nil?
+    fail 'result row to select has not checkbox' if checkbox.nil?
     check(checkbox[:id])
   end
 
   def should_contain_result(result_text)
     match = @session.find('//div[@class="child_summary_panel"]//div[@class="summary_item"]//div[@class="value"]', :text => result_text)
-    raise Spec::Expectations::ExpectationNotMetError, "#{result_text} - This value could not be found in the search results." unless match
+    fail Spec::Expectations::ExpectationNotMetError, "#{result_text} - This value could not be found in the search results." unless match
   end
 
   def should_not_contain_result(result_text)

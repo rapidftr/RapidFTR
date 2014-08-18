@@ -1,5 +1,4 @@
 module ChildHistoriesHelper
-
   def history_wording(from, to)
     formatted_to = field_value_for_display to
     formatted_from = field_value_for_display from

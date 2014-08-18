@@ -23,7 +23,7 @@ class Session < CouchRest::Model::Base
 
   def self.get_from_cookies(cookies)
     session_id = cookies[COOKIE_KEY]
-    self.get(session_id)
+    get(session_id)
   end
 
   def self.delete_for(user)
@@ -31,10 +31,10 @@ class Session < CouchRest::Model::Base
   end
 
   def token
-    self.id
+    id
   end
 
-  delegate :full_name, to: :user
+  delegate :full_name, :to => :user
 
   def device_blacklisted?
     if imei
@@ -42,5 +42,4 @@ class Session < CouchRest::Model::Base
     end
     false
   end
-
 end

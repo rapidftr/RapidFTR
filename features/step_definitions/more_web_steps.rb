@@ -36,7 +36,7 @@ When /^I uncheck the disabled checkbox for user "([^"]*)"$/ do |username|
   click_button('Yes')
 end
 
-Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, element, id|
+Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, _element, id|
   should = do_not_want ? :should_not : :should
   page.send(should, have_css("##{id}"))
 end
@@ -46,7 +46,7 @@ And /^I check the device with an imei of "([^\"]*)"$/ do |imei_number|
 end
 
 def get_user_row_element(full_name)
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]") }
+  page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]")
 end
 
 Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
@@ -54,21 +54,21 @@ Then /^user "([^\"]*)" should exist on the page$/ do |full_name|
 end
 
 Then /^user "([^\"]*)" should not exist on the page$/ do |full_name|
-  expect(get_user_row_element(full_name)).to raise_error(Capybara::ElementNotFound)
+  expect { get_user_row_element(full_name) }.to raise_error(Capybara::ElementNotFound)
 end
 
 Then /^I should not see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
   child_summary_panel = page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*")
-  expect(child_summary_panel).not_to have_content(text);
+  expect(child_summary_panel).not_to have_content(text)
 end
 
 Then /^I should see "([^\"]*)" for record "([^\"]*)"$/ do |text, full_name|
   child_summary_panel = page.find(:xpath, "//div[text()=\"#{full_name}\"]/parent::*/parent::*")
-  expect(child_summary_panel).to have_content(text);
+  expect(child_summary_panel).to have_content(text)
 end
 
 def get_element_for_edit_user_link(full_name, link)
-  lambda { page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]") }
+  page.find(:xpath, "//tr[@id=\"user-row-#{full_name}\"]/td/a[text()=\"#{link}\"]")
 end
 
 Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
@@ -76,7 +76,7 @@ Then /^I should see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
 end
 
 Then /^I should not see "([^\"]*)" for "([^\"]*)"$/ do |link, full_name|
-  expect(get_element_for_edit_user_link(full_name, link)).to raise_error(Capybara::ElementNotFound)
+  expect { get_element_for_edit_user_link(full_name, link) }.to raise_error(Capybara::ElementNotFound)
 end
 
 Then /^the field "([^"]*)" should have the following options:$/ do |locator, table|
@@ -84,7 +84,7 @@ Then /^the field "([^"]*)" should have the following options:$/ do |locator, tab
 end
 
 def get_link_for_page(page_name)
-  lambda { page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ") }
+  page.find(:xpath, "//a[@href=\"#{path_to(page_name)}\"] ")
 end
 
 Then /^(?:|I )should see a link to the (.+)$/ do |page_name|
@@ -110,7 +110,7 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
   end
 end
 
-Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
+Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |_filename|
   url = current_url.gsub '/edit', ''
   expect(page.body).to have_selector("//audio/source[@src='#{url}/audio']")
 end
@@ -132,8 +132,8 @@ end
 
 Then /^the "([^"]*)" dropdown should have the following options:$/ do |dropdown_label, table|
   options = table.hashes
-  page.has_select?(dropdown_label, :options => options.collect { |element| element['label'] },
-                                   :selected => options.collect { |element| element['label'] if element['selected?'] == 'yes' }.compact!)
+  page.has_select?(dropdown_label, :options => options.map { |element| element['label'] },
+                                   :selected => options.map { |element| element['label'] if element['selected?'] == 'yes' }.compact!)
 end
 
 Then /^I should find the following links:$/ do |table|
@@ -149,7 +149,7 @@ Then /^the "([^"]*)" checkboxes should have the following options:$/ do |checkbo
   checkbox_elements = Nokogiri::HTML(page.body).css("input[type='checkbox'][name='child[#{checkbox_id}][]']")
 
   checkboxes = checkbox_elements.each_with_object({}) do |element, result|
-    result[element['value']] = !!element[:checked]
+    result[element['value']] = !element[:checked].nil?
   end
 
   table.hashes.each do |expected_checkbox|

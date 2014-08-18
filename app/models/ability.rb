@@ -1,9 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def user
-    @user
-  end
+  attr_reader :user
 
   def initialize(user)
     alias_action :index, :view, :list, :to => :read
@@ -31,7 +29,7 @@ class Ability
       can [:read, :view_all, :view_and_search], Child
     end
 
-    if user.has_permission?(Permission::CHILDREN[:view_and_search]) and user.has_permission?(Permission::CHILDREN[:edit])
+    if user.has_permission?(Permission::CHILDREN[:view_and_search]) && user.has_permission?(Permission::CHILDREN[:edit])
       can [:read, :update, :destroy], Child
     end
 
@@ -142,7 +140,6 @@ class Ability
     if user.has_permission?(Permission::REPORTS[:view])
       can [:manage], Report
     end
-
   end
 
   def can(action = nil, subject = nil, conditions = nil, &block)
@@ -152,5 +149,4 @@ class Ability
   def cannot(action = nil, subject = nil, conditions = nil, &block)
     rules << CanCan::CustomRule.new(false, action, subject, conditions, block)
   end
-
 end

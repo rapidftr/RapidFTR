@@ -1,5 +1,4 @@
 class CouchSettings
-
   attr_accessor :path
   attr_accessor :env
   attr_accessor :config
@@ -10,7 +9,7 @@ class CouchSettings
     end
 
     def new_with_defaults
-      path   = ::Rails.root.join "config", "couchdb.yml"
+      path   = ::Rails.root.join 'config', 'couchdb.yml'
       env    = ::Rails.env.to_s
       config = YAML.load(ERB.new(File.read(path)).result)[env] rescue {}
       CouchSettings.new(path, env, config)
@@ -44,7 +43,7 @@ class CouchSettings
   end
 
   def db_prefix
-    @config['prefix'] || "rapidftr"
+    @config['prefix'] || 'rapidftr'
   end
 
   def db_suffix
@@ -52,7 +51,7 @@ class CouchSettings
   end
 
   def ssl_enabled_for_rapidftr?
-    !(@config["ssl"].blank? or @config["ssl"] == false)
+    !(@config['ssl'].blank? || @config['ssl'] == false)
   end
 
   def port
@@ -60,7 +59,7 @@ class CouchSettings
   end
 
   def protocol
-    ssl_enabled_for_rapidftr? ? "https" : "http"
+    ssl_enabled_for_rapidftr? ? 'https' : 'http'
   end
 
   def uri
@@ -79,7 +78,7 @@ class CouchSettings
   end
 
   def authenticate(username, password)
-    RestClient.post "#{uri}/_session", "name=#{username}&password=#{password}", {:content_type => 'application/x-www-form-urlencoded'}
+    RestClient.post "#{uri}/_session", "name=#{username}&password=#{password}", :content_type => 'application/x-www-form-urlencoded'
     true
   end
 
@@ -88,11 +87,8 @@ class CouchSettings
   end
 
   def databases
-    COUCHDB_SERVER.databases.select { |db|
-      db.starts_with?(db_prefix + "_") && db.ends_with?("_" + db_suffix)
-    }.map { |name|
-      COUCHDB_SERVER.database(name)
-    }
+    COUCHDB_SERVER.databases.
+      select { |db| db.starts_with?(db_prefix + '_') && db.ends_with?('_' + db_suffix) }.
+      map { |name| COUCHDB_SERVER.database(name) }
   end
-
 end

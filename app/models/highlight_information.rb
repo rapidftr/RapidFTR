@@ -3,5 +3,4 @@ class HighlightInformation
 
   property :order
   property :highlighted, TrueClass, :default => false
-
 end

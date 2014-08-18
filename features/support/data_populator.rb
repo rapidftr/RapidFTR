@@ -1,5 +1,4 @@
 class DataPopulator
-
   def create_user_with_permission(permission)
     create_user('default_username', 'default_password', permission)
   end
@@ -36,15 +35,15 @@ class DataPopulator
 
   def create_account(user_type, username, password, permission)
     permissions = []
-    permissions.push(Permission.all_permissions) if user_type.downcase == "admin" and permission.nil?
-    permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == "user" and permission.nil?
-    permissions.push(Permission::REPORTS[:view]) if user_type.downcase == "senior official" and permission.nil?
-    permissions.push(Permission::CHILDREN[:edit], Permission::CHILDREN[:register], Permission::CHILDREN[:view_and_search], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]) if user_type.downcase == "registration worker" and permission.nil?
+    permissions.push(Permission.all_permissions) if user_type.downcase == 'admin' && permission.nil?
+    permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == 'user' && permission.nil?
+    permissions.push(Permission::REPORTS[:view]) if user_type.downcase == 'senior official' && permission.nil?
+    permissions.push(Permission::CHILDREN[:edit], Permission::CHILDREN[:register], Permission::CHILDREN[:view_and_search], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]) if user_type.downcase == 'registration worker' && permission.nil?
     permissions.push(Permission.all_permissions) if permission.to_s.downcase.split(',').include?('admin')
-    permissions.push(permission.split(",")) if permission
+    permissions.push(permission.split(',')) if permission
     permissions.flatten!
 
-    role_name = permissions.join("-")
+    role_name = permissions.join('-')
     role = Role.find_by_name(role_name) || Role.create(:name => role_name, :permissions => permissions)
 
     @user = User.find_by_user_name(username)
@@ -55,8 +54,8 @@ class DataPopulator
           :password => password,
           :password_confirmation => password,
           :full_name => username,
-          :organisation => "UNICEF",
-          :disabled => "false",
+          :organisation => 'UNICEF',
+          :disabled => 'false',
           :email => "#{username}@test.com",
           :role_ids => [role.id]
       )

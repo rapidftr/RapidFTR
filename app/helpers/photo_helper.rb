@@ -1,5 +1,4 @@
 module PhotoHelper
-
   def rotate_photo(angle)
     existing_photo = primary_photo
     image = MiniMagick::Image.read(existing_photo.data.read)
@@ -35,7 +34,7 @@ module PhotoHelper
     return unless new_photos
     # basically to support any client passing a single photo param, only used by child_spec AFAIK
     if new_photos.is_a? Hash
-      photos = new_photos.to_a.sort.map { |k, v| v }
+      photos = new_photos.sort.to_h.values
     else
       photos = [new_photos]
     end
@@ -44,11 +43,11 @@ module PhotoHelper
 
   def photos=(new_photos)
     @photos = []
-    @new_photo_keys = new_photos.select { |photo| photo.respond_to? :content_type }.collect do |photo|
+    @new_photo_keys = new_photos.select { |photo| photo.respond_to? :content_type }.map do |photo|
       @photos << photo
       attachment = FileAttachment.from_uploadable_file(photo, "photo-#{photo.path.hash}")
       attach(attachment)
-      self["current_photo_key"] = attachment.name if photo.original_filename.include?(self["current_photo_key"].to_s)
+      self['current_photo_key'] = attachment.name if photo.original_filename.include?(self['current_photo_key'].to_s)
       attachment.name
     end
   end
@@ -57,10 +56,10 @@ module PhotoHelper
   def update_photo_keys
     return if @new_photo_keys.blank? && @deleted_photo_keys.blank?
     self['photo_keys'].concat(@new_photo_keys).uniq! if @new_photo_keys
-    @deleted_photo_keys.each { |p|
+    @deleted_photo_keys.each do |p|
       self['photo_keys'].delete p
       self['current_photo_key'] = self['photo_keys'].first if p == self['current_photo_key']
-    } if @deleted_photo_keys
+    end if @deleted_photo_keys
 
     self['current_photo_key'] ||= self['photo_keys'].first unless self['photo_keys'].include?(self['current_photo_key'])
 
@@ -73,11 +72,9 @@ module PhotoHelper
 
   def photos
     return [] if self['photo_keys'].blank?
-    self["photo_keys"].sort_by do |key|
-      key == self["current_photo_key"] ? "" : key
-    end.collect do |key|
-      attachment(key)
-    end
+    self['photo_keys'].
+      sort_by { |key| key == self['current_photo_key'] ? '' : key }.
+      map { |key| attachment(key) }
   end
 
   def photo_changes_for(new_photo_keys, deleted_photo_keys)
@@ -87,7 +84,7 @@ module PhotoHelper
 
   def photos_index
     return [] if self['photo_keys'].blank?
-    self['photo_keys'].collect do |key|
+    self['photo_keys'].map do |key|
       {
         :photo_uri => child_photo_url(self, key),
         :thumbnail_uri => child_photo_url(self, key)
@@ -97,7 +94,7 @@ module PhotoHelper
 
   def primary_photo
     key = self['current_photo_key']
-    (key == "" || key.nil?) ? nil : attachment(key)
+    (key == '' || key.nil?) ? nil : attachment(key)
   end
 
   def primary_photo_id
@@ -106,7 +103,7 @@ module PhotoHelper
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise I18n.t("errors.models.child.primary_photo_id", :photo_id => photo_key)
+      fail I18n.t('errors.models.child.primary_photo_id', :photo_id => photo_key)
     end
     self['current_photo_key'] = photo_key
   end

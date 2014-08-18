@@ -11,7 +11,7 @@ class CustomFieldsValidator
       return target.field_definitions_for(form.name) if (target.respond_to? :field_definitions_for) && !target.field_definitions_for(form.name).nil?
       return FormSection.all_visible_child_fields_for_form form.name
     end
-    return []
+    []
   end
 
   def validate_fields(fields, target)
@@ -20,18 +20,18 @@ class CustomFieldsValidator
       field_name = field[:name]
       value = target[field_name].nil? ? '' : target[field_name].strip
 
-      if value.present? and is_not_valid(value)
+      if value.present? && not_valid?(value)
         target.errors.add(:"#{field[:name]}", validation_message_for(field))
         valid = false
       end
     end
-    return valid
+    valid
   end
 end
 
 class CustomNumericFieldsValidator < CustomFieldsValidator
-  def is_not_valid(value)
-    !value.is_number?
+  def not_valid?(value)
+    !value.number?
   end
 
   def validation_message_for(field)
@@ -40,7 +40,7 @@ class CustomNumericFieldsValidator < CustomFieldsValidator
 end
 
 class CustomTextFieldsValidator < CustomFieldsValidator
-  def is_not_valid(value)
+  def not_valid?(value)
     value.length > 200
   end
 
@@ -51,7 +51,7 @@ end
 
 class CustomTextAreasValidator < CustomFieldsValidator
   MAX_LENGTH = 400_000
-  def is_not_valid(value)
+  def not_valid?(value)
     value.length > MAX_LENGTH
   end
 
@@ -62,7 +62,7 @@ end
 
 class DateFieldsValidator < CustomFieldsValidator
   # Blackberry client can only parse specific date formats
-  def is_not_valid(value)
+  def not_valid?(value)
     Date.strptime(value, '%d %b %Y')
     false
   rescue
@@ -80,16 +80,16 @@ module Extensions
       class FieldValidator  < ActiveModel::Validator
         def validate(record)
           case @options[:type]
-            when Field::NUMERIC_FIELD
-              validator = CustomNumericFieldsValidator
-            when Field::TEXT_FIELD
-              validator = CustomTextFieldsValidator
-            when Field::TEXT_AREA
-              validator = CustomTextAreasValidator
-            when Field::DATE_FIELD
-              validator = DateFieldsValidator
-            else
-              raise "Unrecognised field type " + field_type.to_s + " for validation"
+          when Field::NUMERIC_FIELD
+            validator = CustomNumericFieldsValidator
+          when Field::TEXT_FIELD
+            validator = CustomTextFieldsValidator
+          when Field::TEXT_AREA
+            validator = CustomTextAreasValidator
+          when Field::DATE_FIELD
+            validator = DateFieldsValidator
+          else
+            fail 'Unrecognised field type ' + field_type.to_s + ' for validation'
           end
           validator.new(record, @options) if validator
         end

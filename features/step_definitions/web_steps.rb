@@ -5,7 +5,7 @@
 # files.
 
 require 'uri'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'support', 'paths'))
 
 module WithinHelpers
   def with_scope(locator)
@@ -63,7 +63,7 @@ When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |fi
   end
 end
 
-When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |value, field|
+When /^(?:|I ) select "([^\"]*)" for "([^\"]*)"$/ do |_value, field|
   page.execute_script "$('#{field}').trigger('focus')"
   page.execute_script "$('a.ui-datepicker-next').trigger('click')"
   page.execute_script "$(\"a.ui-state-default:contains('15')\").trigger(\"click\")"
@@ -75,7 +75,7 @@ end
 When /^(?:|I )fill in the following(?: within "([^\"]*)")?:$/ do |selector, fields|
   with_scope(selector) do
     fields.rows_hash.each do |name, value|
-      step %{I fill in "#{name}" with "#{value}"}
+      step %(I fill in "#{name}" with "#{value}")
     end
   end
 end
@@ -174,7 +174,7 @@ Then /^the "([^"]*)" radio-button(?: within "([^"]*)")? should be checked$/ do |
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      expect(["true", "checked", true]).to include field_checked
+      expect(['true', 'checked', true]).to include field_checked
     else
       field_checked
     end
@@ -196,7 +196,7 @@ Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |labe
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
-      expect(["true", true]).to include field_checked
+      expect(['true', true]).to include field_checked
     else
       field_checked
     end
@@ -238,7 +238,7 @@ Then /^show me the page$/ do
 end
 
 When /^I fill in a (\d+) character long string for "([^"]*)"$/ do |length, field|
-  fill_in field, :with => ("x" * length.to_i)
+  fill_in field, :with => ('x' * length.to_i)
 end
 
 Then /^I should see the order (.+)$/ do |input|
@@ -254,7 +254,7 @@ Then /^(.+) button is disabled$/ do |text|
   assert !find_button(text).visible?
 end
 
-When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |button, selector|
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")? for language change$/ do |_button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
@@ -265,11 +265,11 @@ And /^I submit the form$/ do
 end
 
 When /^I clear the search results$/ do
-  click_button("reset")
+  click_button('reset')
 end
 
-Then /^I should see first (\d+) records in the search results$/ do |arg1|
-  assert page.has_content?("Displaying children 1 - 20 ")
+Then /^I should see first (\d+) records in the search results$/ do |_arg1|
+  assert page.has_content?('Displaying children 1 - 20 ')
 end
 
 When /^I goto the "(.*?)"$/ do |text|
@@ -277,7 +277,7 @@ When /^I goto the "(.*?)"$/ do |text|
 end
 
 Then /^I should see next records in the search results$/ do
-  assert page.has_content?("Displaying children 21 - 25 ")
+  assert page.has_content?('Displaying children 21 - 25 ')
 end
 
 Then /^I should see link to "(.*?)"$/ do |text|
@@ -289,13 +289,13 @@ Then /^I should( not)? be able to view the tab (.+)$/ do|not_visible, tab_name|
   expect(tab_element).to eq(!not_visible)
 end
 
-When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+When /^(?:|I )select "([^\"]*)"(?: within "([^\"]*)")?$/ do |_button, selector|
   with_scope(selector) do
     find("//input[@class='btn_submit']").click
   end
 end
 
-When /^I go and press "([^"]*)"$/ do |arg|
+When /^I go and press "([^"]*)"$/ do |_arg|
   find("//input[@class='btn_submit']").click
 end
 
@@ -304,18 +304,18 @@ Then /^"([^"]*)" option should be unavailable to me$/ do |element|
 end
 
 Then /^password prompt should be enabled$/ do
-  assert page.has_content?("Password")
+  assert page.has_content?('Password')
 end
 
-When /^I fill in "([^"]*)" in the password prompt$/ do |arg|
+When /^I fill in "([^"]*)" in the password prompt$/ do |_arg|
   fill_in 'password-prompt-dialog', :with => 'abcd'
 end
 
 Then /^Error message should be displayed$/ do
-  assert page.has_content?("Enter a valid password")
+  assert page.has_content?('Enter a valid password')
 end
 
-When /^I follow "([^"]*)" for child records$/ do |arg|
+When /^I follow "([^"]*)" for child records$/ do |_arg|
   find(:xpath, "//span[@class='export']").click
 end
 

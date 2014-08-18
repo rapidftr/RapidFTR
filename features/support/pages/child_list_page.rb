@@ -38,10 +38,10 @@ class ChildListPage
 
   def sort(sort_order)
     case sort_order
-      when 'ascending'
-        page.find(:css, "li#sort_ascending_arrow").click
-      when 'descending'
-        page.find(:css, "li#sort_descending_arrow").click
+    when 'ascending'
+      page.find(:css, 'li#sort_ascending_arrow').click
+    when 'descending'
+      page.find(:css, 'li#sort_descending_arrow').click
     end
   end
 

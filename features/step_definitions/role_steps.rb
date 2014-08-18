@@ -35,7 +35,7 @@ When /^I try to filter user roles sorted by "(.*?)"$/ do |order|
 end
 
 Then /^I should see the following roles sorted:$/ do |table|
-  expected_order = table.hashes.collect { |role| role['name'] }
+  expected_order = table.hashes.map { |role| role['name'] }
   expect(actual_order_against(expected_order)).to eq(expected_order)
 end
 
@@ -61,7 +61,7 @@ def go_to_roles_page
 end
 
 def actual_order_against(expected_order)
-  list = page.all(:xpath, "//td[@class='role_name']").collect(&:text)
+  list = page.all(:xpath, "//td[@class='role_name']").map(&:text)
   actual_order = []
   list.each { |item| actual_order << item if expected_order.include?(item) }
   actual_order

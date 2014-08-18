@@ -1,7 +1,7 @@
 class Child < CouchRest::Model::Base
   use_database :child
 
-  require "uuidtools"
+  require 'uuidtools'
   include RecordHelper
   include RapidFTR::CouchRestRailsBackward
   include Extensions::CustomValidator::CustomFieldsValidator
@@ -39,15 +39,15 @@ class Child < CouchRest::Model::Base
   validate :validate_has_at_least_one_field_value
   validate :validate_last_updated_at
 
-  FORM_NAME = "Children"
+  FORM_NAME = 'Children'
 
   def initialize(*args)
     self['photo_keys'] ||= []
     arguments = args.first
 
-    if arguments.is_a?(Hash) && arguments["current_photo_key"]
-      self['current_photo_key'] = arguments["current_photo_key"]
-      arguments.delete("current_photo_key")
+    if arguments.is_a?(Hash) && arguments['current_photo_key']
+      self['current_photo_key'] = arguments['current_photo_key']
+      arguments.delete('current_photo_key')
     end
 
     self['histories'] = []
@@ -56,28 +56,28 @@ class Child < CouchRest::Model::Base
 
   def self.new_with_user_name(user, fields = {})
     child = new(fields)
-    child.set_creation_fields_for user
+    child.creation_fields_for(user)
     child
   end
 
   def self.build_text_fields_for_solar
     sortable_fields = FormSection.all_sortable_field_names || []
-    self.default_child_fields + sortable_fields
+    default_child_fields + sortable_fields
   end
 
   def self.default_child_fields
-    ["unique_identifier", "short_id", "created_by", "created_by_full_name", "last_updated_by", "last_updated_by_full_name", "created_organisation"]
+    %w(unique_identifier short_id created_by created_by_full_name last_updated_by last_updated_by_full_name created_organisation)
   end
 
   def self.build_date_fields_for_solar
-    ["created_at", "last_updated_at", "reunited_at", "flag_at"]
+    %w(created_at last_updated_at reunited_at flag_at)
   end
 
   def self.sortable_field_name(field)
     "#{field}_sort".to_sym
   end
 
-  @set_up_solr_fields = proc {
+  @set_up_solr_fields = proc do
     text_fields = Child.build_text_fields_for_solar
     date_fields = Child.build_date_fields_for_solar
 
@@ -99,7 +99,7 @@ class Child < CouchRest::Model::Base
     boolean(:active) { |c| !c.duplicate && !c.reunited }
     boolean :reunited
     boolean :flag
-  }
+  end
 
   searchable(&@set_up_solr_fields)
 
@@ -151,15 +151,15 @@ class Child < CouchRest::Model::Base
 
   def self.fetch_all_ids_and_revs
     ids_and_revs = []
-    all_rows = self.by_ids_and_revs({:include_docs => false})["rows"]
+    all_rows = by_ids_and_revs(:include_docs => false)['rows']
     all_rows.each do |row|
-      ids_and_revs << row["value"]
+      ids_and_revs << row['value']
     end
     ids_and_revs
   end
 
   def form
-    return Form.find_by_name(form_name)
+    Form.find_by_name(form_name)
   end
 
   def form_name
@@ -169,33 +169,33 @@ class Child < CouchRest::Model::Base
   def validate_has_at_least_one_field_value
     return true if field_definitions_for(Child::FORM_NAME).any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
-    return true if unknown_fields && unknown_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
-    errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
+    return true if unknown_fields && unknown_fields.any? { |_key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
+    errors.add(:validate_has_at_least_one_field_value, I18n.t('errors.models.child.at_least_one_field'))
   end
 
   def validate_age
-    return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
-    errors.add(:age, I18n.t("errors.models.child.age"))
+    return true if age.nil? || age.blank? || !age.number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
+    errors.add(:age, I18n.t('errors.models.child.age'))
   end
 
   def validate_photos
     return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    errors.add(:photo, I18n.t("errors.models.child.photo_format"))
+    errors.add(:photo, I18n.t('errors.models.child.photo_format'))
   end
 
   def validate_photos_size
     return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-    errors.add(:photo, I18n.t("errors.models.child.photo_size"))
+    errors.add(:photo, I18n.t('errors.models.child.photo_size'))
   end
 
   def validate_audio_size
     return true if @audio.blank? || @audio.size < 10.megabytes
-    errors.add(:audio, I18n.t("errors.models.child.audio_size"))
+    errors.add(:audio, I18n.t('errors.models.child.audio_size'))
   end
 
   def validate_audio_file_name
     return true if @audio_file_name.nil? || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
-    errors.add(:audio, "Please upload a valid audio file (amr or mp3) for this child record")
+    errors.add(:audio, 'Please upload a valid audio file (amr or mp3) for this child record')
   end
 
   def has_valid_audio?
@@ -220,7 +220,7 @@ rescue
   errors.add(:last_updated_at, '')
   end
 
-  def method_missing(m, *args, &block)
+  def method_missing(m, *)
     self[m]
   end
 
@@ -229,8 +229,8 @@ rescue
   end
 
   def self.all_connected_with(user_name)
-    # TODO Investigate why the hash of the objects got different.
-    (by_user_name(key: user_name).all + by_created_by(key: user_name).all).uniq { |child| child.unique_identifier }
+    # TODO: Investigate why the hash of the objects got different.
+    (by_user_name(:key => user_name).all + by_created_by(:key => user_name).all).uniq { |child| child.unique_identifier }
   end
 
   def create_unique_id
@@ -250,7 +250,7 @@ rescue
   end
 
   def self.schedule(scheduler)
-    scheduler.every("24h") do
+    scheduler.every('24h') do
       Child.reindex!
     end
   end
@@ -258,24 +258,24 @@ rescue
   private
 
   def unknown_fields
-    system_fields = ["created_at",
-                     "last_updated_at",
-                     "last_updated_by",
-                     "last_updated_by_full_name",
-                     "posted_at",
-                     "posted_from",
-                     "_rev",
-                     "_id",
-                     "_attachments",
-                     "short_id",
-                     "created_by",
-                     "created_by_full_name",
-                     "couchrest-type",
-                     "histories",
-                     "unique_identifier",
-                     "created_organisation"]
+    system_fields = ['created_at',
+                     'last_updated_at',
+                     'last_updated_by',
+                     'last_updated_by_full_name',
+                     'posted_at',
+                     'posted_from',
+                     '_rev',
+                     '_id',
+                     '_attachments',
+                     'short_id',
+                     'created_by',
+                     'created_by_full_name',
+                     'couchrest-type',
+                     'histories',
+                     'unique_identifier',
+                     'created_organisation']
     existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
-    self.reject { |k, v| existing_fields.include? k }
+    reject { |k, _v| existing_fields.include? k }
   end
 
   def key_for_content_type(content_type)
@@ -283,6 +283,6 @@ rescue
   end
 
   def validate_duplicate_of
-    return errors.add(:duplicate, I18n.t("errors.models.child.validate_duplicate")) if self["duplicate"] && self["duplicate_of"].blank?
+    return errors.add(:duplicate, I18n.t('errors.models.child.validate_duplicate')) if self['duplicate'] && self['duplicate_of'].blank?
   end
 end

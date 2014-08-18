@@ -2,17 +2,17 @@ class Enquiry < CouchRest::Model::Base
   use_database :enquiry
   include RecordHelper
 
-  before_validation :create_criteria, on: [:create, :update]
+  before_validation :create_criteria, :on => [:create, :update]
   before_save :find_matching_children
 
   property :criteria, Hash
   property :potential_matches, :default => []
-  property :match_updated_at, :default => ""
+  property :match_updated_at, :default => ''
 
-  validates_presence_of :criteria, :message => I18n.t("errors.models.enquiry.presence_of_criteria")
+  validates :criteria, :presence => {:message => I18n.t('errors.models.enquiry.presence_of_criteria')}
   validate :validate_has_at_least_one_field_value
 
-  FORM_NAME = "Enquiries"
+  FORM_NAME = 'Enquiries'
 
   design do
     view :all,
@@ -25,7 +25,7 @@ class Enquiry < CouchRest::Model::Base
 
   def validate_has_at_least_one_field_value
     return true if field_definitions_for(Enquiry::FORM_NAME).any? { |field| is_filled_in?(field) }
-    errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.enquiry.at_least_one_field"))
+    errors.add(:validate_has_at_least_one_field_value, I18n.t('errors.models.enquiry.at_least_one_field'))
   end
 
   def method_missing(m, *args)
@@ -37,14 +37,14 @@ class Enquiry < CouchRest::Model::Base
 
   def self.new_with_user_name(user, *args)
     enquiry = new(*args)
-    enquiry.set_creation_fields_for(user)
+    enquiry.creation_fields_for(user)
     enquiry
   end
 
   def update_from(properties)
     attributes_to_update = {}
     properties.each_pair do |name, value|
-      if value.instance_of? HashWithIndifferentAccess or value.instance_of? ActionController::Parameters
+      if value.instance_of?(HashWithIndifferentAccess) || value.instance_of?(ActionController::Parameters)
         attributes_to_update[name] = self[name] if attributes_to_update[name].nil?
         # Don't change the code to use merge!
         # It will break the access to dynamic attributes.
@@ -57,29 +57,29 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def find_matching_children
-    previous_matches = self.potential_matches
-    children = MatchService.search_for_matching_children(self.criteria)
+    previous_matches = potential_matches
+    children = MatchService.search_for_matching_children(criteria)
     self.potential_matches = children.map { |child| child.id }
     verify_format_of(previous_matches)
 
-    unless previous_matches.eql?(self.potential_matches)
+    unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
   end
 
   def self.search_by_match_updated_since(timestamp)
-    Enquiry.all.all.select { |e|
-      !e['match_updated_at'].empty? and DateTime.parse(e['match_updated_at']) >= timestamp
-    }
+    Enquiry.all.all.select do |e|
+      !e['match_updated_at'].empty? && DateTime.parse(e['match_updated_at']) >= timestamp
+    end
   end
 
   private
 
   def create_criteria
     self.criteria = {}
-    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| is_filled_in?(field) };
+    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| is_filled_in?(field) }
     fields.each do |field|
-      self.criteria.store(field.name, self[field.name])
+      criteria.store(field.name, self[field.name])
     end
   end
 
@@ -89,5 +89,4 @@ class Enquiry < CouchRest::Model::Base
     end
     previous_matches
   end
-
 end

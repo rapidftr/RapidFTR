@@ -23,10 +23,10 @@ class Replication < CouchRest::Model::Base
          }"
   end
 
-  validates_presence_of :remote_app_url
-  validates_presence_of :description
-  validates_presence_of :username
-  validates_presence_of :password
+  validates :remote_app_url, :presence => true
+  validates :description, :presence => true
+  validates :username, :presence => true
+  validates :password, :presence => true
   validate :validate_remote_app_url
   validate :save_remote_couch_config
 
@@ -59,8 +59,8 @@ class Replication < CouchRest::Model::Base
   end
 
   def check_status_and_reindex
-    if needs_reindexing? and !active?
-      Rails.logger.info "Replication complete, triggering reindex"
+    if needs_reindexing? && !active?
+      Rails.logger.info 'Replication complete, triggering reindex'
       trigger_local_reindex
       trigger_remote_reindex
     end
@@ -71,33 +71,33 @@ class Replication < CouchRest::Model::Base
   end
 
   def timestamp
-    fetch_configs.collect { |config| Time.zone.parse config["_replication_state_time"] rescue nil }.compact.max
+    fetch_configs.map { |config| Time.zone.parse config['_replication_state_time'] rescue nil }.compact.max
   end
 
   def statuses
-    fetch_configs.collect { |config| config["_replication_state"] || 'triggered' }
+    fetch_configs.map { |config| config['_replication_state'] || 'triggered' }
   end
 
   def active?
-    statuses.include?("triggered") || (timestamp && timestamp > STABLE_WAIT_TIME.ago)
+    statuses.include?('triggered') || (timestamp && timestamp > STABLE_WAIT_TIME.ago)
   end
 
   def success?
-    statuses.uniq == ["completed"]
+    statuses.uniq == ['completed']
   end
 
   def status
-    active? ? "triggered" : success? ? "completed" : "error"
+    active? ? 'triggered' : success? ? 'completed' : 'error'
   end
 
   def remote_app_uri
     uri = URI.parse self.class.normalize_url remote_app_url
-    uri.path = "/"
+    uri.path = '/'
     uri
   end
 
-  def remote_couch_uri(path = "")
-    uri = URI.parse remote_couch_config["target"]
+  def remote_couch_uri(path = '')
+    uri = URI.parse remote_couch_config['target']
     uri.host = remote_app_uri.host if uri.host == 'localhost'
     uri.path = "/#{path}"
     uri.user = username if username
@@ -106,13 +106,13 @@ class Replication < CouchRest::Model::Base
   end
 
   def push_config(model)
-    target = remote_couch_uri remote_couch_config["databases"][model.to_s]
-    { "source" => model.database.name, "target" => target.to_s, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
+    target = remote_couch_uri remote_couch_config['databases'][model.to_s]
+    {'source' => model.database.name, 'target' => target.to_s, 'rapidftr_ref_id' => self['_id'], 'rapidftr_env' => Rails.env}
   end
 
   def pull_config(model)
-    target = remote_couch_uri remote_couch_config["databases"][model.to_s]
-    { "source" => target.to_s, "target" => model.database.name, "rapidftr_ref_id" => self["_id"], "rapidftr_env" => Rails.env }
+    target = remote_couch_uri remote_couch_config['databases'][model.to_s]
+    {'source' => target.to_s, 'target' => model.database.name, 'rapidftr_ref_id' => self['_id'], 'rapidftr_env' => Rails.env}
   end
 
   def build_configs
@@ -122,7 +122,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def fetch_configs
-    @fetch_configs ||= replicator_docs.select { |rep| rep["rapidftr_ref_id"] == self.id }
+    @fetch_configs ||= replicator_docs.select { |rep| rep['rapidftr_ref_id'] == id }
   end
 
   def self.models_to_sync
@@ -138,9 +138,9 @@ class Replication < CouchRest::Model::Base
 
     {
       :target => uri.to_s,
-      :databases => models_to_sync.each_with_object({}) { |model, result|
+      :databases => models_to_sync.each_with_object({}) do |model, result|
         result[model.to_s] = model.database.name
-      }
+      end
     }
   end
 
@@ -151,12 +151,12 @@ class Replication < CouchRest::Model::Base
   end
 
   def self.schedule(scheduler)
-    scheduler.every("5m") do
+    scheduler.every('5m') do
       begin
-        Rails.logger.info "Checking Replication Status..."
+        Rails.logger.info 'Checking Replication Status...'
         Replication.all.each(&:check_status_and_reindex)
       rescue => e
-        Rails.logger.error "Error checking replication status"
+        Rails.logger.error 'Error checking replication status'
         e.backtrace.each { |line| Rails.logger.error line }
       end
     end
@@ -182,10 +182,10 @@ class Replication < CouchRest::Model::Base
   end
 
   def validate_remote_app_url
-    raise unless remote_app_uri.is_a?(URI::HTTP) or remote_app_uri.is_a?(URI::HTTPS)
+    fail unless remote_app_uri.is_a?(URI::HTTP) || remote_app_uri.is_a?(URI::HTTPS)
     true
   rescue
-    errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))
+    errors.add(:remote_app_url, I18n.t('errors.models.replication.remote_app_url'))
   end
 
   def normalize_remote_app_url
@@ -195,12 +195,12 @@ class Replication < CouchRest::Model::Base
   def save_remote_couch_config
     uri = remote_app_uri
     uri.path = Rails.application.routes.url_helpers.configuration_replications_path
-    post_params = {:user_name => self.username, :password => self.password}
+    post_params = {:user_name => username, :password => password}
     response = post_uri uri, post_params
     self.remote_couch_config = JSON.parse response.body
     true
-  rescue => e
-    errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
+  rescue
+    errors.add(:save_remote_couch_config, I18n.t('errors.models.replication.save_remote_couch_config'))
   end
 
   def replicator
@@ -208,11 +208,11 @@ class Replication < CouchRest::Model::Base
   end
 
   def replicator_docs
-    replicator.documents["rows"].map { |doc| replicator.get doc["id"] unless doc["id"].include? "_design" }.compact
+    replicator.documents['rows'].map { |doc| replicator.get doc['id'] unless doc['id'].include? '_design' }.compact
   end
 
   def post_uri(uri, post_params = {})
-    if uri.scheme == "http"
+    if uri.scheme == 'http'
       Net::HTTP.post_form uri, post_params
     else
       http = Net::HTTP.new(uri.host, uri.port)
@@ -223,5 +223,4 @@ class Replication < CouchRest::Model::Base
       http.start { |req| req.request(request) }
     end
   end
-
 end

@@ -25,7 +25,7 @@ module Searchable
         begin
           Sunspot.index!(self)
         rescue
-          Rails.logger.error "***Problem indexing record for searching, is SOLR running?"
+          Rails.logger.error '***Problem indexing record for searching, is SOLR running?'
         end
         true
       end
@@ -34,11 +34,10 @@ module Searchable
 
   module ClassMethods
     def reindex!
-      self.update_solr_indices
+      update_solr_indices
       Sunspot.remove_all(self)
-      self.all.rows.each { |row| Sunspot.index row.doc }
+      all.rows.each { |row| Sunspot.index row.doc }
       Sunspot.commit
     end
   end
-
 end

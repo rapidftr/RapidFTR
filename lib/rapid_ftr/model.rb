@@ -3,7 +3,6 @@ require 'active_model'
 
 module RapidFTR
   module Model
-
     def self.included(base)
       base.extend ActiveModel::Naming
     end
@@ -13,11 +12,11 @@ module RapidFTR
     end
 
     def _id=(new_id)
-      self["_id"] = new_id
+      self['_id'] = new_id
     end
 
     def _id
-      self["_id"]
+      self['_id']
     end
 
     def errors

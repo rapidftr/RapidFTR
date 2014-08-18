@@ -1,24 +1,22 @@
 class StandardFormsService
-
-  FORMS_KEY = "forms"
-  SECTIONS_KEY = "sections"
-  FIELDS_KEY = "fields"
-  USER_SELECTED_KEY = "user_selected"
-  USER_SELECTED = "1"
+  FORMS_KEY = 'forms'
+  SECTIONS_KEY = 'sections'
+  FIELDS_KEY = 'fields'
+  USER_SELECTED_KEY = 'user_selected'
+  USER_SELECTED = '1'
 
   def self.persist(attributes_hash)
     RapidFTR::FormSetup.default_forms.each do |form|
       form_attr = attributes_hash.fetch(FORMS_KEY, {}).fetch(form.name.downcase, {})
       saved_form = persist_form(form, form_attr)
+      next if saved_form.nil?
 
-      unless saved_form.nil?
-        sections_attr = form_attr.fetch(SECTIONS_KEY, {})
-        saved_sections = persist_sections(saved_form, sections_attr)
+      sections_attr = form_attr.fetch(SECTIONS_KEY, {})
+      saved_sections = persist_sections(saved_form, sections_attr)
 
-        saved_sections.each do |s|
-          fields_attr = sections_attr.fetch(s.name, {}).fetch(FIELDS_KEY, {})
-          persist_fields(s, fields_attr)
-        end
+      saved_sections.each do |s|
+        fields_attr = sections_attr.fetch(s.name, {}).fetch(FIELDS_KEY, {})
+        persist_fields(s, fields_attr)
       end
     end
   end

@@ -1,21 +1,20 @@
 module RapidFTR
   module FormSetup
-
     def self.default_forms
       [default_form_for(Child::FORM_NAME), default_form_for(Enquiry::FORM_NAME)]
     end
 
     def self.default_form_for(form_name)
-      form = Form.new(name: form_name)
+      form = Form.new(:name => form_name)
       form.sections = default_sections_for form_name
       form
     end
 
     def self.default_sections_for(form_name)
       if form_name == Child::FORM_NAME
-        form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
+        RapidFTR::ChildrenFormSectionSetup.build_form_sections
       elsif form_name == Enquiry::FORM_NAME
-        form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
+        RapidFTR::EnquiriesFormSectionSetup.build_form_sections
       end
     end
 

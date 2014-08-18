@@ -1,14 +1,13 @@
 Given /^an? (user|admin|senior official|registration worker) "([^\"]*)" with(?: a)? password "([^\"]*)"(?: and "([^\"]*)" permission)?$/ do |user_type, username, password, permission|
   case user_type
-    when 'user'
-      DataPopulator.new.create_user(username, password, permission)
-    when 'admin'
-      DataPopulator.new.create_admin(username, password, permission)
-    when 'senior official'
-      DataPopulator.new.create_senior_official(username, password, permission)
-    when 'registration worker'
-      DataPopulator.new.create_registration_worker(username, password, permission)
-
+  when 'user'
+    DataPopulator.new.create_user(username, password, permission)
+  when 'admin'
+    DataPopulator.new.create_admin(username, password, permission)
+  when 'senior official'
+    DataPopulator.new.create_senior_official(username, password, permission)
+  when 'registration worker'
+    DataPopulator.new.create_registration_worker(username, password, permission)
   end
 end
 
@@ -68,7 +67,7 @@ end
 
 Given /^the user's time zone is "([^"]*)"$/ do |timezone|
   step 'I am on the home page'
-  step %|I select "#{timezone}" from "Current time zone"|
+  step %(I select "#{timezone}" from "Current time zone")
   step 'I press "Save"'
 end
 

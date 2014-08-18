@@ -27,13 +27,13 @@ module Forms
         (criterion[:value].present? && criterion[:field].present?) rescue false
       end
 
-      @system_criteria = params.slice(*SYSTEM_CRITERIA).select { |k, v| v.present? }
+      @system_criteria = params.slice(*SYSTEM_CRITERIA).select { |_k, v| v.present? }
 
       @query = params[:query]
     end
 
     def has_criteria?
-      errors.add(:criteria, I18n.t("messages.valid_search_criteria")) unless @criteria.present? || @system_criteria.present? || @query.present?
+      errors.add(:criteria, I18n.t('messages.valid_search_criteria')) unless @criteria.present? || @system_criteria.present? || @query.present?
     end
 
     def execute_search
@@ -52,13 +52,12 @@ module Forms
       search.less_than(:last_updated_at, @system_criteria[:updated_at_before_value]) if @system_criteria[:updated_at_before_value].present?
       search.greater_than(:last_updated_at, @system_criteria[:updated_at_after_value]) if @system_criteria[:updated_at_after_value].present?
 
-      search.fulltext_by((Form.find_by_name(Child::FORM_NAME).highlighted_fields.collect(&:name)) + [:unique_identifier, :short_id], @query) if @query.present?
+      search.fulltext_by((Form.find_by_name(Child::FORM_NAME).highlighted_fields.map(&:name)) + [:unique_identifier, :short_id], @query) if @query.present?
 
       search.created_by(ability.user) unless ability.can?(:view_all, Child)
       search.paginated((params[:page] || 1).to_i, (params[:per_page] || PER_PAGE).to_i)
 
       @results = search.results
     end
-
   end
 end

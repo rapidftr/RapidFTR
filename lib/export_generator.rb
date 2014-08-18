@@ -2,9 +2,9 @@ require 'csv'
 require 'prawn/measurement_extensions'
 require 'prawn/layout'
 
-CHILD_IDENTIFIERS = ["unique_identifier", "short_id"]
-CHILD_METADATA = ["created_by", "created_organisation", "posted_at", "last_updated_by_full_name", "last_updated_at"]
-CHILD_STATUS = ["Suspect status", "Reunited status"]
+CHILD_IDENTIFIERS = %w(unique_identifier short_id)
+CHILD_METADATA = %w(created_by created_organisation posted_at last_updated_by_full_name last_updated_at)
+CHILD_STATUS = ['Suspect status', 'Reunited status']
 
 class ExportGenerator
   class Export
@@ -42,8 +42,8 @@ class ExportGenerator
       @child_data.each do |child|
         begin
           child_data = map_field_with_value(child, fields)
-          child_data << (child.flag? ? "Suspect" : "")
-          child_data << (child.reunited? ? "Reunited" : "")
+          child_data << (child.flag? ? 'Suspect' : '')
+          child_data << (child.reunited? ? 'Reunited' : '')
           metadata = metadata_fields([], CHILD_METADATA)
           metadata_value = map_field_with_value(child, metadata)
           child_data += metadata_value
@@ -54,7 +54,7 @@ class ExportGenerator
       end
     end
 
-    return Export.new csv_data, {:type => 'text/csv', :filename => filename("full-details", "csv")}
+    Export.new csv_data, :type => 'text/csv', :filename => filename('full-details', 'csv')
   end
 
   def map_field_with_value(child, fields)
@@ -63,7 +63,7 @@ class ExportGenerator
 
   def metadata_fields(fields, extras)
     extras.each do |extra|
-      fields.push Field.new(name: extra, display_name: extra.humanize)
+      fields.push Field.new(:name => extra, :display_name => extra.humanize)
     end
     fields
   end
@@ -79,10 +79,10 @@ class ExportGenerator
   private
 
   def format_field_for_export(field, value, child = nil)
-    return "" if value.blank?
-    return value.join(", ") if field.type == Field::CHECK_BOXES
+    return '' if value.blank?
+    return value.join(', ') if field.type == Field::CHECK_BOXES
     if child
-      # TODO:
+      # TODO: rubocop:disable CommentAnnotation
       # child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless (child.primary_photo_id.nil? || child.primary_photo_id == "")
       # child['audio_url'] = child_audio_url(child)
 
@@ -94,19 +94,19 @@ class ExportGenerator
 
   def filename(export_type, extension)
     return "rapidftr-#{@child_data[0][:unique_identifier]}-#{filename_date_string}.#{extension}" if @child_data.length == 1
-    return "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
+    "rapidftr-#{export_type}-#{filename_date_string}.#{extension}"
   end
 
   def filename_date_string
-    Clock.now.strftime("%Y%m%d")
+    Clock.now.strftime('%Y%m%d')
   end
 
   def add_child_photo(child, with_full_id = false)
     if child.primary_photo
       render_image(child.primary_photo.data)
     else
-      @@no_photo_clip = File.binread("app/assets/images/no_photo_clip.jpg")
-      @attachment = FileAttachment.new("no_photo", "image/jpg", @@no_photo_clip)
+      @@no_photo_clip = File.binread('app/assets/images/no_photo_clip.jpg')
+      @attachment = FileAttachment.new('no_photo', 'image/jpg', @@no_photo_clip)
       render_image(@attachment.data)
     end
     @pdf.move_down 25
@@ -143,7 +143,7 @@ class ExportGenerator
   def render_pdf(field_pair)
     unless field_pair.empty?
       @pdf.table field_pair,
-                 :border_width => 0, :row_colors => %w[  cccccc ffffff  ],
+                 :border_width => 0, :row_colors => %w(cccccc ffffff),
                  :width => 500, :column_widths => {0 => 200, 1 => 300},
                  :position => :left
     end
@@ -156,10 +156,10 @@ class ExportGenerator
   end
 
   def flag_if_suspected(child)
-    @pdf.text("Flagged as Suspect Record", :style => :bold) if child.flag?
+    @pdf.text('Flagged as Suspect Record', :style => :bold) if child.flag?
   end
 
   def flag_if_reunited(child)
-    @pdf.text("Reunited", :style => :bold) if child.reunited?
+    @pdf.text('Reunited', :style => :bold) if child.reunited?
   end
 end

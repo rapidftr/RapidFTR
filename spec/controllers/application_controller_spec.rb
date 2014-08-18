@@ -28,13 +28,13 @@ describe ApplicationController, :type => :controller do
   end
 
   describe 'locale' do
-    it "should be set to default" do
+    it 'should be set to default' do
       allow(controller).to receive(:current_session).and_return(session)
       @controller.set_locale
       expect(I18n.locale).to eq(I18n.default_locale)
     end
 
-    it "should be change the locale" do
+    it 'should be change the locale' do
       user = double('user', :locale => :ar)
       session = double('session', :user => user)
       allow(controller).to receive(:current_session).and_return(session)
@@ -50,15 +50,15 @@ describe ApplicationController, :type => :controller do
         allow(controller).to receive(:current_session).and_return(session)
       end
 
-      xit "should set be set to default" do
+      xit 'should set be set to default' do
 
       end
     end
   end
 
-  describe "user" do
-    it "should return me the current logged in user" do
-      user = User.new(:user_name => 'user_name', :role_names => ["default"])
+  describe 'user' do
+    it 'should return me the current logged in user' do
+      user = User.new(:user_name => 'user_name', :role_names => ['default'])
       expect(User).to receive(:find_by_user_name).with('user_name').and_return(user)
       session = Session.new :user_name => user.user_name
       allow(controller).to receive(:current_session).and_return(session)
@@ -72,14 +72,14 @@ describe ApplicationController, :type => :controller do
     end
 
     it 'should send encrypted zip with one file' do
-      files = [RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1")]
+      files = [RapidftrAddon::ExportTask::Result.new('/1/2/3/file_1.pdf', 'content 1')]
 
-      expect(controller).to receive(:send_file) do |file, opts|
+      expect(controller).to receive(:send_file) do |file, _opts|
         ZipRuby::Archive.open(file) do |ar|
           expect(ar.num_files).to eq(1)
           ar.decrypt 'test_password'
-          ar.fopen("file_1.pdf") do |f|
-            expect(f.read).to eq("content 1")
+          ar.fopen('file_1.pdf') do |f|
+            expect(f.read).to eq('content 1')
           end
         end
       end
@@ -88,17 +88,17 @@ describe ApplicationController, :type => :controller do
     end
 
     it 'should send encrypted zip with multiple files' do
-      files = [RapidftrAddon::ExportTask::Result.new("/1/2/3/file_1.pdf", "content 1"), RapidftrAddon::ExportTask::Result.new("file_2.xls", "content 2")]
+      files = [RapidftrAddon::ExportTask::Result.new('/1/2/3/file_1.pdf', 'content 1'), RapidftrAddon::ExportTask::Result.new('file_2.xls', 'content 2')]
 
-      expect(controller).to receive(:send_file) do |file, opts|
+      expect(controller).to receive(:send_file) do |file, _opts|
         ZipRuby::Archive.open(file) do |ar|
           expect(ar.num_files).to eq(2)
           ar.decrypt 'test_password'
-          ar.fopen("file_1.pdf") do |f|
-            expect(f.read).to eq("content 1")
+          ar.fopen('file_1.pdf') do |f|
+            expect(f.read).to eq('content 1')
           end
-          ar.fopen("file_2.xls") do |f|
-            expect(f.read).to eq("content 2")
+          ar.fopen('file_2.xls') do |f|
+            expect(f.read).to eq('content 2')
           end
         end
       end
@@ -110,7 +110,7 @@ describe ApplicationController, :type => :controller do
       CleansingTmpDir.stub :temp_file_name => 'encrypted_file'
       ZipRuby::Archive.stub :open => true
 
-      expect(controller).to receive(:send_file).with('encrypted_file', hash_including(:filename => 'test_filename.zip', :type => 'application/zip', :disposition => "inline"))
+      expect(controller).to receive(:send_file).with('encrypted_file', hash_including(:filename => 'test_filename.zip', :type => 'application/zip', :disposition => 'inline'))
       controller.encrypt_exported_files [], 'test_filename.zip'
     end
   end

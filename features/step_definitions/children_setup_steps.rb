@@ -54,7 +54,7 @@ def create_child(child_hash)
   end
 
   if child_hash['created_organisation']
-    user.update_attributes({:organisation => child_hash['created_organisation']})
+    user.update_attributes(:organisation => child_hash['created_organisation'])
   end
 
   child_hash['flag_at'] = child_hash['flagged_at'] || DateTime.new(2001, 2, 3, 4, 5, 6)

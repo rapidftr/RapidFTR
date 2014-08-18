@@ -4,13 +4,11 @@
 
 module RapidFTR
   module CouchRestRailsBackward
-
     def self.included(base)
       base.extend(ClassMethods)
     end
 
     module ClassMethods
-
       def paginate(pagination_options = {})
         options = pagination_options.clone
         paginates_per options.delete(:per_page)
@@ -22,7 +20,6 @@ module RapidFTR
       def view(view_name, options = {})
         send(view_name, options).all
       end
-
     end
   end
 end

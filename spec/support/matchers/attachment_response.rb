@@ -10,7 +10,7 @@ module CustomMatchers
 
     def matches?(response)
       verify { [response.content_type == @content_type, "content type is #{response.content_type} instead of #{@content_type}"] } &&
-          verify { [response.body == @data, "data is different"] } &&
+          verify { [response.body == @data, 'data is different'] } &&
           verify do
             result = response_has_specified_disposition? response
             [result, "content disposition is #{response.headers['Content-Disposition']} instead of #{@disposition}"]

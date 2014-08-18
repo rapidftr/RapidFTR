@@ -1,5 +1,4 @@
 class ChildRecordToolbarWidget
-
   def initialize(session)
     @session = session
   end
@@ -21,7 +20,7 @@ class ChildRecordToolbarWidget
   end
 
   def mark_as_duplicate(child_name)
-    child_with_specified_name = Child.all.detect { |c| c.name == child_name }
+    child_with_specified_name = Child.all.find { |c| c.name == child_name }
     @session.find_by_id("child_#{child_with_specified_name._id}").click_link('Mark as Duplicate')
   end
 end

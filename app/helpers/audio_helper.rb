@@ -1,19 +1,19 @@
 module AudioHelper
   def add_audio_file(audio_file, content_type)
-    attachment = FileAttachment.from_file(audio_file, content_type, "audio", key_for_content_type(content_type))
+    attachment = FileAttachment.from_file(audio_file, content_type, 'audio', key_for_content_type(content_type))
     attach(attachment)
     setup_mime_specific_audio(attachment)
   end
 
-  def recorded_audio=(audio_file_name = "")
-    self["recorded_audio"] ||= audio_file_name
+  def recorded_audio=(audio_file_name = '')
+    self['recorded_audio'] ||= audio_file_name
   end
 
   def audio=(audio_file)
     return unless audio_file.respond_to? :content_type
     @audio_file_name = audio_file.original_filename
     @audio = audio_file
-    attachment = FileAttachment.from_uploadable_file(audio_file, "audio")
+    attachment = FileAttachment.from_uploadable_file(audio_file, 'audio')
     self['recorded_audio'] = attachment.name
     attach(attachment)
     setup_original_audio(attachment)
@@ -21,7 +21,7 @@ module AudioHelper
   end
 
   def audio
-    return nil if self.id.nil? || self['audio_attachments'].nil?
+    return nil if id.nil? || self['audio_attachments'].nil?
     attachment_key = self['audio_attachments']['original']
     return nil unless has_attachment? attachment_key
 

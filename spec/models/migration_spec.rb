@@ -6,8 +6,8 @@ describe Migration, :type => :model do
   end
 
   it 'should list all migrations' do
-    expect(Dir).to receive(:[]).with(Migration.migration_dir.join "*.rb").and_return(["/1/2/04_migration.rb", "/1/2/02_migration.rb"])
-    expect(Migration.all_migrations).to eq(["02_migration.rb", "04_migration.rb"])
+    expect(Dir).to receive(:[]).with(Migration.migration_dir.join '*.rb').and_return(['/1/2/04_migration.rb', '/1/2/02_migration.rb'])
+    expect(Migration.all_migrations).to eq(['02_migration.rb', '04_migration.rb'])
   end
 
   it 'should list pending migrations' do
@@ -18,7 +18,7 @@ describe Migration, :type => :model do
   it 'should list applied migrations' do
     Migration.database.save_doc :name => '2_test'
     Migration.database.save_doc :name => '1_test'
-    expect(Migration.applied_migrations).to eq(["1_test", "2_test"])
+    expect(Migration.applied_migrations).to eq(%w(1_test 2_test))
   end
 
   it 'should apply only pending migrations' do
@@ -30,8 +30,8 @@ describe Migration, :type => :model do
   end
 
   it 'should save migration name in database after applying' do
-    expect(Kernel).to receive(:load).with(Migration.migration_dir.join("one"), true).and_return(false)
-    expect(Migration.database).to receive(:save_doc).with(:name => "one")
-    Migration.apply_migration("one")
+    expect(Kernel).to receive(:load).with(Migration.migration_dir.join('one'), true).and_return(false)
+    expect(Migration.database).to receive(:save_doc).with(:name => 'one')
+    Migration.apply_migration('one')
   end
 end

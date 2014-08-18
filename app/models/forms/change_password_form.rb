@@ -1,5 +1,4 @@
 module Forms
-
   class ChangePasswordForm
     extend ActiveModel::Naming
     include ActiveModel::Conversion
@@ -9,7 +8,7 @@ module Forms
 
     validates :user, :presence => true
     validates :old_password, :presence => true
-    validates :new_password, :presence => true, :confirmation =>  true
+    validates :new_password, :presence => true, :confirmation => true
     validates :new_password_confirmation, :presence => true
     validate :check_old_password
 
@@ -21,7 +20,7 @@ module Forms
 
     def check_old_password
       if user.crypted_password != User.encrypt(old_password, user.salt)
-        errors[:old_password] = I18n.t("user.messages.passwords_do_not_match")
+        errors[:old_password] = I18n.t('user.messages.passwords_do_not_match')
         return false
       else
         return true
@@ -49,5 +48,4 @@ module Forms
       false
     end
   end
-
 end

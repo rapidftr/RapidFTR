@@ -1,13 +1,12 @@
 module Security
   module SessionSecret
     class << self
-
       def secret_token
         fetch || create
       end
 
       def fetch
-        database.get("session_secret")["value"]   rescue nil
+        database.get('session_secret')['value']   rescue nil
       end
 
       def generate
@@ -16,7 +15,7 @@ module Security
 
       def create
         secret_value = generate
-        database.save_doc "_id" => "session_secret", "value" => secret_value
+        database.save_doc '_id' => 'session_secret', 'value' => secret_value
         secret_value
       end
 
@@ -27,7 +26,6 @@ module Security
       def env
         Rails.env
       end
-
     end
   end
 end

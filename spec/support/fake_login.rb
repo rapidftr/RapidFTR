@@ -1,20 +1,20 @@
 module FakeLogin
-  def fake_login(user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"]))
+  def fake_login(user = User.new(:user_name => 'fakeuser', :role_ids => ['abcd']))
     session = Session.new :user_name => user.user_name
     session.save
 
-    allow(user).to receive(:id).and_return("1234") unless user.try(:id)
+    allow(user).to receive(:id).and_return('1234') unless user.try(:id)
     allow(User).to receive(:get).with(user.id).and_return(user)
 
     allow(@controller).to receive(:current_session).and_return(session)
     @controller.session[:last_access_time] = Clock.now.rfc2822
 
-    allow(Role).to receive(:get).with("abcd").and_return(Role.new(:name => "default", :permissions => [Permission::CHILDREN[:register]]))
+    allow(Role).to receive(:get).with('abcd').and_return(Role.new(:name => 'default', :permissions => [Permission::CHILDREN[:register]]))
     allow(User).to receive(:find_by_user_name).with(user.user_name).and_return(user)
     session
   end
 
-  def setup_session(user = User.new(:user_name => 'fakeuser', :role_ids => ["abcd"]))
+  def setup_session(user = User.new(:user_name => 'fakeuser', :role_ids => ['abcd']))
     session = Session.new :user_name => user.user_name
     session.save
     allow(@controller).to receive(:current_session).and_return(session)
@@ -46,5 +46,4 @@ module FakeLogin
     allow(user).to receive(:roles).and_return([Role.new(:permissions => [permission].flatten)])
     fake_login user
   end
-
 end

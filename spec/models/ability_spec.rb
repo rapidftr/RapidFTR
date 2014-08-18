@@ -19,14 +19,14 @@ describe Ability, :type => :model do
     #   can? :update, User == true!!
     # It is messing up life a bit, so it is here as a test
     describe '#class and object assumptions' do
-      subject {
+      subject do
         ability = Object.new.extend CanCan::Ability
         ability.can :update, Child do |child|
           child.name == 'test'
         end
         ability.stub :user => user
         ability
-      }
+      end
 
       it { is_expected.to authorize :update, Child }
       it { is_expected.to authorize :update, Child.new(:name => 'test') }
@@ -34,12 +34,12 @@ describe Ability, :type => :model do
     end
 
     describe '#manage with exceptions patch' do
-      subject {
+      subject do
         ability = Object.new.extend CanCan::Ability
         ability.can :manage, User, :except => [:update, :disable]
         ability.stub :user => user
         ability
-      }
+      end
 
       it { is_expected.to authorize_all [:blah, :foo, :bar], User }
       it { is_expected.not_to authorize_any [:update, :disable], [User, User.new] }
@@ -108,7 +108,7 @@ describe Ability, :type => :model do
       it { is_expected.to authorize :update, Child.new(:created_by => 'test') }
     end
 
-    describe "export children to photowall" do
+    describe 'export children to photowall' do
       let(:permissions) { [Permission::CHILDREN[:export_photowall]] }
 
       it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
@@ -122,7 +122,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :export_csv, Child.new }
     end
 
-    describe "export children to csv" do
+    describe 'export children to csv' do
       let(:permissions) { [Permission::CHILDREN[:export_csv]] }
 
       it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
@@ -136,7 +136,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
-    describe "export children to pdf" do
+    describe 'export children to pdf' do
       let(:permissions) { [Permission::CHILDREN[:export_pdf]] }
 
       it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
@@ -150,7 +150,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
-    describe "export children to cpims" do
+    describe 'export children to cpims' do
       let(:permissions) { [Permission::CHILDREN[:export_cpims]] }
 
       it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
@@ -164,7 +164,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
-    describe "view and search child records" do
+    describe 'view and search child records' do
       let(:permissions) { [Permission::CHILDREN[:view_and_search]] }
 
       it { is_expected.to authorize :index, Child.new }
@@ -193,7 +193,7 @@ describe Ability, :type => :model do
       it { is_expected.to authorize :read, User.new }
     end
 
-    describe "destroy users" do
+    describe 'destroy users' do
       let(:permissions) { [Permission::USERS[:destroy]] }
 
       it { is_expected.to authorize :destroy, User.new }
@@ -201,7 +201,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :edit, User.new }
     end
 
-    describe "disable users" do
+    describe 'disable users' do
       let(:permissions) { [Permission::USERS[:disable]] }
 
       it { is_expected.not_to authorize_any [:create, :update], User.new }
@@ -209,7 +209,7 @@ describe Ability, :type => :model do
       it { is_expected.to authorize :read, User.new }
     end
 
-    describe "blacklist" do
+    describe 'blacklist' do
       let(:permissions) { [Permission::DEVICES[:black_list]] }
 
       it { is_expected.not_to authorize_any CRUD, Child, FormSection, Session, User, Role, Replication, SystemUsers, Report }
@@ -219,7 +219,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :read, User.new }
     end
 
-    describe "replication" do
+    describe 'replication' do
       let(:permissions) { [Permission::DEVICES[:replications]] }
 
       it { is_expected.not_to authorize_any CRUD, Child, FormSection, Session, User, Role, SystemUsers, Report }
@@ -231,7 +231,7 @@ describe Ability, :type => :model do
   end
 
   context 'roles' do
-    describe "view roles permission" do
+    describe 'view roles permission' do
       let(:permissions) { [Permission::ROLES[:view]] }
 
       it { is_expected.to authorize :list, Role.new }
@@ -240,7 +240,7 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :update, Role.new }
     end
 
-    describe "create and edit roles permission" do
+    describe 'create and edit roles permission' do
       let(:permissions) { [Permission::ROLES[:create_and_edit]] }
 
       it { is_expected.to authorize :list, Role.new }
@@ -250,7 +250,7 @@ describe Ability, :type => :model do
   end
 
   context 'forms' do
-    describe "manage forms" do
+    describe 'manage forms' do
       let(:permissions) { [Permission::FORMS[:manage]] }
 
       it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, SystemUsers, Report }
@@ -260,14 +260,14 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :highlight, Field }
     end
 
-    describe "highlight fields" do
+    describe 'highlight fields' do
       let(:permissions) { [Permission::SYSTEM[:highlight_fields]] }
       it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Report }
       it { is_expected.to authorize :highlight, Field }
     end
   end
 
-  describe "replications" do
+  describe 'replications' do
     let(:permissions) { [Permission::DEVICES[:replications]] }
     it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field, SystemUsers, Report }
     it { is_expected.to authorize :manage, Replication }
@@ -280,7 +280,7 @@ describe Ability, :type => :model do
   end
 
   context 'other' do
-    describe "system users for synchronisation" do
+    describe 'system users for synchronisation' do
       let(:permissions) { [Permission::SYSTEM[:system_users]] }
       it { is_expected.not_to authorize_any CRUD, Child, Device, Session, User, Role, FormSection, Field }
       it { is_expected.to authorize :manage, SystemUsers }

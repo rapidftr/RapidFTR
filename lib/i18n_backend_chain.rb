@@ -6,7 +6,7 @@ module I18n
         backends.each do |backend|
           return false unless backend.initialized?
         end
-        return true
+        true
       end
 
       protected
@@ -26,9 +26,8 @@ module I18n
             trans.deep_merge!(translations)
           end
         end
-        return trans
+        trans
       end
-
     end
   end
 end

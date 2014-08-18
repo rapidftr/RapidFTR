@@ -19,9 +19,8 @@
 #    ruby -Itest test/lib/i18n_backend_couch_test.rb
 #
 class I18nBackendCouch < I18n::Backend::Simple
-
   def load_translations
-    locales = db.documents["rows"].collect { |row| row["id"] }
+    locales = db.documents['rows'].map { |row| row['id'] }
     locales.each do |locale|
       translations[locale.to_sym] = db.get(locale).deep_symbolize_keys
     end
@@ -46,7 +45,7 @@ class I18nBackendCouch < I18n::Backend::Simple
   # Merge and save data into an existing document
   # Or create a new document
   def save_doc(locale)
-    data   = translations[locale] || { }
+    data   = translations[locale] || {}
     locale = locale.to_s
     data   = clean(deep_stringify_keys(data))
 
@@ -58,15 +57,15 @@ class I18nBackendCouch < I18n::Backend::Simple
       end
       doc.save
     rescue
-      data["_id"] = locale
+      data['_id'] = locale
       db.save_doc(data)
     end
   end
 
   # The presence of these two attributes frequently causes CouchRest Conflicts
   def clean(data)
-    data.delete "_id"
-    data.delete "_rev"
+    data.delete '_id'
+    data.delete '_rev'
     data
   end
 
@@ -76,5 +75,4 @@ class I18nBackendCouch < I18n::Backend::Simple
       result[key.to_s] = value.is_a?(Hash) ? deep_stringify_keys(value) : value
     end
   end
-
 end

@@ -5,7 +5,7 @@ module MiniMagickConversions
     thumbnail.instance_eval "def content_type; 'image/#{File.extname(path).gsub(/^\./, '').downcase}'; end"
 
     def thumbnail.data
-      self.to_blob
+      to_blob
     end
 
     thumbnail

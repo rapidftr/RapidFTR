@@ -3,16 +3,16 @@ When /^I fill in the basic details of a child$/ do
 end
 
 When /^I attach a photo "([^"]*)"$/ do |photo_path|
-  step %{I attach the file "#{photo_path}" to "child_photo0"}
+  step %(I attach the file "#{photo_path}" to "child_photo0")
 end
 
 When /^I attach an audio file "([^"]*)"$/ do |audio_path|
-  step %{I attach the file "#{audio_path}" to "child[audio]"}
+  step %(I attach the file "#{audio_path}" to "child[audio]")
 end
 
 When /^I attach the following photos:$/ do |table|
   table.raw.each_with_index do |photo, i|
-    step %{I attach the file "#{photo.first}" to "child[photo]#{i}"}
+    step %(I attach the file "#{photo.first}" to "child[photo]#{i}")
   end
 end
 
@@ -35,7 +35,7 @@ Given /^the following form sections exist in the system on the "(.*)" form:$/ do
   FormSection.all.each { |u| u.destroy }
   Form.all.each { |f| f.destroy }
 
-  form = Form.create(name: form_name)
+  form = Form.create(:name => form_name)
   form_sections_table.hashes.each do |form_section_hash|
     form_section_hash.reverse_merge!(
       'unique_id' => form_section_hash['name'].gsub(/\s/, '_').downcase,
@@ -87,15 +87,15 @@ When /^the local date\/time is "([^\"]*)" and UTC time is "([^\"]*)"$/ do |datet
 end
 
 Given /^a child record named "([^"]*)" exists with a audio file with the name "([^"]*)"$/ do |name, filename|
-  user = User.create!("user_name" => "bob_creator",
-                      "password" => "rapidftr",
-                      "password_confirmation" => "rapidftr",
-                      "full_name" => "Bob Creator",
-                      "organisation" => "UNICEF",
-                      "email" => "rapidftr@rapidftr.com",
-                      "disabled" => "false",
-                      "role_ids" => ["ADMIN"])
-  child = Child.new_with_user_name(user, {:name => name})
+  user = User.create!('user_name' => 'bob_creator',
+                      'password' => 'rapidftr',
+                      'password_confirmation' => 'rapidftr',
+                      'full_name' => 'Bob Creator',
+                      'organisation' => 'UNICEF',
+                      'email' => 'rapidftr@rapidftr.com',
+                      'disabled' => 'false',
+                      'role_ids' => ['ADMIN'])
+  child = Child.new_with_user_name(user, :name => name)
   child.audio = uploadable_audio("features/resources/#{filename}")
   child.create!
 end
@@ -106,7 +106,7 @@ Given /^I am editing an existing child record$/ do
   child['birthplace'] = 'haiti'
   child.photo = uploadable_photo
   child['unique_identifier'] = 'UNIQUE_IDENTIFIER'
-  raise 'Failed to save a valid child record' unless child.save
+  fail 'Failed to save a valid child record' unless child.save
 
   visit children_path + "/#{child.id}/edit"
 end
@@ -129,8 +129,7 @@ end
 When 'I wait for the page to load' do
   if Capybara.current_driver == :selenium
     Timeout.timeout(Capybara.default_wait_time) do
-      sleep(0.1) until value = page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0')
-      value
+      sleep(0.1) until page.evaluate_script('window["jQuery"] != undefined && window["jQuery"] != null && jQuery.active == 0')
     end
   else
     page.has_content? ''
@@ -252,7 +251,7 @@ And /^I should see "([^\"]*)" in the list of fields and disabled$/ do |field_nam
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
-  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, '_'))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :help_text => field_help_text)
   FormSection.add_field_to_formsection(form_section, field)
 end
@@ -267,7 +266,7 @@ Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ d
 end
 
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" hidden$/ do |form_section, field_name |
-  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, "_"))
+  form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, '_'))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :visible => false)
   FormSection.add_field_to_formsection(form_section, field)
 end
@@ -278,7 +277,7 @@ end
 
 When /^I debug$/ do
   require 'pry'
-  binding.pry
+  binding.pry # rubocop:disable Debugger
 end
 
 private

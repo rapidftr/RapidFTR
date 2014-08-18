@@ -35,7 +35,7 @@ class Report < CouchRest::Model::Base
   end
 
   def content_type
-    file_meta["content_type"]
+    file_meta['content_type']
   end
 
   def data

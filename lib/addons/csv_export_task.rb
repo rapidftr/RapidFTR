@@ -1,6 +1,5 @@
 module Addons
   class CsvExportTask < RapidftrAddon::ExportTask
-
     def self.id
       :csv
     end
@@ -16,6 +15,5 @@ module Addons
     def generate_filename(children)
       ((children && children.length == 1) ? (children[0]['unique_identifier']) : 'full_data') + '.csv'
     end
-
   end
 end

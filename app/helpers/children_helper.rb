@@ -1,5 +1,4 @@
 module ChildrenHelper
-
   module View
     PER_PAGE = 20
     MAX_PER_PAGE = 9999
@@ -34,18 +33,18 @@ module ChildrenHelper
   end
 
   def flag_message
-    user = @child.histories.select { |h| h["changes"]["flag"] }.first["user_name"]
-    message = (@child.flag_message.blank? && "") || ": \"#{@child.flag_message}\""
-    I18n.t("child.flagged_as_suspected") + " #{user}#{message}"
+    user = @child.histories.select { |h| h['changes']['flag'] }.first['user_name']
+    message = (@child.flag_message.blank? && '') || ": \"#{@child.flag_message}\""
+    I18n.t('child.flagged_as_suspected') + " #{user}#{message}"
   end
 
   def flag_summary_for_child(child)
-    flag_history = child["histories"].select { |h| h["changes"].keys.include?("flag") }.first
-    "<b>" + I18n.t("child.flagged_by") + " </b>" + flag_history["user_name"] + "<b> " + I18n.t("preposition.on_label") + "</b> " + current_user.localize_date(flag_history["datetime"]) + "<b> " + I18n.t("preposition.because") + "</b> " + child["flag_message"]
+    flag_history = child['histories'].select { |h| h['changes'].keys.include?('flag') }.first
+    '<b>' + I18n.t('child.flagged_by') + ' </b>' + flag_history['user_name'] + '<b> ' + I18n.t('preposition.on_label') + '</b> ' + current_user.localize_date(flag_history['datetime']) + '<b> ' + I18n.t('preposition.because') + '</b> ' + child['flag_message']
   end
 
   def reunited_message
-    "Reunited"
+    'Reunited'
   end
 
   def duplicate_message
@@ -53,9 +52,9 @@ module ChildrenHelper
   end
 
   def field_value_for_display(field_value)
-    return "" if field_value.nil? || field_value.length == 0
-    return field_value.join ", " if field_value.instance_of? Array
-    return field_value
+    return '' if field_value.nil? || field_value.length == 0
+    return field_value.join ', ' if field_value.instance_of? Array
+    field_value
   end
 
   def link_for_filter(filter, selected_filter)
@@ -72,7 +71,7 @@ module ChildrenHelper
     if child.duplicate?
       link_to 'View the change log', child_history_path(child)
     else
-      render :partial => "show_child_toolbar"
+      render :partial => 'show_child_toolbar'
     end
   end
 
@@ -80,12 +79,12 @@ module ChildrenHelper
     system_fields ||= []
     form_sections ||= []
     options = {}
-    options[t("children.order_by.system_fields")] = system_fields.map { |f| [t("children.order_by.#{f}"), f] }
+    options[t('children.order_by.system_fields')] = system_fields.map { |f| [t("children.order_by.#{f}"), f] }
     form_sections.each do |form_section|
       options_for_form = form_section.all_sortable_fields.map { |f| [f.display_name, f.name] }
       options[form_section.name] = options_for_form
     end
-    return options
+    options
   end
 
   def child_sorted_highlighted_fields

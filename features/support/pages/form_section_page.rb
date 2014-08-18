@@ -8,7 +8,7 @@ class FormSectionPage
   end
 
   def should_list_the_following_sections(section_names)
-    names_on_page = all(:css, "#form_sections a.formSectionLink").map(&:text)
+    names_on_page = all(:css, '#form_sections a.formSectionLink').map(&:text)
     expect(names_on_page).to eq(section_names)
   end
 
@@ -53,7 +53,7 @@ class FormSectionPage
   end
 
   def should_show_fields_in_order(expected_field_order)
-    actual_order = @session.all(:xpath, "//tr[@class='rowEnabled']/td[1]").collect(&:text)
+    actual_order = @session.all(:xpath, "//tr[@class='rowEnabled']/td[1]").map(&:text)
     expect(actual_order).to eq(expected_field_order)
   end
 
