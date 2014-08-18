@@ -10,16 +10,15 @@ rows.each do |row|
     doc = Child.database.get row['id']
     attachments = doc['_attachments']
     attachments.each do |attachment_id, attachment_meta|
-      if attachment_meta['content_type'].start_with? 'image/'
-        data = Child.database.fetch_attachment doc, attachment_id
-        begin
-          MiniMagick::Image.read data
-        rescue MiniMagick::Invalid
-          data64 = Base64.decode64 data
-          MiniMagick::Image.read data64
-          Child.database.put_attachment doc, attachment_id, data64
-          doc = Child.database.get row['id']
-        end
+      next unless attachment_meta['content_type'].start_with? 'image/'
+      data = Child.database.fetch_attachment doc, attachment_id
+      begin
+        MiniMagick::Image.read data
+      rescue MiniMagick::Invalid
+        data64 = Base64.decode64 data
+        MiniMagick::Image.read data64
+        Child.database.put_attachment doc, attachment_id, data64
+        doc = Child.database.get row['id']
       end
     end if doc['_attachments']
   rescue => e

@@ -15,12 +15,10 @@ unless photos_and_audio_fs
     basic_identity_fs.fields.delete ff
   end
 
-  basic_identity_fs.fields.each do |ff|
-    unless ff.valid?
-      logger.error(ff.inspect)
-      logger.error(ff.errors.inspect)
-      logger.error("*" * 25)
-    end
+  basic_identity_fs.fields.reject(&:valid?).each do |ff|
+    logger.error(ff.inspect)
+    logger.error(ff.errors.inspect)
+    logger.error("*" * 25)
   end
 
   basic_identity_fs.save!

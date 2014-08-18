@@ -85,11 +85,6 @@ Style/DoubleNegation:
 Style/NestedTernaryOperator:
   Enabled: false
 
-# Offense count: 4
-# Configuration parameters: EnforcedStyle, MinBodyLength, SupportedStyles.
-Style/Next:
-  Enabled: false
-
 # Offense count: 23
 # Configuration parameters: NamePrefixBlacklist.
 Style/PredicateName:
