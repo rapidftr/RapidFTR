@@ -29,8 +29,26 @@ $(document).ready(function() {
     }
 
     function fieldHideShow(){
-      $.post($($.find("#toggle_url")).val(), {'id' : $(this).val()}); 
-      $("table#form_sections tbody").sortable();
+        var checkbox = $(this);
+        var td = $("#" + $(this).val() + "_row td");
+        var origColor = td.parent().children().css("background-color");
+        function resetTrBackgroundColor(){
+            td.parent().css('background-color', "transparent");
+        }
+
+        $.post($("#toggle_url").val(), {'id' : $(this).val()})
+            .success(function(data) {
+                td.parent().css('background-color', "#87A96B");
+                td.animate({opacity: 0}, 300).animate({opacity: 1}, 300, "swing", resetTrBackgroundColor);
+            })
+            .error(function(jqXHR) {
+                td.parent().css('background-color', "#DD2726");
+                td.animate({opacity: 0}, 300);
+                checkbox.prop( "checked", function( i, val ) {
+                    return !val;
+                });
+            });
+        $("table#form_sections tbody").sortable();
     }
 
     function showMovePanel(){
