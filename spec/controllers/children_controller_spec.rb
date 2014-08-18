@@ -338,8 +338,8 @@ describe ChildrenController, :type => :controller do
       child = Child.create('last_known_location' => "London", :created_by => "uname")
       child.create_unique_id
       allow(Child).to receive(:get).with("37").and_return(child)
-      assigns[child[:current_photo_key]] == ""
       get(:show, :format => 'json', :id => "37")
+      expect(assigns[:child][:current_photo_key]).to eq("")
     end
 
     it "orders and assigns the forms" do

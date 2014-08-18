@@ -32,7 +32,7 @@ module Api
         user.save!
       end
 
-      render :json => {:response => "ok"}.to_json
+      render :json => {:response => "ok"}
     end
 
     private

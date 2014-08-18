@@ -61,7 +61,7 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
-      format.json { render :json => @child.compact.to_json }
+      format.json { render :json => @child.compact }
 
       respond_to_export format, [@child]
     end
@@ -103,7 +103,7 @@ class ChildrenController < ApplicationController
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
         format.json do
-          render :json => @child.compact.to_json
+          render :json => @child.compact
         end
       else
         format.html do
@@ -122,7 +122,7 @@ class ChildrenController < ApplicationController
       child = Child.get(params[:child][:_id])
       child = update_child_with_attachments child, params
       child.save
-      render :json => child.compact.to_json
+      render :json => child.compact
     else
       respond_to do |format|
         format.json do
@@ -131,7 +131,7 @@ class ChildrenController < ApplicationController
 
           child['created_by_full_name'] = current_user.full_name
           if child.save
-            render :json => child.compact.to_json
+            render :json => child.compact
           end
         end
       end
@@ -144,7 +144,7 @@ class ChildrenController < ApplicationController
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
-        render :json => child.compact.to_json
+        render :json => child.compact
       end
 
       format.html do
@@ -211,7 +211,7 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(children_url) }
       format.xml { head :ok }
-      format.json { render :json => {:response => "ok"}.to_json }
+      format.json { render :json => {:response => "ok"} }
     end
   end
 
@@ -268,7 +268,7 @@ class ChildrenController < ApplicationController
     @child = Child.get(params[:id])
     return unless @child.nil?
     respond_to do |format|
-      format.json { render :json => @child.to_json }
+      format.json { render :json => @child }
       format.html do
         flash[:error] = "Child with the given id is not found"
         redirect_to(:action => :index) && return

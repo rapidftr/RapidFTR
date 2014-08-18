@@ -14,10 +14,6 @@ Lint/ShadowingOuterLocalVariable:
 Lint/UnusedBlockArgument:
   Enabled: false
 
-# Offense count: 1
-Lint/Void:
-  Enabled: false
-
 # Offense count: 8
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
