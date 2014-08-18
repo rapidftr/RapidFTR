@@ -72,11 +72,9 @@ module PhotoHelper
 
   def photos
     return [] if self['photo_keys'].blank?
-    self["photo_keys"].sort_by do |key|
-      key == self["current_photo_key"] ? "" : key
-    end.map do |key|
-      attachment(key)
-    end
+    self["photo_keys"].
+      sort_by { |key| key == self["current_photo_key"] ? "" : key }.
+      map { |key| attachment(key) }
   end
 
   def photo_changes_for(new_photo_keys, deleted_photo_keys)

@@ -86,15 +86,6 @@ Style/DoubleNegation:
 Style/GuardClause:
   Enabled: false
 
-# Offense count: 17
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Enabled: false
-
-# Offense count: 2
-Style/MultilineBlockChain:
-  Enabled: false
-
 # Offense count: 4
 Style/NestedTernaryOperator:
   Enabled: false

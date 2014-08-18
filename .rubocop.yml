@@ -13,6 +13,9 @@ Lint/AmbiguousRegexpLiteral:
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 Style/Lambda:
   Enabled: false
 
