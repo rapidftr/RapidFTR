@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
     send_file enc_filename, :filename => zip_filename, :disposition => "inline", :type => 'application/zip'
   end
 
-  ActionView::Base.field_error_proc = proc do |html_tag, instance|
+  ActionView::Base.field_error_proc = proc do |html_tag, _instance|
     %(<span class="field-error">) + html_tag + %(</span>)
   end
 end

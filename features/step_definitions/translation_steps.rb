@@ -27,6 +27,6 @@ end
 def store(translation)
   I18n.backend.store_translations translation['locale'], translation['key'] => translation['value']
 end
-Then /^I should see my system language as "([^"]*)"-"([^"]*)"$/ do |language, locale|
+Then /^I should see my system language as "([^"]*)"-"([^"]*)"$/ do |_language, _locale|
   assert page.has_xpath?("//div[@class='page-content']/h2")
 end

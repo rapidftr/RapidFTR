@@ -9,7 +9,7 @@ namespace :db do
     Migration.migrate
   end
 
-  task :create_couch_sysadmin, :user_name, :password do |t, args|
+  task :create_couch_sysadmin, :user_name, :password do |_t, args|
     url       = "http://localhost:5984"
     user_name = args[:user_name]
     password  = args[:password]
@@ -26,7 +26,7 @@ namespace :db do
   end
 
   desc "Create/Copy couchdb.yml from couchdb.yml.example"
-  task :create_couchdb_yml, :user_name, :password  do |t, args|
+  task :create_couchdb_yml, :user_name, :password  do |_t, args|
     default_env = ENV['RAILS_ENV'] || "development"
     environments = ["development", "test", "assets", "cucumber", "production", "uat", "standalone", "android", default_env].uniq
     user_name = ENV['couchdb_user_name'] || args[:user_name] || ""

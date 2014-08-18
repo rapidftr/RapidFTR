@@ -54,7 +54,7 @@ When /^I add a new text field with "([^\"]*)" and "([^\"]*)"$/ do |display_name,
   form_section_page.create_text_field(display_name, help_text)
 end
 
-Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |link, section_name|
+Then /^I should not see the "([^\"]*)" link for the "([^\"]*)" section$/ do |_link, _section_name|
   form_section_page.should_not_see_the_manage_fields_link
 end
 

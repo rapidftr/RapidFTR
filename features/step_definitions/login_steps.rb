@@ -36,7 +36,7 @@ Then /^I am logged in as user (.+) with password as (.+)/ do|user_name, password
   login_page.login_as(user_name, password)
 end
 
-Given /^I logout as "([^"]*)"$/ do |arg|
+Given /^I logout as "([^"]*)"$/ do |_arg|
   click_link(I18n.t('header.logout'))
 end
 

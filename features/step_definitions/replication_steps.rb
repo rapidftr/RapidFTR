@@ -1,6 +1,6 @@
 When /^I make sure that the Replication Configuration request succeeds$/ do
   RSpec::Mocks.space.proxy_for(Net::HTTP).reset
-  allow(Net::HTTP).to receive(:post_form) do |*args|
+  allow(Net::HTTP).to receive(:post_form) do |*_args|
     double :body => {"target" => "http://localhost:1234", "databases" => {}}.to_json
   end
 end

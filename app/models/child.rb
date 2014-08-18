@@ -169,7 +169,7 @@ class Child < CouchRest::Model::Base
   def validate_has_at_least_one_field_value
     return true if field_definitions_for(Child::FORM_NAME).any? { |field| is_filled_in?(field) }
     return true if !@file_name.nil? || !@audio_file_name.nil?
-    return true if unknown_fields && unknown_fields.any? { |key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
+    return true if unknown_fields && unknown_fields.any? { |_key, value| !value.nil? && value != [] && value != {} && !value.to_s.empty? }
     errors.add(:validate_has_at_least_one_field_value, I18n.t("errors.models.child.at_least_one_field"))
   end
 
@@ -275,7 +275,7 @@ rescue
                      "unique_identifier",
                      "created_organisation"]
     existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
-    reject { |k, v| existing_fields.include? k }
+    reject { |k, _v| existing_fields.include? k }
   end
 
   def key_for_content_type(content_type)

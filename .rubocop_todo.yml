@@ -9,11 +9,6 @@
 Lint/ShadowingOuterLocalVariable:
   Enabled: false
 
-# Offense count: 81
-# Cop supports --auto-correct.
-Lint/UnusedBlockArgument:
-  Enabled: false
-
 # Offense count: 6
 Style/ClassVars:
   Enabled: false

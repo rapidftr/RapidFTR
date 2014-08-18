@@ -15,7 +15,7 @@ end
 namespace :sunspot do
 
   desc "wait for solr to be started"
-  task :wait, [:timeout] => :environment do |t, args|
+  task :wait, [:timeout] => :environment do |_t, args|
     require 'rsolr'
 
     connected = false

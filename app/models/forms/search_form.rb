@@ -27,7 +27,7 @@ module Forms
         (criterion[:value].present? && criterion[:field].present?) rescue false
       end
 
-      @system_criteria = params.slice(*SYSTEM_CRITERIA).select { |k, v| v.present? }
+      @system_criteria = params.slice(*SYSTEM_CRITERIA).select { |_k, v| v.present? }
 
       @query = params[:query]
     end

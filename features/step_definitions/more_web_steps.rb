@@ -36,7 +36,7 @@ When /^I uncheck the disabled checkbox for user "([^"]*)"$/ do |username|
   click_button('Yes')
 end
 
-Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, element, id|
+Then /^I should (not )?see "([^\"]*)" with id "([^\"]*)"$/ do |do_not_want, _element, id|
   should = do_not_want ? :should_not : :should
   page.send(should, have_css("##{id}"))
 end
@@ -110,7 +110,7 @@ And /^the user "([^\"]*)" should be marked as (disabled|enabled)$/ do |username,
   end
 end
 
-Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |filename|
+Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |_filename|
   url = current_url.gsub '/edit', ''
   expect(page.body).to have_selector("//audio/source[@src='#{url}/audio']")
 end

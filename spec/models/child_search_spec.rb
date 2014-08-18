@@ -13,7 +13,7 @@ describe ChildSearch, :solr => true do
     end
 
     it "should paginate children" do
-      5.times do |i|
+      5.times do
         create :child
       end
 

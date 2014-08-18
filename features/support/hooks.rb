@@ -14,13 +14,13 @@ Before do
   Sunspot.remove_all!(Child, Enquiry)
 end
 
-Before('@roles') do |scenario|
+Before('@roles') do |_scenario|
   Role.create(:name => 'Field Worker', :permissions => [Permission::CHILDREN[:register]])
   Role.create(:name => 'Field Admin', :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:create], Permission::CHILDREN[:edit]])
   Role.create(:name => 'Admin', :permissions => Permission.all_permissions)
 end
 
-Before('@no_expire') do |scenario|
+Before('@no_expire') do |_scenario|
   Rails.application.config.stub(:session_options).and_return(
                                                                :key => '_rftr_session',
                                                                :expire_after => 99.years,

@@ -268,7 +268,7 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.new(fields)
         enquiry.save!
 
-        expect(enquiry.criteria).to eq(fields.keep_if { |key, value| !value.nil? })
+        expect(enquiry.criteria).to eq(fields.keep_if { |_key, value| !value.nil? })
       end
     end
 

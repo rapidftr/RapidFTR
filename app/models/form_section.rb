@@ -275,8 +275,8 @@ class FormSection < CouchRest::Model::Base
   # that items were saved or they were loaded from the database.
   # TODO: move to a monkey patch for CouchRest::Model::Base
   def flag_saved_embedded_properties
-    casted_properties = properties_with_values.select { |property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
-    casted_properties.each do |property, value|
+    casted_properties = properties_with_values.select { |_property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
+    casted_properties.each do |_property, value|
       if value.instance_of?(CouchRest::Model::CastedArray)
         value.each do |item|
           item.document_saved = true if item.respond_to?(:document_saved)
