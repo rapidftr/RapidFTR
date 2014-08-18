@@ -23,7 +23,7 @@ class String
     ActiveSupport::Inflector.dehumanize(self)
   end
 
-  def is_number?
-    !!(self =~ /^\d*\.{0,1}\d?$/)
+  def number?
+    self =~ /^\d*\.{0,1}\d?$/
   end
 end

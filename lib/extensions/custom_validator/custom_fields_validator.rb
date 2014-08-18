@@ -20,7 +20,7 @@ class CustomFieldsValidator
       field_name = field[:name]
       value = target[field_name].nil? ? '' : target[field_name].strip
 
-      if value.present? && is_not_valid(value)
+      if value.present? && not_valid?(value)
         target.errors.add(:"#{field[:name]}", validation_message_for(field))
         valid = false
       end
@@ -30,8 +30,8 @@ class CustomFieldsValidator
 end
 
 class CustomNumericFieldsValidator < CustomFieldsValidator
-  def is_not_valid(value)
-    !value.is_number?
+  def not_valid?(value)
+    !value.number?
   end
 
   def validation_message_for(field)
@@ -40,7 +40,7 @@ class CustomNumericFieldsValidator < CustomFieldsValidator
 end
 
 class CustomTextFieldsValidator < CustomFieldsValidator
-  def is_not_valid(value)
+  def not_valid?(value)
     value.length > 200
   end
 
@@ -51,7 +51,7 @@ end
 
 class CustomTextAreasValidator < CustomFieldsValidator
   MAX_LENGTH = 400_000
-  def is_not_valid(value)
+  def not_valid?(value)
     value.length > MAX_LENGTH
   end
 
@@ -62,7 +62,7 @@ end
 
 class DateFieldsValidator < CustomFieldsValidator
   # Blackberry client can only parse specific date formats
-  def is_not_valid(value)
+  def not_valid?(value)
     Date.strptime(value, '%d %b %Y')
     false
   rescue

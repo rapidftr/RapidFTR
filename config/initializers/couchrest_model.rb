@@ -25,7 +25,7 @@ module CouchRest
       def save_without_callbacks
         return unless valid?
         result = database.save_doc(self)
-        ret = !!result["ok"]
+        ret = !result["ok"].nil?
         @changed_attributes.clear if ret && @changed_attributes
         ret
       end

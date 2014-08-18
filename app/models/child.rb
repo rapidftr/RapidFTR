@@ -174,7 +174,7 @@ class Child < CouchRest::Model::Base
   end
 
   def validate_age
-    return true if age.nil? || age.blank? || !age.is_number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
+    return true if age.nil? || age.blank? || !age.number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
     errors.add(:age, I18n.t("errors.models.child.age"))
   end
 
