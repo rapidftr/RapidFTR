@@ -30,7 +30,7 @@ class Api::ApiController < ActionController::Base
   end
 
   def check_device_blacklisted
-    raise ErrorResponse.forbidden("session.device_blacklisted") if current_session && current_session.device_blacklisted?
+    fail ErrorResponse.forbidden("session.device_blacklisted") if current_session && current_session.device_blacklisted?
   end
 
   def render_error_response(e)

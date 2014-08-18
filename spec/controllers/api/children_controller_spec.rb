@@ -51,7 +51,7 @@ describe Api::ChildrenController, :type => :controller do
     end
 
     it "should return a 403 if the device is blacklisted" do
-      expect(controller).to receive(:check_device_blacklisted) { raise ErrorResponse.forbidden("Device Blacklisted") }
+      expect(controller).to receive(:check_device_blacklisted) { fail ErrorResponse.forbidden("Device Blacklisted") }
       get :show, :id => "123", :format => "json"
       expect(response.response_code).to eq(403)
     end

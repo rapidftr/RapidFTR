@@ -113,12 +113,6 @@ Style/PredicateName:
 Style/RescueModifier:
   Enabled: false
 
-# Offense count: 35
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/SignalException:
-  Enabled: false
-
 # Offense count: 6413
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

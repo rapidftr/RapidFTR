@@ -182,7 +182,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def validate_remote_app_url
-    raise unless remote_app_uri.is_a?(URI::HTTP) || remote_app_uri.is_a?(URI::HTTPS)
+    fail unless remote_app_uri.is_a?(URI::HTTP) || remote_app_uri.is_a?(URI::HTTPS)
     true
   rescue
     errors.add(:remote_app_url, I18n.t("errors.models.replication.remote_app_url"))

@@ -148,7 +148,7 @@ class User < CouchRest::Model::Base
 
   def authenticate(check)
     if new?
-      raise Exception.new, I18n.t("errors.models.user.authenticate")
+      fail Exception.new, I18n.t("errors.models.user.authenticate")
     end
     !disabled? && crypted_password == self.class.encrypt(check, salt)
   end

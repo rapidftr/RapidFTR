@@ -38,5 +38,5 @@ end
 if errors.count > 0
   logger.error("Failed to migrate images for following records:")
   logger.error(errors)
-  raise "Migration failed" unless ENV['IGNORE_0012'] == 'true'
+  fail "Migration failed" unless ENV['IGNORE_0012'] == 'true'
 end

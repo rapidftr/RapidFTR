@@ -127,7 +127,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def self.add_field_to_formsection(formsection, field)
-    raise I18n.t("errors.models.form_section.add_field_to_form_section") unless formsection.editable
+    fail I18n.t("errors.models.form_section.add_field_to_form_section") unless formsection.editable
     field.merge!('base_language' => formsection['base_language'])
     formsection.fields.push(field)
     formsection.save
@@ -188,7 +188,7 @@ class FormSection < CouchRest::Model::Base
 
   def delete_field(field_to_delete)
     field = fields.find { |field| field.name == field_to_delete }
-    raise I18n.t("errors.models.form_section.delete_field") unless field.editable?
+    fail I18n.t("errors.models.form_section.delete_field") unless field.editable?
     if field
       field_index = fields.index(field)
       fields.delete_at(field_index)

@@ -106,7 +106,7 @@ Given /^I am editing an existing child record$/ do
   child['birthplace'] = 'haiti'
   child.photo = uploadable_photo
   child['unique_identifier'] = 'UNIQUE_IDENTIFIER'
-  raise 'Failed to save a valid child record' unless child.save
+  fail 'Failed to save a valid child record' unless child.save
 
   visit children_path + "/#{child.id}/edit"
 end

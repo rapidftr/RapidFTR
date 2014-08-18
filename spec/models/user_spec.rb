@@ -56,11 +56,11 @@ describe User, :type => :model do
 
   it 'should consider a re-loaded user as valid' do
     user = build :user
-    raise user.errors.full_messages.inspect unless user.valid?
+    fail user.errors.full_messages.inspect unless user.valid?
     user.create!
 
     reloaded_user = User.get(user.id)
-    raise reloaded_user.errors.full_messages.inspect unless reloaded_user.valid?
+    fail reloaded_user.errors.full_messages.inspect unless reloaded_user.valid?
     expect(reloaded_user).to be_valid
   end
 

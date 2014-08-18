@@ -28,7 +28,7 @@ namespace :sunspot do
       end
     end
 
-    raise "Solr is not responding" unless connected
+    fail "Solr is not responding" unless connected
   end
 
   Rake::Task["sunspot:reindex"].clear

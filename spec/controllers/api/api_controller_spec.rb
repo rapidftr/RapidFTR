@@ -27,7 +27,7 @@ describe TestController, :type => :controller do
 
   it "should return 422 for malformed json" do
     allow(controller).to receive(:logged_in?).and_return(true)
-    allow(controller).to receive(:index) { raise ActiveSupport::JSON.parse_error }
+    allow(controller).to receive(:index) { fail ActiveSupport::JSON.parse_error }
     get :index
     expect(response.response_code).to eq(422)
     expect(response.body).to eq(I18n.t("session.invalid_request"))

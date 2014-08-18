@@ -58,7 +58,7 @@ describe "children/search.html.erb", :type => :view do
 
       first_content_row = Hpricot(rendered).photos
       first_image_tag = first_content_row.at("img")
-      raise 'no image tag' if first_image_tag.nil?
+      fail 'no image tag' if first_image_tag.nil?
 
       child = @results.first
       expect(first_image_tag['src']).to eq("/children/#{child.id}/thumbnail/#{child.primary_photo_id}")

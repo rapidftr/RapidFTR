@@ -21,25 +21,25 @@ module NavigationHelpers
         /saved record page for child with name "(.+)"/ => proc do |options, matches|
                                                             child_name = matches[1]
                                                             child = Child.by_name(:key => child_name)
-                                                            raise "no child named '#{child_name}'" if child.nil? || child.empty?
+                                                            fail "no child named '#{child_name}'" if child.nil? || child.empty?
                                                             child_path(child.first, options)
                                                           end,
         /child record page for "(.+)"/                 => proc do |options, matches|
                                                             child_name = matches[1]
                                                             child = Child.by_name(:key => child_name)
-                                                            raise "no child named '#{child_name}'" if child.nil? || child.empty?
+                                                            fail "no child named '#{child_name}'" if child.nil? || child.empty?
                                                             child_path(child.first, options)
                                                           end,
         /child record page for unique id "(.+)"/       => proc do |options, matches|
                                                             unique_id = matches[1]
                                                             child = Child.get unique_id
-                                                            raise "no child with unique id '#{unique_id}'" if child.nil?
+                                                            fail "no child with unique id '#{unique_id}'" if child.nil?
                                                             child_path(child, options)
                                                           end,
         /change log page for "(.+)"/                   => proc do |options, matches|
                                                             child_name = matches[1]
                                                             child = Child.by_name(:key => child_name)
-                                                            raise "no child named '#{child_name}'" if child.nil? || child.empty?
+                                                            fail "no child named '#{child_name}'" if child.nil? || child.empty?
                                                             child_history_path(child.first, options)
                                                           end,
         /new user page/                                => proc { |options, matches| new_user_path(options) },
@@ -67,7 +67,7 @@ module NavigationHelpers
                                                           end,
         /the edit user page for "(.+)"$/               => proc do |options, matches|
                                                             user = User.by_user_name(:key => matches[1])
-                                                            raise "no user named #{matches[1]}" if user.nil?
+                                                            fail "no user named #{matches[1]}" if user.nil?
                                                             edit_user_path(user)
                                                           end,
         /new field page for "(.+)" for form "(.+)"/    => proc do |options, matches|
@@ -104,7 +104,7 @@ module NavigationHelpers
   def path_to(page_name, options = {})
     format = page_name[/^(?:|the )(\w+) formatted/, 1]
     options.reverse_merge!(:format => format)
-    path_for_cuke_string(page_name, options) || raise("Can't find mapping from \"#{page_name}\" to a path.\nNow, go and add a mapping in #{__FILE__}")
+    path_for_cuke_string(page_name, options) || fail("Can't find mapping from \"#{page_name}\" to a path.\nNow, go and add a mapping in #{__FILE__}")
   end
 
   def path_for_cuke_string(string_to_match, options = {})

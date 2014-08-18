@@ -32,7 +32,7 @@ class AdvancedSearchController < ApplicationController
       children = record_ids.map { |id| Child.get id }
     end
 
-    raise ErrorResponse.bad_request('You must select at least one record to be exported') if record_ids.empty?
+    fail ErrorResponse.bad_request('You must select at least one record to be exported') if record_ids.empty?
 
     results = export_task.new.export(children)
     encrypt_exported_files results, export_filename(children, export_task)

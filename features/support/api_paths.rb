@@ -34,19 +34,19 @@ module NavigationHelpers
       when /saved record page for child with name "(.+)"/
         child_name = Regexp.last_match[1]
         child = Child.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        fail "no child named '#{child_name}'" if child.nil? || child.empty?
         child_path(child.first, options)
 
       when /child record page for "(.+)"/
         child_name = Regexp.last_match[1]
         child = Child.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        fail "no child named '#{child_name}'" if child.nil? || child.empty?
         child_path(child.first, options)
 
       when /change log page for "(.+)"/
         child_name = Regexp.last_match[1]
         child = Child.by_name(:key => child_name)
-        raise "no child named '#{child_name}'" if child.nil? || child.empty?
+        fail "no child named '#{child_name}'" if child.nil? || child.empty?
         child_history_path(child.first, options)
 
       when /new user page/
@@ -92,7 +92,7 @@ module NavigationHelpers
 
       when /the edit user page for "(.+)"$/
         user = User.by_user_name(:key => Regexp.last_match[1])
-        raise "no user named #{Regexp.last_match[1]}" if user.nil?
+        fail "no user named #{Regexp.last_match[1]}" if user.nil?
         edit_user_path(user)
 
       when /new field page for "(.+)"/
@@ -123,7 +123,7 @@ module NavigationHelpers
       #     user_profile_path(User.find_by_login($1))
 
       else
-        raise "Can't find mapping from \"#{page_name}\" to a path.\n" \
+        fail "Can't find mapping from \"#{page_name}\" to a path.\n" \
                   "Now, go and add a mapping in #{__FILE__}"
     end
   end

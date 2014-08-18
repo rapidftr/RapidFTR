@@ -105,7 +105,7 @@ module PhotoHelper
 
   def primary_photo_id=(photo_key)
     unless self['photo_keys'].include?(photo_key)
-      raise I18n.t("errors.models.child.primary_photo_id", :photo_id => photo_key)
+      fail I18n.t("errors.models.child.primary_photo_id", :photo_id => photo_key)
     end
     self['current_photo_key'] = photo_key
   end

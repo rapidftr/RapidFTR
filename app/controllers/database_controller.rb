@@ -32,6 +32,6 @@ class DatabaseController < ApplicationController
   private
 
   def restrict_to_nonproduction
-    raise CanCan::AccessDenied unless Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?
+    fail CanCan::AccessDenied unless Rails.env.android? || Rails.env.test? || Rails.env.development? || Rails.env.cucumber?
   end
 end
