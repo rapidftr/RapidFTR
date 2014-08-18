@@ -36,7 +36,9 @@ begin
 rescue LoadError
 
   # Quality checks not needed when in production
-  desc 'Run all quality metrics'
-  task :all => [:cane, :rubocop]
+  desc 'Run all quality metrics (not available)'
+  task :quality do
+    abort 'Quality rake task is not available in this environment.'
+  end
 
 end
