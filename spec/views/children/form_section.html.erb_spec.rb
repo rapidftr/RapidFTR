@@ -152,7 +152,7 @@ describe "children/_form_section.html.erb", :type => :view do
     end
   end
 
-  # TODO Date picker must be implemented in Advanced Search Page
+  # TODO: Date picker must be implemented in Advanced Search Page
 
   # describe "rendering date field" do
 

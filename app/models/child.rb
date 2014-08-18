@@ -229,7 +229,7 @@ rescue
   end
 
   def self.all_connected_with(user_name)
-    # TODO Investigate why the hash of the objects got different.
+    # TODO: Investigate why the hash of the objects got different.
     (by_user_name(:key => user_name).all + by_created_by(:key => user_name).all).uniq { |child| child.unique_identifier }
   end
 

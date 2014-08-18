@@ -45,11 +45,6 @@ Metrics/PerceivedComplexity:
 Style/ClassVars:
   Enabled: false
 
-# Offense count: 11
-# Configuration parameters: Keywords.
-Style/CommentAnnotation:
-  Enabled: false
-
 # Offense count: 165
 Style/Documentation:
   Enabled: false

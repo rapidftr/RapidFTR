@@ -46,7 +46,7 @@ class FormSection < CouchRest::Model::Base
 
   # If everything goes well when saving, CastedBy items
   # should flag as saved.
-  # TODO move to a monkey patch for CouchRest::Model::Base
+  # TODO: move to a monkey patch for CouchRest::Model::Base
   before_save do
     flag_saved_embedded_properties
   end
@@ -57,7 +57,7 @@ class FormSection < CouchRest::Model::Base
     create_unique_id
     #:directly_set_attributes is set to true when the object is built from the database.
     # flag as saved CastedArray and CastedHash fields.
-    # TODO move to a monkey patch for CouchRest::Model::Base
+    # TODO: move to a monkey patch for CouchRest::Model::Base
     if options[:directly_set_attributes]
       flag_saved_embedded_properties
     end
@@ -273,7 +273,7 @@ class FormSection < CouchRest::Model::Base
 
   # Flag saved CastedBy fields (:document_saved to true) in order to be aware
   # that items were saved or they were loaded from the database.
-  # TODO move to a monkey patch for CouchRest::Model::Base
+  # TODO: move to a monkey patch for CouchRest::Model::Base
   def flag_saved_embedded_properties
     casted_properties = properties_with_values.select { |property, value| value.respond_to?(:casted_by) && value.respond_to?(:casted_by_property) }
     casted_properties.each do |property, value|

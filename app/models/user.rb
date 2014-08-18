@@ -105,7 +105,7 @@ class User < CouchRest::Model::Base
   validates :password, :confirmation => {:if => :password_required? && :password_confirmation_entered?,
                                          :message => I18n.t("errors.models.user.password_mismatch")}
 
-  # FIXME 409s randomly...destroying user records before test as a temp
+  # FIXME: 409s randomly...destroying user records before test as a temp
   validate :is_user_name_unique
 
   before_save :generate_id

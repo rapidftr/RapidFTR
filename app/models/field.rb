@@ -10,7 +10,7 @@ class Field
   # exists or not in the database. The parent object
   # is responsible to set the flag.
   # document_saved nil or false consider the field as new.
-  # TODO move to a monkey patch for CouchRest::Model::Embeddable
+  # TODO: move to a monkey patch for CouchRest::Model::Embeddable
   attr_accessor :document_saved
 
   property :name
@@ -63,7 +63,7 @@ class Field
   end
 
   # Override new? method to not rely on the new? of the parent object.
-  # TODO move to a monkey patch for CouchRest::Model::Embeddable
+  # TODO: move to a monkey patch for CouchRest::Model::Embeddable
   def new?
     !@document_saved
   end

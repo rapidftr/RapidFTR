@@ -9,7 +9,7 @@ describe ChildSearch, :solr => true do
     it "should return all children" do
       child = create :child
       expect(ChildSearch.new.results).to eq [child]
-      # todo: make sure no pagination variables
+      # TODO: make sure no pagination variables
     end
 
     it "should paginate children" do

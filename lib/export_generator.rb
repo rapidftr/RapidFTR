@@ -82,7 +82,7 @@ class ExportGenerator
     return "" if value.blank?
     return value.join(", ") if field.type == Field::CHECK_BOXES
     if child
-      # TODO:
+      # TODO: rubocop:disable CommentAnnotation
       # child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless (child.primary_photo_id.nil? || child.primary_photo_id == "")
       # child['audio_url'] = child_audio_url(child)
 
