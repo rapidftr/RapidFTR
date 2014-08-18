@@ -138,7 +138,6 @@ describe FieldsController, :type => :controller do
       put :change_form, :id => mothers_name_field.name, :form_section_id => family_details_form.unique_id, :destination_form_id => mother_details_form.unique_id
 
       expect(FormSection.get(family_details_form.id).fields.find { |field| field.name == "mothers_name" }).to be_nil
-      updated_field = FormSection.get(mother_details_form.id).fields.find { |field| field.name == "mothers_name" }
       expect(request.flash[:notice]).to eq("Mother's Name moved from Family Details to Mother Details")
       expect(response).to redirect_to(edit_form_section_path(family_details_form.unique_id))
     end

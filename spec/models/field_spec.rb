@@ -6,7 +6,7 @@ describe "Child record field view model", :type => :model do
   before :each do
     FormSection.all.each { |form| form.destroy }
     @field_name = "gender"
-    @field = Field.new :name => "gender", :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON
+    @field = Field.new(:name => "gender", :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON)
   end
 
   describe '#name' do
@@ -16,7 +16,7 @@ describe "Child record field view model", :type => :model do
     end
 
     it "should not be generated when provided" do
-      field = Field.new :name => 'test_name'
+      field = Field.new(:name => 'test_name')
       expect(field.name).to eq('test_name')
     end
   end
@@ -30,12 +30,12 @@ describe "Child record field view model", :type => :model do
   end
 
   it "returns the html options tags for a select box with default option '(Select...)'" do
-    @field = Field.new :type => Field::SELECT_BOX, :display_name => @field_name, :option_strings_text => "option 1\noption 2"
+    @field = Field.new(:type => Field::SELECT_BOX, :display_name => @field_name, :option_strings_text => "option 1\noption 2")
     expect(@field.select_options).to eq([["(Select...)", ""], ["option 1", "option 1"], ["option 2", "option 2"]])
   end
 
   it "should create options from text" do
-    field = Field.new :display_name => "something", :option_strings_text => "tim\nrob"
+    field = Field.new(:display_name => "something", :option_strings_text => "tim\nrob")
     expect(field['option_strings_text']).to eq(nil)
     expect(field.option_strings).to eq(%w(tim rob))
   end
@@ -199,40 +199,40 @@ describe "Child record field view model", :type => :model do
 
   describe "normalize line endings" do
     it "should convert \\r\\n to \\n" do
-      field = Field.new :name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\r\nSudan"
+      field = Field.new(:name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\r\nSudan")
       expect(field.option_strings).to eq(%w(Uganda Sudan))
     end
 
     it "should use \\n as it is" do
-      field = Field.new :name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\nSudan"
+      field = Field.new(:name => "test", :display_name_en => "test", :option_strings_text_en => "Uganda\nSudan")
       expect(field.option_strings).to eq(%w(Uganda Sudan))
     end
 
     it "should convert option_strings to option_strings_text" do
-      field = Field.new :name => "test", :display_name_en => "test", :option_strings => "Uganda\nSudan"
+      field = Field.new(:name => "test", :display_name_en => "test", :option_strings => "Uganda\nSudan")
       expect(field.option_strings_text).to eq("Uganda\nSudan")
     end
 
     it "should convert option_strings to option_strings_text" do
-      field = Field.new :name => "test", :display_name_en => "test", :option_strings => %w(Uganda Sudan)
+      field = Field.new(:name => "test", :display_name_en => "test", :option_strings => %w(Uganda Sudan))
       expect(field.option_strings_text).to eq("Uganda\nSudan")
     end
   end
 
   it "should show that the field is new until the field is saved" do
-    form = FormSection.create! :name => 'test_form', :unique_id => 'test_form'
-    field = Field.new :name => "test_field", :display_name_en => "test_field", :type => Field::TEXT_FIELD
+    form = FormSection.create!(:name => 'test_form', :unique_id => 'test_form')
+    field = Field.new(:name => "test_field", :display_name_en => "test_field", :type => Field::TEXT_FIELD)
     expect(field.new?).to be_truthy
     FormSection.add_field_to_formsection form, field
     expect(field.new?).to be_falsey
   end
 
   it "should show that the field is new after the field fails validation" do
-    form =  FormSection.create! :name => 'test_form2', :unique_id => 'test_form'
-    field = Field.new :name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD
+    form =  FormSection.create!(:name => 'test_form2', :unique_id => 'test_form')
+    field = Field.new(:name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD)
     FormSection.add_field_to_formsection form, field
     # Adding duplicate field.
-    field = Field.new :name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD
+    field = Field.new(:name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD)
     FormSection.add_field_to_formsection form, field
     expect(field.errors.length).to be > 0
     expect(field.errors[:name]).to eq(["Field already exists on this form"])
@@ -243,7 +243,7 @@ describe "Child record field view model", :type => :model do
     # Try to create a FormSection with duplicate fields. That will make fails the save.
     fields = [Field.new(:name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD),
               Field.new(:name => "test_field2", :display_name_en => "test_field", :type => Field::TEXT_FIELD)]
-    form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => fields
+    FormSection.create(:name => 'test_form2', :unique_id => 'test_form', :fields => fields)
     expect(fields.first.errors.length).to be > 0
     expect(fields.first.errors[:name]).to eq(["Field already exists on this form"])
     expect(fields.last.errors.length).to be > 0
@@ -257,7 +257,7 @@ describe "Child record field view model", :type => :model do
     # Create the FormSection with two valid fields.
     fields = [Field.new(:name => "test_field1", :display_name_en => "test_field1", :type => Field::TEXT_FIELD),
               Field.new(:name => "test_field2", :display_name_en => "test_field2", :type => Field::TEXT_FIELD)]
-    form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => fields
+    form = FormSection.create(:name => 'test_form2', :unique_id => 'test_form', :fields => fields)
     expect(fields.first.errors.length).to be == 0
     expect(fields.first.new?).to be_falsey
     expect(fields.last.errors.length).to be == 0
@@ -283,10 +283,10 @@ describe "Child record field view model", :type => :model do
 
   it "should fails save second form section because duplicate name in other form section" do
     field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type => Field::TEXT_FIELD)
-    form = FormSection.create :name => 'test_form1', :unique_id => 'test_form', :fields => [field]
+    FormSection.create(:name => 'test_form1', :unique_id => 'test_form', :fields => [field])
 
     field = Field.new(:name => "test_field1", :display_name_en => "test_field1", :type => Field::TEXT_FIELD)
-    form = FormSection.create :name => 'test_form2', :unique_id => 'test_form', :fields => [field]
+    FormSection.create(:name => 'test_form2', :unique_id => 'test_form', :fields => [field])
     expect(field.errors[:name]).to eq(["Field already exists on form 'test_form1'"])
   end
 

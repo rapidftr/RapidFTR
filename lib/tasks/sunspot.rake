@@ -22,7 +22,7 @@ namespace :sunspot do
       until connected
         begin
           connected = RSolr.connect(:url => Sunspot.config.solr.url).get "admin/ping"
-        rescue => e
+        rescue
           sleep 1
         end
       end

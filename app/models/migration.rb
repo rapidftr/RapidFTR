@@ -24,7 +24,7 @@ class Migration < CouchRest::Model::Base
 
   def self.applied_migrations
     migration_ids = database.documents["rows"].select { |row| !row["id"].include?("_design") }.map { |row| row["id"] }
-    migration_names = migration_ids.map { |id| database.get(id)[:name] }.sort
+    migration_ids.map { |id| database.get(id)[:name] }.sort
   end
 
   def self.pending_migrations

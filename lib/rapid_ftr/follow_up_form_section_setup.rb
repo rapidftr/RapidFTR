@@ -1,7 +1,6 @@
 module RapidFTR
   module FollowUpFormSectionSetup
     def self.reset_definitions
-      form_sections = []
       form = Form.find_by_name(Child::FORM_NAME)
       outcome_of_follow_up_visit_fields = [
         Field.new("name" => "was_child_seen",

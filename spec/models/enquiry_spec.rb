@@ -87,7 +87,6 @@ describe Enquiry, :type => :model do
       end
 
       it "should contain potential matches given one matching child" do
-        enquiry = Enquiry.new
         child = Child.create(:name => "eduardo aquiles", 'created_by' => "me", 'created_organisation' => "stc")
         enquiry = Enquiry.create!(:enquirer_name => "Kisitu", :name => "eduardo")
 

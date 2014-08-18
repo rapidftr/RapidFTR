@@ -5,7 +5,7 @@ describe FormSection, :type => :model do
 
   def create_formsection(stubs = {})
     stubs.reverse_merge!(:fields => [], :save => true, :editable => true, :base_language => "en")
-    @create_formsection = FormSection.new stubs
+    @create_formsection = FormSection.new(stubs)
   end
 
   def new_should_be_called_with(name, value)
@@ -42,7 +42,7 @@ describe FormSection, :type => :model do
     end
 
     it "should not be generated when provided" do
-      f = FormSection.new :unique_id => 'test_form'
+      f = FormSection.new(:unique_id => 'test_form')
       expect(f.unique_id).to eq('test_form')
     end
 
@@ -64,15 +64,15 @@ describe FormSection, :type => :model do
 
     describe "enabled_by_order" do
       it "should bring back sections in order" do
-        second = FormSection.create! :name => 'Second', :order => 2, :unique_id => 'second'
-        first = FormSection.create! :name => 'First', :order => 1, :unique_id => 'first'
-        third = FormSection.create! :name => 'Third', :order => 3, :unique_id => 'third'
+        FormSection.create!(:name => 'Second', :order => 2, :unique_id => 'second')
+        FormSection.create!(:name => 'First', :order => 1, :unique_id => 'first')
+        FormSection.create!(:name => 'Third', :order => 3, :unique_id => 'third')
         expect(FormSection.enabled_by_order.map(&:name)).to eq(%w( First Second Third ))
       end
 
       it "should exclude disabled sections" do
-        expected = FormSection.create! :name => 'Good', :order => 1, :unique_id => 'good'
-        unwanted = FormSection.create! :name => 'Bad', :order => 2, :unique_id => 'bad', :visible => false
+        FormSection.create!(:name => 'Good', :order => 1, :unique_id => 'good')
+        FormSection.create!(:name => 'Bad', :order => 2, :unique_id => 'bad', :visible => false)
         expect(FormSection.enabled_by_order.map(&:name)).to eq(%w(Good))
         expect(FormSection.enabled_by_order.map(&:name)).not_to eq(%w(Bad))
       end
@@ -83,7 +83,7 @@ describe FormSection, :type => :model do
         visible_field = Field.new(:name => "visible_field", :display_name => "Visible Field", :visible => true)
         hidden_field = Field.new(:name => "hidden_field", :display_name => "Hidden Field", :visible => false)
 
-        section = FormSection.new :name => 'section', :order => 1, :unique_id => 'section'
+        section = FormSection.new(:name => 'section', :order => 1, :unique_id => 'section')
         section.fields = [visible_field, hidden_field]
         section.save!
 
@@ -102,7 +102,7 @@ describe FormSection, :type => :model do
     end
 
     it "should save fields" do
-      section = FormSection.new :name => 'somename', :unique_id => "someform"
+      section = FormSection.new(:name => 'somename', :unique_id => "someform")
       section.save!
 
       section.fields = [Field.new(:name => "a_field", :type => "text_field", :display_name => "A Field")]
@@ -129,7 +129,7 @@ describe FormSection, :type => :model do
     end
 
     it "adds base_language to fields in formsection" do
-      field = build :text_area_field, :name => "name"
+      field = build(:text_area_field, :name => "name")
       formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields[2]).to have_key("base_language")
@@ -143,8 +143,8 @@ describe FormSection, :type => :model do
     end
 
     it "should raise an error if adding a field to a non editable form section" do
-      field = build :field
-      formsection = FormSection.new :editable => false
+      field = build(:field)
+      formsection = FormSection.new(:editable => false)
       expect { FormSection.add_field_to_formsection formsection, field }.to raise_error
     end
 
@@ -153,7 +153,7 @@ describe FormSection, :type => :model do
   describe "add_textarea_field_to_formsection" do
 
     it "adds the textarea to the formsection" do
-      field = build :text_area_field, :name => "name"
+      field = build(:text_area_field, :name => "name")
       formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
       FormSection.add_field_to_formsection formsection, field
       expect(formsection.fields.length).to eq(3)
@@ -161,7 +161,7 @@ describe FormSection, :type => :model do
     end
 
     it "saves the formsection with textarea field" do
-      field = build :text_area_field, :name => "name"
+      field = build(:text_area_field, :name => "name")
       formsection = create_formsection
       expect(formsection).to receive(:save)
       FormSection.add_field_to_formsection formsection, field
@@ -238,25 +238,25 @@ describe FormSection, :type => :model do
 
   describe "delete_field" do
     it "should delete editable fields" do
-      @field = build :field
-      form_section = FormSection.new :fields => [@field]
+      @field = build(:field)
+      form_section = FormSection.new(:fields => [@field])
       form_section.delete_field(@field.name)
       expect(form_section.fields).to be_empty
     end
 
     it "should not delete uneditable fields" do
       @field = build(:field, :editable => false)
-      form_section = FormSection.new :fields => [@field]
+      form_section = FormSection.new(:fields => [@field])
       expect { form_section.delete_field(@field.name) }.to raise_error("Uneditable field cannot be deleted")
     end
   end
 
   describe "save fields in given order" do
     it "should save the fields in the given field name order" do
-      @field_1 = build :field, :name => 'orderfield1'
-      @field_2 = build :field, :name => 'orderfield2'
-      @field_3 = build :field, :name => 'orderfield3'
-      form_section = FormSection.create! :name => "some_name", :fields => [@field_1, @field_2, @field_3]
+      @field_1 = build(:field, :name => 'orderfield1')
+      @field_2 = build(:field, :name => 'orderfield2')
+      @field_3 = build(:field, :name => 'orderfield3')
+      form_section = FormSection.create!(:name => "some_name", :fields => [@field_1, @field_2, @field_3])
       form_section.order_fields([@field_2.name, @field_3.name, @field_1.name])
       expect(form_section.fields).to eq([@field_2, @field_3, @field_1])
       expect(form_section.fields.first).to eq(@field_2)
@@ -318,8 +318,8 @@ describe FormSection, :type => :model do
     it "should validate name is unique" do
       same_name = 'Same Name'
       valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :visible => true, :order => 0}
-      FormSection.create! valid_attributes.dup
-      form_section = FormSection.new valid_attributes.dup
+      FormSection.create!(valid_attributes.dup)
+      form_section = FormSection.new(valid_attributes.dup)
       expect(form_section).not_to be_valid
       expect(form_section.errors[:name]).to be_present
       expect(form_section.errors[:unique_id]).to be_present
@@ -327,14 +327,14 @@ describe FormSection, :type => :model do
 
     it "should validate name is unique only within parent form" do
       same_name = 'Same Name'
-      form = build :form
-      other_form = build :form
+      form = build(:form)
+      other_form = build(:form)
       valid_attributes = {:name => same_name, :unique_id => same_name.dehumanize, :description => '', :visible => true, :order => 0, :form => form}
-      FormSection.create! valid_attributes.dup
+      FormSection.create!(valid_attributes.dup)
 
       valid_attributes[:form] = other_form
       valid_attributes[:unique_id] = "some_other_id"
-      form_section = FormSection.new valid_attributes
+      form_section = FormSection.new(valid_attributes)
       expect(form_section).to be_valid
     end
 
@@ -354,7 +354,7 @@ describe FormSection, :type => :model do
     it "should update field as highlighted" do
       attrs = {:field_name => "h1", :form_id => "highlight_form"}
       existing_field = Field.new :name => attrs[:field_name]
-      form = build :form
+      form = build(:form)
       form_section = FormSection.new(:name => "Some Form",
                                      :unique_id => attrs[:form_id],
                                      :fields => [existing_field],
@@ -371,7 +371,7 @@ describe FormSection, :type => :model do
       existing_field = Field.new :name => attrs[:field_name]
       existing_highlighted_field = Field.new :name => "highlighted_field"
       existing_highlighted_field.highlight_with_order 3
-      form = build :form
+      form = build(:form)
       form_section = FormSection.new(:name => "Some Form",
                                      :unique_id => attrs[:form_id],
                                      :fields => [existing_field, existing_highlighted_field],
@@ -410,7 +410,7 @@ describe FormSection, :type => :model do
 
     it 'should find field by id' do
       expected_field = Field.new(:name => "a_field", :type => "text_field", :display_name => "A Field")
-      form_section = FormSection.new :name => 'form_section', :unique_id => "unique_id", :fields => [expected_field]
+      form_section = FormSection.new(:name => 'form_section', :unique_id => "unique_id", :fields => [expected_field])
       form_section.save!
 
       retrieved_field = form_section.get_field_by_name("a_field")
@@ -418,7 +418,7 @@ describe FormSection, :type => :model do
     end
 
     it 'should return nothing when field name does not match' do
-      form_section = FormSection.new :name => 'new_form_section', :unique_id => "new_unique_id"
+      form_section = FormSection.new(:name => 'new_form_section', :unique_id => "new_unique_id")
       form_section.save!
 
       expected_field = form_section.get_field_by_name("some_other_field")
@@ -432,11 +432,11 @@ describe FormSection, :type => :model do
     end
 
     it "should return searchable fields" do
-      text_field = build :text_field, :name => "text_field", :display_name => "Text Field"
-      text_area = build :text_area_field, :name => "text_area", :display_name => "Text Area"
-      select_box = build :select_box_field, :name => "select_box", :display_name => "Select Box"
-      numeric_field = build :numeric_field, :name => "numeric_field", :display_name => "Numeric Field"
-      form_section = create :form_section, :name => 'sortable_form_section', :unique_id => "unique_id", :fields => [text_field, text_area, select_box, numeric_field]
+      text_field = build(:text_field, :name => "text_field", :display_name => "Text Field")
+      text_area = build(:text_area_field, :name => "text_area", :display_name => "Text Area")
+      select_box = build(:select_box_field, :name => "select_box", :display_name => "Select Box")
+      numeric_field = build(:numeric_field, :name => "numeric_field", :display_name => "Numeric Field")
+      create(:form_section, :name => 'sortable_form_section', :unique_id => "unique_id", :fields => [text_field, text_area, select_box, numeric_field])
 
       expect(FormSection.all_sortable_field_names).to eq(%w(text_field text_area select_box))
     end
@@ -444,7 +444,7 @@ describe FormSection, :type => :model do
     it "should not return hidden fields" do
       text_field = Field.new(:name => "visible_text_field", :type => "text_field", :display_name => "Visible Text Field")
       hidden_text_field = Field.new(:name => "hidden_text_field", :type => "text_field", :display_name => "Hidden Text Field", :visible => false)
-      form_section = FormSection.create :name => 'form_section', :unique_id => "unique_id", :fields => [text_field, hidden_text_field]
+      FormSection.create(:name => 'form_section', :unique_id => "unique_id", :fields => [text_field, hidden_text_field])
 
       expect(FormSection.all_sortable_field_names).to eq(["visible_text_field"])
     end
@@ -457,18 +457,18 @@ describe FormSection, :type => :model do
     end
 
     it "should only return visible form sections" do
-      form = create :form, :name => "Form Name"
-      section1 = create :form_section, :form => form
-      section2 = create :form_section, :form => form, :visible => false
+      form = create(:form, :name => "Form Name")
+      section1 = create(:form_section, :form => form)
+      create(:form_section, :form => form, :visible => false)
 
       expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section1])
     end
 
     it "should only return form sections for the form" do
       form = create :form, :name => "Form Name"
-      other_form = create :form, :name => "Other Name"
-      section1 = create :form_section, :form => form
-      section2 = create :form_section, :form => other_form
+      other_form = create(:form, :name => "Other Name")
+      section1 = create(:form_section, :form => form)
+      create(:form_section, :form => other_form)
 
       expect(FormSection.enabled_by_order_for_form("Form Name")).to eq([section1])
     end

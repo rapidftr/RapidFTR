@@ -64,7 +64,7 @@ describe ChildrenController, :type => :controller do
 
     describe 'member' do
       before :each do
-        allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+        allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
         @child = Child.create('last_known_location' => "London", :short_id => 'short_id', :created_by => "uname")
         @child_arg = hash_including("_id" => @child.id)
       end
@@ -323,7 +323,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it 'should not fail if primary_photo_id is not present' do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", :created_by => "uname")
       child.create_unique_id
       allow(Child).to receive(:get).with("37").and_return(child)
@@ -334,7 +334,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should set current photo key as blank instead of nil" do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", :created_by => "uname")
       child.create_unique_id
       allow(Child).to receive(:get).with("37").and_return(child)
@@ -424,7 +424,7 @@ describe ChildrenController, :type => :controller do
       fake_admin_login
     end
     it "should sanitize the parameters if the params are sent as string(params would be as a string hash when sent from mobile)" do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname", :created_at => "Jan 16 2010 14:05:32")
       child.attributes = {'histories' => []}
       child.save!
@@ -441,7 +441,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should update child on a field and photo update" do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
 
       allow(Clock).to receive(:now).and_return(Time.parse("Jan 17 2010 14:05:32"))
@@ -457,7 +457,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should update only non-photo fields when no photo update" do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
 
       put :update, :id => child.id,
@@ -471,7 +471,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should not update history on photo rotation" do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
       expect(Child.get(child.id)["histories"].size).to be 1
 
@@ -491,7 +491,7 @@ describe ChildrenController, :type => :controller do
     end
 
     it "should update flag (cast as boolean) and flag message" do
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo, :created_by => "uname")
       put :update, :id => child.id,
                    :child => {
@@ -507,7 +507,7 @@ describe ChildrenController, :type => :controller do
       current_time = Time.parse("20 Jan 2010 17:10:32")
       allow(Clock).to receive(:now).and_return(current_time)
       allow(current_time).to receive(:getutc).and_return current_time_in_utc
-      allow(User).to receive(:find_by_user_name).with("uname").and_return(user = double('user', :user_name => 'uname', :organisation => 'org'))
+      allow(User).to receive(:find_by_user_name).with("uname").and_return(double('user', :user_name => 'uname', :organisation => 'org'))
       child = Child.create('last_known_location' => "London", 'photo' => uploadable_photo_jeff, :created_by => "uname")
 
       put :update, :id => child.id, :child => {:flag => true, :flag_message => "Test"}

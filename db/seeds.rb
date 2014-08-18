@@ -15,9 +15,9 @@ end
 
 if should_seed? User
   registration_worker = Role.create!(:name => "registration worker", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]])
-  registration_officer = Role.create!(:name => "registration officer", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]])
-  child_protection_specialist = Role.create!(:name => "child protection specialist", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::USERS[:view]])
-  senior_official = Role.create!(:name => "senior official", :permissions => [Permission::REPORTS[:view]])
+  Role.create!(:name => "registration officer", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]])
+  Role.create!(:name => "child protection specialist", :permissions => [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:register], Permission::CHILDREN[:edit], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::USERS[:view]])
+  Role.create!(:name => "senior official", :permissions => [Permission::REPORTS[:view]])
   field_level_admin = Role.create!(:name => "field level admin", :permissions => [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:view], Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:export], Permission::REPORTS[:view], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]])
   system_admin = Role.create!(:name => "system admin", :permissions => [Permission::USERS[:create_and_edit], Permission::USERS[:view], Permission::USERS[:destroy], Permission::USERS[:disable], Permission::ROLES[:create_and_edit], Permission::ROLES[:view], Permission::REPORTS[:view], Permission::FORMS[:manage], Permission::SYSTEM[:highlight_fields], Permission::SYSTEM[:system_users], Permission::DEVICES[:blacklist], Permission::DEVICES[:replications]])
 

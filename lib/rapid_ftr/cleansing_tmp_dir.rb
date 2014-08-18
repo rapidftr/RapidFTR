@@ -3,7 +3,7 @@ module CleansingTmpDir
 
   class << self
     def dir_name
-      File.join Rails.root, 'tmp', 'cleanup'
+      File.join(Rails.root, 'tmp', 'cleanup')
     end
 
     def dir
@@ -12,7 +12,7 @@ module CleansingTmpDir
     end
 
     def temp_file_name
-      filename = File.join dir, UUIDTools::UUID.random_create.to_s
+      File.join(dir, UUIDTools::UUID.random_create.to_s)
     end
 
     def schedule(scheduler)

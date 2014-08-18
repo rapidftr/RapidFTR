@@ -199,7 +199,7 @@ class Replication < CouchRest::Model::Base
     response = post_uri uri, post_params
     self.remote_couch_config = JSON.parse response.body
     true
-  rescue => e
+  rescue
     errors.add(:save_remote_couch_config, I18n.t("errors.models.replication.save_remote_couch_config"))
   end
 

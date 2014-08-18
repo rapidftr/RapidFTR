@@ -36,7 +36,7 @@ module ApplicationHelper
   end
 
   def translated_permissions
-    permissions = Permission.hashed_values.map do |group, permissions|
+    Permission.hashed_values.map do |group, permissions|
       [
         I18n.t(group, :scope => "permissions.group"),
         permissions.map do |permission|

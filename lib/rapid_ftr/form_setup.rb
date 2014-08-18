@@ -12,9 +12,9 @@ module RapidFTR
 
     def self.default_sections_for(form_name)
       if form_name == Child::FORM_NAME
-        form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
+        RapidFTR::ChildrenFormSectionSetup.build_form_sections
       elsif form_name == Enquiry::FORM_NAME
-        form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
+        RapidFTR::EnquiriesFormSectionSetup.build_form_sections
       end
     end
 

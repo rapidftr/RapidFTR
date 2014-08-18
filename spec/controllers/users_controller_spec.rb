@@ -72,7 +72,7 @@ describe UsersController, :type => :controller do
 
     it "should return error if user is not authorized" do
       fake_login
-      mock_user = stub_model User
+      stub_model User
       get :index
       expect(response).to be_forbidden
     end
