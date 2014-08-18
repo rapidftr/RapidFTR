@@ -10,6 +10,40 @@ Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'features/step_definitions/*.rb'
 
+Metrics/BlockNesting:
+  Max: 3
+
+# TODO: Lower to 100
+Metrics/ClassLength:
+  CountComments: false
+  Max: 250
+
+# TODO: Lower to 6
+Metrics/CyclomaticComplexity:
+  Max: 37
+
+# TODO: Lower to 80
+Metrics/LineLength:
+  Max: 455
+  AllowURI: true
+
+# TODO: Lower to 10
+Metrics/MethodLength:
+  CountComments: false
+  Max: 208
+
+Metrics/ParameterLists:
+  Max: 5
+  CountKeywordArgs: true
+
+# TODO: Lower to 7
+Metrics/PerceivedComplexity:
+  Max: 26
+
+# Offense count: 165
+Style/Documentation:
+  Enabled: false
+
 Style/DotPosition:
   EnforcedStyle: trailing
 
