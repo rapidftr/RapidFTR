@@ -12,7 +12,7 @@ describe 'children/_date_field.html.erb', :type => :view do
                            :type => 'date_field',
                            :help_text => 'This is my help text'
 
-    render :partial => 'children/date_field', :locals => {:date_field => date_field}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'shared/date_field', :locals => {:date_field => date_field, :model => @child}, :formats => [:html], :handlers => [:erb]
     expect(rendered).to have_tag('img.vtip')
   end
 
@@ -21,7 +21,7 @@ describe 'children/_date_field.html.erb', :type => :view do
                            :display_name => 'field name',
                            :type => 'date_field'
 
-    render :partial => 'children/date_field', :locals => {:date_field => date_field}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'shared/date_field', :locals => {:date_field => date_field, :model => @child}, :formats => [:html], :handlers => [:erb]
     expect(rendered).not_to have_tag('img.vtip')
   end
 
@@ -31,9 +31,8 @@ describe 'children/_date_field.html.erb', :type => :view do
                            :type => 'date_field',
                            :help_text => 'This is my help text'
 
-    render :partial => 'children/date_field', :locals => {:date_field => date_field}, :formats => [:html], :handlers => [:erb]
+    render :partial => 'shared/date_field', :locals => {:date_field => date_field, :model => @child}, :formats => [:html], :handlers => [:erb]
 
     expect(rendered).to be_include("dateFormat: 'dd/mm/yy'")
-
   end
 end

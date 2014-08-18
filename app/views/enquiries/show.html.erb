@@ -1,0 +1,74 @@
+<% content_for :javascript do %>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $(".profile-image .image a").click(function (event) {
+                $('.thumbnails .thumbnail a')[0].click();
+                return false;
+            });
+
+            $(".accordion").accordion({ header: "h2", autoHeight: false, collapsible: true, active: false });
+
+            $(".profile-tools .mark-as-form").hide();
+
+            $(".profile-tools .flag a").click(function () {
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
+            });
+
+            $(".profile-tools .reunited a").click(function () {
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
+            });
+            $(".profile-tools .investigated a").click(function () {
+                $(this).parent().siblings('form').children('.mark-as-form').toggle();
+            });
+
+            $('.sub_export_record').hide();
+
+            $('.export_record_link').click(function (e) {
+                e.preventDefault();
+            });
+
+            $('.export_record').click(function (e) {
+                var $sub = $(this).find(".sub_export_record");
+
+                if ($sub.is(":hidden")) {
+                    $sub.slideDown("slow");
+                }
+                else {
+                    $sub.hide();
+                }
+            });
+
+        });
+    </script>
+<% end %>
+
+<h1 class="float_left no_border"><%= link_to t("enquiry.label"), enquiries_path %> &gt; <%= @enquiry.short_id %></h1>
+
+<% if can? :update, @enquiry %>
+    <%= link_to content_tag(:span, t("buttons.edit"), :class => 'edit'), edit_enquiry_path(@enquiry), :class => 'btn' %>
+<% end %>
+
+<div class="clearfix"></div>
+
+<div id='interviewer_details' class="filter_bar">
+  <h3><%= t("enquiry.registered_by") %>
+    : <%= @enquiry['created_by'] %> <%= link_to_update_info(@enquiry) %> <%= t("preposition.on_label") %> <%= @current_user.localize_date(@enquiry['created_at']) %></h3>
+  <% if @enquiry['last_updated_at'] %>
+      <h3><%= t("enquiry.last_updated") %>: <%= @current_user.localize_date(@enquiry['last_updated_at']) %> </h3>
+  <% end %>
+  <% if @enquiry['posted_from']=="Mobile" %>
+      <h3><%= t("enquiry.posted_from_mobile") %> <%= @current_user.localize_date(@enquiry['posted_at']) %> </h3>
+  <% end %>
+</div>
+<div class="page-content-new">
+
+  <div class="side-tab">
+    <%= render :partial => "shared/tabs", :object => @form_sections %>
+  </div>
+
+  <div class="side-tab-content">
+    <div class="clearfix"></div>
+    <%= render :partial => "shared/show_form_section", :locals => {:model => @enquiry} %>
+  </div>
+
+</div>

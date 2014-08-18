@@ -5,6 +5,8 @@ describe Enquiry, :type => :model do
   before :each do
     Enquiry.all.each { |e| e.destroy }
     Sunspot.remove_all!(Child)
+
+    allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
   end
 
   describe 'validation' do

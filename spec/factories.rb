@@ -70,6 +70,16 @@ FactoryGirl.define do
     end
   end
 
+  factory :enquiry, :traits => [:model] do
+    unique_identifier { counter.to_s }
+    enquirer_name { "Test Enquirer #{counter}" }
+    child_name { "Test Enquirer #{counter}" }
+    created_by { 'test_user' }
+    created_at { Time.now.utc.to_s }
+
+    initialize_with { new(attributes) }
+  end
+
   factory :role, :traits => [:model] do
     name { "test_role_#{counter}" }
     description 'test description'

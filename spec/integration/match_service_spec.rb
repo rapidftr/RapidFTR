@@ -14,10 +14,9 @@ describe MatchService, :type => :request, :solr => true do
       build(:text_field, :name => 'birthplace'),
       build(:text_field, :name => 'languages')
     ], :form => form
-  end
-
-  before :each do
     Sunspot.remove_all(Child)
+
+    allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
   end
 
   it "should match children from a country given enquiry criteria with key different from child's country key " do

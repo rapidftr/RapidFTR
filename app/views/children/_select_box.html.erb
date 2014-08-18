@@ -1,8 +1,0 @@
-<p>
-  <span class="tool-tip-label">
-	<%= label_tag select_box.tag_name_attribute, t(select_box.name, :default => select_box.display_name), :class=>'key'  %>
-  </span>
-<%= select_tag select_box.tag_name_attribute, options_for_select(select_box.select_options, (@child[select_box.name] || '')) %>
-
-  <%= image_tag "new/icon_help.png", title: select_box.help_text, class: 'tool-tip-icon vtip' if select_box.help_text.present? %>
-</p>

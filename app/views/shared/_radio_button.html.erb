@@ -5,8 +5,8 @@
 
 
     <% radio_button.options.each do |option| %>
-          <%= radio_button_tag radio_button.tag_name_attribute, option.option_name, option.option_name == @child[radio_button.name] %>
-          <%= label_tag option.tag_id, option.option_name %>
+          <%= radio_button_tag radio_button.tag_name_attribute(model), option.option_name, option.option_name == model[radio_button.name] %>
+          <%= label_tag option.tag_id(model), option.option_name %>
     <% end %>
 
   <%= image_tag "new/icon_help.png", title: radio_button.help_text, class: 'tool-tip-icon vtip' if radio_button.help_text.present? %>

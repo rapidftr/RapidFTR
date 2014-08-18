@@ -1,0 +1,9 @@
+
+<fieldset id="tab_<%= form_section.section_name %>" class="<%= form_section.section_name %> tab">
+  <%= render :partial => "shared/form_section_info", :locals => {:form_section => form_section} %>
+
+  <% (form_section.fields.select {|field| field.visible? }).each do |field| %>
+        <%= render :partial => "shared/#{field.type}", :locals => {:model => model}, :object => field %>
+  <% end %>
+
+</fieldset>

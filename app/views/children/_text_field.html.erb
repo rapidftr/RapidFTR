@@ -1,8 +1,0 @@
-<p>
-  <span class="tool-tip-label">
-      <%= label_tag text_field.tag_name_attribute, t(text_field.name, :default => text_field.display_name), :class=>'key' %>
-  </span>
-  <%= text_field_tag text_field.tag_name_attribute, @child[text_field.name] %>
-
-  <%= image_tag "new/icon_help.png", title: text_field.help_text, class: 'tool-tip-icon vtip' if text_field.help_text.present? %>
-</p>

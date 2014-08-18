@@ -1,4 +1,6 @@
-<% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Child)} %>
+<% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Child) unless export_task.id.nil? } %>
+
+
 <div class="btn dropdown_btn btn_export">
   <span class="export">
     <a href="#"> <%= t("children.export") %> </a>

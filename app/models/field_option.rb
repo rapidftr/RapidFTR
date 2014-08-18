@@ -14,11 +14,11 @@ class FieldOption
     @option_name = option
   end
 
-  def tag_name_attribute
-    "child[#{@field_name}][#{@option_name}]"
+  def tag_name_attribute(model)
+    "#{model.class.name.downcase}[#{@field_name}][#{@option_name}]"
   end
 
-  def tag_id
-    "child_#{@field_name}_#{@option_name.dehumanize}"
+  def tag_id(model)
+    "#{model.class.name.downcase}_#{@field_name}_#{@option_name.dehumanize}"
   end
 end

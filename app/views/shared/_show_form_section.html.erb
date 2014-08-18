@@ -1,0 +1,13 @@
+<% @form_sections.each do |section| %>
+
+    <fieldset id='tab_<%= section.section_name.underscore %>' class='<%= section.section_name %> tab '>
+      <div class="clearfix"></div>
+
+      <%= render :partial => "shared/form_section_info", :locals => {:form_section => section} %>
+
+      <% (section.fields.select { |field| field.visible? }).each do |field| %>
+          <%= render :partial => "shared/field_display_#{field.display_type}", :locals => {:field => field, :model => model} %>
+      <% end %>
+
+    </fieldset>
+<% end %>

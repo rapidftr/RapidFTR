@@ -5,11 +5,12 @@
   	<%= hidden_field_tag "child[posted_from]", "Browser" %>
     <%= error_messages_for :child %>
       <div class="side-tab">
-        <%= render :partial => "tabs", :object => @form_sections %>
+        <%= render :partial => "shared/tabs", :object => @form_sections %>
       </div>
+
       <div class="side-tab-content">
         <div class="clearfix"></div>
-        <%= render :partial => "form_section", :collection => @form_sections %>
+        <%= render :partial => "shared/form_section",:locals => { model: @child}, :collection => @form_sections %>
         <div class="btn_panel">  
             <%= discard_button :back %>
             <%= submit_button %>    
