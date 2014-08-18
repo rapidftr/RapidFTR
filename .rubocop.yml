@@ -10,6 +10,9 @@ Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'features/step_definitions/*.rb'
 
+Style/GuardClause:
+  MinBodyLength: 4
+
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
