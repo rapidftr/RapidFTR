@@ -53,9 +53,9 @@ describe "children/_form_section.html.erb", :type => :view do
         @child = Child.new
         render :partial => 'children/form_section', :locals => {:form_section => @form_section}, :formats => [:html], :handlers => [:erb]
 
-        @form_section.fields.each do |field|
-          expect(rendered).to be_include("<label class=\"key\" for=\"#{field.tag_id}\">")
-          expect(rendered).to be_include("<input id=\"#{field.tag_id}\" name=\"#{field.tag_name_attribute}\" type=\"text\" />")
+        @form_section.fields.each do |f|
+          expect(rendered).to be_include("<label class=\"key\" for=\"#{f.tag_id}\">")
+          expect(rendered).to be_include("<input id=\"#{f.tag_id}\" name=\"#{f.tag_name_attribute}\" type=\"text\" />")
         end
       end
     end

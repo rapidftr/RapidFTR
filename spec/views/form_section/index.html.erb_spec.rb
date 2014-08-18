@@ -12,20 +12,20 @@ end
 
 def should_have_description(form_section)
   row = @searchable_response.form_section_row_for form_section.unique_id
-  cell = row.search("td").find { |cell| cell.inner_html.strip == @form_section_1.description }
+  cell = row.search("td").find { |td| td.inner_html.strip == @form_section_1.description }
   expect(cell).not_to be_nil
 end
 
 def should_have_enable_or_disable_checkbox(form_section, visible)
   row = @searchable_response.form_section_row_for form_section.unique_id
-  cell = row.search("td").find { |cell| cell.inner_html.to_s.include? "sections_" + form_section.unique_id }
+  cell = row.search("td").find { |td| td.inner_html.to_s.include? "sections_" + form_section.unique_id }
   expect(cell.search("input").to_s.include? "checked=\"checked\"").to eq(visible)
   expect(cell).not_to be_nil
 end
 
 def should_not_have_enable_or_disable_checkbox(form_section)
   row = @searchable_response.form_section_row_for form_section.unique_id
-  cell = row.search("td").find { |cell| cell.inner_html.to_s.include? "sections_" + form_section.unique_id }
+  cell = row.search("td").find { |td| td.inner_html.to_s.include? "sections_" + form_section.unique_id }
   expect(cell).to be_nil
 end
 

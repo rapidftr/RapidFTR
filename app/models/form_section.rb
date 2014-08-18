@@ -158,7 +158,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def update_field_as_highlighted(field_name)
-    field = fields.find { |field| field.name == field_name }
+    field = fields.find { |f| f.name == field_name }
     existing_max_order = form.highlighted_fields.
         map(&:highlight_information).
         map(&:order).
@@ -169,7 +169,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def remove_field_as_highlighted(field_name)
-    field = fields.find { |field| field.name == field_name }
+    field = fields.find { |f| f.name == field_name }
     field.unhighlight
     save
   end
@@ -187,7 +187,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def delete_field(field_to_delete)
-    field = fields.find { |field| field.name == field_to_delete }
+    field = fields.find { |f| f.name == field_to_delete }
     fail I18n.t("errors.models.form_section.delete_field") unless field.editable?
     if field
       field_index = fields.index(field)

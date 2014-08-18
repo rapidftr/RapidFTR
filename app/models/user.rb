@@ -185,7 +185,7 @@ class User < CouchRest::Model::Base
     # attr_accessor devices field change.
     attribute_will_change!("devices")
     @devices = device_hashes.map do |device_hash|
-      device = all_devices.find { |device| device.imei == device_hash["imei"] }
+      device = all_devices.find { |d| d.imei == device_hash["imei"] }
       device.blacklisted = device_hash["blacklisted"] == "true"
       device
     end
