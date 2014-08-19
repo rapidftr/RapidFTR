@@ -59,6 +59,11 @@ Style/IfUnlessModifier:
 Style/Lambda:
   Enabled: false
 
+Style/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+    - have_
+
 Style/RegexpLiteral:
   Exclude:
     - 'features/step_definitions/*.rb'

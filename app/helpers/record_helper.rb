@@ -116,7 +116,7 @@ module RecordHelper
   end
 
   # TODO: Refactor, move to Field class as "empty?"
-  def is_filled_in?(field)
+  def filled_in?(field)
     (!(self[field.name].nil? || self[field.name].empty? || self[field.name].to_s.empty?)) rescue false
   end
 

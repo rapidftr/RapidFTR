@@ -79,8 +79,8 @@ RapidFTR::Application.routes.draw do
     end
 
     controller :device, :defaults => {:format => :json} do
-      get 'is_blacklisted', :action => 'is_blacklisted'
-      get 'is_blacklisted/:imei', :action => 'is_blacklisted'
+      get 'is_blacklisted', :action => 'blacklisted'
+      get 'is_blacklisted/:imei', :action => 'blacklisted'
     end
 
     controller :sessions, :defaults => {:format => :json} do

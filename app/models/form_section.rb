@@ -178,14 +178,6 @@ class FormSection < CouchRest::Model::Base
     unique_id
   end
 
-  def is_first(field_to_check)
-    field_to_check == fields.at(0)
-  end
-
-  def is_last(field_to_check)
-    field_to_check == fields.at(fields.length - 1)
-  end
-
   def delete_field(field_to_delete)
     field = fields.find { |f| f.name == field_to_delete }
     fail I18n.t('errors.models.form_section.delete_field') unless field.editable?

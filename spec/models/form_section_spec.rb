@@ -363,7 +363,7 @@ describe FormSection, :type => :model do
       allow(FormSection).to receive(:all).and_return([form_section])
       form_section.update_field_as_highlighted attrs[:field_name]
       expect(existing_field.highlight_information.order).to eq(1)
-      expect(existing_field.is_highlighted?).to be_truthy
+      expect(existing_field).to be_highlighted
     end
 
     it 'should increment order of the field to be highlighted' do
@@ -379,7 +379,7 @@ describe FormSection, :type => :model do
       allow(form).to receive(:highlighted_fields).and_return([existing_highlighted_field])
       allow(FormSection).to receive(:all).and_return([form_section])
       form_section.update_field_as_highlighted attrs[:field_name]
-      expect(existing_field.is_highlighted?).to be_truthy
+      expect(existing_field).to be_highlighted
       expect(existing_field.highlight_information.order).to eq(4)
     end
 
@@ -390,7 +390,7 @@ describe FormSection, :type => :model do
                              :fields => [existing_highlighted_field])
       allow(FormSection).to receive(:all).and_return([form])
       form.remove_field_as_highlighted existing_highlighted_field.name
-      expect(existing_highlighted_field.is_highlighted?).to be_falsey
+      expect(existing_highlighted_field).not_to be_highlighted
     end
 
     describe 'formatted hash' do

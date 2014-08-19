@@ -128,7 +128,7 @@ class Field
     select_options + @options.map { |option| [option.option_name, option.option_name] }
   end
 
-  def is_highlighted?
+  def highlighted?
     highlight_information[:highlighted]
   end
 

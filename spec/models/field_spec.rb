@@ -130,20 +130,20 @@ describe 'Child record field view model', :type => :model do
 
     it 'should initialize with empty highlight information' do
       field = Field.new(:name => 'No_highlight')
-      expect(field.is_highlighted?).to be_falsey
+      expect(field).not_to be_highlighted
     end
 
     it 'should set highlight information' do
       field = Field.new(:name => 'highlighted')
       field.highlight_with_order 6
-      expect(field.is_highlighted?).to be_truthy
+      expect(field).to be_highlighted
     end
 
     it 'should unhighlight a field' do
       field = Field.new(:name => 'new_highlighted')
       field.highlight_with_order 1
       field.unhighlight
-      expect(field.is_highlighted?).to be_falsey
+      expect(field).not_to be_highlighted
     end
   end
 
