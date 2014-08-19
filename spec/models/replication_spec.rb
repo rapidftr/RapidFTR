@@ -336,7 +336,7 @@ describe Replication, :type => :model do
   end
 
   def delete_all_docs(db)
-    all_docs(db).each { |doc| db.delete_doc doc rescue nil }
+    all_docs(db).each { |doc| db.delete_doc(doc) rescue nil }
   end
 
   def wait_for_doc(db, prop, value, present = true, seconds = 60)

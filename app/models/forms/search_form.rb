@@ -24,7 +24,7 @@ module Forms
       criteria_list = criteria_hash.is_a?(Hash) ? criteria_hash.values : criteria_hash
 
       @criteria = criteria_list.select do |criterion|
-        (criterion[:value].present? && criterion[:field].present?) rescue false
+        criterion[:value].present? && criterion[:field].present?
       end
 
       @system_criteria = params.slice(*SYSTEM_CRITERIA).select { |_k, v| v.present? }

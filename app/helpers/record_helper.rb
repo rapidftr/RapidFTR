@@ -112,7 +112,7 @@ module RecordHelper
   end
 
   def original_data
-    (@original_data ||= Child.get(id) rescue nil) || self
+    (@original_data ||= Child.get(id)) || self
   end
 
   # TODO: Refactor, move to Field class as "empty?"

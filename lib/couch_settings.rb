@@ -83,7 +83,12 @@ class CouchSettings
   end
 
   def ssl_enabled_for_couch?
-    @ssl_enabled_for_couch ||= with_ssl { authenticate username, password } rescue false
+    return @ssl_enabled_for_couch if defined?(@ssl_enabled_for_couch)
+    @ssl_enabled_for_couch = begin
+      with_ssl { authenticate username, password }
+    rescue
+      false
+    end
   end
 
   def databases
