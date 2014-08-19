@@ -32,7 +32,7 @@ class Migration < CouchRest::Model::Base
   end
 
   def self.migration_dir
-    @@migration_dir ||= Rails.root.join MIGRATIONS_DIR
+    @migration_dir ||= Rails.root.join(MIGRATIONS_DIR)
   end
 
   def self.apply_migration(file)

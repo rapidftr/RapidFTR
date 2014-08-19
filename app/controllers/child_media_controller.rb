@@ -1,4 +1,6 @@
 class ChildMediaController < ApplicationController
+  NO_PHOTO_FORMAT = 'jpg'
+  NO_PHOTO_CLIP = File.binread(Rails.root.join("app/assets/images/no_photo_clip.#{NO_PHOTO_FORMAT}"))
   helper :children
   before_action :find_child
   before_action :find_photo_attachment, :only => [:show_photo, :show_resized_photo, :show_thumbnail]
@@ -58,8 +60,7 @@ class ChildMediaController < ApplicationController
   end
 
   def no_photo_attachment
-    @@no_photo_clip ||= File.binread(File.join(Rails.root, 'app/assets/images/no_photo_clip.jpg'))
-    FileAttachment.new 'no_photo', 'image/jpg', @@no_photo_clip
+    FileAttachment.new('no_photo', "image/#{NO_PHOTO_FORMAT}", NO_PHOTO_CLIP)
   end
 
   def audio_filename(attachment)

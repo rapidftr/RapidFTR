@@ -2,11 +2,12 @@ require 'csv'
 require 'prawn/measurement_extensions'
 require 'prawn/layout'
 
-CHILD_IDENTIFIERS = %w(unique_identifier short_id)
-CHILD_METADATA = %w(created_by created_organisation posted_at last_updated_by_full_name last_updated_at)
-CHILD_STATUS = ['Suspect status', 'Reunited status']
-
 class ExportGenerator
+  CHILD_IDENTIFIERS = %w(unique_identifier short_id)
+  CHILD_METADATA = %w(created_by created_organisation posted_at last_updated_by_full_name last_updated_at)
+  CHILD_STATUS = ['Suspect status', 'Reunited status']
+  NO_PHOTO_FORMAT = 'jpg'
+  NO_PHOTO_CLIP = File.binread("app/assets/images/no_photo_clip.#{NO_PHOTO_FORMAT}")
   class Export
     attr_accessor :data, :options
 
@@ -105,8 +106,7 @@ class ExportGenerator
     if child.primary_photo
       render_image(child.primary_photo.data)
     else
-      @@no_photo_clip = File.binread('app/assets/images/no_photo_clip.jpg')
-      @attachment = FileAttachment.new('no_photo', 'image/jpg', @@no_photo_clip)
+      @attachment = FileAttachment.new('no_photo', "image/#{NO_PHOTO_FORMAT}", NO_PHOTO_CLIP)
       render_image(@attachment.data)
     end
     @pdf.move_down 25
