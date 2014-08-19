@@ -225,7 +225,7 @@ describe 'Child record field view model', :type => :model do
     field = Field.new(:name => 'test_field', :display_name_en => 'test_field', :type => Field::TEXT_FIELD)
     expect(field.new?).to be_truthy
     FormSection.add_field_to_formsection form, field
-    expect(field.new?).to be_falsey
+    expect(field).not_to be_new
   end
 
   it 'should show that the field is new after the field fails validation' do
@@ -260,9 +260,9 @@ describe 'Child record field view model', :type => :model do
               Field.new(:name => 'test_field2', :display_name_en => 'test_field2', :type => Field::TEXT_FIELD)]
     form = FormSection.create(:name => 'test_form2', :unique_id => 'test_form', :fields => fields)
     expect(fields.first.errors.length).to be == 0
-    expect(fields.first.new?).to be_falsey
+    expect(fields.first).not_to be_new
     expect(fields.last.errors.length).to be == 0
-    expect(fields.last.new?).to be_falsey
+    expect(fields.last).not_to be_new
 
     # Update the first one to have the same name of the second,
     # This make fails saving the FormSection.
@@ -273,8 +273,8 @@ describe 'Child record field view model', :type => :model do
     expect(fields.first.errors[:name]).to eq(['Field already exists on this form'])
 
     # because field already came from the database should remains false
-    expect(fields.first.new?).to be_falsey
-    expect(fields.last.new?).to be_falsey
+    expect(fields.first).not_to be_new
+    expect(fields.last).not_to be_new
 
     # Fix the field and save again
     fields.first.name = 'Something_else'

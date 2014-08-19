@@ -34,7 +34,7 @@ describe Forms::StandardFormsForm do
       allow(RapidFTR::ChildrenFormSectionSetup).to receive(:build_form_sections).and_return([form_section])
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
       child_form_sections = forms[CHILD_FORM_INDEX].sections
-      expect(child_form_sections.first.disabled).to be_falsey
+      expect(child_form_sections.first.disabled).to be false
     end
 
     it 'should not disable enquiry form sections by default' do
@@ -42,7 +42,7 @@ describe Forms::StandardFormsForm do
       allow(RapidFTR::EnquiriesFormSectionSetup).to receive(:build_form_sections).and_return([form_section])
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
       form_sections = forms[ENQUIRY_FORM_INDEX].sections
-      expect(form_sections.first.disabled).to be_falsey
+      expect(form_sections.first.disabled).to be false
     end
 
     it 'should disable already existing enquiry form sections' do
@@ -73,7 +73,7 @@ describe Forms::StandardFormsForm do
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
       child_form_sections = forms[CHILD_FORM_INDEX].sections
       child_form_sections.each do |section|
-        section.fields.each { |field| expect(field.disabled).to be_falsey }
+        section.fields.each { |field| expect(field.disabled).to be false }
       end
     end
 
@@ -81,7 +81,7 @@ describe Forms::StandardFormsForm do
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
       form_sections = forms[ENQUIRY_FORM_INDEX].sections
       form_sections.each do |section|
-        section.fields.each { |field| expect(field.disabled).to be_falsey }
+        section.fields.each { |field| expect(field.disabled).to be false }
       end
     end
 
@@ -99,7 +99,7 @@ describe Forms::StandardFormsForm do
       existing_field = existing_form_section.fields.first
       expect(existing_field.disabled).to be(true)
       existing_form_section.fields[1..-1].each do |f|
-        expect(f.disabled).to be_falsey
+        expect(f.disabled).to be false
       end
     end
   end

@@ -200,7 +200,7 @@ describe FormSection, :type => :model do
   describe 'perm_visible' do
     it 'should not be perm_enabled by default' do
       formsection = FormSection.new
-      expect(formsection.perm_visible?).to be_falsey
+      expect(formsection).not_to be_perm_visible
     end
 
     it 'should be perm_visible when set' do
@@ -212,7 +212,7 @@ describe FormSection, :type => :model do
   describe 'fixed_order' do
     it 'should not be fixed)order by default' do
       formsection = FormSection.new
-      expect(formsection.fixed_order?).to be_falsey
+      expect(formsection).not_to be_fixed_order
     end
 
     it 'should be fixed_order when set' do
@@ -224,7 +224,7 @@ describe FormSection, :type => :model do
   describe 'perm_enabled' do
     it 'should not be perm_enabled by default' do
       formsection = FormSection.new
-      expect(formsection.perm_enabled?).to be_falsey
+      expect(formsection).not_to be_perm_enabled
     end
 
     it 'should be perm_enabled when set' do

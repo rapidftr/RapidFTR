@@ -35,7 +35,7 @@ describe User, :type => :model do
 
     it 'should default disabled to false' do
       user = User.new :disabled => nil
-      expect(user.disabled).to be_falsey
+      expect(user.disabled).to be_nil
     end
 
     it 'should generate id' do
@@ -98,12 +98,12 @@ describe User, :type => :model do
 
   it "can't authenticate with the wrong password" do
     user = create :user, :password => 'onepassword'
-    expect(user.authenticate('otherpassword')).to be_falsey
+    expect(user.authenticate('otherpassword')).to be false
   end
 
   it "can't authenticate if disabled" do
     user = create :user, :disabled => 'true', :password => 'thepass'
-    expect(user.authenticate('thepass')).to be_falsey
+    expect(user.authenticate('thepass')).to be false
   end
 
   it "can't look up password in database" do
@@ -150,7 +150,7 @@ describe User, :type => :model do
     user = create :user
     user.add_mobile_login_event('an imei', 'a mobile')
 
-    expect(Device.all.all? { |device| device.blacklisted? }).to be_falsey
+    expect(Device.all.all? { |device| device.blacklisted? }).to be false
   end
 
   it 'should save blacklisted devices to the device list' do
