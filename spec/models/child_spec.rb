@@ -960,7 +960,7 @@ describe Child, :type => :model do
 
     it 'should be true if was created and not updated' do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
-      expect(child.has_one_interviewer?).to be_truthy
+      expect(child).to have_one_interviewer
     end
 
     it 'should be true if was created and updated by the same person' do
@@ -976,7 +976,7 @@ describe Child, :type => :model do
                              'user_name' => 'john',
                              'datetime' => '03/02/2011 21:33'}]
       child['last_updated_by'] = 'john'
-      expect(child.has_one_interviewer?).to be_truthy
+      expect(child).to have_one_interviewer
     end
 
     it 'should be false if created by one person and updated by another' do
@@ -998,7 +998,7 @@ describe Child, :type => :model do
     it 'should be false if histories is empty' do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = []
-      expect(child.has_one_interviewer?).to be_truthy
+      expect(child).to have_one_interviewer
     end
 
   end
@@ -1063,7 +1063,7 @@ describe Child, :type => :model do
         child_duplicate = Child.create('name' => 'Jaco', 'unique_identifier' => 'jacoxxabcde', 'short_id' => 'abcde12', 'created_by' => 'me', 'created_organisation' => 'stc')
         child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id' => 'nique12', 'created_by' => 'me', 'created_organisation' => 'stc')
         child_duplicate.mark_as_duplicate child_active['short_id']
-        expect(child_duplicate.duplicate?).to be_truthy
+        expect(child_duplicate).to be_duplicate
         expect(child_duplicate.duplicate_of).to eq(child_active.id)
       end
 
@@ -1077,7 +1077,7 @@ describe Child, :type => :model do
         child_duplicate = Child.create('name' => 'Jaco', 'unique_identifier' => 'jacoxxabcde', 'short_id' => 'abcde12', 'created_by' => 'me', 'created_organisation' => 'stc')
         child_active = Child.create('name' => 'Jacobus', 'unique_identifier' => 'jacobusxxxunique', 'short_id' => 'nique12', 'created_by' => 'me', 'created_organisation' => 'stc')
         child_duplicate.mark_as_duplicate child_active['short_id']
-        expect(child_duplicate.duplicate?).to be_truthy
+        expect(child_duplicate).to be_duplicate
         expect(child_duplicate.duplicate_of).to eq(child_active.id)
       end
     end

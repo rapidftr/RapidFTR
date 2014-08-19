@@ -272,7 +272,7 @@ describe Replication, :type => :model do
       @rep['_id'] = nil
       @rep.needs_reindexing = false
       @rep.save
-      expect(@rep.needs_reindexing).to be_truthy
+      expect(@rep.needs_reindexing).to be true
     end
 
     it 'should set needs reindexing to true when starting replication' do

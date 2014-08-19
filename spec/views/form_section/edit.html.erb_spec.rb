@@ -7,7 +7,7 @@ describe 'form_section/edit.html.erb', :type => :view do
     assign(:form, form)
   end
 
-  it 'should not allow to show/hide fields for non editable formsections' do
+  it 'should not allow to show/hide fields for non editable form sections' do
     fields = [Field.new(:name => 'my_field', :display_name => 'My Field', :type => 'text_field', :visible => true)]
     form_section = build :form_section, 'name' => 'Basic Details', 'enabled' => 'true', 'description' => 'Blah blah', 'order' => '10', 'unique_id' => 'basic_details', :editable => 'false', :fields => fields
     assign(:form_section, form_section)

@@ -93,7 +93,7 @@ describe User, :type => :model do
 
   it 'can authenticate with the right password' do
     user = create :user, :password => 'thepass'
-    expect(user.authenticate('thepass')).to be_truthy
+    expect(user.authenticate('thepass')).to be true
   end
 
   it "can't authenticate with the wrong password" do
@@ -113,7 +113,7 @@ describe User, :type => :model do
 
   it 'can authenticate if not disabled' do
     user = create :user, :disabled => 'false', :password => 'thepass'
-    expect(user.authenticate('thepass')).to be_truthy
+    expect(user.authenticate('thepass')).to be true
   end
 
   it 'should be able to store a mobile login event' do

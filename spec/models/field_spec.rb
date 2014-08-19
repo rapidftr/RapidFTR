@@ -223,21 +223,21 @@ describe 'Child record field view model', :type => :model do
   it 'should show that the field is new until the field is saved' do
     form = FormSection.create!(:name => 'test_form', :unique_id => 'test_form')
     field = Field.new(:name => 'test_field', :display_name_en => 'test_field', :type => Field::TEXT_FIELD)
-    expect(field.new?).to be_truthy
-    FormSection.add_field_to_formsection form, field
+    expect(field).to be_new
+    FormSection.add_field_to_form_section form, field
     expect(field).not_to be_new
   end
 
   it 'should show that the field is new after the field fails validation' do
     form = FormSection.create!(:name => 'test_form2', :unique_id => 'test_form')
     field = Field.new(:name => 'test_field2', :display_name_en => 'test_field', :type => Field::TEXT_FIELD)
-    FormSection.add_field_to_formsection form, field
+    FormSection.add_field_to_form_section form, field
     # Adding duplicate field.
     field = Field.new(:name => 'test_field2', :display_name_en => 'test_field', :type => Field::TEXT_FIELD)
-    FormSection.add_field_to_formsection form, field
+    FormSection.add_field_to_form_section form, field
     expect(field.errors.length).to be > 0
     expect(field.errors[:name]).to eq(['Field already exists on this form'])
-    expect(field.new?).to be_truthy
+    expect(field).to be_new
   end
 
   it 'should fails save because fields are duplicated and fields remains as new' do
@@ -250,8 +250,8 @@ describe 'Child record field view model', :type => :model do
     expect(fields.last.errors.length).to be > 0
     expect(fields.last.errors[:name]).to eq(['Field already exists on this form'])
     # Because it fails save, field remains new.
-    expect(fields.first.new?).to be_truthy
-    expect(fields.last.new?).to be_truthy
+    expect(fields.first).to be_new
+    expect(fields.last).to be_new
   end
 
   it 'should fails save because fields changes make them duplicate' do

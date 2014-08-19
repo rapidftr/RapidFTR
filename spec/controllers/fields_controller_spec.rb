@@ -15,19 +15,19 @@ describe FieldsController, :type => :controller do
       allow(FormSection).to receive(:get_by_unique_id).with(@form_section.unique_id).and_return(@form_section)
     end
 
-    it 'should add the new field to the formsection' do
-      expect(FormSection).to receive(:add_field_to_formsection).with(@form_section, @field)
+    it 'should add the new field to the form_section' do
+      expect(FormSection).to receive(:add_field_to_form_section).with(@form_section, @field)
       post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
     end
 
     it 'should redirect back to the fields page' do
-      allow(FormSection).to receive(:add_field_to_formsection)
+      allow(FormSection).to receive(:add_field_to_form_section)
       post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
       expect(response).to redirect_to(edit_form_section_path(@form_section.unique_id))
     end
 
     it 'should render edit form section page if field has errors' do
-      allow(FormSection).to receive(:add_field_to_formsection)
+      allow(FormSection).to receive(:add_field_to_form_section)
       expect(Field).to receive(:new).and_return(@field)
       expect(@field).to receive(:errors).and_return(['errors'])
       post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
@@ -37,13 +37,13 @@ describe FieldsController, :type => :controller do
     end
 
     it 'should show a flash message' do
-      allow(FormSection).to receive(:add_field_to_formsection)
+      allow(FormSection).to receive(:add_field_to_form_section)
       post :create, :form_section_id => @form_section.unique_id, :field => JSON.parse(@field.to_json)
       expect(request.flash[:notice]).to eq('Field successfully added')
     end
 
     it 'should use the display name to form the field name if no field name is supplied' do
-      expect(FormSection).to receive(:add_field_to_formsection).with(anything, hash_including("display_name_#{I18n.locale}" => 'My brilliant new field'))
+      expect(FormSection).to receive(:add_field_to_form_section).with(anything, hash_including("display_name_#{I18n.locale}" => 'My brilliant new field'))
       post :create, :form_section_id => @form_section.unique_id, :field => {:display_name => 'My brilliant new field'}
     end
 
@@ -129,7 +129,7 @@ describe FieldsController, :type => :controller do
       expect(response).to render_template('form_section/edit')
     end
 
-    it 'should move the field to the given form_section' do
+    it 'should move the field to the given form section' do
       mothers_name_field = Field.new(:name => 'mothers_name', :visible => true, :display_name => "Mother's Name")
       another_field = Field.new(:name => 'childs_name', :visible => true, :display_name => "Child's Name")
       family_details_form = FormSection.create!(:name => 'Family Details', :unique_id => 'family_details', :fields => [mothers_name_field])

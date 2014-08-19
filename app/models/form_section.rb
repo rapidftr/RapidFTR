@@ -126,11 +126,11 @@ class FormSection < CouchRest::Model::Base
     by_unique_id(:key => unique_id).first
   end
 
-  def self.add_field_to_formsection(formsection, field)
-    fail I18n.t('errors.models.form_section.add_field_to_form_section') unless formsection.editable
-    field.merge!('base_language' => formsection['base_language'])
-    formsection.fields.push(field)
-    formsection.save
+  def self.add_field_to_form_section(form_section, field)
+    fail I18n.t('errors.models.form_section.add_field_to_form_section') unless form_section.editable
+    field.merge!('base_language' => form_section['base_language'])
+    form_section.fields.push(field)
+    form_section.save
   end
 
   def self.get_form_containing_field(field_name)
@@ -142,9 +142,9 @@ class FormSection < CouchRest::Model::Base
     FormSection.new(form_section)
   end
 
-  def self.change_form_section_state(formsection, to_state)
-    formsection.enabled = to_state
-    formsection.save
+  def self.change_form_section_state(form_section, to_state)
+    form_section.enabled = to_state
+    form_section.save
   end
 
   def properties=(properties)
