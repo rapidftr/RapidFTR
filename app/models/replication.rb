@@ -87,7 +87,10 @@ class Replication < CouchRest::Model::Base
   end
 
   def status
-    active? ? 'triggered' : success? ? 'completed' : 'error'
+    if active?     then 'triggered'
+    elsif success? then 'completed'
+    else                'error'
+    end
   end
 
   def remote_app_uri

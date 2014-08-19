@@ -20,7 +20,8 @@ module AdvancedSearchHelper
     field = all_fields.find { |f| f.name == criteria[:field] }
     return '' unless field.present?
 
-    html = criteria[:index].to_i > 0 ? AND_OR.gsub('#AND_CHECKED', criteria[:join] == 'AND' ?  "checked=''" : '').gsub('#OR_CHECKED', criteria[:join] == 'OR' ?  "checked=''" : '') : ''
+    html = ''
+    html += AND_OR.gsub('#AND_CHECKED', criteria[:join] == 'AND' ?  "checked=''" : '').gsub('#OR_CHECKED', criteria[:join] == 'OR' ?  "checked=''" : '') if criteria[:index].to_i > 0
     html += DISPLAY_LABEL.gsub('#DISPLAY_NAME', field.display_name)
     html += FIELD_INDEX.gsub('#FIELD', field.name)
     html += send("#{field.type}_criteria", criteria, field)
