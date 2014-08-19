@@ -6,7 +6,7 @@
 <%= render :partial => "children/order_by_box" %>
 </div>
 
-<div class="child_list">
+<div class="entity_list">
   <% #Change me! %>
   <%= render :partial => "children/summary_row", :collection => @children, :as => :child, :locals => { :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields  }  %>
 

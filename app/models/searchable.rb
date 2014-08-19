@@ -7,7 +7,7 @@ module Searchable
 
   class DocumentDataAccessor < Sunspot::Adapters::DataAccessor
     def load(id)
-      Child.get(id)
+      @clazz.get(id)
     end
   end
 

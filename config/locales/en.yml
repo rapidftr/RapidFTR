@@ -75,6 +75,7 @@ en:
      advanced_search: "Advanced Search"
      go: "Go"
      search: "Search"
+     enquiries: "ENQUIRIES"
 
   buttons:
      delete: "Delete"
@@ -130,6 +131,7 @@ en:
     registered_by: "Registered by"
     posted_from_mobile: "Posted from the mobile client at:"
     register_new_enquiry: "Register New Enquiry"
+    no_records_available: "No Records Available"
     messages:
       creation_success: "Enquiry record successfully created."
   child:

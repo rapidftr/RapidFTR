@@ -1,8 +1,8 @@
-.child_list {
+.entity_list {
   @extend .clearfix;
 
 
-  .child_summary_panel {
+  .entity_summary_panel {
     background: $bg-child-summary;
     border: 1px solid $border-child-summary;
     @include borderRadius(2px);

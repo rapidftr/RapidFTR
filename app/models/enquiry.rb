@@ -1,6 +1,8 @@
 class Enquiry < CouchRest::Model::Base
   use_database :enquiry
   include RecordHelper
+  include RapidFTR::CouchRestRailsBackward
+  include Searchable
 
   before_validation :create_criteria, :on => [:create, :update]
   before_save :find_matching_children
@@ -29,6 +31,10 @@ class Enquiry < CouchRest::Model::Base
               }"
   end
 
+  def self.sortable_field_name(field)
+    "#{field}_sort".to_sym
+  end
+
   def validate_has_at_least_one_field_value
     return true if field_definitions_for(Enquiry::FORM_NAME).any? { |field| is_filled_in?(field) }
     errors.add(:validate_has_at_least_one_field_value, I18n.t('errors.models.enquiry.at_least_one_field'))
@@ -45,6 +51,43 @@ class Enquiry < CouchRest::Model::Base
     enquiry = new(*args)
     enquiry.creation_fields_for(user)
     enquiry
+  end
+
+  def self.build_text_fields_for_solar
+    sortable_fields = FormSection.all_sortable_field_names || []
+    default_child_fields + sortable_fields
+  end
+
+  def self.default_child_fields
+    %w(unique_identifier created_by created_by_full_name last_updated_by last_updated_by_full_name created_organisation)
+  end
+
+  def self.build_date_fields_for_solar
+    %w(created_at last_updated_at)
+  end
+
+  @set_up_solr_fields = proc do
+    text_fields = Enquiry.build_text_fields_for_solar
+    date_fields = Enquiry.build_date_fields_for_solar
+
+    text_fields.each do |field_name|
+      string Enquiry.sortable_field_name(field_name) do
+        self[field_name]
+      end
+      text field_name
+    end
+    date_fields.each do |field_name|
+      time field_name
+      time Enquiry.sortable_field_name(field_name) do
+        self[field_name]
+      end
+    end
+  end
+
+  searchable(&@set_up_solr_fields)
+
+  def self.update_solr_indices
+    Sunspot.setup(Child, &@set_up_solr_fields)
   end
 
   def update_from(properties)

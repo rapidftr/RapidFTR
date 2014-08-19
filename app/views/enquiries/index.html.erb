@@ -1,0 +1,10 @@
+<%= render :partial => "enquiries/header" %>
+<div class="clearfix"></div>
+
+<div class="entity_list">
+  <%= render :partial => "enquiries/summary_row", :collection => @enquiries, :as => :enquiry, :locals => { :checkbox => false, :highlighted_fields => enquiry_sorted_highlighted_fields  }  %>
+
+  <%= render :partial => 'shared/pagination', :locals => { :results => @enquiries } %>
+</div>
+
+<br/>

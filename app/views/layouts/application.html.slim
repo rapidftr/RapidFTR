@@ -26,6 +26,9 @@ html[xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"]
               - if can? :read, Child
                 li
                   = link_to t("navigation.children"), children_path
+              - if can? :read, Enquiry
+                li
+                  = link_to t("navigation.enquiries"), enquiries_path
               - if current_user_name==nil or can? :manage, FormSection
                 li
                   = link_to t("navigation.forms"), forms_path

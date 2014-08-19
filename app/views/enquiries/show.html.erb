@@ -52,7 +52,7 @@
 
 <div id='interviewer_details' class="filter_bar">
   <h3><%= t("enquiry.registered_by") %>
-    : <%= @enquiry['created_by'] %> <%= link_to_update_info(@enquiry) %> <%= t("preposition.on_label") %> <%= @current_user.localize_date(@enquiry['created_at']) %></h3>
+    : <%= @enquiry['created_by'] %> <%= t("preposition.on_label") %> <%= @current_user.localize_date(@enquiry['created_at']) %></h3>
   <% if @enquiry['last_updated_at'] %>
       <h3><%= t("enquiry.last_updated") %>: <%= @current_user.localize_date(@enquiry['last_updated_at']) %> </h3>
   <% end %>

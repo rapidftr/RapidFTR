@@ -23,6 +23,36 @@ class EnquiriesController < ApplicationController
     @form_sections = enquiry_form_sections
   end
 
+  def index
+    authorize! :index, Enquiry
+
+    @page_name = t('home.view_records')
+    @filter = params[:filter] || nil
+    @order = params[:order_by] || EnquiriesHelper::ORDER_BY[@filter] || 'created_at'
+    @sort_order = (params[:sort_order].nil? || params[:sort_order].empty?) ? :asc : params[:sort_order]
+    per_page = params[:per_page] || EnquiriesHelper::View::PER_PAGE
+    per_page = per_page.to_i unless per_page == 'all'
+    page = params[:page] || 1
+
+    search = EnquirySearch.new.
+        paginated(page, per_page).
+        ordered(@order, @sort_order.to_sym).
+        marked_as(@filter)
+    search.created_by(current_user) unless can?(:view_all, Enquiry)
+    @enquiries = search.results
+
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @enquiries }
+      unless params[:format].nil?
+        if @enquiries.empty?
+          flash[:notice] = t('enquiry.no_records_available')
+          redirect_to(:action => :index) && return
+        end
+      end
+    end
+  end
+
   private
 
   def enquiry_form_sections

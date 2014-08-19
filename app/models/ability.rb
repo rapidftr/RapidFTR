@@ -135,7 +135,7 @@ class Ability
     end
 
     if user.has_permission?(Permission::ENQUIRIES[:view])
-      can [:read], Enquiry
+      can [:read, :view_all], Enquiry
     end
   end
 

@@ -12,7 +12,7 @@ module HpricotSearch
   end
 
   def profiles_list_items
-    search('div[@class=child_summary_panel]')
+    search('div[@class=entity_summary_panel]')
   end
 
   def child_name
