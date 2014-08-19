@@ -22,6 +22,7 @@ Feature: So that a user can get back to their initial start page from anywhere w
     And I should see "Register New Child"
     And I should see "View Records"
     And I should see "0 Records need Attention"
+    And I should see "Register New Enquiry"
 
   Scenario: Admin users should see records need Attention
     Given I am logged in

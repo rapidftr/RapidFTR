@@ -1,0 +1,7 @@
+<p>
+  <span class="tool-tip-label">
+      <%= label_tag textarea.tag_name_attribute(model), t(textarea.name,:default => textarea.display_name), :class=>'key' %>
+  </span>
+  <%= text_area_tag textarea.tag_name_attribute(model), model[textarea.name]%>
+  <%= image_tag "new/icon_help.png", title: textarea.help_text, class: 'tool-tip-icon vtip' if textarea.help_text.present? %>
+</p>

@@ -114,12 +114,12 @@ class Field
     option_strings_text.gsub(/\r\n?/, "\n").split("\n")
   end
 
-  def tag_id
-    "child_#{name}"
+  def tag_id(model)
+    "#{model.class.name.downcase}_#{name}"
   end
 
-  def tag_name_attribute
-    "child[#{name}]"
+  def tag_name_attribute(model)
+    "#{model.class.name.downcase}[#{name}]"
   end
 
   def select_options

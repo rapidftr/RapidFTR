@@ -47,7 +47,7 @@ end
 
 describe 'Enquiry Mapping', :type => :request, :solr => true do
 
-  before :all do
+  before :each do
     Sunspot.remove_all(Child)
     reset_couchdb!
 
@@ -61,6 +61,8 @@ describe 'Enquiry Mapping', :type => :request, :solr => true do
     @child2 = create(:child, 'last_known_location' => 'New York', 'name' => 'Muhammed Jones')
     @child3 = create(:child, 'last_known_location' => 'New York', 'name' => 'Muhammad Brown')
     @child4 = create(:child, 'last_known_location' => 'New York', 'name' => 'Ammad Brown')
+
+    allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
     @enquiry = Enquiry.create('enquirer_name' => 'Kavitha', 'name' => 'Ammad', 'location' => 'Kyangwali')
   end
 
@@ -79,9 +81,9 @@ describe 'Enquiry Mapping', :type => :request, :solr => true do
   end
 
   it 'should match enquiry with child record' do
+
     matches = match(@enquiry['criteria'])
     expect(matches.results.map(&:name).sort).to eq(['Ammad Brown'])
     expect(matches.results.map(&:name).sort).not_to include('Muhammad Brown')
   end
-
 end

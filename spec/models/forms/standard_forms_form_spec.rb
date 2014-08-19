@@ -41,8 +41,8 @@ describe Forms::StandardFormsForm do
       form_section = build :form_section, :name => 'Enquiry Criteria'
       allow(RapidFTR::EnquiriesFormSectionSetup).to receive(:build_form_sections).and_return([form_section])
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
-      enquiry_form_sections = forms[ENQUIRY_FORM_INDEX].sections
-      expect(enquiry_form_sections.first.disabled).to be_falsey
+      form_sections = forms[ENQUIRY_FORM_INDEX].sections
+      expect(form_sections.first.disabled).to be_falsey
     end
 
     it 'should disable already existing enquiry form sections' do
@@ -52,8 +52,8 @@ describe Forms::StandardFormsForm do
       form_section.save
 
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
-      enquiry_form_sections = forms[ENQUIRY_FORM_INDEX].sections
-      expect(enquiry_form_sections.first.disabled).to be(true)
+      form_sections = forms[ENQUIRY_FORM_INDEX].sections
+      expect(form_sections.first.disabled).to be(true)
     end
 
     it 'should disable already existing child form sections' do
@@ -79,8 +79,8 @@ describe Forms::StandardFormsForm do
 
     it 'should have enquiry fields enabled by default' do
       forms = Forms::StandardFormsForm.build_from_seed_data.forms
-      enquiry_form_sections = forms[ENQUIRY_FORM_INDEX].sections
-      enquiry_form_sections.each do |section|
+      form_sections = forms[ENQUIRY_FORM_INDEX].sections
+      form_sections.each do |section|
         section.fields.each { |field| expect(field.disabled).to be_falsey }
       end
     end

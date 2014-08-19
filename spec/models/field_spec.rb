@@ -6,7 +6,8 @@ describe 'Child record field view model', :type => :model do
   before :each do
     FormSection.all.each { |form| form.destroy }
     @field_name = 'gender'
-    @field = Field.new(:name => 'gender', :display_name => @field_name, :option_strings => "male\nfemale", :type => Field::RADIO_BUTTON)
+    @field = Field.new :name => 'gender', :display_name => @field_name, :option_strings => 'male\nfemale', :type => Field::RADIO_BUTTON
+    @model = Child.new
   end
 
   describe '#name' do
@@ -22,11 +23,11 @@ describe 'Child record field view model', :type => :model do
   end
 
   it 'converts field name to a HTML tag ID' do
-    expect(@field.tag_id).to eq("child_#{@field_name}")
+    expect(@field.tag_id @model).to eq("child_#{@field_name}")
   end
 
   it 'converts field name to a HTML tag name' do
-    expect(@field.tag_name_attribute).to eq("child[#{@field_name}]")
+    expect(@field.tag_name_attribute(@model)).to eq("child[#{@field_name}]")
   end
 
   it "returns the html options tags for a select box with default option '(Select...)'" do
@@ -190,7 +191,7 @@ describe 'Child record field view model', :type => :model do
     end
 
     it 'should return array for option_strings_text ' do
-      field = Field.new(:name => 'f_name', :option_strings_text_en => "Yes\nNo")
+      field = Field.new(:name => 'f_name', :option_strings_text_en => 'Yes\nNo')
       field_hash = field.formatted_hash
       field_hash['option_strings_text'] == {'en' => %w(Yes No)}
     end
@@ -209,8 +210,8 @@ describe 'Child record field view model', :type => :model do
     end
 
     it 'should convert option_strings to option_strings_text' do
-      field = Field.new(:name => 'test', :display_name_en => 'test', :option_strings => "Uganda\nSudan")
-      expect(field.option_strings_text).to eq("Uganda\nSudan")
+      field = Field.new(:name => 'test', :display_name_en => 'test', :option_strings => 'Uganda\nSudan')
+      expect(field.option_strings_text).to eq('Uganda\nSudan')
     end
 
     it 'should convert option_strings to option_strings_text' do
@@ -228,7 +229,7 @@ describe 'Child record field view model', :type => :model do
   end
 
   it 'should show that the field is new after the field fails validation' do
-    form =  FormSection.create!(:name => 'test_form2', :unique_id => 'test_form')
+    form = FormSection.create!(:name => 'test_form2', :unique_id => 'test_form')
     field = Field.new(:name => 'test_field2', :display_name_en => 'test_field', :type => Field::TEXT_FIELD)
     FormSection.add_field_to_formsection form, field
     # Adding duplicate field.

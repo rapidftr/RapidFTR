@@ -63,6 +63,11 @@ RapidFTR::Application.routes.draw do
   match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
 
   #######################
+  # ENQUIRY URLS
+  #######################
+  resources :enquiries
+
+  #######################
   # API URLS
   #######################
 
