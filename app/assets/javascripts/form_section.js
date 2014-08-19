@@ -18,21 +18,18 @@ $(document).ready(function() {
         $(this).find("tr").each(function(index, ele){
           datas.push($(ele).attr("data"));
         });
-
-        $(rows).on( "sortstop", function( event, ui) {
-            $.post($("#save_order_url").val(), {'ids' : datas})
-                .success(function(data) {
-                    tds.parent().css('background-color', "#87A96B");
-                    tds.animate({opacity: 0.3}, 300).animate({opacity: 1}, 300, "swing", function() {
-                        tds.parent().css('background-color', "transparent");
+        $.post($("#save_order_url").val(), {'ids' : datas})
+            .success(function(data) {
+                tds.parent().css('background-color', "#87A96B");
+                tds.animate({opacity: 0.3}, 300).animate({opacity: 1}, 300, "swing", function() {
+                    tds.parent().css('background-color', "transparent");
                     });
-                 })
-                .error(function(jqXHR) {
-                    tds.parent().css('background-color', "#DD2726");
-                    tds.animate({opacity: 0.5}, 300);
-                });
-        });
-      }
+                })
+            .error(function(jqXHR) {
+                tds.parent().css('background-color', "#DD2726");
+                tds.animate({opacity: 0.5}, 300);
+            });
+        }
     });
     $(".field_location").bind('change', changeForm);
 
