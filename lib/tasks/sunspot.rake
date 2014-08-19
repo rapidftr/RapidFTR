@@ -36,10 +36,11 @@ namespace :sunspot do
   end
 
   Rake::Task['sunspot:reindex'].clear
-  desc 're-index child records'
+  desc 're-index child and enquiry records'
   task :reindex => :wait do
     puts 'Reindexing Solr...'
     Child.reindex!
+    Enquiry.reindex!
   end
 
 end

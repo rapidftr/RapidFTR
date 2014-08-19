@@ -14,7 +14,7 @@ class SearchResults
   end
 
   def should_contain_result(result_text)
-    match = @session.find('//div[@class="child_summary_panel"]//div[@class="summary_item"]//div[@class="value"]', :text => result_text)
+    match = @session.find('//div[@class="entity_summary_panel"]//div[@class="summary_item"]//div[@class="value"]', :text => result_text)
     fail Spec::Expectations::ExpectationNotMetError, "#{result_text} - This value could not be found in the search results." unless match
   end
 
