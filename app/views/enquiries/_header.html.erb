@@ -1,0 +1,4 @@
+<h1 class="no_border float_left"><%= t("enquiry.label") %></h1>
+<% if can? :create, Enquiry %>
+    <%= link_to content_tag(:span, t("enquiry.register_new_enquiry"), :class => 'create_user'), new_enquiry_path, :class=>'btn' %>
+<% end %>
