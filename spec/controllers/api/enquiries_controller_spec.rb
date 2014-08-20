@@ -256,24 +256,52 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json)
     end
 
-    it 'should return enquiries with new matches when passed query parameter with last update timestamp' do
-      allow(controller).to receive(:authorize!)
-
-      enquiry = Enquiry.new(:_id => '123')
-      expect(Enquiry).to receive(:search_by_match_updated_since).with('2013-09-18 06:42:12UTC').and_return([enquiry])
-
-      get :index, :updated_after => '2013-09-18 06:42:12UTC'
-
-      expect(response.response_code).to eq(200)
-      expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json)
-    end
-
     it 'should return 422 if query parameter with last update timestamp is not a valid timestamp' do
       allow(controller).to receive(:authorize!)
       bypass_rescue
       get :index, :updated_after => 'adsflkj'
 
       expect(response.response_code).to eq(422)
+    end
+
+    describe 'updated after' do
+      before :each do 
+        reset_couchdb!
+        form = create(:form, :name => Enquiry::FORM_NAME)
+        enquirer_name_field = build(:field, :name => 'enquirer_name')
+        child_name_field = build(:field, :name => 'child_name')
+        form_section = create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field])
+
+
+        allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 22, 14, 05, 0))
+        @enquiry1 = Enquiry.create(:enquirer_name => 'John doe',:child_name => 'any child')
+        allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 24, 16, 05, 0))
+        @enquiry2 = Enquiry.create(:enquirer_name => 'David',:child_name => 'any child')
+      end
+
+      it'should return all the records created after a specified date' do
+        get :index, :updated_after => '2010-01-22 06:42:12UTC'
+        
+        enquiry_one = {:location => "http://test.host:80/api/enquiries/#{@enquiry1.id}"}
+        enquiry_two = {:location => "http://test.host:80/api/enquiries/#{@enquiry2.id}"}
+        expect(response.body).to match([enquiry_one, enquiry_two].to_json)
+      end
+
+      it'should return filter records by specified date' do
+        get :index, :updated_after => '2010-01-23 06:42:12UTC'
+        
+        expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{@enquiry2.id}"}].to_json)
+      end
+
+      it 'should filter records updated after specified date' do
+        allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 26, 16, 05, 0))
+        enquiry = Enquiry.all.select{|enquiry| enquiry[:enquirer_name] == 'David'}.first
+        enquiry.update_attributes({:enquirer_name => 'Jones'})
+
+        get :index, :updated_after => '2010-01-25 06:42:12UTC'
+        
+        expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{@enquiry2.id}"}].to_json)
+      end
     end
 
   end

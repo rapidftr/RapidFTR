@@ -20,7 +20,7 @@ Feature: Sync one/all enquiries on the API
     Given a registration worker "tim" with a password "123"
     And I login as tim with password 123 and imei 10001
 
-    @search
+  @search
   Scenario: Syn all enquiries should display, the urls of all enquiries on the API
     Given the following enquiries exist in the system:
       | enquirer_name | _id | created_at             | posted_at              | created_by |
@@ -50,13 +50,15 @@ Feature: Sync one/all enquiries on the API
     When I send a GET request to "/api/enquiries/3"
     Then the JSON at "enquirer_name" should be "cob"
 
-  @search
+  #do we really need to sync enquiries by match_updated_at?
+  @search @wip
   Scenario: The url of the enquiries created after a particular time, should be displayed,0 once the appropriate request is sent
     Given the following enquiries exist in the system:
-      | enquirer_name   | _id   | created_at             | posted_at              | created_by | match_updated_at       |
+      | enquirer_name   | _id   | created_at             | posted_at              | created_by | updated_at             |
       | bob             | 1     | 2013-09-25 02:07:51UTC | 2013-09-25 02:07:51UTC | Sanchari   | 2013-09-25 02:07:51UTC |
       | rob             | 2     | 2013-09-25 02:09:51UTC | 2013-09-25 02:09:51UTC | Sanchari   | 2013-09-25 02:07:51UTC |
       | dobby           | 3     | 2011-06-22 02:09:51UTC | 2011-06-22 02:09:51UTC | Sanchari   | 2011-09-25 02:07:51UTC |
+
     When I send a GET request to "/api/enquiries?updated_after=2013-09-24"
     Then the JSON should be:
     """

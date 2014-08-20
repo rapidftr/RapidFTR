@@ -46,7 +46,7 @@ module RecordHelper
                                 'user_name' => created_by,
                                 'user_organisation' => organisation_of(created_by),
                                 'datetime' => created_at,
-                                'changes' => { self.class.name => {:created => created_at}}
+                                'changes' => { self.class.name.downcase => {:created => created_at}}
                               )
   end
 
