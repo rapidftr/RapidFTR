@@ -65,19 +65,18 @@ describe Enquiry, :type => :model do
     end
 
     describe 'updated_at' do
-      
-      before :each do 
-        FormSection.all.each{|fs| fs.destroy }
+      before :each do
+        FormSection.all.each { |fs| fs.destroy }
         form = create(:form, :name => Enquiry::FORM_NAME)
         enquirer_name_field = build(:field, :name => 'enquirer_name')
         child_name_field = build(:field, :name => 'child_name')
-        form_section = create(:form_section, :name => 'enquiry_criteria', :form => form,:fields => [enquirer_name_field, child_name_field])
+        create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field])
         allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 22, 14, 05, 0))
-        @enquiry = Enquiry.create(:enquirer_name => 'John doe',:child_name => 'any child')
+        @enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
       end
 
       it 'should add updated_at field when creating enquiry' do
-        expect(@enquiry['updated_at']).to eq ('2010-01-22 14:05:00UTC')
+        expect(@enquiry['updated_at']).to eq('2010-01-22 14:05:00UTC')
       end
 
       it 'should reflect new date when enquiry is updated' do
@@ -86,16 +85,15 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.first
         enquiry.update_attributes(:enquirer_name => 'David Jones')
 
-        expect(enquiry['updated_at']).to eq ('2010-01-22 15:05:00UTC')
-      end    
+        expect(enquiry['updated_at']).to eq('2010-01-22 15:05:00UTC')
+      end
 
       it 'should reflect new date when potential_matches are updated' do
         allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 22, 15, 05, 0))
 
         @enquiry[:potential_matches] << 'matching_child_id'
         @enquiry.save!
-        
-        expect(@enquiry['updated_at']).to eq ('2010-01-22 15:05:00UTC')
+        expect(@enquiry['updated_at']).to eq('2010-01-22 15:05:00UTC')
       end
     end
 
@@ -250,9 +248,7 @@ describe Enquiry, :type => :model do
 
           allow(Clock).to receive(:now).and_return(Time.utc(2013, 'jan', 02, 00, 00, 0))
           enquiry.location = 'Kampala'
-          
           enquiry.save!
-          
           expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 02, 00, 00, 0).to_s)
           expect(enquiry.potential_matches.size).to eq(2)
         end

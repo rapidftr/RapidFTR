@@ -7,5 +7,4 @@ class FormsController < ApplicationController
     StandardFormsService.persist params[:default_forms]
     redirect_to forms_path
   end
-
 end

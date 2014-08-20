@@ -18,9 +18,9 @@ class Enquiry < CouchRest::Model::Base
   validate :validate_has_at_least_one_field_value
 
   FORM_NAME = 'Enquiries'
- 
-  set_callback :save, :before do |object|
-    write_attribute('updated_at', RapidFTR::Clock.current_formatted_time)  
+
+  set_callback :save, :before do
+    self['updated_at'] = RapidFTR::Clock.current_formatted_time
   end
 
   def initialize(*args)
