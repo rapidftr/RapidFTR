@@ -377,6 +377,7 @@ en:
       save_order: "Save Order"
     messages:
       order_saved: "Order is successfully saved."
+      not_saved: "Please reload the page. Change on red field could not be saved."
       cannot_create: "Form section could not be created"
       correct_errors: "Please correct the following errors and resubmit:"
       hide_confirmation: "Are you sure you want to hide fields?"

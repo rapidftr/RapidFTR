@@ -16,10 +16,10 @@ $(document).ready(function() {
         var tds = $(ui.item).find("td")
         var datas = [];
         $(this).find("tr").each(function(index, ele){
-          datas.push($(ele).attr("data"));
+            datas.push($(ele).attr("data"));
         });
         $.post($("#save_order_url").val(), {'ids' : datas})
-            .success(function(data) {
+            .success(function() {
                 tds.parent().css('background-color', "#87A96B");
                 tds.animate({opacity: 0.3}, 300).animate({opacity: 1}, 300, "swing", function() {
                     tds.parent().css('background-color', "transparent");
@@ -28,6 +28,7 @@ $(document).ready(function() {
             .error(function(jqXHR) {
                 tds.parent().css('background-color', "#DD2726");
                 tds.animate({opacity: 0.5}, 300);
+                $("#errorNotice").show();
             });
         }
     });
@@ -57,6 +58,7 @@ $(document).ready(function() {
                 checkbox.prop( "checked", function( i, val ) {
                     return !val;
                 });
+                $("#errorNotice").show();
             });
         $("table#form_sections tbody").sortable();
     }
