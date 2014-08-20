@@ -12,11 +12,16 @@ class Enquiry < CouchRest::Model::Base
   property :criteria, Hash
   property :potential_matches, :default => []
   property :match_updated_at, :default => ''
+  property :updated_at, Time
 
   validates :criteria, :presence => {:message => I18n.t('errors.models.enquiry.presence_of_criteria')}
   validate :validate_has_at_least_one_field_value
 
   FORM_NAME = 'Enquiries'
+
+  set_callback :save, :before do
+    self['updated_at'] = RapidFTR::Clock.current_formatted_time
+  end
 
   def initialize(*args)
     self['histories'] = []

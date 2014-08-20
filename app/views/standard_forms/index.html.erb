@@ -18,6 +18,7 @@
                     <%= ffs.hidden_field :id %>
                     <%= ffs.label section.name %>
                   </h2>
+
                   <ul>
                     <% section.fields.each do |field| %>
                       <%= ffs.fields_for "[fields]", field, {index: field.id} do |ffsf| %>
@@ -38,7 +39,6 @@
       <% end %>
     <% end %>
   <ul>
-
   <%= f.submit t('buttons.save'), {class: 'btn_submit'} %>
 <% end %>
 
