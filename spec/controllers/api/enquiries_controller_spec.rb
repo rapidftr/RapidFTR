@@ -266,7 +266,7 @@ describe Api::EnquiriesController, :type => :controller do
 
     describe 'updated after' do
       before :each do 
-        reset_couchdb!
+        FormSection.all.each {|fs| fs.destroy }
         form = create(:form, :name => Enquiry::FORM_NAME)
         enquirer_name_field = build(:field, :name => 'enquirer_name')
         child_name_field = build(:field, :name => 'child_name')
