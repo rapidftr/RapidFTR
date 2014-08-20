@@ -62,20 +62,24 @@ describe StandardFormsService do
       end
 
       it 'should persist new enquiry form with new enquiry criteria form sections' do
-        attributes =  {'forms' => {'enquiries' =>                                     {'user_selected' => '1',
-                                                                                       'id' => 'enquiries',
-                                                                                       'sections' =>                                        {'Enquiry Criteria' =>                                          {'user_selected' => '1',
-                                                                                                                                                                                                             'id' => 'enquiry_criteria',
-                                                                                                                                                                                                             'fields' => {'enquirer_name' => {'user_selected' => '1', 'id' => 'enquirer_name'}, 'criteria' => {'user_selected' => '1', 'id' => 'criteria'}}}}}}}
+        attributes = {'forms' => {
+          'enquiries' => {'user_selected' => '1', 'id' => 'enquiries',
+                            'sections' => {
+                              'Details of the Adult Seeking a Child' => {
+                                'user_selected' => '1',
+                                'id' => 'enq_details_of_adult_seeking_child',
+                                'fields' => {'enq_first_name' => {'user_selected' => '1', 'id' => 'enq_first_name'},
+                                             'criteria' => {'user_selected' => '1', 'id' => 'criteria'}
+                            }}}}}}
 
         StandardFormsService.persist(attributes)
 
         expect(Form.count).to eq 1
         expect(Form.first.sections.length).to eq 1
         expect(FormSection.count).to eq 1
-        expect(FormSection.all.first.unique_id).to eq('enquiry_criteria')
+        expect(FormSection.all.first.unique_id).to eq('enq_details_of_adult_seeking_child')
         expect(FormSection.all.first.form).to_not be_nil
-        expect(FormSection.all.first.name).to eq('Enquiry Criteria')
+        expect(FormSection.all.first.name).to eq('Details of the Adult Seeking a Child')
       end
 
       it 'should persist new form sections on existing forms with no form sections' do

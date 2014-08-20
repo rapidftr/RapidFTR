@@ -30,7 +30,9 @@ Feature: Add standard forms
     Then I should be on the forms page
     And I should see "Enquiries"
     When I click the "Enquiries" link
-    Then I should see "Enquiry Criteria"
-    When I click the "Enquiry Criteria" link
-    Then I should see "Enquirer Name"
-    And I should see "Criteria"
+    Then I should see "Details of the Adult Seeking a Child"
+    When I click the "Details of the Adult Seeking a Child" link
+    Then I should see "First Name"
+    And I should see "Middle Name"
+    And I should see "Last Name"
+    And I should see "Date of Birth (dd/mm/yyyy)"
