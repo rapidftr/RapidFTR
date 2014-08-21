@@ -122,6 +122,68 @@ describe EnquiriesController, :type => :controller do
       expect(assigns[:form_sections]).to eq [@form_section]
       expect(response).to render_template('show')
     end
+  end
 
+  describe '#update enquiry' do
+    before :each do
+      form = create(:form, :name => Enquiry::FORM_NAME)
+      enquirer_name_field = build(:field, :name => 'enquirer_name')
+      child_name_field = build(:field, :name => 'child_name')
+      @form_section = create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field])
+      @enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
+      allow(controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(true)
+    end
+
+    describe '#edit' do
+
+      it 'should render edit template' do
+        get :edit, :id => @enquiry.id
+
+        expect(response).to render_template :edit
+      end
+
+      it 'should load an enquiry' do
+        get :edit, :id => @enquiry.id
+
+        expect(assigns[:enquiry]).to eq @enquiry
+      end
+
+      it 'load form sections for the enquiry form' do
+        get :edit, :id => @enquiry.id
+
+        expect(assigns[:form_sections]).to eq [@form_section]
+      end
+    end
+  
+    describe '#update' do
+      it 'should update the attributes of an enquiry' do
+        new_enquiry_attributes = {:enquirer_name => 'David jones'}
+        
+        put :update, :id => @enquiry.id, :enquiry => new_enquiry_attributes
+  
+        updated_enquiry = Enquiry.get(@enquiry.id)
+        expect(updated_enquiry[:enquirer_name]).to eq(new_enquiry_attributes[:enquirer_name])
+      end
+
+      it 'should redirect to show page after succcessful update' do
+        new_enquiry_attributes = {:enquirer_name => 'David jones'}
+        
+        put :update, :id => @enquiry.id, :enquiry => new_enquiry_attributes
+
+        expect(response).to redirect_to enquiry_path(@enquiry)
+      end
+
+      it 'should return to edit page after unsuccessful update' do
+        enquiry = instance_double("Enquiry", :update_attributes => false)
+        allow(Enquiry).to receive(:find).and_return(enquiry)
+        new_enquiry_attributes = {:enquirer_name => 'Hello'}
+
+        put :update, :id => @enquiry.id, :enquiry => new_enquiry_attributes
+  
+        expect(response).to render_template :edit
+        expect(assigns[:enquiry]).to eq enquiry
+        expect(assigns[:form_sections]).to eq [@form_section]
+      end
+    end
   end
 end
