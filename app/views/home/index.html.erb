@@ -8,24 +8,28 @@
       <%= f.time_zone_select "time_zone" %>
       <%= label_tag "user_locale", t("home.language") %>
       <%= f.select "locale", RapidFTR::Application::LOCALES_WITH_DESCRIPTION %>
-      <p class='submitButton' >
-        <%= f.submit t("buttons.save") %>
-      </p>
-  <% end %>
+    <p class='submitButton'>
+      <%= f.submit t("buttons.save") %>
+    </p>
+<% end %>
 </p>
-	<% if can? :create, Child %>
-		<%= link_to t("children.register_new_child"), new_child_path %> <br/><br/>
-	<% end %>
+<% if can? :create, Child %>
+    <%= link_to t("children.register_new_child"), new_child_path %> <br/><br/>
+<% end %>
 
 <% if can? :read, Child %>
-  <%= link_to t('home.view_records'), children_path %> <br/><br/>
-  <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flag") %>
+    <%= link_to t('home.view_records'), children_path %> <br/><br/>
+    <%= link_to @suspect_record_count.to_s + " " + t("home.records_need_attention"), child_filter_path(:filter => "flag") %>
 <% end %>
 
 <p>
   <br/>
   <% if can? :create, Enquiry %>
       <%= link_to t("enquiry.register_new_enquiry"), new_enquiry_path %> <br/><br/>
+  <% end %>
+
+  <% if can? :view, Enquiry %>
+      <%= link_to "#{number_of_enquiries_with_matches} #{t('enquiry.enquiries_with_potential_matches')}", matches_enquiries_path %>
   <% end %>
 </p>
 

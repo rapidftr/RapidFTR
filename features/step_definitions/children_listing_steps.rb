@@ -33,5 +33,5 @@ end
 private
 
 def child_list_page
-  @_child_list_page ||= ChildListPage.new(Capybara.current_session)
+  @_child_list_page ||= EntityListPage.new(Capybara.current_session)
 end

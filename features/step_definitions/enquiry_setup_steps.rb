@@ -4,6 +4,10 @@ Given /^the following enquiries exist in the system:$/ do |enquiry_table|
   end
 end
 
+Then /^I should see "([^\"]*)" enquiries on the page$/ do |number_of_records|
+  enquiry_list_page.should_be_showing(number_of_records.to_i)
+end
+
 private
 
 def enquiry_defaults
@@ -21,4 +25,8 @@ def create_enquiry(enquiry_hash)
 
   enquiry = Enquiry.new_with_user_name(user, enquiry_hash)
   enquiry.create!
+end
+
+def enquiry_list_page
+  @_enquiry_list_page ||= EntityListPage.new(Capybara.current_session)
 end

@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe 'enquiries/show.html.erb', :type => :view do
 
-  it 'display all form sections for the enquiries form' do
+  before :each do
+    reset_couchdb!
     @user = double('user', :has_permission? => true, :user_name => 'name', :id => 'test-user-id')
     @form_sections = []
+    @potential_matches = []
 
     form = create(:form, :name => Enquiry::FORM_NAME)
     @form_sections << create(:form_section, :unique_id => 'enquiry_criteria', :name => 'Enquiry Criteria', :form => form, :fields => [build(:field, :name => 'enquirer_name')])
@@ -12,6 +14,7 @@ describe 'enquiries/show.html.erb', :type => :view do
 
     enquiry = create(:enquiry, :enquirer_name => 'Foo Bar', :child_name => 'John Doe', :created_at => 'July 19 2010 13:05:32UTC')
 
+    allow(@user).to receive(:localize_date).and_return('July 19 2010 13:05:32UTC')
     allow(controller).to receive(:current_user).and_return(@user)
     allow(view).to receive(:current_user).and_return(@user)
     allow(view).to receive(:logged_in?).and_return(true)
@@ -20,9 +23,23 @@ describe 'enquiries/show.html.erb', :type => :view do
     assign(:enquiry, enquiry)
     assign(:current_user, User.new)
 
-    render :template => 'enquiries/show', :layout => 'layouts/application'
+    @highlighted_fields = [
+      Field.new(:name => 'field_2', :display_name => 'field display 2', :visible => true),
+      Field.new(:name => 'field_4', :display_name => 'field display 4', :visible => true)]
+    allow(Form).to receive(:find_by_name).and_return(double('Form', :sorted_highlighted_fields => @highlighted_fields))
+  end
 
+  it 'display all form sections for the enquiries form' do
+    render :template => 'enquiries/show', :layout => 'layouts/application'
     expect(rendered).to have_tag('#tab_enquiry_criteria')
+    expect(rendered).to have_tag('#tab_potential_matches')
+  end
+
+  it 'display potential matches section' do
+    @potential_matches << create(:child, :name => 'John')
+    @potential_matches << create(:child, :name => 'Jane')
+
+    render :template => 'enquiries/show', :layout => 'layouts/application'
     expect(rendered).to have_tag('#tab_potential_matches')
   end
 end
