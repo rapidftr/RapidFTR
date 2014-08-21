@@ -17,7 +17,11 @@ module ApplicationHelper
   end
 
   def discard_button(path)
-    link_to t('discard'), path, :class => 'link_discard', :data => {:confirm => t('messages.confirmation_message')}
+    if path == enquiries_path
+      link_to t('discard'), path, :class => 'link_discard', :data => {:confirm => t('enquiry.messages.confirmation_message')}
+    else
+      link_to t('discard'), path, :class => 'link_discard', :data => {:confirm => t('child.messages.confirmation_message')}
+    end
   end
 
   def link_with_confirm(link_to, anchor, link_options = {})
