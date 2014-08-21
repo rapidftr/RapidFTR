@@ -338,6 +338,7 @@ ar:
       save_order: "حفظ الطلب"
     messages:
       order_saved: "تم حفظ الطلب بنجاح."
+      #not_saved: "Please reload the page. Change on red field could not be saved."
       cannot_create: "لم يتم تكوين قسم الإستمارة"
       correct_errors: "الرجاء تصحيح الأخطاء الوارده و أعد التسليم:"
       hide_confirmation: "هل أنت متأكد من أنك تود إخفاء الحقول؟"
