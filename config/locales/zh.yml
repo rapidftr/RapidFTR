@@ -351,6 +351,7 @@ zh:
       save_order: "保存顺序"
     messages:
       order_saved: "顺序被成功保存."
+#     not_saved: "Please reload the page. Change on red field could not be saved."
       cannot_create: "表单项不能被创建"
       correct_errors: "请改正下面的错误并重新提交:"
       hide_confirmation: "你确定隐藏字段?"

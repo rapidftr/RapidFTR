@@ -12,13 +12,25 @@ $(document).ready(function() {
     triggerErrors();
     var rows = $("table#form_sections tbody");
     rows.sortable({
-      update: function(){
+      update: function(event, ui){
+        var tds = $(ui.item).find("td")
         var datas = [];
         $(this).find("tr").each(function(index, ele){
-          datas.push($(ele).attr("data"));
+            datas.push($(ele).attr("data"));
         });
-        $.post($($.find("#save_order_url")).val(), {'ids' : datas});
-      }
+        $.post($("#save_order_url").val(), {'ids' : datas})
+            .success(function() {
+                tds.parent().css('background-color', "#87A96B");
+                tds.animate({opacity: 0.3}, 300).animate({opacity: 1}, 300, "swing", function() {
+                    tds.parent().css('background-color', "transparent");
+                    });
+                })
+            .error(function(jqXHR) {
+                tds.parent().css('background-color', "#DD2726");
+                tds.animate({opacity: 0.5}, 300);
+                $("#errorNotice").show();
+            });
+        }
     });
     $(".field_location").bind('change', changeForm);
 
@@ -29,8 +41,26 @@ $(document).ready(function() {
     }
 
     function fieldHideShow(){
-      $.post($($.find("#toggle_url")).val(), {'id' : $(this).val()}); 
-      $("table#form_sections tbody").sortable();
+        var checkbox = $(this);
+        var td = $("#" + $(this).val() + "_row td");
+        var origColor = td.parent().children().css("background-color");
+
+        $.post($("#toggle_url").val(), {'id' : $(this).val()})
+            .success(function(data) {
+                td.parent().css('background-color', "#87A96B");
+                td.animate({opacity: 0.7}, 300).animate({opacity: 1}, 300, "swing", function() {
+                    td.parent().css('background-color', "transparent");
+                });
+            })
+            .error(function(jqXHR) {
+                td.parent().css('background-color', "#DD2726");
+                td.animate({opacity: 0.5}, 300);
+                checkbox.prop( "checked", function( i, val ) {
+                    return !val;
+                });
+                $("#errorNotice").show();
+            });
+        $("table#form_sections tbody").sortable();
     }
 
     function showMovePanel(){
