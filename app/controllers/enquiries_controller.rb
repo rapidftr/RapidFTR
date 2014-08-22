@@ -1,5 +1,5 @@
 class EnquiriesController < ApplicationController
-  before_filter :load_enquiry, :only => [:show, :edit, :update]
+  before_action :load_enquiry, :only => [:show, :edit, :update]
 
   def index
     authorize! :index, Enquiry
