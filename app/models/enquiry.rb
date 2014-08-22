@@ -34,6 +34,21 @@ class Enquiry < CouchRest::Model::Base
                    emit(doc['_id'],1);
                  }
               }"
+
+    view :with_potential_matches,
+         :map => "function(doc) {
+                    if(doc['couchrest-type'] == 'Enquiry' && doc['potential_matches'].length > 0) {
+                      emit(doc['_id'], 1);
+                    }
+                 }",
+         :reduce => "function(keys, values, rereduce) {
+                      if (rereduce) {
+                        return sum(values);
+                      }
+                      else {
+                        return values.length;
+                      }
+          }"
   end
 
   def self.sortable_field_name(field)
@@ -60,10 +75,10 @@ class Enquiry < CouchRest::Model::Base
 
   def self.build_text_fields_for_solar
     sortable_fields = FormSection.all_sortable_field_names || []
-    default_child_fields + sortable_fields
+    default_enquiry_fields + sortable_fields
   end
 
-  def self.default_child_fields
+  def self.default_enquiry_fields
     %w(unique_identifier created_by created_by_full_name last_updated_by last_updated_by_full_name created_organisation)
   end
 
@@ -87,6 +102,13 @@ class Enquiry < CouchRest::Model::Base
         self[field_name]
       end
     end
+
+    string :potential_matches do
+      self[:potential_matches]
+      self[:multiple] = true
+    end
+
+    text :potential_matches
   end
 
   searchable(&@set_up_solr_fields)
@@ -142,5 +164,27 @@ class Enquiry < CouchRest::Model::Base
       previous_matches = JSON.parse(previous_matches)
     end
     previous_matches
+  end
+
+  class << self
+    def with_child_potential_matches(options = {})
+      options[:page] ||= 1
+      options[:per_page] ||= EnquiriesHelper::View::PER_PAGE
+
+      view_name = 'with_potential_matches'
+      WillPaginate::Collection.create(options[:page], options[:per_page]) do |pager|
+        results = paginate(
+            options.merge(
+                :design_doc => 'Enquiry',
+                :view_name => view_name,
+                :descending => true,
+                :include_docs => true,
+                :reduce => false
+            ))
+
+        pager.replace(results)
+        pager.total_entries = view(view_name).count
+      end
+    end
   end
 end

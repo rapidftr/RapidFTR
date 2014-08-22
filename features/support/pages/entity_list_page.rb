@@ -1,4 +1,4 @@
-class ChildListPage
+class EntityListPage
   include RSpec::Matchers
   include Capybara::DSL
 

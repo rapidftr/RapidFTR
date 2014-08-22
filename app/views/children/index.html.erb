@@ -10,7 +10,8 @@
   <% #Change me! %>
   <%= render :partial => "children/summary_row", :collection => @children, :as => :child, :locals => { :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields  }  %>
 
-    <%= render :partial => 'shared/pagination', :locals => { :results => @children } %>
+  <div class="clearfix"></div>
+  <%= render :partial => 'shared/pagination', :locals => { :results => @children } %>
 </div>
 
 <br/>

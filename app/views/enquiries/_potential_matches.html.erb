@@ -1,0 +1,13 @@
+<fieldset id='tab_potential_matches' class='tab'>
+  <div class="clearfix"></div>
+  <h2><%= t('enquiry.potential_child_matches') %></h2>
+
+  <div class="clearfix"></div>
+
+  <div class="form_info"></div>
+  <div class="entity_list">
+    <% @potential_matches.each do |child| %>
+        <%= render :partial => "children/summary_row", :locals => {:child => child, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields} %>
+    <% end %>
+  </div>
+</fieldset>

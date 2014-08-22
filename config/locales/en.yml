@@ -132,6 +132,9 @@ en:
     posted_from_mobile: "Posted from the mobile client at:"
     register_new_enquiry: "Register New Enquiry"
     no_records_available: "No Records Available"
+    potential_child_matches: "Potential Matches"
+    enquiries_with_potential_matches: "Enquiries with potential matches"
+    enquiry_with_potential_matches: "Enquiry with potential matches"
     messages:
       creation_success: "Enquiry record successfully created."
   child:
