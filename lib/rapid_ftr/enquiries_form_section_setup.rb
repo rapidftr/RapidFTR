@@ -28,27 +28,6 @@ module RapidFTR
       true
     end
 
-    def self.build_enquiry_section
-      enquiry_fields = [
-        Field.new(
-                    'name' => 'enquirer_name',
-                    'type' => 'text_field',
-                    'display_name_all' => 'Enquirer Name'
-                  ),
-        Field.new(
-                    'name' => 'criteria',
-                    'type' => 'textarea',
-                    'display_name_all' => 'Criteria'
-                  )]
-
-      FormSection.new('visible' => true, :order => 1,
-                       'unique_id' => 'enquiry_criteria',
-                       :fields => enquiry_fields,
-                       'name_all' => 'Enquiry Criteria',
-                       'description_all' => 'Enquiry Criteria'
-      )
-    end
-
     def self.build_details_of_adult_seeking_child_section
       details_of_adult_seeking_child_fields = [
         Field.new('name' => 'enq_first_name',
@@ -277,7 +256,7 @@ module RapidFTR
       FormSection.new('visible' => true,
                       :order => 4, :unique_id => 'enq_separation_history', 'editable' => true,
                       :fields => separation_history_fields,
-                      'name_all' => 'History of Sepration',
+                      'name_all' => 'History of Separation',
                       'description_all' => 'Separation history'
       )
     end
