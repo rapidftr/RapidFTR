@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby21:0.9.12
+FROM phusion/passenger-ruby21:0.9.11
 
 ENV HOME /root
 ENV RAILS_ENV production
