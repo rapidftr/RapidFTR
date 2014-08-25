@@ -18,6 +18,15 @@ RapidFTR.maintabControl = function(){
 
         case "devices":   $(".main_bar li a:contains('DEVICES')").addClass("sel");
         break;
+
+        case "enquiries": $(".main_bar li a:contains('ENQUIRIES')").addClass("sel");
+        break;
+
+        case "forms": $(".main_bar li a:contains('FORMS')").addClass("sel");
+        break;
+
+        case "reports": $(".main_bar li a:contains('REPORTS')").addClass("sel");
+        break;
     }
 
 
