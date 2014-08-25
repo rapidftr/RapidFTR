@@ -486,7 +486,7 @@ module RapidFTR
 
       FormSection.new('visible' => true,
                        :order => 2, :unique_id => 'family_details', :fields => family_details_fields,
-                       'name_all' => 'Family details',
+                       'name_all' => 'Family Details',
                        'description_all' => "Information about a child's known family"
       )
     end
