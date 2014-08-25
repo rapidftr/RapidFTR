@@ -22,18 +22,16 @@ Given /^no forms exist in the system$/ do
 end
 
 Given /^the following forms exist in the system:$/ do |forms_table|
-  Form.all.each { |u| u.destroy }
-
   forms_table.hashes.each do |form_hash|
     form_hash.reverse_merge!('unique_id' => form_hash['name'].gsub(/\s/, '_').downcase)
+    destroy_form(form_hash['name'])
     form = Form.new(form_hash)
     form.save!
   end
 end
 
 Given /^the following form sections exist in the system on the "(.*)" form:$/ do |form_name, form_sections_table|
-  FormSection.all.each { |u| u.destroy }
-  Form.all.each { |f| f.destroy }
+  destroy_form(form_name)
 
   form = Form.create(:name => form_name)
   form_sections_table.hashes.each do |form_section_hash|
@@ -66,6 +64,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
     )
     form_section.fields.push Field.new(field_hash)
   end
+
   form_section.save!
 end
 
@@ -286,4 +285,10 @@ def click_flag_as_suspect_record_link_for(name)
   child = find_child_by_name name
   visit children_path + "/#{child.id}"
   find(:css, '.btn_flag').click
+end
+
+def destroy_form(form_name)
+  form = Form.find_by_name(form_name)
+  form.sections.each { |section| section.destroy } unless form.nil?
+  form.destroy unless form.nil?
 end

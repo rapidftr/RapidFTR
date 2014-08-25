@@ -65,7 +65,9 @@ RapidFTR::Application.routes.draw do
   #######################
   # ENQUIRY URLS
   #######################
-  resources :enquiries
+  resources :enquiries do
+    get 'matches', :on => :collection
+  end
 
   #######################
   # API URLS

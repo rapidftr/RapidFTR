@@ -19,7 +19,7 @@ echo "path-exclude /usr/share/groff/*" >> /etc/dpkg/dpkg.cfg.d/01_nodoc
 echo "path-exclude /usr/share/info/*" >> /etc/dpkg/dpkg.cfg.d/01_nodoc
 
 apt-get update
-$minimal_apt_get_install build-essential git libxml2-dev libxslt1-dev zlib1g-dev imagemagick python-software-properties openjdk-7-jre-headless uuid-runtime couchdb uuid-runtime
+$minimal_apt_get_install build-essential git libxml2-dev libxslt1-dev zlib1g-dev imagemagick openjdk-7-jre-headless uuid-runtime couchdb nodejs
 
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /build/ $0

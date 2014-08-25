@@ -42,7 +42,7 @@
     </script>
 <% end %>
 
-<h1 class="float_left no_border"><%= link_to t("enquiry.label"), enquiries_path %> &gt; <%= @enquiry.short_id %></h1>
+<h1 class="float_left no_border"><%= link_to t("enquiry.label"), enquiries_path %> &gt; <%= @enquiry.id %></h1>
 
 <% if can? :update, @enquiry %>
     <%= link_to content_tag(:span, t("buttons.edit"), :class => 'edit'), edit_enquiry_path(@enquiry), :class => 'btn' %>
@@ -64,11 +64,19 @@
 
   <div class="side-tab">
     <%= render :partial => "shared/tabs", :object => @form_sections %>
+
+    <ul class="tab-handles">
+      <li>
+        <a href="#tab_potential_matches"><%= t('enquiry.potential_child_matches') %></a>
+      </li>
+    </ul>
+
   </div>
 
   <div class="side-tab-content">
     <div class="clearfix"></div>
     <%= render :partial => "shared/show_form_section", :locals => {:model => @enquiry} %>
+    <%= render :partial => "enquiries/potential_matches" %>
   </div>
 
 </div>

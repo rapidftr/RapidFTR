@@ -16,7 +16,7 @@ class EnquiriesController < ApplicationController
         paginated(page, per_page).
         ordered(@order, @sort_order.to_sym).
         marked_as(@filter)
-    search.created_by(current_user) unless can?(:view_all, Enquiry)
+
     @enquiries = search.results
 
     respond_to do |format|
@@ -69,6 +69,28 @@ class EnquiriesController < ApplicationController
   def show
     authorize! :read, Enquiry
     @form_sections = enquiry_form_sections
+    @potential_matches = potential_matches
+
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @enquiry }
+      format.json { render :json => @enquiry }
+    end
+  end
+
+  def matches
+    @filter = params[:filter] || nil
+    @order = params[:order_by] || EnquiriesHelper::ORDER_BY[@filter] || 'created_at'
+    @sort_order = (params[:sort_order].nil? || params[:sort_order].empty?) ? :asc : params[:sort_order]
+    per_page = params[:per_page] || EnquiriesHelper::View::PER_PAGE
+    page = params[:page] || 1
+
+    @enquiries = Enquiry.with_child_potential_matches(:per_page => per_page, :page => page)
+
+    respond_to do |format|
+      format.html { render :template => 'enquiries/index_with_potential_matches' }
+      format.xml { render :xml => @enquiries }
+    end
   end
 
   private
@@ -79,5 +101,11 @@ class EnquiriesController < ApplicationController
 
   def enquiry_form_sections
     FormSection.enabled_by_order_for_form(Enquiry::FORM_NAME)
+  end
+
+  def potential_matches
+    matches = []
+    @enquiry.potential_matches.each { |id| matches << Child.get(id) }
+    matches
   end
 end

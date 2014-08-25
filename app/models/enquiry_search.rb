@@ -47,7 +47,14 @@ class EnquirySearch
 
   def greater_than(field_name, value)
     search.build do
-      with(field_name.to_sym).greater_than Time.parse(value) if value.present?
+      with(field_name.to_sym).greater_than value if value.present?
+    end
+    self
+  end
+
+  def without(field_name, value)
+    search.build do
+      without(field_name, value)
     end
     self
   end

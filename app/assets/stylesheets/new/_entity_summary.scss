@@ -6,8 +6,9 @@
     background: $bg-child-summary;
     border: 1px solid $border-child-summary;
     @include borderRadius(2px);
-    margin: 10px 26px;
+    margin: 10px 0px;
     float:left;
+    width: 100%;
     @extend .clearfix;
 
     p.checkbox{
@@ -43,7 +44,9 @@
     .summary_panel {
       float: left;
       padding: 10px 10px 10px 0px;
-      width:695px;
+      width:auto;
+      max-width: 78%;
+      min-width: 70%;
       position: relative;
 
       h2 {
@@ -89,7 +92,7 @@
         color: #000;
         padding:10px;
         float:left;
-        width:470px;
+        /*width:470px;*/
 
       }
       }
