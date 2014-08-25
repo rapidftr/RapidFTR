@@ -1,0 +1,26 @@
+<h1 class="float_left no_border"><%= link_to t("enquiry.label"), enquiries_path %> 
+	&gt; <%= @enquiry.id %>
+</h1>
+
+<div class="clearfix"></div>
+
+<%= form_tag enquiry_path(@enquiry), :method => :put, :multipart => true, :class => "edit-profile default-form" do %>
+  <div class="page-content-new">
+    <%= error_messages_for :enquiry %>
+    <div class="side-tab">
+      <%= render :partial => "shared/tabs", :object => @form_sections %>
+    </div>
+
+    <div class="side-tab-content">
+      <%= render :partial => "shared/form_section", :collection => @form_sections, :locals => { :model => @enquiry} %>
+
+      <div class="btn_panel">
+        <%= discard_button enquiries_path %>
+        <%= submit_button %>
+        <div class="clearfix"></div>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>

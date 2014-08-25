@@ -53,6 +53,21 @@ Feature:
     And I should see "john"
     And I should see "jane"
 
+  Scenario: Editing an enquiry
+    Given I am logged in as a user with "View Enquiries,Update Enquiry" permissions
+    And the following enquiries exist in the system:
+	  | enquirer_name_ct | child_name_ct | location_ct |
+      | bob              | bob chulu     | kampala     |
+    And I follow "ENQUIRIES"
+    And I follow "Edit"
+    And I fill in "Enquirer Name" with "John Doe"
+    And I fill in "Location" with "Nairobi"
+    And I press "Save"
+    Then I should see "John Doe"
+    Then I should see "Nairobi"
+    Then I should see "Enquiry record successfully updated."
+	Then I should not see "Save"
+
   @javascript
   Scenario: View potential Matches for enquiry
     Given the following children exist in the system:

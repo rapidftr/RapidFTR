@@ -1,34 +1,5 @@
 class EnquiriesController < ApplicationController
-  def new
-    @enquiry = Enquiry.new
-    @form_sections = enquiry_form_sections
-  end
-
-  def create
-    authorize! :create, Enquiry
-    @enquiry = Enquiry.new_with_user_name current_user, params[:enquiry]
-
-    if @enquiry.save
-      flash['notice'] = t('enquiry.messages.creation_success')
-      redirect_to(@enquiry)
-    else
-      @form_sections = enquiry_form_sections
-      render :action => 'new'
-    end
-  end
-
-  def show
-    authorize! :read, Enquiry
-    @enquiry = Enquiry.find params[:id]
-    @form_sections = enquiry_form_sections
-    @potential_matches = potential_matches
-
-    respond_to do |format|
-      format.html
-      format.xml { render :xml => @enquiry }
-      format.json { render :json => @enquiry }
-    end
-  end
+  before_action :load_enquiry, :only => [:show, :edit, :update]
 
   def index
     authorize! :index, Enquiry
@@ -45,7 +16,7 @@ class EnquiriesController < ApplicationController
         paginated(page, per_page).
         ordered(@order, @sort_order.to_sym).
         marked_as(@filter)
-    # search.created_by(current_user) unless can?(:view_all, Enquiry)
+
     @enquiries = search.results
 
     respond_to do |format|
@@ -60,7 +31,53 @@ class EnquiriesController < ApplicationController
     end
   end
 
-  # handles request to display enquiries with potential matches.
+  def new
+    @enquiry = Enquiry.new
+    @form_sections = enquiry_form_sections
+  end
+
+  def create
+    authorize! :create, Enquiry
+    @enquiry = Enquiry.new_with_user_name current_user, params[:enquiry]
+
+    if @enquiry.save
+      flash[:notice] = t('enquiry.messages.creation_success')
+      redirect_to(@enquiry)
+    else
+      @form_sections = enquiry_form_sections
+      render :new
+    end
+  end
+
+  def edit
+    authorize! :update, Enquiry
+    @form_sections = enquiry_form_sections
+  end
+
+  def update
+    authorize! :update, Enquiry
+
+    if @enquiry.update_attributes(params[:enquiry])
+      flash[:notice] = t('enquiry.messages.update_success')
+      redirect_to enquiry_path(@enquiry)
+    else
+      @form_sections = enquiry_form_sections
+      render :edit
+    end
+  end
+
+  def show
+    authorize! :read, Enquiry
+    @form_sections = enquiry_form_sections
+    @potential_matches = potential_matches
+
+    respond_to do |format|
+      format.html
+      format.xml { render :xml => @enquiry }
+      format.json { render :json => @enquiry }
+    end
+  end
+
   def matches
     @filter = params[:filter] || nil
     @order = params[:order_by] || EnquiriesHelper::ORDER_BY[@filter] || 'created_at'
@@ -77,6 +94,10 @@ class EnquiriesController < ApplicationController
   end
 
   private
+
+  def load_enquiry
+    @enquiry = Enquiry.find params[:id]
+  end
 
   def enquiry_form_sections
     FormSection.enabled_by_order_for_form(Enquiry::FORM_NAME)

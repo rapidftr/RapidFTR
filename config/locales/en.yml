@@ -35,7 +35,6 @@ en:
     this_user: " this user?"
     keep_working: "Yes, Keep Working"
     logoff: "No, Logoff"
-    confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
     cancel_confirmation: "Are you sure you want to cancel?"
     logoff_warning_prefix: "You will be logged off in"
     logoff_warning_suffix: "seconds."
@@ -137,6 +136,9 @@ en:
     enquiry_with_potential_matches: "Enquiry with potential matches"
     messages:
       creation_success: "Enquiry record successfully created."
+      update_success: "Enquiry record successfully updated."
+      confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Enquiry Record Instead."
+
   child:
     flagged_by: "Flagged By"
     last_updated: "Last updated"
@@ -169,6 +171,8 @@ en:
       creation_success: "Child record successfully created."
       not_found: "Child with the given id is not found"
       confirm_duplicate: "Are you sure you want to continue? If so, click OK. If not, click Cancel."
+      confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Child Record Instead."
+
 
     actions:
       mark_as_investigated: "Mark as Investigated"
