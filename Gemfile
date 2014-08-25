@@ -36,7 +36,7 @@ gem 'rails-assets-aexmachina--jquery-bonsai', '~> 0.1.1'
 gem 'rails-assets-aexmachina--jquery-qubit', '~> 0.1.2'
 
 group :development do
-  gem 'better_errors',     '~> 1.1.0'
+  gem 'better_errors',     '~> 2.0'
 end
 
 group :development, :test, :cucumber do
