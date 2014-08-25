@@ -184,7 +184,7 @@ GEM
       sprockets-rails (~> 2.0)
     rails-assets-aexmachina--jquery-bonsai (0.1.1)
       rails-assets-jquery
-    rails-assets-aexmachina--jquery-qubit (0.1.2)
+    rails-assets-aexmachina--jquery-qubit (0.1.4)
       rails-assets-jquery
     rails-assets-jquery (2.1.1)
     rails-assets-select2 (3.5.1)
