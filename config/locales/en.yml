@@ -134,6 +134,7 @@ en:
     potential_child_matches: "Potential Matches"
     enquiries_with_potential_matches: "Enquiries with potential matches"
     enquiry_with_potential_matches: "Enquiry with potential matches"
+    mark_child_as_not_matching: "Mark as not matching"
     messages:
       creation_success: "Enquiry record successfully created."
       update_success: "Enquiry record successfully updated."
