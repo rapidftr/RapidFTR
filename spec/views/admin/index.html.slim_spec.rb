@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'admin/index.html.erb', :type => :view do
+describe 'admin/index.html.slim', :type => :view do
 
   let(:permissions) { [] }
   let(:user) { stub_model User, :id => 'test_id', :user_name => 'test_user', :permissions => permissions }

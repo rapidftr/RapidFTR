@@ -1,0 +1,33 @@
+h1.no_border.float_left
+  = @page_name
+- if can? :create, Replication
+  = link_to content_tag(:span, t("replication.configure_a_server"), :class => 'create_user'), new_replication_path, :class => 'btn'
+.page-content-new
+  .side-tab-content.full_width
+    - unless @replications.nil? || @replications.empty?
+    = render :partial => "replications/index", :locals => {:replications => @replications}
+    - unless @devices.nil? || @devices.empty?
+      table#devices.list_table
+        thead
+          tr
+            th
+              = t("imei")
+            th
+              = t("login.username")
+            th
+              = t("blacklisted")
+        tbody
+          - @devices.each do |device|
+            tr
+              td
+                = device.imei
+              td
+                = device.user_name
+              td
+                | <input class="device_blacklist_check_box" type="checkbox" id="
+                = device.imei
+                | " 
+                - if device.blacklisted
+                  |  checked="checked" 
+                | > 
+    #modal-dialog.hide

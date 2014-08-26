@@ -1,0 +1,18 @@
+h1
+  = t("header.system_settings")
+- if can? :manage, SystemUsers
+  br
+  p
+    = link_to t("admin.system_logs"), system_logs_path
+- if can? :highlight, Field
+  br
+  p
+    = link_to t("admin.highlight_fields"), highlight_fields_path
+- if can? :manage, SystemUsers
+  br
+  p
+    = link_to t("admin.manage_system_users"), system_users_path
+= form_tag admin_update_path, :method => "put"  do
+  = label_tag "user_locale", t("home.language")
+  = select_tag :locale, options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION, I18n.default_locale)
+  = submit_tag t("buttons.save")
