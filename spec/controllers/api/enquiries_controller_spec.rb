@@ -91,6 +91,22 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response).to be_forbidden
       expect(JSON.parse(response.body)['error']).to eq('Forbidden')
     end
+
+    it 'should not overwrite creation information from mobile' do
+      allow(RapidFTR::Clock).to receive(:current_formatted_time).and_return('2014-08-26 08:15:22 +0000')
+      enquiry = {:enquirer_name => 'John Doe',
+                 :created_by => 'Foo Bar',
+                 :created_organisation => 'UNICEF',
+                 :created_at => '2014-08-25 08:15:22 +0000'}
+
+      post :create, :enquiry => enquiry
+
+      saved_enquiry = Enquiry.first
+      expect(saved_enquiry[:created_by]).to eq enquiry[:created_by]
+      expect(saved_enquiry[:created_at]).to eq enquiry[:created_at]
+      expect(saved_enquiry[:created_organisation]).to eq enquiry[:created_organisation]
+      expect(saved_enquiry[:posted_at]).to eq '2014-08-26 08:15:22 +0000'
+    end
   end
 
   describe 'PUT update' do
