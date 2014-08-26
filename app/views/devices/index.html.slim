@@ -5,7 +5,7 @@ h1.no_border.float_left
 .page-content-new
   .side-tab-content.full_width
     - unless @replications.nil? || @replications.empty?
-    = render :partial => "replications/index", :locals => {:replications => @replications}
+      = render :partial => "replications/index", :locals => {:replications => @replications}
     - unless @devices.nil? || @devices.empty?
       table#devices.list_table
         thead
