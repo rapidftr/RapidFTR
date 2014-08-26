@@ -4,7 +4,7 @@
             <li>
               <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
               <%= link_to "download", child_audio_url(model), {:id => "audio_link"} %></li>
-            <% if is_playable_in_browser(model.audio) %>
+            <% if playable_in_browser?(model.audio) %>
                 <li>
                   <audio controls="controls" id="audio_player">
                     <source src="<%= child_audio_url(model) %>"/>

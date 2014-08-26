@@ -106,7 +106,7 @@ class User < CouchRest::Model::Base
                                          :message => I18n.t('errors.models.user.password_mismatch')}
 
   # FIXME: 409s randomly...destroying user records before test as a temp
-  validate :is_user_name_unique
+  validate :unique_user_name
 
   before_save :generate_id
 
@@ -138,7 +138,7 @@ class User < CouchRest::Model::Base
     !email.blank?
   end
 
-  def is_user_name_unique
+  def unique_user_name
     user = User.find_by_user_name(user_name)
     return true if user.nil? || id == user.id
     errors.add(:user_name, I18n.t('errors.models.user.user_name_uniqueness'))

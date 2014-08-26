@@ -10,7 +10,7 @@ describe Child, :type => :request do
                         'age' => '28',
                         'last_known_location' => 'London',
                         'photo' => photo)
-    expect(child.save).to be_truthy
+    expect(child.save!).to be true
   end
 
   it 'should load an existing child record from the database' do

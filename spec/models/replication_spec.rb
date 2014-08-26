@@ -272,7 +272,7 @@ describe Replication, :type => :model do
       @rep['_id'] = nil
       @rep.needs_reindexing = false
       @rep.save
-      expect(@rep.needs_reindexing).to be_truthy
+      expect(@rep.needs_reindexing).to be true
     end
 
     it 'should set needs reindexing to true when starting replication' do
@@ -336,7 +336,7 @@ describe Replication, :type => :model do
   end
 
   def delete_all_docs(db)
-    all_docs(db).each { |doc| db.delete_doc doc rescue nil }
+    all_docs(db).each { |doc| db.delete_doc(doc) rescue nil }
   end
 
   def wait_for_doc(db, prop, value, present = true, seconds = 60)

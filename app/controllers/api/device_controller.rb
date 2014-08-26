@@ -3,7 +3,7 @@ module Api
     skip_before_action :check_device_blacklisted
     skip_before_action :check_authentication
 
-    def is_blacklisted
+    def blacklisted
       params[:imei] ||= request.headers['X-FTR-Imei']
       device = Device.find_by_device_imei(params[:imei]).first
       if device

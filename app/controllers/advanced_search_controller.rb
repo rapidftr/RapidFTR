@@ -28,7 +28,7 @@ class AdvancedSearchController < ApplicationController
       children = @search_form.results
       record_ids = @search_form.results.map(&:id)
     else
-      record_ids = Hash[params['selections'].sort].values rescue []
+      record_ids = Hash[Array(params['selections']).sort].values
       children = record_ids.map { |id| Child.get id }
     end
 

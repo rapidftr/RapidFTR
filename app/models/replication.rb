@@ -71,7 +71,7 @@ class Replication < CouchRest::Model::Base
   end
 
   def timestamp
-    fetch_configs.map { |config| Time.zone.parse config['_replication_state_time'] rescue nil }.compact.max
+    fetch_configs.map { |config| Time.zone.parse(config['_replication_state_time']) rescue nil }.compact.max
   end
 
   def statuses
@@ -87,7 +87,10 @@ class Replication < CouchRest::Model::Base
   end
 
   def status
-    active? ? 'triggered' : success? ? 'completed' : 'error'
+    if active?     then 'triggered'
+    elsif success? then 'completed'
+    else                'error'
+    end
   end
 
   def remote_app_uri

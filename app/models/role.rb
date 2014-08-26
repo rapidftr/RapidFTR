@@ -18,7 +18,7 @@ class Role < CouchRest::Model::Base
 
   validates :name, :presence => {:message => 'Name must not be blank'}
   validates :permissions, :presence => {:message => I18n.t('errors.models.role.permission_presence')}
-  validate :is_name_unique, :if => :name
+  validate :unique_name, :if => :name
 
   before_save :generate_id
 
@@ -26,7 +26,7 @@ class Role < CouchRest::Model::Base
     Role.by_name(:key => name).first
   end
 
-  def has_permission(permission)
+  def has_permission?(permission)
     permissions.include? permission
   end
 
@@ -34,7 +34,7 @@ class Role < CouchRest::Model::Base
     permissions.reject! { |permission| permission.blank? } if permissions
   end
 
-  def is_name_unique
+  def unique_name
     role = Role.find_by_name(name)
     return true if role.nil? || id == role.id
     errors.add(:name, I18n.t('errors.models.role.unique_name'))

@@ -56,7 +56,7 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def validate_has_at_least_one_field_value
-    return true if field_definitions_for(Enquiry::FORM_NAME).any? { |field| is_filled_in?(field) }
+    return true if field_definitions_for(Enquiry::FORM_NAME).any? { |field| filled_in?(field) }
     errors.add(:validate_has_at_least_one_field_value, I18n.t('errors.models.enquiry.at_least_one_field'))
   end
 
@@ -153,7 +153,7 @@ class Enquiry < CouchRest::Model::Base
 
   def create_criteria
     self.criteria = {}
-    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| is_filled_in?(field) }
+    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| filled_in?(field) }
     fields.each do |field|
       criteria.store(field.name, self[field.name])
     end

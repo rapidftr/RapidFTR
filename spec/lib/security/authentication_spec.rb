@@ -30,7 +30,7 @@ module Security
     end
 
     it 'should check successful authentication' do
-      expect(@controller.send(:check_authentication)).to be_truthy
+      expect(@controller.send(:check_authentication)).to be_a User
     end
 
     it 'should raise ErrorResponse if no session ID' do

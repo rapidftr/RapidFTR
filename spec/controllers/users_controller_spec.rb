@@ -255,7 +255,7 @@ describe UsersController, :type => :controller do
       allow(controller).to receive(:authorize!).and_return(true)
       expect(User).to receive(:get).with('unique_id').and_return(double('user', :update_attributes => false, :verified? => false))
       post :update, :id => 'unique_id', :user => {:verified => true}
-      expect(controller.params[:verify]).to be_truthy
+      expect(controller.params[:verify]).to be true
     end
 
     it 'should update all the children of recently verified users' do

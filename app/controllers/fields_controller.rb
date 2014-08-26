@@ -15,7 +15,7 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new params[:field]
-    FormSection.add_field_to_formsection @form_section, @field
+    FormSection.add_field_to_form_section @form_section, @field
     @field.base_language = I18n.default_locale
     if (@field.errors.length == 0)
       flash[:notice] = t('fields.successfully_added')

@@ -9,12 +9,12 @@ describe 'Form Section routing', :type => :routing do
 
   it 'has route to post a new field' do
     expect(:post => '/form_section/foo/fields').to route_to(:controller => 'fields', :action => 'create', :form_section_id => 'foo')
-    expect(form_section_fields_path('some_formsection')).to eq('/form_section/some_formsection/fields')
+    expect(form_section_fields_path('some_form_section')).to eq('/form_section/some_form_section/fields')
   end
 
   it 'has route to save order of fields' do
     expect(:post => '/form_section/foo/fields/save_order').to route_to(:controller => 'fields', :action => 'save_order', :form_section_id => 'foo')
-    expect(save_order_form_section_fields_path('some_formsection')).to eq('/form_section/some_formsection/fields/save_order')
+    expect(save_order_form_section_fields_path('some_form_section')).to eq('/form_section/some_form_section/fields/save_order')
   end
 
   it 'has route for form sections index page' do

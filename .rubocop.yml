@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   Exclude:
     - 'bin/*'
@@ -59,9 +57,17 @@ Style/IfUnlessModifier:
 Style/Lambda:
   Enabled: false
 
+Style/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+    - have_
+
 Style/RegexpLiteral:
   Exclude:
     - 'features/step_definitions/*.rb'
+
+Style/RescueModifier:
+  Enabled: false
 
 Style/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space

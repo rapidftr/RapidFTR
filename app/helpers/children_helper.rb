@@ -24,7 +24,7 @@ module ChildrenHelper
     link_to key.humanize, child_audio_url(@child.id, key), :id => key, :target => '_blank'
   end
 
-  def is_playable_in_browser(audio)
+  def playable_in_browser?(audio)
     AudioMimeTypes.browser_playable? audio.mime_type
   end
 

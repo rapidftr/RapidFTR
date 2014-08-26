@@ -3,9 +3,9 @@ require 'spec_helper'
 
 describe FormSection, :type => :model do
 
-  def create_formsection(stubs = {})
+  def create_form_section(stubs = {})
     stubs.reverse_merge!(:fields => [], :save => true, :editable => true, :base_language => 'en')
-    @create_formsection = FormSection.new(stubs)
+    @create_form_section = FormSection.new(stubs)
   end
 
   def new_should_be_called_with(name, value)
@@ -94,7 +94,7 @@ describe FormSection, :type => :model do
   end
 
   describe 'get_by_unique_id' do
-    it 'should retrieve formsection by unique id' do
+    it 'should retrieve form_section by unique id' do
       expected = FormSection.new
       unique_id = 'fred'
       allow(FormSection).to receive(:by_unique_id).with(:key => unique_id).and_return([expected])
@@ -118,72 +118,72 @@ describe FormSection, :type => :model do
 
   end
 
-  describe 'add_field_to_formsection' do
+  describe 'add_field_to_form_section' do
 
-    it 'adds the field to the formsection' do
+    it 'adds the field to the form_section' do
       field = build(:text_field)
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
-      FormSection.add_field_to_formsection formsection, field
-      expect(formsection.fields.length).to eq(3)
-      expect(formsection.fields[2]).to eq(field)
+      form_section = create_form_section :fields => [build(:field), build(:field)], :save => true
+      FormSection.add_field_to_form_section form_section, field
+      expect(form_section.fields.length).to eq(3)
+      expect(form_section.fields[2]).to eq(field)
     end
 
-    it 'adds base_language to fields in formsection' do
+    it 'adds base_language to fields in form_section' do
       field = build(:text_area_field, :name => 'name')
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
-      FormSection.add_field_to_formsection formsection, field
-      expect(formsection.fields[2]).to have_key('base_language')
+      form_section = create_form_section :fields => [build(:field), build(:field)], :save => true
+      FormSection.add_field_to_form_section form_section, field
+      expect(form_section.fields[2]).to have_key('base_language')
     end
 
-    it 'saves the formsection' do
+    it 'saves the form_section' do
       field = build(:text_field)
-      formsection = create_formsection
-      expect(formsection).to receive(:save)
-      FormSection.add_field_to_formsection formsection, field
+      form_section = create_form_section
+      expect(form_section).to receive(:save)
+      FormSection.add_field_to_form_section form_section, field
     end
 
     it 'should raise an error if adding a field to a non editable form section' do
       field = build(:field)
-      formsection = FormSection.new(:editable => false)
-      expect { FormSection.add_field_to_formsection formsection, field }.to raise_error
+      form_section = FormSection.new(:editable => false)
+      expect { FormSection.add_field_to_form_section form_section, field }.to raise_error
     end
 
   end
 
-  describe 'add_textarea_field_to_formsection' do
+  describe 'add_textarea_field_to_form_section' do
 
-    it 'adds the textarea to the formsection' do
+    it 'adds the textarea to the form_section' do
       field = build(:text_area_field, :name => 'name')
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
-      FormSection.add_field_to_formsection formsection, field
-      expect(formsection.fields.length).to eq(3)
-      expect(formsection.fields[2]).to eq(field)
+      form_section = create_form_section :fields => [build(:field), build(:field)], :save => true
+      FormSection.add_field_to_form_section form_section, field
+      expect(form_section.fields.length).to eq(3)
+      expect(form_section.fields[2]).to eq(field)
     end
 
-    it 'saves the formsection with textarea field' do
+    it 'saves the form_section with textarea field' do
       field = build(:text_area_field, :name => 'name')
-      formsection = create_formsection
-      expect(formsection).to receive(:save)
-      FormSection.add_field_to_formsection formsection, field
+      form_section = create_form_section
+      expect(form_section).to receive(:save)
+      FormSection.add_field_to_form_section form_section, field
     end
 
   end
 
-  describe 'add_select_drop_down_field_to_formsection' do
+  describe 'add_select_drop_down_field_to_form_section' do
 
-    it 'adds the select drop down to the formsection' do
+    it 'adds the select drop down to the form_section' do
       field = build(:select_box_field)
-      formsection = create_formsection :fields => [build(:field), build(:field)], :save => true
-      FormSection.add_field_to_formsection formsection, field
-      expect(formsection.fields.length).to eq(3)
-      expect(formsection.fields[2]).to eq(field)
+      form_section = create_form_section :fields => [build(:field), build(:field)], :save => true
+      FormSection.add_field_to_form_section form_section, field
+      expect(form_section.fields.length).to eq(3)
+      expect(form_section.fields[2]).to eq(field)
     end
 
-    it 'saves the formsection with select drop down field' do
+    it 'saves the form_section with select drop down field' do
       field = build(:select_box_field)
-      formsection = create_formsection
-      expect(formsection).to receive(:save)
-      FormSection.add_field_to_formsection formsection, field
+      form_section = create_form_section
+      expect(form_section).to receive(:save)
+      FormSection.add_field_to_form_section form_section, field
     end
 
   end
@@ -191,48 +191,48 @@ describe FormSection, :type => :model do
   describe 'editable' do
 
     it 'should be editable by default' do
-      formsection = FormSection.new
-      expect(formsection.editable?).to be_truthy
+      form_section = FormSection.new
+      expect(form_section).to be_editable
     end
 
   end
 
   describe 'perm_visible' do
     it 'should not be perm_enabled by default' do
-      formsection = FormSection.new
-      expect(formsection.perm_visible?).to be_falsey
+      form_section = FormSection.new
+      expect(form_section).not_to be_perm_visible
     end
 
     it 'should be perm_visible when set' do
-      formsection = FormSection.new(:perm_visible => true)
-      expect(formsection.perm_visible?).to be_truthy
+      form_section = FormSection.new(:perm_visible => true)
+      expect(form_section).to be_perm_visible
     end
   end
 
   describe 'fixed_order' do
     it 'should not be fixed)order by default' do
-      formsection = FormSection.new
-      expect(formsection.fixed_order?).to be_falsey
+      form_section = FormSection.new
+      expect(form_section).not_to be_fixed_order
     end
 
     it 'should be fixed_order when set' do
-      formsection = FormSection.new(:fixed_order => true)
-      expect(formsection.fixed_order?).to be_truthy
+      form_section = FormSection.new(:fixed_order => true)
+      expect(form_section).to be_fixed_order
     end
   end
 
   describe 'perm_enabled' do
     it 'should not be perm_enabled by default' do
-      formsection = FormSection.new
-      expect(formsection.perm_enabled?).to be_falsey
+      form_section = FormSection.new
+      expect(form_section).not_to be_perm_enabled
     end
 
     it 'should be perm_enabled when set' do
-      formsection = FormSection.create!(:name => 'test', :uniq_id => 'test_id', :perm_enabled => true)
-      expect(formsection.perm_enabled?).to be_truthy
-      expect(formsection.perm_visible?).to be_truthy
-      expect(formsection.fixed_order?).to be_truthy
-      expect(formsection.visible?).to be_truthy
+      form_section = FormSection.create!(:name => 'test', :uniq_id => 'test_id', :perm_enabled => true)
+      expect(form_section).to be_perm_enabled
+      expect(form_section).to be_perm_visible
+      expect(form_section).to be_fixed_order
+      expect(form_section).to be_visible
     end
   end
 
@@ -363,7 +363,7 @@ describe FormSection, :type => :model do
       allow(FormSection).to receive(:all).and_return([form_section])
       form_section.update_field_as_highlighted attrs[:field_name]
       expect(existing_field.highlight_information.order).to eq(1)
-      expect(existing_field.is_highlighted?).to be_truthy
+      expect(existing_field).to be_highlighted
     end
 
     it 'should increment order of the field to be highlighted' do
@@ -379,7 +379,7 @@ describe FormSection, :type => :model do
       allow(form).to receive(:highlighted_fields).and_return([existing_highlighted_field])
       allow(FormSection).to receive(:all).and_return([form_section])
       form_section.update_field_as_highlighted attrs[:field_name]
-      expect(existing_field.is_highlighted?).to be_truthy
+      expect(existing_field).to be_highlighted
       expect(existing_field.highlight_information.order).to eq(4)
     end
 
@@ -390,7 +390,7 @@ describe FormSection, :type => :model do
                              :fields => [existing_highlighted_field])
       allow(FormSection).to receive(:all).and_return([form])
       form.remove_field_as_highlighted existing_highlighted_field.name
-      expect(existing_highlighted_field.is_highlighted?).to be_falsey
+      expect(existing_highlighted_field).not_to be_highlighted
     end
 
     describe 'formatted hash' do

@@ -39,8 +39,8 @@ describe Role, :type => :model do
   it 'should only grant permissions that are assigned to a role' do
     role = Role.new(:name => 'some_role', :permissions => [Permission::CHILDREN[:register]])
     role.valid?
-    expect(role.has_permission(Permission::CHILDREN[:register])).to eq(true)
-    expect(role.has_permission(Permission::CHILDREN[:edit])).to eq(false)
+    expect(role.has_permission?(Permission::CHILDREN[:register])).to eq(true)
+    expect(role.has_permission?(Permission::CHILDREN[:edit])).to eq(false)
   end
 
   it 'should generate id' do

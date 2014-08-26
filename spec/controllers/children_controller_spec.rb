@@ -498,7 +498,7 @@ describe ChildrenController, :type => :controller do
                      :flag => true,
                      :flag_message => 'Possible Duplicate'
                    }
-      expect(assigns[:child]['flag']).to be_truthy
+      expect(assigns[:child]['flag']).to be true
       expect(assigns[:child]['flag_message']).to eq('Possible Duplicate')
     end
 

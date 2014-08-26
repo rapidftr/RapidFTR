@@ -4,7 +4,7 @@ source 'https://rails-assets.org'
 gem 'rapidftr_addon', :git => 'https://github.com/rapidftr/rapidftr-addon.git', :branch => 'master'
 gem 'rapidftr_addon_cpims', :git => 'https://github.com/rapidftr/rapidftr-addon-cpims.git', :branch => 'master'
 
-gem 'rails',           '~> 4.0.8'
+gem 'rails',           '~> 4.0.9'
 gem 'couchrest_model', '~> 2.0.1'
 gem 'mini_magick',     '~> 3.8'
 gem 'prawn',           '~> 0.8.4'
@@ -36,7 +36,7 @@ gem 'rails-assets-aexmachina--jquery-bonsai', '~> 0.1.1'
 gem 'rails-assets-aexmachina--jquery-qubit', '~> 0.1.2'
 
 group :development do
-  gem 'better_errors',     '~> 1.1.0'
+  gem 'better_errors',     '~> 2.0'
 end
 
 group :development, :test, :cucumber do

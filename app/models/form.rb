@@ -34,7 +34,7 @@ class Form < CouchRest::Model::Base
 
   def highlighted_fields
     sections.map do |form_section|
-      form_section.fields.select { |field| field.is_highlighted? }
+      form_section.fields.select { |field| field.highlighted? }
     end.flatten
   end
 

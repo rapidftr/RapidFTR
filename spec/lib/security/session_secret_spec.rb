@@ -40,7 +40,7 @@ module Security
     end
 
     after :each do
-      COUCHDB_SERVER.database(SessionSecret.database_name).delete! rescue nil
+      SessionSecret.respond_to?(:database_name) && COUCHDB_SERVER.database(SessionSecret.database_name).delete!
     end
 
   end

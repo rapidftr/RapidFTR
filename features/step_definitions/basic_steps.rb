@@ -50,7 +50,7 @@ end
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with field type "([^\"]*)"$/ do |form_section, field_name, field_type|
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, '_'))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :type => field_type)
-  FormSection.add_field_to_formsection(form_section, field)
+  FormSection.add_field_to_form_section(form_section, field)
 end
 
 Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table|
@@ -252,7 +252,7 @@ end
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" with help text "([^\"]*)"$/ do |form_section, field_name, field_help_text|
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, '_'))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :help_text => field_help_text)
-  FormSection.add_field_to_formsection(form_section, field)
+  FormSection.add_field_to_form_section(form_section, field)
 end
 
 Then /^I should see the text "([^\"]*)" in the list of fields for "([^\"]*)"$/ do |expected_text, field_name |
@@ -267,7 +267,7 @@ end
 Given /^the "([^\"]*)" form section has the field "([^\"]*)" hidden$/ do |form_section, field_name |
   form_section = FormSection.get_by_unique_id(form_section.downcase.gsub(/\s/, '_'))
   field = Field.new(:name => field_name.dehumanize, :display_name => field_name, :visible => false)
-  FormSection.add_field_to_formsection(form_section, field)
+  FormSection.add_field_to_form_section(form_section, field)
 end
 
 Then /^I should see errors$/ do
