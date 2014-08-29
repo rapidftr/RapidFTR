@@ -218,6 +218,20 @@ describe Enquiry, :type => :model do
         expect(enquiry.potential_matches).to eq([child1.id, child2.id])
       end
 
+      it 'should remove id specified by user as not matching during save' do
+        child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
+        child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
+
+        enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
+        expect(enquiry.potential_matches.size).to eq(2)
+
+        enquiry.id_marked_as_not_matching = child1.id
+        enquiry.save
+
+        expect(enquiry.potential_matches.size).to eq(1)
+        expect(enquiry.potential_matches.first).to eq(child2.id)
+      end
+
       describe 'match_updated_at' do
 
         before do

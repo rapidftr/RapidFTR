@@ -17,6 +17,7 @@ class Enquiry < CouchRest::Model::Base
   validates :criteria, :presence => {:message => I18n.t('errors.models.enquiry.presence_of_criteria')}
   validate :validate_has_at_least_one_field_value
 
+  attr_accessor :id_marked_as_not_matching
   FORM_NAME = 'Enquiries'
 
   set_callback :save, :before do
@@ -114,7 +115,7 @@ class Enquiry < CouchRest::Model::Base
   searchable(&@set_up_solr_fields)
 
   def self.update_solr_indices
-    Sunspot.setup(Child, &@set_up_solr_fields)
+    Sunspot.setup(Enquiry, &@set_up_solr_fields)
   end
 
   def update_from(properties)
@@ -134,7 +135,7 @@ class Enquiry < CouchRest::Model::Base
 
   def find_matching_children
     previous_matches = potential_matches
-    children = MatchService.search_for_matching_children(criteria)
+    children = MatchService.search_for_matching_children(criteria, id_marked_as_not_matching)
     self.potential_matches = children.map { |child| child.id }
     verify_format_of(previous_matches)
 
