@@ -33,7 +33,6 @@ describe Enquiry, :type => :model do
       it 'should update the enquiry' do
         enquiry = create_enquiry_with_created_by('jdoe', :enquirer_name => 'Vivek', :place => 'Kampala')
         properties = {:enquirer_name => 'DJ', :place => 'Kampala'}
-
         enquiry.update_from(properties)
 
         expect(enquiry.enquirer_name).to eq('DJ')

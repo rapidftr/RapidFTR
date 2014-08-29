@@ -1,14 +1,20 @@
 class Enquiry < CouchRest::Model::Base
   use_database :enquiry
+
+  require 'uuidtools'
   include RecordHelper
   include RapidFTR::CouchRestRailsBackward
   include Searchable
+
+  after_initialize :create_unique_id
 
   before_validation :create_criteria, :on => [:create, :update]
   before_save :find_matching_children
   before_save :update_history, :unless => :new?
   before_save :add_creation_history, :if => :new?
 
+  property :short_id
+  property :unique_identifier
   property :criteria, Hash
   property :potential_matches, :default => []
   property :match_updated_at, :default => ''
@@ -150,6 +156,11 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
+
+  def create_unique_id
+    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
+    self.short_id = unique_identifier.last 7
+  end
 
   def create_criteria
     self.criteria = {}
