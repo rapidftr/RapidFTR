@@ -21,21 +21,20 @@ module Api
 
     def update
       authorize! :update, Enquiry
-      @enquiry = Enquiry.get(params[:id])
-      if @enquiry.nil?
+
+      enquiry = Enquiry.get(params[:id])
+      if enquiry.nil?
         render_error('errors.models.enquiry.not_found', 404)
         return
       end
-
-      @enquiry.update_from(enquiry_json)
-
-      unless @enquiry.valid? && !@enquiry['criteria'].nil? && !@enquiry['criteria'].empty?
-        render :json => {:error => @enquiry.errors.full_messages}, :status => 422
+      enquiry = update_enquiry_from(params)
+      unless enquiry.valid? && !enquiry['criteria'].nil? && !enquiry['criteria'].empty?
+        render :json => {:error => enquiry.errors.full_messages}, :status => 422
         return
       end
 
-      @enquiry.save
-      render :json => @enquiry
+      enquiry.save!
+      render :json => enquiry
     end
 
     def index
@@ -60,6 +59,12 @@ module Api
 
     private
 
+    def update_enquiry_from(params)
+      enquiry = enquiry || Enquiry.get(params[:id]) || Enquiry.new_with_user_name(current_user, params[:enquiry])
+      enquiry.update_properties_with_user_name(current_user.user_name, nil, nil, nil, params[:enquiry])
+      enquiry
+    end
+
     def render_error(message, status_code)
       render :json => {:error => I18n.t(message)}, :status => status_code
     end
@@ -68,6 +73,9 @@ module Api
       unless (params[:updated_after]).nil?
         DateTime.parse params[:updated_after]
       end
+
+      # histories might come from the mobile client as a string
+      params['enquiry']['histories'] = JSON.parse(params['enquiry']['histories']) if params['enquiry'] && params['enquiry']['histories'].is_a?(String)
     rescue
       render :json => 'Invalid request', :status => 422
     end
