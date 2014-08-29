@@ -68,6 +68,7 @@ RapidFTR::Application.routes.draw do
   resources :enquiries do
     get 'matches', :on => :collection
   end
+  match '/enquiries/:id/potential_matches/:match_id' => 'enquiries#update', :via => [:put]
 
   #######################
   # API URLS

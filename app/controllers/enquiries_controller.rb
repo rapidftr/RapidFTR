@@ -57,6 +57,14 @@ class EnquiriesController < ApplicationController
   def update
     authorize! :update, Enquiry
 
+    if !params[:match_id].nil?
+      @enquiry[:potential_matches].delete params[:match_id]
+      @enquiry.id_marked_as_not_matching = params[:match_id]
+      @enquiry.save
+      redirect_to enquiry_path(@enquiry)
+      return
+    end
+
     if @enquiry.update_attributes(params[:enquiry])
       flash[:notice] = t('enquiry.messages.update_success')
       redirect_to enquiry_path(@enquiry)

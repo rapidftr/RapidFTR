@@ -124,13 +124,22 @@ describe EnquiriesController, :type => :controller do
     end
   end
 
-  describe '#update enquiry' do
+  describe '#update enquiry', :solr => true do
     before :each do
+      Sunspot.setup(Child) do
+        text :child_name
+        text :location
+        text :gender
+      end
+      @child = create(:child, :child_name => 'any child', :location => 'Kampala', :gender => 'male')
+      Child.reindex!
       form = create(:form, :name => Enquiry::FORM_NAME)
-      enquirer_name_field = build(:field, :name => 'enquirer_name')
-      child_name_field = build(:field, :name => 'child_name')
-      @form_section = create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field])
-      @enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
+      enquirer_name_field = build(:text_field, :name => 'enquirer_name')
+      child_name_field = build(:text_field, :name => 'child_name')
+      gender_field = build(:text_field, :name => 'gender')
+      location_field = build(:text_field, :name => 'location')
+      @form_section = create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field, location_field, gender_field])
+      @enquiry = create(:enquiry, :enquirer_name => 'John doe', :child_name => 'any child', :gender => 'male', :location => 'kampala')
       allow(controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(true)
     end
 
@@ -156,6 +165,13 @@ describe EnquiriesController, :type => :controller do
     end
 
     describe '#update' do
+      it 'should not change enquiry given empty params' do
+        put :update, :id => @enquiry.id
+
+        updated_enquiry = Enquiry.find @enquiry.id
+        expect(updated_enquiry).to eq @enquiry
+      end
+
       it 'should update the attributes of an enquiry' do
         new_enquiry_attributes = {:enquirer_name => 'David jones'}
 
@@ -183,6 +199,37 @@ describe EnquiriesController, :type => :controller do
         expect(response).to render_template :edit
         expect(assigns[:enquiry]).to eq enquiry
         expect(assigns[:form_sections]).to eq [@form_section]
+      end
+
+      it 'should remove child id from potential matches when child_id exists in params' do
+        expect(@enquiry.potential_matches.length).to eq 1
+        put :update, :id => @enquiry.id, :match_id => @child.id
+
+        @enquiry.reload
+        expect(@enquiry.potential_matches.length).to eq 0
+      end
+
+      it 'should not remove child id from potential matches when child_id does not exists in params' do
+        expect(@enquiry.potential_matches.length).to eq 1
+        put :update, :id => @enquiry.id
+
+        @enquiry.reload
+        expect(@enquiry.potential_matches.length).to eq 1
+      end
+
+      it 'should update enquiry without tempering with potential matches ' do
+        expect(@enquiry.potential_matches.length).to eq 1
+        put :update, :id => @enquiry.id, :enquiry => {:enquirer_name => 'James Bond'}
+
+        @enquiry.reload
+        expect(@enquiry.enquirer_name).to eq 'James Bond'
+        expect(@enquiry.potential_matches.length).to eq 1
+      end
+
+      it 'should redirect to enquiry page after marking child as not matching' do
+        put :update, :id => @enquiry.id, :match_id => @child.id
+
+        expect(response).to redirect_to enquiry_path(@enquiry)
       end
     end
   end

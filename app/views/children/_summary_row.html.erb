@@ -64,7 +64,7 @@
 
               <% if local_assigns.has_key? :rendered_by_show_enquiry %>
                 <li>
-                  <%= link_to t('enquiry.mark_child_as_not_matching'), enquiry_path(@enquiry), child_id: child.id, method: :put %>
+                  <%= link_to t('enquiry.mark_child_as_not_matching'), enquiry_path(@enquiry)+"/potential_matches/#{child.id}", child_id: child.id, method: :put %>
                 </li>
               <% end %>
         <% end %>
