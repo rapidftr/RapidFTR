@@ -15,6 +15,7 @@ class Field
 
   property :name
   property :visible, TrueClass, :default => true
+  property :searchable, TrueClass, :default => false
   property :type
   property :highlight_information, HighlightInformation
   property :editable, TrueClass, :default => true
@@ -90,6 +91,7 @@ class Field
     self.visible = true if properties['visible'].nil?
     self.highlight_information = HighlightInformation.new
     self.editable = true if properties['editable'].nil?
+    self.searchable = false if properties ['searchable'].nil?
     self.attributes = properties
     create_unique_id
   end

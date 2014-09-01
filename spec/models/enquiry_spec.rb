@@ -272,7 +272,7 @@ describe Enquiry, :type => :model do
       end
     end
 
-    describe 'generate_criteria' do
+    describe 'create_criteria' do
       before :each do
         reset_couchdb!
 
@@ -283,7 +283,9 @@ describe Enquiry, :type => :model do
           build(:text_field, :name => 'location'),
           build(:text_field, :name => 'nationality'),
           build(:text_field, :name => 'enquirer_name'),
-          build(:numeric_field, :name => 'age')
+          build(:numeric_field, :name => 'age'),
+          build(:text_field, :name => 'parent_name', :searchable => false),
+          build(:text_field, :name => 'sibling_name', :searchable => false)
         ], :form => form
       end
 
@@ -302,7 +304,17 @@ describe Enquiry, :type => :model do
 
         expect(enquiry.criteria).to eq(fields.keep_if { |_key, value| !value.nil? })
       end
+
+      it 'should only use searchable fields' do
+        fields = {'name' => 'Eduardo', 'nationality' => 'Ugandan', 'sibling_name' => 'sister', 'parent_name' => 'father'}
+        enquiry = Enquiry.new(fields)
+        enquiry.save!
+
+        expect(enquiry.criteria).to eq({'name' => 'Eduardo', 'nationality' => 'Ugandan'})
+      end 
     end
+
+
 
     private
 
