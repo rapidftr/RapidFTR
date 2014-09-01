@@ -314,6 +314,19 @@ describe Enquiry, :type => :model do
       end 
     end
 
+    describe '.update_all_child_matches' do
+      it 'should update child matches for all enquiries' do
+        enquiry1 = build(:enquiry)
+        enquiry2 = build(:enquiry)
+        enquiries = [enquiry1, enquiry2]
+        
+        expect(Enquiry).to receive(:all).and_return(enquiries)
+        expect(enquiry1).to receive(:find_matching_children)
+        expect(enquiry2).to receive(:find_matching_children)
+        
+        Enquiry.update_all_child_matches
+      end
+    end
 
 
     private

@@ -35,6 +35,12 @@ describe FormSection, :type => :model do
     form.run_callbacks(:update)
   end
 
+  it 'updates possible child matches when updated' do
+    form = FormSection.new
+    expect(Enquiry).to receive(:update_all_child_matches)
+    form.run_callbacks(:save)
+  end
+
   describe '#unique_id' do
     it 'should be generated when not provided' do
       f = FormSection.new

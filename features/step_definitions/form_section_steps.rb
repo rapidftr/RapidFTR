@@ -31,6 +31,10 @@ When /^I select the form section "([^"]*)" to toggle visibility$/ do |section_na
   form_section_page.toggle_section_visibility(section_name)
 end
 
+When /^I mark "([^"].*)" as searchable$/ do |field_name|
+  form_section_edit_page.mark_field_as_searchable field_name
+end
+
 When /^I demote field "([^"]*)"$/ do |field|
   # #find(:css, "a##{field}_down").click
   # #drag = page.find("//tr[@data='#{field}']")

@@ -29,11 +29,16 @@ class FormSection < CouchRest::Model::Base
 
   after_create :update_child_indices
   after_update :update_child_indices
+  after_save :update_child_matches
 
   belongs_to :form
 
   def update_child_indices
     Child.update_solr_indices
+  end
+
+  def update_child_matches
+    Enquiry.update_all_child_matches
   end
 
   def valid_presence_of_base_language_name
@@ -116,10 +121,6 @@ class FormSection < CouchRest::Model::Base
 
   def self.all_sortable_field_names
     all.map { |form| form.all_sortable_fields.map(&:name) }.flatten
-  end
-
-  def self.all_searchable_fields
-    all.map { |form| form.all_searchable_fields }.flatten
   end
 
   def self.get_by_unique_id(unique_id)
