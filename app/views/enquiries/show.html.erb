@@ -38,6 +38,8 @@
                 }
             });
 
+            var section = $(location).attr('hash');
+            $('a[href='+ section + ']').click();
         });
     </script>
 <% end %>

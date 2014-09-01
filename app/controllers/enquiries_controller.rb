@@ -61,7 +61,7 @@ class EnquiriesController < ApplicationController
       @enquiry[:potential_matches].delete params[:match_id]
       @enquiry.id_marked_as_not_matching = params[:match_id]
       @enquiry.save
-      redirect_to enquiry_path(@enquiry)
+      redirect_to :action => :show, :anchor => 'tab_potential_matches'
       return
     end
 
