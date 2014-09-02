@@ -63,15 +63,4 @@ describe MatchService, :type => :request, :solr => true do
 
     expect(children.size).to eq(3)
   end
-
-  it 'should exclude child record with specified id from search results' do
-    child1 = Child.create!(:name => 'Christine', :created_by => 'me', :country => 'Republic of Uganda', :created_organisation => 'stc')
-    child2 = Child.create!(:name => 'Man', :created_by => 'me', :nationality => 'Uganda', :gender => 'Male', :created_organisation => 'stc')
-    child3 = Child.create!(:name => 'dude', :created_by => 'me', :birthplace => 'Dodoma', :languages => 'Swahili', :created_organisation => 'stc')
-    enquiry = Enquiry.create!(:enquirer_name => 'Foo Bar', :gender => 'male', :country => 'uganda', :birthplace => 'dodoma', :languages => 'Swahili')
-
-    children = MatchService.search_for_matching_children(enquiry['criteria'], child1.id)
-
-    expect(children.size).to eq(2)
-  end
 end
