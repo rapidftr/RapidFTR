@@ -527,7 +527,6 @@ ar:
         unique_id: "الهوية المتفردة '%{unique_id}' موجوده"
 
       enquiry:
-        presence_of_criteria: "الرجاء إضافة معايير للطلب"
         presence_of_enquirer_name: "الرجاء إدخال إسم مقدم الطلب"
         presence_of_reporter_details: "الرجاء إدخال تفاصيل مقدم الطلب"
         create_forbidden: "ممنوع"

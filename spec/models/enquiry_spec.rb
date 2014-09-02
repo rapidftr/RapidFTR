@@ -10,18 +10,6 @@ describe Enquiry, :type => :model do
   end
 
   describe 'validation' do
-    it 'should not create enquiry without criteria' do
-      enquiry = create_enquiry_with_created_by('user name', :enquirer_name => 'Vivek')
-      expect(enquiry).not_to be_valid
-      expect(enquiry.errors[:criteria]).to eq(['Please add criteria to your enquiry'])
-    end
-
-    it 'should not create enquiry with empty criteria' do
-      enquiry = create_enquiry_with_created_by('user name', :enquirer_name => 'Vivek', :criteria => {})
-      expect(enquiry).not_to be_valid
-      expect(enquiry.errors[:criteria]).to eq(['Please add criteria to your enquiry'])
-    end
-
     it 'should fail to validate if all fields are nil' do
       enquiry = Enquiry.new
       allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => 'height')]
@@ -33,7 +21,6 @@ describe Enquiry, :type => :model do
       it 'should update the enquiry' do
         enquiry = create_enquiry_with_created_by('jdoe', :enquirer_name => 'Vivek', :place => 'Kampala')
         properties = {:enquirer_name => 'DJ', :place => 'Kampala'}
-
         enquiry.update_from(properties)
 
         expect(enquiry.enquirer_name).to eq('DJ')
@@ -117,7 +104,7 @@ describe Enquiry, :type => :model do
       end
 
       it 'should be an empty array when enquiry is created' do
-        enquiry = Enquiry.new(:criteria => {'name' => 'Stephen'})
+        enquiry = Enquiry.new
         expect(enquiry.potential_matches).to eq([])
       end
 
@@ -331,7 +318,7 @@ describe Enquiry, :type => :model do
       end
     end
 
-    describe 'generate_criteria' do
+    describe 'create_criteria' do
       before :each do
         reset_couchdb!
 
@@ -342,7 +329,9 @@ describe Enquiry, :type => :model do
           build(:text_field, :name => 'location'),
           build(:text_field, :name => 'nationality'),
           build(:text_field, :name => 'enquirer_name'),
-          build(:numeric_field, :name => 'age')
+          build(:numeric_field, :name => 'age'),
+          build(:text_field, :name => 'parent_name', :matchable => false),
+          build(:text_field, :name => 'sibling_name', :matchable => false)
         ], :form => form
       end
 
@@ -360,6 +349,28 @@ describe Enquiry, :type => :model do
         enquiry.save!
 
         expect(enquiry.criteria).to eq(fields.keep_if { |_key, value| !value.nil? })
+      end
+
+      it 'should only use matchable fields' do
+        fields = {'name' => 'Eduardo', 'nationality' => 'Ugandan', 'sibling_name' => 'sister', 'parent_name' => 'father'}
+        enquiry = Enquiry.new(fields)
+        enquiry.save!
+
+        expect(enquiry.criteria).to eq('name' => 'Eduardo', 'nationality' => 'Ugandan')
+      end
+    end
+
+    describe '.update_all_child_matches' do
+      it 'should update child matches for all enquiries' do
+        enquiry1 = build(:enquiry)
+        enquiry2 = build(:enquiry)
+        enquiries = [enquiry1, enquiry2]
+
+        expect(Enquiry).to receive(:all).and_return(enquiries)
+        expect(enquiry1).to receive(:find_matching_children)
+        expect(enquiry2).to receive(:find_matching_children)
+
+        Enquiry.update_all_child_matches
       end
     end
 

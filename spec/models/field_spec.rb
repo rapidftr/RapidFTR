@@ -115,6 +115,18 @@ describe 'Child record field view model', :type => :model do
     end
   end
 
+  describe 'matchable' do
+    it 'should always default to false' do
+      field = Field.new(:name => 'new_field', :display_name => 'new_field')
+      expect(field).to_not be_matchable
+    end
+
+    it 'can be set to true' do
+      field = Field.new(:name => 'new_field', :display_name => 'new_field', :matchable => true)
+      expect(field).to be_matchable
+    end
+  end
+
   describe 'save' do
     it 'should set visible' do
       field = Field.new(:name => 'diff_field', :display_name => 'diff_field', :visible => 'true')

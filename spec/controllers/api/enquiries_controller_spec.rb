@@ -72,13 +72,6 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(201)
     end
 
-    it 'should not create enquiry without criteria' do
-      allow(controller).to receive(:authorize!)
-      post :create, :enquiry => {:parent_name => 'new name', :town => 'kampala'}
-      expect(response.response_code).to eq(422)
-      expect(JSON.parse(response.body)['error']).to include('Criteria Please add criteria to your enquiry')
-    end
-
     it 'should not update record if it exists and return error' do
       enquiry = Enquiry.new(:enquirer_name => 'old name', :"location" => 'kampala', :name => 'name')
       enquiry.save!
@@ -111,24 +104,6 @@ describe Api::EnquiriesController, :type => :controller do
 
   describe 'PUT update' do
 
-    it 'should not update record when criteria is empty' do
-      enquiry = Enquiry.create(:enquirer_name => 'Someone', :name => 'child name')
-      allow(controller).to receive(:authorize!)
-
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => nil, :name => nil}, :format => :json
-
-      expect(response.response_code).to eq(422)
-    end
-
-    it 'should not update record when there is no criteria' do
-      enquiry = Enquiry.create(:enquirer_name => 'Someone', :name => 'child name')
-      allow(controller).to receive(:authorize!)
-
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => nil, :name => nil}, :format => :json
-
-      expect(response.response_code).to eq(422)
-    end
-
     it 'should trigger the match functionality every time a record is created' do
       criteria = {'name' => 'old name'}
       enquiry = Enquiry.create(:enquirer_name => 'Machaba', :reporter_details => {'location' => 'kampala'}, :criteria => criteria)
@@ -142,8 +117,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not trigger the match unless record is created' do
-      criteria = {'name' => 'old name'}
-      enquiry = Enquiry.create(:enquirer_name => 'Machaba', :reporter_details => {'location' => 'kampala'}, :criteria => criteria)
+      enquiry = Enquiry.create(:enquirer_name => 'Machaba', :reporter_details => {'location' => 'kampala'})
       allow(controller).to receive(:authorize!)
 
       expect(Enquiry).not_to receive(:find_matching_children)
@@ -239,14 +213,11 @@ describe Api::EnquiriesController, :type => :controller do
       child1 = Child.create('name' => 'Clayton aquiles', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
       child2 = Child.create('name' => 'Steven aquiles', 'sex' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
 
-      enquiry_json = "{\"enquirer_name\": \"Godwin\",\"sex\": \"male\",\"age\": \"10\",\"location\": \"Kampala\" }"
-      enquiry = Enquiry.new(JSON.parse(enquiry_json))
-      enquiry.save!
+      enquiry = Enquiry.create(:enquirer_name => 'Godwin', :sex => 'male', :age => '10', :location => 'Kampala')
+
       expect(Enquiry.get(enquiry.id)['potential_matches']).to include(*[child2.id])
 
-      updated_enquiry = "{\"name\": \"aquiles\", \"age\": \"10\", \"location\": \"Kampala\"}"
-
-      put :update, :id => enquiry.id, :enquiry => updated_enquiry
+      put :update, :id => enquiry.id, :enquiry => {:name => 'aquiles', :age => '10', :location => 'Kampala'}
       expect(response.response_code).to eq(200)
 
       enquiry_after_update = Enquiry.get(enquiry.id)

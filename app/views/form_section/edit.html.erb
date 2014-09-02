@@ -19,6 +19,7 @@
         <th width="100"><%= t("form_section.options") %></th>
         <th width="75"><%= t("fields.type") %></th>
         <th width="75" align="center"><%= t("form_section.hide") %></th>
+        <th width="75" align="center"><%= t("form_section.matchable") %></th>
 
         <th width="220" align="center">Actions</th>
       </tr>
@@ -41,11 +42,14 @@
             <% if @form_section.editable? %>
                 <td width="75" align="center">
                   <% if field.editable? %>
-                    <%= check_box_tag "fields[]", field.name, !field.visible? , {:id => "fields_#{field.name}", :class => "field_hide_show"} %>
+                    <%= check_box_tag "fields[]", field.name, !field.visible? , {:id => "fields_#{field.name}", :class => "field_hide_show", 'data-field-name' => "visible"} %>
                   <% end %>
                 </td>
 
             <% end %>
+            <td width="75">
+              <%= check_box_tag "fields[]", field.name, field.matchable? , {:id => "fields_#{field.name}", :class => "field_matchable", 'data-field-name' => "matchable"} %>
+            </td>            
             <% if @form_section.editable? %>
             <td class='field-buttons' width="220">
                   <% if field.editable? %>

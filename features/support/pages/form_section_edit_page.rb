@@ -19,6 +19,10 @@ class FormSectionEditPage
     check('fields_nationality')
   end
 
+  def mark_field_as_matchable(field_name)
+    check("fields_#{field_name}")
+  end
+
   private
 
   def field_selector(field_name)

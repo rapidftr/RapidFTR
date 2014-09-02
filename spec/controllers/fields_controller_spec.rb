@@ -87,17 +87,27 @@ describe FieldsController, :type => :controller do
       allow(FormSection).to receive(:get_by_unique_id).with(@form_section_id).and_return(@form_section)
     end
 
-    it 'should toggle the given field' do
+    it 'should toggle the given field attribute' do
       fields = [double(:field, :name => 'bla', :visible => true)]
 
       expect(@form_section).to receive(:fields).and_return(fields)
       expect(fields.first).to receive(:visible=).with(false)
       expect(@form_section).to receive(:save)
 
-      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla'
+      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => 'visible'
       expect(response.body).to eq('OK')
     end
 
+    it 'should toggle the matchable field attribute' do
+      fields = [double(:field, :name => 'bla', :matchable => false)]
+
+      expect(@form_section).to receive(:fields).and_return(fields)
+      expect(fields.first).to receive(:matchable=).with(true)
+      expect(@form_section).to receive(:save)
+
+      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => 'matchable'
+      expect(response.body).to eq('OK')
+    end
   end
 
   describe 'post update' do

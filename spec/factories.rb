@@ -139,6 +139,7 @@ FactoryGirl.define do
     option_strings { [] }
     editable true
     visible true
+    matchable true
 
     initialize_with { new(attributes) }
 
