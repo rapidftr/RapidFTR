@@ -258,7 +258,7 @@ describe Enquiry, :type => :model do
           @enquiry.ids_marked_as_not_matching << @child2.id
           expect(@enquiry.ids_marked_as_not_matching.length).to eq 2
 
-          @enquiry.clear_ids_marked_as_not_matching()
+          @enquiry.clear_ids_marked_as_not_matching
 
           expect(@enquiry.ids_marked_as_not_matching.length).to eq(0)
         end

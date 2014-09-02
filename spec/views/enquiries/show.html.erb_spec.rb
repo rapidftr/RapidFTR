@@ -45,22 +45,22 @@ describe 'enquiries/show.html.erb', :type => :view do
 
   describe 'rendering matching child partial' do
     it 'should a have link to mark child as not a match' do
-      fields =[build(:field, :name => 'name')]
+      fields = [build(:field, :name => 'name')]
       child = create(:child, :name => 'Foo Bar')
 
-      render :template => "children/_summary_row", :locals => {:child => child, :checkbox => false, :highlighted_fields => fields, :rendered_by_show_enquiry => true}
+      render :template => 'children/_summary_row', :locals => {:child => child, :checkbox => false, :highlighted_fields => fields, :rendered_by_show_enquiry => true}
 
-      expect(rendered).to match /Mark as not matching/
+      expect(rendered).to match(/Mark as not matching/)
       expect(rendered).to have_link('Mark as not matching', :href => "/enquiries/#{@enquiry.id}/potential_matches/#{child.id}")
     end
 
     it 'should not have link to mark child as not a match when flag is not passed' do
-      fields =[build(:field, :name => 'name')]
+      fields = [build(:field, :name => 'name')]
       child = create(:child, :name => 'Foo Bar')
 
-      render :template => "children/_summary_row", :locals => {:child => child, :checkbox => false, :highlighted_fields => fields} 
+      render :template => 'children/_summary_row', :locals => {:child => child, :checkbox => false, :highlighted_fields => fields} 
 
-      expect(rendered).not_to match /Mark as not matching/
+      expect(rendered).not_to match(/Mark as not matching/)
       expect(rendered).not_to have_link('Mark as not matching', :href => "/enquiries/#{@enquiry.id}")
     end
 

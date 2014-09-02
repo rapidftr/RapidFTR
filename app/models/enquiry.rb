@@ -171,8 +171,9 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
-  def exclude_children_marked_as_not_matches children
-    children.select {|child| !ids_marked_as_not_matching.include? child.id }
+
+  def exclude_children_marked_as_not_matches(children)
+    children.select { |child| !ids_marked_as_not_matching.include? child.id }
   end
 
   def create_criteria
