@@ -218,21 +218,66 @@ describe Enquiry, :type => :model do
         expect(enquiry.potential_matches).to eq([child1.id, child2.id])
       end
 
-      it 'should remove id specified by user as not matching during save' do
+      it 'should remove id specified as not matching during save' do
         child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
         child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
 
         enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
         expect(enquiry.potential_matches.size).to eq(2)
 
-        enquiry.id_marked_as_not_matching = child1.id
+        enquiry.ids_marked_as_not_matching << child1.id
         enquiry.save
 
         expect(enquiry.potential_matches.size).to eq(1)
         expect(enquiry.potential_matches.first).to eq(child2.id)
       end
 
-      describe 'match_updated_at' do
+      it 'should not include child records marked as not matching in potential_matches when enquiry has not been edited' do
+        child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
+        child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
+        enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
+        expect(enquiry.potential_matches.size).to eq(2)
+
+        enquiry.ids_marked_as_not_matching << child1.id
+        enquiry.save
+        expect(enquiry.potential_matches.size).to eq(1)
+        expect(enquiry.potential_matches.first).to eq(child2.id)
+
+        enquiry.ids_marked_as_not_matching << child2.id
+        enquiry.save
+        expect(enquiry.potential_matches.size).to eq(0)        
+      end
+
+      describe '#ids_marked_as_not_matching' do
+        before :each do
+          @child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
+          @child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
+          @enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
+        end
+
+        it 'should empty when an enquiry is new' do
+          expect(@enquiry.ids_marked_as_not_matching.length).to eq(0)
+        end
+
+        it 'should append ids' do
+          @enquiry.ids_marked_as_not_matching << @child1.id
+
+          expect(@enquiry.ids_marked_as_not_matching.length).to eq(1)
+          expect(@enquiry.ids_marked_as_not_matching.first).to eq(@child1.id)
+        end
+
+        it 'should delete all child record ids marked as not matching' do
+          @enquiry.ids_marked_as_not_matching << @child1.id
+          @enquiry.ids_marked_as_not_matching << @child2.id
+          expect(@enquiry.ids_marked_as_not_matching.length).to eq 2
+
+          @enquiry.clear_ids_marked_as_not_matching()
+
+          expect(@enquiry.ids_marked_as_not_matching.length).to eq(0)
+        end
+      end
+
+      describe 'match_updated_at', :solr => true do
 
         before do
           allow(Clock).to receive(:now).and_return(Time.utc(2013, 'jan', 01, 00, 00, 0))
@@ -268,7 +313,6 @@ describe Enquiry, :type => :model do
         end
       end
     end
-
     describe 'all_enquires' do
       it 'should return a list of all enquiries' do
         save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})

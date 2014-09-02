@@ -13,11 +13,11 @@ class Enquiry < CouchRest::Model::Base
   property :potential_matches, :default => []
   property :match_updated_at, :default => ''
   property :updated_at, Time
+  property :ids_marked_as_not_matching, [String]
 
   validates :criteria, :presence => {:message => I18n.t('errors.models.enquiry.presence_of_criteria')}
   validate :validate_has_at_least_one_field_value
 
-  attr_accessor :id_marked_as_not_matching
   FORM_NAME = 'Enquiries'
 
   set_callback :save, :before do
@@ -50,6 +50,10 @@ class Enquiry < CouchRest::Model::Base
                         return values.length;
                       }
           }"
+  end
+
+  def clear_ids_marked_as_not_matching
+    self[:ids_marked_as_not_matching].clear
   end
 
   def self.sortable_field_name(field)
@@ -135,8 +139,9 @@ class Enquiry < CouchRest::Model::Base
 
   def find_matching_children
     previous_matches = potential_matches
-    children = MatchService.search_for_matching_children(criteria, id_marked_as_not_matching)
-    self.potential_matches = children.map { |child| child.id }
+    children = MatchService.search_for_matching_children(criteria)
+    matching_children = exclude_children_marked_as_not_matches(children)
+    self.potential_matches = matching_children.map { |child| child.id }
     verify_format_of(previous_matches)
 
     unless previous_matches.eql?(potential_matches)
@@ -151,6 +156,9 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
+  def exclude_children_marked_as_not_matches children
+    children.select {|child| !ids_marked_as_not_matching.include? child.id }
+  end
 
   def create_criteria
     self.criteria = {}
