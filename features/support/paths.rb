@@ -93,7 +93,7 @@ module NavigationHelpers
       /forms page/                                   => proc { |_options, _matches| forms_path },
       /standard form page/                           => proc { |_options, _matches| standard_forms_path },
       /enquiries listing page/                       => proc { |_options, _matches| enquiries_path },
-      /enquiry page for "(.*)"/                      => proc { |_options, matches| enquiry_path(matches[1])}
+      /enquiry page for "(.*)"/                      => proc { |_options, matches| enquiry_path(matches[1]) }
     }
   end
 

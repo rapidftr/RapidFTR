@@ -94,10 +94,10 @@ describe FieldsController, :type => :controller do
       expect(fields.first).to receive(:visible=).with(false)
       expect(@form_section).to receive(:save)
 
-      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => "visible"
+      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => 'visible'
       expect(response.body).to eq('OK')
     end
-   
+
     it 'should toggle the matchable field attribute' do
       fields = [double(:field, :name => 'bla', :matchable => false)]
 
@@ -105,7 +105,7 @@ describe FieldsController, :type => :controller do
       expect(fields.first).to receive(:matchable=).with(true)
       expect(@form_section).to receive(:save)
 
-      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => "matchable"
+      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => 'matchable'
       expect(response.body).to eq('OK')
     end
   end

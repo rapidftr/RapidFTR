@@ -310,8 +310,8 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.new(fields)
         enquiry.save!
 
-        expect(enquiry.criteria).to eq({'name' => 'Eduardo', 'nationality' => 'Ugandan'})
-      end 
+        expect(enquiry.criteria).to eq('name' => 'Eduardo', 'nationality' => 'Ugandan')
+      end
     end
 
     describe '.update_all_child_matches' do
@@ -319,15 +319,14 @@ describe Enquiry, :type => :model do
         enquiry1 = build(:enquiry)
         enquiry2 = build(:enquiry)
         enquiries = [enquiry1, enquiry2]
-        
+
         expect(Enquiry).to receive(:all).and_return(enquiries)
         expect(enquiry1).to receive(:find_matching_children)
         expect(enquiry2).to receive(:find_matching_children)
-        
+
         Enquiry.update_all_child_matches
       end
     end
-
 
     private
 

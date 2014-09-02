@@ -151,7 +151,7 @@ class Enquiry < CouchRest::Model::Base
 
   def self.update_all_child_matches
     Enquiry.skip_callback(:save, :before, :find_matching_children)
-    self.all.each do |enquiry|
+    all.each do |enquiry|
       enquiry.create_criteria
       enquiry.find_matching_children
       enquiry.save
