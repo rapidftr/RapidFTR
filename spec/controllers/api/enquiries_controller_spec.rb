@@ -72,13 +72,6 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(201)
     end
 
-    it 'should not create enquiry without criteria' do
-      allow(controller).to receive(:authorize!)
-      post :create, :enquiry => {:parent_name => 'new name', :town => 'kampala'}
-      expect(response.response_code).to eq(422)
-      expect(JSON.parse(response.body)['error']).to include('Criteria Please add criteria to your enquiry')
-    end
-
     it 'should not update record if it exists and return error' do
       enquiry = Enquiry.new(:enquirer_name => 'old name', :"location" => 'kampala', :name => 'name')
       enquiry.save!
