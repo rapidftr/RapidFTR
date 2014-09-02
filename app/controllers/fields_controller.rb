@@ -79,7 +79,8 @@ class FieldsController < ApplicationController
 
   def toggle_fields
     field =  fetch_field params[:id]
-    field.visible = !field.visible
+    field_name = params[:field]
+    field.send("#{field_name}=", !field.send("#{field_name}"))
     @form_section.save
     render :text => 'OK'
   end

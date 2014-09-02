@@ -105,56 +105,69 @@ module RapidFTR
       details_of_child_sought_fields = [
         Field.new('name' => '2_first_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'First Name'
+                  'display_name_all' => 'First Name',
+                  'matchable' => true
         ),
         Field.new('name' => '2_middle_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Middle Name'
+                  'display_name_all' => 'Middle Name',
+                  'matchable' => true
         ),
         Field.new('name' => '2_last_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Last Name'
+                  'display_name_all' => 'Last Name',
+                  'matchable' => true
         ),
         Field.new('name' => '2_other_names',
                   'type' => 'text_field',
-                  'display_name_all' => 'Other names or spellings child known by'
+                  'display_name_all' => 'Other names or spellings child known by',
+                  'matchable' => true
         ),
         Field.new('name' => '2_gender',
                   'type' => 'select_box',
                   'option_strings_text_all' => "Male\nFemale",
-                  'display_name_all' => 'Sex'
+                  'display_name_all' => 'Sex',
+                  'matchable' => true
         ),
         Field.new('name' => '2_year_of_birth',
                   'type' => 'text_field',
-                  'display_name_all' => 'Year of Birth'
+                  'display_name_all' => 'Year of Birth',
+                  'matchable' => true
         ),
         Field.new('name' => '2_language',
                   'type' => 'text_field',
-                  'display_name_all' => 'Languages spoken by the child'
+                  'display_name_all' => 'Languages spoken by the child',
+                  'matchable' => true
         ),
         Field.new('name' => '2_religion',
                   'type' => 'text_field',
-                  'display_name_all' => 'Childs Religion'
+                  'display_name_all' => 'Childs Religion',
+                  'matchable' => true
         ),
         Field.new('name' => '2_nationality',
                   'type' => 'text_field',
-                  'display_name_all' => 'Nationality'
+                  'display_name_all' => 'Nationality',
+                  'matchable' => true
         ),
         Field.new('name' => '2_child_ethnic_affiliation',
                   'type' => 'text_field',
-                  'display_name_all' => "Child's Ethnic Affiliation"
+                  'display_name_all' => "Child's Ethnic Affiliation",
+                  'matchable' => true
         ),
         Field.new('name' => '2_physical_characteristics',
                   'type' => 'textarea',
-                  'display_name_all' => 'Distinguishing physical characteristics'
+                  'display_name_all' => 'Distinguishing physical characteristics',
+                  'matchable' => true
         ),
         Field.new('name' => '2_last_school_attended',
                   'type' => 'text_field',
-                  'display_name_all' => 'Last School Attended'
+                  'display_name_all' => 'Last School Attended',
+                  'matchable' => true
         ),
         Field.new('name' => '2_school_level',
                   'type' => 'text_field',
-                  'display_name_all' => 'Level'
+                  'display_name_all' => 'Level',
+                  'matchable' => true
         )
       ]
 

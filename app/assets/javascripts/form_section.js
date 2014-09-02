@@ -7,7 +7,8 @@ $(document).ready(function() {
     $("a.add_field").click(toggleFieldPanel);
     $("ul.field_types a").click(showFieldDetails);
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
-    $(".field_hide_show").bind('change',fieldHideShow);
+    $(".field_hide_show").bind('change',toggleField);
+    $(".field_matchable").bind('change',toggleField);
     $(".link_moveto").click(showMovePanel);
     triggerErrors();
     var rows = $("table#form_sections tbody");
@@ -40,12 +41,15 @@ $(document).ready(function() {
       parent_div.find("form").submit();
     }
 
-    function fieldHideShow(){
+    function toggleField(){
         var checkbox = $(this);
         var td = $("#" + $(this).val() + "_row td");
         var origColor = td.parent().children().css("background-color");
+        var fieldToToggle = $(this).data('field-name');
+        console.log($(this).data('field-name'));
+        console.log(fieldToToggle);
 
-        $.post($("#toggle_url").val(), {'id' : $(this).val()})
+        $.post($("#toggle_url").val(), {id: $(this).val(), field: fieldToToggle})
             .success(function(data) {
                 td.parent().css('background-color', "#87A96B");
                 td.animate({opacity: 0.7}, 300).animate({opacity: 1}, 300, "swing", function() {

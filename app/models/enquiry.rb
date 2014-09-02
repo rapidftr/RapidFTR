@@ -149,9 +149,27 @@ class Enquiry < CouchRest::Model::Base
     end
   end
 
+  def self.update_all_child_matches
+    Enquiry.skip_callback(:save, :before, :find_matching_children)
+    all.each do |enquiry|
+      enquiry.create_criteria
+      enquiry.find_matching_children
+      enquiry.save
+    end
+    Enquiry.set_callback(:save, :before, :find_matching_children)
+  end
+
   def self.search_by_match_updated_since(timestamp)
     Enquiry.all.all.select do |e|
       !e['match_updated_at'].empty? && DateTime.parse(e['match_updated_at']) >= timestamp
+    end
+  end
+
+  def create_criteria
+    self.criteria = {}
+    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| filled_in?(field) && field.matchable? }
+    fields.each do |field|
+      criteria.store(field.name, self[field.name])
     end
   end
 
@@ -160,14 +178,6 @@ class Enquiry < CouchRest::Model::Base
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
     self.short_id = unique_identifier.last 7
-  end
-
-  def create_criteria
-    self.criteria = {}
-    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| filled_in?(field) }
-    fields.each do |field|
-      criteria.store(field.name, self[field.name])
-    end
   end
 
   def verify_format_of(previous_matches)

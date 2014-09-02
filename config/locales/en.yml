@@ -394,6 +394,7 @@ en:
 
       updated: "Form section successfully added"
     hide: "Hide"
+    matchable: "Matchable"
     show: "Show"
     manage: "Manage Form Sections"
     edit: "Edit Form Sections"
