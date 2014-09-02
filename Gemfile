@@ -41,6 +41,7 @@ end
 
 group :development, :test, :cucumber do
   gem 'factory_girl',       '~> 4.4.0'
+  gem 'faker',              '~> 1.4.3'
 
   gem 'rspec',              '~> 3.0'
   gem 'rspec-rails',        '~> 3.0'
