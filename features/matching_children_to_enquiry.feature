@@ -17,13 +17,13 @@ Feature: So that administrators and workers can efficiently match children to en
       | name           | text_field | Name           | true     |
       | nick_name      | text_field | Nick Name      | true     |
     And the following fields exists on "basic_details":
-      | name           | type       | display_name   | editable | searchable |
+      | name           | type       | display_name   | editable | matchable |
       | child_name     | text_field | Name           | false    | false      |
       | enquirer_name  | text_field | Enquirer Name  | true     | true       |
 
   @javascript
   @search
-  Scenario: Marking fields as searchable changes search results
+  Scenario: Marking fields as matchable changes search results
     Given the following enquiries exist in the system:
       | child_name    | enquirer_name | _id | created_at             | posted_at              | created_by |
       | bob           | nick          | 1   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC | Sanchari   |
@@ -36,7 +36,7 @@ Feature: So that administrators and workers can efficiently match children to en
     When I follow "FORMS"
     And I follow "Enquiries"
     And I follow "Basic details"
-    And I mark "child_name" as searchable
+    And I mark "child_name" as matchable
     When I am on the enquiry page for "1"
     And I follow "Potential Matches"
     Then I should see "1" children on the page

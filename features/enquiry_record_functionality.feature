@@ -10,7 +10,7 @@ Feature:
       | name             | unique_id        | editable | order | visible | perm_enabled |
       | Enquiry Criteria | enquiry_criteria | false    | 1     | true    | true         |
     And the following fields exists on "enquiry_criteria":
-      | name             | type       | display_name  | editable | searchable |
+      | name             | type       | display_name  | editable | matchable |
       | enquirer_name_ct | text_field | Enquirer Name | false    | true       |
       | child_name_ct    | text_field | Child's Name  | false    | true       |
       | location_ct      | text_field | Location      | false    | true       |

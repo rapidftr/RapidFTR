@@ -98,14 +98,14 @@ describe FieldsController, :type => :controller do
       expect(response.body).to eq('OK')
     end
    
-    it 'should toggle the searchable field attribute' do
-      fields = [double(:field, :name => 'bla', :searchable => false)]
+    it 'should toggle the matchable field attribute' do
+      fields = [double(:field, :name => 'bla', :matchable => false)]
 
       expect(@form_section).to receive(:fields).and_return(fields)
-      expect(fields.first).to receive(:searchable=).with(true)
+      expect(fields.first).to receive(:matchable=).with(true)
       expect(@form_section).to receive(:save)
 
-      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => "searchable"
+      post :toggle_fields, :form_section_id => @form_section_id, :id => 'bla', :field => "matchable"
       expect(response.body).to eq('OK')
     end
   end

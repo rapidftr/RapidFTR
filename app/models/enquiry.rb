@@ -167,7 +167,7 @@ class Enquiry < CouchRest::Model::Base
 
   def create_criteria
     self.criteria = {}
-    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| filled_in?(field) && field.searchable? }
+    fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| filled_in?(field) && field.matchable? }
     fields.each do |field|
       criteria.store(field.name, self[field.name])
     end

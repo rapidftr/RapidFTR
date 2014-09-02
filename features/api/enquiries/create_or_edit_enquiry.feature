@@ -14,7 +14,7 @@ Feature: Creating an enquiry using the API
       | name          | unique_id     | editable | order | visible | perm_enabled |
       | Basic details | basic_details | false    | 1     | true    | true         |
     And the following fields exists on "basic_details":
-      | name           | type       | display_name   | editable | searchable |
+      | name           | type       | display_name   | editable | matchable |
       | name           | text_field | Name           | false    | true       |
       | location       | text_field | Location       | true     | true       |
       | enquirer_name  | text_field | Enquirer Name  | true     | true       |

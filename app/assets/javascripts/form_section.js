@@ -8,7 +8,7 @@ $(document).ready(function() {
     $("ul.field_types a").click(showFieldDetails);
     $(".field_details_panel a.link_cancel").click(toggleFieldPanel);
     $(".field_hide_show").bind('change',toggleField);
-    $(".field_searchable").bind('change',toggleField);
+    $(".field_matchable").bind('change',toggleField);
     $(".link_moveto").click(showMovePanel);
     triggerErrors();
     var rows = $("table#form_sections tbody");

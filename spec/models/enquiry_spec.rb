@@ -284,8 +284,8 @@ describe Enquiry, :type => :model do
           build(:text_field, :name => 'nationality'),
           build(:text_field, :name => 'enquirer_name'),
           build(:numeric_field, :name => 'age'),
-          build(:text_field, :name => 'parent_name', :searchable => false),
-          build(:text_field, :name => 'sibling_name', :searchable => false)
+          build(:text_field, :name => 'parent_name', :matchable => false),
+          build(:text_field, :name => 'sibling_name', :matchable => false)
         ], :form => form
       end
 
@@ -305,7 +305,7 @@ describe Enquiry, :type => :model do
         expect(enquiry.criteria).to eq(fields.keep_if { |_key, value| !value.nil? })
       end
 
-      it 'should only use searchable fields' do
+      it 'should only use matchable fields' do
         fields = {'name' => 'Eduardo', 'nationality' => 'Ugandan', 'sibling_name' => 'sister', 'parent_name' => 'father'}
         enquiry = Enquiry.new(fields)
         enquiry.save!
