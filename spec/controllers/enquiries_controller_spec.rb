@@ -190,7 +190,7 @@ describe EnquiriesController, :type => :controller do
       end
 
       it 'should return to edit page after unsuccessful update' do
-        enquiry = instance_double('Enquiry', :update_attributes => false)
+        enquiry = instance_double('Enquiry', :update_attributes => false, :clear_ids_marked_as_not_matching => [])
         allow(Enquiry).to receive(:find).and_return(enquiry)
         new_enquiry_attributes = {:enquirer_name => 'Hello'}
 
@@ -226,10 +226,22 @@ describe EnquiriesController, :type => :controller do
         expect(@enquiry.potential_matches.length).to eq 1
       end
 
-      it 'should redirect to enquiry page after marking child as not matching' do
+      it 'should not exclude records previously marked as not matching from potential_matches when updating enquiry' do
+        put :update, :id => @enquiry.id, :match_id => @child.id
+        @enquiry.reload
+        expect(@enquiry.potential_matches.length).to eq 0
+
+        put :update, :id => @enquiry.id, :enquiry => {:enquirer_name => 'Foo Bar'}
+
+        @enquiry.reload
+        expect(@enquiry.ids_marked_as_not_matching.length).to eq 0
+        expect(@enquiry.potential_matches.length).to eq 1
+      end
+
+      it 'should redirect to potential matches section of enquiry page after marking child as not matching' do
         put :update, :id => @enquiry.id, :match_id => @child.id
 
-        expect(response).to redirect_to enquiry_path(@enquiry)
+        expect(response).to redirect_to "/enquiries/#{@enquiry.id}#tab_potential_matches"
       end
     end
   end

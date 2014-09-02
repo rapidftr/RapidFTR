@@ -59,12 +59,14 @@ class EnquiriesController < ApplicationController
 
     if !params[:match_id].nil?
       @enquiry[:potential_matches].delete params[:match_id]
-      @enquiry.id_marked_as_not_matching = params[:match_id]
+      @enquiry.ids_marked_as_not_matching << params[:match_id]
       @enquiry.save
+      flash[:notice] = t('enquiry.messages.child_record_marked_as_not_a_match_successfully')
       redirect_to :action => :show, :anchor => 'tab_potential_matches'
       return
     end
 
+    @enquiry.clear_ids_marked_as_not_matching
     if @enquiry.update_attributes(params[:enquiry])
       flash[:notice] = t('enquiry.messages.update_success')
       redirect_to enquiry_path(@enquiry)

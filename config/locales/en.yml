@@ -139,6 +139,7 @@ en:
       creation_success: "Enquiry record successfully created."
       update_success: "Enquiry record successfully updated."
       confirmation_message: "Clicking OK Will Discard Any Unsaved Changes. Click Cancel To Return To The Enquiry Record Instead."
+      child_record_marked_as_not_a_match_successfully: "Child successfully removed from potential matches"
 
   child:
     flagged_by: "Flagged By"
