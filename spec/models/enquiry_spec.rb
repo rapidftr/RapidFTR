@@ -104,7 +104,7 @@ describe Enquiry, :type => :model do
       end
 
       it 'should be an empty array when enquiry is created' do
-        enquiry = Enquiry.new()
+        enquiry = Enquiry.new
         expect(enquiry.potential_matches).to eq([])
       end
 
