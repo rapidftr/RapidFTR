@@ -20,7 +20,6 @@ class Enquiry < CouchRest::Model::Base
   property :match_updated_at, :default => ''
   property :updated_at, Time
 
-  validates :criteria, :presence => {:message => I18n.t('errors.models.enquiry.presence_of_criteria')}
   validate :validate_has_at_least_one_field_value
 
   FORM_NAME = 'Enquiries'

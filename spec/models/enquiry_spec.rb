@@ -10,18 +10,6 @@ describe Enquiry, :type => :model do
   end
 
   describe 'validation' do
-    it 'should not create enquiry without criteria' do
-      enquiry = create_enquiry_with_created_by('user name', :enquirer_name => 'Vivek')
-      expect(enquiry).not_to be_valid
-      expect(enquiry.errors[:criteria]).to eq(['Please add criteria to your enquiry'])
-    end
-
-    it 'should not create enquiry with empty criteria' do
-      enquiry = create_enquiry_with_created_by('user name', :enquirer_name => 'Vivek', :criteria => {})
-      expect(enquiry).not_to be_valid
-      expect(enquiry.errors[:criteria]).to eq(['Please add criteria to your enquiry'])
-    end
-
     it 'should fail to validate if all fields are nil' do
       enquiry = Enquiry.new
       allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return [Field.new(:type => 'numeric_field', :name => 'height', :display_name => 'height')]
@@ -116,7 +104,7 @@ describe Enquiry, :type => :model do
       end
 
       it 'should be an empty array when enquiry is created' do
-        enquiry = Enquiry.new(:criteria => {'name' => 'Stephen'})
+        enquiry = Enquiry.new
         expect(enquiry.potential_matches).to eq([])
       end
 
