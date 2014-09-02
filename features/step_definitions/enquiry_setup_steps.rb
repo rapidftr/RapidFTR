@@ -4,6 +4,10 @@ Given /^the following enquiries exist in the system:$/ do |enquiry_table|
   end
 end
 
+When /^I mark child with unique_id "([^\"]*)" as not matching$/ do |unique_id|
+  find_by_id("mark_#{unique_id}").click
+end
+
 Then /^I should see "([^\"]*)" enquiries on the page$/ do |number_of_records|
   enquiry_list_page.should_be_showing(number_of_records.to_i)
 end

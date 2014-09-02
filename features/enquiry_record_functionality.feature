@@ -57,7 +57,7 @@ Feature:
     Given I am logged in as a user with "View Enquiries,Update Enquiry" permissions
     And the following enquiries exist in the system:
 	  | enquirer_name_ct | child_name_ct | location_ct |
-      | bob              | bob chulu     | kampala     |
+    | bob              | bob chulu     | kampala     |
     And I follow "ENQUIRIES"
     And I follow "Edit"
     And I fill in "Enquirer Name" with "John Doe"
@@ -115,3 +115,41 @@ Feature:
     When I follow "2 Enquiries with potential matches"
     Then I should see "Enquiries with potential matches"
     And I should see "2" enquiries on the page
+
+  @javascript
+  Scenario: Mark a child record as not a match for particular enquiry
+    Given the following form sections exist in the system on the "Children" form:
+      | name             | unique_id        | editable | order | visible | perm_enabled |
+      | Basic Identity   | basic_identity   | false    | 1     | true    | true         |
+    And the following fields exists on "basic_identity":
+      | name             | type       | display_name  | editable |
+      | name             | text_field | Child Name    | false    |
+      | birthplace       | text_field | Birthplace    | false    |
+    And the following children exist in the system:
+      | name     | last_known_location | reporter | unique_id    | birthplace |
+      | John     | London              | zubair   | zubairlon233 | nairobi    |
+      | Doe      | London              | zubair   | zubairlon423 | bengal     |
+      | shaikh   | NYC                 | james    | james423     | kerala     |
+      | marylyn  | Austin              | james    | james124     | cairo      |
+    And the following enquiries exist in the system:
+      | enquirer_name_ct | child_name_ct | location_ct | _id      |
+      | bob              | bob chulu     | kampala     |  1a0ced  |
+      | john             | john doe      | gulu        |  20e3fe  |
+      | jane             | jane doe      | adjumani    |  3d5elk  |
+    Given I am logged in as an admin
+    And I follow "System Settings"
+    And I follow "Highlight Fields"
+    And I follow "Children"
+    And I click text "add"
+    And I select menu "Child Name"
+    And I click text "add"      
+    And I select menu "Birthplace"
+    Then I logout
+    And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
+    When I follow "2 Enquiries with potential matches"
+    And I follow "20e3fe"
+    And I follow "Potential Matches"
+    Then I should see "John"
+    Then I should see "Doe"
+    When I mark child with unique_id "zubairlon233" as not matching
+    Then I should not see "John"
