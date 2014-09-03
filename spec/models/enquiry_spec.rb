@@ -232,7 +232,7 @@ describe Enquiry, :type => :model do
 
         enquiry.ids_marked_as_not_matching << child2.id
         enquiry.save
-        expect(enquiry.potential_matches.size).to eq(0)        
+        expect(enquiry.potential_matches.size).to eq(0)
       end
 
       describe '#ids_marked_as_not_matching' do

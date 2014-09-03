@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PotentialMatchesController, :type => :controller do
 
   before :each do
-    FormSection.all.map &:destroy
+    FormSection.all.each { |fs| fs.destroy }
     fake_field_worker_login
     @child = create(:child, :name => 'John Doe', :gender => 'male')
     form = create(:form, :name => Enquiry::FORM_NAME)

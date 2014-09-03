@@ -58,7 +58,7 @@ describe 'enquiries/show.html.erb', :type => :view do
       fields = [build(:field, :name => 'name')]
       child = create(:child, :name => 'Foo Bar')
 
-      render :template => 'children/_summary_row', :locals => {:child => child, :checkbox => false, :highlighted_fields => fields} 
+      render :template => 'children/_summary_row', :locals => {:child => child, :checkbox => false, :highlighted_fields => fields}
 
       expect(rendered).not_to match(/Mark as not matching/)
       expect(rendered).not_to have_link('Mark as not matching', :href => "/enquiries/#{@enquiry.id}")

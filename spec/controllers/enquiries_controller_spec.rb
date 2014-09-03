@@ -200,7 +200,7 @@ describe EnquiriesController, :type => :controller do
         expect(assigns[:form_sections]).to eq [@form_section]
       end
 
-      #do we really need this?
+      # TODO: do we really need this?
       xit 'should not exclude records previously marked as not matching from potential_matches when updating enquiry' do
         delete 'potential_matches#destroy', :enquiry_id => @enquiry.id, :id => @child.id
         @enquiry.reload
