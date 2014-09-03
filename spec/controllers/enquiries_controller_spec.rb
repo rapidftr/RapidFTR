@@ -132,7 +132,6 @@ describe EnquiriesController, :type => :controller do
         text :gender
       end
       @child = create(:child, :child_name => 'any child', :location => 'Kampala', :gender => 'male')
-      Child.reindex!
       form = create(:form, :name => Enquiry::FORM_NAME)
       enquirer_name_field = build(:text_field, :name => 'enquirer_name')
       child_name_field = build(:text_field, :name => 'child_name')
@@ -201,33 +200,9 @@ describe EnquiriesController, :type => :controller do
         expect(assigns[:form_sections]).to eq [@form_section]
       end
 
-      it 'should remove child id from potential matches when child_id exists in params' do
-        expect(@enquiry.potential_matches.length).to eq 1
-        put :update, :id => @enquiry.id, :match_id => @child.id
-
-        @enquiry.reload
-        expect(@enquiry.potential_matches.length).to eq 0
-      end
-
-      it 'should not remove child id from potential matches when child_id does not exists in params' do
-        expect(@enquiry.potential_matches.length).to eq 1
-        put :update, :id => @enquiry.id
-
-        @enquiry.reload
-        expect(@enquiry.potential_matches.length).to eq 1
-      end
-
-      it 'should update enquiry without tempering with potential matches ' do
-        expect(@enquiry.potential_matches.length).to eq 1
-        put :update, :id => @enquiry.id, :enquiry => {:enquirer_name => 'James Bond'}
-
-        @enquiry.reload
-        expect(@enquiry.enquirer_name).to eq 'James Bond'
-        expect(@enquiry.potential_matches.length).to eq 1
-      end
-
-      it 'should not exclude records previously marked as not matching from potential_matches when updating enquiry' do
-        put :update, :id => @enquiry.id, :match_id => @child.id
+      #do we really need this?
+      xit 'should not exclude records previously marked as not matching from potential_matches when updating enquiry' do
+        delete 'potential_matches#destroy', :enquiry_id => @enquiry.id, :id => @child.id
         @enquiry.reload
         expect(@enquiry.potential_matches.length).to eq 0
 
@@ -236,12 +211,6 @@ describe EnquiriesController, :type => :controller do
         @enquiry.reload
         expect(@enquiry.ids_marked_as_not_matching.length).to eq 0
         expect(@enquiry.potential_matches.length).to eq 1
-      end
-
-      it 'should redirect to potential matches section of enquiry page after marking child as not matching' do
-        put :update, :id => @enquiry.id, :match_id => @child.id
-
-        expect(response).to redirect_to "/enquiries/#{@enquiry.id}#tab_potential_matches"
       end
     end
   end
