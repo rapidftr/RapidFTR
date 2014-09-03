@@ -316,6 +316,17 @@ describe Enquiry, :type => :model do
       end
     end
 
+    describe 'find_matching_children' do
+      it 'should set potential matches to [] if no criteria' do
+        enquiry = build(:enquiry, :potential_matches => ['something'], :criteria => {})
+        expect(enquiry.criteria).to be_empty
+        expect(enquiry.potential_matches).to include('something')
+
+        enquiry.find_matching_children
+        expect(enquiry.potential_matches).to be_empty
+      end
+    end
+
     private
 
     def create_enquiry_with_created_by(created_by, options = {}, organisation = 'UNICEF')
