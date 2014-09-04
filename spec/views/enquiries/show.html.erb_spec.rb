@@ -12,7 +12,7 @@ describe 'enquiries/show.html.erb', :type => :view do
     @form_sections << create(:form_section, :unique_id => 'enquiry_criteria', :name => 'Enquiry Criteria', :form => form, :fields => [build(:field, :name => 'enquirer_name')])
     @form_sections << create(:form_section, :unique_id => 'potential_matches', :name => 'Potential Matches', :form => form)
 
-    enquiry = create(:enquiry, :enquirer_name => 'Foo Bar', :child_name => 'John Doe', :created_at => 'July 19 2010 13:05:32UTC')
+    @enquiry = create(:enquiry, :enquirer_name => 'Foo Bar', :child_name => 'John Doe', :created_at => 'July 19 2010 13:05:32UTC')
 
     allow(@user).to receive(:localize_date).and_return('July 19 2010 13:05:32UTC')
     allow(controller).to receive(:current_user).and_return(@user)
@@ -20,7 +20,7 @@ describe 'enquiries/show.html.erb', :type => :view do
     allow(view).to receive(:logged_in?).and_return(true)
     allow(view).to receive(:current_user_name).and_return('name')
     assign(:forms_sections, @form_sections)
-    assign(:enquiry, enquiry)
+    assign(:enquiry, @enquiry)
     assign(:current_user, User.new)
 
     @highlighted_fields = [
@@ -41,5 +41,28 @@ describe 'enquiries/show.html.erb', :type => :view do
 
     render :template => 'enquiries/show', :layout => 'layouts/application'
     expect(rendered).to have_tag('#tab_potential_matches')
+  end
+
+  describe 'rendering matching child partial' do
+    it 'should a have link to mark child as not a match' do
+      fields = [build(:field, :name => 'name')]
+      child = create(:child, :name => 'Foo Bar')
+
+      render :template => 'children/_summary_row', :locals => {:child => child, :checkbox => false, :highlighted_fields => fields, :rendered_by_show_enquiry => true}
+
+      expect(rendered).to match(/Mark as not matching/)
+      expect(rendered).to have_link('Mark as not matching', :href => "/enquiries/#{@enquiry.id}/potential_matches/#{child.id}")
+    end
+
+    it 'should not have link to mark child as not a match when flag is not passed' do
+      fields = [build(:field, :name => 'name')]
+      child = create(:child, :name => 'Foo Bar')
+
+      render :template => 'children/_summary_row', :locals => {:child => child, :checkbox => false, :highlighted_fields => fields}
+
+      expect(rendered).not_to match(/Mark as not matching/)
+      expect(rendered).not_to have_link('Mark as not matching', :href => "/enquiries/#{@enquiry.id}")
+    end
+
   end
 end

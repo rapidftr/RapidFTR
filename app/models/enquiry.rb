@@ -19,6 +19,7 @@ class Enquiry < CouchRest::Model::Base
   property :potential_matches, :default => []
   property :match_updated_at, :default => ''
   property :updated_at, Time
+  property :ids_marked_as_not_matching, [String]
 
   validate :validate_has_at_least_one_field_value
 
@@ -54,6 +55,10 @@ class Enquiry < CouchRest::Model::Base
                         return values.length;
                       }
           }"
+  end
+
+  def clear_ids_marked_as_not_matching
+    self[:ids_marked_as_not_matching].clear
   end
 
   def self.sortable_field_name(field)
@@ -119,7 +124,7 @@ class Enquiry < CouchRest::Model::Base
   searchable(&@set_up_solr_fields)
 
   def self.update_solr_indices
-    Sunspot.setup(Child, &@set_up_solr_fields)
+    Sunspot.setup(Enquiry, &@set_up_solr_fields)
   end
 
   def update_from(properties)
@@ -143,7 +148,8 @@ class Enquiry < CouchRest::Model::Base
       self.potential_matches = []
     else
       children = MatchService.search_for_matching_children(criteria)
-      self.potential_matches = children.map { |child| child.id }
+      matching_children = exclude_children_marked_as_not_matches(children)
+      self.potential_matches = matching_children.map { |child| child.id }
       verify_format_of(previous_matches)
     end
 
@@ -177,6 +183,10 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
+
+  def exclude_children_marked_as_not_matches(children)
+    children.select { |child| !ids_marked_as_not_matching.include? child.id }
+  end
 
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s

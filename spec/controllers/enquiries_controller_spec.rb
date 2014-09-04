@@ -124,13 +124,21 @@ describe EnquiriesController, :type => :controller do
     end
   end
 
-  describe '#update enquiry' do
+  describe '#update enquiry', :solr => true do
     before :each do
+      Sunspot.setup(Child) do
+        text :child_name
+        text :location
+        text :gender
+      end
+      @child = create(:child, :child_name => 'any child', :location => 'Kampala', :gender => 'male')
       form = create(:form, :name => Enquiry::FORM_NAME)
-      enquirer_name_field = build(:field, :name => 'enquirer_name')
-      child_name_field = build(:field, :name => 'child_name')
-      @form_section = create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field])
-      @enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
+      enquirer_name_field = build(:text_field, :name => 'enquirer_name')
+      child_name_field = build(:text_field, :name => 'child_name')
+      gender_field = build(:text_field, :name => 'gender')
+      location_field = build(:text_field, :name => 'location')
+      @form_section = create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field, location_field, gender_field])
+      @enquiry = create(:enquiry, :enquirer_name => 'John doe', :child_name => 'any child', :gender => 'male', :location => 'kampala')
       allow(controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(true)
     end
 
@@ -156,6 +164,13 @@ describe EnquiriesController, :type => :controller do
     end
 
     describe '#update' do
+      it 'should not change enquiry given empty params' do
+        put :update, :id => @enquiry.id
+
+        updated_enquiry = Enquiry.find @enquiry.id
+        expect(updated_enquiry).to eq @enquiry
+      end
+
       it 'should update the attributes of an enquiry' do
         new_enquiry_attributes = {:enquirer_name => 'David jones'}
 
@@ -174,7 +189,7 @@ describe EnquiriesController, :type => :controller do
       end
 
       it 'should return to edit page after unsuccessful update' do
-        enquiry = instance_double('Enquiry', :update_attributes => false)
+        enquiry = instance_double('Enquiry', :update_attributes => false, :clear_ids_marked_as_not_matching => [])
         allow(Enquiry).to receive(:find).and_return(enquiry)
         new_enquiry_attributes = {:enquirer_name => 'Hello'}
 
@@ -183,6 +198,19 @@ describe EnquiriesController, :type => :controller do
         expect(response).to render_template :edit
         expect(assigns[:enquiry]).to eq enquiry
         expect(assigns[:form_sections]).to eq [@form_section]
+      end
+
+      # TODO: do we really need this?
+      xit 'should not exclude records previously marked as not matching from potential_matches when updating enquiry' do
+        delete 'potential_matches#destroy', :enquiry_id => @enquiry.id, :id => @child.id
+        @enquiry.reload
+        expect(@enquiry.potential_matches.length).to eq 0
+
+        put :update, :id => @enquiry.id, :enquiry => {:enquirer_name => 'Foo Bar'}
+
+        @enquiry.reload
+        expect(@enquiry.ids_marked_as_not_matching.length).to eq 0
+        expect(@enquiry.potential_matches.length).to eq 1
       end
     end
   end

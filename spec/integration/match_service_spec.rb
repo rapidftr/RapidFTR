@@ -63,5 +63,4 @@ describe MatchService, :type => :request, :solr => true do
 
     expect(children.size).to eq(3)
   end
-
 end

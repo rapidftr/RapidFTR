@@ -19,16 +19,7 @@ class EnquiriesController < ApplicationController
 
     @enquiries = search.results
 
-    respond_to do |format|
-      format.html
-      format.xml { render :xml => @enquiries }
-      unless params[:format].nil?
-        if @enquiries.empty?
-          flash[:notice] = t('enquiry.no_records_available')
-          redirect_to(:action => :index) && return
-        end
-      end
-    end
+    flash[:notice] = t('enquiry.no_records_available') if @enquiries.empty?
   end
 
   def new
@@ -57,6 +48,7 @@ class EnquiriesController < ApplicationController
   def update
     authorize! :update, Enquiry
 
+    @enquiry.clear_ids_marked_as_not_matching
     if @enquiry.update_attributes(params[:enquiry])
       flash[:notice] = t('enquiry.messages.update_success')
       redirect_to enquiry_path(@enquiry)
@@ -70,12 +62,6 @@ class EnquiriesController < ApplicationController
     authorize! :read, Enquiry
     @form_sections = enquiry_form_sections
     @potential_matches = potential_matches
-
-    respond_to do |format|
-      format.html
-      format.xml { render :xml => @enquiry }
-      format.json { render :json => @enquiry }
-    end
   end
 
   def matches
@@ -87,10 +73,7 @@ class EnquiriesController < ApplicationController
 
     @enquiries = Enquiry.with_child_potential_matches(:per_page => per_page, :page => page)
 
-    respond_to do |format|
-      format.html { render :template => 'enquiries/index_with_potential_matches' }
-      format.xml { render :xml => @enquiries }
-    end
+    render :template => 'enquiries/index_with_potential_matches'
   end
 
   private

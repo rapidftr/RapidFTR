@@ -59,8 +59,14 @@
               <%= link_to t('child.mark_as_duplicate'), new_child_duplicate_path(child), :class=>'children/mark_as_duplicate' %> |
               </li>
               <li>
-              <%= render :partial =>"children/suspect_flag", :object => child, :as => :child %>
+              <%= render :partial =>"children/suspect_flag", :object => child, :as => :child %> |
               </li>
+
+              <% if local_assigns.has_key? :rendered_by_show_enquiry %>
+                <li>
+                  <%= link_to t('enquiry.mark_child_as_not_matching'),enquiry_potential_match_path(@enquiry, child), :id => "mark_#{child.id}", method: :delete %>
+                </li>
+              <% end %>
         <% end %>
         </ul>
     <% end %>
