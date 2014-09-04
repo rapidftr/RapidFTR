@@ -144,10 +144,14 @@ class Enquiry < CouchRest::Model::Base
 
   def find_matching_children
     previous_matches = potential_matches
-    children = MatchService.search_for_matching_children(criteria)
-    matching_children = exclude_children_marked_as_not_matches(children)
-    self.potential_matches = matching_children.map { |child| child.id }
-    verify_format_of(previous_matches)
+    if criteria.nil? || criteria.empty?
+      self.potential_matches = []
+    else
+      children = MatchService.search_for_matching_children(criteria)
+      matching_children = exclude_children_marked_as_not_matches(children)
+      self.potential_matches = matching_children.map { |child| child.id }
+      verify_format_of(previous_matches)
+    end
 
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
@@ -204,13 +208,13 @@ class Enquiry < CouchRest::Model::Base
       view_name = 'with_potential_matches'
       WillPaginate::Collection.create(options[:page], options[:per_page]) do |pager|
         results = paginate(
-            options.merge(
-                :design_doc => 'Enquiry',
-                :view_name => view_name,
-                :descending => true,
-                :include_docs => true,
-                :reduce => false
-            ))
+          options.merge(
+            :design_doc => 'Enquiry',
+            :view_name => view_name,
+            :descending => true,
+            :include_docs => true,
+            :reduce => false
+          ))
 
         pager.replace(results)
         pager.total_entries = view(view_name).count
