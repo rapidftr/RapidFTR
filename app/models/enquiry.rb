@@ -170,12 +170,6 @@ class Enquiry < CouchRest::Model::Base
     end
   end
 
-  private
-
-  def exclude_children_marked_as_not_matches(children)
-    children.select { |child| !ids_marked_as_not_matching.include? child.id }
-  end
-
   def create_criteria
     self.criteria = {}
     fields = Array.new(field_definitions_for(Enquiry::FORM_NAME)).keep_if { |field| filled_in?(field) && field.matchable? }
@@ -185,6 +179,10 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
+
+  def exclude_children_marked_as_not_matches(children)
+    children.select { |child| !ids_marked_as_not_matching.include? child.id }
+  end
 
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
