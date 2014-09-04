@@ -9,7 +9,7 @@ class Enquiry < CouchRest::Model::Base
   after_initialize :create_unique_id
 
   before_validation :create_criteria, :on => [:create, :update]
-  before_save :find_matching_children
+  after_save :find_matching_children
   before_save :update_history, :unless => :new?
   before_save :add_creation_history, :if => :new?
 
@@ -127,6 +127,13 @@ class Enquiry < CouchRest::Model::Base
     Sunspot.setup(Enquiry, &@set_up_solr_fields)
   end
 
+  def potential_matches
+    potential_matches = PotentialMatch.by_enquiry_id.key(id).all
+    potential_matches.reject! { |pm| pm.marked_invalid? }
+    child_ids = potential_matches.each.map(&:child_id)
+    child_ids.each { |id| Child.get(id) }
+  end
+
   def update_from(properties)
     attributes_to_update = {}
     properties.each_pair do |name, value|
@@ -144,14 +151,9 @@ class Enquiry < CouchRest::Model::Base
 
   def find_matching_children
     previous_matches = potential_matches
-    if criteria.nil? || criteria.empty?
-      self.potential_matches = []
-    else
-      children = MatchService.search_for_matching_children(criteria)
-      matching_children = exclude_children_marked_as_not_matches(children)
-      self.potential_matches = matching_children.map { |child| child.id }
-      verify_format_of(previous_matches)
-    end
+    children = MatchService.search_for_matching_children(criteria)
+    PotentialMatch.create_matches_for_enquiry id, children.map(&:id)
+    verify_format_of(previous_matches)
 
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
@@ -159,13 +161,13 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def self.update_all_child_matches
-    Enquiry.skip_callback(:save, :before, :find_matching_children)
+    Enquiry.skip_callback(:save, :after, :find_matching_children)
     all.each do |enquiry|
       enquiry.create_criteria
       enquiry.find_matching_children
       enquiry.save
     end
-    Enquiry.set_callback(:save, :before, :find_matching_children)
+    Enquiry.set_callback(:save, :after, :find_matching_children)
   end
 
   def self.search_by_match_updated_since(timestamp)
@@ -183,10 +185,6 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
-
-  def exclude_children_marked_as_not_matches(children)
-    children.select { |child| !ids_marked_as_not_matching.include? child.id }
-  end
 
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
