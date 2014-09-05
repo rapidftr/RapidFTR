@@ -10,6 +10,15 @@ class PotentialMatch < CouchRest::Model::Base
   design do
     view :by_enquiry_id
     view :by_enquiry_id_and_child_id
+    view :all_valid_enquiry_ids,
+         :map => "function(doc) {
+                    if(doc['couchrest-type'] == 'PotentialMatch' && !doc['marked_invalid']) {
+                        emit(doc['enquiry_id'], null);
+                      }
+                   }",
+         :reduce => "function(key, values) {
+                       return null;
+                     }"
   end
 
   def mark_as_invalid

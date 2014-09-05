@@ -20,7 +20,7 @@ describe PotentialMatch, :type => :model do
     end
 
     it 'should create potential matches for an enquiry' do
-      PotentialMatch.create_matches_for_enquiry '1a3efc', %w('2e453c', '2ef1g')
+      PotentialMatch.create_matches_for_enquiry '1a3efc', %w(2e453c 2ef1g)
 
       expect(PotentialMatch.count).to eq 2
       potential_matches = PotentialMatch.all.all

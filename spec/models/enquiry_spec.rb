@@ -74,14 +74,6 @@ describe Enquiry, :type => :model do
 
         expect(enquiry['updated_at']).to eq('2010-01-22 15:05:00UTC')
       end
-
-      it 'should reflect new date when potential_matches are updated' do
-        allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 22, 15, 05, 0))
-
-        @enquiry[:potential_matches] << 'matching_child_id'
-        @enquiry.save!
-        expect(@enquiry['updated_at']).to eq('2010-01-22 15:05:00UTC')
-      end
     end
 
     describe 'potential_matches', :solr => true do
@@ -262,6 +254,60 @@ describe Enquiry, :type => :model do
         expect(PotentialMatch.count).to eq 1
         expect(PotentialMatch.first.child_id).to eq child.id
         expect(PotentialMatch.first.enquiry_id).to eq enquiry.id
+      end
+    end
+
+    describe '.with_child_potential_matches' do
+      before :each do
+        PotentialMatch.all.each { |pm| pm.destroy }
+      end
+
+      it 'should only return enquiries with potential matches' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        enquiry_y = build(:enquiry, :id => 'enquiry_id_y')
+        enquiry_z = build(:enquiry, :id => 'enquiry_id_z')
+        expect(Enquiry).to receive(:find).with(enquiry_x.id).and_return(enquiry_x)
+        expect(Enquiry).to receive(:find).with(enquiry_y.id).and_return(enquiry_y)
+        expect(Enquiry).to_not receive(:find).with(enquiry_z.id)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x'
+        PotentialMatch.create :enquiry_id => 'enquiry_id_y', :child_id => 'child_id_y'
+        PotentialMatch.create :enquiry_id => 'enquiry_id_z', :child_id => 'child_id_y', :marked_invalid => true
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(2)
+        expect(enquiries).to include(enquiry_x, enquiry_y)
+      end
+
+      it 'should not return duplicate enquiries' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        expect(Enquiry).to receive(:find).with(enquiry_x.id).and_return(enquiry_x)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x'
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_y'
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(1)
+        expect(enquiries).to include(enquiry_x)
+      end
+
+      it 'should not return invalid matches' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        expect(Enquiry).to_not receive(:find).with(enquiry_x.id)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :marked_invalid => true
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(0)
+      end
+
+      it 'should paginate results' do
+        10.times do |i|
+          enquiry = build(:enquiry, :id => "enquiry_#{i}")
+          allow(Enquiry).to receive(:find).with(enquiry.id).and_return(enquiry)
+          PotentialMatch.create :enquiry_id => "enquiry_#{i}", :child_id => i.to_s
+        end
+
+        enquiries = Enquiry.with_child_potential_matches :per_page => 5
+        expect(enquiries.size).to eq(5)
+        expect(enquiries.total_pages).to eq(2)
       end
     end
 

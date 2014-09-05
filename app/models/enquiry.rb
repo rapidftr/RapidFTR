@@ -16,7 +16,6 @@ class Enquiry < CouchRest::Model::Base
   property :short_id
   property :unique_identifier
   property :criteria, Hash
-  property :potential_matches, :default => []
   property :match_updated_at, :default => ''
   property :updated_at, Time
   property :ids_marked_as_not_matching, [String]
@@ -40,21 +39,6 @@ class Enquiry < CouchRest::Model::Base
                    emit(doc['_id'],1);
                  }
               }"
-
-    view :with_potential_matches,
-         :map => "function(doc) {
-                    if(doc['couchrest-type'] == 'Enquiry' && doc['potential_matches'].length > 0) {
-                      emit(doc['_id'], 1);
-                    }
-                 }",
-         :reduce => "function(keys, values, rereduce) {
-                      if (rereduce) {
-                        return sum(values);
-                      }
-                      else {
-                        return values.length;
-                      }
-          }"
   end
 
   def clear_ids_marked_as_not_matching
@@ -112,13 +96,6 @@ class Enquiry < CouchRest::Model::Base
         self[field_name]
       end
     end
-
-    string :potential_matches do
-      self[:potential_matches]
-      self[:multiple] = true
-    end
-
-    text :potential_matches
   end
 
   searchable(&@set_up_solr_fields)
@@ -203,19 +180,17 @@ class Enquiry < CouchRest::Model::Base
       options[:page] ||= 1
       options[:per_page] ||= EnquiriesHelper::View::PER_PAGE
 
-      view_name = 'with_potential_matches'
       WillPaginate::Collection.create(options[:page], options[:per_page]) do |pager|
-        results = paginate(
-          options.merge(
-            :design_doc => 'Enquiry',
-            :view_name => view_name,
-            :descending => true,
-            :include_docs => true,
-            :reduce => false
-          ))
-
-        pager.replace(results)
-        pager.total_entries = view(view_name).count
+        PotentialMatch.paginates_per options.delete(:per_page)
+        page = options.delete(:page)
+        results = PotentialMatch.
+                    all_valid_enquiry_ids(options).
+                    page(page).
+                    reduce.
+                    group.
+                    rows
+        pager.replace(results.map { |r| Enquiry.find(r['key']) })
+        pager.total_entries = PotentialMatch.all_valid_enquiry_ids.reduce.group.rows.count
       end
     end
   end
