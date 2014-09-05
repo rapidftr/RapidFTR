@@ -1,4 +1,13 @@
-class EnquirySearch
+class Search
+
+  def initialize(klass)
+    @class_to_search = klass
+  end
+
+  def self.for(klass) 
+    self.new(klass)
+  end
+  
   def results
     search.execute.results
   end
@@ -12,14 +21,14 @@ class EnquirySearch
 
   def ordered(field, direction = :asc)
     search.build do
-      order_by(Enquiry.sortable_field_name(field), direction) unless field.nil?
+      order_by(@class_to_search.sortable_field_name(field), direction) unless field.nil?
     end
     self
   end
 
   def created_by(user)
     search.build do
-      with Enquiry.sortable_field_name(:created_by), user.user_name
+      with @class_to_search.sortable_field_name(:created_by), user.user_name
     end
     self
   end
@@ -47,7 +56,7 @@ class EnquirySearch
 
   def greater_than(field_name, value)
     search.build do
-      with(field_name.to_sym).greater_than value if value.present?
+      with(field_name.to_sym).greater_than Time.parse(value) if value.present?
     end
     self
   end
@@ -55,6 +64,6 @@ class EnquirySearch
   private
 
   def search
-    @search ||= Sunspot.new_search(Enquiry)
+    @search ||= Sunspot.new_search(@class_to_search)
   end
 end
