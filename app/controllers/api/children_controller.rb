@@ -5,7 +5,13 @@ module Api
 
     def index
       authorize! :index, Child
-      render :json => Child.all
+
+      if params[:updated_after].nil?
+        children = Child.all
+      else
+        children = Child.all.select { |child| child.last_updated_at > params[:updated_after] }
+      end
+      render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} })
     end
 
     def show
@@ -63,6 +69,11 @@ module Api
 
     def sanitize_params
       super :child
+
+      unless (params[:updated_after]).nil?
+        DateTime.parse params[:updated_after]
+      end
+
       params['child']['histories'] = JSON.parse(params['child']['histories']) if params['child'] && params['child']['histories'].is_a?(String) # histories might come as string from the mobile client.
     rescue JSON::ParserError
       render :json => {:error => I18n.t('errors.models.enquiry.malformed_query')}, :status => 422
