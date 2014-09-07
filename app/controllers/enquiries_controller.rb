@@ -12,7 +12,7 @@ class EnquiriesController < ApplicationController
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
-    search = EnquirySearch.new.
+    search = Search.for(Enquiry).
         paginated(page, per_page).
         ordered(@order, @sort_order.to_sym).
         marked_as(@filter)
