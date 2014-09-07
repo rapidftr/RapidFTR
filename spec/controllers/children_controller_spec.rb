@@ -283,17 +283,17 @@ describe ChildrenController, :type => :controller do
 
       it 'should use the ascending sort order param' do
         fake_field_worker_login
-        child_search = ChildSearch.new
+        child_search = Search.for(Child)
         expect(child_search).to receive(:ordered).with(anything, :asc).and_return(child_search)
-        expect(ChildSearch).to receive(:new).and_return(child_search)
+        expect(Search).to receive(:for).with(Child).and_return(child_search)
         get :index, :sort_order => 'asc'
       end
 
       it 'should use the descending sort order param' do
         fake_field_worker_login
-        child_search = ChildSearch.new
+        child_search = Search.for(Child)
         expect(child_search).to receive(:ordered).with(anything, :desc).and_return(child_search)
-        expect(ChildSearch).to receive(:new).and_return(child_search)
+        expect(Search).to receive(:for).with(Child).and_return(child_search)
         get :index, :sort_order => 'desc'
       end
 
@@ -621,7 +621,7 @@ describe ChildrenController, :type => :controller do
       @child1 = build :child
       @child2 = build :child
       results = [@child1, @child2]
-      allow_any_instance_of(ChildSearch).to receive(:results).and_return(results)
+      allow_any_instance_of(Search).to receive(:results).and_return(results)
     end
 
     it 'should handle full PDF' do
