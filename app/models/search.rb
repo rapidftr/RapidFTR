@@ -1,11 +1,12 @@
 class Search
+  attr_reader :class_to_search
 
   def initialize(klass)
     @class_to_search = klass
   end
 
-  def self.for(klass) 
-    self.new(klass)
+  def self.for(klass)
+    new(klass)
   end
 
   def results
@@ -61,9 +62,6 @@ class Search
     self
   end
 
-  def class_to_search
-    @class_to_search
-  end
   private
 
   def search

@@ -42,7 +42,7 @@ describe Search, :solr => true do
     end
   end
 
-  shared_examples "search" do
+  shared_examples 'search' do
     before :each do
       Sunspot.remove_all!
     end
