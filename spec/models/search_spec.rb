@@ -162,9 +162,39 @@ describe Search, :solr => true do
     end
 
     describe 'less_than' do
+      before :each do
+        @model1 = create model_factory, :last_updated_at => 1.minute.ago.to_s
+        @model2 = create model_factory, :last_updated_at => 1.hour.ago.to_s
+      end
+
+      it 'should only return values less than the provided value' do
+        results = Search.for(model_class).less_than(:last_updated_at, 2.minutes.ago.to_s).results
+        expect(results.size).to eq(1)
+        expect(results.first).to eq(@model2)
+      end
+
+      it 'should all results if value to compare is absent' do
+        results = Search.for(model_class).less_than(:last_updated_at, nil).results
+        expect(results.size).to eq(2)
+      end
     end
 
     describe 'greater_than' do
+      before :each do
+        @model1 = create model_factory, :last_updated_at => 1.minute.ago.to_s
+        @model2 = create model_factory, :last_updated_at => 1.hour.ago.to_s
+      end
+
+      it 'should only return values greater than the provided value' do
+        results = Search.for(model_class).greater_than(:last_updated_at, 2.minutes.ago.to_s).results
+        expect(results.size).to eq(1)
+        expect(results.first).to eq(@model1)
+      end
+
+      it 'should all results if value to compare is absent' do
+        results = Search.for(model_class).greater_than(:last_updated_at, nil).results
+        expect(results.size).to eq(2)
+      end
     end
   end
 
