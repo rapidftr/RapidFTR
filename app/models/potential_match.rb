@@ -4,7 +4,7 @@ class PotentialMatch < CouchRest::Model::Base
   belongs_to :enquiry
   belongs_to :child
   property :marked_invalid, TrueClass, :default => false
-
+  timestamps!
   validates :child_id, :uniqueness => {:scope => :enquiry_id}
 
   design do

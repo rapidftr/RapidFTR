@@ -110,6 +110,10 @@ RapidFTR::Application.routes.draw do
 
     resources :enquiries, :defaults => {:format => :json}
 
+    # POTENTIAL MATCH
+
+    resources :potential_matches, :only => [:index, :show]
+
   end
 
   # Backwards compatibility with 1.2
