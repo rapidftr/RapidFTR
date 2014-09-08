@@ -20,6 +20,11 @@ class Ability
     initialize_enquiry_permissions(user)
 
     #
+    # POTENTIAL MATCHES
+    #
+    intialize_potential_matches_permissions(user)
+
+    #
     # USERS
     #
 
@@ -120,6 +125,12 @@ class Ability
 
     if user.has_permission?(Permission::USERS[:disable])
       can [:read, :disable], User
+    end
+  end
+
+  def intialize_potential_matches_permissions(user)
+    if user.has_permission? Permission::POTENTIAL_MATCHES[:read]
+      can [:read], PotentialMatch
     end
   end
 

@@ -2,15 +2,16 @@ require 'spec_helper'
 
 describe Api::PotentialMatchesController, :type => :controller do
   before :each do
-    fake_admin_login
+    fake_field_worker_login
   end
 
   describe 'GET index' do
     it 'should fetch all the potential matches' do
-      allow(controller).to receive(:authorize!).with(:index, PotentialMatch).and_return(true)
+      expect(controller).to receive(:authorize!).with(:read, PotentialMatch).and_return(true)
 
       potential_match = PotentialMatch.new(:_id => '123')
-      expect(PotentialMatch).to receive(:all).and_return([potential_match])
+      view = instance_double('CouchRest::Model::Designs::View', :all => [potential_match])
+      expect(PotentialMatch).to receive(:all).and_return(view)
 
       get :index
       expect(response.response_code).to eq(200)
@@ -20,6 +21,7 @@ describe Api::PotentialMatchesController, :type => :controller do
     describe 'updated after' do
 
       it 'should return all the records created after a specified date' do
+        expect(controller).to receive(:authorize!).with(:read, PotentialMatch).and_return(true)
         @pm1 = PotentialMatch.new :enquiry_id => 1, :child_id => 1
         @pm2 = PotentialMatch.new :enquiry_id => 1, :child_id => 2
         Timecop.freeze(1.days.ago) { @pm1.save }
@@ -34,6 +36,13 @@ describe Api::PotentialMatchesController, :type => :controller do
         expect(json.length).to eq 2
         expect(json).to include(pm2_url, pm1_url)
       end
+    end
+  end
+
+  describe 'GET show' do
+    it 'should authorize user' do
+      expect(controller).to receive(:authorize!).with(:read, PotentialMatch)
+      get :show, :id => '1'
     end
   end
 end
