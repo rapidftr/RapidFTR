@@ -19,8 +19,8 @@ describe Forms::SearchForm do
 
   describe 'execute' do
     before(:each) do
-      @child_search = ChildSearch.new
-      allow(ChildSearch).to receive(:new).and_return(@child_search)
+      @child_search = Search.for(Child)
+      allow(Search).to receive(:for).with(Child).and_return(@child_search)
     end
 
     it 'should not execute search if invalid' do

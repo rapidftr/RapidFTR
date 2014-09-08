@@ -37,7 +37,7 @@ module Forms
     end
 
     def execute_search
-      search = ChildSearch.new
+      search = Search.for(Child)
 
       @criteria.each do |criterion|
         search.fulltext_by [criterion[:field]], criterion[:value]

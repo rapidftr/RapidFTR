@@ -25,7 +25,7 @@ class ChildrenController < ApplicationController
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
-    search = ChildSearch.new.
+    search = Search.for(Child).
       paginated(page, per_page).
       ordered(@order, @sort_order.to_sym).
       marked_as(@filter)

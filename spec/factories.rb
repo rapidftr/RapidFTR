@@ -76,6 +76,18 @@ FactoryGirl.define do
     child_name { "Test Enquirer #{counter}" }
     created_by { 'test_user' }
     created_at { Time.now.utc.to_s }
+    posted_at { Time.now.utc.to_s }
+    created_organisation { 'UNICEF' }
+
+    before(:create) do
+      form = Form.find_or_create_by_name Enquiry::FORM_NAME
+      sections = FormSection.all_form_sections_for(Enquiry::FORM_NAME)
+      child_name_field_present = !sections.empty? && sections.map(&:fields).flatten.map(&:name).include?('child_name')
+      unless child_name_field_present
+        field = build :text_field, :name => 'child_name'
+        create :form_section, :form => form, :fields => [field]
+      end
+    end
 
     initialize_with { new(attributes) }
   end

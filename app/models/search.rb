@@ -1,4 +1,14 @@
-class ChildSearch
+class Search
+  attr_reader :class_to_search
+
+  def initialize(klass)
+    @class_to_search = klass
+  end
+
+  def self.for(klass)
+    new(klass)
+  end
+
   def results
     search.execute.results
   end
@@ -12,14 +22,14 @@ class ChildSearch
 
   def ordered(field, direction = :asc)
     search.build do
-      order_by(Child.sortable_field_name(field), direction) unless field.nil?
+      order_by(class_to_search.sortable_field_name(field), direction) unless field.nil?
     end
     self
   end
 
   def created_by(user)
     search.build do
-      with Child.sortable_field_name(:created_by), user.user_name
+      with class_to_search.sortable_field_name(:created_by), user.user_name
     end
     self
   end
@@ -55,6 +65,6 @@ class ChildSearch
   private
 
   def search
-    @search ||= Sunspot.new_search(Child)
+    @search ||= Sunspot.new_search(class_to_search)
   end
 end
