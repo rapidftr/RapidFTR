@@ -27,17 +27,20 @@ Feature: Check for matches after creating/editing an enquiry on the API
     Given the following children exist in the system:
       | name | _id | created_at             | posted_at              |
       | Tom  | 1   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC |
-
     When I send a POST request to "/api/enquiries" with JSON:
     """
       {
         "enquiry": {
           "enquirer_name" : "bob",
-          "name" :  "Tom"
+          "name" :  "Tom",
+          "_id" : "1"
         }
       }
     """
-    Then the JSON at "potential_matches/0" should be "1"
+    When I am logged in as an admin
+    And I am on the enquiry page for "1"
+    And I follow "Potential Matches"
+    Then I should see "1" children on the page
 
   @search
   Scenario: Editing an enquiry should also trigger matches
@@ -60,8 +63,7 @@ Feature: Check for matches after creating/editing an enquiry on the API
         }
       }
       """
-    Then the JSON at "potential_matches/0" should be "1"
-    When I send a PUT request to "/api/enquiries/1" with JSON:
+    And I send a PUT request to "/api/enquiries/1" with JSON:
     """
       {
         "enquiry": {
@@ -71,4 +73,7 @@ Feature: Check for matches after creating/editing an enquiry on the API
         }
       }
       """
-    Then the JSON at "potential_matches" should be ["2","1"]
+    When I am logged in as an admin
+    And I am on the enquiry page for "1"
+    And I follow "Potential Matches"
+    Then I should see "2" children on the page
