@@ -19,7 +19,7 @@ describe MatchService, :type => :request, :solr => true do
     allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
   end
 
-  it "should match children from a country given enquiry criteria with key different from child's country key " do
+  it 'should match children from a country given enquiry criteria with key different from childs country key ' do
     Sunspot.setup(Child) do
       text :location
       text :nationality
@@ -62,5 +62,9 @@ describe MatchService, :type => :request, :solr => true do
     children = MatchService.search_for_matching_children(enquiry['criteria'])
 
     expect(children.size).to eq(3)
+  end
+
+  it 'should return empty array if criteria is empty' do
+    expect(MatchService.search_for_matching_children({})).to eq([])
   end
 end

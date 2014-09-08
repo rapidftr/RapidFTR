@@ -39,6 +39,7 @@ class DataPopulator
     permissions.push(Permission::CHILDREN[:register]) if user_type.downcase == 'user' && permission.nil?
     permissions.push(Permission::REPORTS[:view]) if user_type.downcase == 'senior official' && permission.nil?
     permissions.push(Permission::CHILDREN[:edit], Permission::CHILDREN[:register], Permission::CHILDREN[:view_and_search], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update]) if user_type.downcase == 'registration worker' && permission.nil?
+    permissions.push(Permission::POTENTIAL_MATCHES[:read]) if user_type.downcase == 'registration worker' && permission.nil?
     permissions.push(Permission.all_permissions) if permission.to_s.downcase.split(',').include?('admin')
 
     permissions.push(permission.split(',')) if permission

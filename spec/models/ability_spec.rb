@@ -71,6 +71,15 @@ describe Ability, :type => :model do
     end
   end
 
+  context 'potential_matches' do
+    describe 'view' do
+      let(:permissions) { [Permission::POTENTIAL_MATCHES[:read]] }
+
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child, Enquiry }
+      it { is_expected.to authorize :read, PotentialMatch }
+    end
+  end
+
   context 'children' do
     describe '#view,search all data and edit' do
       let(:permissions) { [Permission::CHILDREN[:view_and_search], Permission::CHILDREN[:edit]] }

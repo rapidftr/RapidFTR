@@ -9,17 +9,15 @@ class Enquiry < CouchRest::Model::Base
   after_initialize :create_unique_id
 
   before_validation :create_criteria, :on => [:create, :update]
-  before_save :find_matching_children
+  after_save :find_matching_children
   before_save :update_history, :unless => :new?
   before_save :add_creation_history, :if => :new?
 
   property :short_id
   property :unique_identifier
   property :criteria, Hash
-  property :potential_matches, :default => []
   property :match_updated_at, :default => ''
   property :updated_at, Time
-  property :ids_marked_as_not_matching, [String]
 
   validate :validate_has_at_least_one_field_value
 
@@ -40,25 +38,6 @@ class Enquiry < CouchRest::Model::Base
                    emit(doc['_id'],1);
                  }
               }"
-
-    view :with_potential_matches,
-         :map => "function(doc) {
-                    if(doc['couchrest-type'] == 'Enquiry' && doc['potential_matches'].length > 0) {
-                      emit(doc['_id'], 1);
-                    }
-                 }",
-         :reduce => "function(keys, values, rereduce) {
-                      if (rereduce) {
-                        return sum(values);
-                      }
-                      else {
-                        return values.length;
-                      }
-          }"
-  end
-
-  def clear_ids_marked_as_not_matching
-    self[:ids_marked_as_not_matching].clear
   end
 
   def self.sortable_field_name(field)
@@ -112,19 +91,19 @@ class Enquiry < CouchRest::Model::Base
         self[field_name]
       end
     end
-
-    string :potential_matches do
-      self[:potential_matches]
-      self[:multiple] = true
-    end
-
-    text :potential_matches
   end
 
   searchable(&@set_up_solr_fields)
 
   def self.update_solr_indices
     Sunspot.setup(Enquiry, &@set_up_solr_fields)
+  end
+
+  def potential_matches
+    potential_matches = PotentialMatch.by_enquiry_id.key(id).all
+    potential_matches.reject! { |pm| pm.marked_invalid? }
+    child_ids = potential_matches.each.map(&:child_id)
+    child_ids.each { |id| Child.get(id) }
   end
 
   def update_from(properties)
@@ -144,14 +123,9 @@ class Enquiry < CouchRest::Model::Base
 
   def find_matching_children
     previous_matches = potential_matches
-    if criteria.nil? || criteria.empty?
-      self.potential_matches = []
-    else
-      children = MatchService.search_for_matching_children(criteria)
-      matching_children = exclude_children_marked_as_not_matches(children)
-      self.potential_matches = matching_children.map { |child| child.id }
-      verify_format_of(previous_matches)
-    end
+    children = MatchService.search_for_matching_children(criteria)
+    PotentialMatch.create_matches_for_enquiry id, children.map(&:id)
+    verify_format_of(previous_matches)
 
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
@@ -159,13 +133,13 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def self.update_all_child_matches
-    Enquiry.skip_callback(:save, :before, :find_matching_children)
+    Enquiry.skip_callback(:save, :after, :find_matching_children)
     all.each do |enquiry|
       enquiry.create_criteria
       enquiry.find_matching_children
       enquiry.save
     end
-    Enquiry.set_callback(:save, :before, :find_matching_children)
+    Enquiry.set_callback(:save, :after, :find_matching_children)
   end
 
   def self.search_by_match_updated_since(timestamp)
@@ -184,10 +158,6 @@ class Enquiry < CouchRest::Model::Base
 
   private
 
-  def exclude_children_marked_as_not_matches(children)
-    children.select { |child| !ids_marked_as_not_matching.include? child.id }
-  end
-
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
     self.short_id = unique_identifier.last 7
@@ -205,19 +175,17 @@ class Enquiry < CouchRest::Model::Base
       options[:page] ||= 1
       options[:per_page] ||= EnquiriesHelper::View::PER_PAGE
 
-      view_name = 'with_potential_matches'
       WillPaginate::Collection.create(options[:page], options[:per_page]) do |pager|
-        results = paginate(
-          options.merge(
-            :design_doc => 'Enquiry',
-            :view_name => view_name,
-            :descending => true,
-            :include_docs => true,
-            :reduce => false
-          ))
-
-        pager.replace(results)
-        pager.total_entries = view(view_name).count
+        PotentialMatch.paginates_per options.delete(:per_page)
+        page = options.delete(:page)
+        results = PotentialMatch.
+                    all_valid_enquiry_ids(options).
+                    page(page).
+                    reduce.
+                    group.
+                    rows
+        pager.replace(results.map { |r| Enquiry.find(r['key']) })
+        pager.total_entries = PotentialMatch.all_valid_enquiry_ids.reduce.group.rows.count
       end
     end
   end

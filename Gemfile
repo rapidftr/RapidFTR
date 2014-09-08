@@ -34,6 +34,7 @@ gem 'slim',          '~> 2.0.3'
 gem 'rails-assets-select2', '~> 3.5.0'
 gem 'rails-assets-aexmachina--jquery-bonsai', '~> 0.1.1'
 gem 'rails-assets-aexmachina--jquery-qubit', '~> 0.1.2'
+gem 'timecop', '~> 0.7.1'
 
 group :development do
   gem 'better_errors',     '~> 2.0'

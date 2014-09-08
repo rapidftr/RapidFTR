@@ -74,14 +74,6 @@ describe Enquiry, :type => :model do
 
         expect(enquiry['updated_at']).to eq('2010-01-22 15:05:00UTC')
       end
-
-      it 'should reflect new date when potential_matches are updated' do
-        allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 22, 15, 05, 0))
-
-        @enquiry[:potential_matches] << 'matching_child_id'
-        @enquiry.save!
-        expect(@enquiry['updated_at']).to eq('2010-01-22 15:05:00UTC')
-      end
     end
 
     describe 'potential_matches', :solr => true do
@@ -93,6 +85,7 @@ describe Enquiry, :type => :model do
           text :name
           text :gender
         end
+
         form = create :form, :name => Enquiry::FORM_NAME
 
         create :form_section, :name => 'test_form', :fields => [
@@ -101,50 +94,6 @@ describe Enquiry, :type => :model do
           build(:text_field, :name => 'gender'),
           build(:text_field, :name => 'enquirer_name')
         ], :form => form
-      end
-
-      it 'should be an empty array when enquiry is created' do
-        enquiry = Enquiry.new
-        expect(enquiry.potential_matches).to eq([])
-      end
-
-      it 'should contain potential matches given one matching child' do
-        child = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-        enquiry = Enquiry.create!(:enquirer_name => 'Kisitu', :name => 'eduardo')
-
-        expect(enquiry.criteria).not_to be_empty
-        expect(enquiry.potential_matches).not_to be_empty
-        expect(enquiry.potential_matches).to eq([child.id])
-      end
-
-      it 'should not fail when enquiry has no potential matches' do
-        enquiry = Enquiry.create!(:name => 'does not exist', :enquirer_name => 'Kisitu')
-        expect(enquiry.potential_matches).to be_empty
-      end
-
-      it 'should contain multiple potential matches given multiple matching children' do
-        child1 = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-        child2 = Child.create(:name => 'john doe', 'created_by' => 'me', :location => 'kampala', 'created_organisation' => 'stc')
-        child3 = Child.create(:name => 'foo bar', 'created_by' => 'me', :gender => 'male', 'created_organisation' => 'stc')
-
-        enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :gender => 'male', :enquirer_name => 'Kisitu')
-
-        expect(enquiry.potential_matches.size).to eq(3)
-        expect(enquiry.potential_matches).to include(child1.id, child2.id, child3.id)
-      end
-
-      it 'should assure that potential_matches contains no duplicates' do
-        child1 = Child.create(:name => 'eduardo aquiles', :gender => 'male', 'created_by' => 'me', 'created_organisation' => 'stc')
-        enquiry = Enquiry.create!(:enquirer_name => 'Kisitu', :name => 'eduardo')
-
-        expect(enquiry.potential_matches.size).to eq(1)
-        expect(enquiry.potential_matches).to eq([child1.id])
-
-        enquiry.gender = 'male'
-        enquiry.save!
-
-        expect(enquiry.potential_matches.size).to eq(1)
-        expect(enquiry.potential_matches).to eq([child1.id])
       end
 
       it 'should update potential matches with new matches whenever an enquiry is edited' do
@@ -164,37 +113,6 @@ describe Enquiry, :type => :model do
         expect(enquiry.potential_matches).to include(child1.id, child2.id, child3.id)
       end
 
-      it 'should remove id that dont match anymore whenever criteria changes' do
-        child1 = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-
-        enquiry = Enquiry.create!(:name => 'eduardo', :enquirer_name => 'Kisitu')
-
-        expect(enquiry.potential_matches.size).to eq(1)
-        expect(enquiry.potential_matches).to eq([child1.id])
-
-        enquiry.name = 'John'
-        enquiry.save!
-
-        expect(enquiry.potential_matches.size).to eq(0)
-        expect(enquiry.potential_matches).to eq([])
-      end
-
-      it 'should keep only matching ids when criteria changes' do
-        child1 = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-        child2 = Child.create(:name => 'foo bar', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
-
-        enquiry = Enquiry.create!(:name => 'eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
-
-        expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to include(child1.id, child2.id)
-
-        enquiry.name = 'John'
-        enquiry.save!
-
-        expect(enquiry.potential_matches.size).to eq(1)
-        expect(enquiry.potential_matches).to eq([child2.id])
-      end
-
       it 'should sort the results based on solr scores' do
         child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
         child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
@@ -202,104 +120,45 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to eq([child1.id, child2.id])
+        expect(enquiry.potential_matches).to include(child1.id, child2.id)
       end
 
-      it 'should remove id specified as not matching during save' do
-        child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
-        child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
+      it 'should not return matches marked as invalid' do
+        child1 = build(:child, :name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
+        child2 = build(:child, :name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
+        allow(MatchService).to receive(:search_for_matching_children).and_return([child1, child2])
 
         enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
         expect(enquiry.potential_matches.size).to eq(2)
 
-        enquiry.ids_marked_as_not_matching << child1.id
-        enquiry.save
+        pm = PotentialMatch.first
+        pm.mark_as_invalid
+        pm.save
 
         expect(enquiry.potential_matches.size).to eq(1)
-        expect(enquiry.potential_matches.first).to eq(child2.id)
       end
 
-      it 'should not include child records marked as not matching in potential_matches when enquiry has not been edited' do
-        child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
-        child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
-        enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
-        expect(enquiry.potential_matches.size).to eq(2)
+      it 'should contain potential matches given one matching child' do
+        child = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
+        enquiry = Enquiry.create!(:enquirer_name => 'Kisitu', :name => 'eduardo')
 
-        enquiry.ids_marked_as_not_matching << child1.id
-        enquiry.save
-        expect(enquiry.potential_matches.size).to eq(1)
-        expect(enquiry.potential_matches.first).to eq(child2.id)
-
-        enquiry.ids_marked_as_not_matching << child2.id
-        enquiry.save
-        expect(enquiry.potential_matches.size).to eq(0)
+        expect(enquiry.criteria).not_to be_empty
+        expect(enquiry.potential_matches).not_to be_empty
+        expect(enquiry.potential_matches).to eq([child.id])
       end
 
-      describe '#ids_marked_as_not_matching' do
-        before :each do
-          @child1 = Child.create(:name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
-          @child2 = Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
-          @enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
-        end
+      it 'should contain multiple potential matches given multiple matching children' do
+        child1 = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
+        child2 = Child.create(:name => 'john doe', 'created_by' => 'me', :location => 'kampala', 'created_organisation' => 'stc')
+        child3 = Child.create(:name => 'foo bar', 'created_by' => 'me', :gender => 'male', 'created_organisation' => 'stc')
 
-        it 'should empty when an enquiry is new' do
-          expect(@enquiry.ids_marked_as_not_matching.length).to eq(0)
-        end
+        enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :gender => 'male', :enquirer_name => 'Kisitu')
 
-        it 'should append ids' do
-          @enquiry.ids_marked_as_not_matching << @child1.id
-
-          expect(@enquiry.ids_marked_as_not_matching.length).to eq(1)
-          expect(@enquiry.ids_marked_as_not_matching.first).to eq(@child1.id)
-        end
-
-        it 'should delete all child record ids marked as not matching' do
-          @enquiry.ids_marked_as_not_matching << @child1.id
-          @enquiry.ids_marked_as_not_matching << @child2.id
-          expect(@enquiry.ids_marked_as_not_matching.length).to eq 2
-
-          @enquiry.clear_ids_marked_as_not_matching
-
-          expect(@enquiry.ids_marked_as_not_matching.length).to eq(0)
-        end
-      end
-
-      describe 'match_updated_at', :solr => true do
-
-        before do
-          allow(Clock).to receive(:now).and_return(Time.utc(2013, 'jan', 01, 00, 00, 0))
-          Child.create(:name => 'Eduardo aquiles', :location => 'Kyangwali', 'created_by' => 'One', 'created_organisation' => 'stc')
-          Child.create(:name => 'Batman', :location => 'Kampala', 'created_by' => 'Two', 'created_organisation' => 'stc')
-        end
-
-        after do
-          Enquiry.all.each { |enquiry| enquiry.destroy }
-          Child.all.each { |child| child.destroy }
-        end
-
-        it 'should update match_updated_at timestamp when new matching children are found on creation of an Enquiry' do
-          enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
-          expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 01, 00, 00, 0).to_s)
-        end
-
-        it 'should not update match_updated_at if there are no matching children records on creation of an Enquiry' do
-          enquiry = Enquiry.create!(:criteria => {'name' => 'Dennis', 'location' => 'Space'}, :enquirer_name => 'Kisitu')
-          expect(enquiry.match_updated_at).to eq('')
-        end
-
-        it 'should update match_updated_at timestamp when new matching children are found on update of an Enquiry' do
-          enquiry = Enquiry.create!(:name => 'Eduardo', :enquirer_name => 'Kisitu')
-          expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 01, 00, 00, 0).to_s)
-          expect(enquiry.potential_matches.size).to eq(1)
-
-          allow(Clock).to receive(:now).and_return(Time.utc(2013, 'jan', 02, 00, 00, 0))
-          enquiry.location = 'Kampala'
-          enquiry.save!
-          expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 02, 00, 00, 0).to_s)
-          expect(enquiry.potential_matches.size).to eq(2)
-        end
+        expect(enquiry.potential_matches.size).to eq(3)
+        expect(enquiry.potential_matches).to include(child1.id, child2.id, child3.id)
       end
     end
+
     describe 'all_enquires' do
       it 'should return a list of all enquiries' do
         save_valid_enquiry('user2', 'enquiry_id' => 'id2', 'criteria' => {'location' => 'Kampala'}, 'enquirer_name' => 'John', 'reporter_details' => {'location' => 'Kampala'})
@@ -375,13 +234,80 @@ describe Enquiry, :type => :model do
     end
 
     describe 'find_matching_children' do
-      it 'should set potential matches to [] if no criteria' do
-        enquiry = build(:enquiry, :potential_matches => ['something'], :criteria => {})
-        expect(enquiry.criteria).to be_empty
-        expect(enquiry.potential_matches).to include('something')
+      after :each do
+        PotentialMatch.all.each { |pm| pm.destroy }
+      end
+
+      it 'should not have potential matches if no criteria' do
+        enquiry = build :enquiry, :criteria => {}
+        enquiry.find_matching_children
+        expect(enquiry.potential_matches).to eq([])
+      end
+
+      it 'should create potential match when enquiry that has a match is created' do
+        child = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return([child])
+        enquiry = build(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
-        expect(enquiry.potential_matches).to be_empty
+
+        expect(PotentialMatch.count).to eq 1
+        expect(PotentialMatch.first.child_id).to eq child.id
+        expect(PotentialMatch.first.enquiry_id).to eq enquiry.id
+      end
+    end
+
+    describe '.with_child_potential_matches' do
+      before :each do
+        PotentialMatch.all.each { |pm| pm.destroy }
+      end
+
+      it 'should only return enquiries with potential matches' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        enquiry_y = build(:enquiry, :id => 'enquiry_id_y')
+        enquiry_z = build(:enquiry, :id => 'enquiry_id_z')
+        expect(Enquiry).to receive(:find).with(enquiry_x.id).and_return(enquiry_x)
+        expect(Enquiry).to receive(:find).with(enquiry_y.id).and_return(enquiry_y)
+        expect(Enquiry).to_not receive(:find).with(enquiry_z.id)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x'
+        PotentialMatch.create :enquiry_id => 'enquiry_id_y', :child_id => 'child_id_y'
+        PotentialMatch.create :enquiry_id => 'enquiry_id_z', :child_id => 'child_id_y', :marked_invalid => true
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(2)
+        expect(enquiries).to include(enquiry_x, enquiry_y)
+      end
+
+      it 'should not return duplicate enquiries' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        expect(Enquiry).to receive(:find).with(enquiry_x.id).and_return(enquiry_x)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x'
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_y'
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(1)
+        expect(enquiries).to include(enquiry_x)
+      end
+
+      it 'should not return invalid matches' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        expect(Enquiry).to_not receive(:find).with(enquiry_x.id)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :marked_invalid => true
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(0)
+      end
+
+      it 'should paginate results' do
+        10.times do |i|
+          enquiry = build(:enquiry, :id => "enquiry_#{i}")
+          allow(Enquiry).to receive(:find).with(enquiry.id).and_return(enquiry)
+          PotentialMatch.create :enquiry_id => "enquiry_#{i}", :child_id => i.to_s
+        end
+
+        enquiries = Enquiry.with_child_potential_matches :per_page => 5
+        expect(enquiries.size).to eq(5)
+        expect(enquiries.total_pages).to eq(2)
       end
     end
 
