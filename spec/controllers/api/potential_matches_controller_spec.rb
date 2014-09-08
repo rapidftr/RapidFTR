@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Api::PotentialMatchesController, :type => :controller do
   before :each do
+    PotentialMatch.all.each { |pm| pm.destroy }
     fake_field_worker_login
   end
 
@@ -43,6 +44,15 @@ describe Api::PotentialMatchesController, :type => :controller do
     it 'should authorize user' do
       expect(controller).to receive(:authorize!).with(:read, PotentialMatch)
       get :show, :id => '1'
+    end
+
+    it 'should authorize user' do
+      expect(controller).to receive(:authorize!).with(:read, PotentialMatch)
+      pm1 = PotentialMatch.create :enquiry_id => 1, :child_id => 1
+
+      get :show, :id => pm1.id
+      json = JSON.parse response.body
+      expect(json).to eq(JSON.parse(pm1.to_json))
     end
   end
 end

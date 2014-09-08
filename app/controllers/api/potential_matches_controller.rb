@@ -13,7 +13,7 @@ module Api
 
     def show
       authorize! :read, PotentialMatch
-      render :json => {}
+      render :json => PotentialMatch.find(params[:id])
     end
   end
 end
