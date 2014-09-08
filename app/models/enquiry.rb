@@ -18,7 +18,6 @@ class Enquiry < CouchRest::Model::Base
   property :criteria, Hash
   property :match_updated_at, :default => ''
   property :updated_at, Time
-  property :ids_marked_as_not_matching, [String]
 
   validate :validate_has_at_least_one_field_value
 
@@ -39,10 +38,6 @@ class Enquiry < CouchRest::Model::Base
                    emit(doc['_id'],1);
                  }
               }"
-  end
-
-  def clear_ids_marked_as_not_matching
-    self[:ids_marked_as_not_matching].clear
   end
 
   def self.sortable_field_name(field)

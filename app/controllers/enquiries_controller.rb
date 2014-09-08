@@ -48,7 +48,6 @@ class EnquiriesController < ApplicationController
   def update
     authorize! :update, Enquiry
 
-    @enquiry.clear_ids_marked_as_not_matching
     if @enquiry.update_attributes(params[:enquiry])
       flash[:notice] = t('enquiry.messages.update_success')
       redirect_to enquiry_path(@enquiry)
