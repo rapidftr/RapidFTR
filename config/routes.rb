@@ -41,12 +41,13 @@ RapidFTR::Application.routes.draw do
       post :sync_unverified
       post :reindex
       get :advanced_search
-      get :search
     end
 
     resources :attachments, :only => :show
     resource :duplicate, :only => [:new, :create]
   end
+
+  get '/search', :to => 'search#search', :as => 'search'
 
   match '/children-ids' => 'child_ids#all', :as => :child_ids, :via => [:post, :get, :put, :delete]
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get

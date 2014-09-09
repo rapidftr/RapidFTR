@@ -215,19 +215,6 @@ class ChildrenController < ApplicationController
     end
   end
 
-  def search
-    authorize! :index, Child
-    @page_name = t('search')
-    @search_form = Forms::SearchForm.new :ability => current_ability, :params => params
-
-    if @search_form.valid?
-      @results = @search_form.execute.results
-      default_search_respond_to
-    else
-      render :search
-    end
-  end
-
   private
 
   def child_short_id(child_params)
@@ -250,18 +237,6 @@ class ChildrenController < ApplicationController
 
   def form_sections
     FormSection.enabled_by_order_for_form(Child::FORM_NAME)
-  end
-
-  def default_search_respond_to
-    respond_to do |format|
-      format.html do
-        if @results && @results.length == 1
-          redirect_to child_path(@results.first)
-        end
-      end
-
-      respond_to_export format, @results
-    end
   end
 
   def load_child_or_redirect

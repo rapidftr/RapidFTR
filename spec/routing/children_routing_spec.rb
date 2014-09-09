@@ -30,10 +30,6 @@ describe ChildrenController, :type => :routing do
       expect(:delete => '/children/1').to route_to(:controller => 'children', :action => 'destroy', :id => '1')
     end
 
-    it 'recognizes and generates #search' do
-      expect(:get => '/children/search').to route_to(:controller => 'children', :action => 'search')
-    end
-
     it 'handles a multi-child export request' do
       expect(:post => 'advanced_search/export_data').to route_to(:controller => 'advanced_search', :action => 'export_data')
     end
