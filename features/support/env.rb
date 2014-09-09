@@ -4,6 +4,11 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
+if ENV['COVERALLS']
+  require 'coveralls'
+  Coveralls.wear_merged!('rails')
+end
+
 ENV['RAILS_ENV'] = 'cucumber'
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + '/../..'))
 
@@ -14,11 +19,6 @@ require 'spec/support/child_finder'
 require 'json_spec/cucumber'
 require 'rack/test'
 require 'selenium/webdriver'
-
-if ENV['COVERALLS']
-  require 'coveralls'
-  Coveralls.wear_merged!('rails')
-end
 
 Capybara.register_driver :selenium do |app|
   http_client = Selenium::WebDriver::Remote::Http::Default.new
