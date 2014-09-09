@@ -217,6 +217,15 @@ describe Enquiry, :type => :model do
 
         expect(enquiry.criteria).to eq('name' => 'Eduardo', 'nationality' => 'Ugandan')
       end
+
+      it 'should not use empty fields' do
+        fields = {'name' => '   ', 'nationality' => 'Ugandan'}
+        enquiry = Enquiry.new(fields)
+        enquiry.save!
+
+        expect(enquiry.criteria).to eq('nationality' => 'Ugandan')
+        expect(enquiry.criteria['name']).to be_nil
+      end
     end
 
     describe '.update_all_child_matches' do
@@ -308,6 +317,21 @@ describe Enquiry, :type => :model do
         enquiries = Enquiry.with_child_potential_matches :per_page => 5
         expect(enquiries.size).to eq(5)
         expect(enquiries.total_pages).to eq(2)
+      end
+    end
+
+    describe 'strip_whitespaces' do
+      it 'should strip whitespaces' do
+        enquiry = build :enquiry, :child_name => '  childs name    '
+        enquiry.send :strip_whitespaces
+        expect(enquiry['child_name']).to eq('childs name')
+      end
+
+      it 'should be run before validation' do
+        enquiry = build :enquiry, :child_name => '  childs name  '
+        expect(enquiry['child_name']).to eq('  childs name  ')
+        enquiry.run_callbacks :validation
+        expect(enquiry['child_name']).to eq('childs name')
       end
     end
 

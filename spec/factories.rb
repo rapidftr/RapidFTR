@@ -84,8 +84,8 @@ FactoryGirl.define do
       sections = FormSection.all_form_sections_for(Enquiry::FORM_NAME)
       child_name_field_present = !sections.empty? && sections.map(&:fields).flatten.map(&:name).include?('child_name')
       unless child_name_field_present
-        field = build :text_field, :name => 'child_name'
-        create :form_section, :form => form, :fields => [field]
+        field1 = build :text_field, :name => 'child_name'
+        create :form_section, :form => form, :fields => [field1]
       end
     end
 

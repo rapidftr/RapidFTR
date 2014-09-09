@@ -8,6 +8,7 @@ class Enquiry < CouchRest::Model::Base
 
   after_initialize :create_unique_id
 
+  before_validation :strip_whitespaces
   before_validation :create_criteria, :on => [:create, :update]
   after_save :find_matching_children
   before_save :update_history, :unless => :new?
@@ -157,6 +158,13 @@ class Enquiry < CouchRest::Model::Base
   end
 
   private
+
+  def strip_whitespaces
+    keys.each do |key|
+      value = self[key]
+      value.strip! if value.respond_to? :strip!
+    end
+  end
 
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
