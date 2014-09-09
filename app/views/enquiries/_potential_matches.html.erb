@@ -6,7 +6,7 @@
 
   <div class="form_info"></div>
   <div class="entity_list">
-    <% @potential_matches.each do |child| %>
+    <% @enquiry.potential_matches.each do |child| %>
         <%= render :partial => "children/summary_row", :locals => {:child => child, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
     <% end %>
   </div>

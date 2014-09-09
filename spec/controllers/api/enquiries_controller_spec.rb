@@ -215,15 +215,15 @@ describe Api::EnquiriesController, :type => :controller do
 
       enquiry = Enquiry.create(:enquirer_name => 'Godwin', :sex => 'male', :age => '10', :location => 'Kampala')
 
-      expect(Enquiry.get(enquiry.id).potential_matches).to include(child2.id)
+      expect(Enquiry.get(enquiry.id).potential_matches).to include(child2)
 
       put :update, :id => enquiry.id, :enquiry => {:name => 'aquiles', :age => '10', :location => 'Kampala'}
       expect(response.response_code).to eq(200)
 
       enquiry_after_update = Enquiry.get(enquiry.id)
       expect(enquiry_after_update.potential_matches.size).to eq(2)
-      expect(enquiry_after_update.potential_matches).to include(child1.id)
-      expect(enquiry_after_update.potential_matches).to include(child2.id)
+      expect(enquiry_after_update.potential_matches).to include(child1)
+      expect(enquiry_after_update.potential_matches).to include(child2)
       expect(enquiry_after_update['criteria']).to eq('name' => 'aquiles', 'age' => '10', 'location' => 'Kampala', 'sex' => 'male')
     end
 

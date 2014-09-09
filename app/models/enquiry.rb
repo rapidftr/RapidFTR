@@ -104,7 +104,7 @@ class Enquiry < CouchRest::Model::Base
     potential_matches = PotentialMatch.by_enquiry_id.key(id).all
     potential_matches.reject! { |pm| pm.marked_invalid? }
     child_ids = potential_matches.each.map(&:child_id)
-    child_ids.each { |id| Child.get(id) }
+    child_ids.map { |id| Child.get(id) }
   end
 
   def update_from(properties)

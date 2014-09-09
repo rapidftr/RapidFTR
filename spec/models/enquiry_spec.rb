@@ -104,13 +104,13 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to include(child1.id, child2.id)
+        expect(enquiry.potential_matches).to include(child1, child2)
 
         enquiry.gender = 'male'
         enquiry.save!
 
         expect(enquiry.potential_matches.size).to eq(3)
-        expect(enquiry.potential_matches).to include(child1.id, child2.id, child3.id)
+        expect(enquiry.potential_matches).to include(child1, child2, child3)
       end
 
       it 'should sort the results based on solr scores' do
@@ -120,7 +120,7 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to include(child1.id, child2.id)
+        expect(enquiry.potential_matches).to include(child1, child2)
       end
 
       it 'should not return matches marked as invalid' do
@@ -144,7 +144,7 @@ describe Enquiry, :type => :model do
 
         expect(enquiry.criteria).not_to be_empty
         expect(enquiry.potential_matches).not_to be_empty
-        expect(enquiry.potential_matches).to eq([child.id])
+        expect(enquiry.potential_matches).to eq([child])
       end
 
       it 'should contain multiple potential matches given multiple matching children' do
@@ -155,7 +155,7 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :gender => 'male', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(3)
-        expect(enquiry.potential_matches).to include(child1.id, child2.id, child3.id)
+        expect(enquiry.potential_matches).to include(child1, child2, child3)
       end
     end
 

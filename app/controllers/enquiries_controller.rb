@@ -60,7 +60,6 @@ class EnquiriesController < ApplicationController
   def show
     authorize! :read, Enquiry
     @form_sections = enquiry_form_sections
-    @potential_matches = potential_matches
   end
 
   def matches
@@ -83,11 +82,5 @@ class EnquiriesController < ApplicationController
 
   def enquiry_form_sections
     FormSection.enabled_by_order_for_form(Enquiry::FORM_NAME)
-  end
-
-  def potential_matches
-    matches = []
-    @enquiry.potential_matches.each { |id| matches << Child.get(id) }
-    matches
   end
 end
