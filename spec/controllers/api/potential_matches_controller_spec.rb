@@ -52,7 +52,14 @@ describe Api::PotentialMatchesController, :type => :controller do
 
       get :show, :id => pm1.id
       json = JSON.parse response.body
-      expect(json).to eq(JSON.parse(pm1.to_json))
+      expected_json = JSON.parse(pm1.to_json)
+      expect(Time.parse(json['created_at']).to_i).to eq(pm1['created_at'].to_i)
+      expect(Time.parse(json['updated_at']).to_i).to eq(pm1['updated_at'].to_i)
+      expect(json['_id']).to eq(expected_json['_id'])
+      expect(json['_rev']).to eq(expected_json['_rev'])
+      expect(json['enquiry_id']).to eq(expected_json['enquiry_id'])
+      expect(json['child_id']).to eq(expected_json['child_id'])
+      expect(json['marked_invalid']).to eq(expected_json['marked_invalid'])
     end
   end
 end
