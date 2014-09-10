@@ -26,6 +26,54 @@ describe Enquiry, :type => :model do
         expect(enquiry.enquirer_name).to eq('DJ')
         expect(enquiry['place']).to eq('Kampala')
       end
+
+    end
+
+    describe 'update_histories' do
+
+      before :each do
+        FormSection.all.each { |fs| fs.destroy }
+        form = create(:form, :name => Enquiry::FORM_NAME)
+        enquirer_name_field = build(:field, :name => 'enquirer_name')
+        child_name_field = build(:field, :name => 'child_name')
+        create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [enquirer_name_field, child_name_field])
+
+        Timecop.freeze(Date.today)
+        @enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
+      end
+
+      it 'should add history for updated fields on enquiry' do
+        @enquiry.update_attributes(:enquirer_name => 'David Jones')
+        histories = @enquiry.histories
+
+        expect(histories.size).to eq(2)
+        expect(histories.first['changes']['enquirer_name']['from']).to eq('John doe')
+        expect(histories.first['changes']['enquirer_name']['to']).to eq('David Jones')
+      end
+
+      it 'should merge the histories of the given record with the current record if the update at of the current record is greater than that of the given record.' do
+        Timecop.freeze(Date.today + 1)
+        @enquiry.update_attributes(:enquirer_name => 'David Jones')
+
+        histories = @enquiry.histories
+
+        expect(histories.size).to eq(2)
+
+        Timecop.freeze(Date.today + 2)
+        given_histories = histories.concat([JSON.parse("{\"user_name\":\"rapidftr\",\"datetime\":\"2012-01-01 00:00:02UTC\",\"changes\":{\"enquirer_name\":{\"to\":\"new\",\"from\":\"old\"}}}")])
+        given_properties = {'child_name' => 'Ann', 'updated_at' => "#{RapidFTR::Clock.current_formatted_time}", 'histories' => given_histories}
+
+        @enquiry.update_properties_with_user_name 'rapidftr', nil, nil, nil, given_properties
+        @enquiry.save!
+
+        histories = @enquiry.histories
+
+        expect(histories.size).to eq(4)
+        expect(histories.first['changes']['child_name']['from']).to eq('any child')
+        expect(histories.first['changes']['child_name']['to']).to eq('Ann')
+
+        Timecop.return
+      end
     end
 
     describe 'new_with_user_name' do

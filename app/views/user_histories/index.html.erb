@@ -1,23 +1,41 @@
+<h1 class="float_left no_border"> <%= t("enquiry.change_log") %> &gt; <%= link_to @user.id, user_path(@user) %></h1>
+<div class="clearfix"></div>
+
 <div class="profile-header">
   <ul class="history-details">
 
-    <% if @histories.empty? %>
-      <%= render :partial => "no_activities" %>
+    <% if @child_histories.empty? && @enquiry_histories.empty? %>
+        <%= render :partial => "no_activities" %>
     <% else %>
-      <% @histories.each do |history| %>
-        <% @child = Child.get(history[:child_id]) %>
-        <% history['changes'].each_pair do |field, change| %>
-          <% history_entry = history_entry_for(history, field, change) %>
-          <% unless history_entry.empty? %>
-            <li>
-              <div>
-                <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals] %>
-                Child id:<span class="child_id"><%= history[:child_id] %></span>
-              </div>
-            </li>
-          <% end %>
+        <% @child_histories.each do |history| %>
+            <% @child = Child.get(history[:child_id]) %>
+            <% history['changes'].each_pair do |field, change| %>
+                <% history_entry = history_entry_for(history, field, change) %>
+                <% unless history_entry.empty? %>
+                    <li>
+                      <div>
+                        <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals] %>
+                        Child id:<span class="child_id"><%= history[:child_id] %></span>
+                      </div>
+                    </li>
+                <% end %>
+            <% end %>
         <% end %>
-      <% end %>
+
+        <% @enquiry_histories.each do |history| %>
+            <% @enquiry = Enquiry.get(history[:enquiry_id]) %>
+            <% history['changes'].each_pair do |field, change| %>
+                <% history_entry = history_entry_for(history, field, change) %>
+                <% unless history_entry.empty? %>
+                    <li>
+                      <div>
+                        <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals] %>
+                        Enquiry id:<span class="enquiry_id"><%= history[:enquiry_id] %></span>
+                      </div>
+                    </li>
+                <% end %>
+            <% end %>
+        <% end %>
     <% end %>
   </ul>
 </div>
@@ -25,6 +43,6 @@
 
 <div class="profile-tools">
   <ul>
-    <li class="back"><%= link_to t("buttons.back") , user_path(@user) %></li>
+    <li class="back"><%= link_to t("buttons.back"), user_path(@user) %></li>
   </ul>
 </div>

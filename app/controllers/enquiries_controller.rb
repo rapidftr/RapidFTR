@@ -59,6 +59,7 @@ class EnquiriesController < ApplicationController
 
   def show
     authorize! :read, Enquiry
+    @enquiry = Enquiry.find params[:id]
     @form_sections = enquiry_form_sections
   end
 
