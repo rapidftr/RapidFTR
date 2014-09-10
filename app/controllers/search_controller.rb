@@ -7,7 +7,6 @@ class SearchController < ApplicationController
 
     if query.nil? || query.empty?
       flash[:error] = I18n.t('messages.valid_search_criteria')
-      render 'children/search'
     else
       search = Search.for(@search_type)
       search.created_by(current_user) unless can?(:view_all, @search_type)
@@ -20,8 +19,10 @@ class SearchController < ApplicationController
   def default_search_respond_to
     respond_to do |format|
       format.html do
-        if @results && @results.length == 1
+        if @search_type == Child && @results && @results.length == 1
           redirect_to child_path(@results.first)
+        elsif @search_type == Enquiry && @results && @results.length == 1
+          redirect_to enquiry_path(@results.first)
         end
       end
 

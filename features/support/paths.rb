@@ -48,11 +48,11 @@ module NavigationHelpers
                                                           user = User.find_by_user_name(matches[1])
                                                           user_path(user, options)
                                                         end,
-      /child search page/                            => proc { |options, _matches| search_path(options) },
+      /search page/                                  => proc { |options, _matches| search_path(options) },
       /child advanced search page/                   => proc { |options, _matches| advanced_search_index_path(options) },
       /login page/                                   => proc { |options, _matches| login_path(options) },
       /logout page/                                  => proc { |options, _matches| logout_path(options) },
-      /child search results page/                    => proc { |options, _matches| search_path(options) },
+      /search results page/                           => proc { |options, _matches| search_path(options) },
       /child advanced search results page/           => proc { |options, _matches| advanced_search_index_path(options) },
       /edit form section page for "(.+)"$/           => proc { |_options, matches| edit_form_section_path(:id => matches[1]) },
       /edit field page for "(.+)" on "(.+)" form$/   => proc { |_options, matches| edit_form_section_field_path(:form_section_id => matches[2], :id => matches[1]) },

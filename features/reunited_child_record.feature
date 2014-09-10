@@ -41,7 +41,7 @@ Feature: Reunited Child
     Then I should see "Child was successfully updated."
      When I fill in "query" with "Will"
      And I press "Go"
-    Then I should be on the child search results page
+    Then I should be on the search results page
      And I should see "will_uid" as reunited in the search results
 
   @javascript @search
@@ -53,5 +53,5 @@ Feature: Reunited Child
     Then I should see "Child was successfully updated."
      When I fill in "query" with "Fred"
      And I press "Go"
-    Then I should be on the child search results page
+    Then I should be on the search results page
      And I should not see "fred_uid" as reunited in the search results

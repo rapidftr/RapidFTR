@@ -62,7 +62,7 @@ Given /^the following fields exists on "([^"]*)":$/ do |form_section_name, table
       'visible' => true,
       'type' => Field::TEXT_FIELD
     )
-    form_section.fields.push Field.new(field_hash)
+    form_section.fields.push FactoryGirl.build(:field, field_hash)
   end
 
   form_section.save!

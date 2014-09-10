@@ -39,6 +39,8 @@ Capybara.javascript_driver = :selenium # default driver when you using @javascri
 
 ActionController::Base.allow_rescue = true
 
+FactoryGirl.find_definitions
+
 module UrlHelpers
   include Rails.application.routes.url_helpers
 end
