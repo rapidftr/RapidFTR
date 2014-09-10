@@ -22,16 +22,14 @@
     }
 </script>
 
-<% has_results = (@results && @results.size > 0) %>
 <%= form_tag export_data_children_path(search_params: params), method: :post do %>
   <br />
-  <div class="profiles-list child_list">
+  <div class="profiles-list entity_list">
     <% if @results %>
         <div class="results-count">
           <p><%= t("advanced_search.records_found", :count => @results.total_entries) if @results.size > 0 %></p>
         </div>
     <% end %>
-    <%= hidden_field_tag "full_results", @full_results.join(",") if @full_results%>
     <% if !@results.nil? && @results.size > 0 %>
     <%= check_box_tag 'all', 'Select all records' %>
     <%= label_tag 'all',t("select_all") %>

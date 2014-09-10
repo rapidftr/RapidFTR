@@ -6,6 +6,7 @@ include HpricotSearch
 describe 'search/search.html.erb', :type => :view do
   describe 'rendering search results' do
     before :each do
+      @search_type = Child
       @user = double(:user)
       allow(@user).to receive(:time_zone).and_return TZInfo::Timezone.get('UTC')
       allow(@user).to receive(:localize_date).and_return('some date')

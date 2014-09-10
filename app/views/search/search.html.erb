@@ -1,3 +1,4 @@
 <% flash[:error] %>
 
-<%= render :partial => 'children/search_results' %>
+<%= render :partial => 'children/search_results' if @search_type == Child %>
+<%= render :partial => 'enquiries/search_results' if @search_type == Enquiry %>

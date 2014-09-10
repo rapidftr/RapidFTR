@@ -69,7 +69,7 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def self.default_enquiry_fields
-    %w(unique_identifier created_by created_by_full_name last_updated_by last_updated_by_full_name created_organisation)
+    %w(unique_identifier short_id created_by created_by_full_name last_updated_by last_updated_by_full_name created_organisation)
   end
 
   def self.build_date_fields_for_solar
@@ -155,6 +155,10 @@ class Enquiry < CouchRest::Model::Base
     fields.each do |field|
       criteria.store(field.name, self[field.name])
     end
+  end
+
+  def self.searchable_field_names
+    Form.find_by_name(FORM_NAME).highlighted_fields.map(&:name) + [:unique_identifier, :short_id]
   end
 
   private

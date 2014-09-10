@@ -1,6 +1,7 @@
 class SearchController < ApplicationController
   def search
-    authorize! :index, Child
+    @search_type = params[:search_type].nil? ? Child : params[:search_type].constantize
+    authorize! :index, @search_type
     @page_name = t('search')
     query = params[:query]
 
@@ -8,10 +9,9 @@ class SearchController < ApplicationController
       flash[:error] = I18n.t('messages.valid_search_criteria')
       render 'children/search'
     else
-      search_type = params[:search_type].constantize
-      search = Search.for(search_type)
-      search.created_by(current_user.user_name) unless can?(:view_all, Child)
-      search.fulltext_by((Form.find_by_name(Child::FORM_NAME).highlighted_fields.map(&:name)) + [:unique_identifier, :short_id], query)
+      search = Search.for(@search_type)
+      search.created_by(current_user) unless can?(:view_all, @search_type)
+      search.fulltext_by(@search_type.searchable_field_names, query)
       @results = search.results
       default_search_respond_to
     end
@@ -25,7 +25,7 @@ class SearchController < ApplicationController
         end
       end
 
-      respond_to_export format, @results
+      respond_to_export(format, @results) if @search_type == Child
     end
   end
 
