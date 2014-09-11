@@ -47,7 +47,7 @@ Feature: So that hard copy printout of missing child photos are available
 
   @javascript @search
   Scenario Outline: In search results, when no records are selected and the export button is clicked, the user is shown an error message
-    Given I am on the search page
+    Given I am on the basic search page
     When I fill in "query" with "Wil"
     And I press "Go"
     And I press "<action>"
@@ -114,7 +114,7 @@ Feature: So that hard copy printout of missing child photos are available
 
   @javascript @search
   Scenario: Password prompt throws an error message when left blank or filled with spaces
-    Given I am on the search page
+    Given I am on the basic search page
     And I fill in "query" with "Wil"
     And I press "Go"
     And I press "Export Selected to PDF"

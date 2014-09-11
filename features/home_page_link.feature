@@ -8,7 +8,7 @@ Feature: So that a user can get back to their initial start page from anywhere w
     And the following children exist in the system:
       | name  |
       | Lisa	|
-    And I am on the search page
+    And I am on the basic search page
 
     When I search using a name of "Lisa"
     Then I should be on the saved record page for child with name "Lisa"

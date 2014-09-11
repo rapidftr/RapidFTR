@@ -68,7 +68,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I should see "Willis" in the search results
 
   Scenario: Searching for a child given his name returns no results
-    Given I am on the search page
+    Given I am on the basic search page
     Then I should not see "No results found"
 
   @wip
@@ -80,7 +80,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should be on the children listing page
 
   Scenario: Creating a search with non standard queries
-    Given I am on the search page
+    Given I am on the basic search page
     Then I should not see any errors
     When I fill in "query" with "\"
     And I press "Go"

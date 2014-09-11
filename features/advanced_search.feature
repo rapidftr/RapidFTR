@@ -6,7 +6,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   @javascript
   Scenario: Validation of search criteria field name
    Given I am logged in
-   And I debug
    And I am on child advanced search page
    When I search
    And I wait for the page to load
@@ -86,7 +85,6 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Andrew | bob        | john                 |
       | Peter  | john       | bob                  |
       | James  | john       | john                 |
-    And I debug
     When I fill in "created_by_value" with "bob"
     And I search
     And I wait for the page to load
