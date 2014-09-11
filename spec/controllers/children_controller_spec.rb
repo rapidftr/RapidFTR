@@ -42,12 +42,6 @@ describe ChildrenController, :type => :controller do
         expect(response.status).to eq(403)
       end
 
-      it 'GET search' do
-        expect(@controller.current_ability).to receive(:can?).with(:index, Child).and_return(false)
-        get :search
-        expect(response.status).to eq(403)
-      end
-
       it 'GET new' do
         expect(@controller.current_ability).to receive(:can?).with(:create, Child).and_return(false)
         get :new
@@ -561,26 +555,6 @@ describe ChildrenController, :type => :controller do
       expect(response).to redirect_to "/children/#{child.id}"
     end
 
-  end
-
-  describe 'GET search' do
-    before :each do
-      fake_admin_login
-    end
-
-    it 'should render error if search is invalid' do
-      get :search, :query => nil
-      search = assigns[:search_form]
-      expect(search.errors).not_to be_empty
-      expect(response).to render_template('search')
-    end
-
-    it 'should create SearchForm with whatever params received' do
-      params = {:query => 'test'}
-      expect(Forms::SearchForm).to receive(:new).with(:ability => controller.current_ability, :params => hash_including(params)).and_call_original
-      expect_any_instance_of(Forms::SearchForm).to receive(:execute)
-      get :search, params
-    end
   end
 
   describe 'exporting children' do

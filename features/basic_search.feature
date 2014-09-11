@@ -35,14 +35,14 @@ Feature: So that I can find a child that has been entered in to RapidFTR
   Scenario: Search parameters are displayed in the search results
     When I fill in "query" with "Will"
     And I press "Go"
-    Then I should be on the child search results page
+    Then I should be on the search results page
     And the "query" field should contain "Will"
 
   Scenario: Each search result has a link to the full child record
     Given the following children exist in the system:
       | name   	|
       | Willis	|
-      | Will	|
+      | Will	  |
     When I search using a name of "Will"
     Then I should see a link to the saved record page for child with name "Willis"
     And I should see a link to the saved record page for child with name "Will"
@@ -64,11 +64,11 @@ Feature: So that I can find a child that has been entered in to RapidFTR
       | Will   |
     When I fill in "query" with "Will"
     And I press "Go"
-    Then I should be on the child search results page
+    Then I should be on the search results page
     And I should see "Willis" in the search results
 
   Scenario: Searching for a child given his name returns no results
-    Given I am on the child search page
+    Given I am on the basic search page
     Then I should not see "No results found"
 
   @wip
@@ -80,11 +80,11 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Then I should be on the children listing page
 
   Scenario: Creating a search with non standard queries
-    Given I am on the child search page
+    Given I am on the basic search page
     Then I should not see any errors
     When I fill in "query" with "\"
     And I press "Go"
-    Then I should be on the child search results page
+    Then I should be on the search results page
 
   Scenario: User with unlimited access can see all children
     Given a user "field_admin" with "View And Search Child" permission

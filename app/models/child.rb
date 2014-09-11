@@ -255,6 +255,10 @@ rescue
     end
   end
 
+  def self.searchable_field_names
+    Form.find_by_name(FORM_NAME).highlighted_fields.map(&:name) + [:unique_identifier, :short_id]
+  end
+
   private
 
   def unknown_fields

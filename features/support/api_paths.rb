@@ -47,16 +47,16 @@ module NavigationHelpers
     when /edit user page for "(.+)"/
       user = User.find_by_user_name(Regexp.last_match[1])
       edit_user_path(user, options)
-    when /child search page/
-      search_children_path(options)
+    when /basic search page/
+      search_path(options)
     when /child advanced search page/
       advanced_search_index_path(options)
     when /login page/
       login_path(options)
     when /logout page/
       logout_path(options)
-    when /child search results page/
-      search_children_path(options)
+    when /search results page/
+      search_path(options)
     when /child advanced search results page/
       advanced_search_index_path(options)
     when /edit form section page for "(.+)"$/

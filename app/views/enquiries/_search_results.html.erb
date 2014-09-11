@@ -1,0 +1,11 @@
+<br />
+<div class="profiles-list entity_list">
+  <% if @results %>
+    <div class="results-count">
+      <p><%= t("advanced_search.records_found", :count => @results.total_entries) if @results.size > 0 %></p>
+    </div>
+  <% end %>
+  <%= render :partial => "enquiries/summary_row", :collection => @results, :as => :enquiry %>
+  <%= render :partial => 'shared/pagination', :locals => { :results => @results } %>
+</div>
+

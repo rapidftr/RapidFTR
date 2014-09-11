@@ -23,7 +23,7 @@ And /^I visit children listing page "([^\"]*)"$/ do|page_number|
 end
 
 And /^I select dropdown option "(.+)"$/ do |option|
-  page.find('//option', :text => option).click
+  page.find('//option', :text => option).select_option
 end
 
 When /^I sort "(.*?)"$/  do |sort_order|

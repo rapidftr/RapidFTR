@@ -41,11 +41,12 @@ html[xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"]
               - if can? :read, Report
                 li
                   = link_to t("navigation.reports"), reports_path
-          - if can? :view_and_search, Child
-              = form_tag search_children_path, :method => :get, :id => "search_form" do
+          - if can?(:view_and_search, Child) || can?(:view, Enquiry)
+              = form_tag search_path, :method => :get, :id => "search_form" do
                 .search
                   = link_to t("navigation.advanced_search"), advanced_search_index_path
                   = text_field_tag 'query', params[:query]
+                  = select_tag :search_type, options_from_collection_for_select(Search::SEARCHABLE_CLASSES, :name, :name, @search_type)
                   = submit_tag t("navigation.go"), :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();"
       .page-content
         - if flash[:notice].present?

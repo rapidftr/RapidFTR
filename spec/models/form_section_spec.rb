@@ -23,15 +23,17 @@ describe FormSection, :type => :model do
     expect(f.all_searchable_fields).to eq([text_field, text_area, select_box])
   end
 
-  it 'udpates solr child index when created' do
+  it 'udpates solr index when created' do
     form = FormSection.new
     expect(Child).to receive(:update_solr_indices)
+    expect(Enquiry).to receive(:update_solr_indices)
     form.run_callbacks(:create)
   end
 
-  it 'updates solr child index when updated' do
+  it 'updates solr index when updated' do
     form = FormSection.new
     expect(Child).to receive(:update_solr_indices)
+    expect(Enquiry).to receive(:update_solr_indices)
     form.run_callbacks(:update)
   end
 

@@ -1,4 +1,5 @@
 class Search
+  SEARCHABLE_CLASSES = [Child, Enquiry]
   attr_reader :class_to_search
 
   def initialize(klass)

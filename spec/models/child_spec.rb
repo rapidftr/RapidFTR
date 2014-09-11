@@ -1208,6 +1208,15 @@ describe Child, :type => :model do
     end
   end
 
+  describe 'searchable_field_names' do
+    it 'should include highlighted fields, short_id, and unique_identifier' do
+      form = create :form, :name => Child::FORM_NAME
+      create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :highlighted => true)]
+
+      expect(Child.searchable_field_names).to eq ['first_name', :unique_identifier, :short_id]
+    end
+  end
+
   private
 
   def create_child(name, options = {})
