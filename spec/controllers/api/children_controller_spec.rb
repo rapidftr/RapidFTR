@@ -28,11 +28,59 @@ describe Api::ChildrenController, :type => :controller do
 
   describe 'GET index' do
     it 'should render all children as json' do
-      expect(Child).to receive(:all).and_return(double(:to_json => 'all the children'))
+      allow(controller).to receive(:authorize)
 
-      get :index, :format => 'json'
+      child = Child.new(:_id => '123')
+      expect(Child).to receive(:all).and_return([child])
 
-      expect(response.body).to eq('all the children')
+      get :index
+
+      expect(response.response_code).to eq(200)
+      expect(response.body).to eq([{:location => "http://test.host:80/api/children/#{child.id}"}].to_json)
+    end
+  end
+
+  describe 'updated after' do
+    before :each do
+      reset_couchdb!
+      FormSection.all.each { |fs| fs.destroy }
+      form = create(:form, :name => Child::FORM_NAME)
+      child_name_field = build(:field, :name => 'child_name')
+      location_field = build(:field, :name => 'location')
+      create(:form_section, :name => 'basic_details', :form => form, :fields => [child_name_field, location_field])
+      allow(User).to receive(:find_by_user_name).with('uname').and_return(@user = double('user', :user_name => 'uname', :organisation => 'org'))
+
+      allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 22, 14, 05, 0))
+      @child1 = Child.new_with_user_name(@user, :child_name => 'John Doe', :location => 'Kampala')
+      @child1.save!
+
+      allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 24, 14, 05, 0))
+      @child2 = Child.new_with_user_name(@user, :child_name => 'David', :location => 'Kampala')
+      @child2.save!
+    end
+
+    it 'should return all records created after a specified date' do
+      get :index, :updated_after => '2010-01-22 06:42:12UTC'
+      child_one = {:location => "http://test.host:80/api/children/#{@child1.id}"}
+      child_two = {:location => "http://test.host:80/api/children/#{@child2.id}"}
+
+      expect(response.body).to match([child_one, child_two].to_json)
+    end
+
+    it 'should return filtered records by specified date' do
+      get :index, :updated_after => '2010-01-23 06:42:12UTC'
+      expect(response.body).to eq([{:location => "http://test.host:80/api/children/#{@child2.id}"}].to_json)
+    end
+
+    it 'should filter records updated after specified date' do
+      allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 26, 16, 05, 0))
+      child = Child.all.select { |c| c[:child_name] == 'David' }.first
+
+      child.update_properties_with_user_name(@user.user_name, nil, nil, nil, :child_name => 'James')
+      child.save
+
+      get :index, :updated_after => '2010-01-25 06:42:12UTC'
+      expect(response.body).to eq([{:location => "http://test.host:80/api/children/#{@child2.id}"}].to_json)
     end
   end
 

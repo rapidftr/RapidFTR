@@ -34,11 +34,25 @@ class Enquiry < CouchRest::Model::Base
   end
 
   design do
+    view :by_created_by
     view :all, :map => "function(doc) {
                  if (doc['couchrest-type'] == 'Enquiry') {
                    emit(doc['_id'],1);
                  }
               }"
+
+    view :by_user_name,
+         :map => "function(doc) {
+           if (doc.hasOwnProperty('histories')){
+               for(var index=0; index<doc['histories'].length; index++){
+                   emit(doc['histories'][index]['user_name'], doc)
+               }
+           }
+           }"
+  end
+
+  def self.all_connected_with(user_name)
+    (by_user_name(:key => user_name).all + by_created_by(:key => user_name).all).uniq { |enquiry| enquiry.unique_identifier }
   end
 
   def self.sortable_field_name(field)

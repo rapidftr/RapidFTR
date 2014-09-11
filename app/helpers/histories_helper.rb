@@ -5,6 +5,11 @@ module HistoriesHelper
     return_partial_hash(change, field, history)
   end
 
+  def history_entry_for_enquiry_field(history, field, change)
+    @form_sections = FormSection.all.select { |fs| fs.form.name == Enquiry::FORM_NAME }
+    return_partial_hash(change, field, history)
+  end
+
   def history_entry_for(history, field, change)
     @form_sections = FormSection.all
 
@@ -36,7 +41,7 @@ module HistoriesHelper
     elsif field == 'duplicate'
       return {:partial => 'shared/histories/duplicate_change',
               :locals => default_locals_for(history, change).merge(:duplicate_of => new_value_for(history, 'duplicate_of'))}
-    elsif field == 'child'
+    elsif field == 'child' || field == 'enquiry'
       return {:partial => 'shared/histories/record_created',
               :locals => {:organisation => history['user_organisation'], :user_name => history['user_name'], :datetime => @user.localize_date(history['datetime'], '%Y-%m-%d %H:%M:%S %Z')}}
     elsif %w(flag_message reunited_message investigated_message duplicate_of).include? field
