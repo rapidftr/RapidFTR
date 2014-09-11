@@ -165,6 +165,7 @@ RapidFTR::Application.routes.draw do
 
   resources :system_logs, :only => :index
   match '/children/:id/history' => 'child_histories#index', :as => :child_history, :via => :get
+  match '/enquiries/:id/history' => 'enquiry_histories#index', :as => :enquiry_history, :via => :get
   match '/users/:id/history' => 'user_histories#index', :as => :user_history, :via => :get
 
   #######################

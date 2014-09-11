@@ -1,11 +1,11 @@
-<h1 class="float_left no_border"> <%= t("child.change_log") %> &gt; <%= link_to @child.id, children_path(@path) %></h1>
+<h1 class="float_left no_border"> <%= t("enquiry.change_log") %> &gt; <%= link_to @enquiry.id, enquiry_path(@enquiry) %></h1>
 <div class="clearfix"></div>
 
 <div class="profile-header">
   <ul class="history-details">
-    <% @child.ordered_histories.each do |history| %>
+    <% @enquiry.ordered_histories.each do |history| %>
       <% history['changes'].each_pair do |field, change| %>
-        <% history_entry = history_entry_for_chidlren_field(history, field, change) %>
+        <% history_entry = history_entry_for_enquiry_field(history, field, change) %>
         <% unless history_entry.empty? %>
           <li>
             <div>
@@ -21,6 +21,6 @@
 
 <div class="profile-tools">
   <ul>
-    <li class="back"><%= link_to t("buttons.back"), child_path(@child) %></li>
+    <li class="back"><%= link_to t("buttons.back"), enquiry_path(@enquiry) %></li>
   </ul>
 </div>

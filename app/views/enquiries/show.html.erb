@@ -50,6 +50,8 @@
     <%= link_to content_tag(:span, t("buttons.edit"), :class => 'edit'), edit_enquiry_path(@enquiry), :class => 'btn' %>
 <% end %>
 
+<%= link_to content_tag(:span, t("enquiry.change_log"), :class => 'log'), enquiry_history_path(@enquiry), :class=>'btn' %>
+
 <div class="clearfix"></div>
 
 <div id='interviewer_details' class="filter_bar">
