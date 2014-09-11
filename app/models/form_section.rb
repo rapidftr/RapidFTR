@@ -27,14 +27,15 @@ class FormSection < CouchRest::Model::Base
   validate :validate_fixed_order
   validate :validate_perm_visible
 
-  after_create :update_child_indices
-  after_update :update_child_indices
+  after_create :update_indices
+  after_update :update_indices
   after_save :update_child_matches
 
   belongs_to :form
 
-  def update_child_indices
+  def update_indices
     Child.update_solr_indices
+    Enquiry.update_solr_indices
   end
 
   def update_child_matches
