@@ -28,7 +28,7 @@ module Api
         return
       end
       enquiry = update_enquiry_from(params)
-      unless enquiry.valid? && !enquiry['criteria'].nil? && !enquiry['criteria'].empty?
+      unless enquiry.valid?
         render :json => {:error => enquiry.errors.full_messages}, :status => 422
         return
       end
