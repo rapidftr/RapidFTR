@@ -68,7 +68,7 @@ RapidFTR::Application.routes.draw do
   #######################
   resources :enquiries do
     get 'matches', :on => :collection
-    resources :potential_matches, :only => [:destroy]
+    resources :potential_matches, :only => [:destroy, :update]
   end
 
   #######################
