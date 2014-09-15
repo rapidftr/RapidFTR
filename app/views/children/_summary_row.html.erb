@@ -63,12 +63,9 @@
               </li>
 
               <% if local_assigns.has_key? :rendered_by_show_enquiry %>
-                <% unless local_assigns.has_key?(:confirmed_match) && (confirmed_match == child) %>
-                  <li> | <%= link_to t('enquiry.mark_child_as_not_matching'), enquiry_potential_match_path(@enquiry, child), :id => "mark_#{child.id}", method: :delete %></li>
-                <% end %>
-                <% unless local_assigns.has_key?(:confirmed_match) && !confirmed_match.nil? %>
-                  <li> | <%= link_to t('enquiry.confirm_child_as_matching'), enquiry_potential_match_path(@enquiry, child, :confirmed => true), :id => "confirm_#{child.id}", method: :put %></li>
-                <% end %>
+                <%= mark_as_not_matching_link child, confirmed_match, @enquiry %>
+                <%= confirm_match_link child, confirmed_match, @enquiry %>
+                <%= unconfirm_match_link child, confirmed_match, @enquiry %>
               <% end %>
         <% end %>
         </ul>

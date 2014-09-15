@@ -98,4 +98,22 @@ module ChildrenHelper
     content = content_tag(:h3, builder.flatten.join(' ').html_safe)
     content_tag(:div, content, :id => 'match_details', :class => 'filter_bar')
   end
+
+  def mark_as_not_matching_link child, confirmed_match, enquiry
+    return nil if confirmed_match == child
+    content = " | #{link_to t('enquiry.mark_child_as_not_matching'), enquiry_potential_match_path(enquiry.id, child.id), method: :delete}".html_safe
+    content_tag(:li, content, :id => "mark_#{child.id}")
+  end
+
+  def confirm_match_link child, confirmed_match, enquiry
+    return nil if !confirmed_match.nil?
+    content = " | #{link_to t('enquiry.confirm_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => true), method: :put}".html_safe
+    content_tag(:li, content, :id => "confirm_#{child.id}")
+  end
+
+  def unconfirm_match_link child, confirmed_match, enquiry
+    return nil if confirmed_match.nil? || child != confirmed_match
+    content = " | #{link_to t('enquiry.unmark_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => false), method: :put}".html_safe
+    content_tag(:li, content, :id => "confirm_#{child.id}")
+  end
 end
