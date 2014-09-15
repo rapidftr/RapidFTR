@@ -31,12 +31,12 @@ Feature: So that administrators and workers can efficiently match children to en
       | name   | nick_name |
       | bob    | bobby     |
     When I am on the enquiry page for "1"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     Then I should see "0" children on the page
     When I follow "FORMS"
     And I follow "Enquiries"
     And I follow "Basic details"
     And I mark "child_name" as matchable
     When I am on the enquiry page for "1"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     Then I should see "1" children on the page

@@ -48,7 +48,7 @@ Feature:
     And I fill in "Child's Name" with "John Doe"
     And I fill in "Location" with "London"
     And I press "Save"
-    Then I follow "Potential Matches"
+    Then I follow "Matches"
     And I should see "2" children on the page
 
   Scenario: View list of enquiries with potential matches
@@ -71,7 +71,7 @@ Feature:
     And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
     When I follow "2 Enquiries with potential matches"
     And I follow "20e3fe"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     Then I should see "John"
     Then I should see "Doe"
     When I mark child with unique_id "zubairlon233" as not matching
@@ -91,7 +91,7 @@ Feature:
     And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
     When I follow "2 Enquiries with potential matches"
     And I follow "20e3fe"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     Then I should see "John"
     Then I should see "Doe"
     When I mark child with unique_id "zubairlon233" as not matching
@@ -107,7 +107,7 @@ Feature:
     And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
     When I am on the enquiry page for "3a0bed"
     Then I should not see "Confirmed Matches"
-    When I follow "Potential Matches"
+    When I follow "Matches"
     And I confirm child match with unique_id "zubairlon456"
     Then I should see "Confirmed Matches"
     And I should not see "Confirm as Match"
@@ -125,7 +125,7 @@ Feature:
       | jerry            | jerry chulu   | kampala     | 3a0bed | 3a0bed            |
     And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
     When I am on the enquiry page for "3a0bed"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     And I confirm child match with unique_id "zubairlon456"
     And I follow "Undo Confirmation"
     Then I should not see "Confirmed Matches"

@@ -10,7 +10,7 @@ describe 'enquiries/show.html.erb', :type => :view do
 
     form = create(:form, :name => Enquiry::FORM_NAME)
     @form_sections << create(:form_section, :unique_id => 'enquiry_criteria', :name => 'Enquiry Criteria', :form => form, :fields => [build(:field, :name => 'enquirer_name')])
-    @form_sections << create(:form_section, :unique_id => 'potential_matches', :name => 'Potential Matches', :form => form)
+    @form_sections << create(:form_section, :unique_id => 'potential_matches', :name => 'Matches', :form => form)
 
     @enquiry = create(:enquiry, :enquirer_name => 'Foo Bar', :child_name => 'John Doe', :created_at => 'July 19 2010 13:05:32UTC')
 
