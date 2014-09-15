@@ -5,11 +5,15 @@ Given /^the following enquiries exist in the system:$/ do |enquiry_table|
 end
 
 When /^I mark child with unique_id "([^\"]*)" as not matching$/ do |unique_id|
-  find_by_id("mark_#{unique_id}").click
+  within(:css, "#mark_#{unique_id}") do
+    find('a').click
+  end
 end
 
 When /^I confirm child match with unique_id "([^\"]*)"$/ do |unique_id|
-  find_by_id("confirm_#{unique_id}").click
+  within(:css, "#confirm_#{unique_id}") do
+    find('a').click
+  end
 end
 
 Then /^I should not see a 'Mark as not matching' link for "([^\"]*)"$/ do |unique_id|

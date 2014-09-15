@@ -138,15 +138,15 @@ describe ChildrenHelper, :type => :helper do
       e1 = build(:enquiry, :unique_id => 'id1')
       e2 = build(:enquiry, :unique_id => 'id2')
       header = confirmed_matches_header [e1, e2]
-      expect(header).to eq("<div class=\"filter_bar\" id=\"match_details\"><h3>Confirmed Matches : " \
+      expect(header).to eq("<div class=\"filter_bar\" id=\"match_details\"><h3>Confirmed Matches: " \
                            "<a href=\"/enquiries/#{e1.id}\">#{e1.short_id}</a> " \
                            "<a href=\"/enquiries/#{e2.id}\">#{e2.short_id}</a></h3></div>")
     end
   end
 
   describe 'potential match links' do
-    let (:child) { build :child }
-    let (:enquiry) { build :enquiry }
+    let(:child) { build :child }
+    let(:enquiry) { build :enquiry }
 
     describe '#mark_as_not_matching_link' do
       it 'should return nil if current child is a confirmed match' do
@@ -192,7 +192,7 @@ describe ChildrenHelper, :type => :helper do
         link = unconfirm_match_link child, child, enquiry
         expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
                            "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=false\" "\
-                           "rel=\"nofollow\">Unconfirm Match</a></li>")
+                           "rel=\"nofollow\">Undo Confirmation</a></li>")
       end
     end
   end

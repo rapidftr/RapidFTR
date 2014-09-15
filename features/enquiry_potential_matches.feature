@@ -112,6 +112,20 @@ Feature:
     Then I should see "Confirmed Matches"
     And I should not see "Confirm as Match"
     And I should not see a 'Mark as not matching' link for "zubairlon456"
-    And I should see "Confirmed Matches : rlon456"
+    And I should see "Confirmed Matches: rlon456"
     When I follow "rlon456"
-    Then I should see "Confirmed Matches : 3a0bed"
+    Then I should see "Confirmed Matches: 3a0bed"
+
+  Scenario: Undo a potential match confirmation
+    Given the following children exist in the system:
+      | name     | last_known_location | reporter | unique_id    | birthplace |
+      | jerry    | London              | zubair   | zubairlon456 | kampala    |
+    And the following enquiries exist in the system:
+      | enquirer_name_ct | child_name_ct | location_ct | _id    | unique_identifier |
+      | jerry            | jerry chulu   | kampala     | 3a0bed | 3a0bed            |
+    And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
+    When I am on the enquiry page for "3a0bed"
+    And I follow "Potential Matches"
+    And I confirm child match with unique_id "zubairlon456"
+    And I follow "Undo Confirmation"
+    Then I should not see "Confirmed Matches"

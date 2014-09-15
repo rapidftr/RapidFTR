@@ -137,7 +137,7 @@ en:
     enquiry_with_potential_matches: "Enquiry with potential matches"
     mark_child_as_not_matching: "Mark as not matching"
     confirm_child_as_matching: "Confirm as Match"
-    unmark_child_as_matching: "Unconfirm Match"
+    unmark_child_as_matching: "Undo Confirmation"
     history_of: "History of %{short_id}"
     change_log: "Change Log"
     messages:

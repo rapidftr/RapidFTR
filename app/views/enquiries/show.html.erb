@@ -67,7 +67,7 @@
 <% confirmed_match = @enquiry.confirmed_match %>
 <% if !confirmed_match.nil? %>
   <div id='match_details' class="filter_bar">
-    <h3><%= t("enquiry.confirmed_child_matches") %> : <%= link_to(confirmed_match.short_id, child_path(confirmed_match)) %> </h3>
+    <h3><%= t("enquiry.confirmed_child_matches") %>: <%= link_to(confirmed_match.short_id, child_path(confirmed_match)) %> </h3>
   </div>
 <% end %>
 <div class="page-content-new">
