@@ -14,6 +14,13 @@ Feature:
       | enquirer_name_ct | text_field | Enquirer Name | false    | true       |
       | child_name_ct    | text_field | Child's Name  | false    | true       |
       | location_ct      | text_field | Location      | false    | true       |
+    And the following form sections exist in the system on the "Children" form:
+      | name             | unique_id        | editable | order | visible | perm_enabled |
+      | Basic Identity   | basic_identity   | false    | 1     | true    | true         |
+    And the following fields exists on "basic_identity":
+      | name             | type       | display_name  | editable |
+      | name             | text_field | Child Name    | false    |
+      | birthplace       | text_field | Birthplace    | false    |
     And the following children exist in the system:
       | name     | last_known_location | reporter | unique_id    | birthplace |
       | John     | London              | zubair   | zubairlon233 | nairobi    |
@@ -28,10 +35,10 @@ Feature:
       | mahendra | Austin              | james    | james130     | cairo      |
       | pragyan  | Austin              | james    | james148     | cairo      |
     And the following enquiries exist in the system:
-      | enquirer_name_ct | child_name_ct | location_ct |
-      | bob              | bob chulu     | kampala     |
-      | john             | john doe      | gulu        |
-      | jane             | jane doe      | adjumani    |
+      | enquirer_name_ct | child_name_ct | location_ct | _id      |
+      | bob              | bob chulu     | kampala     |  1a0ced  |
+      | john             | john doe      | gulu        |  20e3fe  |
+      | jane             | jane doe      | adjumani    |  3d5elk  |
 
   @javascript
   Scenario: View potential Matches for enquiry
@@ -52,25 +59,7 @@ Feature:
 
   @javascript
   Scenario: Mark a child record as not a match for particular enquiry
-    Given the following form sections exist in the system on the "Children" form:
-      | name             | unique_id        | editable | order | visible | perm_enabled |
-      | Basic Identity   | basic_identity   | false    | 1     | true    | true         |
-    And the following fields exists on "basic_identity":
-      | name             | type       | display_name  | editable |
-      | name             | text_field | Child Name    | false    |
-      | birthplace       | text_field | Birthplace    | false    |
-    And the following children exist in the system:
-      | name     | last_known_location | reporter | unique_id    | birthplace |
-      | John     | London              | zubair   | zubairlon233 | nairobi    |
-      | Doe      | London              | zubair   | zubairlon423 | bengal     |
-      | shaikh   | NYC                 | james    | james423     | kerala     |
-      | marylyn  | Austin              | james    | james124     | cairo      |
-    And the following enquiries exist in the system:
-      | enquirer_name_ct | child_name_ct | location_ct | _id      |
-      | bob              | bob chulu     | kampala     |  1a0ced  |
-      | john             | john doe      | gulu        |  20e3fe  |
-      | jane             | jane doe      | adjumani    |  3d5elk  |
-    And I am logged in as an admin
+    Given I am logged in as an admin
     And I follow "System Settings"
     And I follow "Highlight Fields"
     And I follow "Children"
@@ -90,31 +79,13 @@ Feature:
 
   @javascript
   Scenario: Confirm a record as a match
-    Given the following form sections exist in the system on the "Children" form:
-      | name             | unique_id        | editable | order | visible | perm_enabled |
-      | Basic Identity   | basic_identity   | false    | 1     | true    | true         |
-    And the following fields exists on "basic_identity":
-      | name             | type       | display_name  | editable |
-      | name             | text_field | Child Name    | false    |
-      | birthplace       | text_field | Birthplace    | false    |
-    And the following children exist in the system:
-      | name     | last_known_location | reporter | unique_id    | birthplace |
-      | John     | London              | zubair   | zubairlon233 | nairobi    |
-      | Doe      | London              | zubair   | zubairlon423 | bengal     |
-      | shaikh   | NYC                 | james    | james423     | kerala     |
-      | marylyn  | Austin              | james    | james124     | cairo      |
-    And the following enquiries exist in the system:
-      | enquirer_name_ct | child_name_ct | location_ct | _id      |
-      | bob              | bob chulu     | kampala     |  1a0ced  |
-      | john             | john doe      | gulu        |  20e3fe  |
-      | jane             | jane doe      | adjumani    |  3d5elk  |
     Given I am logged in as an admin
     And I follow "System Settings"
     And I follow "Highlight Fields"
     And I follow "Children"
     And I click text "add"
     And I select menu "Child Name"
-    And I click text "add"      
+    And I click text "add"
     And I select menu "Birthplace"
     Then I logout
     And I am logged in as a user with "View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
