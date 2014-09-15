@@ -76,6 +76,7 @@ $(".profile-tools .investigated a").click( function(){
         <h3><%= t("child.posted_from_mobile")  %> <%= @current_user.localize_date(@child['posted_at']) %> </h3>
     <% end %>
     </div>
+    <%= confirmed_matches_header @child.confirmed_matches %>
 <div class="page-content-new">
 
   <div class="side-tab">

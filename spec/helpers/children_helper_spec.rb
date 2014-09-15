@@ -127,4 +127,20 @@ describe ChildrenHelper, :type => :helper do
       expect(options).to eq(t('children.order_by.system_fields') => [['Created at', 'created_at']], 'First' => [%w(display_name id_name)])
     end
   end
+
+  describe 'confirmed_matches_header' do
+    it 'should return nil if matches is empty' do
+      header = confirmed_matches_header []
+      expect(header).to be_nil
+    end
+
+    it 'should separate links by spaces' do
+      e1 = build(:enquiry, :unique_id => 'id1')
+      e2 = build(:enquiry, :unique_id => 'id2')
+      header = confirmed_matches_header [e1, e2]
+      expect(header).to eq("<div class=\"filter_bar\" id=\"match_details\"><h3>Confirmed Matches : " \
+                           "<a href=\"/enquiries/#{e1.id}\">#{e1.short_id}</a> " \
+                           "<a href=\"/enquiries/#{e2.id}\">#{e2.short_id}</a></h3></div>")
+    end
+  end
 end

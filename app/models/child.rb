@@ -249,6 +249,11 @@ rescue
     self['duplicate_of'] = Child.by_short_id(:key => parent_id).first.try(:id)
   end
 
+  def confirmed_matches
+    matches = PotentialMatch.by_child_id_and_confirmed.key([id, true]).all
+    matches.map { |pm| Enquiry.find(pm.enquiry_id) }
+  end
+
   def self.schedule(scheduler)
     scheduler.every('24h') do
       Child.reindex!

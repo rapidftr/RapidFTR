@@ -421,7 +421,7 @@ describe Enquiry, :type => :model do
         PotentialMatch.all.each { |pm| pm.destroy }
       end
 
-      it 'should not return a confirmed match' do
+      it 'should return a confirmed match' do
         enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
         PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                               :child_id => 'child_id_x',

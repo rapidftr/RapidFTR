@@ -90,4 +90,12 @@ module ChildrenHelper
   def child_sorted_highlighted_fields
     Form.find_by_name(Child::FORM_NAME).sorted_highlighted_fields
   end
+
+  def confirmed_matches_header(matches)
+    return nil if matches.empty?
+    builder = [t('enquiry.confirmed_child_matches'), ':']
+    builder << matches.map { |enquiry| link_to(enquiry.short_id, enquiry_path(enquiry.id)) }
+    content = content_tag(:h3, builder.flatten.join(' ').html_safe)
+    content_tag(:div, content, :id => 'match_details', :class => 'filter_bar')
+  end
 end

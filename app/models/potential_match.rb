@@ -12,6 +12,7 @@ class PotentialMatch < CouchRest::Model::Base
     view :by_enquiry_id
     view :by_enquiry_id_and_child_id
     view :by_enquiry_id_and_confirmed
+    view :by_child_id_and_confirmed
     view :all_valid_enquiry_ids,
          :map => "function(doc) {
                     if(doc['couchrest-type'] == 'PotentialMatch' && !doc['marked_invalid'] && !doc['confirmed']) {

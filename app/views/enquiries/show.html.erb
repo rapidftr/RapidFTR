@@ -64,6 +64,12 @@
       <h3><%= t("enquiry.posted_from_mobile") %> <%= @current_user.localize_date(@enquiry['posted_at']) %> </h3>
   <% end %>
 </div>
+<div id='match_details' class="filter_bar">
+  <% confirmed_match = @enquiry.confirmed_match %>
+  <% if !confirmed_match.nil? %>
+    <h3><%= t("enquiry.confirmed_child_matches") %> : <%= link_to(confirmed_match.short_id, child_path(confirmed_match)) %> </h3>
+  <% end %>
+</div>
 <div class="page-content-new">
 
   <div class="side-tab">

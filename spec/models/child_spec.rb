@@ -1217,6 +1217,45 @@ describe Child, :type => :model do
     end
   end
 
+  describe '#confirmed_matches' do
+    before :each do
+      reset_couchdb!
+    end
+
+    it 'should return a confirmed match' do
+      child_x = create(:child, :id => 'child_id_x')
+      PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                            :child_id => 'child_id_x',
+                            :confirmed => true
+      expect(Enquiry).to receive(:find).with('enquiry_id_x').and_return({})
+      expect(child_x.confirmed_matches).to_not be_nil
+    end
+
+    it 'should return multiple confirmed matches' do
+      child_x = create(:child, :id => 'child_id_x')
+      enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
+      enquiry_y = create(:enquiry, :id => 'enquiry_id_y')
+      PotentialMatch.create :enquiry_id => 'enquiry_id_y',
+                            :child_id => 'child_id_x',
+                            :confirmed => true
+      PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                            :child_id => 'child_id_x',
+                            :confirmed => true
+      expect(child_x.confirmed_matches).to_not be_nil
+      expect(child_x.confirmed_matches.size).to be(2)
+      expect(child_x.confirmed_matches).to include(enquiry_x, enquiry_y)
+    end
+
+    it 'should not return unconfirmed matches' do
+      child_x = create(:child, :id => 'child_id_x')
+      PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                            :child_id => 'child_id_x',
+                            :confirmed => false
+      expect(Enquiry).to_not receive(:find)
+      expect(child_x.confirmed_matches).to be_empty
+    end
+  end
+
   private
 
   def create_child(name, options = {})
