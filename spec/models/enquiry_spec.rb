@@ -171,6 +171,21 @@ describe Enquiry, :type => :model do
         expect(enquiry.potential_matches).to include(child1, child2)
       end
 
+      it 'should not return matches marked as confirmed' do
+        child1 = build(:child, :name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
+        child2 = build(:child, :name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
+        allow(MatchService).to receive(:search_for_matching_children).and_return([child1, child2])
+
+        enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
+        expect(enquiry.potential_matches.size).to eq(2)
+
+        pm = PotentialMatch.first
+        pm.confirmed = true
+        pm.save
+
+        expect(enquiry.potential_matches.size).to eq(1)
+      end
+
       it 'should not return matches marked as invalid' do
         child1 = build(:child, :name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
         child2 = build(:child, :name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
@@ -346,6 +361,15 @@ describe Enquiry, :type => :model do
         expect(enquiries).to include(enquiry_x)
       end
 
+      it 'should not return confirmed matches' do
+        enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
+        expect(Enquiry).to_not receive(:find).with(enquiry_x.id)
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :confirmed => true
+
+        enquiries = Enquiry.with_child_potential_matches
+        expect(enquiries.size).to eq(0)
+      end
+
       it 'should not return invalid matches' do
         enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
         expect(Enquiry).to_not receive(:find).with(enquiry_x.id)
@@ -389,6 +413,30 @@ describe Enquiry, :type => :model do
         create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :highlighted => true)]
 
         expect(Enquiry.searchable_field_names).to eq ['first_name', :unique_identifier, :short_id]
+      end
+    end
+
+    describe '#confirmed_match' do
+      after :each do
+        PotentialMatch.all.each { |pm| pm.destroy }
+      end
+
+      it 'should return a confirmed match' do
+        enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                              :child_id => 'child_id_x',
+                              :confirmed => true
+        expect(Child).to receive(:get).with('child_id_x').and_return({})
+        expect(enquiry_x.confirmed_match).to_not be_nil
+      end
+
+      it 'should not return unconfirmed matches' do
+        enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                              :child_id => 'child_id_x',
+                              :confirmed => false
+        expect(Child).to_not receive(:get)
+        expect(enquiry_x.confirmed_match).to be_nil
       end
     end
 

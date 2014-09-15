@@ -17,16 +17,43 @@ describe PotentialMatchesController, :type => :controller do
     it 'should remove child id from potential matches ' do
       expect(@enquiry.potential_matches.length).to eq 1
       delete :destroy, :enquiry_id => @enquiry.id, :id => @child.id
-
       @enquiry.reload
       expect(@enquiry.potential_matches.length).to eq 0
     end
 
     it 'should redirect to potential matches section of enquiry page after marking child as not matching' do
       delete :destroy, :enquiry_id => @enquiry.id, :id => @child.id
+      expect(response).to redirect_to "/enquiries/#{@enquiry.id}#tab_potential_matches"
+    end
+
+    it 'should reject unauthorized users' do
+      allow(controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(false)
+      delete :destroy, :enquiry_id => @enquiry.id, :id => @child.id
+      expect(response).to_not be_ok
+    end
+  end
+
+  describe 'update' do
+    it 'should confirm a potential match' do
+      expect(PotentialMatch.first).to_not be_confirmed
+      params =  {:id => @child.id, :enquiry_id => @enquiry.id, :confirmed => true}
+      put :update, params
+
+      expect(PotentialMatch.first).to be_confirmed
+    end
+
+    it 'should redirect to potential matches section of enquiry page' do
+      params =  {:id => @child.id, :enquiry_id => @enquiry.id, :confirmed => true}
+      put :update, params
 
       expect(response).to redirect_to "/enquiries/#{@enquiry.id}#tab_potential_matches"
     end
 
+    it 'should reject unauthorize users' do
+      allow(controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(false)
+      params =  {:id => @child.id, :enquiry_id => @enquiry.id, :confirmed => true}
+      put :update, params
+      expect(response).to_not be_ok
+    end
   end
 end

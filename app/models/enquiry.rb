@@ -116,7 +116,7 @@ class Enquiry < CouchRest::Model::Base
 
   def potential_matches
     potential_matches = PotentialMatch.by_enquiry_id.key(id).all
-    potential_matches.reject! { |pm| pm.marked_invalid? }
+    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? }
     child_ids = potential_matches.each.map(&:child_id)
     child_ids.map { |id| Child.get(id) }
   end
@@ -173,6 +173,11 @@ class Enquiry < CouchRest::Model::Base
 
   def self.searchable_field_names
     Form.find_by_name(FORM_NAME).highlighted_fields.map(&:name) + [:unique_identifier, :short_id]
+  end
+
+  def confirmed_match
+    match = PotentialMatch.by_enquiry_id_and_confirmed.key([id, true]).first
+    match.nil? ? nil : Child.get(match.child_id)
   end
 
   private

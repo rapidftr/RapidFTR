@@ -39,7 +39,7 @@ Feature: Check for matches after creating/editing an enquiry on the API
     """
     When I am logged in as an admin
     And I am on the enquiry page for "1"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     Then I should see "1" children on the page
 
   @search
@@ -75,5 +75,5 @@ Feature: Check for matches after creating/editing an enquiry on the API
       """
     When I am logged in as an admin
     And I am on the enquiry page for "1"
-    And I follow "Potential Matches"
+    And I follow "Matches"
     Then I should see "2" children on the page

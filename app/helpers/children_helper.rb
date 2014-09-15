@@ -90,4 +90,30 @@ module ChildrenHelper
   def child_sorted_highlighted_fields
     Form.find_by_name(Child::FORM_NAME).sorted_highlighted_fields
   end
+
+  def confirmed_matches_header(matches)
+    return nil if matches.empty?
+    builder = [t('enquiry.confirmed_child_matches') + ':']
+    builder << matches.map { |enquiry| link_to(enquiry.short_id, enquiry_path(enquiry.id)) }
+    content = content_tag(:h3, builder.flatten.join(' ').html_safe)
+    content_tag(:div, content, :id => 'match_details', :class => 'filter_bar')
+  end
+
+  def mark_as_not_matching_link(child, confirmed_match, enquiry)
+    return nil if confirmed_match == child
+    content = " | #{link_to t('enquiry.mark_child_as_not_matching'), enquiry_potential_match_path(enquiry.id, child.id), :method => :delete}".html_safe
+    content_tag(:li, content, :id => "mark_#{child.id}")
+  end
+
+  def confirm_match_link(child, confirmed_match, enquiry)
+    return nil unless confirmed_match.nil?
+    content = " | #{link_to t('enquiry.confirm_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => true), :method => :put}".html_safe
+    content_tag(:li, content, :id => "confirm_#{child.id}")
+  end
+
+  def unconfirm_match_link(child, confirmed_match, enquiry)
+    return nil if confirmed_match.nil? || child != confirmed_match
+    content = " | #{link_to t('enquiry.unmark_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => false), :method => :put}".html_safe
+    content_tag(:li, content, :id => "confirm_#{child.id}")
+  end
 end
