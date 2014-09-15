@@ -1,5 +1,4 @@
 class PotentialMatchesController < ApplicationController
-
   before_action :authorize_update
   before_action :load_potential_match
 

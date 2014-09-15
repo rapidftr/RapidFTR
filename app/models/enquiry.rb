@@ -176,7 +176,7 @@ class Enquiry < CouchRest::Model::Base
   end
 
   def confirmed_match
-    match = PotentialMatch.by_enquiry_id_and_confirmed.key([self.id, true]).first
+    match = PotentialMatch.by_enquiry_id_and_confirmed.key([id, true]).first
     match.nil? ? nil : Child.get(match.child_id)
   end
 

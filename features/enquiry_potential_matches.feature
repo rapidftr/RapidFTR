@@ -139,5 +139,5 @@ Feature:
     When I follow "Potential Matches"
     And I confirm child match with unique_id "zubairlon456"
     Then I should see "Confirmed Matches"
-    And I should not see "Confirm Match"
+    And I should not see "Confirm as Match"
     And I should not see a 'Mark as not matching' link for "zubairlon456"
