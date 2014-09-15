@@ -8,6 +8,20 @@ When /^I mark child with unique_id "([^\"]*)" as not matching$/ do |unique_id|
   find_by_id("mark_#{unique_id}").click
 end
 
+When /^I confirm child match with unique_id "([^\"]*)"$/ do |unique_id|
+  find_by_id("confirm_#{unique_id}").click
+end
+
+Then /^I should not see a 'Mark as not matching' link for "([^\"]*)"$/ do |unique_id|
+  begin
+    find_by_id("mark_#{unique_id}")
+  rescue => e
+    exception = e
+  end
+  expect(exception).not_to be_nil
+  expect(exception.class).to eq(Capybara::ElementNotFound)
+end
+
 Then /^I should see "([^\"]*)" enquiries on the page$/ do |number_of_records|
   enquiry_list_page.should_be_showing(number_of_records.to_i)
 end

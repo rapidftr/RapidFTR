@@ -132,6 +132,7 @@ en:
     register_new_enquiry: "Register New Enquiry"
     no_records_available: "No Records Available"
     potential_child_matches: "Potential Matches"
+    confirmed_child_matches: "Confirmed Matches"
     enquiries_with_potential_matches: "Enquiries with potential matches"
     enquiry_with_potential_matches: "Enquiry with potential matches"
     mark_child_as_not_matching: "Mark as not matching"
