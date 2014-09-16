@@ -124,7 +124,7 @@ describe Enquiry, :type => :model do
       end
     end
 
-    describe 'potential_matches', :solr => true do
+    describe '#potential_matches', :solr => true do
 
       before :each do
         reset_couchdb!

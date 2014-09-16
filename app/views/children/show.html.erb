@@ -79,14 +79,13 @@ $(".profile-tools .investigated a").click( function(){
     <%= confirmed_matches_header @child.confirmed_matches %>
 <div class="page-content-new">
 
-  <div class="side-tab">
-    <%= render :partial => "shared/tabs", :object => @form_sections %>
-  </div>
+  <%= render :partial => 'shared/tabs_panel' %>
 
   <div class="side-tab-content">
     <div class="clearfix"></div>
     <%= render :partial => 'shared/sidebar' %>
-    <%= render :partial => "shared/show_form_section", :locals => {:model => @child }%>
+    <%= render :partial => "shared/show_form_section", :locals => {:model => @child}%>
+    <%= render :partial => "enquiries/potential_matches", :locals => {:model => @child} %>
   </div>
 
 </div>
