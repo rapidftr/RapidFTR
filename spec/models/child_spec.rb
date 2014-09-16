@@ -46,7 +46,7 @@ describe Child, :type => :model do
       given_histories = [existing_histories,
                          JSON.parse("{\"datetime\":\"2013-02-04 06:55:03\",\"user_name\":\"rapidftr\",\"changes\":{\"current_photo_key\":{\"to\":\"2c097fa8-b9ab-4ae8-aa4d-1b7bda7dcb72\",\"from\":\"photo-364416240-2013-02-04T122424\"}},\"user_organisation\":\"N\\/A\"}"),
                          JSON.parse("{\"datetime\":\"2013-02-04 06:58:12\",\"user_name\":\"rapidftr\",\"changes\":{\"recorded_audio\":{\"to\":\"9252364d-c011-4af0-8739-0b1e9ed5c0ad1359961089870\",\"from\":\"\"}},\"user_organisation\":\"N\\/A\"}")
-                        ]
+      ]
       child = Child.new('name' => 'existing name', 'last_updated_at' => '2013-12-12 00:00:01UTC', 'histories' => [existing_histories])
       given_properties = {'name' => 'given name', 'last_updated_at' => '2013-01-01 00:00:00UTC', 'histories' => given_histories}
       child.update_properties_with_user_name 'rapidftr', nil, nil, nil, given_properties
@@ -66,8 +66,8 @@ describe Child, :type => :model do
     # This spec is almost always failing randomly, need to fix this spec if possible or think of other ways to test this?
     xit 'should not add changes to history if its already added to the history' do
       FormSection.stub(:all_visible_child_fields =>
-                            [Field.new(:type => Field::TEXT_FIELD, :name => 'name', :display_name => 'Name'),
-                             Field.new(:type => Field::CHECK_BOXES, :name => 'not_name')])
+                       [Field.new(:type => Field::TEXT_FIELD, :name => 'name', :display_name => 'Name'),
+                        Field.new(:type => Field::CHECK_BOXES, :name => 'not_name')])
       child = Child.new('name' => 'old', 'last_updated_at' => '2012-12-12 00:00:00UTC')
       child.save!
       sleep 1
@@ -204,8 +204,8 @@ describe Child, :type => :model do
 
     it 'should disallow text field values to be more than 200 chars' do
       FormSection.stub(:all_visible_child_fields_for_form =>
-                        [Field.new(:type => Field::TEXT_FIELD, :name => 'name', :display_name => 'Name'),
-                         Field.new(:type => Field::CHECK_BOXES, :name => 'not_name')])
+                       [Field.new(:type => Field::TEXT_FIELD, :name => 'name', :display_name => 'Name'),
+                        Field.new(:type => Field::CHECK_BOXES, :name => 'not_name')])
       child = Child.new :name => ('a' * 201)
       expect(child).not_to be_valid
       expect(child.errors[:name]).to eq(['Name cannot be more than 200 characters long'])
@@ -213,7 +213,7 @@ describe Child, :type => :model do
 
     it 'should disallow text area values to be more than 400,000 chars' do
       FormSection.stub(:all_visible_child_fields_for_form =>
-                        [Field.new(:type => Field::TEXT_AREA, :name => 'a_textfield', :display_name => 'A textfield')])
+                       [Field.new(:type => Field::TEXT_AREA, :name => 'a_textfield', :display_name => 'A textfield')])
       child = Child.new :a_textfield => ('a' * 400_001)
       expect(child).not_to be_valid
       expect(child.errors[:a_textfield]).to eq(['A textfield cannot be more than 400000 characters long'])
@@ -221,44 +221,22 @@ describe Child, :type => :model do
 
     it 'should allow text area values to be 400,000 chars' do
       FormSection.stub(:all_visible_child_fields_for_form =>
-                        [Field.new(:type => Field::TEXT_AREA, :name => 'a_textfield', :display_name => 'A textfield')])
+                       [Field.new(:type => Field::TEXT_AREA, :name => 'a_textfield', :display_name => 'A textfield')])
       child = Child.new :a_textfield => ('a' * 400_000)
       expect(child).to be_valid
     end
 
     it 'should allow date fields formatted as dd M yy' do
       FormSection.stub(:all_visible_child_fields_for_form =>
-                        [Field.new(:type => Field::DATE_FIELD, :name => 'a_datefield', :display_name => 'A datefield')])
+                       [Field.new(:type => Field::DATE_FIELD, :name => 'a_datefield', :display_name => 'A datefield')])
       child = Child.new :a_datefield => ('27 Feb 2010')
       expect(child).to be_valid
     end
 
     it 'should pass numeric fields that are valid numbers to 1 dp' do
       FormSection.stub(:all_visible_child_fields_for_form =>
-                        [Field.new(:type => Field::NUMERIC_FIELD, :name => 'height')])
+                       [Field.new(:type => Field::NUMERIC_FIELD, :name => 'height')])
       expect(Child.new(:height => '10.2')).to be_valid
-    end
-
-    it 'should disallow file formats that are not photo formats' do
-      child = Child.new
-      child.photo = uploadable_photo_gif
-      expect(child).not_to be_valid
-      child.photo = uploadable_photo_bmp
-      expect(child).not_to be_valid
-    end
-
-    it 'should disallow file formats that are not supported audio formats' do
-      child = Child.new
-      child.audio = uploadable_photo_gif
-      expect(child).not_to be_valid
-      child.audio = uploadable_audio_amr
-      expect(child).to be_valid
-      child.audio = uploadable_audio_mp3
-      expect(child).to be_valid
-      child.audio = uploadable_audio_wav
-      expect(child).not_to be_valid
-      child.audio = uploadable_audio_ogg
-      expect(child).not_to be_valid
     end
 
     it 'should allow blank age' do
@@ -266,27 +244,6 @@ describe Child, :type => :model do
       expect(child).to be_valid
       child = Child.new :foo => 'bar'
       expect(child).to be_valid
-    end
-
-    it 'should disallow image file formats that are not png or jpg' do
-      child = Child.new
-      child.photo = uploadable_photo
-      expect(child).to be_valid
-      child.photo = uploadable_text_file
-      expect(child).not_to be_valid
-    end
-
-    it 'should disallow a photo larger than 10 megabytes' do
-      photo = uploadable_large_photo
-      child = Child.new
-      child.photo = photo
-      expect(child).not_to be_valid
-    end
-
-    it 'should disllow an audio file larger than 10 megabytes' do
-      child = Child.new
-      child.audio = uploadable_large_audio
-      expect(child).not_to be_valid
     end
 
     it 'created_at should be a be a valid ISO date' do
@@ -320,65 +277,12 @@ describe Child, :type => :model do
 
   describe 'save' do
 
-    it 'should not save file formats that are not photo formats' do
-      child = Child.new
-      child.photo = uploadable_photo_gif
-      expect(child.save).to eq(false)
-      child.photo = uploadable_photo_bmp
-      expect(child.save).to eq(false)
-    end
-
-    it 'should save file based on content type' do
-      child = Child.new('created_by' => 'me', 'created_organisation' => 'stc')
-      photo = uploadable_jpg_photo_without_file_extension
-      child[:photo] = photo
-      expect(child.save.present?).to eq(true)
-    end
-
-    it 'should not save with file formats that are not supported audio formats' do
-      child = Child.new('created_by' => 'me', 'created_organisation' => 'stc')
-      child.audio = uploadable_photo_gif
-      expect(child.save).to eq(false)
-      child.audio = uploadable_audio_amr
-      expect(child.save.present?).to eq(true)
-      child.audio = uploadable_audio_mp3
-      expect(child.save.present?).to eq(true)
-      child.audio = uploadable_audio_wav
-      expect(child.save).to eq(false)
-      child.audio = uploadable_audio_ogg
-      expect(child.save).to eq(false)
-    end
-
-    it 'should save blank age' do
+     it 'should save blank age' do
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
       child = Child.new(:age => '', :another_field => 'blah', 'created_by' => 'me', 'created_organisation' => 'stc')
       expect(child.save.present?).to eq(true)
       child = Child.new :foo => 'bar'
       expect(child.save.present?).to eq(true)
-    end
-
-    it 'should not save with image file formats that are not png or jpg' do
-      photo = uploadable_photo
-      child = Child.new('created_by' => 'me', 'created_organisation' => 'stc')
-      child.photo = photo
-      expect(child.save.present?).to eq(true)
-      loaded_child = Child.get(child.id)
-      expect(loaded_child.save.present?).to eq(true)
-      loaded_child.photo = uploadable_text_file
-      expect(loaded_child.save).to eq(false)
-    end
-
-    it 'should not save with a photo larger than 10 megabytes' do
-      photo = uploadable_large_photo
-      child = Child.new('created_by' => 'me', 'created_organisation' => 'stc')
-      child.photo = photo
-      expect(child.valid?).to eq(false)
-    end
-
-    it 'should not save with an audio file larger than 10 megabytes' do
-      child = Child.new('created_by' => 'me', 'created_organisation' => 'stc')
-      child.audio = uploadable_large_audio
-      expect(child.save).to eq(false)
     end
 
   end
@@ -450,220 +354,6 @@ describe Child, :type => :model do
     allow(UUIDTools::UUID).to receive('random_create').and_return(1_212_127_654_321)
     child = Child.new
     expect(child.short_id).to eq('7654321')
-  end
-
-  describe 'photo attachments' do
-
-    before(:each) do
-      allow(Clock).to receive(:now).and_return(Time.parse('Jan 20 2010 17:10:32'))
-    end
-
-    context 'with no photos' do
-      it 'should have an empty set' do
-        expect(Child.new.photos).to be_empty
-      end
-
-      it 'should not have a primary photo' do
-        expect(Child.new.primary_photo).to be_nil
-      end
-    end
-
-    context 'with a single new photo' do
-      before :each do
-        allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
-      end
-
-      it 'should only have one photo on creation' do
-        expect(@child.photos.size).to eql 1
-      end
-
-      it 'should be the primary photo' do
-        expect(@child.primary_photo).to match_photo uploadable_photo
-      end
-
-    end
-
-    context 'with multiple new photos' do
-      before :each do
-        allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-        @child = Child.create('photo' => {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jorge}, 'last_known_location' => 'London', 'created_by' => 'me')
-      end
-
-      it 'should have corrent number of photos after creation' do
-        expect(@child.photos.size).to eql 2
-      end
-
-      it 'should order by primary photo' do
-        @child.primary_photo_id = @child['photo_keys'].last
-        expect(@child.photos.first.name).to eq(@child.current_photo_key)
-      end
-
-      it 'should return the first photo as a primary photo' do
-        expect(@child.primary_photo).to match_photo uploadable_photo_jeff
-      end
-
-    end
-
-    context 'when rotating an existing photo' do
-      before :each do
-        allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
-        allow(Clock).to receive(:now).and_return(Time.parse('Feb 20 2010 12:04:32'))
-      end
-
-      it 'should become the primary photo' do
-        existing_photo = @child.primary_photo
-        @child.rotate_photo(180)
-        @child.save
-        # TODO: should be a better way to check rotation other than stubbing Minimagic ?
-        expect(@child.primary_photo).not_to match_photo existing_photo
-      end
-
-      it 'should delete the original orientation' do
-        existing_photo = @child.primary_photo
-        @child.rotate_photo(180)
-        @child.save
-        expect(@child.primary_photo.name).to eql existing_photo.name
-        expect(existing_photo).not_to match_photo @child.primary_photo
-        expect(@child.photos.size).to eql 1
-      end
-
-    end
-
-  end
-
-  describe '.audio=' do
-
-    before(:each) do
-      @child = Child.new
-      allow(@child).to receive(:attach)
-      @file_attachment = mock_model(FileAttachment, :data => 'My Data', :name => 'some name', :mime_type => Mime::Type.lookup('audio/mpeg'))
-    end
-
-    it "should create an 'original' key in the audio hash" do
-      @child.audio = uploadable_audio
-      expect(@child['audio_attachments']).to have_key('original')
-    end
-
-    it "should create a FileAttachment with uploaded file and prefix 'audio'" do
-      uploaded_file = uploadable_audio
-      expect(FileAttachment).to receive(:from_uploadable_file).with(uploaded_file, 'audio').and_return(@file_attachment)
-      @child.audio = uploaded_file
-    end
-
-    it "should store the audio attachment key with the 'original' key in the audio hash" do
-      allow(FileAttachment).to receive(:from_uploadable_file).and_return(@file_attachment)
-      @child.audio = uploadable_audio
-      expect(@child['audio_attachments']['original']).to eq('some name')
-    end
-
-    it "should store the audio attachment key with the 'mime-type' key in the audio hash" do
-      allow(FileAttachment).to receive(:from_uploadable_file).and_return(@file_attachment)
-      @child.audio = uploadable_audio
-      expect(@child['audio_attachments']['mp3']).to eq('some name')
-    end
-
-  end
-
-  describe '.add_audio_file' do
-
-    before :each do
-      @file = double('File')
-      allow(File).to receive(:binread).with(@file).and_return('ABC')
-      @file_attachment = FileAttachment.new('attachment_file_name', 'audio/mpeg', 'data')
-    end
-
-    it 'should use Mime::Type.lookup to create file name postfix' do
-      child = Child.new
-      expect(Mime::Type).to receive(:lookup).exactly(2).times.with('audio/mpeg').and_return('abc'.to_sym)
-      child.add_audio_file(@file, 'audio/mpeg')
-    end
-
-    it "should create a file attachment for the file with 'audio' prefix, mime mediatype as postfix" do
-      child = Child.new
-      allow(Mime::Type).to receive(:lookup).and_return('abc'.to_sym)
-      expect(FileAttachment).to receive(:from_file).with(@file, 'audio/mpeg', 'audio', 'abc').and_return(@file_attachment)
-      child.add_audio_file(@file, 'audio/mpeg')
-    end
-
-    it "should add attachments key attachment to the audio hash using the content's media type as key" do
-      child = Child.new
-      allow(FileAttachment).to receive(:from_file).and_return(@file_attachment)
-      child.add_audio_file(@file, 'audio/mpeg')
-      expect(child['audio_attachments']['mp3']).to eq('attachment_file_name')
-    end
-
-  end
-
-  describe '.audio' do
-
-    before :each do
-      allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-    end
-
-    it 'should return nil if no audio file has been set' do
-      child = Child.new
-      expect(child.audio).to be_nil
-    end
-
-    it "should check if 'original' audio attachment is present" do
-      child = Child.create('audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
-      child['audio_attachments']['original'] = 'ThisIsNotAnAttachmentName'
-      expect(child).to receive(:has_attachment?).with('ThisIsNotAnAttachmentName').and_return(false)
-      child.audio
-    end
-
-    it 'should return nil if the recorded audio key is not an attachment' do
-      child = Child.create('audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
-      child['audio_attachments']['original'] = 'ThisIsNotAnAttachmentName'
-      expect(child.audio).to be_nil
-    end
-
-    it 'should retrieve attachment data for attachment key' do
-      allow(Clock).to receive(:now).and_return(Time.parse('Feb 20 2010 12:04:32'))
-      child = Child.create('audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
-      expect(child).to receive(:read_attachment).with('audio-2010-02-20T120432').and_return('Some audio')
-      child.audio
-    end
-
-    it 'should create a FileAttachment with the read attachment and the attachments content type' do
-      allow(Clock).to receive(:now).and_return(Time.parse('Feb 20 2010 12:04:32'))
-      uploaded_amr = uploadable_audio_amr
-      child = Child.create('audio' => uploaded_amr, 'created_by' => 'me', 'created_organisation' => 'stc')
-      expected_data = 'LA! LA! LA! Audio Data'
-      allow(child).to receive(:read_attachment).and_return(expected_data)
-      expect(FileAttachment).to receive(:new).with('audio-2010-02-20T120432', uploaded_amr.content_type, expected_data)
-      child.audio
-
-    end
-
-    it 'should return nil if child has not been saved' do
-      child = Child.new('audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
-      expect(child.audio).to be_nil
-    end
-
-  end
-
-  describe 'audio attachment' do
-    before :each do
-      allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-    end
-
-    it 'should create a field with recorded_audio on creation' do
-      allow(Clock).to receive(:now).and_return(Time.parse('Jan 20 2010 17:10:32'))
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
-
-      expect(child['audio_attachments']['original']).to eq('audio-2010-01-20T171032')
-    end
-
-    it 'should change audio file if a new audio file is set' do
-      child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
-      allow(Clock).to receive(:now).and_return(Time.parse('Feb 20 2010 12:04:32'))
-      child.update_attributes :audio => uploadable_audio
-      expect(child['audio_attachments']['original']).to eq('audio-2010-02-20T120432')
-    end
-
   end
 
   describe 'history log' do
@@ -791,67 +481,7 @@ describe Child, :type => :model do
       expect(child['histories'].first['datetime']).to eq('2010-01-14 14:05:00UTC')
     end
 
-    describe 'photo logging' do
 
-      before :each do
-        allow(Clock).to receive(:now).and_return(Time.parse('Jan 20 2010 12:04:24'))
-        allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
-        allow(Clock).to receive(:now).and_return(Time.parse('Feb 20 2010 12:04:24'))
-      end
-
-      it 'should log new photo key on adding a photo' do
-        @child.photo = uploadable_photo_jeff
-        @child.save
-        changes = @child['histories'].first['changes']
-        # TODO: this should be instead child.photo_history.first.to or something like that
-        expect(changes['photo_keys']['added'].first).to match(/photo.*?-2010-02-20T120424/)
-      end
-
-      it 'should log multiple photos being added' do
-        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
-        @child.save
-        changes = @child['histories'].first['changes']
-        expect(changes['photo_keys']['added'].size).to eq(2)
-        expect(changes['photo_keys']['deleted']).to be_nil
-      end
-
-      it 'should log a photo being deleted' do
-        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
-        @child.save
-        @child.delete_photos([@child.photos.first.name])
-        @child.save
-        changes = @child['histories'][1]['changes']
-        expect(changes['photo_keys']['deleted'].size).to eq(1)
-        expect(changes['photo_keys']['added']).to be_nil
-      end
-
-      it 'should select a new primary photo if the current one is deleted' do
-        @child.photos = [uploadable_photo_jeff]
-        @child.save
-        original_primary_photo_key = @child.photos[0].name
-        jeff_photo_key = @child.photos[1].name
-        expect(@child.primary_photo.name).to eq(original_primary_photo_key)
-        @child.delete_photos([original_primary_photo_key])
-        @child.save
-        expect(@child.primary_photo.name).to eq(jeff_photo_key)
-      end
-
-      it 'should take the current photo key during child creation and update it appropriately with the correct format' do
-        @child = Child.create('photo' => {'0' => uploadable_photo, '1' => uploadable_photo_jeff}, 'last_known_location' => 'London', 'current_photo_key' => uploadable_photo_jeff.original_filename, 'created_by' => 'me', 'created_organisation' => 'stc')
-        @child.save
-        expect(@child.primary_photo.name).to eq(@child.photos.first.name)
-        expect(@child.primary_photo.name).to start_with('photo-')
-      end
-
-      it 'should not log anything if no photo changes have been made' do
-        @child['last_known_location'] = 'Moscow'
-        @child.save
-        changes = @child['histories'].first['changes']
-        expect(changes['photo_keys']).to be_nil
-      end
-
-    end
 
     it 'should maintain history when child is flagged and message is added' do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
@@ -878,79 +508,6 @@ describe Child, :type => :model do
       expect(reunited_message_history['from']).to be_nil
       expect(reunited_message_history['to']).to eq('Finally home!')
     end
-
-    describe 'photo changes' do
-
-      before :each do
-        allow(Clock).to receive(:now).and_return(Time.parse('Jan 20 2010 12:04:24'))
-        allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-        @child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
-        allow(Clock).to receive(:now).and_return(Time.parse('Feb 20 2010 12:04:24'))
-      end
-
-      it 'should log new photo key on adding a photo' do
-        @child.photo = uploadable_photo_jeff
-        @child.save
-        changes = @child['histories'].first['changes']
-        # TODO: this should be instead child.photo_history.first.to or something like that
-        expect(changes['photo_keys']['added'].first).to match(/photo.*?-2010-02-20T120424/)
-      end
-
-      it 'should log multiple photos being added' do
-        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
-        @child.save
-        changes = @child['histories'].first['changes']
-        expect(changes['photo_keys']['added'].size).to eq(2)
-        expect(changes['photo_keys']['deleted']).to be_nil
-      end
-
-      it 'should log a photo being deleted' do
-        @child.photos = [uploadable_photo_jeff, uploadable_photo_jorge]
-        @child.save
-        @child.delete_photos([@child.photos.first.name])
-        @child.save
-        changes = @child['histories'][1]['changes']
-        expect(changes['photo_keys']['deleted'].size).to eq(1)
-        expect(changes['photo_keys']['added']).to be_nil
-      end
-
-      it 'should select a new primary photo if the current one is deleted' do
-        @child.photos = [uploadable_photo_jeff]
-        @child.save
-        original_primary_photo_key = @child.photos[0].name
-        jeff_photo_key = @child.photos[1].name
-        expect(@child.primary_photo.name).to eq(original_primary_photo_key)
-        @child.delete_photos([original_primary_photo_key])
-        @child.save
-        expect(@child.primary_photo.name).to eq(jeff_photo_key)
-      end
-
-      it 'should not log anything if no photo changes have been made' do
-        @child['last_known_location'] = 'Moscow'
-        @child.save
-        changes = @child['histories'].first['changes']
-        expect(changes['photo_keys']).to be_nil
-      end
-
-      it 'should delete items like _328 and _160x160 in attachments' do
-        child = Child.new
-        child.photo = uploadable_photo
-        child.save
-
-        photo_key = child.photos[0].name
-        uploadable_photo_328 = FileAttachment.new(photo_key + '_328', 'image/jpg', 'data')
-        uploadable_photo_160x160 = FileAttachment.new(photo_key + '_160x160', 'image/jpg', 'data')
-        child.attach(uploadable_photo_328)
-        child.attach(uploadable_photo_160x160)
-        child.save
-        expect(child[:_attachments].keys.size).to eq(3)
-
-        child.delete_photos [child.primary_photo.name]
-        child.save
-        expect(child[:_attachments].keys.size).to eq(0)
-      end
-    end
-
   end
 
   describe '.has_one_interviewer?' do
@@ -967,14 +524,14 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{'changes' => {'gender' => {'from' => nil, 'to' => 'Male'},
                                            'age' => {'from' => '1', 'to' => '15'}},
-                             'user_name' => 'john',
-                             'datetime' => '03/02/2011 21:48'},
-                            {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-                             'datetime' => '03/02/2011 21:34',
-                             'user_name' => 'john'},
-                            {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-                             'user_name' => 'john',
-                             'datetime' => '03/02/2011 21:33'}]
+      'user_name' => 'john',
+      'datetime' => '03/02/2011 21:48'},
+      {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+       'datetime' => '03/02/2011 21:34',
+       'user_name' => 'john'},
+       {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+        'user_name' => 'john',
+        'datetime' => '03/02/2011 21:33'}]
       child['last_updated_by'] = 'john'
       expect(child).to have_one_interviewer
     end
@@ -983,14 +540,14 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{'changes' => {'gender' => {'from' => nil, 'to' => 'Male'},
                                            'age' => {'from' => '1', 'to' => '15'}},
-                             'user_name' => 'jane',
-                             'datetime' => '03/02/2011 21:48'},
-                            {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-                             'datetime' => '03/02/2011 21:34',
-                             'user_name' => 'john'},
-                            {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-                             'user_name' => 'john',
-                             'datetime' => '03/02/2011 21:33'}]
+      'user_name' => 'jane',
+      'datetime' => '03/02/2011 21:48'},
+      {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+       'datetime' => '03/02/2011 21:34',
+       'user_name' => 'john'},
+       {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+        'user_name' => 'john',
+        'datetime' => '03/02/2011 21:33'}]
       child['last_updated_by'] = 'jane'
       expect(child.has_one_interviewer?).to be false
     end
