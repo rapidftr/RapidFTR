@@ -1256,7 +1256,7 @@ describe Child, :type => :model do
     end
   end
 
-  describe '#potential_matches' do
+  describe '#potential_matches', :solr => true do
 
     before :each do
       reset_couchdb!
@@ -1277,72 +1277,47 @@ describe Child, :type => :model do
     end
 
     it 'return potential matches' do
-        child1 = Child.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-        child2 = Child.create(:name => 'john doe', 'created_by' => 'me', :location => 'kampala', 'created_organisation' => 'stc')
-        child3 = Child.create(:name => 'foo bar', 'created_by' => 'me', :gender => 'male', 'created_organisation' => 'stc')
-
-        enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :enquirer_name => 'Kisitu')
-
-        expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to include(child1, child2)
-        binding.pry
       child = create :child, :name => 'Eduardo'
-      enquiry1 = create :enquiry, :name => 'Eduardo'
-      enquiry2 = create :enquiry, :name => 'Maria'
-      binding.pry
+      enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
+      enquiry2 = create :enquiry, :child_name => 'Maria', :enquirer_name => 'Uncle'
 
       expect(child.potential_matches.size).to eq(1)
-      expect(child.potential_matches).to include(enquiry1, enquiry2)
+      expect(child.potential_matches).to include(enquiry1)
+      expect(child.potential_matches).to_not include(enquiry2)
     end
 
     it 'should not return matches marked as confirmed' do
-      child1 = build(:child, :name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
-      child2 = build(:child, :name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
-      allow(MatchService).to receive(:search_for_matching_children).and_return([child1, child2])
+      child = create :child, :name => 'Eduardo'
+      enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
+      enquiry2 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Uncle'
 
-      enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
-      expect(enquiry.potential_matches.size).to eq(2)
+      expect(child.potential_matches.size).to eq(2)
+      expect(child.potential_matches).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
       pm.confirmed = true
       pm.save
 
-      expect(enquiry.potential_matches.size).to eq(1)
+      expect(child.potential_matches.size).to eq(1)
+      expect(child.potential_matches).to include(enquiry1)
+      expect(child.potential_matches).to_not include(enquiry2)
     end
 
     it 'should not return matches marked as invalid' do
-      child1 = build(:child, :name => 'Eduardo aquiles', :location => 'Kampala', 'created_by' => 'me', 'created_organisation' => 'stc')
-      child2 = build(:child, :name => 'Batman', :location => 'Kampala', 'created_by' => 'not me', 'created_organisation' => 'stc')
-      allow(MatchService).to receive(:search_for_matching_children).and_return([child1, child2])
+      child = create :child, :name => 'Eduardo'
+      enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
+      enquiry2 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Uncle'
 
-      enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
-      expect(enquiry.potential_matches.size).to eq(2)
+      expect(child.potential_matches.size).to eq(2)
+      expect(child.potential_matches).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
-      pm.mark_as_invalid
+      pm.marked_invalid = true
       pm.save
 
-      expect(enquiry.potential_matches.size).to eq(1)
-    end
-
-    it 'should contain potential matches given one matching child' do
-      child = Enquiry.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-      enquiry = Enquiry.create!(:enquirer_name => 'Kisitu', :name => 'eduardo')
-
-      expect(enquiry.criteria).not_to be_empty
-      expect(enquiry.potential_matches).not_to be_empty
-      expect(enquiry.potential_matches).to eq([child])
-    end
-
-    it 'should contain multiple potential matches given multiple matching children' do
-      child1 = Enquiry.create(:name => 'eduardo aquiles', 'created_by' => 'me', 'created_organisation' => 'stc')
-      child2 = Enquiry.create(:name => 'john doe', 'created_by' => 'me', :location => 'kampala', 'created_organisation' => 'stc')
-      child3 = Enquiry.create(:name => 'foo bar', 'created_by' => 'me', :gender => 'male', 'created_organisation' => 'stc')
-
-      enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :gender => 'male', :enquirer_name => 'Kisitu')
-
-      expect(enquiry.potential_matches.size).to eq(3)
-      expect(enquiry.potential_matches).to include(child1, child2, child3)
+      expect(child.potential_matches.size).to eq(1)
+      expect(child.potential_matches).to include(enquiry1)
+      expect(child.potential_matches).to_not include(enquiry2)
     end
   end
 

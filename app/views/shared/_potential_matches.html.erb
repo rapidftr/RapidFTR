@@ -1,0 +1,33 @@
+<fieldset id='tab_potential_matches' class='tab'>
+  <% confirmed_match = model.confirmed_match %>
+  <% unless confirmed_match.nil? %>
+    <div class="clearfix"></div>
+    <h2><%= t('enquiry.confirmed_child_matches') %></h2>
+    <div class="clearfix"></div>
+    <div class="form_info"></div>
+    <div class="entity_list">
+      <% if model.class == Enquiry %>
+        <%= render :partial => "children/summary_row", :locals => {:child => confirmed_match, :enquiry => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+      <% elsif model.class == Child %>
+        <%= render :partial => "enquiries/summary_row", :locals => {:enquiry => confirmed_match, :child => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+      <% end %>
+    </div>
+    <br>
+    <br>
+    <br>
+  <% end %>
+
+  <div class="clearfix"></div>
+  <h2><%= t('enquiry.potential_child_matches') %></h2>
+  <div class="clearfix"></div>
+  <div class="form_info"></div>
+  <div class="entity_list">
+    <% model.potential_matches.each do |match| %>
+      <% if model.class == Enquiry %>
+        <%= render :partial => "children/summary_row", :locals => {:child => match, :enquiry => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+      <% elsif model.class == Child %>
+        <%= render :partial => "enquiries/summary_row", :locals => {:enquiry => match, :child => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+      <% end %>
+    <% end %>
+  </div>
+</fieldset>
