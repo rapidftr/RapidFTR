@@ -39,7 +39,7 @@
       <ul class="view-edit">
         <% if can?(:update, enquiry) %>
           <li>
-            <%= link_to(t('buttons.edit'), edit_enquiry_path(enquiry), :class=>'edit') %> |
+            <%= link_to(t('buttons.edit'), edit_enquiry_path(enquiry), :class=>'edit') %>
           </li>
           <% if local_assigns.has_key?(:rendered_by_show_enquiry) && local_assigns.has_key?(:confirmed_match)%>
             <%= mark_as_not_matching_link child, confirmed_match, enquiry %>

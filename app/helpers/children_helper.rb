@@ -112,7 +112,8 @@ module ChildrenHelper
   end
 
   def unconfirm_match_link(child, confirmed_match, enquiry)
-    return nil if confirmed_match.nil? || child != confirmed_match
+    is_confirmed_match = (child == confirmed_match || enquiry == confirmed_match)
+    return nil if confirmed_match.nil? || !is_confirmed_match
     content = " | #{link_to t('enquiry.unmark_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => false), :method => :put}".html_safe
     content_tag(:li, content, :id => "confirm_#{child.id}")
   end
