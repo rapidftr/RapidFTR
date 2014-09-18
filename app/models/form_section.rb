@@ -81,7 +81,7 @@ class FormSection < CouchRest::Model::Base
     end
 
     def all_form_sections_for(form_name)
-      all.select { |fs| fs.form.name == form_name }
+      all.select { |fs| !fs.form.nil? && fs.form.name == form_name }
     end
 
     def all_child_field_names

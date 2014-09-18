@@ -129,14 +129,14 @@ describe Child, :type => :model do
 
     it 'should set flagged_at if the record has been flagged' do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 17, 19, 5, 0))
-      child = create_child('timothy cochran')
+      child = create(:child, :name => 'timothy cochran')
       child.update_properties_with_user_name 'some user name', nil, nil, nil, :flag => true
       expect(child.flag_at).to eq('2010-01-17 19:05:00UTC')
     end
 
     it 'should set reunited_at if the record has been reunited' do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 17, 19, 5, 0))
-      child = create_child('timothy cochran')
+      child = create(:child, :name => 'timothy cochran')
       child.update_properties_with_user_name 'some user name', nil, nil, nil, :reunited => true
       expect(child.reunited_at).to eq('2010-01-17 19:05:00UTC')
     end
@@ -1202,18 +1202,26 @@ describe Child, :type => :model do
       Child.update_solr_indices
     end
 
-    it 'should use all searchable fields' do
-      expect(FormSection).to receive :all_sortable_field_names
+    it 'should use all searchable fields for the correct form section' do
+      expect(FormSection).to receive(:all_form_sections_for).and_return([])
       Child.update_solr_indices
     end
   end
 
   describe 'searchable_field_names' do
-    it 'should include highlighted fields, short_id, and unique_identifier' do
+    before :each do
+      reset_couchdb!
+    end
+
+    it 'should include visible fields, short_id, and unique_identifier' do
       form = create :form, :name => Child::FORM_NAME
-      create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :highlighted => true)]
+      create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :visible => true)]
 
       expect(Child.searchable_field_names).to eq ['first_name', :unique_identifier, :short_id]
+    end
+
+    it 'should return short_id and unique_identifier if no forms exist' do
+      expect(Child.searchable_field_names).to eq [:unique_identifier, :short_id]
     end
   end
 
@@ -1256,11 +1264,41 @@ describe Child, :type => :model do
     end
   end
 
+  describe '#find_matching_enquiries' do
+    before :each do
+      PotentialMatch.all.each { |pm| pm.destroy }
+    end
+
+    it 'should be triggered after save' do
+      enquiry = build(:enquiry, :child_name => 'Eduardo')
+      allow(MatchService).to receive(:search_for_matching_enquiries).and_return([enquiry])
+      child = create(:child, :name => 'Eduardo')
+
+      expect(PotentialMatch.count).to eq(1)
+      expect(PotentialMatch.first.child_id).to eq(child.id)
+      expect(PotentialMatch.first.enquiry_id).to eq(enquiry.id)
+    end
+  end
+
+  describe '.build_text_fields_for_solar' do
+    it 'should not use searchable fields from the wrong form' do
+      child_form = create :form, :name => Child::FORM_NAME
+      field1 = build :text_field
+      create :form_section, :form => child_form, :fields => [field1]
+      enquiry_form = create :form, :name => Enquiry::FORM_NAME
+      field2 = build :text_field
+      create :form_section, :form => enquiry_form, :fields => [field2]
+      fields = Child.build_text_fields_for_solar
+      expect(fields).to_not include(field2.name)
+      expect(fields).to include(field1.name)
+    end
+  end
+
   private
 
   def create_child(name, options = {})
     options.merge!('name' => name, 'last_known_location' => 'new york', 'created_by' => 'me', 'created_organisation' => 'stc')
-    Child.create(options)
+    create(:child, options)
   end
 
   def create_duplicate(parent)

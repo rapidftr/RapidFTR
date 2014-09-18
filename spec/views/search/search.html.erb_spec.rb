@@ -20,7 +20,7 @@ describe 'search/search.html.erb', :type => :view do
       @highlighted_fields = [
         Field.new(:name => 'field_2', :display_name => 'field display 2', :visible => true),
         Field.new(:name => 'field_4', :display_name => 'field display 4', :visible => true)]
-      allow(Form).to receive(:find_by_name).and_return(double('Form', :sorted_highlighted_fields => @highlighted_fields))
+      allow(Form).to receive(:find_by_name).and_return(double('Form', :highlighted_fields => @highlighted_fields, :sorted_highlighted_fields => @highlighted_fields))
       assign(:current_user, @user)
       assign(:results, @results)
     end
