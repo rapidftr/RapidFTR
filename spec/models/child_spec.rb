@@ -295,6 +295,15 @@ describe Child, :type => :model do
       expect(child['age']).to eq('6')
     end
 
+    it 'should create child with photo' do
+      child = create_child_with_created_by('john doe', 'photo' => uploadable_photo)
+      child.save
+
+      expect(child.photos.size).to eq 1
+      expect(child.photo_keys.size).to eq 1
+      expect(child.primary_photo).to match_photo uploadable_photo
+    end
+
     it 'should create a unique id' do
       allow(UUIDTools::UUID).to receive('random_create').and_return(12_345)
       child = create_child_with_created_by('jdoe', 'last_known_location' => 'London')

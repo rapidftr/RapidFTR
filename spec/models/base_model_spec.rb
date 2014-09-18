@@ -52,6 +52,11 @@ describe BaseModel, :type => :model do
         expect(@base_model.primary_photo).to match_photo uploadable_photo_jeff
       end
 
+      it 'should not allow duplicate photos' do
+        photos = {'0' => uploadable_photo_jeff, '1' => uploadable_photo_jeff}
+        base_model = BaseModel.create('photo' => photos, 'last_known_location' => 'London', 'created_by' => 'me')
+        expect(base_model.photos.size).to eq 1
+      end
     end
 
     context 'when rotating an existing photo' do
