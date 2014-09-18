@@ -29,12 +29,6 @@ class Child < BaseModel
 
   FORM_NAME = 'Children'
 
-  def self.new_with_user_name(user, fields = {})
-    child = new(fields)
-    child.creation_fields_for(user)
-    child
-  end
-
   def self.build_text_fields_for_solar
     sortable_fields = FormSection.all_sortable_field_names || []
     default_child_fields + sortable_fields

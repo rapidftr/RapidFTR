@@ -27,6 +27,12 @@ class BaseModel < CouchRest::Model::Base
     super(*args)
   end
 
+  def self.new_with_user_name(user, fields = {})
+    model = new(fields)
+    model.creation_fields_for(user)
+    model
+  end
+
   def method_missing(method, *)
     self[method]
   end

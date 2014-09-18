@@ -2,7 +2,6 @@ class Enquiry < BaseModel
   use_database :enquiry
 
   require 'uuidtools'
-  include RapidFTR::CouchRestRailsBackward
   include Searchable
 
   after_initialize :create_unique_id
@@ -62,12 +61,6 @@ class Enquiry < BaseModel
       return self[m.to_s[0..-2]] = args[0]
     end
     super
-  end
-
-  def self.new_with_user_name(user, *args)
-    enquiry = new(*args)
-    enquiry.creation_fields_for(user)
-    enquiry
   end
 
   def self.build_text_fields_for_solar

@@ -181,12 +181,12 @@ describe Api::EnquiriesController, :type => :controller do
       allow(controller).to receive(:authorize!)
       enquiry = Enquiry.create(:enquirer_name => 'old name', :location => 'kampala', :name => 'child name')
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :name => 'child new name'}
+      put :update, :id => enquiry.id, :enquiry => {:name => 'child new name'}
 
       enquiry = Enquiry.get(enquiry.id)
       expect(enquiry.criteria).to eq('name' => 'child new name', 'enquirer_name' => 'old name', 'location' => 'kampala')
 
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :location => 'Kampala', :age => '100', :gender => 'female'}
+      put :update, :id => enquiry.id, :enquiry => {:location => 'Kampala', :age => '100', :gender => 'female'}
 
       enquiry = Enquiry.get(enquiry.id)
 
