@@ -16,6 +16,7 @@ class Child < CouchRest::Model::Base
   before_save :update_organisation
   before_save :update_photo_keys
   before_save :add_creation_history, :if => :new?
+  after_save :find_matching_enquiries
 
   property :short_id
   property :unique_identifier
@@ -61,7 +62,7 @@ class Child < CouchRest::Model::Base
   end
 
   def self.build_text_fields_for_solar
-    sortable_fields = FormSection.all_sortable_field_names || []
+    sortable_fields = FormSection.all_form_sections_for(Child::FORM_NAME).map(&:all_sortable_fields).flatten.map(&:name)
     default_child_fields + sortable_fields
   end
 
@@ -252,6 +253,18 @@ rescue
   def confirmed_matches
     matches = PotentialMatch.by_child_id_and_confirmed.key([id, true]).all
     matches.map { |pm| Enquiry.find(pm.enquiry_id) }
+  end
+
+  def find_matching_enquiries
+    previous_matches = potential_matches
+    criteria = Child.build_text_fields_for_solar.map { |field_name| self[field_name] unless self[field_name].nil? }
+    criteria.reject! { |c| c.nil? || c.empty? }
+    enquiries = MatchService.search_for_matching_enquiries(criteria)
+    PotentialMatch.create_matches_for_child id, enquiries.map(&:id)
+
+    unless previous_matches.eql?(potential_matches)
+      self.match_updated_at = Clock.now.to_s
+    end
   end
 
   def self.schedule(scheduler)

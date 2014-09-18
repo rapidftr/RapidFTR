@@ -440,6 +440,20 @@ describe Enquiry, :type => :model do
       end
     end
 
+    describe '.build_text_fields_for_solar' do
+      it 'should not use searchable fields from the wrong form' do
+        child_form = create :form, :name => Child::FORM_NAME
+        field1 = build :text_field
+        create :form_section, :form => child_form, :fields => [field1]
+        enquiry_form = create :form, :name => Enquiry::FORM_NAME
+        field2 = build :text_field
+        create :form_section, :form => enquiry_form, :fields => [field2]
+        fields = Enquiry.build_text_fields_for_solar
+        expect(fields).to_not include(field1.name)
+        expect(fields).to include(field2.name)
+      end
+    end
+
     private
 
     def create_enquiry_with_created_by(created_by, options = {}, organisation = 'UNICEF')

@@ -20,6 +20,15 @@ FactoryGirl.define do
     created_by { 'test_user' }
 
     initialize_with { new(attributes) }
+    before(:create) do
+      form = Form.find_or_create_by_name Child::FORM_NAME
+      sections = FormSection.all_form_sections_for(Child::FORM_NAME)
+      name_field_present = !sections.empty? && sections.map(&:fields).flatten.map(&:name).include?('name')
+      unless name_field_present
+        field1 = build :text_field, :name => 'name'
+        create :form_section, :form => form, :fields => [field1]
+      end
+    end
   end
 
   factory :replication, :traits => [:model] do
