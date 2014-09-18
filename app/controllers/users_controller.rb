@@ -122,7 +122,19 @@ class UsersController < ApplicationController
   end
 
   def contact
-    render :ok
+    # shamefully copied from `index` above :-(
+    authorize! :read, User
+
+    @page_name = t('home.users')
+    sort_option = 'full_name'
+    filter_option = 'share_contact_info'
+
+    @users = User.view("by_#{sort_option}_filter_view", :startkey => [filter_option], :endkey => [filter_option, {}])
+    @users_details = users_details
+
+    if params[:ajax] == 'true'
+      render :partial => 'users/user', :collection => @users
+    end
   end
 
   private

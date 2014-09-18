@@ -1,0 +1,20 @@
+<!-- to hook in / populate the users model in backbone -->
+<script type="text/javascript">
+//    $(function () {
+//        window.Users.refresh(<%= raw @users_details.to_json %>);
+//    });
+</script>
+
+<h1><%= t("header.contact") %></h1>
+
+<div class="page-content-new">
+    <% if @users.present? %>
+        <%= render :partial => 'users_table' %>
+        <p><%= link_to t("buttons.back"), :back %></p>
+
+        <div id="modal-dialog"/>
+    <% else %>
+        <%= t("no_contact_details_available") %>
+    <% end %>
+</div>
+
