@@ -1,4 +1,4 @@
-class ChildMediaController < ApplicationController
+class MediaController < ApplicationController
   NO_PHOTO_FORMAT = 'jpg'
   NO_PHOTO_CLIP = File.binread(Rails.root.join("app/assets/images/no_photo_clip.#{NO_PHOTO_FORMAT}"))
   helper :children

@@ -52,15 +52,15 @@ RapidFTR::Application.routes.draw do
   match '/children-ids' => 'child_ids#all', :as => :child_ids, :via => [:post, :get, :put, :delete]
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
-  match '/children/:child_id/photos_index' => 'child_media#index', :as => :photos_index, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photos' => 'child_media#manage_photos', :as => :manage_photos, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/audio(/:id)' => 'child_media#download_audio', :as => :child_audio, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photo/:photo_id' => 'child_media#show_photo', :as => :child_photo, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photo' => 'child_media#show_photo', :as => :child_legacy_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photos_index' => 'media#index', :as => :photos_index, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photos' => 'media#manage_photos', :as => :manage_photos, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/audio(/:id)' => 'media#download_audio', :as => :child_audio, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photo/:photo_id' => 'media#show_photo', :as => :child_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photo' => 'media#show_photo', :as => :child_legacy_photo, :via => [:post, :get, :put, :delete]
   match 'children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
-  match '/children/:child_id/resized_photo/:size' => 'child_media#show_resized_photo', :as => :child_legacy_resized_photo, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photo/:photo_id/resized/:size' => 'child_media#show_resized_photo', :as => :child_resized_photo, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/thumbnail(/:photo_id)' => 'child_media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/resized_photo/:size' => 'media#show_resized_photo', :as => :child_legacy_resized_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/photo/:photo_id/resized/:size' => 'media#show_resized_photo', :as => :child_resized_photo, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/thumbnail(/:photo_id)' => 'media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put, :delete]
   match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
 
   #######################
