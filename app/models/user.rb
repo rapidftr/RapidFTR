@@ -75,10 +75,12 @@ class User < CouchRest::Model::Base
               }
           }"
 
-    view :by_share_contact_info_filter_view,
+    view :by_share_contact_info,
          :map => "function(doc) {
-             if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
-              {
+             if (doc['couchrest-type'] == 'User'
+                     && doc['share_contact_info']
+                     && doc['verified']
+                     && !doc['disabled']) {
                  emit(doc);
               }
           }"

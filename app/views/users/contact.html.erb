@@ -9,10 +9,29 @@
 
 <div class="page-content-new">
     <% if @users.present? %>
-        <%= render :partial => 'users_table' %>
-        <p><%= link_to t("buttons.back"), :back %></p>
-
-        <div id="modal-dialog"/>
+      <table id="users" class="list_table">
+        <thead>
+        <thead>
+          <th><%= t("user.full_name") %></th>
+          <th><%= t("user.phone") %></th>
+          <th><%= t("user.email") %></th>
+          <th><%= t("user.organisation") %></th>
+          <th><%= t("user.position") %></th>
+          <th><%= t("user.location") %></th>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr id="user-row-<%= user.user_name %>">
+              <td class="full_name"><%= h user.full_name %></td>
+              <td class="phone"><%= h user.phone %></td>
+              <td class="email"><%= h user.email %></td>
+              <td class="organisation"><%= h user.organisation %></td>
+              <td class="position"><%= h user.position %></td>
+              <td class="location"><%= h user.location %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% else %>
         <%= t("no_contact_details_available") %>
     <% end %>
