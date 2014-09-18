@@ -1213,15 +1213,11 @@ describe Child, :type => :model do
       reset_couchdb!
     end
 
-    it 'should include visible fields, short_id, and unique_identifier' do
+    it 'should include highlighted fields, short_id, and unique_identifier' do
       form = create :form, :name => Child::FORM_NAME
-      create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :visible => true)]
+      create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :highlighted => true)]
 
       expect(Child.searchable_field_names).to eq ['first_name', :unique_identifier, :short_id]
-    end
-
-    it 'should return short_id and unique_identifier if no forms exist' do
-      expect(Child.searchable_field_names).to eq [:unique_identifier, :short_id]
     end
   end
 
