@@ -25,6 +25,9 @@ RUN rm -f /etc/service/nginx/down
 # Enable first boot script
 ADD docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
 
+# Enable worker start script
+ADD docker/boot/start_workers.sh /etc/my_init.d/01_start_workers.sh
+
 # Volumes and Ports
 EXPOSE 5984
 EXPOSE 6984
@@ -44,6 +47,7 @@ ADD config.ru /rapidftr/
 ADD Rakefile /rapidftr/
 ADD LICENSE /rapidftr/
 ADD script/ /rapidftr/script/
+ADD bin/ /rapidftr/bin/
 ADD vendor/ /rapidftr/vendor/
 ADD solr/ /rapidftr/solr/
 ADD docker/config/solr.xml /rapidftr/solr/solr.xml
