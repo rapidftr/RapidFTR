@@ -47,7 +47,6 @@ ADD config.ru /rapidftr/
 ADD Rakefile /rapidftr/
 ADD LICENSE /rapidftr/
 ADD script/ /rapidftr/script/
-ADD bin/ /rapidftr/bin/
 ADD vendor/ /rapidftr/vendor/
 ADD solr/ /rapidftr/solr/
 ADD docker/config/solr.xml /rapidftr/solr/solr.xml
