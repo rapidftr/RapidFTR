@@ -25,6 +25,9 @@ RUN rm -f /etc/service/nginx/down
 # Enable first boot script
 ADD docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
 
+# Enable worker start script
+ADD docker/boot/start_workers.sh /etc/my_init.d/01_start_workers.sh
+
 # Volumes and Ports
 EXPOSE 5984
 EXPOSE 6984
@@ -52,4 +55,10 @@ ADD config/ /rapidftr/config/
 ADD db/ /rapidftr/db/
 ADD lib/ /rapidftr/lib/
 ADD app/ /rapidftr/app/
+
+# Bundling the RapidFTR documentation
+ADD docker/docbuild.sh /root/
+RUN /root/docbuild.sh
+
+# Bundling the rapidftr apk
 ADD https://www.dropbox.com/sh/y9cjomps39deqb6/AAB2ieXvhcohg_4J0BC3j2GXa/Android/RapidFTR-dev.apk?dl=1 /rapidftr/public/RapidFTR.apk

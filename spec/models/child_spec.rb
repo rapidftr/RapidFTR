@@ -129,14 +129,14 @@ describe Child, :type => :model do
 
     it 'should set flagged_at if the record has been flagged' do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 17, 19, 5, 0))
-      child = create_child('timothy cochran')
+      child = create(:child, :name => 'timothy cochran')
       child.update_properties_with_user_name 'some user name', nil, nil, nil, :flag => true
       expect(child.flag_at).to eq('2010-01-17 19:05:00UTC')
     end
 
     it 'should set reunited_at if the record has been reunited' do
       allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 17, 19, 5, 0))
-      child = create_child('timothy cochran')
+      child = create(:child, :name => 'timothy cochran')
       child.update_properties_with_user_name 'some user name', nil, nil, nil, :reunited => true
       expect(child.reunited_at).to eq('2010-01-17 19:05:00UTC')
     end
@@ -768,13 +768,17 @@ describe Child, :type => :model do
       Child.update_solr_indices
     end
 
-    it 'should use all searchable fields' do
-      expect(FormSection).to receive :all_sortable_field_names
+    it 'should use all searchable fields for the correct form section' do
+      expect(FormSection).to receive(:all_form_sections_for).and_return([])
       Child.update_solr_indices
     end
   end
 
   describe 'searchable_field_names' do
+    before :each do
+      reset_couchdb!
+    end
+
     it 'should include highlighted fields, short_id, and unique_identifier' do
       form = create :form, :name => Child::FORM_NAME
       create :form_section, :form => form, :name => 'Basic Identity', :fields => [build(:field, :name => 'first_name', :highlighted => true)]
@@ -783,11 +787,80 @@ describe Child, :type => :model do
     end
   end
 
+  describe '#confirmed_matches' do
+    before :each do
+      reset_couchdb!
+    end
+
+    it 'should return a confirmed match' do
+      child_x = create(:child, :id => 'child_id_x')
+      PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                            :child_id => 'child_id_x',
+                            :confirmed => true
+      expect(Enquiry).to receive(:find).with('enquiry_id_x').and_return({})
+      expect(child_x.confirmed_matches).to_not be_nil
+    end
+
+    it 'should return multiple confirmed matches' do
+      child_x = create(:child, :id => 'child_id_x')
+      enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
+      enquiry_y = create(:enquiry, :id => 'enquiry_id_y')
+      PotentialMatch.create :enquiry_id => 'enquiry_id_y',
+                            :child_id => 'child_id_x',
+                            :confirmed => true
+      PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                            :child_id => 'child_id_x',
+                            :confirmed => true
+      expect(child_x.confirmed_matches).to_not be_nil
+      expect(child_x.confirmed_matches.size).to be(2)
+      expect(child_x.confirmed_matches).to include(enquiry_x, enquiry_y)
+    end
+
+    it 'should not return unconfirmed matches' do
+      child_x = create(:child, :id => 'child_id_x')
+      PotentialMatch.create :enquiry_id => 'enquiry_id_x',
+                            :child_id => 'child_id_x',
+                            :confirmed => false
+      expect(Enquiry).to_not receive(:find)
+      expect(child_x.confirmed_matches).to be_empty
+    end
+  end
+
+  describe '#find_matching_enquiries' do
+    before :each do
+      PotentialMatch.all.each { |pm| pm.destroy }
+    end
+
+    it 'should be triggered after save' do
+      enquiry = build(:enquiry, :child_name => 'Eduardo')
+      allow(MatchService).to receive(:search_for_matching_enquiries).and_return([enquiry])
+      child = create(:child, :name => 'Eduardo')
+
+      expect(PotentialMatch.count).to eq(1)
+      expect(PotentialMatch.first.child_id).to eq(child.id)
+      expect(PotentialMatch.first.enquiry_id).to eq(enquiry.id)
+    end
+  end
+
+  describe '.build_text_fields_for_solar' do
+    it 'should not use searchable fields from the wrong form' do
+      child_form = create :form, :name => Child::FORM_NAME
+      field1 = build :text_field
+      create :form_section, :form => child_form, :fields => [field1]
+      enquiry_form = create :form, :name => Enquiry::FORM_NAME
+      field2 = build :text_field
+      create :form_section, :form => enquiry_form, :fields => [field2]
+      fields = Child.build_text_fields_for_solar
+      expect(fields).to_not include(field2.name)
+      expect(fields).to include(field1.name)
+    end
+  end
+
   private
 
   def create_child(name, options = {})
     options.merge!('name' => name, 'last_known_location' => 'new york', 'created_by' => 'me', 'created_organisation' => 'stc')
-    Child.create(options)
+    create(:child, options)
   end
 
   def create_duplicate(parent)

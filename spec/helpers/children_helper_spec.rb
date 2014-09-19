@@ -127,4 +127,73 @@ describe ChildrenHelper, :type => :helper do
       expect(options).to eq(t('children.order_by.system_fields') => [['Created at', 'created_at']], 'First' => [%w(display_name id_name)])
     end
   end
+
+  describe '#confirmed_matches_header' do
+    it 'should return nil if matches is empty' do
+      header = confirmed_matches_header []
+      expect(header).to be_nil
+    end
+
+    it 'should separate links by spaces' do
+      e1 = build(:enquiry, :unique_id => 'id1')
+      e2 = build(:enquiry, :unique_id => 'id2')
+      header = confirmed_matches_header [e1, e2]
+      expect(header).to eq("<div class=\"filter_bar\" id=\"match_details\"><h3>Confirmed Matches: " \
+                           "<a href=\"/enquiries/#{e1.id}\">#{e1.short_id}</a> " \
+                           "<a href=\"/enquiries/#{e2.id}\">#{e2.short_id}</a></h3></div>")
+    end
+  end
+
+  describe 'potential match links' do
+    let(:child) { build :child }
+    let(:enquiry) { build :enquiry }
+
+    describe '#mark_as_not_matching_link' do
+      it 'should return nil if current child is a confirmed match' do
+        expect(mark_as_not_matching_link(child, child, enquiry)).to be_nil
+      end
+
+      it 'should return a link if confirmed_match is nil' do
+        link = mark_as_not_matching_link child, nil, enquiry
+        expect(link).to match(/<a data-method=\"delete\"/)
+      end
+
+      it 'should return a delete link beginning with |' do
+        link = mark_as_not_matching_link child, build(:child), enquiry
+        expect(link).to eq("<li id=\"mark_#{child.id}\"> | " \
+                           "<a data-method=\"delete\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}\" "\
+                           "rel=\"nofollow\">Mark as not matching</a></li>")
+      end
+    end
+
+    describe '#confirm_match_link' do
+      it 'should return nil if a confirmed_match exists' do
+        expect(confirm_match_link child, child, enquiry).to be_nil
+      end
+
+      it 'should return a put link beginning with |' do
+        link = confirm_match_link child, nil, enquiry
+        expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
+                           "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=true\" "\
+                           "rel=\"nofollow\">Confirm as Match</a></li>")
+      end
+    end
+
+    describe '#unconfirm_match_link' do
+      it 'should return nil if there is no confirmed match' do
+        expect(unconfirm_match_link(child, nil, enquiry)).to be_nil
+      end
+
+      it 'should return nil if current child isnt the confirmed match' do
+        expect(unconfirm_match_link(child, build(:child), enquiry)).to be_nil
+      end
+
+      it 'should return a put link with confirm=false for a child that is the confirmed match' do
+        link = unconfirm_match_link child, child, enquiry
+        expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
+                           "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=false\" "\
+                           "rel=\"nofollow\">Undo Confirmation</a></li>")
+      end
+    end
+  end
 end

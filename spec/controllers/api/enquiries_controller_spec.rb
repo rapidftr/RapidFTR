@@ -201,32 +201,36 @@ describe Api::EnquiriesController, :type => :controller do
       reset_couchdb!
       form = create :form, :name => Enquiry::FORM_NAME
       create :form_section, :fields => [
-        build(:text_field, :name => 'name'),
-        build(:text_field, :name => 'age'),
-        build(:text_field, :name => 'location'),
-        build(:text_field, :name => 'sex')
+        build(:text_field, :name => 'child_name', :matchable => true),
+        build(:text_field, :name => 'age', :matchable => true),
+        build(:text_field, :name => 'location', :matchable => true),
+        build(:text_field, :name => 'sex', :matchable => true)
       ], :form => form
 
+      form = create :form, :name => Child::FORM_NAME
+      create :form_section, :fields => [
+        build(:text_field, :name => 'name'),
+        build(:text_field, :name => 'gender')
+      ], :form => form
       Child.reindex!
 
       allow(controller).to receive(:authorize!)
       child1 = Child.create('name' => 'Clayton aquiles', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
-      child2 = Child.create('name' => 'Steven aquiles', 'sex' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
+      child2 = Child.create('name' => 'Steven aquiles', 'gender' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
 
       enquiry = Enquiry.create(:enquirer_name => 'Godwin', :sex => 'male', :age => '10', :location => 'Kampala')
 
       expect(Enquiry.get(enquiry.id).potential_matches).to include(child2)
 
-      put :update, :id => enquiry.id, :enquiry => {:name => 'aquiles', :age => '10', :location => 'Kampala'}
+      put :update, :id => enquiry.id, :enquiry => {:child_name => 'aquiles', :age => '10', :location => 'Kampala'}
       expect(response.response_code).to eq(200)
 
       enquiry_after_update = Enquiry.get(enquiry.id)
       expect(enquiry_after_update.potential_matches.size).to eq(2)
       expect(enquiry_after_update.potential_matches).to include(child1)
       expect(enquiry_after_update.potential_matches).to include(child2)
-      expect(enquiry_after_update['criteria']).to eq('name' => 'aquiles', 'age' => '10', 'location' => 'Kampala', 'sex' => 'male')
+      expect(enquiry_after_update['criteria']).to eq('child_name' => 'aquiles', 'age' => '10', 'location' => 'Kampala', 'sex' => 'male')
     end
-
   end
 
   describe 'GET index' do

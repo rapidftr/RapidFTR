@@ -64,7 +64,7 @@ class Enquiry < BaseModel
   end
 
   def self.build_text_fields_for_solar
-    sortable_fields = FormSection.all_sortable_field_names || []
+    sortable_fields = FormSection.all_form_sections_for(Enquiry::FORM_NAME).map(&:all_sortable_fields).flatten.map(&:name)
     default_enquiry_fields + sortable_fields
   end
 
@@ -102,7 +102,7 @@ class Enquiry < BaseModel
 
   def potential_matches
     potential_matches = PotentialMatch.by_enquiry_id.key(id).all
-    potential_matches.reject! { |pm| pm.marked_invalid? }
+    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? }
     child_ids = potential_matches.each.map(&:child_id)
     child_ids.map { |id| Child.get(id) }
   end
@@ -159,6 +159,15 @@ class Enquiry < BaseModel
 
   def self.searchable_field_names
     Form.find_by_name(FORM_NAME).highlighted_fields.map(&:name) + [:unique_identifier, :short_id]
+  end
+
+  def confirmed_match
+    match = PotentialMatch.by_enquiry_id_and_confirmed.key([id, true]).first
+    match.nil? ? nil : Child.get(match.child_id)
+  end
+
+  def self.matchable_fields
+    Array.new(FormSection.all_visible_child_fields_for_form(Enquiry::FORM_NAME)).keep_if { |field| field.matchable? }
   end
 
   private
