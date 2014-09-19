@@ -39,7 +39,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def update_child_matches
-    Enquiry.update_all_child_matches
+    Enquiry.delay.update_all_child_matches
   end
 
   def valid_presence_of_base_language_name
