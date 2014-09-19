@@ -37,9 +37,10 @@ describe FormSection, :type => :model do
     form.run_callbacks(:update)
   end
 
-  it 'updates possible child matches when updated' do
+  it 'updates possible child matches when updated in a delayed job' do
     form = FormSection.new
     expect(Enquiry).to receive(:update_all_child_matches)
+    expect(Enquiry).to receive(:delay).and_return(Enquiry)
     form.run_callbacks(:save)
   end
 
