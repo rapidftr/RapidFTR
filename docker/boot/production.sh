@@ -40,8 +40,6 @@ runsv /etc/service/solr &
 sleep 5
 bundle exec rake sunspot:reindex
 
-RAILS_ENV=production bin/delayed_job start
-
 echo "Normal system boot will now start..."
 sv shutdown couchdb
 sv shutdown solr
