@@ -114,9 +114,9 @@ module RecordHelper
 
   # TODO: Refactor, move to Field class as "empty?
   def filled_in?(field)
-    return true if field.type == 'photo_upload_box' && !self.photo_current_key.nil?
+    return true if field.type == 'photo_upload_box' && !photo_current_key.nil?
 
-    return true if field.type == 'audio_upload_box' && !self.audio_upload_box.nil?
+    return true if field.type == 'audio_upload_box' && !audio_upload_box.nil?
 
     (!(self[field.name].nil? || self[field.name].empty? || self[field.name].to_s.empty?)) rescue false
   end

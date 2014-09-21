@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BaseModel, :type => :model do 
+describe BaseModel, :type => :model do
   describe 'photo attachments' do
 
     before(:each) do
@@ -172,7 +172,7 @@ describe BaseModel, :type => :model do
       base_model.photo = uploadable_photo_bmp
       expect(base_model).not_to be_valid
     end
-    
+
     it 'should disallow image file formats that are not png or jpg' do
       base_model = BaseModel.new
       base_model.photo = uploadable_photo

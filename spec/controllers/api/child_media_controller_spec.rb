@@ -97,7 +97,7 @@ describe Api::ChildMediaController, :type => :controller do
   end
 
   describe 'child photos' do
-    it_behaves_like 'photos' do 
+    it_behaves_like 'photos' do
       let(:model_class) { 'Child' }
     end
   end

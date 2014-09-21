@@ -20,19 +20,19 @@ describe ChildIdsController, :type => :controller do
 
     it 'should return Id and Rev for each child record' do
 
-       given_a('child').with_id('child-id').with_rev('child-revision-id')
-       expect(Child).to receive(:fetch_all_ids_and_revs).and_return([{'_id' => 'child-id', '_rev' => 'child-revision-id'}])
+      given_a('child').with_id('child-id').with_rev('child-revision-id')
+      expect(Child).to receive(:fetch_all_ids_and_revs).and_return([{'_id' => 'child-id', '_rev' => 'child-revision-id'}])
 
-       get :all
+      get :all
 
-       expect(response.headers['Content-Type']).to include('application/json')
+      expect(response.headers['Content-Type']).to include('application/json')
 
-       child_ids = JSON.parse(response.body)
-       expect(child_ids.length).to eq(1)
+      child_ids = JSON.parse(response.body)
+      expect(child_ids.length).to eq(1)
 
-       child_id = child_ids[0]
-       expect(child_id['_id']).to eq('child-id')
-       expect(child_id['_rev']).to eq('child-revision-id')
-     end
+      child_id = child_ids[0]
+      expect(child_id['_id']).to eq('child-id')
+      expect(child_id['_rev']).to eq('child-revision-id')
+    end
   end
 end

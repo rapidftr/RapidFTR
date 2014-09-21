@@ -24,7 +24,7 @@ class MediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    controller = get_controller_name_from_current_uri
+    controller = controller_name_from_current_uri
     redirect_to(:controller => controller, :action => 'show', :id => @model.id) && return unless @attachment
     send_data(@attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type)
   end
@@ -36,7 +36,7 @@ class MediaController < ApplicationController
   private
 
   def find_model
-    model_class = get_model_name_from_current_uri
+    model_class = model_name_from_current_uri
     model_id = "#{model_class}_id".downcase.to_sym
     @model = model_class.get(params[model_id])
   end
@@ -84,12 +84,12 @@ class MediaController < ApplicationController
     send_data(*args)
   end
 
-  def get_model_name_from_current_uri
-    url_for(:only_path => true).split("/")[1].singularize.capitalize.constantize
+  def model_name_from_current_uri
+    url_for(:only_path => true).split('/')[1].singularize.capitalize.constantize
   end
 
-  def get_controller_name_from_current_uri
-    model_name = get_model_name_from_current_uri.to_s
+  def controller_name_from_current_uri
+    model_name = model_name_from_current_uri.to_s
     model_name.downcase.pluralize
   end
 end

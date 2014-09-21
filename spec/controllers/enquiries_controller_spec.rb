@@ -31,8 +31,8 @@ describe EnquiriesController, :type => :controller do
     before :each do
       field1 = build(:field, :name => 'enquirer_name')
       field2 = build(:field, :name => 'child_name')
-      field3 = build(:photo_field, :name => 'photo') 
-      field4 = build(:audio_field, :name => 'audio') 
+      field3 = build(:photo_field, :name => 'photo')
+      field4 = build(:audio_field, :name => 'audio')
 
       form = create(:form, :name => Enquiry::FORM_NAME)
       create(:form_section, :name => 'enquiry_criteria', :form => form, :fields => [field1, field2, field3, field4])
@@ -108,25 +108,25 @@ describe EnquiriesController, :type => :controller do
 
         @enquiry = {
           'enquirer_name' => 'John Doe',
-          'child_name' => 'Kasozi',
+          'child_name' => 'Kasozi'
         }
       end
 
       it 'should save a photo along with the enquiry' do
-        @enquiry['photo'] = {'0' => @photo_jeff }
-        
+        @enquiry['photo'] = {'0' => @photo_jeff}
+
         post :create, :enquiry => @enquiry
 
-        enquiry = Enquiry.first  
+        enquiry = Enquiry.first
         expect(enquiry[:enquirer_name]).to eq @enquiry['enquirer_name']
-        expect(enquiry[:child_name]).to eq @enquiry['child_name']      
+        expect(enquiry[:child_name]).to eq @enquiry['child_name']
         expect(enquiry.photos.size).to eq 1
         expect(enquiry.photo_keys.size).to eq 1
       end
 
-      it 'should save multiple photos along with the enquiry' do  
+      it 'should save multiple photos along with the enquiry' do
         @enquiry['photo'] = {'0' => @photo_jeff, '1' => @photo_jorge}
-        
+
         post :create, :enquiry => @enquiry
 
         enquiry = Enquiry.first
@@ -145,7 +145,7 @@ describe EnquiriesController, :type => :controller do
         expect(enquiry[:enquirer_name]).to eq @enquiry['enquirer_name']
         expect(enquiry[:child_name]).to eq @enquiry['child_name']
         expect(enquiry.recorded_audio).not_to be_nil
-      end 
+      end
 
       it 'should save a single photo and audio file along with the enquiry' do
         @enquiry['photo'] = {'0' => @photo_jeff}

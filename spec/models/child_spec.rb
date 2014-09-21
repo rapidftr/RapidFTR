@@ -46,7 +46,7 @@ describe Child, :type => :model do
       given_histories = [existing_histories,
                          JSON.parse("{\"datetime\":\"2013-02-04 06:55:03\",\"user_name\":\"rapidftr\",\"changes\":{\"current_photo_key\":{\"to\":\"2c097fa8-b9ab-4ae8-aa4d-1b7bda7dcb72\",\"from\":\"photo-364416240-2013-02-04T122424\"}},\"user_organisation\":\"N\\/A\"}"),
                          JSON.parse("{\"datetime\":\"2013-02-04 06:58:12\",\"user_name\":\"rapidftr\",\"changes\":{\"recorded_audio\":{\"to\":\"9252364d-c011-4af0-8739-0b1e9ed5c0ad1359961089870\",\"from\":\"\"}},\"user_organisation\":\"N\\/A\"}")
-      ]
+                        ]
       child = Child.new('name' => 'existing name', 'last_updated_at' => '2013-12-12 00:00:01UTC', 'histories' => [existing_histories])
       given_properties = {'name' => 'given name', 'last_updated_at' => '2013-01-01 00:00:00UTC', 'histories' => given_histories}
       child.update_properties_with_user_name 'rapidftr', nil, nil, nil, given_properties
@@ -277,7 +277,7 @@ describe Child, :type => :model do
 
   describe 'save' do
 
-     it 'should save blank age' do
+    it 'should save blank age' do
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
       child = Child.new(:age => '', :another_field => 'blah', 'created_by' => 'me', 'created_organisation' => 'stc')
       expect(child.save.present?).to eq(true)
@@ -490,8 +490,6 @@ describe Child, :type => :model do
       expect(child['histories'].first['datetime']).to eq('2010-01-14 14:05:00UTC')
     end
 
-
-
     it 'should maintain history when child is flagged and message is added' do
       child = Child.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
       child['flag'] = 'true'
@@ -533,14 +531,14 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{'changes' => {'gender' => {'from' => nil, 'to' => 'Male'},
                                            'age' => {'from' => '1', 'to' => '15'}},
-      'user_name' => 'john',
-      'datetime' => '03/02/2011 21:48'},
-      {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-       'datetime' => '03/02/2011 21:34',
-       'user_name' => 'john'},
-       {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-        'user_name' => 'john',
-        'datetime' => '03/02/2011 21:33'}]
+                             'user_name' => 'john',
+                             'datetime' => '03/02/2011 21:48'},
+                            {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+                             'datetime' => '03/02/2011 21:34',
+                             'user_name' => 'john'},
+                            {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+                             'user_name' => 'john',
+                             'datetime' => '03/02/2011 21:33'}]
       child['last_updated_by'] = 'john'
       expect(child).to have_one_interviewer
     end
@@ -549,14 +547,14 @@ describe Child, :type => :model do
       child = Child.create('last_known_location' => 'London', 'created_by' => 'john')
       child['histories'] = [{'changes' => {'gender' => {'from' => nil, 'to' => 'Male'},
                                            'age' => {'from' => '1', 'to' => '15'}},
-      'user_name' => 'jane',
-      'datetime' => '03/02/2011 21:48'},
-      {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-       'datetime' => '03/02/2011 21:34',
-       'user_name' => 'john'},
-       {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
-        'user_name' => 'john',
-        'datetime' => '03/02/2011 21:33'}]
+                             'user_name' => 'jane',
+                             'datetime' => '03/02/2011 21:48'},
+                            {'changes' => {'last_known_location' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+                             'datetime' => '03/02/2011 21:34',
+                             'user_name' => 'john'},
+                            {'changes' => {'origin' => {'from' => 'Rio', 'to' => 'Rio De Janeiro'}},
+                             'user_name' => 'john',
+                             'datetime' => '03/02/2011 21:33'}]
       child['last_updated_by'] = 'jane'
       expect(child.has_one_interviewer?).to be false
     end

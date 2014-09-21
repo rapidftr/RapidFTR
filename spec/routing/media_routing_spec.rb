@@ -42,15 +42,15 @@ describe MediaController, :type => :routing do
 
   describe 'child_media' do
     it_behaves_like 'routing' do
-      let(:model) {'children'}
-      let(:model_id) {'child_id'}
+      let(:model) { 'children' }
+      let(:model_id) { 'child_id' }
     end
   end
 
   describe 'enquiry_media' do
     it_behaves_like 'routing' do
-      let(:model) {'enquiries'}
-      let(:model_id) {'enquiry_id'}
+      let(:model) { 'enquiries' }
+      let(:model_id) { 'enquiry_id' }
     end
   end
 end

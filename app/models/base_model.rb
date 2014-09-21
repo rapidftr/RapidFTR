@@ -60,5 +60,4 @@ class BaseModel < CouchRest::Model::Base
   def key_for_content_type(content_type)
     Mime::Type.lookup(content_type).to_sym.to_s
   end
-
-end 
+end

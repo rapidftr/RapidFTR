@@ -29,7 +29,7 @@ describe MediaController, :type => :controller do
     end
 
     describe 'response' do
-      it "should return current photo" do
+      it 'should return current photo' do
         given_a(model).
                 with_id('1').
                 with_photo(uploadable_photo, 'current')
@@ -38,7 +38,7 @@ describe MediaController, :type => :controller do
         expect(response).to redirect_to(:photo_id => 'current', :ts => Date.today)
       end
 
-      it "should return requested photo" do
+      it 'should return requested photo' do
         given_a(model).
                 with_id('1')
         with_photo(uploadable_photo, 'current').
@@ -48,7 +48,7 @@ describe MediaController, :type => :controller do
         expect(response).to represent_inline_attachment(uploadable_photo_jeff)
       end
 
-      it "should return current photo resized to a particular size" do
+      it 'should return current photo resized to a particular size' do
         given_a(model).
                 with_id('1').
                 with_photo(uploadable_photo, 'current')
@@ -57,7 +57,7 @@ describe MediaController, :type => :controller do
         expect(response).to redirect_to(:photo_id => 'current', :ts => Date.today)
       end
 
-      it "should return current photo resized to a particular size" do
+      it 'should return current photo resized to a particular size' do
         given_a(model).
                 with_id('1').
                 with_photo(uploadable_photo, 'current')
@@ -66,7 +66,7 @@ describe MediaController, :type => :controller do
         expect(to_image(response.body)[:width]).to eq(300)
       end
 
-      it "should return requested thumbnail" do
+      it 'should return requested thumbnail' do
         given_a(model).
                 with_id('1')
         with_photo(uploadable_photo_jeff).
@@ -133,16 +133,16 @@ describe MediaController, :type => :controller do
   end
 
   describe 'children photos' do
-    it_behaves_like 'photos' do 
-      let (:model) {'child'}
-      let (:model_class) {'Child'}
+    it_behaves_like 'photos' do
+      let(:model) { 'child' }
+      let(:model_class) { 'Child' }
     end
   end
-  
+
   describe 'enquiries photos' do
     it_behaves_like 'photos' do
-      let (:model) {'enquiry'}
-      let (:model_class) {'Enquiry'}
+      let(:model) { 'enquiry' }
+      let(:model_class) { 'Enquiry' }
     end
   end
 end
