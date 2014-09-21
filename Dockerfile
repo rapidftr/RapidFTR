@@ -16,6 +16,7 @@ RUN /root/bootstrap.sh
 ADD docker/runit/couchdb/ /etc/service/couchdb/
 ADD docker/runit/solr/ /etc/service/solr/
 ADD docker/runit/scheduler/ /etc/service/scheduler/
+ADD docker/runit/worker/ /etc/service/worker/
 
 # Service configurations
 ADD docker/config/couchdb.ini /etc/couchdb/local.d/rapidftr.ini
@@ -24,9 +25,6 @@ RUN rm -f /etc/service/nginx/down
 
 # Enable first boot script
 ADD docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
-
-# Enable worker start script
-ADD docker/boot/start_workers.sh /etc/my_init.d/01_start_workers.sh
 
 # Volumes and Ports
 EXPOSE 5984

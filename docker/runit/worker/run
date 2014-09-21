@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "Starting Delayed Job Worker in $RAILS_ENV mode..."
+cd /rapidftr
+bundle exec rake jobs:work
