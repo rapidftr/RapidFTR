@@ -1,0 +1,2 @@
+#!/bin/bash
+curl localhost:8983 > /dev/null 2>&1
