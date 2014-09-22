@@ -1,18 +1,15 @@
-class Enquiry < CouchRest::Model::Base
+class Enquiry < BaseModel
   use_database :enquiry
 
   require 'uuidtools'
-  include RecordHelper
-  include RapidFTR::CouchRestRailsBackward
   include Searchable
 
   after_initialize :create_unique_id
 
   before_validation :strip_whitespaces
   before_validation :create_criteria, :on => [:create, :update]
+
   after_save :find_matching_children
-  before_save :update_history, :unless => :new?
-  before_save :add_creation_history, :if => :new?
 
   property :short_id
   property :unique_identifier
@@ -26,11 +23,6 @@ class Enquiry < CouchRest::Model::Base
 
   set_callback :save, :before do
     self['updated_at'] = RapidFTR::Clock.current_formatted_time
-  end
-
-  def initialize(*args)
-    self['histories'] = []
-    super(*args)
   end
 
   design do
@@ -68,13 +60,7 @@ class Enquiry < CouchRest::Model::Base
     if m.to_s.match(/=$/)
       return self[m.to_s[0..-2]] = args[0]
     end
-    self[m]
-  end
-
-  def self.new_with_user_name(user, *args)
-    enquiry = new(*args)
-    enquiry.creation_fields_for(user)
-    enquiry
+    super
   end
 
   def self.build_text_fields_for_solar

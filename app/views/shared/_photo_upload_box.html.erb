@@ -1,22 +1,22 @@
 <p>
   Photos should be no larger than 10mb. Audio files should be no larger than 10mb. The smaller the better.
 </p>
+
 <% ChildrenHelper::EditView::ONETIME_PHOTOS_UPLOAD_LIMIT.times do |i|%>
 <p class="file">
   <span class="tool-tip-label">
-      <%= label_tag "child[photo]#{i}", "Add Photo", :class=>'key' %>
-
+      <%= label_tag "#{model.class.name.downcase}[photo]#{i}", "Add Photo", :class=>'key' %>
   </span>
-  <%= file_field_tag "child[photo]#{i}" %>
+  <%= file_field_tag "#{model.class.name.downcase}[photo]#{i}" %>
 
   <%= image_tag "new/icon_help.png", title: photo_upload_box.help_text, class: 'tool-tip-icon vtip' if photo_upload_box.help_text.present? %>
 </p>
 <% end %>
 
-<% @child.photos.each do |photo| %>
+<% model.photos.each do |photo| %>
     <p class="thumbnail">
-      <%= label_tag "delete_child_photo[#{photo.name}]", t("child.actions.delete_photo") %>
-      <%= check_box_tag("delete_child_photo[#{photo.name}]") %>
+      <%= label_tag "delete_#{model.class.name.downcase}_photo[#{photo.name}]", t("child.actions.delete_photo") %>
+      <%= check_box_tag("delete_#{model.class.name.downcase}_photo[#{photo.name}]") %>
       <%= thumbnail_tag(model, photo.name) %>
     </p>
 <% end %>

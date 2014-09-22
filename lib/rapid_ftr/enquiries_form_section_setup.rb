@@ -9,6 +9,7 @@ module RapidFTR
         form_sections << build_separation_history_section
         form_sections << build_location_of_child_section
         form_sections << build_details_of_interview_section
+        form_sections << build_photo_audio_section
       end
       form_sections
     end
@@ -327,6 +328,26 @@ module RapidFTR
                       :fields => details_of_interview_fields,
                       'name_all' => 'Details of Interview',
                       'description_all' => 'Details of interview'
+      )
+    end
+
+    def self.build_photo_audio_section
+      photo_audio_fields = [
+        Field.new('name' => '7_current_photo_key',
+                   'type' => 'photo_upload_box', 'editable' => false,
+                   'display_name_all' => 'Current Photo Key'
+                  ),
+        Field.new('name' => '7_recorded_audio',
+                   'type' => 'audio_upload_box', 'editable' => false,
+                   'display_name_all' => 'Recorded Audio'
+                  )
+      ]
+
+      FormSection.new('visible' => true,
+                       :order => 10, :unique_id => 'enq_photos_and_audio', :fields => photo_audio_fields,
+                       :perm_visible => true, 'editable' => false,
+                       'name_all' => 'Photos and Audio',
+                       'description_all' => 'All Photo and Audio Files Associated with a Child Record'
       )
     end
   end
