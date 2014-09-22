@@ -1,4 +1,4 @@
-<h1><%= link_to t("children.label"), children_path %> &gt; <%= link_to @child.short_id, child_path(@child) %> &gt; <%= t("child.manage_photos") %></h1>
+<h1><%= link_to t("children.label"), children_path %> &gt; <%= link_to @model.short_id, child_path(@model) %> &gt; <%= t("child.manage_photos") %></h1>
 <script type="text/javascript">
 $(function() {
   window.Photos.refresh(<%= @photos_details.to_json.html_safe %>);
