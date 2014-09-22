@@ -46,6 +46,7 @@ describe 'Enquiry Mapping', :type => :request, :solr => true do
   before :each do
     Sunspot.remove_all(Child)
     reset_couchdb!
+    allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
 
     @child1 = create(:child, 'last_known_location' => 'New York', 'name' => 'Mohammed Smith')
     @child2 = create(:child, 'last_known_location' => 'New York', 'name' => 'Muhammed Jones')

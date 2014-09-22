@@ -292,3 +292,10 @@ def destroy_form(form_name)
   form.sections.each { |section| section.destroy } unless form.nil?
   form.destroy unless form.nil?
 end
+
+Given(/^the following system variables exist in the system$/) do |table|
+  # table is a table.hashes.keys # => [:name, :value]
+  table.hashes.each do | system_variables_hash|
+    SystemVariable.create(:name => system_variables_hash['name'], :value => system_variables_hash['value'])
+  end
+end

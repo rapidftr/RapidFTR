@@ -129,3 +129,15 @@ Feature:
     And I confirm child match with unique_id "zubairlon456"
     And I follow "Undo Confirmation"
     Then I should not see "Confirmed Matches"
+
+  @javascript
+  Scenario: View potential Matches score for enquiry
+    Given I am logged in as a user with "Create Enquiry,View Enquiries" permissions
+    When I follow "Register New Enquiry"
+    And I fill in "Enquirer Name" with "Charles"
+    And I fill in "Child's Name" with "John Doe"
+    And I fill in "Location" with "London"
+    And I press "Save"
+    Then I follow "Matches"
+    And I should see "2" children on the page
+    And I should see "2" scores on the page

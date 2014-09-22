@@ -18,8 +18,8 @@
   <div class="clearfix"></div>
   <div class="form_info"></div>
   <div class="entity_list">
-    <% @enquiry.potential_matches.each do |child| %>
-      <%= render :partial => "children/summary_row", :locals => {:child => child, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
-  <% end %>
+    <% @enquiry.potential_matches.each do |match| %>
+      <%= render :partial => "children/summary_row", :locals => {:child => match.child, :score => match.score, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+    <% end %>
   </div>
 </fieldset>

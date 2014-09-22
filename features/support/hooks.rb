@@ -12,6 +12,11 @@ Before do
   RSpec::Mocks.space.proxy_for(Clock).reset
 
   Sunspot.remove_all!(Child, Enquiry)
+
+  score_threshold_variable = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
+  if score_threshold_variable.nil?
+    SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :value => '0.00')
+  end
 end
 
 Before('@roles') do |_scenario|

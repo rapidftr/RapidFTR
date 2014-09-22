@@ -5,6 +5,7 @@ describe EnquiriesController, :type => :controller do
   before :each do
     reset_couchdb!
     @session = fake_field_worker_login
+    allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
   end
 
   describe '#new' do
