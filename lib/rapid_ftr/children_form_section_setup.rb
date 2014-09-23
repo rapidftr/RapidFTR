@@ -67,7 +67,7 @@ module RapidFTR
                   'display_name_all' => 'Place of Interview'
                   ),
         Field.new('name' => 'interview_date',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Date'
                   ),
         Field.new('name' => 'interview_subject',
@@ -135,7 +135,7 @@ module RapidFTR
                   'display_name_all' => 'Country'
                   ),
         Field.new('name' => 'other_org_date',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Date'
                   ),
         Field.new('name' => 'orther_org_reference_no',
@@ -296,10 +296,10 @@ module RapidFTR
                   'type' => 'text_field'),
         Field.new('name' => 'evacuation_date',
                   'display_name_all' => 'Evacuation Date',
-                  'type' => 'text_field'),
+                  'type' => 'date_field'),
         Field.new('name' => 'separation_care_arrangements_arrival_date',
                   'display_name_all' => 'Arrival Date',
-                  'type' => 'text_field')
+                  'type' => 'date_field')
       ]
       FormSection.new('visible' => true,
                            :order => 4, :unique_id => 'separation_history', :fields => separation_history_fields,
@@ -345,7 +345,7 @@ module RapidFTR
                   'display_name_all' => 'Child Arriving From'
                   ),
         Field.new('name' => 'care_arrangements_arrival_date',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Arrival Date'
                   ),
         Field.new('name' => 'care_arrangements_convoy_no',
@@ -419,7 +419,7 @@ module RapidFTR
                   'display_name_all' => 'Relationship'
                   ),
         Field.new('name' => 'other_child_1_dob',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Date of Birth'
                   ),
         Field.new('name' => 'other_child_1_birthplace',
@@ -443,7 +443,7 @@ module RapidFTR
                   'display_name_all' => 'Relationship'
                   ),
         Field.new('name' => 'other_child_2_dob',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Date of Birth'
                   ),
         Field.new('name' => 'other_child_2_birthplace',
@@ -467,7 +467,7 @@ module RapidFTR
                   'display_name_all' => 'Relationship'
                   ),
         Field.new('name' => 'other_child_3_dob',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Date of Birth'
                   ),
         Field.new('name' => 'other_child_3_birthplace',
