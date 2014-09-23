@@ -122,8 +122,6 @@ class UsersController < ApplicationController
   end
 
   def contact
-    authorize! :read, User
-
     @page_name = t('header.contact')
     @users = User.view(:by_share_contact_info)
     @users_details = users_details
