@@ -10,23 +10,19 @@ module ChildrenHelper
   ORDER_BY = {'active' => 'created_at', 'all' => 'created_at', 'reunited' => 'reunited_at', 'flag' => 'flag_at'}
 
   def thumbnail_tag(model, key = nil)
-    if model.class.name == 'Child'
-      image_tag(child_thumbnail_path(model, key || model.current_photo_key, :ts => model.last_updated_at), :alt => model['name'])
-    else
-      binding.pry
-      image_tag(enquiry_thumbnail_path(model, key || model.current_photo_key, :ts => model.last_updated_at), :alt => model['enquirer_name'])
-    end
+    image_tag(thumbnail_path(model.class.name.downcase, model.id, key || model.current_photo_key, :ts => model.last_updated_at),
+              :alt => model['name'])
   end
 
   def link_to_photo_with_key(key)
     link_to thumbnail_tag(@child, key),
-            child_photo_path(@child, key, :ts => @child.last_updated_at),
+            photo_path('child', @child.id, key, :ts => @child.last_updated_at),
             :id => key,
             :target => '_blank'
   end
 
   def link_to_download_audio_with_key(key)
-    link_to key.humanize, child_audio_url(@child.id, key), :id => key, :target => '_blank'
+    link_to key.humanize, audio_url('child', @child.id, key), :id => key, :target => '_blank'
   end
 
   def playable_in_browser?(audio)
@@ -34,11 +30,7 @@ module ChildrenHelper
   end
 
   def audio_url_for(model)
-    if model.class.name == 'Enquiry'
-      return enquiry_audio_url(model)
-    else
-      return child_audio_url(model)
-    end
+    audio_url(model.class.name.downcase, model.id)
   end
 
   def link_to_update_info(child)

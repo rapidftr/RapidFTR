@@ -34,17 +34,16 @@ describe 'enquiries/show.html.erb', :type => :view do
   end
 
   it 'should render sidebar' do
-    render 
-    expect(rendered).to render_template(:partial => 'shared/_sidebar', :locals => { :model => @enquiry})
+    render
+    expect(rendered).to render_template(:partial => 'shared/_sidebar', :locals => {:model => @enquiry})
   end
 
-  it "displays the enquiry photo" do
+  it 'displays the enquiry photo' do
     assign(:aside, 'picture')
     render
-    
     expect(rendered).to have_tag('.profile-image') do
-      with_tag('a[href=?]', enquiry_resized_photo_path(@enquiry, @enquiry.primary_photo_id, 640))
-      with_tag('img[src=?]', enquiry_resized_photo_path(@enquiry, @enquiry.primary_photo_id, 328))
+      with_tag('a[href=?]', resized_photo_path('enquiry', @enquiry.id, @enquiry.primary_photo_id, 640))
+      with_tag('img[src=?]', resized_photo_path('enquiry', @enquiry.id, @enquiry.primary_photo_id, 328))
     end
   end
 

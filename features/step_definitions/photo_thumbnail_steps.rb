@@ -2,11 +2,11 @@ require 'spec/support/matchers/attachment_response'
 include CustomMatchers
 
 Then /^I should see the photo of "([^\"]*)"$/ do |child_name|
-  check_link(child_name) { |child| child_resized_photo_path(child, child.primary_photo_id, 328) }
+  check_link(child_name) { |child| resized_photo_path('child', child.id, child.primary_photo_id, 328) }
 end
 
-Then /^I should see the thumbnail of "([^\"]*)"$/ do |child_name|
-  check_link(child_name) { |child| child_thumbnail_path(child, child.primary_photo_id) }
+Then /^I should see the thumbnail of "([^\"]*)"$/ do |model_name|
+  check_link(model_name) { |model| thumbnail_path(model.class.name.downcase, model.id, model.primary_photo_id) }
 end
 
 Then /^I should see the thumbnail of "([^\"]*)" with timestamp "([^"]*)"$/ do |name, timestamp|

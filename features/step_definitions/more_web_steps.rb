@@ -112,6 +112,8 @@ end
 
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |_filename|
   url = current_url.gsub '/edit', ''
+  url = url.gsub 'children', 'child'
+  url = url.gsub 'enquiries', 'enquiry'
   expect(page.body).to have_selector("//audio/source[@src='#{url}/audio']")
 end
 

@@ -28,8 +28,8 @@ describe 'children/show.html.erb', :type => :view do
       render :template => 'children/show', :layout => 'layouts/application'
 
       expect(rendered).to have_tag('.profile-image') do
-        with_tag('a[href=?]', child_resized_photo_path(@child, @child.primary_photo_id, 640))
-        with_tag('img[src=?]', child_resized_photo_path(@child, @child.primary_photo_id, 328))
+        with_tag('a[href=?]', resized_photo_path('child', @child.id, @child.primary_photo_id, 640))
+        with_tag('img[src=?]', resized_photo_path('child', @child.id, @child.primary_photo_id, 328))
       end
     end
 
@@ -138,7 +138,5 @@ describe 'children/show.html.erb', :type => :view do
         expect(rendered).to have_link 'Export to CSV', link
       end
     end
-
   end
-
 end

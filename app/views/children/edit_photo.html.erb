@@ -5,7 +5,7 @@
   <div class="edit_photo_page">
     <%= form_for @child, :url => update_photo_url, :html => {:method => :put} do |f| %>
         <div class="profile-image display_photo">
-          <%= image_tag child_photo_path(@child, @child.primary_photo_id), :id => "child_picture" %>
+          <%= image_tag photo_path('child', @child.id, @child.primary_photo_id), :id => "child_picture" %>
         </div>
         <%= hidden_field_tag "child[photo_orientation]", "0" %>
         <div class="profile-tools" id="image_rotation_links">

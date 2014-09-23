@@ -20,7 +20,7 @@ describe 'children/edit.html.erb', :type => :view do
 
   it 'renders the children/form_section partial' do
     render
-    expect(rendered).to render_template(:partial => 'shared/_form_section', :locals => { :model => @child})
+    expect(rendered).to render_template(:partial => 'shared/_form_section', :locals => {:model => @child})
     expect(rendered).to include('section_name')
   end
 

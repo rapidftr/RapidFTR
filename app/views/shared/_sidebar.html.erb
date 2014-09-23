@@ -1,16 +1,22 @@
 <div class="profile-image">
   <% unless model.photos.blank? %>
       <div class='image'>
-      <% if model.class.name == 'Enquiry' %>
-        <%= link_to image_tag(enquiry_resized_photo_path(model, model.primary_photo_id, 328, :ts => model.last_updated_at), :alt => 'Profile Image'), enquiry_resized_photo_path(model, model.primary_photo_id, 640)%>
-      <% else %>
-        <%= link_to image_tag(child_resized_photo_path(model, model.primary_photo_id, 328, :ts => model.last_updated_at), :alt => 'Profile Image'), child_resized_photo_path(model, model.primary_photo_id, 640)%>
-      <% end %>
+      <%= link_to(
+            image_tag(
+              resized_photo_path(model.class.name,
+                                 model.id,
+                                 model.primary_photo_id,
+                                 328),
+              :alt => 'Profile Image'), 
+            resized_photo_path(model.class.name,
+                               model.id,
+                               model.primary_photo_id,
+                               640))%>
         <p class='view-full-size'><%= t("child.messages.see_full_size") %> </p>
       </div>
       <% if can? :edit, model %>
           <%= link_to(t("child.edit_photo"), edit_photo_url(model), :class=>"edit_photo") %>
-          <%= link_to(t("child.manage_photos"), manage_photos_url(model), :class=>"manage_photo") %>
+          <%= link_to(t("child.manage_photos"), manage_photos_path(model.class.name.downcase, model.id), :class=>"manage_photo") %>
       <% end %>
   <% else %>
       <%= image_tag('no_photo_clip.jpg') %>
