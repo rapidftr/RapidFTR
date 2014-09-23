@@ -148,10 +148,6 @@ class Child < BaseModel
     errors.add(:age, I18n.t('errors.models.child.age'))
   end
 
-  def has_valid_audio?
-    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
-  end
-
   def validate_created_at
     if self['created_at']
       DateTime.parse self['created_at']

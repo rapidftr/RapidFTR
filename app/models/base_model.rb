@@ -60,4 +60,8 @@ class BaseModel < CouchRest::Model::Base
   def key_for_content_type(content_type)
     Mime::Type.lookup(content_type).to_sym.to_s
   end
+
+  def has_valid_audio?
+    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
+  end
 end
