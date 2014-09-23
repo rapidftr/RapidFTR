@@ -33,6 +33,21 @@ describe 'enquiries/show.html.erb', :type => :view do
     expect(rendered).to have_tag('#tab_potential_matches')
   end
 
+  it 'should render sidebar' do
+    render 
+    expect(rendered).to render_template(:partial => 'shared/_sidebar', :locals => { :model => @enquiry})
+  end
+
+  it "displays the enquiry photo" do
+    assign(:aside, 'picture')
+    render
+    
+    expect(rendered).to have_tag('.profile-image') do
+      with_tag('a[href=?]', enquiry_resized_photo_path(@enquiry, @enquiry.primary_photo_id, 640))
+      with_tag('img[src=?]', enquiry_resized_photo_path(@enquiry, @enquiry.primary_photo_id, 328))
+    end
+  end
+
   it 'display potential matches section' do
     @potential_matches << create(:child, :name => 'John')
     @potential_matches << create(:child, :name => 'Jane')

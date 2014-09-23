@@ -9,8 +9,13 @@ module ChildrenHelper
   end
   ORDER_BY = {'active' => 'created_at', 'all' => 'created_at', 'reunited' => 'reunited_at', 'flag' => 'flag_at'}
 
-  def thumbnail_tag(child, key = nil)
-    image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt => child['name'])
+  def thumbnail_tag(model, key = nil)
+    if model.class.name == 'Child'
+      image_tag(child_thumbnail_path(model, key || model.current_photo_key, :ts => model.last_updated_at), :alt => model['name'])
+    else
+      binding.pry
+      image_tag(enquiry_thumbnail_path(model, key || model.current_photo_key, :ts => model.last_updated_at), :alt => model['enquirer_name'])
+    end
   end
 
   def link_to_photo_with_key(key)
@@ -26,6 +31,14 @@ module ChildrenHelper
 
   def playable_in_browser?(audio)
     AudioMimeTypes.browser_playable? audio.mime_type
+  end
+
+  def audio_url_for(model)
+    if model.class.name == 'Enquiry'
+      return enquiry_audio_url(model)
+    else
+      return child_audio_url(model)
+    end
   end
 
   def link_to_update_info(child)

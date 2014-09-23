@@ -3,11 +3,11 @@
         <div class="audio">
             <li>
               <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
-              <%= link_to "download", child_audio_url(model), {:id => "audio_link"} %></li>
+              <%= link_to "download", audio_url_for(model), {:id => "audio_link"} %></li>
             <% if playable_in_browser?(model.audio) %>
                 <li>
                   <audio controls="controls" id="audio_player">
-                    <source src="<%= child_audio_url(model) %>"/>
+                    <source src="<%= audio_url_for(model) %>"/>
                     Your browser is unable to play this audio file. You can download the file using the link above.
                   </audio>
 

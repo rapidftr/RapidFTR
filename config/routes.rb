@@ -75,6 +75,7 @@ RapidFTR::Application.routes.draw do
   match '/enquiries/:enquiry_id/photo' => 'media#show_photo', :as => :enquiry_legacy_photo, :via => [:post, :get, :put, :delete]
   match '/enquiries/:enquiry_id/audio(/:id)' => 'media#download_audio', :as => :enquiry_audio, :via => [:get]
   match '/enquiries/:enquiry_id/resized_photo/:size' => 'media#show_resized_photo', :as => :enquiry_legacy_resized_photo, :via => [:get]
+  match '/enquiries/:enquiry_id/photo/:photo_id/resized/:size' => 'media#show_resized_photo', :as => :enquiry_resized_photo, :via => [:get]
   match '/enquiries/:enquiry_id/thumbnail(/:photo_id)' => 'media#show_thumbnail', :as => :enquiry_thumbnail, :via => [:get]
   #######################
   # API URLS

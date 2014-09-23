@@ -85,6 +85,7 @@
 
   <div class="side-tab-content">
     <div class="clearfix"></div>
+    <%= render :partial => 'shared/sidebar', :locals => { :model => @enquiry  } %>
     <%= render :partial => "shared/show_form_section", :locals => {:model => @enquiry} %>
     <%= render :partial => "enquiries/potential_matches" %>
   </div>
