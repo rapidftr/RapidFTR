@@ -69,7 +69,7 @@ module RapidFTR
                   ),
 
         Field.new('name' => 'date_new_arrangement_started',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Date new care arrangement started'
                   )
       ]
@@ -113,7 +113,7 @@ module RapidFTR
                   'display_name_all' => 'What other activities is the child involved in?'
                   ),
         Field.new('name' => 'start_date_of_training',
-                  'type' => 'text_field',
+                  'type' => 'date_field',
                   'display_name_all' => 'Start Date of Training'
                   ),
         Field.new('name' => 'duration_of_training',
