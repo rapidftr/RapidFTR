@@ -14,7 +14,7 @@
                                640))%>
         <p class='view-full-size'><%= t("child.messages.see_full_size") %> </p>
       </div>
-      <% if can? :edit, model %>
+      <% if can?(:edit, model) && model.class == Child %>
           <%= link_to(t("child.edit_photo"), edit_photo_url(model), :class=>"edit_photo") %>
           <%= link_to(t("child.manage_photos"), manage_photos_path(model.class.name.downcase, model.id), :class=>"manage_photo") %>
       <% end %>

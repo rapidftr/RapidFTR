@@ -9,8 +9,25 @@ describe 'shared/_sidebar.html.erb', :type => :view do
     assign(:form_sections, [form_section])
     allow(User).to receive(:find_by_user_name).with('test_user').and_return(double(:organisation => 'stc'))
     @user = User.new
-    @user.stub(:permissions => [Permission::USERS[:create_and_edit]])
+    @user.stub(:user_name => 'test_user')
+    @user.stub(:permissions => [Permission::USERS[:create_and_edit], Permission::ENQUIRIES[:create], Permission::ENQUIRIES[:update], Permission::CHILDREN[:edit]])
     allow(controller).to receive(:current_user).and_return(@user)
+  end
+
+  it 'should display manage and edit photo links for child' do
+    child = create :child, :photo => uploadable_photo_jeff, :created_by => @user.user_name
+    assign :child, child
+    render :template => 'shared/_sidebar.html.erb', :locals => {:model => child}
+    expect(rendered).to have_tag('.profile-image .edit_photo')
+    expect(rendered).to have_tag('.profile-image .manage_photo')
+  end
+
+  it 'should not display manage and edit photo links for enquiry' do
+    enquiry = create :enquiry, :photo => uploadable_photo_jeff, :created_by => @user.user_name
+    assign :enquiry, enquiry
+    render :template => 'shared/_sidebar.html.erb', :locals => {:model => enquiry}
+    expect(rendered).to_not have_tag('.profile-image .edit_photo')
+    expect(rendered).to_not have_tag('.profile-image .manage_photo')
   end
 
   it 'should load enquiry photo given an enquiry' do
