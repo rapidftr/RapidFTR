@@ -7,7 +7,7 @@ Feature: Uploading enquiry attachments
     And the following form sections exist in the system on the "Enquiries" form:
       | name             | unique_id           | editable | order | visible | perm_enabled |
       | Enquiry Criteria | enquiry_criteria    | false    | 1     | true    | false        |
-      | Photos and Audio | enquiry_attachments | false    | 2     | true    | true         |
+      | Photos and Audio | enquiry_attachments | false    | 2     | true    | false        |
     And the following fields exists on "enquiry_criteria":
       | name              | type        | display_name  | editable | matchable  |
       | enquirer_name_001 | text_field  | Enquirer Name | false    | true       |
@@ -73,38 +73,25 @@ Feature: Uploading enquiry attachments
     Then I should see an audio element that can play the audio file named "sample.mp3"
     And I follow "Change Log"
     And the enquiry history should log "Audio"
-    And I debug
     And the enquiry history should log "added by mary"
 
-  #   When I am editing the child with name "Harry"
-  #   And I click the "Photos and Audio" link
-  #   And I attach an audio file "features/resources/sample.mp3"
-  #   And I press "Save"
-  #   Then I should see "Child was successfully updated"
+  Scenario: Uploaded child audio file can be downloaded
+    Given I follow "ENQUIRIES" 
+    Given I follow "Register New Enquiry" 
+    And I fill in "Enquirer Name" with "John"
+    And I click the "Photos and Audio" link
+    And I attach an enquiry audio file "features/resources/sample.mp3"
+    And I press "Save"
+    When I click the "Photos and Audio" link
+    Then I should see an audio element that can play the audio file named "sample.mp3"
+    And I can download the "audio_link"
 
-  #   When I click the "Photos and Audio" link
-  #   Then I should see an audio element that can play the audio file named "sample.mp3"
-  #   # WIP: And the record history should log "Audio changed"
-  #   # WIP: And the record history should log "by bob"
-
-  # Scenario: Uploaded child audio file can be downloaded
-  #   Given I am on the new child page
-  #   And I fill in "Name" with "John"
-  #   And I click the "Photos and Audio" link
-  #   And I attach an audio file "features/resources/sample.mp3"
-  #   And I press "Save"
-
-  #   When I click the "Photos and Audio" link
-  #   Then I should see an audio element that can play the audio file named "sample.mp3"
-  #   And I can download the "audio_link"
-
-  # Scenario: Photos and Audio field should always be visible
-  #   Given I logout as "bob"
-  #   And I am logged in as an admin
-  #   When I am on the form sections page for "Children"
-  #   Then the form section "Photos and Audio" should be listed as visible
-
-  #   When I select the form section "photos_and_audio" to toggle visibility
-  #   And I am on children listing page
-  #   And I follow "Register New Child"
-  #   Then I should see "Photos and Audio"
+  Scenario: Photos and Audio field should always be visible
+    Given I logout as "mary"
+    And I am logged in as an admin
+    When I am on the form sections page for "Enquiries"
+    Then the form section "Photos and Audio" should be listed as visible
+    When I select the form section "enquiry_attachments" to toggle visibility
+    And I am on enquiries listing page
+    And I follow "Register New Enquiry"
+    Then I should see "Photos and Audio"
