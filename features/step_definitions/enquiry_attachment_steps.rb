@@ -1,14 +1,20 @@
-When /^I attach an enquiry audio file "([^"]*)"$/ do |audio_path|
+When /^I attach an enquiry audio file "([^\"]*)"$/ do |audio_path|
   step %(I attach the file "#{audio_path}" to "enquiry[audio]")
 end
 
-When /^I attach an enquiry photo "([^"]*)"$/ do |photo_path|
+When /^I attach an enquiry photo "([^\"]*)"$/ do |photo_path|
   step %(I attach the file "#{photo_path}" to "enquiry_photo0")
 end
 
-Then /^I should see the enquiry photo of "([^\"]*)"$/ do
-  enquiry = Enquiry.first
+Then /^I should see the enquiry photo of "([^\"]*)"$/ do |enquirer_name|
+  enquiry = Enquiry.all.all.find { |e| e.enquirer_name_001 == enquirer_name }
   image_link = resized_photo_path('enquiry', enquiry.id, enquiry.primary_photo_id, 328)
+  expect(page.body).to have_css("img[src^='#{image_link}']")
+end
+
+Then /^I should see the enquiry thumbnail of "([^\"]*)"$/ do |enquirer_name|
+  enquiry = Enquiry.all.all.find { |e| e.enquirer_name_001 == enquirer_name }
+  image_link = thumbnail_path('enquiry', enquiry.id, enquiry.primary_photo_id)
   expect(page.body).to have_css("img[src^='#{image_link}']")
 end
 

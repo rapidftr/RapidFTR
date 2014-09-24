@@ -28,7 +28,7 @@ Feature: Uploading enquiry attachments
     Then I should see "Enquiry record successfully created"
     When I click the "Photos and Audio" link
     Then I should see an audio element that can play the audio file named "sample.mp3"
-    And I should see the enquiry photo of "Charles"
+    And I should see the enquiry thumbnail of "Charles"
     And the enquiry history should log "Record created by mary"
 
   Scenario: Uploading an invalid file in the image and audio field
@@ -59,10 +59,10 @@ Feature: Uploading enquiry attachments
 
   Scenario: Uploading a standard mp3 file to existing enquiry record
     Given the following enquiries exist in the system:
-      |unique_identifier| enquirer_name_001 | child_name_001 |
-      |       1         |bob                | bob chulu      |
+      | unique_identifier | _id   | enquirer_name_001 | child_name_001 |
+      | 0001              | 0001  | bob               | bob chulu      |
     And I follow "ENQUIRIES"
-    And I follow "1"
+    And I follow "0001"
     And I follow "Edit"
     And I click the "Photos and Audio" link
     And I attach an enquiry audio file "features/resources/sample.mp3"
@@ -73,6 +73,7 @@ Feature: Uploading enquiry attachments
     Then I should see an audio element that can play the audio file named "sample.mp3"
     And I follow "Change Log"
     And the enquiry history should log "Audio"
+    And I debug
     And the enquiry history should log "added by mary"
 
   #   When I am editing the child with name "Harry"

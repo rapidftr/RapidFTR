@@ -316,7 +316,7 @@ describe BaseModel, :type => :model do
       base_model.audio
     end
 
-    it 'should return nil if child has not been saved' do
+    it 'should return nil if base_model has not been saved' do
       base_model = BaseModel.new('audio' => uploadable_audio, 'created_by' => 'me', 'created_organisation' => 'stc')
       expect(base_model.audio).to be_nil
     end
@@ -384,4 +384,163 @@ describe BaseModel, :type => :model do
     end
   end
 
+  describe 'history log' do
+    let(:mock_user) { double(:organisation => 'UNICEF', :user_name => 'some_user') }
+
+    before do
+      fields = [
+        build(:text_field, :name => 'last_known_location'),
+        build(:text_field, :name => 'age'),
+        build(:text_field, :name => 'origin'),
+        build(:radio_button_field, :name => 'gender', :option_strings => %w(male female)),
+        build(:photo_field, :name => 'current_photo_key'),
+        build(:audio_field, :name => 'recorded_audio')
+      ]
+      allow(FormSection).to receive(:all_visible_child_fields_for_form).and_return(fields)
+    end
+
+    before :each do
+      allow(User).to receive(:find_by_user_name).with(anything).and_return(mock_user)
+      User.current_user = mock_user
+    end
+
+    after :each do
+      User.current_user = nil
+    end
+
+    it 'should update history with current_user for last_updated_by' do
+      base_model = BaseModel.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['last_known_location'] = 'Philadelphia'
+      base_model.save!
+      expect(base_model['histories'].first['user_name']).to eq('some_user')
+      expect(base_model['histories'].first['user_organisation']).to eq('UNICEF')
+    end
+
+    it 'should add a history entry when a record is created' do
+      base_model = BaseModel.create('last_known_location' => 'New York', 'created_by' => 'me')
+      expect(base_model['histories'].size).to be 1
+      expect(base_model['histories'][0]).to eq('changes' => {'basemodel' => {:created => nil}}, 'datetime' => nil, 'user_name' => 'me', 'user_organisation' => 'UNICEF')
+    end
+
+    it "should update history with 'from' value on last_known_location update" do
+      base_model = BaseModel.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => 'me')
+      base_model['last_known_location'] = 'Philadelphia'
+      base_model.save!
+      changes = base_model['histories'].first['changes']
+      expect(changes['last_known_location']['from']).to eq('New York')
+    end
+
+    it "should update history with 'to' value on last_known_location update" do
+      base_model = BaseModel.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => 'me')
+      base_model['last_known_location'] = 'Philadelphia'
+      base_model.save!
+      changes = base_model['histories'].first['changes']
+      expect(changes['last_known_location']['to']).to eq('Philadelphia')
+    end
+
+    it "should update history with 'from' value on age update" do
+      base_model = BaseModel.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => 'me')
+      base_model['age'] = '6'
+      base_model.save!
+      changes = base_model['histories'].first['changes']
+      expect(changes['age']['from']).to eq('8')
+    end
+
+    it "should update history with 'to' value on age update" do
+      base_model = BaseModel.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => 'me')
+      base_model['age'] = '6'
+      base_model.save!
+      changes = base_model['histories'].first['changes']
+      expect(changes['age']['to']).to eq('6')
+    end
+
+    it 'should update history with a combined history record when multiple fields are updated' do
+      base_model = BaseModel.create('age' => '8', 'last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => 'me')
+      base_model['age'] = '6'
+      base_model['last_known_location'] = 'Philadelphia'
+      base_model.save!
+      expect(base_model['histories'].size).to eq(2)
+      changes = base_model['histories'].first['changes']
+      expect(changes['age']['from']).to eq('8')
+      expect(changes['age']['to']).to eq('6')
+      expect(changes['last_known_location']['from']).to eq('New York')
+      expect(changes['last_known_location']['to']).to eq('Philadelphia')
+    end
+
+    it 'should not record anything in the history if a save occured with no changes' do
+      base_model = BaseModel.create('photo' => uploadable_photo, 'last_known_location' => 'New York', 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model.save!
+      expect(base_model['histories'].size).to be 1
+    end
+
+    it 'should not record empty string in the history if only change was spaces' do
+      base_model = BaseModel.create('origin' => '', 'photo' => uploadable_photo, 'last_known_location' => 'New York', 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['origin'] = '    '
+      base_model.save!
+      expect(base_model['histories'].size).to be 1
+    end
+
+    it 'should not record history on populated field if only change was spaces' do
+      base_model = BaseModel.create('last_known_location' => 'New York', 'photo' => uploadable_photo, 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['last_known_location'] = ' New York   '
+      base_model.save!
+      expect(base_model['histories'].size).to be 1
+    end
+
+    it 'should record history for newly populated field that previously was null' do
+      # gender is the only field right now that is allowed to be nil when creating base_model document
+      base_model = BaseModel.create('gender' => nil, 'last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['gender'] = 'Male'
+      base_model.save!
+      expect(base_model['histories'].first['changes']['gender']['from']).to be_nil
+      expect(base_model['histories'].first['changes']['gender']['to']).to eq('Male')
+    end
+
+    it 'should apend latest history to the front of histories' do
+      base_model = BaseModel.create('last_known_location' => 'London', 'photo' => uploadable_photo, 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['last_known_location'] = 'New York'
+      base_model.save!
+      base_model['last_known_location'] = 'Philadelphia'
+      base_model.save!
+      expect(base_model['histories'].size).to eq(3)
+      expect(base_model['histories'][0]['changes']['last_known_location']['to']).to eq('Philadelphia')
+      expect(base_model['histories'][1]['changes']['last_known_location']['to']).to eq('New York')
+    end
+
+    it 'should update history with the datetime' do
+      base_model = BaseModel.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
+      time = Time.local(2010, 1, 14, 14, 5, 0)
+      Timecop.freeze(time) do
+        base_model['last_known_location'] = 'Philadelphia'
+        base_model.save!
+      end
+      expect(base_model['histories'].first['datetime']).to eq('2010-01-14 14:05:00UTC')
+    end
+
+    it 'should maintain history when base_model is flagged and message is added' do
+      base_model = BaseModel.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['flag'] = 'true'
+      base_model['flag_message'] = 'Duplicate record!'
+      base_model.save!
+      flag_history = base_model['histories'].first['changes']['flag']
+      expect(flag_history['from']).to be_nil
+      expect(flag_history['to']).to eq('true')
+      flag_message_history = base_model['histories'].first['changes']['flag_message']
+      expect(flag_message_history['from']).to be_nil
+      expect(flag_message_history['to']).to eq('Duplicate record!')
+    end
+
+    it 'should maintain history when base_model is reunited and message is added' do
+      base_model = BaseModel.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
+      base_model['reunited'] = 'true'
+      base_model['reunited_message'] = 'Finally home!'
+      base_model.save!
+      reunited_history = base_model['histories'].first['changes']['reunited']
+      expect(reunited_history['from']).to be_nil
+      expect(reunited_history['to']).to eq('true')
+      reunited_message_history = base_model['histories'].first['changes']['reunited_message']
+      expect(reunited_message_history['from']).to be_nil
+      expect(reunited_message_history['to']).to eq('Finally home!')
+    end
+  end
 end

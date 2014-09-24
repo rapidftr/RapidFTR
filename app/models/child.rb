@@ -6,8 +6,6 @@ class Child < BaseModel
   include Searchable
 
   after_initialize :create_unique_id
-
-  before_save :update_organisation
   after_save :find_matching_enquiries
 
   property :short_id

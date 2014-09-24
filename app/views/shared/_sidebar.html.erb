@@ -3,12 +3,12 @@
       <div class='image'>
       <%= link_to(
             image_tag(
-              resized_photo_path(model.class.name,
+                                 resized_photo_path(model.class.name.downcase,
                                  model.id,
                                  model.primary_photo_id,
                                  328),
               :alt => 'Profile Image'), 
-            resized_photo_path(model.class.name,
+              resized_photo_path(model.class.name.downcase,
                                model.id,
                                model.primary_photo_id,
                                640))%>

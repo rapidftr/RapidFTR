@@ -10,6 +10,7 @@ class BaseModel < CouchRest::Model::Base
   validate :validate_audio_size
   validate :validate_audio_file_name
 
+  before_save :update_organisation
   before_save :update_photo_keys
   before_save :update_history, :unless => :new?
   before_save :add_creation_history, :if => :new?

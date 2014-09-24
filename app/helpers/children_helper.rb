@@ -14,15 +14,15 @@ module ChildrenHelper
               :alt => model['name'])
   end
 
-  def link_to_photo_with_key(key)
-    link_to thumbnail_tag(@child, key),
-            photo_path('child', @child.id, key, :ts => @child.last_updated_at),
+  def link_to_photo_with_key(key, model)
+    link_to thumbnail_tag(model, key),
+            photo_path(model.class.name.downcase, model.id, key, :ts => model.last_updated_at),
             :id => key,
             :target => '_blank'
   end
 
-  def link_to_download_audio_with_key(key)
-    link_to key.humanize, audio_url('child', @child.id, key), :id => key, :target => '_blank'
+  def link_to_download_audio_with_key(model, key)
+    link_to key.humanize, audio_url(model.class.name.downcase, model.id, key), :id => key, :target => '_blank'
   end
 
   def playable_in_browser?(audio)

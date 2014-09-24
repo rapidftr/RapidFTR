@@ -110,6 +110,12 @@ class User < CouchRest::Model::Base
 
   before_save :generate_id
 
+  @current_user = nil
+
+  class << self
+    attr_accessor :current_user
+  end
+
   # In order to track changes on attributes declared as attr_accessor and
   # trigger the callbacks we need to use attribute_will_change! method.
   # check lib/couchrest/model/extended_attachments.rb in source code.
