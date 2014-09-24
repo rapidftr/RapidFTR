@@ -98,6 +98,11 @@
         </p>
     <% end %>
 
+    <p>
+      <%= f.label :share_contact_info, t("share_contact_info"), :class=>'key'  %>
+      <%= f.check_box :share_contact_info, {}, "true", "false" %>
+    </p>
+
     <%= f.hidden_field :verified, :value => true %>
 
     </fieldset>
