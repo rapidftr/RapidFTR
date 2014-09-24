@@ -1,7 +1,6 @@
 <% content_for :javascript do %>
   <script language="javascript" type="text/javascript">
     $(document).ready(function(){
-      $("#audio_player").hide();
       $("#jplayer-placeholder").jPlayer({
         ready: function () {
           var audio = $("#audio_link").attr("href");

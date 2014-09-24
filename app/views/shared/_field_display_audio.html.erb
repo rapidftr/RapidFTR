@@ -6,10 +6,6 @@
               <%= link_to "download", audio_url_for(model), {:id => "audio_link"} %></li>
             <% if playable_in_browser?(model.audio) %>
                 <li>
-                  <audio controls="controls" id="audio_player">
-                    <source src="<%= audio_url_for(model) %>"/>
-                    Your browser is unable to play this audio file. You can download the file using the link above.
-                  </audio>
 
                   <%= render :partial => "shared/audio_player" %>
 
