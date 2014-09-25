@@ -9,7 +9,6 @@ describe MediaController, :type => :controller do
   shared_examples 'photos' do
     before do
       fake_login
-      @model_id = "#{model}_id".to_sym
     end
 
     describe '#send_photo_data' do
@@ -34,7 +33,7 @@ describe MediaController, :type => :controller do
                 with_id('1').
                 with_photo(uploadable_photo, 'current')
 
-        get :show_photo, @model_id => '1'
+        get :show_photo, :model_type => model, :model_id => '1'
         expect(response).to redirect_to(:photo_id => 'current', :ts => Date.today)
       end
 
@@ -44,7 +43,7 @@ describe MediaController, :type => :controller do
         with_photo(uploadable_photo, 'current').
         with_photo(uploadable_photo_jeff, 'other', false)
 
-        get :show_photo, @model_id => '1', :photo_id => 'other'
+        get :show_photo, :model_type => model, :model_id => '1', :photo_id => 'other'
         expect(response).to represent_inline_attachment(uploadable_photo_jeff)
       end
 
@@ -53,7 +52,7 @@ describe MediaController, :type => :controller do
                 with_id('1').
                 with_photo(uploadable_photo, 'current')
 
-        get :show_resized_photo, @model_id => '1', :size => 300
+        get :show_resized_photo, :model_type => model, :model_id => '1', :size => 300
         expect(response).to redirect_to(:photo_id => 'current', :ts => Date.today)
       end
 
@@ -62,7 +61,7 @@ describe MediaController, :type => :controller do
                 with_id('1').
                 with_photo(uploadable_photo, 'current')
 
-        get :show_resized_photo, @model_id => '1', :photo_id => 'current', :size => 300
+        get :show_resized_photo, :model_type => model, :model_id => '1', :photo_id => 'current', :size => 300
         expect(to_image(response.body)[:width]).to eq(300)
       end
 
@@ -72,7 +71,7 @@ describe MediaController, :type => :controller do
         with_photo(uploadable_photo_jeff).
                 with_photo(uploadable_photo, 'other', false)
 
-        get :show_thumbnail, @model_id => '1', :photo_id => 'other'
+        get :show_thumbnail, :model_type => model, :model_id => '1', :photo_id => 'other'
 
         thumbnail = to_thumbnail(160, uploadable_photo.original_filename)
         expect(response).to represent_inline_attachment(thumbnail)
@@ -83,7 +82,7 @@ describe MediaController, :type => :controller do
                 with_id('1').
                 with_no_photos
 
-        get :show_photo, @model_id => '1'
+        get :show_photo, :model_type => model, :model_id => '1'
         expect(response).to redirect_to(:photo_id => '_missing_')
       end
 
@@ -92,7 +91,7 @@ describe MediaController, :type => :controller do
                 with_id('1').
                 with_no_photos
 
-        get :show_photo, @model_id => '1', :photo_id => '_missing_'
+        get :show_photo, :model_type => model, :model_id => '1', :photo_id => '_missing_'
         expect(response).to represent_inline_attachment(no_photo_clip)
       end
 
@@ -104,7 +103,7 @@ describe MediaController, :type => :controller do
               with(:current_photo_key => 'test').
               with(:last_updated_at => 'test')
 
-        get :show_thumbnail, @model_id => '1'
+        get :show_thumbnail, :model_type => model, :model_id => '1'
         expect(response).to redirect_to(:photo_id => 'test', :ts => 'test')
       end
     end
@@ -116,7 +115,7 @@ describe MediaController, :type => :controller do
                 with_unique_identifier("#{model}123").
                 with_audio(uploadable_audio_amr)
 
-        get :download_audio, @model_id => '1'
+        get :download_audio, :model_type => model, :model_id => '1'
         expect(response).to represent_attachment(uploadable_audio_amr, "audio_#{model}123.amr")
       end
 
@@ -126,7 +125,7 @@ describe MediaController, :type => :controller do
                 with_unique_identifier("#{model}123").
                 with_audio(uploadable_audio_mp3)
 
-        get :download_audio, @model_id => '1'
+        get :download_audio, :model_type => model, :model_id => '1'
         expect(response).to represent_attachment(uploadable_audio_mp3, "audio_#{model}123.mp3")
       end
     end

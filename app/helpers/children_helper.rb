@@ -9,23 +9,28 @@ module ChildrenHelper
   end
   ORDER_BY = {'active' => 'created_at', 'all' => 'created_at', 'reunited' => 'reunited_at', 'flag' => 'flag_at'}
 
-  def thumbnail_tag(child, key = nil)
-    image_tag(child_thumbnail_path(child, key || child.current_photo_key, :ts => child.last_updated_at), :alt => child['name'])
+  def thumbnail_tag(model, key = nil)
+    image_tag(thumbnail_path(model.class.name.downcase, model.id, key || model.current_photo_key, :ts => model.last_updated_at),
+              :alt => model['name'])
   end
 
-  def link_to_photo_with_key(key)
-    link_to thumbnail_tag(@child, key),
-            child_photo_path(@child, key, :ts => @child.last_updated_at),
+  def link_to_photo_with_key(key, model)
+    link_to thumbnail_tag(model, key),
+            photo_path(model.class.name.downcase, model.id, key, :ts => model.last_updated_at),
             :id => key,
             :target => '_blank'
   end
 
-  def link_to_download_audio_with_key(key)
-    link_to key.humanize, child_audio_url(@child.id, key), :id => key, :target => '_blank'
+  def link_to_download_audio_with_key(model, key)
+    link_to key.humanize, audio_url(model.class.name.downcase, model.id, key), :id => key, :target => '_blank'
   end
 
   def playable_in_browser?(audio)
     AudioMimeTypes.browser_playable? audio.mime_type
+  end
+
+  def audio_url_for(model)
+    audio_url(model.class.name.downcase, model.id)
   end
 
   def link_to_update_info(child)

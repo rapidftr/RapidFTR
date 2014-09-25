@@ -16,7 +16,7 @@ Feature:
 
     When I click the "Photos and Audio" link
     Then I should see an audio element that can play the audio file named "sample.mp3"
-    And I should see the photo of "John"
+    And I should see the thumbnail of "John"
     And the record history should log "Record created by bob"
 
   Scenario: Uploading an invalid file in the image and audio field
@@ -38,7 +38,7 @@ Feature:
       |features/resources/jeff.png |
     And I press "Save"
     Then I should see "Child record successfully created"
-    And I should see the photo of "John"
+    And I should see the thumbnail of "John"
 
     When I click the "Photos and Audio" link
     Then I should see "2" thumbnails
@@ -123,7 +123,7 @@ Feature:
       |features/resources/jeff.png |
     And I press "Save"
     Then I should see "Child record successfully created"
-    And I should see the photo of "John"
+    And I should see the thumbnail of "John"
 
     When I click the "Photos and Audio" link
     Then I should see "2" thumbnails
@@ -135,7 +135,7 @@ Feature:
     When I check "Delete photo?"
     And I press "Save"
     Then I should see "Child was successfully updated"
-    And I should see the photo of "John"
+    And I should see the thumbnail of "John"
 
     When I click the "Photos and Audio" link
     Then I should see "1" thumbnails

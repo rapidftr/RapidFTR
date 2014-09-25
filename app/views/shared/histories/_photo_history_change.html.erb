@@ -2,14 +2,14 @@
 <% unless new_photos.blank? %>
   <%= new_photos.size > 1 ? "Photos" : "Photo" %>
   <% new_photos.each do |new_photo| %>
-    <%= link_to_photo_with_key(new_photo) %>
+    <%= link_to_photo_with_key(new_photo, model) %>
   <% end %>
   <%=	t("histories.added_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %>
 <% end %>
 <% unless deleted_photos.blank? %>
   <%= deleted_photos.size > 1 ? "Photos" : "Photo" %>
   <% deleted_photos.each do |deleted_photo| %>
-    <%= link_to_photo_with_key(deleted_photo) %>
+    <%= link_to_photo_with_key(deleted_photo, model) %>
   <% end %>
   <%=	t("histories.deleted_by") %> <%= user_name %> <%=	t("histories.belong_to") %> <%= organisation %>
 <% end %>

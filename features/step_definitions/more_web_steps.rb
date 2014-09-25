@@ -112,11 +112,15 @@ end
 
 Then /^I should see an audio element that can play the audio file named "([^"]*)"$/ do |_filename|
   url = current_url.gsub '/edit', ''
-  expect(page.body).to have_selector("//audio/source[@src='#{url}/audio']")
+  url = url.gsub 'children', 'child'
+  url = url.gsub 'enquiries', 'enquiry'
+  expect(page.body).to have_selector(:css, ".audio a[href='#{url}/audio']")
+  expect(page.body).to have_selector(:css, '.audio_player')
+  expect(page.body).to have_selector(:css, '.jp-audio')
 end
 
 Then /^I should not see an audio tag$/ do
-  expect(page.body).not_to have_selector('//audio')
+  expect(page.body).not_to have_selector(:css, '.audio_player')
 end
 
 When /^I visit the "([^"]*)" tab$/ do |name_of_tab|

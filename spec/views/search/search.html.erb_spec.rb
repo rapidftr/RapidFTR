@@ -62,7 +62,7 @@ describe 'search/search.html.erb', :type => :view do
       fail 'no image tag' if first_image_tag.nil?
 
       child = @results.first
-      expect(first_image_tag['src']).to eq("/children/#{child.id}/thumbnail/#{child.primary_photo_id}")
+      expect(first_image_tag['src']).to eq("/child/#{child.id}/thumbnail/#{child.primary_photo_id}")
     end
 
     it 'should show thumbnails with urls for child details page for each child if asked' do

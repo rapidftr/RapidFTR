@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   before_action :check_authentication
   before_action :extend_session_lifetime
   before_action :set_locale
+  around_action :set_current_user
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
     fail e if Rails.env.development?
@@ -54,6 +55,13 @@ class ApplicationController < ActionController::Base
       I18n.locale = (current_user.locale || I18n.default_locale)
       RapidFTR::Translations.set_fallbacks
     end
+  end
+
+  def set_current_user
+    User.current_user = current_user
+    response = yield if block_given?
+    User.current_user = nil
+    response
   end
 
   def clean_params(param)

@@ -24,7 +24,7 @@ class MediaController < ApplicationController
 
   def download_audio
     find_audio_attachment
-    controller = controller_name_from_current_uri
+    controller = controller_name_from_params
     redirect_to(:controller => controller, :action => 'show', :id => @model.id) && return unless @attachment
     send_data(@attachment.data.read, :filename => audio_filename(@attachment), :type => @attachment.content_type)
   end
@@ -36,9 +36,9 @@ class MediaController < ApplicationController
   private
 
   def find_model
-    model_class = model_name_from_current_uri
-    model_id = "#{model_class}_id".downcase.to_sym
-    @model = model_class.get(params[model_id])
+    throw 'Must provide model type and id' if params[:model_type].nil? || params[:model_id].nil?
+    model_class = params[:model_type].classify.constantize
+    @model = model_class.get(params[:model_id])
   end
 
   def find_audio_attachment
@@ -72,8 +72,8 @@ class MediaController < ApplicationController
   def photos_details
     @model['photo_keys'].map do |photo_key|
       {
-        :photo_url => child_photo_url(@model, photo_key),
-        :thumbnail_url => child_thumbnail_url(@model, photo_key),
+        :photo_url => photo_url(@model.class.name.downcase, @model.id, photo_key),
+        :thumbnail_url => thumbnail_url(@model.class.name.downcase, @model.id, photo_key),
         :select_primary_photo_url => child_select_primary_photo_url(@model, photo_key)
       }
     end
@@ -84,12 +84,7 @@ class MediaController < ApplicationController
     send_data(*args)
   end
 
-  def model_name_from_current_uri
-    url_for(:only_path => true).split('/')[1].singularize.capitalize.constantize
-  end
-
-  def controller_name_from_current_uri
-    model_name = model_name_from_current_uri.to_s
-    model_name.downcase.pluralize
+  def controller_name_from_params
+    params[:model_type].pluralize
   end
 end

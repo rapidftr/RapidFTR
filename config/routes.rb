@@ -50,18 +50,23 @@ RapidFTR::Application.routes.draw do
   get '/search', :to => 'search#search', :as => 'search'
 
   match '/children-ids' => 'child_ids#all', :as => :child_ids, :via => [:post, :get, :put, :delete]
+  match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
+  match '/children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
   match '/children/:id/photo/edit' => 'children#edit_photo', :as => :edit_photo, :via => :get
   match '/children/:id/photo' => 'children#update_photo', :as => :update_photo, :via => :put
-  match '/children/:child_id/photos_index' => 'media#index', :as => :photos_index, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photos' => 'media#manage_photos', :as => :manage_photos, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/audio(/:id)' => 'media#download_audio', :as => :child_audio, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photo/:photo_id' => 'media#show_photo', :as => :child_photo, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photo' => 'media#show_photo', :as => :child_legacy_photo, :via => [:post, :get, :put, :delete]
-  match 'children/:child_id/select_primary_photo/:photo_id' => 'children#select_primary_photo', :as => :child_select_primary_photo, :via => :put
-  match '/children/:child_id/resized_photo/:size' => 'media#show_resized_photo', :as => :child_legacy_resized_photo, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/photo/:photo_id/resized/:size' => 'media#show_resized_photo', :as => :child_resized_photo, :via => [:post, :get, :put, :delete]
-  match '/children/:child_id/thumbnail(/:photo_id)' => 'media#show_thumbnail', :as => :child_thumbnail, :via => [:post, :get, :put, :delete]
-  match '/children' => 'children#index', :as => :child_filter, :via => [:post, :get, :put, :delete]
+  # Legacy routing to support old Android APK
+  get '/children/:model_id/photo' => 'media#show_photo', :as => :child_legacy_photo, :defaults => {:model_type => 'child'}
+  get '/children/:model_id/resized_photo/:size' => 'media#show_resized_photo', :as => :child_legacy_resized_photo, :defaults => {:model_type => 'child'}
+  get '/children/:model_id/photos_index' => 'media#index', :as => :photos_index, :defaults => {:model_type => 'child'}
+
+  #######################
+  # MEDIA URLS
+  #######################
+  get '/:model_type/:model_id/photos' => 'media#manage_photos', :as => :manage_photos
+  get '/:model_type/:model_id/photo/:photo_id' => 'media#show_photo', :as => :photo
+  get '/:model_type/:model_id/photo/:photo_id/resized/:size' => 'media#show_resized_photo', :as => :resized_photo
+  get '/:model_type/:model_id/thumbnail(/:photo_id)' => 'media#show_thumbnail', :as => :thumbnail
+  get '/:model_type/:model_id/audio(/:id)' => 'media#download_audio', :as => :audio
 
   #######################
   # ENQUIRY URLS
@@ -71,11 +76,6 @@ RapidFTR::Application.routes.draw do
     resources :potential_matches, :only => [:destroy, :update]
   end
 
-  match '/enquiries/:enquiry_id/photo/:photo_id' => 'media#show_photo', :as => :enquiry_photo, :via => [:get]
-  match '/enquiries/:enquiry_id/photo' => 'media#show_photo', :as => :enquiry_legacy_photo, :via => [:post, :get, :put, :delete]
-  match '/enquiries/:enquiry_id/audio(/:id)' => 'media#download_audio', :as => :enquiry_audio, :via => [:get]
-  match '/enquiries/:enquiry_id/resized_photo/:size' => 'media#show_resized_photo', :as => :enquiry_legacy_resized_photo, :via => [:get]
-  match '/enquiries/:enquiry_id/thumbnail(/:photo_id)' => 'media#show_thumbnail', :as => :enquiry_thumbnail, :via => [:get]
   #######################
   # API URLS
   #######################

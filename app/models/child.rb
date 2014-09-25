@@ -6,8 +6,6 @@ class Child < BaseModel
   include Searchable
 
   after_initialize :create_unique_id
-
-  before_save :update_organisation
   after_save :find_matching_enquiries
 
   property :short_id
@@ -146,10 +144,6 @@ class Child < BaseModel
   def validate_age
     return true if age.nil? || age.blank? || !age.number? || (age =~ /^\d{1,2}(\.\d)?$/ && age.to_f > 0 && age.to_f < 100)
     errors.add(:age, I18n.t('errors.models.child.age'))
-  end
-
-  def has_valid_audio?
-    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
   end
 
   def validate_created_at

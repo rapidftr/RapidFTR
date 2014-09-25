@@ -318,7 +318,7 @@ describe UsersController, :type => :controller do
 
   describe 'register_unverified' do
     it 'should set verified status to false' do
-      expect(User).to receive(:find_by_user_name).and_return(nil)
+      expect(User).to receive(:find_by_user_name).twice.and_return(nil)
       expect(User).to receive(:new).with('user_name' => 'salvador', 'verified' => false, 'password' => 'password', 'password_confirmation' => 'password').and_return(user = 'some_user')
       expect(user).to receive :save!
 

@@ -21,11 +21,11 @@ describe ChildrenHelper, :type => :helper do
   describe '#thumbnail_tag' do
     it 'should use current photo key if photo ID is not specified' do
       child = stub_model Child, :id => 1001, :current_photo_key => 'current'
-      expect(helper.thumbnail_tag(child)).to eq('<img src="/children/1001/thumbnail/current" />')
+      expect(helper.thumbnail_tag(child)).to eq('<img src="/child/1001/thumbnail/current" />')
     end
     it 'should use photo ID if specified' do
       child = stub_model Child, :id => 1001, :current_photo_key => 'current'
-      expect(helper.thumbnail_tag(child, 'custom-id')).to eq('<img src="/children/1001/thumbnail/custom-id" />')
+      expect(helper.thumbnail_tag(child, 'custom-id')).to eq('<img src="/child/1001/thumbnail/custom-id" />')
     end
   end
 
