@@ -11,6 +11,10 @@ h1
 - if can? :manage, SystemUsers
   br
   p
+    = link_to t("admin.system_variables"), system_variables_path
+- if can? :manage, SystemUsers
+  br
+  p
     = link_to t("admin.manage_system_users"), system_users_path
 = form_tag admin_update_path, :method => "put"  do
   = label_tag "user_locale", t("home.language")

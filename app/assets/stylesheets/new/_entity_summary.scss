@@ -1,20 +1,19 @@
 .entity_list {
   @extend .clearfix;
 
-
   .entity_summary_panel {
     background: $bg-child-summary;
     border: 1px solid $border-child-summary;
     @include borderRadius(2px);
     margin: 10px 0px;
-    float:left;
+    float: left;
     width: 100%;
     @extend .clearfix;
 
-    p.checkbox{
+    p.checkbox {
       background: #EEE;
       border: 1px solid #D4D1D1;
-      border-right:0px;
+      border-right: 0px;
       left: -231px;
       padding: 5px;
       position: absolute;
@@ -26,16 +25,16 @@
       width: 160px;
       height: 160px;
 
-      margin:10px;
+      margin: 10px;
       background: #fff;
       border: 10px solid #fff;
     }
 
-    .photos, .audio{
+    .photos, .audio {
       margin-right: 220px;
     }
 
-    .photos .thumbnail{
+    .photos .thumbnail {
       float: left;
       margin: 2px;
       height: 140px;
@@ -44,7 +43,7 @@
     .summary_panel {
       float: left;
       padding: 10px 10px 10px 0px;
-      width:auto;
+      width: auto;
       max-width: 78%;
       min-width: 70%;
       position: relative;
@@ -52,24 +51,24 @@
       h2 {
         font-size: 1.4em;
 
-        padding:5px 10px 10px 0px;
+        padding: 5px 10px 10px 0px;
       }
 
-      .flag{
-        position:absolute;
-        top:0px;
-        width:22px;
-        height:36px;
+      .flag {
+        position: absolute;
+        top: 0px;
+        width: 22px;
+        height: 36px;
       }
 
-      .reunited{
-        right:10px;
-        background:image-url('new/icon_reunited.png') no-repeat;
+      .reunited {
+        right: 10px;
+        background: image-url('new/icon_reunited.png') no-repeat;
       }
 
-      .suspect{
+      .suspect {
         right: 40px;
-        background:image-url('new/icon_flagged.png') no-repeat;
+        background: image-url('new/icon_flagged.png') no-repeat;
       }
 
       .photowall {
@@ -77,26 +76,25 @@
         background: image-url('new/icon_photowall.png') no-repeat;
       }
 
-      .summary_item{
+      .summary_item {
         @extend .clearfix;
         border-top: 1px solid #ddd;
         font-size: 0.95em;
 
-      .key {
-        color: #666;
-        padding:10px 0px 10px 20px;
-        float: left;
-        width:180px;
-      }
-      .value {
-        color: #000;
-        padding:10px;
-        float:left;
-        /*width:470px;*/
+        .key {
+          color: #666;
+          padding: 10px 0px 10px 20px;
+          float: left;
+          width: 180px;
+        }
+        .value {
+          color: #000;
+          padding: 10px;
+          float: left;
+          /*width:470px;*/
 
+        }
       }
-      }
-
     }
 
     .action_panel {
@@ -104,33 +102,43 @@
       padding: 5px 10px 8px;
       border-top: 1px solid $border-child-summary;
       font-size: 1.3em;
-      color:#aaa;
+      color: #aaa;
 
-        a{
-            margin:0px 10px;
-            font-size: 0.8em;
-        }
+      a {
+        margin: 0px 10px;
+        font-size: 0.8em;
+      }
 
-      li{
+      li {
         display: inline;
       }
 
     }
+
+    .left_side {
+      float: left;
+    }
+
+    .score_panel h2 {
+      text-align: center;
+      width: 100%;
+      font-size: 2em !important;
+    }
   }
 
-  .results-count{
+  .results-count {
     float: right;
     margin: 0 26px 0 0;
     color: #4b515f;
   }
 
-  .child_summary_panel.sel{
-    background:#e5efff;
-    border:1px solid #bdd7ff;
+  .child_summary_panel.sel {
+    background: #e5efff;
+    border: 1px solid #bdd7ff;
 
-    p.checkbox{
-      background:#e5efff;
-      border:1px solid #bdd7ff;
+    p.checkbox {
+      background: #e5efff;
+      border: 1px solid #bdd7ff;
       border-right: 0px;
     }
   }

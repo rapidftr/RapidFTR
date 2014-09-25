@@ -465,6 +465,10 @@ en:
     manage_system_users: "Manage Server Synchronisation Users"
     create_system_user: Create a System User
     system_logs: "System Logs"
+    system_variables: "System Variables"
+    manage_system_variables: "Manage System Variables"
+    key: "Key"
+    value: "Value"
 
   fields:
     label: "Fields"

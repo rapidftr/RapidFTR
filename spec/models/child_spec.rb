@@ -679,12 +679,13 @@ describe Child, :type => :model do
 
     it 'should be triggered after save' do
       enquiry = build(:enquiry, :child_name => 'Eduardo')
-      allow(MatchService).to receive(:search_for_matching_enquiries).and_return([enquiry])
+      allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry.id => '0.9')
       child = create(:child, :name => 'Eduardo')
 
       expect(PotentialMatch.count).to eq(1)
       expect(PotentialMatch.first.child_id).to eq(child.id)
       expect(PotentialMatch.first.enquiry_id).to eq(enquiry.id)
+      expect(PotentialMatch.first.score).to eq('0.9')
     end
   end
 

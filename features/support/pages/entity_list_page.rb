@@ -45,6 +45,10 @@ class EntityListPage
     end
   end
 
+  def should_be_showing_score(score_count)
+    expect(@session.all(:css, CHILD_SCORE_PANEL_SELECTOR).count).to eq score_count
+  end
+
   PAGINATION_SELECTOR = 'div.pagination'
   PREV_PAGE_LINK_SELECTOR =  "#{PAGINATION_SELECTOR} a.previous_page"
   NEXT_PAGE_LINK_SELECTOR = "#{PAGINATION_SELECTOR} a.next_page"
@@ -52,4 +56,5 @@ class EntityListPage
   NEXT_PAGE_DISABLED_LINK_SELECTOR = "#{PAGINATION_SELECTOR} span.next_page"
   CURRENT_PAGE_INDICATOR_SELECTOR = "#{PAGINATION_SELECTOR} em.current"
   CHILD_SUMMARY_PANEL_SELECTOR = '.entity_summary_panel'
+  CHILD_SCORE_PANEL_SELECTOR = '.score_panel'
 end

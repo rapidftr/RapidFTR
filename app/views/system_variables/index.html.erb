@@ -1,0 +1,25 @@
+<h1 class="no_border float_left"><%= t('admin.manage_system_variables') %> </h1>
+
+<%= form_tag({:controller => 'system_variables', :action => 'update'}, :method => 'PATCH') do %>
+  <table class="list_table">
+    <thead>
+    <tr>
+      <th><%= t('admin.key') %></th>
+      <th colspan="2"><%= t('admin.value') %></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @system_variables.each do |variable| %>
+        <tr id="system-row-<%= variable.name %>">
+          <td><%= variable.name %></td>
+          <td>
+            <%= text_field_tag "system_variables[#{variable.id}]", variable.value, :type => 'number', :step => '0.001', :min => '0'%>
+          </td>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <button type="submit"><%= t('buttons.save')%></button>
+<% end %>

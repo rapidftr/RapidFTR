@@ -191,6 +191,9 @@ RapidFTR::Application.routes.draw do
 
   resources :system_users, :path => '/admin/system_users'
 
+  resources :system_variables, :path => '/admin/system_variables', :controller => 'system_variables', :except => [:update]
+  match '/admin/system_variables' => 'system_variables#update', :via => [:put, :patch]
+
   #######################
   # REPORTING URLS
   #######################

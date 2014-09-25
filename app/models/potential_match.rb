@@ -5,6 +5,8 @@ class PotentialMatch < CouchRest::Model::Base
   belongs_to :child
   property :marked_invalid, TrueClass, :default => false
   property :confirmed, TrueClass, :default => false
+  property :score, String
+  property :deleted, TrueClass, :default => false
   timestamps!
   validates :child_id, :uniqueness => {:scope => :enquiry_id}
 
@@ -12,6 +14,8 @@ class PotentialMatch < CouchRest::Model::Base
     view :by_enquiry_id
     view :by_enquiry_id_and_child_id
     view :by_enquiry_id_and_confirmed
+    view :by_enquiry_id_and_marked_invalid
+    view :by_enquiry_id_and_deleted
     view :by_child_id_and_confirmed
     view :all_valid_enquiry_ids,
          :map => "function(doc) {
@@ -29,16 +33,16 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   class << self
-    def create_matches_for_child(child_id, enquiry_ids)
-      enquiry_ids.each do |id|
-        pm = PotentialMatch.new :enquiry_id => id, :child_id => child_id
+    def create_matches_for_child(child_id, hits)
+      hits.each do |enquiry_id, score|
+        pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
         pm.save
       end
     end
 
-    def create_matches_for_enquiry(enquiry_id, child_ids)
-      child_ids.each do |id|
-        pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => id
+    def create_matches_for_enquiry(enquiry_id, hits)
+      hits.each do |child_id, score|
+        pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
         pm.save
       end
     end

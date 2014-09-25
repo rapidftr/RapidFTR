@@ -102,9 +102,8 @@ class Enquiry < BaseModel
 
   def potential_matches
     potential_matches = PotentialMatch.by_enquiry_id.key(id).all
-    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? }
-    child_ids = potential_matches.each.map(&:child_id)
-    child_ids.map { |id| Child.get(id) }
+    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? || pm.deleted? }
+    potential_matches.sort_by(&:score).reverse! || []
   end
 
   def update_from(properties)
@@ -124,10 +123,19 @@ class Enquiry < BaseModel
 
   def find_matching_children
     previous_matches = potential_matches
-    children = MatchService.search_for_matching_children(criteria)
-    PotentialMatch.create_matches_for_enquiry id, children.map(&:id)
-    verify_format_of(previous_matches)
+    hits = MatchService.search_for_matching_children(criteria)
+    score_threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
 
+    potential_matches_to_mark_deleted = previous_matches.select { |pm| hits[pm.child_id].to_f < score_threshold.value.to_f }
+    marked_potential_matches_as_deleted(potential_matches_to_mark_deleted)
+
+    potential_matches.reject! { |pm| potential_matches_to_mark_deleted.include?(pm) }
+    updated_potential_matches_score(potential_matches, hits)
+
+    hits.reject! { |_id, score| score.to_f < score_threshold.value.to_f }
+
+    PotentialMatch.create_matches_for_enquiry id, hits
+    verify_format_of(previous_matches)
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
@@ -172,6 +180,22 @@ class Enquiry < BaseModel
 
   private
 
+  def updated_potential_matches_score(matches, hits)
+    matches.each do |pm|
+      if hits.keys.include?(pm.child_id)
+        pm.score = hits[pm.child_id]
+        pm.save!
+      end
+    end
+  end
+
+  def marked_potential_matches_as_deleted(matches)
+    matches.each do |pm|
+      pm.deleted = true
+      pm.save!
+    end
+  end
+
   def strip_whitespaces
     keys.each do |key|
       value = self[key]
@@ -200,11 +224,11 @@ class Enquiry < BaseModel
         PotentialMatch.paginates_per options.delete(:per_page)
         page = options.delete(:page)
         results = PotentialMatch.
-                    all_valid_enquiry_ids(options).
-                    page(page).
-                    reduce.
-                    group.
-                    rows
+            all_valid_enquiry_ids(options).
+            page(page).
+            reduce.
+            group.
+            rows
         pager.replace(results.map { |r| Enquiry.find(r['key']) })
         pager.total_entries = PotentialMatch.all_valid_enquiry_ids.reduce.group.rows.count
       end

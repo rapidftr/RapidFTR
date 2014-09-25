@@ -19,7 +19,7 @@ describe Api::EnquiriesController, :type => :controller do
       build(:numeric_field, :name => 'age'),
       build(:text_field, :name => 'gender')
     ], :form => form
-
+    allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
   end
 
   describe '#authorizations' do
@@ -220,15 +220,15 @@ describe Api::EnquiriesController, :type => :controller do
 
       enquiry = Enquiry.create(:enquirer_name => 'Godwin', :sex => 'male', :age => '10', :location => 'Kampala')
 
-      expect(Enquiry.get(enquiry.id).potential_matches).to include(child2)
+      expect(Enquiry.get(enquiry.id).potential_matches.map(&:child)).to include(child2)
 
       put :update, :id => enquiry.id, :enquiry => {:child_name => 'aquiles', :age => '10', :location => 'Kampala'}
       expect(response.response_code).to eq(200)
 
       enquiry_after_update = Enquiry.get(enquiry.id)
       expect(enquiry_after_update.potential_matches.size).to eq(2)
-      expect(enquiry_after_update.potential_matches).to include(child1)
-      expect(enquiry_after_update.potential_matches).to include(child2)
+      expect(enquiry_after_update.potential_matches.map(&:child)).to include(child1)
+      expect(enquiry_after_update.potential_matches.map(&:child)).to include(child2)
       expect(enquiry_after_update['criteria']).to eq('child_name' => 'aquiles', 'age' => '10', 'location' => 'Kampala', 'sex' => 'male')
     end
   end
