@@ -5,7 +5,7 @@
               <span class="profile-section-label"><%= field ? field.display_name : 'Current Audio' %>:</span>
               <%= link_to "download", audio_url_for(model), {:id => "audio_link"} %></li>
             <% if playable_in_browser?(model.audio) %>
-                <li>
+                <li class="audio_player">
 
                   <%= render :partial => "shared/audio_player" %>
 
