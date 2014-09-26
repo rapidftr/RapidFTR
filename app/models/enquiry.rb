@@ -132,6 +132,17 @@ class Enquiry < BaseModel
     potential_matches.reject! { |pm| potential_matches_to_mark_deleted.include?(pm) }
     updated_potential_matches_score(potential_matches, hits)
 
+    previous_deleted_matches = PotentialMatch.by_enquiry_id_and_deleted.key([id, true]).all
+    previous_deleted_matches = previous_deleted_matches.select { |pm| hits[pm.child_id].to_f > score_threshold.value.to_f }
+
+    previous_deleted_matches.each do |pm|
+      next unless hits.keys.include?(pm.child_id)
+
+      pm.score = hits[pm.child_id]
+      pm.deleted = false
+      pm.save!
+    end
+
     hits.reject! { |_id, score| score.to_f < score_threshold.value.to_f }
 
     PotentialMatch.create_matches_for_enquiry id, hits
