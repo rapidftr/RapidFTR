@@ -15,7 +15,7 @@ module Api
         render(:json => {:error => @enquiry.errors.full_messages}, :status => 422) && return
       end
 
-      @enquiry.save
+      Enquiry.without_histories { @enquiry.save }
       render :json => @enquiry, :status => 201
     end
 
@@ -33,7 +33,7 @@ module Api
         return
       end
 
-      enquiry.save!
+      Enquiry.without_histories { enquiry.save! }
       render :json => enquiry
     end
 

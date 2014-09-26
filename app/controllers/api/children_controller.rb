@@ -30,7 +30,7 @@ module Api
       create_or_update_child(params)
       @child['created_by_full_name'] = current_user_full_name
 
-      @child.save!
+      Child.without_histories { @child.save! }
       render :json => @child.compact
     end
 
@@ -39,7 +39,7 @@ module Api
 
       child = update_child_from params
 
-      child.save!
+      Child.without_histories { child.save! }
       render :json => child.compact
     end
 

@@ -100,6 +100,17 @@ describe Api::EnquiriesController, :type => :controller do
       expect(saved_enquiry[:created_organisation]).to eq enquiry[:created_organisation]
       expect(saved_enquiry[:posted_at]).to eq '2014-08-26 08:15:22 +0000'
     end
+
+    it 'should not duplicate histories from params' do
+      enquiry = {:enquirer_name => 'John Doe',
+                 :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}]
+      }
+
+      post :create, :enquiry => enquiry
+      saved_enquiry = Enquiry.first
+      expect(saved_enquiry['histories'].length).to eq 1
+      expect(saved_enquiry['histories'].first['changes']).to eq({"enquirer_name"=>{"from"=>"", "to"=>"John Doe"}})
+    end
   end
 
   describe 'PUT update' do
@@ -230,6 +241,19 @@ describe Api::EnquiriesController, :type => :controller do
       expect(enquiry_after_update.potential_matches.map(&:child)).to include(child1)
       expect(enquiry_after_update.potential_matches.map(&:child)).to include(child2)
       expect(enquiry_after_update['criteria']).to eq('child_name' => 'aquiles', 'age' => '10', 'location' => 'Kampala', 'sex' => 'male')
+    end
+
+    it 'should not duplicate or replace histories from params' do
+      Timecop.freeze Time.local(2014,9,26,10,10,10) do
+        enquiry_params = {:enquirer_name => 'John Doe',
+                   :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}] }
+        enquiry = create :enquiry
+        put :update, :id => enquiry.id, :enquiry => enquiry_params
+        saved_enquiry = Enquiry.first
+        expect(saved_enquiry['histories'].length).to eq 2
+        expect(saved_enquiry['histories'].first['changes']).to eq({"enquiry"=>{"created"=>"2014-09-26 10:10:10 UTC"}})
+        expect(saved_enquiry['histories'][1]['changes']).to eq({"enquirer_name"=>{"from"=>"", "to"=>"John Doe"}})
+      end
     end
   end
 

@@ -57,7 +57,7 @@ module ChildrenHelper
   end
 
   def field_value_for_display(field_value)
-    return '' if field_value.nil? || field_value.length == 0
+    return '' if field_value.nil? || (field_value.respond_to?(:empty?) && field_value.empty?)
     return field_value.join ', ' if field_value.instance_of? Array
     field_value
   end

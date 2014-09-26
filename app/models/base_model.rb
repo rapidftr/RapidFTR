@@ -34,6 +34,14 @@ class BaseModel < CouchRest::Model::Base
     model
   end
 
+  def self.without_histories
+    skip_callback(:save, :before, :update_history)
+    skip_callback(:save, :before, :add_creation_history)
+    yield if block_given?
+    set_callback(:save, :before, :update_history)
+    set_callback(:save, :before, :add_creation_history)
+  end
+
   def method_missing(method, *)
     self[method]
   end
