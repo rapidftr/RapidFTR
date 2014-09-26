@@ -198,8 +198,8 @@ rescue
     previous_matches = potential_matches
     criteria = Child.build_text_fields_for_solar.map { |field_name| self[field_name] unless self[field_name].nil? }
     criteria.reject! { |c| c.nil? || c.empty? }
-    enquiries = MatchService.search_for_matching_enquiries(criteria)
-    PotentialMatch.create_matches_for_child id, enquiries.map(&:id)
+    hits = MatchService.search_for_matching_enquiries(criteria)
+    PotentialMatch.create_matches_for_child id, hits
 
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s

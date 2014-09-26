@@ -7,6 +7,7 @@ describe Enquiry, :type => :model do
     Sunspot.remove_all!(Child)
 
     allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
+    allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
   end
 
   describe 'validation' do
@@ -152,13 +153,13 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to include(child1, child2)
+        expect(enquiry.potential_matches.map(&:child)).to include(child1, child2)
 
         enquiry.gender = 'male'
         enquiry.save!
 
         expect(enquiry.potential_matches.size).to eq(3)
-        expect(enquiry.potential_matches).to include(child1, child2, child3)
+        expect(enquiry.potential_matches.map(&:child)).to include(child1, child2, child3)
       end
 
       it 'should sort the results based on solr scores' do
@@ -168,7 +169,7 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(2)
-        expect(enquiry.potential_matches).to include(child1, child2)
+        expect(enquiry.potential_matches.map(&:child)).to include(child1, child2)
       end
 
       it 'should not return matches marked as confirmed' do
@@ -207,7 +208,7 @@ describe Enquiry, :type => :model do
 
         expect(enquiry.criteria).not_to be_empty
         expect(enquiry.potential_matches).not_to be_empty
-        expect(enquiry.potential_matches).to eq([child])
+        expect(enquiry.potential_matches.map(&:child)).to eq([child])
       end
 
       it 'should contain multiple potential matches given multiple matching children' do
@@ -218,7 +219,7 @@ describe Enquiry, :type => :model do
         enquiry = Enquiry.create!(:name => 'eduardo', :location => 'kampala', :gender => 'male', :enquirer_name => 'Kisitu')
 
         expect(enquiry.potential_matches.size).to eq(3)
-        expect(enquiry.potential_matches).to include(child1, child2, child3)
+        expect(enquiry.potential_matches.map(&:child)).to include(child1, child2, child3)
       end
     end
 
@@ -318,7 +319,7 @@ describe Enquiry, :type => :model do
 
       it 'should create potential match when enquiry that has a match is created' do
         child = build(:child)
-        allow(MatchService).to receive(:search_for_matching_children).and_return([child])
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child.id => '0.8')
         enquiry = build(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
@@ -326,6 +327,132 @@ describe Enquiry, :type => :model do
         expect(PotentialMatch.count).to eq 1
         expect(PotentialMatch.first.child_id).to eq child.id
         expect(PotentialMatch.first.enquiry_id).to eq enquiry.id
+        expect(PotentialMatch.first.score).to eq '0.8'
+      end
+
+      it 'should order the potential matches by score' do
+        child1 = build(:child)
+        child2 = build(:child)
+        child3 = build(:child)
+        child4 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
+        enquiry = build(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 4
+        expect(potential_matches.first.score).to eq '2.5'
+        expect(potential_matches.last.score).to eq '0.2'
+      end
+
+      it 'should limit the potential matches according to the threshold number set' do
+        child1 = build(:child)
+        child2 = build(:child)
+        child3 = build(:child)
+        child4 = build(:child)
+
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+
+        enquiry = create(:enquiry, :criteria => {:a => :b})
+
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.5'
+        expect(potential_matches.last.score).to eq '1.0'
+      end
+
+      it 'should mark as deleted the previous potential matches whose updated score is less than the threshold.' do
+        child1 = build(:child)
+        child2 = build(:child)
+        child3 = build(:child)
+        child4 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+
+        enquiry = build(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.5'
+
+        child5 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '0.1', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
+        enquiry.update_attributes(:name => 'charles')
+        enquiry.find_matching_children
+
+        deleted_potential_matches = PotentialMatch.by_enquiry_id_and_deleted.key([enquiry.id, true])
+        expect(deleted_potential_matches.count).to eq 1
+        expect(deleted_potential_matches.map(&:child_id)).to include(child2.id)
+        expect(enquiry.potential_matches.count).to eq 2
+      end
+
+      it 'should not mark as deleted previous potential matches that have been marked as confirmed.' do
+        child1 = build(:child)
+        child2 = build(:child)
+        child3 = build(:child)
+        child4 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+        enquiry = build(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.5'
+
+        confirmed_match = potential_matches.last
+        confirmed_match.confirmed = true
+        confirmed_match.save!
+
+        child5 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
+        enquiry.update_attributes(:name => 'charles')
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.9'
+        expect(potential_matches.map(&:child_id)).to include(child3.id, child5.id)
+
+        confirmed_match = PotentialMatch.by_enquiry_id_and_confirmed.key([enquiry.id, true]).first
+        expect(confirmed_match.child_id).to eq(child2.id)
+        expect(confirmed_match.deleted).to eq(false)
+      end
+
+      it 'should not mark as deleted previous matches that have been marked as not matching' do
+        child1 = build(:child)
+        child2 = build(:child)
+        child3 = build(:child)
+        child4 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+        enquiry = build(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.5'
+
+        invalid_match = potential_matches.last
+        invalid_match.marked_invalid = true
+        invalid_match.save!
+
+        child5 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
+        enquiry.update_attributes(:name => 'charles')
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.9'
+        expect(potential_matches.map(&:child_id)).to include(child3.id, child5.id)
+
+        invalid_match = PotentialMatch.by_enquiry_id_and_marked_invalid.key([enquiry.id, true]).first
+        expect(invalid_match.child_id).to eq(child2.id)
+        expect(invalid_match.deleted).to eq(false)
       end
     end
 
