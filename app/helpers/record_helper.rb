@@ -31,10 +31,11 @@ module RecordHelper
   end
 
   def update_history
-    if field_name_changes.any?
-      changes = changes_for(field_name_changes)
-      (add_to_history(changes) unless !self['histories'].empty? && (self['histories'].last['changes'].to_s.include? changes.to_s))
-    end
+    return unless field_name_changes.any?
+    self['last_updated_at'] = RapidFTR::Clock.current_formatted_time
+    self['last_updated_by'] = User.current_user.nil? ? '' : User.current_user.user_name
+    changes = changes_for(field_name_changes)
+    (add_to_history(changes) unless !self['histories'].empty? && (self['histories'].last['changes'].to_s.include? changes.to_s))
   end
 
   def ordered_histories
@@ -43,10 +44,10 @@ module RecordHelper
 
   def add_creation_history
     self['histories'].unshift(
-        'user_name' => created_by,
-        'user_organisation' => organisation_of(created_by),
-        'datetime' => created_at,
-        'changes' => {self.class.name.downcase => {:created => created_at}}
+      'user_name' => created_by,
+      'user_organisation' => organisation_of(created_by),
+      'datetime' => created_at,
+      'changes' => {self.class.name.downcase => {:created => created_at}}
     )
   end
 
@@ -75,10 +76,10 @@ module RecordHelper
   def add_to_history(changes)
     last_updated_user_name = last_updated_by
     self['histories'].unshift(
-        'user_name' => last_updated_user_name,
-        'user_organisation' => organisation_of(last_updated_user_name),
-        'datetime' => last_updated_at,
-        'changes' => changes)
+      'user_name' => last_updated_user_name,
+      'user_organisation' => organisation_of(last_updated_user_name),
+      'datetime' => last_updated_at,
+      'changes' => changes)
   end
 
   def organisation_of(user_name)
@@ -87,7 +88,7 @@ module RecordHelper
 
   def field_name_changes
     field_names = field_definitions_for(form_name).map { |f| f.name }
-    other_fields = %w(flag flag_message reunited reunited_message investigated investigated_message duplicate duplicate_of)
+    other_fields = %w(flag flag_message reunited reunited_message investigated investigated_message duplicate duplicate_of recorded_audio)
     all_fields = field_names + other_fields
     all_fields.select { |field_name| changed_field?(field_name) }
   end
@@ -112,8 +113,12 @@ module RecordHelper
     (@original_data ||= self.class.get(id)) || self
   end
 
-  # TODO: Refactor, move to Field class as "empty?"
+  # TODO: Refactor, move to Field class as "empty?
   def filled_in?(field)
+    return true if field.type == 'photo_upload_box' && !photo_current_key.nil?
+
+    return true if field.type == 'audio_upload_box' && !audio_upload_box.nil?
+
     (!(self[field.name].nil? || self[field.name].empty? || self[field.name].to_s.empty?)) rescue false
   end
 
@@ -154,7 +159,7 @@ module RecordHelper
   def remove_newly_created_media_history(given_histories)
     (given_histories || []).delete_if do |history|
       (history['changes']['current_photo_key'].present? && history['changes']['current_photo_key']['to'].present? && !history['changes']['current_photo_key']['to'].start_with?('photo-')) ||
-          (history['changes']['recorded_audio'].present? && history['changes']['recorded_audio']['to'].present? && !history['changes']['recorded_audio']['to'].start_with?('audio-'))
+        (history['changes']['recorded_audio'].present? && history['changes']['recorded_audio']['to'].present? && !history['changes']['recorded_audio']['to'].start_with?('audio-'))
     end
     given_histories
   end

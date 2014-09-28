@@ -13,10 +13,6 @@ describe 'Solar', :type => :request, :solr => true do
   before :all do
     Sunspot.remove_all(Child)
 
-    create :form_section, :fields => [
-      build(:text_field, :name => 'name')
-    ]
-
     @child1 = create(:child, 'last_known_location' => 'New York', 'name' => 'Mohammed Smith')
     @child2 = create(:child, 'last_known_location' => 'New York', 'name' => 'Muhammed Jones')
     @child3 = create(:child, 'last_known_location' => 'New York', 'name' => 'Muhammad Brown')
@@ -50,12 +46,7 @@ describe 'Enquiry Mapping', :type => :request, :solr => true do
   before :each do
     Sunspot.remove_all(Child)
     reset_couchdb!
-
-    form = create :form, :name => Enquiry::FORM_NAME
-
-    create :form_section, :fields => [
-      build(:text_field, :name => 'name')
-    ], :form => form
+    allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
 
     @child1 = create(:child, 'last_known_location' => 'New York', 'name' => 'Mohammed Smith')
     @child2 = create(:child, 'last_known_location' => 'New York', 'name' => 'Muhammed Jones')
@@ -63,7 +54,7 @@ describe 'Enquiry Mapping', :type => :request, :solr => true do
     @child4 = create(:child, 'last_known_location' => 'New York', 'name' => 'Ammad Brown')
 
     allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
-    @enquiry = Enquiry.create('enquirer_name' => 'Kavitha', 'name' => 'Ammad', 'location' => 'Kyangwali')
+    @enquiry = create(:enquiry, 'enquirer_name' => 'Kavitha', 'child_name' => 'Ammad', 'location' => 'Kyangwali')
   end
 
   def match(criteria)
@@ -81,7 +72,6 @@ describe 'Enquiry Mapping', :type => :request, :solr => true do
   end
 
   it 'should match enquiry with child record' do
-
     matches = match(@enquiry['criteria'])
     expect(matches.results.map(&:name).sort).to eq(['Ammad Brown'])
     expect(matches.results.map(&:name).sort).not_to include('Muhammad Brown')

@@ -9,31 +9,42 @@ describe PotentialMatch, :type => :model do
   describe 'create_matches_for' do
     before :each do
       reset_couchdb!
+      form = create :form, :name => Child::FORM_NAME
+      field = build :field, :highlighted => true
+      create :form_section, :form => form, :fields => [field]
+
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
     end
 
-    it 'should create potential match for an enquiry' do
-      PotentialMatch.create_matches_for_enquiry '1a3efc', ['2e453c']
+    it 'should create potential match for a child' do
+      PotentialMatch.create_matches_for_child('1a3efc', '2e453c' => '0.9', '23edsd' => '0.4')
 
-      expect(PotentialMatch.count).to eq 1
-      expect(PotentialMatch.first.enquiry_id).to eq '1a3efc'
-      expect(PotentialMatch.first.child_id).to eq '2e453c'
+      expect(PotentialMatch.count).to eq 2
+      potential_matches = PotentialMatch.all.all
+      child_ids = potential_matches.map(&:child_id)
+      expect(child_ids).to include('1a3efc')
+      scores = {}
+      potential_matches.each { |pm| scores[pm.enquiry_id] = pm.score }
+      expect(scores).to include('2e453c' => '0.9', '23edsd' => '0.4')
     end
 
     it 'should create potential matches for an enquiry' do
-      PotentialMatch.create_matches_for_enquiry '1a3efc', %w(2e453c 2ef1g)
+      PotentialMatch.create_matches_for_enquiry('1a3efc', '2e453c' => '0.9', '2ef1g' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
       potential_matches = PotentialMatch.all.all
       enquiry_ids = potential_matches.map(&:enquiry_id)
       expect(enquiry_ids).to include('1a3efc')
-      child_ids = potential_matches.map(&:child_id)
-      expect(child_ids).to include('2e453c', '2ef1g')
+      scores = {}
+      potential_matches.each { |pm| scores[pm.child_id] = pm.score }
+      expect(scores).to include('2e453c' => '0.9', '2ef1g' => '0.4')
     end
   end
 
   describe 'uniqueness of enquiry id and child id' do
     before :each do
       PotentialMatch.all.each { |pm| pm.destroy }
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
     end
 
     it 'should assure that potential_matches contains no duplicates' do
@@ -61,6 +72,7 @@ describe PotentialMatch, :type => :model do
 
     before :each do
       allow(User).to receive(:find_by_user_name).and_return(double(:organisation => 'stc'))
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
       reset_couchdb!
       Sunspot.setup(Child) do
         text :location
@@ -95,6 +107,9 @@ describe PotentialMatch, :type => :model do
 
       before do
         allow(Clock).to receive(:now).and_return(Time.utc(2013, 'jan', 01, 00, 00, 0))
+        form = create :form, :name => Child::FORM_NAME
+        field = build :field, :highlighted => true
+        create :form_section, :form => form, :fields => [field]
         Child.create(:name => 'Eduardo aquiles', :location => 'Kyangwali', :created_by => 'One', :created_organisation => 'stc')
         Child.create(:name => 'Batman', :location => 'Kampala', :created_by => 'Two', :created_organisation => 'stc')
       end
@@ -105,17 +120,17 @@ describe PotentialMatch, :type => :model do
       end
 
       it 'should update match_updated_at timestamp when new matching children are found on creation of an Enquiry' do
-        enquiry = Enquiry.create!(:name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
+        enquiry = create(:enquiry, :name => 'Eduardo', :location => 'Kampala', :enquirer_name => 'Kisitu')
         expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 01, 00, 00, 0).to_s)
       end
 
       it 'should not update match_updated_at if there are no matching children records on creation of an Enquiry' do
-        enquiry = Enquiry.create!(:criteria => {:name => 'Dennis', :location => 'Space'}, :enquirer_name => 'Kisitu')
+        enquiry = create(:enquiry, :criteria => {:name => 'Dennis', :location => 'Space'}, :enquirer_name => 'Kisitu')
         expect(enquiry.match_updated_at).to eq('')
       end
 
       it 'should update match_updated_at timestamp when new matching children are found on update of an Enquiry' do
-        enquiry = Enquiry.create!(:name => 'Eduardo', :enquirer_name => 'Kisitu')
+        enquiry = create(:enquiry, :name => 'Eduardo', :enquirer_name => 'Kisitu')
         expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 01, 00, 00, 0).to_s)
         expect(enquiry.potential_matches.size).to eq(1)
 

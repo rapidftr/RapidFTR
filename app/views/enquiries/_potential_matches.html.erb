@@ -20,6 +20,8 @@
   <div class="entity_list">
     <% model.potential_matches.each do |match| %>
       <%= render :partial => "children/summary_row", :locals => {:child => match, :enquiry => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+    <% model.potential_matches.each do |match| %>
+      <%= render :partial => "children/summary_row", :locals => {:child => match.child, :enquiry => match.enquiry, :score => match.score, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
     <% end %>
   </div>
 </fieldset>

@@ -59,6 +59,11 @@
       </p>
 
       <p>
+        <label class="key"><%= t("user.share_contact_info") %>:</label>
+	<%= h t(@user.share_contact_info.to_s) %>
+      </p>
+
+      <p>
         <label><%= t("devices") %>:</label><br/>
         <% @user.devices.each do |device| %>
             <% if device.blacklisted? %>

@@ -1,6 +1,6 @@
 <p class="file">
-  <%= label_tag "child[audio]", "Recorded Audio", :class=>'key' %>
-  <%= file_field_tag "child[audio]" %>
+  <%= label_tag "#{model.class.name.downcase}[audio]", "Recorded Audio", :class=>'key' %>
+  <%= file_field_tag "#{model.class.name.downcase}[audio]" %>
 
   <ul class="audio_player_section">
     <%= render :partial => "shared/field_display_audio", :locals => {:field => nil, :model => model} %>

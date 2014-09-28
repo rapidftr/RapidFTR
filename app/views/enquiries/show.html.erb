@@ -72,10 +72,20 @@
 <% end %>
 <div class="page-content-new">
 
-  <%= render :partial => 'shared/tabs_panel' %>
+  <div class="side-tab">
+    <%= render :partial => "shared/tabs", :object => @form_sections %>
+
+    <ul class="tab-handles">
+      <li>
+        <a href="#tab_potential_matches"><%= t('enquiry.child_matches') %></a>
+      </li>
+    </ul>
+
+  </div>
 
   <div class="side-tab-content">
     <div class="clearfix"></div>
+    <%= render :partial => 'shared/sidebar', :locals => { :model => @enquiry  } %>
     <%= render :partial => "shared/show_form_section", :locals => {:model => @enquiry} %>
     <%= render :partial => "potential_matches", :locals => {:model => @enquiry} %>
   </div>

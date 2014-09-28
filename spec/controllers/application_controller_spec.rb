@@ -56,6 +56,18 @@ describe ApplicationController, :type => :controller do
     end
   end
 
+  describe 'current_user' do
+    it 'should be set to default' do
+      user = User.new(:user_name => 'user_name', :role_names => ['default'])
+      expect(User).to receive(:find_by_user_name).with('user_name').and_return(user)
+      session = Session.new :user_name => user.user_name
+      allow(controller).to receive(:current_session).and_return(session)
+      expect(User.current_user).to be_nil
+      @controller.set_current_user { expect(User.current_user.user_name).to eq('user_name') }
+      expect(User.current_user).to be_nil
+    end
+  end
+
   describe 'user' do
     it 'should return me the current logged in user' do
       user = User.new(:user_name => 'user_name', :role_names => ['default'])

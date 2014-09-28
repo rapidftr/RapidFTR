@@ -9,7 +9,7 @@
         <% unless history_entry.empty? %>
           <li>
             <div>
-              <%= render :partial => history_entry[:partial], :locals => history_entry[:locals] %>
+              <%= render :partial => history_entry[:partial], :locals => history_entry[:locals].merge(:model => @enquiry) %>
             </div>
           </li>
         <% end %>

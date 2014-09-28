@@ -1,18 +1,15 @@
-class Enquiry < CouchRest::Model::Base
+class Enquiry < BaseModel
   use_database :enquiry
 
   require 'uuidtools'
-  include RecordHelper
-  include RapidFTR::CouchRestRailsBackward
   include Searchable
 
   after_initialize :create_unique_id
 
   before_validation :strip_whitespaces
   before_validation :create_criteria, :on => [:create, :update]
+
   after_save :find_matching_children
-  before_save :update_history, :unless => :new?
-  before_save :add_creation_history, :if => :new?
 
   property :short_id
   property :unique_identifier
@@ -26,11 +23,6 @@ class Enquiry < CouchRest::Model::Base
 
   set_callback :save, :before do
     self['updated_at'] = RapidFTR::Clock.current_formatted_time
-  end
-
-  def initialize(*args)
-    self['histories'] = []
-    super(*args)
   end
 
   design do
@@ -68,17 +60,11 @@ class Enquiry < CouchRest::Model::Base
     if m.to_s.match(/=$/)
       return self[m.to_s[0..-2]] = args[0]
     end
-    self[m]
-  end
-
-  def self.new_with_user_name(user, *args)
-    enquiry = new(*args)
-    enquiry.creation_fields_for(user)
-    enquiry
+    super
   end
 
   def self.build_text_fields_for_solar
-    sortable_fields = FormSection.all_sortable_field_names || []
+    sortable_fields = FormSection.all_form_sections_for(Enquiry::FORM_NAME).map(&:all_sortable_fields).flatten.map(&:name)
     default_enquiry_fields + sortable_fields
   end
 
@@ -116,9 +102,8 @@ class Enquiry < CouchRest::Model::Base
 
   def potential_matches
     potential_matches = PotentialMatch.by_enquiry_id.key(id).all
-    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? }
-    child_ids = potential_matches.each.map(&:child_id)
-    child_ids.map { |id| Child.get(id) }
+    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? || pm.deleted? }
+    potential_matches.sort_by(&:score).reverse! || []
   end
 
   def update_from(properties)
@@ -138,10 +123,30 @@ class Enquiry < CouchRest::Model::Base
 
   def find_matching_children
     previous_matches = potential_matches
-    children = MatchService.search_for_matching_children(criteria)
-    PotentialMatch.create_matches_for_enquiry id, children.map(&:id)
-    verify_format_of(previous_matches)
+    hits = MatchService.search_for_matching_children(criteria)
+    score_threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
 
+    potential_matches_to_mark_deleted = previous_matches.select { |pm| hits[pm.child_id].to_f < score_threshold.value.to_f }
+    marked_potential_matches_as_deleted(potential_matches_to_mark_deleted)
+
+    potential_matches.reject! { |pm| potential_matches_to_mark_deleted.include?(pm) }
+    updated_potential_matches_score(potential_matches, hits)
+
+    previous_deleted_matches = PotentialMatch.by_enquiry_id_and_deleted.key([id, true]).all
+    previous_deleted_matches = previous_deleted_matches.select { |pm| hits[pm.child_id].to_f > score_threshold.value.to_f }
+
+    previous_deleted_matches.each do |pm|
+      next unless hits.keys.include?(pm.child_id)
+
+      pm.score = hits[pm.child_id]
+      pm.deleted = false
+      pm.save!
+    end
+
+    hits.reject! { |_id, score| score.to_f < score_threshold.value.to_f }
+
+    PotentialMatch.create_matches_for_enquiry id, hits
+    verify_format_of(previous_matches)
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
@@ -180,7 +185,27 @@ class Enquiry < CouchRest::Model::Base
     match.nil? ? nil : Child.get(match.child_id)
   end
 
+  def self.matchable_fields
+    Array.new(FormSection.all_visible_child_fields_for_form(Enquiry::FORM_NAME)).keep_if { |field| field.matchable? }
+  end
+
   private
+
+  def updated_potential_matches_score(matches, hits)
+    matches.each do |pm|
+      if hits.keys.include?(pm.child_id)
+        pm.score = hits[pm.child_id]
+        pm.save!
+      end
+    end
+  end
+
+  def marked_potential_matches_as_deleted(matches)
+    matches.each do |pm|
+      pm.deleted = true
+      pm.save!
+    end
+  end
 
   def strip_whitespaces
     keys.each do |key|
@@ -210,11 +235,11 @@ class Enquiry < CouchRest::Model::Base
         PotentialMatch.paginates_per options.delete(:per_page)
         page = options.delete(:page)
         results = PotentialMatch.
-                    all_valid_enquiry_ids(options).
-                    page(page).
-                    reduce.
-                    group.
-                    rows
+            all_valid_enquiry_ids(options).
+            page(page).
+            reduce.
+            group.
+            rows
         pager.replace(results.map { |r| Enquiry.find(r['key']) })
         pager.total_entries = PotentialMatch.all_valid_enquiry_ids.reduce.group.rows.count
       end

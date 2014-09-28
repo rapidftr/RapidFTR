@@ -70,3 +70,7 @@ if should_seed? FormSection
   end
   RapidFTR::I18nSetup.reset_definitions
 end
+
+if should_seed? SystemVariable
+  SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :value => '0.00')
+end

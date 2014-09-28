@@ -77,8 +77,10 @@ class User < CouchRest::Model::Base
 
     view :by_share_contact_info,
          :map => "function(doc) {
-             if (doc['couchrest-type'] == 'User' && doc['share_contact_info'] == true && doc['verified'] == true && doc['disabled'] == false)
-              {
+             if (doc['couchrest-type'] == 'User'
+                     && doc['share_contact_info']
+                     && doc['verified']
+                     && !doc['disabled']) {
                  emit(doc);
               }
           }"
@@ -109,6 +111,12 @@ class User < CouchRest::Model::Base
   validate :unique_user_name
 
   before_save :generate_id
+
+  @current_user = nil
+
+  class << self
+    attr_accessor :current_user
+  end
 
   # In order to track changes on attributes declared as attr_accessor and
   # trigger the callbacks we need to use attribute_will_change! method.

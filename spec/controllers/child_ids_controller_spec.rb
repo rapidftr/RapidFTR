@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'support/child_builder'
+require 'support/model_builder'
 
 describe ChildIdsController, :type => :controller do
 
-  include ChildBuilder
+  include ModelBuilder
 
   before do
     fake_login
@@ -16,8 +16,11 @@ describe ChildIdsController, :type => :controller do
   end
 
   describe 'response' do
+    let(:model_class) { 'Child' }
+
     it 'should return Id and Rev for each child record' do
-      given_a_child.with_id('child-id').with_rev('child-revision-id')
+
+      given_a('child').with_id('child-id').with_rev('child-revision-id')
       expect(Child).to receive(:fetch_all_ids_and_revs).and_return([{'_id' => 'child-id', '_rev' => 'child-revision-id'}])
 
       get :all

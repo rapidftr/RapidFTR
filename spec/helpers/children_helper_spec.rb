@@ -21,11 +21,11 @@ describe ChildrenHelper, :type => :helper do
   describe '#thumbnail_tag' do
     it 'should use current photo key if photo ID is not specified' do
       child = stub_model Child, :id => 1001, :current_photo_key => 'current'
-      expect(helper.thumbnail_tag(child)).to eq('<img src="/children/1001/thumbnail/current" />')
+      expect(helper.thumbnail_tag(child)).to eq('<img src="/child/1001/thumbnail/current" />')
     end
     it 'should use photo ID if specified' do
       child = stub_model Child, :id => 1001, :current_photo_key => 'current'
-      expect(helper.thumbnail_tag(child, 'custom-id')).to eq('<img src="/children/1001/thumbnail/custom-id" />')
+      expect(helper.thumbnail_tag(child, 'custom-id')).to eq('<img src="/child/1001/thumbnail/custom-id" />')
     end
   end
 
@@ -134,13 +134,13 @@ describe ChildrenHelper, :type => :helper do
       expect(header).to be_nil
     end
 
-    it 'should separate links by spaces' do
+    it 'should separate links by commas and spaces' do
       e1 = build(:enquiry, :unique_id => 'id1')
       e2 = build(:enquiry, :unique_id => 'id2')
       header = confirmed_matches_header [e1, e2]
       expect(header).to eq("<div class=\"filter_bar\" id=\"match_details\"><h3>Confirmed Matches: " \
-                           "<a href=\"/enquiries/#{e1.id}\">#{e1.short_id}</a> " \
-                           "<a href=\"/enquiries/#{e2.id}\">#{e2.short_id}</a></h3></div>")
+                           "<a href=\"/enquiries/#{e1.id}\">#{e1.short_id}</a>" \
+                           "<a href=\"/enquiries/#{e2.id}\">, #{e2.short_id}</a></h3></div>")
     end
   end
 

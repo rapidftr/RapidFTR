@@ -9,6 +9,7 @@ module RapidFTR
         form_sections << build_separation_history_section
         form_sections << build_location_of_child_section
         form_sections << build_details_of_interview_section
+        form_sections << build_photo_audio_section
       end
       form_sections
     end
@@ -33,16 +34,19 @@ module RapidFTR
         Field.new('name' => 'enq_first_name',
                   'type' => 'text_field',
                   'highlight_information' => HighlightInformation.new('highlighted' => true, 'order' => 1),
-                  'display_name_all' => 'First Name'
+                  'display_name_all' => 'First Name',
+                  'matchable' => true
         ),
         Field.new('name' => 'enq_middle_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Middle Name'
+                  'display_name_all' => 'Middle Name',
+                  'matchable' => true
         ),
         Field.new('name' => 'enq_last_name',
                   'type' => 'text_field',
                   'highlight_information' => HighlightInformation.new('highlighted' => true, 'order' => 2),
-                  'display_name_all' => 'Last Name'
+                  'display_name_all' => 'Last Name',
+                  'matchable' => true
         ),
         Field.new('name' => 'enq_gender',
                   'type' => 'select_box',
@@ -72,7 +76,8 @@ module RapidFTR
         ),
         Field.new('name' => 'enq_telephone_number',
                   'type' => 'text_field',
-                  'display_name_all' => 'Telephone Number'
+                  'display_name_all' => 'Telephone Number',
+                  'matchable' => true
         ),
         Field.new('name' => 'enq_ethnic_affiliation',
                   'type' => 'text_field',
@@ -131,28 +136,23 @@ module RapidFTR
         ),
         Field.new('name' => '2_year_of_birth',
                   'type' => 'text_field',
-                  'display_name_all' => 'Year of Birth',
-                  'matchable' => true
+                  'display_name_all' => 'Year of Birth'
         ),
         Field.new('name' => '2_language',
                   'type' => 'text_field',
-                  'display_name_all' => 'Languages spoken by the child',
-                  'matchable' => true
+                  'display_name_all' => 'Languages spoken by the child'
         ),
         Field.new('name' => '2_religion',
                   'type' => 'text_field',
-                  'display_name_all' => 'Childs Religion',
-                  'matchable' => true
+                  'display_name_all' => 'Childs Religion'
         ),
         Field.new('name' => '2_nationality',
                   'type' => 'text_field',
-                  'display_name_all' => 'Nationality',
-                  'matchable' => true
+                  'display_name_all' => 'Nationality'
         ),
         Field.new('name' => '2_child_ethnic_affiliation',
                   'type' => 'text_field',
-                  'display_name_all' => "Child's Ethnic Affiliation",
-                  'matchable' => true
+                  'display_name_all' => "Child's Ethnic Affiliation"
         ),
         Field.new('name' => '2_physical_characteristics',
                   'type' => 'textarea',
@@ -161,13 +161,11 @@ module RapidFTR
         ),
         Field.new('name' => '2_last_school_attended',
                   'type' => 'text_field',
-                  'display_name_all' => 'Last School Attended',
-                  'matchable' => true
+                  'display_name_all' => 'Last School Attended'
         ),
         Field.new('name' => '2_school_level',
                   'type' => 'text_field',
-                  'display_name_all' => 'Level',
-                  'matchable' => true
+                  'display_name_all' => 'Level'
         )
       ]
 
@@ -183,35 +181,43 @@ module RapidFTR
       family_details_fields = [
         Field.new('name' => '3_father_first_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Child\'s Father - First Name'
+                  'display_name_all' => 'Child\'s Father - First Name',
+                  'matchable' => true
         ),
         Field.new('name' => '3_father_middle_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Child\'s Father - Middle Name'
+                  'display_name_all' => 'Child\'s Father - Middle Name',
+                  'matchable' => true
         ),
         Field.new('name' => '3_father_last_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Child\'s Father - Last Name'
+                  'display_name_all' => 'Child\'s Father - Last Name',
+                  'matchable' => true
         ),
         Field.new('name' => '3_father_current_address',
                   'type' => 'text_field',
-                  'display_name_all' => 'Father\'s current address'
+                  'display_name_all' => 'Father\'s current address',
+                  'matchable' => true
         ),
         Field.new('name' => '3_mother_first_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Child\'s Mother - First Name'
+                  'display_name_all' => 'Child\'s Mother - First Name',
+                  'matchable' => true
         ),
         Field.new('name' => '3_mother_middle_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Child\'s Mother - Middle Name'
+                  'display_name_all' => 'Child\'s Mother - Middle Name',
+                  'matchable' => true
         ),
         Field.new('name' => '3_mother_last_name',
                   'type' => 'text_field',
-                  'display_name_all' => 'Child\'s Mother - Last Name'
+                  'display_name_all' => 'Child\'s Mother - Last Name',
+                  'matchable' => true
         ),
         Field.new('name' => '3_mother_current_address',
                   'type' => 'text_field',
-                  'display_name_all' => 'Mother\'s current address'
+                  'display_name_all' => 'Mother\'s current address',
+                  'matchable' => true
         ),
         Field.new('name' => '3_father_alive',
                   'type' => 'select_box',
@@ -241,11 +247,13 @@ module RapidFTR
       separation_history_fields = [
         Field.new('name' => '4_permanent_address',
                   'type' => 'text_field',
-                  'display_name_all' => 'Permanent address prior to separation'
+                  'display_name_all' => 'Permanent address prior to separation',
+                  'matchable' => true
         ),
         Field.new('name' => '4_telephone_number',
                   'type' => 'text_field',
-                  'display_name_all' => 'Telephone number'
+                  'display_name_all' => 'Telephone number',
+                  'matchable' => true
         ),
         Field.new('name' => '4_date_of_separation',
                   'type' => 'text_field',
@@ -262,7 +270,8 @@ module RapidFTR
         ),
         Field.new('name' => '4_place_of_separation',
                   'type' => 'text_field',
-                  'display_name_all' => 'Place of Separation'
+                  'display_name_all' => 'Place of Separation',
+                  'matchable' => true
         )
       ]
 
@@ -278,7 +287,8 @@ module RapidFTR
       location_of_child_fields = [
         Field.new('name' => '5_location',
                   'type' => 'text_field',
-                  'display_name_all' => 'Possible Location of the child'
+                  'display_name_all' => 'Possible Location of the child',
+                  'matchable' => true
         ),
         Field.new('name' => '5_latest_news_received',
                   'type' => 'textarea',
@@ -286,7 +296,8 @@ module RapidFTR
         ),
         Field.new('name' => '5_name_of_family_member_with_child',
                   'type' => 'text_field',
-                  'display_name_all' => 'Name of family member with the child'
+                  'display_name_all' => 'Name of family member with the child',
+                  'matchable' => true
         )
       ]
 
@@ -327,6 +338,26 @@ module RapidFTR
                       :fields => details_of_interview_fields,
                       'name_all' => 'Details of Interview',
                       'description_all' => 'Details of interview'
+      )
+    end
+
+    def self.build_photo_audio_section
+      photo_audio_fields = [
+        Field.new('name' => '7_current_photo_key',
+                   'type' => 'photo_upload_box', 'editable' => false,
+                   'display_name_all' => 'Current Photo Key'
+                  ),
+        Field.new('name' => '7_recorded_audio',
+                   'type' => 'audio_upload_box', 'editable' => false,
+                   'display_name_all' => 'Recorded Audio'
+                  )
+      ]
+
+      FormSection.new('visible' => true,
+                       :order => 10, :unique_id => 'enq_photos_and_audio', :fields => photo_audio_fields,
+                       :perm_visible => true, 'editable' => false,
+                       'name_all' => 'Photos and Audio',
+                       'description_all' => 'All Photo and Audio Files Associated with a Child Record'
       )
     end
   end

@@ -9,7 +9,9 @@ describe 'enquiries/show.html.erb', :type => :view do
     @potential_matches = []
 
     form = create(:form, :name => Enquiry::FORM_NAME)
-    @form_sections << create(:form_section, :unique_id => 'enquiry_criteria', :name => 'Enquiry Criteria', :form => form, :fields => [build(:field, :name => 'enquirer_name')])
+    field1 = build(:field, :name => 'field_2', :display_name => 'field display 2', :visible => true, :highlighted => true)
+    field2 = build(:field, :name => 'field_4', :display_name => 'field display 4', :visible => true, :highlighted => true)
+    @form_sections << create(:form_section, :unique_id => 'enquiry_criteria', :name => 'Enquiry Criteria', :form => form, :fields => [build(:field, :name => 'enquirer_name'), field1, field2])
     @form_sections << create(:form_section, :unique_id => 'potential_matches', :name => 'Matches', :form => form)
 
     @enquiry = create(:enquiry, :enquirer_name => 'Foo Bar', :child_name => 'John Doe', :created_at => 'July 19 2010 13:05:32UTC')
@@ -23,16 +25,26 @@ describe 'enquiries/show.html.erb', :type => :view do
     assign(:enquiry, @enquiry)
     assign(:current_user, User.new)
 
-    @highlighted_fields = [
-      Field.new(:name => 'field_2', :display_name => 'field display 2', :visible => true),
-      Field.new(:name => 'field_4', :display_name => 'field display 4', :visible => true)]
-    allow(Form).to receive(:find_by_name).and_return(double('Form', :sorted_highlighted_fields => @highlighted_fields))
   end
 
   it 'display all form sections for the enquiries form' do
     render :template => 'enquiries/show', :layout => 'layouts/application'
     expect(rendered).to have_tag('#tab_enquiry_criteria')
     expect(rendered).to have_tag('#tab_potential_matches')
+  end
+
+  it 'should render sidebar' do
+    render
+    expect(rendered).to render_template(:partial => 'shared/_sidebar', :locals => {:model => @enquiry})
+  end
+
+  it 'displays the enquiry photo' do
+    assign(:aside, 'picture')
+    render
+    expect(rendered).to have_tag('.profile-image') do
+      with_tag('a[href=?]', resized_photo_path('enquiry', @enquiry.id, @enquiry.primary_photo_id, 640))
+      with_tag('img[src=?]', resized_photo_path('enquiry', @enquiry.id, @enquiry.primary_photo_id, 328))
+    end
   end
 
   it 'display potential matches section' do

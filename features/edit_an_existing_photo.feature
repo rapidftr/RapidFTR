@@ -14,11 +14,11 @@ Feature:
     And I press "Save"
 
     Then I should see "Child record successfully created"
-    And I should see the photo of "John"
+    And I should see the thumbnail of "John"
 
     When I follow "Edit photo"
     Then I should see "Rotate Anti-Clockwise"
 
     When I follow "Rotate Anti-Clockwise"
     And I press "Save"
-    Then I should see the photo of "John"
+    Then I should see the thumbnail of "John"

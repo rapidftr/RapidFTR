@@ -30,6 +30,10 @@ When /^I sort "(.*?)"$/  do |sort_order|
   child_list_page.sort(sort_order)
 end
 
+Then(/^I should see "(.*?)" scores on the page$/) do |number_of_records|
+  child_list_page.should_be_showing_score(number_of_records.to_i)
+end
+
 private
 
 def child_list_page

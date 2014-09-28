@@ -35,6 +35,8 @@ gem 'rails-assets-select2', '~> 3.5.0'
 gem 'rails-assets-aexmachina--jquery-bonsai', '~> 0.1.1'
 gem 'rails-assets-aexmachina--jquery-qubit', '~> 0.1.2'
 gem 'timecop', '~> 0.7.1'
+gem 'delayed_job'
+gem 'delayed_job_couchrest_model', :git => 'https://github.com/andreweskeclarke/delayed_job_couchrest_model.git', :ref => '399d5325a55dcaf39d02c9659d5548a040d53746'
 
 group :development do
   gem 'better_errors',     '~> 2.0'

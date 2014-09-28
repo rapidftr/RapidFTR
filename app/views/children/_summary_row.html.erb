@@ -1,8 +1,17 @@
 <!-- BEGIN: item -->
 <div id="child_<%= child.id %>" class="entity_summary_panel">
 
-  <div class="photo_panel">
-    <%= link_to thumbnail_tag(child, child.primary_photo_id), child_path(child.id) %>
+  <div class="left_side">
+    <div class="photo_panel">
+      <%= link_to thumbnail_tag(child, child.primary_photo_id), child_path(child.id) %>
+    </div>
+    <% if local_assigns.has_key?(:score) && !:score.nil?%>
+      <div class="score_panel" >
+        <h2>
+          <%= score.to_s[0..4] %>
+        </h2>
+      </div>
+    <% end %>
   </div>
   <div class="summary_panel">
     <% if checkbox %>

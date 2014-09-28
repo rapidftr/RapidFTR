@@ -1,21 +1,12 @@
-class Child < CouchRest::Model::Base
+class Child < BaseModel
   use_database :child
 
   require 'uuidtools'
-  include RecordHelper
-  include RapidFTR::CouchRestRailsBackward
   include Extensions::CustomValidator::CustomFieldsValidator
-  include AttachmentHelper
-  include AudioHelper
-  include PhotoHelper
   include Searchable
 
   after_initialize :create_unique_id
-
-  before_save :update_history, :unless => :new?
-  before_save :update_organisation
-  before_save :update_photo_keys
-  before_save :add_creation_history, :if => :new?
+  after_save :find_matching_enquiries
 
   property :short_id
   property :unique_identifier
@@ -27,10 +18,6 @@ class Child < CouchRest::Model::Base
   property :investigated, TrueClass
   property :verified, TrueClass
 
-  validate :validate_photos_size
-  validate :validate_photos
-  validate :validate_audio_size
-  validate :validate_audio_file_name
   validates_with FieldValidator, :type => Field::NUMERIC_FIELD
   validate :validate_duplicate_of
   validates_with FieldValidator, :type => Field::TEXT_AREA
@@ -41,27 +28,8 @@ class Child < CouchRest::Model::Base
 
   FORM_NAME = 'Children'
 
-  def initialize(*args)
-    self['photo_keys'] ||= []
-    arguments = args.first
-
-    if arguments.is_a?(Hash) && arguments['current_photo_key']
-      self['current_photo_key'] = arguments['current_photo_key']
-      arguments.delete('current_photo_key')
-    end
-
-    self['histories'] = []
-    super(*args)
-  end
-
-  def self.new_with_user_name(user, fields = {})
-    child = new(fields)
-    child.creation_fields_for(user)
-    child
-  end
-
   def self.build_text_fields_for_solar
-    sortable_fields = FormSection.all_sortable_field_names || []
+    sortable_fields = FormSection.all_form_sections_for(Child::FORM_NAME).map(&:all_sortable_fields).flatten.map(&:name)
     default_child_fields + sortable_fields
   end
 
@@ -178,30 +146,6 @@ class Child < CouchRest::Model::Base
     errors.add(:age, I18n.t('errors.models.child.age'))
   end
 
-  def validate_photos
-    return true if @photos.blank? || @photos.all? { |photo| /image\/(jpg|jpeg|png)/ =~ photo.content_type }
-    errors.add(:photo, I18n.t('errors.models.child.photo_format'))
-  end
-
-  def validate_photos_size
-    return true if @photos.blank? || @photos.all? { |photo| photo.size < 10.megabytes }
-    errors.add(:photo, I18n.t('errors.models.child.photo_size'))
-  end
-
-  def validate_audio_size
-    return true if @audio.blank? || @audio.size < 10.megabytes
-    errors.add(:audio, I18n.t('errors.models.child.audio_size'))
-  end
-
-  def validate_audio_file_name
-    return true if @audio_file_name.nil? || /([^\s]+(\.(?i)(amr|mp3))$)/ =~ @audio_file_name
-    errors.add(:audio, 'Please upload a valid audio file (amr or mp3) for this child record')
-  end
-
-  def has_valid_audio?
-    validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
-  end
-
   def validate_created_at
     if self['created_at']
       DateTime.parse self['created_at']
@@ -218,10 +162,6 @@ rescue
     true
 rescue
   errors.add(:last_updated_at, '')
-  end
-
-  def method_missing(m, *)
-    self[m]
   end
 
   def self.flagged
@@ -261,6 +201,18 @@ rescue
     enquiry_ids.map { |id| Enquiry.get(id) }
   end
 
+  def find_matching_enquiries
+    previous_matches = potential_matches
+    criteria = Child.build_text_fields_for_solar.map { |field_name| self[field_name] unless self[field_name].nil? }
+    criteria.reject! { |c| c.nil? || c.empty? }
+    hits = MatchService.search_for_matching_enquiries(criteria)
+    PotentialMatch.create_matches_for_child id, hits
+
+    unless previous_matches.eql?(potential_matches)
+      self.match_updated_at = Clock.now.to_s
+    end
+  end
+
   def self.schedule(scheduler)
     scheduler.every('24h') do
       Child.reindex!
@@ -292,10 +244,6 @@ rescue
                      'created_organisation']
     existing_fields = system_fields + field_definitions_for(Child::FORM_NAME).map { |x| x.name }
     reject { |k, _v| existing_fields.include? k }
-  end
-
-  def key_for_content_type(content_type)
-    Mime::Type.lookup(content_type).to_sym.to_s
   end
 
   def validate_duplicate_of

@@ -122,7 +122,13 @@ class UsersController < ApplicationController
   end
 
   def contact
-    render :ok
+    @page_name = t('header.contact')
+    @users = User.view(:by_share_contact_info)
+    @users_details = users_details
+
+    if params[:ajax] == 'true'
+      render :partial => 'users/user', :collection => @users
+    end
   end
 
   private

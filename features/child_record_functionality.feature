@@ -176,7 +176,7 @@ Feature:
     And I should see "Bombay"
     And I should see "Zambia"
     And I click the "Photos and Audio" link
-    And I should see the photo of "George Harrison"
+    And I should see the thumbnail of "George Harrison"
     And I should see "Child was successfully updated."
 
     Then I follow "Edit"

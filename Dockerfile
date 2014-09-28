@@ -16,6 +16,7 @@ RUN /root/bootstrap.sh
 ADD docker/runit/couchdb/ /etc/service/couchdb/
 ADD docker/runit/solr/ /etc/service/solr/
 ADD docker/runit/scheduler/ /etc/service/scheduler/
+ADD docker/runit/worker/ /etc/service/worker/
 
 # Service configurations
 ADD docker/config/couchdb.ini /etc/couchdb/local.d/rapidftr.ini
@@ -52,4 +53,10 @@ ADD config/ /rapidftr/config/
 ADD db/ /rapidftr/db/
 ADD lib/ /rapidftr/lib/
 ADD app/ /rapidftr/app/
+
+# Bundling the RapidFTR documentation
+ADD docker/docbuild.sh /root/
+RUN /root/docbuild.sh
+
+# Bundling the rapidftr apk
 ADD https://www.dropbox.com/sh/y9cjomps39deqb6/AAB2ieXvhcohg_4J0BC3j2GXa/Android/RapidFTR-dev.apk?dl=1 /rapidftr/public/RapidFTR.apk
