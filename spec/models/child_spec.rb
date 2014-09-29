@@ -684,8 +684,10 @@ describe Child, :type => :model do
 
       form = create :form, :name => Enquiry::FORM_NAME
 
+      SystemVariable.create :name => 'SCORE_THRESHOLD', :value => '0'
+
       create :form_section, :name => 'test_form', :fields => [
-        build(:text_field, :name => 'name'),
+        build(:text_field, :name => 'child_name'),
         build(:text_field, :name => 'location'),
         build(:text_field, :name => 'gender'),
         build(:text_field, :name => 'enquirer_name')
