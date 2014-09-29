@@ -454,6 +454,40 @@ describe Enquiry, :type => :model do
         expect(invalid_match.child_id).to eq(child2.id)
         expect(invalid_match.deleted).to eq(false)
       end
+
+      it 'should unmark deleted previous potential matches when they appear in the hits from solr.' do
+        child1 = build(:child)
+        child2 = build(:child)
+        child3 = build(:child)
+        child4 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+
+        enquiry = build(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 2
+        expect(potential_matches.first.score).to eq '2.5'
+
+        child5 = build(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '0.1', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
+        enquiry.update_attributes(:name => 'charles')
+        enquiry.find_matching_children
+
+        deleted_potential_matches = PotentialMatch.by_enquiry_id_and_deleted.key([enquiry.id, true])
+        expect(deleted_potential_matches.count).to eq 1
+        expect(deleted_potential_matches.map(&:child_id)).to include(child2.id)
+        expect(enquiry.potential_matches.count).to eq 2
+
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '2.0', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
+        enquiry.update_attributes(:name => 'children')
+        enquiry.find_matching_children
+
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq 3
+        expect(potential_matches.map(&:child_id)).to include(child2.id)
+      end
     end
 
     describe '.with_child_potential_matches' do
