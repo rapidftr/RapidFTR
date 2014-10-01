@@ -643,8 +643,8 @@ describe Child, :type => :model do
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
                             :confirmed => true
-      expect(Enquiry).to receive(:find).with('enquiry_id_x').and_return({})
       expect(child_x.confirmed_matches).to_not be_nil
+      expect(child_x.confirmed_matches[0].enquiry_id).to eq('enquiry_id_x')
     end
 
     it 'should return multiple confirmed matches' do
@@ -659,7 +659,7 @@ describe Child, :type => :model do
                             :confirmed => true
       expect(child_x.confirmed_matches).to_not be_nil
       expect(child_x.confirmed_matches.size).to be(2)
-      expect(child_x.confirmed_matches).to include(enquiry_x, enquiry_y)
+      expect(child_x.confirmed_matches.map(&:enquiry)).to include(enquiry_x, enquiry_y)
     end
 
     it 'should not return unconfirmed matches' do

@@ -42,9 +42,9 @@
             <%= link_to(t('buttons.edit'), edit_enquiry_path(enquiry), :class=>'edit') %>
           </li>
           <% if local_assigns.has_key?(:rendered_by_show_enquiry) && local_assigns.has_key?(:confirmed_match)%>
-            <%= mark_as_not_matching_link child, confirmed_match, enquiry %>
-            <%= confirm_match_link child, confirmed_match, enquiry %>
-            <%= unconfirm_match_link child, confirmed_match, enquiry %>
+            <%= mark_as_not_matching_link child, confirmed_match, enquiry, :return => :child %>
+            <%= confirm_match_link child, confirmed_match, enquiry, :return => :child %>
+            <%= unconfirm_match_link child, confirmed_match, enquiry, :return => :child %>
           <% end %>
       <% end %>
       </ul>
