@@ -184,12 +184,19 @@ describe ChildrenHelper, :type => :helper do
         expect(unconfirm_match_link(child, nil, enquiry)).to be_nil
       end
 
-      it 'should return nil if current child isnt the confirmed match' do
-        expect(unconfirm_match_link(child, build(:child), enquiry)).to be_nil
+      it 'should return nil if child isnt the confirmed match' do
+        match = PotentialMatch.new(:child => build(:child), :enquiry => enquiry)
+        expect(unconfirm_match_link(child, match, enquiry)).to be_nil
+      end
+
+      it 'should return nil if enquiry isnt the confirmed match' do
+        match = PotentialMatch.new(:child => child, :enquiry => build(:enquiry))
+        expect(unconfirm_match_link(child, match, enquiry)).to be_nil
       end
 
       it 'should return a put link with confirm=false for a child that is the confirmed match' do
-        link = unconfirm_match_link child, child, enquiry
+        match = PotentialMatch.new(:child => child, :enquiry => enquiry)
+        link = unconfirm_match_link child, match, enquiry
         expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
                            "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=false\" "\
                            "rel=\"nofollow\">Undo Confirmation</a></li>")
