@@ -38,8 +38,9 @@ class BaseModel < CouchRest::Model::Base
     skip_callback(:save, :before, :update_history)
     skip_callback(:save, :before, :add_creation_history)
     yield if block_given?
-    set_callback(:save, :before, :update_history)
-    set_callback(:save, :before, :add_creation_history)
+  ensure
+    set_callback(:save, :before, :update_history, :unless => :new?)
+    set_callback(:save, :before, :add_creation_history, :if => :new?)
   end
 
   def method_missing(method, *)

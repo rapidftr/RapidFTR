@@ -103,7 +103,6 @@ describe Api::ChildrenController, :type => :controller do
       get :show, :id => '123', :format => 'json'
       expect(response.response_code).to eq(403)
     end
-
   end
 
   describe 'POST create' do
@@ -128,6 +127,13 @@ describe Api::ChildrenController, :type => :controller do
       expect(saved_child['histories'].length).to eq 1
       expect(saved_child['histories'].first['changes']).to eq({"enquirer_name"=>{"from"=>"", "to"=>"John Doe"}})
     end
+
+    it 'should not return histories' do
+      child = {:enquirer_name => 'John Doe',
+                 :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}] }
+      post :create, :child => child
+      expect(response.body['histories']).to be_nil
+    end
   end
 
   describe 'PUT update' do
@@ -144,10 +150,19 @@ describe Api::ChildrenController, :type => :controller do
                 :first_name => 'John',
                 :histories => [{:changes => {:child_name => {:from => "", :to => "John Doe"}}}] }
       put :update, :id => child.id, :child => params
-      saved_child = Child.first
+      saved_child = Child.find child.id
       expect(saved_child['histories'].length).to eq 2
       expect(saved_child['histories'].first['changes']).to eq({"child"=>{"created"=>nil}})
       expect(saved_child['histories'][1]['changes']).to eq({"child_name"=>{"from"=>"", "to"=>"John Doe"}})
+    end
+
+    it 'should not return histories' do
+      child = create :child
+      params = {:child_name => 'John Doe',
+                :first_name => 'John',
+                :histories => [{:changes => {:child_name => {:from => "", :to => "John Doe"}}}] }
+      put :update, :id => child.id, :child => params
+      expect(response.body['histories']).to be_nil
     end
   end
 
@@ -188,6 +203,20 @@ describe Api::ChildrenController, :type => :controller do
 
       expect(child['created_by_full_name']).to eq @user.full_name
     end
-  end
 
+    it 'should not return histories for existing children' do
+      child = double(Child)
+      expect(Child).to receive(:get).and_return(child)
+      expect(child).to receive(:update_child_with_attachments).and_return(child)
+      expect(child).to receive(:save).and_return(child)
+      expect(child).to receive(:compact)
+      post :unverified, :child => {:name => 'timmy', :_id => '1'}
+      expect(response.body['histories']).to be_nil
+    end
+
+    it 'should not return histories for new children' do
+      post :unverified, :child => {:name => 'timmy'}
+      expect(response.body['histories']).to be_nil
+    end
+  end
 end

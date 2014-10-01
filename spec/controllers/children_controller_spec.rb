@@ -527,7 +527,7 @@ describe ChildrenController, :type => :controller do
       child = Child.new_with_user_name(user, :name => 'some name')
       params_child = {'name' => 'update'}
       allow(controller).to receive(:current_user_name).and_return('user_name')
-      expect(child).to receive(:update_properties_with_user_name).with('user_name', '', nil, nil, params_child)
+      expect(child).to receive(:update_child_with_attachments).with(hash_excluding('photo', :photo), anything)
       allow(Child).to receive(:get).and_return(child)
       put :update, :id => '1', :child => params_child
     end
@@ -537,7 +537,7 @@ describe ChildrenController, :type => :controller do
       child = Child.new_with_user_name(user, :name => 'some name')
       params_child = {'name' => 'update'}
       allow(controller).to receive(:current_user_name).and_return('user_name')
-      expect(child).to receive(:update_properties_with_user_name).with('user_name', '', nil, nil, params_child)
+      expect(child).to receive(:update_child_with_attachments).and_return(child)
       allow(Child).to receive(:get).and_return(child)
       put :update, :id => '1', :child => params_child, :redirect_url => '/children'
       expect(response).to redirect_to '/children'
@@ -549,7 +549,7 @@ describe ChildrenController, :type => :controller do
 
       params_child = {'name' => 'update'}
       allow(controller).to receive(:current_user_name).and_return('user_name')
-      expect(child).to receive(:update_properties_with_user_name).with('user_name', '', nil, nil, params_child)
+      allow(child).to receive(:update_child_with_attachments).and_return(child)
       allow(Child).to receive(:get).and_return(child)
       put :update, :id => '1', :child => params_child
       expect(response).to redirect_to "/children/#{child.id}"

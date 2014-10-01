@@ -120,7 +120,7 @@ class ChildrenController < ApplicationController
     params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
     if params[:child][:_id]
       child = Child.get(params[:child][:_id])
-      child = update_child_with_attachments child, params
+      child = child.update_child_with_attachments(params, current_user_full_name)
       child.save
       render :json => child.compact
     else
@@ -129,7 +129,7 @@ class ChildrenController < ApplicationController
 
           child = create_or_update_child(params[:child].merge(:verified => current_user.verified?))
 
-          child['created_by_full_name'] = current_user.full_name
+          child['created_by_full_name'] = current_user_full_name
           if child.save
             render :json => child.compact
           end
@@ -254,16 +254,7 @@ class ChildrenController < ApplicationController
   def update_child_from(params)
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     authorize! :update, child
-    update_child_with_attachments(child, params)
-  end
-
-  def update_child_with_attachments(child, params)
-    child['last_updated_by_full_name'] = current_user_full_name
-    new_photo = params[:child].delete('photo')
-    new_photo = (params[:child][:photo] || '') if new_photo.nil?
-    new_audio = params[:child].delete('audio')
-    child.update_properties_with_user_name(current_user_name, new_photo, params['delete_child_photo'], new_audio, params[:child])
-    child
+    child.update_child_with_attachments(params[:child], current_user_full_name)
   end
 
   def respond_to_export(format, children)

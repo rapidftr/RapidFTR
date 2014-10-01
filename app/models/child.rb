@@ -114,6 +114,7 @@ class Child < BaseModel
 
   def compact
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
+    self.delete 'histories'
     self
   end
 
@@ -214,6 +215,15 @@ rescue
 
   def self.searchable_field_names
     Form.find_by_name(FORM_NAME).highlighted_fields.map(&:name) + [:unique_identifier, :short_id]
+  end
+
+  def update_child_with_attachments(attachments, current_user_full_name)
+    self['last_updated_by_full_name'] = current_user_full_name
+    new_photo = attachments.delete('photo')
+    new_photo = (attachments[:photo] || '') if new_photo.nil?
+    new_audio = attachments.delete('audio')
+    update_properties_with_user_name(current_user_full_name, new_photo, attachments['delete_self_photo'], new_audio, attachments)
+    self
   end
 
   private

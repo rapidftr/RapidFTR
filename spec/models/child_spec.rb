@@ -703,6 +703,26 @@ describe Child, :type => :model do
     end
   end
 
+  describe 'compact' do
+    it 'should set current photo key to empty string if the key is nil' do
+      child = build :child, :current_photo_key => nil
+      child.compact
+      expect(child['current_photo_key']).to eq('')
+    end
+
+    it 'remove histories' do
+      child = build :child, :histories => [{:anything => :anything}]
+      child.compact
+      expect(child['histories']).to be_nil
+    end
+
+    it 'should do nothing when there is no histories' do
+      child = build :child
+      child.compact
+      expect(child['histories']).to be_nil
+    end
+  end
+
   private
 
   def create_child(name, options = {})
