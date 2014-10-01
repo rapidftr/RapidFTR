@@ -743,6 +743,9 @@ describe Child, :type => :model do
   describe '#find_matching_enquiries' do
     before :each do
       PotentialMatch.all.each { |pm| pm.destroy }
+      Enquiry.all.each(&:destroy)
+      FormSection.all.each(&:destroy)
+      Form.all.each(&:destroy)
     end
 
     it 'should be triggered after save' do
@@ -753,6 +756,19 @@ describe Child, :type => :model do
       expect(PotentialMatch.count).to eq(1)
       expect(PotentialMatch.first.child_id).to eq(child.id)
       expect(PotentialMatch.first.enquiry_id).to eq(enquiry.id)
+      expect(PotentialMatch.first.score).to eq('0.9')
+    end
+
+    it 'should not match enquiries that have been reunited.' do
+      enquiry1 = create(:enquiry, :child_name => 'Eduardo')
+      enquiry2 = create(:enquiry, :child_name => 'Eduardo Charles', :reunited => true)
+
+      allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry1.id => '0.9', enquiry2.id => '0.7')
+      child = create(:child, :name => 'Eduardo')
+
+      expect(PotentialMatch.count).to eq(1)
+      expect(PotentialMatch.first.child_id).to eq(child.id)
+      expect(PotentialMatch.first.enquiry_id).to eq(enquiry1.id)
       expect(PotentialMatch.first.score).to eq('0.9')
     end
   end

@@ -38,7 +38,7 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def marked_invalid?
-    return marked_as?(PotentialMatch::INVALID)
+    marked_as?(PotentialMatch::INVALID)
   end
 
   def mark_as_confirmed
@@ -46,7 +46,7 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def confirmed?
-    return marked_as?(PotentialMatch::CONFIRMED)
+    marked_as?(PotentialMatch::CONFIRMED)
   end
 
   def mark_as_reunited
@@ -54,7 +54,7 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def reunited?
-    return marked_as?(PotentialMatch::REUNITED)
+    marked_as?(PotentialMatch::REUNITED)
   end
 
   def mark_as_reunited_elsewhere
@@ -62,7 +62,7 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def reunited_elsewhere?
-    return marked_as?(PotentialMatch::REUNITED_ELSEWHERE)
+    marked_as?(PotentialMatch::REUNITED_ELSEWHERE)
   end
 
   def mark_as_deleted
@@ -70,7 +70,7 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def deleted?
-    return marked_as?(PotentialMatch::DELETED)
+    marked_as?(PotentialMatch::DELETED)
   end
 
   def mark_as_potential_match
@@ -78,21 +78,27 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def potential_match?
-    return marked_as?(PotentialMatch::POTENTIAL)
+    marked_as?(PotentialMatch::POTENTIAL)
   end
 
   class << self
     def create_matches_for_child(child_id, hits)
       hits.each do |enquiry_id, score|
-        pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
-        pm.save
+        enquiry = Enquiry.get(enquiry_id)
+        unless enquiry.reunited?
+          pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
+          pm.save
+        end
       end
     end
 
     def create_matches_for_enquiry(enquiry_id, hits)
       hits.each do |child_id, score|
-        pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
-        pm.save
+        enquiry = Enquiry.get(enquiry_id)
+        unless enquiry.reunited?
+          pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
+          pm.save
+        end
       end
     end
   end
@@ -104,6 +110,6 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   def marked_as?(status)
-    return self[:status] == status
+    self[:status] == status
   end
 end

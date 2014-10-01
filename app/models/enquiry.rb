@@ -103,7 +103,6 @@ class Enquiry < BaseModel
 
   def potential_matches
     potential_matches = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::POTENTIAL]).all
-    #potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? || pm.deleted? }
     potential_matches.sort_by(&:score).reverse! || []
   end
 
