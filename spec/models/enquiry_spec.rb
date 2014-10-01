@@ -587,8 +587,8 @@ describe Enquiry, :type => :model do
         PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                               :child_id => 'child_id_x',
                               :confirmed => true
-        expect(Child).to receive(:get).with('child_id_x').and_return({})
         expect(enquiry_x.confirmed_match).to_not be_nil
+        expect(enquiry_x.confirmed_match.child_id).to eq('child_id_x')
       end
 
       it 'should not return unconfirmed matches' do

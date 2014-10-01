@@ -6,7 +6,13 @@
     <div class="clearfix"></div>
     <div class="form_info"></div>
     <div class="entity_list">
-      <%= render :partial => "children/summary_row", :locals => {:child => confirmed_match, :enquiry => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+      <%= render :partial => "children/summary_row",
+                 :locals => {:child => confirmed_match.child,
+                             :enquiry => confirmed_match.enquiry,
+                             :confirmed_match => confirmed_match,
+                             :checkbox => false,
+                             :highlighted_fields => child_sorted_highlighted_fields,
+                             :rendered_by_show_enquiry => true} %>
     </div>
     <br>
     <br>
@@ -19,7 +25,7 @@
   <div class="form_info"></div>
   <div class="entity_list">
     <% model.potential_matches.each do |match| %>
-      <%= render :partial => "children/summary_row", :locals => {:child => match, :enquiry => model, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+      <%= render :partial => "children/summary_row", :locals => {:child => match.child, :enquiry => match.enquiry, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
     <% end %>
   </div>
 </fieldset>
