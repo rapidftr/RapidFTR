@@ -9,6 +9,7 @@
       <% confirmed_matches.each do |match| %>
         <%= render :partial => "enquiries/summary_row",
                    :locals => {:enquiry => match.enquiry,
+                               :score => match.score,
                                :child => model,
                                :confirmed_match => match,
                                :checkbox => false,
@@ -30,6 +31,7 @@
       <%= render :partial => "enquiries/summary_row",
                  :locals => {:enquiry => match,
                              :child => model,
+                             :score => match.score,
                              :confirmed_match => confirmed_matches.first,
                              :checkbox => false,
                              :highlighted_fields => child_sorted_highlighted_fields,
