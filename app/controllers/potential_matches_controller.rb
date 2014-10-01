@@ -12,7 +12,7 @@ class PotentialMatchesController < ApplicationController
 
   def update
     if params[:confirmed]
-      @potential_match.confirmed = params[:confirmed]
+      @potential_match.mark_as_confirmed
       @potential_match.save
     end
     redirect_to url_for :controller => @model_controller, :action => :show, :id => @model_id, :anchor => 'tab_potential_matches'

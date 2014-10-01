@@ -642,7 +642,8 @@ describe Child, :type => :model do
       child_x = create(:child, :id => 'child_id_x')
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
-                            :confirmed => true
+                            :status => PotentialMatch::CONFIRMED
+      expect(Enquiry).to receive(:find).with('enquiry_id_x').and_return({})
       expect(child_x.confirmed_matches).to_not be_nil
       expect(child_x.confirmed_matches[0].enquiry_id).to eq('enquiry_id_x')
     end
@@ -653,10 +654,10 @@ describe Child, :type => :model do
       enquiry_y = create(:enquiry, :id => 'enquiry_id_y')
       PotentialMatch.create :enquiry_id => 'enquiry_id_y',
                             :child_id => 'child_id_x',
-                            :confirmed => true
+                            :status => PotentialMatch::CONFIRMED
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
-                            :confirmed => true
+                            :status => PotentialMatch::CONFIRMED
       expect(child_x.confirmed_matches).to_not be_nil
       expect(child_x.confirmed_matches.size).to be(2)
       expect(child_x.confirmed_matches.map(&:enquiry)).to include(enquiry_x, enquiry_y)
@@ -666,7 +667,7 @@ describe Child, :type => :model do
       child_x = create(:child, :id => 'child_id_x')
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
-                            :confirmed => false
+                            :status => PotentialMatch::POTENTIAL
       expect(Enquiry).to_not receive(:find)
       expect(child_x.confirmed_matches).to be_empty
     end

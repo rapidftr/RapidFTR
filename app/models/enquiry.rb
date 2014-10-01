@@ -16,6 +16,7 @@ class Enquiry < BaseModel
   property :criteria, Hash
   property :match_updated_at, :default => ''
   property :updated_at, Time
+  property :reunited, TrueClass, :default => false
 
   validate :validate_has_at_least_one_field_value
 
@@ -101,8 +102,8 @@ class Enquiry < BaseModel
   end
 
   def potential_matches
-    potential_matches = PotentialMatch.by_enquiry_id.key(id).all
-    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? || pm.deleted? }
+    potential_matches = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::POTENTIAL]).all
+    #potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? || pm.deleted? }
     potential_matches.sort_by(&:score).reverse! || []
   end
 
@@ -127,19 +128,19 @@ class Enquiry < BaseModel
     score_threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
 
     potential_matches_to_mark_deleted = previous_matches.select { |pm| hits[pm.child_id].to_f < score_threshold.value.to_f }
-    marked_potential_matches_as_deleted(potential_matches_to_mark_deleted)
+    mark_potential_matches_as_deleted(potential_matches_to_mark_deleted)
 
     potential_matches.reject! { |pm| potential_matches_to_mark_deleted.include?(pm) }
-    updated_potential_matches_score(potential_matches, hits)
+    update_potential_matches_score(potential_matches, hits)
 
-    previous_deleted_matches = PotentialMatch.by_enquiry_id_and_deleted.key([id, true]).all
+    previous_deleted_matches = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::DELETED]).all
     previous_deleted_matches = previous_deleted_matches.select { |pm| hits[pm.child_id].to_f > score_threshold.value.to_f }
 
     previous_deleted_matches.each do |pm|
       next unless hits.keys.include?(pm.child_id)
 
       pm.score = hits[pm.child_id]
-      pm.deleted = false
+      pm.mark_as_potential_match
       pm.save!
     end
 
@@ -150,6 +151,19 @@ class Enquiry < BaseModel
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
     end
+  end
+
+  def mark_as_reunited(reunited)
+    Enquiry.skip_callback(:save, :after, :find_matching_children)
+    self['reunited'] = reunited
+    save!
+
+    matches = potential_matches
+    matches.each do |match|
+      match.mark_as_reunited_elsewhere
+      match.save!
+    end
+    Enquiry.set_callback(:save, :after, :find_matching_children)
   end
 
   def self.update_all_child_matches
@@ -181,7 +195,8 @@ class Enquiry < BaseModel
   end
 
   def confirmed_match
-    PotentialMatch.by_enquiry_id_and_confirmed.key([id, true]).first
+    match = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::CONFIRMED]).first
+    match.nil? ? nil : Child.get(match.child_id)
   end
 
   def self.matchable_fields
@@ -190,7 +205,7 @@ class Enquiry < BaseModel
 
   private
 
-  def updated_potential_matches_score(matches, hits)
+  def update_potential_matches_score(matches, hits)
     matches.each do |pm|
       if hits.keys.include?(pm.child_id)
         pm.score = hits[pm.child_id]
@@ -199,9 +214,9 @@ class Enquiry < BaseModel
     end
   end
 
-  def marked_potential_matches_as_deleted(matches)
+  def mark_potential_matches_as_deleted(matches)
     matches.each do |pm|
-      pm.deleted = true
+      pm.mark_as_deleted
       pm.save!
     end
   end
