@@ -640,12 +640,12 @@ describe Child, :type => :model do
 
     it 'should return a confirmed match' do
       child_x = create(:child, :id => 'child_id_x')
+      enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
                             :status => PotentialMatch::CONFIRMED
-      expect(Enquiry).to receive(:find).with('enquiry_id_x').and_return({})
       expect(child_x.confirmed_matches).to_not be_nil
-      expect(child_x.confirmed_matches[0].enquiry_id).to eq('enquiry_id_x')
+      expect(child_x.confirmed_matches[0].enquiry.id).to eq(enquiry_x.id)
     end
 
     it 'should return multiple confirmed matches' do
@@ -696,7 +696,7 @@ describe Child, :type => :model do
     end
 
     it 'return potential matches' do
-      child = create :child, :name => 'Eduardo'
+      child = create(:child, :name => 'Eduardo')
       enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
       enquiry2 = create :enquiry, :child_name => 'Maria', :enquirer_name => 'Uncle'
 
@@ -714,7 +714,7 @@ describe Child, :type => :model do
       expect(child.potential_matches).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
-      pm.confirmed = true
+      pm.mark_as_confirmed
       pm.save
 
       expect(child.potential_matches.size).to eq(1)
@@ -731,7 +731,7 @@ describe Child, :type => :model do
       expect(child.potential_matches).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
-      pm.marked_invalid = true
+      pm.mark_as_invalid
       pm.save
 
       expect(child.potential_matches.size).to eq(1)
@@ -742,14 +742,11 @@ describe Child, :type => :model do
 
   describe '#find_matching_enquiries' do
     before :each do
-      PotentialMatch.all.each { |pm| pm.destroy }
-      Enquiry.all.each(&:destroy)
-      FormSection.all.each(&:destroy)
-      Form.all.each(&:destroy)
+      reset_couchdb!
     end
 
     it 'should be triggered after save' do
-      enquiry = build(:enquiry, :child_name => 'Eduardo')
+      enquiry = create(:enquiry, :child_name => 'Eduardo')
       allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry.id => '0.9')
       child = create(:child, :name => 'Eduardo')
 
@@ -775,6 +772,7 @@ describe Child, :type => :model do
 
   describe '.build_text_fields_for_solar' do
     it 'should not use searchable fields from the wrong form' do
+      allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
       child_form = create :form, :name => Child::FORM_NAME
       field1 = build :text_field
       create :form_section, :form => child_form, :fields => [field1]

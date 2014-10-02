@@ -17,6 +17,8 @@ describe PotentialMatch, :type => :model do
     end
 
     it 'should create potential match for a child' do
+      create(:enquiry, :id => '2e453c')
+      create(:enquiry, :id => '23edsd')
       PotentialMatch.create_matches_for_child('1a3efc', '2e453c' => '0.9', '23edsd' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
@@ -29,6 +31,7 @@ describe PotentialMatch, :type => :model do
     end
 
     it 'should create potential matches for an enquiry' do
+      create(:enquiry, :id => '1a3efc')
       PotentialMatch.create_matches_for_enquiry('1a3efc', '2e453c' => '0.9', '2ef1g' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
