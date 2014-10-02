@@ -86,7 +86,7 @@ describe Api::ChildrenController, :type => :controller do
 
   describe 'GET show' do
     it 'should render a child record as json' do
-      expect(Child).to receive(:get).with('123').and_return(double(:compact => double(:to_json => 'a child record')))
+      expect(Child).to receive(:get).with('123').and_return(double(:without_internal_fields => double(:to_json => 'a child record')))
       get :show, :id => '123', :format => 'json'
       expect(response.body).to eq('a child record')
     end
@@ -209,7 +209,7 @@ describe Api::ChildrenController, :type => :controller do
       expect(Child).to receive(:get).and_return(child)
       expect(child).to receive(:update_child_with_attachments).and_return(child)
       expect(child).to receive(:save).and_return(child)
-      expect(child).to receive(:compact)
+      expect(child).to receive(:without_internal_fields)
       post :unverified, :child => {:name => 'timmy', :_id => '1'}
       expect(response.body['histories']).to be_nil
     end

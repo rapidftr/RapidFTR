@@ -19,7 +19,7 @@ module Api
       child = Child.get params[:id]
 
       if child
-        render :json => child.compact
+        render :json => child.without_internal_fields
       else
         render :json => '', :status => 404
       end
@@ -31,7 +31,7 @@ module Api
       @child['created_by_full_name'] = current_user_full_name
 
       Child.without_histories { @child.save! }
-      render :json => @child.compact
+      render :json => @child.without_internal_fields
     end
 
     def update
@@ -40,7 +40,7 @@ module Api
       child = update_child_from params
 
       Child.without_histories { child.save! }
-      render :json => child.compact
+      render :json => child.without_internal_fields
     end
 
     def unverified
@@ -49,14 +49,14 @@ module Api
         child = Child.get(params[:child][:_id])
         child = child.update_child_with_attachments params[:child]
         child.save
-        render :json => child.compact
+        render :json => child.without_internal_fields
       else
         params[:child].merge!(:verified => current_user.verified?)
         child = create_or_update_child(params)
 
         child.attributes = {:created_by_full_name => current_user.full_name}
         if child.save
-          render :json => child.compact
+          render :json => child.without_internal_fields
         end
       end
     end
