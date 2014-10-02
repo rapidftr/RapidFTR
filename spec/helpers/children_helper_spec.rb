@@ -137,7 +137,9 @@ describe ChildrenHelper, :type => :helper do
     it 'should separate links by commas and spaces' do
       e1 = build(:enquiry, :unique_id => 'id1')
       e2 = build(:enquiry, :unique_id => 'id2')
-      header = confirmed_matches_header [e1, e2]
+      m1 = PotentialMatch.new(:enquiry => e1)
+      m2 = PotentialMatch.new(:enquiry => e2)
+      header = confirmed_matches_header [m1, m2]
       expect(header).to eq("<div class=\"filter_bar\" id=\"match_details\"><h3>Confirmed Matches: " \
                            "<a href=\"/enquiries/#{e1.id}\">#{e1.short_id}</a>" \
                            "<a href=\"/enquiries/#{e2.id}\">, #{e2.short_id}</a></h3></div>")
@@ -145,23 +147,33 @@ describe ChildrenHelper, :type => :helper do
   end
 
   describe 'potential match links' do
-    let(:child) { build :child }
-    let(:enquiry) { build :enquiry }
+    let!(:child) { build :child }
+    let!(:enquiry) { build :enquiry }
+    let!(:potential_match) { PotentialMatch.new(:child => child, :enquiry => enquiry) }
 
     describe '#mark_as_not_matching_link' do
       it 'should return nil if current child is a confirmed match' do
-        expect(mark_as_not_matching_link(child, child, enquiry)).to be_nil
+        expect(mark_as_not_matching_link(child, potential_match, enquiry)).to be_nil
       end
 
       it 'should return a link if confirmed_match is nil' do
-        link = mark_as_not_matching_link child, nil, enquiry
+        link = mark_as_not_matching_link(child, nil, enquiry)
         expect(link).to match(/<a data-method=\"delete\"/)
       end
 
       it 'should return a delete link beginning with |' do
-        link = mark_as_not_matching_link child, build(:child), enquiry
+        potential_match = PotentialMatch.new(:child => build(:child), :enquiry => enquiry)
+        link = mark_as_not_matching_link child, potential_match, enquiry
         expect(link).to eq("<li id=\"mark_#{child.id}\"> | " \
                            "<a data-method=\"delete\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}\" "\
+                           "rel=\"nofollow\">Mark as not matching</a></li>")
+      end
+
+      it 'should return a delete link returning to :child' do
+        potential_match = PotentialMatch.new(:child => build(:child), :enquiry => enquiry)
+        link = mark_as_not_matching_link child, potential_match, enquiry, :return => :child
+        expect(link).to eq("<li id=\"mark_#{child.id}\"> | " \
+                           "<a data-method=\"delete\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?return=child\" "\
                            "rel=\"nofollow\">Mark as not matching</a></li>")
       end
     end
@@ -177,6 +189,13 @@ describe ChildrenHelper, :type => :helper do
                            "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=true\" "\
                            "rel=\"nofollow\">Confirm as Match</a></li>")
       end
+
+      it 'should return a put link with options' do
+        link = confirm_match_link child, nil, enquiry, :return => :child
+        expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
+                           "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=true&amp;return=child\" "\
+                           "rel=\"nofollow\">Confirm as Match</a></li>")
+      end
     end
 
     describe '#unconfirm_match_link' do
@@ -184,14 +203,29 @@ describe ChildrenHelper, :type => :helper do
         expect(unconfirm_match_link(child, nil, enquiry)).to be_nil
       end
 
-      it 'should return nil if current child isnt the confirmed match' do
-        expect(unconfirm_match_link(child, build(:child), enquiry)).to be_nil
+      it 'should return nil if child isnt the confirmed match' do
+        potential_match = PotentialMatch.new(:child => build(:child), :enquiry => enquiry)
+        expect(unconfirm_match_link(child, potential_match, enquiry)).to be_nil
+      end
+
+      it 'should return nil if enquiry isnt the confirmed match' do
+        potential_match = PotentialMatch.new(:child => child, :enquiry => build(:enquiry))
+        expect(unconfirm_match_link(child, potential_match, enquiry)).to be_nil
       end
 
       it 'should return a put link with confirm=false for a child that is the confirmed match' do
-        link = unconfirm_match_link child, child, enquiry
+        potential_match = PotentialMatch.new(:child => child, :enquiry => enquiry)
+        link = unconfirm_match_link child, potential_match, enquiry
         expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
                            "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=false\" "\
+                           "rel=\"nofollow\">Undo Confirmation</a></li>")
+      end
+
+      it 'should return a put link with options for a child that is the confirmed match' do
+        potential_match = PotentialMatch.new(:child => child, :enquiry => enquiry)
+        link = unconfirm_match_link child, potential_match, enquiry, :return => :child
+        expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \
+                           "<a data-method=\"put\" href=\"/enquiries/#{enquiry.id}/potential_matches/#{child.id}?confirmed=false&amp;return=child\" "\
                            "rel=\"nofollow\">Undo Confirmation</a></li>")
       end
     end

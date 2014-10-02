@@ -100,30 +100,33 @@ module ChildrenHelper
     return nil if matches.empty?
     builder = [t('enquiry.confirmed_child_matches') + ': ']
     if matches.count == 1
-      builder << matches.map { |enquiry| link_to(enquiry.short_id, enquiry_path(enquiry.id)) }
+      builder << matches.map { |match| link_to(match.enquiry.short_id, enquiry_path(match.enquiry.id)) }
     else
-      builder << matches.take(1).map { |enquiry| link_to(enquiry.short_id, enquiry_path(enquiry.id)) }
-      builder << matches.drop(1).map { |enquiry| link_to(', ' + enquiry.short_id, enquiry_path(enquiry.id)) }
+      builder << matches.take(1).map { |match| link_to(match.enquiry.short_id, enquiry_path(match.enquiry.id)) }
+      builder << matches.drop(1).map { |match| link_to(', ' + match.enquiry.short_id, enquiry_path(match.enquiry.id)) }
     end
     content = content_tag(:h3, builder.flatten.join('').html_safe)
     content_tag(:div, content, :id => 'match_details', :class => 'filter_bar')
   end
 
-  def mark_as_not_matching_link(child, confirmed_match, enquiry)
-    return nil if confirmed_match == child
-    content = " | #{link_to t('enquiry.mark_child_as_not_matching'), enquiry_potential_match_path(enquiry.id, child.id), :method => :delete}".html_safe
+  def mark_as_not_matching_link(child, confirmed_match, enquiry, options = {})
+    return nil if !confirmed_match.nil? && confirmed_match.child == child
+    link_path = enquiry_potential_match_path(enquiry.id, child.id, options)
+    content = " | #{link_to t('enquiry.mark_child_as_not_matching'), link_path, :method => :delete}".html_safe
     content_tag(:li, content, :id => "mark_#{child.id}")
   end
 
-  def confirm_match_link(child, confirmed_match, enquiry)
+  def confirm_match_link(child, confirmed_match, enquiry, options = {})
     return nil unless confirmed_match.nil?
-    content = " | #{link_to t('enquiry.confirm_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => true), :method => :put}".html_safe
+    link_path = enquiry_potential_match_path(enquiry.id, child.id, options.merge(:confirmed => true))
+    content = " | #{link_to t('enquiry.confirm_child_as_matching'), link_path, :method => :put}".html_safe
     content_tag(:li, content, :id => "confirm_#{child.id}")
   end
 
-  def unconfirm_match_link(child, confirmed_match, enquiry)
-    return nil if confirmed_match.nil? || child != confirmed_match
-    content = " | #{link_to t('enquiry.unmark_child_as_matching'), enquiry_potential_match_path(enquiry.id, child.id, :confirmed => false), :method => :put}".html_safe
+  def unconfirm_match_link(child, confirmed_match, enquiry, options = {})
+    return nil if confirmed_match.nil? || !(child == confirmed_match.child && enquiry == confirmed_match.enquiry)
+    link_path = enquiry_potential_match_path(enquiry.id, child.id, options.merge(:confirmed => false))
+    content = " | #{link_to t('enquiry.unmark_child_as_matching'), link_path, :method => :put}".html_safe
     content_tag(:li, content, :id => "confirm_#{child.id}")
   end
 end

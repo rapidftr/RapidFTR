@@ -1,8 +1,17 @@
 <!-- BEGIN: item -->
 <div id="enquiry_<%= enquiry.id %>" class="entity_summary_panel">
 
-  <div class="photo_panel">
-    <%= link_to thumbnail_tag(enquiry, enquiry.primary_photo_id), enquiry_path(enquiry.id) %>
+  <div class="left_side">
+    <div class="photo_panel">
+      <%= link_to thumbnail_tag(enquiry, enquiry.primary_photo_id), enquiry_path(enquiry.id) %>
+    </div>
+    <% if local_assigns.has_key?(:score) && !:score.nil?%>
+      <div class="score_panel" >
+        <h2>
+          <%= score.to_s[0..4] %>
+        </h2>
+      </div>
+    <% end %>
   </div>
   <div class="summary_panel">
 
@@ -36,13 +45,18 @@
   <div class="action_panel">
     <% show_links = true unless local_assigns.has_key? :show_links %>
     <% if show_links %>
-        <ul class="view-edit">
-          <% if can?(:update, enquiry) %>
-              <li>
-              <%= link_to(t('buttons.edit'), edit_enquiry_path(enquiry), :class=>'edit') %> |
-              </li>
-        <% end %>
-        </ul>
+      <ul class="view-edit">
+        <% if can?(:update, enquiry) %>
+          <li>
+            <%= link_to(t('buttons.edit'), edit_enquiry_path(enquiry), :class=>'edit') %>
+          </li>
+          <% if local_assigns.has_key?(:rendered_by_show_enquiry) && local_assigns.has_key?(:confirmed_match)%>
+            <%= mark_as_not_matching_link child, confirmed_match, enquiry, :return => :child %>
+            <%= confirm_match_link child, confirmed_match, enquiry, :return => :child %>
+            <%= unconfirm_match_link child, confirmed_match, enquiry, :return => :child %>
+          <% end %>
+      <% end %>
+      </ul>
     <% end %>
   </div>
 </div>
