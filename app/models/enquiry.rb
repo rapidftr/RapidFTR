@@ -190,6 +190,7 @@ class Enquiry < BaseModel
 
   def without_internal_fields
     delete 'histories'
+    delete 'criteria'
     self
   end
 

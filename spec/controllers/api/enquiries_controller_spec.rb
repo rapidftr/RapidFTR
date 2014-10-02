@@ -72,15 +72,15 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(201)
     end
 
-    it 'should return an enquiry json without histories' do
+    it 'should return an enquiry json without internal fields' do
+      enquiry = build :enquiry
+      allow(Enquiry).to receive(:new_with_user_name).and_return(enquiry)
       allow(controller).to receive(:authorize!)
+      expect(enquiry).to receive(:without_internal_fields).and_return(enquiry)
       post :create, :enquiry => {:enquirer_name => 'reporter',
                                  :reporter_details => {'location' => 'Kampala'},
                                  :name => 'name',
                                  :histories => [{:history => :history}]}
-
-      histories = JSON.parse(response.body)['histories']
-      expect(histories).to be_nil
     end
 
     it 'should not update record if it exists and return error' do
@@ -138,16 +138,14 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(200)
     end
 
-    it 'should not include histories in the returned json' do
-      criteria = {'name' => 'old name'}
-      enquiry = Enquiry.create(:enquirer_name => 'Machaba',
-                               :reporter_details => {'location' => 'kampala'},
-                               :criteria => criteria)
+    it 'should not include internal fields in the returned json' do
+      enquiry = create :enquiry
       allow(controller).to receive(:authorize!)
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => 'new name', :criteria => criteria}, :format => :json
+      put :update, :id => enquiry.id, :enquiry => {:id => 'enquiry_id', :enquirer_name => 'new name', :criteria => 'criteria'}, :format => :json
 
-      histories = JSON.parse(response.body)['histories']
-      expect(histories).to be_nil
+      json_response = JSON.parse(response.body)
+      expect(json_response['histories']).to be_nil
+      expect(json_response['criteria']).to be_nil
     end
 
     it 'should not trigger the match unless record is created' do
@@ -186,29 +184,27 @@ describe Api::EnquiriesController, :type => :controller do
 
     it 'should update record if it exists and return the updated record' do
       allow(controller).to receive(:authorize!)
-      criteria = {:name => 'name'}
-      enquiry = Enquiry.create(:enquirer_name => 'old name', :criteria => criteria)
-
-      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => 'new name', :criteria => criteria}
+      enquiry = Enquiry.create(:enquirer_name => 'old name')
+      put :update, :id => enquiry.id,
+                   :enquiry => {:id => enquiry.id, :enquirer_name => 'new name'}
 
       enquiry = Enquiry.get(enquiry.id)
 
       expect(enquiry.enquirer_name).to eq('new name')
       expect(response.response_code).to eq(200)
-      expect(JSON.parse(response.body)['criteria']).to eq(enquiry[:criteria])
+      expect(enquiry[:criteria]).to eq('enquirer_name' => 'new name')
     end
 
     it 'should update record without passing the id in the enquiry params' do
       allow(controller).to receive(:authorize!)
-      criteria = {:name => 'name'}
-      enquiry = Enquiry.create(:enquirer_name => 'old name', :reporter_details => {'location' => 'kampala'}, :criteria => criteria)
+      enquiry = Enquiry.create(:enquirer_name => 'old name', :reporter_details => {'location' => 'kampala'})
 
-      put :update, :id => enquiry.id, :enquiry => {:enquirer_name => 'new name', :criteria => criteria}
+      put :update, :id => enquiry.id, :enquiry => {:enquirer_name => 'new name'}
 
       enquiry = Enquiry.get(enquiry.id)
       expect(enquiry.enquirer_name).to eq('new name')
       expect(response.response_code).to eq(200)
-      expect(JSON.parse(response.body)['criteria']).to eq(enquiry[:criteria])
+      expect(enquiry[:criteria]).to eq('enquirer_name' => 'new name')
     end
 
     it 'should merge updated fields and return the latest record' do
@@ -228,7 +224,6 @@ describe Api::EnquiriesController, :type => :controller do
       expect(enquiry['age']).to eq('100')
       expect(enquiry['location']).to eq('Kampala')
       expect(response.response_code).to eq(200)
-      expect(JSON.parse(response.body)['criteria']).to eq(enquiry[:criteria])
     end
 
     it 'should update existing enquiry with potential matches', :solr => true do
@@ -353,13 +348,12 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.body).to eq('an enquiry record')
     end
 
-    it 'should not return histories' do
+    it 'should not return internal fields' do
       enquiry = build :enquiry
       allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      expect(enquiry).to receive(:without_internal_fields).and_return(enquiry)
       allow(controller).to receive(:authorize!)
       get :show, :id => enquiry.id
-      histories = JSON.parse(response.body)['histories']
-      expect(histories).to be_nil
     end
 
     it 'should return a 404 with empty body if enquiry record does not exist' do

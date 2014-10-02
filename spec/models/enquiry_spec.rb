@@ -620,6 +620,12 @@ describe Enquiry, :type => :model do
         enquiry = build :enquiry, 'histories' => [{:history => :history}]
         expect(enquiry.without_internal_fields['histories']).to be_nil
       end
+
+      it 'should remove criteria' do
+        enquiry = build :enquiry
+        enquiry.create_criteria
+        expect(enquiry.without_internal_fields['criteria']).to be_nil
+      end
     end
 
     private
