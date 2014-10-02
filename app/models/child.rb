@@ -190,8 +190,14 @@ rescue
   end
 
   def confirmed_matches
-    matches = PotentialMatch.by_child_id_and_confirmed.key([id, true]).all
-    matches.map { |pm| Enquiry.find(pm.enquiry_id) }
+    PotentialMatch.by_child_id_and_confirmed.key([id, true]).all
+  end
+
+  def potential_matches
+    potential_matches = PotentialMatch.by_child_id.key(id).all
+    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? }
+    enquiry_ids = potential_matches.each.map(&:enquiry_id)
+    enquiry_ids.map { |id| Enquiry.get(id) }
   end
 
   def find_matching_enquiries

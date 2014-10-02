@@ -28,6 +28,11 @@ describe PotentialMatchesController, :type => :controller do
       expect(response).to redirect_to "/enquiries/#{@enquiry.id}#tab_potential_matches"
     end
 
+    it 'should redirect to potential matches section of child page if specified' do
+      delete :destroy, :enquiry_id => @enquiry.id, :id => @child.id, :return => :child
+      expect(response).to redirect_to "/children/#{@child.id}#tab_potential_matches"
+    end
+
     it 'should reject unauthorized users' do
       allow(controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(false)
       delete :destroy, :enquiry_id => @enquiry.id, :id => @child.id
@@ -49,6 +54,13 @@ describe PotentialMatchesController, :type => :controller do
       put :update, params
 
       expect(response).to redirect_to "/enquiries/#{@enquiry.id}#tab_potential_matches"
+    end
+
+    it 'should redirect to potential matches section of child page if specificed' do
+      params =  {:id => @child.id, :enquiry_id => @enquiry.id, :confirmed => true, :return => :child}
+      put :update, params
+
+      expect(response).to redirect_to "/children/#{@child.id}#tab_potential_matches"
     end
 
     it 'should reject unauthorize users' do

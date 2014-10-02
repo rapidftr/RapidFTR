@@ -643,8 +643,8 @@ describe Child, :type => :model do
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
                             :confirmed => true
-      expect(Enquiry).to receive(:find).with('enquiry_id_x').and_return({})
       expect(child_x.confirmed_matches).to_not be_nil
+      expect(child_x.confirmed_matches[0].enquiry_id).to eq('enquiry_id_x')
     end
 
     it 'should return multiple confirmed matches' do
@@ -659,7 +659,7 @@ describe Child, :type => :model do
                             :confirmed => true
       expect(child_x.confirmed_matches).to_not be_nil
       expect(child_x.confirmed_matches.size).to be(2)
-      expect(child_x.confirmed_matches).to include(enquiry_x, enquiry_y)
+      expect(child_x.confirmed_matches.map(&:enquiry)).to include(enquiry_x, enquiry_y)
     end
 
     it 'should not return unconfirmed matches' do
@@ -669,6 +669,73 @@ describe Child, :type => :model do
                             :confirmed => false
       expect(Enquiry).to_not receive(:find)
       expect(child_x.confirmed_matches).to be_empty
+    end
+  end
+
+  describe '#potential_matches', :solr => true do
+
+    before :each do
+      reset_couchdb!
+      Sunspot.setup(Child) do
+        text :location
+        text :name
+        text :gender
+      end
+
+      form = create :form, :name => Enquiry::FORM_NAME
+
+      SystemVariable.create :name => 'SCORE_THRESHOLD', :value => '0'
+
+      create :form_section, :name => 'test_form', :fields => [
+        build(:text_field, :name => 'child_name'),
+        build(:text_field, :name => 'location'),
+        build(:text_field, :name => 'gender'),
+        build(:text_field, :name => 'enquirer_name')
+      ], :form => form
+    end
+
+    it 'return potential matches' do
+      child = create :child, :name => 'Eduardo'
+      enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
+      enquiry2 = create :enquiry, :child_name => 'Maria', :enquirer_name => 'Uncle'
+
+      expect(child.potential_matches.size).to eq(1)
+      expect(child.potential_matches).to include(enquiry1)
+      expect(child.potential_matches).to_not include(enquiry2)
+    end
+
+    it 'should not return matches marked as confirmed' do
+      child = create :child, :name => 'Eduardo'
+      enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
+      enquiry2 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Uncle'
+
+      expect(child.potential_matches.size).to eq(2)
+      expect(child.potential_matches).to include(enquiry1, enquiry2)
+
+      pm = PotentialMatch.first
+      pm.confirmed = true
+      pm.save
+
+      expect(child.potential_matches.size).to eq(1)
+      expect(child.potential_matches).to include(enquiry1)
+      expect(child.potential_matches).to_not include(enquiry2)
+    end
+
+    it 'should not return matches marked as invalid' do
+      child = create :child, :name => 'Eduardo'
+      enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
+      enquiry2 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Uncle'
+
+      expect(child.potential_matches.size).to eq(2)
+      expect(child.potential_matches).to include(enquiry1, enquiry2)
+
+      pm = PotentialMatch.first
+      pm.marked_invalid = true
+      pm.save
+
+      expect(child.potential_matches.size).to eq(1)
+      expect(child.potential_matches).to include(enquiry1)
+      expect(child.potential_matches).to_not include(enquiry2)
     end
   end
 

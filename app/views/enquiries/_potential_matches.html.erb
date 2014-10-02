@@ -1,12 +1,19 @@
 <fieldset id='tab_potential_matches' class='tab'>
-  <% confirmed_match = @enquiry.confirmed_match %>
+  <% confirmed_match = model.confirmed_match %>
   <% unless confirmed_match.nil? %>
     <div class="clearfix"></div>
     <h2><%= t('enquiry.confirmed_child_matches') %></h2>
     <div class="clearfix"></div>
     <div class="form_info"></div>
     <div class="entity_list">
-      <%= render :partial => "children/summary_row", :locals => {:child => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true, :confirmed_match => confirmed_match } %>
+      <%= render :partial => "children/summary_row",
+                 :locals => {:child => confirmed_match.child,
+                             :enquiry => model,
+                             :score => confirmed_match.score,
+                             :confirmed_match => confirmed_match,
+                             :checkbox => false,
+                             :highlighted_fields => child_sorted_highlighted_fields,
+                             :rendered_by_show_enquiry => true} %>
     </div>
     <br>
     <br>
@@ -18,8 +25,15 @@
   <div class="clearfix"></div>
   <div class="form_info"></div>
   <div class="entity_list">
-    <% @enquiry.potential_matches.each do |match| %>
-      <%= render :partial => "children/summary_row", :locals => {:child => match.child, :score => match.score, :confirmed_match => confirmed_match, :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields, :rendered_by_show_enquiry => true} %>
+    <% model.potential_matches.each do |match| %>
+      <%= render :partial => "children/summary_row",
+                 :locals => {:child => match.child,
+                             :enquiry => model,
+                             :score => match.score,
+                             :confirmed_match => confirmed_match,
+                             :checkbox => false,
+                             :highlighted_fields => child_sorted_highlighted_fields,
+                             :rendered_by_show_enquiry => true} %>
     <% end %>
   </div>
 </fieldset>
