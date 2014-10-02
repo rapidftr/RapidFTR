@@ -72,8 +72,19 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(201)
     end
 
+    it 'should return an enquiry json without histories' do
+      allow(controller).to receive(:authorize!)
+      post :create, :enquiry => {:enquirer_name => 'reporter',
+                                 :reporter_details => {'location' => 'Kampala'},
+                                 :name => 'name',
+                                 :histories => [{:history => :history}]}
+
+      histories = JSON.parse(response.body)['histories']
+      expect(histories).to be_nil
+    end
+
     it 'should not update record if it exists and return error' do
-      enquiry = Enquiry.new(:enquirer_name => 'old name', :"location" => 'kampala', :name => 'name')
+      enquiry = Enquiry.new(:enquirer_name => 'old name', :'location' => 'kampala', :name => 'name')
       enquiry.save!
       allow(controller).to receive(:authorize!)
 
@@ -103,13 +114,13 @@ describe Api::EnquiriesController, :type => :controller do
 
     it 'should not duplicate histories from params' do
       enquiry = {:enquirer_name => 'John Doe',
-                 :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}]
+                 :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]
       }
 
       post :create, :enquiry => enquiry
       saved_enquiry = Enquiry.first
       expect(saved_enquiry['histories'].length).to eq 1
-      expect(saved_enquiry['histories'].first['changes']).to eq({"enquirer_name"=>{"from"=>"", "to"=>"John Doe"}})
+      expect(saved_enquiry['histories'].first['changes']).to eq('enquirer_name' => {'from' => '', 'to' => 'John Doe'})
     end
   end
 
@@ -125,6 +136,18 @@ describe Api::EnquiriesController, :type => :controller do
       put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => 'new name', :criteria => criteria}, :format => :json
 
       expect(response.response_code).to eq(200)
+    end
+
+    it 'should not include histories in the returned json' do
+      criteria = {'name' => 'old name'}
+      enquiry = Enquiry.create(:enquirer_name => 'Machaba',
+                               :reporter_details => {'location' => 'kampala'},
+                               :criteria => criteria)
+      allow(controller).to receive(:authorize!)
+      put :update, :id => enquiry.id, :enquiry => {:id => enquiry.id, :enquirer_name => 'new name', :criteria => criteria}, :format => :json
+
+      histories = JSON.parse(response.body)['histories']
+      expect(histories).to be_nil
     end
 
     it 'should not trigger the match unless record is created' do
@@ -244,15 +267,15 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not duplicate or replace histories from params' do
-      Timecop.freeze Time.local(2014,9,26,10,10,10) do
+      Timecop.freeze Time.local(2014, 9, 26, 10, 10, 10) do
         enquiry_params = {:enquirer_name => 'John Doe',
-                   :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}] }
+                          :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]}
         enquiry = create :enquiry
         put :update, :id => enquiry.id, :enquiry => enquiry_params
         saved_enquiry = Enquiry.first
         expect(saved_enquiry['histories'].length).to eq 2
-        expect(saved_enquiry['histories'].first['changes']).to eq({"enquiry"=>{"created"=>"2014-09-26 10:10:10 UTC"}})
-        expect(saved_enquiry['histories'][1]['changes']).to eq({"enquirer_name"=>{"from"=>"", "to"=>"John Doe"}})
+        expect(saved_enquiry['histories'].first['changes']).to eq('enquiry' => {'created' => '2014-09-26 10:10:10 UTC'})
+        expect(saved_enquiry['histories'][1]['changes']).to eq('enquirer_name' => {'from' => '', 'to' => 'John Doe'})
       end
     end
   end
@@ -322,12 +345,21 @@ describe Api::EnquiriesController, :type => :controller do
   describe 'GET show' do
     it 'should fetch a particular enquiry' do
       allow(controller).to receive(:authorize!)
-
-      expect(Enquiry).to receive(:get).with('123').and_return(double(:to_json => 'an enquiry record'))
+      enquiry = double(:to_json => 'an enquiry record')
+      expect(Enquiry).to receive(:get).with('123').and_return(double(:without_internal_fields => enquiry))
 
       get :show, :id => '123'
       expect(response.response_code).to eq(200)
       expect(response.body).to eq('an enquiry record')
+    end
+
+    it 'should not return histories' do
+      enquiry = build :enquiry
+      allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      allow(controller).to receive(:authorize!)
+      get :show, :id => enquiry.id
+      histories = JSON.parse(response.body)['histories']
+      expect(histories).to be_nil
     end
 
     it 'should return a 404 with empty body if enquiry record does not exist' do

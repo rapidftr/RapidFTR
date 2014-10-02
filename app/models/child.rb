@@ -112,9 +112,9 @@ class Child < BaseModel
      }"
   end
 
-  def compact
+  def without_internal_fields
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
-    self.delete 'histories'
+    delete 'histories'
     self
   end
 

@@ -61,7 +61,7 @@ class ChildrenController < ApplicationController
     respond_to do |format|
       format.html
       format.xml { render :xml => @child }
-      format.json { render :json => @child.compact }
+      format.json { render :json => @child.without_internal_fields }
 
       respond_to_export format, [@child]
     end
@@ -103,7 +103,7 @@ class ChildrenController < ApplicationController
         format.html { redirect_to(@child) }
         format.xml { render :xml => @child, :status => :created, :location => @child }
         format.json do
-          render :json => @child.compact
+          render :json => @child.without_internal_fields
         end
       else
         format.html do
@@ -122,7 +122,7 @@ class ChildrenController < ApplicationController
       child = Child.get(params[:child][:_id])
       child = child.update_child_with_attachments(params, current_user_full_name)
       child.save
-      render :json => child.compact
+      render :json => child.without_internal_fields
     else
       respond_to do |format|
         format.json do
@@ -131,7 +131,7 @@ class ChildrenController < ApplicationController
 
           child['created_by_full_name'] = current_user_full_name
           if child.save
-            render :json => child.compact
+            render :json => child.without_internal_fields
           end
         end
       end
@@ -144,7 +144,7 @@ class ChildrenController < ApplicationController
         params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)
         child = update_child_from params
         child.save
-        render :json => child.compact
+        render :json => child.without_internal_fields
       end
 
       format.html do

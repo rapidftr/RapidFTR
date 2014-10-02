@@ -188,6 +188,11 @@ class Enquiry < BaseModel
     Array.new(FormSection.all_visible_child_fields_for_form(Enquiry::FORM_NAME)).keep_if { |field| field.matchable? }
   end
 
+  def without_internal_fields
+    delete 'histories'
+    self
+  end
+
   private
 
   def updated_potential_matches_score(matches, hits)

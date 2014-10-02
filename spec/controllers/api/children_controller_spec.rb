@@ -121,16 +121,16 @@ describe Api::ChildrenController, :type => :controller do
 
     it 'should not duplicate histories from params' do
       child = {:enquirer_name => 'John Doe',
-                 :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}] }
+               :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]}
       post :create, :child => child
       saved_child = Child.first
       expect(saved_child['histories'].length).to eq 1
-      expect(saved_child['histories'].first['changes']).to eq({"enquirer_name"=>{"from"=>"", "to"=>"John Doe"}})
+      expect(saved_child['histories'].first['changes']).to eq('enquirer_name' => {'from' => '', 'to' => 'John Doe'})
     end
 
     it 'should not return histories' do
       child = {:enquirer_name => 'John Doe',
-                 :histories => [{:changes => {:enquirer_name => {:from => "", :to => "John Doe"}}}] }
+               :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]}
       post :create, :child => child
       expect(response.body['histories']).to be_nil
     end
@@ -148,19 +148,19 @@ describe Api::ChildrenController, :type => :controller do
       child = create :child
       params = {:child_name => 'John Doe',
                 :first_name => 'John',
-                :histories => [{:changes => {:child_name => {:from => "", :to => "John Doe"}}}] }
+                :histories => [{:changes => {:child_name => {:from => '', :to => 'John Doe'}}}]}
       put :update, :id => child.id, :child => params
       saved_child = Child.find child.id
       expect(saved_child['histories'].length).to eq 2
-      expect(saved_child['histories'].first['changes']).to eq({"child"=>{"created"=>nil}})
-      expect(saved_child['histories'][1]['changes']).to eq({"child_name"=>{"from"=>"", "to"=>"John Doe"}})
+      expect(saved_child['histories'].first['changes']).to eq('child' => {'created' => nil})
+      expect(saved_child['histories'][1]['changes']).to eq('child_name' => {'from' => '', 'to' => 'John Doe'})
     end
 
     it 'should not return histories' do
       child = create :child
       params = {:child_name => 'John Doe',
                 :first_name => 'John',
-                :histories => [{:changes => {:child_name => {:from => "", :to => "John Doe"}}}] }
+                :histories => [{:changes => {:child_name => {:from => '', :to => 'John Doe'}}}]}
       put :update, :id => child.id, :child => params
       expect(response.body['histories']).to be_nil
     end

@@ -615,6 +615,13 @@ describe Enquiry, :type => :model do
       end
     end
 
+    describe 'without_internal_fields' do
+      it 'should remove histories' do
+        enquiry = build :enquiry, 'histories' => [{:history => :history}]
+        expect(enquiry.without_internal_fields['histories']).to be_nil
+      end
+    end
+
     private
 
     def create_enquiry_with_created_by(created_by, options = {}, organisation = 'UNICEF')

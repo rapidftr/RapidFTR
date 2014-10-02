@@ -560,7 +560,7 @@ describe BaseModel, :type => :model do
                                     'created_by' => 'me',
                                     'created_organisation' => 'stc')
       BaseModel.without_histories do
-        base_model['name']= 'new name'
+        base_model['name'] = 'new name'
         base_model.save
       end
       base_model.reload

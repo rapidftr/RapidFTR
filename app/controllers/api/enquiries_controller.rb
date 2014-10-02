@@ -16,7 +16,7 @@ module Api
       end
 
       Enquiry.without_histories { @enquiry.save }
-      render :json => @enquiry, :status => 201
+      render :json => @enquiry.without_internal_fields, :status => 201
     end
 
     def update
@@ -34,7 +34,7 @@ module Api
       end
 
       Enquiry.without_histories { enquiry.save! }
-      render :json => enquiry
+      render :json => enquiry.without_internal_fields
     end
 
     def index
@@ -51,7 +51,7 @@ module Api
       authorize! :show, Enquiry
       enquiry = Enquiry.get(params[:id])
       if !enquiry.nil?
-        render :json => enquiry
+        render :json => enquiry.without_internal_fields
       else
         render :json => '', :status => 404
       end
