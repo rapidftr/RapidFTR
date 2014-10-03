@@ -51,7 +51,7 @@ module Api
       params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
       if params[:child][:_id]
         child = Child.get(params[:child][:_id])
-        child = child.update_child_with_attachments params[:child]
+        child = child.update_with_attachments(params, current_user)
         child.save
         render :json => child.without_internal_fields
       else

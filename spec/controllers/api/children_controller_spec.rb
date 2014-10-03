@@ -219,7 +219,7 @@ describe Api::ChildrenController, :type => :controller do
     it 'should not return histories for existing children' do
       child = double(Child)
       expect(Child).to receive(:get).and_return(child)
-      expect(child).to receive(:update_child_with_attachments).and_return(child)
+      expect(child).to receive(:update_with_attachments).and_return(child)
       expect(child).to receive(:save).and_return(child)
       expect(child).to receive(:without_internal_fields)
       post :unverified, :child => {:name => 'timmy', :_id => '1'}

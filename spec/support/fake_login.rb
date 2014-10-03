@@ -45,4 +45,10 @@ module FakeLogin
     allow(user).to receive(:roles).and_return([Role.new(:permissions => [permission].flatten)])
     fake_login user
   end
+
+  def fake_login_as_user(user)
+    permission = Permission.all_permissions
+    allow(user).to receive(:roles).and_return([Role.new(:permissions => [permission].flatten)])
+    fake_login user
+  end
 end
