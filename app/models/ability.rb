@@ -136,7 +136,8 @@ class Ability
 
   def initialize_enquiry_permissions(user)
     if user.has_permission?(Permission::ENQUIRIES[:create])
-      can [:create], Enquiry do |enquiry|
+      can [:create, :update], Enquiry
+      can [:read], Enquiry do |enquiry|
         enquiry.created_by == user.user_name
       end
     end

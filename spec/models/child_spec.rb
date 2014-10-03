@@ -640,11 +640,12 @@ describe Child, :type => :model do
 
     it 'should return a confirmed match' do
       child_x = create(:child, :id => 'child_id_x')
+      enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
-                            :confirmed => true
+                            :status => PotentialMatch::CONFIRMED
       expect(child_x.confirmed_matches).to_not be_nil
-      expect(child_x.confirmed_matches[0].enquiry_id).to eq('enquiry_id_x')
+      expect(child_x.confirmed_matches[0].enquiry.id).to eq(enquiry_x.id)
     end
 
     it 'should return multiple confirmed matches' do
@@ -653,10 +654,10 @@ describe Child, :type => :model do
       enquiry_y = create(:enquiry, :id => 'enquiry_id_y')
       PotentialMatch.create :enquiry_id => 'enquiry_id_y',
                             :child_id => 'child_id_x',
-                            :confirmed => true
+                            :status => PotentialMatch::CONFIRMED
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
-                            :confirmed => true
+                            :status => PotentialMatch::CONFIRMED
       expect(child_x.confirmed_matches).to_not be_nil
       expect(child_x.confirmed_matches.size).to be(2)
       expect(child_x.confirmed_matches.map(&:enquiry)).to include(enquiry_x, enquiry_y)
@@ -666,7 +667,7 @@ describe Child, :type => :model do
       child_x = create(:child, :id => 'child_id_x')
       PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                             :child_id => 'child_id_x',
-                            :confirmed => false
+                            :status => PotentialMatch::POTENTIAL
       expect(Enquiry).to_not receive(:find)
       expect(child_x.confirmed_matches).to be_empty
     end
@@ -695,7 +696,7 @@ describe Child, :type => :model do
     end
 
     it 'return potential matches' do
-      child = create :child, :name => 'Eduardo'
+      child = create(:child, :name => 'Eduardo')
       enquiry1 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Aunt'
       enquiry2 = create :enquiry, :child_name => 'Maria', :enquirer_name => 'Uncle'
 
@@ -713,7 +714,7 @@ describe Child, :type => :model do
       expect(child.potential_matches).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
-      pm.confirmed = true
+      pm.mark_as_confirmed
       pm.save
 
       expect(child.potential_matches.size).to eq(1)
@@ -730,7 +731,7 @@ describe Child, :type => :model do
       expect(child.potential_matches).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
-      pm.marked_invalid = true
+      pm.mark_as_invalid
       pm.save
 
       expect(child.potential_matches.size).to eq(1)
@@ -741,11 +742,11 @@ describe Child, :type => :model do
 
   describe '#find_matching_enquiries' do
     before :each do
-      PotentialMatch.all.each { |pm| pm.destroy }
+      reset_couchdb!
     end
 
     it 'should be triggered after save' do
-      enquiry = build(:enquiry, :child_name => 'Eduardo')
+      enquiry = create(:enquiry, :child_name => 'Eduardo')
       allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry.id => '0.9')
       child = create(:child, :name => 'Eduardo')
 
@@ -754,10 +755,24 @@ describe Child, :type => :model do
       expect(PotentialMatch.first.enquiry_id).to eq(enquiry.id)
       expect(PotentialMatch.first.score).to eq('0.9')
     end
+
+    it 'should not match enquiries that have been reunited.' do
+      enquiry1 = create(:enquiry, :child_name => 'Eduardo')
+      enquiry2 = create(:enquiry, :child_name => 'Eduardo Charles', :reunited => true)
+
+      allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry1.id => '0.9', enquiry2.id => '0.7')
+      child = create(:child, :name => 'Eduardo')
+
+      expect(PotentialMatch.count).to eq(1)
+      expect(PotentialMatch.first.child_id).to eq(child.id)
+      expect(PotentialMatch.first.enquiry_id).to eq(enquiry1.id)
+      expect(PotentialMatch.first.score).to eq('0.9')
+    end
   end
 
   describe '.build_text_fields_for_solar' do
     it 'should not use searchable fields from the wrong form' do
+      allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
       child_form = create :form, :name => Child::FORM_NAME
       field1 = build :text_field
       create :form_section, :form => child_form, :fields => [field1]

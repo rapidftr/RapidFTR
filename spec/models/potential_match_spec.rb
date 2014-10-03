@@ -17,6 +17,8 @@ describe PotentialMatch, :type => :model do
     end
 
     it 'should create potential match for a child' do
+      create(:enquiry, :id => '2e453c')
+      create(:enquiry, :id => '23edsd')
       PotentialMatch.create_matches_for_child('1a3efc', '2e453c' => '0.9', '23edsd' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
@@ -29,6 +31,7 @@ describe PotentialMatch, :type => :model do
     end
 
     it 'should create potential matches for an enquiry' do
+      create(:enquiry, :id => '1a3efc')
       PotentialMatch.create_matches_for_enquiry('1a3efc', '2e453c' => '0.9', '2ef1g' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
@@ -90,16 +93,33 @@ describe PotentialMatch, :type => :model do
       ], :form => form
     end
 
-    describe '#mark_as_invalid' do
-      it 'should default marked_invalid as false' do
-        potential_match = PotentialMatch.new :enquiry_id => 'enquiry id', :child_id => 'child id'
-        expect(potential_match.marked_invalid).to be false
+    describe '#change status of the potential match' do
+
+      before :each do
+        @potential_match = PotentialMatch.new :enquiry_id => 'enquiry id', :child_id => 'child id'
+      end
+      it 'should mark potential match as invalid' do
+        @potential_match.mark_as_invalid
+        expect(@potential_match.marked_invalid?).to be true
       end
 
-      it 'should mark potential match as invalid' do
-        potential_match = PotentialMatch.new :enquiry_id => 'enquiry id', :child_id => 'child id'
-        potential_match.mark_as_invalid
-        expect(potential_match.marked_invalid).to be true
+      it 'should mark potential match as confirmed' do
+        @potential_match.mark_as_confirmed
+        expect(@potential_match.confirmed?).to be true
+      end
+
+      it 'should mark potential match as reunited' do
+        @potential_match.mark_as_reunited
+        expect(@potential_match.reunited?).to be true
+      end
+
+      it 'should mark potential match as reunited elsewhere' do
+        @potential_match.mark_as_reunited_elsewhere
+        expect(@potential_match.reunited_elsewhere?).to be true
+      end
+      it 'should mark potential_match as potential_match' do
+        @potential_match.mark_as_potential_match
+        expect(@potential_match.potential_match?).to be true
       end
     end
 
@@ -124,7 +144,7 @@ describe PotentialMatch, :type => :model do
         expect(enquiry.match_updated_at).to eq(Time.utc(2013, 'jan', 01, 00, 00, 0).to_s)
       end
 
-      it 'should not update match_updated_at if there are no matching children records on creation of an Enquiry' do
+      it 'should not update match_updated of if there are no matching children records on creation of an Enquiry' do
         enquiry = create(:enquiry, :criteria => {:name => 'Dennis', :location => 'Space'}, :enquirer_name => 'Kisitu')
         expect(enquiry.match_updated_at).to eq('')
       end

@@ -59,7 +59,8 @@ describe Ability, :type => :model do
 
       it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
       it { is_expected.to authorize :create, Enquiry }
-      it { is_expected.not_to authorize :update, Enquiry.new }
+      it { is_expected.to authorize :update, Enquiry.new }
+      it { is_expected.to authorize :read, Enquiry }
     end
 
     describe '#update enquiry' do
@@ -68,6 +69,15 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
       it { is_expected.to authorize :update, Enquiry.new }
       it { is_expected.not_to authorize :create, Enquiry }
+    end
+
+    describe '#view enquiry' do
+      let(:permissions) { [Permission::ENQUIRIES[:view]] }
+
+      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
+      it { is_expected.not_to authorize :update, Enquiry.new }
+      it { is_expected.not_to authorize :create, Enquiry }
+      it { is_expected.to authorize :read, Enquiry }
     end
   end
 
