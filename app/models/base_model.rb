@@ -34,6 +34,15 @@ class BaseModel < CouchRest::Model::Base
     model
   end
 
+  def self.without_histories
+    skip_callback(:save, :before, :update_history)
+    skip_callback(:save, :before, :add_creation_history)
+    yield if block_given?
+  ensure
+    set_callback(:save, :before, :update_history, :unless => :new?)
+    set_callback(:save, :before, :add_creation_history, :if => :new?)
+  end
+
   def method_missing(method, *)
     self[method]
   end
@@ -64,5 +73,10 @@ class BaseModel < CouchRest::Model::Base
 
   def has_valid_audio?
     validate_audio_size.is_a?(TrueClass) && validate_audio_file_name.is_a?(TrueClass)
+  end
+
+  def create_unique_id
+    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
+    self.short_id = unique_identifier.last 7
   end
 end

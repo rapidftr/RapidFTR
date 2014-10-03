@@ -543,4 +543,28 @@ describe BaseModel, :type => :model do
       expect(reunited_message_history['to']).to eq('Finally home!')
     end
   end
+
+  describe '.without_histories' do
+    it 'should not trigger add creation history' do
+      base_model = nil
+      BaseModel.without_histories do
+        base_model = BaseModel.create('last_known_location' => 'london',
+                                      'created_by' => 'me',
+                                      'created_organisation' => 'stc')
+      end
+      expect(base_model.histories.length).to eq(0)
+    end
+
+    it 'should not trigger add history' do
+      base_model = BaseModel.create('last_known_location' => 'london',
+                                    'created_by' => 'me',
+                                    'created_organisation' => 'stc')
+      BaseModel.without_histories do
+        base_model['name'] = 'new name'
+        base_model.save
+      end
+      base_model.reload
+      expect(base_model.histories.length).to eq(1)
+    end
+  end
 end

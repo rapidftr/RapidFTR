@@ -28,7 +28,6 @@ Feature: Creating or Editing a child using the API
     And the JSON at "_id" should be a string
     And the JSON at "_rev" should be a string
     And the JSON at "short_id" should be a string
-    And the JSON at "histories" should be an array
     And the JSON at "photo_keys" should be an array
     And the JSON at "current_photo_key" should be a string
 

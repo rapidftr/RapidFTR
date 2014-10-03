@@ -113,8 +113,9 @@ class Child < BaseModel
      }"
   end
 
-  def compact
+  def without_internal_fields
     self['current_photo_key'] = '' if self['current_photo_key'].nil?
+    delete 'histories'
     self
   end
 
@@ -172,11 +173,6 @@ rescue
   def self.all_connected_with(user_name)
     # TODO: Investigate why the hash of the objects got different.
     (by_user_name(:key => user_name).all + by_created_by(:key => user_name).all).uniq { |child| child.unique_identifier }
-  end
-
-  def create_unique_id
-    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
-    self.short_id = unique_identifier.last 7
   end
 
   def has_one_interviewer?

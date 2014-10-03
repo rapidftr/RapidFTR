@@ -9,7 +9,11 @@ module Api
       if params[:updated_after].nil?
         children = Child.all
       else
-        children = Child.all.select { |child| child.last_updated_at > params[:updated_after] }
+        updated_after = Time.parse(URI.decode(params[:updated_after]))
+        children = Child.all.select do |child|
+          child_updated_at = Time.parse(child.last_updated_at)
+          child_updated_at > updated_after
+        end
       end
       render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} })
     end
@@ -19,7 +23,7 @@ module Api
       child = Child.get params[:id]
 
       if child
-        render :json => child.compact
+        render :json => child.without_internal_fields
       else
         render :json => '', :status => 404
       end
@@ -30,8 +34,8 @@ module Api
       create_or_update_child(params)
       @child['created_by_full_name'] = current_user_full_name
 
-      @child.save!
-      render :json => @child.compact
+      Child.without_histories { @child.save! }
+      render :json => @child.without_internal_fields
     end
 
     def update
@@ -39,24 +43,24 @@ module Api
 
       child = update_child_from params
 
-      child.save!
-      render :json => child.compact
+      Child.without_histories { child.save! }
+      render :json => child.without_internal_fields
     end
 
     def unverified
       params[:child][:photo] = params[:current_photo_key] unless params[:current_photo_key].nil?
       if params[:child][:_id]
         child = Child.get(params[:child][:_id])
-        child = update_child_with_attachments child, params
+        child = child.update_with_attachments(params, current_user)
         child.save
-        render :json => child.compact
+        render :json => child.without_internal_fields
       else
         params[:child].merge!(:verified => current_user.verified?)
         child = create_or_update_child(params)
 
         child.attributes = {:created_by_full_name => current_user.full_name}
         if child.save
-          render :json => child.compact
+          render :json => child.without_internal_fields
         end
       end
     end

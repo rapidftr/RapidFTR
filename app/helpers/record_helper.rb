@@ -56,7 +56,8 @@ module RecordHelper
     new_photo = params[:child].delete('photo')
     new_photo = (params[:child][:photo] || '') if new_photo.nil?
     new_audio = params[:child].delete('audio')
-    update_properties_with_user_name(user.user_name, new_photo, params['delete_child_photo'], new_audio, params[:child])
+    update_properties_with_user_name(user.user_name, new_photo, params[:delete_child_photo], new_audio, params[:child])
+    self
   end
 
   def update_properties_with_user_name(user_name, new_photo, photo_names, new_audio, properties)

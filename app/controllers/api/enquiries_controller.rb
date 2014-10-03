@@ -15,8 +15,8 @@ module Api
         render(:json => {:error => @enquiry.errors.full_messages}, :status => 422) && return
       end
 
-      @enquiry.save
-      render :json => @enquiry, :status => 201
+      Enquiry.without_histories { @enquiry.save }
+      render :json => @enquiry.without_internal_fields, :status => 201
     end
 
     def update
@@ -33,8 +33,8 @@ module Api
         return
       end
 
-      enquiry.save!
-      render :json => enquiry
+      Enquiry.without_histories { enquiry.save! }
+      render :json => enquiry.without_internal_fields
     end
 
     def index
@@ -42,7 +42,10 @@ module Api
       if params[:updated_after].nil?
         enquiries = Enquiry.all
       else
-        enquiries = Enquiry.all.select { |enquiry| enquiry[:updated_at] > params[:updated_after] }
+        updated_after = Time.parse(URI.decode(params[:updated_after]))
+        enquiries = Enquiry.all.select do |enquiry|
+          enquiry.updated_at > updated_after
+        end
       end
       render(:json => enquiries.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} })
     end
@@ -51,7 +54,7 @@ module Api
       authorize! :show, Enquiry
       enquiry = Enquiry.get(params[:id])
       if !enquiry.nil?
-        render :json => enquiry
+        render :json => enquiry.without_internal_fields
       else
         render :json => '', :status => 404
       end

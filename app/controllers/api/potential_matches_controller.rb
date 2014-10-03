@@ -5,7 +5,8 @@ module Api
       potential_matches = PotentialMatch.all.all
 
       unless params[:updated_after].nil?
-        potential_matches.select! { |pm| pm[:updated_at] > Time.parse(params[:updated_after]) }
+        updated_after = Time.parse(URI.decode(params[:updated_after]))
+        potential_matches.select! { |pm| pm.updated_at >= updated_after }
       end
       locations = potential_matches.map { |pm| {:location => api_potential_match_url(pm.id)} }
       render(:json => locations)

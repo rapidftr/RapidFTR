@@ -224,6 +224,12 @@ class Enquiry < BaseModel
     Array.new(FormSection.all_visible_child_fields_for_form(Enquiry::FORM_NAME)).keep_if { |field| field.matchable? }
   end
 
+  def without_internal_fields
+    delete 'histories'
+    delete 'criteria'
+    self
+  end
+
   private
 
   def update_potential_matches_score(matches, hits)
@@ -247,11 +253,6 @@ class Enquiry < BaseModel
       value = self[key]
       value.strip! if value.respond_to? :strip!
     end
-  end
-
-  def create_unique_id
-    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
-    self.short_id = unique_identifier.last 7
   end
 
   def verify_format_of(previous_matches)
