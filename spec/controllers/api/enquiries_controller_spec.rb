@@ -318,6 +318,17 @@ describe Api::EnquiriesController, :type => :controller do
         expect(response.body).to match([enquiry_one, enquiry_two].to_json)
       end
 
+      it 'should decode URI encoded params' do
+        allow(Clock).to receive(:now).and_return(Time.utc(2014, 10, 3, 7, 52, 18))
+        enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
+        fake_admin_login
+
+        get :index, :updated_after => '2014-10-03+07%3A51%3A06UTC'
+
+        enquiry_json = [{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json
+        expect(response.body).to eq(enquiry_json)
+      end
+
       it 'should return filter records by specified date' do
         get :index, :updated_after => '2010-01-23 06:42:12UTC'
 

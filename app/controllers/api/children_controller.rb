@@ -9,7 +9,11 @@ module Api
       if params[:updated_after].nil?
         children = Child.all
       else
-        children = Child.all.select { |child| child.last_updated_at > params[:updated_after] }
+        updated_after = Time.parse(URI.decode(params[:updated_after]))
+        children = Child.all.select do |child|
+          child_updated_at = Time.parse(child.last_updated_at)
+          child_updated_at > updated_after
+        end
       end
       render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} })
     end

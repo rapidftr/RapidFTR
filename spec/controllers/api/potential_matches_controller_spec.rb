@@ -37,6 +37,19 @@ describe Api::PotentialMatchesController, :type => :controller do
         expect(json.length).to eq 2
         expect(json).to include(pm2_url, pm1_url)
       end
+
+      it 'should decode URI encoded strings' do
+        expect(controller).to receive(:authorize!).with(:read, PotentialMatch).and_return(true)
+        pm1 = PotentialMatch.new(:enquiry_id => 3, :child_id => 1)
+        pm2 = PotentialMatch.new(:enquiry_id => 3, :child_id => 2)
+        Timecop.freeze(Time.utc(2014, 10, 3, 7, 52, 18)) { pm1.save! }
+        Timecop.freeze(Time.utc(2014, 10, 3, 7, 50, 00)) { pm2.save! }
+
+        get :index, :updated_after => '2014-10-03+07%3A51%3A06UTC'
+
+        pm1_url = {'location' => "http://test.host/api/potential_matches/#{pm1.id}"}
+        expect(response.body).to eq([pm1_url].to_json)
+      end
     end
   end
 

@@ -42,7 +42,10 @@ module Api
       if params[:updated_after].nil?
         enquiries = Enquiry.all
       else
-        enquiries = Enquiry.all.select { |enquiry| enquiry[:updated_at] > params[:updated_after] }
+        updated_after = Time.parse(URI.decode(params[:updated_after]))
+        enquiries = Enquiry.all.select do |enquiry|
+          enquiry.updated_at > updated_after
+        end
       end
       render(:json => enquiries.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} })
     end

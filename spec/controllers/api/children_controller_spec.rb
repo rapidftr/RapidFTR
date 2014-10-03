@@ -64,7 +64,19 @@ describe Api::ChildrenController, :type => :controller do
       child_one = {:location => "http://test.host:80/api/children/#{@child1.id}"}
       child_two = {:location => "http://test.host:80/api/children/#{@child2.id}"}
 
-      expect(response.body).to match([child_one, child_two].to_json)
+      expect(response.body).to eq([child_two, child_one].to_json)
+    end
+
+    it 'should decode URI encoded strings' do
+      allow(Clock).to receive(:now).and_return(Time.utc(2014, 10, 3, 7, 52, 18))
+      child = Child.new_with_user_name(@user, :child_name => 'David', :location => 'Kampala')
+      child.save!
+      fake_admin_login
+
+      get :index, :updated_after => '2014-10-03+07%3A51%3A06UTC'
+
+      child_json = [{:location => "http://test.host:80/api/children/#{child.id}"}].to_json
+      expect(response.body).to eq(child_json)
     end
 
     it 'should return filtered records by specified date' do
