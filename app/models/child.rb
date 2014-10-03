@@ -175,11 +175,6 @@ rescue
     (by_user_name(:key => user_name).all + by_created_by(:key => user_name).all).uniq { |child| child.unique_identifier }
   end
 
-  def create_unique_id
-    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
-    self.short_id = unique_identifier.last 7
-  end
-
   def has_one_interviewer?
     user_names_after_deletion = self['histories'].map { |change| change['user_name'] }
     user_names_after_deletion.delete(self['created_by'])

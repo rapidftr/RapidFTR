@@ -255,11 +255,6 @@ class Enquiry < BaseModel
     end
   end
 
-  def create_unique_id
-    self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
-    self.short_id = unique_identifier.last 7
-  end
-
   def verify_format_of(previous_matches)
     unless previous_matches.is_a?(Array)
       previous_matches = JSON.parse(previous_matches)
