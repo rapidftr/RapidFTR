@@ -20,20 +20,43 @@
     <br>
   <% end %>
 
-  <div class="clearfix"></div>
-  <h2><%= t('enquiry.potential_child_matches') %></h2>
-  <div class="clearfix"></div>
-  <div class="form_info"></div>
-  <div class="entity_list">
-    <% model.potential_matches.each do |match| %>
-      <%= render :partial => "children/summary_row",
-                 :locals => {:child => match.child,
-                             :enquiry => model,
-                             :score => match.score,
-                             :confirmed_match => confirmed_match,
-                             :checkbox => false,
-                             :highlighted_fields => child_sorted_highlighted_fields,
-                             :rendered_by_show_enquiry => true} %>
-    <% end %>
-  </div>
+  <% reunited_match = model.reunited_match %>
+  <% unless reunited_match.nil? %>
+    <div class="clearfix"></div>
+      <h2><%= t('enquiry.reunited_child_matches') %></h2>
+      <div class="clearfix"></div>
+      <div class="form_info"></div>
+      <div class="entity_list">
+        <%= render :partial => "children/summary_row",
+                   :locals => {:child => reunited_match.child,
+                               :enquiry => model,
+                               :score => reunited_match.score,
+                               :confirmed_match => reunited_match,
+                               :checkbox => false,
+                               :highlighted_fields => child_sorted_highlighted_fields,
+                               :rendered_by_show_enquiry => true} %>
+    </div>
+    <br>
+    <br>
+    <br>
+  <% end %>
+
+  <% unless model.potential_matches.nil? || model.potential_matches.count <= 0 %>
+    <div class="clearfix"></div>
+    <h2><%= t('enquiry.potential_child_matches') %></h2>
+    <div class="clearfix"></div>
+    <div class="form_info"></div>
+    <div class="entity_list">
+      <% model.potential_matches.each do |match| %>
+        <%= render :partial => "children/summary_row",
+                   :locals => {:child => match.child,
+                               :enquiry => model,
+                               :score => match.score,
+                               :confirmed_match => confirmed_match,
+                               :checkbox => false,
+                               :highlighted_fields => child_sorted_highlighted_fields,
+                               :rendered_by_show_enquiry => true} %>
+      <% end %>
+    </div>
+  <% end %>
 </fieldset>

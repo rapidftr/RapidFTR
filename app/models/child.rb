@@ -7,6 +7,7 @@ class Child < BaseModel
 
   after_initialize :create_unique_id
   after_save :find_matching_enquiries
+  after_save :mark_or_unmark_confirmed_enquiry_reunited
 
   property :short_id
   property :unique_identifier
@@ -190,7 +191,7 @@ rescue
   end
 
   def confirmed_matches
-    PotentialMatch.by_child_id_and_confirmed.key([id, true]).all
+    PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::CONFIRMED]).all
   end
 
   def potential_matches
@@ -223,6 +224,21 @@ rescue
   end
 
   private
+
+  def mark_or_unmark_confirmed_enquiry_reunited
+    return if self[:reunited].nil?
+    if self[:reunited]
+      matches = PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::CONFIRMED]).all
+      matches.each do |match|
+        match.enquiry.mark_or_unmark_as_reunited(self[:reunited])
+      end
+    else
+      matches = PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::REUNITED]).all
+      matches.each do |match|
+        match.enquiry.mark_or_unmark_as_reunited(self[:reunited])
+      end
+    end
+  end
 
   def unknown_fields
     system_fields = ['created_at',

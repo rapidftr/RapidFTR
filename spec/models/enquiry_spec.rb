@@ -181,7 +181,7 @@ describe Enquiry, :type => :model do
         expect(enquiry.potential_matches.size).to eq(2)
 
         pm = PotentialMatch.first
-        pm.confirmed = true
+        pm.mark_as_confirmed
         pm.save
 
         expect(enquiry.potential_matches.size).to eq(1)
@@ -309,6 +309,7 @@ describe Enquiry, :type => :model do
     describe 'find_matching_children' do
       after :each do
         PotentialMatch.all.each { |pm| pm.destroy }
+        reset_couchdb!
       end
 
       it 'should not have potential matches if no criteria' do
@@ -318,9 +319,9 @@ describe Enquiry, :type => :model do
       end
 
       it 'should create potential match when enquiry that has a match is created' do
-        child = build(:child)
+        child = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child.id => '0.8')
-        enquiry = build(:enquiry, :criteria => {:a => :b})
+        enquiry = create(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
 
@@ -331,12 +332,12 @@ describe Enquiry, :type => :model do
       end
 
       it 'should order the potential matches by score' do
-        child1 = build(:child)
-        child2 = build(:child)
-        child3 = build(:child)
-        child4 = build(:child)
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        child4 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
-        enquiry = build(:enquiry, :criteria => {:a => :b})
+        enquiry = create(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
 
@@ -347,10 +348,10 @@ describe Enquiry, :type => :model do
       end
 
       it 'should limit the potential matches according to the threshold number set' do
-        child1 = build(:child)
-        child2 = build(:child)
-        child3 = build(:child)
-        child4 = build(:child)
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        child4 = create(:child)
 
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
         allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
@@ -364,39 +365,39 @@ describe Enquiry, :type => :model do
       end
 
       it 'should mark as deleted the previous potential matches whose updated score is less than the threshold.' do
-        child1 = build(:child)
-        child2 = build(:child)
-        child3 = build(:child)
-        child4 = build(:child)
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        child4 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
         allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
 
-        enquiry = build(:enquiry, :criteria => {:a => :b})
+        enquiry = create(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
         potential_matches = enquiry.potential_matches
         expect(potential_matches.count).to eq 2
         expect(potential_matches.first.score).to eq '2.5'
 
-        child5 = build(:child)
+        child5 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '0.1', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
         enquiry.update_attributes(:name => 'charles')
         enquiry.find_matching_children
 
-        deleted_potential_matches = PotentialMatch.by_enquiry_id_and_deleted.key([enquiry.id, true])
+        deleted_potential_matches = PotentialMatch.by_enquiry_id_and_status.key([enquiry.id, PotentialMatch::DELETED])
         expect(deleted_potential_matches.count).to eq 1
         expect(deleted_potential_matches.map(&:child_id)).to include(child2.id)
         expect(enquiry.potential_matches.count).to eq 2
       end
 
       it 'should not mark as deleted previous potential matches that have been marked as confirmed.' do
-        child1 = build(:child)
-        child2 = build(:child)
-        child3 = build(:child)
-        child4 = build(:child)
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        child4 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
         allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
-        enquiry = build(:enquiry, :criteria => {:a => :b})
+        enquiry = create(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
         potential_matches = enquiry.potential_matches
@@ -404,10 +405,10 @@ describe Enquiry, :type => :model do
         expect(potential_matches.first.score).to eq '2.5'
 
         confirmed_match = potential_matches.last
-        confirmed_match.confirmed = true
+        confirmed_match.mark_as_confirmed
         confirmed_match.save!
 
-        child5 = build(:child)
+        child5 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
         enquiry.update_attributes(:name => 'charles')
         enquiry.find_matching_children
@@ -417,19 +418,19 @@ describe Enquiry, :type => :model do
         expect(potential_matches.first.score).to eq '2.9'
         expect(potential_matches.map(&:child_id)).to include(child3.id, child5.id)
 
-        confirmed_match = PotentialMatch.by_enquiry_id_and_confirmed.key([enquiry.id, true]).first
+        confirmed_match = PotentialMatch.by_enquiry_id_and_status.key([enquiry.id, PotentialMatch::CONFIRMED]).first
         expect(confirmed_match.child_id).to eq(child2.id)
-        expect(confirmed_match.deleted).to eq(false)
+        expect(confirmed_match.deleted?).to eq(false)
       end
 
       it 'should not mark as deleted previous matches that have been marked as not matching' do
-        child1 = build(:child)
-        child2 = build(:child)
-        child3 = build(:child)
-        child4 = build(:child)
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        child4 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
         allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
-        enquiry = build(:enquiry, :criteria => {:a => :b})
+        enquiry = create(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
         potential_matches = enquiry.potential_matches
@@ -437,10 +438,10 @@ describe Enquiry, :type => :model do
         expect(potential_matches.first.score).to eq '2.5'
 
         invalid_match = potential_matches.last
-        invalid_match.marked_invalid = true
+        invalid_match.mark_as_invalid
         invalid_match.save!
 
-        child5 = build(:child)
+        child5 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
         enquiry.update_attributes(:name => 'charles')
         enquiry.find_matching_children
@@ -450,32 +451,32 @@ describe Enquiry, :type => :model do
         expect(potential_matches.first.score).to eq '2.9'
         expect(potential_matches.map(&:child_id)).to include(child3.id, child5.id)
 
-        invalid_match = PotentialMatch.by_enquiry_id_and_marked_invalid.key([enquiry.id, true]).first
+        invalid_match = PotentialMatch.by_enquiry_id_and_status.key([enquiry.id, PotentialMatch::INVALID]).first
         expect(invalid_match.child_id).to eq(child2.id)
-        expect(invalid_match.deleted).to eq(false)
+        expect(invalid_match.deleted?).to eq(false)
       end
 
       it 'should unmark deleted previous potential matches when they appear in the hits from solr.' do
-        child1 = build(:child)
-        child2 = build(:child)
-        child3 = build(:child)
-        child4 = build(:child)
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        child4 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5', child4.id => '0.2')
         allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
 
-        enquiry = build(:enquiry, :criteria => {:a => :b})
+        enquiry = create(:enquiry, :criteria => {:a => :b})
 
         enquiry.find_matching_children
         potential_matches = enquiry.potential_matches
         expect(potential_matches.count).to eq 2
         expect(potential_matches.first.score).to eq '2.5'
 
-        child5 = build(:child)
+        child5 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '0.1', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
         enquiry.update_attributes(:name => 'charles')
         enquiry.find_matching_children
 
-        deleted_potential_matches = PotentialMatch.by_enquiry_id_and_deleted.key([enquiry.id, true])
+        deleted_potential_matches = PotentialMatch.by_enquiry_id_and_status.key([enquiry.id, PotentialMatch::DELETED])
         expect(deleted_potential_matches.count).to eq 1
         expect(deleted_potential_matches.map(&:child_id)).to include(child2.id)
         expect(enquiry.potential_matches.count).to eq 2
@@ -487,6 +488,134 @@ describe Enquiry, :type => :model do
         potential_matches = enquiry.potential_matches
         expect(potential_matches.count).to eq 3
         expect(potential_matches.map(&:child_id)).to include(child2.id)
+      end
+    end
+
+    describe 'marking enquiries as reunited' do
+      before :each do
+        Child.all.each(&:destroy)
+        PotentialMatch.all.each(&:destroy)
+        Enquiry.all.each(&:destroy)
+        FormSection.all.each(&:destroy)
+        Form.all.each(&:destroy)
+      end
+
+      it 'should return reunited match' do
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+        enquiry = create(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq(2)
+
+        confirmed_match = potential_matches.first
+        confirmed_match.mark_as_confirmed
+        confirmed_match.save!
+
+        child3.reunited = true
+        child3.save!
+
+        enquiry = Enquiry.get(enquiry.id)
+        expect(enquiry.reunited).to be true
+        expect(enquiry.reunited_match.child_id).to eq(child3.id)
+      end
+
+      it 'should mark an enquiry as reunited when child is marked as reunited.' do
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+        enquiry = create(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq(2)
+
+        confirmed_match = potential_matches.first
+        confirmed_match.mark_as_confirmed
+        confirmed_match.save!
+
+        child3.reunited = true
+        child3.save!
+
+        enquiry = enquiry.reload
+        expect(enquiry['reunited']).to be true
+      end
+
+      it 'should not return a reunited enquiry as a potential match for other children' do
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+        enquiry = create(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq(2)
+
+        confirmed_match = potential_matches.first
+        confirmed_match.mark_as_confirmed
+        confirmed_match.save!
+
+        child3.reunited = true
+        child3.save!
+        enquiry.reload
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(enquiry['reunited']).to be true
+        expect(potential_matches.count).to eq 0
+      end
+    end
+
+    describe 'unmarking enquiries as reunited.' do
+      before :each do
+        Child.all.each(&:destroy)
+        PotentialMatch.all.each(&:destroy)
+        Enquiry.all.each(&:destroy)
+        FormSection.all.each(&:destroy)
+        Form.all.each(&:destroy)
+      end
+
+      it 'should unmark an enquiry as reunited when child is unmarked as reunited.' do
+        child1 = create(:child)
+        child2 = create(:child)
+        child3 = create(:child)
+
+        allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child2.id => '1.0', child3.id => '2.5')
+        allow(SystemVariable).to receive(:find_by_name).and_return(SystemVariable.new(:name => 'THRESHOLD', :value => '1.0'))
+        enquiry = create(:enquiry, :criteria => {:a => :b})
+
+        enquiry.find_matching_children
+        potential_matches = enquiry.potential_matches
+        expect(potential_matches.count).to eq(2)
+
+        confirmed_match = potential_matches.first
+        confirmed_match.mark_as_confirmed
+        confirmed_match.save!
+
+        child3.reunited = true
+        child3.save!
+        child3 = Child.get(child3.id)
+
+        enquiry = Enquiry.get(enquiry.id)
+        expect(enquiry['reunited']).to be true
+        expect(enquiry.potential_matches.count).to eq(0)
+        child3.reunited = false
+        child3.save!
+
+        enquiry = Enquiry.get(enquiry.id)
+        expect(enquiry['reunited']).to be false
+        expect(enquiry.potential_matches.size).to eq(1)
+        expect(enquiry.confirmed_match).not_to be_nil
       end
     end
 
@@ -504,7 +633,7 @@ describe Enquiry, :type => :model do
         expect(Enquiry).to_not receive(:find).with(enquiry_z.id)
         PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x'
         PotentialMatch.create :enquiry_id => 'enquiry_id_y', :child_id => 'child_id_y'
-        PotentialMatch.create :enquiry_id => 'enquiry_id_z', :child_id => 'child_id_y', :marked_invalid => true
+        PotentialMatch.create :enquiry_id => 'enquiry_id_z', :child_id => 'child_id_y', :status => PotentialMatch::INVALID
 
         enquiries = Enquiry.with_child_potential_matches
         expect(enquiries.size).to eq(2)
@@ -525,7 +654,7 @@ describe Enquiry, :type => :model do
       it 'should not return confirmed matches' do
         enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
         expect(Enquiry).to_not receive(:find).with(enquiry_x.id)
-        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :confirmed => true
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :status => PotentialMatch::CONFIRMED
 
         enquiries = Enquiry.with_child_potential_matches
         expect(enquiries.size).to eq(0)
@@ -534,7 +663,7 @@ describe Enquiry, :type => :model do
       it 'should not return invalid matches' do
         enquiry_x = build(:enquiry, :id => 'enquiry_id_x')
         expect(Enquiry).to_not receive(:find).with(enquiry_x.id)
-        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :marked_invalid => true
+        PotentialMatch.create :enquiry_id => 'enquiry_id_x', :child_id => 'child_id_x', :status => PotentialMatch::INVALID
 
         enquiries = Enquiry.with_child_potential_matches
         expect(enquiries.size).to eq(0)
@@ -580,22 +709,27 @@ describe Enquiry, :type => :model do
     describe '#confirmed_match' do
       after :each do
         PotentialMatch.all.each { |pm| pm.destroy }
+        Enquiry.all.each(&:destroy)
+        Child.all.each(&:destroy)
       end
 
       it 'should return a confirmed match' do
         enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
+        child_x = create(:child, :id => 'child_id_x')
+
         PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                               :child_id => 'child_id_x',
-                              :confirmed => true
+                              :status => PotentialMatch::CONFIRMED
         expect(enquiry_x.confirmed_match).to_not be_nil
-        expect(enquiry_x.confirmed_match.child_id).to eq('child_id_x')
+        expect(enquiry_x.confirmed_match.child.id).to eq(child_x.id)
       end
 
       it 'should not return unconfirmed matches' do
         enquiry_x = create(:enquiry, :id => 'enquiry_id_x')
+        create(:child, :id => 'child_id_x')
         PotentialMatch.create :enquiry_id => 'enquiry_id_x',
                               :child_id => 'child_id_x',
-                              :confirmed => false
+                              :status => PotentialMatch::POTENTIAL
         expect(Child).to_not receive(:get)
         expect(enquiry_x.confirmed_match).to be_nil
       end
