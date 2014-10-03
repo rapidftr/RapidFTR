@@ -39,8 +39,6 @@ Feature: Creating an enquiry using the API
 
     Then I should receive HTTP 201
     Then the JSON at "enquirer_name" should be "bob"
-    Then the JSON should have "criteria/name"
-    Then the JSON should have "criteria/location"
 
 
   @search
