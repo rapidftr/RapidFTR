@@ -135,6 +135,7 @@ en:
     potential_matches: "Potential Matches"
     confirmed_matches: "Confirmed Matches"
     reunited_matches: "Reunited Matches"
+    matched_elsewhere_link: "Matched to another Child"
     enquiries_with_potential_matches: "Enquiries with potential matches"
     enquiry_with_potential_matches: "Enquiry with potential matches"
     mark_child_as_not_matching: "Mark as not matching"
