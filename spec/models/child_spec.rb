@@ -701,8 +701,9 @@ describe Child, :type => :model do
       enquiry2 = create :enquiry, :child_name => 'Maria', :enquirer_name => 'Uncle'
 
       expect(child.potential_matches.size).to eq(1)
-      expect(child.potential_matches).to include(enquiry1)
-      expect(child.potential_matches).to_not include(enquiry2)
+      enquiries = child.potential_matches.map(&:enquiry)
+      expect(enquiries).to include(enquiry1)
+      expect(enquiries).to_not include(enquiry2)
     end
 
     it 'should not return matches marked as confirmed' do
@@ -711,15 +712,16 @@ describe Child, :type => :model do
       enquiry2 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Uncle'
 
       expect(child.potential_matches.size).to eq(2)
-      expect(child.potential_matches).to include(enquiry1, enquiry2)
+      expect(child.potential_matches.map(&:enquiry)).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
       pm.mark_as_confirmed
       pm.save
 
       expect(child.potential_matches.size).to eq(1)
-      expect(child.potential_matches).to include(enquiry1)
-      expect(child.potential_matches).to_not include(enquiry2)
+      enquiries = child.potential_matches.map(&:enquiry)
+      expect(enquiries).to include(enquiry1)
+      expect(enquiries).to_not include(enquiry2)
     end
 
     it 'should not return matches marked as invalid' do
@@ -728,15 +730,17 @@ describe Child, :type => :model do
       enquiry2 = create :enquiry, :child_name => 'Eduardo', :enquirer_name => 'Uncle'
 
       expect(child.potential_matches.size).to eq(2)
-      expect(child.potential_matches).to include(enquiry1, enquiry2)
+      enquiries = child.potential_matches.map(&:enquiry)
+      expect(enquiries).to include(enquiry1, enquiry2)
 
       pm = PotentialMatch.first
       pm.mark_as_invalid
       pm.save
 
       expect(child.potential_matches.size).to eq(1)
-      expect(child.potential_matches).to include(enquiry1)
-      expect(child.potential_matches).to_not include(enquiry2)
+      enquiries = child.potential_matches.map(&:enquiry)
+      expect(enquiries).to include(enquiry1)
+      expect(enquiries).to_not include(enquiry2)
     end
   end
 
