@@ -742,6 +742,19 @@ describe Child, :type => :model do
       expect(enquiries).to include(enquiry1)
       expect(enquiries).to_not include(enquiry2)
     end
+
+    it 'should return matches sorted by score' do
+      child = create :child, :name => 'Eduardo Martinez Sanchez'
+      enquiry1 = create :enquiry, :child_name => 'Eduardo Ricardo Rodriguez', :enquirer_name => 'Uncle'
+      enquiry2 = create :enquiry, :child_name => 'Eduardo Martinez Rodriguez', :enquirer_name => 'Uncle'
+      enquiry3 = create :enquiry, :child_name => 'Eduardo Martinez Sanchez', :enquirer_name => 'Aunt'
+
+      expect(child.potential_matches.size).to eq(3)
+      enquiries = child.potential_matches.map(&:enquiry)
+      expect(enquiries[0]).to eq(enquiry3)
+      expect(enquiries[1]).to eq(enquiry2)
+      expect(enquiries[2]).to eq(enquiry1)
+    end
   end
 
   describe '#find_matching_enquiries' do
