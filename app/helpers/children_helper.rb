@@ -98,7 +98,7 @@ module ChildrenHelper
 
   def confirmed_matches_header(matches)
     return nil if matches.empty?
-    builder = [t('enquiry.confirmed_child_matches') + ': ']
+    builder = [t('enquiry.confirmed_matches') + ': ']
     if matches.count == 1
       builder << matches.map { |match| link_to(match.enquiry.short_id, enquiry_path(match.enquiry.id)) }
     else
