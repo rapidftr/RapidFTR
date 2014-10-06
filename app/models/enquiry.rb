@@ -124,29 +124,9 @@ class Enquiry < BaseModel
   def find_matching_children
     previous_matches = potential_matches
     hits = MatchService.search_for_matching_children(criteria)
-    score_threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
-
-    potential_matches_to_mark_deleted = previous_matches.select { |pm| hits[pm.child_id].to_f < score_threshold.value.to_f }
-    mark_potential_matches_as_deleted(potential_matches_to_mark_deleted)
-
-    potential_matches.reject! { |pm| potential_matches_to_mark_deleted.include?(pm) }
-    update_potential_matches_score(potential_matches, hits)
-
-    previous_deleted_matches = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::DELETED]).all
-    previous_deleted_matches = previous_deleted_matches.select { |pm| hits[pm.child_id].to_f > score_threshold.value.to_f }
-
-    previous_deleted_matches.each do |pm|
-      next unless hits.keys.include?(pm.child_id)
-
-      pm.score = hits[pm.child_id]
-      pm.mark_as_potential_match
-      pm.save!
-    end
-
-    hits.reject! { |_id, score| score.to_f < score_threshold.value.to_f }
-
-    PotentialMatch.create_matches_for_enquiry id, hits
+    PotentialMatch.update_matches_for_enquiry id, hits
     verify_format_of(previous_matches)
+
     unless previous_matches.eql?(potential_matches)
       self.match_updated_at = Clock.now.to_s
     end

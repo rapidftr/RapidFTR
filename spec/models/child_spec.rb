@@ -747,6 +747,7 @@ describe Child, :type => :model do
 
     it 'should be triggered after save' do
       enquiry = create(:enquiry, :child_name => 'Eduardo')
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
       allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry.id => '0.9')
       child = create(:child, :name => 'Eduardo')
 
@@ -761,12 +762,24 @@ describe Child, :type => :model do
       enquiry2 = create(:enquiry, :child_name => 'Eduardo Charles', :reunited => true)
 
       allow(MatchService).to receive(:search_for_matching_enquiries).and_return(enquiry1.id => '0.9', enquiry2.id => '0.7')
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
       child = create(:child, :name => 'Eduardo')
 
       expect(PotentialMatch.count).to eq(1)
       expect(PotentialMatch.first.child_id).to eq(child.id)
       expect(PotentialMatch.first.enquiry_id).to eq(enquiry1.id)
       expect(PotentialMatch.first.score).to eq('0.9')
+    end
+
+    it 'should use PotentialMatch.update_matches_for_child to update' do
+      enquiry1 = create(:enquiry, :child_name => 'Eduardo')
+      enquiry2 = create(:enquiry, :child_name => 'Eduardo Charles', :reunited => true)
+
+      hits = {enquiry1.id => '0.9', enquiry2.id => '0.7'}
+      allow(MatchService).to receive(:search_for_matching_enquiries).and_return(hits)
+      expect(PotentialMatch).to receive(:update_matches_for_child).with(anything, hits)
+
+      create(:child, :name => 'Eduardo')
     end
   end
 

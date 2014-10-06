@@ -82,24 +82,41 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   class << self
-    def create_matches_for_child(child_id, hits)
+    def update_matches_for_child(child_id, hits)
       hits.each do |enquiry_id, score|
-        enquiry = Enquiry.get(enquiry_id)
-        unless enquiry.reunited?
-          pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
-          pm.save
-        end
+        enquiry_is_reunited = Enquiry.get(enquiry_id).reunited?
+        update_potential_match(child_id, enquiry_id, score.to_f) unless enquiry_is_reunited
       end
     end
 
-    def create_matches_for_enquiry(enquiry_id, hits)
-      hits.each do |child_id, score|
-        enquiry = Enquiry.get(enquiry_id)
-        unless enquiry.reunited?
-          pm = PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id, :score => score
-          pm.save
-        end
+    def update_matches_for_enquiry(enquiry_id, hits)
+      enquiry = Enquiry.get(enquiry_id)
+      unless enquiry.reunited?
+        hits.each { |child_id, score| update_potential_match(child_id, enquiry_id, score.to_f) }
       end
+    end
+
+    private
+
+    def update_potential_match(child_id, enquiry_id, score)
+      threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD).value.to_f
+      pm = find_or_build enquiry_id, child_id
+      pm.score = score
+      valid_score = score >= threshold
+      should_mark_deleted = !valid_score && !pm.new? && !pm.deleted?
+      if should_mark_deleted
+        pm.mark_as_deleted
+        pm.save
+      elsif valid_score
+        pm.mark_as_potential_match if pm.deleted?
+        pm.save
+      end
+    end
+
+    def find_or_build(enquiry_id, child_id)
+      potential_match = by_enquiry_id_and_child_id.key([enquiry_id, child_id]).first
+      return potential_match unless potential_match.nil?
+      PotentialMatch.new :enquiry_id => enquiry_id, :child_id => child_id
     end
   end
 
