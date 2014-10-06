@@ -2,7 +2,7 @@
   <% confirmed_match = model.confirmed_match %>
   <% unless confirmed_match.nil? %>
     <div class="clearfix"></div>
-    <h2><%= t('enquiry.confirmed_child_matches') %></h2>
+    <h2><%= t('enquiry.confirmed_matches') %></h2>
     <div class="clearfix"></div>
     <div class="form_info"></div>
     <div class="entity_list">
@@ -23,7 +23,7 @@
   <% reunited_match = model.reunited_match %>
   <% unless reunited_match.nil? %>
     <div class="clearfix"></div>
-      <h2><%= t('enquiry.reunited_child_matches') %></h2>
+      <h2><%= t('enquiry.reunited_matches') %></h2>
       <div class="clearfix"></div>
       <div class="form_info"></div>
       <div class="entity_list">
@@ -43,7 +43,7 @@
 
   <% unless model.potential_matches.nil? || model.potential_matches.count <= 0 %>
     <div class="clearfix"></div>
-    <h2><%= t('enquiry.potential_child_matches') %></h2>
+    <h2><%= t('enquiry.potential_matches') %></h2>
     <div class="clearfix"></div>
     <div class="form_info"></div>
     <div class="entity_list">
