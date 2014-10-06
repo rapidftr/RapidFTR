@@ -10,11 +10,11 @@
         <% @child_histories.each do |history| %>
             <% @child = Child.get(history[:child_id]) %>
             <% history['changes'].each_pair do |field, change| %>
-                <% history_entry = history_entry_for(history, field, change) %>
+                <% history_entry = history_entry_for(history, field, change, @child) %>
                 <% unless history_entry.empty? %>
                     <li>
                       <div>
-                        <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals] %>
+                        <%= render :partial => "#{history_entry[:partial]}", :locals => history_entry[:locals]%>
                         Child id:<span class="child_id"><%= history[:child_id] %></span>
                       </div>
                     </li>
@@ -25,7 +25,7 @@
         <% @enquiry_histories.each do |history| %>
             <% @enquiry = Enquiry.get(history[:enquiry_id]) %>
             <% history['changes'].each_pair do |field, change| %>
-                <% history_entry = history_entry_for(history, field, change) %>
+                <% history_entry = history_entry_for(history, field, change, @enquiry) %>
                 <% unless history_entry.empty? %>
                     <li>
                       <div>
