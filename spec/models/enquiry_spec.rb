@@ -313,7 +313,9 @@ describe Enquiry, :type => :model do
       end
 
       it 'should not have potential matches if no criteria' do
+        allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
         enquiry = build :enquiry, :criteria => {}
+        allow(Enquiry).to receive(:get).and_return(enquiry)
         enquiry.find_matching_children
         expect(enquiry.potential_matches).to eq([])
       end
@@ -329,6 +331,16 @@ describe Enquiry, :type => :model do
         expect(PotentialMatch.first.child_id).to eq child.id
         expect(PotentialMatch.first.enquiry_id).to eq enquiry.id
         expect(PotentialMatch.first.score).to eq '0.8'
+      end
+
+      it 'should use PotentialMatch.update_matches_for_enquiry to update' do
+        child = create(:child)
+        hits = {child.id => '0.8'}
+        allow(MatchService).to receive(:search_for_matching_children).and_return(hits)
+        enquiry = create(:enquiry, :criteria => {:a => :b})
+        expect(PotentialMatch).to receive(:update_matches_for_enquiry).with(anything, hits)
+
+        enquiry.find_matching_children
       end
 
       it 'should order the potential matches by score' do

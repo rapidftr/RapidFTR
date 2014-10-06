@@ -6,7 +6,7 @@ describe PotentialMatch, :type => :model do
     reset_couchdb!
   end
 
-  describe 'create_matches_for' do
+  describe 'update_matches_for_child' do
     before :each do
       reset_couchdb!
       form = create :form, :name => Child::FORM_NAME
@@ -19,7 +19,7 @@ describe PotentialMatch, :type => :model do
     it 'should create potential match for a child' do
       create(:enquiry, :id => '2e453c')
       create(:enquiry, :id => '23edsd')
-      PotentialMatch.create_matches_for_child('1a3efc', '2e453c' => '0.9', '23edsd' => '0.4')
+      PotentialMatch.update_matches_for_child('1a3efc', '2e453c' => '0.9', '23edsd' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
       potential_matches = PotentialMatch.all.all
@@ -30,9 +30,84 @@ describe PotentialMatch, :type => :model do
       expect(scores).to include('2e453c' => '0.9', '23edsd' => '0.4')
     end
 
+    it 'should update existing potential matches for a child' do
+      create(:enquiry, :id => '1a3efc')
+      PotentialMatch.create(:enquiry_id => '1a3efc', :child_id => '2e453c', :score => '2.0')
+      PotentialMatch.update_matches_for_child('2e453c', '1a3efc' => '0.9')
+
+      expect(PotentialMatch.count).to eq 1
+      potential_match = PotentialMatch.first
+      expect(potential_match.score).to eq('0.9')
+      expect(potential_match.child_id).to eq('2e453c')
+      expect(potential_match.enquiry_id).to eq('1a3efc')
+    end
+
+    it 'should mark potential matches as deleted if they drop below the threshold' do
+      enquiry = build :enquiry, :reunited => false, :id => 'id'
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with('id').and_return(enquiry)
+      PotentialMatch.create(:enquiry_id => 'id', :child_id => :child_id)
+      hits = {'id' => '0.9'}
+
+      PotentialMatch.update_matches_for_child(:child_id, hits)
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key(['id', :child_id]).first
+      expect(pm).to be_deleted
+      expect(pm.score).to eq('0.9')
+    end
+
+    it 'should not save potential matches if they are below the threshold' do
+      enquiry = build :enquiry, :reunited => false, :id => 'id'
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with('id').and_return(enquiry)
+      hits = {'id' => '0.9'}
+
+      PotentialMatch.update_matches_for_child(:child_id, hits)
+
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key(['id', :child_id]).first
+      expect(pm).to be_nil
+    end
+
+    it 'should not update match if match remains deleted' do
+      enquiry = build :enquiry, :id => 'id-1111-1234', :reunited => false
+      PotentialMatch.create :enquiry_id => enquiry.id, :child_id => 'child_id', :score => '0.5', :status => PotentialMatch::DELETED
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      hits = {'id-1111-1234' => '0.9'}
+
+      PotentialMatch.update_matches_for_child(:child_id, hits)
+
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key([enquiry.id, 'child_id']).first
+      expect(pm[:score]).to eq '0.5'
+    end
+
+    it 'should undelete a match if the score goes above the threshold' do
+      enquiry = build :enquiry, :id => 'id-1111-1234', :reunited => false
+      PotentialMatch.create :enquiry_id => enquiry.id, :child_id => 'child_id', :score => '0.5', :status => PotentialMatch::DELETED
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      hits = {'id-1111-1234' => '1.5'}
+
+      PotentialMatch.update_matches_for_child('child_id', hits)
+
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key([enquiry.id, 'child_id']).first
+      expect(pm[:score]).to eq '1.5'
+      expect(pm).to_not be_deleted
+    end
+  end
+
+  describe 'update_matches_for_enquiry' do
+    before :each do
+      reset_couchdb!
+      form = create :form, :name => Child::FORM_NAME
+      field = build :field, :highlighted => true
+      create :form_section, :form => form, :fields => [field]
+
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+    end
+
     it 'should create potential matches for an enquiry' do
       create(:enquiry, :id => '1a3efc')
-      PotentialMatch.create_matches_for_enquiry('1a3efc', '2e453c' => '0.9', '2ef1g' => '0.4')
+      PotentialMatch.update_matches_for_enquiry('1a3efc', '2e453c' => '0.9', '2ef1g' => '0.4')
 
       expect(PotentialMatch.count).to eq 2
       potential_matches = PotentialMatch.all.all
@@ -41,6 +116,70 @@ describe PotentialMatch, :type => :model do
       scores = {}
       potential_matches.each { |pm| scores[pm.child_id] = pm.score }
       expect(scores).to include('2e453c' => '0.9', '2ef1g' => '0.4')
+    end
+
+    it 'should update existing potential matches for an enquiry' do
+      create(:enquiry, :id => '1a3efc')
+      PotentialMatch.create(:enquiry_id => '1a3efc', :child_id => '2e453c', :score => '2.0')
+      PotentialMatch.update_matches_for_enquiry('1a3efc', '2e453c' => '0.9')
+
+      expect(PotentialMatch.count).to eq 1
+      potential_match = PotentialMatch.first
+      expect(potential_match.score).to eq('0.9')
+      expect(potential_match.child_id).to eq('2e453c')
+      expect(potential_match.enquiry_id).to eq('1a3efc')
+    end
+
+    it 'should mark potential matches as deleted if they drop below the threshold' do
+      enquiry = build :enquiry, :reunited => false
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with('id').and_return(enquiry)
+      PotentialMatch.create(:enquiry_id => 'id', :child_id => :child_id)
+      hits = {:child_id => '0.9'}
+
+      PotentialMatch.update_matches_for_enquiry('id', hits)
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key(['id', :child_id]).first
+      expect(pm).to be_deleted
+      expect(pm.score).to eq('0.9')
+    end
+
+    it 'should not save potential matches if they are below the threshold' do
+      enquiry = build :enquiry, :reunited => false
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with('id').and_return(enquiry)
+      hits = {:child_id => '0.9'}
+
+      PotentialMatch.update_matches_for_enquiry('id', hits)
+
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key(['id', :child_id]).first
+      expect(pm).to be_nil
+    end
+
+    it 'should not update match if match remains deleted' do
+      enquiry = build :enquiry, :id => 'id-1111-1234', :reunited => false
+      PotentialMatch.create :enquiry_id => enquiry.id, :child_id => 'child_id', :score => '0.5', :status => PotentialMatch::DELETED
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      hits = {:child_id => '0.9'}
+
+      PotentialMatch.update_matches_for_enquiry(enquiry.id, hits)
+
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key([enquiry.id, 'child_id']).first
+      expect(pm[:score]).to eq '0.5'
+    end
+
+    it 'should undelete a match if the score goes above the threshold' do
+      enquiry = build :enquiry, :id => 'id-1111-1234', :reunited => false
+      PotentialMatch.create :enquiry_id => enquiry.id, :child_id => 'child_id', :score => '0.5', :status => PotentialMatch::DELETED
+      allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::SCORE_THRESHOLD).and_return(double(:value => '1'))
+      allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      hits = {:child_id => '1.5'}
+
+      PotentialMatch.update_matches_for_enquiry(enquiry.id, hits)
+
+      pm = PotentialMatch.by_enquiry_id_and_child_id.key([enquiry.id, 'child_id']).first
+      expect(pm[:score]).to eq '1.5'
+      expect(pm).to_not be_deleted
     end
   end
 
