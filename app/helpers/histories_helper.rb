@@ -10,13 +10,13 @@ module HistoriesHelper
     return_partial_hash(change, field, history)
   end
 
-  def history_entry_for(history, field, change)
+  def history_entry_for(history, field, change, model)
     @form_sections = FormSection.all
 
-    return_partial_hash(change, field, history)
+    return_partial_hash(change, field, history, model)
   end
 
-  def return_partial_hash(change, field, history)
+  def return_partial_hash(change, field, history, model = nil)
     if field == 'photo_keys'
       return {:partial => 'shared/histories/photo_history_change',
               :locals => {
@@ -28,7 +28,7 @@ module HistoriesHelper
 
     elsif field == 'recorded_audio'
       return {:partial => 'shared/histories/audio_history_change',
-              :locals => default_locals_for(history, change)}
+              :locals => default_locals_for(history, change).merge(:model => model)}
     elsif field == 'flag'
       return {:partial => 'shared/histories/flag_change',
               :locals => default_locals_for(history, change).merge(:message => new_value_for(history, 'flag_message'))}
