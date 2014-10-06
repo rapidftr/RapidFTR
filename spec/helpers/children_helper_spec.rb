@@ -183,6 +183,18 @@ describe ChildrenHelper, :type => :helper do
         expect(confirm_match_link child, child, enquiry).to be_nil
       end
 
+      it 'should return appropriate message if the enquiry is reunited elsewhere' do
+        enquiry = double(:reunited_elsewhere? => true)
+        link = confirm_match_link child, nil, enquiry
+        expect(link).to eq('<li> |  <div class="matched_message">Matched to another Child</div></li>')
+      end
+
+      it 'should return appropriate message if the enquiry is confirmed elsewhere' do
+        enquiry = double(:confirmed_match => {}, :reunited_elsewhere? => false)
+        link = confirm_match_link child, nil, enquiry
+        expect(link).to eq('<li> |  <div class="matched_message">Matched to another Child</div></li>')
+      end
+
       it 'should return a put link beginning with |' do
         link = confirm_match_link child, nil, enquiry
         expect(link).to eq("<li id=\"confirm_#{child.id}\"> | " \

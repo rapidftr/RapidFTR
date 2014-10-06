@@ -98,7 +98,7 @@ module ChildrenHelper
 
   def confirmed_matches_header(matches)
     return nil if matches.empty?
-    builder = [t('enquiry.confirmed_child_matches') + ': ']
+    builder = [t('enquiry.confirmed_matches') + ': ']
     if matches.count == 1
       builder << matches.map { |match| link_to(match.enquiry.short_id, enquiry_path(match.enquiry.id)) }
     else
@@ -118,6 +118,7 @@ module ChildrenHelper
 
   def confirm_match_link(child, confirmed_match, enquiry, options = {})
     return nil unless confirmed_match.nil?
+    return matched_elsewhere_li_element if enquiry.reunited_elsewhere? || !enquiry.confirmed_match.nil?
     link_path = enquiry_potential_match_path(enquiry.id, child.id, options.merge(:confirmed => true))
     content = " | #{link_to t('enquiry.confirm_child_as_matching'), link_path, :method => :put}".html_safe
     content_tag(:li, content, :id => "confirm_#{child.id}")
@@ -128,5 +129,10 @@ module ChildrenHelper
     link_path = enquiry_potential_match_path(enquiry.id, child.id, options.merge(:confirmed => false))
     content = " | #{link_to t('enquiry.unmark_child_as_matching'), link_path, :method => :put}".html_safe
     content_tag(:li, content, :id => "confirm_#{child.id}")
+  end
+
+  def matched_elsewhere_li_element
+    message = content_tag(:div, t('enquiry.matched_elsewhere_link'), :class => 'matched_message')
+    content_tag(:li, " |  #{message}".html_safe)
   end
 end

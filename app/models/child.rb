@@ -191,10 +191,8 @@ rescue
   end
 
   def potential_matches
-    potential_matches = PotentialMatch.by_child_id.key(id).all
-    potential_matches.reject! { |pm| pm.marked_invalid? || pm.confirmed? }
-    enquiry_ids = potential_matches.each.map(&:enquiry_id)
-    enquiry_ids.map { |id| Enquiry.get(id) }
+    potential_matches = PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::POTENTIAL]).all
+    potential_matches.sort_by(&:score).reverse! || []
   end
 
   def find_matching_enquiries
