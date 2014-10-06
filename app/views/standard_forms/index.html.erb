@@ -18,18 +18,6 @@
                     <%= ffs.hidden_field :id %>
                     <%= ffs.label section.name %>
                   </h2>
-
-                  <ul>
-                    <% section.fields.each do |field| %>
-                      <%= ffs.fields_for "[fields]", field, {index: field.id} do |ffsf| %>
-                        <li>
-                          <%= ffsf.check_box :user_selected, { checked: field.disabled, disabled: field.disabled } %>
-                          <%= ffsf.hidden_field :id %>
-                          <%= ffsf.label field.name %>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
                 </li>
               <% end %>
             <% end %>

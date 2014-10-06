@@ -12,12 +12,7 @@ class StandardFormsService
       next if saved_form.nil?
 
       sections_attr = form_attr.fetch(SECTIONS_KEY, {})
-      saved_sections = persist_sections(saved_form, sections_attr)
-
-      saved_sections.each do |s|
-        fields_attr = sections_attr.fetch(s.name, {}).fetch(FIELDS_KEY, {})
-        persist_fields(s, fields_attr)
-      end
+      persist_sections(saved_form, sections_attr)
     end
   end
 
@@ -29,26 +24,8 @@ class StandardFormsService
   def self.persist_sections(form, sections_attributes)
     sections_to_persist(form, sections_attributes).each do |section|
       section.form = form
-      section.fields = []
+      section.fields = RapidFTR::FormSetup.default_fields_for section
       section.save
-    end
-    form.reload_sections!
-    form.sections
-  end
-
-  def self.persist_fields(section, fields_attributes)
-    section.merge_fields! fields_to_persist(section, fields_attributes)
-    section.save
-  end
-
-  def self.selected_by_user(attr)
-    !attr.nil? && attr[USER_SELECTED_KEY] == USER_SELECTED
-  end
-
-  def self.fields_to_persist(section, fields_attributes = {})
-    RapidFTR::FormSetup.default_fields_for(section).select do |field|
-      fields_attributes[field.name] &&
-        selected_by_user(fields_attributes[field.name])
     end
   end
 
@@ -57,5 +34,9 @@ class StandardFormsService
       sections_attributes[section.name] &&
         selected_by_user(sections_attributes[section.name])
     end
+  end
+
+  def self.selected_by_user(attr)
+    !attr.nil? && attr[USER_SELECTED_KEY] == USER_SELECTED
   end
 end
