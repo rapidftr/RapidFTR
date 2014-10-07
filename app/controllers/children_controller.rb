@@ -255,6 +255,7 @@ class ChildrenController < ApplicationController
     child = @child || Child.get(params[:id]) || Child.new_with_user_name(current_user, params[:child])
     authorize! :update, child
     child.update_with_attachments(params, current_user)
+    child
   end
 
   def respond_to_export(format, children)

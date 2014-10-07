@@ -79,8 +79,7 @@ describe Api::EnquiriesController, :type => :controller do
       expect(enquiry).to receive(:without_internal_fields).and_return(enquiry)
       post :create, :enquiry => {:enquirer_name => 'reporter',
                                  :reporter_details => {'location' => 'Kampala'},
-                                 :name => 'name',
-                                 :histories => [{:history => :history}]}
+                                 :name => 'name'}
     end
 
     it 'should not update record if it exists and return error' do

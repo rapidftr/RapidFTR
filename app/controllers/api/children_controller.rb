@@ -85,11 +85,7 @@ module Api
 
     def create_or_update_child(params)
       @child = Child.by_short_id(:key => child_short_id(params)).first if params[:child][:unique_identifier]
-      if @child.nil?
-        @child = Child.new_with_user_name(current_user, params[:child])
-      else
-        @child = update_child_from(params)
-      end
+      @child = update_child_from(params)
     end
 
     def child_short_id(params)
