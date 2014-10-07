@@ -53,9 +53,9 @@ module RecordHelper
 
   def update_with_attachments(params, user)
     self['last_updated_by_full_name'] = user.full_name
-    new_photo = params[:child].delete('photo')
-    new_photo = (params[:child][:photo] || '') if new_photo.nil?
-    new_audio = params[:child].delete('audio')
+    new_photo = params.delete('photo')
+    new_photo = (params[:photo] || '') if new_photo.nil?
+    new_audio = params.delete('audio')
     update_properties_with_user_name(user.user_name, new_photo, params[:delete_child_photo], new_audio, params[:child])
     self
   end
