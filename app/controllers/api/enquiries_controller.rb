@@ -9,7 +9,7 @@ module Api
         render_error('errors.models.enquiry.create_forbidden', 403) && return
       end
 
-      @enquiry = Enquiry.new_with_user_name(current_user, enquiry_json)
+      @enquiry = update_enquiry_from params
 
       unless @enquiry.valid?
         render(:json => {:error => @enquiry.errors.full_messages}, :status => 422) && return
@@ -64,7 +64,7 @@ module Api
 
     def update_enquiry_from(params)
       enquiry = enquiry || Enquiry.get(params[:id]) || Enquiry.new_with_user_name(current_user, params[:enquiry])
-      enquiry.update_properties_with_user_name(current_user.user_name, nil, nil, nil, params[:enquiry])
+      enquiry.update_with_attachments(params, current_user, :enquiry)
       enquiry
     end
 
