@@ -21,6 +21,7 @@ module HistoriesHelper
       return {:partial => 'shared/histories/photo_history_change',
               :locals => {
                 :new_photos => change['added'],
+                :model => model,
                 :deleted_photos => change['deleted'],
                 :datetime => @user.localize_date(history['datetime'], '%Y-%m-%d %H:%M:%S %Z'),
                 :user_name => history['user_name'],
