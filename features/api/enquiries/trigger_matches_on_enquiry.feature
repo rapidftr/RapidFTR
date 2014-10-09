@@ -9,6 +9,13 @@ Feature: Check for matches after creating/editing an enquiry on the API
       | name      |
       | Enquiries |
       | Children  |
+    And the following form sections exist in the system on the "Children" form:
+      | name          | unique_id         | editable | order | visible | perm_enabled |
+      | Details       | matchable_details | false    | 1     | true    | true         |
+    And the following fields exists on "matchable_details":
+      | name          | type       | display_name   | editable | matchable |
+      | childs_name   | text_field | Name           | true     | true       |
+      | birthplace    | text_field | Name           | true     | true       |
     And the following form sections exist in the system on the "Enquiries" form:
       | name          | unique_id     | editable | order | visible | perm_enabled |
       | Basic details | basic_details | false    | 1     | true    | true         |
@@ -25,8 +32,8 @@ Feature: Check for matches after creating/editing an enquiry on the API
   @search
   Scenario: An enquiry should trigger matches
     Given the following children exist in the system:
-      | name | _id | created_at             | posted_at              |
-      | Tom  | 1   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC |
+      | childs_name | _id | created_at             | posted_at              |
+      | Tom         | 1   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC |
     When I send a POST request to "/api/enquiries" with JSON:
     """
       {
@@ -46,9 +53,9 @@ Feature: Check for matches after creating/editing an enquiry on the API
   Scenario: Editing an enquiry should also trigger matches
 
     Given the following children exist in the system:
-      | name  | _id | created_at             | posted_at              | birthplace  |
-      | Tom   | 1   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC | Kilimanjaro |
-      | Jerry | 2   | 2011-06-22 03:07:51UTC | 2011-06-22 03:07:51UTC | Kampala     |
+      | childs_name | _id | created_at             | posted_at              | birthplace  |
+      | Tom         | 1   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC | Kilimanjaro |
+      | Jerry       | 2   | 2011-06-22 03:07:51UTC | 2011-06-22 03:07:51UTC | Kampala     |
 
     And the following enquiries exist in the system:
       | enquirer_name | _id | created_at             | posted_at              | created_by |

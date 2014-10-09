@@ -13,7 +13,7 @@ class SystemVariablesController < ApplicationController
       variable.save!
 
       if variable.name == SystemVariable::SCORE_THRESHOLD && variable.value != old_value
-        Enquiry.update_all_child_matches
+        Enquiry.delay.update_all_child_matches
       end
     end
 

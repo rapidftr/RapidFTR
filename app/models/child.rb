@@ -197,7 +197,10 @@ rescue
 
   def find_matching_enquiries
     previous_matches = potential_matches
-    criteria = Child.build_text_fields_for_solar.map { |field_name| self[field_name] unless self[field_name].nil? }
+    criteria = Child.matchable_fields.map do |field|
+      field_name = field.name
+      self[field_name] unless self[field_name].nil?
+    end
     criteria.reject! { |c| c.nil? || c.empty? }
     hits = MatchService.search_for_matching_enquiries(criteria)
     PotentialMatch.update_matches_for_child id, hits
@@ -215,6 +218,10 @@ rescue
 
   def self.searchable_field_names
     Form.find_by_name(FORM_NAME).highlighted_fields.map(&:name) + [:unique_identifier, :short_id]
+  end
+
+  def self.matchable_fields
+    Array.new(FormSection.all_visible_child_fields_for_form(Child::FORM_NAME)).keep_if { |field| field.matchable? }
   end
 
   private

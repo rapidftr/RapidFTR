@@ -267,10 +267,11 @@ describe PotentialMatch, :type => :model do
       before do
         allow(Clock).to receive(:now).and_return(Time.utc(2013, 'jan', 01, 00, 00, 0))
         form = create :form, :name => Child::FORM_NAME
-        field = build :field, :highlighted => true
-        create :form_section, :form => form, :fields => [field]
-        Child.create(:name => 'Eduardo aquiles', :location => 'Kyangwali', :created_by => 'One', :created_organisation => 'stc')
-        Child.create(:name => 'Batman', :location => 'Kampala', :created_by => 'Two', :created_organisation => 'stc')
+        field = build :field, :highlighted => true, :matchable => true
+        field2 = build :field, :highlighted => true, :matchable => true
+        create :form_section, :form => form, :fields => [field, field2]
+        Child.create(field.name => 'Eduardo aquiles', field2.name => 'Kyangwali', :created_by => 'One', :created_organisation => 'stc')
+        Child.create(field.name => 'Batman', field2.name => 'Kampala', :created_by => 'Two', :created_organisation => 'stc')
       end
 
       after do

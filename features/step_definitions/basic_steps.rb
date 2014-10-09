@@ -279,6 +279,11 @@ When /^I debug$/ do
   binding.pry # rubocop:disable Debugger
 end
 
+Given /^Solr is setup$/ do
+  Child.update_solr_indices
+  Enquiry.update_solr_indices
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)
