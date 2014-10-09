@@ -1,6 +1,10 @@
 <%= render :partial => "enquiries/header", :locals => { :heading_text => t('enquiry.label'), :show_action_buttons => true} %>
 <div class="clearfix"></div>
 
+<div class="filter_bar">
+  <%= render :partial => "enquiries/filter_box" %>
+</div>
+
 <div class="entity_list">
   <%= render :partial => "enquiries/summary_row", :collection => @enquiries, :as => :enquiry, :locals => {:checkbox => false, :highlighted_fields => enquiry_sorted_highlighted_fields} %>
 

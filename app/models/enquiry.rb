@@ -93,6 +93,10 @@ class Enquiry < BaseModel
         self[field_name]
       end
     end
+
+    boolean :reunited
+    boolean(:has_matches) { |e| !(e.potential_matches.empty?) }
+    boolean(:has_confirmed_match) { |e| !(e.confirmed_match.nil?) }
   end
 
   searchable(&@set_up_solr_fields)
