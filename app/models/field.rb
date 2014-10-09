@@ -147,6 +147,10 @@ class Field
     Field.by_name(:key => name.downcase).first
   end
 
+  def can_be_used_for_matching?
+    [TEXT_FIELD, TEXT_AREA, SELECT_BOX].include? type
+  end
+
   private
 
   def create_unique_id

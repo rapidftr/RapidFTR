@@ -48,8 +48,10 @@
 
             <% end %>
             <td width="75">
-              <%= check_box_tag "fields[]", field.name, field.matchable? , {:id => "fields_#{field.name}", :class => "field_matchable", 'data-field-name' => "matchable"} %>
-            </td>            
+              <% if field.can_be_used_for_matching? %>
+                <%= check_box_tag "fields[]", field.name, field.matchable? , {:id => "fields_#{field.name}_matchable", :class => "field_matchable", 'data-field-name' => "matchable"} %>
+              <% end %>
+            </td>
             <% if @form_section.editable? %>
             <td class='field-buttons' width="220">
                   <% if field.editable? %>

@@ -284,6 +284,11 @@ Given /^Solr is setup$/ do
   Enquiry.update_solr_indices
 end
 
+When /^I accept the modal$/ do
+  a = page.driver.browser.switch_to.alert
+  a.accept
+end
+
 private
 
 def click_flag_as_suspect_record_link_for(name)

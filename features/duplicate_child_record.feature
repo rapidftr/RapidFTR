@@ -27,16 +27,16 @@ Feature: Merge Child Records
     And I click mark as duplicate for "Steve"
     Then I am on duplicate child page for "Steve"
 
-# This test is causing Firefox to crash (Firefox v19, selenium-webdriver v2.30.0)
-#  @javascript
-#  Scenario: Should see view child page when I click OK on confirmation
-#    When I am on the child listing filtered by flagged
-#    And I select dropdown option "Flagged"
-#    And I click mark as duplicate for "Steve"
-#    And I fill in "parent_id" with "red_uid"
-#    And I press "Mark as Duplicate"
-#    Then I am on the child record page for "Steve"
-#    And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
+  @javascript
+  Scenario: Should see view child page when I click OK on confirmation
+    When I am on the children listing page
+    And I select "Flagged" from "filter"
+    And I click mark as duplicate for "Steve"
+    And I fill in "parent_id" with "red_uid"
+    And I press "Mark as Duplicate"
+    And I accept the modal
+    Then I am on the child record page for "Steve"
+    And I should see "This record has been marked as a duplicate and is no longer active. To see the Active record click here."
 
   Scenario: Should see duplicate message when viewing child record
     And "Bob" is a duplicate of "Dave"
@@ -45,12 +45,12 @@ Feature: Merge Child Records
     And I follow "here"
     Then I am on the child record page for unique id "bob_uid"
 
-# This test is causing Firefox to crash (Firefox v19, selenium-webdriver v2.30.0)
-#   @javascript
-#   Scenario: Should see error message when wrong Duplicate id/name is given
-#     When I am on the child listing filtered by flagged
-#     And I select dropdown option "Flagged"
-#     And I click mark as duplicate for "Steve"
-#     And I fill in "parent_id" with "fred_uid"
-#     And I press "Mark as Duplicate"
-#     And I should see "This is not a valid rapidftr id."
+  @javascript
+  Scenario: Should see error message when wrong Duplicate id/name is given
+    When I am on the children listing page
+    And I select "Flagged" from "filter"
+    And I click mark as duplicate for "Steve"
+    And I fill in "parent_id" with "fred_uid"
+    And I press "Mark as Duplicate"
+    And I accept the modal
+    And I should see "A valid duplicate ID must be provided"

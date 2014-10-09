@@ -211,7 +211,7 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
     And I follow "characteristic_Delete"
     When I click OK in the browser popup
     Then I should not see "Characteristic field" with id "fields_characteristic"
-  
+
   @javascript
   Scenario: Admins should be able to delete form sections
     When I am on the form sections page for "Children"
@@ -225,3 +225,10 @@ Feature: So that admin can see Manage Form Sections Page, customize form section
       | Care Arrangements   |
       |Other hidden section |
       |Other visible section| 
+
+  @javascript
+  Scenario: Should not be able to mark date fields as matchable
+    When I follow "FORMS"
+    And I follow "Children"
+    And I follow "Basic Identity"
+    Then I should not be able to mark 'date_of_birth' as matchable
