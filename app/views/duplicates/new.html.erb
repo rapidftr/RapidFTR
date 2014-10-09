@@ -19,7 +19,10 @@
     <% end %>
   </div>
 
-    <% #Change me!
-    <%= render :partial => "children/summary_row", :object => @child, :as => :child, :locals => { :checkbox => false, :show_links => false, :highlighted_fields => @sorted_highlighted_fields } %>
+  <% #Change me! %>
+    <%= render(:partial => "children/summary_row",
+               :object => @child,
+               :as => :child,
+               :locals => { :checkbox => false, :show_links => false, :highlighted_fields => @sorted_highlighted_fields }) %>
 
 </div>
