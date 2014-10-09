@@ -27,6 +27,7 @@ describe SystemVariablesController, :type => :controller do
   it 'should trigger update of potential matches when the score threshold changes.' do
     variable = SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :value => '2343')
     params = {:system_variables => {variable.id => '23'}}
+    Enquiry.should_receive(:delay).and_return(Enquiry)
     Enquiry.should_receive(:update_all_child_matches)
     put :update, params
   end
@@ -34,6 +35,7 @@ describe SystemVariablesController, :type => :controller do
   it 'should not trigger an update of potential matches when the other variables are updated' do
     variable = SystemVariable.create(:name => 'Testing', :value => '2343')
     params = {:system_variables => {variable.id => '23'}}
+    Enquiry.should_not_receive(:delay)
     Enquiry.should_not_receive(:update_all_child_matches)
     put :update, params
   end
@@ -41,6 +43,7 @@ describe SystemVariablesController, :type => :controller do
   it 'should not trigger an update for potential matches when the score threshold value doesnot change' do
     variable = SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :value => '2343')
     params = {:system_variables => {variable.id => '2343'}}
+    Enquiry.should_not_receive(:delay)
     Enquiry.should_not_receive(:update_all_child_matches)
     put :update, params
   end

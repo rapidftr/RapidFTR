@@ -17,7 +17,7 @@ class MatchService
       return []
     else
       search = Sunspot.search(Child) do
-        fulltext criteria.values.join(' '), :minimum_match => 1
+        fulltext criteria.values.join(' '), :fields => Child.matchable_fields.map(&:name), :minimum_match => 1
       end
       results = {}
       search.hits.each { |hit| results[hit.result.id] = hit.score }

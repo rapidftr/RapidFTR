@@ -11,6 +11,7 @@ Feature:
     And the following fields exists on "enquiry_criteria":
       | name             | type       | display_name  | editable | matchable  | highlighted |
       | enquirer_name    | text_field | Enquirer Name | false    | true       | true        |
+    And Solr is setup
 
   Scenario: Searching for an enquiry given a highlighted field
     Given the following enquiries exist in the system:

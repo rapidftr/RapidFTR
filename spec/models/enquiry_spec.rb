@@ -135,6 +135,10 @@ describe Enquiry, :type => :model do
           text :gender
         end
 
+        child_fields = [build(:field, :name => 'name'),
+                        build(:field, :name => 'location'),
+                        build(:field, :name => 'gender')]
+        allow(Child).to receive(:matchable_fields).and_return(child_fields)
         form = create :form, :name => Enquiry::FORM_NAME
 
         create :form_section, :name => 'test_form', :fields => [

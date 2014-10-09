@@ -5,6 +5,17 @@ describe MatchService, :type => :request, :solr => true do
   before :each do
     reset_couchdb!
 
+    form = create :form, :name => Child::FORM_NAME
+
+    create :form_section, :name => 'test_form', :fields => [
+      build(:text_field, :name => 'name_1', :matchable => true),
+      build(:text_field, :name => 'nationality_1', :matchable => true),
+      build(:text_field, :name => 'country_1', :matchable => true),
+      build(:text_field, :name => 'birthplace_1', :matchable => true),
+      build(:text_field, :name => 'languages_1', :matchable => true),
+      build(:text_field, :name => 'other_1', :matchable => true)
+    ], :form => form
+
     form = create :form, :name => Enquiry::FORM_NAME
 
     create :form_section, :name => 'test_form', :fields => [
@@ -22,12 +33,12 @@ describe MatchService, :type => :request, :solr => true do
 
   it 'should match children from a country given enquiry criteria with key different from childs country key ' do
     Sunspot.setup(Child) do
-      text :location
-      text :nationality
-      text :country
+      text :location_1
+      text :nationality_1
+      text :country_1
     end
-    child1 = Child.create!(:name => 'christine', :created_by => 'me', :country => 'uganda', :created_organisation => 'stc', :location => '', :nationality => '')
-    child2 = Child.create!(:name => 'john', :created_by => 'not me', :nationality => 'uganda', :created_organisation => 'stc',  :location => '', :country => '')
+    child1 = Child.create!(:name_1 => 'christine', :created_by => 'me', :country_1 => 'uganda', :created_organisation => 'stc', :location_1 => '', :nationality_1 => '')
+    child2 = Child.create!(:name_1 => 'john', :created_by => 'not me', :nationality_1 => 'uganda', :created_organisation => 'stc',  :location_1 => '', :country_1 => '')
     enquiry = Enquiry.create!(:name => 'Foo Bar', :gender => 'male', :nationality => 'uganda', :country => '', :location => '')
 
     hits = MatchService.search_for_matching_children(enquiry['criteria'])
@@ -38,9 +49,9 @@ describe MatchService, :type => :request, :solr => true do
 
   it 'should match records when criteria has a space' do
     Sunspot.setup(Child) do
-      text :country
+      text :country_1
     end
-    child = Child.create!(:name => 'Christine', :created_by => 'me', :country => 'Republic of Uganda', :created_organisation => 'stc')
+    child = Child.create!(:name_1 => 'Christine', :created_by => 'me', :country_1 => 'Republic of Uganda', :created_organisation => 'stc')
     enquiry = Enquiry.create!(:enquirer_name => 'Foo Bar', :gender => 'male', :country => 'uganda')
 
     hits = MatchService.search_for_matching_children(enquiry['criteria'])
@@ -51,18 +62,33 @@ describe MatchService, :type => :request, :solr => true do
 
   it 'should match multiple records given multiple criteria' do
     Sunspot.setup(Child) do
-      text :location
-      text :birthplace
-      text :languages
+      text :location_1
+      text :birthplace_1
+      text :languages_1
     end
-    Child.create!(:name => 'Christine', :created_by => 'me', :country => 'Republic of Uganda', :created_organisation => 'stc')
-    Child.create!(:name => 'Man', :created_by => 'me', :nationality => 'Uganda', :gender => 'Male', :created_organisation => 'stc')
-    Child.create!(:name => 'dude', :created_by => 'me', :birthplace => 'Dodoma', :languages => 'Swahili', :created_organisation => 'stc')
+    Child.create!(:name_1 => 'Christine', :created_by => 'me', :country_1 => 'Republic of Uganda', :created_organisation => 'stc')
+    Child.create!(:name_1 => 'Man', :created_by => 'me', :nationality_1 => 'Uganda', :gender_1 => 'Male', :created_organisation => 'stc')
+    Child.create!(:name_1 => 'dude', :created_by => 'me', :birthplace_1 => 'Dodoma', :languages_1 => 'Swahili', :created_organisation => 'stc')
     enquiry = Enquiry.create!(:enquirer_name => 'Foo Bar', :gender => 'male', :country => 'uganda', :birthplace => 'dodoma', :languages => 'Swahili')
 
     children = MatchService.search_for_matching_children(enquiry['criteria'])
 
     expect(children.size).to eq(3)
+  end
+
+  it 'should not use unmatchable fields to search' do
+    Sunspot.setup(Child) do
+      text :name_1
+      text :other_1
+    end
+    Child.create!(:name_1 => 'Man', :other_1 => 'Other', :created_by => 'me', :created_organisation => 'stc')
+    expected_child = Child.create!(:name_1 => 'dude', :other_1 => 'Other', :created_by => 'me', :created_organisation => 'stc')
+    enquiry = Enquiry.create!(:enquirer_name => 'Foo Bar', :name => 'dude', :other_1 => 'Other')
+
+    children = MatchService.search_for_matching_children(enquiry['criteria'])
+
+    expect(children.size).to eq(1)
+    expect(children.first[0]).to eq(expected_child.id)
   end
 
   it 'should return empty array if criteria is empty' do

@@ -835,6 +835,16 @@ describe Child, :type => :model do
     end
   end
 
+  describe '#matchable_fields' do
+    it 'should only return matchable fields' do
+      matchable_field = build :field, :matchable => true
+      unmatchable_field = build :field, :matchable => false
+      fields = [matchable_field, unmatchable_field]
+      expect(FormSection).to receive(:all_visible_child_fields_for_form).with(Child::FORM_NAME).and_return(fields)
+      expect(Child.matchable_fields).to eq([matchable_field])
+    end
+  end
+
   private
 
   def create_child(name, options = {})
