@@ -20,7 +20,7 @@ class FormSectionEditPage
   end
 
   def mark_field_as_matchable(field_name)
-    check("fields_#{field_name}")
+    check("fields_#{field_name}_matchable")
   end
 
   private

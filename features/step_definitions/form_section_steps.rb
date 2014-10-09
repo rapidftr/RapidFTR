@@ -78,6 +78,10 @@ When /^I fill the following options into "([^"]*)":$/ do |label, string|
   fill_in(label, :with => string)
 end
 
+Then /^I should not be able to mark '([^']*)' as matchable$/ do |element_id|
+  expect(page).to_not have_selector(:css, "#fields_#{element_id}_matchable")
+end
+
 private
 
 def form_section_page
