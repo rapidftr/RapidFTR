@@ -56,8 +56,8 @@ Feature:
   Scenario: Editing an enquiry
     Given I am logged in as a user with "View Enquiries,Update Enquiry" permissions
     And the following enquiries exist in the system:
-	  | enquirer_name_ct | child_name_ct | location_ct |
-    | bob              | bob chulu     | kampala     |
+      | enquirer_name_ct | child_name_ct | location_ct |
+      | bob              | bob chulu     | kampala     |
     And I follow "ENQUIRIES"
     And I follow "Edit"
     And I fill in "Enquirer Name" with "John Doe"
@@ -66,4 +66,4 @@ Feature:
     Then I should see "John Doe"
     Then I should see "Nairobi"
     Then I should see "Enquiry record successfully updated."
-	Then I should not see "Save"
+    Then I should not see "Save"

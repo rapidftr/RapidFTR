@@ -117,7 +117,7 @@ en:
       flag_at: "Flagged at"
     flag_summary: "Flag summary"
 
-    filer_by:
+    filter_by:
       all: "All"
       active: "Active"
       reunited: "Reunited"
@@ -143,6 +143,11 @@ en:
     unmark_child_as_matching: "Undo Confirmation"
     history_of: "History of %{short_id}"
     change_log: "Change Log"
+    filter:
+      all: "All"
+      reunited: "Reunited"
+      has_matches: "Has Matches"
+      has_confirmed_match: "Has Confirmed Match"
     messages:
       creation_success: "Enquiry record successfully created."
       update_success: "Enquiry record successfully updated."

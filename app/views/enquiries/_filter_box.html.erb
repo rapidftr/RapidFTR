@@ -1,0 +1,11 @@
+<form class="filter_panel">
+  <input type="hidden" name="order_by" value="<%= @order %>"/>
+	<%= t("children.filter_by.label") %>:
+  <span> <%= select_tag :filter,
+                         options_for_select([[ t("enquiries.filter_by.all"), "" ],
+                                             [t("enquiries.filter_by.reunited"),"reunited"],
+                                             [t("enquiries.filter_by.has_matches"),"has_matches"],
+                                             [t("enquiries.filter_by.has_confirmed_match"),"has_confirmed_match"]],
+                                             @filter),
+                        { :onchange => "this.form.submit();"} %> </span>
+</form>

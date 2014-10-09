@@ -1,14 +1,124 @@
 require 'spec_helper'
 
 describe EnquiriesController, :type => :controller do
+  describe '#index', :solr => true do
+    before :each do
+      Sunspot.remove_all!
+    end
 
-  before :each do
-    reset_couchdb!
-    @session = fake_field_worker_login
-    allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+    shared_examples_for 'viewing enquiries by user with access to all data' do
+      describe 'when the signed in user has access all data' do
+        before do
+          role = create :role, :permissions => [Permission::ENQUIRIES[:create]]
+          user = create :user, :role_ids => [role.id]
+          @session = setup_session user
+          @params ||= {}
+          @params.merge!(:filter => @filter) if @filter
+          @expected_enquiry ||= [create(:enquiry, :created_by => @session.user_name)]
+        end
+
+        it 'should assign all enquiries as @enquiries' do
+          get :index, @params
+          expect(assigns[:enquiries]).to eq(@expected_enquiries)
+        end
+      end
+    end
+
+    shared_examples_for 'viewing enquiries as a field worker' do
+      describe 'when the signed in user is a field worker' do
+        before do
+          @session ||= fake_field_worker_login
+          @params ||= {}
+          @params.merge!(:filter => @filter) if @filter
+          @expected_enquiries ||= [create(:enquiry, :created_by => @session.user_name)]
+        end
+
+        it 'should assign the enquiries created by the user as @enquiries' do
+          get :index, @params
+          expect(assigns[:enquiries]).to eq(@expected_enquiries)
+        end
+      end
+    end
+
+    context 'viewing reunited enquiries' do
+      context 'admin' do
+        before do
+          @field_worker = create :user
+          create(:enquiry, :created_by => @field_worker.user_name)
+          @expected_enquiries = [create(:enquiry, :created_by => @field_worker.user_name, :reunited => true)]
+          @filter = 'reunited'
+        end
+        it_should_behave_like 'viewing enquiries by user with access to all data'
+      end
+      context 'field worker' do
+        before do
+          @session = fake_field_worker_login
+          create(:enquiry, :created_by => @session.user_name)
+          @expected_enquiries = [create(:enquiry, :created_by => @session.user_name, :reunited => true)]
+          @filter = 'reunited'
+        end
+        it_should_behave_like 'viewing enquiries as a field worker'
+      end
+    end
+
+    context 'viewing enquiries with matches' do
+      context 'admin' do
+        before do
+          @field_worker = create :user
+          create(:enquiry, :created_by => @field_worker.user_name)
+          expected_enquiry = create(:enquiry, :created_by => @field_worker.user_name, :flag => true)
+          PotentialMatch.create(:enquiry_id => expected_enquiry.id, :child_id => '1')
+          expected_enquiry.save
+          @expected_enquiries = [expected_enquiry]
+          @filter = 'has_matches'
+        end
+        it_should_behave_like 'viewing enquiries by user with access to all data'
+      end
+      context 'field_worker' do
+        before do
+          @session = fake_field_worker_login
+          create(:enquiry, :created_by => @session.user_name)
+          expected_enquiry = create(:enquiry, :created_by => @session.user_name, :flag => true)
+          PotentialMatch.create(:enquiry_id => expected_enquiry.id, :child_id => '1')
+          expected_enquiry.save
+          @expected_enquiries = [expected_enquiry]
+          @filter = 'has_matches'
+        end
+        it_should_behave_like 'viewing enquiries as a field worker'
+      end
+    end
+
+    context 'viewing enquiries with confirmed matches' do
+      context 'admin' do
+        before do
+          @field_worker = create :user
+          create(:enquiry, :created_by => @field_worker.user_name)
+          unexpected_enquiry = create(:enquiry, :created_by => @field_worker.user_name, :flag => true)
+          PotentialMatch.create(:enquiry_id => unexpected_enquiry.id, :child_id => '1')
+          unexpected_enquiry.save
+          expected_enquiry = create(:enquiry, :created_by => @field_worker.user_name, :flag => true)
+          PotentialMatch.create(:enquiry_id => expected_enquiry.id, :child_id => '1', :status => PotentialMatch::CONFIRMED)
+          expected_enquiry.save
+          @expected_enquiries = [expected_enquiry]
+          @filter = 'has_confirmed_match'
+        end
+        it_should_behave_like 'viewing enquiries by user with access to all data'
+      end
+      context 'field worker' do
+        before { @options = {:startkey => %w(active fakefieldworker), :endkey => ['active', 'fakefieldworker', {}], :page => 1, :per_page => 20, :view_name => :by_all_view_with_created_by_created_at} }
+        it_should_behave_like 'viewing enquiries as a field worker'
+      end
+    end
   end
 
   describe '#new' do
+
+    before :each do
+      reset_couchdb!
+      @session = fake_field_worker_login
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+    end
+
     it 'should render new form' do
       get :new
       expect(response).to render_template('new')
@@ -28,6 +138,12 @@ describe EnquiriesController, :type => :controller do
   end
 
   describe '#create' do
+
+    before :each do
+      reset_couchdb!
+      @session = fake_field_worker_login
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+    end
 
     before :each do
       field1 = build(:field, :name => 'enquirer_name')
@@ -181,6 +297,12 @@ describe EnquiriesController, :type => :controller do
   describe '#show' do
 
     before :each do
+      reset_couchdb!
+      @session = fake_field_worker_login
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+    end
+
+    before :each do
       field1 = build :field, :name => 'enquirer_name'
       field2 = build :field, :name => 'child_name'
       field3 = build :photo_field, :name => 'photo'
@@ -208,6 +330,13 @@ describe EnquiriesController, :type => :controller do
   end
 
   describe '#update enquiry', :solr => true do
+
+    before :each do
+      reset_couchdb!
+      @session = fake_field_worker_login
+      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+    end
+
     before :each do
       Sunspot.setup(Child) do
         text :child_name

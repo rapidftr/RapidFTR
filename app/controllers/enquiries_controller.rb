@@ -6,15 +6,12 @@ class EnquiriesController < ApplicationController
 
     @page_name = t('home.view_records')
     @filter = params[:filter] || nil
-    @order = params[:order_by] || EnquiriesHelper::ORDER_BY[@filter] || 'created_at'
-    @sort_order = (params[:sort_order].nil? || params[:sort_order].empty?) ? :asc : params[:sort_order]
     per_page = params[:per_page] || EnquiriesHelper::View::PER_PAGE
     per_page = per_page.to_i unless per_page == 'all'
     page = params[:page] || 1
 
     search = Search.for(Enquiry).
         paginated(page, per_page).
-        ordered(@order, @sort_order.to_sym).
         marked_as(@filter)
 
     @enquiries = search.results

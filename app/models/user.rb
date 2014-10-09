@@ -31,13 +31,7 @@ class User < CouchRest::Model::Base
 
   design do
 
-    view :by_user_name,
-         :map => "function(doc) {
-               if ((doc['couchrest-type'] == 'User') && doc['user_name'])
-               {
-                    emit(doc['user_name'],doc);
-               }
-         }"
+    view :by_user_name
 
     view :by_full_name,
          :map => "function(doc) {

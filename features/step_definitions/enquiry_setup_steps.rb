@@ -30,6 +30,19 @@ Then /^I should see "([^\"]*)" enquiries on the page$/ do |number_of_records|
   enquiry_list_page.should_be_showing(number_of_records.to_i)
 end
 
+Given /^there is a potential match for enquiry '(.*)'$/ do |id|
+  enquiry = Enquiry.find(id)
+  PotentialMatch.create :enquiry_id => enquiry.id,
+                        :child_id => '1'
+end
+
+Given /^there is a confirmed potential match for enquiry '(.*)'$/ do |id|
+  enquiry = Enquiry.find(id)
+  PotentialMatch.create :enquiry_id => enquiry.id,
+                        :child_id => '1',
+                        :status => PotentialMatch::CONFIRMED
+end
+
 private
 
 def enquiry_defaults
