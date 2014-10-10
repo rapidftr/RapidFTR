@@ -151,6 +151,10 @@ class Field
     [TEXT_FIELD, TEXT_AREA, SELECT_BOX].include? type
   end
 
+  def visible?
+    self[:visible] && (form.nil? || form.visible?)
+  end
+
   private
 
   def create_unique_id
