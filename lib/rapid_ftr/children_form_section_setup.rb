@@ -401,8 +401,7 @@ module RapidFTR
                   ),
         Field.new('name' => 'care_arrangements_arrival_date',
                   'type' => 'date_field',
-                  'display_name_all' => 'Arrival Date',
-                  'matchable' => true
+                  'display_name_all' => 'Arrival Date'
                   ),
         Field.new('name' => 'care_arrangements_convoy_no',
                   'type' => 'text_field',
