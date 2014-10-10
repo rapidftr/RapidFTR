@@ -90,7 +90,7 @@ class FormSection < CouchRest::Model::Base
 
     def all_visible_child_fields_for_form(form_name)
       enabled_by_order_for_form(form_name).map do |form_section|
-        form_section.fields.select(&:visible)
+        form_section.fields.select(&:visible?)
       end.flatten
     end
 
@@ -117,7 +117,7 @@ class FormSection < CouchRest::Model::Base
   end
 
   def all_sortable_fields
-    all_searchable_fields.select(&:visible)
+    all_searchable_fields.select(&:visible?)
   end
 
   def self.all_sortable_field_names

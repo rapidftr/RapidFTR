@@ -490,4 +490,18 @@ describe FormSection, :type => :model do
       expect(FormSection.enabled_by_order_for_form('Form Name')).to eq([section2, section1])
     end
   end
+
+  describe '#all_visible_child_fields_for_form' do
+    it 'should not include fields from hidden form sections' do
+      form = create :form, :name => Child::FORM_NAME
+      visible_field_1 = build :field, :visible => true
+      create :form_section, :fields => [visible_field_1], :visible => false, :form => form
+      visible_field_2 = build :field, :visible => true
+      create :form_section, :fields => [visible_field_2], :visible => true, :form => form
+
+      visible_field_names = FormSection.all_visible_child_fields_for_form(Child::FORM_NAME).map(&:display_name)
+      expect(visible_field_names).to include(visible_field_2.display_name)
+      expect(visible_field_names).to_not include(visible_field_1.display_name)
+    end
+  end
 end
