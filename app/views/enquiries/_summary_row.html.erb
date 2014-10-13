@@ -17,6 +17,7 @@
 
     <h2><%= link_to enquiry.id, enquiry_path(enquiry) %></h2>
     <div class="clearfix"></div>
+      <%= content_tag(:div, nil, :class => 'flag reunited') if enquiry.reunited? %>
 
       <% enquiry_sorted_highlighted_fields.each do |relevant_field| %>
         <% if relevant_field.visible? %>
