@@ -224,6 +224,12 @@ rescue
     Array.new(FormSection.all_visible_child_fields_for_form(Child::FORM_NAME)).keep_if { |field| field.matchable? }
   end
 
+  def without_updating_matches
+    Child.skip_callback(:save, :after, :find_matching_enquiries)
+    yield
+    Child.set_callback(:save, :after, :find_matching_enquiries)
+  end
+
   private
 
   def mark_or_unmark_confirmed_enquiry_reunited
