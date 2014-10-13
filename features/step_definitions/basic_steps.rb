@@ -135,7 +135,7 @@ When 'I wait for the page to load' do
   end
 end
 
-When /^I wait until "([^"]*)" is visible$/ do |selector|
+When /^I wait until "([^\"]*)" is visible$/ do |selector|
   page.has_content?(selector)
 end
 

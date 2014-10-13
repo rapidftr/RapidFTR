@@ -161,3 +161,19 @@ Feature:
     And I should see "rlon233"
     And I should not see "Confirm as Match"
 
+  @javascript
+  Scenario: Reunited Enquiry should have reunited badge
+    Given I am logged in as a user with "Create Enquiry,View Enquiries,Update Enquiry,View And Search Child,Edit Child" permissions
+    When I follow "Enquiries"
+    And I follow "20e3fe"
+    And I follow "Matches"
+    And I confirm child match with unique_id "zubairlon233"
+    And I should see "Confirmed Matches"
+    And I follow "rlon233"
+    And I click the "Mark as Reunited" link
+    And I fill in "child_reunited_message" with "Testing"
+    And I click the "Reunite" button
+    And I follow "ENQUIRIES"
+    Then I should see "20e3fe"
+    And I should see 1 divs of class "flag reunited"
+
