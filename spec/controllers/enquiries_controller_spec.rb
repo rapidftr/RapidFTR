@@ -68,6 +68,7 @@ describe EnquiriesController, :type => :controller do
           create(:enquiry, :created_by => @field_worker.user_name)
           expected_enquiry = create(:enquiry, :created_by => @field_worker.user_name, :flag => true)
           PotentialMatch.create(:enquiry_id => expected_enquiry.id, :child_id => '1')
+          expected_enquiry.reload
           expected_enquiry.save
           @expected_enquiries = [expected_enquiry]
           @filter = 'has_matches'
@@ -80,6 +81,7 @@ describe EnquiriesController, :type => :controller do
           create(:enquiry, :created_by => @session.user_name)
           expected_enquiry = create(:enquiry, :created_by => @session.user_name, :flag => true)
           PotentialMatch.create(:enquiry_id => expected_enquiry.id, :child_id => '1')
+          expected_enquiry.reload
           expected_enquiry.save
           @expected_enquiries = [expected_enquiry]
           @filter = 'has_matches'
@@ -95,9 +97,11 @@ describe EnquiriesController, :type => :controller do
           create(:enquiry, :created_by => @field_worker.user_name)
           unexpected_enquiry = create(:enquiry, :created_by => @field_worker.user_name, :flag => true)
           PotentialMatch.create(:enquiry_id => unexpected_enquiry.id, :child_id => '1')
+          unexpected_enquiry.reload
           unexpected_enquiry.save
           expected_enquiry = create(:enquiry, :created_by => @field_worker.user_name, :flag => true)
           PotentialMatch.create(:enquiry_id => expected_enquiry.id, :child_id => '1', :status => PotentialMatch::CONFIRMED)
+          expected_enquiry.reload
           expected_enquiry.save
           @expected_enquiries = [expected_enquiry]
           @filter = 'has_confirmed_match'

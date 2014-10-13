@@ -460,6 +460,7 @@ describe Enquiry, :type => :model do
 
         child5 = create(:child)
         allow(MatchService).to receive(:search_for_matching_children).and_return(child1.id => '0.5', child3.id => '2.9', child4.id => '0.2', child5.id => '2.1')
+        enquiry.reload
         enquiry.update_attributes(:name => 'charles')
         enquiry.find_matching_children
         potential_matches = enquiry.potential_matches

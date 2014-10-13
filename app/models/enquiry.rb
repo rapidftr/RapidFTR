@@ -137,45 +137,46 @@ class Enquiry < BaseModel
   end
 
   def mark_or_unmark_as_reunited(reunited)
-    Enquiry.skip_callback(:save, :after, :find_matching_children)
-    self['reunited'] = reunited
-    save!
+    without_updating_matches do
+      Enquiry.skip_callback(:save, :after, :find_matching_children)
+      self['reunited'] = reunited
+      save!
 
-    if reunited
-      matches = potential_matches
-      matches.each do |match|
-        match.mark_as_reunited_elsewhere
-        match.save!
-      end
-
-      confirmed_match = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::CONFIRMED]).first
-      unless confirmed_match.nil?
-        confirmed_match.mark_as_reunited
-        confirmed_match.save!
-      end
-    else
-      matches = PotentialMatch.by_enquiry_id.key(id).all
-      matches.each do |match|
-        if match.reunited_elsewhere?
-          match.mark_as_potential_match
-        elsif match.reunited?
-          match.mark_as_confirmed
+      if reunited
+        matches = potential_matches
+        matches.each do |match|
+          match.mark_as_reunited_elsewhere
+          match.save!
         end
 
-        match.save!
+        confirmed_match = PotentialMatch.by_enquiry_id_and_status.key([id, PotentialMatch::CONFIRMED]).first
+        unless confirmed_match.nil?
+          confirmed_match.mark_as_reunited
+          confirmed_match.save!
+        end
+      else
+        matches = PotentialMatch.by_enquiry_id.key(id).all
+        matches.each do |match|
+          if match.reunited_elsewhere?
+            match.mark_as_potential_match
+          elsif match.reunited?
+            match.mark_as_confirmed
+          end
+
+          match.save!
+        end
       end
     end
-    Enquiry.set_callback(:save, :after, :find_matching_children)
   end
 
   def self.update_all_child_matches
-    Enquiry.skip_callback(:save, :after, :find_matching_children)
-    all.each do |enquiry|
-      enquiry.create_criteria
-      enquiry.find_matching_children
-      enquiry.save
+    without_updating_matches do
+      all.each do |enquiry|
+        enquiry.create_criteria
+        enquiry.find_matching_children
+        enquiry.save
+      end
     end
-    Enquiry.set_callback(:save, :after, :find_matching_children)
   end
 
   def self.search_by_match_updated_since(timestamp)
@@ -212,6 +213,16 @@ class Enquiry < BaseModel
     delete 'histories'
     delete 'criteria'
     self
+  end
+
+  def without_updating_matches(&block)
+    Enquiry.without_updating_matches(&block)
+  end
+
+  def self.without_updating_matches
+    Enquiry.skip_callback(:save, :after, :find_matching_children)
+    yield
+    Enquiry.set_callback(:save, :after, :find_matching_children)
   end
 
   private
@@ -255,11 +266,11 @@ class Enquiry < BaseModel
         PotentialMatch.paginates_per options.delete(:per_page)
         page = options.delete(:page)
         results = PotentialMatch.
-            all_valid_enquiry_ids(options).
-            page(page).
-            reduce.
-            group.
-            rows
+          all_valid_enquiry_ids(options).
+          page(page).
+          reduce.
+          group.
+          rows
         pager.replace(results.map { |r| Enquiry.find(r['key']) })
         pager.total_entries = PotentialMatch.all_valid_enquiry_ids.reduce.group.rows.count
       end
