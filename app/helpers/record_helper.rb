@@ -51,6 +51,17 @@ module RecordHelper
     )
   end
 
+  def add_match_history(old_status, new_status)
+    user = User.current_user
+    histories = self['histories']
+    histories << {'user_name' => user.nil? ? '' : user.user_name,
+                  'user_organisation' => user.nil? ? '' : user.organisation,
+                  'datetime' => RapidFTR::Clock.current_formatted_time,
+                  'changes' => {'match' => {:from => old_status,
+                                            :to => new_status}}}
+    update_attributes :histories => histories
+  end
+
   def update_with_attachments(params, user, model_key = :child)
     self['last_updated_by_full_name'] = user.full_name
     new_photo = params.delete('photo') || params[model_key].delete('photo') || params[:photo] || ''

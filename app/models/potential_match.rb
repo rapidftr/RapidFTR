@@ -7,6 +7,8 @@ class PotentialMatch < CouchRest::Model::Base
   property :status, String, :default => 'POTENTIAL'
   timestamps!
   validates :child_id, :uniqueness => {:scope => :enquiry_id}
+  before_save :load_transitions
+  after_save :handle_state_transition
 
   POTENTIAL = 'POTENTIAL'
   DELETED = 'DELETED'
@@ -121,6 +123,19 @@ class PotentialMatch < CouchRest::Model::Base
   end
 
   private
+
+  def load_transitions
+    @old_status = changed_attributes && changed_attributes[:status]
+    @transitions = Match::StateTransition.for(@old_status, status)
+  end
+
+  def handle_state_transition
+    @transitions.each do |transition_hook|
+      transition_hook.call(self, @old_status, status)
+    end
+    @transitions = []
+    @old_status = nil
+  end
 
   def mark_as_status(status)
     self[:status] = status
