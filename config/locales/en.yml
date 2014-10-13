@@ -377,6 +377,9 @@ en:
       "All": "All"
       "Users for synchronisation": "Manage Server Synchronisation Users"
       "View and Download Reports": "View and Download Reports"
+      "Create Enquiry": "Create, Update and View Enquiries"
+      "Update Enquiry": "Update and View Enquiries"
+      "View Enquiries": "View Enquiries"
   forms:
     label: "Forms"
     manage: "Manage Forms"

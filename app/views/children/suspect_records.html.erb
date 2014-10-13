@@ -1,7 +1,9 @@
 <h2>Suspect Records</h2>
 
-<% #Change me! %>
-<%= render :partial => "children/summary_row", :collection => @children, :as => :child, :locals => { :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields } %>
+<div class="entity_list">
+  <% #Change me! %>
+  <%= render :partial => "children/summary_row", :collection => @children, :as => :child, :locals => { :checkbox => false, :highlighted_fields => child_sorted_highlighted_fields } %>
+</div>
 
 <br/>
 
