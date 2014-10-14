@@ -187,7 +187,13 @@ rescue
   end
 
   def confirmed_matches
-    PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::CONFIRMED]).all
+    potential_matches = PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::CONFIRMED]).all
+    potential_matches.sort_by(&:score).reverse! || []
+  end
+
+  def reunited_matches
+    potential_matches = PotentialMatch.by_child_id_and_status.key([id, PotentialMatch::REUNITED]).all
+    potential_matches.sort_by(&:score).reverse! || []
   end
 
   def potential_matches
