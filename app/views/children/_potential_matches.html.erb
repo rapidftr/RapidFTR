@@ -22,6 +22,29 @@
     <br>
   <% end %>
 
+  <% reunited_matches = model.reunited_matches %>
+  <% unless reunited_matches.empty? %>
+    <div class="clearfix"></div>
+      <h2><%= t('enquiry.reunited_matches') %></h2>
+      <div class="clearfix"></div>
+      <div class="form_info"></div>
+      <div class="entity_list">
+        <% reunited_matches.each do |match| %>
+          <%= render :partial => "enquiries/summary_row",
+                     :locals => {:enquiry => match.enquiry,
+                                 :score => match.score,
+                                 :child => model,
+                                 :confirmed_match => match,
+                                 :checkbox => false,
+                                 :highlighted_fields => child_sorted_highlighted_fields,
+                                 :rendered_by_show_enquiry => true} %>
+        <% end %>
+    </div>
+    <br>
+    <br>
+    <br>
+  <% end %>
+
   <% unless model.potential_matches.empty? %>
     <div class="clearfix"></div>
     <h2><%= t('enquiry.potential_matches') %></h2>
