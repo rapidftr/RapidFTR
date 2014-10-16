@@ -13,8 +13,7 @@ class Permission
                                         {:view_and_search => 'View And Search Child'},
                                         {:export_photowall => 'Export to Photowall'},
                                         {:export_csv => 'Export to CSV'},
-                                        {:export_pdf => 'Export to PDF'},
-                                        {:export_cpims => 'Export to CPIMS'}
+                                        {:export_pdf => 'Export to PDF'}
   )
   ENQUIRIES = Permission.to_ordered_hash({:create => 'Create Enquiry'},
                                          {:update => 'Update Enquiry'},

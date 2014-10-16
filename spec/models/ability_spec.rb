@@ -137,7 +137,6 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :read, Child.new }
       it { is_expected.not_to authorize :update, Child.new }
       it { is_expected.not_to authorize :export_pdf, Child.new }
-      it { is_expected.not_to authorize :export_cpims, Child.new }
       it { is_expected.not_to authorize :export_csv, Child.new }
     end
 
@@ -151,7 +150,6 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :read, Child.new }
       it { is_expected.not_to authorize :update, Child.new }
       it { is_expected.not_to authorize :export_pdf, Child.new }
-      it { is_expected.not_to authorize :export_cpims, Child.new }
       it { is_expected.not_to authorize :export_photowall, Child.new }
     end
 
@@ -164,21 +162,6 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :index, Child }
       it { is_expected.not_to authorize :read, Child.new }
       it { is_expected.not_to authorize :update, Child.new }
-      it { is_expected.not_to authorize :export_cpims, Child.new }
-      it { is_expected.not_to authorize :export_csv, Child.new }
-      it { is_expected.not_to authorize :export_photowall, Child.new }
-    end
-
-    describe 'export children to cpims' do
-      let(:permissions) { [Permission::CHILDREN[:export_cpims]] }
-
-      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Enquiry }
-
-      it { is_expected.to authorize :export_cpims, Child }
-      it { is_expected.not_to authorize :index, Child }
-      it { is_expected.not_to authorize :read, Child.new }
-      it { is_expected.not_to authorize :update, Child.new }
-      it { is_expected.not_to authorize :export_pdf, Child.new }
       it { is_expected.not_to authorize :export_csv, Child.new }
       it { is_expected.not_to authorize :export_photowall, Child.new }
     end

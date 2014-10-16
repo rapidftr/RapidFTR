@@ -3,7 +3,7 @@ Feature: So that hard copy printout of missing child photos are available
   I want to be able to export selected children to a PDF or a CSV file
 
   Background:
-    Given I am logged in as a user with "View And Search Child,Export to Photowall,Export to CSV,Export to PDF,Export to CPIMS,Edit Child" permissions
+    Given I am logged in as a user with "View And Search Child,Export to Photowall,Export to CSV,Export to PDF,Edit Child" permissions
     And the following children exist in the system:
       | name      | unique_id  | created_by |
       | Will      | will_uid   | user1      |
@@ -23,7 +23,6 @@ Feature: So that hard copy printout of missing child photos are available
     |Export Selected to Photo Wall|
     |Export Selected to PDF       |
     |Export Selected to CSV       |
-    |Export Selected to CPIMS     |
 
   Scenario: When there are no search results, there is no csv export link
     When I search using a name of "Z"
@@ -43,7 +42,6 @@ Feature: So that hard copy printout of missing child photos are available
     |Export Selected to Photo Wall|
     |Export Selected to PDF       |
     |Export Selected to CSV       |
-    |Export Selected to CPIMS     |
 
   @javascript @search
   Scenario Outline: In search results, when no records are selected and the export button is clicked, the user is shown an error message
@@ -60,7 +58,6 @@ Feature: So that hard copy printout of missing child photos are available
     |Export Selected to Photo Wall|
     |Export Selected to PDF       |
     |Export Selected to CSV       |
-    |Export Selected to CPIMS     |
 
   @javascript
   Scenario Outline: Exporting full PDF from the child page
@@ -74,7 +71,6 @@ Feature: So that hard copy printout of missing child photos are available
     |Export All to Photo Wall|
     |Export All to PDF       |
     |Export All to CSV       |
-    |Export All to CPIMS     |
 
   @javascript
   Scenario Outline: User can export details of a single child to file
@@ -88,7 +84,6 @@ Feature: So that hard copy printout of missing child photos are available
     |Export to Photo Wall|
     |Export to PDF       |
     |Export to CSV       |
-    |Export to CPIMS     |
 
   @javascript
   Scenario: Exporting PDF when there is no photo
@@ -140,4 +135,3 @@ Feature: So that hard copy printout of missing child photos are available
     |Export Selected to Photo Wall|
     |Export Selected to PDF       |
     |Export Selected to CSV       |
-    |Export Selected to CPIMS     |

@@ -1,6 +1,7 @@
 require 'csv'
 require 'prawn/measurement_extensions'
 require 'prawn/layout'
+require 'RMagick'
 
 class ExportGenerator
   CHILD_IDENTIFIERS = %w(unique_identifier short_id)
@@ -104,10 +105,10 @@ class ExportGenerator
 
   def add_child_photo(child, with_full_id = false)
     if child.primary_photo
-      render_image(child.primary_photo.data)
+      render_image(child.primary_photo)
     else
       @attachment = FileAttachment.new('no_photo', "image/#{NO_PHOTO_FORMAT}", NO_PHOTO_CLIP)
-      render_image(@attachment.data)
+      render_image(@attachment)
     end
     @pdf.move_down 25
     @pdf.text child.short_id, :size => 40, :align => :center, :style => :bold if with_full_id
@@ -115,9 +116,11 @@ class ExportGenerator
     @pdf.y -= 3.mm
   end
 
-  def render_image(data)
+  def render_image(file)
+    image = Magick::Image.from_blob(file.data.read).first
+    image.format = 'PNG'
     @pdf.image(
-        data,
+        StringIO.new(image.to_blob),
         :position => :center,
         :vposition => :top,
         :fit => @image_bounds
@@ -130,7 +133,7 @@ class ExportGenerator
     @fields ||= metadata_fields([], CHILD_IDENTIFIERS + CHILD_METADATA)
     field_pair = @fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
     render_pdf(field_pair)
-    @form_sections ||= FormSection.enabled_by_order
+    @form_sections ||= FormSection.enabled_by_order_for_form Child::FORM_NAME
     @form_sections.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.

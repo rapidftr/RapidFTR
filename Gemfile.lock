@@ -215,6 +215,7 @@ GEM
     rest-client (1.6.8)
       mime-types (~> 1.16)
       rdoc (>= 2.4.2)
+    rmagick (2.13.3)
     rsolr (1.0.10)
       builder (>= 2.1.2)
     rspec (3.0.0)
@@ -350,6 +351,7 @@ DEPENDENCIES
   rake (~> 10.3)
   rapidftr_addon!
   rapidftr_addon_cpims!
+  rmagick (~> 2.13)
   rspec (~> 3.0)
   rspec-activemodel-mocks (~> 1.0.1)
   rspec-rails (~> 3.0)
