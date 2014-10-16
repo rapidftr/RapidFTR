@@ -243,14 +243,14 @@ describe ChildrenController, :type => :controller do
       end
     end
 
-    describe 'export all to PDF/CSV/CPIMS/Photo Wall' do
+    describe 'export all to PDF/CSV/Photo Wall' do
       before do
         fake_field_admin_login
         @params ||= {}
         controller.stub :paginated_collection => [], :render => true
       end
       it 'should flash notice when exporting no records' do
-        format = 'cpims'
+        format = 'csv'
         @params.merge!(:format => format)
         get :index, @params
         expect(flash[:notice]).to eq('No Records Available!')
@@ -627,16 +627,6 @@ describe ChildrenController, :type => :controller do
       expect(controller).to receive(:export_filename).with([@child1, @child2], Addons::CsvExportTask).and_return('test_filename')
       expect(controller).to receive(:encrypt_exported_files).with('data', 'test_filename').and_return(true)
       get :index, :format => :csv
-    end
-
-    it 'should create a log_entry when record is exported' do
-      fake_login User.new(:user_name => 'fakeuser', :organisation => 'STC', :role_ids => ['abcd'])
-      allow(@controller).to receive(:authorize!)
-      expect_any_instance_of(RapidftrAddonCpims::ExportTask).to receive(:export).with([@child1, @child2]).and_return('data')
-
-      expect(LogEntry).to receive(:create!).with :type => LogEntry::TYPE[:cpims], :user_name => 'fakeuser', :organisation => 'STC', :child_ids => [@child1.id, @child2.id]
-
-      get :index, :format => :cpims
     end
 
     it 'should generate filename based on child ID and addon ID when there is only one child' do

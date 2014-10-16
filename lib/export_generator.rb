@@ -116,17 +116,15 @@ class ExportGenerator
   end
 
   def render_image(data)
-    begin
     @pdf.image(
         data,
         :position => :center,
         :vposition => :top,
         :fit => @image_bounds
     )
-    rescue
-      @attachment = FileAttachment.new('no_photo', "image/#{NO_PHOTO_FORMAT}", NO_PHOTO_CLIP)
-      render_image(@attachment.data)
-    end
+  rescue
+    @attachment = FileAttachment.new('no_photo', "image/#{NO_PHOTO_FORMAT}", NO_PHOTO_CLIP)
+    render_image(@attachment.data)
   end
 
   def add_child_details(child)
@@ -135,7 +133,7 @@ class ExportGenerator
     @fields ||= metadata_fields([], CHILD_IDENTIFIERS + CHILD_METADATA)
     field_pair = @fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
     render_pdf(field_pair)
-    @form_sections ||= FormSection.enabled_by_order
+    @form_sections ||= FormSection.enabled_by_order_for_form Child::FORM_NAME
     @form_sections.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
