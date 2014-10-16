@@ -116,12 +116,17 @@ class ExportGenerator
   end
 
   def render_image(data)
+    begin
     @pdf.image(
         data,
         :position => :center,
         :vposition => :top,
         :fit => @image_bounds
     )
+    rescue
+      @attachment = FileAttachment.new('no_photo', "image/#{NO_PHOTO_FORMAT}", NO_PHOTO_CLIP)
+      render_image(@attachment.data)
+    end
   end
 
   def add_child_details(child)

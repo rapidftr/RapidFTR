@@ -22,7 +22,7 @@ class ChildrenController < ApplicationController
     @order = params[:order_by] || ChildrenHelper::ORDER_BY[@filter] || 'created_at'
     @sort_order = (params[:sort_order].nil? || params[:sort_order].empty?) ? :asc : params[:sort_order]
     per_page = params[:per_page] || ChildrenHelper::View::PER_PAGE
-    per_page = per_page.to_i unless per_page == 'all'
+    per_page = per_page == 'all' ? Child.count : per_page.to_i
     page = params[:page] || 1
 
     search = Search.for(Child).
