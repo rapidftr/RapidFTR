@@ -1,8 +1,14 @@
 module Match
   class StateTransition
+    
     @update_match_history = lambda do |match, old_status, new_status|
       match.enquiry.add_match_history(old_status, new_status) if match.enquiry
       match.child.add_match_history(old_status, new_status) if match.child
+    end
+
+    @mark_enquiry_as_not_reunited = lambda do |match, old_status, new_status|
+      match.enquiry.reunited = false
+      match.enquiry.save
     end
 
     LEAVING_STATUS = {
@@ -17,7 +23,11 @@ module Match
       PotentialMatch::REUNITED => [@update_match_history]
     }
 
-    TRANSITIONS = {}
+    TRANSITIONS = {
+      PotentialMatch::REUNITED => {
+        PotentialMatch::REUNITED_ELSEWHERE => [@mark_enquiry_as_not_reunited]
+      }
+    }
 
     def self.for(old_status, new_status)
       transitions = []

@@ -15,11 +15,13 @@ class PotentialMatchesController < ApplicationController
       confirmed = params[:confirmed] == 'true' || params[:confirmed] == true
       if confirmed
         @potential_match.mark_as_confirmed
+        @potential_match.save!
       else
-        @potential_match.mark_as_potential_match
+        change_potential_match_state @potential_match
+        @potential_match.save!
+        
+        @potential_match.enquiry.update_attributes :reunited => false
       end
-
-      @potential_match.save!
     end
     redirect_to url_for :controller => @model_controller, :action => :show, :id => @model_id, :anchor => 'tab_potential_matches'
   end
@@ -40,5 +42,13 @@ class PotentialMatchesController < ApplicationController
 
   def authorize_update
     authorize! :update, Enquiry
+  end
+
+  def update_potential_match_state potential_match
+    if potential_match.reunited? 
+      potential_match.mark_as_reunited_else_where
+    else
+      potential_match.mark_as_potential_match
+    end
   end
 end
