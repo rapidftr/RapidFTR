@@ -1,16 +1,15 @@
 module Match
   class StateTransition
-    
     @update_match_history = lambda do |match, old_status, new_status|
       match.enquiry.add_match_history(old_status, new_status) if match.enquiry
       match.child.add_match_history(old_status, new_status) if match.child
     end
 
-    @mark_enquiry_as_not_reunited = lambda do |match, old_status, new_status|
+    @mark_enquiry_as_not_reunited = lambda do |match, _old_status, _new_status|
       match.enquiry.update_attributes :reunited => false
     end
 
-    @update_enquiry_matches = lambda do |match, old_status, new_status|
+    @update_enquiry_matches = lambda do |match, _old_status, _new_status|
       matches = PotentialMatch.by_enquiry_id_and_status.key([match.enquiry_id, PotentialMatch::REUNITED_ELSEWHERE])
       matches.each { |m| m.update_attributes :status => PotentialMatch::POTENTIAL }
     end
@@ -32,7 +31,7 @@ module Match
         PotentialMatch::REUNITED_ELSEWHERE => [@mark_enquiry_as_not_reunited]
       },
       PotentialMatch::REUNITED => {
-        PotentialMatch::POTENTIAL => [@update_enquiry_matches, 
+        PotentialMatch::POTENTIAL => [@update_enquiry_matches,
                                       @mark_enquiry_as_not_reunited]
       }
     }

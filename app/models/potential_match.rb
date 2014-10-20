@@ -126,6 +126,7 @@ class PotentialMatch < CouchRest::Model::Base
 
   def load_transitions
     @old_status = changed_attributes && changed_attributes[:status]
+    @old_status = changed_attributes && changed_attributes['status'] if @old_status.nil?
     @transitions = Match::StateTransition.for(@old_status, status)
   end
 
