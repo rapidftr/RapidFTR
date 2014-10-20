@@ -7,8 +7,12 @@ module Match
     end
 
     @mark_enquiry_as_not_reunited = lambda do |match, old_status, new_status|
-      match.enquiry.reunited = false
-      match.enquiry.save
+      match.enquiry.update_attributes :reunited => false
+    end
+
+    @update_enquiry_matches = lambda do |match, old_status, new_status|
+      matches = PotentialMatch.by_enquiry_id_and_status.key([match.enquiry_id, PotentialMatch::REUNITED_ELSEWHERE])
+      matches.each { |m| m.update_attributes :status => PotentialMatch::POTENTIAL }
     end
 
     LEAVING_STATUS = {
@@ -26,6 +30,10 @@ module Match
     TRANSITIONS = {
       PotentialMatch::REUNITED => {
         PotentialMatch::REUNITED_ELSEWHERE => [@mark_enquiry_as_not_reunited]
+      },
+      PotentialMatch::REUNITED => {
+        PotentialMatch::POTENTIAL => [@update_enquiry_matches, 
+                                      @mark_enquiry_as_not_reunited]
       }
     }
 
