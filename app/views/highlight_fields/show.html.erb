@@ -56,10 +56,9 @@
     $("#add-field").append($("#form-template").tmpl(selectedElement));
     $("#add-form").submit();
   }
+  $(".remove_field").live("click", function(){ $(this).parents('form:first').submit(); });
+  $(".update").live("click", function(){ $(this).parents('form:first').submit(); });
   $(document).ready(function() {
-    $(".remove_field").live("click", function(){ $("#remove-form").submit(); });
-    $(".update").live("click", function(){ $("#remove-form").submit(); });
-
     function toggleTitleField(){
       var fieldName = $(this).siblings(".highlighted-field").val(),
           formId = $(this).siblings(".highlighted-form").val(),
