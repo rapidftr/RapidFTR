@@ -15,11 +15,11 @@ class PotentialMatchesController < ApplicationController
       confirmed = params[:confirmed] == 'true' || params[:confirmed] == true
       if confirmed
         @potential_match.mark_as_confirmed
+        @potential_match.save!
       else
         @potential_match.mark_as_potential_match
+        @potential_match.save!
       end
-
-      @potential_match.save!
     end
     redirect_to url_for :controller => @model_controller, :action => :show, :id => @model_id, :anchor => 'tab_potential_matches'
   end

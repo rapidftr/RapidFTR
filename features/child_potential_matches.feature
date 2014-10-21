@@ -38,7 +38,7 @@ Feature:
       | enquirer_name_ct | child_name_ct | location_ct | _id      |
       | bob              | bob chulu     | kampala     |  1a0ced  |
       | john             | john doe      | gulu        |  20e3fe  |
-      | jane             | jane doe      | adjumani    |  3d5elk  |
+      | jane             | john does     | adjumani    |  3d5elk  |
 
 
   @javascript
@@ -48,7 +48,7 @@ Feature:
     And I follow "20e3fe"
     And I follow "Matches"
     And I confirm child match with unique_id "zubairlon233"
-    And I should see "Confirmed Matches"
+    Then I should see "Confirmed Matches"
     And I follow "rlon233"
     And I click the "Mark as Reunited" link
     And I fill in "child_reunited_message" with "Testing"
@@ -56,7 +56,7 @@ Feature:
     And I follow "Matches"
     Then I should see "Reunited Matches"
     And I should see "20e3fe"
-    And I should not see "Confirm as Match"
+    And I should see "Undo Confirmation"
 
   @javascript
   Scenario: Reunited Child should not show confirmation links for reunited enquiries under matches
@@ -73,5 +73,5 @@ Feature:
     And I follow "Matches"
     Then I should see "Reunited Matches"
     And I should see "20e3fe"
-    And I should not see "Confirm as Match"
-    And I should not see "Undo Confirmation"
+    And I should see "Confirm as Match"
+    And I should see "Undo Confirmation"

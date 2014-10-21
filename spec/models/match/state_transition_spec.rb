@@ -49,6 +49,35 @@ describe PotentialMatch, :type => :model do
       let(:old_status) { PotentialMatch::REUNITED }
       let(:new_status) { 'anything' }
       it_behaves_like 'a status transition that triggers changelogs'
+
+      context 'to POTENTIAL' do
+        let!(:enquiry) { create :enquiry }
+        let!(:child) { create :child }
+        let(:match) { PotentialMatch.create :child => child, :enquiry => enquiry }
+
+        before :each do
+          child.update_attributes :reunited => true
+          enquiry.reload
+          enquiry.update_attributes :reunited => true
+          match.update_attributes :status => PotentialMatch::REUNITED
+        end
+
+        it 'should update the enquiry as not reunited' do
+          PotentialMatch.first.update_attributes :status => PotentialMatch::POTENTIAL
+          enquiry.reload
+          expect(enquiry).to_not be_reunited
+        end
+
+        it 'should transition other enquiry matches back to potential' do
+          child2 = create :child
+          match2 = PotentialMatch.create :child => child2,
+                                         :enquiry => enquiry,
+                                         :status => PotentialMatch::REUNITED_ELSEWHERE
+          match.update_attributes :status => PotentialMatch::POTENTIAL
+          match2.reload
+          expect(match2.status).to eq(PotentialMatch::POTENTIAL)
+        end
+      end
     end
 
     context 'to CONFIRMED' do

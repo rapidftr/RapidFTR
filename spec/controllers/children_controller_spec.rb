@@ -27,6 +27,9 @@ describe ChildrenController, :type => :controller do
 
   it 'GET reindex' do
     expect(Child).to receive(:reindex!).and_return(nil)
+    expect(Enquiry).to receive(:reindex!).and_return(nil)
+    expect(Enquiry).to receive(:update_all_child_matches)
+    expect(Enquiry).to receive(:delay).and_return(Enquiry)
     get :reindex
     expect(response).to be_success
   end

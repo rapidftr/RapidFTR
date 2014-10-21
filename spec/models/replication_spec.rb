@@ -298,6 +298,9 @@ describe Replication, :type => :model do
 
     it 'should trigger local reindexing' do
       expect(Child).to receive(:reindex!).ordered.and_return(nil)
+      expect(Enquiry).to receive(:reindex!).and_return(nil)
+      expect(Enquiry).to receive(:update_all_child_matches).and_return(nil)
+      expect(Enquiry).to receive(:delay).and_return(Enquiry)
       expect(@rep).to receive(:needs_reindexing=).with(false).ordered.and_return(nil)
       expect(@rep).to receive(:save_without_callbacks).ordered.and_return(nil)
       @rep.send :trigger_local_reindex

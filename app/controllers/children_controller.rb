@@ -8,6 +8,8 @@ class ChildrenController < ApplicationController
 
   def reindex
     Child.reindex!
+    Enquiry.reindex!
+    Enquiry.delay.update_all_child_matches
     render :nothing => true
   end
 
