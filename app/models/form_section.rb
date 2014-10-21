@@ -92,19 +92,9 @@ class FormSection < CouchRest::Model::Base
       all.select { |fs| !fs.form.nil? && fs.form.name == form_name }
     end
 
-    def all_child_field_names
-      all_child_fields.map { |field| field['name'] }
-    end
-
     def all_visible_child_fields_for_form(form_name)
       enabled_by_order_for_form(form_name).map do |form_section|
         form_section.fields.select(&:visible?)
-      end.flatten
-    end
-
-    def all_child_fields
-      all.map do |form_section|
-        form_section.fields
       end.flatten
     end
 
