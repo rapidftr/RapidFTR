@@ -242,4 +242,28 @@ describe ChildrenHelper, :type => :helper do
       end
     end
   end
+
+  describe 'child_title' do
+    before :each do
+      reset_couchdb!
+    end
+
+    it 'should return short id and title field' do
+      form = create :form, :name => Child::FORM_NAME
+      field = build :field, :name => 'title_field', :title_field => true, :highlighted => true
+      create :form_section, :form => form, :fields => [field]
+      child = create :child, :title_field => 'Child Title'
+      title = child_title child
+      expect(title).to eq("Child Title (#{child.short_id})")
+    end
+
+    it 'should return only short id if no title field' do
+      form = create :form, :name => Child::FORM_NAME
+      field = build :field, :name => 'title_field', :highlighted => true
+      create :form_section, :form => form, :fields => [field]
+      child = create :child, :title_field => 'Child Title'
+      title = child_title child
+      expect(title).to eq("(#{child.short_id})")
+    end
+  end
 end

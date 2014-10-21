@@ -42,6 +42,14 @@ class FormSection < CouchRest::Model::Base
     Enquiry.delay.update_all_child_matches
   end
 
+  def without_update_hooks
+    FormSection.skip_callback(:update, :after, :update_indices)
+    FormSection.skip_callback(:save, :after, :update_child_matches)
+    yield if block_given?
+    FormSection.set_callback(:update, :after, :update_indices)
+    FormSection.set_callback(:save, :after, :update_child_matches)
+  end
+
   def valid_presence_of_base_language_name
     if base_language.nil?
       self.base_language = 'en'

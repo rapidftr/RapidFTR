@@ -15,7 +15,7 @@
   </div>
   <div class="summary_panel">
 
-    <h2><%= link_to enquiry.id, enquiry_path(enquiry) %></h2>
+    <h2><%= link_to enquiry_title(enquiry), enquiry_path(enquiry) %></h2>
     <div class="clearfix"></div>
       <%= content_tag(:div, nil, :class => 'flag reunited') if enquiry.reunited? %>
 

@@ -17,8 +17,8 @@
             <%= form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
               <div id="remove-field">
                 <a href="javascript:void(0)" class="remove_field"><%= t("fields.remove") %></a>
-                <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.display_name %>"/>
-                <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.name %>"/>
+                <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.name %>"/>
+                <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.unique_id %>"/>
               </div>
             <% end %>
           </td>
@@ -26,8 +26,8 @@
             <div id="update-title-field">
               <input type="hidden" id="toggle_title_url" value="<%= update_title_field_path %>">
               <%= check_box :update_title_field, false, :class => :toggle_title_field %>
-              <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.display_name %>"/>
-              <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.name %>"/>
+              <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.name %>"/>
+              <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.unique_id %>"/>
             </div>
           </td>
         </tr>
