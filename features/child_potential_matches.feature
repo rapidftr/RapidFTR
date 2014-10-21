@@ -38,7 +38,7 @@ Feature:
       | enquirer_name_ct | child_name_ct | location_ct | _id      |
       | bob              | bob chulu     | kampala     |  1a0ced  |
       | john             | john doe      | gulu        |  20e3fe  |
-      | jane             | jane doe      | adjumani    |  3d5elk  |
+      | jane             | john does     | adjumani    |  3d5elk  |
 
 
   @javascript
