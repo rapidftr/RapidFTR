@@ -169,6 +169,8 @@ class Replication < CouchRest::Model::Base
 
   def trigger_local_reindex
     Child.reindex!
+    Enquiry.reindex!
+    Enquiry.delay.update_all_child_matches
     self.needs_reindexing = false
     save_without_callbacks
   end
