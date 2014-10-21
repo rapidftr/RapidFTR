@@ -158,6 +158,8 @@ RapidFTR::Application.routes.draw do
     end
   end
 
+  post :update_title_field, :to => 'highlight_fields#update_title_field'
+
   #######################
   # ADVANCED SEARCH URLS
   #######################

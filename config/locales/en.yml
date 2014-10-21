@@ -501,6 +501,7 @@ en:
     add: "Add Field"
     type: "Field type"
     move_to: "Move to"
+    title_field: "Title Field"
 
   replication:
     label: Replication
