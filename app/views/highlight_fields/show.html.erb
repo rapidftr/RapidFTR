@@ -1,78 +1,83 @@
-  <h1><%= "#{@form.name} > #{t('admin.highlight_fields')}" %></h1>
-  <table class="highlight-fields list_table">
-    <thead>
+<h1><%= "#{@form.name} > #{t('admin.highlight_fields')}" %></h1>
+<table class="highlight-fields list_table">
+  <thead>
+    <tr>
+      <th><%= t("fields.field_name") %></th>
+      <th><%= t("fields.form_name") %></th>
+      <th><%= t("fields.action") %></th>
+      <th><%= t("fields.title_field") %></th>
+    </tr>
+  </thead>
+  <tbody id="highlighted-fields">
+    <% @highlighted_fields.each do |field| %>
       <tr>
-        <th><%= t("fields.field_name") %></th>
-        <th><%= t("fields.form_name") %></th>
-        <th><%= t("fields.action") %></th>
-        <th><%= t("fields.title_field") %></th>
-      </tr>
-    </thead>
-    <tbody id="highlighted-fields">
-      <% @highlighted_fields.each do |field| %>
-        <tr>
-          <td><%= field.display_name %></td>
-          <td><%= field.form.name%></td>
-          <td>
-            <%= form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
-              <div id="remove-field">
-                <a href="javascript:void(0)" class="remove_field"><%= t("fields.remove") %></a>
-                <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.name %>"/>
-                <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.unique_id %>"/>
-              </div>
-            <% end %>
-          </td>
-          <td>
-            <div id="update-title-field">
-              <input type="hidden" id="toggle_title_url" value="<%= update_title_field_path %>">
-              <%= check_box :update_title_field, false, :class => :toggle_title_field %>
+        <td><%= field.display_name %></td>
+        <td><%= field.form.name%></td>
+        <td>
+          <%= form_tag remove_highlight_fields_path, :method => :post, :id => "remove-form" do %>
+            <div id="remove-field">
+              <a href="javascript:void(0)" class="remove_field"><%= t("fields.remove") %></a>
               <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.name %>"/>
               <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.unique_id %>"/>
             </div>
-          </td>
-        </tr>
-      <% end %>
-        <tr class="add-field-section">
-          <td><a href="javascript:void(0)" class="add_field"><%= t("add") %></a></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
-
-      <%= form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
-        <div id="add-field">
-      </div>
+          <% end %>
+        </td>
+        <td>
+          <div id="update-title-field">
+            <input type="hidden" id="toggle_title_url" value="<%= update_title_field_path %>">
+            <%= check_box :update_title_field, false, :class => :toggle_title_field %>
+            <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.name %>"/>
+            <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.unique_id %>"/>
+          </div>
+        </td>
+      </tr>
     <% end %>
+    <tr class="add-field-section">
+      <td><a href="javascript:void(0)" class="add_field"><%= t("add") %></a></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
-    <script>
-      $(document).ready(function() {
-        var updateWithSelectedItem = function(selectedElement) {
-          $("#add-field").append($("#form-template").tmpl(selectedElement));
-          $("#add-form").submit();
-        }
-        $(".remove_field").live("click", function(){ $("#remove-form").submit(); });
-        $(".update").live("click", function(){ $("#remove-form").submit(); });
+<%= form_tag highlight_fields_path, :method => :post, :id => "add-form" do %>
+  <div id="add-field">
+  </div>
+<% end %>
 
-        function toggleTitleField(){
-          var fieldName = $(this).siblings(".highlighted-field").val(),
-              formId = $(this).siblings(".highlighted-form").val(),
-              newValue = $(this).val(),
-              checkbox = $(this);
-          $.post($("#toggle_title_url").val(), { value: newValue, form_id: formId, field_name: fieldName })
-              .success(function(data) {
-                $('.toggle_title_field').prop('checked', false);
-                checkbox.prop('checked', newValue);
-              })
-              .error(function(jqXHR) {
-                checkbox.prop('checked', !newValue);
-              });
-        }
-        $('.toggle_title_field').click(toggleTitleField);
-      });
-    </script>
+<script id="form-template" type="text/x-jquery-tmpl">
+  <input type="hidden" name="field_name" class="highlighted-field-name" value="${field_name}"/>
+  <input type="hidden" name="form_id" class="highlighted-field-order" value="${form_id}"/>
+</script>
 
-    <%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" ,
-                                                              :on_item_select => "updateWithSelectedItem",
-                                                              :prev_selected_field_selector => ".highlighted-field"} %>
+<script>
+  var updateWithSelectedItem = function(selectedElement) {
+    $("#add-field").append($("#form-template").tmpl(selectedElement));
+    $("#add-form").submit();
+  }
+  $(document).ready(function() {
+    $(".remove_field").live("click", function(){ $("#remove-form").submit(); });
+    $(".update").live("click", function(){ $("#remove-form").submit(); });
+
+    function toggleTitleField(){
+      var fieldName = $(this).siblings(".highlighted-field").val(),
+          formId = $(this).siblings(".highlighted-form").val(),
+          newValue = $(this).val(),
+          checkbox = $(this);
+      $.post($("#toggle_title_url").val(), { value: newValue, form_id: formId, field_name: fieldName })
+          .success(function(data) {
+            $('.toggle_title_field').prop('checked', false);
+            checkbox.prop('checked', newValue);
+          })
+          .error(function(jqXHR) {
+            checkbox.prop('checked', !newValue);
+          });
+    }
+    $('.toggle_title_field').click(toggleTitleField);
+  });
+</script>
+
+<%= render :partial => "shared/form_fields", :locals => { :menu_selector => ".add_field" ,
+                                                          :on_item_select => "updateWithSelectedItem",
+                                                          :prev_selected_field_selector => ".highlighted-field"} %>
