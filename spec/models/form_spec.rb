@@ -31,4 +31,33 @@ describe Form, :type => :model do
       )
     end
   end
+
+  describe 'update_title_field' do
+    before :each do
+      @title_field = build :field, :name => 'title_field', :title_field => true, :highlighted => true
+      @f1 = build :field, :name => 'f1', :highlighted => true
+      @f2 = build :field, :name => 'f2', :highlighted => true
+      section1 = FormSection.new(:name => 'Section1', :fields => [@title_field])
+      section2 = FormSection.new(:name => 'Section2', :fields => [@f1, @f2])
+      @form = build :form
+      @form.sections = [section1, section2]
+    end
+
+    it 'should return currently marked title fields' do
+      expect(@form.title_field).to eq(@title_field)
+    end
+
+    it 'should unmark all other title fields during an update' do
+      @form.update_title_field 'f1', true
+      fields = @form.sections.map(&:fields).flatten.reject! { |f| f.name == 'f1' }
+      expect(fields.map(&:title_field)).to_not include(true)
+    end
+
+    it 'should remove title field if current title field is deselected' do
+      @form.update_title_field 'title_field', false
+      expect(@form.title_field).to be_nil
+      fields = @form.sections.map(&:fields).flatten
+      expect(fields.map(&:title_field)).to_not include(true)
+    end
+  end
 end

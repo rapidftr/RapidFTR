@@ -25,6 +25,9 @@ class HighlightFieldsController < ApplicationController
   end
 
   def update_title_field
+    form = FormSection.get_by_unique_id(params[:form_id]).form
+    new_value = params[:value] == '1'
+    form.update_title_field params[:field_name], new_value
     render :json => {}
   end
 end

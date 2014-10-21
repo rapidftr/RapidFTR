@@ -40,15 +40,14 @@ describe HighlightFieldsController, :type => :controller do
       create(:form_section, :form => children_form, :fields => [build(:field, :highlighted => true)])
       enquiry_form = create(:form, :name => Enquiry::FORM_NAME)
       field = build(:field, :highlighted => true)
-      enquiry_section = create(:form_section, :form => enquiry_form, :fields => [field])
+      create(:form_section, :form => enquiry_form, :fields => [field])
       fake_admin_login
 
       get(:show, :id => enquiry_form.id)
 
       highlighted_fields = assigns[:highlighted_fields]
       expect(highlighted_fields.size).to be(1)
-      expect(highlighted_fields.first).to include(:field_name => field.name)
-      expect(highlighted_fields.first).to include(:form_name => enquiry_section.name)
+      expect(highlighted_fields.first).to eq(field)
     end
 
     it 'should return empty array when no highlighted fields exist' do
@@ -72,9 +71,7 @@ describe HighlightFieldsController, :type => :controller do
       fake_admin_login
       get(:show, :id => 0)
       expect(assigns[:highlighted_fields].size).to eq(3)
-      expect(assigns[:highlighted_fields]).to eq([{:field_name => 'field1', :display_name => 'field1_display', :order => '1', :form_name => 'Section1', :form_id => 'section1'},
-                                                  {:field_name => 'field2', :display_name => 'field2_display', :order => '2', :form_name => 'Section2', :form_id => 'section2'},
-                                                  {:field_name => 'field3', :display_name => 'field3_display', :order => '3', :form_name => 'Section3', :form_id => 'section3'}])
+      expect(assigns[:highlighted_fields]).to eq([field1, field2, field3])
     end
 
   end
@@ -118,6 +115,19 @@ describe HighlightFieldsController, :type => :controller do
       post(:remove, :form_id => 'unique_form_section1', :field_name => 'newfield1')
 
       expect(response).to redirect_to(highlight_field_url(form))
+    end
+  end
+
+  describe 'update_title_field' do
+    it 'should mark a field as the title field'  do
+      field1 = Field.new(:name => 'newfield1', :display_name => 'new_field1_display', :highlight_information => {:order => '1', :highlighted => true})
+      form = double('Form', :id => :id)
+      expect(form).to receive(:update_title_field).with('newfield1', true)
+      form_section = FormSection.new(:name => 'another form section', :unique_id => 'unique_form_section1', :fields => [field1], :form => form)
+      allow(FormSection).to receive(:get_by_unique_id).and_return(form_section)
+      fake_admin_login
+      post(:update_title_field, :form_id => 'unique_form_section1', :field_name => 'newfield1', :value => '1')
+      expect(response.body).to eq('{}')
     end
   end
 end

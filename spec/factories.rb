@@ -161,6 +161,7 @@ FactoryGirl.define do
     editable true
     visible true
     matchable true
+    title_field false
 
     initialize_with { new(attributes) }
 

@@ -19,6 +19,19 @@ class Form < CouchRest::Model::Base
     Form.by_name.key(name).first
   end
 
+  def update_title_field(field_name, value)
+    sections.each do |s|
+      s.fields.each { |f| f.title_field = false }
+      field_to_update =  s.get_field_by_name(field_name)
+      field_to_update.title_field = value unless field_to_update.nil?
+      s.save
+    end
+  end
+
+  def title_field
+    highlighted_fields.select { |f| f.title_field? } .first
+  end
+
   def sections
     @sections ||= FormSection.all.all.select { |fs| fs.form == self }
   end
