@@ -17,26 +17,26 @@ Feature:
       | unique_identifier | reunited | enquirer_name_ct | _id         |
       | reunited          | true     | reunited         | reunited    |
       | confirmed         | false    | confirmed        | confirmed   |
-      | has_mathces       | false    | has_matches      | has_matches |
+      | has_matches       | false    | has_matches      | has_matches |
     Given I am logged in as a user with "View Enquiries" permission
     And I am on the "enquiries listing page"
 
   Scenario: Checking filter by All returns all the enquiries in the system
     When I select "All" from "filter"
-    Then I should see "reunited"
-    And I should see "confirmed"
-    And I should see "has_matches"
+    Then I should see "eunited"
+    And I should see "nfirmed"
+    And I should see "matches"
 
   Scenario: Checking filter by Reunited returns all reunited enquiries
     When I select "Reunited" from "filter"
-    Then I should see "reunited"
+    Then I should see "eunited"
 
   Scenario: Checking filter by Has Matches shows the Order by options
     Given there is a potential match for enquiry 'has_matches'
     When I select "Has Matches" from "filter"
-    Then I should see "has_matches"
+    Then I should see "matches"
 
   Scenario: Checking filter by Has Confirmed Match shows the Order by options
     Given there is a confirmed potential match for enquiry 'has_matches'
     When I select "Has Confirmed Match" from "filter"
-    Then I should see "confirmed"
+    Then I should see "nfirmed"

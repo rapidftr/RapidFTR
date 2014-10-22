@@ -42,6 +42,16 @@ class FormSection < CouchRest::Model::Base
     Enquiry.delay.update_all_child_matches
   end
 
+  def without_update_hooks
+    FormSection.skip_callback(:update, :after, :update_indices)
+    FormSection.skip_callback(:create, :after, :update_indices)
+    FormSection.skip_callback(:save, :after, :update_child_matches)
+    yield if block_given?
+    FormSection.set_callback(:update, :after, :update_indices)
+    FormSection.set_callback(:create, :after, :update_indices)
+    FormSection.set_callback(:save, :after, :update_child_matches)
+  end
+
   def valid_presence_of_base_language_name
     if base_language.nil?
       self.base_language = 'en'
@@ -84,19 +94,9 @@ class FormSection < CouchRest::Model::Base
       all.select { |fs| !fs.form.nil? && fs.form.name == form_name }
     end
 
-    def all_child_field_names
-      all_child_fields.map { |field| field['name'] }
-    end
-
     def all_visible_child_fields_for_form(form_name)
       enabled_by_order_for_form(form_name).map do |form_section|
         form_section.fields.select(&:visible?)
-      end.flatten
-    end
-
-    def all_child_fields
-      all.map do |form_section|
-        form_section.fields
       end.flatten
     end
 
@@ -172,6 +172,7 @@ class FormSection < CouchRest::Model::Base
 
   def remove_field_as_highlighted(field_name)
     field = fields.find { |f| f.name == field_name }
+    field.title_field = false
     field.unhighlight
     save
   end

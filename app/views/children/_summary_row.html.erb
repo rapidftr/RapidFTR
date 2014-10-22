@@ -15,12 +15,12 @@
   </div>
   <div class="summary_panel">
     <% if checkbox %>
-    <p class="checkbox">
-      <%= check_box_tag "selections[#{child_counter}]", child.id if checkbox %>
-    </p>
-       <% end %>
+      <p class="checkbox">
+        <%= check_box_tag "selections[#{child_counter}]", child.id if checkbox %>
+      </p>
+   <% end %>
 
-    <h2><%= link_to child.short_id, child_path(child) %></h2>
+    <h2><%= link_to child_title(child), child_path(child) %></h2>
     <div class="clearfix"></div>
 
     <%= content_tag(:div, nil, :class => 'flag suspect') if child.flag? %>

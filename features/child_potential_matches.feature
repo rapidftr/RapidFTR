@@ -35,10 +35,10 @@ Feature:
       | mahendra | Austin              | james    | james130     | cairo      |
       | pragyan  | Austin              | james    | james148     | cairo      |
     And the following enquiries exist in the system:
-      | enquirer_name_ct | child_name_ct | location_ct | _id      |
-      | bob              | bob chulu     | kampala     |  1a0ced  |
-      | john             | john doe      | gulu        |  20e3fe  |
-      | jane             | john does     | adjumani    |  3d5elk  |
+      | enquirer_name_ct | child_name_ct | location_ct | _id      | unique_identifier |
+      | bob              | bob chulu     | kampala     |  1a0ced  |  1a0ced           |
+      | john             | john doe      | gulu        |  20e3fe  |  20e3fe           |
+      | jane             | john does     | adjumani    |  3d5elk  |  3d5elk           |
 
 
   @javascript
