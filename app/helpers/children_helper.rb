@@ -137,8 +137,11 @@ module ChildrenHelper
   end
 
   def child_title(child)
-    title_field = Form.find_by_name(Child::FORM_NAME).title_field
-    child_title = title_field.nil? ? '' : child.send(title_field.name)
-    "#{child_title} (#{child.short_id})".strip
+    "#{child_title_fields(child)} (#{child.short_id})".strip
+  end
+
+  def child_title_fields(child)
+    title_fields = Form.find_by_name(Child::FORM_NAME).title_fields
+    title_fields.map { |f| child.send(f.name) } .join(' ')
   end
 end

@@ -21,15 +21,14 @@ class Form < CouchRest::Model::Base
 
   def update_title_field(field_name, value)
     sections.each do |s|
-      s.fields.each { |f| f.title_field = false }
       field_to_update =  s.get_field_by_name(field_name)
       field_to_update.title_field = value unless field_to_update.nil?
       s.without_update_hooks { s.save(:validate => false) }
     end
   end
 
-  def title_field
-    highlighted_fields.select { |f| f.title_field? } .first
+  def title_fields
+    highlighted_fields.select { |f| f.title_field? }
   end
 
   def sections

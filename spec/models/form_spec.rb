@@ -43,21 +43,22 @@ describe Form, :type => :model do
       @form.sections = [@section1, @section2]
     end
 
-    it 'should return currently marked title fields' do
-      expect(@form.title_field).to eq(@title_field)
+    it 'should return currently marked title fielids' do
+      expect(@form.title_fields.length).to eq(1)
+      expect(@form.title_fields.first).to eq(@title_field)
     end
 
-    it 'should unmark all other title fields during an update' do
+    it 'should not unmark all other title fields during an update' do
       @form.update_title_field 'f1', true
-      fields = @form.sections.map(&:fields).flatten.reject! { |f| f.name == 'f1' }
-      expect(fields.map(&:title_field)).to_not include(true)
+      title_fields = @form.title_fields
+      expect(title_fields.length).to eq(2)
+      expect(title_fields[0].name).to eq('title_field')
+      expect(title_fields[1].name).to eq('f1')
     end
 
     it 'should remove title field if current title field is deselected' do
       @form.update_title_field 'title_field', false
-      expect(@form.title_field).to be_nil
-      fields = @form.sections.map(&:fields).flatten
-      expect(fields.map(&:title_field)).to_not include(true)
+      expect(@form.title_fields).to be_empty
     end
 
     it 'should save sections without callbacks' do

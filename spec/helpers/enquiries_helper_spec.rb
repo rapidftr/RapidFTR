@@ -15,6 +15,16 @@ describe EnquiriesHelper, :type => :helper do
       expect(title).to eq("Enquiry Title (#{enquiry.short_id})")
     end
 
+    it 'should return short id and multiple title fields' do
+      form = create :form, :name => Enquiry::FORM_NAME
+      field1 = build :field, :name => 'title_field1', :title_field => true, :highlighted => true
+      field2 = build :field, :name => 'title_field2', :title_field => true, :highlighted => true
+      create :form_section, :form => form, :fields => [field1, field2]
+      enquiry = create :enquiry, :title_field1 => 'Title1', :title_field2 => 'Title2'
+      title = enquiry_title enquiry
+      expect(title).to eq("Title1 Title2 (#{enquiry.short_id})")
+    end
+
     it 'should return only short id if no title field' do
       form = create :form, :name => Enquiry::FORM_NAME
       field = build :field, :name => 'title_field', :highlighted => true
