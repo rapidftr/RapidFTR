@@ -402,6 +402,16 @@ describe FormSection, :type => :model do
       expect(existing_highlighted_field).not_to be_highlighted
     end
 
+    it 'should mark a field as not a title field' do
+      existing_highlighted_field = Field.new :name => 'highlighted_field', :title_field => true
+      existing_highlighted_field.highlight_with_order 1
+      form = FormSection.new(:name => 'Some Form', :unique_id => 'form_id',
+                             :fields => [existing_highlighted_field])
+      allow(FormSection).to receive(:all).and_return([form])
+      form.remove_field_as_highlighted existing_highlighted_field.name
+      expect(existing_highlighted_field).not_to be_title_field
+    end
+
     describe 'formatted hash' do
       it 'should combine the translations into a hash' do
         fs = FormSection.new(:name_en => 'english name', :name_fr => 'french name', :unique_id => 'unique id',

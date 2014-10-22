@@ -172,6 +172,7 @@ class FormSection < CouchRest::Model::Base
 
   def remove_field_as_highlighted(field_name)
     field = fields.find { |f| f.name == field_name }
+    field.title_field = false
     field.unhighlight
     save
   end
