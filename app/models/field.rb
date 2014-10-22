@@ -16,6 +16,7 @@ class Field
   property :name
   property :visible, TrueClass, :default => true
   property :matchable, TrueClass, :default => false
+  property :title_field, TrueClass, :default => false
   property :type
   property :highlight_information, HighlightInformation
   property :editable, TrueClass, :default => true

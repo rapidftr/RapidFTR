@@ -135,4 +135,15 @@ module ChildrenHelper
     message = content_tag(:div, t('enquiry.matched_elsewhere_link'), :class => 'matched_message')
     content_tag(:li, " |  #{message}".html_safe)
   end
+
+  def child_title(child)
+    title = child_title_fields(child)
+    return child.short_id if title.empty?
+    "#{title} (#{child.short_id})".strip
+  end
+
+  def child_title_fields(child)
+    title_fields = Form.find_by_name(Child::FORM_NAME).title_fields
+    title_fields.map { |f| child.send(f.name) } .compact.join(' ')
+  end
 end

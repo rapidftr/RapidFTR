@@ -242,4 +242,53 @@ describe ChildrenHelper, :type => :helper do
       end
     end
   end
+
+  describe 'child_title' do
+    before :each do
+      reset_couchdb!
+    end
+
+    it 'should return short id and title field' do
+      form = create :form, :name => Child::FORM_NAME
+      field = build :field, :name => 'title_field', :title_field => true, :highlighted => true
+      create :form_section, :form => form, :fields => [field]
+      child = create :child, :title_field => 'Child Title'
+      title = child_title child
+      expect(title).to eq("Child Title (#{child.short_id})")
+    end
+
+    it 'should return short id and multiple title fields' do
+      form = create :form, :name => Child::FORM_NAME
+      field1 = build :field, :name => 'title_field1', :title_field => true, :highlighted => true
+      field2 = build :field, :name => 'title_field2', :title_field => true, :highlighted => true
+      create :form_section, :form => form, :fields => [field1, field2]
+      child = create :child, :title_field1 => 'ChildTitle1', :title_field2 => 'ChildTitle2'
+      title = child_title child
+      expect(title).to eq("ChildTitle1 ChildTitle2 (#{child.short_id})")
+    end
+
+    it 'should return only short id if no title field' do
+      form = create :form, :name => Child::FORM_NAME
+      field1 = build :field, :name => 'title_field1', :title_field => true, :highlighted => true
+      field2 = build :field, :name => 'title_field2', :title_field => true, :highlighted => true
+      create :form_section, :form => form, :fields => [field1, field2]
+      child = create :child, :title_field1 => nil, :title_field2 => nil
+      title = child_title child
+      expect(title).to eq(child.short_id)
+    end
+
+    it 'should not have unecessary spaces' do
+      form = create :form, :name => Child::FORM_NAME
+      field1 = build :field, :name => 'title_field1', :title_field => true, :highlighted => true
+      field2 = build :field, :name => 'title_field2', :title_field => true, :highlighted => true
+      field3 = build :field, :name => 'title_field3', :title_field => true, :highlighted => true
+      create :form_section, :form => form, :fields => [field1, field2, field3]
+      child = create :child,
+                     :title_field1 => 'ChildTitle1',
+                     :title_field2 => nil,
+                     :title_field3 => 'ChildTitle3'
+      title = child_title child
+      expect(title).to eq("ChildTitle1 ChildTitle3 (#{child.short_id})")
+    end
+  end
 end

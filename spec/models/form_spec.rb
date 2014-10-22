@@ -31,4 +31,40 @@ describe Form, :type => :model do
       )
     end
   end
+
+  describe 'update_title_field' do
+    before :each do
+      @title_field = build :field, :name => 'title_field', :title_field => true, :highlighted => true
+      @f1 = build :field, :name => 'f1', :highlighted => true
+      @f2 = build :field, :name => 'f2', :highlighted => true
+      @section1 = FormSection.new(:name => 'Section1', :fields => [@title_field])
+      @section2 = FormSection.new(:name => 'Section2', :fields => [@f1, @f2])
+      @form = build :form
+      @form.sections = [@section1, @section2]
+    end
+
+    it 'should return currently marked title fielids' do
+      expect(@form.title_fields.length).to eq(1)
+      expect(@form.title_fields.first).to eq(@title_field)
+    end
+
+    it 'should not unmark all other title fields during an update' do
+      @form.update_title_field 'f1', true
+      title_fields = @form.title_fields
+      expect(title_fields.length).to eq(2)
+      expect(title_fields[0].name).to eq('title_field')
+      expect(title_fields[1].name).to eq('f1')
+    end
+
+    it 'should remove title field if current title field is deselected' do
+      @form.update_title_field 'title_field', false
+      expect(@form.title_fields).to be_empty
+    end
+
+    it 'should save sections without callbacks' do
+      expect(@section1).to receive(:without_update_hooks)
+      expect(@section2).to receive(:without_update_hooks)
+      @form.update_title_field 'title_field', false
+    end
+  end
 end
