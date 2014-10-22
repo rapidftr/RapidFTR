@@ -126,7 +126,8 @@ describe HighlightFieldsController, :type => :controller do
       form_section = FormSection.new(:name => 'another form section', :unique_id => 'unique_form_section1', :fields => [field1], :form => form)
       allow(FormSection).to receive(:get_by_unique_id).and_return(form_section)
       fake_admin_login
-      post(:update_title_field, :form_id => 'unique_form_section1', :field_name => 'newfield1', :value => '1')
+      post(:update_title_field, :form_id => 'unique_form_section1', :field_name => 'newfield1', :value => 'true')
+      expect(response).to be_ok
       expect(response.body).to eq('{}')
     end
   end

@@ -13,7 +13,7 @@ describe 'enquiries/index.html.erb', :type => :view do
     @highlighted_fields = [
       Field.new(:name => 'enquirer_name', :display_name => 'Enquiry Criteria', :visible => true),
       Field.new(:name => 'child_name', :display_name => 'child_name', :visible => true)]
-    allow(Form).to receive(:find_by_name).and_return(double('Form', :sorted_highlighted_fields => @highlighted_fields))
+    allow(Form).to receive(:find_by_name).and_return(double('Form', :sorted_highlighted_fields => @highlighted_fields, :title_fields => []))
   end
 
   it 'display all enquiries' do
