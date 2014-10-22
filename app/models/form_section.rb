@@ -44,9 +44,11 @@ class FormSection < CouchRest::Model::Base
 
   def without_update_hooks
     FormSection.skip_callback(:update, :after, :update_indices)
+    FormSection.skip_callback(:create, :after, :update_indices)
     FormSection.skip_callback(:save, :after, :update_child_matches)
     yield if block_given?
     FormSection.set_callback(:update, :after, :update_indices)
+    FormSection.set_callback(:create, :after, :update_indices)
     FormSection.set_callback(:save, :after, :update_child_matches)
   end
 

@@ -37,10 +37,10 @@ describe Form, :type => :model do
       @title_field = build :field, :name => 'title_field', :title_field => true, :highlighted => true
       @f1 = build :field, :name => 'f1', :highlighted => true
       @f2 = build :field, :name => 'f2', :highlighted => true
-      section1 = FormSection.new(:name => 'Section1', :fields => [@title_field])
-      section2 = FormSection.new(:name => 'Section2', :fields => [@f1, @f2])
+      @section1 = FormSection.new(:name => 'Section1', :fields => [@title_field])
+      @section2 = FormSection.new(:name => 'Section2', :fields => [@f1, @f2])
       @form = build :form
-      @form.sections = [section1, section2]
+      @form.sections = [@section1, @section2]
     end
 
     it 'should return currently marked title fields' do
@@ -58,6 +58,12 @@ describe Form, :type => :model do
       expect(@form.title_field).to be_nil
       fields = @form.sections.map(&:fields).flatten
       expect(fields.map(&:title_field)).to_not include(true)
+    end
+
+    it 'should save sections without callbacks' do
+      expect(@section1).to receive(:without_update_hooks)
+      expect(@section2).to receive(:without_update_hooks)
+      @form.update_title_field 'title_field', false
     end
   end
 end

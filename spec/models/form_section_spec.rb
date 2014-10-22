@@ -504,4 +504,19 @@ describe FormSection, :type => :model do
       expect(visible_field_names).to_not include(visible_field_1.display_name)
     end
   end
+
+  describe '#without_update_hooks' do
+    it 'should not call update_indices' do
+      form_section = build :form_section
+      expect(Child).to_not receive(:update_solr_indices)
+      expect(Enquiry).to_not receive(:update_solr_indices)
+      form_section.without_update_hooks { form_section.save }
+    end
+
+    it 'should not call update_child_matches' do
+      form_section = build :form_section
+      expect(Enquiry).to_not receive(:delay)
+      form_section.without_update_hooks { form_section.save }
+    end
+  end
 end

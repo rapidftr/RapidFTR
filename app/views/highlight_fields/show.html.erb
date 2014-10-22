@@ -25,7 +25,7 @@
         <td>
           <div id="update-title-field">
             <input type="hidden" id="toggle_title_url" value="<%= update_title_field_path %>">
-            <%= check_box :update_title_field, false, :class => :toggle_title_field %>
+            <%= check_box_tag :update_title_field, field.title_field?.to_s, field.title_field?, :class => :toggle_title_field %>
             <input type="hidden" name="field_name" class="highlighted-field" value="<%= field.name %>"/>
             <input type="hidden" name="form_id" class="highlighted-form" value="<%= field.form.unique_id %>"/>
           </div>
@@ -62,7 +62,7 @@
     function toggleTitleField(){
       var fieldName = $(this).siblings(".highlighted-field").val(),
           formId = $(this).siblings(".highlighted-form").val(),
-          newValue = $(this).val(),
+          newValue = $(this).is(':checked'),
           checkbox = $(this);
       $.post($("#toggle_title_url").val(), { value: newValue, form_id: formId, field_name: fieldName })
           .success(function(data) {

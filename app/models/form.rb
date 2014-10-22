@@ -24,7 +24,7 @@ class Form < CouchRest::Model::Base
       s.fields.each { |f| f.title_field = false }
       field_to_update =  s.get_field_by_name(field_name)
       field_to_update.title_field = value unless field_to_update.nil?
-      s.without_update_hooks { s.save }
+      s.without_update_hooks { s.save(:validate => false) }
     end
   end
 
