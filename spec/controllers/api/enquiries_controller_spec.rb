@@ -261,7 +261,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not duplicate or replace histories from params' do
-      Timecop.freeze Time.local(2014, 9, 26, 10, 10, 10) do
+      Timecop.freeze Time.parse('2014-09-26 10:10:10 UTC') do
         enquiry_params = {:enquirer_name => 'John Doe',
                           :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]}
         enquiry = create :enquiry
