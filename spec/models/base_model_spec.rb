@@ -509,7 +509,7 @@ describe BaseModel, :type => :model do
 
     it 'should update history with the datetime' do
       base_model = BaseModel.create('photo' => uploadable_photo, 'last_known_location' => 'London', 'created_by' => 'me', 'created_organisation' => 'stc')
-      time = Time.local(2010, 1, 14, 14, 5, 0)
+      time = Time.parse('2010-01-14 14:05:00 UTC')
       Timecop.freeze(time) do
         base_model['last_known_location'] = 'Philadelphia'
         base_model.save!
