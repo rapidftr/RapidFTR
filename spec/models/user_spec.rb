@@ -245,4 +245,32 @@ describe User, :type => :model do
       expect(ids).not_to include user2.id, user3.id, user4.id
     end
   end
+
+  describe 'force password change' do
+    it 'should default to false' do
+      expect(create(:user).force_password_change?).to be(false)
+    end
+
+    it 'should change to false after changed password' do
+      user = create :user, :user_name => 'hello', :verified => true, :force_password_change => true
+      expect(user.force_password_change?).to be(true)
+
+      user.reload
+
+      user.password = 'new_password'
+      user.password_confirmation = 'new_password'
+      user.save
+      expect(user.force_password_change?).to be(false)
+    end
+
+    it 'should not change to false if saved with same password' do
+      user = create :user, :verified => true, :force_password_change => true, :password => 'thepass'
+      user.reload
+
+      user.password = 'thepass'
+      user.password_confirmation = 'thepass'
+      user.save
+      expect(user.force_password_change?).to be(true)
+    end
+  end
 end

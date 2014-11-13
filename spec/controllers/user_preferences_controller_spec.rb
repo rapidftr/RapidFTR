@@ -11,7 +11,7 @@ describe UserPreferencesController, :type => :controller do
   end
 
   it 'should save the given local in user' do
-    mock_user = double('user', :user_name => 'UserName', :locale => 'en')
+    mock_user = double('user', :user_name => 'UserName', :locale => 'en', :force_password_change? => false)
     user_params = {'locale' => 'fr'}
     expect(User).to receive(:find_by_user_name).at_least(:once).and_return(mock_user)
     expect(mock_user).to receive(:update_attributes).with(user_params)
@@ -20,7 +20,7 @@ describe UserPreferencesController, :type => :controller do
   end
 
   it 'should flash a update message when the system language is changed' do
-    mock_user = double('user', :user_name => 'UserName', :locale => 'en')
+    mock_user = double('user', :user_name => 'UserName', :locale => 'en', :force_password_change? => false)
     user_params = {'locale' => 'zh'}
     expect(User).to receive(:find_by_user_name).at_least(:once).and_return(mock_user)
     expect(mock_user).to receive(:update_attributes).with(user_params).and_return(true)

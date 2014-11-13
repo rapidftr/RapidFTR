@@ -23,6 +23,7 @@ class User < CouchRest::Model::Base
   property :locale
 
   property :share_contact_info, TrueClass, :default => false
+  property :force_password_change, TrueClass, :default => false
 
   attr_accessor :password_confirmation, :password
   ADMIN_ASSIGNABLE_ATTRIBUTES = [:role_ids]
@@ -211,7 +212,11 @@ class User < CouchRest::Model::Base
   def encrypt_password
     return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Clock.now}--#{user_name}--") if new_record?
-    self.crypted_password = self.class.encrypt(password, salt)
+    new_crypted_password = self.class.encrypt(password, salt)
+    if !new_record? && new_crypted_password != crypted_password
+      self.force_password_change = false
+    end
+    self.crypted_password = new_crypted_password
   end
 
   def self.encrypt(password, salt)

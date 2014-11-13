@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_action :extend_session_lifetime
   before_action :set_locale
   around_action :set_current_user
+  before_action :force_password_change
 
   rescue_from(Exception, ActiveSupport::JSON.parse_error) do |e|
     fail e if Rails.env.development?
@@ -62,6 +63,12 @@ class ApplicationController < ActionController::Base
     response = yield if block_given?
     User.current_user = nil
     response
+  end
+
+  def force_password_change
+    if current_user && current_user.force_password_change?
+      redirect_to change_password_users_url
+    end
   end
 
   def clean_params(param)
