@@ -37,33 +37,33 @@
     <div class="clearfix"></div>
     <fieldset>
     <p>
-      <%= f.label :full_name, t("user.full_name"), :class=>'key' %>
-      <%= f.text_field :full_name, :autocomplete => "off"%>*
+      <%= raw f.label :full_name, t("user.full_name"), :class=>'key' %>
+      <%= raw f.text_field :full_name, :autocomplete => "off" %>*
     </p>
 
     <p>
-      <%= f.label  :user_name, t("login.username"), :class=>'key'  %>
-      <%= f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
+      <%= raw f.label :user_name, t("login.username"), :class=>'key' %>
+      <%= raw f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
       <span class="footnote"><%= t("user.no_blank") %></span>
     </p>
 
     <p>
-      <%= f.label :password, t('login.password.label'), :class=>'key'  %>
+      <%= f.label :password, t('login.password.label'), :class=>'key' %>
       <%= f.password_field :password, :autocomplete => "off" %>*
     </p>
 
     <p>
-      <%= f.label :password_confirmation,t("login.password.re_enter"), :class=>'key'  %>
-      <%= f.password_field :password_confirmation, :autocomplete => "off" %>*
+      <%= raw f.label :password_confirmation,t("login.password.re_enter"), :class=>'key' %>
+      <%= raw f.password_field :password_confirmation, :autocomplete => "off" %>*
     </p>
 
     <% if !trying_to_edit_ourself %>
       <p>
         <label class="key"><%= t("roles.label") %></label>
-      <% @roles.each do |role| %>
-        <%= f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, "" %>
+        <% @roles.each do |role| %>
+          <%= raw f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, '' %>
           <%= f.label role.name %>
-      <% end %>
+        <% end %>
       </p>
     <% end %>
 
@@ -77,8 +77,8 @@
     </p>
 
     <p>
-      <%= f.label :organisation, t("organisation"), :class=>'key'  %>
-      <%= f.text_field :organisation %>*
+      <%= raw f.label :organisation, t("organisation"), :class=>'key'  %>
+      <%= raw f.text_field :organisation %>*
     </p>
 
     <p>
