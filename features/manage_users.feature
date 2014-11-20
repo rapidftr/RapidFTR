@@ -124,9 +124,23 @@ Feature: As an admin, I should be able to Create Users, Edit and Manage existing
   @roles
   Scenario: Check that an admin creates a user record and is able to edit it
 
-  # Create a user
+  # Create a user with empty fields
     And I am on manage users page
     And I follow "Create User"
+    When I fill in the following:
+      | Full Name         | <Full Name>           |
+      | User Name         | <User Name>           |
+      | Password          | <Password>            |
+      | Re-enter password | <Re-enter password>   |
+      | Phone             | <Phone>               |
+      | Email             | <Email>               |
+      | Organisation      | <Organisation>        |
+      | Position          | <Position>            |
+      | Location          | <Location>            |
+    And I press "Create"
+
+  # Create a user with proper fields
+    And I am on new user page
     When I fill in the following:
       | Full Name         | George Harrison     |
       | User Name         | george              |
@@ -137,7 +151,7 @@ Feature: As an admin, I should be able to Create Users, Edit and Manage existing
       | Organisation      | UNICEF              |
       | Position          | Rescuer             |
       | Location          | Amazon              |
-    And I check "Field worker"
+    And I check "Field Worker"
     And I press "Create"
 
   # View user

@@ -24,9 +24,9 @@
 </script>
 
 <% if flash[:verify] %>
-<div class='flash'>
-  <p class='notice'><%= flash[:verify] %></p>
-</div>
+    <div class='flash'>
+      <p class='notice'><%= flash[:verify] %></p>
+    </div>
 <% end %>
 <%= form_for editable_user, :html => {:class => ''} do |f| %>
     <%= f.error_messages :header_tag => :h3 %>
@@ -36,79 +36,79 @@
     <div class="mandate_panel"><span>*</span> <%= t("mandatory_field") %> </div>
     <div class="clearfix"></div>
     <fieldset>
-    <p>
-      <%= f.label :full_name, t("user.full_name"), :class=>'key' %>
-      <%= f.text_field :full_name, :autocomplete => "off"%>*
-    </p>
-
-    <p>
-      <%= f.label  :user_name, t("login.username"), :class=>'key'  %>
-      <%= f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
-      <span class="footnote"><%= t("user.no_blank") %></span>
-    </p>
-
-    <p>
-      <%= f.label :password, t('login.password.label'), :class=>'key'  %>
-      <%= f.password_field :password, :autocomplete => "off" %>*
-    </p>
-
-    <p>
-      <%= f.label :password_confirmation,t("login.password.re_enter"), :class=>'key'  %>
-      <%= f.password_field :password_confirmation, :autocomplete => "off" %>*
-    </p>
-
-    <% if !trying_to_edit_ourself %>
       <p>
-        <label class="key"><%= t("roles.label") %></label>
-      <% @roles.each do |role| %>
-        <%= f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, "" %>
-          <%= f.label role.name %>
-      <% end %>
+        <%= raw f.label :full_name, t("user.full_name"), :class => 'key' %>
+        <%= raw f.text_field :full_name, :autocomplete => "off" %>*
       </p>
-    <% end %>
 
-    <p>
-      <%= f.label :phone, t("phone"), :class=>'key'  %>
-      <%= f.text_field :phone %>
-    </p>
-    <p>
-      <%= f.label :email, t("email"), :class=>'key'  %>
-      <%= f.text_field :email %>
-    </p>
+      <p>
+        <%= raw f.label :user_name, t("login.username"), :class => 'key' %>
+        <%= raw f.text_field :user_name, :disabled => !editable_user.new_record?, :autocomplete => "off" %>*
+        <span class="footnote"><%= t("user.no_blank") %></span>
+      </p>
 
-    <p>
-      <%= f.label :organisation, t("organisation"), :class=>'key'  %>
-      <%= f.text_field :organisation %>*
-    </p>
+      <p>
+        <%= raw f.label :password, t('login.password.label'), :class => 'key' %>
+        <%= raw f.password_field :password, :autocomplete => "off" %>*
+      </p>
 
-    <p>
-      <%= f.label :position, t("position"), :class=>'key'  %>
-      <%= f.text_field :position %>
-    </p>
+      <p>
+        <%= raw f.label :password_confirmation, t("login.password.re_enter"), :class => 'key' %>
+        <%= raw f.password_field :password_confirmation, :autocomplete => "off" %>*
+      </p>
 
-    <p>
-      <%= f.label :location, t("location"), :class=>'key'  %>
-      <%= f.text_field :location %>
-    </p>
+      <% if !trying_to_edit_ourself %>
+          <p>
+            <label class="key"><%= t("roles.label") %></label>
+            <%= f.collection_check_boxes :roles, @roles.all, :id, :name do |b|
+              b.check_box(:id => "user_#{b.text}", :name => "user[role_ids][]") + b.label(:for => "user_#{b.text}")
+            end %>
+          </p>
+      <% end %>
 
-    <% if !trying_to_edit_ourself && can?(:disable, @user) %>
-        <p>
-          <%= f.label :disabled, t("user.disabled"), :class=>'key' %>
-          <%= f.check_box :disabled, {}, "true", "false" %>
-        </p>
-    <% end %>
+      <p>
+        <%= raw f.label :phone, t("phone"), :class => 'key' %>
+        <%= raw f.text_field :phone %>
+      </p>
 
-    <p>
-      <%= f.label :share_contact_info, t("share_contact_info"), :class=>'key'  %>
-      <%= f.check_box :share_contact_info, {}, "true", "false" %>
-    </p>
+      <p>
+        <%= raw f.label :email, t("email"), :class => 'key' %>
+        <%= raw f.text_field :email %>
+      </p>
 
-    <%= f.hidden_field :verified, :value => true %>
+      <p>
+        <%= raw f.label :organisation, t("organisation"), :class => 'key' %>
+        <%= raw f.text_field :organisation %>*
+      </p>
+
+      <p>
+        <%= f.label :position, t("position"), :class => 'key' %>
+        <%= f.text_field :position %>
+      </p>
+
+      <p>
+        <%= f.label :location, t("location"), :class => 'key' %>
+        <%= f.text_field :location %>
+      </p>
+
+      <% if !trying_to_edit_ourself && can?(:disable, @user) %>
+          <p>
+            <%= f.label :disabled, t("user.disabled"), :class => 'key' %>
+            <%= f.check_box :disabled, {}, "true", "false" %>
+          </p>
+      <% end %>
+
+      <p>
+        <%= f.label :share_contact_info, t("share_contact_info"), :class => 'key' %>
+        <%= f.check_box :share_contact_info, {}, "true", "false" %>
+      </p>
+
+      <%= f.hidden_field :verified, :value => true %>
 
     </fieldset>
 
     <div class="btn_panel">
-    <!--TODO: After we got the user object in the session replace the DB query with User object-->
+      <!--TODO: After we got the user object in the session replace the DB query with User object-->
       <%= cancel_button(users_path) %>
       <%= submit_button(editable_user.new_record? ? t("user.create") : (params[:verify] ? t('user.verify') : t('user.update'))) %>
     </div>

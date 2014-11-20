@@ -75,7 +75,7 @@ Feature: Add new role
      | Password          | automation      |
      | Re-enter password | automation      |
      | Organisation      | UNICEF          |
-   And I check "Automation role"
+   And I check "Automation Role"
    And I press "Create"
    And I logout
    Then I am logged in as user automation with password as automation
@@ -112,7 +112,7 @@ Feature: Add new role
       | Re-enter password | automation |
       | Organisation      | UNICEF       |
 
-    And I check "Auto admin"
+    And I check "Auto Admin"
     And I press "Create"
     And I logout
     Then I am logged in as user automation with password as automation
