@@ -48,8 +48,8 @@
       </p>
 
       <p>
-        <%= f.label :password, t('login.password.label'), :class => 'key' %>
-        <%= f.password_field :password, :autocomplete => "off" %>*
+        <%= raw f.label :password, t('login.password.label'), :class => 'key' %>
+        <%= raw f.password_field :password, :autocomplete => "off" %>*
       </p>
 
       <p>
@@ -60,21 +60,20 @@
       <% if !trying_to_edit_ourself %>
           <p>
             <label class="key"><%= t("roles.label") %></label>
-            <% @roles.each do |role| %>
-                <%= f.check_box :role_ids, {:id => "user_#{role.name}", :name => "user[role_ids][]"}, role.id, '' %>
-                <%= f.label role.name %>
-            <% end %>
+            <%= f.collection_check_boxes :roles, @roles.all, :id, :name do |b|
+              b.check_box(:id => "user_#{b.text}", :name => "user[role_ids][]") + b.label(:for => "user_#{b.text}")
+            end %>
           </p>
       <% end %>
 
       <p>
-        <%= f.label :phone, t("phone"), :class => 'key' %>
-        <%= f.text_field :phone %>
+        <%= raw f.label :phone, t("phone"), :class => 'key' %>
+        <%= raw f.text_field :phone %>
       </p>
 
       <p>
-        <%= f.label :email, t("email"), :class => 'key' %>
-        <%= f.text_field :email %>
+        <%= raw f.label :email, t("email"), :class => 'key' %>
+        <%= raw f.text_field :email %>
       </p>
 
       <p>

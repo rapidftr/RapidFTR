@@ -19,7 +19,6 @@ When /^I enter the following user details$/ do |user_table|
       check(roles)
     end
     fill_in('user_phone', :with => user_row['user_phone'])
-    fill_in('user_email', :with => user_row['user_email'])
     fill_in('user_organisation', :with => user_row['user_organisation'])
     fill_in('user_position', :with => user_row['user_position'])
     fill_in('user_location', :with => user_row['user_location'])
@@ -36,7 +35,6 @@ And /^I should see the user with the following info$/ do |user_table|
     expect(page).to have_content(user_row['user_user_name'])
     expect(page).to have_content(user_row['user_roles'])
     expect(page).to have_content(user_row['user_phone'])
-    expect(page).to have_content(user_row['user_email'])
     expect(page).to have_content(user_row['user_organisation'])
     expect(page).to have_content(user_row['user_position'])
     expect(page).to have_content(user_row['user_location'])
