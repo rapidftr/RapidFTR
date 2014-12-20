@@ -55,7 +55,7 @@ group :development, :test, :cucumber do
   gem 'cucumber',           '~> 1.3.11'
   gem 'cucumber-rails',     '~> 1.4.0', :require => false
   gem 'selenium-webdriver', '~> 2.42.0'
-  gem 'hpricot',            '~> 0.8.6'
+  gem 'nokogiri',           '~> 1.6.3'
   gem 'json_spec',          '~> 1.1.2'
   gem 'pdf-inspector',      '~> 1.1.0'
   gem 'coveralls', :require => false
