@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'hpricot'
 require 'support/hpricot_search'
 include HpricotSearch
 
@@ -19,7 +18,7 @@ end
 def should_have_enable_or_disable_checkbox(form_section, visible)
   row = @searchable_response.form_section_row_for form_section.unique_id
   cell = row.search('td').find { |td| td.inner_html.to_s.include? 'sections_' + form_section.unique_id }
-  expect(cell.search('input').to_s.include? "checked=\"checked\"").to eq(visible)
+  expect(cell.search('input').to_s.include? 'checked').to eq(visible)
   expect(cell).not_to be_nil
 end
 
@@ -38,7 +37,7 @@ describe 'form_section/index.html.erb', :type => :view do
     assign(:form_id, 'foo')
     assign(:form_sections, [@form_section_1, @form_section_2, @form_section_3])
     render
-    @searchable_response = Hpricot(rendered)
+    @searchable_response = Nokogiri::HTML(rendered)
   end
 
   it 'renders a table row for each form section' do

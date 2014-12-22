@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'hpricot'
 
 include HpricotSearch
 
@@ -27,7 +26,7 @@ describe 'search/search.html.erb', :type => :view do
 
     it 'should render items for each record in the results' do
       render
-      expect(Hpricot(rendered).profiles_list_items.size).to eq(@results.length)
+      expect(Nokogiri::HTML(rendered).profiles_list_items.size).to eq(@results.length)
     end
 
     it 'should show only the highlighted fields for a child' do
@@ -45,7 +44,7 @@ describe 'search/search.html.erb', :type => :view do
 
       render
 
-      fields = Hpricot(rendered).search('.summary_panel')
+      fields = Nokogiri::HTML(rendered).search('.summary_panel')
       expect(fields.search('.summary_item').size).to eq(@highlighted_fields.size + 2) # including the registered by and last_updated_by keys
 
       expect(fields.search('.key').first.inner_text).to eq('Field Display 2:')
@@ -57,7 +56,7 @@ describe 'search/search.html.erb', :type => :view do
 
       render
 
-      first_content_row = Hpricot(rendered).photos
+      first_content_row = Nokogiri::HTML(rendered).photos
       first_image_tag = first_content_row.at('img')
       fail 'no image tag' if first_image_tag.nil?
 
@@ -68,7 +67,7 @@ describe 'search/search.html.erb', :type => :view do
     it 'should show thumbnails with urls for child details page for each child if asked' do
       render
 
-      first_content_row = Hpricot(rendered).photos
+      first_content_row = Nokogiri::HTML(rendered).photos
       first_href = first_content_row.at('a')
       expect(first_href).not_to be nil
 
@@ -78,7 +77,7 @@ describe 'search/search.html.erb', :type => :view do
     it 'should include checkboxes to select individual records' do
       render
 
-      select_check_boxes = Hpricot(rendered).checkboxes
+      select_check_boxes = Nokogiri::HTML(rendered).checkboxes
       expect(select_check_boxes.length).to eq(@results.length)
       select_check_boxes.each_with_index do |check_box, i|
         expect(check_box['name']).to eq("selections[#{i}]")
@@ -89,14 +88,14 @@ describe 'search/search.html.erb', :type => :view do
     it 'should have a button to export to pdf' do
       render
 
-      export_to_photo_wall = Hpricot(rendered).submit_for('Export Selected to PDF')
+      export_to_photo_wall = Nokogiri::HTML(rendered).submit_for('Export Selected to PDF')
       expect(export_to_photo_wall.size).not_to eq(0)
     end
 
     it 'should have a button to export to photo wall' do
       render
 
-      export_to_photo_wall = Hpricot(rendered).submit_for('Export Selected to Photo Wall')
+      export_to_photo_wall = Nokogiri::HTML(rendered).submit_for('Export Selected to Photo Wall')
       expect(export_to_photo_wall.size).not_to eq(0)
     end
 
