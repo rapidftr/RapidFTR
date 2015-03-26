@@ -87,7 +87,7 @@ class FormSection < CouchRest::Model::Base
     end
 
     def enabled_by_order_for_form(form_name)
-      by_order.select { |fs| fs.visible? && fs.form.name == form_name } || []
+      by_order.select { |fs| !fs.form.nil? && fs.visible? && fs.form.name == form_name } || []
     end
 
     def all_form_sections_for(form_name)
