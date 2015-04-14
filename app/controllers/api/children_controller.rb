@@ -10,7 +10,7 @@ module Api
         children = Child.all
       else
         updated_after = Time.parse(URI.decode(params[:updated_after]))
-        children = Child.all.select do |child|
+        children = Child.by_last_updated_at().all.select do |child|
           child_updated_at = Time.parse(child.last_updated_at)
           child_updated_at > updated_after
         end

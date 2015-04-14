@@ -82,6 +82,7 @@ class Child < BaseModel
     view :by_short_id
     view :by_created_by
     view :by_duplicate_of
+    view :by_last_updated_at
 
     view :by_flag,
          :map => "function(doc) {
