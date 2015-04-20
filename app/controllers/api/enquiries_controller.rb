@@ -47,7 +47,7 @@ module Api
           enquiry.updated_at > updated_after
         end
       end
-      render(:json => enquiries.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} })
+      render(:json => enquiries.reverse.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} })
     end
 
     def show
