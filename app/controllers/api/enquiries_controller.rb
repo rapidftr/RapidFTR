@@ -40,7 +40,7 @@ module Api
     def index
       authorize! :index, Enquiry
       if params[:updated_after].nil?
-        enquiries = Enquiry.all
+        enquiries = Enquiry.all.all
       else
         updated_after = Time.parse(URI.decode(params[:updated_after]))
         enquiries = Enquiry.all.select do |enquiry|

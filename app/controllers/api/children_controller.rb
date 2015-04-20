@@ -7,7 +7,7 @@ module Api
       authorize! :index, Child
 
       if params[:updated_after].nil?
-        children = Child.all
+        children = Child.all.all
       else
         updated_after = Time.parse(URI.decode(params[:updated_after]))
         children = Child.all.select do |child|
