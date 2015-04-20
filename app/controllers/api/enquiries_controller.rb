@@ -40,14 +40,14 @@ module Api
     def index
       authorize! :index, Enquiry
       if params[:updated_after].nil?
-        enquiries = Enquiry.all.all
+        enquiries = Enquiry.all
       else
         updated_after = Time.parse(URI.decode(params[:updated_after]))
         enquiries = Enquiry.all.select do |enquiry|
           enquiry.updated_at > updated_after
         end
       end
-      render(:json => enquiries.reverse.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} })
+      render(:json => enquiries.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} }.reverse ) 
     end
 
     def show

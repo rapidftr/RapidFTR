@@ -283,6 +283,7 @@ describe Api::EnquiriesController, :type => :controller do
       expect(Enquiry).to receive(:all).and_return([enquiry])
 
       get :index
+      # binding.pry
       expect(response.response_code).to eq(200)
       expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json)
     end

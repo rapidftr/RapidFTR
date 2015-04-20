@@ -7,7 +7,7 @@ module Api
       authorize! :index, Child
 
       if params[:updated_after].nil?
-        children = Child.all.all
+        children = Child.all
       else
         updated_after = Time.parse(URI.decode(params[:updated_after]))
         children = Child.all.select do |child|
@@ -15,7 +15,7 @@ module Api
           child_updated_at > updated_after
         end
       end
-      render(:json => children.reverse.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} })
+      render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} }.reverse)
     end
 
     def show
