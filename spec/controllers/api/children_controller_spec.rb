@@ -64,7 +64,7 @@ describe Api::ChildrenController, :type => :controller do
       child_one = {:location => "http://test.host:80/api/children/#{@child1.id}"}
       child_two = {:location => "http://test.host:80/api/children/#{@child2.id}"}
 
-      expect(response.body).to eq([child_two, child_one].to_json)
+      expect(response.body).to eq([child_one, child_two].to_json)
     end
 
     it 'should decode URI encoded strings' do

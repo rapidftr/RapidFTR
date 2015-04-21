@@ -15,7 +15,7 @@ module Api
           child_updated_at > updated_after
         end
       end
-      render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} })
+      render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} }.reverse)
     end
 
     def show

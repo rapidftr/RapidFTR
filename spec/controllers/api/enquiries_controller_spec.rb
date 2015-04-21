@@ -283,6 +283,7 @@ describe Api::EnquiriesController, :type => :controller do
       expect(Enquiry).to receive(:all).and_return([enquiry])
 
       get :index
+      # binding.pry
       expect(response.response_code).to eq(200)
       expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{enquiry.id}"}].to_json)
     end
@@ -314,7 +315,7 @@ describe Api::EnquiriesController, :type => :controller do
         enquiry_one = {:location => "http://test.host:80/api/enquiries/#{@enquiry1.id}"}
         enquiry_two = {:location => "http://test.host:80/api/enquiries/#{@enquiry2.id}"}
 
-        expect(response.body).to match([enquiry_one, enquiry_two].to_json)
+        expect(response.body).to eq([enquiry_one, enquiry_two].to_json)
       end
 
       it 'should decode URI encoded params' do

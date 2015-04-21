@@ -1,1 +1,1 @@
-RapidFTR::FollowUpFormSectionSetup.reset_definitions
+RapidFTR::FollowUpFormSectionSetup.reset_definitions rescue nil

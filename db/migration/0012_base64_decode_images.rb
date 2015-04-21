@@ -4,7 +4,7 @@ require 'base64'
 rows = Child.database.all_docs['rows']
 progressbar = ProgressBar.new rows.count if rows.count > 0
 errors = []
-
+logger = Logger.new(STDOUT)
 rows.each do |row|
   begin
     doc = Child.database.get row['id']
