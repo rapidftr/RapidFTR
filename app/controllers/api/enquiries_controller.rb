@@ -47,7 +47,11 @@ module Api
           enquiry.updated_at > updated_after
         end
       end
-      render(:json => enquiries.map { |enquiry| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"} }.reverse)
+
+      urls = enquiries.sort { |champion, challenger| Time.parse(champion.updated_at) <=> Time.parse(challenger.updated_at) }.map do |enquiry|
+        {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"}
+      end
+      render(:json => urls)
     end
 
     def show
