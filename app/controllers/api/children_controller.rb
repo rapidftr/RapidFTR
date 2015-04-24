@@ -15,7 +15,11 @@ module Api
           child_updated_at > updated_after
         end
       end
-      render(:json => children.map { |child| {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"} }.reverse)
+
+      urls = children.sort { |champion, challenger| Time.parse(champion.last_updated_at) <=> Time.parse(challenger.last_updated_at) }.map do |child|
+        {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{child[:_id]}"}
+      end
+      render(:json => urls)
     end
 
     def show
