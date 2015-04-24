@@ -48,7 +48,7 @@ module Api
         end
       end
 
-      urls = enquiries.sort { |champion, challenger| Time.parse(champion.updated_at) <=> Time.parse(challenger.updated_at) }.map do |enquiry|
+      urls = enquiries.sort { |champion, challenger| champion.updated_at <=> challenger.updated_at }.map do |enquiry|
         {:location => "#{request.scheme}://#{request.host}:#{request.port}#{request.path}/#{enquiry[:_id]}"}
       end
       render(:json => urls)
