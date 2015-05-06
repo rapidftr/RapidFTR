@@ -48,5 +48,17 @@ describe SystemVariable, :type => :model do
       expect(setting.name).to eq('KEY1')
       expect(setting.value).to eq('232')
     end
+
+    it 'should fail to save if type is null' do
+      enable_enquiries_setting = SystemVariable.new :name => 'ENABLE_ENQUIRIES', :value => true, :type => nil
+      enable_enquiries_setting.save
+      expect(enable_enquiries_setting).not_to be_valid
+    end
+
+    it 'should fail to save if type is invalid' do
+      enable_enquiries_setting = SystemVariable.create :name => 'ENABLE_ENQUIRIES', :value => true, :type => 'list'
+      expect(enable_enquiries_setting).to be_invalid
+      expect(enable_enquiries_setting.errors.messages).to eq({:type => ["unknown type"]})
+    end
   end
 end
