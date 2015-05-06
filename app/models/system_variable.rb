@@ -15,5 +15,15 @@ class SystemVariable < CouchRest::Model::Base
   end
 
   SCORE_THRESHOLD = 'SCORE_THRESHOLD'
+  ENABLE_ENQUIRIES = 'ENABLE_ENQUIRIES'
 
+  def to_bool_value
+    unless self.value.nil?
+      if self.type || self.type == 'true' || self.type == '1'
+        return true;
+      end
+    end
+
+    return false
+  end
 end

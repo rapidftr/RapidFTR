@@ -37,6 +37,15 @@ describe Api::SessionsController, :type => :controller do
     expect(response).to be_success
   end
 
+  it 'should specify the enquiry feature in the response header when enquiries is turned on.' do
+    SystemVariable.all.each { |variable| variable.destory }
+    SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => "1")
+
+    post :login, :user_name => @user.user_name, :password => 'test_password', :imei => 'TEST_IMEI'
+    expect(response).to be_success
+    expect(response.headers['X-Accept-Features']).to eq('CHILD_REG,ENQUIRIES')
+  end
+
   describe '#register' do
     it 'should set verified status to false' do
       expect(User).to receive(:find_by_user_name).and_return(nil)
