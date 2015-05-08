@@ -12,6 +12,15 @@ module Api
       @current_session.save!
       session[:rftr_session_id] = @current_session.id
       session[:last_access_time] = Clock.now.rfc2822
+
+      enable_enquiries = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
+
+      if enable_enquiries.nil? || enable_enquiries.to_bool_value
+        response.headers['X-Accept-Features'] = 'CHILD_REG,ENQUIRIES'
+      else
+        response.headers['X-Accept-Features'] = 'CHILD_REG'
+      end
+
       render_session_as_json @current_session
     end
 

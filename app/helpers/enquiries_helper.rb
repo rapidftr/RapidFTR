@@ -20,4 +20,13 @@ module EnquiriesHelper
     title_fields = Form.find_by_name(Enquiry::FORM_NAME).title_fields
     title_fields.map { |f| enquiry.send(f.name) } .compact.join(' ')
   end
+
+  def enquiries_enabled
+    enquiries_enabled_setting = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
+    unless enquiries_enabled_setting.nil? || enquiries_enabled_setting.to_bool_value
+      return false
+    end
+
+    true
+  end
 end

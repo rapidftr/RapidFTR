@@ -1,4 +1,5 @@
 class EnquiriesController < ApplicationController
+  before_action :check_enquiry_feature_status
   before_action :load_enquiry, :only => [:show, :edit, :update]
 
   def index
@@ -80,5 +81,13 @@ class EnquiriesController < ApplicationController
 
   def enquiry_form_sections
     FormSection.enabled_by_order_for_form(Enquiry::FORM_NAME)
+  end
+
+  def check_enquiry_feature_status
+    enquiries_enabled = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
+    unless enquiries_enabled.nil? || enquiries_enabled.to_bool_value
+      render :file => "#{Rails.root}/public/404.html", :layout => false, :status => 404
+      return false
+    end
   end
 end
