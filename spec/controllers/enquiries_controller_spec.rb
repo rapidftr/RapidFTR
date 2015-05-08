@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe EnquiriesController, :type => :controller do
+
+  before :each do
+    SystemVariable.all.each { |variable| variable.destroy }
+  end
+
   describe '#index', :solr => true do
     before :each do
       Sunspot.remove_all!
@@ -113,6 +118,20 @@ describe EnquiriesController, :type => :controller do
         it_should_behave_like 'viewing enquiries as a field worker'
       end
     end
+
+    context 'viewing enquiries when they are turned off' do
+
+      before :each do
+        @session = fake_field_worker_login
+        SystemVariable.create!(:name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00')
+        SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0')
+      end
+
+      it 'should return 404 when enquiries are turned off' do
+        get :index
+        expect(response.status).to eq(404)
+      end
+    end
   end
 
   describe '#new' do
@@ -120,7 +139,8 @@ describe EnquiriesController, :type => :controller do
     before :each do
       reset_couchdb!
       @session = fake_field_worker_login
-      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+      SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00')
+      SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
     end
 
     it 'should render new form' do
@@ -146,7 +166,8 @@ describe EnquiriesController, :type => :controller do
     before :each do
       reset_couchdb!
       @session = fake_field_worker_login
-      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+      SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00')
+      SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
     end
 
     before :each do
@@ -303,7 +324,8 @@ describe EnquiriesController, :type => :controller do
     before :each do
       reset_couchdb!
       @session = fake_field_worker_login
-      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+      SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00')
+      SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
     end
 
     before :each do
@@ -338,7 +360,8 @@ describe EnquiriesController, :type => :controller do
     before :each do
       reset_couchdb!
       @session = fake_field_worker_login
-      allow(SystemVariable).to receive(:find_by_name).and_return(double(:value => '0.00'))
+      SystemVariable.create(:name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00')
+      SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
     end
 
     before :each do

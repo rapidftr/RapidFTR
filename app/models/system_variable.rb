@@ -7,7 +7,7 @@ class SystemVariable < CouchRest::Model::Base
 
   validates :name, :presence => true, :uniqueness => true
   validates :value, :presence => true
-  validates :type, :presence => true, :inclusion => { :in => ['boolean', 'string', 'number'], :message => 'unknown type'}
+  validates :type, :presence => true, :inclusion => {:in => %w(boolean string number), :message => 'unknown type'}
 
   # the type of the
   design do
@@ -18,12 +18,12 @@ class SystemVariable < CouchRest::Model::Base
   ENABLE_ENQUIRIES = 'ENABLE_ENQUIRIES'
 
   def to_bool_value
-    unless self.value.nil?
-      if self.type || self.type == 'true' || self.type == '1'
-        return true;
+    unless value.nil?
+      if value == 'true' || value == '1'
+        return true
       end
     end
 
-    return false
+    false
   end
 end

@@ -39,7 +39,7 @@ describe Api::SessionsController, :type => :controller do
 
   it 'should specify the enquiry feature in the response header when enquiries is turned on.' do
     SystemVariable.all.each { |variable| variable.destory }
-    SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => "1")
+    SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
 
     post :login, :user_name => @user.user_name, :password => 'test_password', :imei => 'TEST_IMEI'
     expect(response).to be_success

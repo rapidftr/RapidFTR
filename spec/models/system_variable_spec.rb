@@ -58,7 +58,7 @@ describe SystemVariable, :type => :model do
     it 'should fail to save if type is invalid' do
       enable_enquiries_setting = SystemVariable.create :name => 'ENABLE_ENQUIRIES', :value => true, :type => 'list'
       expect(enable_enquiries_setting).to be_invalid
-      expect(enable_enquiries_setting.errors.messages).to eq({:type => ["unknown type"]})
+      expect(enable_enquiries_setting.errors.messages).to eq(:type => ['unknown type'])
     end
   end
 end

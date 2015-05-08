@@ -34,18 +34,18 @@ Feature: Sync one/all enquiries on the API
     Then the JSON should be:
     """
     [
-    {
-     "location": "http://example.org:80/api/enquiries/1"
-     },
-     {
-     "location": "http://example.org:80/api/enquiries/2"
-     },
-     {
-     "location": "http://example.org:80/api/enquiries/3"
-     },
-     {
-     "location": "http://example.org:80/api/enquiries/4"
-     }
+      {
+        "location": "http://example.org:80/api/enquiries/1"
+      },
+      {
+        "location": "http://example.org:80/api/enquiries/2"
+      },
+      {
+        "location": "http://example.org:80/api/enquiries/3"
+      },
+      {
+        "location": "http://example.org:80/api/enquiries/4"
+      }
     ]
     """
     When I send a GET request to "/api/enquiries/3"

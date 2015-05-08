@@ -47,5 +47,15 @@ describe EnquiriesHelper, :type => :helper do
       title = enquiry_title enquiry
       expect(title).to eq(enquiry.short_id)
     end
+
+    it 'should return true if the enquiries are enabled' do
+      SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
+      expect(enquiries_enabled).to eq(true)
+    end
+
+    it 'should return false if the enquiries are disabled' do
+      SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0')
+      expect(enquiries_enabled).to eq(false)
+    end
   end
 end
