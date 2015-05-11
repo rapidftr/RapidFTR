@@ -1,10 +1,12 @@
 <div class="side-tab">
   <%= render :partial => "shared/tabs", :object => @form_sections %>
 
-  <ul class="tab-handles">
-    <li>
-      <a href="#tab_potential_matches"><%= t('enquiry.matches') %></a>
-    </li>
-  </ul>
+  <% if enquiries_enabled %>
+    <ul class="tab-handles">
+      <li>
+        <a href="#tab_potential_matches"><%= t('enquiry.matches') %></a>
+      </li>
+    </ul>
+  <% end %>
 
 </div>

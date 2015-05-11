@@ -138,5 +138,22 @@ describe 'children/show.html.erb', :type => :view do
         expect(rendered).to have_link 'Export to CSV', link
       end
     end
+
+    context 'potential matches' do
+
+      it 'should not show matches tab when enquiries are turned off' do
+        enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => 0)
+        render
+        expect(rendered).not_to have_tag("a[href='#tab_potential_matches']")
+        enable_enquiries.destroy
+      end
+
+      it 'should show matches tab when enquries are turned on' do
+        enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => 1)
+        render
+        expect(rendered).to have_tag("a[href='#tab_potential_matches']")
+        enable_enquiries.destroy
+      end
+    end
   end
 end
