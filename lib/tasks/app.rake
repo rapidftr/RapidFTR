@@ -14,21 +14,34 @@ namespace :app do
   namespace :enquiries do
     desc 'Enable the enquiries feature'
     task :enable => :environment do
-      enable_enquiries = SystemVariable.find_by_name('ENABLE_ENQUIRIES')
+      # add the enable enquiries variable
+      enable_enquiries = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
       if enable_enquiries.nil?
-        SystemVariable.create :name => 'ENABLE_ENQUIRIES', :type => 'boolean', :value => true
+        SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => true
       else
         enable_enquiries.value = 1
         enable_enquiries.save!
+      end
+
+      # add the score threshold variable
+      score_threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
+      if score_threshold.nil?
+        SystemVariable.create! :name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00'
       end
     end
 
     desc 'Disable the enquiries feature'
     task :disable => :environment do
-      enable_enquiries = SystemVariable.find_by_name('ENABLE_ENQUIRIES')
+      enable_enquiries = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
       unless enable_enquiries.nil?
         enable_enquiries.value = 0
         enable_enquiries.save!
+      end
+
+      # remove the score threshold variable
+      score_threshold = SystemVariable.find_by_name(SystemVariable::SCORE_THRESHOLD)
+      unless score_threshold.nil?
+        score_threshold.destroy
       end
     end
   end
