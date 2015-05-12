@@ -43,6 +43,12 @@ namespace :app do
       unless score_threshold.nil?
         score_threshold.destroy
       end
+
+      # remove enquiry form
+      form = Form.find_by_name(Enquiry::FORM_NAME)
+      unless form.nil?
+        form.destroy
+      end
     end
   end
 

@@ -2,6 +2,8 @@ class Form < CouchRest::Model::Base
   include RapidFTR::Model
   use_database :form
 
+  before_destroy :remove_form_sections
+
   property :name
 
   attr_accessor :sections
@@ -52,5 +54,14 @@ class Form < CouchRest::Model::Base
 
   def sorted_highlighted_fields
     highlighted_fields.sort { |field1, field2| field1.highlight_information.order.to_i <=> field2.highlight_information.order.to_i }
+  end
+
+  private
+
+  def remove_form_sections
+    form_sections = FormSection.all.all.select { |fs| fs.form == self }
+    unless form_sections.nil?
+      form_sections.each { |fs| fs.destroy }
+    end
   end
 end
