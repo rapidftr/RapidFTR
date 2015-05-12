@@ -85,7 +85,10 @@ $(".profile-tools .investigated a").click( function(){
     <div class="clearfix"></div>
     <%= render :partial => 'shared/sidebar', :locals => { :model => @child  } %>
     <%= render :partial => "shared/show_form_section", :locals => {:model => @child }%>
-    <%= render :partial => "potential_matches", :locals => {:model => @child} %>
+
+    <% if enquiries_enabled %>
+      <%= render :partial => "potential_matches", :locals => {:model => @child} %>
+    <% end %>
   </div>
 
 </div>
