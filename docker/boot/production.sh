@@ -40,6 +40,11 @@ runsv /etc/service/solr &
 sleep 5
 bundle exec rake sunspot:reindex
 
+if [ $ENQUIRIES_FEATURE = "off" ]; then
+  echo "Disabling all enquiries features..."
+  bundle exec rake app:enquiries:disable
+fi
+
 echo "Normal system boot will now start..."
 sv shutdown couchdb
 sv shutdown solr
