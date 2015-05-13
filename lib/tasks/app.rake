@@ -33,7 +33,9 @@ namespace :app do
     desc 'Disable the enquiries feature'
     task :disable => :environment do
       enable_enquiries = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
-      unless enable_enquiries.nil?
+      if enable_enquiries.nil?
+        SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0'
+      else
         enable_enquiries.value = 0
         enable_enquiries.save!
       end
