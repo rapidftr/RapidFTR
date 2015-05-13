@@ -10,22 +10,22 @@ ENTRYPOINT ["/sbin/my_init"]
 CMD ["--"]
 
 # Provision
-ADD ../docker/bootstrap.sh /root/
+ADD docker/bootstrap.sh /root/
 RUN /root/bootstrap.sh
 
 # Service scripts
-ADD ../docker/runit/couchdb/ /etc/service/couchdb/
-ADD ../docker/runit/solr/ /etc/service/solr/
-ADD ../docker/runit/scheduler/ /etc/service/scheduler/
-ADD ../docker/runit/worker/ /etc/service/worker/
+ADD docker/runit/couchdb/ /etc/service/couchdb/
+ADD docker/runit/solr/ /etc/service/solr/
+ADD docker/runit/scheduler/ /etc/service/scheduler/
+ADD docker/runit/worker/ /etc/service/worker/
 
 # Service configurations
-ADD ../docker/config/couchdb.ini /etc/couchdb/local.d/rapidftr.ini
-ADD ../docker/config/nginx-site.conf /etc/nginx/sites-enabled/default
+ADD docker/config/couchdb.ini /etc/couchdb/local.d/rapidftr.ini
+ADD docker/config/nginx-site.conf /etc/nginx/sites-enabled/default
 RUN rm -f /etc/service/nginx/down
 
 # Enable first boot script
-ADD ../docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
+ADD docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
 
 # Volumes and Ports
 EXPOSE 5984
@@ -56,7 +56,7 @@ ADD lib/ /rapidftr/lib/
 ADD app/ /rapidftr/app/
 
 # Bundling the RapidFTR documentation
-ADD ../docker/docbuild.sh /root/
+ADD docker/docbuild.sh /root/
 RUN /root/docbuild.sh
 
 # Bundling the rapidreg apk
