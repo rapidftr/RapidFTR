@@ -1,6 +1,6 @@
 FROM phusion/passenger-ruby21:0.9.11
 
-ENV ENQUIRIES_FEATURE on
+ENV ENQUIRIES_FEATURE off
 ENV HOME /root
 ENV RAILS_ENV production
 WORKDIR /rapidftr
@@ -59,5 +59,5 @@ ADD app/ /rapidftr/app/
 ADD docker/docbuild.sh /root/
 RUN /root/docbuild.sh
 
-# Bundling the rapidftr apk
-ADD https://www.dropbox.com/sh/y9cjomps39deqb6/AAB2ieXvhcohg_4J0BC3j2GXa/Android/RapidFTR-dev.apk?dl=1 /rapidftr/public/RapidFTR.apk
+# Bundling the rapidreg apk
+ADD https://www.dropbox.com/sh/5prsudbaupcriga/AADLQ_MAW2iVspDRORYlUpyga/Android/RapidREG-dev.apk?dl=1 /rapidftr/public/RapidREG.apk
