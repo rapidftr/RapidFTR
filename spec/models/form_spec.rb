@@ -67,4 +67,32 @@ describe Form, :type => :model do
       @form.update_title_field 'title_field', false
     end
   end
+
+  describe 'removing a form' do
+    before :each do
+
+      FormSection.all.all.each { |fs| fs.destroy }
+      Form.all.all.each { |f| f.destroy }
+
+      @title_field = build :field, :name => 'title_field', :title_field => true, :highlighted => true
+      @f1 = build :field, :name => 'f1', :highlighted => true
+      @f2 = build :field, :name => 'f2', :highlighted => true
+
+      @form = build :form
+      @form.save!
+      @section1 = FormSection.create(:name => 'Section1', :fields => [@title_field], :form_id => @form.id)
+      @section2 = FormSection.create(:name => 'Section2', :fields => [@f1, @f2], :form_id => @form.id)
+    end
+
+    it 'should remove form sections for a form when the form is removed removed' do
+      sections = FormSection.all.all.select { |fs| fs.form == @form }
+      expect(sections.count).to eq(2)
+
+      @form.destroy
+      expect(FormSection.all.count).to eq(0)
+
+      sections = FormSection.all.all.select { |fs| fs.form == @form }
+      expect(sections.count).to eq(0)
+    end
+  end
 end
