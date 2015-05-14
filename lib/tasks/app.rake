@@ -28,6 +28,12 @@ namespace :app do
       if score_threshold.nil?
         SystemVariable.create! :name => SystemVariable::SCORE_THRESHOLD, :type => 'number', :value => '0.00'
       end
+
+      # add enquiries form if it doesn't exist
+      form = Form.find_by_name(Enquiry::FORM_NAME)
+      if form.nil?
+        RapidFTR::EnquiriesFormSectionSetup.reset_form
+      end
     end
 
     desc 'Disable the enquiries feature'

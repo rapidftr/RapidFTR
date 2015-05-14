@@ -1,3 +1,4 @@
+# rubocop:disable ClassLength
 class Enquiry < BaseModel
   use_database :enquiry
 
@@ -274,6 +275,11 @@ class Enquiry < BaseModel
         pager.replace(results.map { |r| Enquiry.find(r['key']) })
         pager.total_entries = PotentialMatch.all_valid_enquiry_ids.reduce.group.rows.count
       end
+    end
+
+    def enquiries_enabled
+      enquiries_enabled_setting = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
+      enquiries_enabled_setting.nil? || enquiries_enabled_setting.to_bool_value
     end
   end
 end
