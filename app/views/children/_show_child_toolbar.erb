@@ -22,33 +22,35 @@
       <%= render :partial =>"suspect_flag", :locals => { :child => @child } %>
     </div>
 
-    <div class="btn dropdown_btn btn_reunite dropdown_form">
-      <% unless @child.reunited? %>
-          <%= render :partial => "mark_as",
-                     :locals=> {:child => @child,
-                                :mark_as_label => t("child.actions.reunited"),
-                                :mark_as_message_id => "reunited_message",
-                                :mark_as_message => t("child.actions.reunited_details"),
-                                :mark_as_property => "reunited",
-                                :mark_as_property_value => "true",
-                                :mark_as_submit_label => t("child.actions.reunite"),
-                                :error_message => t("child.messages.reunite_error_message"),
-                                :style => "flag"
-                     } %>
-      <% else %>
-          <%= render :partial => "mark_as",
-                     :locals=> { :child => @child,
-                                 :mark_as_label => t("child.actions.not_reunited"),
-                                 :mark_as_message_id => "reunited_message",
-                                 :mark_as_message => t("child.actions.undo_reunited_details"),
-                                 :mark_as_property => "reunited",
-                                 :mark_as_property_value => "false",
-                                 :mark_as_submit_label => t("child.actions.undo_reunite"),
-                                 :error_message => t("child.messages.undo_reunite_error_message"),
-                                 :style => "flag"
-                     } %>
-      <% end %>
-    </div>
+    <% if enquiries_enabled %>
+      <div class="btn dropdown_btn btn_reunite dropdown_form">
+        <% unless @child.reunited? %>
+            <%= render :partial => "mark_as",
+                       :locals=> {:child => @child,
+                                  :mark_as_label => t("child.actions.reunited"),
+                                  :mark_as_message_id => "reunited_message",
+                                  :mark_as_message => t("child.actions.reunited_details"),
+                                  :mark_as_property => "reunited",
+                                  :mark_as_property_value => "true",
+                                  :mark_as_submit_label => t("child.actions.reunite"),
+                                  :error_message => t("child.messages.reunite_error_message"),
+                                  :style => "flag"
+                       } %>
+        <% else %>
+            <%= render :partial => "mark_as",
+                       :locals=> { :child => @child,
+                                   :mark_as_label => t("child.actions.not_reunited"),
+                                   :mark_as_message_id => "reunited_message",
+                                   :mark_as_message => t("child.actions.undo_reunited_details"),
+                                   :mark_as_property => "reunited",
+                                   :mark_as_property_value => "false",
+                                   :mark_as_submit_label => t("child.actions.undo_reunite"),
+                                   :error_message => t("child.messages.undo_reunite_error_message"),
+                                   :style => "flag"
+                       } %>
+        <% end %>
+      </div>
+    <% end %>
 
     <div class="btn dropdown_btn btn_investigate dropdown_form">
       <% if @child.flag? %>

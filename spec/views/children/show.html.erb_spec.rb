@@ -139,20 +139,44 @@ describe 'children/show.html.erb', :type => :view do
       end
     end
 
-    context 'potential matches' do
-
-      it 'should not show matches tab when enquiries are turned off' do
-        enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => 0)
-        render
-        expect(rendered).not_to have_tag("a[href='#tab_potential_matches']")
-        enable_enquiries.destroy
+    context 'when enquiries are turned off' do
+      before :each do
+        @enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => 0)
       end
 
-      it 'should show matches tab when enquries are turned on' do
-        enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => 1)
+      after :each do
+        @enable_enquiries.destroy
+      end
+
+      it 'should not show matches tab when enquiries are turned off' do
+        render
+        expect(rendered).not_to have_tag("a[href='#tab_potential_matches']")
+      end
+
+      it 'should not show mark as reunited button' do
+        render
+        expect(rendered).not_to have_tag("div[class~='btn_reunite']")
+      end
+
+    end
+
+    context 'when enquiries are turned on' do
+      before :each do
+        @enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => 1)
+      end
+
+      after :each do
+        @enable_enquiries.destroy
+      end
+
+      it 'should show matches tab' do
         render
         expect(rendered).to have_tag("a[href='#tab_potential_matches']")
-        enable_enquiries.destroy
+      end
+
+      it 'should show mark as reunited button' do
+        render
+        expect(rendered).to have_tag("div[class~='btn_reunite']")
       end
     end
   end
