@@ -30,15 +30,21 @@ class Permission
   POTENTIAL_MATCHES = Permission.to_ordered_hash(:read => 'View Potential Matches')
 
   def self.all
-    {'Children' => CHILDREN,
-     'Forms' => FORMS,
-     'Users' => USERS,
-     'Devices' => DEVICES,
-     'Reports' => REPORTS,
-     'Roles' => ROLES,
-     'System' => SYSTEM,
-     'Enquiries' => ENQUIRIES,
-     'PotentialMatches' => POTENTIAL_MATCHES}
+    perm_hash = {
+      'Children' => CHILDREN,
+      'Forms' => FORMS,
+      'Users' => USERS,
+      'Devices' => DEVICES,
+      'Reports' => REPORTS,
+      'Roles' => ROLES,
+      'System' => SYSTEM
+    }
+
+    if Enquiry.enquiries_enabled
+      perm_hash = perm_hash.merge('Enquiries' => ENQUIRIES, 'PotentialMatches' => POTENTIAL_MATCHES)
+    end
+
+    perm_hash
   end
 
   def self.all_permissions
@@ -46,14 +52,20 @@ class Permission
   end
 
   def self.hashed_values
-    {'Children' => CHILDREN.values,
-     'Forms' => FORMS.values,
-     'Users' => USERS.values,
-     'Devices' => DEVICES.values,
-     'Reports' => REPORTS.values,
-     'Roles' => ROLES.values,
-     'System' => SYSTEM.values,
-     'Enquiries' => ENQUIRIES.values,
-     'PotentialMatches' => POTENTIAL_MATCHES.values}
+    perm_hash = {
+      'Children' => CHILDREN.values,
+      'Forms' => FORMS.values,
+      'Users' => USERS.values,
+      'Devices' => DEVICES.values,
+      'Reports' => REPORTS.values,
+      'Roles' => ROLES.values,
+      'System' => SYSTEM.values
+    }
+
+    if Enquiry.enquiries_enabled
+      perm_hash = perm_hash.merge('Enquiries' => ENQUIRIES.values, 'PotentialMatches' => POTENTIAL_MATCHES.values)
+    end
+
+    perm_hash
   end
 end

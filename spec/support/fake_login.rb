@@ -22,6 +22,9 @@ module FakeLogin
   end
 
   def fake_admin_login
+    variable = SystemVariable.new(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
+    allow(SystemVariable).to receive(:find_by_name).with(SystemVariable::ENABLE_ENQUIRIES).and_return(variable)
+
     user = User.new(:user_name => 'fakeadmin')
     allow(user).to receive(:roles).and_return([Role.new(:permissions => Permission.all_permissions)])
     fake_login user
