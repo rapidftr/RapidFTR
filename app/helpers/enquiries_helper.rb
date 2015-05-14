@@ -22,11 +22,6 @@ module EnquiriesHelper
   end
 
   def enquiries_enabled
-    enquiries_enabled_setting = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
-    unless enquiries_enabled_setting.nil? || enquiries_enabled_setting.to_bool_value
-      return false
-    end
-
-    true
+    Enquiry.enquiries_enabled
   end
 end
