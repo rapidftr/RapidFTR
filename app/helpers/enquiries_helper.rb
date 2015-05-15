@@ -22,6 +22,6 @@ module EnquiriesHelper
   end
 
   def enquiries_enabled
-    Enquiry.enquiries_enabled
+    Enquiry.enquiries_enabled?
   end
 end
