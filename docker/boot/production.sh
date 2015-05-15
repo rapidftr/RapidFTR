@@ -35,15 +35,15 @@ runsv /etc/service/couchdb &
 sleep 5
 bundle exec rake db:seed db:migrate
 
-echo "Reindexing search..."
-runsv /etc/service/solr &
-sleep 5
-bundle exec rake sunspot:reindex
-
 if [ $ENQUIRIES_FEATURE = "off" ]; then
   echo "Disabling all enquiries features..."
   bundle exec rake app:enquiries:disable
 fi
+
+echo "Reindexing search..."
+runsv /etc/service/solr &
+sleep 5
+bundle exec rake sunspot:reindex
 
 echo "Normal system boot will now start..."
 sv shutdown couchdb
