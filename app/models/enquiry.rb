@@ -277,7 +277,7 @@ class Enquiry < BaseModel
       end
     end
 
-    def enquiries_enabled
+    def enquiries_enabled?
       enquiries_enabled_setting = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
       enquiries_enabled_setting.nil? || enquiries_enabled_setting.to_bool_value
     end

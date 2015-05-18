@@ -187,6 +187,32 @@ describe ChildrenController, :type => :controller do
       end
     end
 
+    context 'when enquiries feature is turned off' do
+      before { @session = fake_field_worker_login }
+      before :each do
+        SystemVariable.all.each { |variable| variable.destroy }
+        SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0')
+      end
+
+      it 'should not include reunited_at in the system fields' do
+        get :index
+        expect(assigns[:system_fields]).to_not include('reunited_at')
+      end
+    end
+
+    context 'when enquiries feature is turned on' do
+      before { @session = fake_field_worker_login }
+      before :each do
+        SystemVariable.all.each { |variable| variable.destroy }
+        SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
+      end
+
+      it 'should include reunited_at in the system fields' do
+        get :index
+        expect(assigns[:system_fields]).to include('reunited_at')
+      end
+    end
+
     context 'viewing reunited children' do
       context 'admin' do
         before do

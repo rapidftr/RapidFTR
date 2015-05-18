@@ -40,7 +40,7 @@ class Permission
       'System' => SYSTEM
     }
 
-    if Enquiry.enquiries_enabled
+    if Enquiry.enquiries_enabled?
       perm_hash = perm_hash.merge('Enquiries' => ENQUIRIES, 'PotentialMatches' => POTENTIAL_MATCHES)
     end
 
@@ -62,7 +62,7 @@ class Permission
       'System' => SYSTEM.values
     }
 
-    if Enquiry.enquiries_enabled
+    if Enquiry.enquiries_enabled?
       perm_hash = perm_hash.merge('Enquiries' => ENQUIRIES.values, 'PotentialMatches' => POTENTIAL_MATCHES.values)
     end
 

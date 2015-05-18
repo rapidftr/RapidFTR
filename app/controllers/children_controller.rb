@@ -37,6 +37,10 @@ class ChildrenController < ApplicationController
     @form_sections = form_sections
     @system_fields = Child.default_child_fields + Child.build_date_fields_for_solar
 
+    unless Enquiry.enquiries_enabled?
+      @system_fields = @system_fields.reject { |field| field == 'reunited_at' }
+    end
+
     respond_to do |format|
       format.html
       format.xml { render :xml => @children }
