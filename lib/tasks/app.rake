@@ -17,9 +17,9 @@ namespace :app do
       # add the enable enquiries variable
       enable_enquiries = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
       if enable_enquiries.nil?
-        SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => true
+        SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => true, :user_editable => false
       else
-        enable_enquiries.value = 1
+        enable_enquiries.value = true
         enable_enquiries.save!
       end
 
@@ -40,9 +40,9 @@ namespace :app do
     task :disable => :environment do
       enable_enquiries = SystemVariable.find_by_name(SystemVariable::ENABLE_ENQUIRIES)
       if enable_enquiries.nil?
-        SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0'
+        SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => false, :user_editable => false
       else
-        enable_enquiries.value = 0
+        enable_enquiries.value = false
         enable_enquiries.save!
       end
 

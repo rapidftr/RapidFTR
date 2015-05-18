@@ -4,6 +4,8 @@ class SystemVariable < CouchRest::Model::Base
   property :name, String
   property :value, String
   property :type, String, :default => 'string'
+  property :user_editable, TrueClass, :default => true
+
 
   validates :name, :presence => true, :uniqueness => true
   validates :value, :presence => true

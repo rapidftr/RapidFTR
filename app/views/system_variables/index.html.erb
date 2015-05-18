@@ -14,12 +14,16 @@
         <tr id="system-row-<%= variable.name %>">
           <td><%= variable.name %></td>
           <td>
-            <% if variable.type == 'number' %>
-              <%= text_field_tag "system_variables[#{variable.id}]", variable.value, :type => 'number', :step => '0.001', :min => '0'%>
-            <% elsif variable.type == 'boolean' %>
-              <%= select_tag("system_variables[#{variable.id}]", options_for_select([['Yes', '1'], ['No', '0']], variable.value))%>
+            <% if variable.user_editable %>
+              <% if variable.type == 'number' %>
+                <%= text_field_tag "system_variables[#{variable.id}]", variable.value, :type => 'number', :step => '0.001', :min => '0'%>
+              <% elsif variable.type == 'boolean' %>
+                <%= select_tag("system_variables[#{variable.id}]", options_for_select([['Yes', 'true'], ['No', 'false']], variable.value))%>
+              <% else %>
+                <%= text_field_tag "system_variables[#{variable.id}]", variable.value, :type => 'text' %>
+              <% end %>
             <% else %>
-              <%= text_field_tag "system_variables[#{variable.id}]", variable.value, :type => 'text' %>
+              <%= variable.value %>
             <% end %>
           </td>
           </td>
