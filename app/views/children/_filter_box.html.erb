@@ -1,6 +1,14 @@
 <form class="filter_panel">
   <input type="hidden" name="order_by" value="<%= @order %>"/>
 	<%= t("children.filter_by.label") %>:
-  <span> <%= select_tag :filter, options_for_select([[ t("children.filter_by.all"), "" ],[t("children.filter_by.active"),"active"],[t("children.filter_by.reunited"),"reunited"],
-                                                     [t("children.filter_by.flagged"),"flag"]], @filter), { :onchange => "this.form.submit();"} %> </span>
+  <%
+    options = [[ t("children.filter_by.all"), "" ],[t("children.filter_by.active"),"active"]]
+
+    if enquiries_enabled
+      options << [t("children.filter_by.reunited"),"reunited"]
+    end
+
+    options << [t("children.filter_by.flagged"),"flag"]
+  %>
+  <span> <%= select_tag :filter, options_for_select(options, @filter), { :onchange => "this.form.submit();"} %> </span>
 </form>
