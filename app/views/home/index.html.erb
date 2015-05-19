@@ -24,11 +24,11 @@
 
 <p>
   <br/>
-  <% if can? :create, Enquiry %>
+  <% if can?(:create, Enquiry) && enquiries_enabled %>
       <%= link_to t("enquiry.register_new_enquiry"), new_enquiry_path %> <br/><br/>
   <% end %>
 
-  <% if can? :view, Enquiry %>
+  <% if can?(:view, Enquiry) && enquiries_enabled %>
       <%= link_to "#{number_of_enquiries_with_matches} #{t('enquiry.enquiries_with_potential_matches')}", matches_enquiries_path %>
   <% end %>
 </p>
