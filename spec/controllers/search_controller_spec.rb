@@ -94,5 +94,30 @@ describe SearchController, :type => :controller do
         expect(response).to be_ok
       end
     end
+
+    context 'when search type is unknown' do
+      it 'should return status 400' do
+        fake_login_as
+        get :search, :query => 'some query', :search_type => 'anything'
+        expect(response.status).to be 400
+      end
+    end
+
+    context 'when enquiries are turned off' do
+      before :each do
+        SystemVariable.all.each { |variable| variable.destroy }
+        @enable_enquiries = SystemVariable.create!(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0')
+      end
+
+      after :each do
+        @enable_enquiries.destroy
+      end
+
+      it 'should return status 400' do
+        fake_login_as
+        get :search, :query => 'some query', :search_type => 'Enquiry'
+        expect(response.status).to be 400
+      end
+    end
   end
 end

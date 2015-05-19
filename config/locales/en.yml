@@ -42,6 +42,7 @@ en:
     warning: "Warning: If you continue, any data associated with this field will be lost.\nIf you're uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
     enter_each_in_one_line: "Enter each option on a new line"
     record_count: "Showing %{start} to %{end} of %{total} records"
+    unknown_search_type: "Unknown Search Type"
 
   data_base:
     delete_all_documents: "Deleted all child documents"
