@@ -6,7 +6,6 @@ class SystemVariable < CouchRest::Model::Base
   property :type, String, :default => 'string'
   property :user_editable, TrueClass, :default => true
 
-
   validates :name, :presence => true, :uniqueness => true
   validates :value, :presence => true
   validates :type, :presence => true, :inclusion => {:in => %w(boolean string number), :message => 'unknown type'}

@@ -46,7 +46,8 @@ html[xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"]
                 .search
                   = link_to t("navigation.advanced_search"), advanced_search_index_path
                   = text_field_tag 'query', params[:query]
-                  = select_tag :search_type, options_from_collection_for_select(Search::SEARCHABLE_CLASSES, :name, :name, @search_type)
+                  - if enquiries_enabled
+                    = select_tag :search_type, options_from_collection_for_select(Search::SEARCHABLE_CLASSES, :name, :name, @search_type)
                   = submit_tag t("navigation.go"), :action => "children/search", :method => "get", :onclick => "return RapidFTR.validateSearch();"
       .page-content
         - if flash[:notice].present?

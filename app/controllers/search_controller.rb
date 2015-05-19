@@ -1,6 +1,16 @@
 class SearchController < ApplicationController
   def search
-    @search_type = params[:search_type].nil? ? Child : params[:search_type].constantize
+    @search_type = params[:search_type].nil? ? Child : params[:search_type].safe_constantize
+
+    allowed_search_types = [Child]
+    allowed_search_types << Enquiry if Enquiry.enquiries_enabled?
+
+    if @search_type.nil? || !allowed_search_types.include?(@search_type)
+      flash[:error] = I18n.t('messages.unknown_search_type')
+      render :nothing => true, :status => 400
+      return
+    end
+
     authorize! :index, @search_type
     @page_name = t('search')
     query = params[:query]
