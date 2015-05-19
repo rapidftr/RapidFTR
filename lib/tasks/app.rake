@@ -20,6 +20,7 @@ namespace :app do
         SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => true, :user_editable => false
       else
         enable_enquiries.value = true
+        enable_enquiries.user_editable = false
         enable_enquiries.save!
       end
 
@@ -43,6 +44,7 @@ namespace :app do
         SystemVariable.create :name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => false, :user_editable => false
       else
         enable_enquiries.value = false
+        enable_enquiries.user_editable = false
         enable_enquiries.save!
       end
 
