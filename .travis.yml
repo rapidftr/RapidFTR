@@ -1,4 +1,5 @@
 language: ruby
+cache: bundler
 bundler_args: --without=development --jobs=4
 rvm:
   - 2.1.1
@@ -11,10 +12,13 @@ env:
   global:
     - DISPLAY=":99.0"
     - COVERALLS="true"
+  matrix:
+    - CMD="quality spec coveralls:push"
+    - CMD="cucumber || bundle exec rake cucumber:rerun"
 before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "bundle exec rake db:create_couch_sysadmin[rapidftr,rapidftr] sunspot:solr:start"
 script:
-  - "bundle exec rake quality spec cucumber coveralls:push"
+  - "bundle exec rake $CMD"
 notifications:
   - email: false
