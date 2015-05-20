@@ -103,4 +103,40 @@ describe Forms::StandardFormsForm do
       end
     end
   end
+
+  describe 'when enquiries are turned on or off' do
+    context ':off' do
+      before :each do
+        SystemVariable.all.each { |variable| variable.destroy }
+        @enable_enquiries = SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '0')
+      end
+
+      after :each do
+        @enable_enquiries.destroy
+      end
+
+      it 'should not build formsections for enquiries' do
+        forms = Forms::StandardFormsForm.build_from_seed_data.forms
+        expect(forms.count).to eq 1
+        expect(forms.map { |form| form.name }).to_not include Enquiry::FORM_NAME
+      end
+    end
+
+    context ':on' do
+      before :each do
+        SystemVariable.all.each { |variable| variable.destroy }
+        @enable_enquiries = SystemVariable.create(:name => SystemVariable::ENABLE_ENQUIRIES, :type => 'boolean', :value => '1')
+      end
+
+      after :each do
+        @enable_enquiries.destroy
+      end
+
+      it 'should build formsections for enquiries' do
+        forms = Forms::StandardFormsForm.build_from_seed_data.forms
+        expect(forms.count).to eq 2
+        expect(forms.map { |form| form.name }).to include Enquiry::FORM_NAME
+      end
+    end
+  end
 end

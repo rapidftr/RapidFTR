@@ -1,7 +1,9 @@
 module RapidFTR
   module FormSetup
     def self.default_forms
-      [default_form_for(Child::FORM_NAME), default_form_for(Enquiry::FORM_NAME)]
+      forms = [default_form_for(Child::FORM_NAME)]
+      forms << default_form_for(Enquiry::FORM_NAME) if Enquiry.enquiries_enabled?
+      forms
     end
 
     def self.default_form_for(form_name)

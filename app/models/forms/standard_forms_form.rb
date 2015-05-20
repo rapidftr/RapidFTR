@@ -4,14 +4,19 @@ module Forms
     attr_accessor :forms
 
     def self.build_from_seed_data
+      form = new
+      form.forms = []
+
       child_form_sections = RapidFTR::ChildrenFormSectionSetup.build_form_sections
       child_form = StandardFormsData::FormData.build(Form.new(:name => Child::FORM_NAME), child_form_sections)
+      form.forms << child_form
 
-      form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
-      enquiry_form = StandardFormsData::FormData.build(Form.new(:name => Enquiry::FORM_NAME), form_sections)
+      if Enquiry.enquiries_enabled?
+        form_sections = RapidFTR::EnquiriesFormSectionSetup.build_form_sections
+        enquiry_form = StandardFormsData::FormData.build(Form.new(:name => Enquiry::FORM_NAME), form_sections)
+        form.forms << enquiry_form
+      end
 
-      form = new
-      form.forms = [child_form, enquiry_form]
       form
     end
   end
