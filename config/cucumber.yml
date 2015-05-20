@@ -6,3 +6,4 @@ browser: --tags @javascript <%= std_opts %>
 headless: --tags ~@javascript <%= std_opts %>
 browser_wip: --tags @javascript --tags @wip:3 --wip <%= default_opts %>
 headless_wip: --tags @headless --tags @wip:3 --wip <%= default_opts %>
+rerun: --tags @rerun <%= std_opts %>
