@@ -50,7 +50,7 @@ unless ARGV.any? { |a| a =~ /^gems/ } # Don't load anything when running the gem
         t.binary = vendored_cucumber_bin
         t.fork = true # You may get faster startup if you set this to false
         t.profile = 'rerun'
-        t.cucumber_opts = '@rerun.txt --format progress'
+        t.cucumber_opts = ENV['CI'] ? '@rerun.txt --format progress' : '@rerun.txt'
       end
 
       Rake::Task['cucumber:browser'].enhance ['assets:precompile']
