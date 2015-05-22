@@ -98,8 +98,8 @@ module Api
     end
 
     def block_if_enquiries_feature_is_off
-      if !Enquiry.enquiries_enabled?
-        render :json =>'', :status => 404
+      unless Enquiry.enquiries_enabled?
+        render :json => '', :status => 404
         return false
       end
     end

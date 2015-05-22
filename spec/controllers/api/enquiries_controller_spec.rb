@@ -242,7 +242,6 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.response_code).to eq(200)
     end
 
-    
     it 'should update existing enquiry with potential matches', :solr => true do
       reset_couchdb!
       form = create :form, :name => Enquiry::FORM_NAME
@@ -420,7 +419,7 @@ describe Api::EnquiriesController, :type => :controller do
       allow(controller).to receive(:authorize!)
       put :update, :id => 1, :enquiry => {}
       expect(response.response_code).to eq(404)
-      expect(response.body).to eq("")
+      expect(response.body).to eq('')
     end
   end
 end
