@@ -60,5 +60,11 @@ describe SystemVariable, :type => :model do
       expect(enable_enquiries_setting).to be_invalid
       expect(enable_enquiries_setting.errors.messages).to eq(:type => ['unknown type'])
     end
+
+    it 'should save if type is valid' do
+      enable_enquiries_setting = SystemVariable.create :name => 'ENABLE_ENQUIRIES', :value => true, :type => 'boolean'
+      expect(enable_enquiries_setting).to be_valid
+      expect(enable_enquiries_setting.errors.messages).to eq({})
+    end
   end
 end

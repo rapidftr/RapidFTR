@@ -1,6 +1,7 @@
 module Api
   class EnquiriesController < ApiController
     before_action :sanitise_params
+    before_action :block_if_enquiries_feature_is_off
 
     def create
       authorize! :create, Enquiry
@@ -94,6 +95,13 @@ module Api
         enquiry = params['enquiry']
       end
       enquiry
+    end
+
+    def block_if_enquiries_feature_is_off
+      unless Enquiry.enquiries_enabled?
+        render :json => '', :status => 404
+        return false
+      end
     end
   end
 end

@@ -24,12 +24,14 @@ describe Api::EnquiriesController, :type => :controller do
 
   describe '#authorizations' do
     it 'should fail to POST create when unauthorized' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       expect(@controller.current_ability).to receive(:can?).with(:create, Enquiry).and_return(false)
       post :create
       expect(response).to be_forbidden
     end
 
     it 'should fail to update when unauthorized' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       expect(@controller.current_ability).to receive(:can?).with(:update, Enquiry).and_return(false)
       test_id = '12345'
       put :update, :id => test_id, :enquiry => {:id => test_id, :enquirer_name => 'new name'}
@@ -40,6 +42,7 @@ describe Api::EnquiriesController, :type => :controller do
   describe 'POST create' do
 
     it 'should trigger the match functionality every time a record is created' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       name = 'reporter'
       details = {'location' => 'Kampala'}
@@ -49,6 +52,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not trigger the match unless record is created' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       expect(Enquiry).not_to receive(:find_matching_children)
 
@@ -58,6 +62,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should create the enquiry record and return a success code' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       name = 'reporter'
 
@@ -74,6 +79,7 @@ describe Api::EnquiriesController, :type => :controller do
 
     it 'should return an enquiry json without internal fields' do
       enquiry = build :enquiry
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(Enquiry).to receive(:new_with_user_name).and_return(enquiry)
       allow(controller).to receive(:authorize!)
       expect(enquiry).to receive(:without_internal_fields).and_return(enquiry)
@@ -85,6 +91,7 @@ describe Api::EnquiriesController, :type => :controller do
     it 'should not update record if it exists and return error' do
       enquiry = Enquiry.new(:enquirer_name => 'old name', :'location' => 'kampala', :name => 'name')
       enquiry.save!
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
 
       post :create, :enquiry => {'id' => enquiry.id, :enquirer_name => 'new name', :name => 'name'}
@@ -96,6 +103,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not overwrite creation information from mobile' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(RapidFTR::Clock).to receive(:current_formatted_time).and_return('2014-08-26 08:15:22 +0000')
       enquiry = {:enquirer_name => 'John Doe',
                  :created_by => 'Foo Bar',
@@ -112,6 +120,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not duplicate histories from params' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       enquiry = {:enquirer_name => 'John Doe',
                  :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]
       }
@@ -128,6 +137,7 @@ describe Api::EnquiriesController, :type => :controller do
     it 'should trigger the match functionality every time a record is created' do
       criteria = {'name' => 'old name'}
       enquiry = Enquiry.create(:enquirer_name => 'Machaba', :reporter_details => {'location' => 'kampala'}, :criteria => criteria)
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
 
       expect(Enquiry).not_to receive(:find_matching_children)
@@ -139,6 +149,7 @@ describe Api::EnquiriesController, :type => :controller do
 
     it 'should not include internal fields in the returned json' do
       enquiry = create :enquiry
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       put :update, :id => enquiry.id, :enquiry => {:id => 'enquiry_id', :enquirer_name => 'new name', :criteria => 'criteria'}, :format => :json
 
@@ -148,6 +159,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not trigger the match unless record is created' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       enquiry = Enquiry.create(:enquirer_name => 'Machaba', :reporter_details => {'location' => 'kampala'})
       allow(controller).to receive(:authorize!)
 
@@ -159,6 +171,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should return an error if enquiry does not exist' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       id = '12345'
       allow(Enquiry).to receive(:get).with(id).and_return(nil)
@@ -170,6 +183,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should merge existing criteria when sending new values in criteria' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       enquiry = Enquiry.new(:enquirer_name => 'old name', :location => 'kampala', :name => 'Batman')
       enquiry.save!
@@ -182,6 +196,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should update record if it exists and return the updated record' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       enquiry = Enquiry.create(:enquirer_name => 'old name')
       put :update, :id => enquiry.id,
@@ -195,6 +210,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should update record without passing the id in the enquiry params' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       enquiry = Enquiry.create(:enquirer_name => 'old name', :reporter_details => {'location' => 'kampala'})
 
@@ -207,6 +223,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should merge updated fields and return the latest record' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       enquiry = Enquiry.create(:enquirer_name => 'old name', :location => 'kampala', :name => 'child name')
 
@@ -242,6 +259,7 @@ describe Api::EnquiriesController, :type => :controller do
       ], :form => form
       Child.reindex!
 
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       child1 = Child.create('name' => 'Clayton aquiles', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
       child2 = Child.create('name' => 'Steven aquiles', 'gender' => 'male', 'created_by' => 'fakeadmin', 'created_organisation' => 'stc')
@@ -261,6 +279,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should not duplicate or replace histories from params' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       Timecop.freeze Time.parse('2014-09-26 10:10:10 UTC') do
         enquiry_params = {:enquirer_name => 'John Doe',
                           :histories => [{:changes => {:enquirer_name => {:from => '', :to => 'John Doe'}}}]}
@@ -277,6 +296,7 @@ describe Api::EnquiriesController, :type => :controller do
   describe 'GET index' do
 
     it 'should fetch all the enquiries' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
 
       enquiry = Enquiry.new(:_id => '123')
@@ -288,6 +308,7 @@ describe Api::EnquiriesController, :type => :controller do
     end
 
     it 'should return 422 if query parameter with last update timestamp is not a valid timestamp' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       allow(controller).to receive(:authorize!)
       bypass_rescue
       get :index, :updated_after => 'adsflkj'
@@ -310,6 +331,7 @@ describe Api::EnquiriesController, :type => :controller do
       end
 
       it 'should return all the records created after a specified date' do
+        allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
         get :index, :updated_after => '2010-01-22 06:42:12UTC'
         enquiry_one = {:location => "http://test.host:80/api/enquiries/#{@enquiry1.id}"}
         enquiry_two = {:location => "http://test.host:80/api/enquiries/#{@enquiry2.id}"}
@@ -318,6 +340,7 @@ describe Api::EnquiriesController, :type => :controller do
       end
 
       it 'should decode URI encoded params' do
+        allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
         allow(Clock).to receive(:now).and_return(Time.utc(2014, 10, 3, 7, 52, 18))
         enquiry = Enquiry.create(:enquirer_name => 'John doe', :child_name => 'any child')
         fake_admin_login
@@ -329,6 +352,7 @@ describe Api::EnquiriesController, :type => :controller do
       end
 
       it 'should return filter records by specified date' do
+        allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
         get :index, :updated_after => '2010-01-23 06:42:12UTC'
 
         expect(response.body).to eq([{:location => "http://test.host:80/api/enquiries/#{@enquiry2.id}"}].to_json)
@@ -336,6 +360,7 @@ describe Api::EnquiriesController, :type => :controller do
 
       it 'should filter records updated after specified date' do
         allow(Clock).to receive(:now).and_return(Time.utc(2010, 'jan', 26, 16, 05, 0))
+        allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
         enquiry = Enquiry.all.select { |enq| enq[:enquirer_name] == 'David' }.first
         enquiry.update_attributes(:enquirer_name => 'Jones')
 
@@ -350,6 +375,7 @@ describe Api::EnquiriesController, :type => :controller do
   describe 'GET show' do
     it 'should fetch a particular enquiry' do
       allow(controller).to receive(:authorize!)
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       enquiry = double(:to_json => 'an enquiry record')
       expect(Enquiry).to receive(:get).with('123').and_return(double(:without_internal_fields => enquiry))
 
@@ -361,6 +387,7 @@ describe Api::EnquiriesController, :type => :controller do
     it 'should not return internal fields' do
       enquiry = build :enquiry
       allow(Enquiry).to receive(:get).with(enquiry.id).and_return(enquiry)
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       expect(enquiry).to receive(:without_internal_fields).and_return(enquiry)
       allow(controller).to receive(:authorize!)
       get :show, :id => enquiry.id
@@ -368,7 +395,7 @@ describe Api::EnquiriesController, :type => :controller do
 
     it 'should return a 404 with empty body if enquiry record does not exist' do
       allow(controller).to receive(:authorize!)
-
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(true)
       expect(Enquiry).to receive(:get).with('123').and_return(nil)
 
       get :show, :id => '123'
@@ -376,7 +403,23 @@ describe Api::EnquiriesController, :type => :controller do
       expect(response.body).to eq('')
       expect(response.response_code).to eq(404)
     end
-
   end
 
+  describe 'turn off enquiries sync' do
+    it 'when enquiries is off should return 404' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(false)
+      allow(controller).to receive(:authorize!)
+      get :index
+      expect(response.response_code).to eq(404)
+      expect(response.body).to eq('')
+    end
+
+    it 'PUT should return 404 when enquiries is not on' do
+      allow(Enquiry).to receive(:enquiries_enabled?).and_return(false)
+      allow(controller).to receive(:authorize!)
+      put :update, :id => 1, :enquiry => {}
+      expect(response.response_code).to eq(404)
+      expect(response.body).to eq('')
+    end
+  end
 end
