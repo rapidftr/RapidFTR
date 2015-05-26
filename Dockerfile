@@ -28,7 +28,6 @@ RUN rm -f /etc/service/nginx/down
 ADD docker/boot/production.sh /etc/my_init.d/00_setup_production.sh
 
 # Volumes and Ports
-EXPOSE 5984
 EXPOSE 6984
 EXPOSE 80
 EXPOSE 443
