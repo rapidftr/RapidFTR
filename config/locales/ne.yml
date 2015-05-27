@@ -1,0 +1,691 @@
+﻿# encoding: utf-8
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+ne:
+  home:
+    fr: "Français"
+    en: "English"
+    ar: "العربية"
+    zh: "中文"
+    es: "Español"
+    ru: "Русский"
+    ne: "नेपाली "
+    welcome: "RapidFTR मा स्वागत छ "
+    current_time_zone: "वर्तमान समय क्षेत्र"
+    language: "भाषा"
+    view_records: "रेकर्ड हेर्नुहोस्"
+    users: "प्रयोगकर्ता मिलाउनुहोस "
+    manage_system_users: "सर्भर सिङ्क्रोनाइजेसन प्रयोगकर्ता मिलाउनुहोस"
+    records_need_attention: "ध्यान दिनुपर्ने  रेकर्ड"
+    label: "घर"
+  clear: "मेटाउनुहोस"
+  messages:
+    delete_item: "चेतावनी: यो क्षेत्र संग सम्बन्धित कुनै पनि डाटा हराउन सक्छ।\nयदि तपाइँलाइ थाहा छैन भने, यो क्षेत्र असक्षम गर्नुहोस।\nफर्कन रद्द क्लिक गर्नुहोस। हटाउन ठिक क्लिक गर्नुहोस।"
+    delete_form_section: "चेतावनी: यो फारम क्षेत्र संग सम्बन्धित कुनै पनि डाटा हराउन सक्छ।\nयदि तपाइँलाइ थाहा छैन भने, यो क्षेत्र अक्षम गर्नुहोस।\nफर्कन रद्द क्लिक गर्नुहोस। हटाउन ठिक क्लिक गर्नुहोस।"
+    move_item: "तपाई यो क्षेत्रलाई अर्को फाराम ({{selection_key}}) सेक्सनमा सार्दै हुनुहुन्छ। ठिक छ?"
+    enter_valid_date: "कृपया अघि/पछि ठिक मिति हाल्नुहोस (ढाँचा YYYY-MM-DD)"
+    enter_valid_field_value: "कृपया ठिक फिल्ड भ्यालु हाल्नुहोस"
+    valid_search_criteria: "कम्तिमा एक खोज मापदण्ड हाल्नुहोस"
+    show_hide_forms: "लुकाउन/देखाउन चाहेको फारम (हरू) चयन गर्नुहोस्।"
+    show_forms: "तपाईं यी फारम (हरू) देखाउन निश्चित हुनुहुन्छ?"
+    hide_forms: "तपाईं यी फारम (हरू) लुकाउन निश्चित हुनुहुन्छ?"
+    primary_photo_changed: "प्राथमिक फोटो परिवर्तन।"
+    select_photo: "एक फोटो चयन गर्नुहोस्।"
+    are_you_sure: "तपाईं निश्चित हुनुहुन्छ "
+    this_user: "  यो प्रयोगकर्ता?"
+    keep_working: "हो, कार्य जारी राख्नुहोस्"
+    logoff: "होइन, लग अफ गर्नुहोस्"
+    cancel_confirmation: "तपाईं रद्द गर्न निश्चित हुनुहुन्छ?"
+    logoff_warning_prefix: "तपाईं लग अफ गरिनेछ"
+    logoff_warning_suffix: "सेकेण्ड."
+    logoff_confirmation: "तपाईंले आफ्नो सेसन  जारी राख्न चाहनुहुन्छ?"
+    warning: "चेतावनी: यो क्षेत्र संग सम्बन्धित कुनै पनि डाटा हराउन सक्छ।\nयदि तपाइँलाइ थाहा छैन भने, यो क्षेत्र अक्षम गर्नुहोस।\nफर्कन रद्द क्लिक गर्नुहोस। हटाउन ठिक क्लिक गर्नुहोस।"
+    enter_each_in_one_line: "हरेक अप्सन नयाँ लाइनमा हाल्नुहोस"
+    record_count: " %{total} रेकर्ड मध्ये  %{start} देखि  %{end} सम्म देखाउदै "
+    unknown_search_type: "अज्ञात खोज प्रकार"
+
+  data_base:
+    delete_all_documents: "सबै बच्चाको डकुमेन्ट हटाइयो "
+    operation_not_allowed: "यो कार्य गर्न  %{rails_env} वातावरणमा अनुमति छैन"
+
+  login:
+    details: "लगइन जानकारी"
+    username: "युजरनेम"
+    password:
+      label: "पासवर्ड"
+      reset: "पासवर्ड रिसेट गर्नुहोस"
+      re_enter: "पासवर्ड फेरि हाल्नुहोस"
+      success_notice: "धन्यबाद एक RapidFTR प्रशासकले  छिट्टै तपाईलाई  सम्पर्क गर्नेछन। सम्भव छ भने, सीधा व्यवस्थापकलाई  सम्पर्क गर्नुहोस्।"
+      successfully_hidden: "पासवर्ड अनुरोध सूचना सफलतापूर्वक लुकाइयो।"
+
+    label: "लग इन"
+  header:
+    contact: "संपर्क र सहायता"
+    welcome: "स्वागत"
+    logout: " लग आउट"
+    my_account: "मेरो खाता"
+    system_settings: "प्रणाली सेटिङ"
+
+  navigation:
+     children: "बच्चाहरु"
+     forms: "फारामहरू"
+     users: "प्रयोगकर्ता"
+     devices: "उपकरणहरूको"
+     reports: "रिपोर्ट"
+     advanced_search: "विकसित खोज"
+     go: "जानुहोस "
+     search: "खोज"
+     enquiries: "पूछताछ"
+
+  buttons:
+     delete: "मेट्नुहोस्"
+     save: "सेभ गर्नुहोस्"
+     login: "लग इन"
+     reunite: "पुनः जोड्नुहोस"
+     edit: "सम्पादन"
+     back: "फिर्ता"
+     change_password: "पासवर्ड परिवर्तन"
+     enable_photo_wall: "फोटो वाल सक्षम गर्नुहोस्"
+     disable_photo_wall: "फोटो वाल असक्षम गर्नुहोस्"
+
+  children:
+    label: "बच्चाहरु"
+    register_new_child: "नयाँ बाल दर्ता"
+    export: "निर्यात"
+    filter_by:
+      label: "फिल्टर"
+      all: "सबै"
+      active: "सक्रिय"
+      reunited: "पुनः जोडिएका"
+      flag: "फ्ल्याग गरिएका"
+      created: "बनाइएका"
+    order_by:
+      system_fields: "प्रणाली फिल्ड"
+      most_recently: "हालका"
+      label: "अर्डर "
+      name: "नाम"
+      created: "बनाइयो"
+      unique_identifier: "अद्वितीय आईडी"
+      short_id: "छोटो आईडी"
+      created_by: "बनाउने "
+      created_by_full_name: "बनाउनेको पुरा नाम "
+      last_updated_by: "पछिल्लो अपडेट गर्ने"
+      last_updated_by_full_name: "पछिल्लो अपडेट गर्नेको पुरा नाम"
+      created_organisation: "बनाएको संस्था"
+      created_at: "बनाएको समय"
+      last_updated_at: "पछिल्लो अपडेट समय"
+      reunited_at: "पुनः जोडिएको  समय"
+      flag_at: "फ्ल्याग गरिएको समय"
+    flag_summary: "फ्ल्याग सारांश"
+
+    filter_by:
+      all: "सबै"
+      active: "सक्रिय"
+      reunited: "पुनः जोडिएका"
+      flagged: "फ्ल्याग गरिएका"
+
+  enquiry:
+    label: "पूछताछ"
+    flagged_by: "फ्ल्याग गर्ने"
+    last_updated: "पछिल्लो अपडेट"
+    registered_by: "दर्ता गर्ने"
+    posted_from_mobile: "मोबाइल क्लाइन्टबाट पोस्ट गरिएको :"
+    register_new_enquiry: "नयाँ पूछताछ दर्ता"
+    no_records_available: "कुनै रेकर्ड उपलब्ध छैन"
+    matches: "मिल्दो"
+    potential_matches: "संभावित मिल्दो"
+    confirmed_matches: "पक्का मिल्दो"
+    reunited_matches: "पुनः जोडिएका मिल्दो"
+    matched_elsewhere_link: "अर्को बच्चासँग मिल्दो"
+    enquiries_with_potential_matches: "संभावित मिल्दोसँग पूछताछ"
+    enquiry_with_potential_matches: "संभावित मिल्दोसँग पूछताछ"
+    mark_child_as_not_matching: "मिल्दो नभएका बच्चा चिन्ह लगाउनुहोस"
+    confirm_child_as_matching: "मिल्दो पक्का गर्नुहोस"
+    unmark_child_as_matching: "पक्का फिर्ता गर्नुहोस"
+    history_of: "%{short_id} को इतिहास "
+    change_log: "परिवर्तन लग"
+    filter:
+      all: "सबै"
+      reunited: "पुनः जोडिएका"
+      has_matches: "मिल्दो भएका"
+      has_confirmed_match: "मिल्दो पक्का भएका"
+    messages:
+      creation_success: "पूछताछ रेकर्ड सफलतापूर्वक बनाइयो"
+      update_success: "पूछताछ रेकर्ड सफलतापूर्वक अपडेट गरियो"
+      confirmation_message: "ठिक क्लिक गर्नाले सेभ नगरिएका डाटा हराउछन।पूछताछ रेकर्डमा फर्कन रद्द क्लिक गर्नुहोस।"
+      child_record_marked_as_not_a_match_successfully: "संभावित मिल्दोबाट बच्चालाई सफलतापूर्वक हटाइयो।"
+
+
+  child:
+    flagged_by: "फ्ल्याग गर्ने"
+    last_updated: "पछिल्लो अपडेट"
+    registered_by: "दर्ता गर्ने"
+    mark_as_duplicate: "नकल चिन्ह लगाउनुहोस "
+    flag_record: "रेकर्ड फ्ल्याग गर्नुहोस"
+    flag_label: "फ्ल्याग"
+    flag_reason: "फ्ल्याग कारण"
+    unflag_record: "रेकर्ड अन्फ्ल्याग  गर्नुहोस"
+    unflag_reason: "अन्फ्ल्याग  कारण"
+    unflag_label: "अन्फ्ल्याग "
+    unflag_error_message: "कृपया रेकर्ड अन्फ्ल्याग गर्नुको कारण व्याख्या गर्नुहोस"
+    id_of_record_this_duplicate_of: "यसको नकल रेकर्डको आइडी हाल्नुहोस :"
+    duplicate_header: "%{child_name} नकल बच्चा  चिन्ह लगाउदै"
+    flag_error_message: "कृपया रेकर्ड फ्ल्याग गर्नुको कारण व्याख्या गर्नुहोस"
+    investigation_details: "अनुसन्धान विवरण:"
+    reunite_details: "जोडेको विवरण:"
+    another_duplicate_before_link: "अर्को रेकर्ड यसको नकल भनि चिन्ह लगाइयो। क्लिक गर्नुहोस"
+    another_duplicate_after_link: " नकल रेकर्ड हेर्न"
+    export_error: "कुनै रेकर्ड उपलब्ध छैन!"
+
+    messages:
+      update_success: "बच्चा सफलतापूर्वक अपडेट गरियो" 
+      investigation_error_message: "कृपया फ्ल्याग गरीएको रेकर्ड अनुसन्धान गरिएको भनी चिन्ह लगाउन पक्का गर्नुहोस र भएको विवरण हाल्नुहोस। "
+      undo_investigation_error_message: "कृपया फ्ल्याग गरीएको रेकर्ड अनुसन्धान नगरिएको भनी चिन्ह लगाउन पक्का गर्नुहोस र भएको विवरण हाल्नुहोस।"
+      undo_investigation_error_message: "अनुसन्धान विवरण अन्डु गर्नुहोस:"
+      reunite_error_message: "कृपया बच्चाको परिवार वा अविभावकसँग पुनर्मिलन भएको पक्का गर्नुहोस र  विवरण हाल्नुहोस।"
+      undo_reunite_error_message: "कृपया बच्चाको परिवार वा अविभावकसँग पुनर्मिलन नभएको पक्का गर्नुहोस र  विवरण हाल्नुहोस।"
+      see_full_size: "पुरा हेर्न फोटोमा क्लिक गर्नुहोस"
+      creation_success: "बच्चाको रेकर्ड सफलतापुर्वक बनाइयो"
+      not_found: "यो आइडीको बच्चा भेटिएन "
+      confirm_duplicate: "अघि बढ्न निश्चित हुनुहुन्छ? हुनुहुन्छ भने ठिक क्लिक गर्नुहोस नत्र रद्द क्लिक गर्नुहोस।"
+      confirmation_message: "ठिक क्लिक गर्नाले सेभ नगरिएका डाटा हराउछन। बाल रेकर्डमा फर्कन रद्द क्लिक गर्नुहोस।"
+
+
+    actions:
+      mark_as_investigated: "अनुसन्धान गरिएको भनी चिन्ह लगाउनुहोस"
+      mark_as_reunited: "पुनर्मिलन गरिएको भनी चिन्ह लगाउनुहोस"
+      export_to_photo_wall: "फोटो वालमा एक्सपोर्ट गर्नुहोस"
+      export_to_pdf: "PDF मा एक्सपोर्ट गर्नुहोस"
+      export_to_csv: "CSV मा एक्सपोर्ट गर्नुहोस"
+      change_log: "परिवर्तन लग"
+      mark_as_not_investigated: "अनुसन्धान नगरिएको भनी चिन्ह लगाउनुहोस"
+      reunited: "पुनर्मिलन गरिएको भनी चिन्ह लगाउनुहोस"
+      reunited_details: "पुनर्मिलन विवरण:"
+      reunite: "पुनर्मिलन"
+      not_reunited: "पुनर्मिलन नगरिएको भनी चिन्ह लगाउनुहोस"
+      undo_reunited_details: "पुनर्मिलन कारण अन्डु गर्नुहोस:"
+      undo_reunite: "पुनर्मिलन अन्डु गर्नुहोस"
+      investigation_details: "अनुसन्धान विवरण"
+      undo_investigation_details: "अनुसन्धान विवरण अन्डु गर्नुहोस"
+      undo_investigated: "अनुसन्धान गरीएको अन्डु गर्नुहोस"
+      cancel: "रद्द"
+      delete_photo: "फोटो हटाउने?"
+      choose_as_primary_photo: "प्राथमिक फोटो छान्नुहोस"
+      rotate_anti_clockwise: "घडीको उल्टो दिशामा घुमाउनुहोस"
+      restore_image: "पहिलाको फोटो पुनर्स्थापना गर्नुहोस"
+      rotate_clockwise: "घडीको दिशामा घुमाउनुहोस"
+      view_full_size_photo: "पुरा फोटो हेर्नुहोस"
+
+    change_log: "परिवर्तन लग"
+    flagged_as_suspected: "संदिग्ध रेकर्ड रूपमा फ्ल्याग गर्ने"
+    posted_from_mobile: "मोबाईल क्लाइन्टबाट पोस्ट गरीएको:"
+    edit_photo: "फोटो सम्पादन गर्नुहोस्"
+    manage_photos: "फोटो प्रबन्ध"
+
+    view: "% {short_id} बाल हेर्नुहोस्"
+    edit: "बाल सम्पादन"
+    mark_child_as_duplicate: "%{short_id} लाई नकल चिन्ह लगाउनुहोस"
+    history_of: "%{short_id} को इतिहास"
+  preposition:
+    on_label: "अन"
+    because: "किनकि"
+    at_label: "मा"
+
+  will_paginate:
+    previous_label: "&#8592; पछि"
+    next_label: "अघि &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page_html:
+        zero: "कुनै %{model} भेटिएन"
+        one: "देखाउदै <b>1</b> %{model}"
+        other: "देखाउदै <b>all %{count}</b> %{model}"
+      multi_page_html: "देखाउदै %{model} <b>%{from} - %{to}</b> जम्मा: <b>%{count}</b>"
+    models:
+      report:
+        one: "रिपोर्ट"
+        other: "रिपोर्टहरु"
+      child:
+        one: "बच्चा"
+        other: "बच्चाहरु"
+
+  users:
+    unverified: "अप्रमाणित प्रयोगकर्ता"
+    select_role: "प्रयोगकर्ता प्रमाणित गर्नु अघि भूमिका छान्नुहोस"
+    manage: "प्रयोगकर्ता व्यवस्थापन"
+    label: "प्रयोगकर्ता"
+    create: "प्रयोगकर्ता बनाउनुहोस"
+    account_details: "खाता विवरण"
+    actions:
+      show_all: "सबै देखाउदै"
+      show: "देखाउनुहोस"
+    messages:
+      disable: 'के तपाईं यो प्रयोगकर्ता अक्षम गर्न निश्चित हुनुहुन्छ?'
+    sort_by:
+      label: "क्रमबद्ध"
+      full_name: "पुरा नाम"
+
+
+
+  roles:
+    label: "भूमिकाहरू"
+    list: "भूमिकाहरुको "
+    sort_by:
+      label: "क्रमबद्ध"
+      ascending: "बढ्दै"
+      descending: "घट्दै"
+    name: "भूमिका नाम"
+    actions:
+      show_all: "सबै देखाउदै"
+      show: "देखाउनुहोस"
+      edit: "सम्पादन"
+      update: "उपडेट"
+      create: "बनाउनुहोस"
+    view: "भूमिका हेर्नुहोस"
+
+  user:
+    label: "प्रयोगकर्ता"
+    full_name: "पुरा नाम"
+    history_of: "%{user_name} को इतिहास"
+    disabled: "असक्षम"
+    actions:
+      delete: "हटाउनुहोस"
+    messages:
+      confirmation: "क तपाई यो प्रयोगकर्ता हटाउन निश्चित हुनुहुन्छ? यो अन्डु गर्न मिल्दैन। हटाउन ठिक क्लिक गर्नुहोस।"
+      created: "प्रयोगकर्ता सफलतापुर्वक बनाइयो"
+      updated: "प्रयोगकर्ता सफलतापुर्वक अपडेट गरियो"
+      not_found: "यो आइडिको प्रयोगकर्ता भेटिएन"
+      passwords_do_not_match: "वर्तमान पासवर्ड मेल खाँदैन"
+      password_changed_successfully: "पासवर्ड सफलतापूर्वक परिवर्तन गरियो"
+      time_zone_updated: "परिवर्तन सफलतापूर्वक अपडेट गरियो"
+    update: "अपडेट गर्नुहोस"
+    verify: "प्रमाणित गर्नुहोस"
+    create: "बनाउनुहोस"
+    no_blank: "युजर्नेममा खाली अक्षर हुनु हुदैन"
+    manage_password: "पासवर्ड परिवर्तन गर्नुहोस"
+    old_password: "पुरानो पासवर्ड"
+    new_password: "नयाँ पासवर्ड"
+    new_password_confirmation: "नयाँ पासवर्ड निश्चित गर्नुहोस"
+    new: "नयाँ प्रयोगकर्ता"
+    user_action_history: "प्रयोगकर्ता कार्य इतिहास"
+    no_activity: "को कुनै गतिबिधि छैन"
+
+  actions: "कार्यहरु"
+  phone: "फोन"
+  email: "ईमेल"
+  organisation: "संस्था"
+  position: "पद"
+  location: "स्थान"
+  false: "बेठिक"
+  true: "ठिक"
+  mandatory_field: "चिन्ह लगाइएका क्षेत्रहरु अनिवार्य हुन्"
+  add: "थप्नुहोस"
+  belonging_to: "स्वामित्व"
+  hello: "  नमस्ते"
+  imei: "आइमइआइ"
+  blacklisted: "कालो सूचीमा?"
+  visible: "देखिने"
+  hidden: "  लुकाइएको"
+  help_text: "सहायता टेक्स्ट"
+  cancel: "रद्द"
+  discard: "रद्द"
+  form: "फारम"
+  details: "विवरण"
+  enabled: "सक्रिय"
+  status: "स्थिति"
+  devices: "उपकरणहरू"
+  provide_translation: "अनुवाद प्रदान गर्नुहोस"
+
+  role:
+    create: "भूमिका बनाउनुहोस"
+    edit: "भूमिका सम्पादन गर्नुहोस"
+    name: "नाम"
+    successfully_updated: "भूमिका विवरण सफलतापुर्वक अपडेट गरियो"
+    error_in_updating: "भूमिका विवरण अपडेटमा त्रुटी"
+  record: "रेकर्ड"
+  description: "विवरण"
+  name: "नाम"
+
+  permissions:
+    label: "अनुमतिहरु"
+    group:
+      Reports: रिपोर्टहरु
+      Devices: उपकरणहरु
+      System: प्रणाली
+      Roles: भूमिका
+      Children: बच्चाहरु
+      Forms: फारमहरू
+      Users: प्रयोगकर्ताहरु
+      ALL: All
+
+    permission:
+      "Register Child": "बाल दर्ता"
+      "Edit Child": "बच्चा सम्पादन"
+      "View And Search Child": "बच्चा हेर्नुहोस र खोज्नुहोस"
+      "Export to Photowall/CSV/PDF": "फोटो वाल/CSV/PDF मा निर्यात गर्नुहोस"
+      "Manage Forms": "फारम व्यवस्थापन गर्नुहोस"
+      "Create and Edit Users": "प्रयोगकर्ता बनाउनुहोस र सम्पादन गर्नुहोस"
+      "View Users": "प्रयोगकर्ताहरु हेर्नुहोस"
+      "Delete Users": "प्रयोगकर्ताहरु हटाउनुहोस"
+      "Disable Users": "प्रयोगकर्ताहरु असक्षम गर्नुहोस"
+      "BlackList Devices": "उपकरनहरू कालो सूचीत गर्नुहोस"
+      "Create and Edit Roles": "भूमिका बनाउनुहोस र सम्पादन गर्नुहोस"
+      "View roles": "भूमिका हेर्नुहोस"
+      "System Settings": "प्रणाली सेटिंग"
+      "Highlight Fields": "फिल्ड हाइलाइट गर्नुहोस"
+      "Manage Replications": "नक्कल व्यवस्थापन गर्नुहोस"
+      "View roles": "भूमिका हेर्नुहोस"
+      "All": "सबै"
+      "Users for synchronisation": "सर्भर सिङ्क्रोनाइजेसन प्रयोगकर्ता मिलाउनुहोस"
+      "View and Download Reports": "रिपोर्ट हेर्नुहोस र डाउनलोड गर्नुहोस"
+      "Create Enquiry": "पुछताछ बनाउनुहोस, अपडेट गर्नुहोस र हेर्नुहोस"
+      "Update Enquiry": "पुछताछ अपडेट गर्नुहोस र हेर्नुहोस"
+      "View Enquiries": "पुछताछ हेर्नुहोस"
+  forms:
+    label: "फारम"
+    manage: "फारम व्यवस्थापन गर्नुहोस"
+    save: "फारम सेभ गर्नुहोस"
+    save_details: "विवरण सेभ गर्नुहोस"
+    messages:
+      use_existing: "हामी तपाईलाई विद्यमान फारमहरु प्रयोग गर्न प्रोत्साहन गर्छौ किनकि यसो गर्दा साझेदारी र सजिलो संस्थाहरु बीच डाटा बनाउन र जोड्न सजिलो हुन्छ।"
+    initial_language: "प्रारम्भिक भाषा"
+    cannot_be_edited: "यो फारमको फिल्ड सम्पादन गर्न सकिँदैन।"
+    add_standard_forms: "स्ट्यान्डर्ड फारम थप्नुहोस"
+
+  form_section:
+    create: "नया फारम सेक्सन बनाउनुहोस"
+    visibility: "दृश्यता"
+    ordering: "क्रम मिलाउने"
+    details: "फारम विवरण"
+    label: "फारम सेक्सन"
+    back: "फारम पृष्ठमा फर्कनुहोस"
+    actions:
+      add_custom_field: "अनुकूलन क्षेत्र थप्नुहोस्"
+      save_order: "क्रम सेभ गर्नुहोस"
+    messages:
+      order_saved: "क्रम सफलतापुर्वक सेभ गरियो"
+      not_saved: "कृपया पृष्ठ फेरि लोड गर्नुहोस। रातो फिल्डमा गरिएको परिवर्तन सेभ गर्न सकिएन।"
+      cannot_create: "फारम सेक्सन बनाउन सकिएन"
+      correct_errors: "कृपया यी त्रुटिहरु सच्च्याउनुहोस र फेरि बुझाउनुहोस:"
+      hide_confirmation: "के तपाई यी फिल्डहरु लुकाउन निश्चित हुनुहुन्छ?"
+      show_confirmation: "के तपाई यी फिल्डहरु देखाउन निश्चित हुनुहुन्छ?"
+      drag_drop_help_text: चाहेको क्रममा मिलाउन फिल्डमा किल्क गरेर ड्रयाग गर्नुहोस।
+      deleted: "%{display_name} फारम सेक्सन हटाइएको छ।"
+
+      updated: "फारम सेक्सन सफलतापुर्वक थपियो"
+    hide: "लुकाउनुहोस"
+    matchable: "मिल्दो"
+    show: "देखाउनुहोस"
+    manage: "फारम सेक्सन व्यवस्थापन गर्नुहोस"
+    edit: "फारम सेक्सन सम्पादन गर्नुहोस"
+    buttons:
+      add: "थप्नुहोस"
+    options: "अप्सनहरु"
+
+
+  advanced_search:
+    instruction: "एक भन्दा बढी विकल्पहरु खोज्न शब्दहरुलाई OR ले छुट्याउनुहोस जस्तै: राम OR हरि"
+    date_instruction: "कुनै मिति भन्दा पछि बनाइएका वा अपडेट गरिएका रेकर्ड खोज्न पहिलो बक्समा मिति (yyyy-mm-dd) हाल्नुहोस।        कुनै मिति भन्दा अघि बनाइएका वा अपडेट गरिएका रेकर्ड खोज्न पहिलो बक्समा मिति (yyyy-mm-dd) हाल्नुहोस।       दुई मितिको बीचमा बनाइएका रेकर्ड खोज्न दुवै बक्समा मिति (yyyy-mm-dd) हाल्नुहोस।"
+    created_by_org: "बनाउने संस्था:"
+    date_created: "बनाएको मिति:"
+    updated_by: "अपडेट गर्ने प्रयोगकर्ता:"
+    after: "पछि:"
+    before: "अघि:"
+    created_by: "बनाउने प्रयोगकर्ता:"
+    date_updated: "अपडेट गरेको मिति:"
+    select_a_criteria: "मापदण्ड छान्नुहोस"
+    records_found:
+      one: "एउटा रेकर्ड भेटियो"
+      other: "%{count} रेकर्डहरु भेटियो"
+
+  search: "खोज"
+  select_all: "सबै रेकर्ड छान्नुहोस"
+  no_results_found: "कुनै नतिजा भेटिएन"
+  date_format: "yy-mm-dd"
+  yes_label: "हो"
+  cancel: "रद्द"
+
+  contact:
+    message: "यदि तपाईले RapidFTR मा कुनै समस्या भेट्नुभयो वा पासवर्ड उजागर भएको जस्तो लाग्यो भने, तुरुन्तै प्रणाली प्रशासकलाई तुरुन्त सम्पर्क गर्नुहोस्।"
+    field:
+      name: "नाम"
+      position: "पद"
+      organization: "संस्था"
+      email: "ईमेल"
+      phone: "फोन"
+      location: "स्थान"
+      other_information: "अन्य जानकारी"
+    updated: "सम्पर्क जानकारी सफलतापुर्वक अपडेट गरियो"
+    edit_info: "सम्पर्क जानकारी सम्पादन"
+    info_label: "सम्पर्क जानकारी"
+    not_found: "%{id} को सम्पर्क जानकारी भेटिएन"
+
+  device:
+    blacklist: "उपकरण कालो सूचीत गर्नुहोस"
+    messages:
+      blacklist: "के तपाई यो उपकरणलाई कालो सूचीत गर्न चाहनुहुन्छ?"
+      remove_blacklist: "के तपाई यो उपकरणलाई कालो सूचीबाट हटाउन चाहनुहुन्छ?"
+      disable: "के तपाई यो उपकरणलाई असक्षम गर्न निश्चित हुनुहुन्छ?"
+    information: "उपकरण जानकारी"
+    mobile_number: "मोबाइल नम्बर"
+    timestamp: "टाइमस्ट्याम्प"
+
+  admin:
+    contact_info: "व्यवस्थापक संपर्क जानकारी"
+    highlight_fields: "फिल्ड हाइलाइट गर्नुहोस"
+    manage_system_users: "सर्भर सिङ्क्रोनाइजेसन प्रयोगकर्ता मिलाउनुहोस"
+    create_system_user:  प्रणाली प्रयोगकर्ता बनाउनुहोस
+    system_logs: "प्रणाली लग"
+    system_variables: "प्रणाली भ्याराएबल"
+    manage_system_variables: "प्रणाली भ्याराएबल व्यस्थापन"
+    key: "कि"
+    value: "भ्यालु"
+
+  fields:
+    label: "फिल्डहरु"
+    field_name: "फिल्ड नाम"
+    display_name: "देखिने नाम"
+    option_strings_text: "अप्सनहरु"
+    form_name: "फारम नाम"
+    action: "कार्य"
+    remove: "हटाउनुहोस"
+    text_field: "टेक्स्ट फिल्ड"
+    check_box: "चेक बक्स"
+    select_box: "सेलेक्ट ड्रप डाउन "
+    radio_button: "रेडियो बटन"
+    text_area: "टेक्स्ट एरिया"
+    numeric_field: "अंक फिल्ड"
+    date_field: "मिति फिल्ड"
+    successfully_added: "फिल्ड सफलतापूर्वक थपियो"
+    updated: "फिल्ड अपडेट गरियो"
+    deleted: "%{display_name} फिल्ड हटाइयो"
+    add: "फिल्ड थप्नुहोस"
+    type: "फिल्ड प्रकार"
+    move_to: "यहाँ सार्नुहोस:"
+    title_field: "शीर्षक फिल्ड"
+
+  replication:
+    label: नक्कल बनाउनुहोस
+    index: नक्कल व्यवस्थापन गर्नुहोस
+    create: सर्भर कन्फिगर गर्नुहोस
+    edit: कन्फिगरेसन सम्पादन गर्नुहोस
+    remote_app_url: RapidFTR युआरएल
+    actions: कार्य
+    status: स्तिथि
+    description: विवरण
+    timestamp: टाइमस्ट्याम्प
+    delete: हटाउनुहोस
+    completed: सफल
+    triggered: प्रगति हुदैछ
+    error: असफल
+    confirm_delete: के तपाईं यो नक्कल हटाउन निश्चित हुनुन्छ?
+    start: सिङ्क्रोनाइजेसन सुरु गर्नुहोस
+    stop: सिङ्क्रोनाइजेसन बन्द गर्नुहोस
+    configure_a_server: सर्भर कन्फिगर गर्नुहोस
+
+  session:
+    about_to_expire: "तपाईंको सेसन सकिन लाग्यो!"
+    login_error: "लगइनमा समस्या छ। फेरि प्रयास गर्नुहोस।"
+    has_expired: "तपाईंको सेसन सकियो। फेरि लगइन गर्नुहोस।"
+    invalid_credentials: "जानकारी मिलेन। फेरि प्रयास गर्नुहोस।"
+    invalid_request: "अनुरोध ढाचा मिलेन"
+    forbidden: "यो कार्य गर्न तपाईंलाई अनुमति छैन!"
+    internal_server_error: "यो अनुरोध प्रशोधन गर्दा सर्भरले समस्या भेट्यो। प्रणाली प्रशासकलाई सम्पर्क गर्नुहोस्।"
+    device_blacklisted: "तपाईंको उपकरण कालो सूचीमा छ। प्रणाली प्रशासकलाई सम्पर्क गर्नुहोस्।"
+
+  report:
+    heading: "RapidFTR रिपोर्ट"
+    type: "प्रकार"
+    as_of_date: "मितिको"
+    download: "डाउनलोड"
+    types:
+      weekly_report: "साप्ताहिक रिपोर्ट"
+
+  encrypt:
+    password_title: "पासवर्ड"
+    password_label: "फाइल इन्क्रिप्ट गर्न पासवर्ड हाल्नुहोस"
+    password_mandatory: "मिल्ने पासवर्ड हाल्नुहोस"
+
+  administration: "प्रशासन"
+  new: "नयाँ"
+  saved: "सेभ गरियो"
+  account: "खाता"
+  moved_from: "%{field_name} लाई  %{from_fs} बाट %{to_fs} सारियो"
+
+  # validation error messages
+  couchrest:
+    fields:
+      Name: "नाम"
+      Username: "युसरनेम"
+      Password: "पासवर्ड"
+      Description: "विवरण"
+      "Remote app url": "रिमोट अ्याप युआरएल"
+
+    validations:
+      blank: "%s खाली हुन सक्दैन"
+
+  errors:
+
+    template:
+      header:
+        one: "एक त्रुटीले  यो %{model}  सेभ गर्न निषेध गरिरहेको छ"
+        other: "%{count} त्रुटीहरुले  यो %{model} सेभ गर्न निषेध गरिरहेको छ"
+        body: "यी फिल्डहरुमा समस्या छन्:"
+
+    models:
+      user:
+        full_name: "कृपया प्रयोगकर्ताको पुरा नाम हाल्नुहोस"
+        password_confirmation: "कृपया पासवर्ड निश्चित गर्नुहोस"
+        password_mismatch: "पासवर्ड फिल्डहरुमा एउटै पासवर्ड छैनन्"
+        role_ids: "कृपया कम्तिमा एउटा भूमिका छान्नुहोस"
+        organisation: "कृपया संस्थाको नाम हाल्नुहोस"
+        user_name: "कृपया सहि युसरनेम हाल्नुहोस"
+        email: "कृपया सहि इमेल हाल्नुहोस"
+        user_name_uniqueness: "यो युसरनेम अरु कसैले लिइसक्नुभयो। कृपया नयाँ युसरनेम छान्नुहोस्"
+        authenticate: "सेभ नगरिएको प्रयोगकर्ता प्रमाणित गर्न सकिदैन"
+
+      child:
+        at_least_one_field: "कृपया कम्तिमा एउटा फिल्ड भर्नुहोस् वा फाइल अपलोड गर्नुहोस"
+        age: "उमेर १ देखि ९९ सम्म मात्र हुन सक्छ"
+        photo_format: "कृपया यो बाल रेकर्डको लागि सहि फोटो फाइल ( jpg वा  png) अपलोड गर्नुहोस"
+        photo_size: "फोटो फाइल धेरै ठुलो भयो"
+        audio_size: "अडियो फाइल धेरै ठुलो भयो"
+        primary_photo_id: "'%{photo_id}' लाई प्राथमिक फोटो बनाउन सकिएन: यस्तो फोटो की छैन।"
+        validate_duplicate: "सहि नक्कल आइडी दिनुपर्छ"
+
+      field:
+        display_name_presence: "देखिने नाम खाली हुनु हुनुहुदैन"
+        display_name_format: "देखिने नाममा कम्तिमा एउटा अल्फाबेट हुनुपर्छ"
+        has_2_options: "फिल्डमा कम्तिमा २ अप्सनहरु हुनुपर्छ"
+        has_1_option: "चेक बक्समा कम्तिमा एउटा अप्सन हुनुपर्छ"
+        unique_name_other: "यो फिल्ड '%{form_name}' फारममा पहिले नै छ"
+        unique_name_this: "यो फिल्ड यहि फारममा पहिले नै छ"
+
+      form_section:
+        presence_of_name: "नाम खाली हुनुहुदैन"
+        presence_of_base_language_name: "आधार भाषा '% {base_language}'को नाम खाली हुन सक्दैन"
+        format_of_name: "नाममा अक्षर, अंक र खाली स्पेस मात्र हुन सक्छ"
+        visible_method: "perm_visible सांचो छ भने visible झूटो हुन सक्दैन"
+        fixed_order_method: "perm_enabled सांचो छ भने fixed_order झूटो हुन सक्दैन"
+        perm_visible_method: "perm_enabled सांचो छ भने perm_visible झूटो हुन सक्दैन"
+        add_field_to_form_section: "फारम सेक्सन सम्पादन गर्न मिल्दैन"
+        delete_field: "सम्पादन गर्न नमिल्ने फिल्ड हटाउन मिल्दैन"
+        unique_name: "'%{name}'नाम अरु कसैले लिइसक्नुभएको छ"
+        unique_id: "'%{unique_id}'पृथक आइडी अरु कसैले लिईसक्नुभएको छ"
+
+      enquiry:
+        presence_of_enquirer_name: "कृपया पुछताछमा पुछताछ गर्नेको नाम लेख्नुहोस"
+        presence_of_reporter_details:  "कृपया पुछताछमा रिपोर्ट गर्नेको विवरण लेख्नुहोस"
+        create_forbidden: "निषेध"
+        at_least_one_field: "कृपया कम्तिमा एउटा फिल्ड भर्नुहोस् वा फाइल अपलोड गर्नुहोस"
+        not_found: "भेटिएन"
+        malformed_query: "नमिल्दो अनुरोध"
+
+
+      role:
+        permission_presence: "कृपया कम्तिमा एउटा अनुमति छान्नुहोस्"
+        unique_name: "यो नामको भूमिका पहिलै छ। कृपया नया नाम हाल्नुहोस।"
+
+      system_users:
+        username_unique: "यो युसरनेम अरु कसैले लिइसक्नुभयो। कृपया नयाँ युसरनेम छान्नुहोस्।"
+
+      replication:
+        remote_app_url: "कृपया सहि युआरएल हाल्नुहोस, जस्तै: http://<server>:<port>"
+        save_remote_couch_config: "तपाईले हाल्नुभएको युआरएल/युसरनेम/पासवर्ड मिलेन"
+
+      password_recovery_request:
+        user_name_mandatory: "सहि युसरनेम हाल्नुहोस"
+
+
+
+  select_all_results: "सबै नतिजा छान्नुहोस"
+
+  histories:
+    of: "को"
+    to: "लाई"
+    by: "बाट"
+    added_by: "थप्ने"
+    belong_to: "स्वामित्व"
+    because: "किनकि:"
+    deleted_by: "हटाउने"
+
+    system_logs:
+      records_performed_by: "रेकर्ड प्रदर्शन गर्ने"
+      performed_by: "प्रदर्शन गर्ने"
+      of_child_with_id: "बच्चाको यो आइडी भएको:"
+
+    audio:
+      audio: "अडियो"
+      audio_change: "यो अडियोबाट परिवर्तन गरियो:"
+
+    duplicate:
+      mark_as_duplicate: "यो रेकर्ड यसको नक्कलको रुपमा चिन्ह लगाइयो:"
+      no_longer_active: "वर्तमान रेकर्ड सक्रिय वा सम्पादन योग्य छैन"
+
+    flag:
+      record_flagged_by: "रेकर्ड फ्ल्याग गर्ने"
+      record_unflagged_by: "रेकर्ड अनफ्ल्याग गर्ने"
+
+    investigated:
+      mark_as_investigated_by: "रेकर्ड अनुसन्धान गरीएको भनी चिन्ह लगाउने"
+      mark_as_not_investigated_by:  "रेकर्ड अनुसन्धान नगरीएको भनी चिन्ह लगाउने"
+
+    reunited:
+      child_status_changed: "बच्चाको स्तिथि सक्रिय भनी पबिर्तन गर्ने"
+      with_details: "यी विवरण सहित:"
+
+  addons:
+    export_task:
+      pdf:
+        all: सबै PDF मा निर्यात गर्नुहोस
+        one: PDF मा निर्यात गर्नुहोस
+        selected: छानेको जति PDF मा निर्यात गर्नुहोस
+      photowall:
+        all: सबै फोटो वालमा निर्यात गर्नुहोस
+        one: फोटो वालमा निर्यात गर्नुहोस
+        selected: छानेको जति फोटो वालमा निर्यात गर्नुहोस
+      csv:
+        all: सबै CSV मा निर्यात गर्नुहोस
+        one: CSV मा निर्यात गर्नुहोस
+        selected: छानेको जति CSV मा निर्यात गर्नुहोस
