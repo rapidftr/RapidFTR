@@ -1,5 +1,5 @@
 class Replication < CouchRest::Model::Base
-  MODELS_TO_SYNC = [Role, Child, User, MobileDbKey, Device]
+  MODELS_TO_SYNC = [Role, Child, User, MobileDbKey, Device, Form, FormSection]
   STABLE_WAIT_TIME = 2.minutes
 
   include RapidFTR::Model
