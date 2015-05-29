@@ -17,7 +17,7 @@ module RapidFTR
     def self.reset_form
       FormSection.all.each { |f| f.destroy  if f.form.name == Enquiry::FORM_NAME  }
       Form.all.each { |f| f.destroy if f.name == Enquiry::FORM_NAME }
-      Form.create(:name => Enquiry::FORM_NAME)
+      Form.create(:_id => '7caed4ef-4001-44d7-977b-529e934ea1db', :name => Enquiry::FORM_NAME)
     end
 
     def self.reset_definitions
