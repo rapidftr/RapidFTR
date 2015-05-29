@@ -75,7 +75,7 @@ describe Replication, :type => :model do
   describe 'getters' do
     it 'should return what models to sync' do
       reset Replication
-      expect(Replication.models_to_sync).to eq([Role, Child, User, MobileDbKey, Device])
+      expect(Replication.models_to_sync).to eq([Role, Child, User, MobileDbKey, Device, Form, FormSection])
     end
 
     it 'should sync roles first, otherwise users will sync first and start throwing role errors' do
