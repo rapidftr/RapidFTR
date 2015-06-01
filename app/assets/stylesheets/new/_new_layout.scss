@@ -15,7 +15,7 @@ body {
       @extend .clearfix;
 
       .logo {
-        background: image-url('new/logo.png') no-repeat;
+        background: url('/logo.png') no-repeat;
         float: left;
         width: 200px;
         height: 35px;
@@ -789,4 +789,3 @@ table#form_sections{
     }
   }
 }
-
