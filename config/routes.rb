@@ -31,6 +31,7 @@ RapidFTR::Application.routes.draw do
   resources :roles
   match 'admin' => 'admin#index', :as => :admin, :via => [:post, :get, :put, :delete]
   match 'admin/update' => 'admin#update', :as => :admin_update, :via => [:post, :get, :put, :delete]
+  match 'admin/logo' => 'admin#logo', :as => :admin_logo_update, :via => [:put]
 
   #######################
   # CHILD URLS

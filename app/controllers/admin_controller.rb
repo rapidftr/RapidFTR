@@ -13,4 +13,15 @@ class AdminController < ApplicationController
     flash[:notice] = I18n.translate('user.messages.time_zone_updated')
     redirect_to admin_path
   end
+
+  def logo
+    filename = '/logo.png'
+    directory = 'public'
+    path =  Rails.root.join(File.join(directory, filename))
+
+    File.open(path, 'wb') { |file| file.write(params[:logo].read) }
+    ActionController::Base.helpers.precompile
+
+    redirect_to admin_path
+  end
 end

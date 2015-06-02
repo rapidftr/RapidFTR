@@ -88,6 +88,7 @@ en:
      change_password: "Change Password"
      enable_photo_wall: "Enable photo wall"
      disable_photo_wall: "Disable photo wall"
+     upload: "Upload"
 
   children:
     label: "Children"

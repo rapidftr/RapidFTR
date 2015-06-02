@@ -20,3 +20,8 @@ h1
   = label_tag "user_locale", t("home.language")
   = select_tag :locale, options_for_select(RapidFTR::Application::LOCALES_WITH_DESCRIPTION, I18n.default_locale)
   = submit_tag t("buttons.save")
+
+= form_tag admin_logo_update_path, :method => "put", :multipart => true  do
+  = label_tag "system_logo", t("home.logo")
+  = file_field_tag "logo"
+  = submit_tag t("buttons.upload")
