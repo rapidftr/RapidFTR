@@ -568,7 +568,7 @@ describe BaseModel, :type => :model do
     end
   end
 
-  it 'should set last_updated_at to created_at during creation' do    
+  it 'should set last_updated_at to created_at during creation' do
     allow(RapidFTR::Clock).to receive(:current_formatted_time).and_return('2015-06-02 17:10:32UTC')
     user = {:username => 'Foo Bar', :organisation => 'UNICEF'}
     fields = {'last_known_location' => 'london',

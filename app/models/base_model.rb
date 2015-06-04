@@ -82,6 +82,6 @@ class BaseModel < CouchRest::Model::Base
   end
 
   def add_last_updated_at
-    self[:last_updated_at] = self.created_at
+    self[:last_updated_at] = created_at
   end
 end
