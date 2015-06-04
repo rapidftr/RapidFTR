@@ -62,3 +62,11 @@
     font-weight: bold;
 }
 
+.error {
+  color: red;
+  text-align: left;
+  font-weight: bold;
+  font-size: 15px;
+  border: 1px solid red;
+  padding: 5px;
+}

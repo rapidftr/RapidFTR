@@ -44,6 +44,8 @@ en:
     enter_each_in_one_line: "Enter each option on a new line"
     record_count: "Showing %{start} to %{end} of %{total} records"
     unknown_search_type: "Unknown Search Type"
+    file_size_exceeds_limitation_of_1mb: "File size exceeds limitation of 1MB"
+    expecting_png: "Expecting PNG file"
 
   data_base:
     delete_all_documents: "Deleted all child documents"
