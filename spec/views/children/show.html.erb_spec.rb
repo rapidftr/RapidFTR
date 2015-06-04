@@ -68,7 +68,6 @@ describe 'children/show.html.erb', :type => :view do
         expect(rendered).to have_tag('#interviewer_details')
         expect(rendered).to be_include('Registered by: jsmith')
         expect(rendered).not_to be_include('and others')
-        expect(rendered).not_to be_include('Last updated:')
       end
 
       it 'should show link to change log if child has been updated by multiple people' do

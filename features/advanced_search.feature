@@ -168,7 +168,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Given I am logged in
     And I am on child advanced search page
     And the following children exist in the system:
-      | name   | last_updated_at        |
+      | name   | created_at             |
       | Emma   | 2012-04-21 23:59:59UTC |
       | Andrew | 2012-04-22 11:23:58UTC |
       | Peter  | 2012-04-23 03:32:12UTC |

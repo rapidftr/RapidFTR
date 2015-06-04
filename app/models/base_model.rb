@@ -14,7 +14,7 @@ class BaseModel < CouchRest::Model::Base
   before_save :update_photo_keys
   before_save :update_history, :unless => :new?
   before_save :add_creation_history, :if => :new?
-  before_save :add_last_updated_at
+  before_save :add_last_updated_at, :if => :new?
 
   def initialize(*args)
     self['photo_keys'] ||= []

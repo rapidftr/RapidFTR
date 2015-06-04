@@ -31,7 +31,7 @@ Feature: Sync one/all enquiries on the API
       | deb           | 4   | 2011-06-22 02:07:51UTC | 2011-06-22 02:07:51UTC | Kavitha    |
 
     When I send a GET request to "/api/enquiries"
-    Then the JSON should be:
+    Then the JSON should have:
     """
     [
       {

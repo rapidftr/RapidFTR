@@ -71,10 +71,10 @@ describe Search, :solr => true do
 
     describe 'order results' do
       before :each do
-        @model1 = create model_factory, :created_by => 'Test 1', :last_updated_at => 1.minute.ago.to_s
-        @model2 = create model_factory, :created_by => 'Test 2', :last_updated_at => 1.hour.ago.to_s
-        @model3 = create model_factory, :created_by => 'Test 3', :last_updated_at => 1.day.ago.to_s
-        @model4 = create model_factory, :created_by => 'Test 4', :last_updated_at => 1.week.ago.to_s
+        @model1 = create model_factory, :created_by => 'Test 1', :created_at => 1.minute.ago.to_s
+        @model2 = create model_factory, :created_by => 'Test 2', :created_at => 1.hour.ago.to_s
+        @model3 = create model_factory, :created_by => 'Test 3', :created_at => 1.day.ago.to_s
+        @model4 = create model_factory, :created_by => 'Test 4', :created_at => 1.week.ago.to_s
       end
 
       it 'should order results ascending' do
@@ -163,8 +163,8 @@ describe Search, :solr => true do
 
     describe 'less_than' do
       before :each do
-        @model1 = create model_factory, :last_updated_at => 1.minute.ago.to_s
-        @model2 = create model_factory, :last_updated_at => 1.hour.ago.to_s
+        @model1 = create model_factory, :created_at => 1.minute.ago.to_s
+        @model2 = create model_factory, :created_at => 1.hour.ago.to_s
       end
 
       it 'should only return values less than the provided value' do
@@ -181,8 +181,8 @@ describe Search, :solr => true do
 
     describe 'greater_than' do
       before :each do
-        @model1 = create model_factory, :last_updated_at => 1.minute.ago.to_s
-        @model2 = create model_factory, :last_updated_at => 1.hour.ago.to_s
+        @model1 = create model_factory, :created_at => 1.minute.ago.to_s
+        @model2 = create model_factory, :created_at => 1.hour.ago.to_s
       end
 
       it 'should only return values greater than the provided value' do
