@@ -35,6 +35,17 @@ namespace :app do
       if form.nil?
         RapidFTR::EnquiriesFormSectionSetup.reset_form
       end
+
+      rapidreg_user = User.find_by_user_name('rapidreg')
+      unless rapidreg_user.nil?
+        rapidreg_user.destroy
+      end
+
+      rapidftr_user = User.find_by_user_name('rapidftr')
+      unless rapidftr_user.nil?
+        rapidftr_user.disabled = false
+        rapidftr_user.save!
+      end
     end
 
     desc 'Disable the enquiries feature'
@@ -58,6 +69,26 @@ namespace :app do
       form = Form.find_by_name(Enquiry::FORM_NAME)
       unless form.nil?
         form.destroy
+      end
+
+      system_admin = Role.find_by_name('System Admin')
+      user = User.find_by_user_name('rapidreg')
+
+      if user.nil? && !system_admin.nil?
+        User.create!('user_name' => 'rapidreg',
+                     'password' => 'rapidreg',
+                     'password_confirmation' => 'rapidreg',
+                     'full_name' => 'Rapidreg Administrator',
+                     'email' => 'rapidreg@rapidreg.com',
+                     'disabled' => 'false',
+                     'organisation' => 'N/A',
+                     'role_ids' => [system_admin.id])
+      end
+
+      rapidftr_user = User.find_by_user_name('rapidftr')
+      unless rapidftr_user.nil?
+        rapidftr_user.disabled = true
+        rapidftr_user.save!
       end
     end
   end
