@@ -567,4 +567,17 @@ describe BaseModel, :type => :model do
       expect(base_model.histories.length).to eq(1)
     end
   end
+
+  it 'should set last_updated_at to created_at during creation' do
+    allow(RapidFTR::Clock).to receive(:current_formatted_time).and_return('2015-06-02 17:10:32UTC')
+    user = {:username => 'Foo Bar', :organisation => 'UNICEF'}
+    fields = {'last_known_location' => 'london',
+              'created_by' => 'me',
+              'created_organisation' => 'stc'}
+
+    base_model = BaseModel.new_with_user_name(user, fields)
+    base_model.save
+
+    expect(base_model.last_updated_at).to eq('2015-06-02 17:10:32UTC')
+  end
 end

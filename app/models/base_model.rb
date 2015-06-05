@@ -14,6 +14,7 @@ class BaseModel < CouchRest::Model::Base
   before_save :update_photo_keys
   before_save :update_history, :unless => :new?
   before_save :add_creation_history, :if => :new?
+  before_save :add_last_updated_at, :if => :new?
 
   def initialize(*args)
     self['photo_keys'] ||= []
@@ -78,5 +79,9 @@ class BaseModel < CouchRest::Model::Base
   def create_unique_id
     self.unique_identifier ||= UUIDTools::UUID.random_create.to_s
     self.short_id = unique_identifier.last 7
+  end
+
+  def add_last_updated_at
+    self[:last_updated_at] = created_at
   end
 end
