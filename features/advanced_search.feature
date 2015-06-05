@@ -187,12 +187,12 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     Given I am logged in
     And I am on child advanced search page
     And the following children exist in the system:
-      | name    | created_by  | created_by_full_name | last_updated_by | last_updated_by_full_name | created_at             | last_updated_at        |
-      | Willis  | john        | bob                  | tim             | jane                      | 2012-04-21 23:59:59UTC | 2012-05-21 23:59:59UTC |
-      | Wilbert | jane        | john                 | bob             | tim                       | 2012-04-22 11:23:58UTC | 2012-05-22 11:23:58UTC |
-      | James   | john        | bob                  | tim             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-24 03:32:12UTC |
-      | William | tim         | bob                  | bob             | jane                      | 2012-04-23 03:32:12UTC | 2012-05-23 03:32:12UTC |
-      | Wilfred | jane        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC | 2012-05-24 14:10:03UTC |
+      | name    | created_by  | created_by_full_name | last_updated_by | last_updated_by_full_name | created_at             |
+      | Willis  | john        | bob                  | tim             | jane                      | 2012-04-21 23:59:59UTC |
+      | Wilbert | jane        | john                 | bob             | tim                       | 2012-04-22 11:23:58UTC |
+      | James   | john        | bob                  | tim             | jane                      | 2012-04-23 03:32:12UTC |
+      | William | tim         | bob                  | bob             | jane                      | 2012-04-23 03:32:12UTC |
+      | Wilfred | jane        | john                 | bob             | tim                       | 2012-04-24 14:10:03UTC |
     When I click text "Select A Criteria"
     And I click text "Name"
     And I fill in "criteria_list[0][value]" with "Wil"
@@ -200,7 +200,7 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I fill in "updated_by_value" with "jan"
     And I fill in "created_at_after_value" with "2012-04-22"
     And I fill in "created_at_before_value" with "2012-04-24"
-    And I fill in "updated_at_after_value" with "2012-05-21"
+    And I fill in "updated_at_after_value" with "2012-04-21"
     And I fill in "updated_at_before_value" with "2012-05-24"
     And I search
     And I wait for the page to load
