@@ -12,7 +12,7 @@
     </p>
     <p>
       <%= f.label :password, t("login.password.label"), :class=>'key'  %>
-      <%= f.password_field :password, :autocomplete => "off" %>*
+      <%= f.password_field :password, :autocomplete => "off" %>* <%= t("login.password.system_user_password_notice")%>
     </p>
   </fieldset>
 

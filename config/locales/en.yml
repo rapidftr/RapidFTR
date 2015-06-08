@@ -60,6 +60,7 @@ en:
       re_enter: "Re-enter password"
       success_notice: "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
       successfully_hidden: "Password request notification was successfully hidden."
+      system_user_password_notice: "Password should not contain special characters like .,/,<,>"
 
     label: "Login"
   header:
