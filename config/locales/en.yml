@@ -19,6 +19,8 @@ en:
     manage_system_users: "Manage Server Synchronisation Users"
     records_need_attention: "Records need Attention"
     label: "Home"
+    rapidreg:
+      welcome: "Welcome to RapidREG"
   clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
