@@ -19,6 +19,8 @@ en:
     manage_system_users: "Manage Server Synchronisation Users"
     records_need_attention: "Records need Attention"
     label: "Home"
+    rapidreg:
+      welcome: "Welcome to RapidREG"
   clear: "Clear"
   messages:
     delete_item: "Warning: If you continue, any data associated with this field will be lost.\nIf you\'re uncertain, disable the field instead.\nClick Cancel to go back. Click OK to Delete the field."
@@ -60,6 +62,7 @@ en:
       re_enter: "Re-enter password"
       success_notice: "Thank you. A RapidFTR administrator will contact you shortly. If possible, contact the admin directly."
       successfully_hidden: "Password request notification was successfully hidden."
+      system_user_password_notice: "Password should not contain special characters like .,/,<,>"
 
     label: "Login"
   header:

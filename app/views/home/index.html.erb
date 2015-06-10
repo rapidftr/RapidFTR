@@ -1,4 +1,10 @@
-<h2><%= t "home.welcome" %></h2>
+<h2>
+  <% if Enquiry.enquiries_enabled? %>
+    <%= t "home.welcome" %>
+  <% elsif !Enquiry.enquiries_enabled? %>
+    <%= t "home.rapidreg.welcome" %>
+  <% end %>
+</h2>
 
 <%= render 'notifications' %>
 
