@@ -16,6 +16,7 @@ module RapidFTR
     config.autoload_paths += %W(
       #{config.root}/lib
       #{config.root}/lib/addons
+      #{config.root}/lib/export_generator.rb
       #{config.root}/lib/rapid_ftr
       #{config.root}/lib/extensions
       #{config.root}/app/presenters

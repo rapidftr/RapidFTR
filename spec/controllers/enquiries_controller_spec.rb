@@ -1,5 +1,20 @@
 require 'spec_helper'
 
+def inject_export_generator(fake_export_generator, enquiry_data)
+  allow(ExportGenerator).to receive(:new).with(enquiry_data).and_return(fake_export_generator)
+end
+
+def stub_out_export_generator(enquiry_data = [])
+  inject_export_generator(stub_export_generator = double(ExportGenerator), enquiry_data)
+  allow(stub_export_generator).to receive(:child_photos).and_return('')
+  stub_export_generator
+end
+
+def stub_out_enquiry_get(mock_enquiry = double(Enquiry))
+  allow(Enquiry).to receive(:get).and_return(mock_enquiry)
+  mock_enquiry
+end
+
 describe EnquiriesController, :type => :controller do
   describe '#index', :solr => true do
     before :each do
@@ -431,5 +446,62 @@ describe EnquiriesController, :type => :controller do
         end
       end
     end
+  end
+
+  describe '#respond_to_export' do
+    before :each do
+      fake_admin_login
+      @enquiry1 = build :enquiry
+      @enquiry2 = build :enquiry
+      results = [@enquiry1, @enquiry2]
+      allow_any_instance_of(Search).to receive(:results).and_return(results)
+    end
+
+    it 'should handle full PDF' do
+      expect_any_instance_of(Addons::PdfExportTask).to receive(:export).with([@enquiry1, @enquiry2]).and_return('data')
+      get :index, :format => :pdf
+    end
+
+    it 'should handle Photowall PDF' do
+      expect_any_instance_of(Addons::PhotowallExportTask).to receive(:export).with([@enquiry1, @enquiry2]).and_return('data')
+      get :index, :format => :photowall
+    end
+
+    it 'should handle CSV' do
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@enquiry1, @enquiry2]).and_return('data')
+      get :index, :format => :csv
+    end
+
+    it 'should handle custom export addon' do
+      mock_addon = double
+      mock_addon_class = double(:new => mock_addon, :id => 'mock')
+      RapidftrAddon::ExportTask.stub :active => [mock_addon_class]
+      allow(controller).to receive(:authorize!)
+      expect(mock_addon).to receive(:export).with([@enquiry1, @enquiry2]).and_return('data')
+      get :index, :format => :mock
+    end
+
+    it 'should encrypt result' do
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@enquiry1, @enquiry2]).and_return('data')
+      expect(controller).to receive(:export_filename).with([@enquiry1, @enquiry2], Addons::CsvExportTask).and_return('test_filename')
+      expect(controller).to receive(:encrypt_exported_files).with('data', 'test_filename').and_return(true)
+      get :index, :format => :csv
+    end
+
+    it 'should generate filename based on enquiry ID and addon ID when there is only one enquiry' do
+      @enquiry1.stub :short_id => 'test_short_id'
+      expect(controller.send(:export_filename, [@enquiry1], Addons::PhotowallExportTask)).to eq('test_short_id_photowall.zip')
+    end
+
+    it 'should generate filename based on username and addon ID when there are multiple enquiries' do
+      controller.stub :current_user_name => 'test_user'
+      expect(controller.send(:export_filename, [@enquiry1, @enquiry2], Addons::PdfExportTask)).to eq('test_user_pdf.zip')
+    end
+
+    it 'should handle CSV' do
+      expect_any_instance_of(Addons::CsvExportTask).to receive(:export).with([@enquiry1, @enquiry2]).and_return('data')
+      get :index, :format => :csv
+    end
+
   end
 end

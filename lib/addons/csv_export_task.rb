@@ -4,16 +4,16 @@ module Addons
       :csv
     end
 
-    def export(children)
-      [Result.new(generate_filename(children), generate_data(children))]
+    def export(models)
+      [Result.new(generate_filename(models), generate_data(models))]
     end
 
-    def generate_data(children)
-      ExportGenerator.new(children).to_csv.data
+    def generate_data(models)
+      ExportGenerator.new(models).to_csv.data
     end
 
-    def generate_filename(children)
-      ((children && children.length == 1) ? (children[0]['unique_identifier']) : 'full_data') + '.csv'
+    def generate_filename(models)
+      ((models && models.length == 1) ? (models[0]['unique_identifier']) : 'full_data') + '.csv'
     end
   end
 end

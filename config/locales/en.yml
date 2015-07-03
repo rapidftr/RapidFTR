@@ -143,6 +143,7 @@ en:
     unmark_child_as_matching: "Undo Confirmation"
     history_of: "History of %{short_id}"
     change_log: "Change Log"
+    export_error: "No Records Available!"
     filter:
       all: "All"
       reunited: "Reunited"
