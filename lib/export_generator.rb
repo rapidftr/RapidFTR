@@ -37,7 +37,7 @@ class ExportGenerator
   end
 
   def to_csv
-    fields = metadata_fields([], CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields_for_form(Child::FORM_NAME)
+    fields = metadata_fields([], CHILD_IDENTIFIERS) + FormSection.all_visible_child_fields_for_form(model_class()::FORM_NAME)
     field_names = fields.map { |field| field.display_name }
     csv_data = CSV.generate do |rows|
       rows << field_names + CHILD_STATUS + metadata_fields([], CHILD_METADATA).map { |field| field.display_name }
@@ -133,7 +133,7 @@ class ExportGenerator
     @fields ||= metadata_fields([], CHILD_IDENTIFIERS + CHILD_METADATA)
     field_pair = @fields.map { |field| [field.display_name, format_field_for_export(field, child[field.name])] }
     render_pdf(field_pair)
-    @form_sections ||= FormSection.enabled_by_order_for_form Child::FORM_NAME
+    @form_sections ||= FormSection.enabled_by_order_for_form model_class()::FORM_NAME
     @form_sections.each do |section|
       @pdf.text section.name, :style => :bold, :size => 16
       field_pair = section.fields.
@@ -164,5 +164,9 @@ class ExportGenerator
 
   def flag_if_reunited(child)
     @pdf.text('Reunited', :style => :bold) if child.reunited?
+  end
+
+  def model_class
+    @child_data.first.class
   end
 end
