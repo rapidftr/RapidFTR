@@ -159,6 +159,7 @@ class Ability
     if  user.has_permission?(Permission::ENQUIRIES[:export_pdf])
       can [:export_pdf], Enquiry
     end
+    
   end
 
   def initialize_child_permissions(user)
