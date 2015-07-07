@@ -19,8 +19,8 @@ class Permission
                                          {:update => 'Update Enquiry'},
                                          {:view => 'View Enquiries'},
                                          {:export_photowall => 'Export to Photowall'},
-                                        {:export_csv => 'Export to CSV'},
-                                        {:export_pdf => 'Export to PDF'}
+                                         {:export_csv => 'Export to CSV'},
+                                         {:export_pdf => 'Export to PDF'}
   )
   FORMS = Permission.to_ordered_hash(:manage => 'Manage Forms')
   USERS = Permission.to_ordered_hash({:create_and_edit => 'Create and Edit Users'}, {:view => 'View Users'},

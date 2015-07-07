@@ -3,9 +3,7 @@ class EnquiriesController < ApplicationController
   before_action :load_enquiry, :only => [:show, :edit, :update]
   before_action :current_user, :except => [:reindex]
   skip_before_action :check_authentication, :only => [:reindex]
-
-
-   def reindex
+  def reindex
     Child.reindex!
     Enquiry.reindex!
     Enquiry.delay.update_all_child_matches
@@ -29,19 +27,16 @@ class EnquiriesController < ApplicationController
         marked_as(@filter)
 
     @enquiries = search.results
-
-    
     flash[:notice] = t('enquiries.no_records_available') if @enquiries.empty?
-    
     respond_to do |format|
       format.html
       format.xml { render :xml => @enquiries }
-       unless params[:format].nil?
-         if @enquiries.empty?
-           flash[:notice] = t('enquiry.export_error')
-           redirect_to(:action => :index) && return
-         end
-       end
+      unless params[:format].nil?
+        if @enquiries.empty?
+          flash[:notice] = t('enquiry.export_error')
+          redirect_to(:action => :index) && return
+        end
+      end
 
       respond_to_export format, @enquiries
     end
