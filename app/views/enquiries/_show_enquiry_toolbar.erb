@@ -1,0 +1,86 @@
+<% if RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Enquiry) unless export_task.id.nil? } %>
+
+
+<div class="btn dropdown_btn btn_export">
+  <span class="export">
+    <a href="#"> <%= t("enquiries.export") %> </a>
+  </span>
+
+  <div class="dropdown hide">
+    <% RapidftrAddon::ExportTask.active.each do |export_task| %>
+      <% if can?("export_#{export_task.id}".to_sym, Enquiry) %>
+        <%= link_to t("addons.export_task.#{export_task.id}.all"), enquiry_path(@enquiry, :format => export_task.id, :per_page => :all), :class => "password-prompt" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<% end %>
+
+<% if can? :update, enquiry %>
+
+    <div class="btn dropdown_btn btn_flag dropdown_form">
+      <%= render :partial =>"suspect_flag", :locals => { :enquiry => @enquiry } %>
+    </div>
+
+    <% if children_enabled %>
+      <div class="btn dropdown_btn btn_reunite dropdown_form">
+        <% unless @enquiry.reunited? %>
+            <%= render :partial => "mark_as",
+                       :locals=> {:enquiry => @enquiry,
+                                  :mark_as_label => t("enquiry.actions.reunited"),
+                                  :mark_as_message_id => "reunited_message",
+                                  :mark_as_message => t("enquiry.actions.reunited_details"),
+                                  :mark_as_property => "reunited",
+                                  :mark_as_property_value => "true",
+                                  :mark_as_submit_label => t("enquiry.actions.reunite"),
+                                  :error_message => t("enquiry.messages.reunite_error_message"),
+                                  :style => "flag"
+                       } %>
+        <% else %>
+            <%= render :partial => "mark_as",
+                       :locals=> { :enquiry => @enquiry,
+                                   :mark_as_label => t("enquiry.actions.not_reunited"),
+                                   :mark_as_message_id => "reunited_message",
+                                   :mark_as_message => t("enquiry.actions.undo_reunited_details"),
+                                   :mark_as_property => "reunited",
+                                   :mark_as_property_value => "false",
+                                   :mark_as_submit_label => t("enquiry.actions.undo_reunite"),
+                                   :error_message => t("enquiry.messages.undo_reunite_error_message"),
+                                   :style => "flag"
+                       } %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="btn dropdown_btn btn_investigate dropdown_form">
+      <% if @enquiry.flag? %>
+          <% unless @enquiry.investigated? %>
+              <%= render :partial => "mark_as",
+                         :locals=> { :enquiry => @enquiry,
+                                     :mark_as_label => t("enquiry.actions.mark_as_investigated"),
+                                     :mark_as_message_id => "investigated_message",
+                                     :mark_as_message => t("enquiry.actions.investigation_details"),
+                                     :mark_as_property => "investigated",
+                                     :mark_as_property_value => "true",
+                                     :mark_as_submit_label => t("enquiry.actions.mark_as_investigated"),
+                                     :error_message => t("enquiry.messages.investigation_error_message"),
+                                     :style => "flag"
+                         } %>
+          <% else %>
+              <%= render :partial => "mark_as",
+                         :locals=> { :enquiry => @enquiry,
+                                     :mark_as_label => t("enquiry.actions.mark_as_not_investigated"),
+                                     :mark_as_message_id => "investigated_message",
+                                     :mark_as_message => t("enquiry.actions.undo_investigation_details"),
+                                     :mark_as_property => "investigated",
+                                     :mark_as_property_value => "false",
+                                     :mark_as_submit_label => t("enquiry.actions.undo_investigated"),
+                                     :error_message => t("enquiry.messages.undo_investigation_error_message"),
+                                     :style => "flag"
+                         } %>
+          <% end %>
+        <% end %>
+    </div>
+  <% end %>
+
+<%= link_to content_tag(:span, t("enquiry.change_log") , :class => 'log'), enquiry_history_path(@enquiry), :class=>'btn' %>
