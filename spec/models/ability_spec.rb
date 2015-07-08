@@ -79,45 +79,6 @@ describe Ability, :type => :model do
       it { is_expected.not_to authorize :create, Enquiry }
       it { is_expected.to authorize :read, Enquiry }
     end
-
-    describe 'export enquiries to csv' do
-      let(:permissions) { [Permission::ENQUIRIES[:export_csv]] }
-
-      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
-
-      it { is_expected.to authorize :export_csv, Enquiry }
-      it { is_expected.not_to authorize :index, Enquiry }
-      it { is_expected.not_to authorize :read, Enquiry.new }
-      it { is_expected.not_to authorize :update, Enquiry.new }
-      it { is_expected.not_to authorize :export_pdf, Enquiry.new }
-      it { is_expected.not_to authorize :export_photowall, Enquiry.new }
-    end
-
-    describe 'export enquiries to photowall' do
-      let(:permissions) { [Permission::ENQUIRIES[:export_photowall]] }
-
-      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
-
-      it { is_expected.to authorize :export_photowall, Enquiry }
-      it { is_expected.not_to authorize :index, Enquiry }
-      it { is_expected.not_to authorize :read, Enquiry.new }
-      it { is_expected.not_to authorize :update, Enquiry.new }
-      it { is_expected.not_to authorize :export_pdf, Enquiry.new }
-      it { is_expected.not_to authorize :export_csv, Enquiry.new }
-    end
-
-    describe 'export enquiries to pdf' do
-      let(:permissions) { [Permission::ENQUIRIES[:export_pdf]] }
-
-      it { is_expected.not_to authorize_any CRUD, Device, FormSection, Field, Session, User, Role, SystemUsers, Report, Child }
-
-      it { is_expected.to authorize :export_pdf, Enquiry }
-      it { is_expected.not_to authorize :index, Enquiry }
-      it { is_expected.not_to authorize :read, Enquiry.new }
-      it { is_expected.not_to authorize :update, Enquiry.new }
-      it { is_expected.not_to authorize :export_csv, Enquiry.new }
-      it { is_expected.not_to authorize :export_photowall, Enquiry.new }
-    end
   end
 
   context 'potential_matches' do

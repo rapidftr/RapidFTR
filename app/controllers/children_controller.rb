@@ -96,8 +96,7 @@ class ChildrenController < ApplicationController
   end
 
   # POST /children
-  # POST /children.
-
+  # POST /children.xml
   def create
     authorize! :create, Child
     params[:child] = JSON.parse(params[:child]) if params[:child].is_a?(String)

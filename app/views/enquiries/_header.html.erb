@@ -2,33 +2,4 @@
 <% if can?(:create, Enquiry) && show_action_buttons %>
     <%= link_to content_tag(:span, t("enquiry.register_new_enquiry"), :class => 'create_user'), new_enquiry_path, :class=>'btn' %>
 <% end %>
-
-<% if @enquiries.present? and RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Enquiry)} %>
-<div class="btn dropdown_btn">
-  <span class="export"><%= t("enquiries.export") %></span>
-  <div class="dropdown hide">
-    <% RapidftrAddon::ExportTask.active.each do |export_task| %>
-      <% if can?("export_#{export_task.id}".to_sym, Enquiry) %>
-        <%= link_to t("addons.export_task.#{export_task.id}.all"), enquiries_path(:format => export_task.id, :per_page => :all), :class => "password-prompt" %>
-      <% end %>
-    <% end %>
-  </div>
-</div>
-<% end %>
-
-<script type="text/javascript">
-  $(".export-password-prompt").each(function() {
-    var el = $(this);
-    el.data("original-href", el.attr("href"));
-    el.data("password", null);
-  });
-
-  $(".export-password-prompt").click(function() {
-    var el=$(this), password=el.data("password"), href=el.attr("original-href");
-    if (password == null || password == undefined || password == "") {
-      password = prompt("Enter password");
-      el.attr("href", href + (href.indexOf("?") == -1 ? "?" : "") + "&password=" + escape(password);
-    }
-  });
-</script>
     
