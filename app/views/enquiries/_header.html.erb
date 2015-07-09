@@ -5,7 +5,7 @@
 
 <% if @enquiries.present? and RapidftrAddon::ExportTask.active.any?{|export_task| can?("export_#{export_task.id}".to_sym, Enquiry)} %>
 <div class="btn dropdown_btn">
-  <span class="export"><%= t("enquiries.export") %></span>
+  <span class="export"><%= t("enquiry.export") %></span>
   <div class="dropdown hide">
     <% RapidftrAddon::ExportTask.active.each do |export_task| %>
       <% if can?("export_#{export_task.id}".to_sym, Enquiry) %>
