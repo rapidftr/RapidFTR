@@ -133,6 +133,7 @@ en:
 
   enquiry:
     label: "Enquiries"
+    export: "Export"
     flagged_by: "Flagged By"
     last_updated: "Last updated"
     registered_by: "Registered by"
