@@ -47,7 +47,6 @@ Feature: So that hard copy printout of missing enquiry photos are available
   #   And I follow "Export to PDF"
   #   Then password prompt should be enabled
 
-
   # Scenario: A user without file export permissions should not be able to export files
   #   Given I logout as "Mary"
   #   And an registration worker "john" with password "123"
