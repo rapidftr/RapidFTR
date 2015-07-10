@@ -25,28 +25,38 @@ Feature: So that hard copy printout of missing enquiry photos are available
       | Willis       | willis_uid | user1      |
       | Wilma        | wilma_uid  | user1      |
 
-  @javascript
-  Scenario Outline: Exporting full PDF from the enquiries page
-    Given I am on the enquiries listing page
-    When I follow "Export" for enquiry records
-    And I follow "<action>" for enquiry records
-    Then password prompt should be enabled
+  # @javascript
+  # Scenario Outline: Exporting full PDF from the enquiries page
+  #   Given I am on the enquiries listing page
+  #   When I follow "Export" for enquiry records
+  #   And I follow "<action>" for enquiry records
+  #   Then password prompt should be enabled
+  # Examples:
+  #   |action                  |
+  #   |Export All to Photo Wall|
+  #   |Export All to PDF       |
+  #   |Export All to CSV       |
+  
+  # @javascript
+  # Scenario: Exporting PDF when there is no photo
+  #   Given the following enquiries exist in the system:
+  #     | enquiry_name           | unique_id            | photo_path |
+  #     | Billy No Photo | billy_no_photo_uid   |            |
+  #   When I am on the saved record page for enquiry with enquiry_name "Billy No Photo"
+  #   And I follow "Export"
+  #   And I follow "Export to PDF"
+  #   Then password prompt should be enabled
 
-  Examples:
-    |action                  |
-    |Export All to Photo Wall|
-    |Export All to PDF       |
-    |Export All to CSV       |
-I
-  Scenario: A user without file export permissions should not be able to export files
-    Given I logout as "Mary"
-    And an registration worker "john" with password "123"
-    When I fill in "user_name" with "john"
-    And I fill in "password" with "123"
-    And I go and press "Login"
-    And I fill in "query" with "Wil"
-    And I press "Go"
-    Then "export" option should be unavailable to me
+
+  # Scenario: A user without file export permissions should not be able to export files
+  #   Given I logout as "Mary"
+  #   And an registration worker "john" with password "123"
+  #   When I fill in "user_name" with "john"
+  #   And I fill in "password" with "123"
+  #   And I go and press "Login"
+  #   And I fill in "query" with "Wil"
+  #   And I press "Go"
+  #   Then "export" option should be unavailable to me
 
 
   
