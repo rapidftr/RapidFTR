@@ -37,16 +37,7 @@ Feature: So that hard copy printout of missing enquiry photos are available
     |Export All to Photo Wall|
     |Export All to PDF       |
     |Export All to CSV       |
-  @javascript
-  Scenario: Exporting PDF when there is no photo
-    Given the following enquiries exist in the system:
-      | enquiry_name           | unique_id            | photo_path |
-      | Billy No Photo | billy_no_photo_uid   |            |
-    When I am on the saved record page for enquiry with enquiry_name "Billy No Photo"
-    And I follow "Export"
-    And I follow "Export to PDF"
-    Then password prompt should be enabled
-
+I
   Scenario: A user without file export permissions should not be able to export files
     Given I logout as "Mary"
     And an registration worker "john" with password "123"
