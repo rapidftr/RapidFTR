@@ -32,12 +32,6 @@ Feature: So that hard copy printout of missing enquiry photos are available
     And I follow "<action>" for enquiry records
     Then password prompt should be enabled
 
-  Examples:
-    |action                  |
-    |Export All to Photo Wall|
-    |Export All to PDF       |
-    |Export All to CSV       |
-I
   Scenario: A user without file export permissions should not be able to export files
     Given I logout as "Mary"
     And an registration worker "john" with password "123"

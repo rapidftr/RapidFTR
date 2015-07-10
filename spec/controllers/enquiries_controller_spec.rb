@@ -4,7 +4,6 @@ def inject_export_generator(fake_export_generator, enquiry_data)
   allow(ExportGenerator).to receive(:new).with(enquiry_data).and_return(fake_export_generator)
 end
 
-
 def stub_out_export_generator(enquiry_data = [])
   inject_export_generator(stub_export_generator = double(ExportGenerator), enquiry_data)
   allow(stub_export_generator).to receive(:child_photos).and_return('')
@@ -519,3 +518,4 @@ describe EnquiriesController, :type => :controller do
 
     end
   end
+end

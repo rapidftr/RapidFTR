@@ -39,7 +39,6 @@ class EnquiriesController < ApplicationController
 
       respond_to_export format, @enquiries
     end
-
   end
 
   def new
@@ -132,5 +131,4 @@ class EnquiriesController < ApplicationController
   def export_filename(enquiries, export_task)
     (enquiries.length == 1 ? enquiries.first.short_id : current_user_name) + '_' + export_task.id.to_s + '.zip'
   end
-  
 end
