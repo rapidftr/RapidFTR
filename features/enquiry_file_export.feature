@@ -12,13 +12,13 @@ Feature: So that hard copy printout of missing enquiry photos are available
       | Enquiry Criteria | enquiry_criteria | false    | 1     | true    | true         |
     And the following fields exists on "enquiry_criteria":
       | name             | type       | display_name  | editable | matchable  |
-      | enquirer_name    | text_field | enquiry_name  | false    | true       |
+      | enquiry_name     | text_field | enquiry_name  | false    | true       |
       | unique_id        | text_field | unique_id     | false    | true       |
       | created_by       | text_field | created_by    | false    | true       |
       | action           | text_field | action        | false    | true       |
       | photo_path       | text_field | photo_path    | false    | true       |
 
-    Given I am logged in as a user with "View Enquiry,Export to Photowall,Export to CSV,Export to PDF,Edit Enquiry" permissions
+    Given I am logged in as a user with "Create Enquiry,View Enquiries,Update Enquiry,Export to Photowall,Export to CSV,Export to PDF" permissions
     And the following enquiries exist in the system:
       | enquiry_name | unique_id  | created_by |
       | Will         | will_uid   | user1      |
@@ -26,7 +26,7 @@ Feature: So that hard copy printout of missing enquiry photos are available
       | Wilma        | wilma_uid  | user1      |
 
   @javascript
-  Scenario Outline: Exporting full PDF from the enquiries page
+  Scenario Outline: Exporting enquiries
     Given I am on the enquiries listing page
     When I follow "Export" for enquiry records
     And I follow "<action>" for enquiry records
@@ -37,7 +37,7 @@ Feature: So that hard copy printout of missing enquiry photos are available
     |Export All to Photo Wall|
     |Export All to PDF       |
     |Export All to CSV       |
-I
+
   Scenario: A user without file export permissions should not be able to export files
     Given I logout as "Mary"
     And an registration worker "john" with password "123"

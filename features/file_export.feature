@@ -60,7 +60,7 @@ Feature: So that hard copy printout of missing child photos are available
     |Export Selected to CSV       |
 
   @javascript
-  Scenario Outline: Exporting full PDF from the child page
+  Scenario Outline: Exporting children
     Given I am on the children listing page
     When I follow "Export" for child records
     And I follow "<action>" for child records
