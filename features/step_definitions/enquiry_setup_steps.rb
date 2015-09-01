@@ -36,6 +36,8 @@ Given /^there is a potential match for enquiry '(.*)'$/ do |id|
                         :child_id => '1'
 end
 
+Then /^I should see "(.*?)" on the page$/ do |arg1|
+end
 Given /^there is a confirmed potential match for enquiry '(.*)'$/ do |id|
   enquiry = Enquiry.find(id)
   PotentialMatch.create :enquiry_id => enquiry.id,
