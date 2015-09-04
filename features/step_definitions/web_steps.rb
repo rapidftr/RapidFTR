@@ -343,6 +343,6 @@ When /^I click OK in the browser popup$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
-When(/^I follow "(.*?)" for enquiry records$/) do |arg1|
+When(/^I follow "([^"]*)" for enquiry records$/) do |_|
   find(:xpath, "//span[@class='export']").click
 end
