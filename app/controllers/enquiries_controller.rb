@@ -27,7 +27,7 @@ class EnquiriesController < ApplicationController
         marked_as(@filter)
 
     @enquiries = search.results
-    flash[:notice] = t('enquiries.no_records_available') if @enquiries.empty?
+    flash[:notice] = t('enquiry.no_records_available') if @enquiries.empty?
     respond_to do |format|
       format.html
       format.xml { render :xml => @enquiries }
