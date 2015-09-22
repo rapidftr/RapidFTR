@@ -51,13 +51,7 @@ Feature:
     Then I follow "Matches"
     And I should see "2" children on the page
 
-  Scenario: View list of enquiries with potential matches
-    Given I am logged in as a user with "View Enquiries" permissions
-    When I follow "2 Enquiries with potential matches"
-    Then I should see "Enquiries with potential matches"
-    And I should see "2" enquiries on the page
-
-  Scenario: View no potential Matches for enquiry
+    Scenario: View no potential Matches for enquiry
     Given I am logged in as a user with "Create Enquiry,View Enquiries" permissions
     When I follow "Register New Enquiry"
     And I fill in "Enquirer Name" with "Nelly"
@@ -66,6 +60,16 @@ Feature:
     And I press "Save"
     Then I follow "Matches"
     Then I should see "No potential matches was found" on the page
+
+  Scenario: View list of enquiries with potential matches
+    Given I am logged in as a user with "View Enquiries" permissions
+    When I follow "2 Enquiries with potential matches"
+    Then I should see "Enquiries with potential matches"
+    And I should see "2" enquiries on the page
+
+  
+  
+
   @javascript
   Scenario: Mark a child record as not a match for particular enquiry
     Given I am logged in as an admin

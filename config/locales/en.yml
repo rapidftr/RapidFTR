@@ -361,17 +361,21 @@ en:
       Reports: Reports
       Devices: Devices
       System: System
+      Enquiries: Enquiries
       Roles: Roles
       Children: Children
       Forms: Forms
       Users: Users
       ALL: All
+      PotentialMatches: PotentialMatches
 
     permission:
       "Register Child": "Register Child"
       "Edit Child": "Edit Child"
       "View And Search Child": "View And Search Child"
-      "Export to Photowall/CSV/PDF": "Export to Photowall/CSV/PDF"
+      "Export to Photowall": "Export to Photowall"
+      "Export to CSV": "Export to CSV"
+      "Export to PDF": "Export to PDF"
       "Manage Forms": "Manage Forms"
       "Create and Edit Users": "Create and Edit Users"
       "View Users": "View Users"
@@ -390,8 +394,14 @@ en:
       "Create Enquiry": "Create, Update and View Enquiries"
       "Update Enquiry": "Update and View Enquiries"
       "View Enquiries": "View Enquiries"
+      "View Potential Matches": "View Potential Matches"
+
+
+      
   forms:
     label: "Forms"
+
+
     manage: "Manage Forms"
     save: "Save Form"
     save_details: "Save Details"
