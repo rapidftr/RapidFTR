@@ -29,6 +29,7 @@ describe SearchController, :type => :controller do
     context 'when searching Children' do
       let :search do
         search = instance_double('Search', :results => [])
+        allow(search).to receive(:paginated).and_return(search)
         allow(search).to receive(:created_by).and_return(search)
         allow(search).to receive(:fulltext_by).and_return(search)
         allow(search).to receive(:results).and_return([])
@@ -67,6 +68,7 @@ describe SearchController, :type => :controller do
     context 'when searching Enquiries' do
       let :search do
         search = instance_double('Search', :results => [])
+        allow(search).to receive(:paginated).and_return(search)
         allow(search).to receive(:created_by).and_return(search)
         allow(search).to receive(:fulltext_by).and_return(search)
         allow(search).to receive(:results).and_return([])
