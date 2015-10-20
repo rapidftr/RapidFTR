@@ -15,6 +15,41 @@ Feature: So that I can find a child that has been entered in to RapidFTR
     And I press "Go"
     And I should see "Willis" in the search results
 
+  Scenario: Searching for a child name in paginated result
+    Given the following children exist in the system:
+      | name   |
+      | Will_1 |
+      | Will_2 |
+      | Will_3 |
+      | Will_4 |
+      | Will_5 |
+      | Will_6 |
+      | Will_7 |
+      | Will_8 |
+      | Will_9 |
+      | Will_10 |
+      | Will_11 |
+      | Will_12 |
+      | Will_13 |
+      | Will_14 |
+      | Will_15 |
+      | Will_16 |
+      | Will_17 |
+      | Will_18 |
+      | Will_19 |
+      | Will_20 |
+      | Will_21 |
+      | Will_22 |
+      | Will_23 |
+      | Will_24 |
+    When I fill in "query" with "Will"
+    And I press "Go"
+    And I should see "Will_1" in the search results
+    Then I goto the "next_page"
+    And I should not see "Will_1" in the search results
+    And I should see "Will_24" in the search results
+
+
   Scenario: Searching for a child given his short id
     Given the following children exist in the system:
       | name   	| last_known_location 	| reporter | unique_id     |

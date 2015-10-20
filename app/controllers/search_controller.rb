@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  PER_PAGE = 20
   def search
     @search_type = params[:search_type].nil? ? Child : params[:search_type].safe_constantize
 
@@ -18,7 +19,11 @@ class SearchController < ApplicationController
     if query.nil? || query.empty?
       flash[:error] = I18n.t('messages.valid_search_criteria')
     else
-      search = Search.for(@search_type)
+      per_page = params[:per_page] || PER_PAGE
+      per_page = per_page == 'all' ? @search_type.count : per_page.to_i
+      page = params[:page] || 1
+      
+      search = Search.for(@search_type).paginated(page, per_page)
       search.created_by(current_user) unless can?(:view_all, @search_type)
       search.fulltext_by(@search_type.searchable_field_names, query)
       @results = search.results
