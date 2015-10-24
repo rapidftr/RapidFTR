@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :clean_role_ids, :only => [:update, :create]
   before_action :load_user, :only => [:show, :edit, :update, :destroy]
 
-  skip_before_action :check_authentication, :set_locale, :only => :register_unverified
+  skip_before_action :check_authentication, :set_locale, :only => [:register_unverified, :contact]
 
   def index
     authorize! :read, User
