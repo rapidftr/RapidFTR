@@ -314,11 +314,34 @@ describe UsersController, :type => :controller do
       post :update_password, :forms_change_password_form => @mock_params
       expect(response).to render_template :change_password
     end
+
+    it 'should show form when force password change' do
+      @user.force_password_change = true
+      @user.save
+
+      allow(Forms::ChangePasswordForm).to receive(:new).with(:user => @user).and_return(@mock_change_form)
+      get :change_password
+      expect(assigns[:change_password_request]).to eq(@mock_change_form)
+      expect(response).to render_template :change_password
+    end
+
+    it 'should update password when force password change' do
+      @user.force_password_change = true
+      @user.save
+
+      allow(Forms::ChangePasswordForm).to receive(:new).with(:user => @user).and_return(@mock_change_form)
+      expect(@mock_change_form).to receive(:user=).with(@user).and_return(nil)
+      expect(@mock_change_form).to receive(:execute).and_return(true)
+
+      post :update_password, :forms_change_password_form => @mock_params
+      expect(flash[:notice]).to eq('Password changed successfully')
+      expect(response).to redirect_to :action => :show, :id => @user.id
+    end
   end
 
   describe 'register_unverified' do
     it 'should set verified status to false' do
-      expect(User).to receive(:find_by_user_name).twice.and_return(nil)
+      allow(User).to receive(:find_by_user_name).and_return(nil)
       expect(User).to receive(:new).with('user_name' => 'salvador', 'verified' => false, 'password' => 'password', 'password_confirmation' => 'password').and_return(user = 'some_user')
       expect(user).to receive :save!
 
@@ -328,7 +351,7 @@ describe UsersController, :type => :controller do
     end
 
     it 'should not attempt to create a user if already exists' do
-      expect(User).to receive(:find_by_user_name).and_return('something that is not nil')
+      expect(User).to receive(:find_by_user_name).and_return(User.new)
       expect(User).not_to receive(:new)
 
       post :register_unverified, :format => :json, :user => {:user_name => 'salvador', 'unauthenticated_password' => 'password'}

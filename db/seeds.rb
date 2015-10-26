@@ -28,6 +28,7 @@ if should_seed? User
                'email' => 'rapidftr@rapidftr.com',
                'disabled' => 'false',
                'organisation' => 'N/A',
+               'force_password_change' => true,
                'role_ids' => [system_admin.id])
 
   User.create!('user_name' => 'field_worker',

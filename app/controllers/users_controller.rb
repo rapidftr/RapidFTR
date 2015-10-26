@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :load_user, :only => [:show, :edit, :update, :destroy]
 
   skip_before_action :check_authentication, :set_locale, :only => :register_unverified
+  skip_before_action :force_password_change, :only => [:change_password, :update_password]
 
   def index
     authorize! :read, User
