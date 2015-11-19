@@ -60,7 +60,11 @@ class ExportGenerator
   end
 
   def map_field_with_value(child, fields)
-    fields.map { |field| format_field_for_export(field, child[field.name] || child.send(field.name), child) }
+
+    fields.map do |field|
+      value = child[field.name] || (child.send(field.name) if child.respond_to?(field.name))
+      format_field_for_export(field, value, child)
+    end
   end
 
   def metadata_fields(fields, extras)
@@ -82,7 +86,16 @@ class ExportGenerator
 
   def format_field_for_export(field, value, child = nil)
     return '' if value.blank?
-    return value.join(', ') if field.type == Field::CHECK_BOXES
+    if field.type == Field::CHECK_BOXES
+      return case value.class
+        when Array
+          value.join(', ')
+        when String
+          value
+        else
+          value
+      end
+    end
     if child
       # TODO: rubocop:disable CommentAnnotation
       # child['photo_url'] = child_photo_url(child, child.primary_photo_id) unless (child.primary_photo_id.nil? || child.primary_photo_id == "")
