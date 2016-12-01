@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = '2'
 
 # Check required plugins
 REQUIRED_PLUGINS = %w(vagrant-omnibus vagrant-faster)
-exit unless REQUIRED_PLUGINS.all? do |plugin|
+exit unless ARGV[0] == 'plugin' or REQUIRED_PLUGINS.all? do |plugin|
   Vagrant.has_plugin?(plugin) || (
     puts "The #{plugin} plugin is required. Please install it with:"
     puts "$ vagrant plugin install #{plugin}"
